@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "element-react": "^1.4.19",
+    "element-theme-default": "^1.4.13",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-markdown": "^3.3.2",
     "react-scripts": "1.1.4"
   },
   "scripts": {
