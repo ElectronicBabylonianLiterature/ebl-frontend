@@ -1,3 +1,6 @@
+[![Codeship Status for ElectronicBabylonianLiterature/ebl-frontend](https://app.codeship.com/projects/81f1a480-4637-0136-73e8-46e54b124c02/status?branch=master)](https://app.codeship.com/projects/292066)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/maintainability)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/maintainability)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
