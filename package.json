@@ -5,6 +5,7 @@
   "dependencies": {
     "element-react": "^1.4.19",
     "element-theme-default": "^1.4.13",
+    "lodash": "^4.17.10",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-markdown": "^3.3.2",
@@ -26,6 +27,7 @@
       "browser": true,
       "jest": true,
       "es6": true
-    }
+    },
+    "parser": "babel-eslint"
   }
 }
