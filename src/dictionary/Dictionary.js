@@ -4,11 +4,23 @@ import WordSearch from './WordSearch'
 import Word from './Word'
 
 class Dictionary extends Component {
+  constructor () {
+    super()
+
+    this.state = {
+      word: {source: ''}
+    }
+  }
+
+  onSearch = response => {
+    this.setState({word: response})
+  }
+
   render () {
     return (
       <div>
-        <WordSearch />
-        <Word value={{source: '**lemma**, *form* "meaning" \\[LOGOGRAM\\] **G** (*a*/*u*) \\> derived'}} />
+        <WordSearch onResponse={this.onSearch} />
+        <Word value={this.state.word} />
       </div>
     )
   }
