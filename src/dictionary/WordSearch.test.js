@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, renderIntoDocument, cleanup, wait} from 'react-testing-library'
+import {Simulate, render} from 'react-testing-library'
 import WordSearch from './WordSearch'
 
 let onResponse
@@ -8,24 +8,18 @@ beforeEach(async () => {
   fetch.resetMocks()
   fetch.mockResponseOnce(JSON.stringify({ lemma: ['lemma'] }))
   onResponse = jest.fn()
-  const {getByText, getByPlaceholderText} = renderIntoDocument(<WordSearch onResponse={onResponse} />)
+  const {container, getByPlaceholderText} = render(<WordSearch onResponse={onResponse} />)
 
   const lemma = getByPlaceholderText('lemma')
   lemma.value = 'lemma'
-  fireEvent.change(lemma)
+  Simulate.change(lemma)
 
   const homonym = getByPlaceholderText('homonym')
   homonym.value = 'homonym'
-  fireEvent.change(homonym)
+  Simulate.change(homonym)
 
-  await wait()
-
-  fireEvent.click(
-    getByText((content, element) => element.tagName.toLowerCase() === 'button')
-  )
+  Simulate.submit(container.querySelector('form'))
 })
-
-afterEach(cleanup)
 
 it('Calls onResponse with the response JSON', async () => {
   expect(await onResponse.mock.calls[0][0]).toEqual({ lemma: ['lemma'] })
