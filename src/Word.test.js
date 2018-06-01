@@ -1,9 +1,10 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import {render} from 'react-testing-library'
 import Word from './Word'
 
-it('renders without crashing', () => {
-  const div = document.createElement('div')
-  ReactDOM.render(<Word value={{source: '**lemma**'}} />, div)
-  ReactDOM.unmountComponentAtNode(div)
+import 'dom-testing-library/extend-expect'
+
+it('renders markdown as HTML', () => {
+  const word = render(<Word value={{source: '**lemma**'}} />)
+  expect(word.container.innerHTML).toContain('<strong>lemma</strong>')
 })
