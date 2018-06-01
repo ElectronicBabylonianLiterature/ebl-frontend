@@ -20,8 +20,8 @@ class WordSearch extends Component {
     })
   }
 
-  submit = (e) => {
-    e.preventDefault()
+  submit = event => {
+    event.preventDefault()
     fetch(`http://localhost:8000/words/${this.state.form.lemma}/${this.state.form.homonym}`)
       .then(response => response.json())
       .then(this.props.onResponse)
