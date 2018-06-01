@@ -4,8 +4,7 @@ import './App.css'
 
 import 'element-theme-default'
 
-import WordSearch from './WordSearch'
-import Word from './Word'
+import Dictionary from './dictionary/Dictionary'
 
 class App extends Component {
   render () {
@@ -18,8 +17,7 @@ class App extends Component {
         <p className='App-intro'>
           Dictionary
         </p>
-        <WordSearch />
-        <Word value={{source: '**lemma**, *form* "meaning" \\[LOGOGRAM\\] **G** (*a*/*u*) \\> derived'}} />
+        <Dictionary />
       </div>
     )
   }
