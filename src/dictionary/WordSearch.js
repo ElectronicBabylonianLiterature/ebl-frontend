@@ -23,7 +23,7 @@ class WordSearch extends Component {
   submit = event => {
     event.preventDefault()
     const headers = new Headers({'Authorization': `Bearer ${this.props.auth.getAccessToken()}`})
-    fetch(`http://localhost:8000/words/${this.state.form.lemma}/${this.state.form.homonym}`, {headers: headers})
+    fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.state.form.lemma}/${this.state.form.homonym}`, {headers: headers})
       .then(response => response.json())
       .then(this.props.onResponse)
   }
