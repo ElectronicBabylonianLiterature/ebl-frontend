@@ -20,12 +20,23 @@ class WordSearch extends Component {
     })
   }
 
-  submit = event => {
+  submit = async event => {
     event.preventDefault()
-    const headers = new Headers({'Authorization': `Bearer ${this.props.auth.getAccessToken()}`})
-    fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.state.form.lemma}/${this.state.form.homonym}`, {headers: headers})
-      .then(response => response.json())
-      .then(this.props.onResponse)
+    try {
+      const headers = new Headers({'Authorization': `Bearer ${this.props.auth.getAccessToken()}`})
+      await fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.state.form.lemma}/${this.state.form.homonym}`, {headers: headers})
+        .then(response => {
+          if (response.ok) {
+            return response
+          } else {
+            throw Error(response.statusText)
+          }
+        })
+        .then(response => response.json())
+        .then(this.props.onResponse)
+    } catch (error) {
+      this.props.onResponse(null, error)
+    }
   }
 
   render () {
