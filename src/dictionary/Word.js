@@ -3,9 +3,7 @@ import ReactMarkdown from 'react-markdown'
 
 class Word extends Component {
   render () {
-    return (
-      <ReactMarkdown source={this.props.value.source} />
-    )
+    return <ReactMarkdown source={this.props.value.source} />
   }
 }
 
