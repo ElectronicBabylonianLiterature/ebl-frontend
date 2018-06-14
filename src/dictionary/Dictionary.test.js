@@ -3,6 +3,14 @@ import {render, Simulate, wait} from 'react-testing-library'
 import Dictionary from './Dictionary'
 import Auth from '../auth0/Auth'
 
+const word = {
+  lemma: ['lemma'],
+  forms: [],
+  homonym: 'I',
+  amplifiedMeanings: {},
+  derived: []
+}
+
 let auth
 
 beforeEach(() => {
@@ -17,13 +25,13 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    fetch.mockResponseOnce(JSON.stringify({ source: 'source' }))
+    fetch.mockResponseOnce(JSON.stringify(word))
 
     const {container, getByText} = render(<Dictionary auth={auth} />)
 
     Simulate.submit(container.querySelector('form'))
     await wait()
-    expect(getByText('source')).toBeDefined()
+    expect(getByText('lemma')).toBeDefined()
   })
 
   it('displays error on failed query', async () => {

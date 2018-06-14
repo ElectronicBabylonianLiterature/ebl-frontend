@@ -2,11 +2,19 @@ import React from 'react'
 import {Simulate, render} from 'react-testing-library'
 import WordSearch from './WordSearch'
 
+const word = {
+  lemma: ['lemma'],
+  forms: [],
+  homonym: 'I',
+  amplifiedMeanings: {},
+  derived: []
+}
+
 let onResponse
 
 beforeEach(async () => {
   fetch.resetMocks()
-  fetch.mockResponseOnce(JSON.stringify({ lemma: ['lemma'] }))
+  fetch.mockResponseOnce(JSON.stringify(word))
   onResponse = jest.fn()
 
   const auth = {
@@ -29,7 +37,7 @@ beforeEach(async () => {
 })
 
 it('Calls onResponse with the response JSON', async () => {
-  expect(await onResponse.mock.calls[0][0]).toEqual({ lemma: ['lemma'] })
+  expect(await onResponse.mock.calls[0][0]).toEqual(word)
 })
 
 it('Makes one request', async () => {

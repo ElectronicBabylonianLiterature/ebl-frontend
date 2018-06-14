@@ -4,6 +4,8 @@ import { Alert } from 'element-react'
 import WordSearch from './WordSearch'
 import Word from './Word'
 
+import './Dictionary.css'
+
 class Dictionary extends Component {
   constructor (props) {
     super(props)
@@ -20,18 +22,20 @@ class Dictionary extends Component {
 
   render () {
     return (
-      <Fragment>
+      <section>
         {this.props.auth.isAuthenticated()
           ? (
             <Fragment>
-              <WordSearch onResponse={this.onSearch} auth={this.props.auth} />
+              <header className='Dictionary-search'>
+                <WordSearch onResponse={this.onSearch} auth={this.props.auth} />
+              </header>
               {this.state.word && <Word value={this.state.word} />}
               {this.state.error && <Alert type='error' title={this.state.error.message} showIcon closable={false} />}
             </Fragment>
           )
-          : <div>You need to be logged in to access the dictionary.</div>
+          : <p>You need to be logged in to access the dictionary.</p>
         }
-      </Fragment>
+      </section>
     )
   }
 }

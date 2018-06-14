@@ -1,4 +1,5 @@
-.App {
+.App-header,
+.App-intro {
   text-align: center;
 }
 
@@ -20,4 +21,9 @@
 
 .App-intro {
   font-size: large;
+}
+
+.App section {
+  margin-left: 5%;
+  margin-right: 5%;
 }

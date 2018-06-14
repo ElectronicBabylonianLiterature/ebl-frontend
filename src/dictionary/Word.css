@@ -1,0 +1,39 @@
+.InlineMarkdown,
+.InlineMarkdown p,
+.InlineMarkdown div {
+  display: inline;
+}
+
+.Word li,
+.Word ul {
+  display: inline;
+  padding: 0;
+}
+
+.Word-forms::before {
+  content: ", ";
+}
+
+.Word-forms li + li::before {
+  content: ", ";
+}
+
+.AmplifiedMeanings-entry::before {
+  content: " ";
+}
+
+.Derived::before {
+  content: "> ";
+}
+
+.Derived-group::after {
+  content: "; ";
+}
+
+.Derived-group li + li::before {
+  content: ", ";
+}
+
+.Word-derivedFrom::before {
+  content: "< ";
+}
