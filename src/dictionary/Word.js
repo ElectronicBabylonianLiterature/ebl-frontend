@@ -40,7 +40,9 @@ class Notes extends Component {
 
 class Form extends Component {
   render () {
-    return (
+    return _.isString(this.props.value) ? (
+      <InlineMarkdown source={this.props.value} />
+    ) : (
       <Notes value={this.props.value.notes}>
         <Lemma value={this.props.value} container='em' />
       </Notes>
@@ -98,7 +100,7 @@ class Word extends Component {
   get forms () {
     return (
       <ul className='Word-forms'>
-        {this.word.forms.map(form => <li key={form.lemma.join(' ')}><Form value={form} /></li>)}
+        {this.word.forms.map((form, index) => <li key={index}><Form value={form} /></li>)}
       </ul>
     )
   }

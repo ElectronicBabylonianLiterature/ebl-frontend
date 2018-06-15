@@ -26,32 +26,59 @@ const word = {
   source: '**source**'
 }
 
+const brokenWord = {
+  lemma: ['lemma'],
+  homonym: 'I',
+  forms: ['broken-form'],
+  meaning: 'meaning',
+  amplifiedMeanings: {},
+  derived: [['broken-derived']],
+  derivedFrom: null,
+  source: '**source**'
+}
+
 let textContent
 
-beforeEach(() => {
-  textContent = render(<Word value={word} />).container.textContent
+describe('word display', () => {
+  beforeEach(() => {
+    textContent = render(<Word value={word} />).container.textContent
+  })
+
+  it('renders lemma', () => {
+    expect(textContent).toContain('part1 part2 I')
+  })
+
+  it('renders forms', () => {
+    expect(textContent).toContain('*form II')
+  })
+
+  it('renders meaning', () => {
+    expect(textContent).toContain('meaning')
+  })
+
+  it('amplifiedMeanings', () => {
+    expect(textContent).toContain('G amplified')
+  })
+
+  it('derived', () => {
+    expect(textContent).toContain('note1 derived IV note2')
+  })
+
+  it('derivedFrom', () => {
+    expect(textContent).toContain('derivedFrom I')
+  })
 })
 
-it('renders lemma', () => {
-  expect(textContent).toContain('part1 part2 I')
-})
+describe('broken word display', () => {
+  beforeEach(() => {
+    textContent = render(<Word value={brokenWord} />).container.textContent
+  })
 
-it('renders forms', () => {
-  expect(textContent).toContain('*form II')
-})
+  it('form', () => {
+    expect(textContent).toContain('broken-form')
+  })
 
-it('renders meaning', () => {
-  expect(textContent).toContain('meaning')
-})
-
-it('amplifiedMeanings', () => {
-  expect(textContent).toContain('G amplified')
-})
-
-it('derived', () => {
-  expect(textContent).toContain('note1 derived IV note2')
-})
-
-it('derivedFrom', () => {
-  expect(textContent).toContain('derivedFrom I')
+  it('derived', () => {
+    expect(textContent).toContain('broken-derived')
+  })
 })
