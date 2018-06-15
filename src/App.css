@@ -27,3 +27,9 @@
   margin-left: 5%;
   margin-right: 5%;
 }
+
+.App-nav ul,
+.App-nav li {
+  display: inline;
+  margin: 0.5em;
+}

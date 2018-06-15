@@ -23,6 +23,7 @@ class Dictionary extends Component {
   render () {
     return (
       <section>
+        <h2>Dictionary</h2>
         {this.props.auth.isAuthenticated()
           ? (
             <Fragment>

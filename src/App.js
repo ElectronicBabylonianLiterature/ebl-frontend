@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import logo from './logo.png'
 import './App.css'
 
@@ -14,15 +14,24 @@ class App extends Component {
     return (
       <div className='App'>
         <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <h1 className='App-title'>Electronic Babylonian Literature</h1>
-          <User auth={this.props.auth} />
+          <h1 className='App-title'>
+            <img src={logo} className='App-logo' alt='Electronic Babylonian Literature (eBL)' title='Electronic Babylonian Literature' />
+          </h1>
+          <nav className='App-nav'>
+            <ul>
+              <li><Link to='/'>Home</Link></li>
+              <li><Link to='/dictionary'>Dictionary</Link></li>
+              <li><User auth={this.props.auth} /></li>
+            </ul>
+          </nav>
         </header>
-        <p className='App-intro'>
-          Dictionary
-        </p>
-        <Route exact path='/' render={props => <Dictionary auth={this.props.auth} />} />
-        <Route path='/callback' render={props => <Callback {...{...props, auth: this.props.auth}} />} />
+        <Route exact path='/' render={props => (
+          <section className='App-intro'>
+            <h2>Welcome</h2>
+          </section>
+        )} />
+        <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} />} />
+        <Route path='/callback' render={props => <Callback {...Object.assign({auth: this.props.auth}, props)} />} />
       </div>
     )
   }
