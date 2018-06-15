@@ -2,19 +2,19 @@ import React from 'react'
 import {Simulate, render} from 'react-testing-library'
 import WordSearch from './WordSearch'
 
-const word = {
+const result = [{
   lemma: ['lemma'],
   forms: [],
   homonym: 'I',
   amplifiedMeanings: {},
   derived: []
-}
+}]
 
 let onResponse
 
 beforeEach(async () => {
   fetch.resetMocks()
-  fetch.mockResponseOnce(JSON.stringify(word))
+  fetch.mockResponseOnce(JSON.stringify(result))
   onResponse = jest.fn()
 
   const auth = {
@@ -29,15 +29,11 @@ beforeEach(async () => {
   lemma.value = 'lemma'
   Simulate.change(lemma)
 
-  const homonym = getByPlaceholderText('homonym')
-  homonym.value = 'homonym'
-  Simulate.change(homonym)
-
   Simulate.submit(container.querySelector('form'))
 })
 
 it('Calls onResponse with the response JSON', async () => {
-  expect(await onResponse.mock.calls[0][0]).toEqual(word)
+  expect(await onResponse.mock.calls[0][0]).toEqual(result)
 })
 
 it('Makes one request', async () => {
@@ -46,6 +42,6 @@ it('Makes one request', async () => {
 
 it('Queries the Dictionary API with given parameters', async () => {
   const expectedHeaders = new Headers({'Authorization': `Bearer accessToken`})
-  const expectedUrl = 'http://localhost:8000/words/lemma/homonym'
+  const expectedUrl = 'http://localhost:8000/words/search/lemma'
   expect(fetch).toBeCalledWith(expectedUrl, {headers: expectedHeaders})
 })

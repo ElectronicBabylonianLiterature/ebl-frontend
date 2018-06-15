@@ -8,8 +8,7 @@ class WordSearch extends Component {
 
     this.state = {
       form: {
-        lemma: '',
-        homonym: ''
+        lemma: ''
       }
     }
   }
@@ -24,7 +23,7 @@ class WordSearch extends Component {
     event.preventDefault()
     try {
       const headers = new Headers({'Authorization': `Bearer ${this.props.auth.getAccessToken()}`})
-      await fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.state.form.lemma}/${this.state.form.homonym}`, {headers: headers})
+      await fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/search/${this.state.form.lemma}`, {headers: headers})
         .then(response => {
           if (response.ok) {
             return response
@@ -44,9 +43,6 @@ class WordSearch extends Component {
       <Form inline model={this.state.form} onSubmit={this.submit}>
         <Form.Item prop='lemma'>
           <Input placeholder='lemma' onChange={_.partial(this.onChange, 'lemma')} />
-        </Form.Item>
-        <Form.Item prop='homonym'>
-          <Input placeholder='homonym' onChange={_.partial(this.onChange, 'homonym')} />
         </Form.Item>
         <Form.Item>
           <Button nativeType='submit' type='primary'>Query</Button>

@@ -11,13 +11,13 @@ class Dictionary extends Component {
     super(props)
 
     this.state = {
-      word: null,
+      words: [],
       error: null
     }
   }
 
   onSearch = (response, error) => {
-    this.setState({word: response, error: error})
+    this.setState({words: response, error: error})
   }
 
   render () {
@@ -30,7 +30,13 @@ class Dictionary extends Component {
               <header className='Dictionary-search'>
                 <WordSearch onResponse={this.onSearch} auth={this.props.auth} />
               </header>
-              {this.state.word && <Word value={this.state.word} />}
+              <ul className='Dictionary-results'>
+                {this.state.words.map(word =>
+                  <li key={word._id}>
+                    <Word value={word} />
+                  </li>
+                )}
+              </ul>
               {this.state.error && <Alert type='error' title={this.state.error.message} showIcon closable={false} />}
             </Fragment>
           )

@@ -1,3 +1,8 @@
 .Dictionary-search {
   text-align: center;
 }
+
+.Dictionary-results li {
+  list-style-type: none;
+  margin-bottom: 1em;
+}
