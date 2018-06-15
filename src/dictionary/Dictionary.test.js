@@ -5,6 +5,7 @@ import Auth from '../auth0/Auth'
 
 const words = [
   {
+    _id: '1',
     lemma: ['lemma'],
     forms: [],
     homonym: 'I',
@@ -12,6 +13,7 @@ const words = [
     derived: []
   },
   {
+    _id: '2',
     lemma: ['lemma'],
     forms: [],
     homonym: 'II',

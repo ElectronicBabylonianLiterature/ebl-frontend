@@ -17,7 +17,7 @@ class Dictionary extends Component {
   }
 
   onSearch = (response, error) => {
-    this.setState({words: response, error: error})
+    this.setState({words: response || [], error: error})
   }
 
   render () {
