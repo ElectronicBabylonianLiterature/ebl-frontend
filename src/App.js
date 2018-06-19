@@ -9,6 +9,7 @@ import User from './auth0/User'
 import Callback from './auth0/Callback'
 import Introduction from './Introduction'
 import Dictionary from './dictionary/Dictionary'
+import WordEditor from './dictionary/editor/WordEditor'
 
 class App extends Component {
   render () {
@@ -27,7 +28,8 @@ class App extends Component {
           </nav>
         </header>
         <Route exact path='/' component={Introduction} />
-        <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} />} />
+        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} />} />
+        <Route path='/dictionary/:id' render={props => <WordEditor {...Object.assign({auth: this.props.auth}, props)} />} />
         <Route path='/callback' render={props => <Callback {...Object.assign({auth: this.props.auth}, props)} />} />
       </div>
     )
