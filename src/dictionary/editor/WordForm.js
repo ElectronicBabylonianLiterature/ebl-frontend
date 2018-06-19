@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Checkbox, Button, Select } from 'element-react'
+import { Form, Input, Checkbox, Button, Select, Layout } from 'element-react'
 import _ from 'lodash'
 
-import './WordEditor.css'
+import './WordForm.css'
+
 class WordForm extends Component {
   constructor (props) {
     super(props)
@@ -37,33 +38,50 @@ class WordForm extends Component {
     const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
 
     return (
-      <Form model={this.state.word} >
-        <Form.Item label='Lemma'>
-          <Input value={this.state.word.lemma.join(' ')} />
+      <Form className='WordForm' model={this.state.word} labelPosition='top'>
+        <Form.Item>
+          <Layout.Col span='4'>
+            <Form.Item label='Attested'>
+              <Checkbox checked={this.state.word.attested} />
+            </Form.Item>
+          </Layout.Col>
+          <Layout.Col span='12'>
+            <Form.Item label='Lemma'>
+              <Input value={this.state.word.lemma.join(' ')} />
+            </Form.Item>
+          </Layout.Col>
+          <Layout.Col span='8'>
+            <Form.Item label='Homonym'>
+              <Input value={this.state.word.homonym} />
+            </Form.Item>
+          </Layout.Col>
         </Form.Item>
-        <Form.Item label='Homonym'>
-          <Input value={this.state.word.homonym} />
-        </Form.Item>
-        <Form.Item label='Attested'>
-          <Checkbox
-            selected={this.state.word.attested} />
-        </Form.Item>
-        <Form.Item label='POS'>
-          <Select value={this.state.word.pos}>
-            {posOptions.map(option => <Select.Option key={option.value} label={option.label} value={option.value} />)}
-          </Select>
-        </Form.Item>
-        {this.state.word.roots &&
-          <Form.Item label='Roots'>
-            {this.state.word.roots.map((wordRoot, index) =>
-              <Form.Item key={index}>
-                <Input value={wordRoot} />
-                <Button>Delete root</Button>
+
+        <Form.Item>
+          <Layout.Col span='12'>
+            <Form.Item label='POS'>
+              <Select value={this.state.word.pos}>
+                {posOptions.map(option => <Select.Option key={option.value} label={option.label} value={option.value} />)}
+              </Select>
+            </Form.Item>
+          </Layout.Col>
+          <Layout.Col span='12'>
+            {this.state.word.pos === 'V' &&
+              <Form.Item label='Roots'>
+                {(this.state.word.roots || []).map((wordRoot, index) =>
+                  <Form.Item key={index}>
+                    <Input className='WordForm-roots_root' maxLength='3' value={wordRoot} />
+                    <Button>Delete root</Button>
+                  </Form.Item>
+                )}
+                <Form.Item>
+                  <Button>Add root</Button>
+                </Form.Item>
               </Form.Item>
-            )}
-            <Button>Add root</Button>
-          </Form.Item>
-        }
+            }
+          </Layout.Col>
+        </Form.Item>
+
         <Form.Item label='Forms'>
           {this.state.word.forms.map((form, index) =>
             _.isString(form) ? (
@@ -72,18 +90,23 @@ class WordForm extends Component {
               </span>
             ) : (
               <Form.Item key={index}>
-                <Form.Item label='Lemma'>
-                  <Input value={form.lemma.join(' ')} />
-                </Form.Item>
-                <Form.Item label='Attested'>
-                  <Checkbox
-                    selected={form.attested} />
+                <Form.Item>
+                  <Layout.Col span='4'>
+                    <Form.Item label='Attested'>
+                      <Checkbox checked={form.attested} />
+                    </Form.Item>
+                  </Layout.Col>
+                  <Layout.Col span='12'>
+                    <Form.Item label='Lemma'>
+                      <Input value={form.lemma.join(' ')} />
+                    </Form.Item>
+                  </Layout.Col>
                 </Form.Item>
                 <Form.Item label='Notes'>
                   {form.notes.map((note, index) =>
                     <Form.Item key={index}>
-                      <Input value={note} />
-                      <Button>Delete note</Button>
+                      <Input className='WordForm-notes_note' value={note} />
+                      <Button className='WordForm-notes_delete'>Delete note</Button>
                     </Form.Item>
                   )}
                   <Button>Add note</Button>
