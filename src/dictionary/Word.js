@@ -51,10 +51,6 @@ class Form extends Component {
 }
 
 class AmplifiedMeanings extends Component {
-  isEntryKey (value, key) {
-    return /\d+\./.test(key)
-  }
-
   render () {
     return (
       <ul className='AmplifiedMeanings'>
@@ -65,9 +61,9 @@ class AmplifiedMeanings extends Component {
             <InlineMarkdown source={value.meaning} />
             {' '}
             <ul>
-              {_(value).pickBy(this.isEntryKey).map((value, key) =>
-                <li className='AmplifiedMeanings-entry' key={key}><strong>{key}</strong> <InlineMarkdown source={value.meaning} /></li>
-              ).value()}
+              {value.entries.map((value, index) =>
+                <li className='AmplifiedMeanings-entry' key={index}><strong>{`${index + 1}.`}</strong> <InlineMarkdown source={value.meaning} /></li>
+              )}
             </ul>
           </li>
         )}

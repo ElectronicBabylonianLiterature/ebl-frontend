@@ -5,6 +5,7 @@ import Word from './Word'
 const word = {
   lemma: ['part1', 'part2'],
   homonym: 'I',
+  attested: true,
   forms: [{
     lemma: ['form'],
     homonym: 'II',
@@ -12,7 +13,14 @@ const word = {
   }],
   meaning: 'meaning',
   amplifiedMeanings: {
-    G: {meaning: '*amplified*'}
+    G: {
+      meaning: '*amplified*',
+      vowels: [],
+      entries: [{
+        meaning: 'entry',
+        vowels: []
+      }]
+    }
   },
   derived: [[{
     lemma: ['derived'],
@@ -58,6 +66,10 @@ describe('word display', () => {
 
   it('amplifiedMeanings', () => {
     expect(textContent).toContain('G amplified')
+  })
+
+  it('entries', () => {
+    expect(textContent).toContain('1. entry')
   })
 
   it('derived', () => {
