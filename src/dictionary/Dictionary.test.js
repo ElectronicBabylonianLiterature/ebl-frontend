@@ -2,6 +2,7 @@ import React from 'react'
 import {render, Simulate, wait} from 'react-testing-library'
 import Dictionary from './Dictionary'
 import Auth from '../auth0/Auth'
+import HttpClient from '../http/HttpClient'
 
 const words = [
   {
@@ -23,62 +24,43 @@ const words = [
 ]
 
 let auth
+let httpClient
 
 beforeEach(() => {
   fetch.resetMocks()
   auth = new Auth()
+  httpClient = new HttpClient(auth)
 })
 
 describe('Searching for word', () => {
+  let element
+
   beforeEach(() => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(auth, 'getAccessToken').mockReturnValueOnce('token')
+    element = render(<Dictionary auth={auth} httpClient={httpClient} />)
   })
 
   it('displays result on successfull query', async () => {
-    fetch.mockResponseOnce(JSON.stringify(words))
+    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
 
-    const {getByText, container} = render(<Dictionary auth={auth} />)
-
-    Simulate.submit(container.querySelector('form'))
+    Simulate.submit(element.container.querySelector('form'))
     await wait()
-    expect(getByText('lemma')).toBeDefined()
+    expect(element.getByText('lemma')).toBeDefined()
   })
 
   it('displays error on failed query', async () => {
-    fetch.mockReject(new Error('error'))
+    const errorMessage = 'error'
+    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
-    const {container, getByText} = render(<Dictionary auth={auth} />)
-
-    Simulate.submit(container.querySelector('form'))
+    Simulate.submit(element.container.querySelector('form'))
     await wait()
-    expect(getByText('error')).toBeDefined()
-  })
-
-  it('displays status text on HTTP error', async () => {
-    fetch.mockResponseOnce('', {status: 404, statusText: 'NOT FOUND'})
-
-    const {container, getByText} = render(<Dictionary auth={auth} />)
-
-    Simulate.submit(container.querySelector('form'))
-    await wait()
-    expect(getByText('NOT FOUND')).toBeDefined()
-  })
-
-  it('displays error on if access token is expires', () => {
-    jest.spyOn(auth, 'getAccessToken').mockImplementationOnce(() => { throw new Error('error') })
-
-    const {container, getByText} = render(<Dictionary auth={auth} />)
-
-    Simulate.submit(container.querySelector('form'))
-
-    expect(getByText('error')).toBeDefined()
+    expect(element.getByText(errorMessage)).toBeDefined()
   })
 })
 
 it('Displays a message if user is not logged in', () => {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
 
-  const {getByText} = render(<Dictionary auth={auth} />)
+  const {getByText} = render(<Dictionary auth={auth} httpClient={httpClient} />)
   expect(getByText('You need to be logged in to access the dictionary.')).toBeDefined()
 })

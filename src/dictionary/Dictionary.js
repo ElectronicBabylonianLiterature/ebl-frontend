@@ -28,7 +28,7 @@ class Dictionary extends Component {
           ? (
             <Fragment>
               <header className='Dictionary-search'>
-                <WordSearch onResponse={this.onSearch} auth={this.props.auth} />
+                <WordSearch onResponse={this.onSearch} httpClient={this.props.httpClient} />
               </header>
               <ul className='Dictionary-results'>
                 {this.state.words.map(word =>

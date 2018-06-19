@@ -1,6 +1,8 @@
 import React from 'react'
-import {Simulate, render} from 'react-testing-library'
+import {Simulate, render, wait} from 'react-testing-library'
 import WordSearch from './WordSearch'
+import HttpClient from '../http/HttpClient'
+import Auth from '../auth0/Auth'
 
 const result = [{
   lemma: ['lemma'],
@@ -11,37 +13,46 @@ const result = [{
 }]
 
 let onResponse
+let httpClient
+let container
 
 beforeEach(async () => {
-  fetch.resetMocks()
-  fetch.mockResponseOnce(JSON.stringify(result))
   onResponse = jest.fn()
 
-  const auth = {
-    getAccessToken () {
-      return 'accessToken'
-    }
-  }
+  httpClient = new HttpClient(new Auth())
 
-  const {container, getByPlaceholderText} = render(<WordSearch onResponse={onResponse} auth={auth} />)
+  const element = render(<WordSearch onResponse={onResponse} httpClient={httpClient} />)
+  container = element.container
 
-  const lemma = getByPlaceholderText('lemma')
+  const lemma = element.getByPlaceholderText('lemma')
   lemma.value = 'lemma'
   Simulate.change(lemma)
-
-  Simulate.submit(container.querySelector('form'))
 })
 
-it('Calls onResponse with the response JSON', async () => {
-  expect(await onResponse.mock.calls[0][0]).toEqual(result)
+it('Calls onResponse with the result on success', async () => {
+  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
+  await submit()
+
+  expect(onResponse).toBeCalledWith(result)
 })
 
-it('Makes one request', async () => {
-  expect(fetch).toBeCalled()
+it('Calls onResponse with the error on failure', async () => {
+  const error = new Error('error')
+  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
+  await submit()
+
+  expect(onResponse).toBeCalledWith(null, error)
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
-  const expectedHeaders = new Headers({'Authorization': `Bearer accessToken`})
+  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
+  await submit()
+
   const expectedUrl = 'http://localhost:8000/words/search/lemma'
-  expect(fetch).toBeCalledWith(expectedUrl, {headers: expectedHeaders})
+  expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
 })
+
+async function submit () {
+  Simulate.submit(container.querySelector('form'))
+  await wait()
+}
