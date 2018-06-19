@@ -150,11 +150,8 @@ class WordForm extends Component {
                 <Button>Add vowels</Button>
               </Form.Item>
               <Form.Item label='Entries'>
-                {_(amplifiedMeaning).pick(key => /\d+\./.test(key)).map((entry, key) =>
-                  <Form.Item key={key}>
-                    <Form.Item label='Key'>
-                      <Input value={key} />
-                    </Form.Item>
+                {amplifiedMeaning.entries.map((entry, index) =>
+                  <Form.Item key={index}>
                     <Form.Item label='Meaning'>
                       <Input value={entry.meaning} />
                     </Form.Item>
@@ -180,7 +177,7 @@ class WordForm extends Component {
                     </Form.Item>
                     <Button>Delete entry</Button>
                   </Form.Item>
-                ).value()}
+                )}
                 <Button>Add entry</Button>
               </Form.Item>
               <Button>Delete amplified meaning</Button>

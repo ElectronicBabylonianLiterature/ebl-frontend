@@ -3,7 +3,6 @@ import { Loading, Alert, Collapse, Breadcrumb } from 'element-react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 
-import './WordEditor.css'
 import WordForm from './WordForm'
 
 class WordEditor extends Component {
