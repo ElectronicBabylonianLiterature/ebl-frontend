@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Alert } from 'element-react'
+import { Alert } from 'react-bootstrap'
 
 import WordSearch from './WordSearch'
 import Word from './Word'
@@ -37,7 +37,11 @@ class Dictionary extends Component {
                   </li>
                 )}
               </ul>
-              {this.state.error && <Alert type='error' title={this.state.error.message} showIcon closable={false} />}
+              {this.state.error && (
+                <Alert bsStyle='danger'>
+                  {this.state.error.message}
+                </Alert>
+              )}
             </Fragment>
           )
           : <p>You need to be logged in to access the dictionary.</p>
