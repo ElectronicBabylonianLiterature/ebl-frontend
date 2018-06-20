@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Spinner from '../Spinner'
 
 class Callback extends Component {
   handleAuthentication (nextState, replace) {
@@ -11,7 +12,7 @@ class Callback extends Component {
 
   render () {
     this.handleAuthentication(this.props)
-    return <div><i className='fa fa-spinner fa-spin' /> Loading...</div>
+    return <Spinner />
   }
 }
 

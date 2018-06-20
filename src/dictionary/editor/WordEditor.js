@@ -3,6 +3,7 @@ import { Alert, Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
 import WordForm from './WordForm'
+import Spinner from '../../Spinner'
 
 class WordEditor extends Component {
   constructor (props) {
@@ -42,7 +43,7 @@ class WordEditor extends Component {
     } else if (this.state.error) {
       return <Alert bsStyle='danger'>{this.state.error.message}</Alert>
     } else {
-      return <div><i className='fa fa-spinner fa-spin' /> Loading...</div>
+      return <Spinner />
     }
   }
 }
