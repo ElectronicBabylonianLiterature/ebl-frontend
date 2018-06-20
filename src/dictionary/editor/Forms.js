@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, InputGroup, Button } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
