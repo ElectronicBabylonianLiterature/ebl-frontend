@@ -73,7 +73,7 @@ class WordForm extends Component {
 
         <FormGroup>
           <FormGroup controlId='pos'>
-            <ControlLabel>POS</ControlLabel>
+            <ControlLabel>Position of speech</ControlLabel>
             <FormControl componentClass='select' value={this.state.word.pos} onChange={this.onChange('pos')}>
               {posOptions.map(option =>
                 <option key={option.value} value={option.value}>
