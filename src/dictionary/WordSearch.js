@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'element-react'
+import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 class WordSearch extends Component {
@@ -13,9 +13,9 @@ class WordSearch extends Component {
     }
   }
 
-  onChange = (key, value) => {
+  onChange = (key, event) => {
     this.setState({
-      form: Object.assign(this.state.form, { [key]: value })
+      form: Object.assign(this.state.form, { [key]: event.target.value })
     })
   }
 
@@ -29,13 +29,16 @@ class WordSearch extends Component {
 
   render () {
     return (
-      <Form inline model={this.state.form} onSubmit={this.submit}>
-        <Form.Item prop='lemma'>
-          <Input placeholder='lemma' onChange={_.partial(this.onChange, 'lemma')} />
-        </Form.Item>
-        <Form.Item>
-          <Button nativeType='submit' type='primary'>Query</Button>
-        </Form.Item>
+      <Form inline onSubmit={this.submit}>
+        <FormGroup controlId='lemma'>
+          <ControlLabel>Lemma</ControlLabel>
+          <FormControl
+            type='text'
+            value={this.state.form.lemma}
+            placeholder='lemma'
+            onChange={_.partial(this.onChange, 'lemma')} />
+        </FormGroup>
+        <Button type='submit' bsStyle='primary'>Query</Button>
       </Form>
     )
   }
