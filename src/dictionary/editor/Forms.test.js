@@ -1,6 +1,5 @@
 import React from 'react'
 import Forms from './Forms'
-import {Form} from 'element-react'
 import {render} from 'react-testing-library'
 
 const forms = [
@@ -12,5 +11,5 @@ const forms = [
 ]
 
 it('Rendiers without crashing', () => {
-  render(<Form><Forms value={forms} /></Form>)
+  render(<form><Forms value={forms} /></form>)
 })

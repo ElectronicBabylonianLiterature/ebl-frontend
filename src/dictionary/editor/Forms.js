@@ -1,45 +1,49 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Checkbox, Button, Layout } from 'element-react'
+import { FormGroup, ControlLabel, FormControl, Checkbox, Button, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 class Forms extends Component {
   render () {
     return (
-      <Form.Item label='Forms'>
+      <FormGroup>
+        <ControlLabel>Forms</ControlLabel>
         {this.props.value.map((form, index) =>
-          <Form.Item key={index}>
+          <FormGroup key={index}>
             {_.isString(form) ? (
               <span>{form}</span>
             ) : (
               <Fragment>
-                <Form.Item>
-                  <Layout.Col span='4'>
-                    <Form.Item label='Attested'>
-                      <Checkbox checked={form.attested} />
-                    </Form.Item>
-                  </Layout.Col>
-                  <Layout.Col span='12'>
-                    <Form.Item label='Lemma'>
-                      <Input value={form.lemma.join(' ')} />
-                    </Form.Item>
-                  </Layout.Col>
-                </Form.Item>
-                <Form.Item label='Notes'>
+                <FormGroup>
+                  <Col md={4}>
+                    <FormGroup controlId={`forms-${index}-attested`}>
+                      <ControlLabel>Attested</ControlLabel>
+                      <Checkbox checked={form.attested} onChange={_.noop} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={12}>
+                    <FormGroup controlId={`forms-${index}-lemma`}>
+                      <ControlLabel>Lemma</ControlLabel>
+                      <FormControl componentClass='text' value={form.lemma.join(' ')} onChange={_.noop} />
+                    </FormGroup>
+                  </Col>
+                </FormGroup>
+                <FormGroup label='Notes' controlId={`forms-${index}-notes`}>
+                  <ControlLabel>Notes</ControlLabel>
                   {form.notes.map((note, index) =>
-                    <Form.Item key={index}>
-                      <Input className='WordForm-notes_note' value={note} />
+                    <FormGroup key={index}>
+                      <FormControl componentClass='text' className='WordForm-notes_note' value={note} />
                       <Button className='WordForm-notes_delete'>Delete note</Button>
-                    </Form.Item>
+                    </FormGroup>
                   )}
                   <Button>Add note</Button>
-                </Form.Item>
+                </FormGroup>
               </Fragment>
             )}
             <Button>Delete form</Button>
-          </Form.Item>
+          </FormGroup>
         )}
         <Button>Add form</Button>
-      </Form.Item>
+      </FormGroup>
     )
   }
 }

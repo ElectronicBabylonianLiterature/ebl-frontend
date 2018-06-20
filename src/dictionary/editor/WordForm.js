@@ -101,7 +101,7 @@ class WordForm extends Component {
           </Col>
         </FormGroup>
 
-        {false && <Forms value={this.state.word.forms} />}
+        <Forms value={this.state.word.forms} />
 
         <FormGroup controlId='meaning'>
           <ControlLabel>Meaning</ControlLabel>
