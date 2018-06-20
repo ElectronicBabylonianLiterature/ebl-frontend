@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { FormGroup, ControlLabel, FormControl, InputGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
+import LemmaInput from './LemmaInput'
+
 class Forms extends Component {
   render () {
     return (
@@ -13,19 +15,7 @@ class Forms extends Component {
               <span>{form}</span>
             ) : (
               <Fragment>
-                <FormGroup>
-                  <FormGroup controlId={`forms-${index}-lemma`}>
-                    <InputGroup>
-                      <InputGroup.Addon>
-                        <input type='checkbox' aria-label='...' checked={form.attested} onChange={_.noop} />
-                      </InputGroup.Addon>
-                      <FormControl
-                        type='text'
-                        value={form.lemma.join(' ')}
-                        onChange={_.noop} />
-                    </InputGroup>
-                  </FormGroup>
-                </FormGroup>
+                <LemmaInput id={`forms-${index}-lemma`} value={form} />
                 <FormGroup label='Notes' controlId={`forms-${index}-notes`}>
                   <ControlLabel>Notes</ControlLabel>
                   {form.notes.map((note, index) =>

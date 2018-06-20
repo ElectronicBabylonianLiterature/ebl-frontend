@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, Button, InputGroup } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
+import LemmaInput from './LemmaInput'
 import Forms from './Forms'
 
 import './WordForm.css'
@@ -41,18 +42,7 @@ class WordForm extends Component {
 
     return (
       <form className='WordForm'>
-        <FormGroup controlId='lemma'>
-          <ControlLabel>Lemma</ControlLabel>
-          <InputGroup>
-            <InputGroup.Addon>
-              <input type='checkbox' aria-label='...' checked={this.state.word.attested} onChange={_.noop} />
-            </InputGroup.Addon>
-            <FormControl
-              type='text'
-              value={this.state.word.lemma.join(' ')}
-              onChange={_.noop} />
-          </InputGroup>
-        </FormGroup>
+        <LemmaInput id='lemma' value={this.state.word} />
         <FormGroup controlId='homonym'>
           <ControlLabel>Homonym</ControlLabel>
           <FormControl
@@ -212,10 +202,7 @@ class WordForm extends Component {
                   </span>
                 ) : (
                   <FormGroup key={index}>
-                    <FormGroup>
-                      <ControlLabel>Lemma</ControlLabel>
-                      <FormControl type='text' value={form.lemma.join(' ')} onChange={_.noop} />
-                    </FormGroup>
+                    <LemmaInput id={`derived-${index}-lemma`} value={form} />
                     <FormGroup>
                       <ControlLabel>Homonym</ControlLabel>
                       <FormControl type='text' value={form.homonym} onChange={_.noop} />
@@ -245,10 +232,7 @@ class WordForm extends Component {
           <ControlLabel>Derived from</ControlLabel>
           {this.state.word.derivedFrom ? (
             <Fragment>
-              <FormGroup>
-                <ControlLabel>Lemma</ControlLabel>
-                <FormControl type='text' value={this.state.word.derivedFrom.lemma.join(' ')} onChange={_.noop} />
-              </FormGroup>
+              <LemmaInput id='derivedFrom-lemma' value={this.state.word.derivedFrom} />
               <FormGroup>
                 <ControlLabel>Homonym</ControlLabel>
                 <FormControl type='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />
