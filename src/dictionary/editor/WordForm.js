@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Checkbox, Button, Select, Layout } from 'element-react'
+import { FormGroup, ControlLabel, FormControl, Checkbox, Button, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import Forms from './Forms'
@@ -40,204 +40,249 @@ class WordForm extends Component {
     const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
 
     return (
-      <Form className='WordForm' model={this.state.word} labelPosition='top'>
-        <Form.Item>
-          <Layout.Col span='4'>
-            <Form.Item label='Attested'>
-              <Checkbox checked={this.state.word.attested} />
-            </Form.Item>
-          </Layout.Col>
-          <Layout.Col span='12'>
-            <Form.Item label='Lemma'>
-              <Input value={this.state.word.lemma.join(' ')} />
-            </Form.Item>
-          </Layout.Col>
-          <Layout.Col span='8'>
-            <Form.Item label='Homonym'>
-              <Input value={this.state.word.homonym} />
-            </Form.Item>
-          </Layout.Col>
-        </Form.Item>
+      <form className='WordForm'>
+        <FormGroup>
+          <Col md={4}>
+            <FormGroup controlId='attested'>
+              <ControlLabel>Attested</ControlLabel>
+              <Checkbox checked={this.state.word.attested} onChange={_.noop} />
+            </FormGroup>
+          </Col>
+          <Col md={12}>
+            <FormGroup controlId='lemma'>
+              <ControlLabel>Lemma</ControlLabel>
+              <FormControl
+                componentClass='text'
+                value={this.state.word.lemma.join(' ')}
+                onChange={_.noop} />
+            </FormGroup>
+          </Col>
+          <Col md={8}>
+            <FormGroup controlId='homonym'>
+              <ControlLabel>Homonym</ControlLabel>
+              <FormControl
+                componentClass='text'
+                value={this.state.word.homonym}
+                onChange={_.noop} />
+            </FormGroup>
+          </Col>
+        </FormGroup>
 
-        <Form.Item>
-          <Layout.Col span='12'>
-            <Form.Item label='POS'>
-              <Select value={this.state.word.pos}>
-                {posOptions.map(option => <Select.Option key={option.value} label={option.label} value={option.value} />)}
-              </Select>
-            </Form.Item>
-          </Layout.Col>
-          <Layout.Col span='12'>
-            {this.state.word.pos === 'V' &&
-              <Form.Item label='Roots'>
-                {(this.state.word.roots || []).map((wordRoot, index) =>
-                  <Form.Item key={index}>
-                    <Input className='WordForm-roots_root' maxLength='3' value={wordRoot} />
-                    <Button>Delete root</Button>
-                  </Form.Item>
+        <FormGroup>
+          <Col md={12}>
+            <FormGroup controlId='pos'>
+              <ControlLabel>POS</ControlLabel>
+              <FormControl componentClass='select' value={this.state.word.pos} onChange={_.noop}>
+                {posOptions.map(option =>
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 )}
-                <Form.Item>
-                  <Button>Add root</Button>
-                </Form.Item>
-              </Form.Item>
+              </FormControl>
+            </FormGroup>
+          </Col>
+          <Col md={12}>
+            {this.state.word.pos === 'V' &&
+              <FormGroup controld='roots'>
+                <ControlLabel>Roots</ControlLabel>
+                {(this.state.word.roots || []).map((wordRoot, index) =>
+                  <FormGroup key={index} controld={`root-${index}`}>
+                    <FormControl
+                      componentClass='text'
+                      maxLength='3'
+                      value={wordRoot}
+                      onChange={_.noop} />
+                    <Button>Delete root</Button>
+                  </FormGroup>
+                )}
+                <Button>Add root</Button>
+              </FormGroup>
             }
-          </Layout.Col>
-        </Form.Item>
+          </Col>
+        </FormGroup>
 
-        <Forms value={this.state.word.forms} />
+        {false && <Forms value={this.state.word.forms} />}
 
-        <Form.Item label='Meaning'>
-          <Input value={this.state.word.meaning} />
-        </Form.Item>
-        <Form.Item label='Amplified meanings'>
+        <FormGroup controlId='meaning'>
+          <ControlLabel>Meaning</ControlLabel>
+          <FormControl
+            componentClass='text'
+            value={this.state.word.meaning}
+            onChange={_.noop} />
+        </FormGroup>
+
+        <FormGroup controlId='amplifiedMeaning'>
+          <ControlLabel>Amplified meanings</ControlLabel>
           {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, key) =>
-            <Form.Item key={key}>
-              <Form.Item label='Conjugation/Function'>
-                <Input value={key} />
-              </Form.Item>
-              <Form.Item label='Meaning'>
-                <Input value={amplifiedMeaning.meaning} />
-              </Form.Item>
-              <Form.Item label='Vowels'>
+            <FormGroup controlId={`amplifiedMeaning-${key}`} key={key}>
+              <FormGroup controlId={`amplifiedMeaning-${key}-conjugationfunction`}>
+                <ControlLabel>Conjugation/Function</ControlLabel>
+                <FormControl componentClass='text' value={key} onChange={_.noop} />
+              </FormGroup>
+              <FormGroup controlId={`amplifiedMeaning-${key}-meaning`}>
+                <ControlLabel>Meaning</ControlLabel>
+                <FormControl componentClass='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
+              </FormGroup>
+              <FormGroup controlId={`amplifiedMeaning-${key}-vowels`}>
+                <ControlLabel>Vowels</ControlLabel>
                 {amplifiedMeaning.vowels.map((vowel, index) =>
-                  <Form.Item key={index}>
-                    <Form.Item label='Value'>
-                      <Input value={vowel.value.join('/')} />
-                    </Form.Item>
-                    <Form.Item label='Notes'>
+                  <FormGroup key={index} controlId={`amplifiedMeaning-${key}-vowels-${index}`}>
+                    <FormGroup controlId={`amplifiedMeaning-${key}-vowels-${index}-value`}>
+                      <ControlLabel>Value</ControlLabel>
+                      <FormControl componentClass='text' value={vowel.value.join('/')} onChange={_.noop} />
+                    </FormGroup>
+                    <FormGroup label='Notes' controlId={`amplifiedMeaning-${key}-vowels-${index}-notes`}>
+                      <ControlLabel>Notes</ControlLabel>
                       {vowel.notes.map((note, index) =>
-                        <Form.Item key={index}>
-                          <Input value={note} />
+                        <FormGroup key={index}>
+                          <FormControl componentClass='text' value={note} onChange={_.noop} />
                           <Button>Delete note</Button>
-                        </Form.Item>
+                        </FormGroup>
                       )}
                       <Button>Add note</Button>
-                    </Form.Item>
+                    </FormGroup>
                     <Button>Delete vowels</Button>
-                  </Form.Item>
+                  </FormGroup>
                 )}
                 <Button>Add vowels</Button>
-              </Form.Item>
-              <Form.Item label='Entries'>
-                {amplifiedMeaning.entries.map((entry, index) =>
-                  <Form.Item key={index}>
-                    <Form.Item label='Meaning'>
-                      <Input value={entry.meaning} />
-                    </Form.Item>
-                    <Form.Item label='Vowels'>
+              </FormGroup>
+
+              <FormGroup label='Entries'>
+                {amplifiedMeaning.entries.map((entry, entryIndex) =>
+                  <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}`} key={entryIndex}>
+                    <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-meaning`}>
+                      <ControlLabel>Meaning</ControlLabel>
+                      <FormControl componentClass='text' value={entry.meaning} onChange={_.noop} />
+                    </FormGroup>
+                    <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels`}>
+                      <ControlLabel>Vowels</ControlLabel>
                       {entry.vowels.map((vowel, index) =>
-                        <Form.Item key={index}>
-                          <Form.Item label='Value'>
-                            <Input value={vowel.value.join('/')} />
-                          </Form.Item>
-                          <Form.Item label='Notes'>
+                        <FormGroup key={index} controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}`}>
+                          <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-value`}>
+                            <ControlLabel>Value</ControlLabel>
+                            <FormControl componentClass='text' value={vowel.value.join('/')} onChange={_.noop} />
+                          </FormGroup>
+                          <FormGroup label='Notes' controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-notes`}>
+                            <ControlLabel>Notes</ControlLabel>
                             {vowel.notes.map((note, index) =>
-                              <Form.Item key={index}>
-                                <Input value={note} />
+                              <FormGroup key={index}>
+                                <FormControl componentClass='text' value={note} onChange={_.noop} />
                                 <Button>Delete note</Button>
-                              </Form.Item>
+                              </FormGroup>
                             )}
                             <Button>Add note</Button>
-                          </Form.Item>
+                          </FormGroup>
                           <Button>Delete vowels</Button>
-                        </Form.Item>
+                        </FormGroup>
                       )}
                       <Button>Add vowels</Button>
-                    </Form.Item>
+                    </FormGroup>
                     <Button>Delete entry</Button>
-                  </Form.Item>
+                  </FormGroup>
                 )}
                 <Button>Add entry</Button>
-              </Form.Item>
+              </FormGroup>
               <Button>Delete amplified meaning</Button>
-            </Form.Item>
+            </FormGroup>
           )}
           <Button>Add amplified meaning</Button>
-        </Form.Item>
-        <Form.Item label='Logograms'>
+        </FormGroup>
+
+        <FormGroup>
+          <ControlLabel>Logograms</ControlLabel>
           {_.map(this.state.word.logograms, (logogram, index) =>
-            <Form.Item key={index}>
-              <Form.Item label='Logogram'>
-                <Input value={logogram.logogram.join(' ')} />
-              </Form.Item>
-              <Form.Item label='Notes'>
+            <FormGroup key={index}>
+              <FormGroup>
+                <ControlLabel>Logogram</ControlLabel>
+                <FormControl componentClass='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Notes</ControlLabel>
                 {logogram.notes.map((note, index) =>
-                  <Form.Item key={index}>
-                    <Input value={note} />
+                  <FormGroup key={index}>
+                    <FormControl componentClass='text' value={note} onChange={_.noop} />
                     <Button>Delete note</Button>
-                  </Form.Item>
+                  </FormGroup>
                 )}
                 <Button>Add note</Button>
-              </Form.Item>
+              </FormGroup>
               <Button>Delete Logogram</Button>
-            </Form.Item>
+            </FormGroup>
           )}
           <Button>Add Logogram</Button>
-        </Form.Item>
-        <Form.Item label='Derived'>
+        </FormGroup>
+
+        <FormGroup>
+          <ControlLabel>Derived</ControlLabel>
           {this.state.word.derived.map((group, index) =>
-            <Form.Item key={index}>
+            <FormGroup key={index}>
               {group.map((form, index) =>
                 _.isString(form) ? (
                   <span key={index}>
                     {form}
                   </span>
                 ) : (
-                  <Form.Item key={index}>
-                    <Form.Item label='Lemma'>
-                      <Input value={form.lemma.join(' ')} />
-                    </Form.Item>
-                    <Form.Item label='Homonym' >
-                      <Input value={form.homonym} />
-                    </Form.Item>
-                    <Form.Item label='Notes'>
+                  <FormGroup key={index}>
+                    <FormGroup>
+                      <ControlLabel>Lemma</ControlLabel>
+                      <FormControl componentClass='text' value={form.lemma.join(' ')} onChange={_.noop} />
+                    </FormGroup>
+                    <FormGroup>
+                      <ControlLabel>Homonym</ControlLabel>
+                      <FormControl componentClass='text' value={form.homonym} onChange={_.noop} />
+                    </FormGroup>
+                    <FormGroup>
+                      <ControlLabel>Notes</ControlLabel>
                       {form.notes.map((note, index) =>
-                        <Form.Item key={index}>
-                          <Input value={note} />
+                        <FormGroup key={index}>
+                          <FormControl componentClass='text' value={note} onChange={_.noop} />
                           <Button>Delete note</Button>
-                        </Form.Item>
+                        </FormGroup>
                       )}
                       <Button>Add note</Button>
-                    </Form.Item>
+                    </FormGroup>
                     <Button>Delete form</Button>
-                  </Form.Item>
+                  </FormGroup>
                 )
               )}
               <Button>Add form</Button>
               <Button>Delete group</Button>
-            </Form.Item>
+            </FormGroup>
           )}
           <Button>Add group</Button>
-        </Form.Item>
-        <Form.Item label='Derived from'>
+        </FormGroup>
+
+        <FormGroup>
+          <ControlLabel>Derived from</ControlLabel>
           {this.state.word.derivedFrom ? (
             <Fragment>
-              <Form.Item label='Lemma'>
-                <Input value={this.state.word.derivedFrom.lemma.join(' ')} />
-              </Form.Item>
-              <Form.Item label='Homonym' >
-                <Input value={this.state.word.derivedFrom.homonym} />
-              </Form.Item>
-              <Form.Item label='Notes'>
+              <FormGroup>
+                <ControlLabel>Lemma</ControlLabel>
+                <FormControl componentClass='text' value={this.state.word.derivedFrom.lemma.join(' ')} onChange={_.noop} />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Homonym</ControlLabel>
+                <FormControl componentClass='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Notes</ControlLabel>
                 {this.state.word.derivedFrom.notes.map((note, index) =>
-                  <Form.Item key={index}>
-                    <Input value={note} />
+                  <FormGroup key={index}>
+                    <FormControl componentClass='text' value={note} onChange={_.noop} />
                     <Button>Delete note</Button>
-                  </Form.Item>
+                  </FormGroup>
                 )}
                 <Button>Add note</Button>
-              </Form.Item>
+              </FormGroup>
               <Button>Delete derived from</Button>
             </Fragment>
           ) : (
             <Button>Add derived from</Button>
           )}
-        </Form.Item>
+        </FormGroup>
 
-        <Form.Item>
-          <Button nativeType='submit' type='primary'>Save</Button>
-        </Form.Item>
-      </Form>
+        <Button type='submit' bsStyle='primary'>Save</Button>
+      </form>
     )
   }
 }
