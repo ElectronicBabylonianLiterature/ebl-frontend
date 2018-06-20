@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, Checkbox, Button } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Button, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import Forms from './Forms'
@@ -41,25 +41,24 @@ class WordForm extends Component {
 
     return (
       <form className='WordForm'>
-        <FormGroup>
-          <FormGroup controlId='attested'>
-            <ControlLabel>Attested</ControlLabel>
-            <Checkbox checked={this.state.word.attested} onChange={_.noop} />
-          </FormGroup>
-          <FormGroup controlId='lemma'>
-            <ControlLabel>Lemma</ControlLabel>
+        <FormGroup controlId='lemma'>
+          <ControlLabel>Lemma</ControlLabel>
+          <InputGroup>
+            <InputGroup.Addon>
+              <input type='checkbox' aria-label='...' checked={this.state.word.attested} onChange={_.noop} />
+            </InputGroup.Addon>
             <FormControl
               type='text'
               value={this.state.word.lemma.join(' ')}
               onChange={_.noop} />
-          </FormGroup>
-          <FormGroup controlId='homonym'>
-            <ControlLabel>Homonym</ControlLabel>
-            <FormControl
-              type='text'
-              value={this.state.word.homonym}
-              onChange={_.noop} />
-          </FormGroup>
+          </InputGroup>
+        </FormGroup>
+        <FormGroup controlId='homonym'>
+          <ControlLabel>Homonym</ControlLabel>
+          <FormControl
+            type='text'
+            value={this.state.word.homonym}
+            onChange={_.noop} />
         </FormGroup>
 
         <FormGroup>
