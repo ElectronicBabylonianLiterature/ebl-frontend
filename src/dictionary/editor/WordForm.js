@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Form, Input, Checkbox, Button, Select, Layout } from 'element-react'
 import _ from 'lodash'
 
+import Forms from './Forms'
+
 import './WordForm.css'
 
 class WordForm extends Component {
@@ -82,41 +84,8 @@ class WordForm extends Component {
           </Layout.Col>
         </Form.Item>
 
-        <Form.Item label='Forms'>
-          {this.state.word.forms.map((form, index) =>
-            _.isString(form) ? (
-              <span key={index}>
-                {form}
-              </span>
-            ) : (
-              <Form.Item key={index}>
-                <Form.Item>
-                  <Layout.Col span='4'>
-                    <Form.Item label='Attested'>
-                      <Checkbox checked={form.attested} />
-                    </Form.Item>
-                  </Layout.Col>
-                  <Layout.Col span='12'>
-                    <Form.Item label='Lemma'>
-                      <Input value={form.lemma.join(' ')} />
-                    </Form.Item>
-                  </Layout.Col>
-                </Form.Item>
-                <Form.Item label='Notes'>
-                  {form.notes.map((note, index) =>
-                    <Form.Item key={index}>
-                      <Input className='WordForm-notes_note' value={note} />
-                      <Button className='WordForm-notes_delete'>Delete note</Button>
-                    </Form.Item>
-                  )}
-                  <Button>Add note</Button>
-                </Form.Item>
-                <Button>Delete form</Button>
-              </Form.Item>
-            )
-          )}
-          <Button>Add form</Button>
-        </Form.Item>
+        <Forms value={this.state.word.forms} />
+
         <Form.Item label='Meaning'>
           <Input value={this.state.word.meaning} />
         </Form.Item>
