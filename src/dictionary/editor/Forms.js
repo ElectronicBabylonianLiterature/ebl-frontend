@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, Checkbox, Button, Col } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Checkbox, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 class Forms extends Component {
@@ -14,18 +14,14 @@ class Forms extends Component {
             ) : (
               <Fragment>
                 <FormGroup>
-                  <Col md={4}>
-                    <FormGroup controlId={`forms-${index}-attested`}>
-                      <ControlLabel>Attested</ControlLabel>
-                      <Checkbox checked={form.attested} onChange={_.noop} />
-                    </FormGroup>
-                  </Col>
-                  <Col md={12}>
-                    <FormGroup controlId={`forms-${index}-lemma`}>
-                      <ControlLabel>Lemma</ControlLabel>
-                      <FormControl type='text' value={form.lemma.join(' ')} onChange={_.noop} />
-                    </FormGroup>
-                  </Col>
+                  <FormGroup controlId={`forms-${index}-attested`}>
+                    <ControlLabel>Attested</ControlLabel>
+                    <Checkbox checked={form.attested} onChange={_.noop} />
+                  </FormGroup>
+                  <FormGroup controlId={`forms-${index}-lemma`}>
+                    <ControlLabel>Lemma</ControlLabel>
+                    <FormControl type='text' value={form.lemma.join(' ')} onChange={_.noop} />
+                  </FormGroup>
                 </FormGroup>
                 <FormGroup label='Notes' controlId={`forms-${index}-notes`}>
                   <ControlLabel>Notes</ControlLabel>

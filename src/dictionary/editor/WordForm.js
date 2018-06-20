@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, Checkbox, Button, Col } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Checkbox, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import Forms from './Forms'
@@ -42,63 +42,53 @@ class WordForm extends Component {
     return (
       <form className='WordForm'>
         <FormGroup>
-          <Col md={4}>
-            <FormGroup controlId='attested'>
-              <ControlLabel>Attested</ControlLabel>
-              <Checkbox checked={this.state.word.attested} onChange={_.noop} />
-            </FormGroup>
-          </Col>
-          <Col md={12}>
-            <FormGroup controlId='lemma'>
-              <ControlLabel>Lemma</ControlLabel>
-              <FormControl
-                type ='text'
-                value={this.state.word.lemma.join(' ')}
-                onChange={_.noop} />
-            </FormGroup>
-          </Col>
-          <Col md={8}>
-            <FormGroup controlId='homonym'>
-              <ControlLabel>Homonym</ControlLabel>
-              <FormControl
-                type='text'
-                value={this.state.word.homonym}
-                onChange={_.noop} />
-            </FormGroup>
-          </Col>
+          <FormGroup controlId='attested'>
+            <ControlLabel>Attested</ControlLabel>
+            <Checkbox checked={this.state.word.attested} onChange={_.noop} />
+          </FormGroup>
+          <FormGroup controlId='lemma'>
+            <ControlLabel>Lemma</ControlLabel>
+            <FormControl
+              type='text'
+              value={this.state.word.lemma.join(' ')}
+              onChange={_.noop} />
+          </FormGroup>
+          <FormGroup controlId='homonym'>
+            <ControlLabel>Homonym</ControlLabel>
+            <FormControl
+              type='text'
+              value={this.state.word.homonym}
+              onChange={_.noop} />
+          </FormGroup>
         </FormGroup>
 
         <FormGroup>
-          <Col md={12}>
-            <FormGroup controlId='pos'>
-              <ControlLabel>POS</ControlLabel>
-              <FormControl componentClass='select' value={this.state.word.pos} onChange={_.noop}>
-                {posOptions.map(option =>
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                )}
-              </FormControl>
+          <FormGroup controlId='pos'>
+            <ControlLabel>POS</ControlLabel>
+            <FormControl componentClass='select' value={this.state.word.pos} onChange={_.noop}>
+              {posOptions.map(option =>
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              )}
+            </FormControl>
+          </FormGroup>
+          {this.state.word.pos === 'V' &&
+            <FormGroup controld='roots'>
+              <ControlLabel>Roots</ControlLabel>
+              {(this.state.word.roots || []).map((wordRoot, index) =>
+                <FormGroup key={index} controld={`root-${index}`}>
+                  <FormControl
+                    type='text'
+                    maxLength='3'
+                    value={wordRoot}
+                    onChange={_.noop} />
+                  <Button>Delete root</Button>
+                </FormGroup>
+              )}
+              <Button>Add root</Button>
             </FormGroup>
-          </Col>
-          <Col md={12}>
-            {this.state.word.pos === 'V' &&
-              <FormGroup controld='roots'>
-                <ControlLabel>Roots</ControlLabel>
-                {(this.state.word.roots || []).map((wordRoot, index) =>
-                  <FormGroup key={index} controld={`root-${index}`}>
-                    <FormControl
-                      type='text'
-                      maxLength='3'
-                      value={wordRoot}
-                      onChange={_.noop} />
-                    <Button>Delete root</Button>
-                  </FormGroup>
-                )}
-                <Button>Add root</Button>
-              </FormGroup>
-            }
-          </Col>
+          }
         </FormGroup>
 
         <Forms value={this.state.word.forms} />
