@@ -7,8 +7,6 @@
   },
   "dependencies": {
     "auth0-js": "^9.6.0",
-    "element-react": "^1.4.19",
-    "element-theme-default": "^1.4.13",
     "lodash": "^4.17.10",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
