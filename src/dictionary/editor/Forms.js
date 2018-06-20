@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import { FormGroup, ControlLabel, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
+import ListInput from './ListInput'
 
 class Forms extends Component {
   render () {
@@ -16,16 +17,9 @@ class Forms extends Component {
             ) : (
               <Fragment>
                 <LemmaInput id={`forms-${index}-lemma`} value={form} onChange={_.noop} />
-                <FormGroup label='Notes' controlId={`forms-${index}-notes`}>
-                  <ControlLabel>Notes</ControlLabel>
-                  {form.notes.map((note, index) =>
-                    <FormGroup key={index}>
-                      <FormControl type='text' className='WordForm-notes_note' value={note} onChange={_.noop} />
-                      <Button className='WordForm-notes_delete'>Delete note</Button>
-                    </FormGroup>
-                  )}
-                  <Button>Add note</Button>
-                </FormGroup>
+                <ListInput id={`forms-${index}-notes`} value={form.notes} onChange={_.noop}>
+                  Notes
+                </ListInput>
               </Fragment>
             )}
             <Button>Delete form</Button>
