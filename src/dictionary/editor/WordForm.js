@@ -42,7 +42,7 @@ class WordForm extends Component {
 
     return (
       <form className='WordForm'>
-        <LemmaInput id='lemma' value={this.state.word} />
+        <LemmaInput id='lemma' value={this.state.word} onChange={_.noop} />
         <FormGroup controlId='homonym'>
           <ControlLabel>Homonym</ControlLabel>
           <FormControl
@@ -202,7 +202,7 @@ class WordForm extends Component {
                   </span>
                 ) : (
                   <FormGroup key={index}>
-                    <LemmaInput id={`derived-${index}-lemma`} value={form} />
+                    <LemmaInput id={`derived-${index}-lemma`} value={form} onChange={_.noop} />
                     <FormGroup>
                       <ControlLabel>Homonym</ControlLabel>
                       <FormControl type='text' value={form.homonym} onChange={_.noop} />
@@ -232,7 +232,7 @@ class WordForm extends Component {
           <ControlLabel>Derived from</ControlLabel>
           {this.state.word.derivedFrom ? (
             <Fragment>
-              <LemmaInput id='derivedFrom-lemma' value={this.state.word.derivedFrom} />
+              <LemmaInput id='derivedFrom-lemma' value={this.state.word.derivedFrom} onChange={_.noop} />
               <FormGroup>
                 <ControlLabel>Homonym</ControlLabel>
                 <FormControl type='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />

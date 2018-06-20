@@ -15,7 +15,7 @@ class Forms extends Component {
               <span>{form}</span>
             ) : (
               <Fragment>
-                <LemmaInput id={`forms-${index}-lemma`} value={form} />
+                <LemmaInput id={`forms-${index}-lemma`} value={form} onChange={_.noop} />
                 <FormGroup label='Notes' controlId={`forms-${index}-notes`}>
                   <ControlLabel>Notes</ControlLabel>
                   {form.notes.map((note, index) =>
