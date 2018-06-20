@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, Simulate, wait} from 'react-testing-library'
+import {render, fireEvent, wait, cleanup} from 'react-testing-library'
 import Dictionary from './Dictionary'
 import Auth from '../auth0/Auth'
 import HttpClient from '../http/HttpClient'
@@ -26,6 +26,8 @@ const words = [
 let auth
 let httpClient
 
+afterEach(cleanup)
+
 beforeEach(() => {
   fetch.resetMocks()
   auth = new Auth()
@@ -43,7 +45,7 @@ describe('Searching for word', () => {
   it('displays result on successfull query', async () => {
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
 
-    Simulate.submit(element.container.querySelector('form'))
+    fireEvent.submit(element.container.querySelector('form'))
     await wait()
     expect(element.getByText('lemma')).toBeDefined()
   })
@@ -52,7 +54,7 @@ describe('Searching for word', () => {
     const errorMessage = 'error'
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
-    Simulate.submit(element.container.querySelector('form'))
+    fireEvent.submit(element.container.querySelector('form'))
     await wait()
     expect(element.getByText(errorMessage)).toBeDefined()
   })

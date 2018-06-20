@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import Word from './Word'
 
 const word = {
@@ -46,6 +46,8 @@ const brokenWord = {
 }
 
 let textContent
+
+afterEach(cleanup)
 
 describe('word display', () => {
   beforeEach(() => {

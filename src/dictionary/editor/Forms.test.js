@@ -1,6 +1,6 @@
 import React from 'react'
 import Forms from './Forms'
-import {render} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 
 const forms = [
   {
@@ -9,6 +9,8 @@ const forms = [
     notes: ['note1', 'note2']
   }
 ]
+
+afterEach(cleanup)
 
 it('Rendiers without crashing', () => {
   render(<form><Forms value={forms} /></form>)

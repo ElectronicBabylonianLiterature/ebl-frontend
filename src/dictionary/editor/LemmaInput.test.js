@@ -1,9 +1,16 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
-import {render} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 
 let value
 let element
+let onChanged
+
+afterEach(cleanup)
+
+beforeEach(() => {
+  onChanged = jest.fn()
+})
 
 describe('Value has attested property', () => {
   beforeEach(() => {
@@ -11,7 +18,7 @@ describe('Value has attested property', () => {
       lemma: ['part1', 'part2'],
       attested: true
     }
-    element = render(<LemmaInput id='lemma-input' value={value} />)
+    element = render(<LemmaInput id='lemma-input' value={value} onChanged={onChanged} />)
   })
 
   it('Displays lemma', () => {

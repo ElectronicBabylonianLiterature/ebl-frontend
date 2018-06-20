@@ -1,5 +1,5 @@
 import React from 'react'
-import {Simulate, render, wait} from 'react-testing-library'
+import {fireEvent, render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
 import HttpClient from '../http/HttpClient'
 import Auth from '../auth0/Auth'
@@ -16,6 +16,8 @@ let onResponse
 let httpClient
 let container
 
+afterEach(cleanup)
+
 beforeEach(async () => {
   onResponse = jest.fn()
 
@@ -26,7 +28,7 @@ beforeEach(async () => {
 
   const lemma = element.getByPlaceholderText('lemma')
   lemma.value = 'lemma'
-  Simulate.change(lemma)
+  fireEvent.change(lemma)
 })
 
 it('Calls onResponse with the result on success', async () => {
@@ -53,6 +55,6 @@ it('Queries the Dictionary API with given parameters', async () => {
 })
 
 async function submit () {
-  Simulate.submit(container.querySelector('form'))
+  fireEvent.submit(container.querySelector('form'))
   await wait()
 }

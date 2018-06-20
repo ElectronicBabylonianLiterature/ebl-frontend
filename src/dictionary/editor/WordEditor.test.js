@@ -1,6 +1,6 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
-import {render, wait} from 'react-testing-library'
+import {render, wait, cleanup} from 'react-testing-library'
 import WordEditor from './WordEditor'
 import HttpClient from '../../http/HttpClient'
 import Auth from '../../auth0/Auth'
@@ -18,6 +18,8 @@ const result = {
 }
 
 let httpClient
+
+afterEach(cleanup)
 
 beforeEach(() => {
   httpClient = new HttpClient(new Auth())

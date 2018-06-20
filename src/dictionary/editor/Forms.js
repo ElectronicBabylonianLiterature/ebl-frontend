@@ -20,7 +20,7 @@ class Forms extends Component {
                   <ControlLabel>Notes</ControlLabel>
                   {form.notes.map((note, index) =>
                     <FormGroup key={index}>
-                      <FormControl type='text' className='WordForm-notes_note' value={note} />
+                      <FormControl type='text' className='WordForm-notes_note' value={note} onChange={_.noop} />
                       <Button className='WordForm-notes_delete'>Delete note</Button>
                     </FormGroup>
                   )}
