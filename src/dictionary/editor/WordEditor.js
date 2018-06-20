@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Loading, Alert, Breadcrumb } from 'element-react'
-import { Link } from 'react-router-dom'
+import { Alert, Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
 import WordForm from './WordForm'
@@ -30,9 +29,9 @@ class WordEditor extends Component {
         <section className='WordEditor'>
           <header>
             <Breadcrumb separator='/'>
-              <Breadcrumb.Item><Link to='/'>eBL</Link></Breadcrumb.Item>
-              <Breadcrumb.Item><Link to='/dictionary'>Dictionary</Link></Breadcrumb.Item>
-              <Breadcrumb.Item>{this.props.match.params.id}</Breadcrumb.Item>
+              <Breadcrumb.Item href='/'>eBL</Breadcrumb.Item>
+              <Breadcrumb.Item href='/dictionary'>Dictionary</Breadcrumb.Item>
+              <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
             </Breadcrumb>
             <h2>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym} ({this.state.word._id})</h2>
             <ReactMarkdown source={this.state.word.source} />
@@ -41,9 +40,9 @@ class WordEditor extends Component {
         </section>
       )
     } else if (this.state.error) {
-      return <Alert type='error' title={this.state.error.message} showIcon closable={false} />
+      return <Alert bsStyle='danger'>{this.state.error.message}</Alert>
     } else {
-      return <Loading fullscreen />
+      return <div><i className='fa fa-spinner fa-spin' /> Loading...</div>
     }
   }
 }
