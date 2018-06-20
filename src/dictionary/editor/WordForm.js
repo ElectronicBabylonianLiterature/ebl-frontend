@@ -16,6 +16,19 @@ class WordForm extends Component {
     }
   }
 
+  updateWord = updatedFields => {
+    this.setState({
+      word: {
+        ...this.state.word,
+        ...updatedFields
+      }
+    })
+  }
+
+  onChange = (key) => (event) => {
+    this.updateWord({ [key]: event.target.value })
+  }
+
   render () {
     const positionsOfScpeech = {
       '': 'undefined',
@@ -42,19 +55,26 @@ class WordForm extends Component {
 
     return (
       <form className='WordForm'>
-        <LemmaInput id='lemma' value={this.state.word} onChange={_.noop} />
+        <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
+        <FormGroup controlId='legacyLemma'>
+          <ControlLabel>Legacy Lemma</ControlLabel>
+          <FormControl
+            type='text'
+            value={this.state.word.legacyLemma}
+            onChange={this.onChange('legacyLemma')} />
+        </FormGroup>
         <FormGroup controlId='homonym'>
           <ControlLabel>Homonym</ControlLabel>
           <FormControl
             type='text'
             value={this.state.word.homonym}
-            onChange={_.noop} />
+            onChange={this.onChange('homonym')} />
         </FormGroup>
 
         <FormGroup>
           <FormGroup controlId='pos'>
             <ControlLabel>POS</ControlLabel>
-            <FormControl componentClass='select' value={this.state.word.pos} onChange={_.noop}>
+            <FormControl componentClass='select' value={this.state.word.pos} onChange={this.onChange('pos')}>
               {posOptions.map(option =>
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -87,7 +107,7 @@ class WordForm extends Component {
           <FormControl
             type='text'
             value={this.state.word.meaning}
-            onChange={_.noop} />
+            onChange={this.onChange('meaning')} />
         </FormGroup>
 
         <FormGroup controlId='amplifiedMeaning'>
@@ -255,6 +275,12 @@ class WordForm extends Component {
         </FormGroup>
 
         <Button type='submit' bsStyle='primary'>Save</Button>
+        {process.env.NODE_ENV === 'development' && (
+          <div>
+            <h3>JSON preview</h3>
+            <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
+          </div>
+        )}
       </form>
     )
   }
