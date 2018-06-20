@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'element-react'
+import { Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
 class User extends Component {
@@ -15,8 +15,8 @@ class User extends Component {
   render () {
     return (
       this.props.auth.isAuthenticated()
-        ? <Button type='text' onClick={this.logout}>Logout</Button>
-        : <Button type='text' onClick={this.login}>Login</Button>
+        ? <Button bsSize='xsmall' onClick={this.logout}>Logout</Button>
+        : <Button bsSize='xsmall' onClick={this.login}>Login</Button>
     )
   }
 }

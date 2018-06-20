@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Loading } from 'element-react'
 
 class Callback extends Component {
   handleAuthentication (nextState, replace) {
@@ -12,7 +11,7 @@ class Callback extends Component {
 
   render () {
     this.handleAuthentication(this.props)
-    return <Loading fullscreen />
+    return <div><i className='fa fa-spinner fa-spin' /> Loading...</div>
   }
 }
 

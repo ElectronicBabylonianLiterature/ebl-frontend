@@ -3,8 +3,6 @@ import { Route, Link } from 'react-router-dom'
 import logo from './logo.png'
 import './App.css'
 
-import 'element-theme-default'
-
 import User from './auth0/User'
 import Callback from './auth0/Callback'
 import Introduction from './Introduction'
