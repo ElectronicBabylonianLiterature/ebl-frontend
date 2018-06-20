@@ -52,7 +52,7 @@ class WordForm extends Component {
             <FormGroup controlId='lemma'>
               <ControlLabel>Lemma</ControlLabel>
               <FormControl
-                componentClass='text'
+                type ='text'
                 value={this.state.word.lemma.join(' ')}
                 onChange={_.noop} />
             </FormGroup>
@@ -61,7 +61,7 @@ class WordForm extends Component {
             <FormGroup controlId='homonym'>
               <ControlLabel>Homonym</ControlLabel>
               <FormControl
-                componentClass='text'
+                type='text'
                 value={this.state.word.homonym}
                 onChange={_.noop} />
             </FormGroup>
@@ -88,7 +88,7 @@ class WordForm extends Component {
                 {(this.state.word.roots || []).map((wordRoot, index) =>
                   <FormGroup key={index} controld={`root-${index}`}>
                     <FormControl
-                      componentClass='text'
+                      type='text'
                       maxLength='3'
                       value={wordRoot}
                       onChange={_.noop} />
@@ -106,7 +106,7 @@ class WordForm extends Component {
         <FormGroup controlId='meaning'>
           <ControlLabel>Meaning</ControlLabel>
           <FormControl
-            componentClass='text'
+            type='text'
             value={this.state.word.meaning}
             onChange={_.noop} />
         </FormGroup>
@@ -117,11 +117,11 @@ class WordForm extends Component {
             <FormGroup controlId={`amplifiedMeaning-${key}`} key={key}>
               <FormGroup controlId={`amplifiedMeaning-${key}-conjugationfunction`}>
                 <ControlLabel>Conjugation/Function</ControlLabel>
-                <FormControl componentClass='text' value={key} onChange={_.noop} />
+                <FormControl type='text' value={key} onChange={_.noop} />
               </FormGroup>
               <FormGroup controlId={`amplifiedMeaning-${key}-meaning`}>
                 <ControlLabel>Meaning</ControlLabel>
-                <FormControl componentClass='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
+                <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
               </FormGroup>
               <FormGroup controlId={`amplifiedMeaning-${key}-vowels`}>
                 <ControlLabel>Vowels</ControlLabel>
@@ -129,13 +129,13 @@ class WordForm extends Component {
                   <FormGroup key={index} controlId={`amplifiedMeaning-${key}-vowels-${index}`}>
                     <FormGroup controlId={`amplifiedMeaning-${key}-vowels-${index}-value`}>
                       <ControlLabel>Value</ControlLabel>
-                      <FormControl componentClass='text' value={vowel.value.join('/')} onChange={_.noop} />
+                      <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
                     </FormGroup>
                     <FormGroup label='Notes' controlId={`amplifiedMeaning-${key}-vowels-${index}-notes`}>
                       <ControlLabel>Notes</ControlLabel>
                       {vowel.notes.map((note, index) =>
                         <FormGroup key={index}>
-                          <FormControl componentClass='text' value={note} onChange={_.noop} />
+                          <FormControl type='text' value={note} onChange={_.noop} />
                           <Button>Delete note</Button>
                         </FormGroup>
                       )}
@@ -152,7 +152,7 @@ class WordForm extends Component {
                   <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}`} key={entryIndex}>
                     <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-meaning`}>
                       <ControlLabel>Meaning</ControlLabel>
-                      <FormControl componentClass='text' value={entry.meaning} onChange={_.noop} />
+                      <FormControl type='text' value={entry.meaning} onChange={_.noop} />
                     </FormGroup>
                     <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels`}>
                       <ControlLabel>Vowels</ControlLabel>
@@ -160,13 +160,13 @@ class WordForm extends Component {
                         <FormGroup key={index} controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}`}>
                           <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-value`}>
                             <ControlLabel>Value</ControlLabel>
-                            <FormControl componentClass='text' value={vowel.value.join('/')} onChange={_.noop} />
+                            <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
                           </FormGroup>
                           <FormGroup label='Notes' controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-notes`}>
                             <ControlLabel>Notes</ControlLabel>
                             {vowel.notes.map((note, index) =>
                               <FormGroup key={index}>
-                                <FormControl componentClass='text' value={note} onChange={_.noop} />
+                                <FormControl type='text' value={note} onChange={_.noop} />
                                 <Button>Delete note</Button>
                               </FormGroup>
                             )}
@@ -194,13 +194,13 @@ class WordForm extends Component {
             <FormGroup key={index}>
               <FormGroup>
                 <ControlLabel>Logogram</ControlLabel>
-                <FormControl componentClass='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
+                <FormControl type='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Notes</ControlLabel>
                 {logogram.notes.map((note, index) =>
                   <FormGroup key={index}>
-                    <FormControl componentClass='text' value={note} onChange={_.noop} />
+                    <FormControl type='text' value={note} onChange={_.noop} />
                     <Button>Delete note</Button>
                   </FormGroup>
                 )}
@@ -225,17 +225,17 @@ class WordForm extends Component {
                   <FormGroup key={index}>
                     <FormGroup>
                       <ControlLabel>Lemma</ControlLabel>
-                      <FormControl componentClass='text' value={form.lemma.join(' ')} onChange={_.noop} />
+                      <FormControl type='text' value={form.lemma.join(' ')} onChange={_.noop} />
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>Homonym</ControlLabel>
-                      <FormControl componentClass='text' value={form.homonym} onChange={_.noop} />
+                      <FormControl type='text' value={form.homonym} onChange={_.noop} />
                     </FormGroup>
                     <FormGroup>
                       <ControlLabel>Notes</ControlLabel>
                       {form.notes.map((note, index) =>
                         <FormGroup key={index}>
-                          <FormControl componentClass='text' value={note} onChange={_.noop} />
+                          <FormControl type='text' value={note} onChange={_.noop} />
                           <Button>Delete note</Button>
                         </FormGroup>
                       )}
@@ -258,17 +258,17 @@ class WordForm extends Component {
             <Fragment>
               <FormGroup>
                 <ControlLabel>Lemma</ControlLabel>
-                <FormControl componentClass='text' value={this.state.word.derivedFrom.lemma.join(' ')} onChange={_.noop} />
+                <FormControl type='text' value={this.state.word.derivedFrom.lemma.join(' ')} onChange={_.noop} />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Homonym</ControlLabel>
-                <FormControl componentClass='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />
+                <FormControl type='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Notes</ControlLabel>
                 {this.state.word.derivedFrom.notes.map((note, index) =>
                   <FormGroup key={index}>
-                    <FormControl componentClass='text' value={note} onChange={_.noop} />
+                    <FormControl type='text' value={note} onChange={_.noop} />
                     <Button>Delete note</Button>
                   </FormGroup>
                 )}

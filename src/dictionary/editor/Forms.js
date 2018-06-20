@@ -23,7 +23,7 @@ class Forms extends Component {
                   <Col md={12}>
                     <FormGroup controlId={`forms-${index}-lemma`}>
                       <ControlLabel>Lemma</ControlLabel>
-                      <FormControl componentClass='text' value={form.lemma.join(' ')} onChange={_.noop} />
+                      <FormControl type='text' value={form.lemma.join(' ')} onChange={_.noop} />
                     </FormGroup>
                   </Col>
                 </FormGroup>
@@ -31,7 +31,7 @@ class Forms extends Component {
                   <ControlLabel>Notes</ControlLabel>
                   {form.notes.map((note, index) =>
                     <FormGroup key={index}>
-                      <FormControl componentClass='text' className='WordForm-notes_note' value={note} />
+                      <FormControl type='text' className='WordForm-notes_note' value={note} />
                       <Button className='WordForm-notes_delete'>Delete note</Button>
                     </FormGroup>
                   )}
