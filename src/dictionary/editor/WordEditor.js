@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Loading, Alert, Collapse, Breadcrumb } from 'element-react'
+import { Loading, Alert, Breadcrumb } from 'element-react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 
@@ -17,24 +17,11 @@ class WordEditor extends Component {
     this.load()
   }
 
-  async load () {
-    try {
-      const headers = new Headers({'Authorization': `Bearer ${this.props.auth.getAccessToken()}`})
-      await fetch(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`, {headers: headers})
-        .then(response => {
-          if (response.ok) {
-            return response
-          } else {
-            throw Error(response.statusText)
-          }
-        })
-        .then(response => response.json())
-        .then(json => {
-          this.setState({word: json, error: null})
-        })
-    } catch (error) {
-      this.setState({word: null, error: error})
-    }
+  load () {
+    this.props.httpClient
+      .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`)
+      .then(json => this.setState({word: json, error: null}))
+      .catch(error => this.setState({word: null, error: error}))
   }
 
   render () {
@@ -51,13 +38,6 @@ class WordEditor extends Component {
             <ReactMarkdown source={this.state.word.source} />
           </header>
           <WordForm value={this.state.word} />
-          <Collapse>
-            <Collapse.Item title='JSON preview'>
-              <pre>
-                {JSON.stringify(this.state.word, null, 2)}
-              </pre>
-            </Collapse.Item>
-          </Collapse>
         </section>
       )
     } else if (this.state.error) {

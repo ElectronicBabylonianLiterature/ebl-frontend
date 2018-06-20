@@ -48,7 +48,7 @@ it('Queries the Dictionary API with given parameters', async () => {
   jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
   await submit()
 
-  const expectedUrl = 'http://localhost:8000/words/search/lemma'
+  const expectedUrl = 'http://example.com/words/search/lemma'
   expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
 })
 

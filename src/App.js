@@ -30,7 +30,7 @@ class App extends Component {
         </header>
         <Route exact path='/' component={Introduction} />
         <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} httpClient={new HttpClient(this.props.auth)} />} />
-        <Route path='/dictionary/:id' render={props => <WordEditor auth={this.props.auth} {...props} />} />
+        <Route path='/dictionary/:id' render={props => <WordEditor httpClient={new HttpClient(this.props.auth)} {...props} />} />
         <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
       </div>
     )
