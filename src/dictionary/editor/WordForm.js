@@ -169,20 +169,22 @@ class WordForm extends Component {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Logograms</ControlLabel>
-          {_.map(this.state.word.logograms, (logogram, index) =>
-            <FormGroup key={index}>
-              <FormGroup>
-                <ControlLabel>Logogram</ControlLabel>
-                <FormControl type='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
-              </FormGroup>
-              <ListInput id={`logogram-${index}-notes`} value={logogram.notes} onChange={_.noop}>
-                Notes
-              </ListInput>
-              <Button>Delete Logogram</Button>
-            </FormGroup>
-          )}
-          <Button>Add Logogram</Button>
+          <label>Logograms</label>
+          <ul>
+            {_.map(this.state.word.logograms, (logogram, index) =>
+              <li key={index}>
+                <FormGroup>
+                  <ControlLabel>Logogram</ControlLabel>
+                  <FormControl type='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
+                </FormGroup>
+                <ListInput id={`logogram-${index}-notes`} value={logogram.notes} onChange={_.noop}>
+                  Notes
+                </ListInput>
+                <Button>Delete Logogram</Button>
+              </li>
+            )}
+            <li><Button>Add Logogram</Button></li>
+          </ul>
         </FormGroup>
 
         <FormGroup>
