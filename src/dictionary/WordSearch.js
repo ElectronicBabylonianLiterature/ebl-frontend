@@ -32,12 +32,14 @@ class WordSearch extends Component {
       <Form inline onSubmit={this.submit}>
         <FormGroup controlId='lemma'>
           <ControlLabel>Lemma</ControlLabel>
+          {' '}
           <FormControl
             type='text'
             value={this.state.form.lemma}
             placeholder='lemma'
             onChange={_.partial(this.onChange, 'lemma')} />
         </FormGroup>
+        {' '}
         <Button type='submit' bsStyle='primary'>Query</Button>
       </Form>
     )
