@@ -38,7 +38,7 @@ class LogogramList extends Component {
         <ul>
           {_.map(this.props.value, (logogram, index) =>
             <li key={index}>
-              <FormGroup contorlId={`${this.props.id}-${index}`}>
+              <FormGroup controlId={`${this.props.id}-${index}`}>
                 <ControlLabel>Logogram</ControlLabel>
                 <FormControl type='text' value={logogram.logogram.join(' ')} onChange={this.updateLogogram(index)} />
               </FormGroup>
