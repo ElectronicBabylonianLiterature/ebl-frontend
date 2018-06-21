@@ -7,31 +7,23 @@ class LemmaInput extends Component {
     return _.has(this.props.value, 'attested')
   }
 
-  get lemmaFormControl () {
+  lemmaFormControl = () => {
     return <FormControl
       type='text'
       value={this.props.value.lemma.join(' ')}
       onChange={this.lemmaChanged} />
   }
 
-  filterChange = change => {
-    this.props.onChange(
-      this.hasAttested
-        ? change
-        : _.omit(change, 'attested')
-    )
-  }
-
   lemmaChanged = event => {
-    this.filterChange({
-      lemma: event.target.value.split(' '),
-      attested: this.props.value.attested
+    this.props.onChange({
+      ...this.props.value,
+      lemma: event.target.value.split(' ')
     })
   }
 
   attestedChanged = event => {
-    this.filterChange({
-      lemma: this.props.value.lemma,
+    this.props.onChange({
+      ...this.props.value,
       attested: event.target.checked
     })
   }
@@ -49,10 +41,10 @@ class LemmaInput extends Component {
                 checked={this.props.value.attested}
                 onChange={this.attestedChanged} />
             </InputGroup.Addon>
-            {this.lemmaFormControl}
+            <this.lemmaFormControl />
           </InputGroup>
         )
-          : this.lemmaFormControl
+          : <this.lemmaFormControl />
         }
       </FormGroup>
     )
