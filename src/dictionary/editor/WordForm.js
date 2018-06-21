@@ -6,6 +6,7 @@ import LemmaInput from './LemmaInput'
 import ListInput from './ListInput'
 import FormList from './FormList'
 import FormInput from './FormInput'
+import LogogramList from './LogogramList'
 
 import './WordForm.css'
 
@@ -172,24 +173,9 @@ class WordForm extends Component {
           <Button>Add amplified meaning</Button>
         </FormGroup>
 
-        <FormGroup>
-          <label>Logograms</label>
-          <ul>
-            {_.map(this.state.word.logograms, (logogram, index) =>
-              <li key={index}>
-                <FormGroup>
-                  <ControlLabel>Logogram</ControlLabel>
-                  <FormControl type='text' value={logogram.logogram.join(' ')} onChange={_.noop} />
-                </FormGroup>
-                <ListInput id={`logogram-${index}-notes`} value={logogram.notes} onChange={_.noop}>
-                  Notes
-                </ListInput>
-                <Button>Delete Logogram</Button>
-              </li>
-            )}
-            <li><Button>Add Logogram</Button></li>
-          </ul>
-        </FormGroup>
+        <LogogramList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
+          Logograms
+        </LogogramList>
 
         <FormGroup>
           <label>Derived</label>
