@@ -5,6 +5,7 @@ import _ from 'lodash'
 import LemmaInput from './LemmaInput'
 import ListInput from './ListInput'
 import Forms from './Forms'
+import FormInput from './FormInput'
 
 import './WordForm.css'
 
@@ -185,47 +186,34 @@ class WordForm extends Component {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Derived</ControlLabel>
-          {this.state.word.derived.map((group, groupIndex) =>
-            <FormGroup key={groupIndex}>
-              {group.map((form, index) =>
-                _.isString(form) ? (
-                  <span key={index}>
-                    {form}
-                  </span>
-                ) : (
-                  <FormGroup key={index}>
-                    <LemmaInput id={`derived-${groupIndex}-${index}-lemma`} value={form} onChange={_.noop} />
-                    <FormGroup>
-                      <ControlLabel>Homonym</ControlLabel>
-                      <FormControl type='text' value={form.homonym} onChange={_.noop} />
-                    </FormGroup>
-                    <ListInput id={`derived-${groupIndex}-${index}-notes`} value={form.notes} onChange={_.noop}>
-                      Notes
-                    </ListInput>
-                    <Button>Delete form</Button>
-                  </FormGroup>
-                )
-              )}
-              <Button>Add form</Button>
-              <Button>Delete group</Button>
-            </FormGroup>
-          )}
-          <Button>Add group</Button>
+          <label>Derived</label>
+          <ul>
+            {this.state.word.derived.map((group, groupIndex) =>
+              <li key={groupIndex}>
+                <ul>
+                  {group.map((form, index) =>
+                    <li key={index}>
+                      {_.isString(form)
+                        ? <span>{form}</span>
+                        : <FormInput id={`derived-${groupIndex}-${index}`} value={form} onChange={_.noop} />
+                      }
+                      <Button>Delete form</Button>
+                    </li>
+                  )}
+                  <li><Button>Add form</Button></li>
+                </ul>
+                <Button>Delete group</Button>
+              </li>
+            )}
+            <li><Button>Add group</Button></li>
+          </ul>
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Derived from</ControlLabel>
+          <label>Derived from</label>
           {this.state.word.derivedFrom ? (
             <Fragment>
-              <LemmaInput id='derivedFrom-lemma' value={this.state.word.derivedFrom} onChange={_.noop} />
-              <FormGroup>
-                <ControlLabel>Homonym</ControlLabel>
-                <FormControl type='text' value={this.state.word.derivedFrom.homonym} onChange={_.noop} />
-              </FormGroup>
-              <ListInput id={`derivedFrom-notes`} value={this.state.word.derivedFrom.notes} onChange={_.noop}>
-                Notes
-              </ListInput>
+              <FormInput id='derivedFrom' value={this.state.word.derivedFrom} onChange={_.noop} />
               <Button>Delete derived from</Button>
             </Fragment>
           ) : (
