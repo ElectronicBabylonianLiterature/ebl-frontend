@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import ListInput from './ListInput'
-import Forms from './Forms'
+import FormList from './FormList'
 import FormInput from './FormInput'
 
 import './WordForm.css'
@@ -95,11 +95,11 @@ class WordForm extends Component {
           }
         </FormGroup>
 
-        <Forms
+        <FormList
           id='forms'
           value={this.state.word.forms}
           onChange={this.onChangeValue('forms')}
-          fields={['lemma', 'attested', 'notes']}>Forms</Forms>
+          fields={['lemma', 'attested', 'notes']}>Forms</FormList>
 
         <FormGroup controlId='meaning'>
           <ControlLabel>Meaning</ControlLabel>
@@ -196,7 +196,7 @@ class WordForm extends Component {
           <ul>
             {this.state.word.derived.map((group, groupIndex) =>
               <li key={groupIndex}>
-                <Forms
+                <FormList
                   id={`derived-${groupIndex}`}
                   value={group}
                   onChange={_.noop}

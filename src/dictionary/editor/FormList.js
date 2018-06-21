@@ -11,7 +11,7 @@ const defaultForm = {
   notes: []
 }
 
-class Forms extends Component {
+class FormList extends Component {
   add = () => {
     const fields = this.props.fields || _.keys(defaultForm)
     this.props.onChange([...this.props.value, _.pick(defaultForm, fields)])
@@ -51,4 +51,4 @@ class Forms extends Component {
   }
 }
 
-export default Forms
+export default FormList

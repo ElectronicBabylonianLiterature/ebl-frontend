@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import Forms from './Forms'
+import FormList from './FormList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
 afterEach(cleanup)
@@ -66,5 +66,5 @@ it('Calls onChange with updated value on change', async () => {
 })
 
 function renderForms () {
-  return render(<Forms id='form' value={value} onChange={onChange} fields={['lemma', 'attested', 'homonym', 'notes']}>{label}</Forms>)
+  return render(<FormList id='form' value={value} onChange={onChange} fields={['lemma', 'attested', 'homonym', 'notes']}>{label}</FormList>)
 }
