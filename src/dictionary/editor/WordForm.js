@@ -95,7 +95,11 @@ class WordForm extends Component {
           }
         </FormGroup>
 
-        <Forms value={this.state.word.forms} />
+        <Forms
+          id='forms'
+          value={this.state.word.forms}
+          onChange={this.onChangeValue('forms')}
+          fields={['lemma', 'attested', 'notes']}>Forms</Forms>
 
         <FormGroup controlId='meaning'>
           <ControlLabel>Meaning</ControlLabel>
@@ -192,18 +196,11 @@ class WordForm extends Component {
           <ul>
             {this.state.word.derived.map((group, groupIndex) =>
               <li key={groupIndex}>
-                <ul>
-                  {group.map((form, index) =>
-                    <li key={index}>
-                      {_.isString(form)
-                        ? <span>{form}</span>
-                        : <FormInput id={`derived-${groupIndex}-${index}`} value={form} onChange={_.noop} />
-                      }
-                      <Button>Delete form</Button>
-                    </li>
-                  )}
-                  <li><Button>Add form</Button></li>
-                </ul>
+                <Forms
+                  id={`derived-${groupIndex}`}
+                  value={group}
+                  onChange={_.noop}
+                  fields={['lemma', 'homonym', 'notes']} />
                 <Button>Delete group</Button>
               </li>
             )}
@@ -215,11 +212,11 @@ class WordForm extends Component {
           <label>Derived from</label>
           {this.state.word.derivedFrom ? (
             <Fragment>
-              <FormInput id='derivedFrom' value={this.state.word.derivedFrom} onChange={_.noop} />
-              <Button>Delete derived from</Button>
+              <FormInput id='derivedFrom' value={this.state.word.derivedFrom} onChange={this.onChangeValue('derivedFrom')} />
+              <Button onClick={() => this.onChangeValue('derivedFrom')(null)}>Delete derived from</Button>
             </Fragment>
           ) : (
-            <Button>Add derived from</Button>
+            <Button onClick={() => this.onChangeValue('derivedFrom')({lemma: [], homonym: '', notes: []})}>Add derived from</Button>
           )}
         </FormGroup>
 

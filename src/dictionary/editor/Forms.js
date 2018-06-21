@@ -4,22 +4,47 @@ import _ from 'lodash'
 
 import FormInput from './FormInput'
 
+const defaultForm = {
+  lemma: [],
+  attested: true,
+  homonym: '',
+  notes: []
+}
+
 class Forms extends Component {
+  add = () => {
+    const fields = this.props.fields || _.keys(defaultForm)
+    this.props.onChange([...this.props.value, _.pick(defaultForm, fields)])
+  }
+
+  delete = index => () => {
+    this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
+  }
+
+  update = index => updatedForm => {
+    this.props.onChange(
+      _.map(this.props.value, (form, formIndex) => index === formIndex
+        ? updatedForm
+        : form
+      )
+    )
+  }
+
   render () {
     return (
       <FormGroup>
-        <label>Forms</label>
+        <label>{this.props.children}</label>
         <ul>
           {this.props.value.map((form, index) =>
             <li key={index}>
               {_.isString(form)
                 ? <span>{form}</span>
-                : <FormInput id={`forms-${index}`} value={form} onChange={_.noop} />
+                : <FormInput id={`${this.props.id}-${index}`} value={form} onChange={this.update(index)} />
               }
-              <Button>Delete form</Button>
+              <Button onClick={this.delete(index)}>Delete form</Button>
             </li>
           )}
-          <li><Button>Add form</Button></li>
+          <li><Button onClick={this.add}>Add form</Button></li>
         </ul>
       </FormGroup>
     )
