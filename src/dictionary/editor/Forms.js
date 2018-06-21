@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
-import LemmaInput from './LemmaInput'
-import ListInput from './ListInput'
+import FormInput from './FormInput'
 
 class Forms extends Component {
   render () {
@@ -13,16 +12,10 @@ class Forms extends Component {
         <ul>
           {this.props.value.map((form, index) =>
             <li key={index}>
-              {_.isString(form) ? (
-                <span>{form}</span>
-              ) : (
-                <FormGroup>
-                  <LemmaInput id={`forms-${index}-lemma`} value={form} onChange={_.noop} />
-                  <ListInput id={`forms-${index}-notes`} value={form.notes} onChange={_.noop}>
-                    Notes
-                  </ListInput>
-                </FormGroup>
-              )}
+              {_.isString(form)
+                ? <span>{form}</span>
+                : <FormInput id={`forms-${index}`} value={form} onChange={_.noop} />
+              }
               <Button>Delete form</Button>
             </li>
           )}
