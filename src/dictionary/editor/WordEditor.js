@@ -34,7 +34,7 @@ class WordEditor extends Component {
               <Breadcrumb.Item href='/dictionary'>Dictionary</Breadcrumb.Item>
               <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
             </Breadcrumb>
-            <h2>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym} ({this.state.word._id})</h2>
+            <h2>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym} <small>({this.state.word._id})</small></h2>
             <ReactMarkdown source={this.state.word.source} />
           </header>
           <WordForm value={this.state.word} />
