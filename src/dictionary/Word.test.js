@@ -1,8 +1,10 @@
 import React from 'react'
 import {render, cleanup} from 'react-testing-library'
+import { MemoryRouter } from 'react-router-dom'
 import Word from './Word'
 
 const word = {
+  _id: 'object-id',
   lemma: ['part1', 'part2'],
   homonym: 'I',
   attested: true,
@@ -46,12 +48,18 @@ const brokenWord = {
 }
 
 let textContent
+let element
 
 afterEach(cleanup)
 
 describe('word display', () => {
   beforeEach(() => {
-    textContent = render(<Word value={word} />).container.textContent
+    element = render(<MemoryRouter><Word value={word} /></MemoryRouter>)
+    textContent = element.container.textContent
+  })
+
+  it('lemma links to editor', () => {
+    expect(element.getByText('part1 part2').href).toEqual('http://localhost/dictionary/object-id')
   })
 
   it('renders lemma', () => {
@@ -85,7 +93,7 @@ describe('word display', () => {
 
 describe('broken word display', () => {
   beforeEach(() => {
-    textContent = render(<Word value={brokenWord} />).container.textContent
+    textContent = render(<MemoryRouter><Word value={brokenWord} /></MemoryRouter>).container.textContent
   })
 
   it('form', () => {

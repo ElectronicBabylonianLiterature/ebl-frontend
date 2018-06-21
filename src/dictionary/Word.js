@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import './Word.css'
@@ -16,7 +17,10 @@ class Lemma extends Component {
     const lemma = this.props.value.lemma.join(' ')
     return (
       <Fragment>
-        {React.createElement(container, {}, `${attested}${lemma}`)}
+        {this.props.value._id
+          ? React.createElement(container, {}, <Link to={`/dictionary/${this.props.value._id}`}>{attested}{lemma}</Link>)
+          : React.createElement(container, {}, `${attested}${lemma}`)
+        }
         {' '}
         {this.props.value.homonym}
       </Fragment>

@@ -1,5 +1,6 @@
 import React from 'react'
 import {render, fireEvent, wait, cleanup} from 'react-testing-library'
+import { MemoryRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from '../auth0/Auth'
 import HttpClient from '../http/HttpClient'
@@ -39,7 +40,7 @@ describe('Searching for word', () => {
 
   beforeEach(() => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    element = render(<Dictionary auth={auth} httpClient={httpClient} />)
+    element = render(<MemoryRouter><Dictionary auth={auth} httpClient={httpClient} /></MemoryRouter>)
   })
 
   it('displays result on successfull query', async () => {
