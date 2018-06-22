@@ -6,18 +6,12 @@ import WordForm from './WordForm'
 import Spinner from '../../Spinner'
 
 class WordEditor extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      word: null,
-      error: null
-    }
-
-    this.load()
+  state = {
+    word: null,
+    error: null
   }
 
-  load () {
+  componentDidMount () {
     this.props.httpClient
       .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`)
       .then(json => this.setState({word: json, error: null}))
