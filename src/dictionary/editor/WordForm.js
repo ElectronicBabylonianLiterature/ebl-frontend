@@ -8,6 +8,7 @@ import FormList from './FormList'
 import FormInput from './FormInput'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
+import VowelsList from './VowelsList'
 
 import './WordForm.css'
 
@@ -140,25 +141,7 @@ class WordForm extends Component {
                   <ControlLabel>Meaning</ControlLabel>
                   <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
                 </FormGroup>
-                <FormGroup>
-                  <label>Vowels</label>
-                  <ul>
-                    {amplifiedMeaning.vowels.map((vowel, index) =>
-                      <li key={index}>
-                        <FormGroup controlId={`amplifiedMeaning-${key}-vowels-${index}-value`}>
-                          <ControlLabel>Value</ControlLabel>
-                          <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
-                        </FormGroup>
-                        <ListInput id={`amplifiedMeaning-${key}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
-                          Notes
-                        </ListInput>
-                        <Button>Delete vowels</Button>
-                      </li>
-                    )}
-                    <li><Button>Add vowels</Button></li>
-                  </ul>
-                </FormGroup>
-
+                <VowelsList id={`amplifiedMeaning-${key}-vowels`} value={amplifiedMeaning.vowels} onChange={_.noop}>Vowels</VowelsList>
                 <FormGroup>
                   <label>Entries</label>
                   <ol>
@@ -168,24 +151,7 @@ class WordForm extends Component {
                           <ControlLabel>Meaning</ControlLabel>
                           <FormControl type='text' value={entry.meaning} onChange={_.noop} />
                         </FormGroup>
-                        <FormGroup>
-                          <label>Vowels</label>
-                          <ul>
-                            {entry.vowels.map((vowel, index) =>
-                              <li key={index}>
-                                <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-value`}>
-                                  <ControlLabel>Value</ControlLabel>
-                                  <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
-                                </FormGroup>
-                                <ListInput id={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
-                                  Notes
-                                </ListInput>
-                                <Button>Delete vowels</Button>
-                              </li>
-                            )}
-                            <li><Button>Add vowels</Button></li>
-                          </ul>
-                        </FormGroup>
+                        <VowelsList id={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels`} value={entry.vowels} onChange={_.noop}>Vowels</VowelsList>
                         <Button>Delete entry</Button>
                       </li>
                     )}
