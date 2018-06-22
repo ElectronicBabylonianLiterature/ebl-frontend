@@ -1,9 +1,11 @@
 import React from 'react'
-import {render, fireEvent, wait, cleanup} from 'react-testing-library'
-import { MemoryRouter } from 'react-router-dom'
+import {render, wait, cleanup} from 'react-testing-library'
+import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from '../../auth0/Auth'
 import HttpClient from '../../http/HttpClient'
+
+const DictionaryWithRouter = withRouter(Dictionary)
 
 const words = [
   {
@@ -38,32 +40,39 @@ beforeEach(() => {
 describe('Searching for word', () => {
   let element
 
-  beforeEach(() => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    element = render(<MemoryRouter><Dictionary auth={auth} httpClient={httpClient} /></MemoryRouter>)
-  })
-
   it('displays result on successfull query', async () => {
+    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
-
-    fireEvent.submit(element.container.querySelector('form'))
+    element = render(<MemoryRouter initialEntries={['/dictionary?lemma=lemma']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
     await wait()
+
     expect(element.getByText('lemma')).toBeDefined()
   })
 
-  it('displays error on failed query', async () => {
-    const errorMessage = 'error'
-    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-
-    fireEvent.submit(element.container.querySelector('form'))
+  it('fills in search form query', async () => {
+    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
+    element = render(<MemoryRouter initialEntries={['/dictionary?lemma=lemma']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
     await wait()
-    expect(element.getByText(errorMessage)).toBeDefined()
+
+    expect(element.getByLabelText('Lemma').value).toEqual('lemma')
+  })
+
+  it('displays empty search if no query', async () => {
+    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
+    element = render(<MemoryRouter initialEntries={['/dictionary']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
+    await wait()
+
+    expect(element.getByLabelText('Lemma').value).toEqual('')
   })
 })
 
-it('Displays a message if user is not logged in', () => {
+it('Displays a message if user is not logged in', async () => {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
 
-  const {getByText} = render(<Dictionary auth={auth} httpClient={httpClient} />)
+  const {getByText} = render(<MemoryRouter><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
+  await wait()
+
   expect(getByText('You need to be logged in to access the dictionary.')).toBeDefined()
 })

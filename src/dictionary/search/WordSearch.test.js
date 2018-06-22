@@ -1,60 +1,59 @@
 import React from 'react'
-import {fireEvent, render, wait, cleanup} from 'react-testing-library'
+import { MemoryRouter } from 'react-router-dom'
+import {render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
-import HttpClient from '../../http/HttpClient'
-import Auth from '../../auth0/Auth'
 
-const result = [{
-  lemma: ['lemma'],
-  forms: [],
-  homonym: 'I',
-  amplifiedMeanings: {},
-  derived: []
-}]
+const words = [
+  {
+    _id: '1',
+    lemma: ['lemma'],
+    forms: [],
+    homonym: 'I',
+    amplifiedMeanings: {},
+    derived: []
+  },
+  {
+    _id: '2',
+    lemma: ['lemma'],
+    forms: [],
+    homonym: 'II',
+    amplifiedMeanings: {},
+    derived: []
+  }
+]
 
-let onResponse
 let httpClient
-let container
 
 afterEach(cleanup)
 
-beforeEach(async () => {
-  onResponse = jest.fn()
-
-  httpClient = new HttpClient(new Auth())
-
-  const element = render(<WordSearch onResponse={onResponse} httpClient={httpClient} />)
-  container = element.container
-
-  const lemma = element.getByPlaceholderText('lemma')
-  lemma.value = 'lemma'
-  fireEvent.change(lemma)
-})
-
-it('Calls onResponse with the result on success', async () => {
-  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-  await submit()
-
-  expect(onResponse).toBeCalledWith(result)
-})
-
-it('Calls onResponse with the error on failure', async () => {
-  const error = new Error('error')
-  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
-  await submit()
-
-  expect(onResponse).toBeCalledWith(null, error)
+beforeEach(() => {
+  httpClient = {
+    fetchJson: jest.fn()
+  }
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
-  jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-  await submit()
+  httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
+  render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
+  await wait()
 
   const expectedUrl = 'http://example.com/words/search/lemma'
   expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
 })
 
-async function submit () {
-  fireEvent.submit(container.querySelector('form'))
+it('displays result on successfull query', async () => {
+  httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
+  const element = render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
   await wait()
-}
+
+  expect(element.getByText('lemma')).toBeDefined()
+})
+
+it('displays error on failed query', async () => {
+  const errorMessage = 'error'
+  httpClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+  const element = render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
+  await wait()
+
+  expect(element.getByText(errorMessage)).toBeDefined()
+})

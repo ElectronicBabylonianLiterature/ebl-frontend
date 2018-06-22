@@ -1,47 +1,51 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 import _ from 'lodash'
 
-class WordSearch extends Component {
-  constructor (props) {
-    super(props)
+import Word from './Word'
 
-    this.state = {
-      form: {
-        lemma: ''
-      }
+class WordSearch extends Component {
+  state = {
+    words: [],
+    error: null
+  }
+
+  fetchWords () {
+    if (_.isEmpty(this.props.lemma)) {
+      this.setState({words: [], error: null})
+    } else {
+      this.props.httpClient
+        .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/search/${this.props.lemma}`)
+        .then(words => this.setState({words: words, error: null}))
+        .catch(error => this.setState({words: [], error: error}))
     }
   }
 
-  onChange = (key, event) => {
-    this.setState({
-      form: Object.assign(this.state.form, { [key]: event.target.value })
-    })
+  componentDidMount () {
+    this.fetchWords()
   }
 
-  submit = event => {
-    event.preventDefault()
-    this.props.httpClient
-      .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/search/${this.state.form.lemma}`)
-      .then(this.props.onResponse)
-      .catch(_.partial(this.props.onResponse, null))
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.lemma !== this.props.lemma) {
+      this.fetchWords()
+    }
   }
 
   render () {
     return (
-      <Form inline onSubmit={this.submit}>
-        <FormGroup controlId='lemma'>
-          <ControlLabel>Lemma</ControlLabel>
-          {' '}
-          <FormControl
-            type='text'
-            value={this.state.form.lemma}
-            placeholder='lemma'
-            onChange={_.partial(this.onChange, 'lemma')} />
-        </FormGroup>
-        {' '}
-        <Button type='submit' bsStyle='primary'>Query</Button>
-      </Form>
+      this.state.error ? (
+        <Alert bsStyle='danger'>
+          {this.state.error.message}
+        </Alert>
+      ) : (
+        <ul className='Dictionary-results'>
+          {this.state.words.map(word =>
+            <li key={word._id}>
+              <Word value={word} />
+            </li>
+          )}
+        </ul>
+      )
     )
   }
 }
