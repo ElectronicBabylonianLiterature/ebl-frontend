@@ -7,6 +7,7 @@ import ListInput from './ListInput'
 import FormList from './FormList'
 import FormInput from './FormInput'
 import LogogramList from './LogogramList'
+import DerivedList from './DerivedList'
 
 import './WordForm.css'
 
@@ -34,6 +35,18 @@ class WordForm extends Component {
 
   onChangeEvent = key => event => {
     this.onChangeValue(key)(event.target.value)
+  }
+
+  updateDerived = newIndex => newGroup => {
+    this.onChangeValue('derived')(_(this.state.word.derived)
+      .map((group, index) =>
+        index === newIndex
+          ? newGroup
+          : group
+      )
+      .compact()
+      .value()
+    )
   }
 
   render () {
@@ -177,22 +190,9 @@ class WordForm extends Component {
           Logograms
         </LogogramList>
 
-        <FormGroup>
-          <label>Derived</label>
-          <ul>
-            {this.state.word.derived.map((group, groupIndex) =>
-              <li key={groupIndex}>
-                <FormList
-                  id={`derived-${groupIndex}`}
-                  value={group}
-                  onChange={_.noop}
-                  fields={['lemma', 'homonym', 'notes']} />
-                <Button>Delete group</Button>
-              </li>
-            )}
-            <li><Button>Add group</Button></li>
-          </ul>
-        </FormGroup>
+        <DerivedList id='derived' value={this.state.word.derived} onChange={this.onChangeValue('derived')}>
+          Derived
+        </DerivedList>
 
         <FormGroup>
           <label>Derived from</label>
