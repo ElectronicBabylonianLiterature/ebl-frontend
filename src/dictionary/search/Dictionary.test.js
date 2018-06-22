@@ -2,8 +2,8 @@ import React from 'react'
 import {render, fireEvent, wait, cleanup} from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
-import Auth from '../auth0/Auth'
-import HttpClient from '../http/HttpClient'
+import Auth from '../../auth0/Auth'
+import HttpClient from '../../http/HttpClient'
 
 const words = [
   {

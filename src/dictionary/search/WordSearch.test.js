@@ -1,8 +1,8 @@
 import React from 'react'
 import {fireEvent, render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
-import HttpClient from '../http/HttpClient'
-import Auth from '../auth0/Auth'
+import HttpClient from '../../http/HttpClient'
+import Auth from '../../auth0/Auth'
 
 const result = [{
   lemma: ['lemma'],
