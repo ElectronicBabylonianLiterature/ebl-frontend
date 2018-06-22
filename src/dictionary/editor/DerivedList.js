@@ -15,11 +15,11 @@ class DerivedList extends Component {
   }
 
   updateDerived = index => group => {
-    this.props.onChange(_.compact([
+    this.props.onChange([
       ...this.props.value.slice(0, index),
       group,
       ...this.props.value.slice(index + 1)
-    ]))
+    ])
   }
 
   render () {
