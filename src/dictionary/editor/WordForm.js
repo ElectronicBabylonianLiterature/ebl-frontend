@@ -109,12 +109,6 @@ class WordForm extends Component {
           }
         </FormGroup>
 
-        <FormList
-          id='forms'
-          value={this.state.word.forms}
-          onChange={this.onChangeValue('forms')}
-          fields={['lemma', 'attested', 'notes']}>Forms</FormList>
-
         <FormGroup controlId='meaning'>
           <ControlLabel>Meaning</ControlLabel>
           <FormControl
@@ -122,6 +116,16 @@ class WordForm extends Component {
             value={this.state.word.meaning}
             onChange={this.onChangeEvent('meaning')} />
         </FormGroup>
+
+        <hr />
+
+        <FormList
+          id='forms'
+          value={this.state.word.forms}
+          onChange={this.onChangeValue('forms')}
+          fields={['lemma', 'attested', 'notes']}>Forms</FormList>
+
+        <hr />
 
         <FormGroup controlId='amplifiedMeaning'>
           <ControlLabel>Amplified meanings</ControlLabel>
@@ -195,13 +199,19 @@ class WordForm extends Component {
           </ul>
         </FormGroup>
 
+        <hr />
+
         <LogogramList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
           Logograms
         </LogogramList>
 
+        <hr />
+
         <DerivedList id='derived' value={this.state.word.derived} onChange={this.onChangeValue('derived')}>
           Derived
         </DerivedList>
+
+        <hr />
 
         <FormGroup>
           <label>Derived from</label>
