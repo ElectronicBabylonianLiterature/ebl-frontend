@@ -6,8 +6,12 @@ import Auth from './auth0/Auth'
 
 afterEach(cleanup)
 
-it('renders without crashing', () => {
-  localStorage.getItem.mockReturnValue(null)
+const routes = ['/', 'dictionary', '/dictionary/object_id', '/callback']
 
-  render(<MemoryRouter><App auth={new Auth()} /></MemoryRouter>)
+routes.forEach(route => {
+  it(`${route} renders without crashing`, () => {
+    localStorage.getItem.mockReturnValue(null)
+
+    render(<MemoryRouter initialEntries={[route]}><App auth={new Auth()} /></MemoryRouter>)
+  })
 })

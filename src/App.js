@@ -12,6 +12,8 @@ import HttpClient from './http/HttpClient'
 
 class App extends Component {
   render () {
+    const httpClient = new HttpClient(this.props.auth)
+
     return (
       <div className='App'>
         <header className='App-header'>
@@ -27,8 +29,8 @@ class App extends Component {
           </nav>
         </header>
         <Route exact path='/' component={Introduction} />
-        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} httpClient={new HttpClient(this.props.auth)} />} />
-        <Route path='/dictionary/:id' render={props => <WordEditor httpClient={new HttpClient(this.props.auth)} {...props} />} />
+        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} httpClient={httpClient} />} />
+        <Route path='/dictionary/:id' render={props => <WordEditor httpClient={httpClient} {...props} />} />
         <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
       </div>
     )
