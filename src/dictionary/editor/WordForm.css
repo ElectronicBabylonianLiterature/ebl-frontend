@@ -1,7 +1,10 @@
-.WordForm-roots_root {
-  width: 4em;
+.WordForm li {
+  display: block;
+  margin-bottom: 0.5em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
-.WordForm-notes_note {
-  width: 80%
+.WordForm li + li {
+  border-top: 1px silver solid;
 }
