@@ -125,65 +125,74 @@ class WordForm extends Component {
 
         <FormGroup controlId='amplifiedMeaning'>
           <ControlLabel>Amplified meanings</ControlLabel>
-          {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, key) =>
-            <FormGroup controlId={`amplifiedMeaning-${key}`} key={key}>
-              <FormGroup controlId={`amplifiedMeaning-${key}-conjugationfunction`}>
-                <ControlLabel>Conjugation/Function</ControlLabel>
-                <FormControl type='text' value={key} onChange={_.noop} />
-              </FormGroup>
-              <FormGroup controlId={`amplifiedMeaning-${key}-meaning`}>
-                <ControlLabel>Meaning</ControlLabel>
-                <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
-              </FormGroup>
-              <FormGroup controlId={`amplifiedMeaning-${key}-vowels`}>
-                <ControlLabel>Vowels</ControlLabel>
-                {amplifiedMeaning.vowels.map((vowel, index) =>
-                  <FormGroup key={index} controlId={`amplifiedMeaning-${key}-vowels-${index}`}>
-                    <FormGroup controlId={`amplifiedMeaning-${key}-vowels-${index}-value`}>
-                      <ControlLabel>Value</ControlLabel>
-                      <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
-                    </FormGroup>
-                    <ListInput id={`amplifiedMeaning-${key}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
-                      Notes
-                    </ListInput>
-                    <Button>Delete vowels</Button>
-                  </FormGroup>
-                )}
-                <Button>Add vowels</Button>
-              </FormGroup>
-
-              <FormGroup label='Entries'>
-                {amplifiedMeaning.entries.map((entry, entryIndex) =>
-                  <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}`} key={entryIndex}>
-                    <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-meaning`}>
-                      <ControlLabel>Meaning</ControlLabel>
-                      <FormControl type='text' value={entry.meaning} onChange={_.noop} />
-                    </FormGroup>
-                    <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels`}>
-                      <ControlLabel>Vowels</ControlLabel>
-                      {entry.vowels.map((vowel, index) =>
-                        <FormGroup key={index} controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}`}>
-                          <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-value`}>
-                            <ControlLabel>Value</ControlLabel>
-                            <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
-                          </FormGroup>
-                          <ListInput id={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
-                            Notes
-                          </ListInput>
-                          <Button>Delete vowels</Button>
+          <ul>
+            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, key) =>
+              <li key={key}>
+                <FormGroup controlId={`amplifiedMeaning-${key}-conjugationfunction`}>
+                  <ControlLabel>Conjugation/Function</ControlLabel>
+                  <FormControl type='text' value={key} onChange={_.noop} />
+                </FormGroup>
+                <FormGroup controlId={`amplifiedMeaning-${key}-meaning`}>
+                  <ControlLabel>Meaning</ControlLabel>
+                  <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
+                </FormGroup>
+                <FormGroup>
+                  <label>Vowels</label>
+                  <ul>
+                    {amplifiedMeaning.vowels.map((vowel, index) =>
+                      <li key={index}>
+                        <FormGroup controlId={`amplifiedMeaning-${key}-vowels-${index}-value`}>
+                          <ControlLabel>Value</ControlLabel>
+                          <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
                         </FormGroup>
-                      )}
-                      <Button>Add vowels</Button>
-                    </FormGroup>
-                    <Button>Delete entry</Button>
-                  </FormGroup>
-                )}
-                <Button>Add entry</Button>
-              </FormGroup>
-              <Button>Delete amplified meaning</Button>
-            </FormGroup>
-          )}
-          <Button>Add amplified meaning</Button>
+                        <ListInput id={`amplifiedMeaning-${key}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
+                          Notes
+                        </ListInput>
+                        <Button>Delete vowels</Button>
+                      </li>
+                    )}
+                    <li><Button>Add vowels</Button></li>
+                  </ul>
+                </FormGroup>
+
+                <FormGroup>
+                  <label>Entries</label>
+                  <ol>
+                    {amplifiedMeaning.entries.map((entry, entryIndex) =>
+                      <li key={entryIndex}>
+                        <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-meaning`}>
+                          <ControlLabel>Meaning</ControlLabel>
+                          <FormControl type='text' value={entry.meaning} onChange={_.noop} />
+                        </FormGroup>
+                        <FormGroup>
+                          <label>Vowels</label>
+                          <ul>
+                            {entry.vowels.map((vowel, index) =>
+                              <li key={index}>
+                                <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-value`}>
+                                  <ControlLabel>Value</ControlLabel>
+                                  <FormControl type='text' value={vowel.value.join('/')} onChange={_.noop} />
+                                </FormGroup>
+                                <ListInput id={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels-${index}-notes`} value={vowel.notes} onChange={_.noop}>
+                                  Notes
+                                </ListInput>
+                                <Button>Delete vowels</Button>
+                              </li>
+                            )}
+                            <li><Button>Add vowels</Button></li>
+                          </ul>
+                        </FormGroup>
+                        <Button>Delete entry</Button>
+                      </li>
+                    )}
+                    <li><Button>Add entry</Button></li>
+                  </ol>
+                </FormGroup>
+                <Button>Delete amplified meaning</Button>
+              </li>
+            )}
+            <li><Button>Add amplified meaning</Button></li>
+          </ul>
         </FormGroup>
 
         <LogogramList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
