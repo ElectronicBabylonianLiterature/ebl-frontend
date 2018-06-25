@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import TextInput from './TextInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
@@ -12,9 +11,6 @@ afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()
-})
-
-beforeEach(() => {
   element = renderTextInput()
 })
 
