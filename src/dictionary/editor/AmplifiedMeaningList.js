@@ -4,8 +4,15 @@ import { FormGroup, Button } from 'react-bootstrap'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 
 class AmplifiedMeaningList extends Component {
+  get noun () {
+    return this.props.entry ? 'entry' : 'amplified meaning'
+  }
+
   add = () => {
-    this.props.onChange([...this.props.value, {meaning: '', vowels: []}])
+    const newAmplifiedMeaning = this.props.entry
+      ? {meaning: '', vowels: []}
+      : {key: '', meaning: '', vowels: [], entries: []}
+    this.props.onChange([...this.props.value, newAmplifiedMeaning])
   }
 
   delete = index => () => {
@@ -34,11 +41,11 @@ class AmplifiedMeaningList extends Component {
                 id={`${this.props.id}-${index}`}
                 value={entry}
                 onChange={this.update(index)}
-                entry />
-              <Button onClick={this.delete(index)}>Delete entry</Button>
+                entry={this.props.entry} />
+              <Button onClick={this.delete(index)}>Delete {this.noun}</Button>
             </li>
           )}
-          <li><Button onClick={this.add}>Add entry</Button></li>
+          <li><Button onClick={this.add}>Add {this.noun}</Button></li>
         </ol>
       </FormGroup>
     )

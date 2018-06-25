@@ -11,7 +11,7 @@ const result = {
   attested: true,
   forms: [],
   homonym: 'I',
-  amplifiedMeanings: {},
+  amplifiedMeanings: [],
   derived: [],
   derivedFrom: null,
   source: ''

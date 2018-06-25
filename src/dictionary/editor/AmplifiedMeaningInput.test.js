@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
@@ -42,13 +43,28 @@ describe('Conjugation/Function', () => {
           notes: []
         }
       ],
-      entries: []
+      entries: [
+        {
+          meaning: 'entry1',
+          vowels: []
+        },
+        {
+          meaning: 'entry2',
+          vowels: []
+        }
+      ]
     }
     element = renderAmplifiedMeaningInput(false)
   })
 
   it('Displays key', () => {
     expect(element.getByValue(value.key)).toBeVisible()
+  })
+
+  it('Displays entries', () => {
+    value.entries.map(entry => entry.meaning).forEach(entry =>
+      expect(element.queryByValue(entry)).toBeVisible()
+    )
   })
 
   it('Calls onChange with updated value on key', async () => {
@@ -60,6 +76,26 @@ describe('Conjugation/Function', () => {
     await wait()
 
     expect(onChange).toHaveBeenCalledWith({...value, key: newValue})
+  })
+
+  it('Calls onChange with updated value on entry', async () => {
+    const newValue = 'new entry'
+    const input = element.getByValue(value.entries[0].meaning)
+    input.value = newValue
+    fireEvent.change(input)
+
+    await wait()
+
+    expect(onChange).toHaveBeenCalledWith({
+      ...value,
+      entries: [
+        {
+          ...value.entries[0],
+          meaning: newValue
+        },
+        ..._.tail(value.entries)
+      ]
+    })
   })
 
   commonTests()
@@ -93,7 +129,12 @@ function commonTests () {
 
     await wait()
 
-    expect(onChange).toHaveBeenCalledWith({...value, vowels: [{...value.vowels[0], value: newValue.split('/')}]})
+    expect(onChange).toHaveBeenCalledWith({
+      ...value,
+      vowels: [
+        {...value.vowels[0], value: newValue.split('/')}
+      ]
+    })
   })
 }
 

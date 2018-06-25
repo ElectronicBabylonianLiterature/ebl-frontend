@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 import VowelsList from './VowelsList'
 import TextInput from './TextInput'
+import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 class AmplifiedMeaningInput extends Component {
   onChange = key => value => {
@@ -34,6 +35,15 @@ class AmplifiedMeaningInput extends Component {
           onChange={this.onChange('vowels')}>
             Vowels
         </VowelsList>
+        {!this.props.entry && (
+          <AmplifiedMeaningList
+            id={`${this.props.id}-entry`}
+            value={this.props.value.entries}
+            onChange={this.onChange('entries')}
+            entry>
+            Entries
+          </AmplifiedMeaningList>
+        )}
       </Fragment>
     )
   }

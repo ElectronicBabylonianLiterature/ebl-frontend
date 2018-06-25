@@ -10,6 +10,7 @@ const label = 'Amplified Meanings'
 let value
 let element
 let onChange
+let noun
 
 afterEach(cleanup)
 
@@ -17,54 +18,98 @@ beforeEach(() => {
   onChange = jest.fn()
 })
 
-beforeEach(() => {
-  value = [
-    {meaning: 'meaning1', vowels: []},
-    {meaning: 'meaning2', vowels: []}
-  ]
-  element = renderAmplifiedMeaningList()
+describe('Entries', () => {
+  beforeEach(() => {
+    noun = 'entry'
+    value = [
+      {meaning: 'meaning1', vowels: []},
+      {meaning: 'meaning2', vowels: []}
+    ]
+    element = renderAmplifiedMeaningList(true)
+  })
+
+  it('New entry has entry fields', async () => {
+    const add = element.getByText(`Add ${noun}`)
+    fireEvent.click(add)
+
+    await wait()
+
+    expect(onChange).toHaveBeenCalledWith([...value, {meaning: '', vowels: []}])
+  })
+
+  commonTests()
 })
 
-it('Displays all amplified meanings', () => {
-  for (let item of value) {
-    expect(element.getByValue(item.meaning)).toBeVisible()
-  }
+describe('Conjugations/Functions', () => {
+  beforeEach(() => {
+    noun = 'amplified meaning'
+    value = [
+      {key: 'G', meaning: 'meaning1', vowels: [], entries: [{meaning: 'entry1', vowels: []}]},
+      {key: 'D', meaning: 'meaning2', vowels: [], entries: [{meaning: 'entry2', vowels: []}]}
+    ]
+    element = renderAmplifiedMeaningList(false)
+  })
+
+  it('Displays all keys', () => {
+    for (let item of value) {
+      expect(element.getByValue(item.key)).toBeVisible()
+    }
+  })
+
+  it('Displays all entries', () => {
+    _(value).flatMap('entries').map('meaning').forEach(entry =>
+      expect(element.getByValue(entry)).toBeVisible()
+    )
+  })
+
+  it('New entry has top level fields', async () => {
+    const add = element.getByText(`Add ${noun}`)
+    fireEvent.click(add)
+
+    await wait()
+
+    expect(onChange).toHaveBeenCalledWith([...value, {key: '', meaning: '', vowels: [], entries: []}])
+  })
+
+  commonTests()
 })
 
-it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
-})
+function commonTests () {
+  it('Displays all amplified meanings', () => {
+    for (let item of value) {
+      expect(element.getByValue(item.meaning)).toBeVisible()
+    }
+  })
 
-it('New entry has given fields', async () => {
-  const add = element.getByText('Add entry')
-  fireEvent.click(add)
+  it('Displays label', () => {
+    expect(element.getByText(label)).toBeVisible()
+  })
 
-  await wait()
+  it('Removes item when Delete is clicked', async () => {
+    const indexToDelete = 1
+    const del = element.getAllByText(`Delete ${noun}`)[indexToDelete]
+    fireEvent.click(del)
 
-  expect(onChange).toHaveBeenCalledWith([...value, {meaning: '', vowels: []}])
-})
+    await wait()
 
-it('Removes item when Delete is clicked', async () => {
-  const indexToDelete = 1
-  const del = element.getAllByText('Delete entry')[indexToDelete]
-  fireEvent.click(del)
+    expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  })
 
-  await wait()
+  it('Calls onChange with updated value on change', async () => {
+    const newValue = 'new'
+    const input = element.getByValue(value[0].meaning)
+    input.value = newValue
+    fireEvent.change(input)
 
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-})
+    await wait()
 
-it('Calls onChange with updated value on change', async () => {
-  const newValue = 'new'
-  const input = element.getByValue(value[0].meaning)
-  input.value = newValue
-  fireEvent.change(input)
+    expect(onChange).toHaveBeenCalledWith([{...value[0], meaning: newValue}, ..._.tail(value)])
+  })
+}
 
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([{...value[0], meaning: newValue}, ..._.tail(value)])
-})
-
-function renderAmplifiedMeaningList () {
-  return render(<AmplifiedMeaningList id='amplifiedMeanings' value={value} onChange={onChange}>{label}</AmplifiedMeaningList>)
+function renderAmplifiedMeaningList (entry) {
+  return render(
+    <AmplifiedMeaningList id='amplifiedMeanings' value={value} onChange={onChange} entry={entry}>
+      {label}
+    </AmplifiedMeaningList>)
 }

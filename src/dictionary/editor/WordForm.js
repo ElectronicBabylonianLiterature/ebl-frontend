@@ -9,7 +9,6 @@ import FormInput from './FormInput'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import TextInput from './TextInput'
-import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 import './WordForm.css'
@@ -127,27 +126,12 @@ class WordForm extends Component {
 
         <hr />
 
-        <FormGroup controlId='amplifiedMeaning'>
-          <ControlLabel>Amplified meanings</ControlLabel>
-          <ul>
-            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, index) =>
-              <li key={index}>
-                <AmplifiedMeaningInput
-                  id={`amplifiedMeaning-${index}`}
-                  value={amplifiedMeaning}
-                  onChange={_.noop} />
-                <AmplifiedMeaningList
-                  id={`amplifiedMeaning-${index}-entry`}
-                  value={amplifiedMeaning.entries}
-                  onChange={_.noop}>
-                  Entries
-                </AmplifiedMeaningList>
-                <Button>Delete amplified meaning</Button>
-              </li>
-            )}
-            <li><Button>Add amplified meaning</Button></li>
-          </ul>
-        </FormGroup>
+        <AmplifiedMeaningList
+          id={`amplifiedMeaning`}
+          value={this.state.word.amplifiedMeanings}
+          onChange={this.onChangeValue('amplifiedMeanings')}>
+          Amplified meanings
+        </AmplifiedMeaningList>
 
         <hr />
 
