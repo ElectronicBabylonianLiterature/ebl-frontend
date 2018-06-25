@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import VowelsList from './VowelsList'
 import TextInput from './TextInput'
 
-class EntryInput extends Component {
+class AmplifiedMeaningInput extends Component {
   onChange = key => value => {
     this.props.onChange({
       ...this.props.value,
@@ -14,6 +14,14 @@ class EntryInput extends Component {
   render () {
     return (
       <Fragment>
+        {!this.props.entry && (
+          <TextInput
+            id={`${this.props.id}-key`}
+            value={this.props.value.key}
+            onChange={this.onChange('key')}>
+            Conjugation/Function
+          </TextInput>
+        )}
         <TextInput
           id={`${this.props.id}-meaning`}
           value={this.props.value.meaning}
@@ -31,4 +39,4 @@ class EntryInput extends Component {
   }
 }
 
-export default EntryInput
+export default AmplifiedMeaningInput

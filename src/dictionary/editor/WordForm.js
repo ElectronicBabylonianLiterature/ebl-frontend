@@ -8,9 +8,8 @@ import FormList from './FormList'
 import FormInput from './FormInput'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
-import VowelsList from './VowelsList'
 import TextInput from './TextInput'
-import EntryInput from './EntryInput'
+import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 
 import './WordForm.css'
 
@@ -132,28 +131,20 @@ class WordForm extends Component {
           <ul>
             {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, topLevelIndex) =>
               <li key={topLevelIndex}>
-                <TextInput
-                  id={`amplifiedMeaning-${topLevelIndex}-conjugationfunction`}
-                  value={amplifiedMeaning.key}
-                  onChange={_.noop}>
-                  Conjugation/Function
-                </TextInput>
-                <TextInput
-                  id={`amplifiedMeaning-${topLevelIndex}-meaning`}
-                  value={amplifiedMeaning.meaning}
-                  onChange={_.noop}>
-                  Meaning
-                </TextInput>
-                <VowelsList id={`amplifiedMeaning-${topLevelIndex}-vowels`} value={amplifiedMeaning.vowels} onChange={_.noop}>Vowels</VowelsList>
+                <AmplifiedMeaningInput
+                  id={`amplifiedMeaning-${topLevelIndex}`}
+                  value={amplifiedMeaning}
+                  onChange={_.noop} />
                 <FormGroup>
                   <label>Entries</label>
                   <ol>
                     {amplifiedMeaning.entries.map((entry, entryIndex) =>
                       <li key={entryIndex}>
-                        <EntryInput
+                        <AmplifiedMeaningInput
                           id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}`}
                           value={entry}
-                          onChange={_.noop} />
+                          onChange={_.noop}
+                          entry />
                         <Button>Delete entry</Button>
                       </li>
                     )}
