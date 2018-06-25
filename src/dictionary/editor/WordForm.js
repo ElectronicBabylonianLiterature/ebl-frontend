@@ -10,6 +10,7 @@ import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import TextInput from './TextInput'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
+import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 import './WordForm.css'
 
@@ -129,28 +130,18 @@ class WordForm extends Component {
         <FormGroup controlId='amplifiedMeaning'>
           <ControlLabel>Amplified meanings</ControlLabel>
           <ul>
-            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, topLevelIndex) =>
-              <li key={topLevelIndex}>
+            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, index) =>
+              <li key={index}>
                 <AmplifiedMeaningInput
-                  id={`amplifiedMeaning-${topLevelIndex}`}
+                  id={`amplifiedMeaning-${index}`}
                   value={amplifiedMeaning}
                   onChange={_.noop} />
-                <FormGroup>
-                  <label>Entries</label>
-                  <ol>
-                    {amplifiedMeaning.entries.map((entry, entryIndex) =>
-                      <li key={entryIndex}>
-                        <AmplifiedMeaningInput
-                          id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}`}
-                          value={entry}
-                          onChange={_.noop}
-                          entry />
-                        <Button>Delete entry</Button>
-                      </li>
-                    )}
-                    <li><Button>Add entry</Button></li>
-                  </ol>
-                </FormGroup>
+                <AmplifiedMeaningList
+                  id={`amplifiedMeaning-${index}-entry`}
+                  value={amplifiedMeaning.entries}
+                  onChange={_.noop}>
+                  Entries
+                </AmplifiedMeaningList>
                 <Button>Delete amplified meaning</Button>
               </li>
             )}
