@@ -9,6 +9,7 @@ import FormInput from './FormInput'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import VowelsList from './VowelsList'
+import TextInput from './TextInput'
 
 import './WordForm.css'
 
@@ -77,20 +78,18 @@ class WordForm extends Component {
     return (
       <form className='WordForm'>
         <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
-        <FormGroup controlId='legacyLemma'>
-          <ControlLabel>Legacy Lemma</ControlLabel>
-          <FormControl
-            type='text'
-            value={this.state.word.legacyLemma}
-            onChange={this.onChangeEvent('legacyLemma')} />
-        </FormGroup>
-        <FormGroup controlId='homonym'>
-          <ControlLabel>Homonym</ControlLabel>
-          <FormControl
-            type='text'
-            value={this.state.word.homonym}
-            onChange={this.onChangeEvent('homonym')} />
-        </FormGroup>
+        <TextInput
+          id='legacyLemma'
+          value={this.state.word.legacyLemma}
+          onChange={this.onChangeValue('legacyLemma')}>
+            Legacy Lemma
+        </TextInput>
+        <TextInput
+          id='homonym'
+          value={this.state.word.homonym}
+          onChange={this.onChangeValue('homonym')}>
+          Homonym
+        </TextInput>
 
         <FormGroup>
           <FormGroup controlId='pos'>
@@ -110,13 +109,12 @@ class WordForm extends Component {
           }
         </FormGroup>
 
-        <FormGroup controlId='meaning'>
-          <ControlLabel>Meaning</ControlLabel>
-          <FormControl
-            type='text'
-            value={this.state.word.meaning}
-            onChange={this.onChangeEvent('meaning')} />
-        </FormGroup>
+        <TextInput
+          id='meaning'
+          value={this.state.word.meaning}
+          onChange={this.onChangeValue('meaning')}>
+          Meaning
+        </TextInput>
 
         <hr />
 
@@ -133,24 +131,30 @@ class WordForm extends Component {
           <ul>
             {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, topLevelIndex) =>
               <li key={topLevelIndex}>
-                <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-conjugationfunction`}>
-                  <ControlLabel>Conjugation/Function</ControlLabel>
-                  <FormControl type='text' value={amplifiedMeaning.key} onChange={_.noop} />
-                </FormGroup>
-                <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-meaning`}>
-                  <ControlLabel>Meaning</ControlLabel>
-                  <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
-                </FormGroup>
+                <TextInput
+                  id={`amplifiedMeaning-${topLevelIndex}-conjugationfunction`}
+                  value={amplifiedMeaning.key}
+                  onChange={_.noop}>
+                  Conjugation/Function
+                </TextInput>
+                <TextInput
+                  id={`amplifiedMeaning-${topLevelIndex}-meaning`}
+                  value={amplifiedMeaning.meaning}
+                  onChange={_.noop}>
+                  Meaning
+                </TextInput>
                 <VowelsList id={`amplifiedMeaning-${topLevelIndex}-vowels`} value={amplifiedMeaning.vowels} onChange={_.noop}>Vowels</VowelsList>
                 <FormGroup>
                   <label>Entries</label>
                   <ol>
                     {amplifiedMeaning.entries.map((entry, entryIndex) =>
                       <li key={entryIndex}>
-                        <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-meaning`}>
-                          <ControlLabel>Meaning</ControlLabel>
-                          <FormControl type='text' value={entry.meaning} onChange={_.noop} />
-                        </FormGroup>
+                        <TextInput
+                          id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-meaning`}
+                          value={entry.meaning}
+                          onChange={_.noop}>
+                          Meaning
+                        </TextInput>
                         <VowelsList id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-vowels`} value={entry.vowels} onChange={_.noop}>Vowels</VowelsList>
                         <Button>Delete entry</Button>
                       </li>

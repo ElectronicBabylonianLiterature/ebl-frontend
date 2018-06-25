@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ListInput from './ListInput'
+import TextInput from './TextInput'
 
 class LogogramList extends Component {
   add = () => {
@@ -13,10 +14,10 @@ class LogogramList extends Component {
     this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
   }
 
-  updateLogogram = index => event => {
+  updateLogogram = index => logogram => {
     this.props.onChange(
       _.map(this.props.value, (item, itemIndex) => index === itemIndex
-        ? {...item, logogram: event.target.value.split(' ')}
+        ? {...item, logogram: logogram.split(' ')}
         : item
       )
     )
@@ -38,10 +39,12 @@ class LogogramList extends Component {
         <ul>
           {_.map(this.props.value, (logogram, index) =>
             <li key={index}>
-              <FormGroup controlId={`${this.props.id}-${index}`}>
-                <ControlLabel>Logogram</ControlLabel>
-                <FormControl type='text' value={logogram.logogram.join(' ')} onChange={this.updateLogogram(index)} />
-              </FormGroup>
+              <TextInput
+                id={`${this.props.id}-${index}`}
+                value={logogram.logogram.join(' ')}
+                onChange={this.updateLogogram(index)}>
+                Logogram
+              </TextInput>
               <ListInput id={`${this.props.id}-${index}-notes`} value={logogram.notes} onChange={this.updateNotes(index)}>
                 Notes
               </ListInput>

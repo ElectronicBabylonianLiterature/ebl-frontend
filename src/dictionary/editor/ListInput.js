@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { FormGroup, FormControl, Button } from 'react-bootstrap'
+import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
+
+import TextInput from './TextInput'
 
 class ListInput extends Component {
   add = () => {
@@ -11,10 +13,10 @@ class ListInput extends Component {
     this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
   }
 
-  update = index => event => {
+  update = index => value => {
     this.props.onChange(
       _.map(this.props.value, (item, itemIndex) => index === itemIndex
-        ? event.target.value
+        ? value
         : item
       )
     )
@@ -27,12 +29,10 @@ class ListInput extends Component {
         <ul>
           {this.props.value.map((item, index) =>
             <li key={index} >
-              <FormGroup controld={`${this.props.id}-${index}`}>
-                <FormControl
-                  type='text'
-                  value={item}
-                  onChange={this.update(index)} />
-              </FormGroup>
+              <TextInput
+                id={`${this.props.id}-${index}`}
+                value={item}
+                onChange={this.update(index)} />
               <Button onClick={this.delete(index)}>Delete</Button>
             </li>
           )}

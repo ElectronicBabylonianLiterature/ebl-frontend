@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import ListInput from './ListInput'
+import TextInput from './TextInput'
 
 class FormInput extends Component {
   lemmaChanged = lemma => {
@@ -13,10 +14,10 @@ class FormInput extends Component {
     })
   }
 
-  homonymChanged = event => {
+  homonymChanged = homonym => {
     this.props.onChange({
       ...this.props.value,
-      homonym: event.target.value
+      homonym: homonym
     })
   }
 
@@ -32,13 +33,12 @@ class FormInput extends Component {
       <FormGroup>
         <LemmaInput id={`${this.props.id}-lemma`} value={this.props.value} onChange={this.lemmaChanged} />
         {_.has(this.props.value, 'homonym') && (
-          <FormGroup controlId={`${this.props.id}-homonym`}>
-            <ControlLabel>Homonym</ControlLabel>
-            <FormControl
-              type='text'
-              value={this.props.value.homonym}
-              onChange={this.homonymChanged} />
-          </FormGroup>
+          <TextInput
+            id={`${this.props.id}-homonym`}
+            value={this.props.value.homonym}
+            onChange={this.homonymChanged}>
+            Homonym
+          </TextInput>
         )}
         {_.has(this.props.value, 'notes') && (
           <ListInput id={`${this.props.id}-notes`} value={this.props.value.notes} onChange={this.notesChanged}>
