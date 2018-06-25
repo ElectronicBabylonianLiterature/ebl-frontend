@@ -58,15 +58,15 @@ class AmplifiedMeanings extends Component {
   render () {
     return (
       <ul className='AmplifiedMeanings'>
-        {_.map(this.props.value, (value, key) =>
-          <li key={key}>
-            {key !== 'implicit' && <strong>{key}</strong>}
+        {_.map(this.props.value, (value, topLevelindex) =>
+          <li key={topLevelindex}>
+            {value.key !== '' && <strong>{value.key}</strong>}
             {' '}
             <InlineMarkdown source={value.meaning} />
             {' '}
             <ul>
-              {value.entries.map((value, index) =>
-                <li className='AmplifiedMeanings-entry' key={index}><strong>{`${index + 1}.`}</strong> <InlineMarkdown source={value.meaning} /></li>
+              {value.entries.map((value, enryIndex) =>
+                <li className='AmplifiedMeanings-entry' key={enryIndex}><strong>{`${enryIndex + 1}.`}</strong> <InlineMarkdown source={value.meaning} /></li>
               )}
             </ul>
           </li>

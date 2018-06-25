@@ -131,27 +131,27 @@ class WordForm extends Component {
         <FormGroup controlId='amplifiedMeaning'>
           <ControlLabel>Amplified meanings</ControlLabel>
           <ul>
-            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, key) =>
-              <li key={key}>
-                <FormGroup controlId={`amplifiedMeaning-${key}-conjugationfunction`}>
+            {_.map(this.state.word.amplifiedMeanings, (amplifiedMeaning, topLevelIndex) =>
+              <li key={topLevelIndex}>
+                <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-conjugationfunction`}>
                   <ControlLabel>Conjugation/Function</ControlLabel>
-                  <FormControl type='text' value={key} onChange={_.noop} />
+                  <FormControl type='text' value={amplifiedMeaning.key} onChange={_.noop} />
                 </FormGroup>
-                <FormGroup controlId={`amplifiedMeaning-${key}-meaning`}>
+                <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-meaning`}>
                   <ControlLabel>Meaning</ControlLabel>
                   <FormControl type='text' value={amplifiedMeaning.meaning} onChange={_.noop} />
                 </FormGroup>
-                <VowelsList id={`amplifiedMeaning-${key}-vowels`} value={amplifiedMeaning.vowels} onChange={_.noop}>Vowels</VowelsList>
+                <VowelsList id={`amplifiedMeaning-${topLevelIndex}-vowels`} value={amplifiedMeaning.vowels} onChange={_.noop}>Vowels</VowelsList>
                 <FormGroup>
                   <label>Entries</label>
                   <ol>
                     {amplifiedMeaning.entries.map((entry, entryIndex) =>
                       <li key={entryIndex}>
-                        <FormGroup controlId={`amplifiedMeaning-${key}-entry-${entryIndex}-meaning`}>
+                        <FormGroup controlId={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-meaning`}>
                           <ControlLabel>Meaning</ControlLabel>
                           <FormControl type='text' value={entry.meaning} onChange={_.noop} />
                         </FormGroup>
-                        <VowelsList id={`amplifiedMeaning-${key}-entry-${entryIndex}-vowels`} value={entry.vowels} onChange={_.noop}>Vowels</VowelsList>
+                        <VowelsList id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-vowels`} value={entry.vowels} onChange={_.noop}>Vowels</VowelsList>
                         <Button>Delete entry</Button>
                       </li>
                     )}

@@ -14,8 +14,9 @@ const word = {
     attested: false
   }],
   meaning: 'meaning',
-  amplifiedMeanings: {
-    G: {
+  amplifiedMeanings: [
+    {
+      key: 'G',
       meaning: '*amplified*',
       vowels: [],
       entries: [{
@@ -23,7 +24,7 @@ const word = {
         vowels: []
       }]
     }
-  },
+  ],
   derived: [[{
     lemma: ['derived'],
     homonym: 'IV',
