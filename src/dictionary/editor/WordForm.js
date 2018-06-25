@@ -10,6 +10,7 @@ import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import VowelsList from './VowelsList'
 import TextInput from './TextInput'
+import EntryInput from './EntryInput'
 
 import './WordForm.css'
 
@@ -149,13 +150,10 @@ class WordForm extends Component {
                   <ol>
                     {amplifiedMeaning.entries.map((entry, entryIndex) =>
                       <li key={entryIndex}>
-                        <TextInput
-                          id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-meaning`}
-                          value={entry.meaning}
-                          onChange={_.noop}>
-                          Meaning
-                        </TextInput>
-                        <VowelsList id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}-vowels`} value={entry.vowels} onChange={_.noop}>Vowels</VowelsList>
+                        <EntryInput
+                          id={`amplifiedMeaning-${topLevelIndex}-entry-${entryIndex}`}
+                          value={entry}
+                          onChange={_.noop} />
                         <Button>Delete entry</Button>
                       </li>
                     )}
