@@ -1,15 +1,15 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import ListInput from './ListInput'
 import FormList from './FormList'
-import FormInput from './FormInput'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
+import DerivedFromInput from './DerivedFromInput'
 
 import './WordForm.css'
 
@@ -65,18 +65,6 @@ class WordForm extends Component {
 
   onChangeEvent = key => event => {
     this.onChangeValue(key)(event.target.value)
-  }
-
-  updateDerived = newIndex => newGroup => {
-    this.onChangeValue('derived')(_(this.state.word.derived)
-      .map((group, index) =>
-        index === newIndex
-          ? newGroup
-          : group
-      )
-      .compact()
-      .value()
-    )
   }
 
   jsonPreview = () => {
@@ -159,17 +147,7 @@ class WordForm extends Component {
 
         <hr />
 
-        <FormGroup>
-          <label>Derived from</label>
-          {this.state.word.derivedFrom ? (
-            <Fragment>
-              <FormInput id='derivedFrom' value={this.state.word.derivedFrom} onChange={this.onChangeValue('derivedFrom')} />
-              <Button onClick={() => this.onChangeValue('derivedFrom')(null)}>Delete derived from</Button>
-            </Fragment>
-          ) : (
-            <Button onClick={() => this.onChangeValue('derivedFrom')({lemma: [], homonym: '', notes: []})}>Add derived from</Button>
-          )}
-        </FormGroup>
+        <DerivedFromInput id='derivedFrom' value={this.state.word.derivedFrom} onChange={this.onChangeValue('derivedFrom')} />
 
         <Button type='submit' bsStyle='primary'>Save</Button>
         {process.env.NODE_ENV === 'development' && <this.jsonPreview />}
