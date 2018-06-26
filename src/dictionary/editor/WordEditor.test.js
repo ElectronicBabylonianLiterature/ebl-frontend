@@ -70,7 +70,7 @@ describe('Update word', () => {
   it('Displays error message on failed post', async () => {
     const errorMessage = 'error'
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    jest.spyOn(httpClient, 'postJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+    jest.spyOn(httpClient, 'postJson').mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     const {container, getByText} = renderWithRouter()
 
     await wait()
@@ -84,6 +84,7 @@ async function post (container) {
   fireEvent.submit(container.querySelector('form'))
   await wait()
 }
+
 function renderWithRouter () {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
