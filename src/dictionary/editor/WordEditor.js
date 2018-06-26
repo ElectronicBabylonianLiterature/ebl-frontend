@@ -27,7 +27,7 @@ class WordEditor extends Component {
     this.setState({word: this.state.word, error: null, saving: true})
     this.props.httpClient
       .postJson(this.wordUrl, word)
-      .then(() => this.setState({word: this.state.word, error: null, saving: false}))
+      .then(() => this.setState({word: word, error: null, saving: false}))
       .catch(error => this.setState({word: this.state.word, error: error, saving: false}))
   }
 
