@@ -3,7 +3,7 @@ import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
-import ListInput from './ListInput'
+import ListInput from './TextListInput'
 import TextInput from './TextInput'
 
 class FormInput extends Component {

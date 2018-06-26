@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
-import ListInput from './ListInput'
+import TextListInput from './TextListInput'
 import ArrayInput from './ArrayInput'
 
 class ArrayWithNotesList extends Component {
@@ -39,9 +39,9 @@ class ArrayWithNotesList extends Component {
                 onChange={this.update(index, this.props.property)}>
                 {_.startCase(this.props.noun)}
               </ArrayInput>
-              <ListInput id={`${this.props.id}-${index}-notes`} value={item.notes} onChange={this.update(index, 'notes')}>
+              <TextListInput id={`${this.props.id}-${index}-notes`} value={item.notes} onChange={this.update(index, 'notes')}>
                 Notes
-              </ListInput>
+              </TextListInput>
               <Button onClick={this.delete(index)}>Delete {this.props.noun}</Button>
             </li>
           )}

@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import ListInput from './ListInput'
+import TextListInput from './TextListInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
 const label = 'List'
@@ -64,5 +64,5 @@ it('Calls onChange with updated value on change', async () => {
 })
 
 function renderListInput () {
-  return render(<ListInput id='list' value={value} onChange={onChange}>{label}</ListInput>)
+  return render(<TextListInput id='list' value={value} onChange={onChange}>{label}</TextListInput>)
 }

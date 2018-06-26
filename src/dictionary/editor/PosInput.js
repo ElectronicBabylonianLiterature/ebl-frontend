@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
-import ListInput from './ListInput'
+import TextListInput from './TextListInput'
 
 const positionsOfScpeech = {
   '': 'undefined',
@@ -49,9 +49,9 @@ class PosInput extends Component {
           </FormControl>
         </FormGroup>
         {this.props.value.pos === 'V' &&
-          <ListInput id='roots' value={this.props.value.roots || []} onChange={this.updateRoots}>
+          <TextListInput id='roots' value={this.props.value.roots || []} onChange={this.updateRoots}>
             Roots
-          </ListInput>
+          </TextListInput>
         }
       </FormGroup>
     )
