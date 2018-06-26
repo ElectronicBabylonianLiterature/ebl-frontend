@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { FormGroup, Button } from 'react-bootstrap'
-import _ from 'lodash'
 
 import TextInput from './TextInput'
 
