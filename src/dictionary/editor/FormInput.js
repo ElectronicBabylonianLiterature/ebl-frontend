@@ -28,11 +28,13 @@ class FormInput extends Component {
     })
   }
 
+  hasProperty = property => _.has(this.props.value, property)
+  
   render () {
     return (
       <FormGroup>
         <LemmaInput id={`${this.props.id}-lemma`} value={this.props.value} onChange={this.lemmaChanged} />
-        {_.has(this.props.value, 'homonym') && (
+        {this.hasProperty('homonym') && (
           <TextInput
             id={`${this.props.id}-homonym`}
             value={this.props.value.homonym}
@@ -40,7 +42,7 @@ class FormInput extends Component {
             Homonym
           </TextInput>
         )}
-        {_.has(this.props.value, 'notes') && (
+        {this.hasProperty('notes') && (
           <ListInput id={`${this.props.id}-notes`} value={this.props.value.notes} onChange={this.notesChanged}>
             Notes
           </ListInput>
