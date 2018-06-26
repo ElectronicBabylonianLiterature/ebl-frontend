@@ -43,6 +43,7 @@ class WordEditor extends Component {
             </Breadcrumb>
             {this.state.word && <h2>
               Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}
+              {' '}
               <small>({this.state.word._id})</small>
             </h2>}
             {this.state.word && <ReactMarkdown source={this.state.word.source} />}
