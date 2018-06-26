@@ -1,40 +1,16 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
-import _ from 'lodash'
+import { Button } from 'react-bootstrap'
 
 import LemmaInput from './LemmaInput'
-import ListInput from './ListInput'
 import FormList from './FormList'
 import LogogramList from './LogogramList'
 import DerivedList from './DerivedList'
 import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import DerivedFromInput from './DerivedFromInput'
+import PosInput from './PosInput'
 
 import './WordForm.css'
-
-const positionsOfScpeech = {
-  '': 'undefined',
-  'AJ': 'adjective',
-  'AV': 'adverb',
-  'N': 'noun',
-  'NU': 'number',
-  'V': 'verb',
-  'DP': 'demonstrative pronoun',
-  'IP': 'independent/anaphoric pronoun',
-  'PP': 'possessive pronoun',
-  'QP': 'interrogative pronoun',
-  'RP': 'reflexive/reciprocal pronoun',
-  'XP': 'indefinite pronoun',
-  'REL': 'relative pronoun',
-  'DET': 'determinative pronoun',
-  'CNJ': 'conjunction',
-  'J': 'interjection',
-  'MOD': 'modal, negative, or conditional particle',
-  'PRP': 'preposition',
-  'SBJ': 'subjunction'
-}
-const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
 
 class WordForm extends Component {
   constructor (props) {
@@ -63,10 +39,6 @@ class WordForm extends Component {
     this.updateWord({ [key]: value })
   }
 
-  onChangeEvent = key => event => {
-    this.onChangeValue(key)(event.target.value)
-  }
-
   jsonPreview = () => {
     return <div>
       <h3>JSON preview</h3>
@@ -91,23 +63,7 @@ class WordForm extends Component {
           Homonym
         </TextInput>
 
-        <FormGroup>
-          <FormGroup controlId='pos'>
-            <ControlLabel>Position of speech</ControlLabel>
-            <FormControl componentClass='select' value={this.state.word.pos} onChange={this.onChangeEvent('pos')}>
-              {posOptions.map(option =>
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              )}
-            </FormControl>
-          </FormGroup>
-          {this.state.word.pos === 'V' &&
-            <ListInput id='roots' value={this.state.word.roots || []} onChange={this.onChangeValue('roots')}>
-              Roots
-            </ListInput>
-          }
-        </FormGroup>
+        <PosInput id='pos' value={this.state.word} onChange={this.updateWord} />
 
         <TextInput
           id='meaning'
