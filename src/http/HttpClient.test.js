@@ -74,7 +74,7 @@ describe('postJson', () => {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
-    expect(fetch).toBeCalledWith(url, {body: JSON.stringify(json), headers: expectedHeaders})
+    expect(fetch).toBeCalledWith(url, {body: JSON.stringify(json), headers: expectedHeaders, method: 'POST'})
   })
 
   it('Rejects with error if not authorized', async () => {

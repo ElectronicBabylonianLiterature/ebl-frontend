@@ -22,6 +22,11 @@ class WordForm extends Component {
     }
   }
 
+  submit = () => {
+    console.log('SUBMIT', this.state.word)
+    this.props.onSubmit(this.state.word)
+  }
+
   updateWord = updatedFields => {
     this.setState({
       word: {
@@ -76,7 +81,7 @@ class WordForm extends Component {
     const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
 
     return (
-      <form className='WordForm'>
+      <form className='WordForm' onSubmit={this.submit}>
         <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
         <TextInput
           id='legacyLemma'

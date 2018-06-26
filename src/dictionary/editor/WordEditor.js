@@ -11,15 +11,26 @@ class WordEditor extends Component {
     error: null
   }
 
+  get wordUrl () {
+    return `${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`
+  }
+
   componentDidMount () {
     this.props.httpClient
-      .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`)
+      .fetchJson(this.wordUrl)
       .then(json => this.setState({word: json, error: null}))
       .catch(error => this.setState({word: null, error: error}))
   }
 
+  updateWord = word => {
+    this.props.httpClient
+      .postJson(this.wordUrl, word)
+      .then(() => this.setState({word: this.state.word, error: null}))
+      .catch(error => this.setState({word: this.state.word, error: error}))
+  }
+
   render () {
-    if (this.state.word) {
+    if (this.state.word || this.state.error) {
       return (
         <section className='WordEditor'>
           <header>
@@ -28,16 +39,18 @@ class WordEditor extends Component {
               <Breadcrumb.Item href='/dictionary'>Dictionary</Breadcrumb.Item>
               <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
             </Breadcrumb>
-            <h2>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym} <small>({this.state.word._id})</small></h2>
-            <ReactMarkdown source={this.state.word.source} />
+            {this.state.word && <h2>
+              Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}
+              <small>({this.state.word._id})</small>
+            </h2>}
+            {this.state.word && <ReactMarkdown source={this.state.word.source} />}
           </header>
-          <WordForm value={this.state.word} />
+          {this.state.word && <WordForm value={this.state.word} onSubmit={this.updateWord} />}
+          {this.state.error && <Alert bsStyle='danger'>{this.state.error.message}</Alert>}
         </section>
       )
-    } else if (this.state.error) {
-      return <Alert bsStyle='danger'>{this.state.error.message}</Alert>
     } else {
-      return <Spinner />
+      return <section><Spinner /></section>
     }
   }
 }

@@ -19,7 +19,7 @@ class HttpClient {
       'Authorization': `Bearer ${this.auth.getAccessToken()}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
-    const response = await fetch(url, {body: JSON.stringify(body), headers: headers})
+    const response = await fetch(url, {body: JSON.stringify(body), headers: headers, method: 'POST'})
 
     if (!response.ok) {
       throw Error(response.statusText)
