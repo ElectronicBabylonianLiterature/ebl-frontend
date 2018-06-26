@@ -29,7 +29,8 @@ describe('Entry', () => {
     element = renderAmplifiedMeaningInput(true)
   })
 
-  commonTests()
+  commonDisplayTests()
+  commonUpdateTests()
 })
 
 describe('Conjugation/Function', () => {
@@ -98,10 +99,11 @@ describe('Conjugation/Function', () => {
     })
   })
 
-  commonTests()
+  commonDisplayTests()
+  commonUpdateTests()
 })
 
-function commonTests () {
+function commonDisplayTests () {
   it('Displays meaning', () => {
     expect(element.getByValue(value.meaning)).toBeVisible()
   })
@@ -109,7 +111,9 @@ function commonTests () {
   it('Displays vowels', () => {
     expect(element.getByValue(value.vowels[0].value.join('/'))).toBeVisible()
   })
+}
 
+function commonUpdateTests () {
   it('Calls onChange with updated value on meaning chnage', async () => {
     const newValue = 'new meaning'
     const input = element.getByValue(value.meaning)
