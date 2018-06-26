@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
+import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import FormList from './FormList'
@@ -46,31 +47,23 @@ class WordForm extends Component {
     </div>
   }
 
+  textInput = ({property}) => (
+    <TextInput
+      id={property}
+      value={this.state.word[property]}
+      onChange={this.onChangeValue(property)}>
+      {_.startCase(property)}
+    </TextInput>
+  )
+
   render () {
     return (
       <form className='WordForm' onSubmit={this.submit}>
         <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
-        <TextInput
-          id='legacyLemma'
-          value={this.state.word.legacyLemma}
-          onChange={this.onChangeValue('legacyLemma')}>
-            Legacy Lemma
-        </TextInput>
-        <TextInput
-          id='homonym'
-          value={this.state.word.homonym}
-          onChange={this.onChangeValue('homonym')}>
-          Homonym
-        </TextInput>
-
+        <this.textInput property='legacyLemma' />
+        <this.textInput property='homonym' />
         <PosInput id='pos' value={this.state.word} onChange={this.updateWord} />
-
-        <TextInput
-          id='meaning'
-          value={this.state.word.meaning}
-          onChange={this.onChangeValue('meaning')}>
-          Meaning
-        </TextInput>
+        <this.textInput property='meaning' />
 
         <hr />
 
