@@ -12,23 +12,22 @@ class AmplifiedMeaningInput extends Component {
     })
   }
 
+  textInput = ({property, children}) => (
+    <TextInput
+      id={`${this.props.id}-${property}`}
+      value={this.props.value[property]}
+      onChange={this.onChange(property)}>
+      {children}
+    </TextInput>
+  )
+
   render () {
     return (
       <Fragment>
         {!this.props.entry && (
-          <TextInput
-            id={`${this.props.id}-key`}
-            value={this.props.value.key}
-            onChange={this.onChange('key')}>
-            Conjugation/Function
-          </TextInput>
+          <this.textInput property='key'>Conjugation/Function</this.textInput>
         )}
-        <TextInput
-          id={`${this.props.id}-meaning`}
-          value={this.props.value.meaning}
-          onChange={this.onChange('meaning')}>
-          Meaning
-        </TextInput>
+        <this.textInput property='meaning'>Meaning</this.textInput>
         <VowelsList
           id={`${this.props.id}-vowels`}
           value={this.props.value.vowels}
