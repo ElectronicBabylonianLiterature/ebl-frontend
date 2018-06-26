@@ -10,16 +10,18 @@ class ListInput extends Component {
   }
 
   delete = index => () => {
-    this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
+    this.props.onChange(_.compact([
+      ...this.props.value.slice(0, index),
+      ...this.props.value.slice(index + 1)
+    ]))
   }
 
   update = index => value => {
-    this.props.onChange(
-      _.map(this.props.value, (item, itemIndex) => index === itemIndex
-        ? value
-        : item
-      )
-    )
+    this.props.onChange([
+      ...this.props.value.slice(0, index),
+      value,
+      ...this.props.value.slice(index + 1)
+    ])
   }
 
   render () {

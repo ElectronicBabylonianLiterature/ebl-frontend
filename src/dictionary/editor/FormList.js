@@ -18,16 +18,18 @@ class FormList extends Component {
   }
 
   delete = index => () => {
-    this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
+    this.props.onChange(_.compact([
+      ...this.props.value.slice(0, index),
+      ...this.props.value.slice(index + 1)
+    ]))
   }
 
-  update = index => updatedForm => {
-    this.props.onChange(
-      _.map(this.props.value, (form, formIndex) => index === formIndex
-        ? updatedForm
-        : form
-      )
-    )
+  update = index => form => {
+    this.props.onChange([
+      ...this.props.value.slice(0, index),
+      form,
+      ...this.props.value.slice(index + 1)
+    ])
   }
 
   render () {
