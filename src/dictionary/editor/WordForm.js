@@ -13,6 +13,29 @@ import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 import './WordForm.css'
 
+const positionsOfScpeech = {
+  '': 'undefined',
+  'AJ': 'adjective',
+  'AV': 'adverb',
+  'N': 'noun',
+  'NU': 'number',
+  'V': 'verb',
+  'DP': 'demonstrative pronoun',
+  'IP': 'independent/anaphoric pronoun',
+  'PP': 'possessive pronoun',
+  'QP': 'interrogative pronoun',
+  'RP': 'reflexive/reciprocal pronoun',
+  'XP': 'indefinite pronoun',
+  'REL': 'relative pronoun',
+  'DET': 'determinative pronoun',
+  'CNJ': 'conjunction',
+  'J': 'interjection',
+  'MOD': 'modal, negative, or conditional particle',
+  'PRP': 'preposition',
+  'SBJ': 'subjunction'
+}
+const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
+
 class WordForm extends Component {
   constructor (props) {
     super(props)
@@ -56,30 +79,14 @@ class WordForm extends Component {
     )
   }
 
-  render () {
-    const positionsOfScpeech = {
-      '': 'undefined',
-      'AJ': 'adjective',
-      'AV': 'adverb',
-      'N': 'noun',
-      'NU': 'number',
-      'V': 'verb',
-      'DP': 'demonstrative pronoun',
-      'IP': 'independent/anaphoric pronoun',
-      'PP': 'possessive pronoun',
-      'QP': 'interrogative pronoun',
-      'RP': 'reflexive/reciprocal pronoun',
-      'XP': 'indefinite pronoun',
-      'REL': 'relative pronoun',
-      'DET': 'determinative pronoun',
-      'CNJ': 'conjunction',
-      'J': 'interjection',
-      'MOD': 'modal, negative, or conditional particle',
-      'PRP': 'preposition',
-      'SBJ': 'subjunction'
-    }
-    const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
+  jsonPreview = () => {
+    return <div>
+      <h3>JSON preview</h3>
+      <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
+    </div>
+  }
 
+  render () {
     return (
       <form className='WordForm' onSubmit={this.submit}>
         <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
@@ -165,12 +172,7 @@ class WordForm extends Component {
         </FormGroup>
 
         <Button type='submit' bsStyle='primary'>Save</Button>
-        {process.env.NODE_ENV === 'development' && (
-          <div>
-            <h3>JSON preview</h3>
-            <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
-          </div>
-        )}
+        {process.env.NODE_ENV === 'development' && <this.jsonPreview />}
       </form>
     )
   }
