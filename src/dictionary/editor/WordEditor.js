@@ -16,6 +16,10 @@ class WordEditor extends Component {
     return `${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`
   }
 
+  get isLoading () {
+    return !this.state.word && !this.state.error
+  }
+
   componentDidMount () {
     this.props.httpClient
       .fetchJson(this.wordUrl)
@@ -32,8 +36,9 @@ class WordEditor extends Component {
   }
 
   render () {
-    if (this.state.word || this.state.error) {
-      return (
+    return this.isLoading
+      ? <section><Spinner /></section>
+      : (
         <section className='WordEditor'>
           <header>
             <Breadcrumb separator='/'>
@@ -53,9 +58,6 @@ class WordEditor extends Component {
           {this.state.error && <Alert bsStyle='danger'>{this.state.error.message}</Alert>}
         </section>
       )
-    } else {
-      return <section><Spinner /></section>
-    }
   }
 }
 
