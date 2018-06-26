@@ -105,6 +105,10 @@ class Word extends Component {
     )
   }
 
+  isNotEmpty (property) {
+    return !_.isEmpty(this.word[property])
+  }
+
   render () {
     return (
       <div className='Word'>
@@ -113,9 +117,9 @@ class Word extends Component {
         {' '}
         <InlineMarkdown source={this.word.meaning} />
         {' '}
-        {!_.isEmpty(this.word.amplifiedMeanings) && <AmplifiedMeanings value={this.word.amplifiedMeanings} /> }
+        {this.isNotEmpty('amplifiedMeanings') && <AmplifiedMeanings value={this.word.amplifiedMeanings} /> }
         {' '}
-        {!_.isEmpty(this.word.derived) && <Derived value={this.word.derived} />}
+        {this.isNotEmpty('derived') && <Derived value={this.word.derived} />}
         {' '}
         {this.word.derivedFrom && (
           <span className='Word-derivedFrom'>
