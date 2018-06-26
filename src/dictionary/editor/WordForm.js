@@ -22,8 +22,8 @@ class WordForm extends Component {
     }
   }
 
-  submit = () => {
-    console.log('SUBMIT', this.state.word)
+  submit = event => {
+    event.preventDefault()
     this.props.onSubmit(this.state.word)
   }
 
