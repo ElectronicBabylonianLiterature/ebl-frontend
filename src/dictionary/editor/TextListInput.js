@@ -10,10 +10,10 @@ class ListInput extends Component {
   }
 
   delete = index => () => {
-    this.props.onChange(_.compact([
+    this.props.onChange([
       ...this.props.value.slice(0, index),
       ...this.props.value.slice(index + 1)
-    ]))
+    ])
   }
 
   update = index => value => {

@@ -8,10 +8,10 @@ class DerivedList extends Component {
   addDerived = () => this.props.onChange([...this.props.value, []])
 
   deleteDerived = index => () => {
-    this.props.onChange(_.compact([
+    this.props.onChange([
       ...this.props.value.slice(0, index),
       ...this.props.value.slice(index + 1)
-    ]))
+    ])
   }
 
   updateDerived = index => group => {
