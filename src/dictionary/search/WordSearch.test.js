@@ -33,11 +33,12 @@ beforeEach(() => {
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
+  const lemma = 'lem[ma?]'
   httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
+  render(<MemoryRouter><WordSearch lemma={lemma} httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
-  const expectedUrl = 'http://example.com/words/search/lemma'
+  const expectedUrl = `http://example.com/words/search/${encodeURIComponent(lemma)}`
   expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
 })
 
