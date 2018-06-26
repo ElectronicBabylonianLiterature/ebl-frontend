@@ -1,11 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
-import LogogramList from './LogogramList'
+import ArrayWithNotesList from './ArrayWithNotesList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
 afterEach(cleanup)
 
-const label = 'Logograms'
+const noun = 'logogram'
+const property = 'logogram'
+const separator = ' '
 
 let value
 let element
@@ -33,8 +35,8 @@ beforeEach(() => {
   element = renderForms()
 })
 
-it('Displays all logograms', () => {
-  _.map(value, ({logogram}) => logogram.join(' ')).forEach(logogram => expect(element.getByValue(logogram)).toBeVisible())
+it('Displays all array items', () => {
+  _.map(value, entry => entry[property].join(separator)).forEach(item => expect(element.getByValue(item)).toBeVisible())
 })
 
 it('Displays all notes', () => {
@@ -42,21 +44,21 @@ it('Displays all notes', () => {
 })
 
 it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
+  expect(element.getByText(_.startCase(noun))).toBeVisible()
 })
 
 it('Adds new entry when Add is clicked', async () => {
-  const add = element.getByText('Add Logogram')
+  const add = element.getByText(`Add ${noun}`)
   fireEvent.click(add)
 
   await wait()
 
-  expect(onChange).toHaveBeenCalledWith([...value, {logogram: [], notes: []}])
+  expect(onChange).toHaveBeenCalledWith([...value, {[property]: [], notes: []}])
 })
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  const del = element.getAllByText('Delete Logogram')[indexToDelete]
+  const del = element.getAllByText(`Delete ${noun}`)[indexToDelete]
   fireEvent.click(del)
 
   await wait()
@@ -64,7 +66,7 @@ it('Removes item when Delete is clicked', async () => {
   expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
-it('Calls onChange with updated logogram on change', async () => {
+it('Calls onChange with updated property on change', async () => {
   const newValue = 'NEW LOG'
   const input = element.getByValue(value[0].logogram.join(' '))
   input.value = newValue
@@ -72,7 +74,7 @@ it('Calls onChange with updated logogram on change', async () => {
 
   await wait()
 
-  expect(onChange).toHaveBeenCalledWith([{...value[0], logogram: newValue.split(' ')}, ..._.tail(value)])
+  expect(onChange).toHaveBeenCalledWith([{...value[0], [property]: newValue.split(' ')}, ..._.tail(value)])
 })
 
 it('Calls onChange with updated notes on change', async () => {
@@ -85,5 +87,11 @@ it('Calls onChange with updated notes on change', async () => {
 })
 
 function renderForms () {
-  return render(<LogogramList id='form' value={value} onChange={onChange} fields={['lemma', 'attested', 'homonym', 'notes']}>{label}</LogogramList>)
+  return render(<ArrayWithNotesList
+    id='form'
+    property={property}
+    noun={noun}
+    separator={separator}
+    value={value}
+    onChange={onChange} />)
 }

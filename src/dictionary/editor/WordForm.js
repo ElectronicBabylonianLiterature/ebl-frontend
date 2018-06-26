@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import FormList from './FormList'
-import LogogramList from './LogogramList'
+import ArrayWithNotesList from './ArrayWithNotesList'
 import DerivedList from './DerivedList'
 import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
@@ -84,9 +84,9 @@ class WordForm extends Component {
 
         <hr />
 
-        <LogogramList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
+        <ArrayWithNotesList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
           Logograms
-        </LogogramList>
+        </ArrayWithNotesList>
 
         <hr />
 

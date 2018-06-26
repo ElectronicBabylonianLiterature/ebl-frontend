@@ -5,9 +5,9 @@ import _ from 'lodash'
 import ListInput from './ListInput'
 import ArrayInput from './ArrayInput'
 
-class LogogramList extends Component {
+class ArrayWithNotesList extends Component {
   add = () => {
-    this.props.onChange([...this.props.value, {logogram: [], notes: []}])
+    this.props.onChange([...this.props.value, {[this.props.property]: [], notes: []}])
   }
 
   delete = index => () => {
@@ -30,26 +30,26 @@ class LogogramList extends Component {
       <FormGroup>
         <label>{this.props.children}</label>
         <ul>
-          {_.map(this.props.value, (logogram, index) =>
+          {_.map(this.props.value, (item, index) =>
             <li key={index}>
               <ArrayInput
                 id={`${this.props.id}-${index}`}
-                separator=' '
-                value={logogram.logogram}
-                onChange={this.update(index, 'logogram')}>
-                Logogram
+                separator={this.props.separator}
+                value={item[this.props.property]}
+                onChange={this.update(index, this.props.property)}>
+                {_.startCase(this.props.noun)}
               </ArrayInput>
-              <ListInput id={`${this.props.id}-${index}-notes`} value={logogram.notes} onChange={this.update(index, 'notes')}>
+              <ListInput id={`${this.props.id}-${index}-notes`} value={item.notes} onChange={this.update(index, 'notes')}>
                 Notes
               </ListInput>
-              <Button onClick={this.delete(index)}>Delete Logogram</Button>
+              <Button onClick={this.delete(index)}>Delete {this.props.noun}</Button>
             </li>
           )}
-          <li><Button onClick={this.add}>Add Logogram</Button></li>
+          <li><Button onClick={this.add}>Add {this.props.noun}</Button></li>
         </ul>
       </FormGroup>
     )
   }
 }
 
-export default LogogramList
+export default ArrayWithNotesList
