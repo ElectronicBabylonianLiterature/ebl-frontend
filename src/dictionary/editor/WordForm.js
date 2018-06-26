@@ -84,9 +84,13 @@ class WordForm extends Component {
 
         <hr />
 
-        <ArrayWithNotesList id='logograms' value={this.state.word.logograms} onChange={this.onChangeValue('logograms')}>
-          Logograms
-        </ArrayWithNotesList>
+        <ArrayWithNotesList
+          id='logograms'
+          value={this.state.word.logograms}
+          separator=' '
+          property='logogram'
+          noun='logogram'
+          onChange={this.onChangeValue('logograms')} />
 
         <hr />
 

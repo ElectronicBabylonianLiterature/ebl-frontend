@@ -29,7 +29,7 @@ class FormInput extends Component {
   }
 
   hasProperty = property => _.has(this.props.value, property)
-  
+
   render () {
     return (
       <FormGroup>
