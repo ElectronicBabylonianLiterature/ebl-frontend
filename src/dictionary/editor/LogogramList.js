@@ -3,7 +3,7 @@ import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ListInput from './ListInput'
-import TextInput from './TextInput'
+import ArrayInput from './ArrayInput'
 
 class LogogramList extends Component {
   add = () => {
@@ -11,25 +11,18 @@ class LogogramList extends Component {
   }
 
   delete = index => () => {
-    this.props.onChange(_.reject(this.props.value, (item, itemIndex) => index === itemIndex))
+    this.props.onChange([
+      ...this.props.value.slice(0, index),
+      ...this.props.value.slice(index + 1)
+    ])
   }
 
-  updateLogogram = index => logogram => {
-    this.props.onChange(
-      _.map(this.props.value, (item, itemIndex) => index === itemIndex
-        ? {...item, logogram: logogram.split(' ')}
-        : item
-      )
-    )
-  }
-
-  updateNotes = index => notes => {
-    this.props.onChange(
-      _.map(this.props.value, (item, itemIndex) => index === itemIndex
-        ? {...item, notes: notes}
-        : item
-      )
-    )
+  update = (index, property) => value => {
+    this.props.onChange([
+      ...this.props.value.slice(0, index),
+      {...this.props.value[index], [property]: value},
+      ...this.props.value.slice(index + 1)
+    ])
   }
 
   render () {
@@ -39,13 +32,14 @@ class LogogramList extends Component {
         <ul>
           {_.map(this.props.value, (logogram, index) =>
             <li key={index}>
-              <TextInput
+              <ArrayInput
                 id={`${this.props.id}-${index}`}
-                value={logogram.logogram.join(' ')}
-                onChange={this.updateLogogram(index)}>
+                separator=' '
+                value={logogram.logogram}
+                onChange={this.update(index, 'logogram')}>
                 Logogram
-              </TextInput>
-              <ListInput id={`${this.props.id}-${index}-notes`} value={logogram.notes} onChange={this.updateNotes(index)}>
+              </ArrayInput>
+              <ListInput id={`${this.props.id}-${index}-notes`} value={logogram.notes} onChange={this.update(index, 'notes')}>
                 Notes
               </ListInput>
               <Button onClick={this.delete(index)}>Delete Logogram</Button>

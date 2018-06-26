@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import queryString from 'query-string'
 import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
@@ -15,7 +16,7 @@ class WordSearch extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?lemma=${this.state.lemma}`)
+    this.props.history.push(`?${queryString.stringify({lemma: this.state.lemma})}`)
   }
 
   render () {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, Button } from 'react-bootstrap'
 
 import ListInput from './ListInput'
-import TextInput from './TextInput'
+import ArrayInput from './ArrayInput'
 
 class VowelsList extends Component {
   add = () => {
@@ -25,7 +25,7 @@ class VowelsList extends Component {
   }
 
   updateVowels = index => vowels => {
-    this.update(index, {...this.props.value[index], value: vowels.split('/')})
+    this.update(index, {...this.props.value[index], value: vowels})
   }
 
   updateNotes = index => notes => {
@@ -39,12 +39,13 @@ class VowelsList extends Component {
         <ul>
           {this.props.value.map((vowel, index) =>
             <li key={index}>
-              <TextInput
+              <ArrayInput
                 id={`${this.props.id}-${index}-value`}
-                value={vowel.value.join('/')}
+                separator='/'
+                value={vowel.value}
                 onChange={this.updateVowels(index)}>
                 Value
-              </TextInput>
+              </ArrayInput>
               <ListInput id={`${this.props.id}-${index}-notes`} value={vowel.notes} onChange={this.updateNotes(index)}>
                 Notes
               </ListInput>
