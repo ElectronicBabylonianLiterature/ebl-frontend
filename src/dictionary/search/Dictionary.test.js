@@ -38,41 +38,40 @@ beforeEach(() => {
 })
 
 describe('Searching for word', () => {
-  let element
-
-  it('displays result on successfull query', async () => {
+  beforeEach(() => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
-    element = render(<MemoryRouter initialEntries={['/dictionary?lemma=lemma']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
-    await wait()
+  })
 
-    expect(element.getByText('lemma')).toBeDefined()
+  it('displays result on successfull query', async () => {
+    const {getByText} = await renderDictionary('/dictionary?lemma=lemma')
+
+    expect(getByText('lemma')).toBeDefined()
   })
 
   it('fills in search form query', async () => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
-    element = render(<MemoryRouter initialEntries={['/dictionary?lemma=lemma']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
-    await wait()
+    const {getByLabelText} = await renderDictionary('/dictionary?lemma=lemma')
 
-    expect(element.getByLabelText('Lemma').value).toEqual('lemma')
+    expect(getByLabelText('Lemma').value).toEqual('lemma')
   })
 
   it('displays empty search if no query', async () => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
-    element = render(<MemoryRouter initialEntries={['/dictionary']}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
-    await wait()
+    const {getByLabelText} = await renderDictionary('/dictionary')
 
-    expect(element.getByLabelText('Lemma').value).toEqual('')
+    expect(getByLabelText('Lemma').value).toEqual('')
   })
 })
 
 it('Displays a message if user is not logged in', async () => {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
 
-  const {getByText} = render(<MemoryRouter><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
-  await wait()
+  const {getByText} = await renderDictionary('/dictionary')
 
   expect(getByText('You need to be logged in to access the dictionary.')).toBeDefined()
 })
+
+async function renderDictionary (path) {
+  const element = render(<MemoryRouter initialEntries={[path]}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
+  await wait()
+  return element
+}
