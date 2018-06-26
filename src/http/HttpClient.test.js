@@ -36,18 +36,62 @@ describe('fetchJson', () => {
   it('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => { throw error })
 
-    expect(httpClient.fetchJson(url)).rejects.toEqual(error)
+    await expect(httpClient.fetchJson(url)).rejects.toEqual(error)
   })
 
   it('Rejects with error if fetch fails', async () => {
     fetch.mockRejectOnce(error)
 
-    expect(httpClient.fetchJson(url)).rejects.toEqual(error)
+    await expect(httpClient.fetchJson(url)).rejects.toEqual(error)
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
     const statusText = 'NOT FOUND'
     fetch.mockResponseOnce('', {status: 404, statusText: statusText})
-    expect(httpClient.fetchJson(url)).rejects.toEqual(new Error(statusText))
+    await expect(httpClient.fetchJson(url)).rejects.toEqual(new Error(statusText))
+  })
+})
+
+describe('postJson', () => {
+  const json = {
+    'payload': 1
+  }
+
+  it('Resolves on success', async () => {
+    auth.getAccessToken.mockReturnValueOnce(accessToken)
+    fetch.mockResponseOnce('')
+
+    await expect(httpClient.postJson(url, json)).resolves.toBeUndefined()
+  })
+
+  it('Makes a post request with given parameters', async () => {
+    auth.getAccessToken.mockReturnValueOnce(accessToken)
+    fetch.mockResponseOnce('')
+
+    await httpClient.postJson(url, json)
+
+    const expectedHeaders = new Headers({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json; charset=utf-8'
+    })
+    expect(fetch).toBeCalledWith(url, {body: JSON.stringify(json), headers: expectedHeaders})
+  })
+
+  it('Rejects with error if not authorized', async () => {
+    auth.getAccessToken.mockImplementationOnce(() => { throw error })
+
+    await expect(httpClient.postJson(url, json)).rejects.toEqual(error)
+  })
+
+  it('Rejects with error if post fails', async () => {
+    fetch.mockRejectOnce(error)
+
+    await expect(httpClient.postJson(url, json)).rejects.toEqual(error)
+  })
+
+  it('Rejects with status text as error message if response not ok', async () => {
+    const statusText = 'NOT FOUND'
+    fetch.mockResponseOnce('', {status: 404, statusText: statusText})
+    await expect(httpClient.postJson(url, json)).rejects.toEqual(new Error(statusText))
   })
 })
