@@ -11,12 +11,12 @@ it('Adds lemma to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const {getByLabelText, container} = render(<Router history={history}><WordSearchForm /></Router>)
 
-  const lemma = getByLabelText('Lemma')
+  const lemma = getByLabelText('Query')
   lemma.value = 'lemma'
   fireEvent.change(lemma)
 
   fireEvent.submit(container.querySelector('form'))
   await wait()
 
-  expect(history.push).toBeCalledWith('?lemma=lemma')
+  expect(history.push).toBeCalledWith('?query=lemma')
 })

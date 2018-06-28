@@ -44,21 +44,21 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const {getByText} = await renderDictionary('/dictionary?lemma=lemma')
+    const {getByText} = await renderDictionary('/dictionary?query=lemma')
 
     expect(getByText('lemma')).toBeDefined()
   })
 
   it('fills in search form query', async () => {
-    const {getByLabelText} = await renderDictionary('/dictionary?lemma=lemma')
+    const {getByLabelText} = await renderDictionary('/dictionary?query=lemma')
 
-    expect(getByLabelText('Lemma').value).toEqual('lemma')
+    expect(getByLabelText('Query').value).toEqual('lemma')
   })
 
   it('displays empty search if no query', async () => {
     const {getByLabelText} = await renderDictionary('/dictionary')
 
-    expect(getByLabelText('Lemma').value).toEqual('')
+    expect(getByLabelText('Query').value).toEqual('')
   })
 })
 

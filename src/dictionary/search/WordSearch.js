@@ -12,12 +12,12 @@ class WordSearch extends Component {
   }
 
   fetchWords () {
-    if (_.isEmpty(this.props.lemma)) {
+    if (_.isEmpty(this.props.query)) {
       this.setState({words: [], error: null})
     } else {
       this.setState({words: null, error: null})
       this.props.httpClient
-        .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words/search/${encodeURIComponent(this.props.lemma)}`)
+        .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words?query=${encodeURIComponent(this.props.query)}`)
         .then(words => this.setState({words: words, error: null}))
         .catch(error => this.setState({words: [], error: error}))
     }
@@ -28,7 +28,7 @@ class WordSearch extends Component {
   }
 
   componentDidUpdate (prevProps, prevState, snapshot) {
-    if (prevProps.lemma !== this.props.lemma) {
+    if (prevProps.query !== this.props.query) {
       this.fetchWords()
     }
   }

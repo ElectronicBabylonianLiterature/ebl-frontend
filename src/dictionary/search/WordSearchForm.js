@@ -5,30 +5,30 @@ import { withRouter } from 'react-router-dom'
 
 class WordSearch extends Component {
   state = {
-    lemma: this.props.lemma || ''
+    query: this.props.query || ''
   }
 
   onChange = event => {
     this.setState({
-      lemma: event.target.value
+      query: event.target.value
     })
   }
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?${queryString.stringify({lemma: this.state.lemma})}`)
+    this.props.history.push(`?${queryString.stringify({query: this.state.query})}`)
   }
 
   render () {
     return (
       <Form inline onSubmit={this.submit}>
-        <FormGroup controlId='lemma'>
-          <ControlLabel>Lemma</ControlLabel>
+        <FormGroup controlId='query'>
+          <ControlLabel>Query</ControlLabel>
           {' '}
           <FormControl
             type='text'
-            value={this.state.lemma}
-            placeholder='lemma'
+            value={this.state.query}
+            placeholder='lemma or meaning'
             onChange={this.onChange} />
         </FormGroup>
         {' '}

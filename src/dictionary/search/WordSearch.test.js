@@ -33,18 +33,18 @@ beforeEach(() => {
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
-  const lemma = 'lem[ma?]'
+  const query = 'lem[ma?]'
   httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  render(<MemoryRouter><WordSearch lemma={lemma} httpClient={httpClient} /></MemoryRouter>)
+  render(<MemoryRouter><WordSearch query={query} httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
-  const expectedUrl = `http://example.com/words/search/${encodeURIComponent(lemma)}`
+  const expectedUrl = `http://example.com/words?query=${encodeURIComponent(query)}`
   expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
 })
 
 it('displays result on successfull query', async () => {
   httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  const element = render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
+  const element = render(<MemoryRouter><WordSearch query='lemma' httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
   expect(element.getByText('lemma')).toBeDefined()
@@ -53,7 +53,7 @@ it('displays result on successfull query', async () => {
 it('displays error on failed query', async () => {
   const errorMessage = 'error'
   httpClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-  const element = render(<MemoryRouter><WordSearch lemma='lemma' httpClient={httpClient} /></MemoryRouter>)
+  const element = render(<MemoryRouter><WordSearch query='lemma' httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
   expect(element.getByText(errorMessage)).toBeDefined()

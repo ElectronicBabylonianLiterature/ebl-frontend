@@ -8,7 +8,7 @@ import './Dictionary.css'
 
 class Dictionary extends Component {
   render () {
-    const lemma = queryString.parse(this.props.location.search).lemma
+    const query = queryString.parse(this.props.location.search).query
 
     return (
       <section>
@@ -17,9 +17,9 @@ class Dictionary extends Component {
           ? (
             <Fragment>
               <header className='Dictionary-search'>
-                <WordSearchForm lemma={lemma} />
+                <WordSearchForm query={query} />
               </header>
-              <WordSearch lemma={lemma} httpClient={this.props.httpClient} />
+              <WordSearch query={query} httpClient={this.props.httpClient} />
             </Fragment>
           )
           : <p>You need to be logged in to access the dictionary.</p>
