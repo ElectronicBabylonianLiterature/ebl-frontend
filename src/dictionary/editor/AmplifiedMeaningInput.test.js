@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
-import {render, cleanup, fireEvent} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import {whenChanged} from '../../testHelpers'
 
