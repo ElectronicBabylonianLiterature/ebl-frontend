@@ -3,6 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
+import {changeValue} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -44,11 +45,7 @@ describe('Conjugation/Function', () => {
 
   it('Calls onChange with updated value on key', async () => {
     const newValue = 'D'
-    const input = element.getByValue(value.key)
-    input.value = newValue
-    fireEvent.change(input)
-
-    await wait()
+    await changeValue(element, value.key, newValue)
 
     expect(onChange).toHaveBeenCalledWith({...value, key: newValue})
   })
@@ -90,22 +87,14 @@ function commonDisplayTests () {
 function commonUpdateTests () {
   it('Calls onChange with updated value on meaning chnage', async () => {
     const newValue = 'new meaning'
-    const input = element.getByValue(value.meaning)
-    input.value = newValue
-    fireEvent.change(input)
-
-    await wait()
+    await changeValue(element, value.meaning, newValue)
 
     expect(onChange).toHaveBeenCalledWith({...value, meaning: newValue})
   })
 
   it('Calls onChange with updated value on vowels change', async () => {
     const newValue = 'e/e'
-    const input = element.getByValue(value.vowels[0].value.join('/'))
-    input.value = newValue
-    fireEvent.change(input)
-
-    await wait()
+    await changeValue(element, value.vowels[0].value.join('/'), newValue)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,

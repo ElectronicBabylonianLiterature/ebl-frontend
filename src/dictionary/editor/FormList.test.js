@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FormList from './FormList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth} from '../../testHelpers'
+import {clickNth, changeValue} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -52,11 +52,7 @@ it('Removes item when Delete is clicked', async () => {
 
 it('Calls onChange with updated value on change', async () => {
   const newValue = 'new'
-  const input = element.getByValue(value[0].lemma.join(' '))
-  input.value = newValue
-  fireEvent.change(input)
-
-  await wait()
+  await changeValue(element, value[0].lemma.join(' '), newValue)
 
   expect(onChange).toHaveBeenCalledWith([{...value[0], lemma: [newValue]}, ..._.tail(value)])
 })

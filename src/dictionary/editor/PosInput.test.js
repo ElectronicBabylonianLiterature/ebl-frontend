@@ -1,8 +1,9 @@
 import React from 'react'
 import PosInput from './PosInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import _ from 'lodash'
 import {factory} from 'factory-girl'
+import {changeValue} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -28,11 +29,7 @@ describe('Verb', () => {
 
   it('Calls onChange with updated value on root change', async () => {
     const newValue = 'rtr'
-    const input = element.getByValue(value.roots[0])
-    input.value = newValue
-    fireEvent.change(input)
-
-    await wait()
+    await changeValue(element, value.roots[0], newValue)
 
     expect(onChange).toHaveBeenCalledWith({roots: [newValue, ..._.tail(value.roots)]})
   })
@@ -56,11 +53,7 @@ function commonTests () {
 
   it('Calls onChange with updated value on pos change', async () => {
     const newValue = 'AJ'
-    const input = element.getByLabelText('Position of speech')
-    input.value = newValue
-    fireEvent.change(input)
-
-    await wait()
+    await changeValue(element, value.pos, newValue)
 
     expect(onChange).toHaveBeenCalledWith({pos: newValue})
   })

@@ -1,6 +1,7 @@
 import React from 'react'
 import TextInput from './TextInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
+import {changeValue} from '../../testHelpers'
 
 const label = 'Text'
 const value = 'text input'
@@ -24,11 +25,7 @@ it('Displays label', () => {
 
 it('Calls onChange with updated value on change', async () => {
   const newValue = 'new'
-  const input = element.getByValue(value)
-  input.value = newValue
-  fireEvent.change(input)
-
-  await wait()
+  await changeValue(element, value, newValue)
 
   expect(onChange).toHaveBeenCalledWith(newValue)
 })
