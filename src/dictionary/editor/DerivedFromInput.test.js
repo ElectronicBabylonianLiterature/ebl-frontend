@@ -1,6 +1,7 @@
 import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -15,12 +16,8 @@ beforeEach(() => {
 })
 
 describe('Derived from set', () => {
-  beforeEach(() => {
-    value = {
-      lemma: ['lemma'],
-      homonym: 'I',
-      notes: ['note']
-    }
+  beforeEach(async () => {
+    value = await factory.build('derived')
     element = renderDerivedFromInput()
   })
 

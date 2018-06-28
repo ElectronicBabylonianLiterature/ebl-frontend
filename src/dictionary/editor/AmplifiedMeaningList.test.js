@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -19,12 +20,9 @@ beforeEach(() => {
 })
 
 describe('Entries', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     noun = 'entry'
-    value = [
-      {meaning: 'meaning1', vowels: []},
-      {meaning: 'meaning2', vowels: []}
-    ]
+    value = await factory.buildMany('entry', 2)
     element = renderAmplifiedMeaningList(true)
   })
 
@@ -41,12 +39,9 @@ describe('Entries', () => {
 })
 
 describe('Conjugations/Functions', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     noun = 'amplified meaning'
-    value = [
-      {key: 'G', meaning: 'meaning1', vowels: [], entries: [{meaning: 'entry1', vowels: []}]},
-      {key: 'D', meaning: 'meaning2', vowels: [], entries: [{meaning: 'entry2', vowels: []}]}
-    ]
+    value = await factory.buildMany('amplifiedMeaning', 2)
     element = renderAmplifiedMeaningList(false)
   })
 

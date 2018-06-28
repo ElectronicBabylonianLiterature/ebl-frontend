@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -16,16 +17,8 @@ beforeEach(() => {
 })
 
 describe('Entry', () => {
-  beforeEach(() => {
-    value = {
-      meaning: 'meaning',
-      vowels: [
-        {
-          value: ['i', 'i'],
-          notes: []
-        }
-      ]
-    }
+  beforeEach(async () => {
+    value = await factory.build('entry')
     element = renderAmplifiedMeaningInput(true)
   })
 
@@ -34,27 +27,8 @@ describe('Entry', () => {
 })
 
 describe('Conjugation/Function', () => {
-  beforeEach(() => {
-    value = {
-      key: 'G',
-      meaning: 'meaning',
-      vowels: [
-        {
-          value: ['i', 'i'],
-          notes: []
-        }
-      ],
-      entries: [
-        {
-          meaning: 'entry1',
-          vowels: []
-        },
-        {
-          meaning: 'entry2',
-          vowels: []
-        }
-      ]
-    }
+  beforeEach(async () => {
+    value = await factory.build('amplifiedMeaning')
     element = renderAmplifiedMeaningInput(false)
   })
 
@@ -136,7 +110,8 @@ function commonUpdateTests () {
     expect(onChange).toHaveBeenCalledWith({
       ...value,
       vowels: [
-        {...value.vowels[0], value: newValue.split('/')}
+        {...value.vowels[0], value: newValue.split('/')},
+        ..._.tail(value.vowels)
       ]
     })
   })

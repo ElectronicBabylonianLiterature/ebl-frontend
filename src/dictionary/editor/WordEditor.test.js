@@ -4,25 +4,15 @@ import {render, wait, cleanup, fireEvent} from 'react-testing-library'
 import WordEditor from './WordEditor'
 import HttpClient from '../../http/HttpClient'
 import Auth from '../../auth0/Auth'
+import {factory} from 'factory-girl'
 
-const result = {
-  _id: 'object_id',
-  lemma: ['lemma'],
-  pos: '',
-  attested: true,
-  forms: [],
-  homonym: 'I',
-  amplifiedMeanings: [],
-  derived: [],
-  derivedFrom: null,
-  source: ''
-}
-
+let result
 let httpClient
 
 afterEach(cleanup)
 
-beforeEach(() => {
+beforeEach(async () => {
+  result = await factory.build('word')
   httpClient = new HttpClient(new Auth())
 })
 
@@ -40,7 +30,7 @@ describe('Fecth word', () => {
     const {getByText} = renderWithRouter()
 
     await wait()
-    expect(getByText(result.lemma[0])).toBeDefined()
+    expect(getByText(result.lemma.join(' '))).toBeDefined()
   })
 
   it('Displays error message on failed query', async () => {

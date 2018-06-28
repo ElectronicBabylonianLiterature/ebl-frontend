@@ -5,8 +5,8 @@ import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 
 afterEach(cleanup)
 
-const noun = 'logogram'
-const property = 'logogram'
+const noun = 'item'
+const property = 'value'
 const separator = ' '
 
 let value
@@ -22,11 +22,11 @@ beforeEach(() => {
 beforeEach(() => {
   value = [
     {
-      'logogram': ['LOG1', 'LOG2'],
+      [property]: ['LOG1', 'LOG2'],
       'notes': ['note1']
     },
     {
-      'logogram': [],
+      [property]: [],
       'notes': [
         'note2'
       ]
@@ -68,7 +68,7 @@ it('Removes item when Delete is clicked', async () => {
 
 it('Calls onChange with updated property on change', async () => {
   const newValue = 'NEW LOG'
-  const input = element.getByValue(value[0].logogram.join(' '))
+  const input = element.getByValue(value[0][property].join(' '))
   input.value = newValue
   fireEvent.change(input)
 

@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import DerivedList from './DerivedList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -17,10 +18,10 @@ beforeEach(() => {
   onChange = jest.fn()
 })
 
-beforeEach(() => {
+beforeEach(async () => {
   value = [
-    [{lemma: ['a', 'b'], homonym: 'I', notes: ['note']}],
-    [{lemma: ['c', 'd'], homonym: 'II', notes: []}]
+    [await factory.build('derived')],
+    [await factory.build('derived')]
   ]
   element = renderDerivedList()
 })

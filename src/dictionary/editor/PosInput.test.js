@@ -42,11 +42,10 @@ describe('Verb', () => {
   commonTests()
 })
 
-describe('No derived from set', () => {
+describe('Not verb', () => {
   beforeEach(() => {
     value = {
-      pos: 'V',
-      roots: ['rrr', 'ttt']
+      pos: 'AJ'
     }
     element = renderPosInput()
   })

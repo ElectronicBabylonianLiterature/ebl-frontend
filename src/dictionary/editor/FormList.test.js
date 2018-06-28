@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import FormList from './FormList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -17,11 +18,8 @@ beforeEach(() => {
   onChange = jest.fn()
 })
 
-beforeEach(() => {
-  value = [
-    {lemma: ['a', 'b']},
-    {lemma: ['c', 'd']}
-  ]
+beforeEach(async () => {
+  value = await factory.buildMany('form', 2)
   element = renderForms()
 })
 
