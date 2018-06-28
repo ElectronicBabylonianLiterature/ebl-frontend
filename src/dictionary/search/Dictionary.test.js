@@ -4,34 +4,18 @@ import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from '../../auth0/Auth'
 import HttpClient from '../../http/HttpClient'
+import {factory} from 'factory-girl'
 
 const DictionaryWithRouter = withRouter(Dictionary)
 
-const words = [
-  {
-    _id: '1',
-    lemma: ['lemma'],
-    forms: [],
-    homonym: 'I',
-    amplifiedMeanings: {},
-    derived: []
-  },
-  {
-    _id: '2',
-    lemma: ['lemma'],
-    forms: [],
-    homonym: 'II',
-    amplifiedMeanings: {},
-    derived: []
-  }
-]
-
+let words
 let auth
 let httpClient
 
 afterEach(cleanup)
 
-beforeEach(() => {
+beforeEach(async () => {
+  words = await factory.buildMany('word', 2)
   fetch.resetMocks()
   auth = new Auth()
   httpClient = new HttpClient(auth)
@@ -46,7 +30,7 @@ describe('Searching for word', () => {
   it('displays result on successfull query', async () => {
     const {getByText} = await renderDictionary('/dictionary?query=lemma')
 
-    expect(getByText('lemma')).toBeDefined()
+    expect(getByText(words[0].meaning)).toBeDefined()
   })
 
   it('fills in search form query', async () => {

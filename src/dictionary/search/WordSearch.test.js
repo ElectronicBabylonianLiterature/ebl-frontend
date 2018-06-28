@@ -2,31 +2,15 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import {render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
+import {factory} from 'factory-girl'
 
-const words = [
-  {
-    _id: '1',
-    lemma: ['lemma'],
-    forms: [],
-    homonym: 'I',
-    amplifiedMeanings: {},
-    derived: []
-  },
-  {
-    _id: '2',
-    lemma: ['lemma'],
-    forms: [],
-    homonym: 'II',
-    amplifiedMeanings: {},
-    derived: []
-  }
-]
-
+let words
 let httpClient
 
 afterEach(cleanup)
 
-beforeEach(() => {
+beforeEach(async () => {
+  words = await factory.buildMany('word', 2)
   httpClient = {
     fetchJson: jest.fn()
   }
@@ -47,7 +31,7 @@ it('displays result on successfull query', async () => {
   const element = render(<MemoryRouter><WordSearch query='lemma' httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
-  expect(element.getByText('lemma')).toBeDefined()
+  expect(element.getByText(words[0].meaning)).toBeDefined()
 })
 
 it('displays error on failed query', async () => {
