@@ -3,7 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth, changeValue} from '../../testHelpers'
+import {clickNth, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -89,10 +89,15 @@ function commonTests () {
   })
 
   it('Calls onChange with updated value on change', async () => {
-    const newValue = 'new'
-    await changeValue(element, value[0].meaning, newValue)
-
-    expect(onChange).toHaveBeenCalledWith([{...value[0], meaning: newValue}, ..._.tail(value)])
+    await whenChanged(element, value[0].meaning, 'new')
+      .expect(onChange)
+      .toHaveBeenCalledWith(newValue => [
+        {
+          ...value[0],
+          meaning: newValue
+        },
+        ..._.tail(value)
+      ])
   })
 }
 

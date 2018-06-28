@@ -13,3 +13,17 @@ export async function changeValue (element, value, newValue) {
 
   await wait()
 }
+
+export function whenChanged (element, value, newValue) {
+  const createMatcher = onChange => async expectedChangeFactory => {
+    await changeValue(element, value, newValue)
+
+    expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
+  }
+
+  return {
+    expect: onChange => ({
+      toHaveBeenCalledWith: createMatcher(onChange)
+    })
+  }
+}

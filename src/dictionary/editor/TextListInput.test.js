@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import {clickNth, changeValue} from '../../testHelpers'
+import {clickNth, whenChanged} from '../../testHelpers'
 
 const label = 'List'
 
@@ -51,10 +51,12 @@ it('Removes item when Delete is clicked', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  const newValue = 'new'
-  await changeValue(element, value[0], newValue)
-
-  expect(onChange).toHaveBeenCalledWith([newValue, ..._.tail(value)])
+  await whenChanged(element, value[0], 'new')
+    .expect(onChange)
+    .toHaveBeenCalledWith(newValue => [
+      newValue,
+      ..._.tail(value)
+    ])
 })
 
 function renderListInput () {

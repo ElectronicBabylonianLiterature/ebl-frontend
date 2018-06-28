@@ -3,7 +3,7 @@ import PosInput from './PosInput'
 import {render, cleanup} from 'react-testing-library'
 import _ from 'lodash'
 import {factory} from 'factory-girl'
-import {changeValue} from '../../testHelpers'
+import {whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -28,10 +28,14 @@ describe('Verb', () => {
   })
 
   it('Calls onChange with updated value on root change', async () => {
-    const newValue = 'rtr'
-    await changeValue(element, value.roots[0], newValue)
-
-    expect(onChange).toHaveBeenCalledWith({roots: [newValue, ..._.tail(value.roots)]})
+    await whenChanged(element, value.roots[0], 'rtr')
+      .expect(onChange)
+      .toHaveBeenCalledWith(newValue => ({
+        roots: [
+          newValue,
+          ..._.tail(value.roots)
+        ]
+      }))
   })
 
   commonTests()
@@ -52,10 +56,11 @@ function commonTests () {
   })
 
   it('Calls onChange with updated value on pos change', async () => {
-    const newValue = 'AJ'
-    await changeValue(element, value.pos, newValue)
-
-    expect(onChange).toHaveBeenCalledWith({pos: newValue})
+    await whenChanged(element, value.pos, 'AJ')
+      .expect(onChange)
+      .toHaveBeenCalledWith(newValue => ({
+        pos: newValue
+      }))
   })
 }
 

@@ -1,7 +1,8 @@
 import React from 'react'
+import _ from 'lodash'
 import TextInput from './TextInput'
 import {render, cleanup} from 'react-testing-library'
-import {changeValue} from '../../testHelpers'
+import {whenChanged} from '../../testHelpers'
 
 const label = 'Text'
 const value = 'text input'
@@ -24,10 +25,9 @@ it('Displays label', () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  const newValue = 'new'
-  await changeValue(element, value, newValue)
-
-  expect(onChange).toHaveBeenCalledWith(newValue)
+  await whenChanged(element, value, 'new')
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.identity)
 })
 
 function renderTextInput () {

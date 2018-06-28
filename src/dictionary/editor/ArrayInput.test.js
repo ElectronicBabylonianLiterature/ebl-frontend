@@ -1,7 +1,7 @@
 import React from 'react'
 import ArrayInput from './ArrayInput'
 import {render, cleanup} from 'react-testing-library'
-import {changeValue} from '../../testHelpers'
+import {whenChanged} from '../../testHelpers'
 
 const label = 'Array'
 const value = ['array', 'input']
@@ -25,10 +25,9 @@ it('Displays label', () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  const newValue = 'new value'
-  await changeValue(element, value.join(separator), newValue)
-
-  expect(onChange).toHaveBeenCalledWith(newValue.split(separator))
+  await whenChanged(element, value.join(separator), 'new value')
+    .expect(onChange)
+    .toHaveBeenCalledWith(newValue => newValue.split(separator))
 })
 
 function renderArrayInput () {

@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import {clickNth, changeValue} from '../../testHelpers'
+import {clickNth, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -65,10 +65,15 @@ it('Removes item when Delete is clicked', async () => {
 })
 
 it('Calls onChange with updated property on change', async () => {
-  const newValue = 'NEW LOG'
-  await changeValue(element, value[0][property].join(' '), newValue)
-
-  expect(onChange).toHaveBeenCalledWith([{...value[0], [property]: newValue.split(' ')}, ..._.tail(value)])
+  await whenChanged(element, value[0][property].join(' '), 'NEW LOG')
+    .expect(onChange)
+    .toHaveBeenCalledWith(newValue => [
+      {
+        ...value[0],
+        [property]: newValue.split(' ')
+      },
+      ..._.tail(value)
+    ])
 })
 
 it('Calls onChange with updated notes on change', async () => {

@@ -3,7 +3,7 @@ import _ from 'lodash'
 import DerivedList from './DerivedList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth, changeValue} from '../../testHelpers'
+import {clickNth, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -52,10 +52,17 @@ it('Removes group when Delete is clicked', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  const newValue = 'IV'
-  await changeValue(element, value[0][0].homonym, newValue)
-
-  expect(onChange).toHaveBeenCalledWith([[{...value[0][0], homonym: newValue}], ..._.tail(value)])
+  await whenChanged(element, value[0][0].homonym, 'IV')
+    .expect(onChange)
+    .toHaveBeenCalledWith(newValue => [
+      [
+        {
+          ...value[0][0],
+          homonym: newValue
+        }
+      ],
+      ..._.tail(value)
+    ])
 })
 
 function renderDerivedList () {
