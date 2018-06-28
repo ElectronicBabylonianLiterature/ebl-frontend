@@ -3,6 +3,7 @@ import _ from 'lodash'
 import DerivedList from './DerivedList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
+import {clickNth} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -45,10 +46,7 @@ it('Adds new group when Add is cliked', async () => {
 
 it('Removes group when Delete is clicked', async () => {
   const indexToDelete = 1
-  const del = element.getAllByText('Delete group')[indexToDelete]
-  fireEvent.click(del)
-
-  await wait()
+  await clickNth(element, 'Delete group', indexToDelete)
 
   expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })

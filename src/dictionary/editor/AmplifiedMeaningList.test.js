@@ -3,6 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
+import {clickNth} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -82,10 +83,7 @@ function commonTests () {
 
   it('Removes item when Delete is clicked', async () => {
     const indexToDelete = 1
-    const del = element.getAllByText(`Delete ${noun}`)[indexToDelete]
-    fireEvent.click(del)
-
-    await wait()
+    await clickNth(element, `Delete ${noun}`, indexToDelete)
 
     expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
   })

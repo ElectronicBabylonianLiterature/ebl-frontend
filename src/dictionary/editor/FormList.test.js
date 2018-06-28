@@ -3,6 +3,7 @@ import _ from 'lodash'
 import FormList from './FormList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
+import {clickNth} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -44,10 +45,7 @@ it('New entry has given fields', async () => {
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  const del = element.getAllByText('Delete form')[indexToDelete]
-  fireEvent.click(del)
-
-  await wait()
+  await clickNth(element, 'Delete form', indexToDelete)
 
   expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })

@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {clickNth} from '../../testHelpers'
 
 const label = 'List'
 
@@ -44,10 +45,7 @@ it('Adds emtpy item when Add is clicked', async () => {
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  const del = element.getAllByText('Delete')[indexToDelete]
-  fireEvent.click(del)
-
-  await wait()
+  await clickNth(element, 'Delete', indexToDelete)
 
   expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })

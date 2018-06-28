@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {clickNth} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -58,10 +59,7 @@ it('Adds new entry when Add is clicked', async () => {
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  const del = element.getAllByText(`Delete ${noun}`)[indexToDelete]
-  fireEvent.click(del)
-
-  await wait()
+  await clickNth(element, `Delete ${noun}`, indexToDelete)
 
   expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
