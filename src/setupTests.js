@@ -1,6 +1,8 @@
 import 'jest-date-mock'
 import 'jest-dom/extend-expect'
 
+import './testFixtures'
+
 global.fetch = require('jest-fetch-mock')
 
 const localStorageMock = {
