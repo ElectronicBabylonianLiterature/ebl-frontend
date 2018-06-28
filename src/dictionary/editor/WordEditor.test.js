@@ -12,7 +12,7 @@ let httpClient
 afterEach(cleanup)
 
 beforeEach(async () => {
-  result = await factory.build('word')
+  result = await factory.build('verb')
   httpClient = new HttpClient(new Auth())
 })
 

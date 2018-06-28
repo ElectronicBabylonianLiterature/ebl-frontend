@@ -2,6 +2,7 @@ import React from 'react'
 import PosInput from './PosInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import _ from 'lodash'
+import {factory} from 'factory-girl'
 
 afterEach(cleanup)
 
@@ -16,11 +17,8 @@ beforeEach(() => {
 })
 
 describe('Verb', () => {
-  beforeEach(() => {
-    value = {
-      pos: 'V',
-      roots: ['rrr', 'ttt']
-    }
+  beforeEach(async () => {
+    value = await factory.build('verb')
     element = renderPosInput()
   })
 
@@ -43,10 +41,8 @@ describe('Verb', () => {
 })
 
 describe('Not verb', () => {
-  beforeEach(() => {
-    value = {
-      pos: 'AJ'
-    }
+  beforeEach(async () => {
+    value = await factory.build('word')
     element = renderPosInput()
   })
 

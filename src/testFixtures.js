@@ -1,5 +1,17 @@
 import {factory} from 'factory-girl'
 
+function pickOne (values) {
+  return factory.chance('pickone', values)
+}
+
+function homonym () {
+  return pickOne(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'])
+}
+
+function vowel () {
+  return pickOne(['i', 'a', 'u', 'e'])
+}
+
 function wordArray () {
   return [
     factory.chance('word'),
@@ -15,8 +27,8 @@ factory.define('form', Object, {
 
 factory.define('vowels', Object, {
   value: [
-    factory.chance('character'),
-    factory.chance('character')
+    vowel(),
+    vowel()
   ],
   notes: wordArray()
 })
@@ -27,29 +39,29 @@ factory.define('entry', Object, {
 })
 
 factory.extend('entry', 'amplifiedMeaning', {
-  key: factory.chance('character'),
+  key: pickOne(['G', 'Gtn', 'Gt', 'D', 'Dtn', 'Dt', 'Dtt', 'Š', 'Štn', 'Št', 'ŠD', 'N', 'Ntn', 'R', 'Št2', 'A.', 'B.', 'C.', 'D.']),
   entries: factory.assocAttrsMany('entry', 2)
 })
 
 factory.define('derived', Object, {
   lemma: wordArray(),
-  homonym: 'I',
+  homonym: homonym(),
   notes: wordArray()
 })
 
 factory.define('logogram', Object, {
-  logogram: wordArray(),
+  logogram: factory.chance('pickset', ['alpha', 'bravo', 'charlie', 'delta', 'echo'], 2),
   notes: wordArray()
 })
 
 factory.define('word', Object, {
-  _id: factory.chance('string'),
+  _id: factory.chance('hash'),
   attested: true,
   lemma: wordArray(),
   legacyLemma: factory.chance('word'),
-  homonym: 'I',
+  homonym: homonym(),
   meaning: factory.chance('sentence'),
-  pos: 'AJ',
+  pos: pickOne(['', 'AJ', 'AV', 'N', 'NU', 'DP', 'IP', 'PP', 'QP', 'RP', 'XP', 'REL', 'DET', 'CNJ', 'J', 'MOD', 'PRP', 'SBJ']),
   forms: factory.assocAttrsMany('form', 2),
   amplifiedMeanings: factory.assocAttrsMany('amplifiedMeaning', 2),
   logograms: factory.assocAttrsMany('logogram', 2),
@@ -59,4 +71,9 @@ factory.define('word', Object, {
   ],
   derivedFrom: factory.assocAttrs('derived'),
   source: '**source**'
+})
+
+factory.extend('word', 'verb', {
+  pos: 'V',
+  roots: ['rrr', 'ttt']
 })
