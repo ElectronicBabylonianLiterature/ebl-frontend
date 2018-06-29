@@ -6,9 +6,10 @@ import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
-const noun = 'item'
-const property = 'value'
-const separator = ' '
+const noun = 'log'
+const property = 'key'
+const separator = '/'
+const label = 'Array with notes'
 
 let value
 let element
@@ -33,19 +34,15 @@ beforeEach(() => {
       ]
     }
   ]
-  element = renderForms()
+  element = renderArrayWithNotesList()
 })
 
-it('Displays all array items', () => {
+it('Displays all items', () => {
   _.map(value, entry => entry[property].join(separator)).forEach(item => expect(element.getByValue(item)).toBeVisible())
 })
 
-it('Displays all notes', () => {
-  _.flatMap(value, 'notes').forEach(note => expect(element.getByValue(note)).toBeVisible())
-})
-
 it('Displays label', () => {
-  expect(element.getByText(_.startCase(noun))).toBeVisible()
+  expect(element.getByText(label)).toBeVisible()
 })
 
 it('Adds new entry when Add is clicked', async () => {
@@ -57,36 +54,26 @@ it('Adds new entry when Add is clicked', async () => {
     ])
 })
 
-it('Calls onChange with updated property on change', async () => {
-  await whenChanged(element, value[0][property].join(' '), 'NEW LOG')
+it('Calls onChange on change', async () => {
+  await whenChanged(element, value[0][property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       {
         ...value[0],
-        [property]: newValue.split(' ')
+        [property]: newValue.split(separator)
       },
       ..._.tail(value)
     ])
 })
 
-it('Calls onChange with updated notes on change', async () => {
-  await whenClicked(element, 'Add')
-    .expect(onChange)
-    .toHaveBeenCalledWith([
-      {
-        ...value[0],
-        notes: [...value[0].notes, '']
-      },
-      ..._.tail(value)
-    ])
-})
-
-function renderForms () {
+function renderArrayWithNotesList () {
   return render(<ArrayWithNotesList
-    id='form'
+    id='arrayWithNotesList'
     property={property}
     noun={noun}
     separator={separator}
     value={value}
-    onChange={onChange} />)
+    onChange={onChange}>
+    {label}
+  </ArrayWithNotesList>)
 }

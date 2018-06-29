@@ -1,52 +1,30 @@
 import React, { Component } from 'react'
-import { FormGroup, Button } from 'react-bootstrap'
+import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-import TextListInput from './TextListInput'
-import ArrayInput from './ArrayInput'
+import ArrayWithNotes from './ArrayWithNotes'
+import List from './List'
 
 class ArrayWithNotesList extends Component {
-  add = () => {
-    this.props.onChange([...this.props.value, {[this.props.property]: [], notes: []}])
-  }
-
-  delete = index => () => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      ...this.props.value.slice(index + 1)
-    ])
-  }
-
-  update = (index, property) => value => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      {...this.props.value[index], [property]: value},
-      ...this.props.value.slice(index + 1)
-    ])
-  }
-
   render () {
     return (
       <FormGroup>
-        <label>{this.props.children}</label>
-        <ul>
+        <List
+          label={this.props.children}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          noun={this.props.noun}
+          default={{[this.props.property]: [], notes: []}}>
           {_.map(this.props.value, (item, index) =>
-            <li key={index}>
-              <ArrayInput
-                id={`${this.props.id}-${index}`}
-                separator={this.props.separator}
-                value={item[this.props.property]}
-                onChange={this.update(index, this.props.property)}>
-                {_.startCase(this.props.noun)}
-              </ArrayInput>
-              <TextListInput id={`${this.props.id}-${index}-notes`} value={item.notes} onChange={this.update(index, 'notes')}>
-                Notes
-              </TextListInput>
-              <Button onClick={this.delete(index)}>Delete {this.props.noun}</Button>
-            </li>
+            <ArrayWithNotes
+              key={index}
+              noun={this.props.noun}
+              id={`${this.props.id}-${index}`}
+              property={this.props.property}
+              separator={this.props.separator}
+              value={item} />
           )}
-          <li><Button onClick={this.add}>Add {this.props.noun}</Button></li>
-        </ul>
+        </List>
       </FormGroup>
     )
   }
