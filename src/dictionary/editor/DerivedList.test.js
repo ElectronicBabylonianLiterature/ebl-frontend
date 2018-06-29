@@ -41,13 +41,6 @@ it('Adds new group when Add is cliked', async () => {
     .toHaveBeenCalledWith([...value, []])
 })
 
-it('Removes group when Delete is clicked', async () => {
-  const indexToDelete = 1
-  await whenClicked(element, 'Delete group', indexToDelete)
-    .expect(onChange)
-    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-})
-
 it('Calls onChange with updated value on change', async () => {
   await whenChanged(element, value[0][0].homonym, 'IV')
     .expect(onChange)

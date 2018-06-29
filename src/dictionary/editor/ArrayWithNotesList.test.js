@@ -57,13 +57,6 @@ it('Adds new entry when Add is clicked', async () => {
     ])
 })
 
-it('Removes item when Delete is clicked', async () => {
-  const indexToDelete = 1
-  await whenClicked(element, `Delete ${noun}`, indexToDelete)
-    .expect(onChange)
-    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-})
-
 it('Calls onChange with updated property on change', async () => {
   await whenChanged(element, value[0][property].join(' '), 'NEW LOG')
     .expect(onChange)

@@ -81,13 +81,6 @@ function commonTests () {
     expect(element.getByText(label)).toBeVisible()
   })
 
-  it('Removes item when Delete is clicked', async () => {
-    const indexToDelete = 1
-    await whenClicked(element, `Delete ${noun}`, indexToDelete)
-      .expect(onChange)
-      .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-  })
-
   it('Calls onChange with updated value on change', async () => {
     await whenChanged(element, value[0].meaning, 'new')
       .expect(onChange)

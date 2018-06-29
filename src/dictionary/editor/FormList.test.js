@@ -48,13 +48,6 @@ it('New entry has given fields', async () => {
     ])
 })
 
-it('Removes item when Delete is clicked', async () => {
-  const indexToDelete = 1
-  await whenClicked(element, 'Delete form', indexToDelete)
-    .expect(onChange)
-    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-})
-
 it('Calls onChange with updated value on change', async () => {
   await whenChanged(element, value[0].lemma.join(' '), 'new')
     .expect(onChange)

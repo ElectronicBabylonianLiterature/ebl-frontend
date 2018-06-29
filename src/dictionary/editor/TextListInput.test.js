@@ -40,13 +40,6 @@ it('Adds emtpy item when Add is clicked', async () => {
     .toHaveBeenCalledWith([...value, ''])
 })
 
-it('Removes item when Delete is clicked', async () => {
-  const indexToDelete = 1
-  await whenClicked(element, 'Delete', indexToDelete)
-    .expect(onChange)
-    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
-})
-
 it('Calls onChange with updated value on change', async () => {
   await whenChanged(element, value[0], 'new')
     .expect(onChange)
