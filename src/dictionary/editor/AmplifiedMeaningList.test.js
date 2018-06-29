@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -28,12 +28,12 @@ describe('Entries', () => {
   })
 
   it('New entry has entry fields', async () => {
-    const add = element.getByText(`Add ${noun}`)
-    fireEvent.click(add)
-
-    await wait()
-
-    expect(onChange).toHaveBeenCalledWith([...value, {meaning: '', vowels: []}])
+    await whenClicked(element, `Add ${noun}`)
+      .expect(onChange)
+      .toHaveBeenCalledWith([
+        ...value,
+        {meaning: '', vowels: []}
+      ])
   })
 
   commonTests()
@@ -59,12 +59,12 @@ describe('Conjugations/Functions', () => {
   })
 
   it('New entry has top level fields', async () => {
-    const add = element.getByText(`Add ${noun}`)
-    fireEvent.click(add)
-
-    await wait()
-
-    expect(onChange).toHaveBeenCalledWith([...value, {key: '', meaning: '', vowels: [], entries: []}])
+    await whenClicked(element, `Add ${noun}`)
+      .expect(onChange)
+      .toHaveBeenCalledWith([
+        ...value,
+        {key: '', meaning: '', vowels: [], entries: []}
+      ])
   })
 
   commonTests()
@@ -83,9 +83,9 @@ function commonTests () {
 
   it('Removes item when Delete is clicked', async () => {
     const indexToDelete = 1
-    await clickNth(element, `Delete ${noun}`, indexToDelete)
-
-    expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+    await whenClicked(element, `Delete ${noun}`, indexToDelete)
+      .expect(onChange)
+      .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
   })
 
   it('Calls onChange with updated value on change', async () => {

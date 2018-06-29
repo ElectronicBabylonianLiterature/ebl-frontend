@@ -1,8 +1,8 @@
 import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -39,12 +39,9 @@ describe('Derived from set', () => {
   })
 
   it('Removes derived from when Delete is clicked', async () => {
-    const del = element.getByText('Delete derived from')
-    fireEvent.click(del)
-
-    await wait()
-
-    expect(onChange).toHaveBeenCalledWith(null)
+    await whenClicked(element, 'Delete derived from')
+      .expect(onChange)
+      .toHaveBeenCalledWith(null)
   })
 
   it('Calls onChange with updated derived from on change', async () => {
@@ -72,12 +69,13 @@ describe('No derived from set', () => {
   })
 
   it('Adds derived from whe Add is clicked', async () => {
-    const add = element.getByText('Add derived from')
-    fireEvent.click(add)
-
-    await wait()
-
-    expect(onChange).toHaveBeenCalledWith({lemma: [], homonym: '', notes: []})
+    await whenClicked(element, 'Add derived from')
+      .expect(onChange)
+      .toHaveBeenCalledWith({
+        lemma: [],
+        homonym: '',
+        notes: []
+      })
   })
 })
 

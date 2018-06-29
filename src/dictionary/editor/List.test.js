@@ -2,8 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import List from './List'
 import TextInput from './TextInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {render, cleanup} from 'react-testing-library'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -37,19 +37,16 @@ it('Displays label', () => {
 })
 
 it('New entry has default value', async () => {
-  const add = element.getByText(`Add ${noun}`)
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([...value, defaultValue])
+  await whenClicked(element, `Add ${noun}`)
+    .expect(onChange)
+    .toHaveBeenCalledWith([...value, defaultValue])
 })
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  await clickNth(element, `Delete ${noun}`, indexToDelete)
-
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  await whenClicked(element, `Delete ${noun}`, indexToDelete)
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
 it('Calls onChange with updated value on change', async () => {

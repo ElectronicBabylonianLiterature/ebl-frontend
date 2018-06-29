@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {render, cleanup} from 'react-testing-library'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 const label = 'List'
 
@@ -35,19 +35,16 @@ it('Displays label', () => {
 })
 
 it('Adds emtpy item when Add is clicked', async () => {
-  const add = element.getByText('Add')
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([...value, ''])
+  await whenClicked(element, 'Add')
+    .expect(onChange)
+    .toHaveBeenCalledWith([...value, ''])
 })
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  await clickNth(element, 'Delete', indexToDelete)
-
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  await whenClicked(element, 'Delete', indexToDelete)
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
 it('Calls onChange with updated value on change', async () => {

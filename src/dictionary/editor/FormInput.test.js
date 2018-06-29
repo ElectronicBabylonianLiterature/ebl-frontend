@@ -3,6 +3,8 @@ import FormInput from './FormInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
 
+import {whenClicked} from '../../testHelpers'
+
 let value
 let element
 let onChange
@@ -83,15 +85,12 @@ function commonChangeTests () {
   })
 
   it('onChanged is called with updated notes', async () => {
-    const add = element.getByText('Add')
-    fireEvent.click(add)
-
-    await wait()
-
-    expect(onChange).toHaveBeenCalledWith({
-      ...value,
-      notes: value.notes.concat('')
-    })
+    await whenClicked(element, 'Add')
+      .expect(onChange)
+      .toHaveBeenCalledWith({
+        ...value,
+        notes: value.notes.concat('')
+      })
   })
 }
 

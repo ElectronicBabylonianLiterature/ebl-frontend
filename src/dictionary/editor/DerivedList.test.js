@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import DerivedList from './DerivedList'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -36,19 +36,16 @@ it('Displays label', () => {
 })
 
 it('Adds new group when Add is cliked', async () => {
-  const add = element.getByText('Add group')
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([...value, []])
+  await whenClicked(element, 'Add group')
+    .expect(onChange)
+    .toHaveBeenCalledWith([...value, []])
 })
 
 it('Removes group when Delete is clicked', async () => {
   const indexToDelete = 1
-  await clickNth(element, 'Delete group', indexToDelete)
-
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  await whenClicked(element, 'Delete group', indexToDelete)
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
 it('Calls onChange with updated value on change', async () => {

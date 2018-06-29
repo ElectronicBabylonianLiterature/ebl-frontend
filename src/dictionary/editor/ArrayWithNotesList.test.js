@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {render, cleanup} from 'react-testing-library'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -49,19 +49,19 @@ it('Displays label', () => {
 })
 
 it('Adds new entry when Add is clicked', async () => {
-  const add = element.getByText(`Add ${noun}`)
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([...value, {[property]: [], notes: []}])
+  await whenClicked(element, `Add ${noun}`)
+    .expect(onChange)
+    .toHaveBeenCalledWith([
+      ...value,
+      {[property]: [], notes: []}
+    ])
 })
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  await clickNth(element, `Delete ${noun}`, indexToDelete)
-
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  await whenClicked(element, `Delete ${noun}`, indexToDelete)
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
 it('Calls onChange with updated property on change', async () => {
@@ -77,12 +77,15 @@ it('Calls onChange with updated property on change', async () => {
 })
 
 it('Calls onChange with updated notes on change', async () => {
-  const add = element.getByText('Add')
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([{...value[0], notes: [...value[0].notes, '']}, ..._.tail(value)])
+  await whenClicked(element, 'Add')
+    .expect(onChange)
+    .toHaveBeenCalledWith([
+      {
+        ...value[0],
+        notes: [...value[0].notes, '']
+      },
+      ..._.tail(value)
+    ])
 })
 
 function renderForms () {

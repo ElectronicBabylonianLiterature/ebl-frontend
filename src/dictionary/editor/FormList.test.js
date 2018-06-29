@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import FormList from './FormList'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {clickNth, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from '../../testHelpers'
 
 afterEach(cleanup)
 
@@ -35,19 +35,24 @@ it('Displays label', () => {
 })
 
 it('New entry has given fields', async () => {
-  const add = element.getByText('Add form')
-  fireEvent.click(add)
-
-  await wait()
-
-  expect(onChange).toHaveBeenCalledWith([...value, {lemma: [], attested: true, homonym: '', notes: []}])
+  await whenClicked(element, 'Add form')
+    .expect(onChange)
+    .toHaveBeenCalledWith([
+      ...value,
+      {
+        lemma: [],
+        attested: true,
+        homonym: '',
+        notes: []
+      }
+    ])
 })
 
 it('Removes item when Delete is clicked', async () => {
   const indexToDelete = 1
-  await clickNth(element, 'Delete form', indexToDelete)
-
-  expect(onChange).toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
+  await whenClicked(element, 'Delete form', indexToDelete)
+    .expect(onChange)
+    .toHaveBeenCalledWith(_.reject(value, (value, index) => index === indexToDelete))
 })
 
 it('Calls onChange with updated value on change', async () => {

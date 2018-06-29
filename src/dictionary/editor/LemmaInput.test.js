@@ -50,7 +50,7 @@ describe('Value has attested property', () => {
 
       await wait()
 
-      expect(onChange).toHaveBeenCalledWith({
+      await expect(onChange).toHaveBeenCalledWith({
         lemma: value.lemma,
         attested: !value.attested
       })
