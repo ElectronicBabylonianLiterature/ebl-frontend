@@ -1,44 +1,25 @@
 import React, { Component } from 'react'
-import { FormGroup, Button } from 'react-bootstrap'
+import { FormGroup } from 'react-bootstrap'
 
 import TextInput from './TextInput'
+import List from './List'
 
 class ListInput extends Component {
-  add = () => {
-    this.props.onChange([...this.props.value, ''])
-  }
-
-  delete = index => () => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      ...this.props.value.slice(index + 1)
-    ])
-  }
-
-  update = index => value => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      value,
-      ...this.props.value.slice(index + 1)
-    ])
-  }
-
   render () {
     return (
       <FormGroup>
-        <label>{this.props.children}</label>
-        <ul>
+        <List
+          label={this.props.children}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          default=''>
           {this.props.value.map((item, index) =>
-            <li key={index} >
-              <TextInput
-                id={`${this.props.id}-${index}`}
-                value={item}
-                onChange={this.update(index)} />
-              <Button onClick={this.delete(index)}>Delete</Button>
-            </li>
+            <TextInput
+              key={index}
+              id={`${this.props.id}-${index}`}
+              value={item} />
           )}
-          <li><Button onClick={this.add}>Add</Button></li>
-        </ul>
+        </List>
       </FormGroup>
     )
   }

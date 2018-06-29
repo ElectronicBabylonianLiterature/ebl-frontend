@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { FormGroup, Button } from 'react-bootstrap'
+import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import FormInput from './FormInput'
+import List from './List'
 
 const defaultForm = {
   lemma: [],
@@ -12,42 +13,27 @@ const defaultForm = {
 }
 
 class FormList extends Component {
-  add = () => {
+  get defaultValue () {
     const fields = this.props.fields || _.keys(defaultForm)
-    this.props.onChange([...this.props.value, _.pick(defaultForm, fields)])
-  }
-
-  delete = index => () => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      ...this.props.value.slice(index + 1)
-    ])
-  }
-
-  update = index => form => {
-    this.props.onChange([
-      ...this.props.value.slice(0, index),
-      form,
-      ...this.props.value.slice(index + 1)
-    ])
+    return _.pick(defaultForm, fields)
   }
 
   render () {
     return (
       <FormGroup>
-        <label>{this.props.children}</label>
-        <ul>
+        <List
+          label={this.props.children}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          noun='form'
+          default={this.defaultValue}>
           {this.props.value.map((form, index) =>
-            <li key={index}>
-              {_.isString(form)
-                ? <span>{form}</span>
-                : <FormInput id={`${this.props.id}-${index}`} value={form} onChange={this.update(index)} />
-              }
-              <Button onClick={this.delete(index)}>Delete form</Button>
-            </li>
+            <FormInput
+              key={index}
+              id={`${this.props.id}-${index}`}
+              value={form} />
           )}
-          <li><Button onClick={this.add}>Add form</Button></li>
-        </ul>
+        </List>
       </FormGroup>
     )
   }
