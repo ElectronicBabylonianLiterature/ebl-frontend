@@ -6,7 +6,7 @@ import Auth from './auth0/Auth'
 
 afterEach(cleanup)
 
-const routes = ['/', 'dictionary', '/dictionary/object_id', '/callback']
+const routes = ['/', 'dictionary', '/dictionary/object_id', '/fragmentarium/fragment_number', '/callback']
 
 routes.forEach(route => {
   it(`${route} renders without crashing`, () => {

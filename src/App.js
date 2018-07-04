@@ -8,6 +8,7 @@ import Callback from './auth0/Callback'
 import Introduction from './Introduction'
 import Dictionary from './dictionary/search/Dictionary'
 import WordEditor from './dictionary/editor/WordEditor'
+import Fragment from './fragmentarium/Fragment'
 import HttpClient from './http/HttpClient'
 
 class App extends Component {
@@ -31,6 +32,7 @@ class App extends Component {
         <Route exact path='/' component={Introduction} />
         <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} httpClient={httpClient} {...props} />} />
         <Route path='/dictionary/:id' render={props => <WordEditor httpClient={httpClient} {...props} />} />
+        <Route path='/fragmentarium/:id' render={props => <Fragment httpClient={httpClient} {...props} />} />
         <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
       </div>
     )

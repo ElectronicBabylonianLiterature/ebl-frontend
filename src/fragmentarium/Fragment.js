@@ -37,7 +37,9 @@ class Fragment extends Component {
             </Breadcrumb>
             <h2>{this.props.match.params.id}</h2>
           </header>
-          {this.state.fragment && JSON.stringify(this.state.fragment, null, 2)}
+          {this.state.fragment &&
+            <pre>{JSON.stringify(this.state.fragment, null, 2)}</pre>
+          }
           {this.state.error && <Alert bsStyle='danger'>{this.state.error.message}</Alert>}
         </section>
       )
