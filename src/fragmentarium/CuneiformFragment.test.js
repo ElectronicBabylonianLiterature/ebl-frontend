@@ -36,9 +36,15 @@ describe('fragment display', () => {
     })
   }
 
-  it(`renders folio`, () => {
-    for (let folio of fragment.folio) {
-      expect(textContent).toContain(folio)
-    }
-  })
+  const arrayProperties = [
+    'folio', 'joins'
+  ]
+
+  for (let property of arrayProperties) {
+    it(`renders all items of ${property}`, () => {
+      for (let item of fragment[property]) {
+        expect(textContent).toContain(item)
+      }
+    })
+  }
 })

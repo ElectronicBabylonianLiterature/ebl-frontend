@@ -48,6 +48,11 @@ class CuneiformFragment extends Component {
                   <h2>{this.fragment._id}</h2>
                   {this.fragment.museum}<br />
                   ({this.fragment.collection} Collection)<br />
+                  Joins: <ul>
+                    {this.fragment.joins.map(join =>
+                      <li key={join}>{join}</li>
+                    )}
+                  </ul>
                   {this.fragment.length} x {this.fragment.width} x {this.fragment.thickness} cm<br />
                   CDLI: {this.fragment.cdliNumber}<br />
                   Accession: {this.fragment.accession}
