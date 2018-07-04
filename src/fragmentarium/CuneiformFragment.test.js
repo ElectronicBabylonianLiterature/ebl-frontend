@@ -2,7 +2,7 @@ import React from 'react'
 import { matchPath } from 'react-router'
 import {render, cleanup, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import Fragment from './Fragment'
+import CuneiformFragment from './CuneiformFragment'
 import HttpClient from '../http/HttpClient'
 import Auth from '../auth0/Auth'
 
@@ -21,7 +21,7 @@ describe('fragment display', () => {
     const match = matchPath(`/fragmentarium/${fragment._id}`, {
       path: '/fragmentarium/:id'
     })
-    element = render(<Fragment match={match} httpClient={httpClient} />)
+    element = render(<CuneiformFragment match={match} httpClient={httpClient} />)
     await wait()
     textContent = element.container.textContent
   })
