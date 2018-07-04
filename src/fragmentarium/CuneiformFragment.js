@@ -44,7 +44,7 @@ class CuneiformFragment extends Component {
           {this.fragment && <Fragment>
             <Grid>
               <Row>
-                <Col md={4}>
+                <Col md={2}>
                   <h2>{this.fragment._id}</h2>
                   {this.fragment.museum}<br />
                   ({this.fragment.collection} Collection)<br />
@@ -52,11 +52,12 @@ class CuneiformFragment extends Component {
                   CDLI: {this.fragment.cdliNumber}<br />
                   Accession: {this.fragment.accession}
                 </Col>
-                <Col md={4}>
+                <Col md={5}>
                   ({this.fragment.publication})<br />
                   (Publication: {this.fragment.genre})
+                  <pre>{this.fragment.transliteration}</pre>
                 </Col>
-                <Col md={4} />
+                <Col md={5} />
               </Row>
             </Grid>
             {process.env.NODE_ENV === 'development' && <pre>{JSON.stringify(this.state.fragment, null, 2)}</pre>}
