@@ -35,4 +35,10 @@ describe('fragment display', () => {
       expect(textContent).toContain(fragment[property])
     })
   }
+
+  it(`renders folio`, () => {
+    for (let folio of fragment.folio) {
+      expect(textContent).toContain(folio)
+    }
+  })
 })

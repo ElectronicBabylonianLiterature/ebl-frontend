@@ -26,7 +26,8 @@ factory.define('fragment', Object, {
   'script': factory.chance('pickone', ['NA', 'NB']),
   'date': factory.chance('sentence', {words: 2}),
   'folio': [
-    factory.chance('sentence')
+    factory.chance('word'),
+    factory.chance('word')
   ],
   'record': factory.assocAttrsMany('record', 2),
   'transliteration': factory.chance('paragraph'),

@@ -57,7 +57,13 @@ class CuneiformFragment extends Component {
                   (Publication: {this.fragment.genre})
                   <pre>{this.fragment.transliteration}</pre>
                 </Col>
-                <Col md={5} />
+                <Col md={5}>
+                  <ul>
+                    {this.fragment.folio.map(folio =>
+                      <li key={folio}>{folio}</li>
+                    )}
+                  </ul>
+                </Col>
               </Row>
             </Grid>
             {process.env.NODE_ENV === 'development' && <pre>{JSON.stringify(this.state.fragment, null, 2)}</pre>}
