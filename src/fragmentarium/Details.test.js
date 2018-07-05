@@ -4,12 +4,12 @@ import {factory} from 'factory-girl'
 import Details from './Details'
 
 let fragment
-let textContent
+let container
 let element
 
 function renderDetails () {
   element = render(<Details fragment={fragment} />)
-  textContent = element.container.textContent
+  container = element.container
 }
 afterEach(cleanup)
 
@@ -20,7 +20,7 @@ describe('All details', () => {
   })
 
   it('Renders museum', () => {
-    expect(textContent).toContain(`${fragment.museum}`)
+    expect(container).toHaveTextContent(`${fragment.museum}`)
   })
 
   it('Links museum record', () => {
@@ -28,21 +28,21 @@ describe('All details', () => {
   })
 
   it('Renders colection', () => {
-    expect(textContent).toContain(`(${fragment.collection} Collection)`)
+    expect(container).toHaveTextContent(`(${fragment.collection} Collection)`)
   })
 
   it(`Renders all joins`, () => {
     for (let item of fragment.joins) {
-      expect(textContent).toContain(item)
+      expect(container).toHaveTextContent(item)
     }
   })
 
   it('Renders measures', () => {
-    expect(textContent).toContain(`${fragment.length} x ${fragment.width} x ${fragment.thickness} cm`)
+    expect(container).toHaveTextContent(`${fragment.length} x ${fragment.width} x ${fragment.thickness} cm`)
   })
 
   it('Renders CDLI number', () => {
-    expect(textContent).toContain(`CDLI: ${fragment.cdliNumber}`)
+    expect(container).toHaveTextContent(`CDLI: ${fragment.cdliNumber}`)
   })
 
   it('Links CDLI number', () => {
@@ -50,7 +50,7 @@ describe('All details', () => {
   })
 
   it('Renders accession', () => {
-    expect(textContent).toContain(`Accession: ${fragment.accession}`)
+    expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
   })
 })
 
@@ -71,19 +71,19 @@ describe('Missing details', () => {
   })
 
   it('Does not renders colection', () => {
-    expect(textContent).not.toContain('Collection')
+    expect(container).not.toHaveTextContent('Collection')
   })
 
   it(`Renders dash for joins`, () => {
-    expect(textContent).toContain('Joins: -')
+    expect(container).toHaveTextContent('Joins: -')
   })
 
   it('Renders dash for CDLI number', () => {
-    expect(textContent).toContain('CDLI: -')
+    expect(container).toHaveTextContent('CDLI: -')
   })
 
   it('Renders dash for accession', () => {
-    expect(textContent).toContain('Accession: -')
+    expect(container).toHaveTextContent('Accession: -')
   })
 })
 
