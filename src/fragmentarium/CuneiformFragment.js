@@ -75,6 +75,7 @@ class CuneiformFragment extends Component {
                       <li key={folio}>{folio}</li>
                     )}
                   </ul>
+                  {this.fragment.cdliNumber && <img width='20%' src={`https://cdli.ucla.edu/dl/photo/${this.fragment.cdliNumber}.jpg`} />}
                 </Col>
               </Row>
             </Grid>
