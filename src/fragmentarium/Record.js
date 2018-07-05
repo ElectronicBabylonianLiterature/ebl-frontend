@@ -21,6 +21,7 @@ class Record extends Component {
             {entry.user} ({entry.type}, {formatDate(entry.date)})
           </li>
         )}
+        {_.isEmpty(this.record) && <li className='Record-entry'>No record</li>}
       </ol>
     )
   }
