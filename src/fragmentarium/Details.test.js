@@ -38,7 +38,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    expect(container).toHaveTextContent(`${fragment.length} x ${fragment.width} x ${fragment.thickness} cm`)
+    expect(container).toHaveTextContent(`${fragment.length} × ${fragment.width} × ${fragment.thickness} cm`)
   })
 
   it('Renders CDLI number', () => {
