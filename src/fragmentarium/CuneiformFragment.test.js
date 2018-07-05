@@ -5,6 +5,7 @@ import {factory} from 'factory-girl'
 import CuneiformFragment from './CuneiformFragment'
 import HttpClient from '../http/HttpClient'
 import Auth from '../auth0/Auth'
+import moment from 'moment'
 
 let fragment
 let httpClient
@@ -47,4 +48,10 @@ describe('fragment display', () => {
       }
     })
   }
+
+  it(`renders all records`, () => {
+    for (let record of fragment.record) {
+      expect(textContent).toContain(`${record.user} (${record.type}, ${moment(record.date).format('D/M/YYYY')})`)
+    }
+  })
 })

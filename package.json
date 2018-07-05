@@ -8,6 +8,7 @@
   "dependencies": {
     "auth0-js": "^9.6.0",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "query-string": "5",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",

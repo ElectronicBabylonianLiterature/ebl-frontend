@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Alert, Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
+import moment from 'moment'
 
 import Spinner from '../Spinner'
 
@@ -56,6 +57,12 @@ class CuneiformFragment extends Component {
                   {this.fragment.length} x {this.fragment.width} x {this.fragment.thickness} cm<br />
                   CDLI: {this.fragment.cdliNumber}<br />
                   Accession: {this.fragment.accession}
+                  <h3>Record</h3>
+                  <ol>
+                    {this.fragment.record.map((record, index) =>
+                      <li key={index}>{record.user} ({record.type}, {moment(record.date).format('D/M/YYYY')})</li>
+                    )}
+                  </ol>
                 </Col>
                 <Col md={5}>
                   ({this.fragment.publication})<br />

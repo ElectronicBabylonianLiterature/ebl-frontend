@@ -2,7 +2,7 @@ import {factory} from 'factory-girl'
 
 factory.define('record', Object, {
   user: factory.chance('email'),
-  date: factory.chance('date'),
+  date: () => factory.chance('date')().toISOString(),
   type: factory.chance('pickone', ['Transliteration', 'Collation'])
 })
 
