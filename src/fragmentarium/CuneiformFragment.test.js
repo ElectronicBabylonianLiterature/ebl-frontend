@@ -27,7 +27,7 @@ describe('fragment display', () => {
   })
 
   const properties = [
-    '_id', 'museum', 'collection', 'length', 'width', 'thickness', 'cdliNumber', 'accession', 'genre', 'publication', 'transliteration'
+    '_id', 'museum', 'collection', 'length', 'width', 'thickness', 'cdliNumber', 'accession', 'description', 'publication', 'transliteration'
   ]
 
   for (let property of properties) {

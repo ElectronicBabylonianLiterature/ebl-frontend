@@ -53,8 +53,8 @@ class CuneiformFragment extends Component {
                   <Record record={this.fragment.record} />
                 </Col>
                 <Col md={5}>
-                  ({this.fragment.publication})<br />
-                  (Publication: {this.fragment.genre})
+                  ({this.fragment.description})<br />
+                  (Publication: {this.fragment.publication})
                   <pre>{this.fragment.transliteration}</pre>
                 </Col>
                 <Col md={5}>
