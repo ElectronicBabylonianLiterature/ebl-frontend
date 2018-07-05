@@ -3,6 +3,7 @@ import { Alert, Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
 import moment from 'moment'
 
 import Spinner from '../Spinner'
+import Details from './Details'
 
 class CuneiformFragment extends Component {
   state = {
@@ -47,16 +48,7 @@ class CuneiformFragment extends Component {
               <Row>
                 <Col md={2}>
                   <h2>{this.fragment._id}</h2>
-                  {this.fragment.museum}<br />
-                  ({this.fragment.collection} Collection)<br />
-                  Joins: <ul>
-                    {this.fragment.joins.map(join =>
-                      <li key={join}>{join}</li>
-                    )}
-                  </ul>
-                  {this.fragment.length} x {this.fragment.width} x {this.fragment.thickness} cm<br />
-                  CDLI: {this.fragment.cdliNumber}<br />
-                  Accession: {this.fragment.accession}
+                  <Details fragment={this.fragment} />
                   <h3>Record</h3>
                   <ol>
                     {this.fragment.record.map((record, index) =>

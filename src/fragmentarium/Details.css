@@ -1,0 +1,25 @@
+.Details {
+  list-style: none;
+  padding: 0;
+}
+
+.Details-item {
+  margin-bottom: 0.2em;
+}
+
+.Details-joins {
+  display: inline;
+  padding: 0;
+}
+
+.Details-joins_join {
+  display: inline;
+}
+
+.Details-joins_join + .Details-joins_join::before {
+  content: ", ";
+}
+
+.Details-item_measures {
+  margin-bottom: 1em;
+}
