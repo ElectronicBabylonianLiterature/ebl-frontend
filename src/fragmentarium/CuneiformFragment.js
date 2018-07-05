@@ -67,7 +67,6 @@ class CuneiformFragment extends Component {
                 </Col>
               </Row>
             </Grid>
-            {process.env.NODE_ENV === 'development' && <pre>{JSON.stringify(this.state.fragment, null, 2)}</pre>}
           </Fragment>}
           <Error error={this.state.error} />
         </section>
