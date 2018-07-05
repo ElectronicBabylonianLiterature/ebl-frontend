@@ -17,7 +17,7 @@ class CuneiformFragment extends Component {
   }
 
   get fragmentUrl () {
-    return `${process.env.REACT_APP_DICTIONARY_API_URL}/fragments/${this.props.match.params.id}`
+    return `/fragments/${this.props.match.params.id}`
   }
 
   get isLoading () {

@@ -13,7 +13,7 @@ class WordEditor extends Component {
   }
 
   get wordUrl () {
-    return `${process.env.REACT_APP_DICTIONARY_API_URL}/words/${this.props.match.params.id}`
+    return `/words/${this.props.match.params.id}`
   }
 
   get isLoading () {

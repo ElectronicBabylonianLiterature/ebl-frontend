@@ -21,8 +21,8 @@ describe('Fecth word', () => {
     jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
     renderWithRouter()
 
-    const expectedUrl = 'http://example.com/words/id'
-    expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
+    const expectedPath = '/words/id'
+    expect(httpClient.fetchJson).toBeCalledWith(expectedPath)
   })
 
   it('Displays result on successfull query', async () => {
@@ -52,9 +52,9 @@ describe('Update word', () => {
     await wait()
     await post(container)
 
-    const expectedUrl = 'http://example.com/words/id'
+    const expectedPath = '/words/id'
     const expectedBody = result
-    expect(httpClient.postJson).toHaveBeenCalledWith(expectedUrl, expectedBody)
+    expect(httpClient.postJson).toHaveBeenCalledWith(expectedPath, expectedBody)
   })
 
   it('Displays error message on failed post', async () => {

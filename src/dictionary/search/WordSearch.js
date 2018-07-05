@@ -17,7 +17,7 @@ class WordSearch extends Component {
     } else {
       this.setState({words: null, error: null})
       this.props.httpClient
-        .fetchJson(`${process.env.REACT_APP_DICTIONARY_API_URL}/words?query=${encodeURIComponent(this.props.query)}`)
+        .fetchJson(`/words?query=${encodeURIComponent(this.props.query)}`)
         .then(words => this.setState({words: words, error: null}))
         .catch(error => this.setState({words: [], error: error}))
     }

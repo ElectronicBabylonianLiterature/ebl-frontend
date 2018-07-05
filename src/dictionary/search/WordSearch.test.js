@@ -22,8 +22,8 @@ it('Queries the Dictionary API with given parameters', async () => {
   render(<MemoryRouter><WordSearch query={query} httpClient={httpClient} /></MemoryRouter>)
   await wait()
 
-  const expectedUrl = `http://example.com/words?query=${encodeURIComponent(query)}`
-  expect(httpClient.fetchJson).toBeCalledWith(expectedUrl)
+  const expectedPath = `/words?query=${encodeURIComponent(query)}`
+  expect(httpClient.fetchJson).toBeCalledWith(expectedPath)
 })
 
 it('displays result on successfull query', async () => {

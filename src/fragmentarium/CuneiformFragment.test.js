@@ -26,6 +26,11 @@ describe('fragment display', () => {
     conatiner = element.container
   })
 
+  it('Queries the Fragmenatrium API with given parameters', async () => {
+    const expectedPath = `/fragments/${fragment._id}`
+    expect(httpClient.fetchJson).toBeCalledWith(expectedPath)
+  })
+
   const properties = [
     '_id', 'museum', 'collection', 'length', 'width', 'thickness', 'cdliNumber', 'accession', 'description', 'publication', 'transliteration'
   ]
