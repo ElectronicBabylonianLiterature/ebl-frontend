@@ -60,7 +60,9 @@ class CuneiformFragment extends Component {
                 </Col>
                 <Col md={5}>
                   <Folio folio={this.fragment.folio} />
-                  {this.fragment.cdliNumber && <img width='20%' src={`https://cdli.ucla.edu/dl/photo/${this.fragment.cdliNumber}.jpg`} />}
+                  {this.fragment.cdliNumber && (
+                    <img width='20%' src={`https://cdli.ucla.edu/dl/photo/${this.fragment.cdliNumber}.jpg`} alt={`${this.fragment.cdliNumber}.jpg`} />
+                  )}
                 </Col>
               </Row>
             </Grid>
