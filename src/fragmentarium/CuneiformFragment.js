@@ -6,6 +6,7 @@ import Spinner from '../Spinner'
 import Details from './Details'
 import Record from './Record'
 import Folio from './Folio'
+import CdliImage from './CdliImage'
 
 class CuneiformFragment extends Component {
   state = {
@@ -61,9 +62,7 @@ class CuneiformFragment extends Component {
                 </Col>
                 <Col md={5}>
                   <Folio folio={this.fragment.folio} />
-                  {this.fragment.cdliNumber && (
-                    <img width='20%' src={`https://cdli.ucla.edu/dl/photo/${this.fragment.cdliNumber}.jpg`} alt={`${this.fragment.cdliNumber}.jpg`} />
-                  )}
+                  <CdliImage cdliNumber={this.fragment.cdliNumber} />
                 </Col>
               </Row>
             </Grid>
