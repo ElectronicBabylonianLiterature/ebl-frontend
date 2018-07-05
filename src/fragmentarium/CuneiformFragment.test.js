@@ -5,11 +5,10 @@ import {factory} from 'factory-girl'
 import CuneiformFragment from './CuneiformFragment'
 import HttpClient from '../http/HttpClient'
 import Auth from '../auth0/Auth'
-import moment from 'moment'
 
 let fragment
 let httpClient
-let textContent
+let conatiner
 let element
 
 afterEach(cleanup)
@@ -24,7 +23,7 @@ describe('fragment display', () => {
     })
     element = render(<CuneiformFragment match={match} httpClient={httpClient} />)
     await wait()
-    textContent = element.container.textContent
+    conatiner = element.container
   })
 
   const properties = [
@@ -33,7 +32,7 @@ describe('fragment display', () => {
 
   for (let property of properties) {
     it(`renders ${property}`, () => {
-      expect(textContent).toContain(fragment[property])
+      expect(conatiner).toHaveTextContent(fragment[property])
     })
   }
 
@@ -44,14 +43,14 @@ describe('fragment display', () => {
   for (let property of arrayProperties) {
     it(`renders all items of ${property}`, () => {
       for (let item of fragment[property]) {
-        expect(textContent).toContain(item)
+        expect(conatiner).toHaveTextContent(item)
       }
     })
   }
 
   it(`renders all records`, () => {
     for (let record of fragment.record) {
-      expect(textContent).toContain(`${record.user} (${record.type}, ${moment(record.date).format('D/M/YYYY')})`)
+      expect(conatiner).toHaveTextContent(record.user)
     }
   })
 })

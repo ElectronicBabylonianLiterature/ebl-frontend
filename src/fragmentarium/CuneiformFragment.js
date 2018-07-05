@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { Alert, Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
-import moment from 'moment'
 
 import Spinner from '../Spinner'
 import Details from './Details'
+import Record from './Record'
 
 class CuneiformFragment extends Component {
   state = {
@@ -50,11 +50,7 @@ class CuneiformFragment extends Component {
                   <h2>{this.fragment._id}</h2>
                   <Details fragment={this.fragment} />
                   <h3>Record</h3>
-                  <ol>
-                    {this.fragment.record.map((record, index) =>
-                      <li key={index}>{record.user} ({record.type}, {moment(record.date).format('D/M/YYYY')})</li>
-                    )}
-                  </ol>
+                  <Record record={this.fragment.record} />
                 </Col>
                 <Col md={5}>
                   ({this.fragment.publication})<br />

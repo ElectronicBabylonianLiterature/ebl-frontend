@@ -1,0 +1,9 @@
+.Record {
+  list-style: none;
+  padding: 0;
+}
+
+.Record-entry {
+  margin-bottom: 0.2em;
+  font-size: x-small;
+}
