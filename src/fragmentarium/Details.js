@@ -4,7 +4,9 @@ import _ from 'lodash'
 import './Details.css'
 
 const museums = {
-  'The British Museum': 'http://britishmuseum.org/'
+  'The British Museum': fragment => fragment.bmIdNumber
+    ? `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`
+    : 'https://britishmuseum.org/'
 }
 
 class Details extends Component {
@@ -13,7 +15,7 @@ class Details extends Component {
   }
 
   get museum () {
-    const musuemUrl = museums[this.props.fragment.museum]
+    const musuemUrl = _.get(museums, this.props.fragment.museum, () => null)(this.props.fragment)
     return (
       <a href={musuemUrl}>
         {this.props.fragment.museum}

@@ -32,5 +32,5 @@ factory.define('fragment', Object, {
   'record': factory.assocAttrsMany('record', 2),
   'transliteration': factory.chance('paragraph'),
   'notes': factory.chance('sentence'),
-  'museum': factory.chance('sentence', {words: 4})
+  'museum': 'The British Museum'
 })

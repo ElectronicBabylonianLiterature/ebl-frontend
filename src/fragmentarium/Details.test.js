@@ -23,8 +23,8 @@ describe('All details', () => {
     expect(textContent).toContain(`${fragment.museum}`)
   })
 
-  it('Links museum', () => {
-    expect(element.getByText(fragment.museum).href).toEqual('http://britishmuseum.org/')
+  it('Links museum record', () => {
+    expect(element.getByText(fragment.museum).href).toEqual(`https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
   })
 
   it('Renders colection', () => {
@@ -60,13 +60,14 @@ describe('Missing details', () => {
       collection: '',
       joins: [],
       cdliNumber: '',
-      accession: ''
+      accession: '',
+      bmIdNumber: ''
     })
     renderDetails()
   })
 
-  it('Does not link museum', () => {
-    expect(element.getByText(fragment.museum).href).toBeFalsy()
+  it('Links to museum home', () => {
+    expect(element.getByText(fragment.museum).href).toEqual(`https://britishmuseum.org/`)
   })
 
   it('Does not renders colection', () => {
@@ -83,5 +84,18 @@ describe('Missing details', () => {
 
   it('Renders dash for accession', () => {
     expect(textContent).toContain('Accession: -')
+  })
+})
+
+describe('Unknown musuem', () => {
+  beforeEach(async () => {
+    fragment = await factory.build('fragment', {
+      museum: 'The Other Museum'
+    })
+    renderDetails()
+  })
+
+  it('Does not link museum', () => {
+    expect(element.getByText(fragment.museum).href).toBeFalsy()
   })
 })
