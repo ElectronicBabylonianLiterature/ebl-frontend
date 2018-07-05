@@ -4,6 +4,7 @@ import { Alert, Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
 import Spinner from '../Spinner'
 import Details from './Details'
 import Record from './Record'
+import Folio from './Folio'
 
 class CuneiformFragment extends Component {
   state = {
@@ -58,11 +59,7 @@ class CuneiformFragment extends Component {
                   <pre>{this.fragment.transliteration}</pre>
                 </Col>
                 <Col md={5}>
-                  <ul>
-                    {this.fragment.folio.map(folio =>
-                      <li key={folio}>{folio}</li>
-                    )}
-                  </ul>
+                  <Folio folio={this.fragment.folio} />
                   {this.fragment.cdliNumber && <img width='20%' src={`https://cdli.ucla.edu/dl/photo/${this.fragment.cdliNumber}.jpg`} />}
                 </Col>
               </Row>
