@@ -24,7 +24,8 @@ describe('All details', () => {
   })
 
   it('Links museum record', () => {
-    expect(element.getByText(fragment.museum).href).toEqual(`https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
+    expect(element.getByText(fragment.museum))
+      .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
   })
 
   it('Renders colection', () => {
@@ -38,7 +39,8 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    expect(container).toHaveTextContent(`${fragment.length} × ${fragment.width} × ${fragment.thickness} cm`)
+    const expectedMeasures = `${fragment.length} × ${fragment.width} × ${fragment.thickness} cm`
+    expect(container).toHaveTextContent(expectedMeasures)
   })
 
   it('Renders CDLI number', () => {
@@ -46,7 +48,8 @@ describe('All details', () => {
   })
 
   it('Links CDLI number', () => {
-    expect(element.getByText(fragment.cdliNumber).href).toEqual(`https://cdli.ucla.edu/${fragment.cdliNumber}`)
+    expect(element.getByText(fragment.cdliNumber))
+      .toHaveAttribute('href', `https://cdli.ucla.edu/${fragment.cdliNumber}`)
   })
 
   it('Renders accession', () => {
