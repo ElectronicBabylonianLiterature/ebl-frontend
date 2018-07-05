@@ -19,7 +19,7 @@ class Dictionary extends Component {
               <header className='Dictionary-search'>
                 <WordSearchForm query={query} />
               </header>
-              <WordSearch query={query} httpClient={this.props.httpClient} />
+              <WordSearch query={query} apiClient={this.props.apiClient} />
             </Fragment>
           )
           : <p>You need to be logged in to access the dictionary.</p>

@@ -3,11 +3,11 @@ import { matchPath } from 'react-router'
 import {render, cleanup, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import CuneiformFragment from './CuneiformFragment'
-import HttpClient from '../http/HttpClient'
+import ApiClient from '../http/ApiClient'
 import Auth from '../auth0/Auth'
 
 let fragment
-let httpClient
+let apiClient
 let conatiner
 let element
 
@@ -16,19 +16,19 @@ afterEach(cleanup)
 describe('fragment display', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment')
-    httpClient = new HttpClient(new Auth())
-    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
+    apiClient = new ApiClient(new Auth())
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
     const match = matchPath(`/fragmentarium/${fragment._id}`, {
       path: '/fragmentarium/:id'
     })
-    element = render(<CuneiformFragment match={match} httpClient={httpClient} />)
+    element = render(<CuneiformFragment match={match} apiClient={apiClient} />)
     await wait()
     conatiner = element.container
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
     const expectedPath = `/fragments/${fragment._id}`
-    expect(httpClient.fetchJson).toBeCalledWith(expectedPath)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
   })
 
   const properties = [

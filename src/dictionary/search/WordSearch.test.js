@@ -5,30 +5,30 @@ import WordSearch from './WordSearch'
 import {factory} from 'factory-girl'
 
 let words
-let httpClient
+let apiClient
 
 afterEach(cleanup)
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  httpClient = {
+  apiClient = {
     fetchJson: jest.fn()
   }
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
   const query = 'lem[ma?]'
-  httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  render(<MemoryRouter><WordSearch query={query} httpClient={httpClient} /></MemoryRouter>)
+  apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
+  render(<MemoryRouter><WordSearch query={query} apiClient={apiClient} /></MemoryRouter>)
   await wait()
 
   const expectedPath = `/words?query=${encodeURIComponent(query)}`
-  expect(httpClient.fetchJson).toBeCalledWith(expectedPath)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
 })
 
 it('displays result on successfull query', async () => {
-  httpClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  const element = render(<MemoryRouter><WordSearch query='lemma' httpClient={httpClient} /></MemoryRouter>)
+  apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
+  const element = render(<MemoryRouter><WordSearch query='lemma' apiClient={apiClient} /></MemoryRouter>)
   await wait()
 
   expect(element.getByText(words[0].meaning)).toBeDefined()
@@ -36,8 +36,8 @@ it('displays result on successfull query', async () => {
 
 it('displays error on failed query', async () => {
   const errorMessage = 'error'
-  httpClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-  const element = render(<MemoryRouter><WordSearch query='lemma' httpClient={httpClient} /></MemoryRouter>)
+  apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+  const element = render(<MemoryRouter><WordSearch query='lemma' apiClient={apiClient} /></MemoryRouter>)
   await wait()
 
   expect(element.getByText(errorMessage)).toBeDefined()

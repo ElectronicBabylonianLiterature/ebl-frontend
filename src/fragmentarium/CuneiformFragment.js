@@ -25,7 +25,7 @@ class CuneiformFragment extends Component {
   }
 
   componentDidMount () {
-    this.props.httpClient
+    this.props.apiClient
       .fetchJson(this.fragmentUrl)
       .then(json => this.setState({fragment: json, error: null}))
       .catch(error => this.setState({fragment: null, error: error}))

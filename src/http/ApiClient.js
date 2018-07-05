@@ -2,7 +2,7 @@ function apiUrl (path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-class HttpClient {
+class ApiClient {
   constructor (auth) {
     this.auth = auth
   }
@@ -31,4 +31,4 @@ class HttpClient {
   }
 }
 
-export default HttpClient
+export default ApiClient

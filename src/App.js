@@ -9,11 +9,11 @@ import Introduction from './Introduction'
 import Dictionary from './dictionary/search/Dictionary'
 import WordEditor from './dictionary/editor/WordEditor'
 import CuneiformFragment from './fragmentarium/CuneiformFragment'
-import HttpClient from './http/HttpClient'
+import ApiClient from './http/ApiClient'
 
 class App extends Component {
   render () {
-    const httpClient = new HttpClient(this.props.auth)
+    const apiClient = new ApiClient(this.props.auth)
 
     return (
       <div className='App'>
@@ -30,9 +30,9 @@ class App extends Component {
           </nav>
         </header>
         <Route exact path='/' component={Introduction} />
-        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} httpClient={httpClient} {...props} />} />
-        <Route path='/dictionary/:id' render={props => <WordEditor httpClient={httpClient} {...props} />} />
-        <Route path='/fragmentarium/:id' render={props => <CuneiformFragment httpClient={httpClient} {...props} />} />
+        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
+        <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
+        <Route path='/fragmentarium/:id' render={props => <CuneiformFragment apiClient={apiClient} {...props} />} />
         <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
       </div>
     )

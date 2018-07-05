@@ -3,14 +3,14 @@ import {render, wait, cleanup} from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from '../../auth0/Auth'
-import HttpClient from '../../http/HttpClient'
+import ApiClient from '../../http/ApiClient'
 import {factory} from 'factory-girl'
 
 const DictionaryWithRouter = withRouter(Dictionary)
 
 let words
 let auth
-let httpClient
+let apiClient
 
 afterEach(cleanup)
 
@@ -18,13 +18,13 @@ beforeEach(async () => {
   words = await factory.buildMany('word', 2)
   fetch.resetMocks()
   auth = new Auth()
-  httpClient = new HttpClient(auth)
+  apiClient = new ApiClient(auth)
 })
 
 describe('Searching for word', () => {
   beforeEach(() => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(httpClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
   })
 
   it('displays result on successfull query', async () => {
@@ -55,7 +55,7 @@ it('Displays a message if user is not logged in', async () => {
 })
 
 async function renderDictionary (path) {
-  const element = render(<MemoryRouter initialEntries={[path]}><DictionaryWithRouter auth={auth} httpClient={httpClient} /></MemoryRouter>)
+  const element = render(<MemoryRouter initialEntries={[path]}><DictionaryWithRouter auth={auth} apiClient={apiClient} /></MemoryRouter>)
   await wait()
   return element
 }
