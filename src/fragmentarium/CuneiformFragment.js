@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Alert, Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
+import { Breadcrumb, Grid, Row, Col } from 'react-bootstrap'
 
+import Error from '../Error'
 import Spinner from '../Spinner'
 import Details from './Details'
 import Record from './Record'
@@ -68,7 +69,7 @@ class CuneiformFragment extends Component {
             </Grid>
             {process.env.NODE_ENV === 'development' && <pre>{JSON.stringify(this.state.fragment, null, 2)}</pre>}
           </Fragment>}
-          {this.state.error && <Alert bsStyle='danger'>{this.state.error.message}</Alert>}
+          <Error error={this.state.error} />
         </section>
       )
   }

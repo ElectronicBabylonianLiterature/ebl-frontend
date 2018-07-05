@@ -1,14 +1,18 @@
-import React, { Component } from 'react'
-import { Alert } from 'react-bootstrap'
-import Spinner from '../../Spinner'
+import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 
+import Spinner from '../../Spinner'
 import Word from './Word'
+import Error from '../../Error'
 
 class WordSearch extends Component {
   state = {
     words: null,
     error: null
+  }
+
+  get isLoading () {
+    return _.isNil(this.state.error) && _.isNil(this.state.words)
   }
 
   fetchWords () {
@@ -34,21 +38,20 @@ class WordSearch extends Component {
   }
 
   render () {
-    if (_.isObject(this.state.error)) {
-      return <Alert bsStyle='danger'>{this.state.error.message}</Alert>
-    } else if (_.isArray(this.state.words)) {
-      return (
-        <ul className='Dictionary-results'>
-          {this.state.words.map(word =>
-            <li key={word._id}>
-              <Word value={word} />
-            </li>
-          )}
-        </ul>
+    return this.isLoading
+      ? <Spinner />
+      : (
+        <Fragment>
+          <ul className='Dictionary-results'>
+            {this.state.words.map(word =>
+              <li key={word._id}>
+                <Word value={word} />
+              </li>
+            )}
+          </ul>
+          <Error error={this.state.error} />
+        </Fragment>
       )
-    } else {
-      return <Spinner />
-    }
   }
 }
 

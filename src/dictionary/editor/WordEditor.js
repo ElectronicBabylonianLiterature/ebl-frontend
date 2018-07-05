@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Alert, Breadcrumb } from 'react-bootstrap'
+import { Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
 import WordForm from './WordForm'
 import Spinner from '../../Spinner'
+import Error from '../../Error'
 
 class WordEditor extends Component {
   state = {
@@ -55,7 +56,7 @@ class WordEditor extends Component {
             {this.state.saving && <Spinner>Saving...</Spinner>}
           </header>
           {this.state.word && <WordForm value={this.state.word} onSubmit={this.updateWord} />}
-          {this.state.error && <Alert bsStyle='danger'>{this.state.error.message}</Alert>}
+          <Error error={this.state.error} />
         </section>
       )
   }
