@@ -3,20 +3,31 @@ import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import Folio from './Folio'
 
-let folio
-let conatiner
-let element
+let container
 
 afterEach(cleanup)
 
-beforeEach(async () => {
-  folio = [factory.chance('word')(), factory.chance('word')()]
-  element = render(<Folio folio={folio} />)
-  conatiner = element.container
+describe('Folios', () => {
+  let folio
+
+  beforeEach(async () => {
+    folio = [factory.chance('word')(), factory.chance('word')()]
+    container = render(<Folio folio={folio} />).container
+  })
+
+  it(`Renders folio entries`, () => {
+    for (let item of folio) {
+      expect(container).toHaveTextContent(item)
+    }
+  })
 })
 
-it(`Renders folio entries`, () => {
-  for (let item of folio) {
-    expect(conatiner).toHaveTextContent(item)
-  }
+describe('No folios', () => {
+  beforeEach(async () => {
+    container = render(<Folio folio={[]} />).container
+  })
+
+  it(`Renders no folios test`, () => {
+    expect(container).toHaveTextContent('No folios')
+  })
 })

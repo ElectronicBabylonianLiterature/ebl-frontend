@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 
 import './Folio.css'
 
@@ -9,6 +10,7 @@ class Folio extends Component {
         {this.props.folio.map((entry, index) =>
           <li className='Folio-entry' key={index}>{entry}</li>
         )}
+        {_.isEmpty(this.props.folio) && <li>No folios</li>}
       </ul>
     )
   }
