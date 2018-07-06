@@ -5,6 +5,8 @@ import Spinner from 'Spinner'
 import Word from './Word'
 import Error from 'Error'
 
+import './WordSearch.css'
+
 class WordSearch extends Component {
   state = {
     words: null,
@@ -42,9 +44,9 @@ class WordSearch extends Component {
       ? <Spinner />
       : (
         <Fragment>
-          <ul className='Dictionary-results'>
+          <ul className='WordSearch-results'>
             {this.state.words.map(word =>
-              <li key={word._id}>
+              <li key={word._id} className='WordSearch-results__result'>
                 <Word value={word} />
               </li>
             )}

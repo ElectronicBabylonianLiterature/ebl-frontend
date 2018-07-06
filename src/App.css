@@ -1,24 +1,27 @@
-.App-header,
-.App-intro {
-  text-align: center;
-}
-
-.App-logo {
-  height: 80px;
-}
-
 .App-header {
+  text-align: center;
   background-color: white;
   padding: 20px;
   color: black;
   border-bottom: 1px solid black;
 }
 
-.App-title {
+.App-header__logo {
+  height: 80px;
+}
+
+.App-header__title {
   font-size: 1.5em;
 }
 
-.App section {
+.App-header__nav,
+.App-header__nav-item {
+  display: inline;
+  margin: 0.5em;
+}
+
+
+.App-content {
   padding-left: 5%;
   padding-right: 5%;
   margin-left: auto;
@@ -26,8 +29,3 @@
   max-width: 1200px;
 }
 
-.App-nav ul,
-.App-nav li {
-  display: inline;
-  margin: 0.5em;
-}

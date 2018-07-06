@@ -56,7 +56,7 @@ class Form extends Component {
 class AmplifiedMeanings extends Component {
   render () {
     return (
-      <ul className='AmplifiedMeanings'>
+      <ul>
         {_.map(this.props.value, (value, topLevelindex) =>
           <li key={topLevelindex}>
             {value.key !== '' && <strong>{value.key}</strong>}
@@ -65,7 +65,7 @@ class AmplifiedMeanings extends Component {
             {' '}
             <ul>
               {value.entries.map((value, enryIndex) =>
-                <li className='AmplifiedMeanings-entry' key={enryIndex}><strong>{`${enryIndex + 1}.`}</strong> <InlineMarkdown source={value.meaning} /></li>
+                <li className='AmplifiedMeanings__entry' key={enryIndex}><strong>{`${enryIndex + 1}.`}</strong> <InlineMarkdown source={value.meaning} /></li>
               )}
             </ul>
           </li>
@@ -78,10 +78,10 @@ class AmplifiedMeanings extends Component {
 class Derived extends Component {
   render () {
     return (
-      <ul className='Derived'>
+      <ul>
         {this.props.value.map((group, index) =>
-          <li key={index}><ul className='Derived-group'>{group.map((derived, innerIndex) =>
-            <li key={innerIndex}>
+          <li key={index}><ul className='Derived__group'>{group.map((derived, innerIndex) =>
+            <li className='Derived__entry'key={innerIndex}>
               <Form value={derived} />
             </li>
           )}</ul></li>
@@ -98,8 +98,12 @@ class Word extends Component {
 
   get forms () {
     return (
-      <ul className='Word-forms'>
-        {this.word.forms.map((form, index) => <li key={index}><Form value={form} /></li>)}
+      <ul className='Word__forms'>
+        {this.word.forms.map((form, index) => (
+          <li key={index} className='Word__form'>
+            <Form value={form} />
+          </li>
+        ))}
       </ul>
     )
   }
@@ -121,8 +125,8 @@ class Word extends Component {
         {this.isNotEmpty('derived') && <Derived value={this.word.derived} />}
         {' '}
         {this.word.derivedFrom && (
-          <span className='Word-derivedFrom'>
-            <Form className='Word-derivedFrom' value={this.word.derivedFrom} />
+          <span className='Word__derivedFrom'>
+            <Form value={this.word.derivedFrom} />
           </span>
         )}
       </div>

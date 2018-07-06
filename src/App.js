@@ -16,25 +16,27 @@ class App extends Component {
     const apiClient = new ApiClient(this.props.auth)
 
     return (
-      <div className='App'>
+      <div>
         <header className='App-header'>
-          <h1 className='App-title'>
-            <img src={logo} className='App-logo' alt='Electronic Babylonian Literature (eBL)' title='Electronic Babylonian Literature' />
+          <h1 className='App-header__title'>
+            <img src={logo} className='App-header__logo' alt='Electronic Babylonian Literature (eBL)' title='Electronic Babylonian Literature' />
           </h1>
-          <nav className='App-nav'>
-            <ul>
-              <li><Link to='/'>Home</Link></li>
-              <li><Link to='/dictionary'>Dictionary</Link></li>
-              <li><Link to='/fragmentarium/K.1'>Fragmentarium</Link></li>
-              <li><User auth={this.props.auth} /></li>
+          <nav>
+            <ul className='App-header__nav'>
+              <li className='App-header__nav-item'><Link to='/'>Home</Link></li>
+              <li className='App-header__nav-item'><Link to='/dictionary'>Dictionary</Link></li>
+              <li className='App-header__nav-item'><Link to='/fragmentarium/K.1'>Fragmentarium</Link></li>
+              <li className='App-header__nav-item'><User auth={this.props.auth} /></li>
             </ul>
           </nav>
         </header>
-        <Route exact path='/' component={Introduction} />
-        <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
-        <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
-        <Route path='/fragmentarium/:id' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
-        <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
+        <div className='App-content'>
+          <Route exact path='/' component={Introduction} />
+          <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
+          <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
+          <Route path='/fragmentarium/:id' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
+          <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
+        </div>
       </div>
     )
   }

@@ -10,15 +10,19 @@
   padding: 0;
 }
 
-.Word-forms::before {
+.Word__forms::before {
   content: ", ";
 }
 
-.Word-forms li + li::before {
+.Word__form + .Word__form::before {
   content: ", ";
 }
 
-.AmplifiedMeanings-entry::before {
+.Word__derivedFrom::before {
+  content: "< ";
+}
+
+.AmplifiedMeanings__entry::before {
   content: " ";
 }
 
@@ -26,14 +30,10 @@
   content: "> ";
 }
 
-.Derived-group::after {
+.Derived__group::after {
   content: "; ";
 }
 
-.Derived-group li + li::before {
+.Derived__entry + .Derived__entry::before {
   content: ", ";
-}
-
-.Word-derivedFrom::before {
-  content: "< ";
 }

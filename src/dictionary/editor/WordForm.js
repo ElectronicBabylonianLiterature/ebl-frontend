@@ -11,8 +11,6 @@ import AmplifiedMeaningList from './AmplifiedMeaningList'
 import DerivedFromInput from './DerivedFromInput'
 import PosInput from './PosInput'
 
-import './WordForm.css'
-
 class WordForm extends Component {
   constructor (props) {
     super(props)

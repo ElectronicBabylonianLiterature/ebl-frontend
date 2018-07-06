@@ -1,0 +1,7 @@
+.WordSearch-results {
+  list-style-type: none;
+}
+
+.WordSearch-results__result {
+  margin-bottom: 1em;
+}

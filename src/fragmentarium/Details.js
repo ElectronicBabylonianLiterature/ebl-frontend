@@ -31,7 +31,7 @@ class Details extends Component {
           : (
             <ul className='Details-joins'>
               {this.props.fragment.joins.map(join =>
-                <li className='Details-joins_join' key={join}>{join}</li>
+                <li className='Details-joins__join' key={join}>{join}</li>
               )}
             </ul>
           )
@@ -58,12 +58,12 @@ class Details extends Component {
   render () {
     return (
       <ul className='Details'>
-        <li className='Details-item'>{this.museum}</li>
-        <li className='Details-item'>{this.collection}</li>
-        <li className='Details-item'>{this.joins}</li>
-        <li className='Details-item Details-item_measures'>{this.measurements}</li>
-        <li className='Details-item'>{this.cdliNumber}</li>
-        <li className='Details-item'>Accession: {this.props.fragment.accession || '-'}</li>
+        <li className='Details__item'>{this.museum}</li>
+        <li className='Details__item'>{this.collection}</li>
+        <li className='Details__item'>{this.joins}</li>
+        <li className='Details__item Details-item--extra-margin'>{this.measurements}</li>
+        <li className='Details__item'>{this.cdliNumber}</li>
+        <li className='Details__item'>Accession: {this.props.fragment.accession || '-'}</li>
       </ul>
     )
   }
