@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import './FragmentPager.css'
+
 const numberRegexp = /^([^\d]*)(\d+)$/
 
 export default function FragmentPager ({number}) {
