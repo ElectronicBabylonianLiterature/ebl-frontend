@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react'
+import { Breadcrumb } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import queryString from 'query-string'
 
 import WordSearchForm from './WordSearchForm'
@@ -12,7 +14,15 @@ class Dictionary extends Component {
 
     return (
       <section>
-        <h2>Dictionary</h2>
+        <header>
+          <Breadcrumb separator='/'>
+            <LinkContainer to='/'>
+              <Breadcrumb.Item>eBL</Breadcrumb.Item>
+            </LinkContainer>
+            <Breadcrumb.Item active>Dictionary</Breadcrumb.Item>
+          </Breadcrumb>
+          <h2>Dictionary</h2>
+        </header>
         {this.props.auth.isAuthenticated()
           ? (
             <Fragment>

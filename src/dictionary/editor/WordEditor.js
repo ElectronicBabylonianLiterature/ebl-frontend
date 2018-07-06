@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { LinkContainer } from 'react-router-bootstrap'
 import { Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
@@ -43,8 +44,12 @@ class WordEditor extends Component {
         <section className='WordEditor'>
           <header>
             <Breadcrumb separator='/'>
-              <Breadcrumb.Item href='/'>eBL</Breadcrumb.Item>
-              <Breadcrumb.Item href='/dictionary'>Dictionary</Breadcrumb.Item>
+              <LinkContainer to='/'>
+                <Breadcrumb.Item>eBL</Breadcrumb.Item>
+              </LinkContainer>
+              <LinkContainer to='/dictionary'>
+                <Breadcrumb.Item>Dictionary</Breadcrumb.Item>
+              </LinkContainer>
               <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
             </Breadcrumb>
             {this.state.word && <h2>
