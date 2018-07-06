@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Breadcrumb } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
 
+import Breadcrumbs from 'Breadcrumbs'
 import Error from 'Error'
 import Spinner from 'Spinner'
 import CuneiformFragment from './CuneiformFragment'
@@ -42,15 +41,7 @@ class Fragmentarium extends Component {
   header = () => {
     return (
       <header>
-        <Breadcrumb separator='/'>
-          <LinkContainer to='/'>
-            <Breadcrumb.Item>eBL</Breadcrumb.Item>
-          </LinkContainer>
-          <LinkContainer to='/fragmentarium/K.1'>
-            <Breadcrumb.Item>Fragmentarium</Breadcrumb.Item>
-          </LinkContainer>
-          <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumbs section='Fragmentarium' active={this.props.match.params.id} />
         {!this.state.fragment && <h2>{this.props.match.params.id}</h2>}
       </header>
     )

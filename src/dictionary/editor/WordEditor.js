@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
+import Breadcrumbs from 'Breadcrumbs'
 import WordForm from './WordForm'
 import Spinner from 'Spinner'
 import Error from 'Error'
@@ -43,15 +42,7 @@ class WordEditor extends Component {
       : (
         <section className='WordEditor'>
           <header>
-            <Breadcrumb separator='/'>
-              <LinkContainer to='/'>
-                <Breadcrumb.Item>eBL</Breadcrumb.Item>
-              </LinkContainer>
-              <LinkContainer to='/dictionary'>
-                <Breadcrumb.Item>Dictionary</Breadcrumb.Item>
-              </LinkContainer>
-              <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumbs section='Dictionary' active={this.props.match.params.id} />
             {this.state.word && <h2>
               Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}
               {' '}
