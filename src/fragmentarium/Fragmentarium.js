@@ -4,6 +4,7 @@ import { Breadcrumb } from 'react-bootstrap'
 import Error from '../Error'
 import Spinner from '../Spinner'
 import CuneiformFragment from './CuneiformFragment'
+import FragmentPager from './FragmentPager'
 
 class Fragmentarium extends Component {
   state = {
@@ -20,6 +21,17 @@ class Fragmentarium extends Component {
   }
 
   componentDidMount () {
+    this.fetchFragment()
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      this.fetchFragment()
+    }
+  }
+
+  fetchFragment () {
+    this.setState({fragment: null, error: null})
     this.props.apiClient
       .fetchJson(this.fragmentUrl)
       .then(json => this.setState({fragment: json, error: null}))
@@ -41,6 +53,7 @@ class Fragmentarium extends Component {
           </header>
           {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} />}
           <Error error={this.state.error} />
+          <FragmentPager number={this.props.match.params.id} />
         </section>
       )
   }

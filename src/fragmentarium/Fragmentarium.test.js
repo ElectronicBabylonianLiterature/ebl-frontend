@@ -1,5 +1,6 @@
 import React from 'react'
-import { matchPath } from 'react-router'
+import {matchPath} from 'react-router'
+import {MemoryRouter} from 'react-router-dom'
 import {render, cleanup, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import Fragmentarium from './Fragmentarium'
@@ -18,12 +19,14 @@ afterEach(cleanup)
 
 describe('Fragment is loaded', () => {
   let fragment
+  let element
 
   beforeEach(async () => {
     fragment = await factory.build('fragment', {_id: fragmentId})
     apiClient = new ApiClient(new Auth())
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
-    container = render(<Fragmentarium match={match} apiClient={apiClient} />).container
+    element = render(<MemoryRouter><Fragmentarium match={match} apiClient={apiClient} /></MemoryRouter>)
+    container = element.container
     await wait()
   })
 
@@ -35,6 +38,10 @@ describe('Fragment is loaded', () => {
   it('Shows the fragment', async () => {
     expect(container).toHaveTextContent(fragment.transliteration)
   })
+
+  it('Shows pager', () => {
+    expect(element.getByLabelText('Next')).toBeVisible()
+  })
 })
 
 describe('On error', () => {
@@ -44,7 +51,7 @@ describe('On error', () => {
     apiClient = new ApiClient(new Auth())
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
 
-    container = render(<Fragmentarium match={match} apiClient={apiClient} />).container
+    container = render(<MemoryRouter><Fragmentarium match={match} apiClient={apiClient} /></MemoryRouter>).container
     await wait()
   })
 
