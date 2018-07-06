@@ -10,12 +10,14 @@ export default function FragmentPager ({number}) {
   if (match) {
     const prefix = match[1]
     const current = Number(match[2] || 0)
+    const PagerLink = ({offset, label}) =>
+      <Link to={`/fragmentarium/${prefix}${current + offset}`} aria-label={label}><i className='fas fa-angle-left' aria-hidden /></Link>
 
     return (
       <div className='FragmentPager'>
-        <Link to={`/fragmentarium/${prefix}${current - 1}`} aria-label='Previous'><i className='fas fa-angle-left' aria-hidden /></Link>
+        <PagerLink offset={-1} label='Previous' />
         {' '}
-        <Link to={`/fragmentarium/${prefix}${current + 1}`} aria-label='Next'><i className='fas fa-angle-right' aria-hidden /></Link>
+        <PagerLink offset={1} label='Next' />
       </div>
     )
   } else {
