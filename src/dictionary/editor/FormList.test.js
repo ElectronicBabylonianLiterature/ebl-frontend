@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FormList from './FormList'
 import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {whenClicked, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from 'testHelpers'
 
 afterEach(cleanup)
 

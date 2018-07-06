@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Breadcrumb } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import Error from '../Error'
-import Spinner from '../Spinner'
+import Error from 'Error'
+import Spinner from 'Spinner'
 import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
 import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import {whenClicked, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from 'testHelpers'
 
 afterEach(cleanup)
 

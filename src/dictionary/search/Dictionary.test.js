@@ -2,8 +2,8 @@ import React from 'react'
 import {render, wait, cleanup} from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
-import Auth from '../../auth0/Auth'
-import ApiClient from '../../http/ApiClient'
+import Auth from 'auth0/Auth'
+import ApiClient from 'http/ApiClient'
 import {factory} from 'factory-girl'
 
 const DictionaryWithRouter = withRouter(Dictionary)

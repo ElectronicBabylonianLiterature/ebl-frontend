@@ -3,7 +3,7 @@ import _ from 'lodash'
 import List from './List'
 import TextInput from './TextInput'
 import {render, cleanup} from 'react-testing-library'
-import {whenClicked, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from 'testHelpers'
 
 afterEach(cleanup)
 

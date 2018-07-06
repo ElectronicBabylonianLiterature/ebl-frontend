@@ -4,8 +4,8 @@ import { Breadcrumb } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 
 import WordForm from './WordForm'
-import Spinner from '../../Spinner'
-import Error from '../../Error'
+import Spinner from 'Spinner'
+import Error from 'Error'
 
 class WordEditor extends Component {
   state = {

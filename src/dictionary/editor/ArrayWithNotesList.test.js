@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
 import {render, cleanup} from 'react-testing-library'
-import {whenClicked, whenChanged} from '../../testHelpers'
+import {whenClicked, whenChanged} from 'testHelpers'
 
 afterEach(cleanup)
 

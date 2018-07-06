@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextInput from './TextInput'
 import {render, cleanup} from 'react-testing-library'
-import {whenChanged} from '../../testHelpers'
+import {whenChanged} from 'testHelpers'
 
 const label = 'Text'
 const value = 'text input'

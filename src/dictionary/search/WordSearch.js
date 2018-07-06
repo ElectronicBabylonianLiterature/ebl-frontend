@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 
-import Spinner from '../../Spinner'
+import Spinner from 'Spinner'
 import Word from './Word'
-import Error from '../../Error'
+import Error from 'Error'
 
 class WordSearch extends Component {
   state = {

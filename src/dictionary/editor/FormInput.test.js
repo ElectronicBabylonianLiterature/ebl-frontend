@@ -3,7 +3,7 @@ import FormInput from './FormInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
 
-import {whenClicked} from '../../testHelpers'
+import {whenClicked} from 'testHelpers'
 
 let value
 let element

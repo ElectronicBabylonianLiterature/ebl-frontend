@@ -2,8 +2,8 @@ import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
 import {render, wait, cleanup, fireEvent} from 'react-testing-library'
 import WordEditor from './WordEditor'
-import ApiClient from '../../http/ApiClient'
-import Auth from '../../auth0/Auth'
+import ApiClient from 'http/ApiClient'
+import Auth from 'auth0/Auth'
 import {factory} from 'factory-girl'
 
 let result

@@ -4,8 +4,8 @@ import {MemoryRouter} from 'react-router-dom'
 import {render, cleanup, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import Fragmentarium from './Fragmentarium'
-import ApiClient from '../http/ApiClient'
-import Auth from '../auth0/Auth'
+import ApiClient from 'http/ApiClient'
+import Auth from 'auth0/Auth'
 
 const fragmentId = 'K.1'
 const match = matchPath(`/fragmentarium/${fragmentId}`, {

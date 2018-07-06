@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Spinner from '../Spinner'
+import Spinner from 'Spinner'
 
 class Callback extends Component {
   handleAuthentication (nextState, replace) {
