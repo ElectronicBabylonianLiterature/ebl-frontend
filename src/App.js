@@ -25,6 +25,7 @@ class App extends Component {
             <ul>
               <li><Link to='/'>Home</Link></li>
               <li><Link to='/dictionary'>Dictionary</Link></li>
+              <li><Link to='/fragmentarium/K.1'>Fragmentarium</Link></li>
               <li><User auth={this.props.auth} /></li>
             </ul>
           </nav>
