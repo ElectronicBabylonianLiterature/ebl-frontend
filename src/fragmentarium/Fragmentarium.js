@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Breadcrumb } from 'react-bootstrap'
 
 import Error from '../Error'
@@ -38,24 +38,35 @@ class Fragmentarium extends Component {
       .catch(error => this.setState({fragment: null, error: error}))
   }
 
+  header = () => {
+    return (
+      <header>
+        <Breadcrumb separator='/'>
+          <Breadcrumb.Item href='/'>eBL</Breadcrumb.Item>
+          <Breadcrumb.Item>Fragmentarium</Breadcrumb.Item>
+          <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
+        </Breadcrumb>
+        {!this.state.fragment && <h2>{this.props.match.params.id}</h2>}
+      </header>
+    )
+  }
+
   render () {
-    return this.isLoading
-      ? <section><Spinner /></section>
-      : (
-        <section className='Fragment'>
-          <header>
-            <Breadcrumb separator='/'>
-              <Breadcrumb.Item href='/'>eBL</Breadcrumb.Item>
-              <Breadcrumb.Item>Fragmentarium</Breadcrumb.Item>
-              <Breadcrumb.Item active>{this.props.match.params.id}</Breadcrumb.Item>
-            </Breadcrumb>
-            {!this.state.fragment && <h2>{this.props.match.params.id}</h2>}
-          </header>
-          {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} />}
-          <Error error={this.state.error} />
-          <FragmentPager number={this.props.match.params.id} />
-        </section>
-      )
+    return (
+      <section>
+        <this.header />
+        {this.props.auth.isAuthenticated()
+          ? (
+            <Fragment>
+              {this.isLoading && <section><Spinner /></section>}
+              {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} />}
+              <Error error={this.state.error} />
+              <FragmentPager number={this.props.match.params.id} />
+            </Fragment>
+          ) : 'You need to be logged in to access the fragmentarium.'
+        }
+      </section>
+    )
   }
 }
 

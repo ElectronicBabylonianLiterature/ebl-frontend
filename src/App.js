@@ -32,7 +32,7 @@ class App extends Component {
         <Route exact path='/' component={Introduction} />
         <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
         <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
-        <Route path='/fragmentarium/:id' render={props => <Fragmentarium apiClient={apiClient} {...props} />} />
+        <Route path='/fragmentarium/:id' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
         <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
       </div>
     )
