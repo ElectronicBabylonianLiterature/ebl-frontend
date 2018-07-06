@@ -114,8 +114,8 @@ class Word extends Component {
 
   render () {
     return (
-      <div className='Word'>
-        <Lemma value={this.word} container='strong' />
+      <p className='Word'>
+        <dfn><Lemma value={this.word} container='strong' /></dfn>
         {!_.isEmpty(this.forms) && this.forms}
         {' '}
         <InlineMarkdown source={this.word.meaning} />
@@ -129,7 +129,7 @@ class Word extends Component {
             <Form value={this.word.derivedFrom} />
           </span>
         )}
-      </div>
+      </p>
     )
   }
 }
