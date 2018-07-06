@@ -46,7 +46,7 @@ class WordSearch extends Component {
         <Fragment>
           <ul className='WordSearch-results'>
             {this.state.words.map(word =>
-              <li key={word._id}>
+              <li key={word._id} className='WordSearch-results__result'>
                 <Word value={word} />
               </li>
             )}
