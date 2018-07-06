@@ -15,7 +15,7 @@ describe('fragment display', () => {
   })
 
   const properties = [
-    '_id', 'museum', 'collection', 'length', 'width', 'thickness', 'cdliNumber', 'accession', 'description', 'publication', 'transliteration'
+    '_id', 'museum', 'collection', 'cdliNumber', 'accession', 'description', 'publication', 'transliteration'
   ]
 
   for (let property of properties) {
@@ -35,6 +35,12 @@ describe('fragment display', () => {
       }
     })
   }
+
+  it(`renders all measures`, () => {
+    for (let property of ['length', 'width', 'thickness']) {
+      expect(container).toHaveTextContent(fragment[property].value)
+    }
+  })
 
   it(`renders all records`, () => {
     for (let record of fragment.record) {

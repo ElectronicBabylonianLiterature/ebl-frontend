@@ -39,7 +39,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.length} × ${fragment.width} × ${fragment.thickness} cm`
+    const expectedMeasures = `${fragment.length.value} × ${fragment.width.value} × ${fragment.thickness.value} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 

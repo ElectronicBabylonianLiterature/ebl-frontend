@@ -6,6 +6,11 @@ factory.define('record', Object, {
   type: factory.chance('pickone', ['Transliteration', 'Collation'])
 })
 
+factory.define('measure', Object, {
+  value: factory.chance('floating', {min: 0, max: 100}),
+  note: factory.chance('sentence')
+})
+
 factory.define('fragment', Object, {
   '_id': factory.chance('word'),
   'cdliNumber': factory.chance('word'),
@@ -19,9 +24,9 @@ factory.define('fragment', Object, {
   ],
   'subcollection': factory.chance('sentence', {words: 2}),
   'description': factory.chance('sentence'),
-  'length': '13,3',
-  'width': '5,0 (complete)',
-  'thickness': '2,7 (incomplete)',
+  'length': factory.assocAttrs('measure'),
+  'width': factory.assocAttrs('measure'),
+  'thickness': factory.assocAttrs('measure'),
   'collection': 'Kuyunjik',
   'script': factory.chance('pickone', ['NA', 'NB']),
   'date': factory.chance('sentence', {words: 2}),
