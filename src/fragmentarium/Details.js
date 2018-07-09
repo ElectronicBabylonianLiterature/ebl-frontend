@@ -41,7 +41,13 @@ class Details extends Component {
   }
 
   get measurements () {
-    return `${this.props.fragment.length.value} × ${this.props.fragment.width.value} × ${this.props.fragment.thickness.value} cm`
+    const measurements = _([
+      this.props.fragment.length.value,
+      this.props.fragment.width.value,
+      this.props.fragment.thickness.value
+    ]).compact().join(' × ')
+
+    return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
   }
 
   get cdliNumber () {

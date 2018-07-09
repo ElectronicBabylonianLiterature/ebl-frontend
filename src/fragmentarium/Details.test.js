@@ -64,9 +64,14 @@ describe('Missing details', () => {
       joins: [],
       cdliNumber: '',
       accession: '',
-      bmIdNumber: ''
+      bmIdNumber: '',
+      width: {}
     })
     renderDetails()
+  })
+
+  it('Does not render undefined', () => {
+    expect(container).not.toHaveTextContent('undefined')
   })
 
   it('Links to museum home', () => {
@@ -79,6 +84,11 @@ describe('Missing details', () => {
 
   it(`Renders dash for joins`, () => {
     expect(container).toHaveTextContent('Joins: -')
+  })
+
+  it('Does not renders missing measures', () => {
+    const expectedMeasures = `${fragment.length.value} × ${fragment.thickness.value} cm`
+    expect(container).toHaveTextContent(expectedMeasures)
   })
 
   it('Renders dash for CDLI number', () => {
