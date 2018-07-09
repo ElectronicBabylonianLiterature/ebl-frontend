@@ -5,6 +5,7 @@ import Details from './Details'
 import Record from './Record'
 import Folio from './Folio'
 import CdliImage from './CdliImage'
+import TransliteratioForm from './TransliterationForm'
 
 class CuneiformFragment extends Component {
   get fragment () {
@@ -24,7 +25,7 @@ class CuneiformFragment extends Component {
           <Col md={5}>
             <p>{this.fragment.description}</p>
             <p>(Publication: {this.fragment.publication || '- '})</p>
-            <pre>{this.fragment.transliteration}</pre>
+            <TransliteratioForm transliteration={this.fragment.transliteration} />
           </Col>
           <Col md={5}>
             <Folio folio={this.fragment.folio} />
