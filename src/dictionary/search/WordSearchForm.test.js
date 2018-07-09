@@ -1,7 +1,9 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import {fireEvent, render, wait, cleanup} from 'react-testing-library'
+import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import { changeValueByLabel } from 'testHelpers'
+
 import WordSearchForm from './WordSearchForm'
 
 afterEach(cleanup)
@@ -9,13 +11,10 @@ afterEach(cleanup)
 it('Adds lemma to query string on submit', async () => {
   const history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const {getByLabelText, container} = render(<Router history={history}><WordSearchForm /></Router>)
+  const element = render(<Router history={history}><WordSearchForm /></Router>)
 
-  const lemma = getByLabelText('Query')
-  lemma.value = 'lemma'
-  fireEvent.change(lemma)
-
-  fireEvent.submit(container.querySelector('form'))
+  await changeValueByLabel(element, 'Query', 'lemma')
+  fireEvent.submit(element.container.querySelector('form'))
   await wait()
 
   expect(history.push).toBeCalledWith('?query=lemma')
