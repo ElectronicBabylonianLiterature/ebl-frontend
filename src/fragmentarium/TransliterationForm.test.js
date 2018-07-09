@@ -1,6 +1,6 @@
 import React from 'react'
 import {render, cleanup} from 'react-testing-library'
-import { changeValueByLabel, whenClicked } from 'testHelpers'
+import { changeValueByLabel, whenClicked, clickNth } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
 import ApiClient from 'http/ApiClient'
@@ -36,4 +36,13 @@ it('Posts transliteration to API on save', async () => {
   await whenClicked(element, 'Save')
     .expect(apiClient.postJson)
     .toHaveBeenCalledWith(`/fragments/${number}/transliteration`, transliteration)
+})
+
+it('Shows error if saving transliteration fails', async () => {
+  const errorMessage = 'error message'
+  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+
+  await clickNth(element, 'Save', 0)
+
+  expect(element.container).toHaveTextContent(errorMessage)
 })
