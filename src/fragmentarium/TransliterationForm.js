@@ -2,6 +2,20 @@ import React, { Component } from 'react'
 import { FormGroup, FormControl } from 'react-bootstrap'
 
 class TransliteratioForm extends Component {
+  state = {
+    transliteration: this.props.transliteration
+  }
+
+  get rows () {
+    return this.state.transliteration.split('\n').length
+  }
+
+  onChange = event => {
+    this.setState({
+      transliteration: event.target.value
+    })
+  }
+
   render () {
     return (
       <form>
@@ -9,9 +23,9 @@ class TransliteratioForm extends Component {
           <FormControl
             componentClass='textarea'
             aria-label='Transliteration'
-            value={this.props.transliteration}
-            rows={this.props.transliteration.split('\n').length}
-            readOnly />
+            value={this.state.transliteration}
+            rows={this.rows}
+            onChange={this.onChange} />
         </FormGroup>
       </form>
     )
