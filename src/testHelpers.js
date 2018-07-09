@@ -30,9 +30,9 @@ export async function changeValueByLabel (element, label, newValue) {
 }
 
 export function whenClicked (element, text, n = 0) {
-  return when(onChange => async expectedChange => {
+  return when(onChange => async (...expectedChange) => {
     await clickNth(element, text, n)
-    expect(onChange).toHaveBeenCalledWith(expectedChange)
+    expect(onChange).toHaveBeenCalledWith(...expectedChange)
   })
 }
 

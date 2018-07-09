@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, FormControl } from 'react-bootstrap'
+import { FormGroup, FormControl, Button } from 'react-bootstrap'
 
 class TransliteratioForm extends Component {
   state = {
@@ -16,9 +16,15 @@ class TransliteratioForm extends Component {
     })
   }
 
+  submit = event => {
+    event.preventDefault()
+    const path = `/fragments/${this.props.number}/transliteration`
+    this.props.apiClient.postJson(path, this.state.transliteration)
+  }
+
   render () {
     return (
-      <form>
+      <form onSubmit={this.submit}>
         <FormGroup controlId='transliteration'>
           <FormControl
             componentClass='textarea'
@@ -27,6 +33,7 @@ class TransliteratioForm extends Component {
             rows={this.rows}
             onChange={this.onChange} />
         </FormGroup>
+        <Button type='submit' bsStyle='primary'>Save</Button>
       </form>
     )
   }

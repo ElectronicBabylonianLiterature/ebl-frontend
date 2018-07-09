@@ -55,7 +55,7 @@ class Fragmentarium extends Component {
           ? (
             <Fragment>
               {this.isLoading && <section><Spinner /></section>}
-              {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} />}
+              {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} apiClient={this.props.apiClient} />}
               <Error error={this.state.error} />
               <FragmentPager number={this.props.match.params.id} />
             </Fragment>

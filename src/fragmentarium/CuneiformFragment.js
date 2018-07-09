@@ -25,7 +25,10 @@ class CuneiformFragment extends Component {
           <Col md={5}>
             <p>{this.fragment.description}</p>
             <p>(Publication: {this.fragment.publication || '- '})</p>
-            <TransliteratioForm transliteration={this.fragment.transliteration} />
+            <TransliteratioForm
+              number={this.fragment._id}
+              transliteration={this.fragment.transliteration}
+              apiClient={this.props.apiClient} />
           </Col>
           <Col md={5}>
             <Folio folio={this.fragment.folio} />
