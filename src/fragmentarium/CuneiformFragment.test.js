@@ -24,27 +24,27 @@ describe('fragment display', () => {
     })
   }
 
-  const arrayProperties = [
-    'folio', 'joins'
-  ]
+  it('renders all joins', () => {
+    for (let item of fragment.joins) {
+      expect(container).toHaveTextContent(item)
+    }
+  })
 
-  for (let property of arrayProperties) {
-    it(`renders all items of ${property}`, () => {
-      for (let item of fragment[property]) {
-        expect(container).toHaveTextContent(item)
-      }
-    })
-  }
-
-  it(`renders all measures`, () => {
+  it('renders all measures', () => {
     for (let property of ['length', 'width', 'thickness']) {
       expect(container).toHaveTextContent(fragment[property].value)
     }
   })
 
-  it(`renders all records`, () => {
+  it('renders all records', () => {
     for (let record of fragment.record) {
       expect(container).toHaveTextContent(record.user)
+    }
+  })
+
+  it('renders all folios', () => {
+    for (let folio of fragment.folio) {
+      expect(container).toHaveTextContent(folio.number)
     }
   })
 })

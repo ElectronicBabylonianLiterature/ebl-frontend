@@ -11,6 +11,11 @@ factory.define('measure', Object, {
   note: factory.chance('sentence')
 })
 
+factory.define('folio', Object, {
+  name: factory.chance('pickone', ['WGL', 'FWG', 'EL']),
+  number: factory.chance('string')
+})
+
 factory.define('fragment', Object, {
   '_id': factory.chance('word'),
   'cdliNumber': factory.chance('word'),
@@ -30,10 +35,7 @@ factory.define('fragment', Object, {
   'collection': 'Kuyunjik',
   'script': factory.chance('pickone', ['NA', 'NB']),
   'date': factory.chance('sentence', {words: 2}),
-  'folio': [
-    factory.chance('word'),
-    factory.chance('word')
-  ],
+  'folio': factory.assocAttrsMany('folio', 2),
   'record': factory.assocAttrsMany('record', 2),
   'transliteration': factory.chance('paragraph'),
   'notes': factory.chance('sentence'),
