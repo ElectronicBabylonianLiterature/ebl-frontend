@@ -5,7 +5,8 @@ import Error from 'Error'
 class TransliteratioForm extends Component {
   state = {
     transliteration: this.props.transliteration,
-    error: null
+    error: null,
+    disabled: false,
   }
 
   get rows () {
@@ -21,15 +22,21 @@ class TransliteratioForm extends Component {
 
   submit = event => {
     event.preventDefault()
+    this.setState({
+      ...this.state,
+      disabled: true
+    })
     const path = `/fragments/${this.props.number}/transliteration`
     this.props.apiClient.postJson(path, this.state.transliteration)
       .then(() => this.setState({
         ...this.state,
-        error: null
+        error: null,
+        disabled: false
       }))
       .catch(error => this.setState({
         ...this.state,
-        error: error
+        error: error,
+        disabled: false
       }))
   }
 
@@ -44,7 +51,9 @@ class TransliteratioForm extends Component {
             rows={this.rows}
             onChange={this.onChange} />
         </FormGroup>
-        <Button type='submit' bsStyle='primary'>Save</Button>
+        <Button type='submit' bsStyle='primary' disabled={this.state.disabled}>
+          Save
+        </Button>
         <Error error={this.state.error} />
       </form>
     )
