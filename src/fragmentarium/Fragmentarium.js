@@ -30,7 +30,7 @@ class Fragmentarium extends Component {
     }
   }
 
-  fetchFragment () {
+  fetchFragment = () => {
     this.setState({fragment: null, error: null})
     this.props.apiClient
       .fetchJson(this.fragmentUrl)
@@ -55,7 +55,11 @@ class Fragmentarium extends Component {
           ? (
             <Fragment>
               {this.isLoading && <section><Spinner /></section>}
-              {this.state.fragment && <CuneiformFragment fragment={this.state.fragment} apiClient={this.props.apiClient} />}
+              {this.state.fragment && <CuneiformFragment
+                fragment={this.state.fragment}
+                apiClient={this.props.apiClient}
+                onChange={this.fetchFragment}
+              />}
               <Error error={this.state.error} />
               <FragmentPager number={this.props.match.params.id} />
             </Fragment>

@@ -6,7 +6,7 @@ class TransliteratioForm extends Component {
   state = {
     transliteration: this.props.transliteration,
     error: null,
-    disabled: false,
+    disabled: false
   }
 
   get rows () {
@@ -28,11 +28,14 @@ class TransliteratioForm extends Component {
     })
     const path = `/fragments/${this.props.number}/transliteration`
     this.props.apiClient.postJson(path, this.state.transliteration)
-      .then(() => this.setState({
-        ...this.state,
-        error: null,
-        disabled: false
-      }))
+      .then(() => {
+        this.setState({
+          ...this.state,
+          error: null,
+          disabled: false
+        })
+        this.props.onChange()
+      })
       .catch(error => this.setState({
         ...this.state,
         error: error,

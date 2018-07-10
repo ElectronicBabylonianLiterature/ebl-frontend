@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import { changeValueByLabel, whenClicked, clickNth } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
@@ -11,12 +11,19 @@ const transliteration = 'line1\nline2'
 
 let apiClient
 let element
+let onChange
 
 afterEach(cleanup)
 
 beforeEach(() => {
+  onChange = jest.fn()
   apiClient = new ApiClient(new Auth())
-  element = render(<TransliteratioForm number={number} transliteration={transliteration} apiClient={apiClient} />)
+  element = render(<TransliteratioForm
+    number={number}
+    transliteration={transliteration}
+    apiClient={apiClient}
+    onChange={onChange}
+  />)
 })
 
 it('Shows transliteration', () => {
@@ -31,11 +38,19 @@ it('Updates transliteration on change', async () => {
 })
 
 it('Posts transliteration to API on save', async () => {
-  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve)
+  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 
   await whenClicked(element, 'Save')
     .expect(apiClient.postJson)
     .toHaveBeenCalledWith(`/fragments/${number}/transliteration`, transliteration)
+})
+
+it('Calls onChange on save', async () => {
+  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
+
+  await clickNth(element, 'Save', 0)
+
+  expect(onChange).toHaveBeenCalled()
 })
 
 it('Shows error if saving transliteration fails', async () => {

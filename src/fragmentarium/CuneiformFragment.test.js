@@ -1,17 +1,28 @@
 import React from 'react'
 import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
+import ApiClient from 'http/ApiClient'
+import Auth from 'auth0/Auth'
+import { clickNth } from 'testHelpers'
 import CuneiformFragment from './CuneiformFragment'
 
 let fragment
 let element
 let container
+let apiClient
+let onChange
 
 afterEach(cleanup)
 
 beforeEach(async () => {
+  onChange = jest.fn()
+  apiClient = new ApiClient(new Auth())
   fragment = await factory.build('fragment')
-  element = render(<CuneiformFragment fragment={fragment} />)
+  element = render(<CuneiformFragment
+    fragment={fragment}
+    apiClient={apiClient}
+    onChange={onChange}
+  />)
   container = element.container
 })
 
@@ -47,8 +58,16 @@ it('Renders all records', () => {
   }
 })
 
-it('RSenders all folios', () => {
+it('Renders all folios', () => {
   for (let folio of fragment.folio) {
     expect(container).toHaveTextContent(folio.number)
   }
+})
+
+it('Calls onChange on save', async () => {
+  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
+
+  await clickNth(element, 'Save', 0)
+
+  expect(onChange).toHaveBeenCalled()
 })
