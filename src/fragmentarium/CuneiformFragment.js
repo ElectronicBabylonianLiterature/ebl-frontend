@@ -35,9 +35,11 @@ class CuneiformFragment extends Component {
           <Col md={5}>
             <Folio folio={this.fragment.folio} />
             <CdliImage cdliNumber={this.fragment.cdliNumber} />
-            {this.fragment.folio.map((folio, index) =>
-              <ApiImage key={index} apiClient={this.props.apiClient} fileName={`${folio.name}_${folio.number}.jpg`} />
-            )}
+            {this.fragment.folio
+              .filter(folio => folio.name === 'WGL')
+              .map((folio, index) =>
+                <ApiImage key={index} apiClient={this.props.apiClient} fileName={`${folio.name}_${folio.number}.jpg`} />
+              )}
           </Col>
         </Row>
       </Grid>
