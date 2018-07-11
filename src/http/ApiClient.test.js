@@ -96,3 +96,41 @@ describe('postJson', () => {
     await expect(apiClient.postJson(path, json)).rejects.toEqual(new Error(statusText))
   })
 })
+
+describe('fetchBlob', () => {
+  it('Resolves to dataURI', async () => {
+    auth.getAccessToken.mockReturnValueOnce(accessToken)
+    fetch.mockResponseOnce(JSON.stringify(result))
+
+    const blob = new Blob([JSON.stringify(result)])
+    expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
+  })
+
+  it('Makes a request with given parameters', async () => {
+    auth.getAccessToken.mockReturnValueOnce(accessToken)
+    fetch.mockResponseOnce(JSON.stringify(result))
+
+    await apiClient.fetchBlob(path)
+
+    const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
+    expect(fetch).toBeCalledWith(expectedUrl, {headers: expectedHeaders})
+  })
+
+  it('Rejects with error if not authorized', async () => {
+    auth.getAccessToken.mockImplementationOnce(() => { throw error })
+
+    await expect(apiClient.fetchBlob(path)).rejects.toEqual(error)
+  })
+
+  it('Rejects with error if fetch fails', async () => {
+    fetch.mockRejectOnce(error)
+
+    await expect(apiClient.fetchBlob(path)).rejects.toEqual(error)
+  })
+
+  it('Rejects with status text as error message if response not ok', async () => {
+    const statusText = 'NOT FOUND'
+    fetch.mockResponseOnce('', {status: 404, statusText: statusText})
+    await expect(apiClient.fetchBlob(path)).rejects.toEqual(new Error(statusText))
+  })
+})
