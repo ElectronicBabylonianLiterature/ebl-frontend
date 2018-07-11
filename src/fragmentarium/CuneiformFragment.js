@@ -5,6 +5,7 @@ import Details from './Details'
 import Record from './Record'
 import Folio from './Folio'
 import CdliImage from './CdliImage'
+import ApiImage from './ApiImage'
 import TransliteratioForm from './TransliterationForm'
 
 class CuneiformFragment extends Component {
@@ -34,6 +35,9 @@ class CuneiformFragment extends Component {
           <Col md={5}>
             <Folio folio={this.fragment.folio} />
             <CdliImage cdliNumber={this.fragment.cdliNumber} />
+            {this.fragment.folio.map((folio, index) =>
+              <ApiImage key={index} apiClient={this.props.apiClient} fileName={`${folio.name}_${folio.number}.jpg`} />
+            )}
           </Col>
         </Row>
       </Grid>

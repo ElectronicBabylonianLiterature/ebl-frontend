@@ -17,6 +17,8 @@ afterEach(cleanup)
 beforeEach(async () => {
   onChange = jest.fn()
   apiClient = new ApiClient(new Auth())
+  URL.createObjectURL.mockReturnValue('url')
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
   fragment = await factory.build('fragment')
   element = render(<CuneiformFragment
     fragment={fragment}

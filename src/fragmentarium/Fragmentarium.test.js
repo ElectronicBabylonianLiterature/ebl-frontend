@@ -28,6 +28,8 @@ afterEach(cleanup)
 beforeEach(async () => {
   auth = new Auth()
   apiClient = new ApiClient(auth)
+  URL.createObjectURL.mockReturnValue('url')
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
 })
 
 describe('Fragment is loaded', () => {
