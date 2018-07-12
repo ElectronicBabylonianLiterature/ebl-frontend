@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
 
-import './Folio.css'
+import ApiImage from './ApiImage'
+import CdliImage from './CdliImage'
 
 const displayNames = {
   WGL: 'Lambert',
@@ -9,15 +11,38 @@ const displayNames = {
   EL: 'Leichty'
 }
 
+function isLambert (entry) {
+  return entry.name === 'WGL'
+}
+
 class Folio extends Component {
+  folioTab = (entry, index) => (
+    <Tab
+      key={index}
+      eventKey={index}
+      title={`${displayNames[entry.name] || ''} Folio ${entry.number}`}
+      disabled={!isLambert(entry)}>
+      {isLambert(entry) && (
+        <ApiImage apiClient={this.props.apiClient} fileName={`${entry.name}_${entry.number}.jpg`} />
+      )}
+    </Tab>
+  )
+
   render () {
     return (
-      <ul className='Folio'>
-        {this.props.folio.map((entry, index) =>
-          <li key={index}>{displayNames[entry.name] || ''} Folio {entry.number}</li>
-        )}
-        {_.isEmpty(this.props.folio) && <li>No folios</li>}
-      </ul>
+      <Fragment>
+        <Tabs
+          id='folio-container'
+          defaultActiveKey={_.findIndex(this.props.folio, isLambert)}>
+          {this.props.folio.map(this.folioTab)}
+          {this.props.cdliNumber && (
+            <Tab eventKey={-1} title='Cdli Image'>
+              <CdliImage cdliNumber={this.props.cdliNumber} />
+            </Tab>
+          )}
+        </Tabs>
+        {_.isEmpty(this.props.folio) && _.isEmpty(this.props.cdliNumber) && 'No folios'}
+      </Fragment>
     )
   }
 }

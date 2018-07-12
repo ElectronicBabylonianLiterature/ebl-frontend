@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Image } from 'react-bootstrap'
 
 class ApiImage extends Component {
   state = {
@@ -24,7 +25,7 @@ class ApiImage extends Component {
   }
 
   render () {
-    return <img width='100%' src={this.state.image} alt={this.props.fileName} />
+    return <Image src={this.state.image} alt={this.props.fileName} responsive />
   }
 }
 
