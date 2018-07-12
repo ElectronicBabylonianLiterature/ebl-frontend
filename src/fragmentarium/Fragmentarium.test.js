@@ -7,8 +7,8 @@ import Fragmentarium from './Fragmentarium'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 
-const fragmentId = 'K.1'
-const match = matchPath(`/fragmentarium/${fragmentId}`, {
+const fragmentNumber = 'K.1'
+const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
   path: '/fragmentarium/:id'
 })
 
@@ -36,7 +36,7 @@ describe('Fragment is loaded', () => {
   let fragment
 
   beforeEach(async () => {
-    fragment = await factory.build('fragment', {_id: fragmentId})
+    fragment = await factory.build('fragment', {_id: fragmentNumber})
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
     await renderFragmentarium()
@@ -45,6 +45,10 @@ describe('Fragment is loaded', () => {
   it('Queries the Fragmenatrium API with given parameters', async () => {
     const expectedPath = `/fragments/${fragment._id}`
     expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
+  })
+
+  it('Shows the fragment number', async () => {
+    expect(container).toHaveTextContent(fragmentNumber)
   })
 
   it('Shows the fragment', async () => {
@@ -63,6 +67,10 @@ describe('On error', () => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
     await renderFragmentarium()
+  })
+
+  it('Shows the fragment number', async () => {
+    expect(container).toHaveTextContent(fragmentNumber)
   })
 
   it('Shows error message', () => {

@@ -29,7 +29,7 @@ beforeEach(async () => {
 })
 
 const properties = [
-  '_id', 'museum', 'collection', 'cdliNumber', 'accession', 'description', 'publication'
+  'museum', 'collection', 'cdliNumber', 'accession', 'description', 'publication'
 ]
 
 for (let property of properties) {

@@ -1,12 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 
-import './FragmentPager.css'
-
 const numberRegexp = /^([^\d]*)(\d+)$/
 
-export default function FragmentPager ({number}) {
+export default function FragmentPager ({number, children}) {
   const match = numberRegexp.exec(number)
   if (match) {
     const prefix = match[1]
@@ -22,11 +20,11 @@ export default function FragmentPager ({number}) {
     )
 
     return (
-      <div className='FragmentPager'>
+      <Fragment>
         <PagerLink offset={-1} label='Previous' />
-        {' '}
+        {children}
         <PagerLink offset={1} label='Next' />
-      </div>
+      </Fragment>
     )
   } else {
     return ''

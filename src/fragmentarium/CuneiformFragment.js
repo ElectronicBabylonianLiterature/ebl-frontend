@@ -18,7 +18,6 @@ class CuneiformFragment extends Component {
       <Grid>
         <Row>
           <Col md={2}>
-            <h2>{this.fragment._id}</h2>
             <Details fragment={this.fragment} />
             <h3>Record</h3>
             <Record record={this.fragment.record} />

@@ -6,18 +6,23 @@ import FragmentPager from './FragmentPager'
 afterEach(cleanup)
 
 const number = 'prefix 123456'
-let getByLabelText
+const child = 'K.00000'
+let element
 
 beforeEach(() => {
-  getByLabelText = render(<MemoryRouter><FragmentPager number={number} /></MemoryRouter>).getByLabelText
+  element = render(<MemoryRouter><FragmentPager number={number}>{child}</FragmentPager></MemoryRouter>)
 })
 
 it('Previous links to the "previous" fragment', () => {
-  expect(getByLabelText('Previous'))
+  expect(element.getByLabelText('Previous'))
     .toHaveAttribute('href', '/fragmentarium/prefix 123455')
 })
 
 it('Next links to the "next" fragment', () => {
-  expect(getByLabelText('Next'))
+  expect(element.getByLabelText('Next'))
     .toHaveAttribute('href', '/fragmentarium/prefix 123457')
+})
+
+it('Renders children', () => {
+  expect(element.container).toHaveTextContent(child)
 })

@@ -42,7 +42,7 @@ class Fragmentarium extends Component {
     return (
       <header>
         <Breadcrumbs section='Fragmentarium' active={this.props.match.params.id} />
-        {!this.state.fragment && <h2>{this.props.match.params.id}</h2>}
+        <h2><FragmentPager number={this.props.match.params.id}> {this.props.match.params.id} </FragmentPager></h2>
       </header>
     )
   }
@@ -61,7 +61,6 @@ class Fragmentarium extends Component {
                 onChange={this.fetchFragment}
               />}
               <Error error={this.state.error} />
-              <FragmentPager number={this.props.match.params.id} />
             </Fragment>
           ) : 'You need to be logged in to access the fragmentarium.'
         }
