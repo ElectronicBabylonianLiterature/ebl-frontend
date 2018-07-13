@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { FormGroup, FormControl, Button } from 'react-bootstrap'
+import { FormGroup, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import Error from 'Error'
+import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
   state = {
@@ -17,6 +18,13 @@ class TransliteratioForm extends Component {
     this.setState({
       ...this.state,
       transliteration: event.target.value
+    })
+  }
+
+  onTemplate = template => {
+    this.setState({
+      ...this.state,
+      transliteration: template
     })
   }
 
@@ -43,22 +51,47 @@ class TransliteratioForm extends Component {
       }))
   }
 
+  form = () => (
+    <form onSubmit={this.submit} id='transliteration-form'>
+      <FormGroup controlId='transliteration'>
+        <FormControl
+          componentClass='textarea'
+          aria-label='Transliteration'
+          value={this.state.transliteration}
+          rows={this.rows}
+          onChange={this.onChange} />
+      </FormGroup>
+      <Error error={this.state.error} />
+    </form>
+  )
+
+  submitButton = () => (
+    <Button
+      type='submit'
+      bsStyle='primary'
+      disabled={this.state.disabled}
+      form='transliteration-form'>
+      Save
+    </Button>
+  )
+
   render () {
     return (
-      <form onSubmit={this.submit}>
-        <FormGroup controlId='transliteration'>
-          <FormControl
-            componentClass='textarea'
-            aria-label='Transliteration'
-            value={this.state.transliteration}
-            rows={this.rows}
-            onChange={this.onChange} />
-        </FormGroup>
-        <Button type='submit' bsStyle='primary' disabled={this.state.disabled}>
-          Save
-        </Button>
-        <Error error={this.state.error} />
-      </form>
+      <Grid fluid>
+        <Row>
+          <Col sm={12}>
+            <this.form />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={6}>
+            <this.submitButton />
+          </Col>
+          <Col sm={6}>
+            <TemplateForm onSubmit={this.onTemplate} />
+          </Col>
+        </Row>
+      </Grid>
     )
   }
 }

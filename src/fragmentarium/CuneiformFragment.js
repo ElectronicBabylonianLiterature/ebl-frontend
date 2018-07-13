@@ -13,7 +13,7 @@ class CuneiformFragment extends Component {
 
   render () {
     return (
-      <Grid>
+      <Grid fluid>
         <Row>
           <Col md={2}>
             <Details fragment={this.fragment} />
