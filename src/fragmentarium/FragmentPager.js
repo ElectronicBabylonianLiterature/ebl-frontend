@@ -21,7 +21,7 @@ export default function FragmentPager ({number, children}) {
 
     return (
       <Fragment>
-        <PagerLink offset={-1} label='Previous' />
+        {current > 1 && <PagerLink offset={-1} label='Previous' />}
         {children}
         <PagerLink offset={1} label='Next' />
       </Fragment>
