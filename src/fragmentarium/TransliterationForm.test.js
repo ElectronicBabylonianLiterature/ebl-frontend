@@ -1,6 +1,6 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
-import { changeValueByLabel, whenClicked, clickNth } from 'testHelpers'
+import { render, cleanup, fireEvent, wait } from 'react-testing-library'
+import { changeValueByLabel } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
 import ApiClient from 'http/ApiClient'
@@ -40,15 +40,18 @@ it('Updates transliteration on change', async () => {
 it('Posts transliteration to API on save', async () => {
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 
-  await whenClicked(element, 'Save')
-    .expect(apiClient.postJson)
+  fireEvent.submit(element.container.querySelector('#transliteration-form'))
+  await wait()
+
+  expect(apiClient.postJson)
     .toHaveBeenCalledWith(`/fragments/${number}/transliteration`, transliteration)
 })
 
 it('Calls onChange on save', async () => {
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 
-  await clickNth(element, 'Save', 0)
+  fireEvent.submit(element.container.querySelector('#transliteration-form'))
+  await wait()
 
   expect(onChange).toHaveBeenCalled()
 })
@@ -57,7 +60,8 @@ it('Shows error if saving transliteration fails', async () => {
   const errorMessage = 'error message'
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
-  await clickNth(element, 'Save', 0)
+  fireEvent.submit(element.container.querySelector('#transliteration-form'))
+  await wait()
 
   expect(element.container).toHaveTextContent(errorMessage)
 })

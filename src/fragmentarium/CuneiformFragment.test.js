@@ -1,9 +1,8 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { render, cleanup, fireEvent, wait } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
-import { clickNth } from 'testHelpers'
 import CuneiformFragment from './CuneiformFragment'
 
 let fragment
@@ -69,7 +68,8 @@ it('Renders all folios', () => {
 it('Calls onChange on save', async () => {
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 
-  await clickNth(element, 'Save', 0)
+  fireEvent.submit(element.container.querySelector('#transliteration-form'))
+  await wait()
 
   expect(onChange).toHaveBeenCalled()
 })
