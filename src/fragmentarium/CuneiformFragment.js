@@ -26,6 +26,7 @@ class CuneiformFragment extends Component {
             <TransliteratioForm
               number={this.fragment._id}
               transliteration={this.fragment.transliteration}
+              notes={this.fragment.notes}
               apiClient={this.props.apiClient}
               onChange={this.props.onChange} />
           </Col>

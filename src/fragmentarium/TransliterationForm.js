@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { FormGroup, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import Error from 'Error'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
   state = {
     transliteration: this.props.transliteration,
+    notes: this.props.notes,
     error: null,
     disabled: false
   }
@@ -14,10 +15,10 @@ class TransliteratioForm extends Component {
     return this.state.transliteration.split('\n').length
   }
 
-  onChange = event => {
+  update = property => event => {
     this.setState({
       ...this.state,
-      transliteration: event.target.value
+      [property]: event.target.value
     })
   }
 
@@ -34,8 +35,11 @@ class TransliteratioForm extends Component {
       ...this.state,
       disabled: true
     })
-    const path = `/fragments/${this.props.number}/transliteration`
-    this.props.apiClient.postJson(path, this.state.transliteration)
+    const path = `/fragments/${this.props.number}`
+    this.props.apiClient.postJson(path, {
+      transliteration: this.state.transliteration,
+      notes: this.state.notes
+    })
       .then(() => {
         this.setState({
           ...this.state,
@@ -54,12 +58,19 @@ class TransliteratioForm extends Component {
   form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <FormGroup controlId='transliteration'>
+        <ControlLabel>Transliteration</ControlLabel>
         <FormControl
           componentClass='textarea'
-          aria-label='Transliteration'
           value={this.state.transliteration}
           rows={this.rows}
-          onChange={this.onChange} />
+          onChange={this.update('transliteration')} />
+      </FormGroup>
+      <FormGroup controlId='notes'>
+        <ControlLabel>Notes</ControlLabel>
+        <FormControl
+          componentClass='textarea'
+          value={this.state.notes}
+          onChange={this.update('notes')} />
       </FormGroup>
       <Error error={this.state.error} />
     </form>

@@ -8,6 +8,7 @@ import Auth from 'auth0/Auth'
 
 const number = 'K.00000'
 const transliteration = 'line1\nline2'
+const notes = 'notes'
 
 let apiClient
 let element
@@ -21,6 +22,7 @@ beforeEach(() => {
   element = render(<TransliteratioForm
     number={number}
     transliteration={transliteration}
+    notes={notes}
     apiClient={apiClient}
     onChange={onChange}
   />)
@@ -30,11 +32,22 @@ it('Shows transliteration', () => {
   expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
 })
 
+it('Shows notes', () => {
+  expect(element.getByLabelText('Notes').value).toEqual(notes)
+})
+
 it('Updates transliteration on change', async () => {
   const newTransliteration = 'line1\nline2\nnew line'
   await changeValueByLabel(element, 'Transliteration', newTransliteration)
 
   expect(element.getByLabelText('Transliteration').value).toEqual(newTransliteration)
+})
+
+it('Updates notes on change', async () => {
+  const newNotes = 'some notes'
+  await changeValueByLabel(element, 'Notes', newNotes)
+
+  expect(element.getByLabelText('Notes').value).toEqual(newNotes)
 })
 
 it('Posts transliteration to API on save', async () => {
@@ -44,7 +57,10 @@ it('Posts transliteration to API on save', async () => {
   await wait()
 
   expect(apiClient.postJson)
-    .toHaveBeenCalledWith(`/fragments/${number}/transliteration`, transliteration)
+    .toHaveBeenCalledWith(`/fragments/${number}`, {
+      transliteration: transliteration,
+      notes: notes
+    })
 })
 
 it('Calls onChange on save', async () => {
