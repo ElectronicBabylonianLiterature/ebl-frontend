@@ -11,6 +11,12 @@ class TransliteratioForm extends Component {
     disabled: false
   }
 
+  get hasChanges () {
+    const transliterationChanged = this.state.transliteration !== this.props.transliteration
+    const notesChanged = this.state.notes !== this.props.notes
+    return transliterationChanged || notesChanged
+  }
+
   numberOfRows (property) {
     return this.state[property].split('\n').length
   }
@@ -81,7 +87,7 @@ class TransliteratioForm extends Component {
     <Button
       type='submit'
       bsStyle='primary'
-      disabled={this.state.disabled}
+      disabled={this.state.disabled || !this.hasChanges}
       form='transliteration-form'>
       Save
     </Button>
