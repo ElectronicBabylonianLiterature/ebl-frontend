@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 
+import CdliLink from './CdliLink'
+
 import './Details.css'
 
 const museums = {
@@ -51,11 +53,11 @@ class Details extends Component {
   }
 
   get cdliNumber () {
-    const cdliUrl = `https://cdli.ucla.edu/${this.props.fragment.cdliNumber}`
+    const cdliNumber = this.props.fragment.cdliNumber
     return (
       <Fragment>
-        CDLI: {this.props.fragment.cdliNumber
-          ? <a href={cdliUrl}>{this.props.fragment.cdliNumber}</a>
+        CDLI: {cdliNumber
+          ? <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
           : '-'}
       </Fragment>
     )
