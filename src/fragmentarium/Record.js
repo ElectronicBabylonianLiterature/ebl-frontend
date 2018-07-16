@@ -17,14 +17,17 @@ class Record extends Component {
 
   render () {
     return (
-      <ol className='Record'>
-        {this.record.map((entry, index) =>
-          <li className='Record__entry' key={index}>
-            {entry.user} ({entry.type}, <this.date date={entry.date} />)
-          </li>
-        )}
-        {_.isEmpty(this.record) && <li className='Record__entry'>No record</li>}
-      </ol>
+      <section>
+        <h3>Record</h3>
+        <ol className='Record'>
+          {this.record.map((entry, index) =>
+            <li className='Record__entry' key={index}>
+              {entry.user} ({entry.type}, <this.date date={entry.date} />)
+            </li>
+          )}
+          {_.isEmpty(this.record) && <li className='Record__entry'>No record</li>}
+        </ol>
+      </section>
     )
   }
 }
