@@ -7,6 +7,8 @@ import OrganizationLinks from './OrganizationLinks'
 import Folio from './Folio'
 import TransliteratioForm from './TransliterationForm'
 
+import './CuneiformFragment.css'
+
 class CuneiformFragment extends Component {
   get fragment () {
     return this.props.fragment
@@ -24,8 +26,10 @@ class CuneiformFragment extends Component {
               bmIdNumber={this.fragment.bmIdNumber} />
           </Col>
           <Col md={5}>
-            <p>{this.fragment.description}</p>
-            <p>(Publication: {this.fragment.publication || '- '})</p>
+            <p className='CuneifromFragment__description'>{this.fragment.description}</p>
+            <p className='CuneifromFragment__publication'>
+              (Publication: {this.fragment.publication || '- '})
+            </p>
             <TransliteratioForm
               number={this.fragment._id}
               transliteration={this.fragment.transliteration}
