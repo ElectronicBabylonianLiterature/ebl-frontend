@@ -36,7 +36,7 @@ class Folio extends Component {
           defaultActiveKey={_.findIndex(this.props.folio, isLambert)}>
           {this.props.folio.map(this.folioTab)}
           {this.props.cdliNumber && (
-            <Tab eventKey={-1} title='Cdli Image'>
+            <Tab eventKey={-1} title='CDLI Image'>
               <CdliImage cdliNumber={this.props.cdliNumber} />
             </Tab>
           )}
