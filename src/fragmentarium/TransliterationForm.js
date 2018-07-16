@@ -11,8 +11,8 @@ class TransliteratioForm extends Component {
     disabled: false
   }
 
-  get rows () {
-    return this.state.transliteration.split('\n').length
+  numberOfRows (property) {
+    return this.state[property].split('\n').length
   }
 
   update = property => event => {
@@ -62,7 +62,7 @@ class TransliteratioForm extends Component {
         <FormControl
           componentClass='textarea'
           value={this.state.transliteration}
-          rows={this.rows}
+          rows={this.numberOfRows('transliteration')}
           onChange={this.update('transliteration')} />
       </FormGroup>
       <FormGroup controlId='notes'>
@@ -70,6 +70,7 @@ class TransliteratioForm extends Component {
         <FormControl
           componentClass='textarea'
           value={this.state.notes}
+          rows={this.numberOfRows('notes')}
           onChange={this.update('notes')} />
       </FormGroup>
       <Error error={this.state.error} />
