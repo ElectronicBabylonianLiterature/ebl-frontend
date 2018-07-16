@@ -23,9 +23,8 @@ describe('All details', () => {
     expect(container).toHaveTextContent(`${fragment.museum}`)
   })
 
-  it('Links museum record', () => {
-    expect(element.getByText(fragment.museum))
-      .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
+  it('Links to museum home', () => {
+    expect(element.getByText(fragment.museum).href).toEqual(`https://britishmuseum.org/`)
   })
 
   it('Renders colection', () => {
@@ -74,10 +73,6 @@ describe('Missing details', () => {
     expect(container).not.toHaveTextContent('undefined')
   })
 
-  it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum).href).toEqual(`https://britishmuseum.org/`)
-  })
-
   it('Does not renders colection', () => {
     expect(container).not.toHaveTextContent('Collection')
   })
@@ -100,7 +95,7 @@ describe('Missing details', () => {
   })
 })
 
-describe('Unknown musuem', () => {
+describe('Unknown museum', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       museum: 'The Other Museum'

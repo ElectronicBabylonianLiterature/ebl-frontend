@@ -69,6 +69,11 @@ it('Renders all folios', () => {
   }
 })
 
+it('Links museum record', () => {
+  expect(element.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`))
+    .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
+})
+
 it('Calls onChange on save', async () => {
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 

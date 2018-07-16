@@ -6,9 +6,7 @@ import CdliLink from './CdliLink'
 import './Details.css'
 
 const museums = {
-  'The British Museum': fragment => fragment.bmIdNumber
-    ? `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`
-    : 'https://britishmuseum.org/'
+  'The British Museum': 'https://britishmuseum.org/'
 }
 
 class Details extends Component {
@@ -17,10 +15,11 @@ class Details extends Component {
   }
 
   get museum () {
-    const musuemUrl = _.get(museums, this.props.fragment.museum, () => null)(this.props.fragment)
+    const museum = this.props.fragment.museum
+    const musuemUrl = museums[museum]
     return (
       <a href={musuemUrl}>
-        {this.props.fragment.museum}
+        {museum}
       </a>
     )
   }
