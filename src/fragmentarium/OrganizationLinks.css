@@ -1,0 +1,9 @@
+.OrganizationLinks {
+  text-align: center;
+}
+
+.OrganizationLinks__image {
+  border: solid 1px black;
+  height: 3.5em;
+  margin: 0.2em;
+}

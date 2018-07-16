@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 
 import Details from './Details'
 import Record from './Record'
+import OrganizationLinks from './OrganizationLinks'
 import Folio from './Folio'
 import TransliteratioForm from './TransliterationForm'
 
@@ -19,6 +20,9 @@ class CuneiformFragment extends Component {
             <Details fragment={this.fragment} />
             <h3>Record</h3>
             <Record record={this.fragment.record} />
+            <OrganizationLinks
+              cdliNumber={this.fragment.cdliNumber}
+              bmIdNumber={this.fragment.bmIdNumber} />
           </Col>
           <Col md={5}>
             <p>{this.fragment.description}</p>
