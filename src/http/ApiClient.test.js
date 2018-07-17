@@ -6,6 +6,9 @@ const result = {success: true}
 const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
+const errorResponse = {status: 404, statusText: 'NOT_FOUND'}
+const expectedError = new Error(errorResponse.statusText)
+
 let apiClient
 let auth
 
@@ -45,9 +48,8 @@ describe('fetchJson', () => {
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
-    const statusText = 'NOT FOUND'
-    fetch.mockResponseOnce('', {status: 404, statusText: statusText})
-    await expect(apiClient.fetchJson(path)).rejects.toEqual(new Error(statusText))
+    fetch.mockResponseOnce('', errorResponse)
+    await expect(apiClient.fetchJson(path)).rejects.toEqual(expectedError)
   })
 })
 
@@ -87,9 +89,8 @@ describe('postJson', () => {
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
-    const statusText = 'NOT FOUND'
-    fetch.mockResponseOnce('', {status: 404, statusText: statusText})
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(new Error(statusText))
+    fetch.mockResponseOnce('', errorResponse)
+    await expect(apiClient.postJson(path, json)).rejects.toEqual(expectedError)
   })
 })
 
@@ -123,9 +124,8 @@ describe('fetchBlob', () => {
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
-    const statusText = 'NOT FOUND'
-    fetch.mockResponseOnce('', {status: 404, statusText: statusText})
-    await expect(apiClient.fetchBlob(path)).rejects.toEqual(new Error(statusText))
+    fetch.mockResponseOnce('', errorResponse)
+    await expect(apiClient.fetchBlob(path)).rejects.toEqual(expectedError)
   })
 })
 
