@@ -18,15 +18,13 @@ beforeEach(async () => {
 
 describe('fetchJson', () => {
   it('Resolves to parsed JSON on success', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce(JSON.stringify(result))
+    setUpSuccessResponse()
 
     expect(apiClient.fetchJson(path)).resolves.toEqual(result)
   })
 
   it('Makes a request with given parameters', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce(JSON.stringify(result))
+    setUpSuccessResponse()
 
     await apiClient.fetchJson(path)
 
@@ -59,15 +57,13 @@ describe('postJson', () => {
   }
 
   it('Resolves on success', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce('')
+    setUpSuccessResponse('')
 
     await expect(apiClient.postJson(path, json)).resolves.toBeUndefined()
   })
 
   it('Makes a post request with given parameters', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce('')
+    setUpSuccessResponse('')
 
     await apiClient.postJson(path, json)
 
@@ -99,16 +95,14 @@ describe('postJson', () => {
 
 describe('fetchBlob', () => {
   it('Resolves to dataURI', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce(JSON.stringify(result))
+    setUpSuccessResponse()
 
     const blob = new Blob([JSON.stringify(result)])
     expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
   })
 
   it('Makes a request with given parameters', async () => {
-    auth.getAccessToken.mockReturnValueOnce(accessToken)
-    fetch.mockResponseOnce(JSON.stringify(result))
+    setUpSuccessResponse()
 
     await apiClient.fetchBlob(path)
 
@@ -134,3 +128,8 @@ describe('fetchBlob', () => {
     await expect(apiClient.fetchBlob(path)).rejects.toEqual(new Error(statusText))
   })
 })
+
+function setUpSuccessResponse (data = JSON.stringify(result)) {
+  auth.getAccessToken.mockReturnValueOnce(accessToken)
+  fetch.mockResponseOnce(data)
+}
