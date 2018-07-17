@@ -1,11 +1,11 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
-import {render, wait, cleanup, fireEvent} from 'react-testing-library'
+import { render, wait, cleanup } from 'react-testing-library'
 import { submitForm } from 'testHelpers'
 import WordEditor from './WordEditor'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 
 let result
 let apiClient
