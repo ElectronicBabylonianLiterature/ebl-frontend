@@ -11,15 +11,23 @@ class ApiClient {
     return {'Authorization': `Bearer ${this.auth.getAccessToken()}`}
   }
 
-  async fetchJson (path) {
+  async fetch (path) {
     const headers = new Headers(this.baseHeaders)
     const response = await fetch(apiUrl(path), {headers: headers})
 
     if (response.ok) {
-      return response.json()
+      return response
     } else {
       throw Error(response.statusText)
     }
+  }
+
+  async fetchJson (path) {
+    return (await this.fetch(path)).json()
+  }
+
+  async fetchBlob (path) {
+    return (await this.fetch(path)).blob()
   }
 
   async postJson (path, body) {
@@ -30,17 +38,6 @@ class ApiClient {
     const response = await fetch(apiUrl(path), {body: JSON.stringify(body), headers: headers, method: 'POST'})
 
     if (!response.ok) {
-      throw Error(response.statusText)
-    }
-  }
-
-  async fetchBlob (path) {
-    const headers = new Headers(this.baseHeaders)
-    const response = await fetch(apiUrl(path), {headers: headers})
-
-    if (response.ok) {
-      return response.blob()
-    } else {
       throw Error(response.statusText)
     }
   }
