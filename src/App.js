@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
+import React, { Component, Fragment } from 'react'
+import { Route, Link, Switch, Redirect } from 'react-router-dom'
 import logo from './logo.png'
 import './App.css'
 
@@ -16,7 +16,7 @@ class App extends Component {
     const apiClient = new ApiClient(this.props.auth)
 
     return (
-      <div>
+      <Fragment>
         <header className='App-header'>
           <h1 className='App-header__title'>
             <img src={logo} className='App-header__logo' alt='Electronic Babylonian Literature (eBL)' title='Electronic Babylonian Literature' />
@@ -30,14 +30,15 @@ class App extends Component {
             </ul>
           </nav>
         </header>
-        <div className='App-content'>
-          <Route exact path='/' component={Introduction} />
-          <Route exact path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
+        <Switch>
           <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
+          <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
           <Route path='/fragmentarium/:id' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
+          <Redirect from='/fragmentarium' to='/fragmentarium/K.1' />
           <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
-        </div>
-      </div>
+          <Route component={Introduction} />
+        </Switch>
+      </Fragment>
     )
   }
 }

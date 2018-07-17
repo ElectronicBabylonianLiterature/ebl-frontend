@@ -38,9 +38,9 @@ class WordEditor extends Component {
 
   render () {
     return this.isLoading
-      ? <section><Spinner /></section>
+      ? <section className='App-content'><Spinner /></section>
       : (
-        <section className='WordEditor'>
+        <section className='App-content'>
           <header>
             <Breadcrumbs section='Dictionary' active={this.props.match.params.id} />
             {this.state.word && <h2>

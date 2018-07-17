@@ -6,7 +6,7 @@ import './Introduction.css'
 
 class Inroduction extends Component {
   render () {
-    return <section className='Introduction'>
+    return <section className='App-content'>
       <h2>The “Electronic Babylonian Literature” (eBL) Project: A general introduction</h2>
 
       <p>The Electronic Babylonian Literature (eBL) Project brings together ancient Near Eastern specialists and data scientists to revolutionize the way in which the literature of Iraq in the first millennium BCE is reconstructed and analyzed. Generations of scholars have striven to explore the written culture of this period, in which literature in cuneiform script flourished to an unprecedented degree, but their efforts have been hampered by two factors: the literature’s fragmentary state of reconstruction and the lack of an electronic corpus of texts on which to perform computer-aided analyses.</p>

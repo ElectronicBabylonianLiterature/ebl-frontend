@@ -12,7 +12,7 @@ class Dictionary extends Component {
     const query = queryString.parse(this.props.location.search).query
 
     return (
-      <section>
+      <section className='App-content'>
         <header>
           <Breadcrumbs section='Dictionary' />
           <h2>Dictionary</h2>

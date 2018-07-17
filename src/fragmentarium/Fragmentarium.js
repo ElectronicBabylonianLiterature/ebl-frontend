@@ -49,7 +49,7 @@ class Fragmentarium extends Component {
 
   render () {
     return (
-      <section>
+      <section className='App-content App-content--wide'>
         <this.header />
         {this.props.auth.isAuthenticated()
           ? (
