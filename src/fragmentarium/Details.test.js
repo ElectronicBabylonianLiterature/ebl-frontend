@@ -1,6 +1,7 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { MemoryRouter } from 'react-router-dom'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import Details from './Details'
 
 let fragment
@@ -8,7 +9,7 @@ let container
 let element
 
 function renderDetails () {
-  element = render(<Details fragment={fragment} />)
+  element = render(<MemoryRouter><Details fragment={fragment} /></MemoryRouter>)
   container = element.container
 }
 afterEach(cleanup)
@@ -24,7 +25,7 @@ describe('All details', () => {
   })
 
   it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum).href).toEqual(`https://britishmuseum.org/`)
+    expect(element.getByText(fragment.museum)).toHaveAttribute('href', 'https://britishmuseum.org/')
   })
 
   it('Renders colection', () => {
@@ -34,6 +35,13 @@ describe('All details', () => {
   it(`Renders all joins`, () => {
     for (let item of fragment.joins) {
       expect(container).toHaveTextContent(item)
+    }
+  })
+
+  it(`Links all joins`, () => {
+    for (let item of fragment.joins) {
+      expect(element.getByText(item))
+        .toHaveAttribute('href', `/fragmentarium/${item}`)
     }
   })
 
@@ -104,6 +112,6 @@ describe('Unknown museum', () => {
   })
 
   it('Does not link museum', () => {
-    expect(element.getByText(fragment.museum).href).toBeFalsy()
+    expect(element.getByText(fragment.museum)).not.toHaveAttribute('href')
   })
 })

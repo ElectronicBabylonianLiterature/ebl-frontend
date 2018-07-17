@@ -1,4 +1,5 @@
 import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { render, cleanup, fireEvent, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
@@ -19,11 +20,13 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
   fragment = await factory.build('fragment')
-  element = render(<CuneiformFragment
-    fragment={fragment}
-    apiClient={apiClient}
-    onChange={onChange}
-  />)
+  element = render(
+    <MemoryRouter>
+      <CuneiformFragment
+        fragment={fragment}
+        apiClient={apiClient}
+        onChange={onChange} />
+    </MemoryRouter>)
   container = element.container
 })
 
