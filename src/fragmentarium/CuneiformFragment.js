@@ -4,7 +4,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import Details from './Details'
 import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
-import Folio from './Folio'
+import Folios from './Folios'
 import TransliteratioForm from './TransliterationForm'
 
 import './CuneiformFragment.css'
@@ -42,8 +42,8 @@ class CuneiformFragment extends Component {
   )
 
   rightColumn = () => (
-    <Folio
-      folio={this.fragment.folio}
+    <Folios
+      folios={this.fragment.folios}
       apiClient={this.props.apiClient}
       cdliNumber={this.fragment.cdliNumber} />
   )

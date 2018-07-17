@@ -35,7 +35,7 @@ factory.define('fragment', Object, {
   'collection': 'Kuyunjik',
   'script': factory.chance('pickone', ['NA', 'NB']),
   'date': factory.chance('sentence', {words: 2}),
-  'folio': factory.assocAttrsMany('folio', 2),
+  'folios': factory.assocAttrsMany('folio', 2),
   'record': factory.assocAttrsMany('record', 2),
   'transliteration': factory.chance('paragraph'),
   'notes': factory.chance('sentence'),

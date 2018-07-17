@@ -3,12 +3,12 @@ import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
-import Folio from './Folio'
+import Folios from './Folios'
 
 const cdliNumber = '0000'
 let apiClient
 let container
-let folio
+let folios
 
 afterEach(cleanup)
 
@@ -20,13 +20,13 @@ beforeEach(() => {
 
 describe('Folios', () => {
   beforeEach(async () => {
-    folio = await factory.buildMany('folio', 3)
-    container = render(<Folio folio={folio} cdliNumber={cdliNumber} apiClient={apiClient} />).container
+    folios = await factory.buildMany('folio', 3)
+    container = render(<Folios folios={folios} cdliNumber={cdliNumber} apiClient={apiClient} />).container
   })
 
   it(`Renders folio numbers entries`, () => {
-    for (let item of folio) {
-      expect(container).toHaveTextContent(item.number)
+    for (let folio of folios) {
+      expect(container).toHaveTextContent(folio.number)
     }
   })
 
@@ -44,13 +44,13 @@ const names = [
 names.forEach(entry => {
   describe(`${entry.displayName} Folios`, () => {
     beforeEach(async () => {
-      folio = [await factory.build('folio', {name: entry.name})]
-      container = render(<Folio folio={folio} cdliNumber='' apiClient={apiClient} />).container
+      folios = [await factory.build('folio', {name: entry.name})]
+      container = render(<Folios folios={folios} cdliNumber='' apiClient={apiClient} />).container
     })
 
     it(`Renders folio numbers entries`, () => {
-      for (let item of folio) {
-        expect(container).toHaveTextContent(`${entry.displayName} Folio ${item.number}`)
+      for (let folio of folios) {
+        expect(container).toHaveTextContent(`${entry.displayName} Folio ${folio.number}`)
       }
     })
   })
@@ -58,7 +58,7 @@ names.forEach(entry => {
 
 describe('No folios or CDLI imgae', () => {
   beforeEach(async () => {
-    container = render(<Folio folio={[]} cdliNumber='' apiClient={apiClient} />).container
+    container = render(<Folios folios={[]} cdliNumber='' apiClient={apiClient} />).container
   })
 
   it(`Renders no folios test`, () => {

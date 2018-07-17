@@ -15,7 +15,7 @@ function isLambert (entry) {
   return entry.name === 'WGL'
 }
 
-class Folio extends Component {
+class Folios extends Component {
   folioTab = (entry, index) => (
     <Tab
       key={index}
@@ -33,18 +33,18 @@ class Folio extends Component {
       <Fragment>
         <Tabs
           id='folio-container'
-          defaultActiveKey={_.findIndex(this.props.folio, isLambert)}>
-          {this.props.folio.map(this.folioTab)}
+          defaultActiveKey={_.findIndex(this.props.folios, isLambert)}>
+          {this.props.folios.map(this.folioTab)}
           {this.props.cdliNumber && (
             <Tab eventKey={-1} title='CDLI Image'>
               <CdliImage cdliNumber={this.props.cdliNumber} />
             </Tab>
           )}
         </Tabs>
-        {_.isEmpty(this.props.folio) && _.isEmpty(this.props.cdliNumber) && 'No folios'}
+        {_.isEmpty(this.props.folios) && _.isEmpty(this.props.cdliNumber) && 'No folios'}
       </Fragment>
     )
   }
 }
 
-export default Folio
+export default Folios

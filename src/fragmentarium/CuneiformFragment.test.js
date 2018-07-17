@@ -69,7 +69,7 @@ it('Renders all records', () => {
 })
 
 it('Renders all folios', () => {
-  for (let folio of fragment.folio) {
+  for (let folio of fragment.folios) {
     expect(container).toHaveTextContent(folio.number)
   }
 })
