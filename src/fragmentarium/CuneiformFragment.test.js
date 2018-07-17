@@ -1,7 +1,9 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup, fireEvent, wait } from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import { factory } from 'factory-girl'
+
+import { submitForm } from 'testHelpers'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import CuneiformFragment from './CuneiformFragment'
@@ -80,8 +82,7 @@ it('Links museum record', () => {
 it('Calls onChange on save', async () => {
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
 
-  fireEvent.submit(element.container.querySelector('#transliteration-form'))
-  await wait()
+  await submitForm(element, '#transliteration-form')
 
   expect(onChange).toHaveBeenCalled()
 })

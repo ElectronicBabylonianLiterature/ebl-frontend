@@ -1,8 +1,8 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import { changeValueByLabel } from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import WordSearchForm from './WordSearchForm'
 
@@ -14,8 +14,7 @@ it('Adds lemma to query string on submit', async () => {
   const element = render(<Router history={history}><WordSearchForm /></Router>)
 
   await changeValueByLabel(element, 'Query', 'lemma')
-  fireEvent.submit(element.container.querySelector('form'))
-  await wait()
+  await submitForm(element, 'form')
 
   expect(history.push).toBeCalledWith('?query=lemma')
 })

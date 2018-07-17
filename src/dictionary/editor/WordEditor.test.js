@@ -1,6 +1,7 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
 import {render, wait, cleanup, fireEvent} from 'react-testing-library'
+import { submitForm } from 'testHelpers'
 import WordEditor from './WordEditor'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -47,10 +48,10 @@ describe('Update word', () => {
   it('Posts to API on submit', async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
     jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
-    const {container} = renderWithRouter()
+    const element = renderWithRouter()
 
     await wait()
-    await post(container)
+    await submitForm(element, 'form')
 
     const expectedPath = '/words/id'
     const expectedBody = result
@@ -61,19 +62,14 @@ describe('Update word', () => {
     const errorMessage = 'error'
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
     jest.spyOn(apiClient, 'postJson').mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    const {container, getByText} = renderWithRouter()
+    const element = renderWithRouter()
 
     await wait()
-    await post(container)
+    await submitForm(element, 'form')
 
-    expect(getByText(errorMessage)).toBeDefined()
+    expect(element.getByText(errorMessage)).toBeDefined()
   })
 })
-
-async function post (container) {
-  fireEvent.submit(container.querySelector('form'))
-  await wait()
-}
 
 function renderWithRouter () {
   const match = matchPath('/dictionary/id', {

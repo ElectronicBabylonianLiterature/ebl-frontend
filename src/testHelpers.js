@@ -42,3 +42,8 @@ export function whenChanged (element, value, newValue) {
     expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
   })
 }
+
+export async function submitForm (element, query) {
+  fireEvent.submit(element.container.querySelector(query))
+  await wait()
+}

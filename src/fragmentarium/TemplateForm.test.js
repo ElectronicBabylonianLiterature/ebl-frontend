@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
-import { changeValueByLabel } from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TemplateForm from './TemplateForm'
 
@@ -11,8 +11,7 @@ let element
 
 async function submit (value) {
   await changeValueByLabel(element, 'Template', value)
-  fireEvent.submit(element.container.querySelector('form'))
-  await wait()
+  await submitForm(element, 'form')
 }
 
 beforeEach(() => {
