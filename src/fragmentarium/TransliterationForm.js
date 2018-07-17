@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
+import _ from 'lodash'
+
 import Error from 'Error'
 import TemplateForm from './TemplateForm'
 
@@ -61,24 +63,21 @@ class TransliteratioForm extends Component {
       }))
   }
 
+  textArea = ({property}) => (
+    <FormGroup controlId={property}>
+      <ControlLabel>{_.startCase(property)}</ControlLabel>
+      <FormControl
+        componentClass='textarea'
+        value={this.state[property]}
+        rows={this.numberOfRows(property)}
+        onChange={this.update(property)} />
+    </FormGroup>
+  )
+
   form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
-      <FormGroup controlId='transliteration'>
-        <ControlLabel>Transliteration</ControlLabel>
-        <FormControl
-          componentClass='textarea'
-          value={this.state.transliteration}
-          rows={this.numberOfRows('transliteration')}
-          onChange={this.update('transliteration')} />
-      </FormGroup>
-      <FormGroup controlId='notes'>
-        <ControlLabel>Notes</ControlLabel>
-        <FormControl
-          componentClass='textarea'
-          value={this.state.notes}
-          rows={this.numberOfRows('notes')}
-          onChange={this.update('notes')} />
-      </FormGroup>
+      <this.textArea property='transliteration' />
+      <this.textArea property='notes' />
       <Error error={this.state.error} />
     </form>
   )
