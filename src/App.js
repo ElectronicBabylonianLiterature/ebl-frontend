@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Route, Link, Switch, Redirect } from 'react-router-dom'
-import logo from './logo.png'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.css'
 
-import User from './auth0/User'
+import Header from './Header'
 import Callback from './auth0/Callback'
 import Introduction from './Introduction'
 import Dictionary from './dictionary/search/Dictionary'
@@ -17,19 +16,7 @@ class App extends Component {
 
     return (
       <Fragment>
-        <header className='App-header'>
-          <h1 className='App-header__title'>
-            <img src={logo} className='App-header__logo' alt='Electronic Babylonian Literature (eBL)' title='Electronic Babylonian Literature' />
-          </h1>
-          <nav>
-            <ul className='App-header__nav'>
-              <li className='App-header__nav-item'><Link to='/'>Home</Link></li>
-              <li className='App-header__nav-item'><Link to='/dictionary'>Dictionary</Link></li>
-              <li className='App-header__nav-item'><Link to='/fragmentarium/K.1'>Fragmentarium</Link></li>
-              <li className='App-header__nav-item'><User auth={this.props.auth} /></li>
-            </ul>
-          </nav>
-        </header>
+        <Header auth={this.props.auth} />
         <Switch>
           <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />

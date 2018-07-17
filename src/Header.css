@@ -1,0 +1,25 @@
+.Header {
+  background-color: white;
+  border-bottom: 1px solid black;
+  color: black;
+  padding: 1.5em;
+  text-align: center;
+}
+
+.Header__title {
+  height: 4em;
+}
+
+.Header__logo {
+  height: 100%;
+}
+
+.Header__title {
+  font-size: 1.5em;
+}
+
+.Header__nav,
+.Header__nav-item {
+  display: inline;
+  padding: 0.5em;
+}
