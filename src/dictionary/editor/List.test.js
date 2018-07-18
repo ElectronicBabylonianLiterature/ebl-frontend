@@ -22,7 +22,7 @@ beforeEach(() => {
 })
 
 beforeEach(async () => {
-  value = ['text1', 'text2']
+  value = ['text1', 'text2', 'text3']
   element = renderList()
 })
 
@@ -50,11 +50,12 @@ it('Removes item when Delete is clicked', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  await whenChanged(element, value[0], 'new')
+  await whenChanged(element, value[1], 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
+      _.head(value),
       newValue,
-      ..._.tail(value)
+      ..._.drop(value, 2)
     ])
 })
 

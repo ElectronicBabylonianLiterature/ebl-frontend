@@ -11,17 +11,18 @@ class List extends Component {
   }
 
   delete = index => () => {
+    console.log(index)
     this.props.onChange([
-      ...this.props.value.slice(0, index),
-      ...this.props.value.slice(index + 1)
+      ..._.take(this.props.value, index),
+      ..._.drop(this.props.value, index + 1)
     ])
   }
 
   update = index => updated => {
     this.props.onChange([
-      ...this.props.value.slice(0, index),
+      ..._.take(this.props.value, index),
       updated,
-      ...this.props.value.slice(index + 1)
+      ..._.drop(this.props.value, index + 1)
     ])
   }
 
@@ -33,8 +34,8 @@ class List extends Component {
           <Fragment>
             {React.Children.map(this.props.children, child =>
               <li className='List__item' key={child.key}>
-                {React.cloneElement(child, { onChange: this.update(child.key) })}
-                <Button onClick={this.delete(child.key)}>Delete {this.props.noun}</Button>
+                {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
+                <Button onClick={this.delete(Number(child.key))}>Delete {this.props.noun}</Button>
               </li>
             )}
             <li><Button onClick={this.add}>Add {this.props.noun}</Button></li>
