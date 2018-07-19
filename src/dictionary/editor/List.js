@@ -11,7 +11,6 @@ class List extends Component {
   }
 
   delete = index => () => {
-    console.log(index)
     this.props.onChange([
       ..._.take(this.props.value, index),
       ..._.drop(this.props.value, index + 1)
