@@ -1,5 +1,14 @@
 import auth0 from 'auth0-js'
 
+const scopes = [
+  'openid',
+  'profile',
+  'read:words',
+  'write:words',
+  'read:fragments',
+  'transliterate:fragments'
+]
+
 class Auth {
   auth0 = new auth0.WebAuth({
     domain: process.env.REACT_APP_AUTH0_DOMAIN,
@@ -7,7 +16,7 @@ class Auth {
     redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
     audience: 'dictionary-api',
     responseType: 'token id_token',
-    scope: 'openid profile read:words'
+    scope: scopes.join(' ')
   })
 
   login () {
