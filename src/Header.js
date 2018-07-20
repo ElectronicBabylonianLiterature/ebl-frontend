@@ -3,17 +3,14 @@ import { Link } from 'react-router-dom'
 
 import User from './auth0/User'
 
-import logo from './Electronic_Babylonian_Literature.svg'
 import './Header.css'
 
 export default function Header ({auth}) {
   return (
     <header className='Header'>
       <h1 className='Header__title'>
-        <img src={logo}
-          className='Header__logo'
-          alt='Electronic Babylonian Literature (eBL)'
-          title='Electronic Babylonian Literature' />
+        <span className='Header__title-main'>electronic<br />Babylonian<br />Literature</span>
+        <small className='Header__title-abbreviation'>eBL</small>
       </h1>
       <nav>
         <ul className='Header__nav'>
