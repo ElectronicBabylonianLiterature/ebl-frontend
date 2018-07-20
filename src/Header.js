@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import User from './auth0/User'
 
-import logo from './logo.png'
+import logo from './Electronic_Babylonian_Literature.svg'
 import './Header.css'
 
 export default function Header ({auth}) {
