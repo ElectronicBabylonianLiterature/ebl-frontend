@@ -1,0 +1,23 @@
+@font-face{ 
+  font-family: 'Junicode';
+  src: url('/Junicode.woff') format('woff');
+}
+
+@font-face{ 
+  font-family: 'Junicode';
+  font-weight: bold;
+  src: url('/Junicode-Bold.woff') format('woff');
+}
+
+@font-face{ 
+  font-family: 'Junicode';
+  font-style: italic;
+  font-weight: bold;
+  src: url('/Junicode-BoldItalic.woff') format('woff');
+}
+
+@font-face{ 
+  font-family: 'Junicode';
+  font-style: italic;
+  src: url('/Junicode-Italic.woff') format('woff');
+}
