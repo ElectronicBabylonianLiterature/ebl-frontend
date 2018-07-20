@@ -3,6 +3,7 @@
   "clean_urls": false,
   "routes": {
     "/favicon.ico": "favicon.ico",
+    "/eBL_badge.png": "eBL_badge.png",
     "/**": "index.html"
   }
 }
