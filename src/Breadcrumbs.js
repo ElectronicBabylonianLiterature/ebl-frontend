@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const sections = {
   Dictionary: '/dictionary',
-  Fragmentarium: '/fragmentarium/K.1'
+  Fragmentarium: '/fragmentarium'
 }
 
 export default function Breadcrumbs ({section, active}) {
