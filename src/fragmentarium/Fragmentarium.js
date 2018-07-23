@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import Breadcrumbs from 'Breadcrumbs'
 import Error from 'Error'
 import Spinner from 'Spinner'
@@ -32,7 +33,7 @@ class Fragmentarium extends Component {
     return (
       <header>
         <Breadcrumbs section='Fragmentarium' />
-        <h2>Fragmentarium</h2>
+        <h2>Fragmentarium<br /><small><Link to='/fragmentarium/K.1'>Go to fragments...</Link></small></h2>
       </header>
     )
   }
