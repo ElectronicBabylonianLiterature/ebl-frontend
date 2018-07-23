@@ -23,7 +23,7 @@ describe('Fecth word', () => {
     renderWithRouter()
 
     const expectedPath = '/words/id'
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
   })
 
   it('Displays result on successfull query', async () => {

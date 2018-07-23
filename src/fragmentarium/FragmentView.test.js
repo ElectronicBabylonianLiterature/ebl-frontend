@@ -44,7 +44,7 @@ describe('Fragment is loaded', () => {
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
     const expectedPath = `/fragments/${fragment._id}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
   })
 
   it('Shows the fragment number', async () => {

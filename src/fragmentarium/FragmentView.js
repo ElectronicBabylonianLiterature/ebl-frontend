@@ -33,7 +33,7 @@ class FragmentView extends Component {
   fetchFragment = () => {
     this.setState({fragment: null, error: null})
     this.props.apiClient
-      .fetchJson(this.fragmentUrl)
+      .fetchJson(this.fragmentUrl, true)
       .then(json => this.setState({fragment: json, error: null}))
       .catch(error => this.setState({fragment: null, error: error}))
   }

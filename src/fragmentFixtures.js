@@ -1,5 +1,10 @@
 import {factory} from 'factory-girl'
 
+factory.define('statistics', Object, {
+  transliteratedFragments: factory.chance('natural'),
+  lines: factory.chance('natural')
+})
+
 factory.define('record', Object, {
   user: factory.chance('email'),
   date: () => factory.chance('date')().toISOString(),

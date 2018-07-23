@@ -23,7 +23,7 @@ class WordEditor extends Component {
 
   componentDidMount () {
     this.props.apiClient
-      .fetchJson(this.wordUrl)
+      .fetchJson(this.wordUrl, true)
       .then(json => this.setState({word: json, error: null, saving: false}))
       .catch(error => this.setState({word: null, error: error, saving: false}))
   }

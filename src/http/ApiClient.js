@@ -11,8 +11,8 @@ class ApiClient {
     return {'Authorization': `Bearer ${this.auth.getAccessToken()}`}
   }
 
-  async fetch (path) {
-    const headers = new Headers(this.baseHeaders)
+  async fetch (path, authenticate) {
+    const headers = new Headers(authenticate ? this.baseHeaders : {})
     const response = await fetch(apiUrl(path), {headers: headers})
 
     if (response.ok) {
@@ -22,12 +22,12 @@ class ApiClient {
     }
   }
 
-  async fetchJson (path) {
-    return (await this.fetch(path)).json()
+  async fetchJson (path, authenticate) {
+    return (await this.fetch(path, authenticate)).json()
   }
 
   async fetchBlob (path) {
-    return (await this.fetch(path)).blob()
+    return (await this.fetch(path, true)).blob()
   }
 
   async postJson (path, body) {

@@ -23,7 +23,7 @@ it('Queries the Dictionary API with given parameters', async () => {
   await wait()
 
   const expectedPath = `/words?query=${encodeURIComponent(query)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
 })
 
 it('displays result on successfull query', async () => {

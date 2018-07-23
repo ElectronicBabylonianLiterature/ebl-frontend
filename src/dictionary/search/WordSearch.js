@@ -23,7 +23,7 @@ class WordSearch extends Component {
     } else {
       this.setState({words: null, error: null})
       this.props.apiClient
-        .fetchJson(`/words?query=${encodeURIComponent(this.props.query)}`)
+        .fetchJson(`/words?query=${encodeURIComponent(this.props.query)}`, true)
         .then(words => this.setState({words: words, error: null}))
         .catch(error => this.setState({words: [], error: error}))
     }
