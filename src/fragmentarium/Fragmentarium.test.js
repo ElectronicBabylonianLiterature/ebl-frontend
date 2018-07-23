@@ -38,11 +38,11 @@ describe('Statistics are loaded', () => {
   })
 
   it('Shows the number of transliterated tablets', async () => {
-    expect(container).toHaveTextContent(statistics.transliteratedFragments)
+    expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
   })
 
   it('Shows the number of transliterated lines', async () => {
-    expect(container).toHaveTextContent(statistics.lines)
+    expect(container).toHaveTextContent(statistics.lines.toLocaleString())
   })
 })
 

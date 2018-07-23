@@ -33,7 +33,7 @@ class Fragmentarium extends Component {
     return (
       <header>
         <Breadcrumbs section='Fragmentarium' />
-        <h2>Fragmentarium<br /><small><Link to='/fragmentarium/K.1'>Go to fragments...</Link></small></h2>
+        <h2>Fragmentarium<br /><small><Link to='/fragmentarium/K.1'>Go to the fragments...</Link></small></h2>
       </header>
     )
   }
@@ -48,8 +48,8 @@ class Fragmentarium extends Component {
               Current size of the corpus:
               {this.isLoading && <section><Spinner /></section>}
               {this.state.statistics && <p className='Fragmentarium__statistics-values'>
-                {this.state.statistics.transliteratedFragments} tablets transliterated<br />
-                {this.state.statistics.lines} lines of text
+                {this.state.statistics.transliteratedFragments.toLocaleString()} tablets transliterated<br />
+                {this.state.statistics.lines.toLocaleString()} lines of text
               </p>}
             </Col>
             <Col md={5}>
