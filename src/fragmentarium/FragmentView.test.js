@@ -3,7 +3,7 @@ import {matchPath} from 'react-router'
 import {MemoryRouter} from 'react-router-dom'
 import {render, cleanup, wait} from 'react-testing-library'
 import {factory} from 'factory-girl'
-import Fragmentarium from './Fragmentarium'
+import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 
@@ -17,8 +17,8 @@ let apiClient
 let container
 let element
 
-async function renderFragmentarium () {
-  element = render(<MemoryRouter><Fragmentarium match={match} auth={auth} apiClient={apiClient} /></MemoryRouter>)
+async function renderFragmentView () {
+  element = render(<MemoryRouter><FragmentView match={match} auth={auth} apiClient={apiClient} /></MemoryRouter>)
   container = element.container
   await wait()
 }
@@ -39,7 +39,7 @@ describe('Fragment is loaded', () => {
     fragment = await factory.build('fragment', {_id: fragmentNumber})
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
-    await renderFragmentarium()
+    await renderFragmentView()
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -66,7 +66,7 @@ describe('On error', () => {
   beforeEach(async () => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
-    await renderFragmentarium()
+    await renderFragmentView()
   })
 
   it('Shows the fragment number', async () => {
@@ -80,7 +80,7 @@ describe('On error', () => {
 
 it('Displays a message if user is not logged in', async () => {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
-  await renderFragmentarium()
+  await renderFragmentView()
 
   expect(container).toHaveTextContent('You need to be logged in to access the fragmentarium.')
 })

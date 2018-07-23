@@ -6,7 +6,7 @@ import Spinner from 'Spinner'
 import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 
-class Fragmentarium extends Component {
+class FragmentView extends Component {
   state = {
     fragment: null,
     error: null
@@ -69,4 +69,4 @@ class Fragmentarium extends Component {
   }
 }
 
-export default Fragmentarium
+export default FragmentView
