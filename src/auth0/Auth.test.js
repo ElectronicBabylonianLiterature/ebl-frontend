@@ -34,6 +34,7 @@ describe('login', () => {
 
 describe('logout', () => {
   beforeEach(() => {
+    jest.spyOn(auth.auth0, 'logout').mockImplementationOnce(_.noop)
     auth.logout()
   })
 
@@ -47,6 +48,10 @@ describe('logout', () => {
 
   it('Removes expires at', () => {
     expect(localStorage.removeItem).toBeCalledWith('expires_at')
+  })
+
+  it('Calls WebAuth.logout', () => {
+    expect(auth.auth0.logout).toBeCalled()
   })
 })
 
