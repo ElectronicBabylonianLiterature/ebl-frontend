@@ -22,7 +22,7 @@ class App extends Component {
           <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
           <Route path='/fragmentarium/:id' render={props => <FragmentView auth={this.props.auth} apiClient={apiClient} {...props} />} />
-          <Route path='/fragmentarium' render={props => <Fragmentarium apiClient={apiClient} {...props} />} />
+          <Route path='/fragmentarium' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
           <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
           <Route component={Introduction} />
         </Switch>

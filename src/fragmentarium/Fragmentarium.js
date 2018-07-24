@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import queryString from 'query-string'
 import Breadcrumbs from 'Breadcrumbs'
 import Error from 'Error'
 import Spinner from 'Spinner'
+import FragmentSearch from 'fragmentarium/search/FragmentSearch'
 
 import './Fragmentarium.css'
 
@@ -33,33 +33,31 @@ class Fragmentarium extends Component {
     return (
       <header>
         <Breadcrumbs section='Fragmentarium' />
-        <h2>Fragmentarium<br /><small><Link to='/fragmentarium/K.1'>Go to the fragments...</Link></small></h2>
+        <h2>Fragmentarium</h2>
       </header>
     )
   }
 
   render () {
+    const number = queryString.parse(this.props.location.search).number || 'K.1'
     return (
       <section className='App-content'>
         <this.header />
-        <Grid fluid>
-          <Row>
-            <Col md={7} className='Fragmentarium__statistics'>
-              Current size of the corpus:
-              {this.isLoading && <section><Spinner /></section>}
-              {this.state.statistics && <p className='Fragmentarium__statistics-values'>
-                {this.state.statistics.transliteratedFragments.toLocaleString()} tablets transliterated<br />
-                {this.state.statistics.lines.toLocaleString()} lines of text
-              </p>}
-            </Col>
-            <Col md={5}>
-              <blockquote className='Fragmentarium__quote'>
-                “Give me your tired, your poor, Your huddled masses Yearning to breathe free”
-              </blockquote>
-            </Col>
-          </Row>
-        </Grid>
-        <Error error={this.state.error} />
+        <section>
+          {this.props.auth.isAuthenticated()
+            ? <FragmentSearch number={number} apiClient={this.props.apiClient} />
+            : <p>You need to be logged in to access the fragments.</p>
+          }
+        </section>
+        <section className='Fragmentarium__statistics'>
+          <header>Current size of the corpus:</header>
+          {this.isLoading && <section><Spinner /></section>}
+          {this.state.statistics && <p className='Fragmentarium__statistics-values'>
+            {this.state.statistics.transliteratedFragments.toLocaleString()} tablets transliterated<br />
+            {this.state.statistics.lines.toLocaleString()} lines of text
+          </p>}
+          <Error error={this.state.error} />
+        </section>
       </section>
     )
   }
