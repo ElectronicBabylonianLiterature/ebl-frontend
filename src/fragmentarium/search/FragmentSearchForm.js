@@ -27,6 +27,7 @@ class FragmentSearchForm extends Component {
           {' '}
           <FormControl
             type='text'
+            length={80}
             value={this.state.number}
             placeholder='Search museum, accession, or CDLI number.'
             onChange={this.onChange} />

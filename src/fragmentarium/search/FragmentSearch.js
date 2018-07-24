@@ -43,26 +43,29 @@ class FragmentSearch extends Component {
       ? <Spinner />
       : (
         <Fragment>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Number</th>
-                <th>Accession</th>
-                <th>CDLI Number</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.fragments.map(fragment =>
-                <tr key={fragment._id}>
-                  <td><Link to={`/fragmentarium/${fragment._id}`}>{fragment._id}</Link></td>
-                  <td>{fragment.accession}</td>
-                  <td>{fragment.cdliNumber}</td>
-                  <td>{fragment.description}</td>
+          {this.props.number && _.isArray(this.state.fragments) && <Fragment>
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Number</th>
+                  <th>Accession</th>
+                  <th>CDLI Number</th>
+                  <th>Description</th>
                 </tr>
-              )}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {this.state.fragments.map(fragment =>
+                  <tr key={fragment._id}>
+                    <td><Link to={`/fragmentarium/${fragment._id}`}>{fragment._id}</Link></td>
+                    <td>{fragment.accession}</td>
+                    <td>{fragment.cdliNumber}</td>
+                    <td>{fragment.description}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+            {_.isEmpty(this.state.fragments) && 'No fragments found.'}
+          </Fragment>}
           <Error error={this.state.error} />
         </Fragment>
       )

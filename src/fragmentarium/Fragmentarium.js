@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import Breadcrumbs from 'Breadcrumbs'
+import FragmentSearchForm from 'fragmentarium/search/FragmentSearchForm'
 import FragmentSearch from 'fragmentarium/search/FragmentSearch'
 import Statistics from 'fragmentarium/Statistics'
+
+import './Fragmentarium.css'
 
 class Fragmentarium extends Component {
   header = () => {
@@ -15,16 +18,21 @@ class Fragmentarium extends Component {
   }
 
   render () {
-    const number = queryString.parse(this.props.location.search).number || 'K.1'
+    const number = queryString.parse(this.props.location.search).number
     return (
       <section className='App-content'>
         <this.header />
-        <section>
-          {this.props.auth.isAuthenticated()
-            ? <FragmentSearch number={number} apiClient={this.props.apiClient} />
-            : <p>You need to be logged in to access the fragments.</p>
-          }
-        </section>
+        {this.props.auth.isAuthenticated()
+          ? (
+            <section className='Fragmentarium-search'>
+              <header className='Fragmentarium-search__header'>
+                <FragmentSearchForm number={number} />
+              </header>
+              <FragmentSearch number={number} apiClient={this.props.apiClient} />
+            </section>
+          )
+          : <p>You need to be logged in to access the fragments.</p>
+        }
         <Statistics apiClient={this.props.apiClient} />
       </section>
     )

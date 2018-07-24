@@ -29,6 +29,7 @@ beforeEach(async () => {
 
 describe('Searching for fragments', () => {
   let fragments
+  let number = 'K.2'
 
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', 2)
@@ -37,11 +38,15 @@ describe('Searching for fragments', () => {
       ? Promise.resolve(fragments)
       : Promise.resolve(statistics)
     )
-    await renderFragmentarium('/fragmentarium?number=K.1')
+    await renderFragmentarium(`/fragmentarium?number=${number}`)
   })
 
   it('Displays result on successfull query', () => {
     expect(container).toHaveTextContent(fragments[0]._id)
+  })
+
+  it('Fills in search form query', async () => {
+    expect(element.getByLabelText('Number').value).toEqual(number)
   })
 })
 
