@@ -46,39 +46,17 @@ describe('Searching for fragments', () => {
 })
 
 describe('Statistics', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(false)
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
+    await renderFragmentarium()
   })
 
-  describe('On load', () => {
-    beforeEach(async () => {
-      jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
-      await renderFragmentarium()
-    })
-
-    it('Queries the statistics', async () => {
-      expect(apiClient.fetchJson).toBeCalledWith('/statistics', false)
-    })
-
-    it('Shows the number of transliterated tablets', async () => {
-      expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
-    })
-
-    it('Shows the number of transliterated lines', async () => {
-      expect(container).toHaveTextContent(statistics.lines.toLocaleString())
-    })
+  it('Shows the number of transliterated tablets', async () => {
+    expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
   })
 
-  describe('On error', () => {
-    const message = 'message'
-
-    beforeEach(async () => {
-      jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(message)))
-      await renderFragmentarium()
-    })
-
-    it('Shows error message', () => {
-      expect(container).toHaveTextContent(message)
-    })
+  it('Shows the number of transliterated lines', async () => {
+    expect(container).toHaveTextContent(statistics.lines.toLocaleString())
   })
 })
