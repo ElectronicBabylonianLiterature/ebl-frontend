@@ -7,7 +7,7 @@ import Callback from './auth0/Callback'
 import Introduction from './Introduction'
 import Dictionary from './dictionary/search/Dictionary'
 import WordEditor from './dictionary/editor/WordEditor'
-import FragmentView from './fragmentarium/FragmentView'
+import FragmentView from './fragmentarium//transliterate/FragmentView'
 import Fragmentarium from './fragmentarium/Fragmentarium'
 import ApiClient from './http/ApiClient'
 
