@@ -51,7 +51,10 @@ describe('logout', () => {
   })
 
   it('Calls WebAuth.logout', () => {
-    expect(auth.auth0.logout).toBeCalled()
+    expect(auth.auth0.logout).toBeCalledWith({
+      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+    })
   })
 })
 
