@@ -7,12 +7,18 @@ class ApiClient {
     this.auth = auth
   }
 
-  get baseHeaders () {
-    return {'Authorization': `Bearer ${this.auth.getAccessToken()}`}
+  createHeaders (authenticate, headers) {
+    const defaultHeaders = authenticate
+      ? {'Authorization': `Bearer ${this.auth.getAccessToken()}`}
+      : {}
+    return new Headers({
+      ...defaultHeaders,
+      ...headers
+    })
   }
 
   async fetch (path, authenticate) {
-    const headers = new Headers(authenticate ? this.baseHeaders : {})
+    const headers = this.createHeaders(authenticate, {})
     const response = await fetch(apiUrl(path), {headers: headers})
 
     if (response.ok) {
@@ -31,8 +37,7 @@ class ApiClient {
   }
 
   async postJson (path, body) {
-    const headers = new Headers({
-      ...this.baseHeaders,
+    const headers = this.createHeaders(true, {
       'Content-Type': 'application/json; charset=utf-8'
     })
     const response = await fetch(apiUrl(path), {body: JSON.stringify(body), headers: headers, method: 'POST'})
