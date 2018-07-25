@@ -71,7 +71,7 @@ describe('Value does not have attested property', () => {
   })
 
   it('Does not display attested', () => {
-    expect(element.queryByLabelText('attested')).not.toBeInTheDOM()
+    expect(element.queryByLabelText('attested')).toBeNull()
   })
 
   describe('On change with attested', () => {
