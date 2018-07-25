@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class Spinner extends Component {
-  render () {
-    return <span><i className='fa fa-spinner fa-spin' />{this.props.children || 'Loading...'}</span>
-  }
+export default function Spinner ({loading, children}) {
+  return (loading || loading === undefined) && (
+    <span>
+      <i className='fa fa-spinner fa-spin' />
+      {children || 'Loading...'}
+    </span>
+  )
 }
-
-export default Spinner

@@ -5,11 +5,21 @@ import Spinner from './Spinner'
 afterEach(cleanup)
 
 it('Has loading indicator', () => {
-  const {container} = render(<Spinner />)
+  const {container} = render(<Spinner loading />)
   expect(container).toHaveTextContent('Loading...')
 })
 
 it('Shows children', () => {
-  const {container} = render(<Spinner>Spinning</Spinner>)
+  const {container} = render(<Spinner loading>Spinning</Spinner>)
   expect(container).toHaveTextContent('Spinning')
+})
+
+it('Displays nothing if loading undefined', async () => {
+  const {container} = render(<Spinner />)
+  expect(container).toHaveTextContent('Loading...')
+})
+
+it('Displays nothing if loading false', async () => {
+  const {container} = render(<Spinner loading={false} />)
+  expect(container.textContent).toEqual('')
 })
