@@ -1,5 +1,7 @@
 .Statistics {
   font-size: 1.5em;
+  margin: auto;
+  width: 40%;
 }
 
 .Statistics__values {
