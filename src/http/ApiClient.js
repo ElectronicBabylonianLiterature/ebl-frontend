@@ -17,9 +17,12 @@ class ApiClient {
     })
   }
 
-  async fetch (path, authenticate) {
+  async fetch (path, authenticate, signal) {
     const headers = this.createHeaders(authenticate, {})
-    const response = await fetch(apiUrl(path), {headers: headers})
+    const response = await fetch(apiUrl(path), {
+      headers: headers,
+      signal: signal
+    })
 
     if (response.ok) {
       return response
@@ -28,19 +31,24 @@ class ApiClient {
     }
   }
 
-  async fetchJson (path, authenticate) {
-    return (await this.fetch(path, authenticate)).json()
+  async fetchJson (path, authenticate, signal) {
+    return (await this.fetch(path, authenticate, signal)).json()
   }
 
-  async fetchBlob (path) {
-    return (await this.fetch(path, true)).blob()
+  async fetchBlob (path, signal) {
+    return (await this.fetch(path, true, signal)).blob()
   }
 
-  async postJson (path, body) {
+  async postJson (path, body, signal) {
     const headers = this.createHeaders(true, {
       'Content-Type': 'application/json; charset=utf-8'
     })
-    const response = await fetch(apiUrl(path), {body: JSON.stringify(body), headers: headers, method: 'POST'})
+    const response = await fetch(apiUrl(path), {
+      body: JSON.stringify(body),
+      headers: headers,
+      method: 'POST',
+      signal: signal
+    })
 
     if (!response.ok) {
       throw Error(response.statusText)

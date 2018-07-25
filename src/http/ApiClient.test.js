@@ -11,53 +11,58 @@ const expectedError = new Error(errorResponse.statusText)
 
 let apiClient
 let auth
+let signal
 
 beforeEach(async () => {
   fetch.resetMocks()
-
+  signal = 'mock signal'
   auth = {getAccessToken: jest.fn()}
   apiClient = new ApiClient(auth)
 })
 
 describe('fetchJson', () => {
-  it('Resolves to parsed JSON on success', async () => {
-    setUpSuccessResponse()
+  describe('Successful request', () => {
+    beforeEach(() => {
+      setUpSuccessResponse()
+    })
 
-    expect(apiClient.fetchJson(path, true)).resolves.toEqual(result)
-  })
+    it('Resolves to parsed JSON on success', async () => {
+      expect(apiClient.fetchJson(path, true)).resolves.toEqual(result)
+    })
 
-  it('Makes a request with given parameters', async () => {
-    setUpSuccessResponse()
+    it('Makes a request with given parameters', async () => {
+      const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
+      await apiClient.fetchJson(path, true, signal)
+      expect(fetch).toBeCalledWith(expectedUrl, {
+        headers: expectedHeaders,
+        signal: signal
+      })
+    })
 
-    await apiClient.fetchJson(path, true)
-
-    const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
-    expect(fetch).toBeCalledWith(expectedUrl, {headers: expectedHeaders})
-  })
-
-  it('Makes a request without Authorization header', async () => {
-    setUpSuccessResponse()
-
-    await apiClient.fetchJson(path, false)
-
-    expect(fetch).toBeCalledWith(expectedUrl, {headers: new Headers()})
+    it('Makes a request without Authorization header', async () => {
+      await apiClient.fetchJson(path, false, signal)
+      expect(fetch).toBeCalledWith(expectedUrl, {
+        headers: new Headers(),
+        signal: signal
+      })
+    })
   })
 
   it('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => { throw error })
 
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(error)
+    await expect(apiClient.fetchJson(path, true, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with error if fetch fails', async () => {
     fetch.mockRejectOnce(error)
 
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(error)
+    await expect(apiClient.fetchJson(path, true, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
     fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(expectedError)
+    await expect(apiClient.fetchJson(path, true, signal)).rejects.toEqual(expectedError)
   })
 })
 
@@ -69,36 +74,41 @@ describe('postJson', () => {
   it('Resolves on success', async () => {
     setUpSuccessResponse('')
 
-    await expect(apiClient.postJson(path, json)).resolves.toBeUndefined()
+    await expect(apiClient.postJson(path, json, signal)).resolves.toBeUndefined()
   })
 
   it('Makes a post request with given parameters', async () => {
     setUpSuccessResponse('')
 
-    await apiClient.postJson(path, json)
+    await apiClient.postJson(path, json, signal)
 
     const expectedHeaders = new Headers({
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
-    expect(fetch).toBeCalledWith(expectedUrl, {body: JSON.stringify(json), headers: expectedHeaders, method: 'POST'})
+    expect(fetch).toBeCalledWith(expectedUrl, {
+      body: JSON.stringify(json),
+      headers: expectedHeaders,
+      method: 'POST',
+      signal: signal
+    })
   })
 
   it('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => { throw error })
 
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
+    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with error if post fails', async () => {
     fetch.mockRejectOnce(error)
 
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
+    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
     fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(expectedError)
+    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(expectedError)
   })
 })
 
@@ -107,28 +117,31 @@ describe('fetchBlob', () => {
     setUpSuccessResponse()
 
     const blob = new Blob([JSON.stringify(result)])
-    expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
+    expect(apiClient.fetchBlob(path, signal)).resolves.toEqual(blob)
   })
 
   it('Makes a request with given parameters', async () => {
     setUpSuccessResponse()
 
-    await apiClient.fetchBlob(path)
+    await apiClient.fetchBlob(path, signal)
 
     const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
-    expect(fetch).toBeCalledWith(expectedUrl, {headers: expectedHeaders})
+    expect(fetch).toBeCalledWith(expectedUrl, {
+      headers: expectedHeaders,
+      signal: signal
+    })
   })
 
   it('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => { throw error })
 
-    await expect(apiClient.fetchBlob(path)).rejects.toEqual(error)
+    await expect(apiClient.fetchBlob(path, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with error if fetch fails', async () => {
     fetch.mockRejectOnce(error)
 
-    await expect(apiClient.fetchBlob(path)).rejects.toEqual(error)
+    await expect(apiClient.fetchBlob(path, signal)).rejects.toEqual(error)
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
