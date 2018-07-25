@@ -6,6 +6,8 @@ import {factory} from 'factory-girl'
 import { whenClicked } from 'testHelpers'
 import LuckyButton from './LuckyButton'
 
+const buttonText = 'I\'m feeling lucky'
+
 let fragment
 let history
 let apiClient
@@ -25,13 +27,13 @@ beforeEach(async () => {
 })
 
 it('Redirects to fragment when clicked', async () => {
-  await whenClicked(element, 'I\'am feeling lucky')
+  await whenClicked(element, buttonText)
     .expect(history.push)
     .toHaveBeenCalledWith(`/fragmentarium/${fragment._id}`)
 })
 
 it('Fetches random fragment from the API', async () => {
-  await whenClicked(element, 'I\'am feeling lucky')
+  await whenClicked(element, buttonText)
     .expect(apiClient.fetchJson)
     .toHaveBeenCalledWith('/fragments?random=true', true)
 })

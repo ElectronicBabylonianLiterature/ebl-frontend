@@ -11,7 +11,7 @@ class LuckyButton extends Component {
 
   render () {
     return (
-      <Button bsStyle='primary' onClick={this.click}>I'am feeling lucky</Button>
+      <Button bsStyle='primary' onClick={this.click}>I'm feeling lucky</Button>
     )
   }
 }
