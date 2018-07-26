@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component, Fragment } from 'react'
 
 import Breadcrumbs from 'Breadcrumbs'
@@ -7,6 +8,8 @@ import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 
 class FragmentView extends Component {
+  abortController = new AbortController()
+
   state = {
     fragment: null,
     error: null
@@ -30,12 +33,20 @@ class FragmentView extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.abortController.abort()
+  }
+
   fetchFragment = () => {
     this.setState({fragment: null, error: null})
     this.props.apiClient
-      .fetchJson(this.fragmentUrl, true)
+      .fetchJson(this.fragmentUrl, true, this.abortController.signal)
       .then(json => this.setState({fragment: json, error: null}))
-      .catch(error => this.setState({fragment: null, error: error}))
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          this.setState({fragment: null, error: error})
+        }
+      })
   }
 
   header = () => {

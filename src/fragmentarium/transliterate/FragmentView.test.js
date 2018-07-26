@@ -6,11 +6,13 @@ import {factory} from 'factory-girl'
 import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
+import { AbortError } from 'testHelpers'
 
 const fragmentNumber = 'K.1'
 const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
   path: '/fragmentarium/:id'
 })
+const message = 'message'
 
 let auth
 let apiClient
@@ -18,7 +20,11 @@ let container
 let element
 
 async function renderFragmentView () {
-  element = render(<MemoryRouter><FragmentView match={match} auth={auth} apiClient={apiClient} /></MemoryRouter>)
+  element = render(
+    <MemoryRouter>
+      <FragmentView match={match} auth={auth} apiClient={apiClient} />
+    </MemoryRouter>
+  )
   container = element.container
   await wait()
 }
@@ -30,6 +36,7 @@ beforeEach(async () => {
   apiClient = new ApiClient(auth)
   URL.createObjectURL.mockReturnValue('url')
   jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
+  jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
 })
 
 describe('Fragment is loaded', () => {
@@ -44,7 +51,7 @@ describe('Fragment is loaded', () => {
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
     const expectedPath = `/fragments/${fragment._id}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
   })
 
   it('Shows the fragment number', async () => {
@@ -61,11 +68,9 @@ describe('Fragment is loaded', () => {
 })
 
 describe('On error', () => {
-  const error = new Error('message')
-
   beforeEach(async () => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(error))
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView()
   })
 
@@ -74,13 +79,29 @@ describe('On error', () => {
   })
 
   it('Shows error message', () => {
-    expect(container).toHaveTextContent(error.message)
+    expect(container).toHaveTextContent(message)
   })
 })
 
 it('Displays a message if user is not logged in', async () => {
-  jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
+  jest.spyOn(auth, 'isAuthenticated').mockReturnValue(false)
   await renderFragmentView()
 
   expect(container).toHaveTextContent('You need to be logged in to access the fragmentarium.')
+})
+
+describe('When unmounting', () => {
+  beforeEach(async () => {
+    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(apiClient, 'fetchJson').mockImplementationOnce(() => Promise.reject(new AbortError(message)))
+    await renderFragmentView()
+  })
+
+  it('Aborts fetch', () => {
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
+  })
+
+  it('Ignores AbortError', async () => {
+    expect(element.container).not.toHaveTextContent(message)
+  })
 })
