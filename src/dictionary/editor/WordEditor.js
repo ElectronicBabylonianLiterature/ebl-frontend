@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 
@@ -7,6 +8,8 @@ import Spinner from 'Spinner'
 import Error from 'Error'
 
 class WordEditor extends Component {
+  abortController = new AbortController()
+
   state = {
     word: null,
     error: null,
@@ -23,9 +26,17 @@ class WordEditor extends Component {
 
   componentDidMount () {
     this.props.apiClient
-      .fetchJson(this.wordUrl, true)
+      .fetchJson(this.wordUrl, true, this.abortController.signal)
       .then(json => this.setState({word: json, error: null, saving: false}))
-      .catch(error => this.setState({word: null, error: error, saving: false}))
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          this.setState({word: null, error: error, saving: false})
+        }
+      })
+  }
+
+  componentWillUnmount () {
+    this.abortController.abort()
   }
 
   updateWord = word => {

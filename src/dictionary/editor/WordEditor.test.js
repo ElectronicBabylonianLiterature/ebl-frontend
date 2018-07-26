@@ -1,12 +1,13 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
 import { render, wait, cleanup } from 'react-testing-library'
-import { submitForm } from 'testHelpers'
+import { submitForm, AbortError } from 'testHelpers'
 import WordEditor from './WordEditor'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import { factory } from 'factory-girl'
 
+const errorMessage = 'error'
 let result
 let apiClient
 
@@ -23,7 +24,7 @@ describe('Fecth word', () => {
     renderWithRouter()
 
     const expectedPath = '/words/id'
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
   })
 
   it('Displays result on successfull query', async () => {
@@ -59,7 +60,6 @@ describe('Update word', () => {
   })
 
   it('Displays error message on failed post', async () => {
-    const errorMessage = 'error'
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
     jest.spyOn(apiClient, 'postJson').mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     const element = renderWithRouter()
@@ -71,12 +71,33 @@ describe('Update word', () => {
   })
 })
 
+describe('When unmounting', () => {
+  let element
+
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
+    element = renderWithRouter()
+    await wait()
+  })
+
+  it('Aborts fetch', () => {
+    element.unmount()
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
+  })
+
+  it('Ignores AbortError', async () => {
+    expect(element.container).not.toHaveTextContent(errorMessage)
+  })
+})
+
 function renderWithRouter () {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
 
-  return render(<MemoryRouter>
-    <WordEditor match={match} apiClient={apiClient} />
-  </MemoryRouter>)
+  return render(
+    <MemoryRouter>
+      <WordEditor match={match} apiClient={apiClient} />
+    </MemoryRouter>
+  )
 }
