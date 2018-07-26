@@ -67,10 +67,10 @@ describe('When unmounting', () => {
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(message)))
     await renderFragmentSearch()
-    element.unmount()
   })
 
   it('Aborts fetch', () => {
+    element.unmount()
     expect(AbortController.prototype.abort).toHaveBeenCalled()
   })
 

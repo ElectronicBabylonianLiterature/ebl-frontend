@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 
@@ -8,6 +9,8 @@ import Error from 'Error'
 import './WordSearch.css'
 
 class WordSearch extends Component {
+  abortController = new AbortController()
+
   state = {
     words: null,
     error: null
@@ -23,9 +26,13 @@ class WordSearch extends Component {
     } else {
       this.setState({words: null, error: null})
       this.props.apiClient
-        .fetchJson(`/words?query=${encodeURIComponent(this.props.query)}`, true)
+        .fetchJson(`/words?query=${encodeURIComponent(this.props.query)}`, true, this.abortController.signal)
         .then(words => this.setState({words: words, error: null}))
-        .catch(error => this.setState({words: [], error: error}))
+        .catch(error => {
+          if (error.name !== 'AbortError') {
+            this.setState({words: [], error: error})
+          }
+        })
     }
   }
 
@@ -37,6 +44,10 @@ class WordSearch extends Component {
     if (prevProps.query !== this.props.query) {
       this.fetchWords()
     }
+  }
+
+  componentWillUnmount () {
+    this.abortController.abort()
   }
 
   render () {

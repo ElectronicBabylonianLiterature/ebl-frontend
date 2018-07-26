@@ -3,9 +3,18 @@ import { MemoryRouter } from 'react-router-dom'
 import {render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
 import {factory} from 'factory-girl'
+import { AbortError } from 'testHelpers'
 
+const query = 'lem[ma?]'
+const errorMessage = 'error'
 let words
 let apiClient
+let element
+
+async function renderWordSearch () {
+  element = render(<MemoryRouter><WordSearch query={query} apiClient={apiClient} /></MemoryRouter>)
+  await wait()
+}
 
 afterEach(cleanup)
 
@@ -17,28 +26,39 @@ beforeEach(async () => {
 })
 
 it('Queries the Dictionary API with given parameters', async () => {
-  const query = 'lem[ma?]'
   apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  render(<MemoryRouter><WordSearch query={query} apiClient={apiClient} /></MemoryRouter>)
-  await wait()
+  await renderWordSearch()
 
   const expectedPath = `/words?query=${encodeURIComponent(query)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
 })
 
 it('displays result on successfull query', async () => {
   apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  const element = render(<MemoryRouter><WordSearch query='lemma' apiClient={apiClient} /></MemoryRouter>)
-  await wait()
+  await renderWordSearch()
 
   expect(element.getByText(words[0].meaning)).toBeDefined()
 })
 
 it('displays error on failed query', async () => {
-  const errorMessage = 'error'
   apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-  const element = render(<MemoryRouter><WordSearch query='lemma' apiClient={apiClient} /></MemoryRouter>)
-  await wait()
+  await renderWordSearch()
 
-  expect(element.getByText(errorMessage)).toBeDefined()
+  expect(element.container).toHaveTextContent(errorMessage)
+})
+
+describe('When unmounting', () => {
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
+    await renderWordSearch()
+  })
+
+  it('Aborts fetch', () => {
+    element.unmount()
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
+  })
+
+  it('Ignores AbortError', async () => {
+    expect(element.container).not.toHaveTextContent(errorMessage)
+  })
 })
