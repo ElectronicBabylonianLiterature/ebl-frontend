@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import Error from 'Error'
