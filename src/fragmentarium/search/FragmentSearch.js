@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
@@ -7,6 +8,8 @@ import Spinner from 'Spinner'
 import Error from 'Error'
 
 class FragmentSearch extends Component {
+  abortController = new AbortController()
+
   state = {
     fragments: null,
     error: null
@@ -20,11 +23,16 @@ class FragmentSearch extends Component {
     if (_.isEmpty(this.props.number)) {
       this.setState({fragments: [], error: null})
     } else {
+      const path = `/fragments?number=${encodeURIComponent(this.props.number)}`
       this.setState({fragments: null, error: null})
       this.props.apiClient
-        .fetchJson(`/fragments?number=${encodeURIComponent(this.props.number)}`, true)
+        .fetchJson(path, true, this.abortController.signal)
         .then(fragments => this.setState({fragments: fragments, error: null}))
-        .catch(error => this.setState({fragments: [], error: error}))
+        .catch(error => {
+          if (error.name !== 'AbortError') {
+            this.setState({fragments: [], error: error})
+          }
+        })
     }
   }
 
@@ -36,6 +44,10 @@ class FragmentSearch extends Component {
     if (prevProps.number !== this.props.number) {
       this.fetchFragments()
     }
+  }
+
+  componentWillUnmount () {
+    this.abortController.abort()
   }
 
   table = () => (

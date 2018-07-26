@@ -95,6 +95,7 @@ describe('When unmounting', () => {
     jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockImplementationOnce(() => Promise.reject(new AbortError(message)))
     await renderFragmentView()
+    element.unmount()
   })
 
   it('Aborts fetch', () => {

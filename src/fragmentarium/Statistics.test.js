@@ -62,6 +62,7 @@ describe('When unmounting', () => {
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(message)))
     await renderStatistics()
+    element.unmount()
   })
 
   it('Aborts fetch', () => {

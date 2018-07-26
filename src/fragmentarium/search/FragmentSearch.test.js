@@ -1,12 +1,24 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {render, wait, cleanup} from 'react-testing-library'
+import { render, wait, cleanup } from 'react-testing-library'
 import FragmentSearch from './FragmentSearch'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
+import { AbortError } from 'testHelpers'
 
+const number = 'K.003292'
+const message = 'error'
 let fragments
 let apiClient
 let element
+
+async function renderFragmentSearch () {
+  element = render(
+    <MemoryRouter>
+      <FragmentSearch number={number} apiClient={apiClient} />
+    </MemoryRouter>
+  )
+  await wait()
+}
 
 afterEach(cleanup)
 
@@ -17,18 +29,15 @@ beforeEach(async () => {
 })
 
 describe('Successful reqeust', () => {
-  const number = 'K.003292'
-
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', 2)
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(fragments))
-    element = render(<MemoryRouter><FragmentSearch number={number} apiClient={apiClient} /></MemoryRouter>)
-    await wait()
+    await renderFragmentSearch()
   })
 
   it('Queries the API with given parameters', async () => {
     const expectedPath = `/fragments?number=${encodeURIComponent(number)}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
   })
 
   it('Displays results on successfull query', async () => {
@@ -48,10 +57,24 @@ describe('Successful reqeust', () => {
 })
 
 it('Displays error on failed query', async () => {
-  const errorMessage = 'error'
-  apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-  const {container} = render(<MemoryRouter><FragmentSearch number='K.1' apiClient={apiClient} /></MemoryRouter>)
-  await wait()
+  apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(message)))
+  await renderFragmentSearch()
 
-  expect(container).toHaveTextContent(errorMessage)
+  expect(element.container).toHaveTextContent(message)
+})
+
+describe('When unmounting', () => {
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(message)))
+    await renderFragmentSearch()
+    element.unmount()
+  })
+
+  it('Aborts fetch', () => {
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
+  })
+
+  it('Ignores AbortError', async () => {
+    expect(element.container).not.toHaveTextContent(message)
+  })
 })

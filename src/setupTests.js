@@ -25,3 +25,7 @@ global.AbortController.prototype.signal = {
   aborted: false,
   onabort: jest.fn()
 }
+
+afterEach(() => {
+  global.AbortController.prototype.abort.mockReset()
+})
