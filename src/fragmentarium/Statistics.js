@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component } from 'react'
 import _ from 'lodash'
 import Error from 'Error'
@@ -6,6 +7,8 @@ import Spinner from 'Spinner'
 import './Statistics.css'
 
 class Statistics extends Component {
+  abortController = new AbortController()
+
   state = {
     statistics: null,
     error: null
@@ -23,12 +26,20 @@ class Statistics extends Component {
     this.fetchStatistics()
   }
 
+  componentWillUnmount () {
+    this.abortController.abort()
+  }
+
   fetchStatistics = () => {
     this.setState({statistics: null, error: null})
     this.props.apiClient
-      .fetchJson('/statistics', false)
+      .fetchJson('/statistics', false, this.abortController.signal)
       .then(json => this.setState({statistics: json, error: null}))
-      .catch(error => this.setState({statistics: null, error: error}))
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          this.setState({statistics: null, error: error})
+        }
+      })
   }
 
   render () {

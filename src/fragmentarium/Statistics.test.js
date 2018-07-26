@@ -4,12 +4,17 @@ import {factory} from 'factory-girl'
 import Statistics from './Statistics'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
+import { AbortError } from 'testHelpers'
+
+const message = 'message'
 
 let apiClient
+let element
 let container
 
 async function renderStatistics () {
-  container = render(<Statistics apiClient={apiClient} />).container
+  element = render(<Statistics apiClient={apiClient} />)
+  container = element.container
   await wait()
 }
 
@@ -30,7 +35,7 @@ describe('On load', () => {
   })
 
   it('Queries the statistics', async () => {
-    expect(apiClient.fetchJson).toBeCalledWith('/statistics', false)
+    expect(apiClient.fetchJson).toBeCalledWith('/statistics', false, AbortController.prototype.signal)
   })
 
   it('Shows the number of transliterated tablets', async () => {
@@ -43,8 +48,6 @@ describe('On load', () => {
 })
 
 describe('On error', () => {
-  const message = 'message'
-
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderStatistics()
@@ -52,5 +55,20 @@ describe('On error', () => {
 
   it('Shows error message', () => {
     expect(container).toHaveTextContent(message)
+  })
+})
+
+describe('When unmounting', () => {
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(message)))
+    await renderStatistics()
+  })
+
+  it('Aborts fetch', () => {
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
+  })
+
+  it('Ignores AbortError', async () => {
+    expect(element.container).not.toHaveTextContent(message)
   })
 })
