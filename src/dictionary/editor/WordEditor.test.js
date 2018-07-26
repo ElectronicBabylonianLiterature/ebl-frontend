@@ -19,9 +19,9 @@ beforeEach(async () => {
 })
 
 describe('Fecth word', () => {
-  it('Queries the word from API', () => {
+  it('Queries the word from API', async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    renderWithRouter()
+    await renderWithRouter()
 
     const expectedPath = '/words/id'
     expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
@@ -29,45 +29,52 @@ describe('Fecth word', () => {
 
   it('Displays result on successfull query', async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    const {getByText} = renderWithRouter()
+    const {getByText} = await renderWithRouter()
 
-    await wait()
     expect(getByText(result.lemma.join(' '))).toBeDefined()
   })
 
   it('Displays error message on failed query', async () => {
     const errorMessage = 'error'
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-    const {getByText} = renderWithRouter()
+    const {getByText} = await renderWithRouter()
 
-    await wait()
     expect(getByText(errorMessage)).toBeDefined()
   })
 })
 
 describe('Update word', () => {
-  it('Posts to API on submit', async () => {
+  beforeEach(() => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
-    const element = renderWithRouter()
+  })
 
-    await wait()
+  it('Posts to API on submit', async () => {
+    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
+    const element = await renderWithRouter()
+
     await submitForm(element, 'form')
 
     const expectedPath = '/words/id'
     const expectedBody = result
-    expect(apiClient.postJson).toHaveBeenCalledWith(expectedPath, expectedBody)
+    expect(apiClient.postJson).toHaveBeenCalledWith(expectedPath, expectedBody, AbortController.prototype.signal)
   })
 
   it('Displays error message on failed post', async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
     jest.spyOn(apiClient, 'postJson').mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    const element = renderWithRouter()
+    const element = await renderWithRouter()
 
-    await wait()
     await submitForm(element, 'form')
 
     expect(element.getByText(errorMessage)).toBeDefined()
+  })
+
+  it('Ignores AbortError', async () => {
+    jest.spyOn(apiClient, 'postJson').mockImplementationOnce(() => Promise.reject(new AbortError(errorMessage)))
+    const element = await renderWithRouter()
+
+    await submitForm(element, 'form')
+
+    expect(element.container).not.toHaveTextContent(errorMessage)
   })
 })
 
@@ -76,8 +83,7 @@ describe('When unmounting', () => {
 
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
-    element = renderWithRouter()
-    await wait()
+    element = await renderWithRouter()
   })
 
   it('Aborts fetch', () => {
@@ -90,14 +96,16 @@ describe('When unmounting', () => {
   })
 })
 
-function renderWithRouter () {
+async function renderWithRouter () {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
 
-  return render(
+  const element = render(
     <MemoryRouter>
       <WordEditor match={match} apiClient={apiClient} />
     </MemoryRouter>
   )
+  await wait()
+  return element
 }
