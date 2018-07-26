@@ -1,7 +1,10 @@
+/* global AbortController */
 import React, { Component } from 'react'
 import { Image } from 'react-bootstrap'
 
 class ApiImage extends Component {
+  abortController = new AbortController()
+
   state = {
     image: ''
   }
@@ -11,17 +14,22 @@ class ApiImage extends Component {
   }
 
   componentDidMount () {
-    this.props.apiClient.fetchBlob(this.imageUrl)
+    this.props.apiClient.fetchBlob(this.imageUrl, this.abortController.signal)
       .then(blob => {
         this.setState({image: URL.createObjectURL(blob)})
       })
-      .catch(() => this.setState({image: ''}))
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          this.setState({image: ''})
+        }
+      })
   }
 
   componentWillUnmount () {
     if (this.state.image) {
       URL.revokeObjectURL(this.state.image)
     }
+    this.abortController.abort()
   }
 
   render () {
