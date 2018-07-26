@@ -1,11 +1,12 @@
 import React from 'react'
 import { render, cleanup } from 'react-testing-library'
-import { changeValueByLabel, submitForm } from 'testHelpers'
+import { changeValueByLabel, submitForm, AbortError } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 
+const errorMessage = 'error message'
 const number = 'K.00000'
 const transliteration = 'line1\nline2'
 const notes = 'notes'
@@ -62,7 +63,8 @@ describe('Save', () => {
       .toHaveBeenCalledWith(`/fragments/${number}`, {
         transliteration: transliteration,
         notes: notes
-      })
+      },
+      AbortController.prototype.signal)
   })
 
   it('Calls onChange', () => {
@@ -71,10 +73,22 @@ describe('Save', () => {
 })
 
 it('Shows error if saving transliteration fails', async () => {
-  const errorMessage = 'error message'
   jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
   await submitForm(element, '#transliteration-form')
 
   expect(element.container).toHaveTextContent(errorMessage)
+})
+
+it('Ignores AbortError', async () => {
+  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
+
+  await submitForm(element, '#transliteration-form')
+
+  expect(element.container).not.toHaveTextContent(errorMessage)
+})
+
+it('Aborts fetch when unmounting', () => {
+  element.unmount()
+  expect(AbortController.prototype.abort).toHaveBeenCalled()
 })

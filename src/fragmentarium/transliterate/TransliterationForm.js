@@ -1,3 +1,4 @@
+/* global AbortController */
 import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
@@ -6,6 +7,8 @@ import Error from 'Error'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
+  abortController = new AbortController()
+
   state = {
     transliteration: this.props.transliteration,
     notes: this.props.notes,
@@ -17,6 +20,10 @@ class TransliteratioForm extends Component {
     const transliterationChanged = this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
     return transliterationChanged || notesChanged
+  }
+
+  componentWillUnmount () {
+    this.abortController.abort()
   }
 
   numberOfRows (property) {
@@ -44,10 +51,14 @@ class TransliteratioForm extends Component {
       disabled: true
     })
     const path = `/fragments/${this.props.number}`
-    this.props.apiClient.postJson(path, {
-      transliteration: this.state.transliteration,
-      notes: this.state.notes
-    })
+    this.props.apiClient.postJson(
+      path,
+      {
+        transliteration: this.state.transliteration,
+        notes: this.state.notes
+      },
+      this.abortController.signal
+    )
       .then(() => {
         this.setState({
           ...this.state,
@@ -56,11 +67,15 @@ class TransliteratioForm extends Component {
         })
         this.props.onChange()
       })
-      .catch(error => this.setState({
-        ...this.state,
-        error: error,
-        disabled: false
-      }))
+      .catch(error => {
+        if (error.name !== 'AbortError') {
+          this.setState({
+            ...this.state,
+            error: error,
+            disabled: false
+          })
+        }
+      })
   }
 
   textArea = ({property}) => (
