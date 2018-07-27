@@ -15,6 +15,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
 
     fetchData () {
       if (filter(this.props)) {
+        this.setState({data: null, error: null})
         this.props.apiClient
           .fetchJson(getPath(this.props), authorize, this.abortController.signal)
           .then(json => this.setState({data: json, error: null}))
