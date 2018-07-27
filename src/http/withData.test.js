@@ -23,6 +23,11 @@ async function renderWithData () {
   await wait()
 }
 
+async function rerender (prop) {
+  element.rerender(<ComponentWithData apiClient={apiClient} prop={prop} />)
+  await wait()
+}
+
 function clearMocks () {
   InnerComponent.mockClear()
   apiClient.fetchJson.mockClear()
@@ -92,20 +97,14 @@ describe('On successful request', () => {
     })
 
     describe('Prop updated', () => {
-      beforeEach(async () => {
-        element.rerender(<ComponentWithData apiClient={apiClient} prop={newPropValue} />)
-        await wait()
-      })
+      beforeEach(async () => rerender(newPropValue))
 
       expectApiToBeCalled(`path/${newPropValue}`)
       expectWrappedComponentToBeRendered(newPropValue, newData)
     })
 
     describe('Prop did not update', () => {
-      beforeEach(async () => {
-        element.rerender(<ComponentWithData apiClient={apiClient} prop={propValue} />)
-        await wait()
-      })
+      beforeEach(async () => rerender(propValue))
 
       it('Does not query the API', () => {
         expect(apiClient.fetchJson).not.toHaveBeenCalled()
