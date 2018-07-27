@@ -7,6 +7,7 @@ const data = 'Test data'
 const defaultData = 'Default data'
 const propValue = 'passed value'
 const errorMessage = 'error'
+const authorize = false
 let apiClient
 let element
 let filter
@@ -27,7 +28,7 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   InnerComponent = jest.fn()
   InnerComponent.mockImplementation(props => <h1>{props.prop}</h1>)
-  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, filter, defaultData)
+  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, authorize, filter, defaultData)
   apiClient = {
     fetchJson: jest.fn()
   }
@@ -41,7 +42,7 @@ describe('On successful request', () => {
 
   it('Queries the API correct path', () => {
     const expectedPath = `path/${propValue}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
   })
 
   it('Passes properties to inner component', () => {
@@ -110,7 +111,7 @@ describe('When updating', () => {
 
     it('Queries the API correct path', () => {
       const expectedPath = `path/${newPropValue}`
-      expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+      expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
     })
 
     it('Passes properties to inner component', () => {
