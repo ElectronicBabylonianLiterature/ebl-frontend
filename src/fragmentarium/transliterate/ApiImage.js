@@ -14,7 +14,7 @@ class ApiImage extends Component {
   }
 
   componentDidMount () {
-    this.props.apiClient.fetchBlob(this.imageUrl, this.abortController.signal)
+    this.props.apiClient.fetchBlob(this.imageUrl, true, this.abortController.signal)
       .then(blob => {
         this.setState({image: URL.createObjectURL(blob)})
       })

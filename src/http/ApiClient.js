@@ -35,8 +35,8 @@ class ApiClient {
     return (await this.fetch(path, authenticate, signal)).json()
   }
 
-  async fetchBlob (path, signal) {
-    return (await this.fetch(path, true, signal)).blob()
+  async fetchBlob (path, authenticate, signal) {
+    return (await this.fetch(path, authenticate, signal)).blob()
   }
 
   async postJson (path, body, signal) {

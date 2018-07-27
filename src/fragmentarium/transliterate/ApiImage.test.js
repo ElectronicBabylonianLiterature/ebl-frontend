@@ -25,7 +25,7 @@ describe('When displaying image', () => {
 
   it('Queries the API with given parameters', async () => {
     const expectedPath = `/images/${fileName}`
-    expect(apiClient.fetchBlob).toBeCalledWith(expectedPath, AbortController.prototype.signal)
+    expect(apiClient.fetchBlob).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
   })
 
   it('Displays the loaded image', async () => {

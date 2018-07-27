@@ -123,11 +123,22 @@ describe('fetchBlob', () => {
   it('Makes a request with given parameters', async () => {
     setUpSuccessResponse()
 
-    await apiClient.fetchBlob(path, signal)
+    await apiClient.fetchBlob(path, true, signal)
 
     const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
     expect(fetch).toBeCalledWith(expectedUrl, {
       headers: expectedHeaders,
+      signal: signal
+    })
+  })
+
+  it('Makes a request without Authorization header', async () => {
+    setUpSuccessResponse()
+
+    await apiClient.fetchJson(path, false, signal)
+
+    expect(fetch).toBeCalledWith(expectedUrl, {
+      headers: new Headers(),
       signal: signal
     })
   })
