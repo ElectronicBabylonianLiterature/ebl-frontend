@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Spinner from 'Spinner'
 import Error from 'Error'
 
-export default function withData (WrappedComponent, getPath) {
+export default function withData (WrappedComponent, getPath, shouldUpdate = () => false) {
   return class extends Component {
     abortController = new AbortController()
 
@@ -26,6 +26,12 @@ export default function withData (WrappedComponent, getPath) {
 
     componentDidMount () {
       this.fetchData()
+    }
+
+    componentDidUpdate (prevProps, prevState, snapshot) {
+      if (shouldUpdate(prevProps, this.props)) {
+        this.fetchData()
+      }
     }
 
     componentWillUnmount () {
