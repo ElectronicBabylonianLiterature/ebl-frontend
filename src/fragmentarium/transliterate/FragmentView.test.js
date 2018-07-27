@@ -6,7 +6,6 @@ import {factory} from 'factory-girl'
 import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
-import { AbortError } from 'testHelpers'
 
 const fragmentNumber = 'K.1'
 const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
@@ -77,10 +76,6 @@ describe('On error', () => {
   it('Shows the fragment number', async () => {
     expect(container).toHaveTextContent(fragmentNumber)
   })
-
-  it('Shows error message', () => {
-    expect(container).toHaveTextContent(message)
-  })
 })
 
 it('Displays a message if user is not logged in', async () => {
@@ -88,21 +83,4 @@ it('Displays a message if user is not logged in', async () => {
   await renderFragmentView()
 
   expect(container).toHaveTextContent('You need to be logged in to access the fragmentarium.')
-})
-
-describe('When unmounting', () => {
-  beforeEach(async () => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
-    jest.spyOn(apiClient, 'fetchJson').mockImplementationOnce(() => Promise.reject(new AbortError(message)))
-    await renderFragmentView()
-  })
-
-  it('Aborts fetch', () => {
-    element.unmount()
-    expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
-
-  it('Ignores AbortError', async () => {
-    expect(element.container).not.toHaveTextContent(message)
-  })
 })

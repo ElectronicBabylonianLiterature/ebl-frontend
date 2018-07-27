@@ -3,10 +3,8 @@ import { MemoryRouter } from 'react-router-dom'
 import {render, wait, cleanup} from 'react-testing-library'
 import WordSearch from './WordSearch'
 import {factory} from 'factory-girl'
-import { AbortError } from 'testHelpers'
 
 const query = 'lem[ma?]'
-const errorMessage = 'error'
 let words
 let apiClient
 let element
@@ -25,7 +23,7 @@ beforeEach(async () => {
   }
 })
 
-it('Queries the Dictionary API with given parameters', async () => {
+it('Queries the API with given parameters', async () => {
   apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
   await renderWordSearch()
 
@@ -33,32 +31,9 @@ it('Queries the Dictionary API with given parameters', async () => {
   expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
 })
 
-it('displays result on successfull query', async () => {
+it('Sisplays results', async () => {
   apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
   await renderWordSearch()
 
   expect(element.getByText(words[0].meaning)).toBeDefined()
-})
-
-it('displays error on failed query', async () => {
-  apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-  await renderWordSearch()
-
-  expect(element.container).toHaveTextContent(errorMessage)
-})
-
-describe('When unmounting', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
-    await renderWordSearch()
-  })
-
-  it('Aborts fetch', () => {
-    element.unmount()
-    expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
-
-  it('Ignores AbortError', async () => {
-    expect(element.container).not.toHaveTextContent(errorMessage)
-  })
 })

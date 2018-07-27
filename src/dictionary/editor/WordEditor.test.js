@@ -33,14 +33,6 @@ describe('Fecth word', () => {
 
     expect(getByText(result.lemma.join(' '))).toBeDefined()
   })
-
-  it('Displays error message on failed query', async () => {
-    const errorMessage = 'error'
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-    const {getByText} = await renderWithRouter()
-
-    expect(getByText(errorMessage)).toBeDefined()
-  })
 })
 
 describe('Update word', () => {
@@ -76,23 +68,11 @@ describe('Update word', () => {
 
     expect(element.container).not.toHaveTextContent(errorMessage)
   })
-})
 
-describe('When unmounting', () => {
-  let element
-
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new AbortError(errorMessage)))
-    element = await renderWithRouter()
-  })
-
-  it('Aborts fetch', () => {
+  it('Aborts post on unmount', async () => {
+    const element = await renderWithRouter()
     element.unmount()
     expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
-
-  it('Ignores AbortError', async () => {
-    expect(element.container).not.toHaveTextContent(errorMessage)
   })
 })
 
