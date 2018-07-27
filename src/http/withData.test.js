@@ -4,11 +4,12 @@ import withData from './withData'
 import { AbortError } from 'testHelpers'
 
 const data = 'Test data'
+const defaultData = 'Default data'
 const propValue = 'passed value'
 const errorMessage = 'error'
 let apiClient
 let element
-let shouldUpdate
+let filter
 
 let ComponentWithData
 let InnerComponent
@@ -21,10 +22,12 @@ async function renderWithData () {
 afterEach(cleanup)
 
 beforeEach(async () => {
-  shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop
+  const shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop
+  filter = jest.fn()
+  filter.mockReturnValue(true)
   InnerComponent = jest.fn()
   InnerComponent.mockImplementation(props => <h1>{props.prop}</h1>)
-  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate)
+  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, filter, defaultData)
   apiClient = {
     fetchJson: jest.fn()
   }
@@ -137,6 +140,33 @@ describe('When updating', () => {
     it('Does not rerender inner component', () => {
       expect(InnerComponent).not.toHaveBeenCalledWith()
     })
+  })
+})
+
+describe('Filtering', () => {
+  beforeEach(async () => {
+    filter.mockReturnValueOnce(false)
+    await renderWithData()
+  })
+
+  it('Calls filter with props', () => {
+    expect(filter).toHaveBeenCalledWith({
+      apiClient: apiClient,
+      prop: propValue
+    })
+  })
+
+  it('Does not query the API', () => {
+    expect(apiClient.fetchJson).not.toHaveBeenCalled()
+  })
+
+  it('Passes default data to the wrapped component', () => {
+    expect(InnerComponent).toHaveBeenCalledWith({
+      data: defaultData,
+      apiClient: apiClient,
+      prop: propValue
+    },
+    {})
   })
 })
 

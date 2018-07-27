@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Spinner from 'Spinner'
 import Error from 'Error'
 
-export default function withData (WrappedComponent, getPath, shouldUpdate = () => false) {
+export default function withData (WrappedComponent, getPath, shouldUpdate = () => false, filter = () => true, defaultData = null) {
   return class extends Component {
     abortController = new AbortController()
 
@@ -14,14 +14,18 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
     }
 
     fetchData () {
-      this.props.apiClient
-        .fetchJson(getPath(this.props), true, this.abortController.signal)
-        .then(json => this.setState({data: json, error: null}))
-        .catch(error => {
-          if (error.name !== 'AbortError') {
-            this.setState({data: null, error: error})
-          }
-        })
+      if (filter(this.props)) {
+        this.props.apiClient
+          .fetchJson(getPath(this.props), true, this.abortController.signal)
+          .then(json => this.setState({data: json, error: null}))
+          .catch(error => {
+            if (error.name !== 'AbortError') {
+              this.setState({data: null, error: error})
+            }
+          })
+      } else {
+        this.setState({data: defaultData, error: null})
+      }
     }
 
     componentDidMount () {
