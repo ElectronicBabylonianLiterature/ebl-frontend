@@ -5,7 +5,9 @@ import { AbortError } from 'testHelpers'
 
 const data = 'Test data'
 const defaultData = 'Default data'
+const newData = 'New Test Data'
 const propValue = 'passed value'
+const newPropValue = 'new value'
 const errorMessage = 'error'
 const authorize = false
 let apiClient
@@ -27,7 +29,7 @@ beforeEach(async () => {
   filter = jest.fn()
   filter.mockReturnValue(true)
   InnerComponent = jest.fn()
-  InnerComponent.mockImplementation(props => <h1>{props.prop}</h1>)
+  InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
   ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, authorize, filter, defaultData)
   apiClient = {
     fetchJson: jest.fn()
@@ -48,6 +50,7 @@ describe('On successful request', () => {
   it('Passes properties to inner component', () => {
     expect(InnerComponent).toHaveBeenCalledWith({
       data: data,
+      reload: expect.any(Function),
       apiClient: apiClient,
       prop: propValue
     },
@@ -55,7 +58,7 @@ describe('On successful request', () => {
   })
 
   it('Renders the wrapped component', () => {
-    expect(element.container).toHaveTextContent(propValue)
+    expect(element.container).toHaveTextContent(`${propValue} ${data}`)
   })
 })
 
@@ -92,9 +95,6 @@ describe('On aborted request', () => {
 })
 
 describe('When updating', () => {
-  const newPropValue = 'new value'
-  const newData = 'New Test Data'
-
   beforeEach(async () => {
     apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
     await renderWithData()
@@ -117,6 +117,7 @@ describe('When updating', () => {
     it('Passes properties to inner component', () => {
       expect(InnerComponent).toHaveBeenCalledWith({
         data: newData,
+        reload: expect.any(Function),
         apiClient: apiClient,
         prop: newPropValue
       },
@@ -124,7 +125,7 @@ describe('When updating', () => {
     })
 
     it('Renders the wrapped component', () => {
-      expect(element.container).toHaveTextContent(newPropValue)
+      expect(element.container).toHaveTextContent(`${newPropValue} ${newData}`)
     })
   })
 
@@ -164,10 +165,45 @@ describe('Filtering', () => {
   it('Passes default data to the wrapped component', () => {
     expect(InnerComponent).toHaveBeenCalledWith({
       data: defaultData,
+      reload: expect.any(Function),
       apiClient: apiClient,
       prop: propValue
     },
     {})
+  })
+})
+
+describe('Reload', () => {
+  let reload
+
+  beforeEach(async () => {
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
+    await renderWithData()
+    reload = InnerComponent.mock.calls[0][0].reload
+    InnerComponent.mockClear()
+    apiClient.fetchJson.mockClear()
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
+    reload()
+    await wait()
+  })
+
+  it('Queries the API correct path', () => {
+    const expectedPath = `path/${propValue}`
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
+  })
+
+  it('Passes properties to inner component', () => {
+    expect(InnerComponent).toHaveBeenCalledWith({
+      data: newData,
+      reload: expect.any(Function),
+      apiClient: apiClient,
+      prop: propValue
+    },
+    {})
+  })
+
+  it('Renders the wrapped component', () => {
+    expect(element.container).toHaveTextContent(`${propValue} ${newData}`)
   })
 })
 

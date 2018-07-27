@@ -13,7 +13,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
       error: null
     }
 
-    fetchData () {
+    fetchData = () => {
       if (filter(this.props)) {
         this.setState({data: null, error: null})
         this.props.apiClient
@@ -48,7 +48,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
         <Fragment>
           <Spinner loading={_.values(this.state).every(_.isNil)} />
           <Error error={this.state.error} />
-          {this.state.data && <WrappedComponent data={this.state.data} {...this.props} />}
+          {this.state.data && <WrappedComponent data={this.state.data} reload={this.fetchData} {...this.props} />}
         </Fragment>
       )
     }
