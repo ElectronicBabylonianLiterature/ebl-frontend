@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Spinner from 'Spinner'
 import Error from 'Error'
 
-export default function withData (WrappedComponent, getPath, shouldUpdate = () => false, authorize = true, filter = () => true, defaultData = null) {
+export default function withData (WrappedComponent, getPath, shouldUpdate = () => false, authorize = true, filter = () => true, defaultData = null, method = 'fetchJson') {
   return class extends Component {
     abortController = new AbortController()
 
@@ -16,8 +16,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
     fetchData = () => {
       if (filter(this.props)) {
         this.setState({data: null, error: null})
-        this.props.apiClient
-          .fetchJson(getPath(this.props), authorize, this.abortController.signal)
+        this.props.apiClient[method](getPath(this.props), authorize, this.abortController.signal)
           .then(json => this.setState({data: json, error: null}))
           .catch(error => {
             if (error.name !== 'AbortError') {

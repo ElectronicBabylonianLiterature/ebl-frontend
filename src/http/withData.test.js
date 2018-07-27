@@ -30,7 +30,7 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   InnerComponent = jest.fn()
   InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
-  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, authorize, filter, defaultData)
+  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, authorize, filter, defaultData, 'fetchJson')
   apiClient = {
     fetchJson: jest.fn()
   }
