@@ -1,60 +1,26 @@
-/* global AbortController */
-import React, { Component } from 'react'
+import React from 'react'
 import _ from 'lodash'
-import Error from 'Error'
-import Spinner from 'Spinner'
+import withData from 'http/withData'
 
 import './Statistics.css'
 
-class Statistics extends Component {
-  abortController = new AbortController()
+function Statistics ({data}) {
+  const localizedStatistics = _.mapValues(data, value => value.toLocaleString())
 
-  state = {
-    statistics: null,
-    error: null
-  }
-
-  get isLoading () {
-    return !this.state.statistics && !this.state.error
-  }
-
-  get localizedStatistics () {
-    return _.mapValues(this.state.statistics, value => value.toLocaleString())
-  }
-
-  componentDidMount () {
-    this.fetchStatistics()
-  }
-
-  componentWillUnmount () {
-    this.abortController.abort()
-  }
-
-  fetchStatistics = () => {
-    this.setState({statistics: null, error: null})
-    this.props.apiClient
-      .fetchJson('/statistics', false, this.abortController.signal)
-      .then(json => this.setState({statistics: json, error: null}))
-      .catch(error => {
-        if (error.name !== 'AbortError') {
-          this.setState({statistics: null, error: error})
-        }
-      })
-  }
-
-  render () {
-    return (
-      <section className='Statistics'>
-        <header>Current size of the corpus:</header>
-        {this.isLoading && <section><Spinner /></section>}
-        {this.state.statistics && <p className='Statistics__values'>
-          {this.localizedStatistics.transliteratedFragments} tablets transliterated<br />
-          {this.localizedStatistics.lines} lines of text
-        </p>}
-        <Error error={this.state.error} />
-      </section>
-    )
-  }
+  return (
+    <section className='Statistics'>
+      <header>Current size of the corpus:</header>
+      <p className='Statistics__values'>
+        {localizedStatistics.transliteratedFragments} tablets transliterated<br />
+        {localizedStatistics.lines} lines of text
+      </p>
+    </section>
+  )
 }
 
-export default Statistics
+export default withData(
+  Statistics,
+  props => '/statistics',
+  (prevProps, props) => false,
+  false
+)
