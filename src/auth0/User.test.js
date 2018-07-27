@@ -14,26 +14,19 @@ beforeEach(() => {
   }
 })
 
-describe('Logging out', () => {
-  beforeEach(async () => {
-    auth.isAuthenticated.mockReturnValueOnce(true)
-    const {getByText} = render(<User auth={auth} />)
-    fireEvent.click(getByText('Logout'))
-  })
-
-  it('Calls Auth0 logout', () => {
-    expect(auth.logout).toHaveBeenCalled()
-  })
+it('Calls Auth0 logout if user is logged in', () => {
+  const {getByText} = renderUser(true)
+  fireEvent.click(getByText('Logout'))
+  expect(auth.logout).toHaveBeenCalled()
 })
 
-describe('Logging in', () => {
-  beforeEach(() => {
-    auth.isAuthenticated.mockReturnValueOnce(false)
-    const {getByText} = render(<User auth={auth} />)
-    fireEvent.click(getByText('Login'))
-  })
-
-  it('Calls Auth0 login', () => {
-    expect(auth.login).toHaveBeenCalled()
-  })
+it('Calls Auth0 login if user is logged out', () => {
+  const {getByText} = renderUser(false)
+  fireEvent.click(getByText('Login'))
+  expect(auth.login).toHaveBeenCalled()
 })
+
+function renderUser (isAuthenticated) {
+  auth.isAuthenticated.mockReturnValueOnce(isAuthenticated)
+  return render(<User auth={auth} />)
+}
