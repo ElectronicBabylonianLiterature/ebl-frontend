@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
 
 class User extends Component {
   logout = () => {
     this.props.auth.logout()
-    this.props.history.replace('/')
   }
 
   login = () => {
@@ -21,4 +19,4 @@ class User extends Component {
   }
 }
 
-export default withRouter(User)
+export default User
