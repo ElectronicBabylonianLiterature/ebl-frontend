@@ -88,7 +88,7 @@ it('Ignores AbortError', async () => {
   expect(element.container).not.toHaveTextContent(errorMessage)
 })
 
-it('Aborts fetch when unmounting', () => {
+it('Aborts post when unmounting', () => {
   element.unmount()
   expect(AbortController.prototype.abort).toHaveBeenCalled()
 })
