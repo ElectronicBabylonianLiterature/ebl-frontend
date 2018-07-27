@@ -1,40 +1,28 @@
-/* global AbortController */
 import React, { Component } from 'react'
 import { Image } from 'react-bootstrap'
+import withData from 'http/withData'
 
 class ApiImage extends Component {
-  abortController = new AbortController()
-
-  state = {
-    image: ''
-  }
-
-  get imageUrl () {
-    return `/images/${this.props.fileName}`
-  }
-
-  componentDidMount () {
-    this.props.apiClient.fetchBlob(this.imageUrl, true, this.abortController.signal)
-      .then(blob => {
-        this.setState({image: URL.createObjectURL(blob)})
-      })
-      .catch(error => {
-        if (error.name !== 'AbortError') {
-          this.setState({image: ''})
-        }
-      })
+  constructor (props) {
+    super(props)
+    this.image = URL.createObjectURL(props.data)
   }
 
   componentWillUnmount () {
-    if (this.state.image) {
-      URL.revokeObjectURL(this.state.image)
-    }
-    this.abortController.abort()
+    URL.revokeObjectURL(this.image)
   }
 
   render () {
-    return <Image src={this.state.image} alt={this.props.fileName} responsive />
+    return <Image src={this.image} alt={this.props.fileName} responsive />
   }
 }
 
-export default ApiImage
+export default withData(
+  ApiImage,
+  props => `/images/${props.fileName}`,
+  (prevProps, props) => false,
+  true,
+  props => true,
+  null,
+  'fetchBlob'
+)
