@@ -4,7 +4,18 @@ import _ from 'lodash'
 import Spinner from 'Spinner'
 import Error from 'Error'
 
-export default function withData (WrappedComponent, getPath, shouldUpdate = () => false, authorize = true, filter = () => true, defaultData = null, method = 'fetchJson') {
+const defaultConfig = {
+  shouldUpdate: () => false,
+  authorize: true,
+  filter: () => true,
+  defaultData: null,
+  method: 'fetchJson'
+}
+export default function withData (WrappedComponent, getPath, config = {}) {
+  const fullConfig = {
+    ...defaultConfig,
+    ...config
+  }
   return class extends Component {
     abortController = new AbortController()
 
@@ -14,9 +25,9 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
     }
 
     fetchData = () => {
-      if (filter(this.props)) {
+      if (fullConfig.filter(this.props)) {
         this.setState({data: null, error: null})
-        this.props.apiClient[method](getPath(this.props), authorize, this.abortController.signal)
+        this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize, this.abortController.signal)
           .then(json => this.setState({data: json, error: null}))
           .catch(error => {
             if (error.name !== 'AbortError') {
@@ -24,7 +35,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
             }
           })
       } else {
-        this.setState({data: defaultData, error: null})
+        this.setState({data: fullConfig.defaultData, error: null})
       }
     }
 
@@ -33,7 +44,7 @@ export default function withData (WrappedComponent, getPath, shouldUpdate = () =
     }
 
     componentDidUpdate (prevProps, prevState, snapshot) {
-      if (shouldUpdate(prevProps, this.props)) {
+      if (fullConfig.shouldUpdate(prevProps, this.props)) {
         this.fetchData()
       }
     }

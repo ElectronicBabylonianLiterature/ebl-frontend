@@ -21,8 +21,9 @@ function WordSearch ({data}) {
 export default withData(
   WordSearch,
   props => `/words?query=${encodeURIComponent(props.query)}`,
-  (prevProps, props) => prevProps.query !== props.query,
-  true,
-  props => !_.isEmpty(props.query),
-  []
+  {
+    shouldUpdate: (prevProps, props) => prevProps.query !== props.query,
+    filter: props => !_.isEmpty(props.query),
+    defaultData: []
+  }
 )

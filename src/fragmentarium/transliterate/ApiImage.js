@@ -20,9 +20,7 @@ class ApiImage extends Component {
 export default withData(
   ApiImage,
   props => `/images/${props.fileName}`,
-  (prevProps, props) => false,
-  true,
-  props => true,
-  null,
-  'fetchBlob'
+  {
+    method: 'fetchBlob'
+  }
 )

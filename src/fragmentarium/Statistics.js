@@ -21,6 +21,7 @@ function Statistics ({data}) {
 export default withData(
   Statistics,
   props => '/statistics',
-  (prevProps, props) => false,
-  false
+  {
+    authorize: false
+  }
 )

@@ -13,6 +13,7 @@ const authorize = false
 let apiClient
 let element
 let filter
+let config
 
 let ComponentWithData
 let InnerComponent
@@ -30,7 +31,14 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   InnerComponent = jest.fn()
   InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
-  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, shouldUpdate, authorize, filter, defaultData, 'fetchJson')
+  config = {
+    shouldUpdate,
+    authorize,
+    filter,
+    defaultData,
+    method: 'fetchJson'
+  }
+  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, config)
   apiClient = {
     fetchJson: jest.fn()
   }

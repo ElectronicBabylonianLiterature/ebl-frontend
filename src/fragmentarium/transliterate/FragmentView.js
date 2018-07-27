@@ -12,7 +12,9 @@ const FragmentWithData = withData(
     onChange={reload}
   />,
   props => `/fragments/${props.number}`,
-  (prevProps, props) => prevProps.number !== props.number
+  {
+    shouldUpdate: (prevProps, props) => prevProps.number !== props.number
+  }
 )
 
 export default function FragmentView ({apiClient, auth, match}) {

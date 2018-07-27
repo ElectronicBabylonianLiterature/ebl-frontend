@@ -34,8 +34,9 @@ function FragmentSearch ({number, data}) {
 export default withData(
   FragmentSearch,
   props => `/fragments?number=${encodeURIComponent(props.number)}`,
-  (prevProps, props) => prevProps.number !== props.number,
-  true,
-  props => !_.isEmpty(props.number),
-  []
+  {
+    shouldUpdate: (prevProps, props) => prevProps.number !== props.number,
+    filter: props => !_.isEmpty(props.number),
+    defaultData: []
+  }
 )
