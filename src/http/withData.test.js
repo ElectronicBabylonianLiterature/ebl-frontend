@@ -23,6 +23,33 @@ async function renderWithData () {
   await wait()
 }
 
+function clearMocks () {
+  InnerComponent.mockClear()
+  apiClient.fetchJson.mockClear()
+}
+
+function expectApiToBeCalled (expectedPath) {
+  it('Queries the API correct path', () => {
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
+  })
+}
+
+function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
+  it('Renders the wrapped component', () => {
+    expect(element.container).toHaveTextContent(`${expectedPropValue} ${expectedData}`)
+  })
+
+  it('Passes properties to inner component', () => {
+    expect(InnerComponent).toHaveBeenCalledWith({
+      data: expectedData,
+      reload: expect.any(Function),
+      apiClient: apiClient,
+      prop: expectedPropValue
+    },
+    {})
+  })
+}
+
 afterEach(cleanup)
 
 beforeEach(async () => {
@@ -50,23 +77,57 @@ describe('On successful request', () => {
     await renderWithData()
   })
 
-  it('Queries the API correct path', () => {
-    const expectedPath = `path/${propValue}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
+  expectApiToBeCalled(`path/${propValue}`)
+  expectWrappedComponentToBeRendered(propValue, data)
+
+  it('Aborts fetch when unmounting', () => {
+    element.unmount()
+    expect(AbortController.prototype.abort).toHaveBeenCalled()
   })
 
-  it('Passes properties to inner component', () => {
-    expect(InnerComponent).toHaveBeenCalledWith({
-      data: data,
-      reload: expect.any(Function),
-      apiClient: apiClient,
-      prop: propValue
-    },
-    {})
+  describe('When updating', () => {
+    beforeEach(async () => {
+      clearMocks()
+      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
+    })
+
+    describe('Prop updated', () => {
+      beforeEach(async () => {
+        element.rerender(<ComponentWithData apiClient={apiClient} prop={newPropValue} />)
+        await wait()
+      })
+
+      expectApiToBeCalled(`path/${newPropValue}`)
+      expectWrappedComponentToBeRendered(newPropValue, newData)
+    })
+
+    describe('Prop did not update', () => {
+      beforeEach(async () => {
+        element.rerender(<ComponentWithData apiClient={apiClient} prop={propValue} />)
+        await wait()
+      })
+
+      it('Does not query the API', () => {
+        expect(apiClient.fetchJson).not.toHaveBeenCalled()
+      })
+
+      it('Does not rerender inner component', () => {
+        expect(InnerComponent).not.toHaveBeenCalledWith()
+      })
+    })
   })
 
-  it('Renders the wrapped component', () => {
-    expect(element.container).toHaveTextContent(`${propValue} ${data}`)
+  describe('Reload', () => {
+    beforeEach(async () => {
+      const reload = InnerComponent.mock.calls[0][0].reload
+      clearMocks()
+      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
+      reload()
+      await wait()
+    })
+
+    expectApiToBeCalled(`path/${propValue}`)
+    expectWrappedComponentToBeRendered(propValue, newData)
   })
 })
 
@@ -77,11 +138,11 @@ describe('On failed request', () => {
     await renderWithData()
   })
 
-  it('Displays an error on failed query', async () => {
+  it('Displays an error', async () => {
     expect(element.container).toHaveTextContent(errorMessage)
   })
 
-  it('Does not render wrapped component on error', async () => {
+  it('Does not render wrapped component', async () => {
     expect(InnerComponent).not.toHaveBeenCalled()
   })
 })
@@ -102,64 +163,13 @@ describe('On aborted request', () => {
   })
 })
 
-describe('When updating', () => {
-  beforeEach(async () => {
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
-    await renderWithData()
-    InnerComponent.mockClear()
-    apiClient.fetchJson.mockClear()
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
-  })
-
-  describe('Prop changes', () => {
-    beforeEach(async () => {
-      element.rerender(<ComponentWithData apiClient={apiClient} prop={newPropValue} />)
-      await wait()
-    })
-
-    it('Queries the API correct path', () => {
-      const expectedPath = `path/${newPropValue}`
-      expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
-    })
-
-    it('Passes properties to inner component', () => {
-      expect(InnerComponent).toHaveBeenCalledWith({
-        data: newData,
-        reload: expect.any(Function),
-        apiClient: apiClient,
-        prop: newPropValue
-      },
-      {})
-    })
-
-    it('Renders the wrapped component', () => {
-      expect(element.container).toHaveTextContent(`${newPropValue} ${newData}`)
-    })
-  })
-
-  describe('Prop does not change', () => {
-    beforeEach(async () => {
-      element.rerender(<ComponentWithData apiClient={apiClient} prop={propValue} />)
-      await wait()
-    })
-
-    it('Does not query the API', () => {
-      expect(apiClient.fetchJson).not.toHaveBeenCalled()
-    })
-
-    it('Does not rerender inner component', () => {
-      expect(InnerComponent).not.toHaveBeenCalledWith()
-    })
-  })
-})
-
 describe('Filtering', () => {
   beforeEach(async () => {
     filter.mockReturnValueOnce(false)
     await renderWithData()
   })
 
-  it('Calls filter with props', () => {
+  it('Calls the filter with props', () => {
     expect(filter).toHaveBeenCalledWith({
       apiClient: apiClient,
       prop: propValue
@@ -170,60 +180,5 @@ describe('Filtering', () => {
     expect(apiClient.fetchJson).not.toHaveBeenCalled()
   })
 
-  it('Passes default data to the wrapped component', () => {
-    expect(InnerComponent).toHaveBeenCalledWith({
-      data: defaultData,
-      reload: expect.any(Function),
-      apiClient: apiClient,
-      prop: propValue
-    },
-    {})
-  })
-})
-
-describe('Reload', () => {
-  let reload
-
-  beforeEach(async () => {
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
-    await renderWithData()
-    reload = InnerComponent.mock.calls[0][0].reload
-    InnerComponent.mockClear()
-    apiClient.fetchJson.mockClear()
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
-    reload()
-    await wait()
-  })
-
-  it('Queries the API correct path', () => {
-    const expectedPath = `path/${propValue}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
-  })
-
-  it('Passes properties to inner component', () => {
-    expect(InnerComponent).toHaveBeenCalledWith({
-      data: newData,
-      reload: expect.any(Function),
-      apiClient: apiClient,
-      prop: propValue
-    },
-    {})
-  })
-
-  it('Renders the wrapped component', () => {
-    expect(element.container).toHaveTextContent(`${propValue} ${newData}`)
-  })
-})
-
-describe('When unmounting', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockImplementationOnce(() =>
-      Promise.reject(new AbortError(errorMessage)))
-    await renderWithData()
-    element.unmount()
-  })
-
-  it('Aborts fetch', () => {
-    expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
+  expectWrappedComponentToBeRendered(propValue, defaultData)
 })
