@@ -192,6 +192,6 @@ describe('Child component crash', () => {
   })
 
   it('Displays error message', () => {
-    expect(element.container).toHaveTextContent(errorMessage)
+    expect(element.container).toHaveTextContent('Something\'s gone wrong.')
   })
 })
