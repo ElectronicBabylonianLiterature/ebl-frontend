@@ -19,7 +19,7 @@ class LuckyButton extends Component {
       .fetchJson(`/fragments?random=true`, true, this.abortController.signal)
       .then(fragments => this.props.history.push(`/fragmentarium/${fragments[0]._id}`))
       .catch(error => {
-        if (error.name !== 'AbortError') {
+        if (this.props.apiClient.isNotAbortError(error)) {
           this.setState({error: error, loading: false})
         }
       })

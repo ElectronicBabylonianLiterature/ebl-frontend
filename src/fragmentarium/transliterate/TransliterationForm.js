@@ -68,7 +68,7 @@ class TransliteratioForm extends Component {
         this.props.onChange()
       })
       .catch(error => {
-        if (error.name !== 'AbortError') {
+        if (this.props.apiClient.isNotAbortError(error)) {
           this.setState({
             ...this.state,
             error: error,

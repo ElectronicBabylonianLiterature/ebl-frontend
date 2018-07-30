@@ -30,7 +30,7 @@ export default function withData (WrappedComponent, getPath, config = {}) {
         this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize, this.abortController.signal)
           .then(json => this.setState({data: json, error: null}))
           .catch(error => {
-            if (error.name !== 'AbortError') {
+            if (this.props.apiClient.isNotAbortError(error)) {
               this.setState({data: null, error: error})
             }
           })

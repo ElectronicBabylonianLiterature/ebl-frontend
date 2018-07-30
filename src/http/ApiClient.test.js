@@ -1,4 +1,5 @@
 import ApiClient from './ApiClient'
+import { AbortError } from 'testHelpers'
 
 const path = '/resource'
 const expectedUrl = `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -158,6 +159,16 @@ describe('fetchBlob', () => {
   it('Rejects with status text as error message if response not ok', async () => {
     fetch.mockResponseOnce('', errorResponse)
     await expect(apiClient.fetchBlob(path)).rejects.toEqual(expectedError)
+  })
+})
+
+describe('isNotAbortError', () => {
+  it('Returns true is error name is not "AbortError"', () => {
+    expect(apiClient.isNotAbortError(new Error('not abort'))).toBe(true)
+  })
+
+  it('Returns false is error name is "AbortError"', () => {
+    expect(apiClient.isNotAbortError(new AbortError('abort'))).toBe(false)
   })
 })
 

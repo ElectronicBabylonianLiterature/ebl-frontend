@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, wait, cleanup } from 'react-testing-library'
-import withData from './withData'
+import ApiClient from 'http/ApiClient'
 import { AbortError } from 'testHelpers'
+import withData from './withData'
 
 const data = 'Test data'
 const defaultData = 'Default data'
@@ -59,6 +60,7 @@ afterEach(cleanup)
 
 beforeEach(async () => {
   const shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop
+  const method = 'fetchJson'
   filter = jest.fn()
   filter.mockReturnValue(true)
   InnerComponent = jest.fn()
@@ -68,12 +70,11 @@ beforeEach(async () => {
     authorize,
     filter,
     defaultData,
-    method: 'fetchJson'
+    method: method
   }
   ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, config)
-  apiClient = {
-    fetchJson: jest.fn()
-  }
+  apiClient = new ApiClient({})
+  jest.spyOn(apiClient, method)
 })
 
 describe('On successful request', () => {

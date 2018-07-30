@@ -4,6 +4,7 @@ import createMemoryHistory from 'history/createMemoryHistory'
 import { render, cleanup } from 'react-testing-library'
 import {factory} from 'factory-girl'
 import { whenClicked, clickNth, AbortError } from 'testHelpers'
+import ApiClient from 'http/ApiClient'
 import LuckyButton from './LuckyButton'
 
 const buttonText = 'I\'m feeling lucky'
@@ -18,9 +19,8 @@ afterEach(cleanup)
 beforeEach(() => {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  apiClient = {
-    fetchJson: jest.fn()
-  }
+  apiClient = new ApiClient({})
+  jest.spyOn(apiClient, 'fetchJson')
   element = render(<Router history={history}><LuckyButton apiClient={apiClient} /></Router>)
 })
 

@@ -54,6 +54,10 @@ class ApiClient {
       throw Error(response.statusText)
     }
   }
+
+  isNotAbortError (error) {
+    return error.name !== 'AbortError'
+  }
 }
 
 export default ApiClient

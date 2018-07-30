@@ -34,7 +34,7 @@ class WordEditor extends Component {
       .postJson(getWordUrl(this.props), word, this.abortController.signal)
       .then(() => this.setState({word: word, error: null, saving: false}))
       .catch(error => {
-        if (error.name !== 'AbortError') {
+        if (this.props.apiClient.isNotAbortError(error)) {
           this.setState({word: this.state.word, error: error, saving: false})
         }
       })
