@@ -182,3 +182,16 @@ describe('Filtering', () => {
 
   expectWrappedComponentToBeRendered(propValue, defaultData)
 })
+
+describe('Child component crash', () => {
+  beforeEach(async () => {
+    const CrashingComponent = withData(() => { throw new Error(errorMessage) }, props => `path/${props.prop}`)
+    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
+    element = render(<CrashingComponent apiClient={apiClient} prop={propValue} />)
+    await wait()
+  })
+
+  it('Displays error message', () => {
+    expect(element.container).toHaveTextContent(errorMessage)
+  })
+})
