@@ -1,15 +1,35 @@
+/* global Raven */
 import React from 'react'
 import {render, cleanup} from 'react-testing-library'
+import { clickNth } from 'testHelpers'
 import ErrorBoundary from './ErrorBoundary'
 
 afterEach(cleanup)
 
-it('Displays error message if children chrash', async () => {
-  const message = 'Error happened!'
-  const CrashingComponent = () => { throw new Error(message) }
-  const {container} = render(<ErrorBoundary><CrashingComponent /></ErrorBoundary>)
+describe('Children throw an error', () => {
+  let element
+  let error
 
-  expect(container).toHaveTextContent('Something\'s gone wrong')
+  beforeEach(async () => {
+    error = new Error('Error happened!')
+    Raven.lastEventId.mockReturnValueOnce('mockEventId')
+    const CrashingComponent = () => { throw error }
+    element = render(<ErrorBoundary><CrashingComponent /></ErrorBoundary>)
+  })
+
+  it('Displays error message if children crash', async () => {
+    expect(element.container).toHaveTextContent('Something\'s gone wrong')
+  })
+
+  it('Sends report to Sentry', async () => {
+    expect(Raven.captureException).toHaveBeenCalledWith(error, {extra: {componentStack: expect.any(String)}})
+  })
+
+  it('Clicking report button opens report dialog', async () => {
+    await clickNth(element, 'Send a report', 0)
+
+    expect(Raven.showReportDialog).toHaveBeenCalled()
+  })
 })
 
 it('Displays children if they do not crash', async () => {
