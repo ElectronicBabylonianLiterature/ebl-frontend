@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
-import Error from 'Error'
+import ErrorAlert from 'ErrorAlert'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
@@ -93,7 +93,7 @@ class TransliteratioForm extends Component {
     <form onSubmit={this.submit} id='transliteration-form'>
       <this.textArea property='transliteration' />
       <this.textArea property='notes' />
-      <Error error={this.state.error} />
+      <ErrorAlert error={this.state.error} />
     </form>
   )
 

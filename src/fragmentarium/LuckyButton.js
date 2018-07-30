@@ -1,7 +1,7 @@
 /* global AbortController */
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
-import Error from 'Error'
+import ErrorAlert from 'ErrorAlert'
 import Spinner from 'Spinner'
 import { withRouter } from 'react-router-dom'
 
@@ -36,7 +36,7 @@ class LuckyButton extends Component {
             : 'I\'m feeling lucky'
           }
         </Button>
-        <Error error={this.state.error} />
+        <ErrorAlert error={this.state.error} />
       </Fragment>
     )
   }

@@ -2,7 +2,7 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 import Spinner from 'Spinner'
-import Error from 'Error'
+import ErrorAlert from 'ErrorAlert'
 
 const defaultConfig = {
   shouldUpdate: () => false,
@@ -57,7 +57,7 @@ export default function withData (WrappedComponent, getPath, config = {}) {
       return (
         <Fragment>
           <Spinner loading={_.values(this.state).every(_.isNil)} />
-          <Error error={this.state.error} />
+          <ErrorAlert error={this.state.error} />
           {this.state.data && <WrappedComponent data={this.state.data} reload={this.fetchData} {...this.props} />}
         </Fragment>
       )

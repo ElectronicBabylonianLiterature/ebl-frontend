@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import Breadcrumbs from 'Breadcrumbs'
 import WordForm from './WordForm'
 import Spinner from 'Spinner'
-import Error from 'Error'
+import ErrorAlert from 'ErrorAlert'
 import withData from 'http/withData'
 
 function getWordUrl (props) {
@@ -54,7 +54,7 @@ class WordEditor extends Component {
           <Spinner loading={this.state.saving}>Saving...</Spinner>
         </header>
         <WordForm value={this.state.word} onSubmit={this.updateWord} />
-        <Error error={this.state.error} />
+        <ErrorAlert error={this.state.error} />
       </section>
     )
   }
