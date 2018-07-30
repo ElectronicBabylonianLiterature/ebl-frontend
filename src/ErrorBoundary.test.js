@@ -9,7 +9,7 @@ it('Displays error message if children chrash', async () => {
   const CrashingComponent = () => { throw new Error(message) }
   const {container} = render(<ErrorBoundary><CrashingComponent /></ErrorBoundary>)
 
-  expect(container).toHaveTextContent(message)
+  expect(container).toHaveTextContent('Something\'s gone wrong')
 })
 
 it('Displays children if they do not crash', async () => {
