@@ -17,7 +17,7 @@ class Dictionary extends Component {
           <Breadcrumbs section='Dictionary' />
           <h2>Dictionary</h2>
         </header>
-        {this.props.auth.isAuthenticated()
+        {this.props.auth.isAllowedTo('read:words')
           ? (
             <Fragment>
               <header className='Dictionary-search'>
@@ -26,7 +26,7 @@ class Dictionary extends Component {
               <WordSearch query={query} apiClient={this.props.apiClient} />
             </Fragment>
           )
-          : <p>You need to be logged in to access the dictionary.</p>
+          : <p>You do not have the rights to access the dictionary.</p>
         }
       </section>
     )

@@ -23,7 +23,7 @@ beforeEach(async () => {
 
 describe('Searching for word', () => {
   beforeEach(() => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(words))
   })
 
@@ -47,11 +47,11 @@ describe('Searching for word', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(false)
+  jest.spyOn(auth, 'isAllowedTo').mockReturnValueOnce(false)
 
   const {getByText} = await renderDictionary('/dictionary')
 
-  expect(getByText('You need to be logged in to access the dictionary.')).toBeDefined()
+  expect(getByText('You do not have the rights to access the dictionary.')).toBeDefined()
 })
 
 async function renderDictionary (path) {
