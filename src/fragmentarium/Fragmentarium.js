@@ -23,7 +23,7 @@ class Fragmentarium extends Component {
     return (
       <section className='App-content'>
         <this.header />
-        {this.props.auth.isAuthenticated()
+        {this.props.auth.isAllowedTo('read:fragments')
           ? (
             <section className='Fragmentarium-search'>
               <header className='Fragmentarium-search__header'>
@@ -35,7 +35,7 @@ class Fragmentarium extends Component {
               <FragmentSearch number={number} apiClient={this.props.apiClient} />
             </section>
           )
-          : <p>You need to be logged in to access the fragments.</p>
+          : <p>You do not have the rights to access the fragmentarium.</p>
         }
         <Statistics apiClient={this.props.apiClient} />
       </section>

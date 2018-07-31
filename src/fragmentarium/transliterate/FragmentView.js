@@ -25,10 +25,10 @@ export default function FragmentView ({apiClient, auth, match}) {
         <Breadcrumbs section='Fragmentarium' active={number} />
         <h2><FragmentPager number={number}> {number} </FragmentPager></h2>
       </header>
-      {auth.isAuthenticated()
+      {auth.isAllowedTo('read:fragments')
         ? (
           <FragmentWithData apiClient={apiClient} number={number} />
-        ) : 'You need to be logged in to access the fragmentarium.'
+        ) : 'You do not have the rights access the fragmentarium.'
       }
     </section>
   )

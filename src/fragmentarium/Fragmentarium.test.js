@@ -33,7 +33,7 @@ describe('Searching for fragments', () => {
 
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', 2)
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockImplementation(path => path.startsWith('/fragments')
       ? Promise.resolve(fragments)
       : Promise.resolve(statistics)
@@ -52,7 +52,7 @@ describe('Searching for fragments', () => {
 
 describe('Statistics', () => {
   beforeEach(async () => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(false)
+    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(false)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
     await renderFragmentarium()
   })

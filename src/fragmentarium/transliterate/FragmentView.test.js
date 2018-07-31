@@ -35,7 +35,7 @@ beforeEach(async () => {
   apiClient = new ApiClient(auth)
   URL.createObjectURL.mockReturnValue('url')
   jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
-  jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
 })
 
 describe('Fragment is loaded', () => {
@@ -43,7 +43,7 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment', {_id: fragmentNumber})
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
     await renderFragmentView()
   })
@@ -68,7 +68,7 @@ describe('Fragment is loaded', () => {
 
 describe('On error', () => {
   beforeEach(async () => {
-    jest.spyOn(auth, 'isAuthenticated').mockReturnValue(true)
+    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView()
   })
@@ -79,8 +79,8 @@ describe('On error', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  jest.spyOn(auth, 'isAuthenticated').mockReturnValue(false)
+  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(false)
   await renderFragmentView()
 
-  expect(container).toHaveTextContent('You need to be logged in to access the fragmentarium.')
+  expect(container).toHaveTextContent('You do not have the rights access the fragmentarium.')
 })
