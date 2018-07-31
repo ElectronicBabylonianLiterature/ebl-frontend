@@ -115,30 +115,32 @@ class WordForm extends Component {
 
   render () {
     return (
-      <form className='WordForm' onSubmit={this.submit}>
-        <this.lemma />
-        <this.textInput property='legacyLemma' />
-        <this.textInput property='homonym' />
-        <this.pos />
-        <this.textInput property='meaning' />
-        <hr />
+      <form className='WordForm' onSubmit={this.submit} >
+        <fieldset disabled={this.props.disabled}>
+          <this.lemma />
+          <this.textInput property='legacyLemma' />
+          <this.textInput property='homonym' />
+          <this.pos />
+          <this.textInput property='meaning' />
+          <hr />
 
-        <this.forms />
-        <hr />
+          <this.forms />
+          <hr />
 
-        <this.amplifiedMeanings />
-        <hr />
+          <this.amplifiedMeanings />
+          <hr />
 
-        <this.logograms />
-        <hr />
+          <this.logograms />
+          <hr />
 
-        <this.derived />
-        <hr />
+          <this.derived />
+          <hr />
 
-        <this.derivedFrom />
+          <this.derivedFrom />
 
-        <Button type='submit' bsStyle='primary'>Save</Button>
-        {process.env.NODE_ENV === 'development' && <this.jsonPreview />}
+          <Button type='submit' bsStyle='primary'>Save</Button>
+          {process.env.NODE_ENV === 'development' && <this.jsonPreview />}
+        </fieldset>
       </form>
     )
   }

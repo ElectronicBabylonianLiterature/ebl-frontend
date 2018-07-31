@@ -21,7 +21,7 @@ class App extends Component {
         <Header auth={this.props.auth} />
         <ErrorBoundary>
           <Switch>
-            <Route path='/dictionary/:id' render={props => <WordEditor apiClient={apiClient} {...props} />} />
+            <Route path='/dictionary/:id' render={props => <WordEditor auth={this.props.auth} apiClient={apiClient} {...props} />} />
             <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
             <Route path='/fragmentarium/:id' render={props => <FragmentView auth={this.props.auth} apiClient={apiClient} {...props} />} />
             <Route path='/fragmentarium' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />

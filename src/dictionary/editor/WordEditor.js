@@ -53,7 +53,7 @@ class WordEditor extends Component {
           <ReactMarkdown source={this.state.word.source} />
           <Spinner loading={this.state.saving}>Saving...</Spinner>
         </header>
-        <WordForm value={this.state.word} onSubmit={this.updateWord} />
+        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={!this.props.auth.isAllowedTo('write:words')} />
         <ErrorAlert error={this.state.error} />
       </section>
     )

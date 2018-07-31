@@ -9,13 +9,15 @@ import { factory } from 'factory-girl'
 
 const errorMessage = 'error'
 let result
+let auth
 let apiClient
 
 afterEach(cleanup)
 
 beforeEach(async () => {
   result = await factory.build('verb')
-  apiClient = new ApiClient(new Auth())
+  auth = new Auth()
+  apiClient = new ApiClient()
 })
 
 describe('Fecth word', () => {
@@ -76,14 +78,23 @@ describe('Update word', () => {
   })
 })
 
-async function renderWithRouter () {
+describe('User is not allowed to write:words', () => {
+  it('The form is disabled', async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
+    const {container} = await renderWithRouter(false)
+    expect(container.querySelector('fieldset').disabled).toBe(true)
+  })
+})
+
+async function renderWithRouter (isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
+  jest.spyOn(auth, 'isAllowedTo').mockReturnValueOnce(isAllowedTo)
 
   const element = render(
     <MemoryRouter>
-      <WordEditor match={match} apiClient={apiClient} />
+      <WordEditor match={match} auth={auth} apiClient={apiClient} />
     </MemoryRouter>
   )
   await wait()
