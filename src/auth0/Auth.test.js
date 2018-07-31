@@ -155,3 +155,29 @@ describe('handleAuthentication', () => {
     })
   })
 })
+
+describe('hasScope', () => {
+  const scope = 'write:words'
+  const scopes = `profile ${scope} read:words`
+
+  describe('Has scope', () => {
+    it('Returns true', () => {
+      localStorage.getItem.mockReturnValueOnce(scopes)
+      expect(auth.hasScope(scope)).toBe(true)
+    })
+  })
+
+  describe('Does not have scope', () => {
+    it('Returns false', () => {
+      localStorage.getItem.mockReturnValueOnce(scopes)
+      expect(auth.hasScope('read:transliterations')).toBe(false)
+    })
+  })
+
+  describe('Scopes does not exist', () => {
+    it('Returns false', () => {
+      localStorage.getItem.mockReturnValueOnce(null)
+      expect(auth.hasScope(scope)).toBe(false)
+    })
+  })
+})

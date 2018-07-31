@@ -69,6 +69,10 @@ class Auth {
 
     return accessToken
   }
+
+  hasScope (scope) {
+    return (localStorage.getItem('scopes') || '').split(' ').includes(scope)
+  }
 }
 
 export default Auth
