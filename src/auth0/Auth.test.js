@@ -33,22 +33,18 @@ describe('login', () => {
 })
 
 describe('logout', () => {
+  const keys = ['access_token', 'id_token', 'expires_at', 'scopes']
+
   beforeEach(() => {
     jest.spyOn(auth.auth0, 'logout').mockImplementationOnce(_.noop)
     auth.logout()
   })
 
-  it('Removes access token', () => {
-    expect(localStorage.removeItem).toBeCalledWith('access_token')
-  })
-
-  it('Removes ID token', () => {
-    expect(localStorage.removeItem).toBeCalledWith('id_token')
-  })
-
-  it('Removes expires at', () => {
-    expect(localStorage.removeItem).toBeCalledWith('expires_at')
-  })
+  for (let key of keys) {
+    it(`Removes ${key} from local storage`, () => {
+      expect(localStorage.removeItem).toBeCalledWith(key)
+    })
+  }
 
   it('Calls WebAuth.logout', () => {
     expect(auth.auth0.logout).toBeCalledWith({
@@ -101,8 +97,7 @@ describe('getAccessToken', () => {
 })
 
 describe('handleAuthentication', () => {
-  describe('Hash is parsed successfully', () => {
-    const authResult = {accessToken: 'accessToken', idToken: 'idToken', expiresIn: 1}
+  function testParseHash (authResult, scopes) {
     beforeEach(() => {
       jest.spyOn(auth.auth0, 'parseHash')
         .mockImplementationOnce(callback => callback(null, authResult))
@@ -113,22 +108,35 @@ describe('handleAuthentication', () => {
     })
 
     describe('Session', () => {
+      const expectedSession = {
+        access_token: authResult.accessToken,
+        id_token: authResult.idToken,
+        expires_at: JSON.stringify(now.getTime() + authResult.expiresIn * 1000),
+        scopes: scopes
+      }
+
       beforeEach(async () => {
         await auth.handleAuthentication()
       })
 
-      it('Sets access token', () => {
-        expect(localStorage.setItem).toBeCalledWith('access_token', authResult.accessToken)
-      })
-
-      it('Sets ID token', () => {
-        expect(localStorage.setItem).toBeCalledWith('id_token', authResult.idToken)
-      })
-
-      it('Sets expires at', () => {
-        expect(localStorage.setItem).toBeCalledWith('expires_at', JSON.stringify(now.getTime() + authResult.expiresIn * 1000))
+      _.forEach(expectedSession, (value, key) => {
+        it(`Sets ${key} in local storage`, () => {
+          expect(localStorage.setItem).toBeCalledWith(key, value)
+        })
       })
     })
+  }
+
+  describe('authResult has scope', () => {
+    const scope = 'write:words'
+    const authResult = {accessToken: 'accessToken', idToken: 'idToken', expiresIn: 1, scope: scope}
+    testParseHash(authResult, scope)
+  })
+
+  describe('authResult does not have scope', () => {
+    const expectedScope = 'openid profile read:words write:words read:fragments transliterate:fragments'
+    const authResult = {accessToken: 'accessToken', idToken: 'idToken', expiresIn: 1, scope: null}
+    testParseHash(authResult, expectedScope)
   })
 
   describe('Hash is parsed with error', () => {
