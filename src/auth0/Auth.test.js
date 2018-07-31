@@ -97,7 +97,14 @@ describe('getAccessToken', () => {
 })
 
 describe('handleAuthentication', () => {
-  function testParseHash (authResult, scopes) {
+  function testParseHash (authResultConfig, scopes) {
+    const authResult = {
+      accessToken: 'accessToken',
+      idToken: 'idToken',
+      expiresIn: 1,
+      ...authResultConfig
+    }
+
     beforeEach(() => {
       jest.spyOn(auth.auth0, 'parseHash')
         .mockImplementationOnce(callback => callback(null, authResult))
@@ -129,14 +136,12 @@ describe('handleAuthentication', () => {
 
   describe('authResult has scope', () => {
     const scope = 'write:words'
-    const authResult = {accessToken: 'accessToken', idToken: 'idToken', expiresIn: 1, scope: scope}
-    testParseHash(authResult, scope)
+    testParseHash({scope: scope}, scope)
   })
 
   describe('authResult does not have scope', () => {
     const expectedScope = 'openid profile read:words write:words read:fragments transliterate:fragments'
-    const authResult = {accessToken: 'accessToken', idToken: 'idToken', expiresIn: 1, scope: null}
-    testParseHash(authResult, expectedScope)
+    testParseHash({scope: null}, expectedScope)
   })
 
   describe('Hash is parsed with error', () => {
