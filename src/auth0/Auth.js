@@ -70,8 +70,9 @@ class Auth {
     return accessToken
   }
 
-  hasScope (scope) {
-    return (localStorage.getItem('scopes') || '').split(' ').includes(scope)
+  isAllowedTo (scope) {
+    const scopes = (localStorage.getItem('scopes') || '').split(' ')
+    return this.isAuthenticated() && scopes.includes(scope)
   }
 }
 

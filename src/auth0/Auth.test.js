@@ -156,28 +156,46 @@ describe('handleAuthentication', () => {
   })
 })
 
-describe('hasScope', () => {
+describe('isAllowedTo', () => {
   const scope = 'write:words'
   const scopes = `profile ${scope} read:words`
 
-  describe('Has scope', () => {
-    it('Returns true', () => {
-      localStorage.getItem.mockReturnValueOnce(scopes)
-      expect(auth.hasScope(scope)).toBe(true)
+  function setupLocalStorage (scopes, time) {
+    const storage = {
+      expires_at: Date.now(),
+      scopes: scopes
+    }
+    localStorage.getItem.mockImplementation(key => storage[key])
+    advanceBy(time)
+  }
+
+  describe('Is authenticated', () => {
+    describe('Has scope', () => {
+      it('Returns true', () => {
+        setupLocalStorage(scopes, -1)
+        expect(auth.isAllowedTo(scope)).toBe(true)
+      })
+    })
+
+    describe('Does not have scope', () => {
+      it('Returns false', () => {
+        setupLocalStorage(scopes, -1)
+        expect(auth.isAllowedTo('read:transliterations')).toBe(false)
+      })
+    })
+
+    describe('Scopes does not exist', () => {
+      it('Returns false', () => {
+        setupLocalStorage(null, -1)
+        expect(auth.isAllowedTo(scope)).toBe(false)
+      })
     })
   })
 
-  describe('Does not have scope', () => {
+  describe('Not authenticated', () => {
     it('Returns false', () => {
-      localStorage.getItem.mockReturnValueOnce(scopes)
-      expect(auth.hasScope('read:transliterations')).toBe(false)
-    })
-  })
-
-  describe('Scopes does not exist', () => {
-    it('Returns false', () => {
-      localStorage.getItem.mockReturnValueOnce(null)
-      expect(auth.hasScope(scope)).toBe(false)
+      setupLocalStorage(scopes, 1)
+      expect(auth.isAllowedTo(scope)).toBe(false)
     })
   })
 })
