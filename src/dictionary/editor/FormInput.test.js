@@ -1,9 +1,9 @@
 import React from 'react'
 import FormInput from './FormInput'
-import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import {factory} from 'factory-girl'
 
-import {whenClicked} from 'testHelpers'
+import {whenClicked, changeValueByLabel} from 'testHelpers'
 
 let value
 let element
@@ -26,12 +26,8 @@ describe('Value has is a derived form', () => {
   })
 
   it('onChanged is called with updated homonym', async () => {
-    const homonym = element.getByLabelText('Homonym')
     const newHomonym = 'IV'
-    homonym.value = newHomonym
-    fireEvent.change(homonym)
-
-    await wait()
+    await changeValueByLabel(element, 'Homonym', newHomonym)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
@@ -71,12 +67,8 @@ function commonDisplayTests () {
 
 function commonChangeTests () {
   it('onChanged is called with updated lemma', async () => {
-    const lemma = element.getByLabelText('Lemma')
     const newLemma = 'new lemma'
-    lemma.value = newLemma
-    fireEvent.change(lemma)
-
-    await wait()
+    await changeValueByLabel(element, 'Lemma', newLemma)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,

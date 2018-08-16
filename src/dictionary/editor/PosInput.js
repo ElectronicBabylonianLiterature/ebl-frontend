@@ -35,6 +35,7 @@ class PosInput extends Component {
   updateRoots = roots => {
     this.props.onChange({roots: roots})
   }
+
   render () {
     return (
       <FormGroup>

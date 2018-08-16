@@ -9,8 +9,7 @@ function when (createMatcher) {
 }
 
 export async function changeValue (input, newValue) {
-  input.value = newValue
-  fireEvent.change(input)
+  fireEvent.change(input, {target: {value: newValue}})
 
   await wait()
 }

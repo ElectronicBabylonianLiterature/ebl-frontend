@@ -1,6 +1,7 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
 import {render, cleanup, fireEvent, wait} from 'react-testing-library'
+import {changeValueByLabel} from 'testHelpers'
 
 let value
 let element
@@ -31,12 +32,8 @@ describe('Value has attested property', () => {
 
   describe('On change with attested', () => {
     it('onChanged is called with updated lemma', async () => {
-      const lemma = element.getByLabelText('Lemma')
       const newLemma = 'new lemma'
-      lemma.value = newLemma
-      fireEvent.change(lemma)
-
-      await wait()
+      await changeValueByLabel(element, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
@@ -84,12 +81,8 @@ describe('Value does not have attested property', () => {
     })
 
     it('onChanged is called with updated lemma', async () => {
-      const lemma = element.getByLabelText('Lemma')
       const newLemma = 'new lemma'
-      lemma.value = newLemma
-      fireEvent.change(lemma)
-
-      await wait()
+      await changeValueByLabel(element, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' ')
