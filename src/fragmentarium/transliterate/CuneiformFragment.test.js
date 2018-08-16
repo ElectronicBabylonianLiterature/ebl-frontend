@@ -17,8 +17,10 @@ let onChange
 afterEach(cleanup)
 
 beforeEach(async () => {
+  const auth = new Auth()
+  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
   onChange = jest.fn()
-  apiClient = new ApiClient(new Auth())
+  apiClient = new ApiClient(auth)
   URL.createObjectURL.mockReturnValue('url')
   jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
   fragment = await factory.build('fragment')
@@ -27,6 +29,7 @@ beforeEach(async () => {
       <CuneiformFragment
         fragment={fragment}
         apiClient={apiClient}
+        auth={auth}
         onChange={onChange} />
     </MemoryRouter>)
   container = element.container

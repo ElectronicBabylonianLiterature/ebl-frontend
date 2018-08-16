@@ -22,6 +22,10 @@ class TransliteratioForm extends Component {
     return transliterationChanged || notesChanged
   }
 
+  get editable () {
+    return this.props.auth.isAllowedTo('transliterate:fragments')
+  }
+
   componentWillUnmount () {
     this.abortController.abort()
   }
@@ -91,9 +95,11 @@ class TransliteratioForm extends Component {
 
   form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
-      <this.textArea property='transliteration' />
-      <this.textArea property='notes' />
-      <ErrorAlert error={this.state.error} />
+      <fieldset disabled={!this.editable}>
+        <this.textArea property='transliteration' />
+        <this.textArea property='notes' />
+        <ErrorAlert error={this.state.error} />
+      </fieldset>
     </form>
   )
 
@@ -115,14 +121,14 @@ class TransliteratioForm extends Component {
             <this.form />
           </Col>
         </Row>
-        <Row>
+        {this.editable && <Row>
           <Col sm={6}>
             <this.submitButton />
           </Col>
           <Col sm={6}>
             <TemplateForm onSubmit={this.onTemplate} />
           </Col>
-        </Row>
+        </Row>}
       </Grid>
     )
   }

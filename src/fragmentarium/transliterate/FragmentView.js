@@ -6,10 +6,10 @@ import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 
 const FragmentWithData = withData(
-  ({data, reload, apiClient}) => <CuneiformFragment
+  ({data, reload, ...props}) => <CuneiformFragment
     fragment={data}
-    apiClient={apiClient}
     onChange={reload}
+    {...props}
   />,
   props => `/fragments/${props.number}`,
   {
@@ -27,7 +27,7 @@ export default function FragmentView ({apiClient, auth, match}) {
       </header>
       {auth.isAllowedTo('read:fragments')
         ? (
-          <FragmentWithData apiClient={apiClient} number={number} />
+          <FragmentWithData apiClient={apiClient} auth={auth} number={number} />
         ) : 'You do not have the rights access the fragmentarium.'
       }
     </section>

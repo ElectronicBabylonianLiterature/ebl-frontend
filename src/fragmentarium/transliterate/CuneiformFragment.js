@@ -37,7 +37,8 @@ class CuneiformFragment extends Component {
         transliteration={this.fragment.transliteration}
         notes={this.fragment.notes}
         apiClient={this.props.apiClient}
-        onChange={this.props.onChange} />
+        onChange={this.props.onChange}
+        auth={this.props.auth} />
     </Fragment>
   )
 
