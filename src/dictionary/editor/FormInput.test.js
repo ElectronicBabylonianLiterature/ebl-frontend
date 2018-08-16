@@ -15,7 +15,7 @@ beforeEach(() => {
   onChange = jest.fn()
 })
 
-describe('Value has is a derived form', () => {
+describe('Value is a derived form', () => {
   beforeEach(async () => {
     value = await factory.build('derived')
     element = RendedFormInput()
