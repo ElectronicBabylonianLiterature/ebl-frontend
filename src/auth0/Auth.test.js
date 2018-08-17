@@ -105,31 +105,22 @@ describe('handleAuthentication', () => {
       ...authResultConfig
     }
 
-    beforeEach(() => {
+    const expectedSession = {
+      access_token: authResult.accessToken,
+      id_token: authResult.idToken,
+      expires_at: JSON.stringify(now.getTime() + authResult.expiresIn * 1000),
+      scopes: scopes
+    }
+
+    beforeEach(async () => {
       jest.spyOn(auth.auth0, 'parseHash')
         .mockImplementationOnce(callback => callback(null, authResult))
+      await auth.handleAuthentication()
     })
 
-    it('Resolves', async () => {
-      await expect(auth.handleAuthentication()).resolves.toBeUndefined()
-    })
-
-    describe('Session', () => {
-      const expectedSession = {
-        access_token: authResult.accessToken,
-        id_token: authResult.idToken,
-        expires_at: JSON.stringify(now.getTime() + authResult.expiresIn * 1000),
-        scopes: scopes
-      }
-
-      beforeEach(async () => {
-        await auth.handleAuthentication()
-      })
-
-      _.forEach(expectedSession, (value, key) => {
-        it(`Sets ${key} in local storage`, () => {
-          expect(localStorage.setItem).toBeCalledWith(key, value)
-        })
+    _.forEach(expectedSession, (value, key) => {
+      it(`Sets ${key} in local storage`, () => {
+        expect(localStorage.setItem).toBeCalledWith(key, value)
       })
     })
   }
