@@ -32,6 +32,10 @@ class Fragmentarium extends Component {
                   <RandomButton apiClient={this.props.apiClient} param='random'>
                     I'm feeling lucky
                   </RandomButton>
+                  {' '}
+                  <RandomButton apiClient={this.props.apiClient} param='interesting'>
+                    Path of the Pioneers
+                  </RandomButton>
                 </div>
               </header>
               <FragmentSearch number={number} apiClient={this.props.apiClient} />
