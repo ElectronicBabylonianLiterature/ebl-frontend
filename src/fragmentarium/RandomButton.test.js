@@ -9,6 +9,7 @@ import RandomButton from './RandomButton'
 
 const buttonText = 'I\'m feeling lucky'
 const message = 'Error'
+const param = 'random'
 
 let history
 let apiClient
@@ -22,7 +23,9 @@ beforeEach(() => {
   apiClient = new ApiClient({})
   jest.spyOn(apiClient, 'fetchJson')
   element = render(<Router history={history}>
-    <RandomButton apiClient={apiClient}>{buttonText}</RandomButton>
+    <RandomButton apiClient={apiClient} param={param}>
+      {buttonText}
+    </RandomButton>
   </Router>)
 })
 
