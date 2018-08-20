@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import Breadcrumbs from 'Breadcrumbs'
 import FragmentSearchForm from 'fragmentarium/search/FragmentSearchForm'
 import FragmentSearch from 'fragmentarium/search/FragmentSearch'
-import LuckyButton from 'fragmentarium/LuckyButton'
+import RandomButton from 'fragmentarium/RandomButton'
 import Statistics from 'fragmentarium/Statistics'
 
 import './Fragmentarium.css'
@@ -29,7 +29,7 @@ class Fragmentarium extends Component {
               <header className='Fragmentarium-search__header'>
                 <FragmentSearchForm number={number} />
                 <div className='Fragmentarium-lucky-button'>
-                  <LuckyButton apiClient={this.props.apiClient} />
+                  <RandomButton apiClient={this.props.apiClient} />
                 </div>
               </header>
               <FragmentSearch number={number} apiClient={this.props.apiClient} />

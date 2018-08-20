@@ -5,7 +5,7 @@ import ErrorAlert from 'ErrorAlert'
 import Spinner from 'Spinner'
 import { withRouter } from 'react-router-dom'
 
-class LuckyButton extends Component {
+class RandomButton extends Component {
   abortController = new AbortController()
 
   state = {
@@ -42,4 +42,4 @@ class LuckyButton extends Component {
   }
 }
 
-export default withRouter(LuckyButton)
+export default withRouter(RandomButton)

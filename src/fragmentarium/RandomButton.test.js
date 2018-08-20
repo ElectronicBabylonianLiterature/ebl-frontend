@@ -5,7 +5,7 @@ import { render, cleanup } from 'react-testing-library'
 import {factory} from 'factory-girl'
 import { whenClicked, clickNth, AbortError } from 'testHelpers'
 import ApiClient from 'http/ApiClient'
-import LuckyButton from './LuckyButton'
+import RandomButton from './RandomButton'
 
 const buttonText = 'I\'m feeling lucky'
 const message = 'Error'
@@ -21,7 +21,7 @@ beforeEach(() => {
   jest.spyOn(history, 'push')
   apiClient = new ApiClient({})
   jest.spyOn(apiClient, 'fetchJson')
-  element = render(<Router history={history}><LuckyButton apiClient={apiClient} /></Router>)
+  element = render(<Router history={history}><RandomButton apiClient={apiClient} /></Router>)
 })
 
 describe('On successful request', () => {
