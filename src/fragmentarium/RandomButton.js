@@ -33,7 +33,7 @@ class RandomButton extends Component {
         <Button bsStyle='primary' onClick={this.click}>
           {this.state.loading
             ? <Spinner />
-            : 'I\'m feeling lucky'
+            : this.props.children
           }
         </Button>
         <ErrorAlert error={this.state.error} />

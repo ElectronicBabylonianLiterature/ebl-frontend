@@ -29,7 +29,9 @@ class Fragmentarium extends Component {
               <header className='Fragmentarium-search__header'>
                 <FragmentSearchForm number={number} />
                 <div className='Fragmentarium-lucky-button'>
-                  <RandomButton apiClient={this.props.apiClient} />
+                  <RandomButton apiClient={this.props.apiClient}>
+                    I'm feeling lucky
+                  </RandomButton>
                 </div>
               </header>
               <FragmentSearch number={number} apiClient={this.props.apiClient} />

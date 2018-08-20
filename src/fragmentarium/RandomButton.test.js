@@ -21,7 +21,9 @@ beforeEach(() => {
   jest.spyOn(history, 'push')
   apiClient = new ApiClient({})
   jest.spyOn(apiClient, 'fetchJson')
-  element = render(<Router history={history}><RandomButton apiClient={apiClient} /></Router>)
+  element = render(<Router history={history}>
+    <RandomButton apiClient={apiClient}>{buttonText}</RandomButton>
+  </Router>)
 })
 
 describe('On successful request', () => {
