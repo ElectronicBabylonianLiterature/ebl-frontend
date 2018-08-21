@@ -6,6 +6,7 @@ import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
 import Folios from './Folios'
 import TransliteratioForm from './TransliterationForm'
+import PioneersButton from 'fragmentarium/PioneersButton'
 
 import './CuneiformFragment.css'
 
@@ -39,6 +40,9 @@ class CuneiformFragment extends Component {
         apiClient={this.props.apiClient}
         onChange={this.props.onChange}
         auth={this.props.auth} />
+      <p className='CuneifromFragment__navigation'>
+        <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
+      </p>
     </Fragment>
   )
 
