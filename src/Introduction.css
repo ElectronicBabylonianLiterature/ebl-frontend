@@ -8,8 +8,8 @@
   margin-top: 1em;
 }
 
-.auth0-badge,
-.auth0-badge__image {
+.Auth0Badge,
+.Auth0Badge__image {
   height: 50px;
   width: 150px;
 }

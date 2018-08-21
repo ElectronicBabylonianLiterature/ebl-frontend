@@ -4,6 +4,16 @@ import eblChart from './ebl_chart.jpg'
 
 import './Introduction.css'
 
+function Auth0Badge () {
+  return <a className='Auth0Badge'
+    rel='noopener noreferrer'
+    href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss'
+    target='_blank'
+    alt='Single Sign On & Token Based Authentication - Auth0'>
+    <img className='Auth0Badge__image' alt='JWT Auth for open source projects' src='//cdn.auth0.com/oss/badges/a0-badge-light.png' />
+  </a>
+}
+
 export default function Inroduction () {
   return <section className='App-content'>
     <h2>The “Electronic Babylonian Literature” (eBL) Project: A general introduction</h2>
@@ -13,14 +23,9 @@ export default function Inroduction () {
     <p>The eBL team will be composed of four members: the PI, a PhD student in Computer Science, a post-doctoral researcher and a PhD student in ancient Near Eastern studies. In addition, Turkish and Iraqi external collaborators will work on manuscripts kept in museums in Istanbul and Baghdad.</p>
     <p>In order to answer several fundamental and much-debated questions about the nature of the Babylonian poetic expression and the composition and transmission of the texts, three tools will be developed to data-mine the eBL corpus. The first will search for patterns in the spelling variants in the manuscripts, the second will find rhythmical patterns, and the third will sift the corpus for intertextual parallels. The bottom-up study of the corpus by means of these tools will decisively change our conceptions of how Babylonian literature was composed and experienced by ancient audiences.</p>
     <img className='Introduction__chart' src={eblChart} alt='eBL chart' />
+
     <footer className='Introduction__footer'>
-      <a className='auth0-badge'
-        rel='noopener noreferrer'
-        href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss'
-        target='_blank'
-        alt='Single Sign On & Token Based Authentication - Auth0'>
-        <img className='auth0-badge__image' alt='JWT Auth for open source projects' src='//cdn.auth0.com/oss/badges/a0-badge-light.png' />
-      </a>
+      <Auth0Badge />
     </footer>
   </section>
 }
