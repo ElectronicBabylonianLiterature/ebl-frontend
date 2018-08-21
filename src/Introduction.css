@@ -1,4 +1,15 @@
-.Introduction-chart {
+.Introduction__chart {
   max-width: 1429px;
   width: 80%;
+}
+
+.Introduction__footer {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.auth0-badge,
+.auth0-badge__image {
+  height: 50px;
+  width: 150px;
 }
