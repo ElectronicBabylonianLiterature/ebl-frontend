@@ -4,6 +4,7 @@ import Breadcrumbs from 'Breadcrumbs'
 import FragmentSearchForm from 'fragmentarium/search/FragmentSearchForm'
 import FragmentSearch from 'fragmentarium/search/FragmentSearch'
 import RandomButton from 'fragmentarium/RandomButton'
+import PioneersButton from 'fragmentarium/PioneersButton'
 import Statistics from 'fragmentarium/Statistics'
 
 import './Fragmentarium.css'
@@ -33,9 +34,7 @@ class Fragmentarium extends Component {
                     I'm feeling lucky
                   </RandomButton>
                   {' '}
-                  <RandomButton apiClient={this.props.apiClient} param='interesting'>
-                    Path of the Pioneers
-                  </RandomButton>
+                  <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
                 </div>
               </header>
               <FragmentSearch number={number} apiClient={this.props.apiClient} />

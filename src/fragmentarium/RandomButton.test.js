@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
 import { render, cleanup } from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 import { whenClicked, clickNth, AbortError } from 'testHelpers'
 import ApiClient from 'http/ApiClient'
 import RandomButton from './RandomButton'
@@ -40,7 +40,7 @@ describe('On successful request', () => {
   it('Fetches a random fragment from the API', async () => {
     await whenClicked(element, buttonText)
       .expect(apiClient.fetchJson)
-      .toHaveBeenCalledWith('/fragments?random=true', true, AbortController.prototype.signal)
+      .toHaveBeenCalledWith(`/fragments?${param}=true`, true, AbortController.prototype.signal)
   })
 
   it('Redirects to the fragment when clicked', async () => {
