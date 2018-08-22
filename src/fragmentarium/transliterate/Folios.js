@@ -8,23 +8,24 @@ import CdliImage from './CdliImage'
 const displayNames = {
   WGL: 'Lambert',
   FWG: 'Geers',
-  EL: 'Leichty'
+  EL: 'Leichty',
+  AKG: 'Grayson'
 }
 
-function isLambert (entry) {
-  return entry.name === 'WGL'
+function hasImage (entry) {
+  return ['WGL', 'AKG'].includes(entry.name)
 }
 
 class Folios extends Component {
-  folioTab = (entry, index) => (
+  FolioTab = (entry, index) => (
     <Tab
       key={index}
       eventKey={index}
-      title={`${displayNames[entry.name] || ''} Folio ${entry.number}`}
-      disabled={!isLambert(entry)}>
-      {isLambert(entry) && (
+      title={`${displayNames[entry.name] || entry.name} Folio ${entry.number}`}
+      disabled={!hasImage(entry)}>
+      {hasImage(entry) &&
         <ApiImage apiClient={this.props.apiClient} fileName={`${entry.name}_${entry.number}.jpg`} />
-      )}
+      }
     </Tab>
   )
 
@@ -33,8 +34,8 @@ class Folios extends Component {
       <Fragment>
         <Tabs
           id='folio-container'
-          defaultActiveKey={_.findIndex(this.props.folios, isLambert)}>
-          {this.props.folios.map(this.folioTab)}
+          defaultActiveKey={_.findIndex(this.props.folios, hasImage)}>
+          {this.props.folios.map(this.FolioTab)}
           {this.props.cdliNumber && (
             <Tab eventKey={-1} title='CDLI Image'>
               <CdliImage cdliNumber={this.props.cdliNumber} />

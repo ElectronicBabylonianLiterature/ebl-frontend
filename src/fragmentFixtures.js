@@ -8,7 +8,7 @@ factory.define('statistics', Object, {
 factory.define('record', Object, {
   user: factory.chance('email'),
   date: () => factory.chance('date')().toISOString(),
-  type: factory.chance('pickone', ['Transliteration', 'Collation'])
+  type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
 })
 
 factory.define('measure', Object, {
@@ -17,7 +17,7 @@ factory.define('measure', Object, {
 })
 
 factory.define('folio', Object, {
-  name: factory.chance('pickone', ['WGL', 'FWG', 'EL']),
+  name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG']),
   number: factory.chance('string')
 })
 

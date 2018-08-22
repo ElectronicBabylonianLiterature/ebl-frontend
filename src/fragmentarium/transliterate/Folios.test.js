@@ -38,7 +38,8 @@ describe('Folios', () => {
 const names = [
   {name: 'WGL', displayName: 'Lambert'},
   {name: 'FWG', displayName: 'Geers'},
-  {name: 'EL', displayName: 'Leichty'}
+  {name: 'EL', displayName: 'Leichty'},
+  {name: 'AKG', displayName: 'Grayson'}
 ]
 
 names.forEach(entry => {
