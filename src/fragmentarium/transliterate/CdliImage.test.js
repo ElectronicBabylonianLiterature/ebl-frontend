@@ -6,6 +6,7 @@ afterEach(cleanup)
 
 describe('CDLI number provided', () => {
   const cdliNumber = 'P000000'
+  const url = `https://cdli.ucla.edu/dl/photo/${cdliNumber}.jpg`
   let container
 
   beforeEach(() => {
@@ -14,11 +15,15 @@ describe('CDLI number provided', () => {
 
   it('Displays the image from CDLI', async () => {
     expect(container.querySelector('img'))
-      .toHaveAttribute('src', `https://cdli.ucla.edu/dl/photo/${cdliNumber}.jpg`)
+      .toHaveAttribute('src', url)
   })
 
   it('Has the image filename as alt text', async () => {
     expect(container.querySelector('img')).toHaveAttribute('alt', `${cdliNumber}.jpg`)
+  })
+
+  it('Has a link to the image', () => {
+    expect(container.querySelector('a')).toHaveAttribute('href', url)
   })
 })
 
