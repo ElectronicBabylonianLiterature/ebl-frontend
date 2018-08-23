@@ -29,6 +29,11 @@ it('Displays the loaded image', () => {
     .toHaveAttribute('src', objectUrl)
 })
 
+it('Has a link to the image', () => {
+  expect(element.container.querySelector('a'))
+    .toHaveAttribute('href', objectUrl)
+})
+
 it('Has the filename as alt text', () => {
   expect(element.container.querySelector('img')).toHaveAttribute('alt', fileName)
 })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Image } from 'react-bootstrap'
+import ExternalLink from 'ExternalLink'
 import withData from 'http/withData'
 
 class ApiImage extends Component {
@@ -13,14 +14,14 @@ class ApiImage extends Component {
   }
 
   render () {
-    return <Image src={this.image} alt={this.props.fileName} responsive />
+    return <ExternalLink href={this.image}>
+      <Image src={this.image} alt={this.props.fileName} responsive />
+    </ExternalLink>
   }
 }
 
 export default withData(
   ApiImage,
   props => `/images/${props.fileName}`,
-  {
-    method: 'fetchBlob'
-  }
+  { method: 'fetchBlob' }
 )
