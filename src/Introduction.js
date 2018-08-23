@@ -1,17 +1,16 @@
 import React from 'react'
+import ExternalLink from 'ExternalLink'
 
 import eblChart from './ebl_chart.jpg'
 
 import './Introduction.css'
 
 function Auth0Badge () {
-  return <a className='Auth0Badge'
-    rel='noopener noreferrer'
+  return <ExternalLink className='Auth0Badge'
     href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss'
-    target='_blank'
-    alt='Single Sign On & Token Based Authentication - Auth0'>
+    title='Single Sign On & Token Based Authentication - Auth0'>
     <img className='Auth0Badge__image' alt='JWT Auth for open source projects' src='//cdn.auth0.com/oss/badges/a0-badge-light.png' />
-  </a>
+  </ExternalLink>
 }
 
 export default function Inroduction () {
