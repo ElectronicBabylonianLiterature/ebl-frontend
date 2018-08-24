@@ -6,5 +6,10 @@
     "/eBL_badge.png": "eBL_badge.png",
     "/eBL_logo.png": "eBL_logo.png",
     "/**": "index.html"
+  },
+  "headers": {
+    "/**": {
+      "Content-Security-Policy": "default-src 'self'; script-src https://cdn.ravenjs.com; img-src 'self' https://cdli.ucla.edu; font-src 'self'; style-src 'self' https://maxcdn.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none';"
+    }
   }
 }
