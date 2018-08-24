@@ -9,7 +9,7 @@
   },
   "headers": {
     "/**": {
-      "Content-Security-Policy": "default-src 'self'; script-src https://cdn.ravenjs.com; img-src 'self' https://cdli.ucla.edu; font-src 'self'; style-src 'self' https://maxcdn.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none';"
+      "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.ravenjs.com 'sha256-hfyUG63oY2A7i2GLLosmbZzqxYHDXHASfutrdCbC0XI='; img-src 'self' https://cdli.ucla.edu https://cdn.auth0.com; font-src 'self' https://maxcdn.bootstrapcdn.com https://use.fontawesome.com; style-src 'self' https://maxcdn.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none';"
     }
   }
 }
