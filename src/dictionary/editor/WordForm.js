@@ -38,7 +38,7 @@ class WordForm extends Component {
     this.updateWord({ [key]: value })
   }
 
-  textInput = ({property}) => (
+  textInput = ({ property }) => (
     <TextInput
       id={property}
       value={this.state.word[property]}

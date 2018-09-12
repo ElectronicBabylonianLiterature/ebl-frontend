@@ -12,7 +12,7 @@ function parseSide (side) {
   }
 }
 
-function createTemplate ({rows, suffix = ''}) {
+function createTemplate ({ rows, suffix = '' }) {
   return _.range(1, rows + 1)
     .map(row => `${row}${suffix}. [...]  [...]`)
     .join('\n')

@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {MemoryRouter} from 'react-router-dom'
+import { render, cleanup } from 'react-testing-library'
+import { MemoryRouter } from 'react-router-dom'
 import Breadcrumbs from './Breadcrumbs'
 
 afterEach(cleanup)

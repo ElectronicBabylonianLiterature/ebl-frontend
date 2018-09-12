@@ -29,13 +29,13 @@ class WordEditor extends Component {
   }
 
   updateWord = word => {
-    this.setState({word: this.state.word, error: null, saving: true})
+    this.setState({ word: this.state.word, error: null, saving: true })
     this.props.apiClient
       .postJson(getWordUrl(this.props), word, this.abortController.signal)
-      .then(() => this.setState({word: word, error: null, saving: false}))
+      .then(() => this.setState({ word: word, error: null, saving: false }))
       .catch(error => {
         if (this.props.apiClient.isNotAbortError(error)) {
-          this.setState({word: this.state.word, error: error, saving: false})
+          this.setState({ word: this.state.word, error: error, saving: false })
         }
       })
   }

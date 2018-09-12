@@ -5,7 +5,7 @@ import User from './auth0/User'
 
 import './Header.css'
 
-export default function Header ({auth}) {
+export default function Header ({ auth }) {
   return (
     <header className='Header'>
       <h1 className='Header__title'>

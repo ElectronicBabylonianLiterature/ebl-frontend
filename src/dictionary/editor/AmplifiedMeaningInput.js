@@ -12,7 +12,7 @@ class AmplifiedMeaningInput extends Component {
     })
   }
 
-  textInput = ({property, children}) => (
+  textInput = ({ property, children }) => (
     <TextInput
       id={`${this.props.id}-${property}`}
       value={this.props.value[property]}

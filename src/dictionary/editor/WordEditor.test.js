@@ -31,7 +31,7 @@ describe('Fecth word', () => {
 
   it('Displays result on successfull query', async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    const {getByText} = await renderWithRouter()
+    const { getByText } = await renderWithRouter()
 
     expect(getByText(result.lemma.join(' '))).toBeDefined()
   })
@@ -81,7 +81,7 @@ describe('Update word', () => {
 describe('User is not allowed to write:words', () => {
   it('The form is disabled', async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(result))
-    const {container} = await renderWithRouter(false)
+    const { container } = await renderWithRouter(false)
     expect(container.querySelector('fieldset').disabled).toBe(true)
   })
 })

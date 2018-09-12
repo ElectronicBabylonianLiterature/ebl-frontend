@@ -6,7 +6,7 @@ import withData from 'http/withData'
 
 import './WordSearch.css'
 
-function WordSearch ({data}) {
+function WordSearch ({ data }) {
   return (
     <ul className='WordSearch-results'>
       {data.map(word =>

@@ -82,7 +82,7 @@ class TransliteratioForm extends Component {
       })
   }
 
-  textArea = ({property}) => (
+  textArea = ({ property }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       <FormControl

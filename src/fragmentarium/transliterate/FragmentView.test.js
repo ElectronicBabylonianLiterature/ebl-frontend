@@ -1,8 +1,8 @@
 import React from 'react'
-import {matchPath} from 'react-router'
-import {MemoryRouter} from 'react-router-dom'
-import {render, cleanup, wait} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { matchPath } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
+import { render, cleanup, wait } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -34,7 +34,7 @@ beforeEach(async () => {
   auth = new Auth()
   apiClient = new ApiClient(auth)
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
 })
 
@@ -42,7 +42,7 @@ describe('Fragment is loaded', () => {
   let fragment
 
   beforeEach(async () => {
-    fragment = await factory.build('fragment', {_id: fragmentNumber})
+    fragment = await factory.build('fragment', { _id: fragmentNumber })
     jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
     await renderFragmentView()

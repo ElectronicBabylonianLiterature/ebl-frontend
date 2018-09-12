@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import CdliImage from './CdliImage'
 
 afterEach(cleanup)
@@ -28,7 +28,7 @@ describe('CDLI number provided', () => {
 })
 
 it('Displays nothing if no CLDI number provided', async () => {
-  const {container} = render(<CdliImage cdliNumber={null} />)
+  const { container } = render(<CdliImage cdliNumber={null} />)
 
   expect(container.innerHTML).toEqual('')
 })

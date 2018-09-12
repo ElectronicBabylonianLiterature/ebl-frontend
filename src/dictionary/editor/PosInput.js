@@ -25,15 +25,15 @@ const positionsOfScpeech = {
   'PRP': 'preposition',
   'SBJ': 'subjunction'
 }
-const posOptions = _.map(positionsOfScpeech, (value, key) => ({value: key, label: value}))
+const posOptions = _.map(positionsOfScpeech, (value, key) => ({ value: key, label: value }))
 
 class PosInput extends Component {
   updatePos = event => {
-    this.props.onChange({pos: event.target.value})
+    this.props.onChange({ pos: event.target.value })
   }
 
   updateRoots = roots => {
-    this.props.onChange({roots: roots})
+    this.props.onChange({ roots: roots })
   }
 
   render () {

@@ -4,12 +4,12 @@ import classNames from 'classnames'
 
 const numberRegexp = /^([^\d]*)(\d+)$/
 
-export default function FragmentPager ({number, children}) {
+export default function FragmentPager ({ number, children }) {
   const match = numberRegexp.exec(number)
   if (match) {
     const prefix = match[1]
     const current = Number(match[2] || 0)
-    const PagerLink = ({offset, label}) => (
+    const PagerLink = ({ offset, label }) => (
       <Link to={`/fragmentarium/${prefix}${current + offset}`} aria-label={label}>
         <i className={classNames({
           fas: true,

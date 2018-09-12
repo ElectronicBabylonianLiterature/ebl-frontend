@@ -3,11 +3,11 @@ import { AbortError } from 'testHelpers'
 
 const path = '/resource'
 const expectedUrl = `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
-const result = {success: true}
+const result = { success: true }
 const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
-const errorResponse = {status: 404, statusText: 'NOT_FOUND'}
+const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
 const expectedError = new Error(errorResponse.statusText)
 
 let apiClient
@@ -17,7 +17,7 @@ let signal
 beforeEach(async () => {
   fetch.resetMocks()
   signal = 'mock signal'
-  auth = {getAccessToken: jest.fn()}
+  auth = { getAccessToken: jest.fn() }
   apiClient = new ApiClient(auth)
 })
 
@@ -32,7 +32,7 @@ describe('fetchJson', () => {
     })
 
     it('Makes a request with given parameters', async () => {
-      const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
+      const expectedHeaders = new Headers({ 'Authorization': `Bearer ${accessToken}` })
       await apiClient.fetchJson(path, true, signal)
       expect(fetch).toBeCalledWith(expectedUrl, {
         headers: expectedHeaders,
@@ -126,7 +126,7 @@ describe('fetchBlob', () => {
 
     await apiClient.fetchBlob(path, true, signal)
 
-    const expectedHeaders = new Headers({'Authorization': `Bearer ${accessToken}`})
+    const expectedHeaders = new Headers({ 'Authorization': `Bearer ${accessToken}` })
     expect(fetch).toBeCalledWith(expectedUrl, {
       headers: expectedHeaders,
       signal: signal

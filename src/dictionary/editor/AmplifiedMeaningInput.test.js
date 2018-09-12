@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
-import {whenChanged} from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
+import { whenChanged } from 'testHelpers'
 
 afterEach(cleanup)
 
@@ -97,7 +97,7 @@ function commonUpdateTests () {
       .toHaveBeenCalledWith(newValue => ({
         ...value,
         vowels: [
-          {...value.vowels[0], value: newValue.split('/')},
+          { ...value.vowels[0], value: newValue.split('/') },
           ..._.tail(value.vowels)
         ]
       }))

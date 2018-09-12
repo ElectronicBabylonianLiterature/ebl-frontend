@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup, wait} from 'react-testing-library'
+import { render, cleanup, wait } from 'react-testing-library'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import ApiImage from './ApiImage'
@@ -14,7 +14,7 @@ let element
 beforeEach(async () => {
   apiClient = new ApiClient(new Auth())
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValueOnce(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   element = render(<ApiImage apiClient={apiClient} fileName={fileName} />)
   await wait()
 })

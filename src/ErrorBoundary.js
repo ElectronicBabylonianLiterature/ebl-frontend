@@ -9,7 +9,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch (error, info) {
-    this.setState({error: error, info: info})
+    this.setState({ error: error, info: info })
     Raven.captureException(error, { extra: info })
   }
 

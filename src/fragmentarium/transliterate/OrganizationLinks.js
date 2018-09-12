@@ -6,7 +6,7 @@ import './OrganizationLinks.css'
 import cdliLogo from './cdli.png'
 import bmLogo from './The_British_Museum.png'
 
-export default function OrganizationLinks ({cdliNumber, bmIdNumber}) {
+export default function OrganizationLinks ({ cdliNumber, bmIdNumber }) {
   return (
     <p className='OrganizationLinks'>
       {bmIdNumber && (

@@ -1,10 +1,10 @@
 import React from 'react'
-import {render, wait, cleanup} from 'react-testing-library'
+import { render, wait, cleanup } from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from 'auth0/Auth'
 import ApiClient from 'http/ApiClient'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 
 const DictionaryWithRouter = withRouter(Dictionary)
 
@@ -28,19 +28,19 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const {getByText} = await renderDictionary('/dictionary?query=lemma')
+    const { getByText } = await renderDictionary('/dictionary?query=lemma')
 
     expect(getByText(words[0].meaning)).toBeDefined()
   })
 
   it('fills in search form query', async () => {
-    const {getByLabelText} = await renderDictionary('/dictionary?query=lemma')
+    const { getByLabelText } = await renderDictionary('/dictionary?query=lemma')
 
     expect(getByLabelText('Query').value).toEqual('lemma')
   })
 
   it('displays empty search if no query', async () => {
-    const {getByLabelText} = await renderDictionary('/dictionary')
+    const { getByLabelText } = await renderDictionary('/dictionary')
 
     expect(getByLabelText('Query').value).toEqual('')
   })
@@ -49,7 +49,7 @@ describe('Searching for word', () => {
 it('Displays a message if user is not logged in', async () => {
   jest.spyOn(auth, 'isAllowedTo').mockReturnValueOnce(false)
 
-  const {getByText} = await renderDictionary('/dictionary')
+  const { getByText } = await renderDictionary('/dictionary')
 
   expect(getByText('You do not have the rights to access the dictionary.')).toBeDefined()
 })

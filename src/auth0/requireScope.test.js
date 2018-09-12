@@ -19,12 +19,12 @@ beforeEach(async () => {
 
 it('Renders inner component if use has the scope', () => {
   auth.isAllowedTo.mockReturnValueOnce(true)
-  const {container} = render(<ComponentRequiringScope auth={auth} />)
+  const { container } = render(<ComponentRequiringScope auth={auth} />)
   expect(container).toHaveTextContent(content)
 })
 
 it('Does not render inner component if user does not have the scope', () => {
   auth.isAllowedTo.mockReturnValueOnce(false)
-  const {container} = render(<ComponentRequiringScope auth={auth} />)
+  const { container } = render(<ComponentRequiringScope auth={auth} />)
   expect(container).not.toHaveTextContent(content)
 })

@@ -16,7 +16,7 @@ class WordSearch extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?${queryString.stringify({query: this.state.query})}`)
+    this.props.history.push(`?${queryString.stringify({ query: this.state.query })}`)
   }
 
   render () {

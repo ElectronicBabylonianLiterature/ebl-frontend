@@ -1,4 +1,4 @@
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 
 function pickOne (values) {
   return factory.chance('pickone', values)

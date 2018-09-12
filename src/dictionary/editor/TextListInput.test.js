@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
-import {render, cleanup} from 'react-testing-library'
-import {whenClicked, whenChanged} from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { whenClicked, whenChanged } from 'testHelpers'
 
 const label = 'List'
 

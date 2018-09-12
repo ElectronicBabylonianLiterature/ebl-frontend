@@ -4,7 +4,7 @@ import withData from 'http/withData'
 
 import './Statistics.css'
 
-function Statistics ({data}) {
+function Statistics ({ data }) {
   const localizedStatistics = _.mapValues(data, value => value.toLocaleString())
 
   return (

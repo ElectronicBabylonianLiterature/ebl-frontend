@@ -6,7 +6,7 @@ import ArrayInput from './ArrayInput'
 
 class ArrayWithNotes extends Component {
   update = property => value => {
-    this.props.onChange({...this.props.value, [property]: value})
+    this.props.onChange({ ...this.props.value, [property]: value })
   }
 
   render () {

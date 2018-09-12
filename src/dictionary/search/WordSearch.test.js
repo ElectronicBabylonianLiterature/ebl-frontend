@@ -1,8 +1,8 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {render, wait, cleanup} from 'react-testing-library'
+import { render, wait, cleanup } from 'react-testing-library'
 import WordSearch from './WordSearch'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 
 const query = 'lem[ma?]'
 let words

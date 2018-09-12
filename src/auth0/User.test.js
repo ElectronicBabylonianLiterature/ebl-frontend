@@ -15,13 +15,13 @@ beforeEach(() => {
 })
 
 it('Calls Auth0 logout if user is logged in', () => {
-  const {getByText} = renderUser(true)
+  const { getByText } = renderUser(true)
   fireEvent.click(getByText('Logout'))
   expect(auth.logout).toHaveBeenCalled()
 })
 
 it('Calls Auth0 login if user is logged out', () => {
-  const {getByText} = renderUser(false)
+  const { getByText } = renderUser(false)
   fireEvent.click(getByText('Login'))
   expect(auth.login).toHaveBeenCalled()
 })

@@ -1,4 +1,4 @@
-import {fireEvent, wait} from 'react-testing-library'
+import { fireEvent, wait } from 'react-testing-library'
 
 function when (createMatcher) {
   return {
@@ -9,7 +9,7 @@ function when (createMatcher) {
 }
 
 export async function changeValue (input, newValue) {
-  fireEvent.change(input, {target: {value: newValue}})
+  fireEvent.change(input, { target: { value: newValue } })
 
   await wait()
 }

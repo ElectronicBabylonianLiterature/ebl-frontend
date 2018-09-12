@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import Record from './Record'
 import moment from 'moment'
 

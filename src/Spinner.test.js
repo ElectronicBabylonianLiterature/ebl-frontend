@@ -1,25 +1,25 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import Spinner from './Spinner'
 
 afterEach(cleanup)
 
 it('Has loading indicator', () => {
-  const {container} = render(<Spinner loading />)
+  const { container } = render(<Spinner loading />)
   expect(container).toHaveTextContent('Loading...')
 })
 
 it('Shows children', () => {
-  const {container} = render(<Spinner loading>Spinning</Spinner>)
+  const { container } = render(<Spinner loading>Spinning</Spinner>)
   expect(container).toHaveTextContent('Spinning')
 })
 
 it('Displays nothing if loading undefined', async () => {
-  const {container} = render(<Spinner />)
+  const { container } = render(<Spinner />)
   expect(container).toHaveTextContent('Loading...')
 })
 
 it('Displays nothing if loading false', async () => {
-  const {container} = render(<Spinner loading={false} />)
+  const { container } = render(<Spinner loading={false} />)
   expect(container.textContent).toEqual('')
 })

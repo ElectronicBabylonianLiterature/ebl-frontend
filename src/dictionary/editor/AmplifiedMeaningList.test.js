@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
-import {whenClicked, whenChanged} from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
+import { whenClicked, whenChanged } from 'testHelpers'
 
 afterEach(cleanup)
 
@@ -32,7 +32,7 @@ describe('Entries', () => {
       .expect(onChange)
       .toHaveBeenCalledWith([
         ...value,
-        {meaning: '', vowels: []}
+        { meaning: '', vowels: [] }
       ])
   })
 
@@ -63,7 +63,7 @@ describe('Conjugations/Functions', () => {
       .expect(onChange)
       .toHaveBeenCalledWith([
         ...value,
-        {key: '', meaning: '', vowels: [], entries: []}
+        { key: '', meaning: '', vowels: [], entries: [] }
       ])
   })
 

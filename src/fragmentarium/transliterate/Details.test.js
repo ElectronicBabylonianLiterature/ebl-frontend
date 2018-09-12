@@ -16,7 +16,7 @@ afterEach(cleanup)
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', {museum: 'The British Museum'})
+    fragment = await factory.build('fragment', { museum: 'The British Museum' })
     renderDetails()
   })
 

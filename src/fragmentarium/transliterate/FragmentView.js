@@ -6,7 +6,7 @@ import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 
 const FragmentWithData = withData(
-  ({data, reload, ...props}) => <CuneiformFragment
+  ({ data, reload, ...props }) => <CuneiformFragment
     fragment={data}
     onChange={reload}
     {...props}
@@ -17,7 +17,7 @@ const FragmentWithData = withData(
   }
 )
 
-export default function FragmentView ({apiClient, auth, match}) {
+export default function FragmentView ({ apiClient, auth, match }) {
   const number = match.params.id
   return (
     <section className='App-content App-content--wide'>

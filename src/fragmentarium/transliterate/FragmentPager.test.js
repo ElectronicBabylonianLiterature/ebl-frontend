@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {MemoryRouter} from 'react-router-dom'
+import { render, cleanup } from 'react-testing-library'
+import { MemoryRouter } from 'react-router-dom'
 import FragmentPager from './FragmentPager'
 
 afterEach(cleanup)

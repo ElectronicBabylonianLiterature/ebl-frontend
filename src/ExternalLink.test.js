@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import ExternalLink from './ExternalLink'
 
 afterEach(cleanup)
@@ -10,7 +10,7 @@ const children = 'The Link'
 let link
 
 beforeEach(() => {
-  const {getByText} = render(<ExternalLink href={href} title={title}>
+  const { getByText } = render(<ExternalLink href={href} title={title}>
     {children}
   </ExternalLink>)
   link = getByText(children)

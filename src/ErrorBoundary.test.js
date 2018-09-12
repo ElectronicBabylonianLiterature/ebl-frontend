@@ -1,6 +1,6 @@
 /* global Raven */
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import { clickNth } from 'testHelpers'
 import ErrorBoundary from './ErrorBoundary'
 
@@ -22,7 +22,7 @@ describe('Children throw an error', () => {
   })
 
   it('Sends report to Sentry', async () => {
-    expect(Raven.captureException).toHaveBeenCalledWith(error, {extra: {componentStack: expect.any(String)}})
+    expect(Raven.captureException).toHaveBeenCalledWith(error, { extra: { componentStack: expect.any(String) } })
   })
 
   it('Clicking report button opens report dialog', async () => {
@@ -34,7 +34,7 @@ describe('Children throw an error', () => {
 
 it('Displays children if they do not crash', async () => {
   const content = 'Did not crash'
-  const {container} = render(<ErrorBoundary>{content}</ErrorBoundary>)
+  const { container } = render(<ErrorBoundary>{content}</ErrorBoundary>)
 
   expect(container).toHaveTextContent(content)
 })

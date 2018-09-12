@@ -1,7 +1,7 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
-import {factory} from 'factory-girl'
+import { factory } from 'factory-girl'
 import Word from './Word'
 
 let word

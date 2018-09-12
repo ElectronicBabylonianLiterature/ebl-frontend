@@ -14,13 +14,13 @@ class RandomButton extends Component {
   }
 
   click = event => {
-    this.setState({error: null, loading: true})
+    this.setState({ error: null, loading: true })
     this.props.apiClient
       .fetchJson(`/fragments?${this.props.param}=true`, true, this.abortController.signal)
       .then(fragments => this.props.history.push(`/fragmentarium/${fragments[0]._id}`))
       .catch(error => {
         if (this.props.apiClient.isNotAbortError(error)) {
-          this.setState({error: error, loading: false})
+          this.setState({ error: error, loading: false })
         }
       })
   }

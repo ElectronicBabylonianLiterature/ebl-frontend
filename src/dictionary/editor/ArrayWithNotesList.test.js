@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
-import {render, cleanup} from 'react-testing-library'
-import {whenClicked, whenChanged} from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { whenClicked, whenChanged } from 'testHelpers'
 
 afterEach(cleanup)
 
@@ -50,7 +50,7 @@ it('Adds new entry when Add is clicked', async () => {
     .expect(onChange)
     .toHaveBeenCalledWith([
       ...value,
-      {[property]: [], notes: []}
+      { [property]: [], notes: [] }
     ])
 })
 

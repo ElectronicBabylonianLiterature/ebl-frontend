@@ -9,7 +9,7 @@ class ApiClient {
 
   createHeaders (authenticate, headers) {
     const defaultHeaders = authenticate
-      ? {'Authorization': `Bearer ${this.auth.getAccessToken()}`}
+      ? { 'Authorization': `Bearer ${this.auth.getAccessToken()}` }
       : {}
     return new Headers({
       ...defaultHeaders,

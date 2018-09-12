@@ -22,7 +22,7 @@ beforeEach(async () => {
   onChange = jest.fn()
   apiClient = new ApiClient(auth)
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragment = await factory.build('fragment')
   element = render(
     <MemoryRouter>

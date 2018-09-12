@@ -16,7 +16,7 @@ class FragmentSearchForm extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?${queryString.stringify({number: this.state.number})}`)
+    this.props.history.push(`?${queryString.stringify({ number: this.state.number })}`)
   }
 
   render () {

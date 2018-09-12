@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 import withData from 'http/withData'
 
-function FragmentSearch ({number, data}) {
+function FragmentSearch ({ number, data }) {
   return number
     ? (<Table responsive>
       <thead>

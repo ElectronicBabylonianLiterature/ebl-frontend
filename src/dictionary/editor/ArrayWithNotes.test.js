@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
-import {render, cleanup} from 'react-testing-library'
-import {whenClicked, whenChanged} from 'testHelpers'
+import { render, cleanup } from 'react-testing-library'
+import { whenClicked, whenChanged } from 'testHelpers'
 
 afterEach(cleanup)
 

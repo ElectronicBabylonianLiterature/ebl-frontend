@@ -1,9 +1,9 @@
 import React from 'react'
 import FormInput from './FormInput'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
 
-import {whenClicked, changeValueByLabel} from 'testHelpers'
+import { whenClicked, changeValueByLabel } from 'testHelpers'
 
 let value
 let element

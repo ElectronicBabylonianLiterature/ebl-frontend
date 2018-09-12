@@ -29,7 +29,7 @@ class List extends Component {
     return (
       <FormGroup>
         <label>{this.props.label}</label>
-        {React.createElement(this.props.ordered ? 'ol' : 'ul', {className: 'List'},
+        {React.createElement(this.props.ordered ? 'ol' : 'ul', { className: 'List' },
           <Fragment>
             {React.Children.map(this.props.children, child =>
               <li className='List__item' key={child.key}>

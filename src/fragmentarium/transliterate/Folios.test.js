@@ -1,6 +1,6 @@
 import React from 'react'
-import {render, cleanup} from 'react-testing-library'
-import {factory} from 'factory-girl'
+import { render, cleanup } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import Folios from './Folios'
@@ -15,7 +15,7 @@ afterEach(cleanup)
 beforeEach(() => {
   apiClient = new ApiClient(new Auth())
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], {type: 'image/jpeg'})))
+  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
 })
 
 describe('Folios', () => {
@@ -36,16 +36,16 @@ describe('Folios', () => {
 })
 
 const names = [
-  {name: 'WGL', displayName: 'Lambert'},
-  {name: 'FWG', displayName: 'Geers'},
-  {name: 'EL', displayName: 'Leichty'},
-  {name: 'AKG', displayName: 'Grayson'}
+  { name: 'WGL', displayName: 'Lambert' },
+  { name: 'FWG', displayName: 'Geers' },
+  { name: 'EL', displayName: 'Leichty' },
+  { name: 'AKG', displayName: 'Grayson' }
 ]
 
 names.forEach(entry => {
   describe(`${entry.displayName} Folios`, () => {
     beforeEach(async () => {
-      folios = [await factory.build('folio', {name: entry.name})]
+      folios = [await factory.build('folio', { name: entry.name })]
       container = render(<Folios folios={folios} cdliNumber='' apiClient={apiClient} />).container
     })
 

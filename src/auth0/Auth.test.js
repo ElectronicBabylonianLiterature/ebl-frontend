@@ -127,12 +127,12 @@ describe('handleAuthentication', () => {
 
   describe('authResult has scope', () => {
     const scope = 'write:words'
-    testParseHash({scope: scope}, scope)
+    testParseHash({ scope: scope }, scope)
   })
 
   describe('authResult does not have scope', () => {
     const expectedScope = 'openid profile read:words write:words read:fragments transliterate:fragments'
-    testParseHash({scope: null}, expectedScope)
+    testParseHash({ scope: null }, expectedScope)
   })
 
   describe('Hash is parsed with error', () => {

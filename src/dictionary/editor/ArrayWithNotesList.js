@@ -14,7 +14,7 @@ class ArrayWithNotesList extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
           noun={this.props.noun}
-          default={{[this.props.property]: [], notes: []}}>
+          default={{ [this.props.property]: [], notes: [] }}>
           {_.map(this.props.value, (item, index) =>
             <ArrayWithNotes
               key={index}

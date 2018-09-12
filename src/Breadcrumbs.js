@@ -7,7 +7,7 @@ const sections = {
   Fragmentarium: '/fragmentarium'
 }
 
-export default function Breadcrumbs ({section, active}) {
+export default function Breadcrumbs ({ section, active }) {
   return (
     <Breadcrumb separator='/'>
       <LinkContainer to='/'>

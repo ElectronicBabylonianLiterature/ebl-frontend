@@ -18,7 +18,7 @@ class DerivedFromInput extends Component {
             <Button onClick={() => this.props.onChange(null)}>Delete derived from</Button>
           </Fragment>
         ) : (
-          <Button onClick={() => this.props.onChange({lemma: [], homonym: '', notes: []})}>Add derived from</Button>
+          <Button onClick={() => this.props.onChange({ lemma: [], homonym: '', notes: [] })}>Add derived from</Button>
         )}
       </FormGroup>
     )

@@ -9,7 +9,7 @@ class Record extends Component {
     return _.sortBy(this.props.record, 'date')
   }
 
-  date ({date}) {
+  date ({ date }) {
     const humanDate = moment(date).format('D/M/YYYY')
     const machineDate = moment(date).format('YYYY-MM-DD')
     return <time dateTime={machineDate}>{humanDate}</time>
