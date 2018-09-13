@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import queryString from 'query-string'
 import Breadcrumbs from 'Breadcrumbs'
 import FragmentSearchForm from 'fragmentarium/search/FragmentSearchForm'
-import FragmentSearch from 'fragmentarium/search/FragmentSearch'
+import NumberSearch from 'fragmentarium/search/NumberSearch'
 import RandomButton from 'fragmentarium/RandomButton'
 import PioneersButton from 'fragmentarium/PioneersButton'
 import Statistics from 'fragmentarium/Statistics'
@@ -37,7 +37,7 @@ class Fragmentarium extends Component {
                   <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
                 </div>
               </header>
-              <FragmentSearch number={number} apiClient={this.props.apiClient} />
+              <NumberSearch number={number} apiClient={this.props.apiClient} />
             </section>
           )
           : <p>You do not have the rights to access the fragmentarium.</p>

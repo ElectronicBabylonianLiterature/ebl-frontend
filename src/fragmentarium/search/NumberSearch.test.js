@@ -1,7 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, wait, cleanup } from 'react-testing-library'
-import FragmentSearch from './FragmentSearch'
+import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
 
 const number = 'K.003292'
@@ -12,7 +12,7 @@ let element
 async function renderFragmentSearch () {
   element = render(
     <MemoryRouter>
-      <FragmentSearch number={number} apiClient={apiClient} />
+      <NumberSearch number={number} apiClient={apiClient} />
     </MemoryRouter>
   )
   await wait()
@@ -34,16 +34,7 @@ it('Queries the API with given parameters', async () => {
   expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
 })
 
-it('Displays results on successfull query', async () => {
-  for (let fragment of fragments) {
-    expect(element.container).toHaveTextContent(fragment._id)
-    expect(element.container).toHaveTextContent(fragment.accession)
-    expect(element.container).toHaveTextContent(fragment.cdliNumber)
-    expect(element.container).toHaveTextContent(fragment.description)
-  }
-})
-
-it('Results link to fragment', async () => {
+it('Displays and links results', async () => {
   for (let fragment of fragments) {
     expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
   }
