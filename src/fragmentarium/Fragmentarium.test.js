@@ -27,9 +27,8 @@ beforeEach(async () => {
   apiClient = new ApiClient(auth)
 })
 
-describe('Searching for fragments', () => {
+describe('Search', () => {
   let fragments
-  let number = 'K.2'
 
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', 2)
@@ -38,15 +37,38 @@ describe('Searching for fragments', () => {
       ? Promise.resolve(fragments)
       : Promise.resolve(statistics)
     )
-    await renderFragmentarium(`/fragmentarium?number=${number}`)
   })
 
-  it('Displays result on successfull query', () => {
-    expect(container).toHaveTextContent(fragments[0]._id)
+  describe('Searching fragments by number', () => {
+    let number = 'K.2'
+
+    beforeEach(async () => {
+      await renderFragmentarium(`/fragmentarium?number=${number}`)
+    })
+
+    it('Displays result on successfull query', () => {
+      expect(container).toHaveTextContent(fragments[0]._id)
+    })
+
+    it('Fills in search form query', async () => {
+      expect(element.getByLabelText('Number').value).toEqual(number)
+    })
   })
 
-  it('Fills in search form query', async () => {
-    expect(element.getByLabelText('Number').value).toEqual(number)
+  describe('Searching fragments by transliteration', () => {
+    let transliteration = 'pak'
+
+    beforeEach(async () => {
+      await renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
+    })
+
+    it('Displays result on successfull query', () => {
+      expect(container).toHaveTextContent(fragments[0]._id)
+    })
+
+    it('Fills in search form query', async () => {
+      expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
+    })
   })
 })
 
