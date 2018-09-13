@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import Breadcrumbs from 'Breadcrumbs'
-import FragmentSearchForm from 'fragmentarium/search/FragmentSearchForm'
+import NumberSearchForm from 'fragmentarium/search/NumberSearchForm'
 import NumberSearch from 'fragmentarium/search/NumberSearch'
 import RandomButton from 'fragmentarium/RandomButton'
 import PioneersButton from 'fragmentarium/PioneersButton'
@@ -28,7 +28,7 @@ class Fragmentarium extends Component {
           ? (
             <section className='Fragmentarium-search'>
               <header className='Fragmentarium-search__header'>
-                <FragmentSearchForm number={number} />
+                <NumberSearchForm number={number} />
                 <div className='Fragmentarium-search__button-bar'>
                   <RandomButton apiClient={this.props.apiClient} param='random'>
                     I'm feeling lucky
