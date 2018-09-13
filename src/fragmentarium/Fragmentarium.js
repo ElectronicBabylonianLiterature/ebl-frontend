@@ -12,11 +12,27 @@ import Statistics from 'fragmentarium/Statistics'
 import './Fragmentarium.css'
 
 class Fragmentarium extends Component {
-  header = () => {
+  MainHeader = () => {
     return (
       <header>
         <Breadcrumbs section='Fragmentarium' />
         <h2>Fragmentarium</h2>
+      </header>
+    )
+  }
+
+  SectionHeader = ({ number, transliteration }) => {
+    return (
+      <header className='Fragmentarium-search__header'>
+        <NumberSearchForm number={number} />
+        <TransliterationSearchForm transliteration={transliteration} />
+        <div className='Fragmentarium-search__button-bar'>
+          <RandomButton apiClient={this.props.apiClient} param='random'>
+            I'm feeling lucky
+          </RandomButton>
+          {' '}
+          <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
+        </div>
       </header>
     )
   }
@@ -26,21 +42,11 @@ class Fragmentarium extends Component {
     const transliteration = queryString.parse(this.props.location.search).transliteration
     return (
       <section className='App-content'>
-        <this.header />
+        <this.MainHeader />
         {this.props.auth.isAllowedTo('read:fragments')
           ? (
             <section className='Fragmentarium-search'>
-              <header className='Fragmentarium-search__header'>
-                <NumberSearchForm number={number} />
-                <TransliterationSearchForm transliteration={transliteration} />
-                <div className='Fragmentarium-search__button-bar'>
-                  <RandomButton apiClient={this.props.apiClient} param='random'>
-                    I'm feeling lucky
-                  </RandomButton>
-                  {' '}
-                  <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
-                </div>
-              </header>
+              <this.SectionHeader number={number} transliteration={transliteration} />
               <NumberSearch number={number} apiClient={this.props.apiClient} />
               <TransliterationSearch transliteration={transliteration} apiClient={this.props.apiClient} />
             </section>
