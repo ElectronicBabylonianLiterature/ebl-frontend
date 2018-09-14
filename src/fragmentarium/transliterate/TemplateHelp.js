@@ -11,7 +11,7 @@ const obverseReverseAndsuffix = `@obverse
 1. [...]  [...]
 2. [...]  [...]`
 
-export default function HelpPopover () {
+export default function TemplateHelp () {
   return (
     <Popover id='Template help' title='Create template'>
       <p>

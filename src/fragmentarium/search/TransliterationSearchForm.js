@@ -1,7 +1,25 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, ControlLabel, FormControl, Button, Col } from 'react-bootstrap'
+import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover, OverlayTrigger } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
+
+function SearchHelp () {
+  return (
+    <Popover id='TransliterationSearchHelp' title='Search transliterations'>
+      <ul>
+        <li>
+          Sequences of signs are retrieved regardless of the values entered: e.g., <code>me lik</code> will retrieve <code>šip taš</code>, <code>me ur</code>, etc.
+        </li>
+        <li>
+          Signs in consecutive lines can be searched by entering them in consecutive lines of the search field.
+        </li>
+        <li>
+          Unicode should be used throughout, including in the subindex numbers (<code>ša₂</code> and <code>ṣu₂</code>).
+        </li>
+      </ul>
+    </Popover>
+  )
+}
 
 class FragmentSearchForm extends Component {
   state = {
@@ -25,8 +43,15 @@ class FragmentSearchForm extends Component {
       <Form horizontal onSubmit={this.submit}>
         <FormGroup controlId='transliteration'>
           <Col sm={2} />
-          <Col componentClass={ControlLabel} sm={2}>
+          <Col sm={2} componentClass={ControlLabel} >
             Transliteration
+            {' '}
+            <OverlayTrigger
+              trigger={['hover', 'focus']}
+              placement='left'
+              overlay={SearchHelp()}>
+              <i className='fas fa-info-circle' />
+            </OverlayTrigger>
           </Col>
           <Col sm={4}>
             <FormControl
