@@ -1,0 +1,9 @@
+.TransliterationSearch__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.TransliterationSearch__list_item + .TransliterationSearch__list_item {
+  margin-top: 0.5em;
+}

@@ -31,7 +31,6 @@ describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    fragments = await factory.buildMany('fragment', 2)
     jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
     jest.spyOn(apiClient, 'fetchJson').mockImplementation(path => path.startsWith('/fragments')
       ? Promise.resolve(fragments)
@@ -43,6 +42,7 @@ describe('Search', () => {
     let number = 'K.2'
 
     beforeEach(async () => {
+      fragments = await factory.buildMany('fragment', 2)
       await renderFragmentarium(`/fragmentarium?number=${number}`)
     })
 
@@ -59,6 +59,10 @@ describe('Search', () => {
     let transliteration = 'pak'
 
     beforeEach(async () => {
+      fragments = await factory.buildMany('fragment', 2, [
+        { matching_lines: [['line 1', 'line 2']] },
+        { matching_lines: [['line 3'], ['line 4']] }
+      ])
       await renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
     })
 
