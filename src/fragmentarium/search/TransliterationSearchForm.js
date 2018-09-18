@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
+import HelpTrigger from 'HelpTrigger'
 
 function SearchHelp () {
   return (
@@ -21,7 +22,7 @@ function SearchHelp () {
   )
 }
 
-class FragmentSearchForm extends Component {
+class TransliterationSearchForm extends Component {
   state = {
     transliteration: this.props.transliteration || ''
   }
@@ -46,12 +47,7 @@ class FragmentSearchForm extends Component {
           <Col sm={2} componentClass={ControlLabel} >
             Transliteration
             {' '}
-            <OverlayTrigger
-              trigger={['hover', 'focus']}
-              placement='left'
-              overlay={SearchHelp()}>
-              <i className='fas fa-info-circle' />
-            </OverlayTrigger>
+            <HelpTrigger overlay={SearchHelp()} />
           </Col>
           <Col sm={4}>
             <FormControl
@@ -70,4 +66,4 @@ class FragmentSearchForm extends Component {
   }
 }
 
-export default withRouter(FragmentSearchForm)
+export default withRouter(TransliterationSearchForm)

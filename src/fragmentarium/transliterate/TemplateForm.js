@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, FormControl, ControlLabel, OverlayTrigger } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import _ from 'lodash'
 
+import HelpTrigger from 'HelpTrigger'
 import TemplateHelp from './TemplateHelp'
 
 function parseSide (side) {
@@ -54,12 +55,7 @@ class TemplateForm extends Component {
       <Form inline onSubmit={this.submit}>
         <FormGroup controlId='template' validationState={this.state.validationState}>
           <ControlLabel>
-            <OverlayTrigger
-              trigger={['hover', 'focus']}
-              placement='left'
-              overlay={TemplateHelp()}>
-              <i className='fas fa-info-circle' />
-            </OverlayTrigger>
+            <HelpTrigger overlay={TemplateHelp()} />
           </ControlLabel>
           {' '}
           <FormControl
