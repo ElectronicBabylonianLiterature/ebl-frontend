@@ -44,6 +44,12 @@ it('Links results', async () => {
   }
 })
 
+it('Displays script', async () => {
+  for (let fragment of fragments) {
+    expect(element.queryByText(fragment.script)).not.toBeNull()
+  }
+})
+
 it('Displays matching lines', async () => {
   for (let line of _.flatMapDeep(fragments, 'matching_lines')) {
     expect(element.getByText(line)).not.toBeNull()

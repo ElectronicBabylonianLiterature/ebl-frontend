@@ -29,6 +29,7 @@ function TransliterationSearchResult ({ data }) {
       <thead>
         <tr>
           <th>Number</th>
+          <th>Script</th>
           <th>Matching lines</th>
         </tr>
       </thead>
@@ -36,6 +37,7 @@ function TransliterationSearchResult ({ data }) {
         {data.map(fragment =>
           <tr key={fragment._id}>
             <td><Link to={`/fragmentarium/${fragment._id}`}>{fragment._id}</Link></td>
+            <td>{fragment.script}</td>
             <td><Lines fragment={fragment} /></td>
           </tr>
         )}
