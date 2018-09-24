@@ -24,7 +24,7 @@ describe('Value is a derived form', () => {
   })
 
   it('onChanged is called with updated homonym', async () => {
-    const newHomonym = 'IV'
+    const newHomonym = value.homonym === 'IV' ? 'I' : 'IV'
     await changeValueByLabel(element, 'Homonym', newHomonym)
 
     expect(onChange).toHaveBeenCalledWith({
