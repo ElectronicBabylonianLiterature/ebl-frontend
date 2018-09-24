@@ -1,7 +1,7 @@
 import React from 'react'
 import { matchPath } from 'react-router'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup, wait } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'

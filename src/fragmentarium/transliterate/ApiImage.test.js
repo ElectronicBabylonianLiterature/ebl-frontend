@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup, wait } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import ApiImage from './ApiImage'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup, wait } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Statistics from './Statistics'
 import ApiClient from 'http/ApiClient'

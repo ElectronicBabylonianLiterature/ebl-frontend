@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, cleanup, wait } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Fragmentarium from './Fragmentarium'
 import ApiClient from 'http/ApiClient'
