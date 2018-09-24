@@ -1,17 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { whenChanged } from 'testHelpers'
-
-afterEach(cleanup)
 
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

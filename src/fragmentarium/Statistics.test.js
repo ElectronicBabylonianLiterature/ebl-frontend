@@ -16,8 +16,6 @@ async function renderStatistics () {
   await wait()
 }
 
-afterEach(cleanup)
-
 beforeEach(async () => {
   const auth = new Auth()
   apiClient = new ApiClient(auth)

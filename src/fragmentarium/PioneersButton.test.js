@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { whenClicked } from 'testHelpers'
 import PioneersButton from './PioneersButton'
 import ApiClient from 'http/ApiClient'
@@ -18,8 +18,6 @@ function renderPioneersButton (isAllowedTo) {
     <PioneersButton auth={auth} apiClient={apiClient} />
   </Router>)
 }
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   auth = new Auth()

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, cleanup } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import ApiClient from 'http/ApiClient'
 import { AbortError } from 'testHelpers'
 import withData from './withData'
@@ -55,8 +55,6 @@ function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
     {})
   })
 }
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   const shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop

@@ -1,10 +1,8 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 import User from './User'
 
 let auth
-
-afterEach(cleanup)
 
 beforeEach(() => {
   auth = {

@@ -1,12 +1,10 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import NumberSearchForm from './NumberSearchForm'
-
-afterEach(cleanup)
 
 it('Adds number to query string on submit', async () => {
   const history = createMemoryHistory()

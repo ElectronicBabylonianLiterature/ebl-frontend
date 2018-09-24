@@ -28,8 +28,6 @@ async function renderFragmentView () {
   await wait()
 }
 
-afterEach(cleanup)
-
 beforeEach(async () => {
   auth = new Auth()
   apiClient = new ApiClient(auth)

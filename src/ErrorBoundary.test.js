@@ -1,10 +1,8 @@
 /* global Raven */
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { clickNth } from 'testHelpers'
 import ErrorBoundary from './ErrorBoundary'
-
-afterEach(cleanup)
 
 describe('Children throw an error', () => {
   let element

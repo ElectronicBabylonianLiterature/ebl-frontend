@@ -7,8 +7,6 @@ let value
 let element
 let onChange
 
-afterEach(cleanup)
-
 beforeEach(() => {
   onChange = jest.fn()
 })

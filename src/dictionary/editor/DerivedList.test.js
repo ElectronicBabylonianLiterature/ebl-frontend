@@ -1,19 +1,15 @@
 import React from 'react'
 import _ from 'lodash'
 import DerivedList from './DerivedList'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChanged } from 'testHelpers'
-
-afterEach(cleanup)
 
 const label = 'Derived'
 
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

@@ -1,10 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { whenClicked, whenChanged } from 'testHelpers'
-
-afterEach(cleanup)
 
 const noun = 'item'
 const property = 'value'
@@ -13,8 +11,6 @@ const separator = ' '
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

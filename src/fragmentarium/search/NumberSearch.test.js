@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, wait, cleanup } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
 
@@ -17,8 +17,6 @@ async function renderFragmentSearch () {
   )
   await wait()
 }
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   apiClient = {

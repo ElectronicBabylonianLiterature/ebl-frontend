@@ -19,8 +19,6 @@ async function renderFragmentarium (path = '/fragmentarium') {
   await wait()
 }
 
-afterEach(cleanup)
-
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   auth = new Auth()

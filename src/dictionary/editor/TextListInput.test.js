@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { whenClicked, whenChanged } from 'testHelpers'
 
 const label = 'List'
@@ -9,8 +9,6 @@ const label = 'List'
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

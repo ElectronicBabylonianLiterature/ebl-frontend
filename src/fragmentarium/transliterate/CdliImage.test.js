@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import CdliImage from './CdliImage'
-
-afterEach(cleanup)
 
 describe('CDLI number provided', () => {
   const cdliNumber = 'P000000'

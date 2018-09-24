@@ -1,13 +1,11 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import FragmentList from './FragmentList'
 import { factory } from 'factory-girl'
 
 let fragments
 let element
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   fragments = await factory.buildMany('fragment', 2)

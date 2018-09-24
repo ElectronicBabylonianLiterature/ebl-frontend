@@ -1,9 +1,7 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import FragmentPager from './FragmentPager'
-
-afterEach(cleanup)
 
 const child = 'K.00000'
 let number

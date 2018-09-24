@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -9,8 +9,6 @@ const cdliNumber = '0000'
 let apiClient
 let container
 let folios
-
-afterEach(cleanup)
 
 beforeEach(() => {
   apiClient = new ApiClient(new Auth())

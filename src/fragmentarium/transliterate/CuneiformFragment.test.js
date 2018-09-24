@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 
 import { submitForm } from 'testHelpers'
@@ -13,8 +13,6 @@ let element
 let container
 let apiClient
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   const auth = new Auth()

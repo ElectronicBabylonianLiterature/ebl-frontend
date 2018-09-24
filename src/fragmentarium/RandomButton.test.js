@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { whenClicked, clickNth, AbortError } from 'testHelpers'
 import ApiClient from 'http/ApiClient'
@@ -14,8 +14,6 @@ const param = 'random'
 let history
 let apiClient
 let element
-
-afterEach(cleanup)
 
 beforeEach(() => {
   history = createMemoryHistory()

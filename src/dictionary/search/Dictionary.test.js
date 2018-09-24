@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, cleanup } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Dictionary from './Dictionary'
 import Auth from 'auth0/Auth'
@@ -11,8 +11,6 @@ const DictionaryWithRouter = withRouter(Dictionary)
 let words
 let auth
 let apiClient
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
-import { render, wait, cleanup } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { submitForm, AbortError } from 'testHelpers'
 import WordEditor from './WordEditor'
 import ApiClient from 'http/ApiClient'
@@ -11,8 +11,6 @@ const errorMessage = 'error'
 let result
 let auth
 let apiClient
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   result = await factory.build('verb')

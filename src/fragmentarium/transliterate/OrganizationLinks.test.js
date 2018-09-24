@@ -1,11 +1,9 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import OrganizationLinks from './OrganizationLinks'
 
 import cdliLogo from './cdli.png'
 import bmLogo from './The_British_Museum.png'
-
-afterEach(cleanup)
 
 const cdliNumber = 'P0000'
 const bmIdNumber = '00000'

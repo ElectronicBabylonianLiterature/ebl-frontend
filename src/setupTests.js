@@ -1,5 +1,6 @@
 import 'jest-date-mock'
 import 'jest-dom/extend-expect'
+import 'react-testing-library/cleanup-after-each'
 
 import './wordFixtures'
 import './fragmentFixtures'

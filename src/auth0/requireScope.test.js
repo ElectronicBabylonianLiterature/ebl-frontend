@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import requireScope from './requireScope'
 import Auth from './Auth'
 
@@ -8,8 +8,6 @@ const InnerComponent = props => <h1>{content}</h1>
 let auth
 let scope
 let ComponentRequiringScope
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   auth = new Auth()

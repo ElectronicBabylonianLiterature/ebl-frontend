@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import ErrorAlert from './ErrorAlert'
-
-afterEach(cleanup)
 
 it('Displays error message', async () => {
   const error = { message: 'error message' }

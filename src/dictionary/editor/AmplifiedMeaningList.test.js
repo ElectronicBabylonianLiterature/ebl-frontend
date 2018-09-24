@@ -1,11 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChanged } from 'testHelpers'
-
-afterEach(cleanup)
 
 const label = 'Amplified Meanings'
 
@@ -13,8 +11,6 @@ let value
 let element
 let onChange
 let noun
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

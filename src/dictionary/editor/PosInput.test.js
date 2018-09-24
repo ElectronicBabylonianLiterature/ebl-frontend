@@ -1,17 +1,13 @@
 import React from 'react'
 import PosInput from './PosInput'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import { whenChanged } from 'testHelpers'
 
-afterEach(cleanup)
-
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

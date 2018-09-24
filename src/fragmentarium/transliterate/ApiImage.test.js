@@ -4,8 +4,6 @@ import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import ApiImage from './ApiImage'
 
-afterEach(cleanup)
-
 const fileName = 'WGL_00000.jpg'
 const objectUrl = 'object URL mock'
 let apiClient

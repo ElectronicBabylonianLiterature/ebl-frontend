@@ -1,16 +1,12 @@
 import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChanged } from 'testHelpers'
-
-afterEach(cleanup)
 
 let value
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

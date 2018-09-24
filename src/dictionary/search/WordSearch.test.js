@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, wait, cleanup } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
 
@@ -13,8 +13,6 @@ async function renderWordSearch () {
   element = render(<MemoryRouter><WordSearch query={query} apiClient={apiClient} /></MemoryRouter>)
   await wait()
 }
-
-afterEach(cleanup)
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)

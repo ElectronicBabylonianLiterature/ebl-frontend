@@ -1,10 +1,8 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TemplateForm from './TemplateForm'
-
-afterEach(cleanup)
 
 let onSubmit
 let element

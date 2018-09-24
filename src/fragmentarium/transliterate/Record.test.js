@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Record from './Record'
 import moment from 'moment'
@@ -7,8 +7,6 @@ import moment from 'moment'
 let record
 let element
 let container
-
-afterEach(cleanup)
 
 describe('Record has entries', () => {
   beforeEach(async () => {

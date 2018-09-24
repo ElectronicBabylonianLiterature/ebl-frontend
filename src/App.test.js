@@ -1,10 +1,8 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 import Auth from './auth0/Auth'
-
-afterEach(cleanup)
 
 const routes = ['/', 'dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 

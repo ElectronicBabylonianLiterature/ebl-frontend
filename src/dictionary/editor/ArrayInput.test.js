@@ -1,6 +1,6 @@
 import React from 'react'
 import ArrayInput from './ArrayInput'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { whenChanged } from 'testHelpers'
 
 const label = 'Array'
@@ -8,8 +8,6 @@ const value = ['array', 'input']
 const separator = ' '
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

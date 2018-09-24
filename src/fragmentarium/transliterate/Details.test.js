@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Details from './Details'
 
@@ -12,7 +12,6 @@ function renderDetails () {
   element = render(<MemoryRouter><Details fragment={fragment} /></MemoryRouter>)
   container = element.container
 }
-afterEach(cleanup)
 
 describe('All details', () => {
   beforeEach(async () => {

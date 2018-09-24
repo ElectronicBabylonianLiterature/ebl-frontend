@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import ExternalLink from './ExternalLink'
-
-afterEach(cleanup)
 
 const href = 'http://example.com'
 const title = 'The Title'

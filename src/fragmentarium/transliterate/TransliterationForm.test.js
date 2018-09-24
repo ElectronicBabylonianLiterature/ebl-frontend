@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm, AbortError } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
@@ -15,8 +15,6 @@ let auth
 let apiClient
 let element
 let onChange
-
-afterEach(cleanup)
 
 beforeEach(() => {
   onChange = jest.fn()

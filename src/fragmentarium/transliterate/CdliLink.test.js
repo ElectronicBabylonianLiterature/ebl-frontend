@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, cleanup } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import CdliLink from './CdliLink'
-
-afterEach(cleanup)
 
 it('Links children to CDLI', () => {
   const cdliNumber = 'P0000'
