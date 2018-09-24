@@ -3,7 +3,7 @@ import _ from 'lodash'
 import List from './List'
 import TextInput from './TextInput'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const label = 'List'
 const defaultValue = ''
@@ -43,7 +43,7 @@ items.forEach((item, index) => {
   })
 
   it(`Calls onChange with updated value on item ${index} change`, async () => {
-    await whenChanged(element, items[index], 'new')
+    await whenChangedByValue(element, items[index], 'new')
       .expect(onChange)
       .toHaveBeenCalledWith(updatedItem =>
         items.map((item, itemIndex) =>

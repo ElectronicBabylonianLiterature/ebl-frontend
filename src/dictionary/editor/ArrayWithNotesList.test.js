@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const noun = 'log'
 const property = 'key'
@@ -51,7 +51,7 @@ it('Adds new entry when Add is clicked', async () => {
 })
 
 it('Calls onChange on change', async () => {
-  await whenChanged(element, value[0][property].join(separator), 'NEW LOG')
+  await whenChangedByValue(element, value[0][property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       {

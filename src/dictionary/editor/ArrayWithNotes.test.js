@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const noun = 'item'
 const property = 'value'
@@ -34,7 +34,7 @@ it('Displays label', () => {
 })
 
 it('Calls onChange with updated property on change', async () => {
-  await whenChanged(element, value[property].join(separator), 'NEW LOG')
+  await whenChangedByValue(element, value[property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => ({
       ...value,

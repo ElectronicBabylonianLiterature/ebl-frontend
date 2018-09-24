@@ -3,7 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const label = 'Amplified Meanings'
 
@@ -78,7 +78,7 @@ function commonTests () {
   })
 
   it('Calls onChange with updated value on change', async () => {
-    await whenChanged(element, value[0].meaning, 'new')
+    await whenChangedByValue(element, value[0].meaning, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => [
         {

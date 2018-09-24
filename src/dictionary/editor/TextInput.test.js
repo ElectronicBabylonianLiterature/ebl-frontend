@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextInput from './TextInput'
 import { render } from 'react-testing-library'
-import { whenChanged } from 'testHelpers'
+import { whenChangedByValue } from 'testHelpers'
 
 const label = 'Text'
 const value = 'text input'
@@ -23,7 +23,7 @@ it('Displays label', () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  await whenChanged(element, value, 'new')
+  await whenChangedByValue(element, value, 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(_.identity)
 })

@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const label = 'List'
 
@@ -39,7 +39,7 @@ it('Adds emtpy item when Add is clicked', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  await whenChanged(element, value[0], 'new')
+  await whenChangedByValue(element, value[0], 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       newValue,

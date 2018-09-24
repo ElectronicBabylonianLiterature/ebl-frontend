@@ -35,11 +35,19 @@ export function whenClicked (element, text, n = 0) {
   })
 }
 
-export function whenChanged (element, value, newValue) {
+function whenChangedBy (element, selector, newValue, changer) {
   return when(onChange => async expectedChangeFactory => {
-    await changeValueByValue(element, value, newValue)
+    await changer(element, selector, newValue)
     expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
   })
+}
+
+export function whenChangedByValue (element, value, newValue) {
+  return whenChangedBy(element, value, newValue, changeValueByValue)
+}
+
+export function whenChangedByLabel (element, label, newValue) {
+  return whenChangedBy(element, label, newValue, changeValueByLabel)
 }
 
 export async function submitForm (element, query) {

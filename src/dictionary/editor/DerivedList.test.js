@@ -3,7 +3,7 @@ import _ from 'lodash'
 import DerivedList from './DerivedList'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const label = 'Derived'
 
@@ -38,7 +38,8 @@ it('Adds new group when Add is cliked', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  await whenChanged(element, value[0][0].homonym, 'IV')
+  const newValue = value[0][0].homonym === 'IV' ? 'V' : 'IV'
+  await whenChangedByValue(element, value[0][0].homonym, newValue)
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       [

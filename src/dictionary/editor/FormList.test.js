@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FormList from './FormList'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 const label = 'List'
 
@@ -45,7 +45,7 @@ it('New entry has given fields', async () => {
 })
 
 it('Calls onChange with updated value on change', async () => {
-  await whenChanged(element, value[0].lemma.join(' '), 'new')
+  await whenChangedByValue(element, value[0].lemma.join(' '), 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       {

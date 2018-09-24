@@ -2,7 +2,7 @@ import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChanged } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'testHelpers'
 
 let value
 let element
@@ -41,7 +41,8 @@ describe('Derived from set', () => {
   })
 
   it('Calls onChange with updated derived from on change', async () => {
-    await whenChanged(element, value.homonym, 'II')
+    const newValue = value.homonym === 'II' ? 'V' : 'II'
+    await whenChangedByValue(element, value.homonym, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,

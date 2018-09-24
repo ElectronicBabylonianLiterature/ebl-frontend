@@ -3,7 +3,7 @@ import PosInput from './PosInput'
 import { render } from 'react-testing-library'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
-import { whenChanged } from 'testHelpers'
+import { whenChangedByValue, whenChangedByLabel } from 'testHelpers'
 
 let value
 let element
@@ -24,7 +24,7 @@ describe('Verb', () => {
   })
 
   it('Calls onChange with updated value on root change', async () => {
-    await whenChanged(element, value.roots[0], 'rtr')
+    await whenChangedByValue(element, value.roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         roots: [
@@ -52,7 +52,7 @@ function commonTests () {
   })
 
   it('Calls onChange with updated value on pos change', async () => {
-    await whenChanged(element, value.pos, 'AJ')
+    await whenChangedByLabel(element, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         pos: newValue

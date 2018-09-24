@@ -3,7 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenChanged } from 'testHelpers'
+import { whenChangedByValue } from 'testHelpers'
 
 let value
 let element
@@ -40,7 +40,8 @@ describe('Conjugation/Function', () => {
   })
 
   it('Calls onChange with updated value on key', async () => {
-    await whenChanged(element, value.key, 'D')
+    const newValue = value.key === 'D' ? 'G' : 'D'
+    await whenChangedByValue(element, value.key, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -49,7 +50,7 @@ describe('Conjugation/Function', () => {
   })
 
   it('Calls onChange with updated value on entry', async () => {
-    await whenChanged(element, value.entries[0].meaning, 'new entry')
+    await whenChangedByValue(element, value.entries[0].meaning, 'new entry')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -79,7 +80,7 @@ function commonDisplayTests () {
 
 function commonUpdateTests () {
   it('Calls onChange with updated value on meaning chnage', async () => {
-    await whenChanged(element, value.meaning, 'new meaning')
+    await whenChangedByValue(element, value.meaning, 'new meaning')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -88,7 +89,7 @@ function commonUpdateTests () {
   })
 
   it('Calls onChange with updated value on vowels change', async () => {
-    await whenChanged(element, value.vowels[0].value.join('/'), 'e/e')
+    await whenChangedByValue(element, value.vowels[0].value.join('/'), 'e/e')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
