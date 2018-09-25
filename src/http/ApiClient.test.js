@@ -14,12 +14,15 @@ let apiClient
 let auth
 let signal
 
-beforeEach(async () => {
+beforeEach(() => {
+  jest.useFakeTimers()
   fetch.resetMocks()
   signal = 'mock signal'
   auth = { getAccessToken: jest.fn() }
   apiClient = new ApiClient(auth)
 })
+
+afterEach(jest.useRealTimers)
 
 describe('createAbortController', () => {
   it('Returns an abort controller', () => {
@@ -85,13 +88,13 @@ describe('postJson', () => {
   it('Resolves on success', async () => {
     setUpSuccessResponse('')
 
-    await expect(apiClient.postJson(path, json, signal)).resolves.toBeUndefined()
+    await expect(apiClient.postJson(path, json)).resolves.toBeUndefined()
   })
 
   it('Makes a post request with given parameters', async () => {
     setUpSuccessResponse('')
 
-    await apiClient.postJson(path, json, signal)
+    await apiClient.postJson(path, json)
 
     const expectedHeaders = new Headers({
       'Authorization': `Bearer ${accessToken}`,
@@ -101,25 +104,37 @@ describe('postJson', () => {
       body: JSON.stringify(json),
       headers: expectedHeaders,
       method: 'POST',
-      signal: signal
+      signal: expect.objectContaining({
+        aborted: expect.any(Boolean),
+        onabort: expect.any(Function)
+      })
     })
   })
 
   it('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => { throw error })
 
-    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(error)
+    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
   })
 
   it('Rejects with error if post fails', async () => {
     fetch.mockRejectOnce(error)
 
-    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(error)
+    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
   })
 
   it('Rejects with status text as error message if response not ok', async () => {
     fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.postJson(path, json, signal)).rejects.toEqual(expectedError)
+    await expect(apiClient.postJson(path, json)).rejects.toEqual(expectedError)
+  })
+
+  it('Can be cancelled', async () => {
+    setUpSuccessResponse()
+    const callback = jest.fn()
+    const promise = apiClient.postJson(path, json).then(callback).catch(callback)
+    promise.cancel()
+    await expect(promise).rejects.toEqual(expect.anything())
+    expect(callback).not.toHaveBeenCalled()
   })
 })
 

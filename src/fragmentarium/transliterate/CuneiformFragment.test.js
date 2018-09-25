@@ -2,6 +2,7 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
+import { Promise } from 'bluebird'
 
 import { submitForm } from 'testHelpers'
 import ApiClient from 'http/ApiClient'

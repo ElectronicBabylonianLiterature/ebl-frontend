@@ -1,4 +1,5 @@
 /* global AbortController */
+import Promise from 'bluebird'
 
 function apiUrl (path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -45,20 +46,29 @@ class ApiClient {
     return (await this.fetch(path, authenticate, signal)).blob()
   }
 
-  async postJson (path, body, signal) {
-    const headers = this.createHeaders(true, {
-      'Content-Type': 'application/json; charset=utf-8'
-    })
-    const response = await fetch(apiUrl(path), {
-      body: JSON.stringify(body),
-      headers: headers,
-      method: 'POST',
-      signal: signal
-    })
+  postJson (path, body) {
+    return new Promise((resolve, reject, onCancel) => {
+      const headers = this.createHeaders(true, {
+        'Content-Type': 'application/json; charset=utf-8'
+      })
+      const abortController = this.createAbortController()
+      fetch(apiUrl(path), {
+        body: JSON.stringify(body),
+        headers: headers,
+        method: 'POST',
+        signal: abortController.signal
+      }).then(response => {
+        if (response.ok) {
+          resolve()
+        } else {
+          reject(new Error(response.statusText))
+        }
+      }).catch(reject)
 
-    if (!response.ok) {
-      throw Error(response.statusText)
-    }
+      onCancel(function () {
+        abortController.abort()
+      })
+    })
   }
 
   isNotAbortError (error) {

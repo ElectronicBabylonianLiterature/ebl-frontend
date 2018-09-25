@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
+import Promise from 'bluebird'
 
 import Breadcrumbs from 'Breadcrumbs'
 import WordForm from './WordForm'
@@ -19,22 +20,21 @@ class WordEditor extends Component {
       error: null,
       saving: false
     }
-    this.abortController = props.apiClient.createAbortController()
+    this.updatePromise = Promise.resolve()
   }
 
   componentWillUnmount () {
-    this.abortController.abort()
+    this.updatePromise.cancel()
   }
 
   updateWord = word => {
+    this.updatePromise.cancel()
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.props.apiClient
-      .postJson(getWordUrl(this.props), word, this.abortController.signal)
+    this.updatePromise = this.props.apiClient
+      .postJson(getWordUrl(this.props), word)
       .then(() => this.setState({ word: word, error: null, saving: false }))
       .catch(error => {
-        if (this.props.apiClient.isNotAbortError(error)) {
-          this.setState({ word: this.state.word, error: error, saving: false })
-        }
+        this.setState({ word: this.state.word, error: error, saving: false })
       })
   }
 
@@ -51,7 +51,7 @@ class WordEditor extends Component {
           <ReactMarkdown source={this.state.word.source} />
           <Spinner loading={this.state.saving}>Saving...</Spinner>
         </header>
-        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={!this.props.auth.isAllowedTo('write:words')} />
+        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={this.state.saving || !this.props.auth.isAllowedTo('write:words')} />
         <ErrorAlert error={this.state.error} />
       </section>
     )

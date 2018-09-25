@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
+import { Promise } from 'bluebird'
 
 import ErrorAlert from 'ErrorAlert'
 import TemplateForm from './TemplateForm'
@@ -8,7 +9,7 @@ import TemplateForm from './TemplateForm'
 class TransliteratioForm extends Component {
   constructor (props) {
     super(props)
-    this.abortController = props.apiClient.createAbortController()
+    this.updatePromise = Promise.resolve()
   }
 
   state = {
@@ -29,7 +30,7 @@ class TransliteratioForm extends Component {
   }
 
   componentWillUnmount () {
-    this.abortController.abort()
+    this.updatePromise.cancel()
   }
 
   numberOfRows (property) {
@@ -52,18 +53,18 @@ class TransliteratioForm extends Component {
 
   submit = event => {
     event.preventDefault()
+    this.updatePromise.cancel()
     this.setState({
       ...this.state,
       disabled: true
     })
     const path = `/fragments/${this.props.number}`
-    this.props.apiClient.postJson(
+    this.updatePromise = this.props.apiClient.postJson(
       path,
       {
         transliteration: this.state.transliteration,
         notes: this.state.notes
-      },
-      this.abortController.signal
+      }
     )
       .then(() => {
         this.setState({

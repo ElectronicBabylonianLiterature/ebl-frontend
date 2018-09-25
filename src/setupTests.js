@@ -1,6 +1,7 @@
 import 'jest-date-mock'
 import 'jest-dom/extend-expect'
 import 'react-testing-library/cleanup-after-each'
+import * as bluebird from 'bluebird'
 
 import './wordFixtures'
 import './fragmentFixtures'
@@ -41,4 +42,8 @@ afterEach(() => {
   global.Raven.captureException.mockReset()
   global.Raven.lastEventId.mockReset()
   global.Raven.showReportDialog.mockReset()
+})
+
+bluebird.config({
+  cancellation: true
 })
