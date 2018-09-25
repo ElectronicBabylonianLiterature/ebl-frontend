@@ -4,6 +4,7 @@ import { render, wait } from 'react-testing-library'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
+import ApiClient from 'http/ApiClient'
 
 const transliteration = 'ma i-ra\nka li'
 let fragments
@@ -20,9 +21,8 @@ async function renderFragmentSearch () {
 }
 
 beforeEach(async () => {
-  apiClient = {
-    fetchJson: jest.fn()
-  }
+  apiClient = new ApiClient()
+  jest.spyOn(apiClient, 'fetchJson')
   fragments = await factory.buildMany('fragment', 2, [
     { matching_lines: [['line 1', 'line 2']] },
     { matching_lines: [['line 3'], ['line 4']] }

@@ -1,4 +1,3 @@
-/* global AbortController */
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import ErrorAlert from 'ErrorAlert'
@@ -6,7 +5,10 @@ import Spinner from 'Spinner'
 import { withRouter } from 'react-router-dom'
 
 class RandomButton extends Component {
-  abortController = new AbortController()
+  constructor (props) {
+    super(props)
+    this.abortController = props.apiClient.createAbortController()
+  }
 
   state = {
     error: null,

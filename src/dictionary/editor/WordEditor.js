@@ -1,4 +1,3 @@
-/* global AbortController */
 import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 
@@ -13,8 +12,6 @@ function getWordUrl (props) {
 }
 
 class WordEditor extends Component {
-  abortController = new AbortController()
-
   constructor (props) {
     super(props)
     this.state = {
@@ -22,6 +19,7 @@ class WordEditor extends Component {
       error: null,
       saving: false
     }
+    this.abortController = props.apiClient.createAbortController()
   }
 
   componentWillUnmount () {

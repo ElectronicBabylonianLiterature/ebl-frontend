@@ -1,4 +1,3 @@
-/* global AbortController */
 import React, { Component } from 'react'
 import _ from 'lodash'
 import Spinner from 'Spinner'
@@ -12,23 +11,29 @@ const defaultConfig = {
   defaultData: null,
   method: 'fetchJson'
 }
+
 export default function withData (WrappedComponent, getPath, config = {}) {
   const fullConfig = {
     ...defaultConfig,
     ...config
   }
   return class extends Component {
-    abortController = new AbortController()
+    constructor (props) {
+      super(props)
+      this.abortController = props.apiClient.createAbortController()
+    }
 
     state = {
       data: null,
       error: null
     }
 
+    fecthFromApi = () => this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize, this.abortController.signal)
+
     fetchData = () => {
       if (fullConfig.filter(this.props)) {
         this.setState({ data: null, error: null })
-        this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize, this.abortController.signal)
+        this.fecthFromApi()
           .then(json => this.setState({ data: json, error: null }))
           .catch(error => {
             if (this.props.apiClient.isNotAbortError(error)) {

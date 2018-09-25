@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
+import ApiClient from 'http/ApiClient'
 
 const number = 'K.003292'
 let fragments
@@ -19,9 +20,8 @@ async function renderFragmentSearch () {
 }
 
 beforeEach(async () => {
-  apiClient = {
-    fetchJson: jest.fn()
-  }
+  apiClient = new ApiClient()
+  jest.spyOn(apiClient, 'fetchJson')
   fragments = await factory.buildMany('fragment', 2)
   apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(fragments))
   await renderFragmentSearch()

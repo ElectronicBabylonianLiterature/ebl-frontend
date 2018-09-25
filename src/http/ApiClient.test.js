@@ -21,6 +21,16 @@ beforeEach(async () => {
   apiClient = new ApiClient(auth)
 })
 
+describe('createAbortController', () => {
+  it('Returns an abort controller', () => {
+    expect(apiClient.createAbortController()).toEqual(expect.any(AbortController))
+  })
+
+  it('Always returns a new instace', () => {
+    expect(apiClient.createAbortController()).not.toBe(apiClient.createAbortController())
+  })
+})
+
 describe('fetchJson', () => {
   describe('Successful request', () => {
     beforeEach(() => {

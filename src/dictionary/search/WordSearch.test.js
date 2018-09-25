@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
+import ApiClient from '../../http/ApiClient';
 
 const query = 'lem[ma?]'
 let words
@@ -16,9 +17,8 @@ async function renderWordSearch () {
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  apiClient = {
-    fetchJson: jest.fn()
-  }
+  apiClient = new ApiClient()
+  jest.spyOn(apiClient, 'fetchJson')
 })
 
 it('Queries the API with given parameters', async () => {

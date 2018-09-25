@@ -1,4 +1,3 @@
-/* global AbortController */
 import React, { Component } from 'react'
 import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
@@ -7,7 +6,10 @@ import ErrorAlert from 'ErrorAlert'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
-  abortController = new AbortController()
+  constructor (props) {
+    super(props)
+    this.abortController = props.apiClient.createAbortController()
+  }
 
   state = {
     transliteration: this.props.transliteration,

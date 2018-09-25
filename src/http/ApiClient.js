@@ -1,3 +1,5 @@
+/* global AbortController */
+
 function apiUrl (path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
@@ -5,6 +7,10 @@ function apiUrl (path) {
 class ApiClient {
   constructor (auth) {
     this.auth = auth
+  }
+
+  createAbortController () {
+    return new AbortController()
   }
 
   createHeaders (authenticate, headers) {
