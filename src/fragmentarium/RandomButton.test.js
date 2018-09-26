@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render, wait } from 'react-testing-library'
+import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
