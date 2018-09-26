@@ -137,7 +137,7 @@ describe('handleAuthentication', () => {
 
   describe('Hash is parsed with error', () => {
     const message = 'error'
-
+    const error = new Error(message)
     beforeEach(() => {
       jest.spyOn(auth.auth0, 'parseHash')
         .mockImplementationOnce(callback =>
@@ -145,9 +145,8 @@ describe('handleAuthentication', () => {
         )
     })
 
-    xit('Rejects with the error', async () => {
-      // rejects is broken in old Jest versions: https://github.com/facebook/jest/issues/4945
-      await expect(auth.handleAuthentication()).rejects.toThrow(message)
+    it('Rejects with the error', async () => {
+      await expect(auth.handleAuthentication()).rejects.toEqual(error)
     })
   })
 })
