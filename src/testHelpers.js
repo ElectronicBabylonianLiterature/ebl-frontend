@@ -54,13 +54,3 @@ export async function submitForm (element, query) {
   fireEvent.submit(element.container.querySelector(query))
   await wait()
 }
-
-export class AbortError extends Error {
-  constructor (...params) {
-    super(...params)
-    this.name = 'AbortError'
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, AbortError)
-    }
-  }
-}

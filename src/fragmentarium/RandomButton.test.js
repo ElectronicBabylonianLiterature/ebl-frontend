@@ -1,9 +1,11 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render } from 'react-testing-library'
+import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, clickNth, AbortError } from 'testHelpers'
+import Promise from 'bluebird'
+import _ from 'lodash'
+import { whenClicked, clickNth } from 'testHelpers'
 import ApiClient from 'http/ApiClient'
 import RandomButton from './RandomButton'
 
@@ -38,7 +40,7 @@ describe('On successful request', () => {
   it('Fetches a random fragment from the API', async () => {
     await whenClicked(element, buttonText)
       .expect(apiClient.fetchJson)
-      .toHaveBeenCalledWith(`/fragments?${param}=true`, true, AbortController.prototype.signal)
+      .toHaveBeenCalledWith(`/fragments?${param}=true`, true)
   })
 
   it('Redirects to the fragment when clicked', async () => {
@@ -64,14 +66,11 @@ describe('On failed request', () => {
 })
 
 describe('When unmounting', () => {
-  it('Aborts fetch', () => {
-    element.unmount()
-    expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
-
-  it('Ignores AbortError', async () => {
-    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new AbortError(message)))
+  it('Cancels fetch', async () => {
+    const promise = new Promise(_.noop)
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(promise)
     await clickNth(element, buttonText, 0)
-    expect(element.container).not.toHaveTextContent(message)
+    element.unmount()
+    expect(promise.isCancelled()).toBe(true)
   })
 })

@@ -3,6 +3,7 @@ import { matchPath } from 'react-router'
 import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
+import Promise from 'bluebird'
 import FragmentView from './FragmentView'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -48,7 +49,7 @@ describe('Fragment is loaded', () => {
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
     const expectedPath = `/fragments/${fragment._id}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
   })
 
   it('Shows the fragment number', async () => {

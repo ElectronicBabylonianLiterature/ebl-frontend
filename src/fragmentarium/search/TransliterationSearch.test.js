@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
+import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
@@ -33,7 +34,7 @@ beforeEach(async () => {
 
 it('Queries the API with given parameters', async () => {
   const expectedPath = `/fragments?transliteration=${encodeURIComponent(transliteration)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
 })
 
 it('Links results', async () => {

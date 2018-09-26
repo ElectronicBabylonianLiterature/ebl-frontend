@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
+import Promise from 'bluebird'
 import Dictionary from './Dictionary'
 import Auth from 'auth0/Auth'
 import ApiClient from 'http/ApiClient'

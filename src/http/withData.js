@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import Promise from 'bluebird'
 import Spinner from 'Spinner'
 import ErrorAlert from 'ErrorAlert'
 import ErrorBoundary from 'ErrorBoundary'
@@ -20,7 +21,7 @@ export default function withData (WrappedComponent, getPath, config = {}) {
   return class extends Component {
     constructor (props) {
       super(props)
-      this.abortController = props.apiClient.createAbortController()
+      this.fetchPromise = Promise.resolve()
     }
 
     state = {
@@ -28,18 +29,15 @@ export default function withData (WrappedComponent, getPath, config = {}) {
       error: null
     }
 
-    fecthFromApi = () => this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize, this.abortController.signal)
+    fecthFromApi = () => this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize)
 
     fetchData = () => {
+      this.fetchPromise.cancel()
       if (fullConfig.filter(this.props)) {
         this.setState({ data: null, error: null })
-        this.fecthFromApi()
+        this.fetchPromise = this.fecthFromApi()
           .then(json => this.setState({ data: json, error: null }))
-          .catch(error => {
-            if (this.props.apiClient.isNotAbortError(error)) {
-              this.setState({ data: null, error: error })
-            }
-          })
+          .catch(error => this.setState({ data: null, error: error }))
       } else {
         this.setState({ data: fullConfig.defaultData, error: null })
       }
@@ -56,7 +54,7 @@ export default function withData (WrappedComponent, getPath, config = {}) {
     }
 
     componentWillUnmount () {
-      this.abortController.abort()
+      this.fetchPromise.cancel()
     }
 
     render () {

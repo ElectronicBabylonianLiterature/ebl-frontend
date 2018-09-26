@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
+import Promise from 'bluebird'
 import Statistics from './Statistics'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -25,7 +26,7 @@ beforeEach(async () => {
 })
 
 it('Queries the statistics', async () => {
-  expect(apiClient.fetchJson).toBeCalledWith('/statistics', false, AbortController.prototype.signal)
+  expect(apiClient.fetchJson).toBeCalledWith('/statistics', false)
 })
 
 it('Shows the number of transliterated tablets', async () => {

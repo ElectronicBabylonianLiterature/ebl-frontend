@@ -10,10 +10,6 @@ class ApiClient {
     this.auth = auth
   }
 
-  createAbortController () {
-    return new AbortController()
-  }
-
   createHeaders (authenticate, headers) {
     const defaultHeaders = authenticate
       ? { 'Authorization': `Bearer ${this.auth.getAccessToken()}` }
@@ -24,42 +20,17 @@ class ApiClient {
     })
   }
 
-  async fetch (path, authenticate, signal) {
-    const headers = this.createHeaders(authenticate, {})
-    const response = await fetch(apiUrl(path), {
-      headers: headers,
-      signal: signal
-    })
-
-    if (response.ok) {
-      return response
-    } else {
-      throw Error(response.statusText)
-    }
-  }
-
-  async fetchJson (path, authenticate, signal) {
-    return (await this.fetch(path, authenticate, signal)).json()
-  }
-
-  async fetchBlob (path, authenticate, signal) {
-    return (await this.fetch(path, authenticate, signal)).blob()
-  }
-
-  postJson (path, body) {
+  cancellableFetch (path, authenticate, options) {
     return new Promise((resolve, reject, onCancel) => {
-      const headers = this.createHeaders(true, {
-        'Content-Type': 'application/json; charset=utf-8'
-      })
-      const abortController = this.createAbortController()
+      const headers = this.createHeaders(authenticate, options.headers)
+      const abortController = new AbortController()
       fetch(apiUrl(path), {
-        body: JSON.stringify(body),
+        ...options,
         headers: headers,
-        method: 'POST',
         signal: abortController.signal
       }).then(response => {
         if (response.ok) {
-          resolve()
+          resolve(response)
         } else {
           reject(new Error(response.statusText))
         }
@@ -71,8 +42,24 @@ class ApiClient {
     })
   }
 
-  isNotAbortError (error) {
-    return error.name !== 'AbortError'
+  fetchJson (path, authenticate) {
+    return this.cancellableFetch(path, authenticate, {})
+      .then(response => response.json())
+  }
+
+  fetchBlob (path, authenticate) {
+    return this.cancellableFetch(path, authenticate, {})
+      .then(response => response.blob())
+  }
+
+  postJson (path, body) {
+    return this.cancellableFetch(path, true, {
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      method: 'POST'
+    })
   }
 }
 

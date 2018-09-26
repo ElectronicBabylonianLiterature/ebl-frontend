@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
+import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import ApiImage from './ApiImage'
@@ -19,7 +20,7 @@ beforeEach(async () => {
 
 it('Queries the API with given parameters', () => {
   const expectedPath = `/images/${fileName}`
-  expect(apiClient.fetchBlob).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+  expect(apiClient.fetchBlob).toBeCalledWith(expectedPath, true)
 })
 
 it('Displays the loaded image', () => {

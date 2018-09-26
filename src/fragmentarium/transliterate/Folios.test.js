@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
+import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
 import Folios from './Folios'

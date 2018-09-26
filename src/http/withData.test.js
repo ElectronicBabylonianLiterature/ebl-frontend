@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
+import Promise from 'bluebird'
+import _ from 'lodash'
 import ApiClient from 'http/ApiClient'
-import { AbortError } from 'testHelpers'
 import withData from './withData'
 
 const data = 'Test data'
@@ -36,7 +37,7 @@ function clearMocks () {
 
 function expectApiToBeCalled (expectedPath) {
   it('Queries the API correct path', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize, AbortController.prototype.signal)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize)
   })
 }
 
@@ -83,11 +84,6 @@ describe('On successful request', () => {
 
   expectApiToBeCalled(`path/${propValue}`)
   expectWrappedComponentToBeRendered(propValue, data)
-
-  it('Aborts fetch when unmounting', () => {
-    element.unmount()
-    expect(AbortController.prototype.abort).toHaveBeenCalled()
-  })
 
   describe('When updating', () => {
     beforeEach(async () => {
@@ -145,18 +141,25 @@ describe('On failed request', () => {
   })
 })
 
-describe('On aborted request', () => {
+describe('When unmounting', () => {
+  let promise
+
   beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockImplementationOnce(() =>
-      Promise.reject(new AbortError(errorMessage)))
+    promise = new Promise(_.noop)
+    apiClient.fetchJson.mockReturnValueOnce(promise)
     await renderWithData()
+    element.unmount()
   })
 
-  it('Ignores AbortError', async () => {
+  it('Cancels fetch', () => {
+    expect(promise.isCancelled()).toBe(true)
+  })
+
+  it('Does not show error', () => {
     expect(element.container).not.toHaveTextContent(errorMessage)
   })
 
-  it('Does not render wrapped component', async () => {
+  it('Does not render wrapped component', () => {
     expect(InnerComponent).not.toHaveBeenCalled()
   })
 })

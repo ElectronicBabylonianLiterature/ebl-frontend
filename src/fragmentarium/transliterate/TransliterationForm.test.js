@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-testing-library'
 import { Promise } from 'bluebird'
+import _ from 'lodash'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
@@ -70,13 +71,13 @@ describe('User has edit rights', () => {
     expect(element.container).toHaveTextContent(errorMessage)
   })
 
-  xit('Aborts post on unmount', async () => {
-    const promise = Promise.resolve()
+  it('Cancels post on unmount', async () => {
+    const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
     jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(promise)
     submitForm(element, '#transliteration-form')
     element.unmount()
-    expect(promise.cancel).toHaveBeenCalled()
+    expect(promise.isCancelled()).toBe(true)
   })
 
   commonTests()

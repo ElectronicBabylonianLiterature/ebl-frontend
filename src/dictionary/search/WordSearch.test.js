@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
+import Promise from 'bluebird'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
@@ -26,7 +27,7 @@ it('Queries the API with given parameters', async () => {
   await renderWordSearch()
 
   const expectedPath = `/words?query=${encodeURIComponent(query)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
 })
 
 it('Sisplays results', async () => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
+import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
 import ApiClient from 'http/ApiClient'
@@ -29,7 +30,7 @@ beforeEach(async () => {
 
 it('Queries the API with given parameters', async () => {
   const expectedPath = `/fragments?number=${encodeURIComponent(number)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
 })
 
 it('Displays and links results', async () => {

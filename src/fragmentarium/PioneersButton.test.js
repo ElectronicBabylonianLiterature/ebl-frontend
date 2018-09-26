@@ -29,7 +29,7 @@ it('Show intersting fragment when clicked', async () => {
   renderPioneersButton(true)
   await whenClicked(element, 'Path of the Pioneers')
     .expect(apiClient.fetchJson)
-    .toHaveBeenCalledWith(`/fragments?interesting=true`, true, AbortController.prototype.signal)
+    .toHaveBeenCalledWith(`/fragments?interesting=true`, true)
 })
 
 it('Hides button if user does not have transliteration rights', async () => {

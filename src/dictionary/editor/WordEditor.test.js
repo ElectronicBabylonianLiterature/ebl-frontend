@@ -2,7 +2,8 @@ import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
 import { render, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
-import { submitForm, AbortError } from 'testHelpers'
+import _ from 'lodash'
+import { submitForm } from 'testHelpers'
 import WordEditor from './WordEditor'
 import ApiClient from 'http/ApiClient'
 import Auth from 'auth0/Auth'
@@ -25,7 +26,7 @@ describe('Fecth word', () => {
     await renderWithRouter()
 
     const expectedPath = '/words/id'
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true, AbortController.prototype.signal)
+    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
   })
 
   it('Displays result on successfull query', async () => {
@@ -61,23 +62,14 @@ describe('Update word', () => {
     expect(element.getByText(errorMessage)).toBeDefined()
   })
 
-  xit('Ignores AbortError', async () => {
-    jest.spyOn(apiClient, 'postJson').mockImplementationOnce(() => Promise.reject(new AbortError(errorMessage)))
-    const element = await renderWithRouter()
-
-    await submitForm(element, 'form')
-
-    expect(element.container).not.toHaveTextContent(errorMessage)
-  })
-
-  xit('Aborts post on unmount', async () => {
-    const promise = Promise.resolve()
+  it('Cancels post on unmount', async () => {
+    const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
     jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(promise)
     const element = await renderWithRouter()
     submitForm(element, 'form')
     element.unmount()
-    expect(promise.cancel).toHaveBeenCalled()
+    expect(promise.isCancelled()).toBe(true)
   })
 })
 
