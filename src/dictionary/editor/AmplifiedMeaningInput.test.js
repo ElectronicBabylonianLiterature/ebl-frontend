@@ -89,7 +89,9 @@ function commonUpdateTests () {
   })
 
   it('Calls onChange with updated value on vowels change', async () => {
-    await whenChangedByValue(element, value.vowels[0].value.join('/'), 'e/e')
+    const oldValue = value.vowels[0].value.join('/')
+    const newValue = oldValue === 'e/e' ? 'a/e' : 'e/e'
+    await whenChangedByValue(element, oldValue, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
