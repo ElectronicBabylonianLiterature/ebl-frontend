@@ -27,6 +27,6 @@ export default function FragmentPager ({ number, children }) {
       </Fragment>
     )
   } else {
-    return ''
+    return children
   }
 }

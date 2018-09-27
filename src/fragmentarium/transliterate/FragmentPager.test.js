@@ -51,3 +51,22 @@ describe('Number is 1', () => {
 
   commonTests()
 })
+
+describe('Number does not match pattern', () => {
+  beforeEach(() => {
+    number = '1 prefix 1'
+    renderPager()
+  })
+
+  it('Does not have previous', () => {
+    expect(element.queryByLabelText('Previous')).toBeNull()
+  })
+
+  it('Does not have next', () => {
+    expect(element.queryByLabelText('Next')).toBeNull()
+  })
+
+  it('Renders children', () => {
+    expect(element.container).toHaveTextContent(child)
+  })
+})
