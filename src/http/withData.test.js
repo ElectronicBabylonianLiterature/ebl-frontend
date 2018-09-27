@@ -10,7 +10,6 @@ const newData = 'New Test Data'
 const propValue = 'passed value'
 const newPropValue = 'new value'
 const errorMessage = 'error'
-const authorize = false
 let element
 let filter
 let config
@@ -64,7 +63,6 @@ beforeEach(async () => {
   InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
   config = {
     shouldUpdate,
-    authorize,
     filter,
     defaultData
   }

@@ -7,10 +7,8 @@ import ErrorBoundary from 'ErrorBoundary'
 
 const defaultConfig = {
   shouldUpdate: () => false,
-  authorize: true,
   filter: () => true,
-  defaultData: null,
-  method: 'fetchJson'
+  defaultData: null
 }
 
 export default function withData (WrappedComponent, getter, config = {}) {
@@ -19,32 +17,20 @@ export default function withData (WrappedComponent, getter, config = {}) {
     ...config
   }
   return class extends Component {
-    constructor (props) {
-      super(props)
-      this.fetchPromise = Promise.resolve()
-    }
+    fetchPromise = Promise.resolve()
 
     state = {
       data: null,
       error: null
     }
 
-    fecthFromApi = path => this.props.apiClient[fullConfig.method](path, fullConfig.authorize)
-
     fetchData = () => {
       this.fetchPromise.cancel()
       if (fullConfig.filter(this.props)) {
-        const result = getter(this.props)
         this.setState({ data: null, error: null })
-        if (_.isString(result)) {
-          this.fetchPromise = this.fecthFromApi(result)
-            .then(json => this.setState({ data: json, error: null }))
-            .catch(error => this.setState({ data: null, error: error }))
-        } else {
-          this.fetchPromise = result
-            .then(data => this.setState({ data: data, error: null }))
-            .catch(error => this.setState({ data: null, error: error }))
-        }
+        this.fetchPromise = getter(this.props)
+          .then(data => this.setState({ data: data, error: null }))
+          .catch(error => this.setState({ data: null, error: error }))
       } else {
         this.setState({ data: fullConfig.defaultData, error: null })
       }
