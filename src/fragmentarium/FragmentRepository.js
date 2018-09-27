@@ -11,6 +11,14 @@ class FragmentRepository {
     return this.apiClient.fetchJson(`/fragments/${number}`, true)
   }
 
+  random () {
+    return this.apiClient.fetchJson(`/fragments?random=true`, true)
+  }
+
+  interesting () {
+    return this.apiClient.fetchJson(`/fragments?interesting=true`, true)
+  }
+
   searchNumber (number) {
     return this.apiClient.fetchJson(`/fragments?number=${encodeURIComponent(number)}`, true)
   }

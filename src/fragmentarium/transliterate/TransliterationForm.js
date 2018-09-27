@@ -58,13 +58,10 @@ class TransliteratioForm extends Component {
       ...this.state,
       disabled: true
     })
-    const path = `/fragments/${this.props.number}`
-    this.updatePromise = this.props.apiClient.postJson(
-      path,
-      {
-        transliteration: this.state.transliteration,
-        notes: this.state.notes
-      }
+    this.updatePromise = this.props.fragmentRepository.updateTransliteration(
+      this.props.number,
+      this.state.transliteration,
+      this.state.notes
     )
       .then(() => {
         this.setState({

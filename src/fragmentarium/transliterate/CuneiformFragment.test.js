@@ -5,29 +5,36 @@ import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
 import { submitForm } from 'testHelpers'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 import CuneiformFragment from './CuneiformFragment'
 
 let fragment
 let element
 let container
-let apiClient
+let imageRepository
+let fragmentRepository
 let onChange
 
 beforeEach(async () => {
-  const auth = new Auth()
+  const auth = {
+    isAllowedTo: () => true
+  }
   jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
   onChange = jest.fn()
-  apiClient = new ApiClient(auth)
+  imageRepository = {
+    find: jest.fn()
+  }
+  fragmentRepository = {
+    updateTransliteration: jest.fn()
+  }
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragment = await factory.build('fragment')
   element = render(
     <MemoryRouter>
       <CuneiformFragment
         fragment={fragment}
-        apiClient={apiClient}
+        imageRepository={imageRepository}
+        fragmentRepository={fragmentRepository}
         auth={auth}
         onChange={onChange} />
     </MemoryRouter>)
@@ -82,7 +89,7 @@ it('Links museum record', () => {
 })
 
 it('Calls onChange on save', async () => {
-  jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
+  fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.resolve())
 
   await submitForm(element, '#transliteration-form')
 

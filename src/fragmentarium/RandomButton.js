@@ -6,11 +6,7 @@ import Spinner from 'Spinner'
 import { withRouter } from 'react-router-dom'
 
 class RandomButton extends Component {
-  constructor (props) {
-    super(props)
-    this.fetchPromise = Promise.resolve()
-  }
-
+  fetchPromise = Promise.resolve()
   state = {
     error: null,
     loading: false
@@ -19,8 +15,7 @@ class RandomButton extends Component {
   click = event => {
     this.fetchPromise.cancel()
     this.setState({ error: null, loading: true })
-    this.fetchPromise = this.props.apiClient
-      .fetchJson(`/fragments?${this.props.param}=true`, true)
+    this.fetchPromise = this.props.fragmentRepository[this.props.method]()
       .then(fragments => this.props.history.push(`/fragmentarium/${fragments[0]._id}`))
       .catch(error => this.setState({ error: error, loading: false }))
   }

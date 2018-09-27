@@ -1,26 +1,25 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
 import Promise from 'bluebird'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 import ApiImage from './ApiImage'
 
 const fileName = 'WGL_00000.jpg'
 const objectUrl = 'object URL mock'
-let apiClient
+let imageRepository
 let element
 
 beforeEach(async () => {
-  apiClient = new ApiClient(new Auth())
+  imageRepository = {
+    find: jest.fn()
+  }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
-  element = render(<ApiImage apiClient={apiClient} fileName={fileName} />)
+  imageRepository.find.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  element = render(<ApiImage imageRepository={imageRepository} fileName={fileName} />)
   await wait()
 })
 
 it('Queries the API with given parameters', () => {
-  const expectedPath = `/images/${fileName}`
-  expect(apiClient.fetchBlob).toBeCalledWith(expectedPath, true)
+  expect(imageRepository.find).toBeCalledWith(fileName)
 })
 
 it('Displays the loaded image', () => {

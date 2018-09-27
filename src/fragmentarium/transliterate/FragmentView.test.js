@@ -5,8 +5,6 @@ import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentView from './FragmentView'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 
 const fragmentNumber = 'K.1'
 const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
@@ -15,14 +13,15 @@ const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
 const message = 'message'
 
 let auth
-let apiClient
+let imageRepository
+let fragmentRepository
 let container
 let element
 
 async function renderFragmentView () {
   element = render(
     <MemoryRouter>
-      <FragmentView match={match} auth={auth} apiClient={apiClient} />
+      <FragmentView match={match} auth={auth} imageRepository={imageRepository} fragmentRepository={fragmentRepository} />
     </MemoryRouter>
   )
   container = element.container
@@ -30,11 +29,17 @@ async function renderFragmentView () {
 }
 
 beforeEach(async () => {
-  auth = new Auth()
-  apiClient = new ApiClient(auth)
+  auth = {
+    isAllowedTo: jest.fn()
+  }
+  fragmentRepository = {
+    find: jest.fn()
+  }
+  imageRepository = {
+    find: jest.fn()
+  }
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
-  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
+  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
 })
 
 describe('Fragment is loaded', () => {
@@ -42,14 +47,13 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment', { _id: fragmentNumber })
+    fragmentRepository.find.mockReturnValueOnce(Promise.resolve(fragment))
     jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
     await renderFragmentView()
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
-    const expectedPath = `/fragments/${fragment._id}`
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+    expect(fragmentRepository.find).toBeCalledWith(fragmentNumber)
   })
 
   it('Shows the fragment number', async () => {
@@ -68,7 +72,7 @@ describe('Fragment is loaded', () => {
 describe('On error', () => {
   beforeEach(async () => {
     jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.reject(new Error(message)))
+    fragmentRepository.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView()
   })
 

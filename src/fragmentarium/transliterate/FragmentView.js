@@ -11,13 +11,13 @@ const FragmentWithData = withData(
     onChange={reload}
     {...props}
   />,
-  props => `/fragments/${props.number}`,
+  props => props.fragmentRepository.find(props.number),
   {
     shouldUpdate: (prevProps, props) => prevProps.number !== props.number
   }
 )
 
-export default function FragmentView ({ apiClient, auth, match }) {
+export default function FragmentView ({ auth, match, fragmentRepository, imageRepository }) {
   const number = match.params.id
   return (
     <section className='App-content App-content--wide'>
@@ -27,7 +27,7 @@ export default function FragmentView ({ apiClient, auth, match }) {
       </header>
       {auth.isAllowedTo('read:fragments')
         ? (
-          <FragmentWithData apiClient={apiClient} auth={auth} number={number} />
+          <FragmentWithData auth={auth} number={number} fragmentRepository={fragmentRepository} imageRepository={imageRepository} />
         ) : 'You do not have the rights access the fragmentarium.'
       }
     </section>

@@ -13,7 +13,7 @@ const defaultConfig = {
   method: 'fetchJson'
 }
 
-export default function withData (WrappedComponent, getPath, config = {}) {
+export default function withData (WrappedComponent, getter, config = {}) {
   const fullConfig = {
     ...defaultConfig,
     ...config
@@ -29,15 +29,22 @@ export default function withData (WrappedComponent, getPath, config = {}) {
       error: null
     }
 
-    fecthFromApi = () => this.props.apiClient[fullConfig.method](getPath(this.props), fullConfig.authorize)
+    fecthFromApi = path => this.props.apiClient[fullConfig.method](path, fullConfig.authorize)
 
     fetchData = () => {
       this.fetchPromise.cancel()
       if (fullConfig.filter(this.props)) {
+        const result = getter(this.props)
         this.setState({ data: null, error: null })
-        this.fetchPromise = this.fecthFromApi()
-          .then(json => this.setState({ data: json, error: null }))
-          .catch(error => this.setState({ data: null, error: error }))
+        if (_.isString(result)) {
+          this.fetchPromise = this.fecthFromApi(result)
+            .then(json => this.setState({ data: json, error: null }))
+            .catch(error => this.setState({ data: null, error: error }))
+        } else {
+          this.fetchPromise = result
+            .then(data => this.setState({ data: data, error: null }))
+            .catch(error => this.setState({ data: null, error: error }))
+        }
       } else {
         this.setState({ data: fullConfig.defaultData, error: null })
       }

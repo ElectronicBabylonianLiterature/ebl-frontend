@@ -1,40 +1,43 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, wait } from 'react-testing-library'
+import { render, wait, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Fragmentarium from './Fragmentarium'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 
 let auth
-let apiClient
+let fragmentRepository
 let container
 let element
 let statistics
 
 async function renderFragmentarium (path = '/fragmentarium') {
   const FragmentariumWithRouter = withRouter(Fragmentarium)
-  element = render(<MemoryRouter initialEntries={[path]}><FragmentariumWithRouter auth={auth} apiClient={apiClient} /></MemoryRouter>)
+  element = render(<MemoryRouter initialEntries={[path]}>
+    <FragmentariumWithRouter auth={auth} fragmentRepository={fragmentRepository} />
+  </MemoryRouter>)
   container = element.container
   await wait()
 }
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
-  auth = new Auth()
-  apiClient = new ApiClient(auth)
+  auth = {
+    isAllowedTo: jest.fn()
+  }
+  fragmentRepository = {
+    statistics: jest.fn(),
+    searchNumber: jest.fn(),
+    searchTransliteration: jest.fn()
+  }
+  fragmentRepository.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
 
 describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
-    jest.spyOn(apiClient, 'fetchJson').mockImplementation(path => path.startsWith('/fragments')
-      ? Promise.resolve(fragments)
-      : Promise.resolve(statistics)
-    )
+    auth.isAllowedTo.mockReturnValue(true)
   })
 
   describe('Searching fragments by number', () => {
@@ -42,14 +45,16 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2)
-      await renderFragmentarium(`/fragmentarium?number=${number}`)
+      fragmentRepository.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
+      renderFragmentarium(`/fragmentarium?number=${number}`)
     })
 
-    it('Displays result on successfull query', () => {
-      expect(container).toHaveTextContent(fragments[0]._id)
+    it('Displays result on successfull query', async () => {
+      await waitForElement(() => element.getByText(fragments[0]._id))
+      expect(container).toHaveTextContent(fragments[1]._id)
     })
 
-    it('Fills in search form query', async () => {
+    it('Fills in search form query', () => {
       expect(element.getByLabelText('Number').value).toEqual(number)
     })
   })
@@ -62,14 +67,16 @@ describe('Search', () => {
         { matching_lines: [['line 1', 'line 2']] },
         { matching_lines: [['line 3'], ['line 4']] }
       ])
-      await renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
+      fragmentRepository.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
+      renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
     })
 
-    it('Displays result on successfull query', () => {
-      expect(container).toHaveTextContent(fragments[0]._id)
+    it('Displays result on successfull query', async () => {
+      await waitForElement(() => element.getByText(fragments[0]._id))
+      expect(container).toHaveTextContent(fragments[1]._id)
     })
 
-    it('Fills in search form query', async () => {
+    it('Fills in search form query', () => {
       expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
     })
   })
@@ -78,7 +85,6 @@ describe('Search', () => {
 describe('Statistics', () => {
   beforeEach(async () => {
     jest.spyOn(auth, 'isAllowedTo').mockReturnValue(false)
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
     await renderFragmentarium()
   })
 

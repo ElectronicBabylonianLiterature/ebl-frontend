@@ -48,6 +48,36 @@ describe('find', () => {
   })
 })
 
+describe('random', () => {
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
+    promise = fragmentRepository.random()
+  })
+
+  it('Queries random fragments', () => {
+    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?random=true`, true)
+  })
+
+  it('Resolves to fragments', async () => {
+    await expect(promise).resolves.toEqual([fragment])
+  })
+})
+
+describe('interesting', () => {
+  beforeEach(async () => {
+    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
+    promise = fragmentRepository.interesting()
+  })
+
+  it('Queries interesting fragments', () => {
+    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?interesting=true`, true)
+  })
+
+  it('Resolves to fragments', async () => {
+    await expect(promise).resolves.toEqual([fragment])
+  })
+})
+
 describe('searchNumber', () => {
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))

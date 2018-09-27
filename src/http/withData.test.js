@@ -2,7 +2,6 @@ import React from 'react'
 import { render, wait } from 'react-testing-library'
 import Promise from 'bluebird'
 import _ from 'lodash'
-import ApiClient from 'http/ApiClient'
 import withData from './withData'
 
 const data = 'Test data'
@@ -12,32 +11,32 @@ const propValue = 'passed value'
 const newPropValue = 'new value'
 const errorMessage = 'error'
 const authorize = false
-let apiClient
 let element
 let filter
 let config
+let getter
 
 let ComponentWithData
 let InnerComponent
 
 async function renderWithData () {
-  element = render(<ComponentWithData apiClient={apiClient} prop={propValue} />)
+  element = render(<ComponentWithData prop={propValue} />)
   await wait()
 }
 
 async function rerender (prop) {
-  element.rerender(<ComponentWithData apiClient={apiClient} prop={prop} />)
+  element.rerender(<ComponentWithData prop={prop} />)
   await wait()
 }
 
 function clearMocks () {
   InnerComponent.mockClear()
-  apiClient.fetchJson.mockClear()
+  getter.mockClear()
 }
 
-function expectApiToBeCalled (expectedPath) {
-  it('Queries the API correct path', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(expectedPath, authorize)
+function expectGetterToBeCalled (expectedProp) {
+  it('Calls getter with props', () => {
+    expect(getter).toBeCalledWith({ prop: expectedProp })
   })
 }
 
@@ -50,7 +49,6 @@ function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
     expect(InnerComponent).toHaveBeenCalledWith({
       data: expectedData,
       reload: expect.any(Function),
-      apiClient: apiClient,
       prop: expectedPropValue
     },
     {})
@@ -59,42 +57,39 @@ function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
 
 beforeEach(async () => {
   const shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop
-  const method = 'fetchJson'
   filter = jest.fn()
   filter.mockReturnValue(true)
+  getter = jest.fn()
   InnerComponent = jest.fn()
   InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
   config = {
     shouldUpdate,
     authorize,
     filter,
-    defaultData,
-    method: method
+    defaultData
   }
-  ComponentWithData = withData(InnerComponent, props => `path/${props.prop}`, config)
-  apiClient = new ApiClient({})
-  jest.spyOn(apiClient, method)
+  ComponentWithData = withData(InnerComponent, getter, config)
 })
 
-describe('On successful request', () => {
+describe('On successful get', () => {
   beforeEach(async () => {
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
+    getter.mockReturnValueOnce(Promise.resolve(data))
     await renderWithData()
   })
 
-  expectApiToBeCalled(`path/${propValue}`)
+  expectGetterToBeCalled(propValue)
   expectWrappedComponentToBeRendered(propValue, data)
 
   describe('When updating', () => {
     beforeEach(async () => {
       clearMocks()
-      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
+      getter.mockReturnValueOnce(Promise.resolve(newData))
     })
 
     describe('Prop updated', () => {
       beforeEach(async () => rerender(newPropValue))
 
-      expectApiToBeCalled(`path/${newPropValue}`)
+      expectGetterToBeCalled(newPropValue)
       expectWrappedComponentToBeRendered(newPropValue, newData)
     })
 
@@ -102,7 +97,7 @@ describe('On successful request', () => {
       beforeEach(async () => rerender(propValue))
 
       it('Does not query the API', () => {
-        expect(apiClient.fetchJson).not.toHaveBeenCalled()
+        expect(getter).not.toHaveBeenCalled()
       })
 
       it('Does not rerender inner component', () => {
@@ -115,19 +110,19 @@ describe('On successful request', () => {
     beforeEach(async () => {
       const reload = InnerComponent.mock.calls[0][0].reload
       clearMocks()
-      apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(newData))
+      getter.mockReturnValueOnce(Promise.resolve(newData))
       reload()
       await wait()
     })
 
-    expectApiToBeCalled(`path/${propValue}`)
+    expectGetterToBeCalled(propValue)
     expectWrappedComponentToBeRendered(propValue, newData)
   })
 })
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    apiClient.fetchJson.mockImplementationOnce(() =>
+    getter.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage)))
     await renderWithData()
   })
@@ -146,12 +141,12 @@ describe('When unmounting', () => {
 
   beforeEach(async () => {
     promise = new Promise(_.noop)
-    apiClient.fetchJson.mockReturnValueOnce(promise)
+    getter.mockReturnValueOnce(promise)
     await renderWithData()
     element.unmount()
   })
 
-  it('Cancels fetch', () => {
+  it('Cancels the promise', () => {
     expect(promise.isCancelled()).toBe(true)
   })
 
@@ -172,13 +167,12 @@ describe('Filtering', () => {
 
   it('Calls the filter with props', () => {
     expect(filter).toHaveBeenCalledWith({
-      apiClient: apiClient,
       prop: propValue
     })
   })
 
   it('Does not query the API', () => {
-    expect(apiClient.fetchJson).not.toHaveBeenCalled()
+    expect(getter).not.toHaveBeenCalled()
   })
 
   expectWrappedComponentToBeRendered(propValue, defaultData)
@@ -186,9 +180,9 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   beforeEach(async () => {
-    const CrashingComponent = withData(() => { throw new Error(errorMessage) }, props => `path/${props.prop}`)
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(data))
-    element = render(<CrashingComponent apiClient={apiClient} prop={propValue} />)
+    const CrashingComponent = withData(() => { throw new Error(errorMessage) }, getter)
+    getter.mockReturnValueOnce(Promise.resolve(data))
+    element = render(<CrashingComponent prop={propValue} />)
     await wait()
   })
 

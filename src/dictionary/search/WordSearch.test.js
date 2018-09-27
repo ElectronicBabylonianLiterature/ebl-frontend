@@ -1,38 +1,35 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, wait } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
-import ApiClient from 'http/ApiClient'
 
 const query = 'lem[ma?]'
 let words
-let apiClient
+let wordRepository
 let element
 
-async function renderWordSearch () {
-  element = render(<MemoryRouter><WordSearch query={query} apiClient={apiClient} /></MemoryRouter>)
-  await wait()
+function renderWordSearch () {
+  element = render(<MemoryRouter>
+    <WordSearch query={query} wordRepository={wordRepository} />
+  </MemoryRouter>)
 }
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  apiClient = new ApiClient()
-  jest.spyOn(apiClient, 'fetchJson')
+  wordRepository = {
+    search: jest.fn()
+  }
+  wordRepository.search.mockReturnValueOnce(Promise.resolve(words))
+  renderWordSearch()
 })
 
-it('Queries the API with given parameters', async () => {
-  apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  await renderWordSearch()
-
-  const expectedPath = `/words?query=${encodeURIComponent(query)}`
-  expect(apiClient.fetchJson).toBeCalledWith(expectedPath, true)
+it('Searches with the query', () => {
+  expect(wordRepository.search).toBeCalledWith(query)
 })
 
-it('Sisplays results', async () => {
-  apiClient.fetchJson.mockReturnValueOnce(Promise.resolve(words))
-  await renderWordSearch()
-
-  expect(element.getByText(words[0].meaning)).toBeDefined()
+it('Displays results', async () => {
+  await waitForElement(() => element.getByText(words[0].meaning))
+  expect(element.getByText(words[1].meaning)).toBeDefined()
 })

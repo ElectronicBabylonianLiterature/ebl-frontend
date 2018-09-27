@@ -27,11 +27,11 @@ class Fragmentarium extends Component {
         <NumberSearchForm number={number} />
         <TransliterationSearchForm transliteration={transliteration} />
         <div className='Fragmentarium-search__button-bar'>
-          <RandomButton apiClient={this.props.apiClient} param='random'>
+          <RandomButton fragmentRepository={this.props.fragmentRepository} method='random'>
             I'm feeling lucky
           </RandomButton>
           {' '}
-          <PioneersButton auth={this.props.auth} apiClient={this.props.apiClient} />
+          <PioneersButton auth={this.props.auth} fragmentRepository={this.props.fragmentRepository} />
         </div>
       </header>
     )
@@ -47,13 +47,13 @@ class Fragmentarium extends Component {
           ? (
             <section className='Fragmentarium-search'>
               <this.SectionHeader number={number} transliteration={transliteration} />
-              <NumberSearch number={number} apiClient={this.props.apiClient} />
-              <TransliterationSearch transliteration={transliteration} apiClient={this.props.apiClient} />
+              <NumberSearch number={number} fragmentRepository={this.props.fragmentRepository} />
+              <TransliterationSearch transliteration={transliteration} fragmentRepository={this.props.fragmentRepository} />
             </section>
           )
           : <p>You do not have the rights to access the fragmentarium.</p>
         }
-        <Statistics apiClient={this.props.apiClient} />
+        <Statistics fragmentRepository={this.props.fragmentRepository} />
       </section>
     )
   }

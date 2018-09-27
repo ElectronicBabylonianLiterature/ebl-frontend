@@ -11,7 +11,9 @@ function Statistics ({ data }) {
     <section className='Statistics'>
       <header>Current size of the corpus:</header>
       <p className='Statistics__values'>
-        {localizedStatistics.transliteratedFragments} tablets transliterated<br />
+        {localizedStatistics.transliteratedFragments} tablets transliterated
+      </p>
+      <p className='Statistics__values'>
         {localizedStatistics.lines} lines of text
       </p>
     </section>
@@ -20,8 +22,5 @@ function Statistics ({ data }) {
 
 export default withData(
   Statistics,
-  props => '/statistics',
-  {
-    authorize: false
-  }
+  props => props.fragmentRepository.statistics()
 )

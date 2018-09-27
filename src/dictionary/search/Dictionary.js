@@ -23,7 +23,7 @@ class Dictionary extends Component {
               <header className='Dictionary-search'>
                 <WordSearchForm query={query} />
               </header>
-              <WordSearch query={query} apiClient={this.props.apiClient} />
+              <WordSearch query={query} wordRepository={this.props.wordRepository} />
             </Fragment>
           )
           : <p>You do not have the rights to access the dictionary.</p>

@@ -5,8 +5,6 @@ import _ from 'lodash'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 
 const errorMessage = 'error message'
 const number = 'K.00000'
@@ -14,14 +12,18 @@ const transliteration = 'line1\nline2'
 const notes = 'notes'
 
 let auth
-let apiClient
+let fragmentRepository
 let element
 let onChange
 
 beforeEach(() => {
   onChange = jest.fn()
-  auth = new Auth()
-  apiClient = new ApiClient(auth)
+  auth = {
+    isAllowedTo: jest.fn()
+  }
+  fragmentRepository = {
+    updateTransliteration: jest.fn()
+  }
 })
 
 describe('User has edit rights', () => {
@@ -45,17 +47,14 @@ describe('User has edit rights', () => {
 
   describe('Save', () => {
     beforeEach(async () => {
-      jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve())
+      fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.resolve())
 
       await submitForm(element, '#transliteration-form')
     })
 
     it('Posts transliteration to API', () => {
-      expect(apiClient.postJson)
-        .toHaveBeenCalledWith(`/fragments/${number}`, {
-          transliteration: transliteration,
-          notes: notes
-        })
+      expect(fragmentRepository.updateTransliteration)
+        .toHaveBeenCalledWith(number, transliteration, notes)
     })
 
     it('Calls onChange', () => {
@@ -64,7 +63,7 @@ describe('User has edit rights', () => {
   })
 
   it('Shows error if saving transliteration fails', async () => {
-    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+    fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
     await submitForm(element, '#transliteration-form')
 
@@ -74,7 +73,7 @@ describe('User has edit rights', () => {
   it('Cancels post on unmount', async () => {
     const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
-    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(promise)
+    fragmentRepository.updateTransliteration.mockReturnValueOnce(promise)
     submitForm(element, '#transliteration-form')
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
@@ -114,12 +113,12 @@ function commonTests () {
 }
 
 function renderTransliterationForm (isAllowed) {
-  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(isAllowed)
+  auth.isAllowedTo.mockReturnValue(isAllowed)
   element = render(<TransliteratioForm
     number={number}
     transliteration={transliteration}
     notes={notes}
-    apiClient={apiClient}
+    fragmentRepository={fragmentRepository}
     auth={auth}
     onChange={onChange}
   />)

@@ -6,24 +6,24 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { whenClicked, clickNth } from 'testHelpers'
-import ApiClient from 'http/ApiClient'
 import RandomButton from './RandomButton'
 
 const buttonText = 'I\'m feeling lucky'
 const message = 'Error'
-const param = 'random'
+const method = 'random'
 
 let history
-let apiClient
+let fragmentRepository
 let element
 
 beforeEach(() => {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  apiClient = new ApiClient({})
-  jest.spyOn(apiClient, 'fetchJson')
+  fragmentRepository = {
+    random: jest.fn()
+  }
   element = render(<Router history={history}>
-    <RandomButton apiClient={apiClient} param={param}>
+    <RandomButton fragmentRepository={fragmentRepository} method={method}>
       {buttonText}
     </RandomButton>
   </Router>)
@@ -34,13 +34,7 @@ describe('On successful request', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment')
-    apiClient.fetchJson.mockReturnValueOnce(Promise.resolve([fragment]))
-  })
-
-  it('Fetches a random fragment from the API', async () => {
-    await whenClicked(element, buttonText)
-      .expect(apiClient.fetchJson)
-      .toHaveBeenCalledWith(`/fragments?${param}=true`, true)
+    fragmentRepository.random.mockReturnValueOnce(Promise.resolve([fragment]))
   })
 
   it('Redirects to the fragment when clicked', async () => {
@@ -52,7 +46,7 @@ describe('On successful request', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    apiClient.fetchJson.mockReturnValueOnce(Promise.reject(new Error(message)))
+    fragmentRepository.random.mockReturnValueOnce(Promise.reject(new Error(message)))
     await clickNth(element, buttonText, 0)
   })
 
@@ -68,7 +62,7 @@ describe('On failed request', () => {
 describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(promise)
+    fragmentRepository.random.mockReturnValueOnce(promise)
     await clickNth(element, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)

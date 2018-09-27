@@ -2,25 +2,25 @@ import React from 'react'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 import Folios from './Folios'
 
 const cdliNumber = '0000'
-let apiClient
+let imageRepository
 let container
 let folios
 
 beforeEach(() => {
-  apiClient = new ApiClient(new Auth())
+  imageRepository = {
+    find: jest.fn()
+  }
   URL.createObjectURL.mockReturnValue('url')
-  jest.spyOn(apiClient, 'fetchBlob').mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
 })
 
 describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
-    container = render(<Folios folios={folios} cdliNumber={cdliNumber} apiClient={apiClient} />).container
+    container = render(<Folios folios={folios} cdliNumber={cdliNumber} imageRepository={imageRepository} />).container
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -45,7 +45,7 @@ names.forEach(entry => {
   describe(`${entry.displayName} Folios`, () => {
     beforeEach(async () => {
       folios = [await factory.build('folio', { name: entry.name })]
-      container = render(<Folios folios={folios} cdliNumber='' apiClient={apiClient} />).container
+      container = render(<Folios folios={folios} cdliNumber='' imageRepository={imageRepository} />).container
     })
 
     it(`Renders folio numbers entries`, () => {
@@ -58,7 +58,7 @@ names.forEach(entry => {
 
 describe('No folios or CDLI imgae', () => {
   beforeEach(async () => {
-    container = render(<Folios folios={[]} cdliNumber='' apiClient={apiClient} />).container
+    container = render(<Folios folios={[]} cdliNumber='' imageRepository={imageRepository} />).container
   })
 
   it(`Renders no folios test`, () => {

@@ -8,10 +8,6 @@ import Spinner from 'Spinner'
 import ErrorAlert from 'ErrorAlert'
 import withData from 'http/withData'
 
-function getWordUrl (props) {
-  return `/words/${props.match.params.id}`
-}
-
 class WordEditor extends Component {
   constructor (props) {
     super(props)
@@ -27,11 +23,15 @@ class WordEditor extends Component {
     this.updatePromise.cancel()
   }
 
+  get disabled () {
+    return this.state.saving || !this.props.auth.isAllowedTo('write:words')
+  }
+
   updateWord = word => {
     this.updatePromise.cancel()
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.updatePromise = this.props.apiClient
-      .postJson(getWordUrl(this.props), word)
+    this.updatePromise = this.props.wordRepository
+      .update(word)
       .then(() => this.setState({ word: word, error: null, saving: false }))
       .catch(error => {
         this.setState({ word: this.state.word, error: error, saving: false })
@@ -51,7 +51,7 @@ class WordEditor extends Component {
           <ReactMarkdown source={this.state.word.source} />
           <Spinner loading={this.state.saving}>Saving...</Spinner>
         </header>
-        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={this.state.saving || !this.props.auth.isAllowedTo('write:words')} />
+        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={this.disabled} />
         <ErrorAlert error={this.state.error} />
       </section>
     )
@@ -60,5 +60,5 @@ class WordEditor extends Component {
 
 export default withData(
   WordEditor,
-  getWordUrl
+  props => props.wordRepository.find(props.match.params.id)
 )

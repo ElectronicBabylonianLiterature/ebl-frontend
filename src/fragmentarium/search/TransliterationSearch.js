@@ -52,7 +52,7 @@ export default withData(
     ? <TransliterationSearchResult data={data} />
     : null
   ,
-  props => `/fragments?transliteration=${encodeURIComponent(props.transliteration)}`,
+  props => props.fragmentRepository.searchTransliteration(props.transliteration),
   {
     shouldUpdate: (prevProps, props) => prevProps.transliteration !== props.transliteration,
     filter: props => !_.isEmpty(props.transliteration),

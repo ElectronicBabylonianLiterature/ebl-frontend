@@ -24,7 +24,7 @@ class Folios extends Component {
       title={`${displayNames[entry.name] || entry.name} Folio ${entry.number}`}
       disabled={!hasImage(entry)}>
       {hasImage(entry) &&
-        <ApiImage apiClient={this.props.apiClient} fileName={`${entry.name}_${entry.number}.jpg`} />
+        <ApiImage imageRepository={this.props.imageRepository} fileName={`${entry.name}_${entry.number}.jpg`} />
       }
     </Tab>
   )

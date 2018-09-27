@@ -9,7 +9,7 @@ export default withData(
     ? <FragmentList data={data} />
     : null
   ,
-  props => `/fragments?number=${encodeURIComponent(props.number)}`,
+  props => props.fragmentRepository.searchNumber(props.number),
   {
     shouldUpdate: (prevProps, props) => prevProps.number !== props.number,
     filter: props => !_.isEmpty(props.number),

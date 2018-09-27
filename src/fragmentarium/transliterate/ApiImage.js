@@ -22,6 +22,5 @@ class ApiImage extends Component {
 
 export default withData(
   ApiImage,
-  props => `/images/${props.fileName}`,
-  { method: 'fetchBlob' }
+  props => props.imageRepository.find(props.fileName)
 )

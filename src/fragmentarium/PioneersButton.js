@@ -1,7 +1,11 @@
 import React from 'react'
 import RandomButton from './RandomButton'
 
-export default function PioneersButton ({ auth, apiClient }) {
+export default function PioneersButton ({ auth, fragmentRepository }) {
   return auth.isAllowedTo('transliterate:fragments') &&
-    <RandomButton apiClient={apiClient} param='interesting'>Path of the Pioneers</RandomButton>
+    <RandomButton
+      fragmentRepository={fragmentRepository}
+      method='interesting'>
+        Path of the Pioneers
+    </RandomButton>
 }

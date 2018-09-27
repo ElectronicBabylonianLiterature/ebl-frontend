@@ -1,38 +1,28 @@
 import React from 'react'
-import { render, wait } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
 
-let apiClient
+let fragmentRepository
 let element
-let container
 let statistics
 
-async function renderStatistics () {
-  element = render(<Statistics apiClient={apiClient} />)
-  container = element.container
-  await wait()
-}
-
 beforeEach(async () => {
-  const auth = new Auth()
-  apiClient = new ApiClient(auth)
   statistics = await factory.build('statistics')
-  jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
-  await renderStatistics()
-})
-
-it('Queries the statistics', async () => {
-  expect(apiClient.fetchJson).toBeCalledWith('/statistics', false)
+  fragmentRepository = {
+    statistics: jest.fn()
+  }
+  fragmentRepository.statistics.mockReturnValueOnce(Promise.resolve(statistics))
+  element = render(<Statistics fragmentRepository={fragmentRepository} />)
 })
 
 it('Shows the number of transliterated tablets', async () => {
-  expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
+  const { textContent } = await waitForElement(() => element.getByText(/tablets transliterated$/))
+  expect(textContent).toContain(statistics.transliteratedFragments.toLocaleString())
 })
 
 it('Shows the number of transliterated lines', async () => {
-  expect(container).toHaveTextContent(statistics.lines.toLocaleString())
+  const { textContent } = await waitForElement(() => element.getByText(/lines of text$/))
+  expect(textContent).toContain(statistics.lines.toLocaleString())
 })

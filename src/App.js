@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import './App.css'
 
@@ -9,29 +9,24 @@ import Dictionary from 'dictionary/search/Dictionary'
 import WordEditor from 'dictionary/editor/WordEditor'
 import FragmentView from 'fragmentarium//transliterate/FragmentView'
 import Fragmentarium from 'fragmentarium/Fragmentarium'
-import ApiClient from 'http/ApiClient'
 import ErrorBoundary from 'ErrorBoundary'
 
-class App extends Component {
-  render () {
-    const apiClient = new ApiClient(this.props.auth)
-
-    return (
-      <Fragment>
-        <Header auth={this.props.auth} />
-        <ErrorBoundary>
-          <Switch>
-            <Route path='/dictionary/:id' render={props => <WordEditor auth={this.props.auth} apiClient={apiClient} {...props} />} />
-            <Route path='/dictionary' render={props => <Dictionary auth={this.props.auth} apiClient={apiClient} {...props} />} />
-            <Route path='/fragmentarium/:id' render={props => <FragmentView auth={this.props.auth} apiClient={apiClient} {...props} />} />
-            <Route path='/fragmentarium' render={props => <Fragmentarium auth={this.props.auth} apiClient={apiClient} {...props} />} />
-            <Route path='/callback' render={props => <Callback auth={this.props.auth} {...props} />} />
-            <Route component={Introduction} />
-          </Switch>
-        </ErrorBoundary>
-      </Fragment>
-    )
-  }
+function App ({ auth, wordRepository, fragmentRepository, imageRepository }) {
+  return (
+    <Fragment>
+      <Header auth={auth} />
+      <ErrorBoundary>
+        <Switch>
+          <Route path='/dictionary/:id' render={props => <WordEditor auth={auth} wordRepository={wordRepository} {...props} />} />
+          <Route path='/dictionary' render={props => <Dictionary auth={auth} wordRepository={wordRepository} {...props} />} />
+          <Route path='/fragmentarium/:id' render={props => <FragmentView auth={auth} imageRepository={imageRepository} fragmentRepository={fragmentRepository} {...props} />} />
+          <Route path='/fragmentarium' render={props => <Fragmentarium auth={auth} fragmentRepository={fragmentRepository} {...props} />} />
+          <Route path='/callback' render={props => <Callback auth={auth} {...props} />} />
+          <Route component={Introduction} />
+        </Switch>
+      </ErrorBoundary>
+    </Fragment>
+  )
 }
 
 export default App
