@@ -11,18 +11,16 @@ const number = 'K.00000'
 const transliteration = 'line1\nline2'
 const notes = 'notes'
 
-let auth
-let fragmentRepository
+let fragmentService
 let element
 let onChange
 
 beforeEach(() => {
   onChange = jest.fn()
-  auth = {
-    isAllowedTo: jest.fn()
-  }
-  fragmentRepository = {
-    updateTransliteration: jest.fn()
+  fragmentService = {
+    updateTransliteration: jest.fn(),
+    allowedToRead: () => true,
+    allowedToTransliterate: jest.fn()
   }
 })
 
@@ -47,13 +45,13 @@ describe('User has edit rights', () => {
 
   describe('Save', () => {
     beforeEach(async () => {
-      fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.resolve())
+      fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
 
       await submitForm(element, '#transliteration-form')
     })
 
     it('Posts transliteration to API', () => {
-      expect(fragmentRepository.updateTransliteration)
+      expect(fragmentService.updateTransliteration)
         .toHaveBeenCalledWith(number, transliteration, notes)
     })
 
@@ -63,7 +61,7 @@ describe('User has edit rights', () => {
   })
 
   it('Shows error if saving transliteration fails', async () => {
-    fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+    fragmentService.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
     await submitForm(element, '#transliteration-form')
 
@@ -73,7 +71,7 @@ describe('User has edit rights', () => {
   it('Cancels post on unmount', async () => {
     const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
-    fragmentRepository.updateTransliteration.mockReturnValueOnce(promise)
+    fragmentService.updateTransliteration.mockReturnValueOnce(promise)
     submitForm(element, '#transliteration-form')
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
@@ -113,13 +111,12 @@ function commonTests () {
 }
 
 function renderTransliterationForm (isAllowed) {
-  auth.isAllowedTo.mockReturnValue(isAllowed)
+  fragmentService.allowedToTransliterate.mockReturnValue(isAllowed)
   element = render(<TransliteratioForm
     number={number}
     transliteration={transliteration}
     notes={notes}
-    fragmentRepository={fragmentRepository}
-    auth={auth}
+    fragmentService={fragmentService}
     onChange={onChange}
   />)
 }

@@ -12,16 +12,14 @@ const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
 })
 const message = 'message'
 
-let auth
-let imageRepository
-let fragmentRepository
+let fragmentService
 let container
 let element
 
 async function renderFragmentView () {
   element = render(
     <MemoryRouter>
-      <FragmentView match={match} auth={auth} imageRepository={imageRepository} fragmentRepository={fragmentRepository} />
+      <FragmentView match={match} fragmentService={fragmentService} />
     </MemoryRouter>
   )
   container = element.container
@@ -29,17 +27,14 @@ async function renderFragmentView () {
 }
 
 beforeEach(async () => {
-  auth = {
-    isAllowedTo: jest.fn()
-  }
-  fragmentRepository = {
-    find: jest.fn()
-  }
-  imageRepository = {
-    find: jest.fn()
+  fragmentService = {
+    find: jest.fn(),
+    findFolio: jest.fn(),
+    allowedToRead: jest.fn(),
+    allowedToTransliterate: jest.fn()
   }
   URL.createObjectURL.mockReturnValue('url')
-  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
 })
 
 describe('Fragment is loaded', () => {
@@ -47,13 +42,14 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment', { _id: fragmentNumber })
-    fragmentRepository.find.mockReturnValueOnce(Promise.resolve(fragment))
-    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
+    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    fragmentService.allowedToRead.mockReturnValue(true)
+    fragmentService.allowedToTransliterate.mockReturnValue(true)
     await renderFragmentView()
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
-    expect(fragmentRepository.find).toBeCalledWith(fragmentNumber)
+    expect(fragmentService.find).toBeCalledWith(fragmentNumber)
   })
 
   it('Shows the fragment number', async () => {
@@ -71,8 +67,9 @@ describe('Fragment is loaded', () => {
 
 describe('On error', () => {
   beforeEach(async () => {
-    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
-    fragmentRepository.find.mockReturnValueOnce(Promise.reject(new Error(message)))
+    fragmentService.allowedToRead.mockReturnValue(true)
+    fragmentService.allowedToTransliterate.mockReturnValue(true)
+    fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView()
   })
 
@@ -82,7 +79,8 @@ describe('On error', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(false)
+  fragmentService.allowedToRead.mockReturnValue(false)
+  fragmentService.allowedToTransliterate.mockReturnValue(false)
   await renderFragmentView()
 
   expect(container).toHaveTextContent('You do not have the rights access the fragmentarium.')

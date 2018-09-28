@@ -3,7 +3,7 @@ import { Image } from 'react-bootstrap'
 import ExternalLink from 'ExternalLink'
 import withData from 'http/withData'
 
-class ApiImage extends Component {
+class BlobImage extends Component {
   constructor (props) {
     super(props)
     this.image = URL.createObjectURL(props.data)
@@ -15,12 +15,12 @@ class ApiImage extends Component {
 
   render () {
     return <ExternalLink href={this.image}>
-      <Image src={this.image} alt={this.props.fileName} responsive />
+      <Image src={this.image} alt={this.props.alt} responsive />
     </ExternalLink>
   }
 }
 
 export default withData(
-  ApiImage,
-  props => props.imageRepository.find(props.fileName)
+  BlobImage,
+  props => props.fragmentService.findFolio(props.folio)
 )

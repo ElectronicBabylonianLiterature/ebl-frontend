@@ -26,7 +26,7 @@ class TransliteratioForm extends Component {
   }
 
   get editable () {
-    return this.props.auth.isAllowedTo('transliterate:fragments')
+    return this.props.fragmentService.allowedToTransliterate()
   }
 
   componentWillUnmount () {
@@ -58,7 +58,7 @@ class TransliteratioForm extends Component {
       ...this.state,
       disabled: true
     })
-    this.updatePromise = this.props.fragmentRepository.updateTransliteration(
+    this.updatePromise = this.props.fragmentService.updateTransliteration(
       this.props.number,
       this.state.transliteration,
       this.state.notes

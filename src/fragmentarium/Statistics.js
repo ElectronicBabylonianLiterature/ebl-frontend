@@ -22,5 +22,5 @@ function Statistics ({ data }) {
 
 export default withData(
   Statistics,
-  props => props.fragmentRepository.statistics()
+  props => props.fragmentService.statistics()
 )

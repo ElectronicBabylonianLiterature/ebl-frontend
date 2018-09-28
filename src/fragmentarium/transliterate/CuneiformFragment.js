@@ -37,11 +37,11 @@ class CuneiformFragment extends Component {
         number={this.fragment._id}
         transliteration={this.fragment.transliteration}
         notes={this.fragment.notes}
-        fragmentRepository={this.props.fragmentRepository}
+        fragmentService={this.props.fragmentService}
         onChange={this.props.onChange}
         auth={this.props.auth} />
       <p className='CuneifromFragment__navigation'>
-        <PioneersButton auth={this.props.auth} fragmentRepository={this.props.fragmentRepository} />
+        <PioneersButton auth={this.props.auth} fragmentService={this.props.fragmentService} />
       </p>
     </Fragment>
   )
@@ -49,7 +49,7 @@ class CuneiformFragment extends Component {
   rightColumn = () => (
     <Folios
       folios={this.fragment.folios}
-      imageRepository={this.props.imageRepository}
+      fragmentService={this.props.fragmentService}
       cdliNumber={this.fragment.cdliNumber} />
   )
 

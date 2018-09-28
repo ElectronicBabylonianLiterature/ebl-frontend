@@ -5,22 +5,22 @@ import Promise from 'bluebird'
 import Folios from './Folios'
 
 const cdliNumber = '0000'
-let imageRepository
+let fragmentService
 let container
 let folios
 
 beforeEach(() => {
-  imageRepository = {
-    find: jest.fn()
+  fragmentService = {
+    findFolio: jest.fn()
   }
   URL.createObjectURL.mockReturnValue('url')
-  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
 })
 
 describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
-    container = render(<Folios folios={folios} cdliNumber={cdliNumber} imageRepository={imageRepository} />).container
+    container = render(<Folios folios={folios} cdliNumber={cdliNumber} fragmentService={fragmentService} />).container
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -45,7 +45,7 @@ names.forEach(entry => {
   describe(`${entry.displayName} Folios`, () => {
     beforeEach(async () => {
       folios = [await factory.build('folio', { name: entry.name })]
-      container = render(<Folios folios={folios} cdliNumber='' imageRepository={imageRepository} />).container
+      container = render(<Folios folios={folios} cdliNumber='' fragmentService={fragmentService} />).container
     })
 
     it(`Renders folio numbers entries`, () => {
@@ -56,9 +56,9 @@ names.forEach(entry => {
   })
 })
 
-describe('No folios or CDLI imgae', () => {
+describe('No folios or CDLI image', () => {
   beforeEach(async () => {
-    container = render(<Folios folios={[]} cdliNumber='' imageRepository={imageRepository} />).container
+    container = render(<Folios folios={[]} cdliNumber='' fragmentService={fragmentService} />).container
   })
 
   it(`Renders no folios test`, () => {

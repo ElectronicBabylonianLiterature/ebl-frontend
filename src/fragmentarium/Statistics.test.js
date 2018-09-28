@@ -4,17 +4,17 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
 
-let fragmentRepository
+let fragmentService
 let element
 let statistics
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
-  fragmentRepository = {
+  fragmentService = {
     statistics: jest.fn()
   }
-  fragmentRepository.statistics.mockReturnValueOnce(Promise.resolve(statistics))
-  element = render(<Statistics fragmentRepository={fragmentRepository} />)
+  fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
+  element = render(<Statistics fragmentService={fragmentService} />)
 })
 
 it('Shows the number of transliterated tablets', async () => {

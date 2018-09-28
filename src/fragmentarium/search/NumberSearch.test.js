@@ -7,24 +7,24 @@ import { factory } from 'factory-girl'
 
 const number = 'K.003292'
 let fragments
-let fragmentRepository
+let fragmentService
 let element
 
 beforeEach(async () => {
   fragments = await factory.buildMany('fragment', 2)
-  fragmentRepository = {
+  fragmentService = {
     searchNumber: jest.fn()
   }
-  fragmentRepository.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
+  fragmentService.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
   element = render(
     <MemoryRouter>
-      <NumberSearch number={number} fragmentRepository={fragmentRepository} />
+      <NumberSearch number={number} fragmentService={fragmentService} />
     </MemoryRouter>
   )
 })
 
 it('Searches for the given parameters', () => {
-  expect(fragmentRepository.searchNumber).toBeCalledWith(number)
+  expect(fragmentService.searchNumber).toBeCalledWith(number)
 })
 
 it('Displays and links results', async () => {

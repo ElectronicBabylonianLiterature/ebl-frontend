@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import _ from 'lodash'
 
-import ApiImage from './ApiImage'
+import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
 
 const displayNames = {
@@ -24,7 +24,7 @@ class Folios extends Component {
       title={`${displayNames[entry.name] || entry.name} Folio ${entry.number}`}
       disabled={!hasImage(entry)}>
       {hasImage(entry) &&
-        <ApiImage imageRepository={this.props.imageRepository} fileName={`${entry.name}_${entry.number}.jpg`} />
+        <FolioImage fragmentService={this.props.fragmentService} folio={entry} alt={`${entry.name}_${entry.number}.jpg`} />
       }
     </Tab>
   )

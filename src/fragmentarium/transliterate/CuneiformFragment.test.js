@@ -10,32 +10,25 @@ import CuneiformFragment from './CuneiformFragment'
 let fragment
 let element
 let container
-let imageRepository
-let fragmentRepository
+let fragmentService
 let onChange
 
 beforeEach(async () => {
-  const auth = {
-    isAllowedTo: () => true
-  }
-  jest.spyOn(auth, 'isAllowedTo').mockReturnValue(true)
   onChange = jest.fn()
-  imageRepository = {
-    find: jest.fn()
-  }
-  fragmentRepository = {
-    updateTransliteration: jest.fn()
+  fragmentService = {
+    updateTransliteration: jest.fn(),
+    findFolio: jest.fn(),
+    allowedToRead: () => true,
+    allowedToTransliterate: () => true
   }
   URL.createObjectURL.mockReturnValue('url')
-  imageRepository.find.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragment = await factory.build('fragment')
   element = render(
     <MemoryRouter>
       <CuneiformFragment
         fragment={fragment}
-        imageRepository={imageRepository}
-        fragmentRepository={fragmentRepository}
-        auth={auth}
+        fragmentService={fragmentService}
         onChange={onChange} />
     </MemoryRouter>)
   container = element.container
@@ -89,7 +82,7 @@ it('Links museum record', () => {
 })
 
 it('Calls onChange on save', async () => {
-  fragmentRepository.updateTransliteration.mockReturnValueOnce(Promise.resolve())
+  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
 
   await submitForm(element, '#transliteration-form')
 

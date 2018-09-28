@@ -1,25 +1,26 @@
 import React from 'react'
 import { render, wait } from 'react-testing-library'
 import Promise from 'bluebird'
-import ApiImage from './ApiImage'
+import BlobImage from './FolioImage'
 
-const fileName = 'WGL_00000.jpg'
+const folio = { name: 'WGL', number: '00000' }
+const alt = 'WGL_00000.jpg'
 const objectUrl = 'object URL mock'
-let imageRepository
+let fragmentService
 let element
 
 beforeEach(async () => {
-  imageRepository = {
-    find: jest.fn()
+  fragmentService = {
+    findFolio: jest.fn()
   }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  imageRepository.find.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
-  element = render(<ApiImage imageRepository={imageRepository} fileName={fileName} />)
+  fragmentService.findFolio.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  element = render(<BlobImage fragmentService={fragmentService} folio={folio} alt={alt} />)
   await wait()
 })
 
 it('Queries the API with given parameters', () => {
-  expect(imageRepository.find).toBeCalledWith(fileName)
+  expect(fragmentService.findFolio).toBeCalledWith(folio)
 })
 
 it('Displays the loaded image', () => {
@@ -33,7 +34,7 @@ it('Has a link to the image', () => {
 })
 
 it('Has the filename as alt text', () => {
-  expect(element.container.querySelector('img')).toHaveAttribute('alt', fileName)
+  expect(element.container.querySelector('img')).toHaveAttribute('alt', alt)
 })
 
 it('Revokes objet URL on unmount', () => {

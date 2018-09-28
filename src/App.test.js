@@ -8,6 +8,7 @@ import ApiClient from 'http/ApiClient'
 import WordRepository from 'dictionary/WordRepository'
 import FragmentRepository from 'fragmentarium/FragmentRepository'
 import ImageRepository from 'fragmentarium/ImageRepository'
+import FragmentService from 'fragmentarium/FragmentService'
 
 const routes = ['/', 'dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 
@@ -18,6 +19,7 @@ routes.forEach(route => {
     const wordRepository = new WordRepository(apiClient)
     const fragmentRepository = new FragmentRepository(apiClient)
     const imageRepository = new ImageRepository(apiClient)
+    const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
 
     localStorage.getItem.mockReturnValue(null)
     jest.spyOn(fragmentRepository, 'statistics').mockReturnValueOnce(factory.build('statistics'))
@@ -26,8 +28,7 @@ routes.forEach(route => {
       <App
         auth={auth}
         wordRepository={wordRepository}
-        fragmentRepository={fragmentRepository}
-        imageRepository={imageRepository}
+        fragmentService={fragmentService}
       />
     </MemoryRouter>)
   })

@@ -5,8 +5,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Fragmentarium from './Fragmentarium'
 
-let auth
-let fragmentRepository
+let fragmentService
 let container
 let element
 let statistics
@@ -14,7 +13,7 @@ let statistics
 async function renderFragmentarium (path = '/fragmentarium') {
   const FragmentariumWithRouter = withRouter(Fragmentarium)
   element = render(<MemoryRouter initialEntries={[path]}>
-    <FragmentariumWithRouter auth={auth} fragmentRepository={fragmentRepository} />
+    <FragmentariumWithRouter fragmentService={fragmentService} />
   </MemoryRouter>)
   container = element.container
   await wait()
@@ -22,22 +21,21 @@ async function renderFragmentarium (path = '/fragmentarium') {
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
-  auth = {
-    isAllowedTo: jest.fn()
-  }
-  fragmentRepository = {
+  fragmentService = {
     statistics: jest.fn(),
     searchNumber: jest.fn(),
-    searchTransliteration: jest.fn()
+    searchTransliteration: jest.fn(),
+    allowedToRead: jest.fn(),
+    allowedToTransliterate: () => false
   }
-  fragmentRepository.statistics.mockReturnValueOnce(Promise.resolve(statistics))
+  fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
 
 describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    auth.isAllowedTo.mockReturnValue(true)
+    fragmentService.allowedToRead.mockReturnValue(true)
   })
 
   describe('Searching fragments by number', () => {
@@ -45,7 +43,7 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2)
-      fragmentRepository.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
+      fragmentService.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
       renderFragmentarium(`/fragmentarium?number=${number}`)
     })
 
@@ -67,7 +65,7 @@ describe('Search', () => {
         { matching_lines: [['line 1', 'line 2']] },
         { matching_lines: [['line 3'], ['line 4']] }
       ])
-      fragmentRepository.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
+      fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
       renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
     })
 
@@ -84,7 +82,7 @@ describe('Search', () => {
 
 describe('Statistics', () => {
   beforeEach(async () => {
-    jest.spyOn(auth, 'isAllowedTo').mockReturnValue(false)
+    fragmentService.allowedToRead.mockReturnValue(false)
     await renderFragmentarium()
   })
 

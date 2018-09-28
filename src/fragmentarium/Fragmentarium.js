@@ -27,11 +27,11 @@ class Fragmentarium extends Component {
         <NumberSearchForm number={number} />
         <TransliterationSearchForm transliteration={transliteration} />
         <div className='Fragmentarium-search__button-bar'>
-          <RandomButton fragmentRepository={this.props.fragmentRepository} method='random'>
+          <RandomButton fragmentService={this.props.fragmentService} method='random'>
             I'm feeling lucky
           </RandomButton>
           {' '}
-          <PioneersButton auth={this.props.auth} fragmentRepository={this.props.fragmentRepository} />
+          <PioneersButton fragmentService={this.props.fragmentService} />
         </div>
       </header>
     )
@@ -43,17 +43,17 @@ class Fragmentarium extends Component {
     return (
       <section className='App-content'>
         <this.MainHeader />
-        {this.props.auth.isAllowedTo('read:fragments')
+        {this.props.fragmentService.allowedToRead()
           ? (
             <section className='Fragmentarium-search'>
               <this.SectionHeader number={number} transliteration={transliteration} />
-              <NumberSearch number={number} fragmentRepository={this.props.fragmentRepository} />
-              <TransliterationSearch transliteration={transliteration} fragmentRepository={this.props.fragmentRepository} />
+              <NumberSearch number={number} fragmentService={this.props.fragmentService} />
+              <TransliterationSearch transliteration={transliteration} fragmentService={this.props.fragmentService} />
             </section>
           )
           : <p>You do not have the rights to access the fragmentarium.</p>
         }
-        <Statistics fragmentRepository={this.props.fragmentRepository} />
+        <Statistics fragmentService={this.props.fragmentService} />
       </section>
     )
   }

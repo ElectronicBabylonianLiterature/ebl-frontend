@@ -8,28 +8,28 @@ import _ from 'lodash'
 
 const transliteration = 'ma i-ra\nka li'
 let fragments
-let fragmentRepository
+let fragmentService
 let element
 
 beforeEach(async () => {
-  fragmentRepository = {
+  fragmentService = {
     searchTransliteration: jest.fn()
   }
   fragments = await factory.buildMany('fragment', 2, [
     { matching_lines: [['line 1', 'line 2']] },
     { matching_lines: [['line 3'], ['line 4']] }
   ])
-  fragmentRepository.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
+  fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
   element = render(
     <MemoryRouter>
-      <TransliterationSearch transliteration={transliteration} fragmentRepository={fragmentRepository} />
+      <TransliterationSearch transliteration={transliteration} fragmentService={fragmentService} />
     </MemoryRouter>
   )
   await waitForElement(() => element.getByText(fragments[0]._id))
 })
 
 it('Queries the API with given parameters', () => {
-  expect(fragmentRepository.searchTransliteration).toBeCalledWith(transliteration)
+  expect(fragmentService.searchTransliteration).toBeCalledWith(transliteration)
 })
 
 it('Links results', () => {
