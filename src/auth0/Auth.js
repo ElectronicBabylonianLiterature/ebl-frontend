@@ -1,13 +1,17 @@
 import auth0 from 'auth0-js'
+import _ from 'lodash'
 
 const scopes = [
   'openid',
-  'profile',
-  'read:words',
-  'write:words',
-  'read:fragments',
-  'transliterate:fragments'
+  'profile'
 ]
+
+const applicationScopes = {
+  readWords: 'read:words',
+  writeWords: 'write:words',
+  readFragments: 'read:fragments',
+  transliterateFragments: 'transliterate:fragments'
+}
 
 class Auth {
   auth0 = new auth0.WebAuth({
@@ -16,8 +20,16 @@ class Auth {
     redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
     audience: 'dictionary-api',
     responseType: 'token id_token',
-    scope: scopes.join(' ')
+    scope: this.scopes
   })
+
+  get scopes () {
+    return scopes.concat(_.values(applicationScopes)).join(' ')
+  }
+
+  get applicationScopes () {
+    return applicationScopes
+  }
 
   login () {
     this.auth0.authorize()
@@ -41,7 +53,7 @@ class Auth {
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
-    localStorage.setItem('scopes', authResult.scope || scopes.join(' '))
+    localStorage.setItem('scopes', authResult.scope || this.scopes)
   }
 
   logout () {

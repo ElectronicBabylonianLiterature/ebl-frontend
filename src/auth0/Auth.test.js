@@ -15,9 +15,16 @@ beforeEach(() => {
 
 afterEach(clear)
 
-describe('WebAuth', () => {
-  it('Is created', () => {
-    expect(auth.auth0 instanceof auth0.WebAuth).toBeTruthy()
+it('WebAuth is created', () => {
+  expect(auth.auth0 instanceof auth0.WebAuth).toBeTruthy()
+})
+
+it('Has correct application scopes', () => {
+  expect(auth.applicationScopes).toEqual({
+    readWords: 'read:words',
+    writeWords: 'write:words',
+    readFragments: 'read:fragments',
+    transliterateFragments: 'transliterate:fragments'
   })
 })
 
