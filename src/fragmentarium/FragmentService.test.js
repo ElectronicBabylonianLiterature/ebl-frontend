@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
 
 const resultStub = {}
@@ -38,26 +39,4 @@ const testData = [
   ['allowedToTransliterate', [], auth.isAllowedTo, true, [auth.applicationScopes.transliterateFragments]]
 ]
 
-for (let [method, params, target, expectedResult, expectedParams, targetResult] of testData) {
-  describe(method, () => {
-    let result
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-      target.mockReturnValueOnce(targetResult || expectedResult)
-      result = fragmentService[method](...(params))
-    })
-
-    it(`Delegates`, () => {
-      expect(target).toHaveBeenCalledWith(...(expectedParams || params))
-    })
-
-    it(`Returns`, () => {
-      if (result instanceof Promise) {
-        expect(result).resolves.toEqual(expectedResult)
-      } else {
-        expect(result).toEqual(expectedResult)
-      }
-    })
-  })
-}
+testDelegation(fragmentService, testData)

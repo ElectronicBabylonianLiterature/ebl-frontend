@@ -1,4 +1,5 @@
 import { fireEvent, wait } from 'react-testing-library'
+import * as bluebird from 'bluebird'
 
 function when (createMatcher) {
   return {
@@ -53,4 +54,30 @@ export function whenChangedByLabel (element, label, newValue) {
 export async function submitForm (element, query) {
   fireEvent.submit(element.container.querySelector(query))
   await wait()
+}
+
+export function testDelegation (object, testData) {
+  for (let [method, params, target, expectedResult, expectedParams, targetResult] of testData) {
+    describe(method, () => {
+      let result
+
+      beforeEach(() => {
+        jest.clearAllMocks()
+        target.mockReturnValueOnce(targetResult || expectedResult)
+        result = object[method](...(params))
+      })
+
+      it(`Delegates`, () => {
+        expect(target).toHaveBeenCalledWith(...(expectedParams || params))
+      })
+
+      it(`Returns`, () => {
+        if (result instanceof bluebird.Promise || result instanceof Promise) {
+          expect(result).resolves.toEqual(expectedResult)
+        } else {
+          expect(result).toEqual(expectedResult)
+        }
+      })
+    })
+  }
 }
