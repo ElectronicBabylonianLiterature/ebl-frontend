@@ -14,13 +14,13 @@ beforeEach(async () => {
   words = await factory.buildMany('word', 2)
   wordService = {
     search: jest.fn(),
-    allowedToRead: jest.fn()
+    isAllowedToRead: jest.fn()
   }
 })
 
 describe('Searching for word', () => {
   beforeEach(() => {
-    wordService.allowedToRead.mockReturnValue(true)
+    wordService.isAllowedToRead.mockReturnValue(true)
     wordService.search.mockReturnValueOnce(Promise.resolve(words))
   })
 
@@ -45,7 +45,7 @@ describe('Searching for word', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  wordService.allowedToRead.mockReturnValueOnce(false)
+  wordService.isAllowedToRead.mockReturnValueOnce(false)
 
   const { getByText } = renderDictionary('/dictionary')
 

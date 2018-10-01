@@ -30,8 +30,8 @@ beforeEach(async () => {
   fragmentService = {
     find: jest.fn(),
     findFolio: jest.fn(),
-    allowedToRead: jest.fn(),
-    allowedToTransliterate: jest.fn()
+    isAllowedToRead: jest.fn(),
+    isAllowedToTransliterate: jest.fn()
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
@@ -43,8 +43,8 @@ describe('Fragment is loaded', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', { _id: fragmentNumber })
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
-    fragmentService.allowedToRead.mockReturnValue(true)
-    fragmentService.allowedToTransliterate.mockReturnValue(true)
+    fragmentService.isAllowedToRead.mockReturnValue(true)
+    fragmentService.isAllowedToTransliterate.mockReturnValue(true)
     await renderFragmentView()
   })
 
@@ -67,8 +67,8 @@ describe('Fragment is loaded', () => {
 
 describe('On error', () => {
   beforeEach(async () => {
-    fragmentService.allowedToRead.mockReturnValue(true)
-    fragmentService.allowedToTransliterate.mockReturnValue(true)
+    fragmentService.isAllowedToRead.mockReturnValue(true)
+    fragmentService.isAllowedToTransliterate.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView()
   })
@@ -79,8 +79,8 @@ describe('On error', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  fragmentService.allowedToRead.mockReturnValue(false)
-  fragmentService.allowedToTransliterate.mockReturnValue(false)
+  fragmentService.isAllowedToRead.mockReturnValue(false)
+  fragmentService.isAllowedToTransliterate.mockReturnValue(false)
   await renderFragmentView()
 
   expect(container).toHaveTextContent('You do not have the rights access the fragmentarium.')

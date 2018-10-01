@@ -2,7 +2,7 @@ import React from 'react'
 import RandomButton from './RandomButton'
 
 export default function PioneersButton ({ fragmentService }) {
-  return fragmentService.allowedToTransliterate() &&
+  return fragmentService.isAllowedToTransliterate() &&
     <RandomButton
       fragmentService={fragmentService}
       method='interesting'>

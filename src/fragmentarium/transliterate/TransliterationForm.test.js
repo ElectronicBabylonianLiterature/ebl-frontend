@@ -19,8 +19,8 @@ beforeEach(() => {
   onChange = jest.fn()
   fragmentService = {
     updateTransliteration: jest.fn(),
-    allowedToRead: () => true,
-    allowedToTransliterate: jest.fn()
+    isAllowedToRead: () => true,
+    isAllowedToTransliterate: jest.fn()
   }
 })
 
@@ -111,7 +111,7 @@ function commonTests () {
 }
 
 function renderTransliterationForm (isAllowed) {
-  fragmentService.allowedToTransliterate.mockReturnValue(isAllowed)
+  fragmentService.isAllowedToTransliterate.mockReturnValue(isAllowed)
   element = render(<TransliteratioForm
     number={number}
     transliteration={transliteration}

@@ -43,7 +43,7 @@ class Fragmentarium extends Component {
     return (
       <section className='App-content'>
         <this.MainHeader />
-        {this.props.fragmentService.allowedToRead()
+        {this.props.fragmentService.isAllowedToRead()
           ? (
             <section className='Fragmentarium-search'>
               <this.SectionHeader number={number} transliteration={transliteration} />

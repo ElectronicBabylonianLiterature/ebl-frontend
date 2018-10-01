@@ -25,7 +25,7 @@ export default function FragmentView ({ match, fragmentService }) {
         <Breadcrumbs section='Fragmentarium' active={number} />
         <h2><FragmentPager number={number}> {number} </FragmentPager></h2>
       </header>
-      {fragmentService.allowedToRead()
+      {fragmentService.isAllowedToRead()
         ? (
           <FragmentWithData number={number} fragmentService={fragmentService} />
         ) : 'You do not have the rights access the fragmentarium.'

@@ -39,12 +39,12 @@ class FragmentService {
     return this.imageRepository.find(`${name}_${number}.jpg`)
   }
 
-  allowedToRead () {
+  isAllowedToRead () {
     const scope = this.auth.applicationScopes.readFragments
     return this.auth.isAllowedTo(scope)
   }
 
-  allowedToTransliterate () {
+  isAllowedToTransliterate () {
     const scope = this.auth.applicationScopes.transliterateFragments
     return this.auth.isAllowedTo(scope)
   }

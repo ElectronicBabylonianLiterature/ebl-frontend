@@ -16,12 +16,12 @@ class WordService {
     return this.wordRepository.update(word)
   }
 
-  allowedToRead () {
+  isAllowedToRead () {
     const scope = this.auth.applicationScopes.readWords
     return this.auth.isAllowedTo(scope)
   }
 
-  allowedToWrite () {
+  isAllowedToWrite () {
     const scope = this.auth.applicationScopes.writeWords
     return this.auth.isAllowedTo(scope)
   }

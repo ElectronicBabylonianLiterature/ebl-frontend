@@ -18,8 +18,8 @@ beforeEach(async () => {
   fragmentService = {
     updateTransliteration: jest.fn(),
     findFolio: jest.fn(),
-    allowedToRead: () => true,
-    allowedToTransliterate: () => true
+    isAllowedToRead: () => true,
+    isAllowedToTransliterate: () => true
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))

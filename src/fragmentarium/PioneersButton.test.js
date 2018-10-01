@@ -14,7 +14,7 @@ let history
 beforeEach(async () => {
   fragmentService = {
     interesting: jest.fn(),
-    allowedToTransliterate: jest.fn()
+    isAllowedToTransliterate: jest.fn()
   }
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
@@ -35,7 +35,7 @@ it('Hides button if user does not have transliteration rights', async () => {
 })
 
 function renderPioneersButton (isAllowedTo) {
-  fragmentService.allowedToTransliterate.mockReturnValue(isAllowedTo)
+  fragmentService.isAllowedToTransliterate.mockReturnValue(isAllowedTo)
   element = render(<Router history={history}>
     <PioneersButton fragmentService={fragmentService} />
   </Router>)

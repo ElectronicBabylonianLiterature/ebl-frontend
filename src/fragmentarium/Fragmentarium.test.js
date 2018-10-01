@@ -25,8 +25,8 @@ beforeEach(async () => {
     statistics: jest.fn(),
     searchNumber: jest.fn(),
     searchTransliteration: jest.fn(),
-    allowedToRead: jest.fn(),
-    allowedToTransliterate: () => false
+    isAllowedToRead: jest.fn(),
+    isAllowedToTransliterate: () => false
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
@@ -35,7 +35,7 @@ describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    fragmentService.allowedToRead.mockReturnValue(true)
+    fragmentService.isAllowedToRead.mockReturnValue(true)
   })
 
   describe('Searching fragments by number', () => {
@@ -82,7 +82,7 @@ describe('Search', () => {
 
 describe('Statistics', () => {
   beforeEach(async () => {
-    fragmentService.allowedToRead.mockReturnValue(false)
+    fragmentService.isAllowedToRead.mockReturnValue(false)
     await renderFragmentarium()
   })
 

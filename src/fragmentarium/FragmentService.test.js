@@ -35,8 +35,8 @@ const testData = [
   ['searchTransliteration', ['kur'], fragmentRepository.searchTransliteration, resultStub],
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
   ['findFolio', [{ name: 'AKG', number: '375' }], imageRepository.find, resultStub, ['AKG_375.jpg']],
-  ['allowedToRead', [], auth.isAllowedTo, true, [auth.applicationScopes.readFragments]],
-  ['allowedToTransliterate', [], auth.isAllowedTo, true, [auth.applicationScopes.transliterateFragments]]
+  ['isAllowedToRead', [], auth.isAllowedTo, true, [auth.applicationScopes.readFragments]],
+  ['isAllowedToTransliterate', [], auth.isAllowedTo, true, [auth.applicationScopes.transliterateFragments]]
 ]
 
 testDelegation(fragmentService, testData)

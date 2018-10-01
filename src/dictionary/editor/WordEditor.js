@@ -24,7 +24,7 @@ class WordEditor extends Component {
   }
 
   get disabled () {
-    return this.state.saving || !this.props.wordService.allowedToWrite()
+    return this.state.saving || !this.props.wordService.isAllowedToWrite()
   }
 
   updateWord = word => {

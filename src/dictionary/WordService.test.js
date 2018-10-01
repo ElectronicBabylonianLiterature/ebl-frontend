@@ -21,8 +21,8 @@ const testData = [
   ['find', ['id'], wordRepository.find, resultStub],
   ['search', ['aklu'], wordRepository.search, resultStub],
   ['update', [{ _id: 'id' }], wordRepository.update, resultStub],
-  ['allowedToRead', [], auth.isAllowedTo, true, [auth.applicationScopes.readWords]],
-  ['allowedToWrite', [], auth.isAllowedTo, true, [auth.applicationScopes.writeWords]]
+  ['isAllowedToRead', [], auth.isAllowedTo, true, [auth.applicationScopes.readWords]],
+  ['isAllowedToWrite', [], auth.isAllowedTo, true, [auth.applicationScopes.writeWords]]
 ]
 
 testDelegation(wordService, testData)

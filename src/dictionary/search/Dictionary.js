@@ -17,7 +17,7 @@ class Dictionary extends Component {
           <Breadcrumbs section='Dictionary' />
           <h2>Dictionary</h2>
         </header>
-        {this.props.wordService.allowedToRead()
+        {this.props.wordService.isAllowedToRead()
           ? (
             <Fragment>
               <header className='Dictionary-search'>

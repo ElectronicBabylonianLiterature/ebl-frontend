@@ -16,8 +16,8 @@ beforeEach(async () => {
   wordService = {
     find: jest.fn(),
     update: jest.fn(),
-    allowedToRead: _.stubTrue(),
-    allowedToWrite: jest.fn()
+    isAllowedToRead: _.stubTrue(),
+    isAllowedToWrite: jest.fn()
   }
   wordService.find.mockReturnValueOnce(Promise.resolve(result))
 })
@@ -77,7 +77,7 @@ async function renderWithRouter (isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
-  wordService.allowedToWrite.mockReturnValueOnce(isAllowedTo)
+  wordService.isAllowedToWrite.mockReturnValueOnce(isAllowedTo)
 
   const element = render(
     <MemoryRouter>

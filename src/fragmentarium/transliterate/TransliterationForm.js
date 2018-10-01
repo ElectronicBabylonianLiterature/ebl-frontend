@@ -26,7 +26,7 @@ class TransliteratioForm extends Component {
   }
 
   get editable () {
-    return this.props.fragmentService.allowedToTransliterate()
+    return this.props.fragmentService.isAllowedToTransliterate()
   }
 
   componentWillUnmount () {
