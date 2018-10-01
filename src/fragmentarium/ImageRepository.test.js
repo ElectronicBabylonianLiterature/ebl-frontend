@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
+import Auth from 'auth/Auth'
 import ImageRepository from './ImageRepository'
 
 const image = new Blob([''], { type: 'image/jpeg' })

@@ -1,7 +1,7 @@
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import ApiClient from 'http/ApiClient'
-import Auth from 'auth0/Auth'
+import Auth from 'auth/Auth'
 import FragmentRepository from './FragmentRepository'
 
 let apiClient

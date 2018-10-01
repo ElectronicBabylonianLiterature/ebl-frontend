@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import './App.css'
 
 import Header from './Header'
-import Callback from './auth0/Callback'
+import Callback from './auth/Callback'
 import Introduction from 'Introduction'
 import Dictionary from 'dictionary/search/Dictionary'
 import WordEditor from 'dictionary/editor/WordEditor'

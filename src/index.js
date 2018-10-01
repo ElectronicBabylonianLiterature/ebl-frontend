@@ -7,7 +7,7 @@ import App from './App'
 import ErrorBoundary from 'ErrorBoundary'
 import registerServiceWorker from './registerServiceWorker'
 
-import Auth from 'auth0/Auth'
+import Auth from 'auth/Auth'
 import ApiClient from 'http/ApiClient'
 import WordRepository from 'dictionary/WordRepository'
 import FragmentRepository from 'fragmentarium/FragmentRepository'

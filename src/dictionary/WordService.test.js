@@ -3,11 +3,8 @@ import WordService from './WordService'
 
 const resultStub = {}
 const auth = {
-  applicationScopes: {
-    readWords: 'read:words',
-    writeWords: 'write:words'
-  },
-  isAllowedTo: jest.fn()
+  isAllowedToReadWords: jest.fn(),
+  isAllowedToWriteWords: jest.fn()
 }
 const wordRepository = {
   find: jest.fn(),
@@ -21,8 +18,8 @@ const testData = [
   ['find', ['id'], wordRepository.find, resultStub],
   ['search', ['aklu'], wordRepository.search, resultStub],
   ['update', [{ _id: 'id' }], wordRepository.update, resultStub],
-  ['isAllowedToRead', [], auth.isAllowedTo, true, [auth.applicationScopes.readWords]],
-  ['isAllowedToWrite', [], auth.isAllowedTo, true, [auth.applicationScopes.writeWords]]
+  ['isAllowedToRead', [], auth.isAllowedToReadWords, true],
+  ['isAllowedToWrite', [], auth.isAllowedToWriteWords, true]
 ]
 
 testDelegation(wordService, testData)

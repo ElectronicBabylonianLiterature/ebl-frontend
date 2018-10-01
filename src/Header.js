@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import User from './auth0/User'
+import User from './auth/User'
 
 import './Header.css'
 

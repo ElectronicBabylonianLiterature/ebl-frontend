@@ -40,13 +40,11 @@ class FragmentService {
   }
 
   isAllowedToRead () {
-    const scope = this.auth.applicationScopes.readFragments
-    return this.auth.isAllowedTo(scope)
+    return this.auth.isAllowedToReadFragments()
   }
 
   isAllowedToTransliterate () {
-    const scope = this.auth.applicationScopes.transliterateFragments
-    return this.auth.isAllowedTo(scope)
+    return this.auth.isAllowedToTransliterateFragments()
   }
 }
 

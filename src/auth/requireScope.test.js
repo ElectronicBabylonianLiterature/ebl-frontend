@@ -11,18 +11,18 @@ let ComponentRequiringScope
 
 beforeEach(async () => {
   auth = new Auth()
-  jest.spyOn(auth, 'isAllowedTo')
+  jest.spyOn(auth, 'hasScope')
   ComponentRequiringScope = requireScope(InnerComponent, scope)
 })
 
 it('Renders inner component if use has the scope', () => {
-  auth.isAllowedTo.mockReturnValueOnce(true)
+  auth.hasScope.mockReturnValueOnce(true)
   const { container } = render(<ComponentRequiringScope auth={auth} />)
   expect(container).toHaveTextContent(content)
 })
 
 it('Does not render inner component if user does not have the scope', () => {
-  auth.isAllowedTo.mockReturnValueOnce(false)
+  auth.hasScope.mockReturnValueOnce(false)
   const { container } = render(<ComponentRequiringScope auth={auth} />)
   expect(container).not.toHaveTextContent(content)
 })

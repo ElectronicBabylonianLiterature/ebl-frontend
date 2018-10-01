@@ -6,6 +6,16 @@ import { advanceBy, advanceTo, clear } from 'jest-date-mock'
 const now = new Date(2018, 6, 6, 0, 0, 0)
 let auth
 
+function mockSession (accessToken, idToken, expiresAt, scopes) {
+  const session = {
+    access_token: accessToken,
+    id_token: idToken,
+    expires_at: expiresAt,
+    scopes: scopes
+  }
+  localStorage.getItem.mockImplementation(key => session[key] || null)
+}
+
 beforeEach(() => {
   advanceTo(now)
   auth = new Auth()
@@ -17,15 +27,6 @@ afterEach(clear)
 
 it('WebAuth is created', () => {
   expect(auth.auth0 instanceof auth0.WebAuth).toBeTruthy()
-})
-
-it('Has correct application scopes', () => {
-  expect(auth.applicationScopes).toEqual({
-    readWords: 'read:words',
-    writeWords: 'write:words',
-    readFragments: 'read:fragments',
-    transliterateFragments: 'transliterate:fragments'
-  })
 })
 
 describe('login', () => {
@@ -64,7 +65,7 @@ describe('logout', () => {
 describe('isAuthenticated', () => {
   describe('Token is valid', () => {
     it('Returns true', () => {
-      localStorage.getItem.mockReturnValueOnce(Date.now())
+      mockSession(null, null, Date.now(), null)
       advanceBy(-1)
       expect(auth.isAuthenticated()).toBe(true)
     })
@@ -72,7 +73,7 @@ describe('isAuthenticated', () => {
 
   describe('Token is expired', () => {
     it('Returns false', () => {
-      localStorage.getItem.mockReturnValueOnce(Date.now())
+      mockSession(null, null, Date.now(), null)
       advanceBy(1)
       expect(auth.isAuthenticated()).toBe(false)
     })
@@ -80,7 +81,7 @@ describe('isAuthenticated', () => {
 
   describe('Logged out', () => {
     it('Returns false', () => {
-      localStorage.getItem.mockReturnValueOnce(null)
+      mockSession(null, null, null, null)
       expect(auth.isAuthenticated()).toBe(false)
     })
   })
@@ -90,14 +91,14 @@ describe('getAccessToken', () => {
   describe('Token exists', () => {
     it('Returns the token', () => {
       const accessToken = 'token'
-      localStorage.getItem.mockReturnValueOnce(accessToken)
+      mockSession(accessToken, null, null, null)
       expect(auth.getAccessToken()).toBe(accessToken)
     })
   })
 
   describe('Token does not exist', () => {
     it('Throws an Error', () => {
-      localStorage.getItem.mockReturnValueOnce(null)
+      mockSession(null, null, null, null)
       expect(() => auth.getAccessToken()).toThrow()
     })
   })
@@ -158,16 +159,12 @@ describe('handleAuthentication', () => {
   })
 })
 
-describe('isAllowedTo', () => {
+describe('hasScope', () => {
   const scope = 'write:words'
   const scopes = `profile ${scope} read:words`
 
   function setupLocalStorage (scopes, time) {
-    const storage = {
-      expires_at: Date.now(),
-      scopes: scopes
-    }
-    localStorage.getItem.mockImplementation(key => storage[key])
+    mockSession(null, null, Date.now(), scopes)
     advanceBy(time)
   }
 
@@ -175,21 +172,21 @@ describe('isAllowedTo', () => {
     describe('Has scope', () => {
       it('Returns true', () => {
         setupLocalStorage(scopes, -1)
-        expect(auth.isAllowedTo(scope)).toBe(true)
+        expect(auth.hasScope(scope)).toBe(true)
       })
     })
 
     describe('Does not have scope', () => {
       it('Returns false', () => {
         setupLocalStorage(scopes, -1)
-        expect(auth.isAllowedTo('read:transliterations')).toBe(false)
+        expect(auth.hasScope('read:transliterations')).toBe(false)
       })
     })
 
     describe('Scopes does not exist', () => {
       it('Returns false', () => {
         setupLocalStorage(null, -1)
-        expect(auth.isAllowedTo(scope)).toBe(false)
+        expect(auth.hasScope(scope)).toBe(false)
       })
     })
   })
@@ -197,7 +194,7 @@ describe('isAllowedTo', () => {
   describe('Not authenticated', () => {
     it('Returns false', () => {
       setupLocalStorage(scopes, 1)
-      expect(auth.isAllowedTo(scope)).toBe(false)
+      expect(auth.hasScope(scope)).toBe(false)
     })
   })
 })

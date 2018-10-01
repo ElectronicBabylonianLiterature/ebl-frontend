@@ -17,13 +17,11 @@ class WordService {
   }
 
   isAllowedToRead () {
-    const scope = this.auth.applicationScopes.readWords
-    return this.auth.isAllowedTo(scope)
+    return this.auth.isAllowedToReadWords()
   }
 
   isAllowedToWrite () {
-    const scope = this.auth.applicationScopes.writeWords
-    return this.auth.isAllowedTo(scope)
+    return this.auth.isAllowedToWriteWords()
   }
 }
 

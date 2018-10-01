@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
-import Auth from './auth0/Auth'
+import Auth from './auth/Auth'
 
 let auth
 let element

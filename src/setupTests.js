@@ -15,6 +15,12 @@ const localStorageMock = {
   clear: jest.fn()
 }
 global.localStorage = localStorageMock
+afterEach(() => {
+  localStorageMock.getItem.mockClear()
+  localStorageMock.setItem.mockClear()
+  localStorageMock.removeItem.mockClear()
+  localStorageMock.clear.mockClear()
+})
 
 global.URL = {
   createObjectURL: jest.fn(),
