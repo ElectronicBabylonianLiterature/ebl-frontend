@@ -9,7 +9,7 @@ import WordRepository from 'dictionary/WordRepository'
 import FragmentRepository from 'fragmentarium/FragmentRepository'
 import ImageRepository from 'fragmentarium/ImageRepository'
 import FragmentService from 'fragmentarium/FragmentService'
-import WordService from 'dictionary/wordService'
+import WordService from 'dictionary/WordService'
 
 const routes = ['/', 'dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 
