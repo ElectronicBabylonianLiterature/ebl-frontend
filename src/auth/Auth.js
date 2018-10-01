@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js'
 import _ from 'lodash'
+import Session from './Session'
 
 const scopes = [
   'openid',
@@ -15,12 +16,11 @@ const applicationScopes = {
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')
 
-function setSession (authResult) {
-  const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime())
-  localStorage.setItem('access_token', authResult.accessToken)
-  localStorage.setItem('id_token', authResult.idToken)
-  localStorage.setItem('expires_at', expiresAt)
-  localStorage.setItem('scopes', authResult.scope || scopeString)
+function setSession (session) {
+  localStorage.setItem('access_token', session.accessToken)
+  localStorage.setItem('id_token', session.idToken)
+  localStorage.setItem('expires_at', JSON.stringify(session.expiresAt))
+  localStorage.setItem('scopes', session.scopes.join(' '))
 }
 
 function clearSession () {
@@ -32,12 +32,12 @@ function clearSession () {
 
 function getSession () {
   const expiresAt = localStorage.getItem('expires_at')
-  return {
-    access_token: localStorage.getItem('access_token'),
-    id_token: localStorage.getItem('id_token'),
-    expires_at: expiresAt && JSON.parse(expiresAt),
-    scopes: (localStorage.getItem('scopes') || '').split(' ')
-  }
+  return new Session(
+    localStorage.getItem('access_token'),
+    localStorage.getItem('id_token'),
+    expiresAt && JSON.parse(expiresAt),
+    (localStorage.getItem('scopes') || '').split(' ')
+  )
 }
 
 class Auth {
@@ -60,7 +60,12 @@ class Auth {
         if (err) {
           reject(err)
         } else {
-          setSession(authResult)
+          setSession(new Session(
+            authResult.accessToken,
+            authResult.idToken,
+            (1000 * authResult.expiresIn) + new Date().getTime(),
+            (authResult.scope || scopeString).split(' ')
+          ))
           resolve()
         }
       })
@@ -76,11 +81,11 @@ class Auth {
   }
 
   isAuthenticated () {
-    return new Date().getTime() < getSession().expires_at
+    return getSession().isAuthenticated()
   }
 
   getAccessToken () {
-    const accessToken = getSession().access_token
+    const accessToken = getSession().accessToken
 
     if (!accessToken) {
       throw new Error('No access token found')
@@ -89,28 +94,24 @@ class Auth {
     return accessToken
   }
 
-  hasScope (scope) {
-    return this.isAuthenticated() && getSession().scopes.includes(scope)
-  }
-
   isAllowedToReadWords () {
     const scope = applicationScopes.readWords
-    return this.hasScope(scope)
+    return getSession().hasScope(scope)
   }
 
   isAllowedToWriteWords () {
     const scope = applicationScopes.writeWords
-    return this.hasScope(scope)
+    return getSession().hasScope(scope)
   }
 
   isAllowedToReadFragments () {
     const scope = applicationScopes.readFragments
-    return this.hasScope(scope)
+    return getSession().hasScope(scope)
   }
 
   isAllowedToTransliterateFragments () {
     const scope = applicationScopes.transliterateFragments
-    return this.hasScope(scope)
+    return getSession().hasScope(scope)
   }
 }
 

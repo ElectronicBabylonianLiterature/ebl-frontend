@@ -65,7 +65,7 @@ describe('logout', () => {
 describe('isAuthenticated', () => {
   describe('Token is valid', () => {
     it('Returns true', () => {
-      mockSession(null, null, Date.now(), null)
+      mockSession('accessToken', null, Date.now(), null)
       advanceBy(-1)
       expect(auth.isAuthenticated()).toBe(true)
     })
@@ -73,7 +73,7 @@ describe('isAuthenticated', () => {
 
   describe('Token is expired', () => {
     it('Returns false', () => {
-      mockSession(null, null, Date.now(), null)
+      mockSession('accessToken', null, Date.now(), null)
       advanceBy(1)
       expect(auth.isAuthenticated()).toBe(false)
     })
@@ -155,46 +155,6 @@ describe('handleAuthentication', () => {
 
     it('Rejects with the error', async () => {
       await expect(auth.handleAuthentication()).rejects.toEqual(error)
-    })
-  })
-})
-
-describe('hasScope', () => {
-  const scope = 'write:words'
-  const scopes = `profile ${scope} read:words`
-
-  function setupLocalStorage (scopes, time) {
-    mockSession(null, null, Date.now(), scopes)
-    advanceBy(time)
-  }
-
-  describe('Is authenticated', () => {
-    describe('Has scope', () => {
-      it('Returns true', () => {
-        setupLocalStorage(scopes, -1)
-        expect(auth.hasScope(scope)).toBe(true)
-      })
-    })
-
-    describe('Does not have scope', () => {
-      it('Returns false', () => {
-        setupLocalStorage(scopes, -1)
-        expect(auth.hasScope('read:transliterations')).toBe(false)
-      })
-    })
-
-    describe('Scopes does not exist', () => {
-      it('Returns false', () => {
-        setupLocalStorage(null, -1)
-        expect(auth.hasScope(scope)).toBe(false)
-      })
-    })
-  })
-
-  describe('Not authenticated', () => {
-    it('Returns false', () => {
-      setupLocalStorage(scopes, 1)
-      expect(auth.hasScope(scope)).toBe(false)
     })
   })
 })
