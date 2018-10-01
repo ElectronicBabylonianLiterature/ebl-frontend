@@ -1,24 +1,21 @@
 import Auth from './Auth'
 import auth0 from 'auth0-js'
 import _ from 'lodash'
-import { advanceBy, advanceTo, clear } from 'jest-date-mock'
+import { advanceTo, clear } from 'jest-date-mock'
+import Session from './Session'
 
-const now = new Date(2018, 6, 6, 0, 0, 0)
+const now = new Date()
+let sessionStore
 let auth
-
-function mockSession (accessToken, idToken, expiresAt, scopes) {
-  const session = {
-    access_token: accessToken,
-    id_token: idToken,
-    expires_at: expiresAt,
-    scopes: scopes
-  }
-  localStorage.getItem.mockImplementation(key => session[key] || null)
-}
 
 beforeEach(() => {
   advanceTo(now)
-  auth = new Auth()
+  sessionStore = {
+    getSession: jest.fn(),
+    clearSession: jest.fn(),
+    setSession: jest.fn()
+  }
+  auth = new Auth(sessionStore)
   jest.spyOn(auth.auth0, 'parseHash')
   jest.spyOn(auth.auth0, 'authorize')
 })
@@ -26,33 +23,24 @@ beforeEach(() => {
 afterEach(clear)
 
 it('WebAuth is created', () => {
-  expect(auth.auth0 instanceof auth0.WebAuth).toBeTruthy()
+  expect(auth.auth0).toEqual(expect.any(auth0.WebAuth))
 })
 
-describe('login', () => {
-  beforeEach(() => {
-    jest.spyOn(auth.auth0, 'authorize').mockImplementationOnce(_.noop)
-    auth.login()
-  })
-
-  it('Calls WebAuth.authorize', () => {
-    expect(auth.auth0.authorize).toBeCalled()
-  })
+it('Login calls WebAuth.authorize', () => {
+  jest.spyOn(auth.auth0, 'authorize').mockImplementationOnce(_.noop)
+  auth.login()
+  expect(auth.auth0.authorize).toBeCalled()
 })
 
 describe('logout', () => {
-  const keys = ['access_token', 'id_token', 'expires_at', 'scopes']
-
   beforeEach(() => {
     jest.spyOn(auth.auth0, 'logout').mockImplementationOnce(_.noop)
     auth.logout()
   })
 
-  for (let key of keys) {
-    it(`Removes ${key} from local storage`, () => {
-      expect(localStorage.removeItem).toBeCalledWith(key)
-    })
-  }
+  it('Clears session', () => {
+    expect(sessionStore.clearSession).toBeCalled()
+  })
 
   it('Calls WebAuth.logout', () => {
     expect(auth.auth0.logout).toBeCalledWith({
@@ -62,46 +50,18 @@ describe('logout', () => {
   })
 })
 
-describe('isAuthenticated', () => {
-  describe('Token is valid', () => {
-    it('Returns true', () => {
-      mockSession('accessToken', null, Date.now(), null)
-      advanceBy(-1)
-      expect(auth.isAuthenticated()).toBe(true)
-    })
-  })
-
-  describe('Token is expired', () => {
-    it('Returns false', () => {
-      mockSession('accessToken', null, Date.now(), null)
-      advanceBy(1)
-      expect(auth.isAuthenticated()).toBe(false)
-    })
-  })
-
-  describe('Logged out', () => {
-    it('Returns false', () => {
-      mockSession(null, null, null, null)
-      expect(auth.isAuthenticated()).toBe(false)
-    })
-  })
+it('isAuthenticaed returns isAuthenticated from session', () => {
+  const session = new Session('accessToken', 'idToken', now.getTime(), [])
+  jest.spyOn(session, 'isAuthenticated').mockReturnValue(true)
+  sessionStore.getSession.mockReturnValue(session)
+  expect(auth.isAuthenticated()).toBe(true)
 })
 
-describe('getAccessToken', () => {
-  describe('Token exists', () => {
-    it('Returns the token', () => {
-      const accessToken = 'token'
-      mockSession(accessToken, null, null, null)
-      expect(auth.getAccessToken()).toBe(accessToken)
-    })
-  })
-
-  describe('Token does not exist', () => {
-    it('Throws an Error', () => {
-      mockSession(null, null, null, null)
-      expect(() => auth.getAccessToken()).toThrow()
-    })
-  })
+it('getAccessToken returns access toke', () => {
+  const accessToken = 'token'
+  const session = new Session(accessToken, 'idToken', now.getTime(), [])
+  sessionStore.getSession.mockReturnValue(session)
+  expect(auth.getAccessToken()).toEqual(accessToken)
 })
 
 describe('handleAuthentication', () => {
@@ -113,12 +73,12 @@ describe('handleAuthentication', () => {
       ...authResultConfig
     }
 
-    const expectedSession = {
-      access_token: authResult.accessToken,
-      id_token: authResult.idToken,
-      expires_at: JSON.stringify(now.getTime() + authResult.expiresIn * 1000),
-      scopes: scopes
-    }
+    const expectedSession = new Session(
+      authResult.accessToken,
+      authResult.idToken,
+      now.getTime() + authResult.expiresIn * 1000,
+      scopes.split(' ')
+    )
 
     beforeEach(async () => {
       jest.spyOn(auth.auth0, 'parseHash')
@@ -126,10 +86,8 @@ describe('handleAuthentication', () => {
       await auth.handleAuthentication()
     })
 
-    _.forEach(expectedSession, (value, key) => {
-      it(`Sets ${key} in local storage`, () => {
-        expect(localStorage.setItem).toBeCalledWith(key, value)
-      })
+    it('Sets session', () => {
+      expect(sessionStore.setSession).toBeCalledWith(expectedSession)
     })
   }
 

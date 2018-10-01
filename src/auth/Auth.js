@@ -16,27 +16,12 @@ const applicationScopes = {
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')
 
-function setSession (session) {
-  localStorage.setItem('access_token', session.accessToken)
-  localStorage.setItem('id_token', session.idToken)
-  localStorage.setItem('expires_at', JSON.stringify(session.expiresAt))
-  localStorage.setItem('scopes', session.scopes.join(' '))
-}
-
-function clearSession () {
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('id_token')
-  localStorage.removeItem('expires_at')
-  localStorage.removeItem('scopes')
-}
-
-function getSession () {
-  const expiresAt = localStorage.getItem('expires_at')
+function createSession (authResult) {
   return new Session(
-    localStorage.getItem('access_token'),
-    localStorage.getItem('id_token'),
-    expiresAt && JSON.parse(expiresAt),
-    (localStorage.getItem('scopes') || '').split(' ')
+    authResult.accessToken,
+    authResult.idToken,
+    (1000 * authResult.expiresIn) + new Date().getTime(),
+    (authResult.scope || scopeString).split(' ')
   )
 }
 
@@ -50,6 +35,10 @@ class Auth {
     scope: scopeString
   })
 
+  constructor (sessionStore) {
+    this.sessionStore = sessionStore
+  }
+
   login () {
     this.auth0.authorize()
   }
@@ -60,12 +49,8 @@ class Auth {
         if (err) {
           reject(err)
         } else {
-          setSession(new Session(
-            authResult.accessToken,
-            authResult.idToken,
-            (1000 * authResult.expiresIn) + new Date().getTime(),
-            (authResult.scope || scopeString).split(' ')
-          ))
+          const session = createSession(authResult)
+          this.sessionStore.setSession(session)
           resolve()
         }
       })
@@ -73,7 +58,7 @@ class Auth {
   }
 
   logout () {
-    clearSession()
+    this.sessionStore.clearSession()
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
@@ -81,37 +66,31 @@ class Auth {
   }
 
   isAuthenticated () {
-    return getSession().isAuthenticated()
+    return this.sessionStore.getSession().isAuthenticated()
   }
 
   getAccessToken () {
-    const accessToken = getSession().accessToken
-
-    if (!accessToken) {
-      throw new Error('No access token found')
-    }
-
-    return accessToken
+    return this.sessionStore.getSession().accessToken
   }
 
   isAllowedToReadWords () {
     const scope = applicationScopes.readWords
-    return getSession().hasScope(scope)
+    return this.sessionStore.getSession().hasScope(scope)
   }
 
   isAllowedToWriteWords () {
     const scope = applicationScopes.writeWords
-    return getSession().hasScope(scope)
+    return this.sessionStore.getSession().hasScope(scope)
   }
 
   isAllowedToReadFragments () {
     const scope = applicationScopes.readFragments
-    return getSession().hasScope(scope)
+    return this.sessionStore.getSession().hasScope(scope)
   }
 
   isAllowedToTransliterateFragments () {
     const scope = applicationScopes.transliterateFragments
-    return getSession().hasScope(scope)
+    return this.sessionStore.getSession().hasScope(scope)
   }
 }
 

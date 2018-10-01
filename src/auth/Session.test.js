@@ -1,7 +1,7 @@
 import { advanceBy, advanceTo, clear } from 'jest-date-mock'
 import Session from './Session'
 
-const now = Date.now()
+const now = new Date()
 
 beforeEach(() => {
   advanceTo(now)
@@ -10,7 +10,7 @@ beforeEach(() => {
 afterEach(clear)
 
 test('constructor', () => {
-  const expiresAt = Date.now()
+  const expiresAt = now.getTime()
   const scopes = ['scope']
   const session = new Session('accessToken', 'idToken', expiresAt, scopes)
   expect(session.accessToken).toEqual('accessToken')
@@ -21,7 +21,7 @@ test('constructor', () => {
 
 describe('isAuthenticated', () => {
   describe('Logged in', () => {
-    const session = new Session('accessToken', 'idToken', now, [])
+    const session = new Session('accessToken', 'idToken', now.getTime(), [])
 
     it('Returns true if token is valid', () => {
       advanceBy(-1)
@@ -36,7 +36,7 @@ describe('isAuthenticated', () => {
 
   describe('Logged out', () => {
     it('Returns false', () => {
-      const session = new Session(null, null, null, null)
+      const session = new Session('', '', 0, [])
       expect(session.isAuthenticated()).toBe(false)
     })
   })
@@ -45,7 +45,7 @@ describe('isAuthenticated', () => {
 describe('hasScope', () => {
   const scope = 'write:words'
   const scopes = `profile ${scope} read:words`
-  const session = new Session('accessToken', 'idToken', Date.now(), scopes)
+  const session = new Session('accessToken', 'idToken', now.getTime(), scopes)
 
   describe('Is authenticated', () => {
     describe('Has scope', () => {

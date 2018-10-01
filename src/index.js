@@ -7,6 +7,7 @@ import App from './App'
 import ErrorBoundary from 'ErrorBoundary'
 import registerServiceWorker from './registerServiceWorker'
 
+import SessionStore from 'auth/SessionStore'
 import Auth from 'auth/Auth'
 import ApiClient from 'http/ApiClient'
 import WordRepository from 'dictionary/WordRepository'
@@ -19,7 +20,7 @@ Promise.config({
   cancellation: true
 })
 
-const auth = new Auth()
+const auth = new Auth(new SessionStore())
 const apiClient = new ApiClient(auth)
 const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)

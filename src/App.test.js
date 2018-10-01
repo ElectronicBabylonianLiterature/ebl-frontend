@@ -10,12 +10,13 @@ import FragmentRepository from 'fragmentarium/FragmentRepository'
 import ImageRepository from 'fragmentarium/ImageRepository'
 import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
+import SessionStore from './auth/SessionStore'
 
 const routes = ['/', 'dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 
 routes.forEach(route => {
   it(`${route} renders without crashing`, () => {
-    const auth = new Auth()
+    const auth = new Auth(new SessionStore())
     const apiClient = new ApiClient(auth)
     const wordRepository = new WordRepository(apiClient)
     const fragmentRepository = new FragmentRepository(apiClient)
