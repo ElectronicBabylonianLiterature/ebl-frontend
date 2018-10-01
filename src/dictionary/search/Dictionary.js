@@ -17,13 +17,13 @@ class Dictionary extends Component {
           <Breadcrumbs section='Dictionary' />
           <h2>Dictionary</h2>
         </header>
-        {this.props.auth.isAllowedTo('read:words')
+        {this.props.wordService.allowedToRead()
           ? (
             <Fragment>
               <header className='Dictionary-search'>
                 <WordSearchForm query={query} />
               </header>
-              <WordSearch query={query} wordRepository={this.props.wordRepository} />
+              <WordSearch query={query} wordService={this.props.wordService} />
             </Fragment>
           )
           : <p>You do not have the rights to access the dictionary.</p>

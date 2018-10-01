@@ -24,13 +24,13 @@ class WordEditor extends Component {
   }
 
   get disabled () {
-    return this.state.saving || !this.props.auth.isAllowedTo('write:words')
+    return this.state.saving || !this.props.wordService.allowedToWrite()
   }
 
   updateWord = word => {
     this.updatePromise.cancel()
     this.setState({ word: this.state.word, error: null, saving: true })
-    this.updatePromise = this.props.wordRepository
+    this.updatePromise = this.props.wordService
       .update(word)
       .then(() => this.setState({ word: word, error: null, saving: false }))
       .catch(error => {
@@ -60,5 +60,5 @@ class WordEditor extends Component {
 
 export default withData(
   WordEditor,
-  props => props.wordRepository.find(props.match.params.id)
+  props => props.wordService.find(props.match.params.id)
 )

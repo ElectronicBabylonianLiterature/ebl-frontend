@@ -11,14 +11,14 @@ import FragmentView from 'fragmentarium//transliterate/FragmentView'
 import Fragmentarium from 'fragmentarium/Fragmentarium'
 import ErrorBoundary from 'ErrorBoundary'
 
-function App ({ auth, wordRepository, fragmentService }) {
+function App ({ auth, wordService, fragmentService }) {
   return (
     <Fragment>
       <Header auth={auth} />
       <ErrorBoundary>
         <Switch>
-          <Route path='/dictionary/:id' render={props => <WordEditor auth={auth} wordRepository={wordRepository} {...props} />} />
-          <Route path='/dictionary' render={props => <Dictionary auth={auth} wordRepository={wordRepository} {...props} />} />
+          <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
+          <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
           <Route path='/fragmentarium/:id' render={props => <FragmentView fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium' render={props => <Fragmentarium fragmentService={fragmentService} {...props} />} />
           <Route path='/callback' render={props => <Callback auth={auth} {...props} />} />

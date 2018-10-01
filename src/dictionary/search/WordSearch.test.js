@@ -7,26 +7,26 @@ import { factory } from 'factory-girl'
 
 const query = 'lem[ma?]'
 let words
-let wordRepository
+let wordService
 let element
 
 function renderWordSearch () {
   element = render(<MemoryRouter>
-    <WordSearch query={query} wordRepository={wordRepository} />
+    <WordSearch query={query} wordService={wordService} />
   </MemoryRouter>)
 }
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  wordRepository = {
+  wordService = {
     search: jest.fn()
   }
-  wordRepository.search.mockReturnValueOnce(Promise.resolve(words))
+  wordService.search.mockReturnValueOnce(Promise.resolve(words))
   renderWordSearch()
 })
 
 it('Searches with the query', () => {
-  expect(wordRepository.search).toBeCalledWith(query)
+  expect(wordService.search).toBeCalledWith(query)
 })
 
 it('Displays results', async () => {

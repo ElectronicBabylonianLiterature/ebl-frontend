@@ -20,7 +20,7 @@ function WordSearch ({ data }) {
 
 export default withData(
   WordSearch,
-  props => props.wordRepository.search(props.query),
+  props => props.wordService.search(props.query),
   {
     shouldUpdate: (prevProps, props) => prevProps.query !== props.query,
     filter: props => !_.isEmpty(props.query),

@@ -9,26 +9,24 @@ import { factory } from 'factory-girl'
 
 const errorMessage = 'error'
 let result
-let auth
-let wordRepository
+let wordService
 
 beforeEach(async () => {
   result = await factory.build('verb')
-  auth = {
-    isAllowedTo: jest.fn()
-  }
-  wordRepository = {
+  wordService = {
     find: jest.fn(),
-    update: jest.fn()
+    update: jest.fn(),
+    allowedToRead: _.stubTrue(),
+    allowedToWrite: jest.fn()
   }
-  wordRepository.find.mockReturnValueOnce(Promise.resolve(result))
+  wordService.find.mockReturnValueOnce(Promise.resolve(result))
 })
 
 describe('Fecth word', () => {
   it('Queries the word from API', async () => {
     await renderWithRouter()
 
-    expect(wordRepository.find).toBeCalledWith('id')
+    expect(wordService.find).toBeCalledWith('id')
   })
 
   it('Displays result on successfull query', async () => {
@@ -40,16 +38,16 @@ describe('Fecth word', () => {
 
 describe('Update word', () => {
   it('Posts to API on submit', async () => {
-    wordRepository.update.mockReturnValueOnce(Promise.resolve())
+    wordService.update.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter()
 
     await submitForm(element, 'form')
 
-    expect(wordRepository.update).toHaveBeenCalledWith(result)
+    expect(wordService.update).toHaveBeenCalledWith(result)
   })
 
   it('Displays error message failure', async () => {
-    wordRepository.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    wordService.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     const element = await renderWithRouter()
 
     await submitForm(element, 'form')
@@ -60,7 +58,7 @@ describe('Update word', () => {
   it('Cancels promise on unmount', async () => {
     const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
-    wordRepository.update.mockReturnValueOnce(promise)
+    wordService.update.mockReturnValueOnce(promise)
     const element = await renderWithRouter()
     submitForm(element, 'form')
     element.unmount()
@@ -79,11 +77,11 @@ async function renderWithRouter (isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
-  auth.isAllowedTo.mockReturnValueOnce(isAllowedTo)
+  wordService.allowedToWrite.mockReturnValueOnce(isAllowedTo)
 
   const element = render(
     <MemoryRouter>
-      <WordEditor match={match} auth={auth} wordRepository={wordRepository} />
+      <WordEditor match={match} wordService={wordService} />
     </MemoryRouter>
   )
   await waitForElement(() => element.getByText(result.lemma.join(' ')))
