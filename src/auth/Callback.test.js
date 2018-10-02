@@ -1,14 +1,13 @@
 import React from 'react'
 import { render } from 'react-testing-library'
-import { Router, withRouter } from 'react-router-dom'
+import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
-import createMemoryHistory from 'history/createMemoryHistory'
 import Callback from './Callback'
 
 const CallbackWithRouter = withRouter(Callback)
 
 let auth
-let history
+let element
 
 beforeEach(() => {
   auth = {
@@ -29,9 +28,7 @@ keys.forEach(key => {
       expect(auth.handleAuthentication).toHaveBeenCalled()
     })
 
-    it('Redirects to home', () => {
-      expect(history.replace).toHaveBeenCalledWith('/')
-    })
+    itRedirectsToHome()
   })
 })
 
@@ -41,9 +38,7 @@ describe('Error', () => {
     renderCallback('access_token=token')
   })
 
-  it('Redirects to home', () => {
-    expect(history.replace).toHaveBeenCalledWith('/')
-  })
+  itRedirectsToHome()
 })
 
 describe('Hash does not contain token', () => {
@@ -52,16 +47,23 @@ describe('Hash does not contain token', () => {
   it('Does not handle authentication', () => {
     expect(auth.handleAuthentication).not.toHaveBeenCalled()
   })
+
+  itRedirectsToHome()
 })
 
-function renderCallback (hash) {
-  history = createMemoryHistory({
-    initialEntries: [`/#${hash}`]
+function itRedirectsToHome () {
+  it('Redirects to home', () => {
+    expect(element.container).toHaveTextContent('Home')
   })
-  jest.spyOn(history, 'replace')
-  render(
-    <Router history={history}>
-      <CallbackWithRouter auth={auth} />
-    </Router>
+}
+
+function renderCallback (hash) {
+  element = render(
+    <MemoryRouter initialEntries={[`/callback#${hash}`]}>
+      <Switch>
+        <Route path='/callback' render={() => <CallbackWithRouter auth={auth} />} />
+        <Route path='/' render={() => <div>Home</div>} />
+      </Switch>
+    </MemoryRouter>
   )
 }
