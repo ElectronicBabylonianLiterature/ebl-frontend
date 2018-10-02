@@ -48,7 +48,7 @@ class Auth {
     return new Promise((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
         if (err) {
-          reject(err)
+          reject(err instanceof Error ? err : new Error(err.error))
         } else {
           const session = createSession(authResult)
           this.sessionStore.setSession(session)

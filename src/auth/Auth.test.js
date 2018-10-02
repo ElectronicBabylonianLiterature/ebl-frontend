@@ -89,17 +89,19 @@ describe('handleAuthentication', () => {
   })
 
   describe('Hash is parsed with error', () => {
-    const message = 'error'
-    const error = new Error(message)
+    const error = {
+      error: 'invalid_hash',
+      errorDescription: 'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property'
+    }
     beforeEach(() => {
       jest.spyOn(auth.auth0, 'parseHash')
         .mockImplementationOnce(callback =>
-          callback(new Error(message), null)
+          callback(error, null)
         )
     })
 
     it('Rejects with the error', async () => {
-      await expect(auth.handleAuthentication()).rejects.toEqual(error)
+      await expect(auth.handleAuthentication()).rejects.toEqual(new Error(error.error))
     })
   })
 })
