@@ -1,3 +1,4 @@
+/* global Raven */
 import React from 'react'
 import { render } from 'react-testing-library'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
@@ -33,9 +34,15 @@ keys.forEach(key => {
 })
 
 describe('Error', () => {
+  const error = new Error('error')
+
   beforeEach(() => {
-    auth.handleAuthentication.mockReturnValueOnce(Promise.reject(new Error('error')))
+    auth.handleAuthentication.mockReturnValueOnce(Promise.reject(error))
     renderCallback('access_token=token')
+  })
+
+  it('Reports error', () => {
+    expect(Raven.captureException).toHaveBeenCalledWith(error)
   })
 
   itRedirectsToHome()
