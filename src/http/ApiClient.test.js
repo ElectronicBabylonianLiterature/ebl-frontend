@@ -1,4 +1,3 @@
-import { CancellationError } from 'bluebird'
 import ApiClient from './ApiClient'
 
 const path = '/resource'
