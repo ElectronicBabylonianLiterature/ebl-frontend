@@ -7,7 +7,7 @@ const apiClient = {
   fetchJson: jest.fn(),
   postJson: jest.fn()
 }
-let wordRepository = new WordRepository(apiClient)
+const wordRepository = new WordRepository(apiClient)
 const wordId = '123+123'
 const query = 'the king'
 const word = {
