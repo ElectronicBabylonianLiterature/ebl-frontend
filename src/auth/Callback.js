@@ -1,19 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Spinner from 'Spinner'
 
-class Callback extends Component {
-  handleAuthentication (nextState, replace) {
-    if (/access_token|id_token|error/.test(nextState.location.hash)) {
-      this.props.auth.handleAuthentication()
-        .then(() => nextState.history.replace('/'))
-        .catch(() => nextState.history.replace('/'))
-    }
+function Callback ({ location, history, auth }) {
+  if (/access_token|id_token|error/.test(location.hash)) {
+    auth.handleAuthentication()
+      .then(() => history.replace('/'))
+      .catch(() => history.replace('/'))
   }
 
-  render () {
-    this.handleAuthentication(this.props)
-    return <Spinner />
-  }
+  return <Spinner />
 }
 
 export default Callback
