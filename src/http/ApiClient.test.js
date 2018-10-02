@@ -69,10 +69,12 @@ describe('fetchJson', () => {
   })
 
   it('Can be cancelled', async () => {
+    setUpSuccessResponse()
     const callback = jest.fn()
-    const promise = apiClient.fetchJson(path, true).then(callback).catch(callback)
-    promise.cancel()
-    await expect(promise).rejects.toEqual(expect.any(CancellationError))
+    const promise = apiClient.fetchJson(path, true)
+    const waitable = promise.then(() => null)
+    promise.then(callback).catch(callback).cancel()
+    await waitable
     expect(callback).not.toHaveBeenCalled()
   })
 })
@@ -125,9 +127,10 @@ describe('postJson', () => {
   it('Can be cancelled', async () => {
     setUpSuccessResponse()
     const callback = jest.fn()
-    const promise = apiClient.postJson(path, json).then(callback).catch(callback)
-    promise.cancel()
-    await expect(promise).rejects.toEqual(expect.anything())
+    const promise = apiClient.postJson(path, json)
+    const waitable = promise.then(() => null)
+    promise.then(callback).catch(callback).cancel()
+    await waitable
     expect(callback).not.toHaveBeenCalled()
   })
 })

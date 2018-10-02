@@ -16,29 +16,40 @@ describe('saveSession', () => {
 
   _.forEach(localStorageItems, (value, key) => {
     it(`Sets ${key} in local storage`, () => {
-      expect(localStorage.setItem).toBeCalledWith(key, value)
+      expect(localStorage.getItem(key)).toEqual(value)
     })
   })
 })
 
+
+
 describe('clearSession', () => {
-  beforeEach(() => sessionStore.clearSession(session))
+  beforeEach(() => {
+    setItems()
+    sessionStore.clearSession(session)
+  })
 
   _.forEach(localStorageItems, (value, key) => {
     it(`Removes ${key} from local storage`, () => {
-      expect(localStorage.removeItem).toBeCalledWith(key)
+      expect(localStorage.getItem(key)).toBeNull()
     })
   })
 })
 
 describe('getSession', () => {
   it('Returns session if token exists', () => {
-    localStorage.getItem.mockImplementation(key => localStorageItems[key] || null)
+    setItems()
     expect(sessionStore.getSession()).toEqual(session)
   })
 
   it('Returns null session if token does not exist', () => {
-    localStorage.getItem.mockReturnValue(null)
     expect(sessionStore.getSession()).toEqual(new Session('', '', 0, []))
   })
 })
+
+
+function setItems() {
+  _.forEach(localStorageItems, (value, key) => {
+    localStorage.setItem(key, value)
+  })
+}

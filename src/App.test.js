@@ -24,7 +24,6 @@ routes.forEach(route => {
     const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
     const wordService = new WordService(auth, wordRepository)
 
-    localStorage.getItem.mockReturnValue(null)
     jest.spyOn(fragmentRepository, 'statistics').mockReturnValueOnce(factory.build('statistics'))
 
     render(<MemoryRouter initialEntries={[route]}>

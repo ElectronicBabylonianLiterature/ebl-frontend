@@ -8,20 +8,6 @@ import './fragmentFixtures'
 
 global.fetch = require('jest-fetch-mock')
 
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn()
-}
-global.localStorage = localStorageMock
-afterEach(() => {
-  localStorageMock.getItem.mockClear()
-  localStorageMock.setItem.mockClear()
-  localStorageMock.removeItem.mockClear()
-  localStorageMock.clear.mockClear()
-})
-
 global.URL = {
   createObjectURL: jest.fn(),
   revokeObjectURL: jest.fn()
@@ -53,3 +39,5 @@ afterEach(() => {
 bluebird.config({
   cancellation: true
 })
+
+afterEach(() => localStorage.clear())
