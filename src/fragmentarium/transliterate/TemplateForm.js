@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import _ from 'lodash'
 
-import HelpTrigger from 'HelpTrigger'
+import HelpTrigger from 'common/HelpTrigger'
 import TemplateHelp from './TemplateHelp'
 
 function parseSide (side) {

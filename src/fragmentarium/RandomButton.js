@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import Promise from 'bluebird'
-import ErrorAlert from 'ErrorAlert'
-import Spinner from 'Spinner'
+import ErrorAlert from 'common/ErrorAlert'
+import Spinner from 'common/Spinner'
 import { withRouter } from 'react-router-dom'
 
 class RandomButton extends Component {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import Promise from 'bluebird'
-import Spinner from 'Spinner'
-import ErrorAlert from 'ErrorAlert'
-import ErrorBoundary from 'ErrorBoundary'
+import Spinner from 'common/Spinner'
+import ErrorAlert from 'common/ErrorAlert'
+import ErrorBoundary from 'common/ErrorBoundary'
 
 const defaultConfig = {
   shouldUpdate: () => false,

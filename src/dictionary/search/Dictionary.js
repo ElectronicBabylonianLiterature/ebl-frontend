@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import queryString from 'query-string'
 
-import Breadcrumbs from 'Breadcrumbs'
+import Breadcrumbs from 'common/Breadcrumbs'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 

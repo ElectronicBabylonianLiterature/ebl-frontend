@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image } from 'react-bootstrap'
-import ExternalLink from 'ExternalLink'
+import ExternalLink from 'common/ExternalLink'
 import withData from 'http/withData'
 
 class BlobImage extends Component {

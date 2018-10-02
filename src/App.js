@@ -9,7 +9,7 @@ import Dictionary from 'dictionary/search/Dictionary'
 import WordEditor from 'dictionary/editor/WordEditor'
 import FragmentView from 'fragmentarium/transliterate/FragmentView'
 import Fragmentarium from 'fragmentarium/search/Fragmentarium'
-import ErrorBoundary from 'ErrorBoundary'
+import ErrorBoundary from 'common/ErrorBoundary'
 
 function App ({ auth, wordService, fragmentService }) {
   return (

@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import * as Promise from 'bluebird'
 import './index.css'
 import App from './App'
-import ErrorBoundary from 'ErrorBoundary'
+import ErrorBoundary from 'common/ErrorBoundary'
 import registerServiceWorker from './registerServiceWorker'
 
 import SessionStore from 'auth/SessionStore'

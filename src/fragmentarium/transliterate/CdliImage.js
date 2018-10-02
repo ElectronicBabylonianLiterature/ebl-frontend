@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import ExternalLink from 'ExternalLink'
+import ExternalLink from 'common/ExternalLink'
 
 export default function CdliImage ({ cdliNumber }) {
   const filename = `${cdliNumber}.jpg`

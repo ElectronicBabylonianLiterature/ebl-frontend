@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import Breadcrumbs from 'Breadcrumbs'
+import Breadcrumbs from 'common/Breadcrumbs'
 import NumberSearchForm from 'fragmentarium/search/NumberSearchForm'
 import NumberSearch from 'fragmentarium/search/NumberSearch'
 import TransliterationSearchForm from 'fragmentarium/search/TransliterationSearchForm'

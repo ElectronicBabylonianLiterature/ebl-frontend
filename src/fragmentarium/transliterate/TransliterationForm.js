@@ -3,7 +3,7 @@ import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 're
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
-import ErrorAlert from 'ErrorAlert'
+import ErrorAlert from 'common/ErrorAlert'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {

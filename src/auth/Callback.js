@@ -1,7 +1,7 @@
 /* global Raven */
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import Spinner from 'Spinner'
+import Spinner from 'common/Spinner'
 
 const redirectTarget = '/'
 

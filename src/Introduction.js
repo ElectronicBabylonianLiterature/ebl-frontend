@@ -1,5 +1,5 @@
 import React from 'react'
-import ExternalLink from 'ExternalLink'
+import ExternalLink from 'common/ExternalLink'
 
 import eblChart from './ebl_chart.jpg'
 

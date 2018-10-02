@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-import HelpTrigger from 'HelpTrigger'
+import HelpTrigger from 'common/HelpTrigger'
 
 function SearchHelp () {
   return (

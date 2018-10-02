@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Breadcrumbs from 'Breadcrumbs'
+import Breadcrumbs from 'common/Breadcrumbs'
 import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'

@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 
-import Breadcrumbs from 'Breadcrumbs'
+import Breadcrumbs from 'common/Breadcrumbs'
 import WordForm from './WordForm'
-import Spinner from 'Spinner'
-import ErrorAlert from 'ErrorAlert'
+import Spinner from 'common/Spinner'
+import ErrorAlert from 'common/ErrorAlert'
 import withData from 'http/withData'
 
 class WordEditor extends Component {
