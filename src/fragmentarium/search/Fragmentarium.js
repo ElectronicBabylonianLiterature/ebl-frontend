@@ -7,7 +7,7 @@ import TransliterationSearchForm from 'fragmentarium/search/TransliterationSearc
 import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import RandomButton from 'fragmentarium/RandomButton'
 import PioneersButton from 'fragmentarium/PioneersButton'
-import Statistics from 'fragmentarium/Statistics'
+import Statistics from 'fragmentarium/search/Statistics'
 
 import './Fragmentarium.css'
 
