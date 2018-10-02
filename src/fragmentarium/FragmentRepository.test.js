@@ -1,134 +1,30 @@
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth/Auth'
+import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
 
-let apiClient
-let fragmentRepository
-let promise
-let fragment
+const apiClient = {
+  fetchJson: jest.fn(),
+  postJson: jest.fn()
+}
+const fragmentRepository = new FragmentRepository(apiClient)
 
-beforeEach(async () => {
-  apiClient = new ApiClient(new Auth())
-  fragmentRepository = new FragmentRepository(apiClient)
-  fragment = await factory.build('fragment')
-})
+const fragmentId = 'K+1234'
+const transliterationQuery = 'kur\nkur'
+const transliteration = 'transliteration'
+const notes = 'notes'
+const resultStub = {}
 
-describe('statistics', () => {
-  let statistics
+const testData = [
+  ['statistics', [], apiClient.fetchJson, resultStub, ['/statistics', false], Promise.resolve(resultStub)],
+  ['find', [fragmentId], apiClient.fetchJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)],
+  ['random', [], apiClient.fetchJson, [resultStub], ['/fragments?random=true', true], Promise.resolve([resultStub])],
+  ['interesting', [], apiClient.fetchJson, [resultStub], ['/fragments?interesting=true', true], Promise.resolve([resultStub])],
+  ['searchNumber', [fragmentId], apiClient.fetchJson, resultStub, [`/fragments?number=${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)],
+  ['searchTransliteration', [transliterationQuery], apiClient.fetchJson, [resultStub], [`/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`, true], Promise.resolve([resultStub])],
+  ['updateTransliteration', [fragmentId, transliteration, notes], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}`, {
+    transliteration,
+    notes
+  }], Promise.resolve(resultStub)]
+]
 
-  beforeEach(async () => {
-    statistics = await factory.build('statistics')
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(statistics))
-    promise = fragmentRepository.statistics()
-  })
-
-  it('Queries the statistics', () => {
-    expect(apiClient.fetchJson).toBeCalledWith('/statistics', false)
-  })
-
-  it('Resolves to statistics', async () => {
-    await expect(promise).resolves.toEqual(statistics)
-  })
-})
-
-describe('find', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(fragment))
-    promise = fragmentRepository.find(fragment._id)
-  })
-
-  it('Queries the fragment', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/fragments/${encodeURIComponent(fragment._id)}`, true)
-  })
-
-  it('Resolves to fragment', async () => {
-    await expect(promise).resolves.toEqual(fragment)
-  })
-})
-
-describe('random', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
-    promise = fragmentRepository.random()
-  })
-
-  it('Queries random fragments', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?random=true`, true)
-  })
-
-  it('Resolves to fragments', async () => {
-    await expect(promise).resolves.toEqual([fragment])
-  })
-})
-
-describe('interesting', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
-    promise = fragmentRepository.interesting()
-  })
-
-  it('Queries interesting fragments', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?interesting=true`, true)
-  })
-
-  it('Resolves to fragments', async () => {
-    await expect(promise).resolves.toEqual([fragment])
-  })
-})
-
-describe('searchNumber', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
-    promise = fragmentRepository.searchNumber(fragment.cdliNumber)
-  })
-
-  it('Queries fragments', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?number=${encodeURIComponent(fragment.cdliNumber)}`, true)
-  })
-
-  it('Resolves to fragments', async () => {
-    await expect(promise).resolves.toEqual([fragment])
-  })
-})
-
-describe('searchTransliteration', () => {
-  const query = 'kur\nkur'
-
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([fragment]))
-    promise = fragmentRepository.searchTransliteration(query)
-  })
-
-  it('Queries fragments', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/fragments?transliteration=${encodeURIComponent(query)}`, true)
-  })
-
-  it('Resolves to fragments', async () => {
-    await expect(promise).resolves.toEqual([fragment])
-  })
-})
-
-describe('updateTransliteration', () => {
-  const number = 'K.1'
-  const transliteration = 'transliteration'
-  const notes = 'notes'
-  const result = 'ok'
-
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve(result))
-    promise = fragmentRepository.updateTransliteration(number, transliteration, notes)
-  })
-
-  it('Posts the fragment', () => {
-    expect(apiClient.postJson).toBeCalledWith(`/fragments/${encodeURIComponent(number)}`, {
-      transliteration,
-      notes
-    })
-  })
-
-  it('Resolves', async () => {
-    await expect(promise).resolves.toBeDefined()
-  })
-})
+testDelegation(fragmentRepository, testData)

@@ -1,65 +1,24 @@
-import { factory } from 'factory-girl'
+
 import Promise from 'bluebird'
-import ApiClient from 'http/ApiClient'
-import Auth from 'auth/Auth'
+import { testDelegation } from 'testHelpers'
 import WordRepository from './WordRepository'
 
-let apiClient
-let wordRepository
-let promise
-let word
+const apiClient = {
+  fetchJson: jest.fn(),
+  postJson: jest.fn()
+}
+let wordRepository = new WordRepository(apiClient)
+const wordId = '123+123'
+const query = 'the king'
+const word = {
+  _id: wordId
+}
+const resultStub = {}
 
-beforeEach(async () => {
-  apiClient = new ApiClient(new Auth())
-  wordRepository = new WordRepository(apiClient)
-  word = await factory.build('word')
-})
+const testData = [
+  ['find', [wordId], apiClient.fetchJson, resultStub, [`/words/${encodeURIComponent(wordId)}`, true], Promise.resolve(resultStub)],
+  ['search', [query], apiClient.fetchJson, resultStub, [`/words?query=${encodeURIComponent(query)}`, true], Promise.resolve(resultStub)],
+  ['update', [word], apiClient.postJson, resultStub, [`/words/${encodeURIComponent(word._id)}`, word], Promise.resolve(resultStub)]
+]
 
-describe('find', () => {
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve(word))
-    promise = wordRepository.find(word._id)
-  })
-
-  it('Queries the word', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/words/${encodeURIComponent(word._id)}`, true)
-  })
-
-  it('Resolves to word', async () => {
-    await expect(promise).resolves.toEqual(word)
-  })
-})
-
-describe('search', () => {
-  const query = 'the king'
-
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchJson').mockReturnValueOnce(Promise.resolve([word]))
-    promise = wordRepository.search(query)
-  })
-
-  it('Queries words', () => {
-    expect(apiClient.fetchJson).toBeCalledWith(`/words?query=${encodeURIComponent(query)}`, true)
-  })
-
-  it('Resolves to words', async () => {
-    await expect(promise).resolves.toEqual([word])
-  })
-})
-
-describe('update', () => {
-  const result = 'ok'
-
-  beforeEach(async () => {
-    jest.spyOn(apiClient, 'postJson').mockReturnValueOnce(Promise.resolve(result))
-    promise = wordRepository.update(word)
-  })
-
-  it('Posts the fragment', () => {
-    expect(apiClient.postJson).toBeCalledWith(`/words/${encodeURIComponent(word._id)}`, word)
-  })
-
-  it('Resolves', async () => {
-    await expect(promise).resolves.toBeDefined()
-  })
-})
+testDelegation(wordRepository, testData)

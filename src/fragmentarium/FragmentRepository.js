@@ -8,7 +8,7 @@ class FragmentRepository {
   }
 
   find (number) {
-    return this.apiClient.fetchJson(`/fragments/${number}`, true)
+    return this.apiClient.fetchJson(`/fragments/${encodeURIComponent(number)}`, true)
   }
 
   random () {
