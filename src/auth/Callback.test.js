@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-testing-library'
-import { MemoryRouter, Router, withRouter } from 'react-router-dom'
+import { Router, withRouter } from 'react-router-dom'
+import Promise from 'bluebird'
 import createMemoryHistory from 'history/createMemoryHistory'
 import Callback from './Callback'
 
@@ -13,7 +14,6 @@ beforeEach(() => {
   auth = {
     handleAuthentication: jest.fn()
   }
-  history = createMemoryHistory()
 })
 
 const keys = ['access_token', 'id_token', 'error']
@@ -21,33 +21,47 @@ const keys = ['access_token', 'id_token', 'error']
 keys.forEach(key => {
   describe(`Hash contains ${key}`, () => {
     beforeEach(() => {
-      history.replace(`/#${key}=token`)
-      jest.spyOn(history, 'replace')
       auth.handleAuthentication.mockReturnValueOnce(Promise.resolve())
-      render(
-        <Router history={history}>
-          <CallbackWithRouter auth={auth} />
-        </Router>
-      )
+      renderCallback(`${key}=token`)
     })
 
     it('Handles authentication', () => {
       expect(auth.handleAuthentication).toHaveBeenCalled()
     })
+
+    it('Redirects to home', () => {
+      expect(history.replace).toHaveBeenCalledWith('/')
+    })
+  })
+})
+
+describe('Error', () => {
+  beforeEach(() => {
+    auth.handleAuthentication.mockReturnValueOnce(Promise.reject(new Error('error')))
+    renderCallback('access_token=token')
+  })
+
+  it('Redirects to home', () => {
+    expect(history.replace).toHaveBeenCalledWith('/')
   })
 })
 
 describe('Hash does not contain token', () => {
-  beforeEach(() => {
-    history.replace(`/#no-token`)
-    render(
-      <MemoryRouter>
-        <CallbackWithRouter auth={auth} />
-      </MemoryRouter>
-    )
-  })
+  beforeEach(() => renderCallback('no-token'))
 
-  it('Handles authentication', () => {
+  it('Does not handle authentication', () => {
     expect(auth.handleAuthentication).not.toHaveBeenCalled()
   })
 })
+
+function renderCallback (hash) {
+  history = createMemoryHistory({
+    initialEntries: [`/#${hash}`]
+  })
+  jest.spyOn(history, 'replace')
+  render(
+    <Router history={history}>
+      <CallbackWithRouter auth={auth} />
+    </Router>
+  )
+}

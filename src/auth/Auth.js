@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js'
 import _ from 'lodash'
+import Promise from 'bluebird'
 import Session from './Session'
 
 const scopes = [
