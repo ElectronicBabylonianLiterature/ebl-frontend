@@ -2,6 +2,7 @@ import Auth from './Auth'
 import auth0 from 'auth0-js'
 import _ from 'lodash'
 import { advanceTo, clear } from 'jest-date-mock'
+import { testDelegation } from 'testHelpers'
 import Session from './Session'
 
 const now = new Date()
@@ -48,20 +49,6 @@ describe('logout', () => {
       returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
     })
   })
-})
-
-it('isAuthenticaed returns isAuthenticated from session', () => {
-  const session = new Session('accessToken', 'idToken', now.getTime(), [])
-  jest.spyOn(session, 'isAuthenticated').mockReturnValue(true)
-  sessionStore.getSession.mockReturnValue(session)
-  expect(auth.isAuthenticated()).toBe(true)
-})
-
-it('getAccessToken returns access toke', () => {
-  const accessToken = 'token'
-  const session = new Session(accessToken, 'idToken', now.getTime(), [])
-  sessionStore.getSession.mockReturnValue(session)
-  expect(auth.getAccessToken()).toEqual(accessToken)
 })
 
 describe('handleAuthentication', () => {
@@ -114,5 +101,25 @@ describe('handleAuthentication', () => {
     it('Rejects with the error', async () => {
       await expect(auth.handleAuthentication()).rejects.toEqual(error)
     })
+  })
+})
+
+describe('Session', () => {
+  const session = new Session('accessToken', 'idToken', now.getTime(), [])
+  jest.spyOn(session, 'isAuthenticated')
+  jest.spyOn(session, 'hasScope')
+
+  beforeEach(() => sessionStore.getSession.mockReturnValue(session))
+
+  testDelegation(() => auth, [
+    ['isAuthenticated', [], session.isAuthenticated, true],
+    ['isAllowedToReadWords', [], session.hasScope, true, ['read:words']],
+    ['isAllowedToWriteWords', [], session.hasScope, true, ['write:words']],
+    ['isAllowedToReadFragments', [], session.hasScope, true, ['read:fragments']],
+    ['isAllowedToTransliterateFragments', [], session.hasScope, true, ['transliterate:fragments']]
+  ])
+
+  it('getAccessToken', () => {
+    expect(auth.getAccessToken()).toEqual(session.accessToken)
   })
 })
