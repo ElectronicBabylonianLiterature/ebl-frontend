@@ -11,6 +11,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - yarn
 - Node
+- Chrome (for Lighthouse)
+
+## Lighthouse
+
+Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
+```
+yarn lighthouse <url>
+```
 
 ## Promises
 
