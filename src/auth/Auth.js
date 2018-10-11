@@ -12,7 +12,12 @@ const applicationScopes = {
   readWords: 'read:words',
   writeWords: 'write:words',
   readFragments: 'read:fragments',
-  transliterateFragments: 'transliterate:fragments'
+  transliterateFragments: 'transliterate:fragments',
+  readWglFolios: 'read:WGL-folios',
+  readFwgFolios: 'read:FWG-folios',
+  readElFolios: 'read:EL-folios',
+  readAkgFolios: 'read:AKG-folios',
+  readMjgFolios: 'read:MJG-folios'
 }
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')

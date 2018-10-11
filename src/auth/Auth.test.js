@@ -84,7 +84,15 @@ describe('handleAuthentication', () => {
   })
 
   describe('authResult does not have scope', () => {
-    const expectedScope = 'openid profile read:words write:words read:fragments transliterate:fragments'
+    const expectedScope = [
+      'openid',
+      'profile read:words write:words read:fragments transliterate:fragments',
+      'read:WGL-folios',
+      'read:FWG-folios',
+      'read:EL-folios',
+      'read:AKG-folios',
+      'read:MJG-folios'
+    ].join(' ')
     testParseHash({ scope: null }, expectedScope)
   })
 
