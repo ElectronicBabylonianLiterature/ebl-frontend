@@ -17,7 +17,7 @@ factory.define('measure', Object, {
 })
 
 factory.define('folio', Object, {
-  name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG']),
+  name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
   number: factory.chance('string')
 })
 

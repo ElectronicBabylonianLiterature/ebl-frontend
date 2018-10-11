@@ -9,7 +9,8 @@ const displayNames = {
   WGL: 'Lambert',
   FWG: 'Geers',
   EL: 'Leichty',
-  AKG: 'Grayson'
+  AKG: 'Grayson',
+  MJG: 'Geller'
 }
 
 function hasImage (entry) {
