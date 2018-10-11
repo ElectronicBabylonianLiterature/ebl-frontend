@@ -13,7 +13,7 @@ import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import SessionStore from './auth/SessionStore'
 
-const routes = ['/fragmentarium/'] // ['/', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
+const routes = ['/', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 
 routes.forEach(route => {
   it(`${route} renders without crashing`, () => {
