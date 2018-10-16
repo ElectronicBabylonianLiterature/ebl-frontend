@@ -14,7 +14,7 @@ const displayNames = {
 }
 
 function hasImage (entry) {
-  return ['WGL', 'AKG'].includes(entry.name)
+  return ['WGL', 'AKG', 'MJG'].includes(entry.name)
 }
 
 class Folios extends Component {

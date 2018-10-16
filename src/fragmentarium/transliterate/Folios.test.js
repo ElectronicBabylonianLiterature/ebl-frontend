@@ -38,7 +38,8 @@ const names = [
   { name: 'WGL', displayName: 'Lambert' },
   { name: 'FWG', displayName: 'Geers' },
   { name: 'EL', displayName: 'Leichty' },
-  { name: 'AKG', displayName: 'Grayson' }
+  { name: 'AKG', displayName: 'Grayson' },
+  { name: 'MJG', displayName: 'Geller' }
 ]
 
 names.forEach(entry => {
