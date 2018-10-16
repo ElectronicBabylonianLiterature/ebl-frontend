@@ -39,3 +39,28 @@ describe('Record is empty', () => {
     expect(container).toHaveTextContent('No record')
   })
 })
+
+describe('Historical transliteration', () => {
+  const start = moment('1975-02-09')
+  const end = moment('1981-10-28')
+  const years = [start, end].map(date => date.format('YYYY'))
+  let entry
+
+  beforeEach(async () => {
+    entry = await factory.build('historicalRecord', { date: `${start.toISOString()}/${end.toISOString()}` })
+    element = render(<Record record={[entry]} />)
+    container = element.container
+  })
+
+  it('Renders correctly', () => {
+    const expectedEntry = `${entry.user} (Transliteration, ${years.join('–')})`
+    expect(container).toHaveTextContent(expectedEntry)
+  })
+
+  it(`Entries have correct range `, () => {
+    for (let year of years) {
+      expect(element.getByText(year))
+        .toHaveAttribute('datetime', year)
+    }
+  })
+})

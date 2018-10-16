@@ -11,6 +11,12 @@ factory.define('record', Object, {
   type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
 })
 
+factory.define('historicalRecord', Object, {
+  user: factory.chance('email'),
+  date: async () => `${await factory.chance('date')().toISOString()}/${await factory.chance('date')().toISOString()}`,
+  type: 'HistoricalTransliteration'
+})
+
 factory.define('measure', Object, {
   value: factory.chance('floating', { min: 0, max: 100 }),
   note: factory.chance('sentence')
