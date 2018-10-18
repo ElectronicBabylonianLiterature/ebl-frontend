@@ -13,7 +13,7 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
-    "query-string": "5",
+    "query-string": "^6.2.0",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",
