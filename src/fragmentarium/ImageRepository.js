@@ -1,4 +1,4 @@
-class WordRepository {
+class ImageRepository {
   constructor (apiClient) {
     this.apiClient = apiClient
   }
@@ -8,4 +8,4 @@ class WordRepository {
   }
 }
 
-export default WordRepository
+export default ImageRepository
