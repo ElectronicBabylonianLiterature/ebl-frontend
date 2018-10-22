@@ -1,8 +1,10 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
+import createFolio from 'fragmentarium/createFolio'
 
 const resultStub = {}
+const folio = createFolio('AKG', '375')
 const auth = {
   isAllowedToReadFragments: jest.fn(),
   isAllowedToTransliterateFragments: jest.fn()
@@ -31,7 +33,7 @@ const testData = [
   ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
   ['searchTransliteration', ['kur'], fragmentRepository.searchTransliteration, resultStub],
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
-  ['findFolio', [{ name: 'AKG', number: '375' }], imageRepository.find, resultStub, ['AKG_375.jpg']],
+  ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true]
 ]

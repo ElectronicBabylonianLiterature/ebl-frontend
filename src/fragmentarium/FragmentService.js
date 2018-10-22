@@ -35,8 +35,8 @@ class FragmentService {
     return this.fragmentRepository.updateTransliteration(number, transliteration, notes)
   }
 
-  findFolio ({ name, number }) {
-    return this.imageRepository.find(`${name}_${number}.jpg`)
+  findFolio (folio) {
+    return this.imageRepository.find(folio.fileName)
   }
 
   isAllowedToRead () {
