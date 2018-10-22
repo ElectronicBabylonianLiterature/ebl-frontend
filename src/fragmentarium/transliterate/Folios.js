@@ -4,25 +4,7 @@ import _ from 'lodash'
 
 import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
-
-function createFolio (data) {
-  const displayNames = {
-    WGL: 'Lambert',
-    FWG: 'Geers',
-    EL: 'Leichty',
-    AKG: 'Grayson',
-    MJG: 'Geller'
-  }
-  const foliosWithImages = ['WGL', 'AKG', 'MJG']
-
-  return {
-    humanizedName: displayNames[data.name] || data.name,
-    name: data.name,
-    number: data.number,
-    hasImage: foliosWithImages.includes(data.name),
-    fileName: `${data.name}_${data.number}.jpg`
-  }
-}
+import createFolio from 'fragmentarium/createFolio'
 
 function Folios ({ fragment, fragmentService }) {
   function folioTab (folio, index) {
@@ -39,7 +21,7 @@ function Folios ({ fragment, fragmentService }) {
     )
   }
 
-  const folios = fragment.folios.map(createFolio)
+  const folios = fragment.folios.map(({ name, number }) => createFolio(name, number))
 
   return (
     <Fragment>
