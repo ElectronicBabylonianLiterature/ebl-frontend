@@ -1,8 +1,8 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
-import { factory } from 'factory-girl';
-import createFolio from './createFolio';
+import { factory } from 'factory-girl'
+import createFolio from 'fragmentarium/createFolio'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -15,6 +15,7 @@ const transliterationQuery = 'kur\nkur'
 const transliteration = 'transliteration'
 const notes = 'notes'
 const resultStub = {}
+const folio = createFolio('MJG', 'K1')
 
 let fragmentDto
 let fragment
@@ -37,7 +38,8 @@ const testData = [
   ['updateTransliteration', [fragmentId, transliteration, notes], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}`, {
     transliteration,
     notes
-  }], Promise.resolve(resultStub)]
+  }], Promise.resolve(resultStub)],
+  ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)]
 ]
 
 testDelegation(fragmentRepository, testData)

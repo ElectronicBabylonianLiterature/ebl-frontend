@@ -16,7 +16,8 @@ const fragmentRepository = {
   interesting: jest.fn(),
   searchNumber: jest.fn(),
   searchTransliteration: jest.fn(),
-  updateTransliteration: jest.fn()
+  updateTransliteration: jest.fn(),
+  folioPager: jest.fn()
 }
 const imageRepository = {
   find: jest.fn()
@@ -35,7 +36,9 @@ const testData = [
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
   ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
-  ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true]
+  ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],
+  ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub]
+
 ]
 
 testDelegation(fragmentService, testData)

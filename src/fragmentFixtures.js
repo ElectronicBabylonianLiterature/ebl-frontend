@@ -66,3 +66,13 @@ factory.define('fragment', Object, async () => {
     folios: dto.folios.map(({ name, number }) => createFolio(name, number))
   }
 })
+
+factory.define('folioPagerEntry', Object, {
+  fragmentNumber: factory.chance('string'),
+  folioNumber: factory.chance('string')
+})
+
+factory.define('folioPager', Object, {
+  previous: factory.assocAttrs('folioPagerEntry'),
+  next: factory.assocAttrs('folioPagerEntry')
+})

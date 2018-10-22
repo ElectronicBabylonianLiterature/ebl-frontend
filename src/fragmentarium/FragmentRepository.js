@@ -60,6 +60,11 @@ class FragmentRepository {
       }
     )
   }
+
+  folioPager (folio, number) {
+    return this.apiClient
+      .fetchJson(`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(number)}`, true)
+  }
 }
 
 export default FragmentRepository

@@ -46,6 +46,10 @@ class FragmentService {
   isAllowedToTransliterate () {
     return this.auth.isAllowedToTransliterateFragments()
   }
+
+  folioPager (folio, fragmentNumber) {
+    return this.fragmentRepository.folioPager(folio, fragmentNumber)
+  }
 }
 
 export default FragmentService
