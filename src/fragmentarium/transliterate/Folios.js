@@ -4,7 +4,6 @@ import _ from 'lodash'
 
 import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
-import createFolio from 'fragmentarium/createFolio'
 
 function Folios ({ fragment, fragmentService }) {
   function folioTab (folio, index) {
@@ -21,14 +20,12 @@ function Folios ({ fragment, fragmentService }) {
     )
   }
 
-  const folios = fragment.folios.map(({ name, number }) => createFolio(name, number))
-
   return (
     <Fragment>
       <Tabs
         id='folio-container'
-        defaultActiveKey={_.findIndex(folios, 'hasImage')}>
-        {folios.map(folioTab)}
+        defaultActiveKey={_.findIndex(fragment.folios, 'hasImage')}>
+        {fragment.folios.map(folioTab)}
         {fragment.cdliNumber && (
           <Tab eventKey={-1} title='CDLI Image'>
             <CdliImage cdliNumber={fragment.cdliNumber} />

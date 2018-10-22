@@ -30,32 +30,14 @@ describe('Folios', () => {
     }
   })
 
+  it(`Renders folio numbers entries`, () => {
+    for (let folio of folios) {
+      expect(container).toHaveTextContent(`${folio.humanizedName} Folio ${folio.number}`)
+    }
+  })
+
   it(`Renders CDLI image`, () => {
     expect(container).toHaveTextContent('CDLI Image')
-  })
-})
-
-const names = [
-  { name: 'WGL', displayName: 'Lambert' },
-  { name: 'FWG', displayName: 'Geers' },
-  { name: 'EL', displayName: 'Leichty' },
-  { name: 'AKG', displayName: 'Grayson' },
-  { name: 'MJG', displayName: 'Geller' }
-]
-
-names.forEach(entry => {
-  describe(`${entry.displayName} Folios`, () => {
-    beforeEach(async () => {
-      folios = [await factory.build('folio', { name: entry.name })]
-      fragment = await factory.build('fragment', { 'folios': folios, 'cdliNumber': '' })
-      container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
-    })
-
-    it(`Renders folio numbers entries`, () => {
-      for (let folio of folios) {
-        expect(container).toHaveTextContent(`${entry.displayName} Folio ${folio.number}`)
-      }
-    })
   })
 })
 

@@ -1,3 +1,16 @@
+import createFolio from 'fragmentarium/createFolio'
+
+function createFragment (dto) {
+  return {
+    ...dto,
+    folios: dto.folios.map(({ name, number }) => createFolio(name, number))
+  }
+}
+
+function createFragments (dtos) {
+  return dtos.map(createFragment)
+}
+
 class FragmentRepository {
   constructor (apiClient) {
     this.apiClient = apiClient
@@ -8,23 +21,33 @@ class FragmentRepository {
   }
 
   find (number) {
-    return this.apiClient.fetchJson(`/fragments/${encodeURIComponent(number)}`, true)
+    return this.apiClient
+      .fetchJson(`/fragments/${encodeURIComponent(number)}`, true)
+      .then(createFragment)
   }
 
   random () {
-    return this.apiClient.fetchJson(`/fragments?random=true`, true)
+    return this.apiClient
+      .fetchJson(`/fragments?random=true`, true)
+      .then(createFragments)
   }
 
   interesting () {
-    return this.apiClient.fetchJson(`/fragments?interesting=true`, true)
+    return this.apiClient
+      .fetchJson(`/fragments?interesting=true`, true)
+      .then(createFragments)
   }
 
   searchNumber (number) {
-    return this.apiClient.fetchJson(`/fragments?number=${encodeURIComponent(number)}`, true)
+    return this.apiClient
+      .fetchJson(`/fragments?number=${encodeURIComponent(number)}`, true)
+      .then(createFragments)
   }
 
   searchTransliteration (transliteration) {
-    return this.apiClient.fetchJson(`/fragments?transliteration=${encodeURIComponent(transliteration)}`, true)
+    return this.apiClient
+      .fetchJson(`/fragments?transliteration=${encodeURIComponent(transliteration)}`, true)
+      .then(createFragments)
   }
 
   updateTransliteration (number, transliteration, notes) {
