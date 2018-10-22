@@ -15,7 +15,7 @@ class CuneiformFragment extends Component {
     return this.props.fragment
   }
 
-  leftColumn = () => (
+  LeftColumn = () => (
     <Fragment>
       <Details fragment={this.fragment} />
       <Record record={this.fragment.record} />
@@ -25,7 +25,7 @@ class CuneiformFragment extends Component {
     </Fragment>
   )
 
-  middleColumn = () => (
+  MiddleColumn = () => (
     <Fragment>
       <p className='CuneifromFragment__description'>
         {this.fragment.description}
@@ -46,11 +46,11 @@ class CuneiformFragment extends Component {
     </Fragment>
   )
 
-  rightColumn = () => (
+  RightColumn = () => (
     <Folios
-      folios={this.fragment.folios}
+      fragment={this.fragment}
       fragmentService={this.props.fragmentService}
-      cdliNumber={this.fragment.cdliNumber} />
+    />
   )
 
   render () {
@@ -58,13 +58,13 @@ class CuneiformFragment extends Component {
       <Grid fluid>
         <Row>
           <Col md={2}>
-            <this.leftColumn />
+            <this.LeftColumn />
           </Col>
           <Col md={5}>
-            <this.middleColumn />
+            <this.MiddleColumn />
           </Col>
           <Col md={5}>
-            <this.rightColumn />
+            <this.RightColumn />
           </Col>
         </Row>
       </Grid>

@@ -4,7 +4,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Folios from './Folios'
 
-const cdliNumber = '0000'
+let fragment
 let fragmentService
 let container
 let folios
@@ -20,7 +20,8 @@ beforeEach(() => {
 describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
-    container = render(<Folios folios={folios} cdliNumber={cdliNumber} fragmentService={fragmentService} />).container
+    fragment = await factory.build('fragment', { 'folios': folios })
+    container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -46,7 +47,8 @@ names.forEach(entry => {
   describe(`${entry.displayName} Folios`, () => {
     beforeEach(async () => {
       folios = [await factory.build('folio', { name: entry.name })]
-      container = render(<Folios folios={folios} cdliNumber='' fragmentService={fragmentService} />).container
+      fragment = await factory.build('fragment', { 'folios': folios, 'cdliNumber': '' })
+      container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
     })
 
     it(`Renders folio numbers entries`, () => {
@@ -59,7 +61,8 @@ names.forEach(entry => {
 
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
-    container = render(<Folios folios={[]} cdliNumber='' fragmentService={fragmentService} />).container
+    fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
+    container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
   })
 
   it(`Renders no folios test`, () => {
