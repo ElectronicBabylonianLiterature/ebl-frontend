@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, wait, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Fragmentarium from './Fragmentarium'
@@ -16,7 +16,7 @@ async function renderFragmentarium (path = '/fragmentarium') {
     <FragmentariumWithRouter fragmentService={fragmentService} />
   </MemoryRouter>)
   container = element.container
-  await wait()
+  await waitForElement(() => element.getByText('Current size of the corpus:'))
 }
 
 beforeEach(async () => {

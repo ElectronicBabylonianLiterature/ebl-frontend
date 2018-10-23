@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
 import classNames from 'classnames'
+import FragmentLink from 'fragmentarium/FragmentLink'
 
 const numberRegexp = /^([^\d]*)(\d+)$/
 
@@ -10,13 +10,13 @@ export default function FragmentPager ({ number, children }) {
     const prefix = match[1]
     const current = Number(match[2] || 0)
     const PagerLink = ({ offset, label }) => (
-      <Link to={`/fragmentarium/${prefix}${current + offset}`} aria-label={label}>
+      <FragmentLink number={`${prefix}${current + offset}`} aria-label={label}>
         <i className={classNames({
           fas: true,
           'fa-angle-left': offset < 0,
           'fa-angle-right': offset >= 0
         })} aria-hidden />
-      </Link>
+      </FragmentLink>
     )
 
     return (

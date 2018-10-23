@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
 
 import withData from 'http/withData'
+import FragmentLink from 'fragmentarium/FragmentLink'
 
 import './TransliterationSearch.css'
 
@@ -36,7 +36,7 @@ function TransliterationSearchResult ({ data }) {
       <tbody>
         {data.map(fragment =>
           <tr key={fragment._id}>
-            <td><Link to={`/fragmentarium/${fragment._id}`}>{fragment._id}</Link></td>
+            <td><FragmentLink number={fragment._id}>{fragment._id}</FragmentLink></td>
             <td>{fragment.script}</td>
             <td><Lines fragment={fragment} /></td>
           </tr>

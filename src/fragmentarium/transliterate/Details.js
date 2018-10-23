@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
 import _ from 'lodash'
 
 import CdliLink from './CdliLink'
+import FragmentLink from 'fragmentarium/FragmentLink'
 
 import './Details.css'
 
@@ -34,7 +34,7 @@ class Details extends Component {
             <ul className='Details-joins'>
               {this.props.fragment.joins.map(join =>
                 <li className='Details-joins__join' key={join}>
-                  <Link to={`/fragmentarium/${join}`}>{join}</Link>
+                  <FragmentLink number={join}>{join}</FragmentLink>
                 </li>
               )}
             </ul>

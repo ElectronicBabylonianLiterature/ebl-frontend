@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
 import _ from 'lodash'
+import FragmentLink from 'fragmentarium/FragmentLink'
 
 function FragmentList ({ data }) {
   return (
@@ -17,7 +17,7 @@ function FragmentList ({ data }) {
       <tbody>
         {data.map(fragment =>
           <tr key={fragment._id}>
-            <td><Link to={`/fragmentarium/${fragment._id}`}>{fragment._id}</Link></td>
+            <td><FragmentLink number={fragment._id}>{fragment._id}</FragmentLink></td>
             <td>{fragment.accession}</td>
             <td>{fragment.cdliNumber}</td>
             <td>{fragment.description}</td>

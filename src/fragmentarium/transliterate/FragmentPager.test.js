@@ -15,7 +15,7 @@ function renderPager () {
 function commonTests () {
   it('Next links to the "next" fragment', () => {
     expect(element.getByLabelText('Next'))
-      .toHaveAttribute('href', `/fragmentarium/${nextNumber}`)
+      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(nextNumber)}`)
   })
 
   it('Renders children', () => {
@@ -32,7 +32,7 @@ describe('Number is greater than 1', () => {
 
   it('Previous links to the "previous" fragment', () => {
     expect(element.getByLabelText('Previous'))
-      .toHaveAttribute('href', '/fragmentarium/prefix 122')
+      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent('prefix 122')}`)
   })
 
   commonTests()
