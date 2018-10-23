@@ -3,6 +3,7 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Folios from './Folios'
+import MemoryRouter from 'react-router/MemoryRouter';
 
 let fragment
 let fragmentService
@@ -25,7 +26,9 @@ describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', { 'folios': folios })
-    container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
+    container = render(<MemoryRouter>
+      <Folios fragment={fragment} fragmentService={fragmentService} />
+    </MemoryRouter>).container
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -48,7 +51,9 @@ describe('Folios', () => {
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
-    container = render(<Folios fragment={fragment} fragmentService={fragmentService} />).container
+    container = render(<MemoryRouter>
+      <Folios fragment={fragment} fragmentService={fragmentService} />
+    </MemoryRouter>).container
   })
 
   it(`Renders no folios test`, () => {
