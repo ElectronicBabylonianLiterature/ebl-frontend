@@ -18,7 +18,7 @@ const FragmentWithData = withData(
 )
 
 export default function FragmentView ({ match, fragmentService }) {
-  const number = match.params.id
+  const number = decodeURIComponent(match.params.id)
   return (
     <section className='App-content App-content--wide'>
       <header>

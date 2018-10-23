@@ -1,25 +1,27 @@
 import React from 'react'
-import { matchPath } from 'react-router'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Switch, Route } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
+import { Chance } from 'chance'
 import FragmentView from './FragmentView'
 
-const fragmentNumber = 'K.1'
-const match = matchPath(`/fragmentarium/${fragmentNumber}`, {
-  path: '/fragmentarium/:id'
-})
+const chance = new Chance()
 const message = 'message'
 
+let fragmentNumber
 let fragmentService
 let container
 let element
 
 async function renderFragmentView () {
   element = render(
-    <MemoryRouter>
-      <FragmentView match={match} fragmentService={fragmentService} />
+    <MemoryRouter initialEntries={[`/${encodeURIComponent(fragmentNumber)}`]}>
+      <Switch>
+        <Route path='/:id' render={({ match }) =>
+          <FragmentView match={match} fragmentService={fragmentService} />
+        } />
+      </Switch>
     </MemoryRouter>
   )
   container = element.container
@@ -38,6 +40,7 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
+  fragmentNumber = chance.string()
 })
 
 describe('Fragment is loaded', () => {
