@@ -1,9 +1,9 @@
 import React from 'react'
+import MemoryRouter from 'react-router/MemoryRouter'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Folios from './Folios'
-import MemoryRouter from 'react-router/MemoryRouter';
 
 let fragment
 let fragmentService
