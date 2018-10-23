@@ -8,13 +8,17 @@ let fragment
 let fragmentService
 let container
 let folios
+let folioPager
 
-beforeEach(() => {
+beforeEach(async () => {
   fragmentService = {
-    findFolio: jest.fn()
+    findFolio: jest.fn(),
+    folioPager: jest.fn()
   }
+  folioPager = await factory.build('folioPager')
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 })
 
 describe('Folios', () => {

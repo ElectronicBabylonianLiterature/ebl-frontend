@@ -14,15 +14,18 @@ let fragmentService
 let onChange
 
 beforeEach(async () => {
+  const folioPager = await factory.build('folioPager')
   onChange = jest.fn()
   fragmentService = {
     updateTransliteration: jest.fn(),
     findFolio: jest.fn(),
+    folioPager: jest.fn(),
     isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
   fragment = await factory.build('fragment')
   element = render(
     <MemoryRouter>
