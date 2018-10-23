@@ -3,13 +3,11 @@ import { MemoryRouter, Switch, Route } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import { Chance } from 'chance'
 import FragmentView from './FragmentView'
 
-const chance = new Chance()
 const message = 'message'
+const fragmentNumber = 'K,K.1'
 
-let fragmentNumber
 let fragmentService
 let container
 let element
@@ -40,7 +38,6 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragmentNumber = chance.string()
 })
 
 describe('Fragment is loaded', () => {
