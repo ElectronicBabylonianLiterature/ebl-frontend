@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
-import { withRouter } from 'react-router-dom'
+import { createFragmentUrl } from 'fragmentarium/FragmentLink'
 
 class RandomButton extends Component {
   fetchPromise = Promise.resolve()
@@ -16,7 +17,7 @@ class RandomButton extends Component {
     this.fetchPromise.cancel()
     this.setState({ error: null, loading: true })
     this.fetchPromise = this.props.fragmentService[this.props.method]()
-      .then(fragments => this.props.history.push(`/fragmentarium/${fragments._id}`))
+      .then(fragments => this.props.history.push(createFragmentUrl(fragments._id)))
       .catch(error => this.setState({ error: error, loading: false }))
   }
 

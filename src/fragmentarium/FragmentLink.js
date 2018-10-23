@@ -1,17 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function createUrl (number) {
+export function createFragmentUrl (number) {
   // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
   return `/fragmentarium/${encodeURIComponent(encodeURIComponent(number))}`
 }
 
-function FragmentLink ({ number, children, ...props }) {
+export default function FragmentLink ({ number, children, ...props }) {
   return (
-    <Link to={createUrl(number)} {...props}>
+    <Link to={createFragmentUrl(number)} {...props}>
       {children}
     </Link>
   )
 }
-
-export default FragmentLink
