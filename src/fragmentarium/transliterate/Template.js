@@ -23,7 +23,7 @@ class Template {
   }
 
   get isValid () {
-    return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.exec(this.template)
+    return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.test(this.template)
   }
 
   generate () {
