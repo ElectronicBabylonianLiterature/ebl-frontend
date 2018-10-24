@@ -1,51 +1,34 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import _ from 'lodash'
+import Template from './Template'
 
 import HelpTrigger from 'common/HelpTrigger'
 import TemplateHelp from './TemplateHelp'
 
-function parseSide (side) {
-  const match = /(\d+)([^\d]*)/.exec(side)
-  return {
-    rows: Number(match[1]),
-    suffix: match[2]
-  }
-}
-
-function createTemplate ({ rows, suffix = '' }) {
-  return _.range(1, rows + 1)
-    .map(row => `${row}${suffix}. [...]  [...]`)
-    .join('\n')
-}
-
 class TemplateForm extends Component {
   state = {
-    template: '',
+    template: new Template(''),
     validationState: null
   }
 
   onChange = event => {
-    const template = event.target.value
+    const template = new Template(event.target.value)
+
     this.setState({
       template: template,
-      validationState: /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.exec(template)
+      validationState: template.isValid
         ? 'success'
-        : template === '' ? null : 'error'
+        : template.isEmpty ? null : 'error'
     })
   }
 
   submit = event => {
     event.preventDefault()
     if (this.state.validationState === 'success') {
-      const [obverse, reverse] = this.state.template
-        .split(/,\s*/)
-        .map(parseSide)
-        .map(createTemplate)
 
-      const generatedTemplate = reverse
-        ? `@obverse\n${obverse}\n\n@reverse\n${reverse}`
-        : obverse
+      const generatedTemplate = this.state.template.generate()
+        
       this.props.onSubmit(generatedTemplate)
     }
   }
