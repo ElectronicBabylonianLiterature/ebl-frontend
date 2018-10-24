@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import _ from 'lodash'
 import Template from './Template'
 
 import HelpTrigger from 'common/HelpTrigger'
@@ -26,9 +25,7 @@ class TemplateForm extends Component {
   submit = event => {
     event.preventDefault()
     if (this.state.validationState === 'success') {
-
       const generatedTemplate = this.state.template.generate()
-        
       this.props.onSubmit(generatedTemplate)
     }
   }
