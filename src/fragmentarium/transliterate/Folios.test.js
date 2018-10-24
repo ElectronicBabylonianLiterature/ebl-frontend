@@ -1,6 +1,6 @@
 import React from 'react'
 import MemoryRouter from 'react-router/MemoryRouter'
-import { render } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Folios from './Folios'
@@ -48,6 +48,17 @@ describe('Folios', () => {
   })
 })
 
+it('Displays selected folio', async () => {
+  folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  fragment = await factory.build('fragment', { 'folios': folios })
+  const selected = folios[1]
+  const element = render(<MemoryRouter>
+    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={folios[1]} />
+  </MemoryRouter>)
+  await waitForElement(() => element.getByText(/Browse/))
+  expect(element.getByText(`${selected.humanizedName} Folio ${selected.number}`)).toHaveAttribute('aria-selected', 'true')
+})
+
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
@@ -56,7 +67,7 @@ describe('No folios or CDLI image', () => {
     </MemoryRouter>).container
   })
 
-  it(`Renders no folios test`, () => {
+  it(`Renders no folios text`, () => {
     expect(container).toHaveTextContent('No folios')
   })
 })

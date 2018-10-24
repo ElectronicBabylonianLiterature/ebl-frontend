@@ -8,7 +8,7 @@ import CdliImage from './CdliImage'
 
 import './Folios.css'
 
-function Folios ({ fragment, fragmentService }) {
+function Folios ({ fragment, fragmentService, activeFolio }) {
   function FolioDetails ({ folio }) {
     return folio.hasImage && <Fragment>
       <header className='Folios__Pager'>
@@ -21,11 +21,13 @@ function Folios ({ fragment, fragmentService }) {
     </Fragment>
   }
 
+  const predicate = activeFolio || 'hasImage'
+
   return (
     <Fragment>
       <Tabs
         id='folio-container'
-        defaultActiveKey={_.findIndex(fragment.folios, 'hasImage')}>
+        defaultActiveKey={_.findIndex(fragment.folios, predicate)}>
         {fragment.folios.map((folio, index) =>
           <Tab
             key={index}
