@@ -3,6 +3,7 @@ import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TemplateForm from './TemplateForm'
+import { changeValue } from '../../testHelpers';
 
 let onSubmit
 let element
@@ -53,4 +54,10 @@ it('Does not call onSubmit if template is invalid', async () => {
 it('Does not call onSubmit if template is empty', async () => {
   await submit('')
   expect(onSubmit).not.toHaveBeenCalled()
+})
+
+it('Update correctly', async () => {
+  const value = '5,5'
+  await changeValueByLabel(element, 'Template', value)
+  expect(element.getByLabelText('Template').value).toEqual(value)
 })

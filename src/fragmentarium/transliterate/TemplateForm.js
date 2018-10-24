@@ -41,7 +41,7 @@ class TemplateForm extends Component {
           <FormControl
             type='text'
             size={8}
-            value={this.state.template}
+            value={this.state.template.template}
             placeholder='obv, rev'
             onChange={this.onChange}
             aria-label='Template' />
