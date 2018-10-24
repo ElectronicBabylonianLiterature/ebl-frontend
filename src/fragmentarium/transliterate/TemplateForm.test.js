@@ -3,7 +3,6 @@ import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TemplateForm from './TemplateForm'
-import { changeValue } from '../../testHelpers';
 
 let onSubmit
 let element
