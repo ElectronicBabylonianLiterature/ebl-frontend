@@ -10,29 +10,25 @@ it('The string is not empty', () => {
   expect(template.isEmpty).toEqual(false)
 })
 
-it('The input is not valid', () => {
-  const template = new Template('-6,7')
-  expect(template.isValid).toEqual(false)
+describe.each([
+  ['-6,7'],
+  ['invalid']
+])('%s the input is not valid', (rowNumbers) => {
+  it('the input is not valid', () => {
+    const template = new Template(rowNumbers)
+    expect(template.isValid).toEqual(false)
+  })
 })
 
-it('The input is not valid', () => {
-  const template = new Template('invalid')
-  expect(template.isValid).toEqual(false)
-})
-
-it('The input is valid', () => {
-  const template = new Template('6,7')
-  expect(template.isValid).toEqual(true)
-})
-
-it('The input is valid', () => {
-  const template = new Template('3')
-  expect(template.isValid).toEqual(true)
-})
-
-it('The input is valid', () => {
-  const template = new Template('1\', 1#')
-  expect(template.isValid).toEqual(true)
+describe.each([
+  ['6,7'],
+  ['3'],
+  ['1\', 1#']
+])('%s the input is valid', (rowNumbers) => {
+  it('the input is valid', () => {
+    const template = new Template(rowNumbers)
+    expect(template.isValid).toEqual(true)
+  })
 })
 
 it('Creates specified number of rows on observe', () => {
