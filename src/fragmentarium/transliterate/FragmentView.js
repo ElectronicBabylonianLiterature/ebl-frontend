@@ -1,4 +1,5 @@
 import React from 'react'
+import queryString from 'query-string'
 
 import Breadcrumbs from 'common/Breadcrumbs'
 import CuneiformFragment from './CuneiformFragment'
@@ -17,8 +18,17 @@ const FragmentWithData = withData(
   }
 )
 
-export default function FragmentView ({ match, fragmentService }) {
+export default function FragmentView ({ match, location, fragmentService }) {
   const number = decodeURIComponent(match.params.id)
+  const folioName = queryString.parse(location.search).folioName
+  const folioNumber = queryString.parse(location.search).folioNumber
+  const activeFolio = folioName || folioNumber
+    ? {
+      name: folioName,
+      number: folioNumber
+    }
+    : null
+
   return (
     <section className='App-content App-content--wide'>
       <header>
@@ -27,7 +37,7 @@ export default function FragmentView ({ match, fragmentService }) {
       </header>
       {fragmentService.isAllowedToRead()
         ? (
-          <FragmentWithData number={number} fragmentService={fragmentService} />
+          <FragmentWithData number={number} fragmentService={fragmentService} activeFolio={activeFolio} />
         ) : 'You do not have the rights access the fragmentarium.'
       }
     </section>

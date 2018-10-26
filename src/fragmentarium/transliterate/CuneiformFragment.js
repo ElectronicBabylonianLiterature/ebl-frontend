@@ -50,6 +50,7 @@ class CuneiformFragment extends Component {
     <Folios
       fragment={this.fragment}
       fragmentService={this.props.fragmentService}
+      activeFolio={this.props.activeFolio}
     />
   )
 

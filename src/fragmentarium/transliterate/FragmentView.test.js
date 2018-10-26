@@ -1,5 +1,5 @@
 import React from 'react'
-import { MemoryRouter, Switch, Route } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
@@ -12,14 +12,12 @@ let fragmentService
 let container
 let element
 
-async function renderFragmentView () {
+async function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmentNumber)}`) {
   element = render(
-    <MemoryRouter initialEntries={[`/${encodeURIComponent(fragmentNumber)}`]}>
-      <Switch>
-        <Route path='/:id' render={({ match }) =>
-          <FragmentView match={match} fragmentService={fragmentService} />
-        } />
-      </Switch>
+    <MemoryRouter initialEntries={[initialEntry]}>
+      <Route path='/:id' render={({ match, location }) =>
+        <FragmentView match={match} location={location} fragmentService={fragmentService} />
+      } />
     </MemoryRouter>
   )
   container = element.container
@@ -42,13 +40,16 @@ beforeEach(async () => {
 
 describe('Fragment is loaded', () => {
   let fragment
+  let selectedFolio
 
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { _id: fragmentNumber })
+    const folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+    fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios })
+    selectedFolio = fragment.folios[1]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.isAllowedToRead.mockReturnValue(true)
     fragmentService.isAllowedToTransliterate.mockReturnValue(true)
-    await renderFragmentView()
+    await renderFragmentView(`/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(selectedFolio.name)}&folioNumber=${encodeURIComponent(selectedFolio.number)}`)
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -65,6 +66,10 @@ describe('Fragment is loaded', () => {
 
   it('Shows pager', () => {
     expect(element.getByLabelText('Next')).toBeVisible()
+  })
+
+  it('Selects active folio', () => {
+    expect(element.getByText(`${selectedFolio.humanizedName} Folio ${selectedFolio.number}`)).toHaveAttribute('aria-selected', 'true')
   })
 })
 
