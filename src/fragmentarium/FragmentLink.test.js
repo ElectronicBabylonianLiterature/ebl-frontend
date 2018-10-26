@@ -4,26 +4,60 @@ import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
 import FragmentLink from './FragmentLink'
 
+const chance = new Chance()
 const children = 'A link'
 const label = 'Link label'
-const number = new Chance().string()
+const number = chance.string()
 let element
 
-beforeEach(() => {
-  element = render(
-    <MemoryRouter>
-      <FragmentLink number={number} aria-label={label}>
-        {children}
-      </FragmentLink>
-    </MemoryRouter>
-  )
+describe('Without folio', () => {
+  beforeEach(() => {
+    element = render(
+      <MemoryRouter>
+        <FragmentLink number={number} aria-label={label}>
+          {children}
+        </FragmentLink>
+      </MemoryRouter>
+    )
+  })
+
+  it('Links to the fragment', () => {
+    expect(element.getByLabelText(label))
+      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(number)}`)
+  })
+
+  expectToRenderChildren()
 })
 
-it('Links to the fragment', () => {
-  expect(element.getByLabelText(label))
-    .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(number)}`)
+describe('With folio', () => {
+  const folio = {
+    name: chance.string(),
+    number: chance.string()
+  }
+
+  beforeEach(() => {
+    element = render(
+      <MemoryRouter>
+        <FragmentLink number={number} folio={folio} aria-label={label}>
+          {children}
+        </FragmentLink>
+      </MemoryRouter>
+    )
+  })
+
+  it('Links to the fragment with folio', () => {
+    const encodedNumber = encodeURIComponent(number)
+    const encodedFolioName = encodeURIComponent(folio.name)
+    const encodedFolioNumber = encodeURIComponent(folio.number)
+    expect(element.getByLabelText(label))
+      .toHaveAttribute('href', `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}`)
+  })
+
+  expectToRenderChildren()
 })
 
-it('Renders children', () => {
-  expect(element.container).toHaveTextContent(children)
-})
+function expectToRenderChildren () {
+  it('Renders children', () => {
+    expect(element.container).toHaveTextContent(children)
+  })
+}

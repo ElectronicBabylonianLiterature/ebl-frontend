@@ -7,7 +7,11 @@ import FragmentLink from 'fragmentarium/FragmentLink'
 
 function FolioPager ({ data, folio }) {
   const PagerLink = ({ label, direction }) => (
-    <FragmentLink number={data[direction].fragmentNumber} aria-label={label}>
+    <FragmentLink
+      number={data[direction].fragmentNumber}
+      folio={{ name: folio.name, number: data[direction].folioNumber }}
+      aria-label={label}
+    >
       <i className={classNames({
         fas: true,
         'fa-angle-left': direction === 'previous',

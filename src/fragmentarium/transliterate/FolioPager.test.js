@@ -30,14 +30,21 @@ beforeEach(async () => {
 
 it('Previous links to the previous fragment', () => {
   expect(element.getByLabelText('Previous'))
-    .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(pagerData.previous.fragmentNumber)}`)
+    .toHaveAttribute('href', expectedLink(pagerData.previous))
 })
 
 it('Next links to the next fragment', () => {
   expect(element.getByLabelText('Next'))
-    .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(pagerData.next.fragmentNumber)}`)
+    .toHaveAttribute('href', expectedLink(pagerData.next))
 })
 
 it('Renders title', () => {
   expect(element.container).toHaveTextContent(`Browse ${folio.humanizedName}'s Folios`)
 })
+
+function expectedLink (pagerEntry) {
+  const encodedNumber = encodeURIComponent(pagerEntry.fragmentNumber)
+  const encodedFolioName = encodeURIComponent(folio.name)
+  const encodedFolioNumber = encodeURIComponent(pagerEntry.folioNumber)
+  return `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}`
+}
