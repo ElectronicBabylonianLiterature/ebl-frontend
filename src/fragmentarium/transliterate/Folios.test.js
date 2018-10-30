@@ -59,6 +59,15 @@ it('Displays selected folio', async () => {
   expect(element.getByText(`${selected.humanizedName} Folio ${selected.number}`)).toHaveAttribute('aria-selected', 'true')
 })
 
+it('Displays CDLI image if no folio specified', async () => {
+  folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  fragment = await factory.build('fragment', { 'folios': folios })
+  const element = render(<MemoryRouter>
+    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={null} />
+  </MemoryRouter>)
+  await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
+})
+
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
