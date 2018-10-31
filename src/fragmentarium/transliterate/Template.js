@@ -14,20 +14,20 @@ function createTemplate ({ rows, suffix = '' }) {
 }
 
 class Template {
-  constructor (template) {
-    this.template = template
+  constructor (pattern) {
+    this.pattern = pattern
   }
 
   get isEmpty () {
-    return this.template === ''
+    return this.pattern === ''
   }
 
   get isValid () {
-    return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.test(this.template)
+    return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.test(this.pattern)
   }
 
   generate () {
-    const [obverse, reverse] = this.template
+    const [obverse, reverse] = this.pattern
       .split(/,\s*/)
       .map(parseSide)
       .map(createTemplate)
