@@ -26,9 +26,7 @@ describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', { 'folios': folios })
-    container = render(<MemoryRouter>
-      <Folios fragment={fragment} fragmentService={fragmentService} />
-    </MemoryRouter>).container
+    container = renderFolios().container
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -52,9 +50,7 @@ it('Displays selected folio', async () => {
   folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
   fragment = await factory.build('fragment', { 'folios': folios })
   const selected = folios[1]
-  const element = render(<MemoryRouter>
-    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={folios[1]} />
-  </MemoryRouter>)
+  const element = renderFolios(selected)
   await waitForElement(() => element.getByText(/Browse/))
   expect(element.getByText(`${selected.humanizedName} Folio ${selected.number}`)).toHaveAttribute('aria-selected', 'true')
 })
@@ -62,21 +58,23 @@ it('Displays selected folio', async () => {
 it('Displays CDLI image if no folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
   fragment = await factory.build('fragment', { 'folios': folios })
-  const element = render(<MemoryRouter>
-    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={null} />
-  </MemoryRouter>)
+  const element = renderFolios()
   await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
 })
 
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
-    container = render(<MemoryRouter>
-      <Folios fragment={fragment} fragmentService={fragmentService} />
-    </MemoryRouter>).container
+    container = renderFolios().container
   })
 
   it(`Renders no folios text`, () => {
     expect(container).toHaveTextContent('No folios')
   })
 })
+
+function renderFolios (activeFolio = null) {
+  return render(<MemoryRouter>
+    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={activeFolio}/>
+  </MemoryRouter>)
+}
