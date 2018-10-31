@@ -1,60 +1,51 @@
 import Template from './Template'
 
-it('The string is empty', () => {
-  const template = new Template('')
-  expect(template.isEmpty).toEqual(true)
+test.each([
+  ['', true],
+  ['5', false]
+])('For %s the isEmpty returns %p', (pattern, expected) => {
+  const template = new Template(pattern)
+  expect(template.isEmpty).toEqual(expected)
 })
 
-it('The string is not empty', () => {
-  const template = new Template('5')
-  expect(template.isEmpty).toEqual(false)
+test.each([
+  ['6,7', true],
+  ['3', true],
+  ['1\', 1#', true],
+  ['-6,7', false],
+  ['invalid', false]
+])('For %s the isValid returns %p', (pattern, expected) => {
+  const template = new Template(pattern)
+  expect(template.isValid).toEqual(expected)
 })
 
-describe.each([
-  ['-6,7'],
-  ['invalid']
-])('%s the input is not valid', (rowNumbers) => {
-  it('the input is not valid', () => {
-    const template = new Template(rowNumbers)
-    expect(template.isValid).toEqual(false)
-  })
-})
-
-describe.each([
-  ['6,7'],
-  ['3'],
-  ['1\', 1#']
-])('%s the input is valid', (rowNumbers) => {
-  it('the input is valid', () => {
-    const template = new Template(rowNumbers)
-    expect(template.isValid).toEqual(true)
-  })
-})
-
-it('Creates specified number of rows on observe', () => {
-  const template = new Template('3')
-  expect(template.generate()).toEqual(`1. [...]  [...]
+test.each([
+  [
+    '3',
+    `1. [...]  [...]
 2. [...]  [...]
-3. [...]  [...]`)
-})
-
-it('Creates specified number of rows obverse and reverse', () => {
-  const template = new Template('2, 3')
-  expect(template.generate()).toEqual(`@obverse
+3. [...]  [...]`
+  ],
+  [
+    '2, 3',
+    `@obverse
 1. [...]  [...]
 2. [...]  [...]
 
 @reverse
 1. [...]  [...]
 2. [...]  [...]
-3. [...]  [...]`)
-})
-
-it('Adds suffix after row number', () => {
-  const template = new Template('1\', 1#')
-  expect(template.generate()).toEqual(`@obverse
+3. [...]  [...]`
+  ],
+  [
+    '1\', 1#',
+    `@obverse
 1'. [...]  [...]
 
 @reverse
-1#. [...]  [...]`)
+1#. [...]  [...]`
+  ]
+])('Pattern %s generates %s', (pattern, expected) => {
+  const template = new Template(pattern)
+  expect(template.generate()).toEqual(expected)
 })
