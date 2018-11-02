@@ -75,6 +75,6 @@ describe('No folios or CDLI image', () => {
 
 function renderFolios (activeFolio = null) {
   return render(<MemoryRouter>
-    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={activeFolio}/>
+    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={activeFolio} />
   </MemoryRouter>)
 }
