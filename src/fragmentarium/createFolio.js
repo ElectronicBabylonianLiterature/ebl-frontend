@@ -5,7 +5,7 @@ const folioNames = {
   AKG: 'Grayson',
   MJG: 'Geller'
 }
-const foliosWithImages = ['WGL', 'AKG', 'MJG']
+const foliosWithImages = ['WGL', 'AKG', 'MJG', 'EL']
 
 export default function createFolio (name, number) {
   return {

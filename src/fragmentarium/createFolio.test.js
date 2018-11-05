@@ -7,7 +7,7 @@ describe.each([
   ['Unknown', 'Unknown', false],
   ['WGL', 'Lambert', true],
   ['FWG', 'Geers', false],
-  ['EL', 'Leichty', false],
+  ['EL', 'Leichty', true],
   ['AKG', 'Grayson', true],
   ['MJG', 'Geller', true]
 ])('%s folios', (name, humanized, hasImage) => {
