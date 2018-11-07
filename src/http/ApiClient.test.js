@@ -67,6 +67,12 @@ describe('fetchJson', () => {
     await expect(apiClient.fetchJson(path, true)).rejects.toEqual(expectedError)
   })
 
+  it('Rejects with description as error message if response not ok and is JSON', async () => {
+    const jsonError = { title: 'error title', description: 'error description' }
+    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
+    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new Error(jsonError.description))
+  })
+
   it('Can be cancelled', async () => {
     setUpSuccessResponse()
     const callback = jest.fn()

@@ -32,7 +32,10 @@ class ApiClient {
         if (response.ok) {
           resolve(response)
         } else {
-          reject(new Error(response.statusText))
+          response.json()
+            .then(({ title, description }) => new Error(description || title))
+            .catch(() => new Error(response.statusText))
+            .then(reject)
         }
       }).catch(reject)
 
