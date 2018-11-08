@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl, Button, Grid, Row, Col } from 'react-bootstrap'
+import { FormGroup, ControlLabel, Button, Grid, Row, Col } from 'react-bootstrap'
+import AceEditor from 'react-ace'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
 import ErrorAlert from 'common/ErrorAlert'
 import TemplateForm from './TemplateForm'
+
+import 'brace/mode/plain_text'
+import 'brace/theme/kuroir'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -37,10 +41,10 @@ class TransliteratioForm extends Component {
     return this.state[property].split('\n').length
   }
 
-  update = property => event => {
+  update = property => value => {
     this.setState({
       ...this.state,
-      [property]: event.target.value
+      [property]: value
     })
   }
 
@@ -80,22 +84,35 @@ class TransliteratioForm extends Component {
       })
   }
 
-  TextArea = ({ property }) => (
+  Editor = ({ property }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
-      <FormControl
-        componentClass='textarea'
+      <AceEditor
+        name={property}
+        width='100%'
+        heigth='auto'
+        minLines={2}
+        maxLines={Math.max(2, this.numberOfRows(property))}
+        mode='plain_text'
+        theme='kuroir'
         value={this.state[property]}
-        rows={this.numberOfRows(property)}
-        onChange={this.update(property)} />
+        onChange={this.update(property)}
+        showPrintMargin={false}
+        showGutter={false}
+        fontSize='initial'
+        readOnly={this.state.disabled}
+        editorProps={{
+          $blockScrolling: Infinity
+        }}
+      />
     </FormGroup>
   )
 
   Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <fieldset disabled={!this.editable}>
-        <this.TextArea property='transliteration' />
-        <this.TextArea property='notes' />
+        <this.Editor property='transliteration' />
+        <this.Editor property='notes' />
         <ErrorAlert error={this.state.error} />
       </fieldset>
     </form>
