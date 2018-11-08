@@ -80,7 +80,7 @@ class TransliteratioForm extends Component {
       })
   }
 
-  textArea = ({ property }) => (
+  TextArea = ({ property }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       <FormControl
@@ -91,17 +91,17 @@ class TransliteratioForm extends Component {
     </FormGroup>
   )
 
-  form = () => (
+  Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <fieldset disabled={!this.editable}>
-        <this.textArea property='transliteration' />
-        <this.textArea property='notes' />
+        <this.TextArea property='transliteration' />
+        <this.TextArea property='notes' />
         <ErrorAlert error={this.state.error} />
       </fieldset>
     </form>
   )
 
-  submitButton = () => (
+  SubmitButton = () => (
     <Button
       type='submit'
       bsStyle='primary'
@@ -116,12 +116,12 @@ class TransliteratioForm extends Component {
       <Grid fluid>
         <Row>
           <Col sm={12}>
-            <this.form />
+            <this.Form />
           </Col>
         </Row>
         {this.editable && <Row>
           <Col sm={6}>
-            <this.submitButton />
+            <this.SubmitButton />
           </Col>
           <Col sm={6}>
             <TemplateForm onSubmit={this.onTemplate} />
