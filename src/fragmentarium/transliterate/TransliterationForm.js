@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { FormGroup, ControlLabel, Button, Grid, Row, Col } from 'react-bootstrap'
-import AceEditor from 'react-ace'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
 import ErrorAlert from 'common/ErrorAlert'
+import Editor from './Editor'
 import TemplateForm from './TemplateForm'
-
-import 'brace/mode/plain_text'
-import 'brace/theme/kuroir'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -84,27 +81,14 @@ class TransliteratioForm extends Component {
       })
   }
 
-  Editor = ({ property }) => (
+  EditorFormGroup = ({ property }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
-      <AceEditor
+      <Editor
         name={property}
-        width='100%'
-        heigth='auto'
-        minLines={2}
-        maxLines={Math.max(2, this.numberOfRows(property))}
-        mode='plain_text'
-        theme='kuroir'
         value={this.state[property]}
         onChange={this.update(property)}
-        showPrintMargin={false}
-        showGutter={false}
-        wrapEnabled
-        fontSize='initial'
-        readOnly={this.state.disabled}
-        editorProps={{
-          $blockScrolling: Infinity
-        }}
+        disabled={!this.editable || this.state.disabled}
       />
     </FormGroup>
   )
@@ -112,8 +96,8 @@ class TransliteratioForm extends Component {
   Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <fieldset disabled={!this.editable}>
-        <this.Editor property='transliteration' />
-        <this.Editor property='notes' />
+        <this.EditorFormGroup property='transliteration' />
+        <this.EditorFormGroup property='notes' />
         <ErrorAlert error={this.state.error} />
       </fieldset>
     </form>
