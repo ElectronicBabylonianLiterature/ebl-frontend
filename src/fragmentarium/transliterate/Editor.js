@@ -1,10 +1,24 @@
 import React from 'react'
 import AceEditor from 'react-ace'
+import _ from 'lodash'
 
 import 'brace/mode/plain_text'
 import 'brace/theme/kuroir'
 
-function Editor ({ name, value, onChange, disabled }) {
+function createAnnotations (error) {
+  const lineNumber = _.get(error, 'data.lineNumber', null)
+  return _.isNil(lineNumber)
+    ? []
+    : [{
+      row: Number(lineNumber) - 1,
+      column: 0,
+      type: 'error',
+      text: 'Invalid line'
+    }]
+}
+
+function Editor ({ name, value, onChange, disabled, error }) {
+  const annotations = createAnnotations(error)
   return <AceEditor
     name={name}
     width='100%'
@@ -16,12 +30,16 @@ function Editor ({ name, value, onChange, disabled }) {
     value={value}
     onChange={onChange}
     showPrintMargin={false}
-    showGutter={false}
+    showGutter={!_.isEmpty(annotations)}
     wrapEnabled
     fontSize='initial'
     readOnly={disabled}
+    annotations={annotations}
     editorProps={{
       $blockScrolling: Infinity
+    }}
+    setOptions={{
+      showLineNumbers: false
     }}
   />
 }

@@ -34,10 +34,6 @@ class TransliteratioForm extends Component {
     this.updatePromise.cancel()
   }
 
-  numberOfRows (property) {
-    return this.state[property].split('\n').length
-  }
-
   update = property => value => {
     this.setState({
       ...this.state,
@@ -57,7 +53,8 @@ class TransliteratioForm extends Component {
     this.updatePromise.cancel()
     this.setState({
       ...this.state,
-      disabled: true
+      disabled: true,
+      error: null
     })
     this.updatePromise = this.props.fragmentService.updateTransliteration(
       this.props.number,
@@ -67,7 +64,6 @@ class TransliteratioForm extends Component {
       .then(() => {
         this.setState({
           ...this.state,
-          error: null,
           disabled: false
         })
         this.props.onChange()
@@ -81,7 +77,7 @@ class TransliteratioForm extends Component {
       })
   }
 
-  EditorFormGroup = ({ property }) => (
+  EditorFormGroup = ({ property, error }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       <Editor
@@ -89,6 +85,7 @@ class TransliteratioForm extends Component {
         value={this.state[property]}
         onChange={this.update(property)}
         disabled={!this.editable || this.state.disabled}
+        error={error}
       />
     </FormGroup>
   )
@@ -96,7 +93,7 @@ class TransliteratioForm extends Component {
   Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <fieldset disabled={!this.editable}>
-        <this.EditorFormGroup property='transliteration' />
+        <this.EditorFormGroup property='transliteration' error={this.state.error} />
         <this.EditorFormGroup property='notes' />
         <ErrorAlert error={this.state.error} />
       </fieldset>
