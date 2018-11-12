@@ -5,7 +5,26 @@ function apiUrl (path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-class ApiClient {
+export class ApiError extends Error {
+  constructor (message, data) {
+    super(message)
+    this.name = this.constructor.name
+    this.data = data
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, this.constructor)
+    } else {
+      this.stack = (new Error(message)).stack
+    }
+  }
+
+  static async fromResponse (response) {
+    return response.json()
+      .then((body) => new ApiError(body.description || response.statusText, body))
+      .catch(() => new ApiError(response.statusText, {}))
+  }
+}
+
+export default class ApiClient {
   constructor (auth) {
     this.auth = auth
   }
@@ -32,10 +51,7 @@ class ApiClient {
         if (response.ok) {
           resolve(response)
         } else {
-          response.json()
-            .then(({ title, description }) => new Error(description || title))
-            .catch(() => new Error(response.statusText))
-            .then(reject)
+          ApiError.fromResponse(response).then(reject)
         }
       }).catch(reject)
 
@@ -65,5 +81,3 @@ class ApiClient {
     })
   }
 }
-
-export default ApiClient

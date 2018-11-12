@@ -1,4 +1,4 @@
-import ApiClient from './ApiClient'
+import ApiClient, { ApiError } from './ApiClient'
 
 const path = '/resource'
 const expectedUrl = `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -7,7 +7,7 @@ const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
 const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
-const expectedError = new Error(errorResponse.statusText)
+const expectedError = new ApiError(errorResponse.statusText, {})
 const expectSignal = expect.objectContaining({
   aborted: expect.any(Boolean),
   onabort: expect.any(Function)
@@ -70,7 +70,7 @@ describe('fetchJson', () => {
   it('Rejects with description as error message if response not ok and is JSON', async () => {
     const jsonError = { title: 'error title', description: 'error description' }
     fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new Error(jsonError.description))
+    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new ApiError(jsonError.description, jsonError))
   })
 
   it('Can be cancelled', async () => {
@@ -127,6 +127,12 @@ describe('postJson', () => {
   it('Rejects with status text as error message if response not ok', async () => {
     fetch.mockResponseOnce('', errorResponse)
     await expect(apiClient.postJson(path, json)).rejects.toEqual(expectedError)
+  })
+
+  it('Rejects with description as error message if response not ok and is JSON', async () => {
+    const jsonError = { title: 'error title', description: 'error description' }
+    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
+    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new ApiError(jsonError.description, jsonError))
   })
 
   it('Can be cancelled', async () => {
