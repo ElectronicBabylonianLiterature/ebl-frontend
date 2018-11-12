@@ -99,6 +99,7 @@ class TransliteratioForm extends Component {
         onChange={this.update(property)}
         showPrintMargin={false}
         showGutter={false}
+        wrapEnabled
         fontSize='initial'
         readOnly={this.state.disabled}
         editorProps={{
