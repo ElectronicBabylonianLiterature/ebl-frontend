@@ -49,7 +49,7 @@ describe('fetchJson', () => {
     })
   })
 
-  testErrorResponse(() => apiClient.fetchJson(path, true))
+  commonTests(() => apiClient.fetchJson(path, true))
 })
 
 describe('postJson', () => {
@@ -80,7 +80,7 @@ describe('postJson', () => {
     })
   })
 
-  testErrorResponse(() => apiClient.postJson(path, json))
+  commonTests(() => apiClient.postJson(path, json))
 })
 
 describe('fetchBlob', () => {
@@ -114,7 +114,7 @@ describe('fetchBlob', () => {
     })
   })
 
-  testErrorResponse(() => apiClient.fetchBlob(path, true))
+  commonTests(() => apiClient.fetchBlob(path, true))
 })
 
 function setUpSuccessResponse (data = JSON.stringify(result)) {
@@ -122,7 +122,7 @@ function setUpSuccessResponse (data = JSON.stringify(result)) {
   fetch.mockResponseOnce(data)
 }
 
-function testErrorResponse (action) {
+function commonTests (action) {
   it('Can be cancelled', async () => {
     setUpSuccessResponse()
     const callback = jest.fn()
