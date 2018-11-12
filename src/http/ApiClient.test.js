@@ -7,7 +7,6 @@ const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
 const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
-const expectedError = new ApiError(errorResponse.statusText, {})
 const expectSignal = expect.objectContaining({
   aborted: expect.any(Boolean),
   onabort: expect.any(Function)
@@ -50,38 +49,7 @@ describe('fetchJson', () => {
     })
   })
 
-  it('Rejects with error if not authorized', async () => {
-    auth.getAccessToken.mockImplementationOnce(() => { throw error })
-
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(error)
-  })
-
-  it('Rejects with error if fetch fails', async () => {
-    fetch.mockRejectOnce(error)
-
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(error)
-  })
-
-  it('Rejects with status text as error message if response not ok', async () => {
-    fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(expectedError)
-  })
-
-  it('Rejects with description as error message if response not ok and is JSON', async () => {
-    const jsonError = { title: 'error title', description: 'error description' }
-    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new ApiError(jsonError.description, jsonError))
-  })
-
-  it('Can be cancelled', async () => {
-    setUpSuccessResponse()
-    const callback = jest.fn()
-    const promise = apiClient.fetchJson(path, true)
-    const waitable = promise.then(() => null)
-    promise.then(callback).catch(callback).cancel()
-    await waitable
-    expect(callback).not.toHaveBeenCalled()
-  })
+  testErrorResponse(() => apiClient.fetchJson(path, true))
 })
 
 describe('postJson', () => {
@@ -112,38 +80,7 @@ describe('postJson', () => {
     })
   })
 
-  it('Rejects with error if not authorized', async () => {
-    auth.getAccessToken.mockImplementationOnce(() => { throw error })
-
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
-  })
-
-  it('Rejects with error if post fails', async () => {
-    fetch.mockRejectOnce(error)
-
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(error)
-  })
-
-  it('Rejects with status text as error message if response not ok', async () => {
-    fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.postJson(path, json)).rejects.toEqual(expectedError)
-  })
-
-  it('Rejects with description as error message if response not ok and is JSON', async () => {
-    const jsonError = { title: 'error title', description: 'error description' }
-    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
-    await expect(apiClient.fetchJson(path, true)).rejects.toEqual(new ApiError(jsonError.description, jsonError))
-  })
-
-  it('Can be cancelled', async () => {
-    setUpSuccessResponse()
-    const callback = jest.fn()
-    const promise = apiClient.postJson(path, json)
-    const waitable = promise.then(() => null)
-    promise.then(callback).catch(callback).cancel()
-    await waitable
-    expect(callback).not.toHaveBeenCalled()
-  })
+  testErrorResponse(() => apiClient.postJson(path, json))
 })
 
 describe('fetchBlob', () => {
@@ -177,25 +114,44 @@ describe('fetchBlob', () => {
     })
   })
 
-  it('Rejects with error if not authorized', async () => {
-    auth.getAccessToken.mockImplementationOnce(() => { throw error })
-
-    await expect(apiClient.fetchBlob(path, true)).rejects.toEqual(error)
-  })
-
-  it('Rejects with error if fetch fails', async () => {
-    fetch.mockRejectOnce(error)
-
-    await expect(apiClient.fetchBlob(path)).rejects.toEqual(error)
-  })
-
-  it('Rejects with status text as error message if response not ok', async () => {
-    fetch.mockResponseOnce('', errorResponse)
-    await expect(apiClient.fetchBlob(path)).rejects.toEqual(expectedError)
-  })
+  testErrorResponse(() => apiClient.fetchBlob(path, true))
 })
 
 function setUpSuccessResponse (data = JSON.stringify(result)) {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
   fetch.mockResponseOnce(data)
+}
+
+function testErrorResponse (action) {
+  it('Can be cancelled', async () => {
+    setUpSuccessResponse()
+    const callback = jest.fn()
+    const promise = action()
+    const waitable = promise.then(() => null)
+    promise.then(callback).catch(callback).cancel()
+    await waitable
+    expect(callback).not.toHaveBeenCalled()
+  })
+
+  it('Rejects with error if not authorized', async () => {
+    auth.getAccessToken.mockImplementationOnce(() => { throw error })
+    await expect(action()).rejects.toEqual(error)
+  })
+
+  it('Rejects with error if fetch fails', async () => {
+    fetch.mockRejectOnce(error)
+    await expect(action()).rejects.toEqual(error)
+  })
+
+  it('Rejects with status text as error message if response not ok', async () => {
+    const expectedError = new ApiError(errorResponse.statusText, {})
+    fetch.mockResponseOnce('', errorResponse)
+    await expect(action()).rejects.toEqual(expectedError)
+  })
+
+  it('Rejects with description as error message if response not ok and is JSON', async () => {
+    const jsonError = { title: 'error title', description: 'error description' }
+    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
+    await expect(action()).rejects.toEqual(new ApiError(jsonError.description, jsonError))
+  })
 }
