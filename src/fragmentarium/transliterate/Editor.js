@@ -6,16 +6,15 @@ import 'brace/ext/searchbox'
 import 'brace/mode/plain_text'
 import 'brace/theme/kuroir'
 
-function createAnnotations (error) {
-  const lineNumber = _.get(error, 'data.lineNumber', null)
-  return _.isNil(lineNumber)
-    ? []
-    : [{
-      row: Number(lineNumber) - 1,
+function createAnnotations (compositeError) {
+  return _.get(compositeError, 'data.errors', [])
+    .filter(error => _.has(error, 'lineNumber'))
+    .map(error => ({
+      row: error.lineNumber - 1,
       column: 0,
       type: 'error',
-      text: 'Invalid line'
-    }]
+      text: error.description
+    }))
 }
 
 function Editor ({ name, value, onChange, disabled, error }) {

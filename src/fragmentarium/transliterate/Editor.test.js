@@ -7,8 +7,14 @@ test.each([
   ['', false, null],
   ['value', true, null],
   ['value', false, {}],
-  ['value', false, { lineNumber: '2' }],
-  ['value', false, { lineNumber: 'invalid' }]
+  ['value', false, { errors: [{
+    type: 'SyntaxError',
+    description: 'Invalid line',
+    lineNumber: 2
+  }] }],
+  ['value', false, { errors: [{
+    type: 'OtherError'
+  }] }]
 ])('Renders without crashing with props %s %p %p', (value, disabled, error) => {
   const onChange = jest.fn()
   const name = 'transliteration'
