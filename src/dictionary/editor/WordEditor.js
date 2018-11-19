@@ -45,8 +45,6 @@ class WordEditor extends Component {
           <Breadcrumbs section='Dictionary' active={this.props.match.params.id} />
           <h2>
             Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}
-            {' '}
-            <small>({this.state.word._id})</small>
           </h2>
           <ReactMarkdown source={this.state.word.source} />
           <Spinner loading={this.state.saving}>Saving...</Spinner>
