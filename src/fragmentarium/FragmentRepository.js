@@ -51,7 +51,7 @@ class FragmentRepository {
   }
 
   updateTransliteration (number, transliteration, notes) {
-    const path = `/fragments/${encodeURIComponent(number)}`
+    const path = `/fragments/${encodeURIComponent(number)}/transliteration`
     return this.apiClient.postJson(
       path,
       {
