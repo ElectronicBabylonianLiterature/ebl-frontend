@@ -83,7 +83,7 @@ class TransliteratioForm extends Component {
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       {' '}
-      <HelpTrigger overlay={TransliterationHelp()} />
+      {property === 'transliteration' && <HelpTrigger overlay={TransliterationHelp()} /> }
       <Editor
         name={property}
         value={this.state[property]}
