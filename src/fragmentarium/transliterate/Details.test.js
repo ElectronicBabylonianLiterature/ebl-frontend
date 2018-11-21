@@ -15,7 +15,7 @@ function renderDetails () {
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { museum: 'The British Museum' })
+    fragment = await factory.build('fragment', { museum: 'The British Museum', hits: 6 })
     renderDetails()
   })
 
@@ -61,6 +61,10 @@ describe('All details', () => {
   it('Renders accession', () => {
     expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
   })
+
+  it('Renders hits', () => {
+    expect(container).toHaveTextContent(`Cited in ${fragment.hits} documents`)
+  })
 })
 
 describe('Missing details', () => {
@@ -80,8 +84,12 @@ describe('Missing details', () => {
     expect(container).not.toHaveTextContent('undefined')
   })
 
-  it('Does not renders colection', () => {
+  it('Does not render colection', () => {
     expect(container).not.toHaveTextContent('Collection')
+  })
+
+  it('Does not render hits', () => {
+    expect(container).not.toHaveTextContent('Cited in')
   })
 
   it(`Renders dash for joins`, () => {

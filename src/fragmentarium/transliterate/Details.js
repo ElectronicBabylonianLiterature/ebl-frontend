@@ -65,6 +65,15 @@ class Details extends Component {
     )
   }
 
+  get hits () {
+    const hits = this.props.fragment.hits
+    return (
+      <Fragment>
+        Cited in {hits} documents
+      </Fragment>
+    )
+  }
+
   render () {
     return (
       <ul className='Details'>
@@ -74,6 +83,7 @@ class Details extends Component {
         <li className='Details__item Details-item--extra-margin'>{this.measurements}</li>
         <li className='Details__item'>{this.cdliNumber}</li>
         <li className='Details__item'>Accession: {this.props.fragment.accession || '-'}</li>
+        {!_.isNil(this.props.fragment.hits) && <li className='Details__item'>{this.hits}</li>}
       </ul>
     )
   }
