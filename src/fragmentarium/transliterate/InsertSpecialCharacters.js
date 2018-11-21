@@ -21,6 +21,8 @@ const characters = {
   'ṣ': { 'win': 'Alt-s', 'mac': 'Option-s' },
   'Ṭ': { 'win': 'Alt-Shift-t', 'mac': 'Option-Shift-t' },
   'ṭ': { 'win': 'Alt-t', 'mac': 'Option-t' },
+  'ḫ': { 'win': 'Alt-h', 'mac': 'Option-h' },
+  'Ḫ': { 'win': 'Alt-Shift-h', 'mac': 'Option-Shift-h' },
   'ʾ': { 'win': 'Ctrl-\'', 'mac': 'Option-\'' },
   'Ĝ': { 'win': 'Alt-Shift-g', 'mac': 'Option-Shift-g' },
   'ĝ': { 'win': 'Alt-g', 'mac': 'Option-g' },
