@@ -6,6 +6,8 @@ import { Promise } from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import Editor from './Editor'
 import TemplateForm from './TemplateForm'
+import HelpTrigger from 'common/HelpTrigger'
+import TransliterationHelp from './TransliterationHelp'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -80,6 +82,8 @@ class TransliteratioForm extends Component {
   EditorFormGroup = ({ property, error }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
+      {' '}
+      <HelpTrigger overlay={TransliterationHelp()} />
       <Editor
         name={property}
         value={this.state[property]}

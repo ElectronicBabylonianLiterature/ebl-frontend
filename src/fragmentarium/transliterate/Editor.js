@@ -5,7 +5,7 @@ import _ from 'lodash'
 import 'brace/ext/searchbox'
 import 'brace/mode/plain_text'
 import 'brace/theme/kuroir'
-import replaceSpecialCharacters from './replaceSpecialCharacters'
+import insertSpecialCharacters from './InsertSpecialCharacters'
 
 function createAnnotations (compositeError) {
   return _.get(compositeError, 'data.errors', [])
@@ -42,7 +42,7 @@ function Editor ({ name, value, onChange, disabled, error }) {
     setOptions={{
       showLineNumbers: false
     }}
-    commands={replaceSpecialCharacters}
+    commands={insertSpecialCharacters}
   />
 }
 

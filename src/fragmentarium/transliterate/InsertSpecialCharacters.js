@@ -37,7 +37,7 @@ const characters = {
   'ₓ': { 'win': 'Ctrl-x', 'mac': 'Command-x' }
 }
 
-const replaceSpecialCharacters = Object.entries(characters).map(([key, value]) => (
+const insertSpecialCharacters = Object.entries(characters).map(([key, value]) => (
   {
     name: `insert a special character ${key}`,
     bindKey: value,
@@ -45,4 +45,4 @@ const replaceSpecialCharacters = Object.entries(characters).map(([key, value]) =
   }
 ))
 
-export default replaceSpecialCharacters
+export default insertSpecialCharacters
