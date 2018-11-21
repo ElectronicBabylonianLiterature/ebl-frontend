@@ -58,8 +58,9 @@ export async function submitForm (element, query) {
 }
 
 export function testDelegation (object, testData) {
-  for (let [method, params, target, expectedResult, expectedParams, targetResult] of testData) {
-    describe(method, () => {
+  describe.each(testData)(
+    '%s',
+    (method, params, target, expectedResult, expectedParams, targetResult) => {
       let result
 
       beforeEach(() => {
@@ -79,6 +80,6 @@ export function testDelegation (object, testData) {
           expect(result).toEqual(expectedResult)
         }
       })
-    })
-  }
+    }
+  )
 }
