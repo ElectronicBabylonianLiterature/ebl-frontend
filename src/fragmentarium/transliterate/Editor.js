@@ -25,7 +25,7 @@ function Editor ({ name, value, onChange, disabled, error }) {
     width='100%'
     heigth='auto'
     minLines={2}
-    maxLines={Math.max(2, value.split('\n').length)}
+    maxLines={2 * value.split('\n').length + 2}
     mode='plain_text'
     theme='kuroir'
     value={value}
