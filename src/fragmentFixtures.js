@@ -55,6 +55,7 @@ factory.define('fragmentDto', Object, {
   'folios': factory.assocAttrsMany('folioDto', 2),
   'record': factory.assocAttrsMany('record', 2),
   'transliteration': factory.chance('paragraph'),
+  'lemmatization': [],
   'notes': factory.chance('sentence'),
   'museum': 'The British Museum'
 })
