@@ -19,10 +19,13 @@ const fragmentRepository = {
   updateTransliteration: jest.fn(),
   folioPager: jest.fn()
 }
+const wordRepository = {
+  searchLemma: jest.fn()
+}
 const imageRepository = {
   find: jest.fn()
 }
-const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
+const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository)
 
 const testData = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
@@ -37,8 +40,8 @@ const testData = [
   ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],
-  ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub]
-
+  ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
+  ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]]
 ]
 
 testDelegation(fragmentService, testData)

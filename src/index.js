@@ -25,7 +25,7 @@ const apiClient = new ApiClient(auth)
 const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)
 const imageRepository = new ImageRepository(apiClient)
-const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
+const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository)
 const wordService = new WordService(auth, wordRepository)
 
 ReactDOM.render(

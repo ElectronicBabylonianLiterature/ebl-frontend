@@ -1,10 +1,11 @@
 import _ from 'lodash'
 
 class FragmentService {
-  constructor (auth, fragmentRepository, imageRepository) {
+  constructor (auth, fragmentRepository, imageRepository, wordRepository) {
     this.auth = auth
     this.fragmentRepository = fragmentRepository
     this.imageRepository = imageRepository
+    this.wordRepository = wordRepository
   }
 
   statistics () {
@@ -49,6 +50,10 @@ class FragmentService {
 
   folioPager (folio, fragmentNumber) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
+  }
+
+  searchLemma (lemma) {
+    return this.wordRepository.searchLemma(lemma)
   }
 }
 
