@@ -86,7 +86,7 @@ describe('handleAuthentication', () => {
   describe('authResult does not have scope', () => {
     const expectedScope = [
       'openid',
-      'profile read:words write:words read:fragments transliterate:fragments',
+      'profile read:words write:words read:fragments transliterate:fragments lemmatize:fragments',
       'read:WGL-folios',
       'read:FWG-folios',
       'read:EL-folios',
@@ -126,7 +126,8 @@ describe('Session', () => {
     ['isAllowedToReadWords', [], session.hasScope, true, ['read:words']],
     ['isAllowedToWriteWords', [], session.hasScope, true, ['write:words']],
     ['isAllowedToReadFragments', [], session.hasScope, true, ['read:fragments']],
-    ['isAllowedToTransliterateFragments', [], session.hasScope, true, ['transliterate:fragments']]
+    ['isAllowedToTransliterateFragments', [], session.hasScope, true, ['transliterate:fragments']],
+    ['isAllowedToLemmatizeFragments', [], session.hasScope, true, ['lemmatize:fragments']]
   ])
 
   it('getAccessToken', () => {

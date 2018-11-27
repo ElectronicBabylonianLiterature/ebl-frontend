@@ -7,7 +7,8 @@ const resultStub = {}
 const folio = createFolio('AKG', '375')
 const auth = {
   isAllowedToReadFragments: jest.fn(),
-  isAllowedToTransliterateFragments: jest.fn()
+  isAllowedToTransliterateFragments: jest.fn(),
+  isAllowedToLemmatizeFragments: jest.fn()
 }
 const fragmentRepository = {
   statistics: jest.fn(),
@@ -40,6 +41,7 @@ const testData = [
   ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],
+  ['isAllowedToLemmatize', [], auth.isAllowedToLemmatizeFragments, true],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]]
 ]

@@ -48,6 +48,10 @@ class FragmentService {
     return this.auth.isAllowedToTransliterateFragments()
   }
 
+  isAllowedToLemmatize () {
+    return this.auth.isAllowedToLemmatizeFragments()
+  }
+
   folioPager (folio, fragmentNumber) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }

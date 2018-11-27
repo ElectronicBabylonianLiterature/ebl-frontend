@@ -13,6 +13,7 @@ const applicationScopes = {
   writeWords: 'write:words',
   readFragments: 'read:fragments',
   transliterateFragments: 'transliterate:fragments',
+  lemmatizeFragments: 'lemmatize:fragments',
   readWglFolios: 'read:WGL-folios',
   readFwgFolios: 'read:FWG-folios',
   readElFolios: 'read:EL-folios',
@@ -96,6 +97,11 @@ class Auth {
 
   isAllowedToTransliterateFragments () {
     const scope = applicationScopes.transliterateFragments
+    return this.sessionStore.getSession().hasScope(scope)
+  }
+
+  isAllowedToLemmatizeFragments () {
+    const scope = applicationScopes.lemmatizeFragments
     return this.sessionStore.getSession().hasScope(scope)
   }
 }
