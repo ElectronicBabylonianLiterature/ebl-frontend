@@ -13,6 +13,7 @@ const fragmentRepository = new FragmentRepository(apiClient)
 const fragmentId = 'K+1234'
 const transliterationQuery = 'kur\nkur'
 const transliteration = 'transliteration'
+const lemmatization = [[{ value: 'kur', uniqueLemma: null }]]
 const notes = 'notes'
 const resultStub = {}
 const folio = createFolio('MJG', 'K1')
@@ -39,6 +40,7 @@ const testData = [
     transliteration,
     notes
   }], Promise.resolve(resultStub)],
+  ['updateLemmatization', [fragmentId, lemmatization], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/lemmatization`, lemmatization], Promise.resolve(resultStub)],
   ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)]
 ]
 
