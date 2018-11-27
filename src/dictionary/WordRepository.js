@@ -11,6 +11,10 @@ class WordRepository {
     return this.apiClient.fetchJson(`/words?query=${encodeURIComponent(query)}`, true)
   }
 
+  searchLemma (lemma) {
+    return this.apiClient.fetchJson(`/words?lemma=${encodeURIComponent(lemma)}`, true)
+  }
+
   update (word) {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
