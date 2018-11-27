@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
 
 import Details from './Details'
 import Record from './Record'
@@ -7,6 +7,7 @@ import OrganizationLinks from './OrganizationLinks'
 import Folios from './Folios'
 import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/PioneersButton'
+import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 
 import './CuneiformFragment.css'
 
@@ -26,24 +27,32 @@ class CuneiformFragment extends Component {
   )
 
   MiddleColumn = () => (
-    <Fragment>
-      <p className='CuneifromFragment__description'>
-        {this.fragment.description}
-      </p>
-      <p className='CuneifromFragment__publication'>
-        (Publication: {this.fragment.publication || '- '})
-      </p>
-      <TransliteratioForm
-        number={this.fragment._id}
-        transliteration={this.fragment.transliteration}
-        notes={this.fragment.notes}
-        fragmentService={this.props.fragmentService}
-        onChange={this.props.onChange}
-        auth={this.props.auth} />
-      <p className='CuneifromFragment__navigation'>
-        <PioneersButton auth={this.props.auth} fragmentService={this.props.fragmentService} />
-      </p>
-    </Fragment>
+    <Tabs id='fragment-container'>
+      <Tab eventKey={1} title='Edition'>
+        <p className='CuneifromFragment__description'>
+          {this.fragment.description}
+        </p>
+        <p className='CuneifromFragment__publication'>
+          (Publication: {this.fragment.publication || '- '})
+        </p>
+        <TransliteratioForm
+          number={this.fragment._id}
+          transliteration={this.fragment.transliteration}
+          notes={this.fragment.notes}
+          fragmentService={this.props.fragmentService}
+          onChange={this.props.onChange}
+          auth={this.props.auth} />
+        <p className='CuneifromFragment__navigation'>
+          <PioneersButton auth={this.props.auth} fragmentService={this.props.fragmentService} />
+        </p>
+      </Tab>
+      <Tab eventKey={2} title='Lemmatization' disabled={!this.props.fragmentService.isAllowedToLemmatize()}>
+        <Lemmatizer
+          fragmentService={this.props.fragmentService}
+          number={this.fragment._id}
+          lemmatization={this.fragment.lemmatization} />
+      </Tab>
+    </Tabs>
   )
 
   RightColumn = () => (

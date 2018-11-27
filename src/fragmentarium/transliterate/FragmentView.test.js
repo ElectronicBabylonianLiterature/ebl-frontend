@@ -31,7 +31,8 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     folioPager: jest.fn(),
     isAllowedToRead: jest.fn(),
-    isAllowedToTransliterate: jest.fn()
+    isAllowedToTransliterate: jest.fn(),
+    isAllowedToLemmatize: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
