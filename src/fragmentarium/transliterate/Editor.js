@@ -5,7 +5,7 @@ import _ from 'lodash'
 import 'brace/ext/searchbox'
 import 'brace/mode/plain_text'
 import 'brace/theme/kuroir'
-import specialCharacters from './SpecialCharacters'
+import specialCharacters from './SpecialCharacters.json'
 
 function createAnnotations (compositeError) {
   return _.get(compositeError, 'data.errors', [])
