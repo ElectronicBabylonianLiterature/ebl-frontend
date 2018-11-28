@@ -3,19 +3,19 @@ import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 function isClickable (token) {
-  return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$]|^\s*$/.test(token.token)
+  return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$]|^\s*$/.test(token.value)
 }
 
-function Word ({ value, columnIndex, rowIndex, onClick }) {
+function Word ({ token, columnIndex, rowIndex, onClick }) {
   return (
     <Fragment>
-      {isClickable(value)
+      {isClickable(token)
         ? <Button key={columnIndex} onClick={onClick}>
-          {!_.isEmpty(value.uniqueLemma)
-            ? <b>{value.token}</b>
-            : value.token}
+          {!_.isEmpty(token.uniqueLemma)
+            ? <b>{token.value}</b>
+            : token.value}
         </Button>
-        : <span key={columnIndex}>{value.token}</span>}
+        : <span key={columnIndex}>{token.value}</span>}
       {' '}
     </Fragment>
   )

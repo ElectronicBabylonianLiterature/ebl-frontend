@@ -15,7 +15,16 @@ beforeEach(async () => {
   }
   fragmentService.updateLemmatizatio.mockReturnValue(Promise.resolve())
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([]))
-  lemmatization = []
+  lemmatization = [[
+    {
+      'value': '1.',
+      'uniqueLemma': []
+    },
+    {
+      'value': 'kur',
+      'uniqueLemma': ['aklu I']
+    }
+  ]]
   element = render(
     <Lemmatizer
       fragmentService={fragmentService}
@@ -25,5 +34,7 @@ beforeEach(async () => {
 })
 
 it('Displays the transliteration', () => {
-  expect(element.container).toHaveTextContent(lemmatization.map(row => row.join(' ')).join('\n'))
+  expect(element.container).toHaveTextContent(lemmatization.map(row =>
+    row.map(token => token.value).join(' ')
+  ).join('\n'))
 })

@@ -19,7 +19,7 @@ export default class Lemmatizer extends Component {
   setLemma = selectedOption => {
     const newTokens = _.cloneDeep(this.state.tokens)
     const token = newTokens[this.state.rowIndex][this.state.columnIndex]
-    token.uniqueLemma = selectedOption.value
+    token.uniqueLemma = [selectedOption.value]
     this.setState({
       ...this.state,
       tokens: newTokens
@@ -45,7 +45,7 @@ export default class Lemmatizer extends Component {
   render () {
     return <div>
       {this.state.selectedToken && <LemmatizationForm
-        value={this.state.selectedToken}
+        token={this.state.selectedToken}
         fragmentService={this.props.fragmentService}
         onChange={this.setLemma}
       />}
@@ -57,7 +57,7 @@ export default class Lemmatizer extends Component {
                 key={columnIndex}
                 columnIndex={columnIndex}
                 rowIndex={rowIndex}
-                value={token}
+                token={token}
                 onClick={() => this.setState({
                   ...this.state,
                   columnIndex,

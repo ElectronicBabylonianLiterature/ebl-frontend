@@ -39,7 +39,7 @@ const testData = [
   ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
   ['searchTransliteration', ['kur'], fragmentRepository.searchTransliteration, resultStub],
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
-  ['updateLemmatization', ['K.1', [[{ value: 'kur', uniqueLemma: null }]]], fragmentRepository.updateLemmatization, resultStub],
+  ['updateLemmatization', ['K.1', [[{ value: 'kur', uniqueLemma: [] }]]], fragmentRepository.updateLemmatization, resultStub],
   ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],
