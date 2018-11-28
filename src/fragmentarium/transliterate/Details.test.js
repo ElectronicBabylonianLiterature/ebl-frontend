@@ -15,7 +15,7 @@ function renderDetails () {
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { museum: 'The British Museum', hits: 6 })
+    fragment = await factory.build('fragment', { museum: 'The British Museum', hits: 0 })
     renderDetails()
   })
 
