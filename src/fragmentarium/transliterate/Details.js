@@ -68,9 +68,7 @@ class Details extends Component {
   get hits () {
     const hits = this.props.fragment.hits
     return (
-      <Fragment>
-        Cited in {hits} documents
-      </Fragment>
+      `Cited in ${hits} documents`
     )
   }
 
