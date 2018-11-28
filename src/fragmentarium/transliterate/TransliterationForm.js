@@ -7,7 +7,7 @@ import ErrorAlert from 'common/ErrorAlert'
 import Editor from './Editor'
 import TemplateForm from './TemplateForm'
 import HelpTrigger from 'common/HelpTrigger'
-import TransliterationHelp from './TransliterationHelp'
+import specialCharactersHelp from './SpecialCharactersHelp'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -79,11 +79,11 @@ class TransliteratioForm extends Component {
       })
   }
 
-  EditorFormGroup = ({ property, error }) => (
+  EditorFormGroup = ({ property, error, showHelp }) => (
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       {' '}
-      {property === 'transliteration' && <HelpTrigger overlay={TransliterationHelp()} /> }
+      {showHelp && <HelpTrigger overlay={specialCharactersHelp()} /> }
       <Editor
         name={property}
         value={this.state[property]}
@@ -97,7 +97,7 @@ class TransliteratioForm extends Component {
   Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
       <fieldset disabled={!this.editable}>
-        <this.EditorFormGroup property='transliteration' error={this.state.error} />
+        <this.EditorFormGroup property='transliteration' error={this.state.error} showHelp />
         <this.EditorFormGroup property='notes' />
         <ErrorAlert error={this.state.error} />
       </fieldset>
