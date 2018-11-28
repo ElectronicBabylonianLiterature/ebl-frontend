@@ -23,20 +23,20 @@ const characters = {
   'ṭ': { 'win': 'Alt-t', 'mac': 'Option-t' },
   'ḫ': { 'win': 'Alt-h', 'mac': 'Option-h' },
   'Ḫ': { 'win': 'Alt-Shift-h', 'mac': 'Option-Shift-h' },
-  'ʾ': { 'win': 'Ctrl-\'', 'mac': 'Option-\'' },
+  'ʾ': { 'win': 'Ctrl-Alt-a', 'mac': 'Command-Option-a' },
   'Ĝ': { 'win': 'Alt-Shift-g', 'mac': 'Option-Shift-g' },
   'ĝ': { 'win': 'Alt-g', 'mac': 'Option-g' },
-  '₁': { 'win': 'Ctrl-1', 'mac': 'Command-1' },
-  '₂': { 'win': 'Ctrl-2', 'mac': 'Command-2' },
-  '₃': { 'win': 'Ctrl-3', 'mac': 'Command-3' },
-  '₄': { 'win': 'Ctrl-4', 'mac': 'Command-4' },
-  '₅': { 'win': 'Ctrl-5', 'mac': 'Command-5' },
-  '₆': { 'win': 'Ctrl-6', 'mac': 'Command-6' },
-  '₇': { 'win': 'Ctrl-7', 'mac': 'Command-7' },
-  '₈': { 'win': 'Ctrl-8', 'mac': 'Command-8' },
-  '₉': { 'win': 'Ctrl-9', 'mac': 'Command-9' },
-  '₀': { 'win': 'Ctrl-0', 'mac': 'Command-0' },
-  'ₓ': { 'win': 'Ctrl-x', 'mac': 'Command-x' }
+  '₁': { 'win': 'Alt-1', 'mac': 'Option-1' },
+  '₂': { 'win': 'Alt-2', 'mac': 'Option-2' },
+  '₃': { 'win': 'Alt-3', 'mac': 'Option-3' },
+  '₄': { 'win': 'Alt-4', 'mac': 'Option-4' },
+  '₅': { 'win': 'Alt-5', 'mac': 'Option-5' },
+  '₆': { 'win': 'Alt-6', 'mac': 'Option-6' },
+  '₇': { 'win': 'Alt-7', 'mac': 'Option-7' },
+  '₈': { 'win': 'Alt-8', 'mac': 'Option-8' },
+  '₉': { 'win': 'Alt-9', 'mac': 'Option-9' },
+  '₀': { 'win': 'Alt-0', 'mac': 'Option-0' },
+  'ₓ': { 'win': 'Alt-x', 'mac': 'Option-x' }
 }
 
 const insertSpecialCharacters = Object.entries(characters).map(([key, value]) => (
