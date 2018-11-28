@@ -24,7 +24,6 @@ class LemmatizationForm extends Component {
           .map(word =>
             ({ value: word._id, label: word._id })
           )
-          .take(10)
           .value()
       )
       .then(callback)
