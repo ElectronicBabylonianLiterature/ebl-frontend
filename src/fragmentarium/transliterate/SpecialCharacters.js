@@ -1,4 +1,4 @@
-const characters = {
+const specialCharacters = {
   'Ā': { 'win': 'Ctrl-Shift-a', 'mac': 'Command-Shift-a' },
   'ā': { 'win': 'Ctrl-a', 'mac': 'Command-a' },
   'Ē': { 'win': 'Ctrl-Shift-e', 'mac': 'Command-Shift-e' },
@@ -39,12 +39,4 @@ const characters = {
   'ₓ': { 'win': 'Alt-x', 'mac': 'Option-x' }
 }
 
-const insertSpecialCharacters = Object.entries(characters).map(([key, value]) => (
-  {
-    name: `insert a special character ${key}`,
-    bindKey: value,
-    exec: (editor) => { editor.insert(key) }
-  }
-))
-
-export default insertSpecialCharacters
+export default specialCharacters
