@@ -10,9 +10,9 @@ class LemmatizationForm extends Component {
   }
 
   createState = () => ({
-    selectedOption: _.isEmpty(this.props.token.uniqueLemma)
-      ? null
-      : { value: this.props.token.uniqueLemma[0], label: this.props.token.uniqueLemma[0] }
+    selectedOption: this.props.token.uniqueLemma.map(lemma => (
+      { value: lemma, label: lemma }
+    ))
   })
 
   loadOptions = (inputValue, callback) => {
@@ -47,10 +47,11 @@ class LemmatizationForm extends Component {
       <header>{this.props.token.value}</header>
       <AsyncSelect
         cacheOptions
-        defaultOptions={!!this.state.selectedOption && [this.state.selectedOption]}
+        defaultOptions={!!this.state.selectedOption && this.state.selectedOption}
         loadOptions={this.loadOptions}
         onChange={this.handleChange}
         value={this.state.selectedOption}
+        isMulti
       />
     </div>
   }

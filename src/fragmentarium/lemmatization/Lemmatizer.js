@@ -19,7 +19,7 @@ export default class Lemmatizer extends Component {
   setLemma = selectedOption => {
     const newTokens = _.cloneDeep(this.state.tokens)
     const token = newTokens[this.state.rowIndex][this.state.columnIndex]
-    token.uniqueLemma = [selectedOption.value]
+    token.uniqueLemma = selectedOption.map(option => option.value)
     this.setState({
       ...this.state,
       tokens: newTokens
