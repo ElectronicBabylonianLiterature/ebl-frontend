@@ -26,7 +26,7 @@ class LemmatizationForm extends Component {
       .then(words =>
         words.map(word => ({
           value: word._id,
-          label: `${word._id} - ${
+          label: `${word._id}, ${
             _.truncate(word.meaning.replace(/\*|\\/g, ''), {
               separator: ' ',
               omission: '…'
