@@ -16,7 +16,7 @@ export async function changeValue (input, newValue) {
   await wait()
 }
 
-export async function clickNth (element, text, n) {
+export async function clickNth (element, text, n = 0) {
   const clickable = element.getAllByText(text)[n]
   fireEvent.click(clickable)
   await wait()

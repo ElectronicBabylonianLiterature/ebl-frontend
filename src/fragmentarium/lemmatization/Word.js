@@ -1,28 +1,27 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
+import classNames from 'classnames'
 import _ from 'lodash'
+
+import './Word.css'
 
 function isClickable (token) {
   return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$@]|^\s*$/.test(token.value)
 }
 
-function LemmaIndicator ({ token, children }) {
-  return !_.isEmpty(token.uniqueLemma)
-    ? <b>{children}</b>
-    : children
-}
-
 function Word ({ token, onClick }) {
-  return (
-    <Fragment>
-      {isClickable(token)
-        ? <Button onClick={onClick}>
-          <LemmaIndicator token={token}>{token.value}</LemmaIndicator>
-        </Button>
-        : <span>{token.value}</span>}
-      {' '}
-    </Fragment>
-  )
+  return isClickable(token)
+    ? (
+      <Button
+        onClick={onClick}
+        className={classNames({
+          Word: true,
+          'Word--with-lemma': !_.isEmpty(token.uniqueLemma)
+        })}>
+        {token.value}
+      </Button>
+    )
+    : <span className='Word'>{token.value}</span>
 }
 
 export default Word

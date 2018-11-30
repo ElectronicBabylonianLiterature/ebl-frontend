@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
@@ -52,10 +52,10 @@ export default class Lemmatizer extends Component {
           multi
         />
       }
-      <div>
+      <ol className='Lemmatizer__transliteration'>
         {this.state.tokens.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            {row.map((token, columnIndex) => (
+          <li key={rowIndex}>
+            {row.map((token, columnIndex) => <Fragment>
               <Word
                 key={columnIndex}
                 columnIndex={columnIndex}
@@ -67,10 +67,11 @@ export default class Lemmatizer extends Component {
                   rowIndex,
                   selectedToken: token
                 })} />
-            ))}
-          </div>
+              {' '}
+            </Fragment>)}
+          </li>
         ))}
-      </div>
+      </ol>
       <Button onClick={this.submit} disabled={this.state.disabled} bsStyle='primary'>Save</Button>
     </div>
   }
