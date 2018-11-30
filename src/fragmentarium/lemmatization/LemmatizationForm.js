@@ -24,7 +24,15 @@ class LemmatizationForm extends Component {
   loadOptions = (inputValue, callback) => {
     this.props.fragmentService.searchLemma(inputValue)
       .then(words =>
-        words.map(word => ({ value: word._id, label: word._id }))
+        words.map(word => ({
+          value: word._id,
+          label: `${word._id} - ${
+            _.truncate(word.meaning.replace(/\*|\\/g, ''), {
+              separator: ' ',
+              omission: '…'
+            })
+          }`
+        }))
       )
       .then(callback)
   }
@@ -35,7 +43,7 @@ class LemmatizationForm extends Component {
     }
   }
 
-  handleChange = (selectedOption) => {
+  handleChange = selectedOption => {
     this.setState({
       ...this.state,
       selectedOption
