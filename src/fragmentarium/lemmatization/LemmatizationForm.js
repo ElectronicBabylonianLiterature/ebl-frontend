@@ -55,7 +55,6 @@ class LemmatizationForm extends Component {
             <AsyncSelect
               aria-labelledby='lemma-label'
               cacheOptions
-              defaultOptions={!!this.state.selectedOption && this.state.selectedOption}
               loadOptions={this.loadOptions}
               onChange={this.handleChange}
               value={this.state.selectedOption}
