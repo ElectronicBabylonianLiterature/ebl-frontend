@@ -7,7 +7,7 @@ import ErrorAlert from 'common/ErrorAlert'
 import Editor from './Editor'
 import TemplateForm from './TemplateForm'
 import HelpTrigger from 'common/HelpTrigger'
-import specialCharactersHelp from './SpecialCharactersHelp'
+import SpecialCharactersHelp from './SpecialCharactersHelp'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -83,7 +83,7 @@ class TransliteratioForm extends Component {
     <FormGroup controlId={property}>
       <ControlLabel>{_.startCase(property)}</ControlLabel>
       {' '}
-      {showHelp && <HelpTrigger overlay={specialCharactersHelp()} /> }
+      {showHelp && <HelpTrigger overlay={SpecialCharactersHelp()} /> }
       <Editor
         name={property}
         value={this.state[property]}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
 
-export default function specialCharactersHelp () {
+export default function SpecialCharactersHelp () {
   return (
     <Popover id='Transliteration help' title='Special characters'>
       <p>
