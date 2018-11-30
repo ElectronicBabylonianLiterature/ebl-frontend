@@ -4,6 +4,8 @@ import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
 
+import './Lemmatizer.css'
+
 export default class Lemmatizer extends Component {
   constructor (props) {
     super(props)
