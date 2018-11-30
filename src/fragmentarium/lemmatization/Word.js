@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 function isClickable (token) {
-  return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$]|^\s*$/.test(token.value)
+  return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$@]|^\s*$/.test(token.value)
 }
 
 function Word ({ token, columnIndex, rowIndex, onClick }) {
