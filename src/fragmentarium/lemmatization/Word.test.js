@@ -34,7 +34,7 @@ describe('Lemmatizable token', () => {
   })
 
   it('Does not have withLemma class', () => {
-    expect(element.getByText(token.value)).not.toHaveClass('Word--withLemma')
+    expect(element.getByText(token.value)).not.toHaveClass('Word--with-lemma')
   })
 })
 
@@ -61,7 +61,7 @@ describe('Lemmatizable token with lemma', () => {
   })
 
   it('Haves have withLemma class', () => {
-    expect(element.getByText(token.value)).toHaveClass('Word--withLemma')
+    expect(element.getByText(token.value)).toHaveClass('Word--with-lemma')
   })
 })
 
@@ -88,6 +88,6 @@ describe('Not-lemmatizable token', () => {
   })
 
   it('Does not have withLemma class', () => {
-    expect(element.getByText(token.value)).not.toHaveClass('Word--withLemma')
+    expect(element.getByText(token.value)).not.toHaveClass('Word--with-lemma')
   })
 })
