@@ -56,7 +56,7 @@ export default class Lemmatizer extends Component {
       }
       <ol className='Lemmatizer__transliteration'>
         {this.state.tokens.map((row, rowIndex) => (
-          <li key={rowIndex}>
+          <li key={rowIndex} className='Lemmatizer__row'>
             {row.map((token, columnIndex) => <Fragment key={columnIndex}>
               <Word
                 columnIndex={columnIndex}

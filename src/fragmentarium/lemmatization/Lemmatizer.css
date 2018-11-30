@@ -2,3 +2,7 @@
   list-style: none;
   padding: 0;
 }
+
+.Lemmatizer__row {
+  min-height: 1em;
+}
