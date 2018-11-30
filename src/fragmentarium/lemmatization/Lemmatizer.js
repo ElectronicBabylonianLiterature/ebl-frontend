@@ -44,11 +44,14 @@ export default class Lemmatizer extends Component {
 
   render () {
     return <div>
-      {this.state.selectedToken && <LemmatizationForm
-        token={this.state.selectedToken}
-        fragmentService={this.props.fragmentService}
-        onChange={this.setLemma}
-      />}
+      {this.state.selectedToken &&
+        <LemmatizationForm
+          token={this.state.selectedToken}
+          fragmentService={this.props.fragmentService}
+          onChange={this.setLemma}
+          multi
+        />
+      }
       <div>
         {this.state.tokens.map((row, rowIndex) => (
           <div key={rowIndex}>

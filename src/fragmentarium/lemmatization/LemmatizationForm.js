@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import { Checkbox, FormGroup, Col } from 'react-bootstrap'
 import AsyncSelect from 'react-select/lib/Async'
-import Promise from 'bluebird'
 import _ from 'lodash'
 
 class LemmatizationForm extends Component {
@@ -9,51 +9,70 @@ class LemmatizationForm extends Component {
     this.state = this.createState()
   }
 
-  createState = () => ({
-    selectedOption: this.props.token.uniqueLemma.map(lemma => (
-      { value: lemma, label: lemma }
-    ))
-  })
+  createState = () => {
+    const multi = this.props.token.uniqueLemma.length > 1
+    return {
+      multi: multi,
+      selectedOption: multi
+        ? this.props.token.uniqueLemma.map(lemma => (
+          { value: lemma, label: lemma }
+        ))
+        : { value: this.props.token.uniqueLemma[0], label: this.props.token.uniqueLemma[0] }
+    }
+  }
 
   loadOptions = (inputValue, callback) => {
-    (inputValue.length > 0
-      ? this.props.fragmentService.searchLemma(inputValue)
-      : Promise.resolve([]))
+    this.props.fragmentService.searchLemma(inputValue)
       .then(words =>
-        _(words)
-          .map(word =>
-            ({ value: word._id, label: word._id })
-          )
-          .value()
+        words.map(word => ({ value: word._id, label: word._id }))
       )
       .then(callback)
   }
 
   componentDidUpdate (prevProps, prevState, snapshot) {
-    if (!_.isEqual(prevProps.token, this.props.token)) {
+    if (prevProps.token !== this.props.token) {
       this.setState(this.createState())
     }
   }
 
   handleChange = (selectedOption) => {
     this.setState({
+      ...this.state,
       selectedOption
     })
-    this.props.onChange(selectedOption)
+    this.props.onChange(_.isArray(selectedOption) ? selectedOption : [selectedOption])
   }
 
   render () {
-    return <div>
-      <header>{this.props.token.value}</header>
-      <AsyncSelect
-        cacheOptions
-        defaultOptions={!!this.state.selectedOption && this.state.selectedOption}
-        loadOptions={this.loadOptions}
-        onChange={this.handleChange}
-        value={this.state.selectedOption}
-        isMulti
-      />
-    </div>
+    return (
+      <form>
+        <header>
+          {this.props.token.value}
+        </header>
+        <label id='lemma-label'>{this.state.multi ? 'Lemmata' : 'Lemma'}</label>
+        <FormGroup>
+          <Col md={8}>
+            <AsyncSelect
+              aria-labelledby='lemma-label'
+              cacheOptions
+              defaultOptions={!!this.state.selectedOption && this.state.selectedOption}
+              loadOptions={this.loadOptions}
+              onChange={this.handleChange}
+              value={this.state.selectedOption}
+              isMulti={this.state.multi}
+            />
+          </Col>
+          <Col md={4}>
+            <Checkbox
+              disabled={this.props.token.uniqueLemma.length > 1}
+              checked={this.state.multi}
+              onChange={() => this.setState({ ...this.state, multi: !this.state.multi })}>
+              Multiple
+            </Checkbox>
+          </Col>
+        </FormGroup>
+      </form>
+    )
   }
 }
 
