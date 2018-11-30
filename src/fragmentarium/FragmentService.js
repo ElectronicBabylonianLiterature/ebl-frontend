@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { Promise } from 'bluebird'
 
 class FragmentService {
   constructor (auth, fragmentRepository, imageRepository, wordRepository) {
@@ -61,7 +62,9 @@ class FragmentService {
   }
 
   searchLemma (lemma) {
-    return this.wordRepository.searchLemma(lemma)
+    return _.isEmpty(lemma)
+      ? Promise.resolve([])
+      : this.wordRepository.searchLemma(lemma)
   }
 }
 

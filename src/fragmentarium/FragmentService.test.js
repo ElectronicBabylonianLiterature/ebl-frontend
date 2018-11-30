@@ -49,3 +49,7 @@ const testData = [
 ]
 
 testDelegation(fragmentService, testData)
+
+it('searchLemma resolves to empty array on zero length query', async () => {
+  await expect(fragmentService.searchLemma('')).resolves.toEqual([])
+})
