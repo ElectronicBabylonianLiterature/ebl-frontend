@@ -1,5 +1,6 @@
 import { factory } from 'factory-girl'
 import createFolio from 'fragmentarium/createFolio'
+import createFragment from 'fragmentarium/createFragment'
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -54,18 +55,20 @@ factory.define('fragmentDto', Object, {
   'date': factory.chance('sentence', { words: 2 }),
   'folios': factory.assocAttrsMany('folioDto', 2),
   'record': factory.assocAttrsMany('record', 2),
-  'transliteration': factory.chance('paragraph'),
-  'lemmatization': [],
+  'lemmatization': async () => {
+    const text = await factory.chance('paragraph', { sentences: 3 })()
+    return text.split('. ')
+      .map(row => row
+        .split(' ')
+        .map(token => ({ value: token, uniqueLemma: [] })))
+  },
   'notes': factory.chance('sentence'),
   'museum': 'The British Museum'
 })
 
 factory.define('fragment', Object, async () => {
   const dto = await factory.build('fragmentDto')
-  return {
-    ...dto,
-    folios: dto.folios.map(({ name, number }) => createFolio(name, number))
-  }
+  return createFragment(dto)
 })
 
 factory.define('folioPagerEntry', Object, {
