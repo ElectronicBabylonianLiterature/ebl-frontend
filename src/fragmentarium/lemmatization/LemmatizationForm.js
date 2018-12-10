@@ -48,7 +48,12 @@ class LemmatizationForm extends Component {
       ...this.state,
       selectedOption
     })
-    this.props.onChange(_.isArray(selectedOption) ? selectedOption : [selectedOption])
+    this.props.onChange(_.isNil(selectedOption)
+      ? []
+      : (_.isArray(selectedOption)
+        ? selectedOption
+        : [selectedOption]
+      ))
   }
 
   render () {
@@ -63,6 +68,7 @@ class LemmatizationForm extends Component {
             <AsyncSelect
               aria-labelledby='lemma-label'
               cacheOptions
+              isClearable
               loadOptions={this.loadOptions}
               onChange={this.handleChange}
               value={this.state.selectedOption}
