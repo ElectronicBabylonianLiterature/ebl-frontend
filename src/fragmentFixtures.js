@@ -39,20 +39,16 @@ factory.define('fragmentDto', Object, {
   'cdliNumber': factory.chance('word'),
   'bmIdNumber': factory.chance('word'),
   'accession': factory.chance('word'),
-  'genre': factory.chance('sentence', { words: 2 }),
-  'fincke': factory.chance('sentence'),
   'publication': factory.chance('sentence', { words: 4 }),
   'joins': [
     factory.chance('word')
   ],
-  'subcollection': factory.chance('sentence', { words: 2 }),
   'description': factory.chance('sentence'),
   'length': factory.assocAttrs('measure'),
   'width': factory.assocAttrs('measure'),
   'thickness': factory.assocAttrs('measure'),
   'collection': 'Kuyunjik',
   'script': factory.chance('pickone', ['NA', 'NB']),
-  'date': factory.chance('sentence', { words: 2 }),
   'folios': factory.assocAttrsMany('folioDto', 2),
   'record': factory.assocAttrsMany('record', 2),
   'lemmatization': async () => {
