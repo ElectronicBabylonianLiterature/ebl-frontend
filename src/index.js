@@ -15,6 +15,8 @@ import FragmentRepository from 'fragmentarium/FragmentRepository'
 import ImageRepository from 'fragmentarium/ImageRepository'
 import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
+import RavenErrorReporterContext from './RavenErrorReporterContext'
+import RavenErrorReporter from './common/RavenErrorReporter'
 
 Promise.config({
   cancellation: true
@@ -27,17 +29,20 @@ const fragmentRepository = new FragmentRepository(apiClient)
 const imageRepository = new ImageRepository(apiClient)
 const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository)
 const wordService = new WordService(auth, wordRepository)
+const ravenErrorReporter = new RavenErrorReporter()
 
 ReactDOM.render(
-  <ErrorBoundary>
-    <Router>
-      <App
-        auth={auth}
-        wordService={wordService}
-        fragmentService={fragmentService}
-      />
-    </Router>
-  </ErrorBoundary>,
+  <RavenErrorReporterContext.Provider value={ravenErrorReporter}>
+    <ErrorBoundary>
+      <Router>
+        <App
+          auth={auth}
+          wordService={wordService}
+          fragmentService={fragmentService}
+        />
+      </Router>
+    </ErrorBoundary>
+  </RavenErrorReporterContext.Provider>,
   document.getElementById('root')
 )
 
