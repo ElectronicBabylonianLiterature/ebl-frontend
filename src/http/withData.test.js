@@ -3,6 +3,7 @@ import { render, wait } from 'react-testing-library'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
+import ErrorReporterContext from 'ErrorReporterContext'
 
 const data = 'Test data'
 const defaultData = 'Default data'
@@ -10,6 +11,7 @@ const newData = 'New Test Data'
 const propValue = 'passed value'
 const newPropValue = 'new value'
 const errorMessage = 'error'
+
 let element
 let filter
 let config
@@ -17,14 +19,19 @@ let getter
 
 let ComponentWithData
 let InnerComponent
+let errorReportingService
+
+errorReportingService = {
+  captureException: jest.fn()
+}
 
 async function renderWithData () {
-  element = render(<ComponentWithData prop={propValue} />)
+  element = render(<ErrorReporterContext.Provider value={errorReportingService}><ComponentWithData prop={propValue} /> </ErrorReporterContext.Provider>)
   await wait()
 }
 
 async function rerender (prop) {
-  element.rerender(<ComponentWithData prop={prop} />)
+  element.rerender(<ErrorReporterContext.Provider value={errorReportingService}><ComponentWithData prop={prop} /> </ErrorReporterContext.Provider>)
   await wait()
 }
 
@@ -180,7 +187,7 @@ describe('Child component crash', () => {
   beforeEach(async () => {
     const CrashingComponent = withData(() => { throw new Error(errorMessage) }, getter)
     getter.mockReturnValueOnce(Promise.resolve(data))
-    element = render(<CrashingComponent prop={propValue} />)
+    element = render(<ErrorReporterContext.Provider value={errorReportingService}><CrashingComponent prop={propValue} /></ErrorReporterContext.Provider>)
     await wait()
   })
 
