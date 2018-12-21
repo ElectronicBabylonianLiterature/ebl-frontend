@@ -1,18 +1,23 @@
-/* global Raven */
+
 import React from 'react'
 import { render } from 'react-testing-library'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
 import Callback from './Callback'
+import ErrorReporterContext from 'ErrorReporterContext'
 
 const CallbackWithRouter = withRouter(Callback)
 
 let auth
 let element
+let errorReportingService
 
 beforeEach(() => {
   auth = {
     handleAuthentication: jest.fn()
+  }
+  errorReportingService = {
+    captureException: jest.fn()
   }
 })
 
@@ -42,7 +47,7 @@ describe('Error', () => {
   })
 
   it('Reports error', () => {
-    expect(Raven.captureException).toHaveBeenCalledWith(error)
+    expect(errorReportingService.captureException).toHaveBeenCalledWith(error)
   })
 
   itRedirectsToHome()
@@ -59,18 +64,20 @@ describe('Hash does not contain token', () => {
 })
 
 function itRedirectsToHome () {
-  it('Redirects to home', () => {
+  it('Redirects to home', async () => {
     expect(element.container).toHaveTextContent('Home')
   })
 }
 
 function renderCallback (hash) {
   element = render(
-    <MemoryRouter initialEntries={[`/callback#${hash}`]}>
-      <Switch>
-        <Route path='/callback' render={() => <CallbackWithRouter auth={auth} />} />
-        <Route path='/' render={() => <div>Home</div>} />
-      </Switch>
-    </MemoryRouter>
+    <ErrorReporterContext.Provider value={errorReportingService}>
+      <MemoryRouter initialEntries={[`/callback#${hash}`]}>
+        <Switch>
+          <Route path='/callback' render={() => <CallbackWithRouter auth={auth} />} />
+          <Route path='/' render={() => <div>Home</div>} />
+        </Switch>
+      </MemoryRouter>
+    </ErrorReporterContext.Provider>
   )
 }
