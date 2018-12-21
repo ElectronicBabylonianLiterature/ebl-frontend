@@ -7,11 +7,11 @@ import ErrorReporterContext from 'ErrorReporterContext'
 const redirectTarget = '/'
 
 class Callback extends Component {
-  constructor ({ location, history, auth, ...props }) {
+  constructor (props) {
     super(props)
-    this.location = location
-    this.history = history
-    this.auth = auth
+    this.location = props.location
+    this.history = props.history
+    this.auth = props.auth
   }
 
   static contextType = ErrorReporterContext

@@ -3,8 +3,8 @@ import React from 'react'
 import { render } from 'react-testing-library'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
-import Callback from './Callback'
 import ErrorReporterContext from 'ErrorReporterContext'
+import Callback from './Callback'
 
 const CallbackWithRouter = withRouter(Callback)
 
