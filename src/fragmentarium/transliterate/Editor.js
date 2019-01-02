@@ -48,7 +48,8 @@ function Editor ({ name, value, onChange, disabled, error }) {
       $blockScrolling: Infinity
     }}
     setOptions={{
-      showLineNumbers: false
+      showLineNumbers: false,
+      newLineMode: 'unix'
     }}
     commands={specialCharacterKeys}
   />
