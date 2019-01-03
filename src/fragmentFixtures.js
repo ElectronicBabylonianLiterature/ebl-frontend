@@ -175,13 +175,6 @@ factory.define('fragmentDto', Object, {
   'script': factory.chance('pickone', ['NA', 'NB']),
   'folios': factory.assocAttrsMany('folioDto', 2),
   'record': factory.assocAttrsMany('record', 2),
-  'lemmatization': async () => {
-    const text = await factory.chance('paragraph', { sentences: 3 })()
-    return text.split('. ')
-      .map(row => row
-        .split(' ')
-        .map(token => ({ value: token, uniqueLemma: [] })))
-  },
   'text': factory.assocAttrs('textDto'),
   'notes': factory.chance('sentence'),
   'museum': 'The British Museum'

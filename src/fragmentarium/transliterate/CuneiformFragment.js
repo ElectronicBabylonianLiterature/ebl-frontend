@@ -28,7 +28,7 @@ class CuneiformFragment extends Component {
   )
 
   MiddleColumn = () => {
-    const lemmatizationDisabled = _.isEmpty(this.fragment.lemmatization) || !this.props.fragmentService.isAllowedToLemmatize()
+    const lemmatizationDisabled = _.isEmpty(this.fragment.text.lines) || !this.props.fragmentService.isAllowedToLemmatize()
     return (
       <Tabs id='fragment-container'>
         <Tab eventKey={1} title='Edition'>
