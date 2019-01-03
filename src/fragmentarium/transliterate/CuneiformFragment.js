@@ -53,7 +53,7 @@ class CuneiformFragment extends Component {
           <Lemmatizer
             fragmentService={this.props.fragmentService}
             number={this.fragment._id}
-            lemmatization={this.fragment.lemmatization} />
+            text={this.fragment.text} />
         </Tab>
       </Tabs>
     )

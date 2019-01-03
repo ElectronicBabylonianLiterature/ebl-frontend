@@ -5,12 +5,8 @@ import _ from 'lodash'
 
 import './Word.css'
 
-function isClickable (token) {
-  return !/x|X|\/|\d+.?\.|\.\.\.|^[#$&$@]|^\s*$/.test(token.value)
-}
-
 function Word ({ token, onClick }) {
-  return isClickable(token)
+  return token.lemmatizable
     ? (
       <Button
         onClick={onClick}

@@ -14,7 +14,7 @@ export default class Lemmatizer extends Component {
       selectedToken: null,
       columnIndex: 0,
       rowIndex: 0,
-      tokens: props.lemmatization
+      tokens: props.text.lines.map(line => line.content)
     }
   }
 
@@ -35,7 +35,10 @@ export default class Lemmatizer extends Component {
     })
     this.props.fragmentService.updateLemmatization(
       this.props.number,
-      this.state.tokens
+      this.state.tokens.map(row => [
+        ...row.map(token => _.pick(token, 'value', 'uniqueLemma')
+        )
+      ])
     ).finally(() => {
       this.setState({
         ...this.state,
@@ -57,6 +60,7 @@ export default class Lemmatizer extends Component {
       <ol className='Lemmatizer__transliteration'>
         {this.state.tokens.map((row, rowIndex) => (
           <li key={rowIndex} className='Lemmatizer__row'>
+            {this.props.text.lines[rowIndex].prefix}
             {row.map((token, columnIndex) => <Fragment key={columnIndex}>
               <Word
                 columnIndex={columnIndex}

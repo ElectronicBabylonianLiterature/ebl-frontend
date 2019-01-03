@@ -11,11 +11,15 @@ beforeEach(() => {
   onClick = jest.fn()
 })
 
-describe('Lemmatizable token', () => {
+describe('Lemmatizable word', () => {
   beforeEach(async () => {
     token = {
+      'type': 'Word',
       'value': 'DIŠ',
-      'uniqueLemma': []
+      'uniqueLemma': [],
+      'language': 'AKKADIAN',
+      'normalized': false,
+      'lemmatizable': true
     }
     element = render(
       <Word
@@ -38,11 +42,15 @@ describe('Lemmatizable token', () => {
   })
 })
 
-describe('Lemmatizable token with lemma', () => {
+describe('Lemmatizable word with lemma', () => {
   beforeEach(async () => {
     token = {
+      'type': 'Word',
       'value': 'DIŠ',
-      'uniqueLemma': ['aklu']
+      'uniqueLemma': ['aklu'],
+      'language': 'AKKADIAN',
+      'normalized': false,
+      'lemmatizable': true
     }
     element = render(
       <Word
@@ -65,11 +73,14 @@ describe('Lemmatizable token with lemma', () => {
   })
 })
 
-describe('Not-lemmatizable token', () => {
+describe('Not-lemmatizable word', () => {
   beforeEach(async () => {
     token = {
-      'value': '1.',
-      'uniqueLemma': []
+      'value': 'DIŠ',
+      'uniqueLemma': [],
+      'language': 'AKKADIAN',
+      'normalized': true,
+      'lemmatizable': false
     }
     element = render(
       <Word
@@ -82,7 +93,7 @@ describe('Not-lemmatizable token', () => {
     expect(element.container).toHaveTextContent(token.value)
   })
 
-  it('Clicking calls on click', async () => {
+  it('Clicking does not call on click', async () => {
     await clickNth(element, token.value)
     expect(onClick).not.toHaveBeenCalled()
   })

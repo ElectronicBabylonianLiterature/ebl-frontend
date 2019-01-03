@@ -24,8 +24,12 @@ beforeEach(async () => {
 describe('Single lemma', () => {
   beforeEach(async () => {
     token = {
+      'type': 'Word',
       'value': 'kur',
-      'uniqueLemma': ['aklu I']
+      'uniqueLemma': ['aklu I'],
+      'language': 'AKKADIAN',
+      'normalized': false,
+      'lemmatizable': true
     }
     element = render(
       <LemmatizationForm
@@ -49,8 +53,12 @@ describe('Single lemma', () => {
 describe('Multiple lemmas', () => {
   beforeEach(async () => {
     token = {
+      'type': 'Word',
       'value': 'kur',
-      'uniqueLemma': ['aklu I', 'aklu II']
+      'uniqueLemma': ['aklu I', 'aklu II'],
+      'language': 'AKKADIAN',
+      'normalized': false,
+      'lemmatizable': true
     }
     element = render(
       <LemmatizationForm

@@ -7,7 +7,7 @@ import { clickNth } from 'testHelpers'
 
 let element
 let fragmentService
-let lemmatization
+let text
 
 beforeEach(async () => {
   fragmentService = {
@@ -16,28 +16,44 @@ beforeEach(async () => {
   }
   fragmentService.updateLemmatizatio.mockReturnValue(Promise.resolve())
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([]))
-  lemmatization = [[
-    {
-      'value': '1.',
-      'uniqueLemma': []
-    },
-    {
-      'value': 'kur',
-      'uniqueLemma': ['aklu I']
-    }
-  ]]
+  text = {
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: ['aklu I'],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          }
+        ]
+      }
+    ]
+  }
   element = render(
     <Lemmatizer
       fragmentService={fragmentService}
       number='K.1'
-      lemmatization={lemmatization}
+      text={text}
     />)
 })
 
+it('Displays the line prefixes', () => {
+  text.lines.forEach(row =>
+    expect(element.container).toHaveTextContent(row.prefix)
+  )
+})
+
 it('Displays the transliteration', () => {
-  expect(element.container).toHaveTextContent(lemmatization.map(row =>
-    row.map(token => token.value).join(' ')
-  ).join('\n'))
+  text.lines.forEach(row =>
+    expect(element.container).toHaveTextContent(
+      row.content.map(token => token.value).join(' ')
+    )
+  )
 })
 
 it('Shows form when clicking a word', async () => {
