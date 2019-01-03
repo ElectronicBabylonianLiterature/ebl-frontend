@@ -34,6 +34,130 @@ factory.define('folio', Object, async ({ name, number }) => {
   return createFolio(name || dto.name, number || dto.number)
 })
 
+factory.define('lineDto', Object, {
+  lines: factory.assocAttrsMany('folioDto', 2)
+})
+
+factory.define('textDto', Object, {
+  lines: async () => {
+    return [
+      {
+        'prefix': '@',
+        'content': [
+          {
+            'type': 'Token',
+            'value': "column 1'"
+          }
+        ],
+        'type': 'ControlLine'
+      },
+      {
+        'prefix': "1'.",
+        'content': [
+          {
+            'type': 'Token',
+            'value': '[...]'
+          },
+          {
+            'type': 'Word',
+            'value': 'x',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          }
+        ],
+        'type': 'TextLine'
+      },
+      {
+        'type': 'EmptyLine',
+        'prefix': '',
+        'content': []
+      },
+      {
+        'prefix': '@',
+        'content': [
+          {
+            'type': 'Token',
+            'value': "column 2'"
+          }
+        ],
+        'type': 'ControlLine'
+      },
+      {
+        'prefix': "1'.",
+        'content': [
+          {
+            'type': 'Word',
+            'value': 'x',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          },
+          {
+            'type': 'Word',
+            'value': 'x',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          },
+          {
+            'type': 'Token',
+            'value': '[...]'
+          }
+        ],
+        'type': 'TextLine'
+      },
+      {
+        'prefix': "2'.",
+        'content': [
+          {
+            'type': 'Word',
+            'value': 'ia',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          },
+          {
+            'type': 'Token',
+            'value': '[...]'
+          }
+        ],
+        'type': 'TextLine'
+      },
+      {
+        'prefix': "3'.",
+        'content': [
+          {
+            'type': 'Word',
+            'value': 'ia',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          },
+          {
+            'type': 'Word',
+            'value': 'g[u/gem[e₂',
+            'uniqueLemma': [],
+            'normalized': false,
+            'language': 'AKKADIAN',
+            'lemmatizable': true
+          },
+          {
+            'type': 'Token',
+            'value': '...]'
+          }
+        ],
+        'type': 'TextLine'
+      }
+    ]
+  }
+})
+
 factory.define('fragmentDto', Object, {
   '_id': factory.chance('word'),
   'cdliNumber': factory.chance('word'),
@@ -58,6 +182,7 @@ factory.define('fragmentDto', Object, {
         .split(' ')
         .map(token => ({ value: token, uniqueLemma: [] })))
   },
+  'text': factory.assocAttrs('textDto'),
   'notes': factory.chance('sentence'),
   'museum': 'The British Museum'
 })
