@@ -64,7 +64,7 @@ describe('Hash does not contain token', () => {
 })
 
 function itRedirectsToHome () {
-  it('Redirects to home', async () => {
+  it('Redirects to home', () => {
     expect(element.container).toHaveTextContent('Home')
   })
 }
