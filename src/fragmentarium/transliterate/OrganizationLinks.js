@@ -1,6 +1,7 @@
 import React from 'react'
 
 import CdliLink from './CdliLink'
+import ExternalLink from 'common/ExternalLink'
 
 import './OrganizationLinks.css'
 import cdliLogo from './cdli.png'
@@ -10,11 +11,11 @@ export default function OrganizationLinks ({ cdliNumber, bmIdNumber }) {
   return (
     <p className='OrganizationLinks'>
       {bmIdNumber && (
-        <a alt='The British Museum'
+        <ExternalLink alt='The British Museum'
           href={`https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${bmIdNumber}&partId=1`}
           aria-label={`The British Museum object ${bmIdNumber}`}>
           <img className='OrganizationLinks__image' src={bmLogo} alt='The British Museum' />
-        </a>
+        </ExternalLink>
       )}
       {cdliNumber && (
         <CdliLink cdliNumber={cdliNumber}>

@@ -3,6 +3,7 @@ import _ from 'lodash'
 
 import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/FragmentLink'
+import ExternalLink from 'common/ExternalLink'
 
 import './Details.css'
 
@@ -19,9 +20,9 @@ class Details extends Component {
     const museum = this.props.fragment.museum
     const musuemUrl = museums[museum]
     return (
-      <a href={musuemUrl}>
+      <ExternalLink href={musuemUrl}>
         {museum}
-      </a>
+      </ExternalLink>
     )
   }
 
