@@ -27,7 +27,7 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragment = await factory.build('fragment')
+  fragment = await factory.build('fragment', { atf: '1. ku' })
   element = render(
     <MemoryRouter>
       <CuneiformFragment
@@ -49,7 +49,7 @@ for (let property of properties) {
 }
 
 xit('Renders transliteration field', () => {
-  expect(element.getByLabelText('Transliteration').value).toEqual(fragment.transliteration)
+  expect(element.getByLabelText('Transliteration').value).toEqual(fragment.atf)
 })
 
 xit('Renders notes field', () => {

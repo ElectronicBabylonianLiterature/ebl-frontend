@@ -40,7 +40,7 @@ class CuneiformFragment extends Component {
           </p>
           <TransliteratioForm
             number={this.fragment._id}
-            transliteration={this.fragment.transliteration}
+            transliteration={this.fragment.atf}
             notes={this.fragment.notes}
             fragmentService={this.props.fragmentService}
             onChange={this.props.onChange}

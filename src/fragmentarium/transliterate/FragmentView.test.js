@@ -45,7 +45,7 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     const folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
-    fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios })
+    fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
     selectedFolio = fragment.folios[1]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.isAllowedToRead.mockReturnValue(true)
@@ -62,7 +62,7 @@ describe('Fragment is loaded', () => {
   })
 
   xit('Shows the fragment', async () => {
-    expect(container).toHaveTextContent(fragment.transliteration)
+    expect(container).toHaveTextContent(fragment.atf)
   })
 
   it('Shows pager', () => {
