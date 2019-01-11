@@ -5,9 +5,7 @@ import _ from 'lodash'
 import Details from './Details'
 import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
-import Folios from './Folios'
-import TransliteratioForm from './TransliterationForm'
-import PioneersButton from 'fragmentarium/PioneersButton'
+import Edition from './Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 
 import './CuneiformFragment.css'
@@ -27,45 +25,31 @@ class CuneiformFragment extends Component {
     </Fragment>
   )
 
-  MiddleColumn = () => {
+  RightColumn = () => {
     const lemmatizationDisabled = _.isEmpty(this.fragment.text.lines) || !this.props.fragmentService.isAllowedToLemmatize()
     return (
       <Tabs id='fragment-container'>
         <Tab eventKey={1} title='Edition'>
-          <p className='CuneifromFragment__description'>
-            {this.fragment.description}
-          </p>
-          <p className='CuneifromFragment__publication'>
-            (Publication: {this.fragment.publication || '- '})
-          </p>
-          <TransliteratioForm
-            number={this.fragment._id}
-            transliteration={this.fragment.atf}
-            notes={this.fragment.notes}
-            fragmentService={this.props.fragmentService}
-            onChange={this.props.onChange}
-            auth={this.props.auth} />
-          <p className='CuneifromFragment__navigation'>
-            <PioneersButton auth={this.props.auth} fragmentService={this.props.fragmentService} />
-          </p>
+          <section className='CuneiformFragment__content'>
+            <Edition
+              activeFolio={this.props.activeFolio}
+              fragment={this.fragment}
+              fragmentService={this.props.fragmentService}
+              onChange={this.props.onChange}
+              auth={this.props.auth} />
+          </section>
         </Tab>
         <Tab eventKey={2} title='Lemmatization' disabled={lemmatizationDisabled}>
-          <Lemmatizer
-            fragmentService={this.props.fragmentService}
-            number={this.fragment._id}
-            text={this.fragment.text} />
+          <section className='CuneiformFragment__content'>
+            <Lemmatizer
+              fragmentService={this.props.fragmentService}
+              number={this.fragment._id}
+              text={this.fragment.text} />
+          </section>
         </Tab>
       </Tabs>
     )
   }
-
-  RightColumn = () => (
-    <Folios
-      fragment={this.fragment}
-      fragmentService={this.props.fragmentService}
-      activeFolio={this.props.activeFolio}
-    />
-  )
 
   render () {
     return (
@@ -74,10 +58,7 @@ class CuneiformFragment extends Component {
           <Col md={2}>
             <this.LeftColumn />
           </Col>
-          <Col md={5}>
-            <this.MiddleColumn />
-          </Col>
-          <Col md={5}>
+          <Col md={10}>
             <this.RightColumn />
           </Col>
         </Row>
