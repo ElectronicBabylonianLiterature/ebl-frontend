@@ -18,9 +18,9 @@ class Details extends Component {
 
   get museum () {
     const museum = this.props.fragment.museum
-    const musuemUrl = museums[museum]
+    const museumUrl = museums[museum]
     return (
-      <ExternalLink href={musuemUrl}>
+      <ExternalLink href={museumUrl}>
         {museum}
       </ExternalLink>
     )
