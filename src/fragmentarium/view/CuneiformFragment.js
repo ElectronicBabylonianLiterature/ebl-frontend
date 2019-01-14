@@ -5,7 +5,7 @@ import _ from 'lodash'
 import Details from './Details'
 import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
-import Edition from './Edition'
+import Edition from 'fragmentarium/transliterate/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 
 import './CuneiformFragment.css'

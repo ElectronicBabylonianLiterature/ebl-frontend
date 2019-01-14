@@ -7,7 +7,7 @@ import Callback from './auth/Callback'
 import Introduction from 'Introduction'
 import Dictionary from 'dictionary/search/Dictionary'
 import WordEditor from 'dictionary/editor/WordEditor'
-import FragmentView from 'fragmentarium/transliterate/FragmentView'
+import FragmentView from 'fragmentarium/view/FragmentView'
 import Fragmentarium from 'fragmentarium/search/Fragmentarium'
 import ErrorBoundary from 'common/ErrorBoundary'
 
