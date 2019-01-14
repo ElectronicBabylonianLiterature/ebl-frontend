@@ -48,8 +48,8 @@ class LemmatizationForm extends Component {
     this.props.onChange(_.isNil(selectedOption)
       ? []
       : (_.isArray(selectedOption)
-        ? selectedOption
-        : [selectedOption]
+        ? selectedOption.map(option => option.value)
+        : [selectedOption.value]
       ))
   }
 
