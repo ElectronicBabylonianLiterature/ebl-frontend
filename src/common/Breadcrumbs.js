@@ -16,7 +16,7 @@ export default function Breadcrumbs ({ section, active }) {
         <Breadcrumb.Item>eBL</Breadcrumb.Item>
       </LinkContainer>
       {sectionLink
-        ? <LinkContainer to={sections[section]}>{sectionItem}</LinkContainer>
+        ? <LinkContainer to={sectionLink}>{sectionItem}</LinkContainer>
         : sectionItem}
       {active && <Breadcrumb.Item active>{active}</Breadcrumb.Item>}
     </Breadcrumb>
