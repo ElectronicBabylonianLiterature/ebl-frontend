@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, Route } from 'react-router-dom'
-import { render, wait } from 'react-testing-library'
+import { render, wait, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentView from './FragmentView'
@@ -12,7 +12,7 @@ let fragmentService
 let container
 let element
 
-async function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmentNumber)}`) {
+function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmentNumber)}`) {
   element = render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <Route path='/:id' render={({ match, location }) =>
@@ -21,7 +21,6 @@ async function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmen
     </MemoryRouter>
   )
   container = element.container
-  await wait()
 }
 
 beforeEach(async () => {
@@ -50,7 +49,8 @@ describe('Fragment is loaded', () => {
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.isAllowedToRead.mockReturnValue(true)
     fragmentService.isAllowedToTransliterate.mockReturnValue(true)
-    await renderFragmentView(`/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(selectedFolio.name)}&folioNumber=${encodeURIComponent(selectedFolio.number)}`)
+    renderFragmentView(`/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(selectedFolio.name)}&folioNumber=${encodeURIComponent(selectedFolio.number)}`)
+    await waitForElement(() => element.getByText('Edition'))
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -75,22 +75,25 @@ describe('Fragment is loaded', () => {
 })
 
 describe('On error', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     fragmentService.isAllowedToRead.mockReturnValue(true)
     fragmentService.isAllowedToTransliterate.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
-    await renderFragmentView()
+    renderFragmentView()
+  })
+
+  it('Shows the error message', async () => {
+    await waitForElement(() => element.getByText(message))
   })
 
   it('Shows the fragment number', async () => {
-    expect(container).toHaveTextContent(fragmentNumber)
+    await waitForElement(() => element.getByText(fragmentNumber))
   })
 })
 
 it('Displays a message if user is not logged in', async () => {
   fragmentService.isAllowedToRead.mockReturnValue(false)
   fragmentService.isAllowedToTransliterate.mockReturnValue(false)
-  await renderFragmentView()
-
-  expect(container).toHaveTextContent('You do not have the rights access the fragmentarium.')
+  renderFragmentView()
+  await waitForElement(() => element.getByText('You do not have the rights access the fragmentarium.'))
 })
