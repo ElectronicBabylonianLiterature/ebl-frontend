@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Checkbox, FormGroup, Col } from 'react-bootstrap'
+import { Checkbox, FormGroup } from 'react-bootstrap'
 import AsyncSelect from 'react-select/lib/Async'
 import _ from 'lodash'
 
@@ -11,13 +11,16 @@ class LemmatizationForm extends Component {
 
   createState = () => {
     const multi = this.props.token.uniqueLemma.length > 1
+    const multiLemmaToOption = () => this.props.token.uniqueLemma.map(lemma => (
+      { value: lemma, label: lemma }
+    ))
+    const singleLemmaToOption = () => this.props.token.uniqueLemma.length === 1
+      ? { value: this.props.token.uniqueLemma[0], label: this.props.token.uniqueLemma[0] }
+      : null
+
     return {
       multi: multi,
-      selectedOption: multi
-        ? this.props.token.uniqueLemma.map(lemma => (
-          { value: lemma, label: lemma }
-        ))
-        : { value: this.props.token.uniqueLemma[0], label: this.props.token.uniqueLemma[0] }
+      selectedOption: multi ? multiLemmaToOption() : singleLemmaToOption()
     }
   }
 
@@ -37,12 +40,6 @@ class LemmatizationForm extends Component {
       .then(callback)
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
-    if (prevProps.token !== this.props.token) {
-      this.setState(this.createState())
-    }
-  }
-
   handleChange = selectedOption => {
     this.setState({
       ...this.state,
@@ -59,30 +56,25 @@ class LemmatizationForm extends Component {
   render () {
     return (
       <form>
-        <header>
-          {this.props.token.value}
-        </header>
-        <label id='lemma-label'>{this.state.multi ? 'Lemmata' : 'Lemma'}</label>
         <FormGroup>
-          <Col md={8}>
-            <AsyncSelect
-              aria-labelledby='lemma-label'
-              cacheOptions
-              isClearable
-              loadOptions={this.loadOptions}
-              onChange={this.handleChange}
-              value={this.state.selectedOption}
-              isMulti={this.state.multi}
-            />
-          </Col>
-          <Col md={4}>
-            <Checkbox
-              disabled={this.props.token.uniqueLemma.length > 1}
-              checked={this.state.multi}
-              onChange={() => this.setState({ ...this.state, multi: !this.state.multi })}>
-              Multiple
-            </Checkbox>
-          </Col>
+          <Checkbox
+            disabled={this.props.token.uniqueLemma.length > 1}
+            checked={this.state.multi}
+            onChange={() => this.setState({ ...this.state, multi: !this.state.multi })}>
+            Multiple
+          </Checkbox>
+        </FormGroup>
+        <FormGroup>
+          <AsyncSelect
+            aria-label={this.state.multi ? 'Lemmata' : 'Lemma'}
+            placeholder={this.state.multi ? 'Lemmata' : 'Lemma'}
+            cacheOptions
+            isClearable
+            loadOptions={this.loadOptions}
+            onChange={this.handleChange}
+            value={this.state.selectedOption}
+            isMulti={this.state.multi}
+          />
         </FormGroup>
       </form>
     )

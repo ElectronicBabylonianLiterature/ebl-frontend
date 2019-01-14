@@ -3,7 +3,6 @@ import { render } from 'react-testing-library'
 import { Promise } from 'bluebird'
 
 import Lemmatizer from './Lemmatizer'
-import { clickNth } from 'testHelpers'
 
 let element
 let fragmentService
@@ -54,9 +53,4 @@ it('Displays the transliteration', () => {
       row.content.map(token => token.value).join(' ')
     )
   )
-})
-
-it('Shows form when clicking a word', async () => {
-  await clickNth(element, 'kur')
-  expect(element.container).toHaveTextContent('Lemma')
 })

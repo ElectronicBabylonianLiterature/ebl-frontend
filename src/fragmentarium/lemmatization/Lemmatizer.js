@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Popover, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
@@ -11,16 +11,26 @@ export default class Lemmatizer extends Component {
     super(props)
     this.state = {
       disabled: false,
-      selectedToken: null,
-      columnIndex: 0,
-      rowIndex: 0,
       tokens: props.text.lines.map(line => line.content)
     }
   }
 
-  setLemma = selectedOption => {
+  FormPopover = (rowIndex, columnIndex, token) => (
+    <Popover
+      id={`LemmatizationForm-${rowIndex},${columnIndex}`}
+      title='Lemmatize'
+      className='Lemmatizer__form'>
+      <LemmatizationForm
+        token={token}
+        fragmentService={this.props.fragmentService}
+        onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
+      />
+    </Popover>
+  )
+
+  setLemma = (rowIndex, columnIndex, selectedOption) => {
     const newTokens = _.cloneDeep(this.state.tokens)
-    const token = newTokens[this.state.rowIndex][this.state.columnIndex]
+    const token = newTokens[rowIndex][columnIndex]
     token.uniqueLemma = selectedOption.map(option => option.value)
     this.setState({
       ...this.state,
@@ -48,36 +58,30 @@ export default class Lemmatizer extends Component {
   }
 
   render () {
-    return <div>
-      {this.state.selectedToken &&
-        <LemmatizationForm
-          token={this.state.selectedToken}
-          fragmentService={this.props.fragmentService}
-          onChange={this.setLemma}
-          multi
-        />
-      }
-      <ol className='Lemmatizer__transliteration'>
-        {this.state.tokens.map((row, rowIndex) => (
-          <li key={rowIndex} className='Lemmatizer__row'>
-            {this.props.text.lines[rowIndex].prefix}
-            {row.map((token, columnIndex) => <Fragment key={columnIndex}>
-              <Word
-                columnIndex={columnIndex}
-                rowIndex={rowIndex}
-                token={token}
-                onClick={() => this.setState({
-                  ...this.state,
-                  columnIndex,
-                  rowIndex,
-                  selectedToken: token
-                })} />
-              {' '}
-            </Fragment>)}
-          </li>
-        ))}
-      </ol>
-      <Button onClick={this.submit} disabled={this.state.disabled} bsStyle='primary'>Save</Button>
-    </div>
+    return (
+      <div>
+        <ol className='Lemmatizer__transliteration'>
+          {this.state.tokens.map((row, rowIndex) => (
+            <li key={rowIndex} className='Lemmatizer__row'>
+              {this.props.text.lines[rowIndex].prefix}
+              {row.map((token, columnIndex) => <Fragment key={columnIndex}>
+                <OverlayTrigger
+                  trigger='click'
+                  rootClose
+                  placement='bottom'
+                  overlay={this.FormPopover(rowIndex, columnIndex, token)}>
+                  <Word
+                    columnIndex={columnIndex}
+                    rowIndex={rowIndex}
+                    token={token} />
+                </OverlayTrigger>
+                {' '}
+              </Fragment>)}
+            </li>
+          ))}
+        </ol>
+        <Button onClick={this.submit} disabled={this.state.disabled} bsStyle='primary'>Save</Button>
+      </div>
+    )
   }
 }

@@ -1,3 +1,8 @@
+.Lemmatizer__form {
+  max-width: none;
+  min-width: 32em;
+}
+
 .Lemmatizer__transliteration {
   list-style: none;
   padding: 0;

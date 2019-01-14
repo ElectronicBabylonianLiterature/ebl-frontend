@@ -43,10 +43,6 @@ describe('Single lemma', () => {
     expect(element.getByLabelText('Multiple')).not.toHaveAttribute('checked')
   })
 
-  it('Multiple is not disabled', async () => {
-    expect(element.getByLabelText('Multiple')).not.toHaveAttribute('disabled')
-  })
-
   commonTests('Lemma')
 })
 
@@ -72,20 +68,12 @@ describe('Multiple lemmas', () => {
     expect(element.getByLabelText('Multiple')).toHaveAttribute('checked')
   })
 
-  it('Multiple is disabled', async () => {
-    expect(element.getByLabelText('Multiple')).toHaveAttribute('disabled')
-  })
-
   commonTests('Lemmata')
 })
 
 function commonTests (lemmaLabel) {
   it('Displays the label', () => {
-    expect(element.container).toHaveTextContent(lemmaLabel)
-  })
-
-  it('Displays the value', () => {
-    expect(element.container).toHaveTextContent(token.value)
+    expect(element.getByLabelText(lemmaLabel)).toBeInTheDocument()
   })
 
   it('Displays the lemma', () => {
