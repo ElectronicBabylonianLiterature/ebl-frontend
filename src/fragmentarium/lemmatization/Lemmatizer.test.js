@@ -4,7 +4,7 @@ import { Promise } from 'bluebird'
 
 import { whenClicked } from 'testHelpers'
 import Lemmatizer from './Lemmatizer'
-import Lemmatization from './Lemmatization';
+import Lemmatization from './Lemmatization'
 
 const number = 'K.1'
 let element
