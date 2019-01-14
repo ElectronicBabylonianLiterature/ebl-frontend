@@ -32,7 +32,7 @@ export default function FragmentView ({ match, location, fragmentService }) {
   return (
     <section className='App-content App-content--wide'>
       <header>
-        <Breadcrumbs section='Fragmentarium' active={number} />
+        <Breadcrumbs section='Fragmentariumxxx' active={number} />
         <h2><FragmentPager number={number}> {number} </FragmentPager></h2>
       </header>
       {fragmentService.isAllowedToRead()

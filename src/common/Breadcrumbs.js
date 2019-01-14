@@ -8,14 +8,16 @@ const sections = {
 }
 
 export default function Breadcrumbs ({ section, active }) {
+  const sectionLink = sections[section]
+  const sectionItem = <Breadcrumb.Item active={!active}>{section}</Breadcrumb.Item>
   return (
     <Breadcrumb separator='/'>
       <LinkContainer to='/'>
         <Breadcrumb.Item>eBL</Breadcrumb.Item>
       </LinkContainer>
-      <LinkContainer to={sections[section]}>
-        <Breadcrumb.Item active={!active}>{section}</Breadcrumb.Item>
-      </LinkContainer>
+      {sectionLink
+        ? <LinkContainer to={sections[section]}>{sectionItem}</LinkContainer>
+        : sectionItem}
       {active && <Breadcrumb.Item active>{active}</Breadcrumb.Item>}
     </Breadcrumb>
   )
