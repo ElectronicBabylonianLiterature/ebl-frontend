@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from 'react-testing-library'
+import { render, wait, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
@@ -79,7 +79,8 @@ beforeEach(async () => {
 describe('On successful get', () => {
   beforeEach(async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
-    await renderWithData()
+    renderWithData()
+    await waitForElement(() => element.getByText(RegExp(propValue)))
   })
 
   expectGetterToBeCalled(propValue)
@@ -92,14 +93,20 @@ describe('On successful get', () => {
     })
 
     describe('Prop updated', () => {
-      beforeEach(async () => rerender(newPropValue))
+      beforeEach(async () => {
+        rerender(newPropValue)
+        await waitForElement(() => element.getByText(RegExp(newPropValue)))
+      })
 
       expectGetterToBeCalled(newPropValue)
       expectWrappedComponentToBeRendered(newPropValue, newData)
     })
 
     describe('Prop did not update', () => {
-      beforeEach(async () => rerender(propValue))
+      beforeEach(async () => {
+        rerender(propValue)
+        await wait()
+      })
 
       it('Does not query the API', () => {
         expect(getter).not.toHaveBeenCalled()
@@ -129,14 +136,11 @@ describe('On failed request', () => {
   beforeEach(async () => {
     getter.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage)))
-    await renderWithData()
+    renderWithData()
+    await waitForElement(() => element.getByText(errorMessage))
   })
 
-  it('Displays an error', async () => {
-    expect(element.container).toHaveTextContent(errorMessage)
-  })
-
-  it('Does not render wrapped component', async () => {
+  it('Does not render wrapped component', () => {
     expect(InnerComponent).not.toHaveBeenCalled()
   })
 })
