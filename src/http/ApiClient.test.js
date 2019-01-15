@@ -87,8 +87,8 @@ describe('fetchBlob', () => {
   it('Resolves to dataURI', async () => {
     setUpSuccessResponse()
 
-    const blob = new Blob([JSON.stringify(result)])
-    expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
+    const blob = await fetch().then(response => response.blob())
+    await expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
   })
 
   it('Makes a request with given parameters', async () => {
@@ -119,7 +119,7 @@ describe('fetchBlob', () => {
 
 function setUpSuccessResponse (data = JSON.stringify(result)) {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
-  fetch.mockResponseOnce(data)
+  fetch.mockResponse(data)
 }
 
 function commonTests (action) {
