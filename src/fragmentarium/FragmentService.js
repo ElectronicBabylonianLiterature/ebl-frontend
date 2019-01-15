@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import { Promise } from 'bluebird'
+import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
+import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 class FragmentService {
   constructor (auth, fragmentRepository, imageRepository, wordRepository) {
@@ -65,6 +67,28 @@ class FragmentService {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)
+  }
+
+  createLemmatization (text) {
+    const find = _.memoize(id => this.wordRepository.find(id))
+    return Promise.all(
+      _(text.lines)
+        .map('content')
+        .map(line => line.map(token => token.uniqueLemma))
+        .flattenDeep()
+        .compact()
+        .map(async uniqueLemma => find(uniqueLemma))
+        .value()
+    ).then(words => {
+      const wordMap = _.keyBy(words, '_id')
+      return new Lemmatization(text, token => token.lemmatizable
+        ? {
+          ...token,
+          uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma]))
+        }
+        : token
+      )
+    })
   }
 }
 

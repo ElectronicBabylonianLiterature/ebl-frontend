@@ -1,19 +1,20 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
-import { changeValueByLabel } from 'testHelpers'
+import Lemma from './lemma'
+import { changeValueByLabel, clickNth } from 'testHelpers'
 
-let word
+let searchWord
 let onChange
 let element
 let fragmentService
 let token
 
 beforeEach(async () => {
-  word = await factory.build('word', {
+  searchWord = await factory.build('word', {
     '_id': 'waklu I',
     'meaning': 'a very very long complicated meaning of a word'
   })
@@ -21,15 +22,18 @@ beforeEach(async () => {
   fragmentService = {
     searchLemma: jest.fn()
   }
-  fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
+  fragmentService.searchLemma.mockReturnValue(Promise.resolve([searchWord]))
 })
 
 describe('Single lemma', () => {
+  let word
+
   beforeEach(async () => {
+    word = await factory.build('word')
     token = {
       'type': 'Word',
       'value': 'kur',
-      'uniqueLemma': ['aklu I'],
+      'uniqueLemma': [new Lemma(word)],
       'language': 'AKKADIAN',
       'normalized': false,
       'lemmatizable': true
@@ -46,15 +50,23 @@ describe('Single lemma', () => {
     expect(element.getByLabelText('Multiple')).not.toHaveAttribute('checked')
   })
 
+  it('Calls onChange when selecting word', async () => {
+    await lemmatize('Lemma')
+    await wait(() => expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)]))
+  })
+
   commonTests('Lemma')
 })
 
 describe('Multiple lemmas', () => {
+  let words
+
   beforeEach(async () => {
+    words = await factory.buildMany('word', 2)
     token = {
       'type': 'Word',
       'value': 'kur',
-      'uniqueLemma': ['aklu I', 'aklu II'],
+      'uniqueLemma': words.map(word => new Lemma(word)),
       'language': 'AKKADIAN',
       'normalized': false,
       'lemmatizable': true
@@ -71,6 +83,14 @@ describe('Multiple lemmas', () => {
     expect(element.getByLabelText('Multiple')).toHaveAttribute('checked')
   })
 
+  it('Calls onChange when selecting word', async () => {
+    await lemmatize('Lemmata')
+    await wait(() => expect(onChange).toHaveBeenCalledWith([
+      ...token.uniqueLemma,
+      new Lemma(searchWord)
+    ]))
+  })
+
   commonTests('Lemmata')
 })
 
@@ -79,12 +99,14 @@ function commonTests (lemmaLabel) {
     expect(element.getByLabelText(lemmaLabel)).toBeInTheDocument()
   })
 
-  it('Displays the lemma', () => {
-    expect(element.container).toHaveTextContent(token.uniqueLemma.join(''))
+  it('Displays the word label', () => {
+    expect(element.container).toHaveTextContent(token.uniqueLemma.map(lemma => lemma.label).join(''))
   })
+}
 
-  it('Displays truncated meaning in options', async () => {
-    await changeValueByLabel(element, lemmaLabel, 'waklu')
-    await waitForElement(() => element.getByText('waklu I, a very very long complicated…'))
-  })
+async function lemmatize (lemmaLabel) {
+  const searchLemma = new Lemma(searchWord)
+  changeValueByLabel(element, lemmaLabel, 'waklu')
+  await waitForElement(() => element.getByText(searchLemma.label))
+  clickNth(element, searchLemma.label, 0)
 }

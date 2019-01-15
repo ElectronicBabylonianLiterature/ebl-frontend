@@ -12,16 +12,13 @@ class LemmatizationForm extends Component {
 
   createState = () => {
     const multi = this.props.token.uniqueLemma.length > 1
-    const multiLemmaToOption = () => this.props.token.uniqueLemma.map(lemma => (
-      { value: lemma, label: lemma }
-    ))
     const singleLemmaToOption = () => this.props.token.uniqueLemma.length === 1
-      ? { value: this.props.token.uniqueLemma[0], label: this.props.token.uniqueLemma[0] }
+      ? this.props.token.uniqueLemma[0]
       : null
 
     return {
       multi: multi,
-      selectedOption: multi ? multiLemmaToOption() : singleLemmaToOption()
+      selectedOption: multi ? this.props.token.uniqueLemma : singleLemmaToOption()
     }
   }
 
@@ -39,8 +36,8 @@ class LemmatizationForm extends Component {
     this.props.onChange(_.isNil(selectedOption)
       ? []
       : (_.isArray(selectedOption)
-        ? selectedOption.map(option => option.value)
-        : [selectedOption.value]
+        ? selectedOption
+        : [selectedOption]
       ))
   }
 

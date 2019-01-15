@@ -4,6 +4,7 @@ import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentView from './FragmentView'
+import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -31,7 +32,11 @@ beforeEach(async () => {
     folioPager: jest.fn(),
     isAllowedToRead: jest.fn(),
     isAllowedToTransliterate: jest.fn(),
-    isAllowedToLemmatize: () => false
+    isAllowedToLemmatize: () => false,
+    createLemmatization: text => Promise.resolve(new Lemmatization(text, token => ({
+      ...token,
+      uniqueLemma: []
+    })))
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))

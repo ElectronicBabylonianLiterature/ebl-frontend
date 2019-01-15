@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Popover, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
-import { Promise } from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
-import Lemmatization from './Lemmatization'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
+import Spinner from 'common/Spinner'
 
 import './Lemmatizer.css'
 
@@ -14,14 +13,22 @@ export default class Lemmatizer extends Component {
     super(props)
     this.state = {
       error: null,
-      disabled: false,
-      lemmatization: new Lemmatization(props.text)
+      disabled: true,
+      lemmatization: null,
+      previousTokens: null
     }
-    this.updatePromise = Promise.resolve()
+    this.updatePromise = props.fragmentService
+      .createLemmatization(props.text)
+      .then(lemmatization => this.setState({
+        error: null,
+        disabled: false,
+        lemmatization: lemmatization,
+        previousTokens: _.cloneDeep(lemmatization.tokens)
+      }))
   }
 
   get hasChanges () {
-    return !_.isEqual(this.state.lemmatization.tokens, new Lemmatization(this.props.text).tokens)
+    return !_.isEqual(this.state.lemmatization.tokens, this.state.previousTokens)
   }
 
   componentWillUnmount () {
@@ -86,7 +93,8 @@ export default class Lemmatizer extends Component {
     ).then(() => {
       this.setState({
         ...this.state,
-        disabled: false
+        disabled: false,
+        previousTokens: _.cloneDeep(this.state.lemmatization.tokens)
       })
     }).catch(error => {
       this.setState({
@@ -98,8 +106,9 @@ export default class Lemmatizer extends Component {
   }
 
   render () {
-    return (
-      <Fragment>
+    return _.isNil(this.state.lemmatization)
+      ? <Spinner />
+      : <Fragment>
         <ol className='Lemmatizer__transliteration'>
           {this.state.lemmatization.tokens.map((row, rowIndex) => (
             <li key={rowIndex} className='Lemmatizer__row'>
@@ -110,6 +119,5 @@ export default class Lemmatizer extends Component {
         <this.SubmitButton />
         <ErrorAlert error={this.state.error} />
       </Fragment>
-    )
   }
 }

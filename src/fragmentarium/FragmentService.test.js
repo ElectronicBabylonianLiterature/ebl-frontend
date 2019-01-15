@@ -1,7 +1,11 @@
 import Promise from 'bluebird'
+import { factory } from 'factory-girl'
+import _ from 'lodash'
 import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
 import createFolio from 'fragmentarium/createFolio'
+import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
+import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 const resultStub = {}
 const folio = createFolio('AKG', '375')
@@ -22,7 +26,8 @@ const fragmentRepository = {
   folioPager: jest.fn()
 }
 const wordRepository = {
-  searchLemma: jest.fn()
+  searchLemma: jest.fn(),
+  find: jest.fn()
 }
 const imageRepository = {
   find: jest.fn()
@@ -52,4 +57,51 @@ testDelegation(fragmentService, testData)
 
 it('searchLemma resolves to empty array on zero length query', async () => {
   await expect(fragmentService.searchLemma('')).resolves.toEqual([])
+})
+
+it('createLemmatization', async () => {
+  const words = await factory.buildMany('word', 2)
+  const wordMap = _.keyBy(words, '_id')
+  const text = {
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [words[0]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          },
+          {
+            type: 'Word',
+            value: 'nu',
+            uniqueLemma: [words[1]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          }
+        ]
+      }
+    ]
+  }
+  wordRepository.find.mockImplementation(id => wordMap[id]
+    ? Promise.resolve(wordMap[id])
+    : Promise.reject(new Error())
+  )
+
+  const expected = new Lemmatization(text, token => ({
+    ...token,
+    uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma]))
+  }))
+  // await expect(fragmentService.createLemmatization(text))
+  // .resolves
+  //  .toEqual(expected)
+
+  const result = await fragmentService.createLemmatization(text)
+  expect(result.tokens).toEqual(expected.tokens)
+  expect(result.text).toEqual(text)
 })

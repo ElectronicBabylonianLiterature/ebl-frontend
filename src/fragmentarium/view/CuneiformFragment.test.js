@@ -6,6 +6,7 @@ import { Promise } from 'bluebird'
 
 import { submitForm } from 'testHelpers'
 import CuneiformFragment from './CuneiformFragment'
+import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
 
 let fragment
 let element
@@ -22,7 +23,11 @@ beforeEach(async () => {
     folioPager: jest.fn(),
     isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true,
-    isAllowedToLemmatize: () => false
+    isAllowedToLemmatize: () => false,
+    createLemmatization: text => Promise.resolve(new Lemmatization(text, token => ({
+      ...token,
+      uniqueLemma: []
+    })))
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))

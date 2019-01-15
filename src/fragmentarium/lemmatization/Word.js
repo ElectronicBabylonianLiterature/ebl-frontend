@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
@@ -15,9 +15,16 @@ function Word ({ token, onClick }) {
           'Word--with-lemma': !_.isEmpty(token.uniqueLemma)
         })}>
         {token.value}
-        <span className='Word__lemma'>
-          {token.uniqueLemma.join(', ')}
-        </span>
+        {_.isArray(token.uniqueLemma) && <span className='Word__lemmatization'>
+          {token.uniqueLemma.map((lemma, index) => (
+            <Fragment key={index}>
+              {index > 0 && ', '}
+              <span className='Word__lemma'>{lemma.lemma}</span>
+              {' '}
+              {lemma.homonym}
+            </Fragment>
+          ))}
+        </span>}
       </Button>
     )
     : <span className='Word'>{token.value}</span>

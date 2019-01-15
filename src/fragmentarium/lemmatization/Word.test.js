@@ -1,7 +1,9 @@
 import React from 'react'
 import { render } from 'react-testing-library'
+import { factory } from 'factory-girl'
 import { clickNth } from '../../testHelpers'
 import Word from './Word'
+import Lemma from './Lemma'
 
 let element
 let token
@@ -43,11 +45,14 @@ describe('Lemmatizable word', () => {
 })
 
 describe('Lemmatizable word with lemma', () => {
+  let lemmas
+
   beforeEach(async () => {
+    lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
     token = {
       'type': 'Word',
       'value': 'DIŠ',
-      'uniqueLemma': ['aklu', 'waklu'],
+      'uniqueLemma': lemmas,
       'language': 'AKKADIAN',
       'normalized': false,
       'lemmatizable': true
@@ -64,7 +69,7 @@ describe('Lemmatizable word with lemma', () => {
   })
 
   it('Displays the lemma', () => {
-    expect(element.container).toHaveTextContent(token.uniqueLemma.join(', '))
+    expect(element.container).toHaveTextContent(lemmas.map(lemma => lemma.uniqueLemma).join(', '))
   })
 
   it('Clicking calls on click', async () => {

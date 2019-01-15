@@ -1,10 +1,14 @@
 import _ from 'lodash'
+import { factory } from 'factory-girl'
+import Lemma from './Lemma'
 import Lemmatization from './Lemmatization'
 
+let words
 let text
 let lemmatization
 
 beforeEach(async () => {
+  words = await factory.buildMany('word', 2)
   text = {
     lines: [
       {
@@ -14,10 +18,15 @@ beforeEach(async () => {
           {
             type: 'Word',
             value: 'kur',
-            uniqueLemma: ['aklu I'],
+            uniqueLemma: [new Lemma(words[0])],
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true
+          },
+          {
+            type: 'LanguageShift',
+            value: '%sux',
+            lemmatizable: false
           }
         ]
       }
@@ -31,7 +40,7 @@ it('Maps tokens', () => {
 })
 
 it('Sets unique lemma', () => {
-  const uniqueLemma = ['aklu II']
+  const uniqueLemma = [new Lemma(words[1])]
   const expected = _.cloneDeep(lemmatization.tokens[0][0])
   expected.uniqueLemma = uniqueLemma
   lemmatization.setLemma(0, 0, uniqueLemma)
@@ -40,7 +49,7 @@ it('Sets unique lemma', () => {
 
 it('Does not mutate text', () => {
   const expected = _.cloneDeep(text)
-  lemmatization.setLemma(0, 0, ['aklu II'])
+  lemmatization.setLemma(0, 0, [new Lemma(words[1])])
   expect(lemmatization.text).toEqual(expected)
 })
 
@@ -48,7 +57,10 @@ it('Creates correct DTO', () => {
   expect(lemmatization.toDto()).toEqual([[
     {
       value: 'kur',
-      uniqueLemma: ['aklu I']
+      uniqueLemma: [words[0]._id]
+    },
+    {
+      value: '%sux'
     }
   ]])
 })

@@ -1,10 +1,11 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 
 import { whenClicked, clickNth, changeValueByLabel } from 'testHelpers'
+import Lemma from './Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization from './Lemmatization'
 
@@ -13,24 +14,34 @@ let element
 let fragmentService
 let text
 let word
+let oldWord
+
+function tokenFactory (token) {
+  return {
+    ...token,
+    uniqueLemma: [new Lemma(oldWord)]
+  }
+}
 
 beforeEach(async () => {
   word = await factory.build('word')
+  oldWord = await factory.build('word')
   fragmentService = {
     updateLemmatization: jest.fn(),
-    searchLemma: jest.fn()
+    searchLemma: jest.fn(),
+    createLemmatization: jest.fn()
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
   text = {
     lines: [
       {
         type: 'TextLine',
-        prefix: number,
+        prefix: '1.',
         content: [
           {
             type: 'Word',
             value: 'kur',
-            uniqueLemma: ['aklu I'],
+            uniqueLemma: [oldWord._id],
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true
@@ -39,12 +50,16 @@ beforeEach(async () => {
       }
     ]
   }
+  fragmentService.createLemmatization.mockImplementation(text => Promise.resolve(
+    new Lemmatization(text, tokenFactory)
+  ))
   element = render(
     <Lemmatizer
       fragmentService={fragmentService}
       number='K.1'
       text={text}
     />)
+  await waitForElement(() => element.getByText('1.'))
 })
 
 it('Displays the line prefixes', () => {
@@ -71,7 +86,7 @@ it('Clicking save calls fragmentService', async () => {
 
   await lemmatizeWord()
 
-  const expected = new Lemmatization(text).setLemma(0, 0, [word._id]).toDto()
+  const expected = new Lemmatization(text, tokenFactory).setLemma(0, 0, [new Lemma(word)]).toDto()
   await whenClicked(element, 'Save').expect(fragmentService.updateLemmatization)
     .toHaveBeenCalledWith(number, expected)
 })
@@ -101,4 +116,5 @@ async function lemmatizeWord () {
   changeValueByLabel(element, 'Lemma', 'a')
   await waitForElement(() => element.getByText(RegExp(word._id)))
   clickNth(element, RegExp(word._id), 0)
+  await wait()
 }
