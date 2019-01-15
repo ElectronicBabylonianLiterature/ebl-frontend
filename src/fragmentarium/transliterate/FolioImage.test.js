@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
 import BlobImage from './FolioImage'
 import createFolio from 'fragmentarium/createFolio'
