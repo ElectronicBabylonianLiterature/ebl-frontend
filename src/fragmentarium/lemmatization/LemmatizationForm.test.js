@@ -4,7 +4,7 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
-import Lemma from './lemma'
+import Lemma from './Lemma'
 import { changeValueByLabel, clickNth } from 'testHelpers'
 
 let searchWord
