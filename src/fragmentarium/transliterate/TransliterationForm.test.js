@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { changeValueByLabel, submitForm } from 'testHelpers'
@@ -46,8 +46,7 @@ describe('User has edit rights', () => {
   describe('Save', () => {
     beforeEach(async () => {
       fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
-
-      await submitForm(element, '#transliteration-form')
+      submitForm(element, '#transliteration-form')
     })
 
     it('Posts transliteration to API', () => {
@@ -55,20 +54,20 @@ describe('User has edit rights', () => {
         .toHaveBeenCalledWith(number, transliteration, notes)
     })
 
-    it('Calls onChange', () => {
-      expect(onChange).toHaveBeenCalled()
+    it('Calls onChange', async () => {
+      await wait(() => expect(onChange).toHaveBeenCalled())
     })
   })
 
   it('Shows error if saving transliteration fails', async () => {
     fragmentService.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
-    await submitForm(element, '#transliteration-form')
+    submitForm(element, '#transliteration-form')
 
-    expect(element.container).toHaveTextContent(errorMessage)
+    await waitForElement(() => element.getByText(errorMessage))
   })
 
-  it('Cancels post on unmount', async () => {
+  it('Cancels post on unmount', () => {
     const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
     fragmentService.updateTransliteration.mockReturnValueOnce(promise)
