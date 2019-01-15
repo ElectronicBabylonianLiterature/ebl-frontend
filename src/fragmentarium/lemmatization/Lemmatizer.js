@@ -48,7 +48,7 @@ export default class Lemmatizer extends Component {
         <OverlayTrigger
           trigger='click'
           rootClose
-          placement='bottom'
+          placement='top'
           overlay={this.FormPopover(rowIndex, columnIndex, token)}>
           <Word token={token} />
         </OverlayTrigger>
