@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from 'react-testing-library'
+import { render, wait, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
 import BlobImage from './FolioImage'
 import createFolio from 'fragmentarium/createFolio'
@@ -16,7 +16,7 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
   fragmentService.findFolio.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   element = render(<BlobImage fragmentService={fragmentService} folio={folio} />)
-  await wait()
+  await waitForElement(() => element.getByAltText(folio.fileName))
 })
 
 it('Queries the API with given parameters', () => {
