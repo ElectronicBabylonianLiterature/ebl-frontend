@@ -52,7 +52,7 @@ describe('Update word', () => {
 
     await submitForm(element, 'form')
 
-    expect(element.getByText(errorMessage)).toBeDefined()
+    await waitForElement(() => element.getByText(errorMessage))
   })
 
   it('Cancels promise on unmount', async () => {
