@@ -1,3 +1,10 @@
 .Word--with-lemma {
   font-weight: bolder;
 }
+
+.Word--with-lemma .Word__lemma {
+  font-size: 66%;
+  margin-left: 0.33em;
+  vertical-align: sub;
+  font-weight: normal;
+}

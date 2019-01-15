@@ -47,7 +47,7 @@ describe('Lemmatizable word with lemma', () => {
     token = {
       'type': 'Word',
       'value': 'DIŠ',
-      'uniqueLemma': ['aklu'],
+      'uniqueLemma': ['aklu', 'waklu'],
       'language': 'AKKADIAN',
       'normalized': false,
       'lemmatizable': true
@@ -61,6 +61,10 @@ describe('Lemmatizable word with lemma', () => {
 
   it('Displays the value', () => {
     expect(element.container).toHaveTextContent(token.value)
+  })
+
+  it('Displays the lemma', () => {
+    expect(element.container).toHaveTextContent(token.uniqueLemma.join(', '))
   })
 
   it('Clicking calls on click', async () => {

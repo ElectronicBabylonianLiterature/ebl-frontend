@@ -15,6 +15,9 @@ function Word ({ token, onClick }) {
           'Word--with-lemma': !_.isEmpty(token.uniqueLemma)
         })}>
         {token.value}
+        <span className='Word__lemma'>
+          {token.uniqueLemma.join(', ')}
+        </span>
       </Button>
     )
     : <span className='Word'>{token.value}</span>

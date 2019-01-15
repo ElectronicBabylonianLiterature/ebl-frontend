@@ -78,7 +78,7 @@ it('Clicking save calls fragmentService', async () => {
 
 it('Shows error if saving transliteration fails', async () => {
   const errorMessage = 'Lemmatization Error'
-  fragmentService.updateLemmatization.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+  fragmentService.updateLemmatization.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
 
   await lemmatizeWord()
   clickNth(element, 'Save', 0)
