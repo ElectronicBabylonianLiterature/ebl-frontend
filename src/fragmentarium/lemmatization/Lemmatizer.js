@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Popover, OverlayTrigger } from 'react-bootstrap'
 import _ from 'lodash'
+import { Promise } from 'bluebird'
+import ErrorAlert from 'common/ErrorAlert'
 import Lemmatization from './Lemmatization'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
@@ -11,9 +13,19 @@ export default class Lemmatizer extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      error: null,
       disabled: false,
       lemmatization: new Lemmatization(props.text)
     }
+    this.updatePromise = Promise.resolve()
+  }
+
+  get hasChanges () {
+    return !_.isEqual(this.state.lemmatization.tokens, new Lemmatization(this.props.text).tokens)
+  }
+
+  componentWillUnmount () {
+    this.updatePromise.cancel()
   }
 
   FormPopover = (rowIndex, columnIndex, token) => (
@@ -45,6 +57,15 @@ export default class Lemmatizer extends Component {
     </Fragment>
   )
 
+  SubmitButton = () => (
+    <Button
+      onClick={this.submit}
+      disabled={this.state.disabled || !this.hasChanges}
+      bsStyle='primary'>
+      Save
+    </Button>
+  )
+
   setLemma = (rowIndex, columnIndex, uniqueLemma) => {
     this.setState({
       ...this.state,
@@ -53,16 +74,24 @@ export default class Lemmatizer extends Component {
   }
 
   submit = () => {
+    this.updatePromise.cancel()
     this.setState({
       ...this.state,
+      error: null,
       disabled: true
     })
-    this.props.fragmentService.updateLemmatization(
+    this.updatePromise = this.props.fragmentService.updateLemmatization(
       this.props.number,
       this.state.lemmatization.toDto()
-    ).finally(() => {
+    ).then(() => {
       this.setState({
         ...this.state,
+        disabled: false
+      })
+    }).catch(error => {
+      this.setState({
+        ...this.state,
+        error: error,
         disabled: false
       })
     })
@@ -78,7 +107,8 @@ export default class Lemmatizer extends Component {
             </li>
           ))}
         </ol>
-        <Button onClick={this.submit} disabled={this.state.disabled} bsStyle='primary'>Save</Button>
+        <this.SubmitButton />
+        <ErrorAlert error={this.state.error} />
       </Fragment>
     )
   }
