@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, Route } from 'react-router-dom'
-import { render, wait, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentView from './FragmentView'
