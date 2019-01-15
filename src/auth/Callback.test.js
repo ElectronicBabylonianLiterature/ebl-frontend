@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, wait, waitForElement } from 'react-testing-library'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorReporterContext from 'ErrorReporterContext'
@@ -46,8 +46,8 @@ describe('Error', () => {
     renderCallback('access_token=token')
   })
 
-  it('Reports error', () => {
-    expect(errorReportingService.captureException).toHaveBeenCalledWith(error)
+  it('Reports error', async () => {
+    await wait(() => expect(errorReportingService.captureException).toHaveBeenCalledWith(error))
   })
 
   itRedirectsToHome()
@@ -64,8 +64,8 @@ describe('Hash does not contain token', () => {
 })
 
 function itRedirectsToHome () {
-  it('Redirects to home', () => {
-    expect(element.container).toHaveTextContent('Home')
+  it('Redirects to home', async () => {
+    await waitForElement(() => element.getByText('Home'))
   })
 }
 
