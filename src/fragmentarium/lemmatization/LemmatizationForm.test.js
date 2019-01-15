@@ -1,24 +1,27 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { Promise } from 'bluebird'
+import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
 import { changeValueByLabel } from 'testHelpers'
 
+let word
 let onChange
 let element
 let fragmentService
 let token
 
 beforeEach(async () => {
+  word = await factory.build('word', {
+    '_id': 'waklu I',
+    'meaning': 'a very very long complicated meaning of a word'
+  })
   onChange = jest.fn()
   fragmentService = {
     searchLemma: jest.fn()
   }
-  fragmentService.searchLemma.mockReturnValue(Promise.resolve([{
-    '_id': 'waklu I',
-    'meaning': 'a very very long complicated meaning of a word'
-  }]))
+  fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
 })
 
 describe('Single lemma', () => {
@@ -82,6 +85,6 @@ function commonTests (lemmaLabel) {
 
   it('Displays truncated meaning in options', async () => {
     await changeValueByLabel(element, lemmaLabel, 'waklu')
-    expect(element.container).toHaveTextContent('waklu I, a very very long complicated…')
+    await waitForElement(() => element.getByText('waklu I, a very very long complicated…'))
   })
 }

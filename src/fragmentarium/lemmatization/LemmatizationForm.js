@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Checkbox, FormGroup } from 'react-bootstrap'
 import AsyncSelect from 'react-select/lib/Async'
 import _ from 'lodash'
+import Lemma from './Lemma'
 
 class LemmatizationForm extends Component {
   constructor (props) {
@@ -26,17 +27,7 @@ class LemmatizationForm extends Component {
 
   loadOptions = (inputValue, callback) => {
     this.props.fragmentService.searchLemma(inputValue)
-      .then(words =>
-        words.map(word => ({
-          value: word._id,
-          label: `${word._id}, ${
-            _.truncate(word.meaning.replace(/\*|\\/g, ''), {
-              separator: ' ',
-              omission: '…'
-            })
-          }`
-        }))
-      )
+      .then(words => words.map(word => new Lemma(word)))
       .then(callback)
   }
 
