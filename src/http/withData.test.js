@@ -124,7 +124,7 @@ describe('On successful get', () => {
       clearMocks()
       getter.mockReturnValueOnce(Promise.resolve(newData))
       reload()
-      await wait()
+      await waitForElement(() => element.getByText(RegExp(propValue)))
     })
 
     expectGetterToBeCalled(propValue)
