@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 import ErrorAlert from 'common/ErrorAlert'
-import LemmatizationForm from './LemmatizationForm'
-import Word from './Word'
+import WordLemmatizer from './WordLemmatizer'
 import Spinner from 'common/Spinner'
 
 import './Lemmatizer.css'
@@ -35,31 +34,15 @@ export default class Lemmatizer extends Component {
     this.updatePromise.cancel()
   }
 
-  FormPopover = (rowIndex, columnIndex, token) => (
-    <Popover
-      id={`LemmatizationForm-${rowIndex},${columnIndex}`}
-      title='Lemmatize'
-      className='Lemmatizer__form'>
-      <LemmatizationForm
-        token={token}
-        fragmentService={this.props.fragmentService}
-        onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
-        autoFocus={this.props.autoFocusLemmaSelect}
-      />
-    </Popover>
-  )
-
   Row = ({ rowIndex, row }) => (
     <Fragment>
       {this.state.lemmatization.getRowPrefix(rowIndex)}{' '}
       {row.map((token, columnIndex) => <Fragment key={columnIndex}>
-        <OverlayTrigger
-          trigger='click'
-          rootClose
-          placement='top'
-          overlay={this.FormPopover(rowIndex, columnIndex, token)}>
-          <Word token={token} />
-        </OverlayTrigger>
+        <WordLemmatizer
+          fragmentService={this.props.fragmentService}
+          token={token}
+          onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
+          autoFocusLemmaSelect={this.props.autoFocusLemmaSelect} />
         {' '}
       </Fragment>)}
     </Fragment>
