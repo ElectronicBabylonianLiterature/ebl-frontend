@@ -58,6 +58,7 @@ class LemmatizationForm extends Component {
             placeholder={this.state.multi ? 'Lemmata' : 'Lemma'}
             cacheOptions
             isClearable
+            autoFocus
             loadOptions={this.loadOptions}
             onChange={this.handleChange}
             value={this.state.selectedOption}
