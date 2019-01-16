@@ -44,6 +44,7 @@ export default class Lemmatizer extends Component {
         token={token}
         fragmentService={this.props.fragmentService}
         onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
+        autoFocus={this.props.autoFocusLemmaSelect}
       />
     </Popover>
   )

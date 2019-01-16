@@ -44,7 +44,9 @@ class CuneiformFragment extends Component {
             <Lemmatizer
               fragmentService={this.props.fragmentService}
               number={this.fragment._id}
-              text={this.fragment.text} />
+              text={this.fragment.text}
+              autoFocusLemmaSelect
+            />
           </section>
         </Tab>
       </Tabs>
