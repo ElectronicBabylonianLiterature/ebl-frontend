@@ -46,8 +46,8 @@ describe('Single lemma', () => {
       />)
   })
 
-  it('Multiple is not checked', async () => {
-    expect(element.getByLabelText('Multiple')).not.toHaveAttribute('checked')
+  it('Complex is not checked', async () => {
+    expect(element.getByLabelText('Complex')).not.toHaveAttribute('checked')
   })
 
   it('Calls onChange when selecting word', async () => {
@@ -58,7 +58,7 @@ describe('Single lemma', () => {
   commonTests('Lemma')
 })
 
-describe('Multiple lemmas', () => {
+describe('Complex lemma', () => {
   let words
 
   beforeEach(async () => {
@@ -79,8 +79,8 @@ describe('Multiple lemmas', () => {
       />)
   })
 
-  it('Multiple is checked', async () => {
-    expect(element.getByLabelText('Multiple')).toHaveAttribute('checked')
+  it('Complex is checked', async () => {
+    expect(element.getByLabelText('Complex')).toHaveAttribute('checked')
   })
 
   it('Calls onChange when selecting word', async () => {

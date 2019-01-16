@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Checkbox, FormGroup } from 'react-bootstrap'
+import { Col, Form, Checkbox, FormGroup } from 'react-bootstrap'
 import AsyncSelect from 'react-select/lib/Async'
 import _ from 'lodash'
 import Lemma from './Lemma'
@@ -11,14 +11,14 @@ class LemmatizationForm extends Component {
   }
 
   createState = () => {
-    const multi = this.props.token.uniqueLemma.length > 1
+    const isComplex = this.props.token.uniqueLemma.length > 1
     const singleLemmaToOption = () => this.props.token.uniqueLemma.length === 1
       ? this.props.token.uniqueLemma[0]
       : null
 
     return {
-      multi: multi,
-      selectedOption: multi ? this.props.token.uniqueLemma : singleLemmaToOption()
+      isComplex: isComplex,
+      selectedOption: isComplex ? this.props.token.uniqueLemma : singleLemmaToOption()
     }
   }
 
@@ -42,31 +42,36 @@ class LemmatizationForm extends Component {
   }
 
   render () {
-    const label = this.state.multi ? 'Lemmata' : 'Lemma'
+    const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
-      <form>
+      <Form horizontal>
         <FormGroup>
-          <Checkbox
-            disabled={this.props.token.uniqueLemma.length > 1}
-            checked={this.state.multi}
-            onChange={() => this.setState({ ...this.state, multi: !this.state.multi })}>
-            Multiple
-          </Checkbox>
+          <Col md={9}>
+            <AsyncSelect
+              aria-label={label}
+              placeholder={label}
+              cacheOptions
+              isClearable
+              autoFocus={this.props.autoFocus}
+              loadOptions={this.loadOptions}
+              onChange={this.handleChange}
+              value={this.state.selectedOption}
+              isMulti={this.state.isComplex}
+            />
+          </Col>
+          <Col md={3}>
+            <Checkbox
+              disabled={this.props.token.uniqueLemma.length > 1}
+              checked={this.state.isComplex}
+              onChange={() => this.setState({
+                ...this.state,
+                isComplex: !this.state.isComplex
+              })}>
+              Complex
+            </Checkbox>
+          </Col>
         </FormGroup>
-        <FormGroup>
-          <AsyncSelect
-            aria-label={label}
-            placeholder={label}
-            cacheOptions
-            isClearable
-            autoFocus={this.props.autoFocus}
-            loadOptions={this.loadOptions}
-            onChange={this.handleChange}
-            value={this.state.selectedOption}
-            isMulti={this.state.multi}
-          />
-        </FormGroup>
-      </form>
+      </Form>
     )
   }
 }
