@@ -1,4 +1,5 @@
 import { factory } from 'factory-girl'
+import _ from 'lodash'
 import Lemma from './Lemma'
 
 let word
@@ -7,9 +8,9 @@ let lemma
 describe('Homonym I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      'lemma': ['waklu', 'waklu'],
-      'homonym': 'I',
-      'meaning': 'a very very long complicated meaning of a word'
+      lemma: ['waklu', 'waklu'],
+      homonym: 'I',
+      meaning: 'a very very long complicated meaning of a word'
     })
     lemma = new Lemma(word)
   })
@@ -24,9 +25,9 @@ describe('Homonym I', () => {
 describe('Homonym not I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      'lemma': ['waklu', 'waklu'],
-      'homonym': 'II',
-      'meaning': 'a very very long complicated meaning of a word'
+      lemma: ['waklu', 'waklu'],
+      homonym: 'II',
+      meaning: 'a very very long complicated meaning of a word'
     })
     lemma = new Lemma(word)
   })
@@ -37,6 +38,43 @@ describe('Homonym not I', () => {
 
   commonTests()
 })
+
+test('Empty meaning', async () => {
+  word = await factory.build('word', {
+    meaning: ''
+  })
+  lemma = new Lemma(word)
+  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}, ${truncateMeaning(word.amplifiedMeanings[0].meaning)}`)
+})
+
+test('Empty amplified meaning', async () => {
+  word = await factory.build('word', {
+    meaning: '',
+    amplifiedMeanings: [
+      await factory.build('amplifiedMeaning', {
+        meaning: ''
+      })
+    ]
+  })
+  lemma = new Lemma(word)
+  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}, ${truncateMeaning(word.amplifiedMeanings[0].entries[0].meaning)}`)
+})
+
+test('No meanings', async () => {
+  word = await factory.build('word', {
+    meaning: '',
+    amplifiedMeanings: []
+  })
+  lemma = new Lemma(word)
+  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}`)
+})
+
+function truncateMeaning (meaning) {
+  return _.truncate(meaning.replace(/\*|\\/g, ''), {
+    separator: ' ',
+    omission: '…'
+  })
+}
 
 function commonTests () {
   test('value', () => {

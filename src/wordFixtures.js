@@ -40,6 +40,7 @@ factory.define('entry', Object, {
 
 factory.extend('entry', 'amplifiedMeaning', {
   key: pickOne(['G', 'Gtn', 'Gt', 'D', 'Dtn', 'Dt', 'Dtt', 'Š', 'Štn', 'Št', 'ŠD', 'N', 'Ntn', 'R', 'Št2', 'A.', 'B.', 'C.', 'D.']),
+  meaning: factory.chance('sentence'),
   entries: factory.assocAttrsMany('entry', 2)
 })
 
