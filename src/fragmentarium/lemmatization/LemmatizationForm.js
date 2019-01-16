@@ -42,6 +42,7 @@ class LemmatizationForm extends Component {
   }
 
   render () {
+    const label = this.state.multi ? 'Lemmata' : 'Lemma'
     return (
       <form>
         <FormGroup>
@@ -54,8 +55,8 @@ class LemmatizationForm extends Component {
         </FormGroup>
         <FormGroup>
           <AsyncSelect
-            aria-label={this.state.multi ? 'Lemmata' : 'Lemma'}
-            placeholder={this.state.multi ? 'Lemmata' : 'Lemma'}
+            aria-label={label}
+            placeholder={label}
             cacheOptions
             isClearable
             autoFocus
