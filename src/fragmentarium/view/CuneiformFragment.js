@@ -7,6 +7,7 @@ import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
 import Edition from 'fragmentarium/transliterate/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
+import Folios from './Folios'
 
 import './CuneiformFragment.css'
 
@@ -25,7 +26,7 @@ class CuneiformFragment extends Component {
     </Fragment>
   )
 
-  RightColumn = () => {
+  MiddleColumn = () => {
     const lemmatizationDisabled = _.isEmpty(this.fragment.text.lines) || !this.props.fragmentService.isAllowedToLemmatize()
     return (
       <Tabs id='fragment-container'>
@@ -53,6 +54,14 @@ class CuneiformFragment extends Component {
     )
   }
 
+  RightColumn = () => (
+    <Folios
+      fragment={this.fragment}
+      fragmentService={this.props.fragmentService}
+      activeFolio={this.props.activeFolio}
+    />
+  )
+
   render () {
     return (
       <Grid fluid>
@@ -60,7 +69,10 @@ class CuneiformFragment extends Component {
           <Col md={2}>
             <this.LeftColumn />
           </Col>
-          <Col md={10}>
+          <Col md={5}>
+            <this.MiddleColumn />
+          </Col>
+          <Col md={5}>
             <this.RightColumn />
           </Col>
         </Row>
