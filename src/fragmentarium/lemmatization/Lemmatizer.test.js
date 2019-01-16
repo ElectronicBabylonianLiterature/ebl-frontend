@@ -15,6 +15,7 @@ let fragmentService
 let text
 let word
 let oldWord
+let lemma
 
 function tokenFactory (token) {
   return {
@@ -25,6 +26,7 @@ function tokenFactory (token) {
 
 beforeEach(async () => {
   word = await factory.build('word')
+  lemma = new Lemma(word)
   oldWord = await factory.build('word')
   fragmentService = {
     updateLemmatization: jest.fn(),
@@ -86,7 +88,7 @@ it('Clicking save calls fragmentService', async () => {
 
   await lemmatizeWord()
 
-  const expected = new Lemmatization(text, tokenFactory).setLemma(0, 0, [new Lemma(word)]).toDto()
+  const expected = new Lemmatization(text, tokenFactory).setLemma(0, 0, [lemma]).toDto()
   await whenClicked(element, 'Save').expect(fragmentService.updateLemmatization)
     .toHaveBeenCalledWith(number, expected)
 })
@@ -114,7 +116,7 @@ async function lemmatizeWord () {
   clickNth(element, 'kur', 0)
   await waitForElement(() => element.getByLabelText('Lemma'))
   changeValueByLabel(element, 'Lemma', 'a')
-  await waitForElement(() => element.getByText(RegExp(word._id)))
-  clickNth(element, RegExp(word._id), 0)
+  await waitForElement(() => element.getByText(lemma.label))
+  clickNth(element, lemma.label, 0)
   await wait()
 }

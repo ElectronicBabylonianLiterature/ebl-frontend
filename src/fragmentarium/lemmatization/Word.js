@@ -20,7 +20,6 @@ function Word ({ token, onClick }) {
             <Fragment key={index}>
               {index > 0 && ', '}
               <span className='Word__lemma'>{lemma.lemma}</span>
-              {' '}
               {lemma.homonym}
             </Fragment>
           ))}

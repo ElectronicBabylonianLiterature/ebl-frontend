@@ -69,7 +69,7 @@ describe('Lemmatizable word with lemma', () => {
   })
 
   it('Displays the lemma', () => {
-    expect(element.container).toHaveTextContent(lemmas.map(lemma => lemma.uniqueLemma).join(', '))
+    expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
   })
 
   it('Clicking calls on click', async () => {
