@@ -4,9 +4,9 @@
 
 .Word--with-lemma .Word__lemmatization {
   font-size: 75%;
+  font-weight: normal;
   margin-left: 0.33em;
   vertical-align: sub;
-  font-weight: normal;
 }
 
 .Word__lemma {
