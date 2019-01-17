@@ -2,15 +2,15 @@ import { factory } from 'factory-girl'
 import _ from 'lodash'
 import Lemma from './Lemma'
 
+const meaning = 'a very very long complicated meaning of a word'
 let word
 let lemma
 
 describe('Homonym I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      lemma: ['waklu', 'waklu'],
       homonym: 'I',
-      meaning: 'a very very long complicated meaning of a word'
+      meaning: meaning
     })
     lemma = new Lemma(word)
   })
@@ -25,9 +25,8 @@ describe('Homonym I', () => {
 describe('Homonym not I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      lemma: ['waklu', 'waklu'],
       homonym: 'II',
-      meaning: 'a very very long complicated meaning of a word'
+      meaning: meaning
     })
     lemma = new Lemma(word)
   })
