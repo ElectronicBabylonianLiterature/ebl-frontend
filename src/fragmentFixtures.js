@@ -34,126 +34,52 @@ factory.define('folio', Object, async ({ name, number }) => {
   return createFolio(name || dto.name, number || dto.number)
 })
 
-factory.define('lineDto', Object, {
-  lines: factory.assocAttrsMany('folioDto', 2)
+factory.define('textLineDto', Object, {
+  'prefix': async () => `${await factory.chance('natural')}.`,
+  'content': [
+    {
+      'type': 'Token',
+      'value': factory.chance('pickone', ['[...]', '&', '&1'])
+    },
+    {
+      'type': 'Word',
+      'value': factory.chance('pickone', ['x', 'X', 'ia', 'g[u/gem[e₂]']),
+      'uniqueLemma': [],
+      'normalized': factory.chance('bool'),
+      'language': factory.chance('pickone', ['AKKADIAN', 'SUMERIAN']),
+      'lemmatizable': factory.chance('bool')
+    }
+  ],
+  'type': 'TextLine'
+})
+
+factory.define('emptyLineDto', Object, {
+  'type': 'EmptyLine',
+  'prefix': '',
+  'content': []
+})
+
+factory.define('controlLineDto', Object, {
+  'prefix': factory.chance('pickone', ['$', '#', '&']),
+  'content': [
+    {
+      'type': 'Token',
+      'value': factory.chance('word')
+    }
+  ],
+  'type': 'ControlLine'
 })
 
 factory.define('textDto', Object, {
   lines: async () => {
     return [
-      {
-        'prefix': '@',
-        'content': [
-          {
-            'type': 'Token',
-            'value': "column 1'"
-          }
-        ],
-        'type': 'ControlLine'
-      },
-      {
-        'prefix': "1'.",
-        'content': [
-          {
-            'type': 'Token',
-            'value': '[...]'
-          },
-          {
-            'type': 'Word',
-            'value': 'x',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          }
-        ],
-        'type': 'TextLine'
-      },
-      {
-        'type': 'EmptyLine',
-        'prefix': '',
-        'content': []
-      },
-      {
-        'prefix': '@',
-        'content': [
-          {
-            'type': 'Token',
-            'value': "column 2'"
-          }
-        ],
-        'type': 'ControlLine'
-      },
-      {
-        'prefix': "1'.",
-        'content': [
-          {
-            'type': 'Word',
-            'value': 'x',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          },
-          {
-            'type': 'Word',
-            'value': 'x',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          },
-          {
-            'type': 'Token',
-            'value': '[...]'
-          }
-        ],
-        'type': 'TextLine'
-      },
-      {
-        'prefix': "2'.",
-        'content': [
-          {
-            'type': 'Word',
-            'value': 'ia',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          },
-          {
-            'type': 'Token',
-            'value': '[...]'
-          }
-        ],
-        'type': 'TextLine'
-      },
-      {
-        'prefix': "3'.",
-        'content': [
-          {
-            'type': 'Word',
-            'value': 'ia',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          },
-          {
-            'type': 'Word',
-            'value': 'g[u/gem[e₂',
-            'uniqueLemma': [],
-            'normalized': false,
-            'language': 'AKKADIAN',
-            'lemmatizable': true
-          },
-          {
-            'type': 'Token',
-            'value': '...]'
-          }
-        ],
-        'type': 'TextLine'
-      }
+      await factory.build('controlLineDto'),
+      await factory.build('textLineDto'),
+      await factory.build('emptyLineDto'),
+      await factory.build('controlLineDto'),
+      await factory.build('textLineDto'),
+      await factory.build('textLineDto'),
+      await factory.build('textLineDto')
     ]
   }
 })
