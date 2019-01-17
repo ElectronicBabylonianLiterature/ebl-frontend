@@ -41,34 +41,42 @@ class LemmatizationForm extends Component {
       ))
   }
 
+  Select = ({ label }) => (
+    <AsyncSelect
+      aria-label={label}
+      placeholder={label}
+      cacheOptions
+      isClearable
+      autoFocus={this.props.autoFocus}
+      loadOptions={this.loadOptions}
+      onChange={this.handleChange}
+      value={this.state.selectedOption}
+      isMulti={this.state.isComplex}
+    />
+  )
+
+  Checkbox = () => (
+    <Checkbox
+      disabled={this.props.token.uniqueLemma.length > 1}
+      checked={this.state.isComplex}
+      onChange={() => this.setState({
+        ...this.state,
+        isComplex: !this.state.isComplex
+      })}>
+      Complex
+    </Checkbox>
+  )
+
   render () {
     const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
       <Form horizontal>
         <FormGroup>
           <Col md={9}>
-            <AsyncSelect
-              aria-label={label}
-              placeholder={label}
-              cacheOptions
-              isClearable
-              autoFocus={this.props.autoFocus}
-              loadOptions={this.loadOptions}
-              onChange={this.handleChange}
-              value={this.state.selectedOption}
-              isMulti={this.state.isComplex}
-            />
+            <this.Select label={label} />
           </Col>
           <Col md={3}>
-            <Checkbox
-              disabled={this.props.token.uniqueLemma.length > 1}
-              checked={this.state.isComplex}
-              onChange={() => this.setState({
-                ...this.state,
-                isComplex: !this.state.isComplex
-              })}>
-              Complex
-            </Checkbox>
+            <this.Checkbox />
           </Col>
         </FormGroup>
       </Form>
