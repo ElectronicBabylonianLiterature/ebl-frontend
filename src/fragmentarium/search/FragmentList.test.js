@@ -21,7 +21,7 @@ it('Displays fragments', async () => {
     expect(element.container).toHaveTextContent(fragment._id)
     expect(element.container).toHaveTextContent(fragment.accession)
     expect(element.container).toHaveTextContent(fragment.cdliNumber)
-    expect(element.container).toHaveTextContent(fragment.description)
+    expect(element.container).toHaveTextContent(fragment.description.replace('\n', ' '))
   }
 })
 
