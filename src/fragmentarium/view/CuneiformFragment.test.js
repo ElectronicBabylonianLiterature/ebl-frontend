@@ -44,7 +44,7 @@ beforeEach(async () => {
 })
 
 const properties = [
-  'museum', 'collection', 'cdliNumber', 'accession', 'description', 'publication'
+  'museum', 'collection', 'cdliNumber', 'accession', 'publication'
 ]
 
 for (let property of properties) {

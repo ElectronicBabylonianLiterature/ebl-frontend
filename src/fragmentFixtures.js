@@ -93,7 +93,11 @@ factory.define('fragmentDto', Object, {
   'joins': [
     factory.chance('word')
   ],
-  'description': factory.chance('sentence'),
+  'description': async () => `${
+    await factory.chance('sentence')()
+  }\n${
+    await factory.chance('sentence')()
+  }`,
   'length': factory.assocAttrs('measure'),
   'width': factory.assocAttrs('measure'),
   'thickness': factory.assocAttrs('measure'),

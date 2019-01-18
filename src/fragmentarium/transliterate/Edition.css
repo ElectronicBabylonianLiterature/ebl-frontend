@@ -1,10 +1,3 @@
-.Edition__description,
-.Edition__publication {
-  color: gray;
-  font-size: 80%;
-  text-align: center;
-}
-
 .Edition__navigation {
   margin: 1em;
   text-align: center;

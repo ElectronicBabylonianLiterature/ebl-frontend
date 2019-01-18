@@ -4,16 +4,12 @@ import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/PioneersButton'
 
 import './Edition.css'
+import TransliterationHeader from 'fragmentarium/view/TransliterationHeader'
 
 function Edition ({ fragment, fragmentService, onChange, auth }) {
   return (
     <Fragment>
-      <p className='Edition__description'>
-        {fragment.description}
-      </p>
-      <p className='Edition__publication'>
-        (Publication: {fragment.publication || '- '})
-      </p>
+      <TransliterationHeader fragment={fragment} />
       <TransliteratioForm
         number={fragment._id}
         transliteration={fragment.atf}
