@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -12,85 +12,84 @@ import Folios from './Folios'
 
 import './CuneiformFragment.css'
 
-class CuneiformFragment extends Component {
-  constructor (props) {
-    super(props)
-    this.tabsId = _.uniqueId('fragment-container-')
-  }
+function ContentSection ({ children }) {
+  return <section className='CuneiformFragment__content'>
+    {children}
+  </section>
+}
 
-  get fragment () {
-    return this.props.fragment
-  }
+function LeftColumn ({ fragment }) {
+  return <>
+    <Details fragment={fragment} />
+    <Record record={fragment.record} />
+    <OrganizationLinks
+      cdliNumber={fragment.cdliNumber}
+      bmIdNumber={fragment.bmIdNumber} />
+  </>
+}
 
-  LeftColumn = () => (
-    <Fragment>
-      <Details fragment={this.fragment} />
-      <Record record={this.fragment.record} />
-      <OrganizationLinks
-        cdliNumber={this.fragment.cdliNumber}
-        bmIdNumber={this.fragment.bmIdNumber} />
-    </Fragment>
+function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSelect }) {
+  const defaultActiveKey = fragmentService.isAllowedToTransliterate() ? 2 : 1
+  const editionDisabled = !fragmentService.isAllowedToTransliterate()
+  const lemmatizationDisabled = _.isEmpty(fragment.text.lines) || !fragmentService.isAllowedToLemmatize()
+  const tabsId = _.uniqueId('fragment-container-')
+  return (
+    <Tabs id={tabsId} defaultActiveKey={defaultActiveKey}>
+      <Tab eventKey={1} title='Display'>
+        <ContentSection><Display fragment={fragment} /> </ContentSection>
+      </Tab>
+      <Tab eventKey={2} title='Edition' disabled={editionDisabled}>
+        <ContentSection>
+          <Edition
+            fragment={fragment}
+            fragmentService={fragmentService}
+            onChange={onChange} />
+        </ContentSection>
+      </Tab>
+      <Tab eventKey={3} title='Lemmatization' disabled={lemmatizationDisabled}>
+        <ContentSection>
+          <Lemmatizer
+            fragmentService={fragmentService}
+            number={fragment._id}
+            text={fragment.text}
+            autoFocusLemmaSelect />
+        </ContentSection>
+      </Tab>
+    </Tabs>
   )
+}
 
-  MiddleColumn = () => {
-    const defaultActiveKey = this.props.fragmentService.isAllowedToTransliterate() ? 2 : 1
-    const editionDisabled = !this.props.fragmentService.isAllowedToTransliterate()
-    const lemmatizationDisabled = _.isEmpty(this.fragment.text.lines) || !this.props.fragmentService.isAllowedToLemmatize()
-    return (
-      <Tabs id={this.tabsId} defaultActiveKey={defaultActiveKey}>
-        <Tab eventKey={1} title='Display'>
-          <section className='CuneiformFragment__content'>
-            <Display fragment={this.fragment} />
-          </section>
-        </Tab>
-        <Tab eventKey={2} title='Edition' disabled={editionDisabled}>
-          <section className='CuneiformFragment__content'>
-            <Edition
-              activeFolio={this.props.activeFolio}
-              fragment={this.fragment}
-              fragmentService={this.props.fragmentService}
-              onChange={this.props.onChange} />
-          </section>
-        </Tab>
-        <Tab eventKey={3} title='Lemmatization' disabled={lemmatizationDisabled}>
-          <section className='CuneiformFragment__content'>
-            <Lemmatizer
-              fragmentService={this.props.fragmentService}
-              number={this.fragment._id}
-              text={this.fragment.text}
-              autoFocusLemmaSelect
-            />
-          </section>
-        </Tab>
-      </Tabs>
-    )
-  }
+function RightColumn ({ fragment, fragmentService, activeFolio }) {
+  return <Folios
+    fragment={fragment}
+    fragmentService={fragmentService}
+    activeFolio={activeFolio}
+  />
+}
 
-  RightColumn = () => (
-    <Folios
-      fragment={this.fragment}
-      fragmentService={this.props.fragmentService}
-      activeFolio={this.props.activeFolio}
-    />
+function CuneiformFragment ({ fragment, fragmentService, activeFolio, onChange, autoFocusLemmaSelect }) {
+  return (
+    <Grid fluid>
+      <Row>
+        <Col md={2}>
+          <LeftColumn fragment={fragment} />
+        </Col>
+        <Col md={5}>
+          <MiddleColumn
+            fragment={fragment}
+            fragmentService={fragmentService}
+            onChange={onChange}
+            autoFocusLemmaSelect={autoFocusLemmaSelect} />
+        </Col>
+        <Col md={5}>
+          <RightColumn
+            fragment={fragment}
+            fragmentService={fragmentService}
+            activeFolio={activeFolio} />
+        </Col>
+      </Row>
+    </Grid>
   )
-
-  render () {
-    return (
-      <Grid fluid>
-        <Row>
-          <Col md={2}>
-            <this.LeftColumn />
-          </Col>
-          <Col md={5}>
-            <this.MiddleColumn />
-          </Col>
-          <Col md={5}>
-            <this.RightColumn />
-          </Col>
-        </Row>
-      </Grid>
-    )
-  }
 }
 
 export default CuneiformFragment
