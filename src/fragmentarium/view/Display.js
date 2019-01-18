@@ -7,7 +7,6 @@ function Display ({ fragment }) {
   return (
     <Fragment>
       <TransliterationHeader fragment={fragment} />
-      <h4>Transliteration</h4>
       <ol className='Display__lines'>
         {fragment.atf.split('\n').map((line, index) => (
           <li key={index}>{line}</li>
