@@ -28,10 +28,6 @@ class TransliteratioForm extends Component {
     return transliterationChanged || notesChanged
   }
 
-  get editable () {
-    return this.props.fragmentService.isAllowedToTransliterate()
-  }
-
   componentWillUnmount () {
     this.updatePromise.cancel()
   }
@@ -88,7 +84,7 @@ class TransliteratioForm extends Component {
         name={property}
         value={this.state[property]}
         onChange={this.update(property)}
-        disabled={!this.editable || this.state.disabled}
+        disabled={this.state.disabled}
         error={error}
       />
     </FormGroup>
@@ -96,7 +92,7 @@ class TransliteratioForm extends Component {
 
   Form = () => (
     <form onSubmit={this.submit} id='transliteration-form'>
-      <fieldset disabled={!this.editable}>
+      <fieldset>
         <this.EditorFormGroup property='transliteration' error={this.state.error} showHelp />
         <this.EditorFormGroup property='notes' />
         <ErrorAlert error={this.state.error} />
@@ -122,14 +118,14 @@ class TransliteratioForm extends Component {
             <this.Form />
           </Col>
         </Row>
-        {this.editable && <Row>
+        <Row>
           <Col sm={6}>
             <this.SubmitButton />
           </Col>
           <Col sm={6}>
             <TemplateForm onSubmit={this.onTemplate} />
           </Col>
-        </Row>}
+        </Row>
       </Grid>
     )
   }

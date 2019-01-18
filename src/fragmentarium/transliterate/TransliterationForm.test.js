@@ -20,97 +20,8 @@ beforeEach(() => {
   fragmentService = {
     updateTransliteration: jest.fn(),
     isAllowedToRead: () => true,
-    isAllowedToTransliterate: jest.fn()
+    isAllowedToTransliterate: () => true
   }
-})
-
-describe('User has edit rights', () => {
-  beforeEach(() => {
-    renderTransliterationForm(true)
-  })
-
-  xit('Updates transliteration on change', async () => {
-    const newTransliteration = 'line1\nline2\nnew line'
-    await changeValueByLabel(element, 'Transliteration', newTransliteration)
-
-    expect(element.getByLabelText('Transliteration').value).toEqual(newTransliteration)
-  })
-
-  xit('Updates notes on change', async () => {
-    const newNotes = 'some notes'
-    await changeValueByLabel(element, 'Notes', newNotes)
-
-    expect(element.getByLabelText('Notes').value).toEqual(newNotes)
-  })
-
-  describe('Save', () => {
-    beforeEach(async () => {
-      fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
-      submitForm(element, '#transliteration-form')
-    })
-
-    it('Posts transliteration to API', () => {
-      expect(fragmentService.updateTransliteration)
-        .toHaveBeenCalledWith(number, transliteration, notes)
-    })
-
-    it('Calls onChange', async () => {
-      await wait(() => expect(onChange).toHaveBeenCalled())
-    })
-  })
-
-  it('Shows error if saving transliteration fails', async () => {
-    fragmentService.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
-
-    submitForm(element, '#transliteration-form')
-
-    await waitForElement(() => element.getByText(errorMessage))
-  })
-
-  it('Cancels post on unmount', () => {
-    const promise = new Promise(_.noop)
-    jest.spyOn(promise, 'cancel')
-    fragmentService.updateTransliteration.mockReturnValueOnce(promise)
-    submitForm(element, '#transliteration-form')
-    element.unmount()
-    expect(promise.isCancelled()).toBe(true)
-  })
-
-  commonTests()
-})
-
-describe('User does not have edit rights', () => {
-  beforeEach(() => {
-    renderTransliterationForm(false)
-  })
-
-  it('The form is disabled', async () => {
-    expect(element.container.querySelector('fieldset').disabled).toBe(true)
-  })
-
-  it('Save button is hidden', async () => {
-    expect(element.queryByText('Save')).toBeNull()
-  })
-
-  it('Template form is hidden', async () => {
-    expect(element.queryByLabelText('Template')).toBeNull()
-  })
-
-  commonTests()
-})
-
-function commonTests () {
-  xit('Shows transliteration', () => {
-    expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
-  })
-
-  xit('Shows notes', () => {
-    expect(element.getByLabelText('Notes').value).toEqual(notes)
-  })
-}
-
-function renderTransliterationForm (isAllowed) {
-  fragmentService.isAllowedToTransliterate.mockReturnValue(isAllowed)
   element = render(<TransliteratioForm
     number={number}
     transliteration={transliteration}
@@ -118,4 +29,59 @@ function renderTransliterationForm (isAllowed) {
     fragmentService={fragmentService}
     onChange={onChange}
   />)
-}
+})
+
+xit('Updates transliteration on change', async () => {
+  const newTransliteration = 'line1\nline2\nnew line'
+  await changeValueByLabel(element, 'Transliteration', newTransliteration)
+
+  expect(element.getByLabelText('Transliteration').value).toEqual(newTransliteration)
+})
+
+xit('Updates notes on change', async () => {
+  const newNotes = 'some notes'
+  await changeValueByLabel(element, 'Notes', newNotes)
+
+  expect(element.getByLabelText('Notes').value).toEqual(newNotes)
+})
+
+describe('Save', () => {
+  beforeEach(async () => {
+    fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
+    submitForm(element, '#transliteration-form')
+  })
+
+  it('Posts transliteration to API', () => {
+    expect(fragmentService.updateTransliteration)
+      .toHaveBeenCalledWith(number, transliteration, notes)
+  })
+
+  it('Calls onChange', async () => {
+    await wait(() => expect(onChange).toHaveBeenCalled())
+  })
+})
+
+it('Shows error if saving transliteration fails', async () => {
+  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
+
+  submitForm(element, '#transliteration-form')
+
+  await waitForElement(() => element.getByText(errorMessage))
+})
+
+it('Cancels post on unmount', () => {
+  const promise = new Promise(_.noop)
+  jest.spyOn(promise, 'cancel')
+  fragmentService.updateTransliteration.mockReturnValueOnce(promise)
+  submitForm(element, '#transliteration-form')
+  element.unmount()
+  expect(promise.isCancelled()).toBe(true)
+})
+
+xit('Shows transliteration', () => {
+  expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
+})
+
+xit('Shows notes', () => {
+  expect(element.getByLabelText('Notes').value).toEqual(notes)
+})
