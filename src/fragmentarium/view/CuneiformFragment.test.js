@@ -44,7 +44,7 @@ beforeEach(async () => {
 })
 
 const properties = [
-  'museum', 'collection', 'cdliNumber', 'accession', 'publication'
+  'museum', 'collection', 'cdliNumber', 'accession'
 ]
 
 for (let property of properties) {
@@ -52,14 +52,6 @@ for (let property of properties) {
     expect(container).toHaveTextContent(fragment[property])
   })
 }
-
-xit('Renders transliteration field', () => {
-  expect(element.getByLabelText('Transliteration').value).toEqual(fragment.atf)
-})
-
-xit('Renders notes field', () => {
-  expect(element.getByLabelText('Notes')).toEqual(fragment.notes)
-})
 
 it('Renders all joins', () => {
   for (let item of fragment.joins) {
