@@ -24,6 +24,10 @@ export default class Lemmatizer extends Component {
         lemmatization: lemmatization,
         previousTokens: _.cloneDeep(lemmatization.tokens)
       }))
+      .catch(error => this.setState({
+        error: error,
+        disabled: true
+      }))
   }
 
   get hasChanges () {
@@ -90,18 +94,20 @@ export default class Lemmatizer extends Component {
   }
 
   render () {
-    return _.isNil(this.state.lemmatization)
-      ? <Spinner />
-      : <Fragment>
-        <ol className='Lemmatizer__transliteration'>
-          {this.state.lemmatization.tokens.map((row, rowIndex) => (
-            <li key={rowIndex} className='Lemmatizer__row'>
-              <this.Row rowIndex={rowIndex} row={row} />
-            </li>
-          ))}
-        </ol>
-        <this.SubmitButton />
-        <ErrorAlert error={this.state.error} />
-      </Fragment>
+    return <>
+      <Spinner loading={_.isNil(this.state.lemmatization) && _.isNil(this.state.error)} />
+      {this.state.lemmatization &&
+        <Fragment>
+          <ol className='Lemmatizer__transliteration'>
+            {this.state.lemmatization.tokens.map((row, rowIndex) => (
+              <li key={rowIndex} className='Lemmatizer__row'>
+                <this.Row rowIndex={rowIndex} row={row} />
+              </li>
+            ))}
+          </ol>
+          <this.SubmitButton />
+        </Fragment>}
+      <ErrorAlert error={this.state.error} />
+    </>
   }
 }
