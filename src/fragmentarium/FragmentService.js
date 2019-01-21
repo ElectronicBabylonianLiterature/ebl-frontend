@@ -70,32 +70,36 @@ class FragmentService {
   }
 
   async createLemmatization (text) {
-    const wordMap = _.keyBy(await Promise.all(
-      mapText(
-        text,
-        line => line.map(token => token.uniqueLemma),
-        async uniqueLemma => new Lemma(await this.wordRepository.find(uniqueLemma))
+    return Promise.all([
+      Promise.all(
+        mapText(
+          text,
+          line => line.map(token => token.uniqueLemma),
+          uniqueLemma => this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
+        )
+      ),
+      Promise.all(
+        mapText(
+          text,
+          line => line.filter(token => token.lemmatizable).map(token => token.value),
+          value => this.fragmentRepository.findLemmas(value).then(result => [
+            value,
+            result.map(complexLemma => complexLemma.map(word => new Lemma(word)))
+          ])
+        )
       )
-    ), 'value')
-    const suggestions = _.fromPairs(await Promise.all(
-      mapText(
-        text,
-        line => line.filter(token => token.lemmatizable).map(token => token.value),
-        async value => [
-          value,
-          (await this.fragmentRepository.findLemmas(value))
-            .map(complexLemma => complexLemma.map(word => new Lemma(word)))
-        ]
+    ]).then(([wordMapData, suggestionsData]) => {
+      const wordMap = _.keyBy(wordMapData, 'value')
+      const suggestions = _.fromPairs(suggestionsData)
+      return Lemmatization.fromText(text, token => token.lemmatizable
+        ? {
+          ...token,
+          uniqueLemma: token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
+          suggestions: suggestions[token.value]
+        }
+        : token
       )
-    ))
-    return Lemmatization.fromText(text, token => token.lemmatizable
-      ? {
-        ...token,
-        uniqueLemma: token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
-        suggestions: suggestions[token.value]
-      }
-      : token
-    )
+    })
   }
 }
 
