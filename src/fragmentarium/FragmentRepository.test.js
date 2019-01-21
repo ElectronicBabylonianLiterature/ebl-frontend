@@ -17,6 +17,7 @@ const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
 const resultStub = {}
 const folio = createFolio('MJG', 'K1')
+const word = 'šim'
 
 let fragmentDto
 let fragment
@@ -41,7 +42,8 @@ const testData = [
     notes
   }], Promise.resolve(resultStub)],
   ['updateLemmatization', [fragmentId, lemmatization], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/lemmatization`, lemmatization], Promise.resolve(resultStub)],
-  ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)]
+  ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)],
+  ['findLemmas', [word], apiClient.fetchJson, resultStub, [`/lemmas?word=${encodeURIComponent(word)}`, true], Promise.resolve(resultStub)]
 ]
 
 testDelegation(fragmentRepository, testData)

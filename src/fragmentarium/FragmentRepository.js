@@ -63,6 +63,11 @@ class FragmentRepository {
     return this.apiClient
       .fetchJson(`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(number)}`, true)
   }
+
+  findLemmas (word) {
+    return this.apiClient
+      .fetchJson(`/lemmas?word=${encodeURIComponent(word)}`, true)
+  }
 }
 
 export default FragmentRepository

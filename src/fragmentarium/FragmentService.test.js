@@ -23,7 +23,8 @@ const fragmentRepository = {
   searchTransliteration: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
-  folioPager: jest.fn()
+  folioPager: jest.fn(),
+  findLemmas: jest.fn()
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -60,8 +61,12 @@ it('searchLemma resolves to empty array on zero length query', async () => {
 })
 
 it('createLemmatization', async () => {
-  const words = await factory.buildMany('word', 2)
+  const words = await factory.buildMany('word', 4)
   const wordMap = _.keyBy(words, '_id')
+  const suggestions = {
+    'kur': words[2],
+    'nu': words[3]
+  }
   const text = {
     lines: [
       {
@@ -92,14 +97,16 @@ it('createLemmatization', async () => {
     ? Promise.resolve(wordMap[id])
     : Promise.reject(new Error())
   )
+  fragmentRepository.findLemmas.mockImplementation(word => Promise.resolve(suggestions[word]
+    ? [[suggestions[word]]]
+    : [])
+  )
 
   const expected = new Lemmatization(text, token => ({
     ...token,
-    uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma]))
+    uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma])),
+    suggestions: [[new Lemma(suggestions[token.value])]]
   }))
-  // await expect(fragmentService.createLemmatization(text))
-  // .resolves
-  //  .toEqual(expected)
 
   const result = await fragmentService.createLemmatization(text)
   expect(result.tokens).toEqual(expected.tokens)
