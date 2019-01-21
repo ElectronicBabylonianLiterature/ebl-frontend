@@ -1,33 +1,24 @@
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
+import Promise from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import WordLemmatizer from './WordLemmatizer'
 import Spinner from 'common/Spinner'
+import withData from 'http/withData'
 
 import './Lemmatizer.css'
 
-export default class Lemmatizer extends Component {
+class Lemmatizer extends Component {
   constructor (props) {
     super(props)
     this.state = {
       error: null,
-      disabled: true,
-      lemmatization: null,
-      previousTokens: null
+      disabled: false,
+      lemmatization: props.data,
+      previousTokens: _.cloneDeep(props.data.tokens)
     }
-    this.updatePromise = props.fragmentService
-      .createLemmatization(props.text)
-      .then(lemmatization => this.setState({
-        error: null,
-        disabled: false,
-        lemmatization: lemmatization,
-        previousTokens: _.cloneDeep(lemmatization.tokens)
-      }))
-      .catch(error => this.setState({
-        error: error,
-        disabled: true
-      }))
+    this.updatePromise = Promise.resolve()
   }
 
   get hasChanges () {
@@ -111,3 +102,8 @@ export default class Lemmatizer extends Component {
     </>
   }
 }
+
+export default withData(
+  Lemmatizer,
+  props => props.fragmentService.createLemmatization(props.text)
+)
