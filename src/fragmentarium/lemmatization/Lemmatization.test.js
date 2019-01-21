@@ -43,6 +43,7 @@ it('Sets unique lemma', () => {
   const uniqueLemma = [new Lemma(words[1])]
   const expected = _.cloneDeep(lemmatization.tokens[0][0])
   expected.uniqueLemma = uniqueLemma
+  expected.suggested = false
   lemmatization.setLemma(0, 0, uniqueLemma)
   expect(lemmatization.tokens[0][0]).toEqual(expected)
 })
@@ -63,4 +64,76 @@ it('Creates correct DTO', () => {
       value: '%sux'
     }
   ]])
+})
+
+it('Sets suggestions', () => {
+  text = {
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [words[0]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          },
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          }
+        ]
+      }
+    ]
+  }
+  lemmatization = new Lemmatization(text, [[
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[0])],
+      suggestions: [[new Lemma(words[1])]],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    },
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [],
+      suggestions: [[new Lemma(words[1])]],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    }
+  ]])
+  const expected = [[
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[0])],
+      suggestions: [[new Lemma(words[1])]],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    },
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[1])],
+      suggestions: [[new Lemma(words[1])]],
+      suggested: true,
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    }
+  ]]
+  lemmatization.setSuggestions()
+  expect(lemmatization.tokens).toEqual(expected)
 })

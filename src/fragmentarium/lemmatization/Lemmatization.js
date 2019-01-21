@@ -9,7 +9,19 @@ export default class Lemmatization {
   getRowPrefix = rowIndex => this.text.lines[rowIndex].prefix
 
   setLemma = (rowIndex, columnIndex, uniqueLemma) => {
-    this.tokens[rowIndex][columnIndex].uniqueLemma = uniqueLemma
+    const token = this.tokens[rowIndex][columnIndex]
+    token.uniqueLemma = uniqueLemma
+    token.suggested = false
+    return this
+  }
+
+  setSuggestions = () => {
+    this.tokens.forEach(row => row.forEach(token => {
+      if (token.suggestions.length === 1 && _.isEmpty(token.uniqueLemma)) {
+        token.uniqueLemma = token.suggestions[0]
+        token.suggested = true
+      }
+    }))
     return this
   }
 
