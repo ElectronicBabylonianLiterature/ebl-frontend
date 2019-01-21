@@ -24,7 +24,7 @@ beforeEach(async () => {
     isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true,
     isAllowedToLemmatize: () => false,
-    createLemmatization: text => Promise.resolve(new Lemmatization(text, token => ({
+    createLemmatization: text => Promise.resolve(Lemmatization.fromText(text, token => ({
       ...token,
       uniqueLemma: []
     })))

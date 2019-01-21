@@ -33,7 +33,7 @@ beforeEach(async () => {
     isAllowedToRead: jest.fn(),
     isAllowedToTransliterate: jest.fn(),
     isAllowedToLemmatize: () => false,
-    createLemmatization: text => Promise.resolve(new Lemmatization(text, token => ({
+    createLemmatization: text => Promise.resolve(Lemmatization.fromText(text, token => ({
       ...token,
       uniqueLemma: []
     })))

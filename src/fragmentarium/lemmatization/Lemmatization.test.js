@@ -32,7 +32,7 @@ beforeEach(async () => {
       }
     ]
   }
-  lemmatization = new Lemmatization(text)
+  lemmatization = Lemmatization.fromText(text)
 })
 
 it('Maps tokens', () => {

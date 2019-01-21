@@ -53,7 +53,7 @@ beforeEach(async () => {
     ]
   }
   fragmentService.createLemmatization.mockImplementation(text => Promise.resolve(
-    new Lemmatization(text, tokenFactory)
+    Lemmatization.fromText(text, tokenFactory)
   ))
   element = render(
     <Lemmatizer
@@ -88,7 +88,7 @@ it('Clicking save calls fragmentService', async () => {
 
   await lemmatizeWord()
 
-  const expected = new Lemmatization(text, tokenFactory).setLemma(0, 0, [lemma]).toDto()
+  const expected = Lemmatization.fromText(text, tokenFactory).setLemma(0, 0, [lemma]).toDto()
   await whenClicked(element, 'Save').expect(fragmentService.updateLemmatization)
     .toHaveBeenCalledWith(number, expected)
 })

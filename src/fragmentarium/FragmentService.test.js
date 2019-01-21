@@ -102,7 +102,7 @@ it('createLemmatization', async () => {
     : [])
   )
 
-  const expected = new Lemmatization(text, token => ({
+  const expected = Lemmatization.fromText(text, token => ({
     ...token,
     uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma])),
     suggestions: [[new Lemma(suggestions[token.value])]]

@@ -1,11 +1,8 @@
 import _ from 'lodash'
 
 export default class Lemmatization {
-  constructor (text, tokenFactory = _.cloneDeep) {
-    this.tokens = _(text.lines)
-      .map('content')
-      .map(line => line.map(tokenFactory))
-      .value()
+  constructor (text, tokens) {
+    this.tokens = tokens
     this.text = text
   }
 
@@ -25,4 +22,12 @@ export default class Lemmatization {
       uniqueLemma: token.uniqueLemma.map(lemma => lemma.value)
     }
   ))
+
+  static fromText (text, tokenFactory = _.cloneDeep) {
+    const tokens = _(text.lines)
+      .map('content')
+      .map(line => line.map(tokenFactory))
+      .value()
+    return new Lemmatization(text, tokens)
+  }
 }

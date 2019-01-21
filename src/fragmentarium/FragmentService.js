@@ -88,7 +88,7 @@ class FragmentService {
         ]
       )
     ))
-    return new Lemmatization(text, token => token.lemmatizable
+    return Lemmatization.fromText(text, token => token.lemmatizable
       ? {
         ...token,
         uniqueLemma: token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
