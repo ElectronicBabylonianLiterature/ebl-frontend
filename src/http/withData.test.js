@@ -188,14 +188,13 @@ describe('Filtering', () => {
 })
 
 describe('Child component crash', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     const CrashingComponent = withData(() => { throw new Error(errorMessage) }, getter)
     getter.mockReturnValueOnce(Promise.resolve(data))
     element = render(<ErrorReporterContext.Provider value={errorReportingService}><CrashingComponent prop={propValue} /></ErrorReporterContext.Provider>)
-    await wait()
   })
 
-  it('Displays error message', () => {
-    expect(element.container).toHaveTextContent('Something\'s gone wrong.')
+  it('Displays error message', async () => {
+    await waitForElement(() => element.getByText('Something\'s gone wrong.'))
   })
 })
