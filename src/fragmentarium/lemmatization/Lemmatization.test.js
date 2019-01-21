@@ -66,7 +66,7 @@ it('Creates correct DTO', () => {
   ]])
 })
 
-it('Sets suggestions', () => {
+it('setSuggestions sets suggestions', () => {
   text = {
     lines: [
       {
@@ -135,5 +135,78 @@ it('Sets suggestions', () => {
     }
   ]]
   lemmatization.setSuggestions()
+  expect(lemmatization.tokens).toEqual(expected)
+})
+
+it('clearSuggestionFalgs clears flags', () => {
+  text = {
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [words[0]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          },
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true
+          }
+        ]
+      }
+    ]
+  }
+  lemmatization = new Lemmatization(text, [[
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[0])],
+      suggestions: [[new Lemma(words[1])]],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    },
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[1])],
+      suggestions: [[new Lemma(words[1])]],
+      suggested: true,
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    }
+  ]])
+  const expected = [[
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[0])],
+      suggestions: [[new Lemma(words[1])]],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    },
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(words[1])],
+      suggestions: [[new Lemma(words[1])]],
+      suggested: false,
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
+    }
+  ]]
+  lemmatization.clearSuggestionFlags()
   expect(lemmatization.tokens).toEqual(expected)
 })

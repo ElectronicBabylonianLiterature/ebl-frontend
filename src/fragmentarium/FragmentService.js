@@ -69,7 +69,7 @@ class FragmentService {
       : this.wordRepository.searchLemma(lemma)
   }
 
-  async createLemmatization (text) {
+  createLemmatization (text) {
     return Promise.all([
       Promise.all(
         mapText(

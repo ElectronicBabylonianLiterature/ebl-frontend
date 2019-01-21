@@ -17,9 +17,20 @@ export default class Lemmatization {
 
   setSuggestions = () => {
     this.tokens.forEach(row => row.forEach(token => {
-      if (token.suggestions.length === 1 && _.isEmpty(token.uniqueLemma)) {
+      if (_.isArray(token.suggestions) &&
+        token.suggestions.length === 1 &&
+        _.isEmpty(token.uniqueLemma)) {
         token.uniqueLemma = token.suggestions[0]
         token.suggested = true
+      }
+    }))
+    return this
+  }
+
+  clearSuggestionFlags = () => {
+    this.tokens.forEach(row => row.forEach(token => {
+      if (token.suggested) {
+        token.suggested = false
       }
     }))
     return this

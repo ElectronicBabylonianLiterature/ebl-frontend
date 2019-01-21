@@ -80,6 +80,53 @@ describe('Lemmatizable word with lemma', () => {
   it('Haves have withLemma class', () => {
     expect(element.getByText(token.value)).toHaveClass('Word--with-lemma')
   })
+
+  it('Does nit have suggestion class', () => {
+    expect(element.getByText(token.value)).not.toHaveClass('Word--suggestion')
+  })
+})
+
+describe('Lemmatizable word with suggestion', () => {
+  let lemmas
+
+  beforeEach(async () => {
+    lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
+    token = {
+      'type': 'Word',
+      'value': 'DIŠ',
+      'uniqueLemma': lemmas,
+      'suggested': true,
+      'language': 'AKKADIAN',
+      'normalized': false,
+      'lemmatizable': true
+    }
+    element = render(
+      <Word
+        token={token}
+        onClick={onClick}
+      />)
+  })
+
+  it('Displays the value', () => {
+    expect(element.container).toHaveTextContent(token.value)
+  })
+
+  it('Displays the lemma', () => {
+    expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
+  })
+
+  it('Clicking calls on click', async () => {
+    await clickNth(element, token.value)
+    expect(onClick).toHaveBeenCalled()
+  })
+
+  it('Haves have withLemma class', () => {
+    expect(element.getByText(token.value)).toHaveClass('Word--with-lemma')
+  })
+
+  it('Haves have suggestion class', () => {
+    expect(element.getByText(token.value)).toHaveClass('Word--suggestion')
+  })
 })
 
 describe('Not-lemmatizable word', () => {

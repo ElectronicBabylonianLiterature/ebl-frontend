@@ -12,7 +12,8 @@ function Word ({ token, onClick }) {
         onClick={onClick}
         className={classNames({
           Word: true,
-          'Word--with-lemma': !_.isEmpty(token.uniqueLemma)
+          'Word--with-lemma': !_.isEmpty(token.uniqueLemma),
+          'Word--suggestion': token.suggested
         })}>
         {token.value}
         {_.isArray(token.uniqueLemma) && <span className='Word__lemmatization'>

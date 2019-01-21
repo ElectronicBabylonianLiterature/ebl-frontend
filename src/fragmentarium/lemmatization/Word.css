@@ -1,3 +1,7 @@
+.Word--suggestion {
+  color: red;
+}
+
 .Word--with-lemma {
   font-weight: bolder;
 }

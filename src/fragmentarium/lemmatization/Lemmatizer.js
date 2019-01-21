@@ -15,8 +15,8 @@ class Lemmatizer extends Component {
     this.state = {
       error: null,
       disabled: false,
-      lemmatization: props.data,
-      previousTokens: _.cloneDeep(props.data.tokens)
+      previousTokens: _.cloneDeep(props.data.tokens),
+      lemmatization: props.data.setSuggestions()
     }
     this.updatePromise = Promise.resolve()
   }
@@ -73,6 +73,7 @@ class Lemmatizer extends Component {
       this.setState({
         ...this.state,
         disabled: false,
+        lemmatization: this.state.lemmatization.clearSuggestionFlags(),
         previousTokens: _.cloneDeep(this.state.lemmatization.tokens)
       })
     }).catch(error => {
