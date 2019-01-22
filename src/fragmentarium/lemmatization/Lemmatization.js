@@ -51,14 +51,16 @@ export default class Lemmatization {
   }
 
   applySuggestions = () => {
-    this.tokens.forEach(row => row.forEach(token => token.applySuggestion()))
+    this._forEachToken(token => token.applySuggestion())
     return this
   }
 
   clearSuggestionFlags = () => {
-    this.tokens.forEach(row => row.forEach(token => token.clearSuggestionFlag()))
+    this._forEachToken(token => token.clearSuggestionFlag())
     return this
   }
 
   toDto = () => this.tokens.map(row => row.map(token => token.toDto()))
+
+  _forEachToken = iteratee => _(this.tokens).flatten().forEach(iteratee)
 }
