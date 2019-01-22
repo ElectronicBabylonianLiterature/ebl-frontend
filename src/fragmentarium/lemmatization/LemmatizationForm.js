@@ -7,18 +7,18 @@ import Lemma from './Lemma'
 class LemmatizationForm extends Component {
   constructor (props) {
     super(props)
-    this.state = this.createState()
-  }
-
-  createState = () => {
-    const isComplex = this.props.token.uniqueLemma.length > 1
-    const singleLemmaToOption = () => this.props.token.uniqueLemma.length === 1
-      ? this.props.token.uniqueLemma[0]
+    const isComplex = props.token.uniqueLemma.length > 1
+    const singleLemmaToOption = () => props.token.uniqueLemma.length === 1
+      ? props.token.uniqueLemma[0]
       : null
 
-    return {
+    this.state = {
       isComplex: isComplex,
-      selectedOption: isComplex ? this.props.token.uniqueLemma : singleLemmaToOption()
+      selectedOption: isComplex ? props.token.uniqueLemma : singleLemmaToOption(),
+      menuIsOpen: (
+        _.isArray(props.token.suggestions) &&
+        props.token.suggestions.length > 0
+      ) || undefined
     }
   }
 
@@ -41,19 +41,39 @@ class LemmatizationForm extends Component {
       ))
   }
 
-  Select = ({ label }) => (
-    <AsyncSelect
-      aria-label={label}
-      placeholder={label}
-      cacheOptions
-      isClearable
-      autoFocus={this.props.autoFocus}
-      loadOptions={this.loadOptions}
-      onChange={this.handleChange}
-      value={this.state.selectedOption}
-      isMulti={this.state.isComplex}
-    />
-  )
+  onInputChange = (inputValue, { action }) => {
+    if (action === 'menu-close') {
+      this.setState({
+        ...this.state,
+        menuIsOpen: undefined
+      })
+    }
+  }
+
+  Select = ({ label }) => {
+    const defaultOptions = this.state.isComplex
+      ? this.props.token.suggestions
+      : _.isArray(this.props.token.suggestions)
+        ? this.props.token.suggestions.map(_.head)
+        : []
+
+    return (
+      <AsyncSelect
+        aria-label={label}
+        placeholder={label}
+        cacheOptions
+        isClearable
+        autoFocus={this.props.autoFocus}
+        loadOptions={this.loadOptions}
+        defaultOptions={defaultOptions}
+        onInputChange={this.onInputChange}
+        menuIsOpen={this.state.menuIsOpen}
+        onChange={this.handleChange}
+        value={this.state.selectedOption}
+        isMulti={this.state.isComplex}
+      />
+    )
+  }
 
   Checkbox = () => (
     <Checkbox
