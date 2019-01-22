@@ -71,25 +71,10 @@ class FragmentService {
 
   createLemmatization (text) {
     return Promise.all([
-      Promise.all(
-        mapText(
-          text,
-          line => line.map(token => token.uniqueLemma),
-          uniqueLemma => this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
-        )
-      ),
-      Promise.all(
-        mapText(
-          text,
-          line => line.filter(token => token.lemmatizable).map(token => token.value),
-          value => this.fragmentRepository.findLemmas(value).then(result => [
-            value,
-            result.map(complexLemma => complexLemma.map(word => new Lemma(word)))
-          ])
-        )
-      )
-    ]).then(([wordMapData, suggestionsData]) => {
-      const wordMap = _.keyBy(wordMapData, 'value')
+      this._fetchLemmas(text),
+      this._fetchSuggestions(text)
+    ]).then(([lemmaData, suggestionsData]) => {
+      const lemmas = _.keyBy(lemmaData, 'value')
       const suggestions = _.fromPairs(suggestionsData)
       return new Lemmatization(
         _.map(text.lines, 'prefix'),
@@ -99,7 +84,7 @@ class FragmentService {
             ? new LemmatizationToken(
               token.value,
               true,
-              token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
+              token.uniqueLemma.map(id => lemmas[id]),
               suggestions[token.value]
             )
             : new LemmatizationToken(token.value, false))
@@ -107,6 +92,29 @@ class FragmentService {
           .value()
       )
     })
+  }
+
+  _fetchLemmas (text) {
+    return Promise.all(
+      mapText(
+        text,
+        line => line.map(token => token.uniqueLemma),
+        uniqueLemma => this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
+      )
+    )
+  }
+
+  _fetchSuggestions (text) {
+    return Promise.all(
+      mapText(
+        text,
+        line => line.filter(token => token.lemmatizable).map(token => token.value),
+        value => this.fragmentRepository.findLemmas(value).then(result => [
+          value,
+          result.map(complexLemma => complexLemma.map(word => new Lemma(word)))
+        ])
+      )
+    )
   }
 }
 
