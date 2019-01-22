@@ -8,20 +8,27 @@ import Lemma from './Lemma'
 let element
 let token
 let onClick
+let lemmas
 
-beforeEach(() => {
+beforeEach(async () => {
   onClick = jest.fn()
+  lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
 })
 
-describe('Lemmatizable word', () => {
+describe.each([
+  [false, false, [], ['Word--with-lemma', 'Word--suggestion']],
+  [true, false, ['Word--with-lemma'], ['Word--suggestion']],
+  [true, true, ['Word--with-lemma', 'Word--suggestion'], []]
+])('%#', (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
   beforeEach(async () => {
     token = {
       'type': 'Word',
       'value': 'DIŠ',
-      'uniqueLemma': [],
+      'uniqueLemma': hasLemma ? lemmas : [],
       'language': 'AKKADIAN',
       'normalized': false,
-      'lemmatizable': true
+      'lemmatizable': true,
+      'suggested': suggested
     }
     element = render(
       <Word
@@ -34,98 +41,23 @@ describe('Lemmatizable word', () => {
     expect(element.container).toHaveTextContent(token.value)
   })
 
-  it('Clicking calls on click', async () => {
-    await clickNth(element, token.value)
-    expect(onClick).toHaveBeenCalled()
-  })
-
-  it('Does not have withLemma class', () => {
-    expect(element.getByText(token.value)).not.toHaveClass('Word--with-lemma')
-  })
-})
-
-describe('Lemmatizable word with lemma', () => {
-  let lemmas
-
-  beforeEach(async () => {
-    lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
-    token = {
-      'type': 'Word',
-      'value': 'DIŠ',
-      'uniqueLemma': lemmas,
-      'language': 'AKKADIAN',
-      'normalized': false,
-      'lemmatizable': true
-    }
-    element = render(
-      <Word
-        token={token}
-        onClick={onClick}
-      />)
-  })
-
-  it('Displays the value', () => {
-    expect(element.container).toHaveTextContent(token.value)
-  })
-
-  it('Displays the lemma', () => {
-    expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
-  })
+  if (hasLemma) {
+    it('Displays the lemma', () => {
+      expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
+    })
+  }
 
   it('Clicking calls on click', async () => {
     await clickNth(element, token.value)
     expect(onClick).toHaveBeenCalled()
   })
 
-  it('Haves have withLemma class', () => {
-    expect(element.getByText(token.value)).toHaveClass('Word--with-lemma')
+  test.each(expectedClasses)('Has class %s', expectedClass => {
+    expect(element.getByText(token.value)).toHaveClass(expectedClass)
   })
 
-  it('Does nit have suggestion class', () => {
-    expect(element.getByText(token.value)).not.toHaveClass('Word--suggestion')
-  })
-})
-
-describe('Lemmatizable word with suggestion', () => {
-  let lemmas
-
-  beforeEach(async () => {
-    lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
-    token = {
-      'type': 'Word',
-      'value': 'DIŠ',
-      'uniqueLemma': lemmas,
-      'suggested': true,
-      'language': 'AKKADIAN',
-      'normalized': false,
-      'lemmatizable': true
-    }
-    element = render(
-      <Word
-        token={token}
-        onClick={onClick}
-      />)
-  })
-
-  it('Displays the value', () => {
-    expect(element.container).toHaveTextContent(token.value)
-  })
-
-  it('Displays the lemma', () => {
-    expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
-  })
-
-  it('Clicking calls on click', async () => {
-    await clickNth(element, token.value)
-    expect(onClick).toHaveBeenCalled()
-  })
-
-  it('Haves have withLemma class', () => {
-    expect(element.getByText(token.value)).toHaveClass('Word--with-lemma')
-  })
-
-  it('Haves have suggestion class', () => {
-    expect(element.getByText(token.value)).toHaveClass('Word--suggestion')
+  test.each(notExpectedClasses)('Does not have class %s', notExpectedClass => {
+    expect(element.getByText(token.value)).not.toHaveClass(notExpectedClass)
   })
 })
 
