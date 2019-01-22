@@ -16,7 +16,7 @@ class Lemmatizer extends Component {
       error: null,
       disabled: false,
       previousTokens: _.cloneDeep(props.data.tokens),
-      lemmatization: props.data.setSuggestions()
+      lemmatization: props.data.applySuggestions()
     }
     this.updatePromise = Promise.resolve()
   }

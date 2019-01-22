@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
 import createFolio from 'fragmentarium/createFolio'
-import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
+import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 const resultStub = {}
@@ -102,13 +102,29 @@ it('createLemmatization', async () => {
     : [])
   )
 
-  const expected = Lemmatization.fromText(text, token => ({
-    ...token,
-    uniqueLemma: token.uniqueLemma.map(uniqueLemma => new Lemma(wordMap[uniqueLemma])),
-    suggestions: [[new Lemma(suggestions[token.value])]]
-  }))
+  const expected = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      [[new Lemma(words[2])]]
+    ),
+    new LemmatizationToken(
+      'nu',
+      true,
+      [new Lemma(words[1])],
+      [[new Lemma(words[3])]]
+    )
+  ]])
 
   const result = await fragmentService.createLemmatization(text)
-  expect(result.tokens).toEqual(expected.tokens)
-  expect(result.text).toEqual(text)
+  result.tokens.forEach((line, lineIndex) =>
+    line.forEach((token, tokenIndex) => {
+      const expectedToken = expected.tokens[lineIndex][tokenIndex]
+      expect(token.value).toEqual(expectedToken.value)
+      expect(token.uniqueLemma).toEqual(expectedToken.uniqueLemma)
+      expect(token.suggestions).toEqual(expectedToken.suggestions)
+      expect(token.lemmatizable).toEqual(expectedToken.lemmatizable)
+    }))
+  expect(result.lines).toEqual(expected.lines)
 })

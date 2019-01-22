@@ -24,10 +24,7 @@ beforeEach(async () => {
     isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true,
     isAllowedToLemmatize: () => false,
-    createLemmatization: text => Promise.resolve(Lemmatization.fromText(text, token => ({
-      ...token,
-      uniqueLemma: []
-    })))
+    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))

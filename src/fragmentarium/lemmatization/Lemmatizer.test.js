@@ -7,7 +7,7 @@ import _ from 'lodash'
 import { whenClicked, clickNth, changeValueByLabel } from 'testHelpers'
 import Lemma from './Lemma'
 import Lemmatizer from './Lemmatizer'
-import Lemmatization from './Lemmatization'
+import Lemmatization, { LemmatizationToken } from './Lemmatization'
 
 const number = 'K.1'
 let element
@@ -16,13 +16,6 @@ let text
 let word
 let oldWord
 let lemma
-
-function tokenFactory (token) {
-  return {
-    ...token,
-    uniqueLemma: [new Lemma(oldWord)]
-  }
-}
 
 beforeEach(async () => {
   word = await factory.build('word')
@@ -53,7 +46,14 @@ beforeEach(async () => {
     ]
   }
   fragmentService.createLemmatization.mockImplementation(text => Promise.resolve(
-    Lemmatization.fromText(text, tokenFactory)
+    new Lemmatization(['1.'], [[
+      new LemmatizationToken(
+        'kur',
+        true,
+        [new Lemma(oldWord)],
+        []
+      )
+    ]])
   ))
   element = render(
     <Lemmatizer
@@ -88,7 +88,14 @@ it('Clicking save calls fragmentService', async () => {
 
   await lemmatizeWord()
 
-  const expected = Lemmatization.fromText(text, tokenFactory).setLemma(0, 0, [lemma]).toDto()
+  const expected = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [lemma],
+      []
+    )
+  ]]).toDto()
   await whenClicked(element, 'Save').expect(fragmentService.updateLemmatization)
     .toHaveBeenCalledWith(number, expected)
 })

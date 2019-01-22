@@ -1,56 +1,64 @@
 import _ from 'lodash'
 
-export default class Lemmatization {
-  constructor (text, tokens) {
-    this.tokens = tokens
-    this.text = text
+export class LemmatizationToken {
+  constructor (value, lemmatizable, uniqueLemma = null, suggestions = null, suggested = false) {
+    this.value = value
+    this.uniqueLemma = uniqueLemma
+    this.suggestions = suggestions
+    this.lemmatizable = lemmatizable
+    this.suggested = suggested
   }
 
-  getRowPrefix = rowIndex => this.text.lines[rowIndex].prefix
+  setUniqueLemma = uniqueLemma => {
+    this.uniqueLemma = uniqueLemma
+    this.suggested = false
+  }
+
+  applySuggestion = () => {
+    if (_.isArray(this.suggestions) &&
+      this.suggestions.length === 1 &&
+      _.isEmpty(this.uniqueLemma)) {
+      this.uniqueLemma = this.suggestions[0]
+      this.suggested = true
+    }
+  }
+
+  clearSuggestionFlag = () => {
+    this.suggested = false
+  }
+
+  toDto = () => _.isNil(this.uniqueLemma)
+    ? {
+      value: this.value
+    }
+    : {
+      value: this.value,
+      uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
+    }
+}
+
+export default class Lemmatization {
+  constructor (lines, tokens) {
+    this.lines = lines
+    this.tokens = tokens
+  }
+
+  getRowPrefix = rowIndex => this.lines[rowIndex]
 
   setLemma = (rowIndex, columnIndex, uniqueLemma) => {
-    const token = this.tokens[rowIndex][columnIndex]
-    token.uniqueLemma = uniqueLemma
-    token.suggested = false
+    this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma)
     return this
   }
 
-  setSuggestions = () => {
-    this.tokens.forEach(row => row.forEach(token => {
-      if (_.isArray(token.suggestions) &&
-        token.suggestions.length === 1 &&
-        _.isEmpty(token.uniqueLemma)) {
-        token.uniqueLemma = token.suggestions[0]
-        token.suggested = true
-      }
-    }))
+  applySuggestions = () => {
+    this.tokens.forEach(row => row.forEach(token => token.applySuggestion()))
     return this
   }
 
   clearSuggestionFlags = () => {
-    this.tokens.forEach(row => row.forEach(token => {
-      if (token.suggested) {
-        token.suggested = false
-      }
-    }))
+    this.tokens.forEach(row => row.forEach(token => token.clearSuggestionFlag()))
     return this
   }
 
-  toDto = () => this.tokens.map(row => row.map(token => _.isNil(token.uniqueLemma)
-    ? {
-      value: token.value
-    }
-    : {
-      value: token.value,
-      uniqueLemma: token.uniqueLemma.map(lemma => lemma.value)
-    }
-  ))
-
-  static fromText (text, tokenFactory = _.cloneDeep) {
-    const tokens = _(text.lines)
-      .map('content')
-      .map(line => line.map(tokenFactory))
-      .value()
-    return new Lemmatization(text, tokens)
-  }
+  toDto = () => this.tokens.map(row => row.map(token => token.toDto()))
 }

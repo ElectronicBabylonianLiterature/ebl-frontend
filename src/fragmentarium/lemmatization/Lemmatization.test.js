@@ -1,60 +1,55 @@
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import Lemma from './Lemma'
-import Lemmatization from './Lemmatization'
+import Lemmatization, { LemmatizationToken } from './Lemmatization'
 
 let words
-let text
-let lemmatization
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  text = {
-    lines: [
-      {
-        type: 'TextLine',
-        prefix: '1.',
-        content: [
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [new Lemma(words[0])],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          },
-          {
-            type: 'LanguageShift',
-            value: '%sux',
-            lemmatizable: false
-          }
-        ]
-      }
-    ]
-  }
-  lemmatization = Lemmatization.fromText(text)
-})
-
-it('Maps tokens', () => {
-  expect(lemmatization.tokens).toEqual(text.lines.map(lines => lines.content))
 })
 
 it('Sets unique lemma', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      []
+    )
+  ]])
   const uniqueLemma = [new Lemma(words[1])]
-  const expected = _.cloneDeep(lemmatization.tokens[0][0])
-  expected.uniqueLemma = uniqueLemma
-  expected.suggested = false
   lemmatization.setLemma(0, 0, uniqueLemma)
-  expect(lemmatization.tokens[0][0]).toEqual(expected)
+  expect(lemmatization.tokens[0][0].uniqueLemma).toEqual(uniqueLemma)
 })
 
-it('Does not mutate text', () => {
-  const expected = _.cloneDeep(text)
+it('setUniqueLemma clears sugegsted', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      [[new Lemma(words[0])]],
+      true
+    )
+  ]])
   lemmatization.setLemma(0, 0, [new Lemma(words[1])])
-  expect(lemmatization.text).toEqual(expected)
+  expect(lemmatization.tokens[0][0].suggested).toEqual(false)
 })
 
 it('Creates correct DTO', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      []
+    ),
+    new LemmatizationToken(
+      '%sux',
+      false
+    )
+  ]])
   expect(lemmatization.toDto()).toEqual([[
     {
       value: 'kur',
@@ -66,147 +61,44 @@ it('Creates correct DTO', () => {
   ]])
 })
 
-it('setSuggestions sets suggestions', () => {
-  text = {
-    lines: [
-      {
-        type: 'TextLine',
-        prefix: '1.',
-        content: [
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          },
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          }
-        ]
-      }
-    ]
-  }
-  lemmatization = new Lemmatization(text, [[
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[0])],
-      suggestions: [[new Lemma(words[1])]],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    },
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [],
-      suggestions: [[new Lemma(words[1])]],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    }
+it('applySuggestions sets suggestions', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      [[new Lemma(words[1])]]
+    ),
+    new LemmatizationToken(
+      'kur',
+      true,
+      [],
+      [[new Lemma(words[1])]]
+    )
   ]])
-  const expected = [[
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[0])],
-      suggestions: [[new Lemma(words[1])]],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    },
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[1])],
-      suggestions: [[new Lemma(words[1])]],
-      suggested: true,
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    }
-  ]]
-  lemmatization.setSuggestions()
-  expect(lemmatization.tokens).toEqual(expected)
+  lemmatization.applySuggestions()
+  expect(_.map(lemmatization.tokens[0], 'uniqueLemma')).toEqual([
+    [new Lemma(words[0])],
+    [new Lemma(words[1])]
+  ])
 })
 
-it('clearSuggestionFalgs clears flags', () => {
-  text = {
-    lines: [
-      {
-        type: 'TextLine',
-        prefix: '1.',
-        content: [
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          },
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          }
-        ]
-      }
-    ]
-  }
-  lemmatization = new Lemmatization(text, [[
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[0])],
-      suggestions: [[new Lemma(words[1])]],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    },
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[1])],
-      suggestions: [[new Lemma(words[1])]],
-      suggested: true,
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    }
+it('clearSuggestionFlags clears flags', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      [[new Lemma(words[1])]]
+    ),
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[1])],
+      [[new Lemma(words[1])]],
+      true
+    )
   ]])
-  const expected = [[
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[0])],
-      suggestions: [[new Lemma(words[1])]],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    },
-    {
-      type: 'Word',
-      value: 'kur',
-      uniqueLemma: [new Lemma(words[1])],
-      suggestions: [[new Lemma(words[1])]],
-      suggested: false,
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true
-    }
-  ]]
   lemmatization.clearSuggestionFlags()
-  expect(lemmatization.tokens).toEqual(expected)
+  expect(_.map(lemmatization.tokens[0], 'suggested')).toEqual([false, false])
 })

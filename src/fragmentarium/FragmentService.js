@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Promise } from 'bluebird'
-import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
+import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 class FragmentService {
@@ -91,13 +91,20 @@ class FragmentService {
     ]).then(([wordMapData, suggestionsData]) => {
       const wordMap = _.keyBy(wordMapData, 'value')
       const suggestions = _.fromPairs(suggestionsData)
-      return Lemmatization.fromText(text, token => token.lemmatizable
-        ? {
-          ...token,
-          uniqueLemma: token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
-          suggestions: suggestions[token.value]
-        }
-        : token
+      return new Lemmatization(
+        _.map(text.lines, 'prefix'),
+        _(text.lines)
+          .map('content')
+          .map(tokens => tokens.map(token => token.lemmatizable
+            ? new LemmatizationToken(
+              token.value,
+              true,
+              token.uniqueLemma.map(uniqueLemma => wordMap[uniqueLemma]),
+              suggestions[token.value]
+            )
+            : new LemmatizationToken(token.value, false))
+          )
+          .value()
       )
     })
   }

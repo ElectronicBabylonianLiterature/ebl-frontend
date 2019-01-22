@@ -33,10 +33,7 @@ beforeEach(async () => {
     isAllowedToRead: jest.fn(),
     isAllowedToTransliterate: jest.fn(),
     isAllowedToLemmatize: () => false,
-    createLemmatization: text => Promise.resolve(Lemmatization.fromText(text, token => ({
-      ...token,
-      uniqueLemma: []
-    })))
+    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
