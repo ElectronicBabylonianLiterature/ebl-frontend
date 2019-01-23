@@ -2,10 +2,13 @@ import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
+import HelpTrigger from 'common/HelpTrigger'
 import ErrorAlert from 'common/ErrorAlert'
 import WordLemmatizer from './WordLemmatizer'
 import Spinner from 'common/Spinner'
 import withData from 'http/withData'
+
+import LemmatizationHelp from './LemmatizationHelp'
 
 import './Lemmatizer.css'
 
@@ -97,6 +100,8 @@ class Lemmatizer extends Component {
               </li>
             ))}
           </ol>
+          <HelpTrigger overlay={LemmatizationHelp()} />
+          {' '}
           <this.SubmitButton />
         </Fragment>}
       <ErrorAlert error={this.state.error} />
