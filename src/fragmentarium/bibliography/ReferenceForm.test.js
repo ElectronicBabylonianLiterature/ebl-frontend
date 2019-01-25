@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 
 import { whenChangedByLabel } from 'testHelpers'
 import ReferenceForm from './ReferenceForm'
