@@ -21,6 +21,7 @@ const word = 'šim'
 
 let fragmentDto
 let fragment
+let references
 
 beforeEach(async () => {
   fragmentDto = await factory.build('fragmentDto', { _id: fragmentId })
@@ -28,6 +29,7 @@ beforeEach(async () => {
     ...fragmentDto,
     folios: fragmentDto.folios.map(({ name, number }) => createFolio(name, number))
   }
+  references = await factory.buildMany('reference', 2)
 })
 
 const testData = [
@@ -42,6 +44,7 @@ const testData = [
     notes
   }], Promise.resolve(resultStub)],
   ['updateLemmatization', [fragmentId, lemmatization], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/lemmatization`, { lemmatization: lemmatization }], Promise.resolve(resultStub)],
+  ['updateReferences', [fragmentId, references], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/references`, { references: references }], Promise.resolve(resultStub)],
   ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)],
   ['findLemmas', [word], apiClient.fetchJson, resultStub, [`/lemmas?word=${encodeURIComponent(word)}`, true], Promise.resolve(resultStub)]
 ]

@@ -59,6 +59,11 @@ class FragmentRepository {
     return this.apiClient.postJson(path, { lemmatization: lemmatization })
   }
 
+  updateReferences (number, references) {
+    const path = `/fragments/${encodeURIComponent(number)}/references`
+    return this.apiClient.postJson(path, { references: references })
+  }
+
   folioPager (folio, number) {
     return this.apiClient
       .fetchJson(`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(number)}`, true)
