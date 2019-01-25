@@ -84,6 +84,14 @@ factory.define('textDto', Object, {
   }
 })
 
+factory.define('reference', Object, {
+  id: factory.chance('string'),
+  type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
+  pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
+  notes: factory.chance('string'),
+  linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
+})
+
 factory.define('fragmentDto', Object, {
   '_id': factory.chance('word'),
   'cdliNumber': factory.chance('word'),
@@ -107,7 +115,8 @@ factory.define('fragmentDto', Object, {
   'record': factory.assocAttrsMany('record', 2),
   'text': factory.assocAttrs('textDto'),
   'notes': factory.chance('sentence'),
-  'museum': 'The British Museum'
+  'museum': 'The British Museum',
+  'references': factory.assocAttrsMany('reference', 2)
 })
 
 factory.define('fragment', Object, async () => {
