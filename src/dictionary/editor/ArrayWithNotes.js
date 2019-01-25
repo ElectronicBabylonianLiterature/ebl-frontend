@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
 
 import TextListInput from './TextListInput'
-import ArrayInput from './ArrayInput'
+import ArrayInput from 'common/ArrayInput'
 
 class ArrayWithNotes extends Component {
   update = property => value => {
@@ -13,7 +13,6 @@ class ArrayWithNotes extends Component {
     return (
       <Fragment>
         <ArrayInput
-          id={`${this.props.id}`}
           separator={this.props.separator}
           value={this.props.value[this.props.property]}
           onChange={this.update(this.props.property)}>
