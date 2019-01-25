@@ -3,7 +3,7 @@ import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayWithNotes from './ArrayWithNotes'
-import List from './List'
+import List from 'common/List'
 
 class ArrayWithNotesList extends Component {
   render () {

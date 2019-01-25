@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import TextInput from './TextInput'
-import List from './List'
+import List from 'common/List'
 
 class ListInput extends Component {
   render () {

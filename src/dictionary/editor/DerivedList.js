@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import FormList from './FormList'
-import List from './List'
+import List from 'common/List'
 
 class DerivedList extends Component {
   render () {

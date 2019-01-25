@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
+import { FormControl } from 'react-bootstrap'
 import List from './List'
-import TextInput from './TextInput'
 import { render } from 'react-testing-library'
 import { whenClicked, whenChangedByValue } from 'testHelpers'
 
@@ -31,19 +31,21 @@ it('New entry has the default value', async () => {
     .toHaveBeenCalledWith([...items, defaultValue])
 })
 
-items.forEach((item, index) => {
-  it(`Displays item ${index}`, () => {
+describe.each(items)('Item %#', item => {
+  const index = items.indexOf(item)
+
+  it(`Displays the item`, () => {
     expect(element.getByValue(item)).toBeVisible()
   })
 
-  it(`Removes item ${index} when Delete is clicked`, async () => {
+  it(`Removes the item when Delete is clicked`, async () => {
     await whenClicked(element, `Delete ${noun}`, index)
       .expect(onChange)
       .toHaveBeenCalledWith(_.reject(items, (value, itemIndex) => itemIndex === index))
   })
 
-  it(`Calls onChange with updated value on item ${index} change`, async () => {
-    await whenChangedByValue(element, items[index], 'new')
+  it(`Calls onChange with updated value on item change`, async () => {
+    await whenChangedByValue(element, item, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith(updatedItem =>
         items.map((item, itemIndex) =>
@@ -54,10 +56,13 @@ items.forEach((item, index) => {
 })
 
 function renderList () {
+  function TestFormControl ({ onChange, value }) {
+    return <FormControl type='text' value={value} onChange={event => onChange(event.target.value)} />
+  }
   return render(
     <List id={id} value={items} onChange={onChange} label={label} noun={noun} default={defaultValue}>
       {items.map((item, index) =>
-        <TextInput key={index} value={item} />
+        <TestFormControl key={index} value={item} />
       )}
     </List>
   )

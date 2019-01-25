@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import List from './List'
+import List from 'common/List'
 import { FormGroup } from 'react-bootstrap'
 
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
