@@ -23,6 +23,7 @@ const fragmentRepository = {
   searchTransliteration: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
+  updateReferences: jest.fn(),
   folioPager: jest.fn(),
   findLemmas: jest.fn()
 }
@@ -46,6 +47,7 @@ const testData = [
   ['searchTransliteration', ['kur'], fragmentRepository.searchTransliteration, resultStub],
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
   ['updateLemmatization', ['K.1', [[{ value: 'kur', uniqueLemma: [] }]]], fragmentRepository.updateLemmatization, resultStub],
+  ['updateReferences', ['K.1', [[{ id: 'id', type: 'EDITION', 'notes': '', pages: '', linesCited: [] }]]], fragmentRepository.updateReferences, resultStub],
   ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],

@@ -43,6 +43,10 @@ class FragmentService {
     return this.fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
+  updateReferences (number, references) {
+    return this.fragmentRepository.updateReferences(number, references)
+  }
+
   findFolio (folio) {
     return this.imageRepository.find(folio.fileName)
   }
