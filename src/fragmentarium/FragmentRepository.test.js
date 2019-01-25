@@ -41,7 +41,7 @@ const testData = [
     transliteration,
     notes
   }], Promise.resolve(resultStub)],
-  ['updateLemmatization', [fragmentId, lemmatization], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/lemmatization`, lemmatization], Promise.resolve(resultStub)],
+  ['updateLemmatization', [fragmentId, lemmatization], apiClient.postJson, resultStub, [`/fragments/${encodeURIComponent(fragmentId)}/lemmatization`, { lemmatization: lemmatization }], Promise.resolve(resultStub)],
   ['folioPager', [folio, fragmentId], apiClient.fetchJson, resultStub, [`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(resultStub)],
   ['findLemmas', [word], apiClient.fetchJson, resultStub, [`/lemmas?word=${encodeURIComponent(word)}`, true], Promise.resolve(resultStub)]
 ]
