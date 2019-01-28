@@ -63,6 +63,10 @@ class FragmentService {
     return this.auth.isAllowedToLemmatizeFragments()
   }
 
+  hasBetaAccess () {
+    return this.auth.hasBetaAccess()
+  }
+
   folioPager (folio, fragmentNumber) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }

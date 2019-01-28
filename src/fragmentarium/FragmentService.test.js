@@ -12,7 +12,8 @@ const folio = createFolio('AKG', '375')
 const auth = {
   isAllowedToReadFragments: jest.fn(),
   isAllowedToTransliterateFragments: jest.fn(),
-  isAllowedToLemmatizeFragments: jest.fn()
+  isAllowedToLemmatizeFragments: jest.fn(),
+  hasBetaAccess: jest.fn()
 }
 const fragmentRepository = {
   statistics: jest.fn(),
@@ -52,6 +53,7 @@ const testData = [
   ['isAllowedToRead', [], auth.isAllowedToReadFragments, true],
   ['isAllowedToTransliterate', [], auth.isAllowedToTransliterateFragments, true],
   ['isAllowedToLemmatize', [], auth.isAllowedToLemmatizeFragments, true],
+  ['hasBetaAccess', [], auth.hasBetaAccess, true],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]]
 ]
