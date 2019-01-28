@@ -14,6 +14,9 @@ const applicationScopes = {
   readFragments: 'read:fragments',
   transliterateFragments: 'transliterate:fragments',
   lemmatizeFragments: 'lemmatize:fragments',
+  readBibliography: 'read:bibliography',
+  writeBiblioGraphy: 'write:bibliography',
+  accessBeta: 'access:beta',
   readWglFolios: 'read:WGL-folios',
   readFwgFolios: 'read:FWG-folios',
   readElFolios: 'read:EL-folios',
@@ -81,27 +84,31 @@ class Auth {
   }
 
   isAllowedToReadWords () {
-    const scope = applicationScopes.readWords
-    return this.sessionStore.getSession().hasScope(scope)
+    return this.hasScope('readWords')
   }
 
   isAllowedToWriteWords () {
-    const scope = applicationScopes.writeWords
-    return this.sessionStore.getSession().hasScope(scope)
+    return this.hasScope('writeWords')
   }
 
   isAllowedToReadFragments () {
-    const scope = applicationScopes.readFragments
-    return this.sessionStore.getSession().hasScope(scope)
+    return this.hasScope('readFragments')
   }
 
   isAllowedToTransliterateFragments () {
-    const scope = applicationScopes.transliterateFragments
-    return this.sessionStore.getSession().hasScope(scope)
+    return this.hasScope('transliterateFragments')
   }
 
   isAllowedToLemmatizeFragments () {
-    const scope = applicationScopes.lemmatizeFragments
+    return this.hasScope('lemmatizeFragments')
+  }
+
+  hasBetaAccess () {
+    return this.hasScope('accessBeta')
+  }
+
+  hasScope (applicationScope) {
+    const scope = applicationScopes[applicationScope]
     return this.sessionStore.getSession().hasScope(scope)
   }
 }
