@@ -9,6 +9,35 @@ beforeEach(async () => {
   words = await factory.buildMany('word', 2)
 })
 
+it('Equals', () => {
+  const lemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      []
+    )
+  ]])
+  const anotherLemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'kur',
+      true,
+      [new Lemma(words[0])],
+      []
+    )
+  ]])
+  const differentLemmatization = new Lemmatization(['1.'], [[
+    new LemmatizationToken(
+      'ra',
+      true,
+      [new Lemma(words[0])],
+      []
+    )
+  ]])
+  expect(_.isEqual(lemmatization, anotherLemmatization)).toEqual(true)
+  expect(_.isEqual(lemmatization, differentLemmatization)).toEqual(false)
+})
+
 it('Sets unique lemma', () => {
   const lemmatization = new Lemmatization(['1.'], [[
     new LemmatizationToken(

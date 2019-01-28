@@ -9,12 +9,12 @@ export class LemmatizationToken {
     this.suggested = suggested
   }
 
-  setUniqueLemma = uniqueLemma => {
+  setUniqueLemma (uniqueLemma) {
     this.uniqueLemma = uniqueLemma
     this.suggested = false
   }
 
-  applySuggestion = () => {
+  applySuggestion () {
     if (_.isArray(this.suggestions) &&
       this.suggestions.length === 1 &&
       _.isEmpty(this.uniqueLemma)) {
@@ -23,18 +23,20 @@ export class LemmatizationToken {
     }
   }
 
-  clearSuggestionFlag = () => {
+  clearSuggestionFlag () {
     this.suggested = false
   }
 
-  toDto = () => _.isNil(this.uniqueLemma)
-    ? {
-      value: this.value
-    }
-    : {
-      value: this.value,
-      uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
-    }
+  toDto () {
+    return _.isNil(this.uniqueLemma)
+      ? {
+        value: this.value
+      }
+      : {
+        value: this.value,
+        uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
+      }
+  }
 }
 
 export default class Lemmatization {
@@ -43,24 +45,30 @@ export default class Lemmatization {
     this.tokens = tokens
   }
 
-  getRowPrefix = rowIndex => this.lines[rowIndex]
+  getRowPrefix (rowIndex) {
+    return this.lines[rowIndex]
+  }
 
-  setLemma = (rowIndex, columnIndex, uniqueLemma) => {
+  setLemma (rowIndex, columnIndex, uniqueLemma) {
     this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma)
     return this
   }
 
-  applySuggestions = () => {
+  applySuggestions () {
     this._forEachToken(token => token.applySuggestion())
     return this
   }
 
-  clearSuggestionFlags = () => {
+  clearSuggestionFlags () {
     this._forEachToken(token => token.clearSuggestionFlag())
     return this
   }
 
-  toDto = () => this.tokens.map(row => row.map(token => token.toDto()))
+  toDto () {
+    return this.tokens.map(row => row.map(token => token.toDto()))
+  }
 
-  _forEachToken = iteratee => _(this.tokens).flatten().forEach(iteratee)
+  _forEachToken (iteratee) {
+    _(this.tokens).flatten().forEach(iteratee)
+  }
 }

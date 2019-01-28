@@ -122,13 +122,5 @@ it('createLemmatization', async () => {
   ]])
 
   const result = await fragmentService.createLemmatization(text)
-  result.tokens.forEach((line, lineIndex) =>
-    line.forEach((token, tokenIndex) => {
-      const expectedToken = expected.tokens[lineIndex][tokenIndex]
-      expect(token.value).toEqual(expectedToken.value)
-      expect(token.uniqueLemma).toEqual(expectedToken.uniqueLemma)
-      expect(token.suggestions).toEqual(expectedToken.suggestions)
-      expect(token.lemmatizable).toEqual(expectedToken.lemmatizable)
-    }))
-  expect(result.lines).toEqual(expected.lines)
+  expect(result).toEqual(expected)
 })
