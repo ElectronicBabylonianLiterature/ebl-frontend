@@ -8,7 +8,7 @@ import ReferenceForm from './ReferenceForm'
 
 const defaultReference = {
   id: '',
-  type: '',
+  type: 'DISCUSSION',
   pages: '',
   notes: '',
   linesCited: []
