@@ -6,7 +6,41 @@ import List from 'common/List'
 import ErrorAlert from 'common/ErrorAlert'
 import ReferenceForm from './ReferenceForm'
 
-export default class References extends Component {
+const defaultReference = {
+  id: '',
+  type: '',
+  pages: '',
+  notes: '',
+  linesCited: []
+}
+
+function References ({ references, onChange, onSubmit, error, disabled }) {
+  return (
+    <form onSubmit={onSubmit}>
+      <List
+        label='References'
+        value={references}
+        onChange={onChange}
+        noun='Reference'
+        default={defaultReference}>
+        {references.map((reference, index) =>
+          <ReferenceForm
+            key={index}
+            value={reference} />
+        )}
+      </List>
+      <Button
+        type='submit'
+        bsStyle='primary'
+        disabled={disabled}>
+        Save
+      </Button>
+      <ErrorAlert error={error} />
+    </form>
+  )
+}
+
+class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -49,34 +83,13 @@ export default class References extends Component {
   }
 
   render () {
-    return (
-      <form onSubmit={this.submit}>
-        <List
-          label='References'
-          value={this.state.references}
-          onChange={this.handleChange}
-          noun='Reference'
-          default={{
-            id: '',
-            type: '',
-            pages: '',
-            notes: '',
-            linesCited: []
-          }}>
-          {this.state.references.map((reference, index) =>
-            <ReferenceForm
-              key={index}
-              value={reference} />
-          )}
-        </List>
-        <Button
-          type='submit'
-          bsStyle='primary'
-          disabled={this.state.saving || this.hasChanges}>
-          Save
-        </Button>
-        <ErrorAlert error={this.state.error} />
-      </form>
-    )
+    return <References
+      references={this.state.references}
+      onChange={this.handleChange}
+      onSubmit={this.submit}
+      error={this.state.error}
+      disabled={this.state.saving || this.hasChanges} />
   }
 }
+
+export default ReferencesController
