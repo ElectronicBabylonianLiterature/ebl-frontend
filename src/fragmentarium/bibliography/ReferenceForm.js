@@ -3,6 +3,8 @@ import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
+import HelpTrigger from 'common/HelpTrigger'
+import NotesHelp from './NotesHelp'
 
 export default class ReferenceForm extends Component {
   constructor (props) {
@@ -49,6 +51,8 @@ export default class ReferenceForm extends Component {
       </FormGroup>
       <FormGroup controlId={`${this.id}-Notes`}>
         <ControlLabel>Notes</ControlLabel>
+        {' '}
+        <HelpTrigger overlay={NotesHelp()} />
         <FormControl
           type='text'
           defaultValue={this.props.value.notes}
