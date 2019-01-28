@@ -139,7 +139,6 @@ class WordForm extends Component {
           <this.derivedFrom />
 
           <Button type='submit' bsStyle='primary'>Save</Button>
-          {process.env.NODE_ENV === 'development' && <this.jsonPreview />}
         </fieldset>
       </form>
     )
