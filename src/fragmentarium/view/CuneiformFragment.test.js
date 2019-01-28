@@ -24,6 +24,7 @@ beforeEach(async () => {
     isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true,
     isAllowedToLemmatize: () => false,
+    hasBetaAccess: () => false,
     createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   URL.createObjectURL.mockReturnValue('url')

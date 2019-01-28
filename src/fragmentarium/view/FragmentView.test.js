@@ -33,6 +33,7 @@ beforeEach(async () => {
     isAllowedToRead: jest.fn(),
     isAllowedToTransliterate: jest.fn(),
     isAllowedToLemmatize: () => false,
+    hasBetaAccess: () => false,
     createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   URL.createObjectURL.mockReturnValue('url')

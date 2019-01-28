@@ -2,12 +2,13 @@ import React from 'react'
 import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
-import Details from './Details'
-import Record from './Record'
-import OrganizationLinks from './OrganizationLinks'
+import References from 'fragmentarium/bibliography/References'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/view/Display'
+import Details from './Details'
+import Record from './Record'
+import OrganizationLinks from './OrganizationLinks'
 import Folios from './Folios'
 
 import './CuneiformFragment.css'
@@ -32,6 +33,7 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
   const defaultActiveKey = fragmentService.isAllowedToTransliterate() ? 2 : 1
   const editionDisabled = !fragmentService.isAllowedToTransliterate()
   const lemmatizationDisabled = _.isEmpty(fragment.text.lines) || !fragmentService.isAllowedToLemmatize()
+  const referencesDisabeld = !fragmentService.hasBetaAccess()
   const tabsId = _.uniqueId('fragment-container-')
   return (
     <Tabs id={tabsId} defaultActiveKey={defaultActiveKey}>
@@ -53,6 +55,13 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
             number={fragment._id}
             text={fragment.text}
             autoFocusLemmaSelect />
+        </ContentSection>
+      </Tab>
+      <Tab eventKey={4} title='References' disabled={referencesDisabeld}>
+        <ContentSection>
+          <References
+            fragmentService={fragmentService}
+            fragment={fragment} />
         </ContentSection>
       </Tab>
     </Tabs>
