@@ -1,5 +1,6 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
+import _ from 'lodash'
 
 const obverse = `1. [...]  [...]
 2. [...]  [...]`
@@ -13,7 +14,7 @@ const obverseReverseAndsuffix = `@obverse
 
 export default function TemplateHelp () {
   return (
-    <Popover id='Template help' title='Create template'>
+    <Popover id={_.uniqueId('TemplateHelp-')} title='Create template'>
       <p>
         If only the first number is given, then only one list is created:
         <code>2</code> results in:

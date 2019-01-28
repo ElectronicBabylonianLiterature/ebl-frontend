@@ -1,9 +1,10 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
+import _ from 'lodash'
 
 export default function SpecialCharactersHelp () {
   return (
-    <Popover id='Transliteration help' title='Special characters'>
+    <Popover id={_.uniqueId('SpecialCharactersHelp-')} title='Special characters'>
       <p>
         For characters with a macron and <code>š</code> use <code>Ctrl</code> or <code>Command</code> (e.g. <code>Ctrl-a</code> results in <code>ā</code>).
       </p>

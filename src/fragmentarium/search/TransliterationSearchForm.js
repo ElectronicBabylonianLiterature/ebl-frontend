@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
+import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
-function SearchHelp () {
+function TransliterationSearchHelp () {
   return (
-    <Popover id='TransliterationSearchHelp' title='Search transliterations'>
+    <Popover id={_.uniqueId('TransliterationSearchHelp-')} title='Search transliterations'>
       <ul>
         <li>
           Sequences of signs are retrieved regardless of the values entered: e.g., <code>me lik</code> will retrieve <code>šip taš</code>, <code>me ur</code>, etc.
@@ -47,7 +48,7 @@ class TransliterationSearchForm extends Component {
           <Col sm={2} componentClass={ControlLabel} >
             Transliteration
             {' '}
-            <HelpTrigger overlay={SearchHelp()} />
+            <HelpTrigger overlay={TransliterationSearchHelp()} />
           </Col>
           <Col sm={4}>
             <FormControl

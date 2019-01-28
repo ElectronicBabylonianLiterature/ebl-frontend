@@ -1,9 +1,10 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
+import _ from 'lodash'
 
 export default function LemmatizationHelp () {
   return (
-    <Popover id='Lemmatization help' title='Lemmatization Help'>
+    <Popover id={_.uniqueId('LemmatizationHelp-')} title='Lemmatization Help'>
       <p>
         The lemmatization follows the <code>Concise Dictionary of Akkadian.</code>
       </p>
