@@ -4,11 +4,12 @@ import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/L
 import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 class FragmentService {
-  constructor (auth, fragmentRepository, imageRepository, wordRepository) {
+  constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository) {
     this.auth = auth
     this.fragmentRepository = fragmentRepository
     this.imageRepository = imageRepository
     this.wordRepository = wordRepository
+    this.bibliographyRepository = bibliographyRepository
   }
 
   statistics () {
@@ -75,6 +76,18 @@ class FragmentService {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)
+  }
+
+  searchBibliography (query) {
+    const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
+    const match = queryRegex.exec(query)
+    return match
+      ? this.bibliographyRepository.search(
+        match[1],
+        match[2] || '',
+        match[3] || ''
+      )
+      : Promise.resolve([])
   }
 
   createLemmatization (text) {

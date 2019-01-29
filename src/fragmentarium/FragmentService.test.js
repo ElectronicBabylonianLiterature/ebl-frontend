@@ -35,7 +35,10 @@ const wordRepository = {
 const imageRepository = {
   find: jest.fn()
 }
-const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository)
+const bibliographyRepository = {
+  search: jest.fn()
+}
+const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository)
 
 const testData = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
@@ -55,13 +58,20 @@ const testData = [
   ['isAllowedToLemmatize', [], auth.isAllowedToLemmatizeFragments, true],
   ['hasBetaAccess', [], auth.hasBetaAccess, true],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
-  ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]]
+  ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
+  ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],
+  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']]
 ]
 
 testDelegation(fragmentService, testData)
 
-it('searchLemma resolves to empty array on zero length query', async () => {
-  await expect(fragmentService.searchLemma('')).resolves.toEqual([])
+describe.each([
+  'searchLemma',
+  'searchBibliography'
+])('%s', method => {
+  it('Resolves to empty array on zero length query', async () => {
+    await expect(fragmentService[method]('')).resolves.toEqual([])
+  })
 })
 
 it('createLemmatization', async () => {
