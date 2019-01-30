@@ -40,7 +40,7 @@ describe.each([
   })
 
   it(`Calls onChange with updated value`, async () => {
-    await whenChangedByLabel(element, label, newValue)
+    whenChangedByLabel(element, label, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(updatedItem => ({ ...reference, [property]: updatedItem }))
   })
@@ -51,7 +51,7 @@ it('Displays Lines Cited', () => {
 })
 
 it(`Calls onChange with updated Lines Cited`, async () => {
-  await whenChangedByLabel(element, 'Lines Cited', '3.1,2')
+  whenChangedByLabel(element, 'Lines Cited', '3.1,2')
     .expect(onChange)
     .toHaveBeenCalledWith(updatedItem => ({ ...reference, linesCited: updatedItem.split(',') }))
 })

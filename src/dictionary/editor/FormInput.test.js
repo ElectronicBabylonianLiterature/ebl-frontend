@@ -23,9 +23,9 @@ describe('Value is a derived form', () => {
     expect(element.getByLabelText('Homonym').value).toEqual(value.homonym)
   })
 
-  it('onChanged is called with updated homonym', async () => {
+  it('onChanged is called with updated homonym', () => {
     const newHomonym = value.homonym === 'IV' ? 'I' : 'IV'
-    await changeValueByLabel(element, 'Homonym', newHomonym)
+    changeValueByLabel(element, 'Homonym', newHomonym)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
@@ -64,9 +64,9 @@ function commonDisplayTests () {
 }
 
 function commonChangeTests () {
-  it('onChanged is called with updated lemma', async () => {
+  it('onChanged is called with updated lemma', () => {
     const newLemma = 'new lemma'
-    await changeValueByLabel(element, 'Lemma', newLemma)
+    changeValueByLabel(element, 'Lemma', newLemma)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,

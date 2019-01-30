@@ -8,7 +8,7 @@ let onSubmit
 let element
 
 async function submit (value) {
-  await changeValueByLabel(element, 'Template', value)
+  changeValueByLabel(element, 'Template', value)
   await submitForm(element, 'form')
 }
 
@@ -55,8 +55,8 @@ it('Does not call onSubmit if template is empty', async () => {
   expect(onSubmit).not.toHaveBeenCalled()
 })
 
-it('Update correctly', async () => {
+it('Update correctly', () => {
   const value = '5,5'
-  await changeValueByLabel(element, 'Template', value)
+  changeValueByLabel(element, 'Template', value)
   expect(element.getByLabelText('Template').value).toEqual(value)
 })

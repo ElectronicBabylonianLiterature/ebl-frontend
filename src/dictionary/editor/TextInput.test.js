@@ -22,8 +22,8 @@ it('Displays label', () => {
   expect(element.getByText(label)).toBeVisible()
 })
 
-it('Calls onChange with updated value on change', async () => {
-  await whenChangedByValue(element, value, 'new')
+it('Calls onChange with updated value on change', () => {
+  whenChangedByValue(element, value, 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(_.identity)
 })

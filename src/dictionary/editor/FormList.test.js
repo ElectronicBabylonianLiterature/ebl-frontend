@@ -44,8 +44,8 @@ it('New entry has given fields', async () => {
     ])
 })
 
-it('Calls onChange with updated value on change', async () => {
-  await whenChangedByValue(element, value[0].lemma.join(' '), 'new')
+it('Calls onChange with updated value on change', () => {
+  whenChangedByValue(element, value[0].lemma.join(' '), 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       {

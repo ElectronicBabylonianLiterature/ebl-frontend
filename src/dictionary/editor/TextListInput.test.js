@@ -38,8 +38,8 @@ it('Adds emtpy item when Add is clicked', async () => {
     .toHaveBeenCalledWith([...value, ''])
 })
 
-it('Calls onChange with updated value on change', async () => {
-  await whenChangedByValue(element, value[0], 'new')
+it('Calls onChange with updated value on change', () => {
+  whenChangedByValue(element, value[0], 'new')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       newValue,

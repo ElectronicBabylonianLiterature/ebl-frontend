@@ -31,16 +31,16 @@ beforeEach(() => {
   />)
 })
 
-xit('Updates transliteration on change', async () => {
+xit('Updates transliteration on change', () => {
   const newTransliteration = 'line1\nline2\nnew line'
-  await changeValueByLabel(element, 'Transliteration', newTransliteration)
+  changeValueByLabel(element, 'Transliteration', newTransliteration)
 
   expect(element.getByLabelText('Transliteration').value).toEqual(newTransliteration)
 })
 
-xit('Updates notes on change', async () => {
+xit('Updates notes on change', () => {
   const newNotes = 'some notes'
-  await changeValueByLabel(element, 'Notes', newNotes)
+  changeValueByLabel(element, 'Notes', newNotes)
 
   expect(element.getByLabelText('Notes').value).toEqual(newNotes)
 })

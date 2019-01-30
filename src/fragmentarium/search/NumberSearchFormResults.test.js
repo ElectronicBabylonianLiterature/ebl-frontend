@@ -11,7 +11,7 @@ it('Adds number to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const element = render(<Router history={history}><NumberSearchFormResults /></Router>)
 
-  await changeValueByLabel(element, 'Number', 'K.3')
+  changeValueByLabel(element, 'Number', 'K.3')
   await submitForm(element, 'form')
 
   expect(history.push).toBeCalledWith('?number=K.3')

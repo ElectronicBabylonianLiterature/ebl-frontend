@@ -12,7 +12,7 @@ it('Adds number to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const element = render(<Router history={history}><TransliterationSearchForm /></Router>)
 
-  await changeValueByLabel(element, 'Transliteration', transliteration)
+  changeValueByLabel(element, 'Transliteration', transliteration)
   await submitForm(element, 'form')
 
   expect(history.push).toBeCalledWith(`/fragmentarium/search/?transliteration=${encodeURIComponent(transliteration)}`)

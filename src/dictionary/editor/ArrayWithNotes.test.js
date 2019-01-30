@@ -33,8 +33,8 @@ it('Displays label', () => {
   expect(element.getByText(_.startCase(noun))).toBeVisible()
 })
 
-it('Calls onChange with updated property on change', async () => {
-  await whenChangedByValue(element, value[property].join(separator), 'NEW LOG')
+it('Calls onChange with updated property on change', () => {
+  whenChangedByValue(element, value[property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => ({
       ...value,

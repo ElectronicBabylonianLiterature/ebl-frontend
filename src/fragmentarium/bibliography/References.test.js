@@ -105,8 +105,8 @@ async function inputReference () {
   changeValueByLabel(element, 'Document', 'Borger')
   await waitForElement(() => element.getByText(/Borger 1957/))
   clickNth(element, /Borger 1957/, 0)
-  await changeValueByLabel(element, 'Type', 'COPY')
-  await changeValueByLabel(element, 'Pages', '1-2')
-  await changeValueByLabel(element, 'Notes', 'notes')
-  await changeValueByLabel(element, 'Lines Cited', '1,2')
+  changeValueByLabel(element, 'Type', 'COPY')
+  changeValueByLabel(element, 'Pages', '1-2')
+  changeValueByLabel(element, 'Notes', 'notes')
+  changeValueByLabel(element, 'Lines Cited', '1,2')
 }

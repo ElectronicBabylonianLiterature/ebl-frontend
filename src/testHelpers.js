@@ -10,10 +10,8 @@ function when (createMatcher) {
   }
 }
 
-export async function changeValue (input, newValue) {
+export function changeValue (input, newValue) {
   fireEvent.change(input, { target: { value: newValue } })
-
-  await wait()
 }
 
 export async function clickNth (element, text, n = 0) {
@@ -22,12 +20,12 @@ export async function clickNth (element, text, n = 0) {
   await wait()
 }
 
-export async function changeValueByValue (element, value, newValue) {
-  await changeValue(element.getByValue(value), newValue)
+export function changeValueByValue (element, value, newValue) {
+  changeValue(element.getByValue(value), newValue)
 }
 
-export async function changeValueByLabel (element, label, newValue) {
-  await changeValue(element.getByLabelText(label), newValue)
+export function changeValueByLabel (element, label, newValue) {
+  changeValue(element.getByLabelText(label), newValue)
 }
 
 export function whenClicked (element, text, n = 0) {
@@ -38,8 +36,8 @@ export function whenClicked (element, text, n = 0) {
 }
 
 function whenChangedBy (element, selector, newValue, changer) {
-  return when(onChange => async expectedChangeFactory => {
-    await changer(element, selector, newValue)
+  return when(onChange => expectedChangeFactory => {
+    changer(element, selector, newValue)
     expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
   })
 }

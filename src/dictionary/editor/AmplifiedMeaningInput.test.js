@@ -39,9 +39,9 @@ describe('Conjugation/Function', () => {
     )
   })
 
-  it('Calls onChange with updated value on key', async () => {
+  it('Calls onChange with updated value on key', () => {
     const newValue = value.key === 'D' ? 'G' : 'D'
-    await whenChangedByValue(element, value.key, newValue)
+    whenChangedByValue(element, value.key, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -50,7 +50,7 @@ describe('Conjugation/Function', () => {
   })
 
   it('Calls onChange with updated value on entry', async () => {
-    await whenChangedByValue(element, value.entries[0].meaning, 'new entry')
+    whenChangedByValue(element, value.entries[0].meaning, 'new entry')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -79,8 +79,8 @@ function commonDisplayTests () {
 }
 
 function commonUpdateTests () {
-  it('Calls onChange with updated value on meaning chnage', async () => {
-    await whenChangedByValue(element, value.meaning, 'new meaning')
+  it('Calls onChange with updated value on meaning chnage', () => {
+    whenChangedByValue(element, value.meaning, 'new meaning')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,
@@ -88,10 +88,10 @@ function commonUpdateTests () {
       }))
   })
 
-  it('Calls onChange with updated value on vowels change', async () => {
+  it('Calls onChange with updated value on vowels change', () => {
     const oldValue = value.vowels[0].value.join('/')
     const newValue = oldValue === 'e/e' ? 'a/e' : 'e/e'
-    await whenChangedByValue(element, oldValue, newValue)
+    whenChangedByValue(element, oldValue, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,

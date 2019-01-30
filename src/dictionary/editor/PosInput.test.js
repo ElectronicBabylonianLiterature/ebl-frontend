@@ -23,8 +23,8 @@ describe('Verb', () => {
     value.roots.forEach(root => expect(element.getByValue(root)).toBeVisible())
   })
 
-  it('Calls onChange with updated value on root change', async () => {
-    await whenChangedByValue(element, value.roots[0], 'rtr')
+  it('Calls onChange with updated value on root change', () => {
+    whenChangedByValue(element, value.roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         roots: [
@@ -51,8 +51,8 @@ function commonTests () {
     expect(element.getByValue(value.pos)).toBeVisible()
   })
 
-  it('Calls onChange with updated value on pos change', async () => {
-    await whenChangedByLabel(element, 'Position of speech', 'AJ')
+  it('Calls onChange with updated value on pos change', () => {
+    whenChangedByLabel(element, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         pos: newValue

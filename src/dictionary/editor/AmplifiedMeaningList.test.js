@@ -77,8 +77,8 @@ function commonTests () {
     expect(element.getByText(label)).toBeVisible()
   })
 
-  it('Calls onChange with updated value on change', async () => {
-    await whenChangedByValue(element, value[0].meaning, 'new')
+  it('Calls onChange with updated value on change', () => {
+    whenChangedByValue(element, value[0].meaning, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => [
         {

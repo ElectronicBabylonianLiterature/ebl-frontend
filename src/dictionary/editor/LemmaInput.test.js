@@ -29,9 +29,9 @@ describe('Value has attested property', () => {
   })
 
   describe('On change with attested', () => {
-    it('onChanged is called with updated lemma', async () => {
+    it('onChanged is called with updated lemma', () => {
       const newLemma = 'new lemma'
-      await changeValueByLabel(element, 'Lemma', newLemma)
+      changeValueByLabel(element, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
@@ -78,9 +78,9 @@ describe('Value does not have attested property', () => {
       element = renderLemmaInput()
     })
 
-    it('onChanged is called with updated lemma', async () => {
+    it('onChanged is called with updated lemma', () => {
       const newLemma = 'new lemma'
-      await changeValueByLabel(element, 'Lemma', newLemma)
+      changeValueByLabel(element, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' ')

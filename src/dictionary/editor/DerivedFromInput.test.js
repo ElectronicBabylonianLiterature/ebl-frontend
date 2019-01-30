@@ -40,9 +40,9 @@ describe('Derived from set', () => {
       .toHaveBeenCalledWith(null)
   })
 
-  it('Calls onChange with updated derived from on change', async () => {
+  it('Calls onChange with updated derived from on change', () => {
     const newValue = value.homonym === 'II' ? 'V' : 'II'
-    await whenChangedByValue(element, value.homonym, newValue)
+    whenChangedByValue(element, value.homonym, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
         ...value,

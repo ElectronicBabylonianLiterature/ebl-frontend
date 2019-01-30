@@ -44,8 +44,8 @@ describe.each(items)('Item %#', item => {
       .toHaveBeenCalledWith(_.reject(items, (value, itemIndex) => itemIndex === index))
   })
 
-  it(`Calls onChange with updated value on item change`, async () => {
-    await whenChangedByValue(element, item, 'new')
+  it(`Calls onChange with updated value on item change`, () => {
+    whenChangedByValue(element, item, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith(updatedItem =>
         items.map((item, itemIndex) =>

@@ -37,9 +37,9 @@ it('Adds new group when Add is cliked', async () => {
     .toHaveBeenCalledWith([...value, []])
 })
 
-it('Calls onChange with updated value on change', async () => {
+it('Calls onChange with updated value on change', () => {
   const newValue = value[0][0].homonym === 'IV' ? 'V' : 'IV'
-  await whenChangedByValue(element, value[0][0].homonym, newValue)
+  whenChangedByValue(element, value[0][0].homonym, newValue)
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       [

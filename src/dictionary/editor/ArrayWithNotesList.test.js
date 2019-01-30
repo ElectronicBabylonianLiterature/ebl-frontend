@@ -50,8 +50,8 @@ it('Adds new entry when Add is clicked', async () => {
     ])
 })
 
-it('Calls onChange on change', async () => {
-  await whenChangedByValue(element, value[0][property].join(separator), 'NEW LOG')
+it('Calls onChange on change', () => {
+  whenChangedByValue(element, value[0][property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => [
       {
