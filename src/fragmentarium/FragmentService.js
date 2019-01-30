@@ -82,6 +82,10 @@ class FragmentService {
       : this.wordRepository.searchLemma(lemma)
   }
 
+  findBibliography (id) {
+    return this.bibliographyRepository.find(id)
+  }
+
   searchBibliography (query) {
     const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
     const match = queryRegex.exec(query)

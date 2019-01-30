@@ -36,6 +36,7 @@ const imageRepository = {
   find: jest.fn()
 }
 const bibliographyRepository = {
+  find: jest.fn(),
   search: jest.fn()
 }
 const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository)
@@ -60,7 +61,8 @@ const testData = [
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],
-  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']]
+  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']],
+  ['findBibliography', ['RN2020'], bibliographyRepository.find, resultStub]
 ]
 
 testDelegation(fragmentService, testData)
