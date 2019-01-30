@@ -24,18 +24,6 @@ afterEach(() => {
   global.AbortController.prototype.abort.mockReset()
 })
 
-global.Raven = {
-  captureException: jest.fn(),
-  lastEventId: jest.fn(),
-  showReportDialog: jest.fn()
-}
-
-afterEach(() => {
-  global.Raven.captureException.mockReset()
-  global.Raven.lastEventId.mockReset()
-  global.Raven.showReportDialog.mockReset()
-})
-
 bluebird.config({
   cancellation: true
 })
