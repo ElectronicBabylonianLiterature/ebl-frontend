@@ -4,13 +4,21 @@ import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
 import HelpTrigger from 'common/HelpTrigger'
+import BibliographySelect from 'bibliography/BibliographySelect'
 import NotesHelp from './NotesHelp'
 
 export default class ReferenceForm extends Component {
   constructor (props) {
     super(props)
     this.id = _.uniqueId('ReferenceForm-')
+    this.documentLabelId = _.uniqueId('ReferenceForm-Document-')
   }
+
+  handleDocumentChange = entry => this.props.onChange({
+    ...this.props.value,
+    id: entry.id,
+    document: entry
+  })
 
   handleChange = property => value => this.props.onChange({
     ...this.props.value,
@@ -21,13 +29,13 @@ export default class ReferenceForm extends Component {
 
   render () {
     return (<>
-      <FormGroup controlId={`${this.id}-ID`}>
-        <ControlLabel>ID</ControlLabel>
-        <FormControl
-          type='text'
-          value={this.props.value.id}
-          onChange={this.handleEvent('id')}
-          required />
+      <FormGroup controlId={`${this.id}-Entry`}>
+        <label id={this.documentLabelId}>Document</label>
+        <BibliographySelect
+          aria-labelledby={this.documentLabelId}
+          value={this.props.value.document}
+          fragmentService={this.props.fragmentService}
+          onChange={this.handleDocumentChange} />
       </FormGroup>
       <FormGroup controlId={`${this.id}-Pages`}>
         <ControlLabel>Pages</ControlLabel>

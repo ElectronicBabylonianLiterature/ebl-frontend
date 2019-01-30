@@ -10,7 +10,7 @@ function createLabel (entry) {
 }
 
 function createOption (entry) {
-  return entry.id
+  return (entry && entry.id)
     ? {
       value: entry.id,
       label: createLabel(entry),
@@ -30,7 +30,7 @@ export default class BibliographySelect extends Component {
   loadOptions = (inputValue, callback) => {
     this.props.fragmentService
       .searchBibliography(inputValue)
-      .map(createOption)
+      .then(entries => entries.map(createOption))
       .then(callback)
   }
 

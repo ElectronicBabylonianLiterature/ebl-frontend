@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 import List from 'common/List'
 import ErrorAlert from 'common/ErrorAlert'
+import withData from 'http/withData'
 import ReferenceForm from './ReferenceForm'
 
 const defaultReference = {
@@ -14,7 +15,7 @@ const defaultReference = {
   linesCited: []
 }
 
-function References ({ references, onChange, onSubmit, error, disabled }) {
+function References ({ fragmentService, references, onChange, onSubmit, error, disabled }) {
   return (
     <form onSubmit={onSubmit}>
       <List
@@ -25,6 +26,7 @@ function References ({ references, onChange, onSubmit, error, disabled }) {
         default={defaultReference}>
         {references.map((reference, index) =>
           <ReferenceForm
+            fragmentService={fragmentService}
             key={index}
             value={reference} />
         )}
@@ -44,7 +46,7 @@ class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      references: props.fragment.references,
+      references: props.data,
       saving: false,
       error: null
     }
@@ -70,7 +72,10 @@ class ReferencesController extends Component {
       error: null
     })
     this.updatePromise = this.props.fragmentService
-      .updateReferences(this.props.fragment._id, this.state.references)
+      .updateReferences(
+        this.props.fragment._id,
+        this.state.references.map(reference => _.omit(reference, 'document'))
+      )
       .then(() => this.setState({
         ...this.state,
         saving: false
@@ -83,13 +88,32 @@ class ReferencesController extends Component {
   }
 
   render () {
-    return <References
-      references={this.state.references}
-      onChange={this.handleChange}
-      onSubmit={this.submit}
-      error={this.state.error}
-      disabled={this.state.saving || this.hasChanges} />
+    return <>
+      <References
+        fragmentService={this.props.fragmentService}
+        references={this.state.references}
+        onChange={this.handleChange}
+        onSubmit={this.submit}
+        error={this.state.error}
+        disabled={this.state.saving || this.hasChanges} />
+    </>
   }
 }
 
-export default ReferencesController
+function hydrateReferences (references, fragmentService) {
+  function hydrate (reference) {
+    return fragmentService
+      .findBibliography(reference.id)
+      .then(entry => ({
+        ...reference,
+        document: entry
+      }))
+  }
+
+  return Promise.all(references.map(hydrate))
+}
+
+export default withData(
+  ReferencesController,
+  ({ fragment, fragmentService }) => hydrateReferences(fragment.references, fragmentService)
+)

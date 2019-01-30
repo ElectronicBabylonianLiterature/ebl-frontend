@@ -34,7 +34,8 @@ beforeEach(async () => {
     isAllowedToTransliterate: jest.fn(),
     isAllowedToLemmatize: () => false,
     hasBetaAccess: () => false,
-    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
+    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
+    findBibliography: id => Promise.resolve(null)
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))

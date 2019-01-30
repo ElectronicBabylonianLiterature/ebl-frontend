@@ -1,22 +1,36 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 
-import { whenChangedByLabel } from 'testHelpers'
+import { whenChangedByLabel, changeValueByLabel, clickNth } from 'testHelpers'
 import ReferenceForm from './ReferenceForm'
 
 let reference
 let element
 let onChange
+let fragmentService
+let entry
 
 beforeEach(async () => {
   reference = await factory.build('reference')
+  entry = await factory.build('bibliographyEntry', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
   onChange = jest.fn()
-  element = render(<ReferenceForm value={reference} onChange={onChange} />)
+  fragmentService = {
+    searchBibliography: jest.fn()
+  }
+  fragmentService.searchBibliography.mockReturnValue(Promise.resolve([entry]))
+  element = render(<ReferenceForm value={reference} onChange={onChange} fragmentService={fragmentService} />)
+})
+
+it(`Changing document calls onChange with updated value`, async () => {
+  changeValueByLabel(element, 'Document', 'Borger')
+  await waitForElement(() => element.getByText(/Borger 1957/))
+  clickNth(element, /Borger 1957/, 0)
+
+  expect(onChange).toHaveBeenCalledWith({ ...reference, id: entry.id, document: entry })
 })
 
 describe.each([
-  ['ID', 'id', 'new id'],
   ['Pages', 'pages', '3'],
   ['Type', 'type', 'EDITION'],
   ['Notes', 'notes', 'new notes']
