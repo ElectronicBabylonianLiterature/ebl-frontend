@@ -11,10 +11,10 @@ function Statistics ({ data }) {
     <section className='Statistics'>
       <header>Current size of the corpus:</header>
       <p className='Statistics__values'>
-        {localizedStatistics.transliteratedFragments} tablets transliterated
+        <strong> {localizedStatistics.transliteratedFragments} </strong> tablets transliterated
       </p>
       <p className='Statistics__values'>
-        {localizedStatistics.lines} lines of text
+        <strong> {localizedStatistics.lines} </strong> lines of text
       </p>
     </section>
   )

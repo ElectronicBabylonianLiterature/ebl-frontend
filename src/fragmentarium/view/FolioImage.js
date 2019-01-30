@@ -1,26 +1,14 @@
-import React, { Component } from 'react'
-import { Image } from 'react-bootstrap'
-import ExternalLink from 'common/ExternalLink'
+import React from 'react'
+import BlobImage from 'common/BlobImage'
 import withData from 'http/withData'
 
-class BlobImage extends Component {
-  constructor (props) {
-    super(props)
-    this.image = URL.createObjectURL(props.data)
-  }
-
-  componentWillUnmount () {
-    URL.revokeObjectURL(this.image)
-  }
-
-  render () {
-    return <ExternalLink href={this.image}>
-      <Image src={this.image} alt={this.props.folio.fileName} responsive />
-    </ExternalLink>
-  }
+function FolioImage (props) {
+  return (
+    <BlobImage data={props.data} alt={props.folio.fileName} />
+  )
 }
 
 export default withData(
-  BlobImage,
+  FolioImage,
   props => props.fragmentService.findFolio(props.folio)
 )

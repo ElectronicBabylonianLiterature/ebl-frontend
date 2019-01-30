@@ -52,6 +52,10 @@ class FragmentService {
     return this.imageRepository.find(folio.fileName)
   }
 
+  findImage () {
+    const fileName = 'Babel_Project_01_cropped.svg'
+    return this.imageRepository.find(fileName)
+  }
   isAllowedToRead () {
     return this.auth.isAllowedToReadFragments()
   }

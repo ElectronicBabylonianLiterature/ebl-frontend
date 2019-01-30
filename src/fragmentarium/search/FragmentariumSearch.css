@@ -1,0 +1,12 @@
+.FragmentariumSearch-search {
+    padding-bottom: 2em;
+  }
+  
+  .FragmentariumSearch-search__header {
+    padding-bottom: 1em;
+    text-align: center;
+  }
+  
+  .FragmentariumSearch-search__button-bar {
+    margin: 1em;
+  }

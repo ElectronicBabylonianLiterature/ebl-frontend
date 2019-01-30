@@ -4,16 +4,16 @@ import createMemoryHistory from 'history/createMemoryHistory'
 import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
-import TransliterationSearchForm from './TransliterationSearchForm'
+import TransliterationSearchFormResults from './TransliterationSearchFormResults'
 
 it('Adds number to query string on submit', async () => {
   const transliteration = 'ma i-ra\nka li'
   const history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const element = render(<Router history={history}><TransliterationSearchForm /></Router>)
+  const element = render(<Router history={history}><TransliterationSearchFormResults /></Router>)
 
   await changeValueByLabel(element, 'Transliteration', transliteration)
   await submitForm(element, 'form')
 
-  expect(history.push).toBeCalledWith(`/fragmentarium/search/?transliteration=${encodeURIComponent(transliteration)}`)
+  expect(history.push).toBeCalledWith(`?transliteration=${encodeURIComponent(transliteration)}`)
 })

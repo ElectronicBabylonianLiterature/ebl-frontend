@@ -3,17 +3,17 @@ import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import Fragmentarium from './Fragmentarium'
+import FragmentariumSearch from './FragmentariumSearch'
 
 let fragmentService
 let container
 let element
 let statistics
 
-async function renderFragmentarium (path = '/fragmentarium') {
-  const FragmentariumWithRouter = withRouter(Fragmentarium)
+async function renderFragmentariumSearch (path = '/fragmentarium/search') {
+  const FragmentariumSearchWithRouter = withRouter(FragmentariumSearch)
   element = render(<MemoryRouter initialEntries={[path]}>
-    <FragmentariumWithRouter fragmentService={fragmentService} />
+    <FragmentariumSearchWithRouter fragmentService={fragmentService} />
   </MemoryRouter>)
   container = element.container
   await waitForElement(() => element.getByText('Current size of the corpus:'))
@@ -44,7 +44,7 @@ describe('Search', () => {
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2)
       fragmentService.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
-      renderFragmentarium(`/fragmentarium?number=${number}`)
+      renderFragmentariumSearch(`/fragmentarium/search?number=${number}`)
     })
 
     it('Displays result on successfull query', async () => {
@@ -66,7 +66,7 @@ describe('Search', () => {
         { matching_lines: [['line 3'], ['line 4']] }
       ])
       fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
-      renderFragmentarium(`/fragmentarium?transliteration=${transliteration}`)
+      renderFragmentariumSearch(`/fragmentarium/search?transliteration=${transliteration}`)
     })
 
     it('Displays result on successfull query', async () => {
@@ -77,20 +77,5 @@ describe('Search', () => {
     it('Fills in search form query', () => {
       expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
     })
-  })
-})
-
-describe('Statistics', () => {
-  beforeEach(async () => {
-    fragmentService.isAllowedToRead.mockReturnValue(false)
-    await renderFragmentarium()
-  })
-
-  it('Shows the number of transliterated tablets', async () => {
-    expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
-  })
-
-  it('Shows the number of transliterated lines', async () => {
-    expect(container).toHaveTextContent(statistics.lines.toLocaleString())
   })
 })

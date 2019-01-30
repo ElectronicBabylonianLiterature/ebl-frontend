@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
-function TransliterationSearchHelp () {
+function SearchHelp () {
   return (
-    <Popover id={_.uniqueId('TransliterationSearchHelp-')} title='Search transliterations'>
+    <Popover id='TransliterationSearchHelp' title='Search transliterations'>
       <ul>
         <li>
           Sequences of signs are retrieved regardless of the values entered: e.g., <code>me lik</code> will retrieve <code>šip taš</code>, <code>me ur</code>, etc.
@@ -36,7 +35,7 @@ class TransliterationSearchForm extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`/fragmentarium/search/?${queryString.stringify({ transliteration: this.state.transliteration })}`)
+    this.props.history.push(`?${queryString.stringify({ transliteration: this.state.transliteration })}`)
   }
 
   render () {
@@ -44,16 +43,18 @@ class TransliterationSearchForm extends Component {
     return (
       <Form horizontal onSubmit={this.submit}>
         <FormGroup controlId='transliteration'>
+          <Col sm={2} />
           <Col sm={2} componentClass={ControlLabel} >
-            <HelpTrigger overlay={TransliterationSearchHelp()} />
+          Transliteration
+            {' '}
+            <HelpTrigger overlay={SearchHelp()} />
           </Col>
-          <Col sm={7}>
+          <Col sm={4}>
             <FormControl
               componentClass='textarea'
               value={this.state.transliteration}
               rows={Math.max(2, rows)}
               placeholder='Search transliterations'
-              aria-label='Transliteration'
               onChange={this.onChange} />
           </Col>
           <Col sm={1}>
