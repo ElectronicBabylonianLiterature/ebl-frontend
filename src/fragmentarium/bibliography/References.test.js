@@ -78,6 +78,18 @@ describe('Edit references', () => {
   })
 })
 
+it('Creates a default reference if none present', async () => {
+  fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve())
+  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
+  fragment = await factory.build('fragment', { references: [] })
+  await renderReferencesAndWait()
+  await submitForm(element, 'form')
+
+  expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [
+    defaultReference
+  ])
+})
+
 it('Cancels submit on unmount', async () => {
   const promise = new Promise(_.noop)
   jest.spyOn(promise, 'cancel')

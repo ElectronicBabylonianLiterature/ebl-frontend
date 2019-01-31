@@ -46,7 +46,9 @@ class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      references: props.data,
+      references: _.isEmpty(props.data)
+        ? [_.cloneDeep(defaultReference)]
+        : props.data,
       saving: false,
       error: null
     }
