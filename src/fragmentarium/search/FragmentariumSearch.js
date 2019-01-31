@@ -14,7 +14,7 @@ class FragmentariumSearch extends Component {
   MainHeader = () => {
     return (
       <header>
-        <Breadcrumbs section='Fragmentarium' active='search' />
+        <Breadcrumbs section='Fragmentarium' active='Search' />
         <h2>Search</h2>
       </header>
     )
