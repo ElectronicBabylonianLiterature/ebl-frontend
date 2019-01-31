@@ -5,6 +5,7 @@ import Breadcrumbs from 'common/Breadcrumbs'
 import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
+import SessionContext from 'auth/SessionContext'
 
 const FragmentWithData = withData(
   ({ data, reload, ...props }) => <CuneiformFragment
@@ -35,11 +36,12 @@ export default function FragmentView ({ match, location, fragmentService }) {
         <Breadcrumbs section='Fragmentarium' active={number} />
         <h2><FragmentPager number={number}> {number} </FragmentPager></h2>
       </header>
-      {fragmentService.isAllowedToRead()
-        ? (
-          <FragmentWithData number={number} fragmentService={fragmentService} activeFolio={activeFolio} />
-        ) : 'You do not have the rights access the fragmentarium.'
-      }
+      <SessionContext.Consumer>
+        {session => session.isAllowedToReadFragments()
+          ? <FragmentWithData number={number} fragmentService={fragmentService} activeFolio={activeFolio} />
+          : 'Please log in to browse the Fragmentarium.'
+        }
+      </SessionContext.Consumer>
     </section>
   )
 }

@@ -3,6 +3,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
+import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
 
@@ -10,15 +11,18 @@ const message = 'message'
 const fragmentNumber = 'K,K.1'
 
 let fragmentService
+let session
 let container
 let element
 
 function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmentNumber)}`) {
   element = render(
     <MemoryRouter initialEntries={[initialEntry]}>
-      <Route path='/:id' render={({ match, location }) =>
-        <FragmentView match={match} location={location} fragmentService={fragmentService} />
-      } />
+      <SessionContext.Provider value={session}>
+        <Route path='/:id' render={({ match, location }) =>
+          <FragmentView match={match} location={location} fragmentService={fragmentService} />
+        } />
+      </SessionContext.Provider>
     </MemoryRouter>
   )
   container = element.container
@@ -30,12 +34,14 @@ beforeEach(async () => {
     find: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    isAllowedToRead: jest.fn(),
-    isAllowedToTransliterate: jest.fn(),
-    isAllowedToLemmatize: () => false,
-    hasBetaAccess: () => false,
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     findBibliography: id => Promise.resolve(null)
+  }
+  session = {
+    isAllowedToReadFragments: jest.fn(),
+    isAllowedToTransliterateFragments: () => false,
+    isAllowedToLemmatizeFragments: () => false,
+    hasBetaAccess: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
@@ -51,8 +57,7 @@ describe('Fragment is loaded', () => {
     fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
     selectedFolio = fragment.folios[1]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
-    fragmentService.isAllowedToRead.mockReturnValue(true)
-    fragmentService.isAllowedToTransliterate.mockReturnValue(true)
+    session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(`/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(selectedFolio.name)}&folioNumber=${encodeURIComponent(selectedFolio.number)}`)
     await waitForElement(() => element.getByText('Edition'))
   })
@@ -80,8 +85,7 @@ describe('Fragment is loaded', () => {
 
 describe('On error', () => {
   beforeEach(() => {
-    fragmentService.isAllowedToRead.mockReturnValue(true)
-    fragmentService.isAllowedToTransliterate.mockReturnValue(true)
+    session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     renderFragmentView()
   })
@@ -96,8 +100,7 @@ describe('On error', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  fragmentService.isAllowedToRead.mockReturnValue(false)
-  fragmentService.isAllowedToTransliterate.mockReturnValue(false)
+  session.isAllowedToReadFragments.mockReturnValue(false)
   renderFragmentView()
-  await waitForElement(() => element.getByText('You do not have the rights access the fragmentarium.'))
+  await waitForElement(() => element.getByText('Please log in to browse the Fragmentarium.'))
 })
