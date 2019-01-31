@@ -5,16 +5,20 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import { whenClicked } from 'testHelpers'
+import SessionContext from 'auth/SessionContext'
 import PioneersButton from './PioneersButton'
 
 let fragmentService
+let session
 let element
 let history
 
 beforeEach(async () => {
   fragmentService = {
-    interesting: jest.fn(),
-    isAllowedToTransliterate: jest.fn()
+    interesting: jest.fn()
+  }
+  session = {
+    isAllowedToTransliterateFragments: jest.fn()
   }
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
@@ -35,8 +39,12 @@ it('Hides button if user does not have transliteration rights', async () => {
 })
 
 function renderPioneersButton (isAllowedTo) {
-  fragmentService.isAllowedToTransliterate.mockReturnValue(isAllowedTo)
-  element = render(<Router history={history}>
-    <PioneersButton fragmentService={fragmentService} />
-  </Router>)
+  session.isAllowedToTransliterateFragments.mockReturnValue(isAllowedTo)
+  element = render(
+    <Router history={history}>
+      <SessionContext.Provider value={session}>
+        <PioneersButton fragmentService={fragmentService} />
+      </SessionContext.Provider>
+    </Router>
+  )
 }

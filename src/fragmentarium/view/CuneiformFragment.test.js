@@ -23,7 +23,6 @@ beforeEach(async () => {
     updateTransliteration: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    isAllowedToTransliterate: () => true,
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     findBibliography: id => Promise.resolve(null)
   }
