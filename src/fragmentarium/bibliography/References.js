@@ -15,7 +15,7 @@ const defaultReference = {
   linesCited: []
 }
 
-function References ({ fragmentService, references, onChange, onSubmit, error, disabled }) {
+function References ({ searchBibliography, references, onChange, onSubmit, error, disabled }) {
   return (
     <form onSubmit={onSubmit}>
       <List
@@ -26,7 +26,7 @@ function References ({ fragmentService, references, onChange, onSubmit, error, d
         default={defaultReference}>
         {references.map((reference, index) =>
           <ReferenceForm
-            fragmentService={fragmentService}
+            searchBibliography={searchBibliography}
             key={index}
             value={reference} />
         )}
@@ -63,6 +63,8 @@ class ReferencesController extends Component {
     this.updatePromise.cancel()
   }
 
+  searchBibliography = query => this.props.fragmentService.searchBibliography(query)
+
   handleChange = value => this.setState({ references: value })
 
   submit = event => {
@@ -92,7 +94,7 @@ class ReferencesController extends Component {
   render () {
     return <>
       <References
-        fragmentService={this.props.fragmentService}
+        searchBibliography={this.searchBibliography}
         references={this.state.references}
         onChange={this.handleChange}
         onSubmit={this.submit}

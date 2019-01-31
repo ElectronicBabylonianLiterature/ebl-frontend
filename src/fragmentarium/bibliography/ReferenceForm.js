@@ -34,7 +34,7 @@ export default class ReferenceForm extends Component {
         <BibliographySelect
           aria-labelledby={this.documentLabelId}
           value={this.props.value.document}
-          fragmentService={this.props.fragmentService}
+          searchBibliography={this.props.searchBibliography}
           onChange={this.handleDocumentChange} />
       </FormGroup>
       <FormGroup controlId={`${this.id}-Pages`}>

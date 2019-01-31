@@ -8,18 +8,16 @@ import ReferenceForm from './ReferenceForm'
 let reference
 let element
 let onChange
-let fragmentService
+let searchBibliography
 let entry
 
 beforeEach(async () => {
   reference = await factory.build('reference')
   entry = await factory.build('bibliographyEntry', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
   onChange = jest.fn()
-  fragmentService = {
-    searchBibliography: jest.fn()
-  }
-  fragmentService.searchBibliography.mockReturnValue(Promise.resolve([entry]))
-  element = render(<ReferenceForm value={reference} onChange={onChange} fragmentService={fragmentService} />)
+  searchBibliography = jest.fn()
+  searchBibliography.mockReturnValue(Promise.resolve([entry]))
+  element = render(<ReferenceForm value={reference} onChange={onChange} searchBibliography={searchBibliography} />)
 })
 
 it(`Changing document calls onChange with updated value`, async () => {

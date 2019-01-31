@@ -28,7 +28,7 @@ export default class BibliographySelect extends Component {
   }
 
   loadOptions = (inputValue, callback) => {
-    this.props.fragmentService
+    this.props
       .searchBibliography(inputValue)
       .then(entries => entries.map(createOption))
       .then(callback)

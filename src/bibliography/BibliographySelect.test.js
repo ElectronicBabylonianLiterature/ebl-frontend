@@ -10,21 +10,19 @@ let entry
 let searchEntry
 let onChange
 let element
-let fragmentService
+let searchBibliography
 
 beforeEach(async () => {
   entry = await factory.build('bibliographyEntry')
   searchEntry = await factory.build('bibliographyEntry')
   onChange = jest.fn()
-  fragmentService = {
-    searchBibliography: jest.fn()
-  }
-  fragmentService.searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
+  searchBibliography = jest.fn()
+  searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
   element = render(<>
     <label id='label'>Entry</label>
     <BibliographySelect
       aria-labelledby='label'
-      fragmentService={fragmentService}
+      searchBibliography={searchBibliography}
       value={entry}
       onChange={onChange} />
   </>)
