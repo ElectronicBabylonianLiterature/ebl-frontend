@@ -69,32 +69,31 @@ class Auth {
   }
 
   isAllowedToReadWords () {
-    return this.hasScope('readWords')
+    return this.hasScope('isAllowedToReadWords')
   }
 
   isAllowedToWriteWords () {
-    return this.hasScope('writeWords')
+    return this.hasScope('isAllowedToWriteWords')
   }
 
   isAllowedToReadFragments () {
-    return this.hasScope('readFragments')
+    return this.hasScope('isAllowedToReadFragments')
   }
 
   isAllowedToTransliterateFragments () {
-    return this.hasScope('transliterateFragments')
+    return this.hasScope('isAllowedToTransliterateFragments')
   }
 
   isAllowedToLemmatizeFragments () {
-    return this.hasScope('lemmatizeFragments')
+    return this.hasScope('isAllowedToLemmatizeFragments')
   }
 
   hasBetaAccess () {
-    return this.hasScope('accessBeta')
+    return this.hasScope('hasBetaAccess')
   }
 
-  hasScope (applicationScope) {
-    const scope = applicationScopes[applicationScope]
-    return this.sessionStore.getSession().hasScope(scope)
+  hasScope (method) {
+    return this.sessionStore.getSession()[method]()
   }
 }
 

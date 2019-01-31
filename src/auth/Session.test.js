@@ -70,3 +70,24 @@ describe('hasScope', () => {
     })
   })
 })
+
+describe.each([
+  ['read:words', 'isAllowedToReadWords'],
+  ['write:words', 'isAllowedToWriteWords'],
+  ['read:fragments', 'isAllowedToReadFragments'],
+  ['transliterate:fragments', 'isAllowedToTransliterateFragments'],
+  ['lemmatize:fragments', 'isAllowedToLemmatizeFragments'],
+  ['access:beta', 'hasBetaAccess']
+])('%s %s', (scope, method) => {
+  beforeEach(() => advanceBy(-1))
+
+  it('Method returns true if session has scope', () => {
+    const session = new Session('accessToken', 'idToken', now.getTime(), [scope])
+    expect(session[method]()).toBe(true)
+  })
+
+  it('Method returns true if session does not have scope', () => {
+    const session = new Session('accessToken', 'idToken', now.getTime(), [])
+    expect(session[method]()).toBe(false)
+  })
+})

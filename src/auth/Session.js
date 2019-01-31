@@ -1,3 +1,5 @@
+import applicationScopes from './applicationScopes.json'
+
 class Session {
   constructor (accessToken, idToken, expiresAt, scopes) {
     this.accessToken = accessToken
@@ -12,6 +14,35 @@ class Session {
 
   hasScope (scope) {
     return this.isAuthenticated() && this.scopes.includes(scope)
+  }
+
+  isAllowedToReadWords () {
+    return this.hasApplicationScope('readWords')
+  }
+
+  isAllowedToWriteWords () {
+    return this.hasApplicationScope('writeWords')
+  }
+
+  isAllowedToReadFragments () {
+    return this.hasApplicationScope('readFragments')
+  }
+
+  isAllowedToTransliterateFragments () {
+    return this.hasApplicationScope('transliterateFragments')
+  }
+
+  isAllowedToLemmatizeFragments () {
+    return this.hasApplicationScope('lemmatizeFragments')
+  }
+
+  hasBetaAccess () {
+    return this.hasApplicationScope('accessBeta')
+  }
+
+  hasApplicationScope (applicationScope) {
+    const scope = applicationScopes[applicationScope]
+    return this.hasScope(scope)
   }
 }
 
