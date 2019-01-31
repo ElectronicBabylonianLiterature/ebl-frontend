@@ -10,6 +10,7 @@ import Details from './Details'
 import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
 import Folios from './Folios'
+import SessionContext from 'auth/SessionContext'
 
 import './CuneiformFragment.css'
 
@@ -30,41 +31,43 @@ function LeftColumn ({ fragment }) {
 }
 
 function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSelect }) {
-  const defaultActiveKey = fragmentService.isAllowedToTransliterate() ? 2 : 1
-  const editionDisabled = !fragmentService.isAllowedToTransliterate()
-  const lemmatizationDisabled = _.isEmpty(fragment.text.lines) || !fragmentService.isAllowedToLemmatize()
-  const referencesDisabeld = !fragmentService.hasBetaAccess()
   const tabsId = _.uniqueId('fragment-container-')
   return (
-    <Tabs id={tabsId} defaultActiveKey={defaultActiveKey}>
-      <Tab eventKey={1} title='Display'>
-        <ContentSection><Display fragment={fragment} /> </ContentSection>
-      </Tab>
-      <Tab eventKey={2} title='Edition' disabled={editionDisabled}>
-        <ContentSection>
-          <Edition
-            fragment={fragment}
-            fragmentService={fragmentService}
-            onChange={onChange} />
-        </ContentSection>
-      </Tab>
-      <Tab eventKey={3} title='Lemmatization' disabled={lemmatizationDisabled}>
-        <ContentSection>
-          <Lemmatizer
-            fragmentService={fragmentService}
-            number={fragment._id}
-            text={fragment.text}
-            autoFocusLemmaSelect />
-        </ContentSection>
-      </Tab>
-      <Tab eventKey={4} title='References' disabled={referencesDisabeld}>
-        <ContentSection>
-          <References
-            fragmentService={fragmentService}
-            fragment={fragment} />
-        </ContentSection>
-      </Tab>
-    </Tabs>
+    <SessionContext.Consumer>
+      {session =>
+        <Tabs id={tabsId} defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}>
+          <Tab eventKey={1} title='Display'>
+            <ContentSection><Display fragment={fragment} /> </ContentSection>
+          </Tab>
+          <Tab eventKey={2} title='Edition' disabled={!session.isAllowedToTransliterateFragments()}>
+            <ContentSection>
+              <Edition
+                fragment={fragment}
+                fragmentService={fragmentService}
+                onChange={onChange} />
+            </ContentSection>
+          </Tab>
+          <Tab eventKey={3} title='Lemmatization' disabled={
+            _.isEmpty(fragment.text.lines) || !session.isAllowedToLemmatizeFragments()
+          }>
+            <ContentSection>
+              <Lemmatizer
+                fragmentService={fragmentService}
+                number={fragment._id}
+                text={fragment.text}
+                autoFocusLemmaSelect />
+            </ContentSection>
+          </Tab>
+          <Tab eventKey={4} title='References' disabled={!session.hasBetaAccess()}>
+            <ContentSection>
+              <References
+                fragmentService={fragmentService}
+                fragment={fragment} />
+            </ContentSection>
+          </Tab>
+        </Tabs>
+      }
+    </SessionContext.Consumer>
   )
 }
 

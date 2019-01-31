@@ -5,6 +5,7 @@ import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
 import { submitForm } from 'testHelpers'
+import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
 
@@ -12,6 +13,7 @@ let fragment
 let element
 let container
 let fragmentService
+let session
 let onChange
 
 beforeEach(async () => {
@@ -21,12 +23,14 @@ beforeEach(async () => {
     updateTransliteration: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    isAllowedToRead: () => true,
     isAllowedToTransliterate: () => true,
-    isAllowedToLemmatize: () => false,
-    hasBetaAccess: () => false,
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     findBibliography: id => Promise.resolve(null)
+  }
+  session = {
+    isAllowedToTransliterateFragments: () => true,
+    isAllowedToLemmatizeFragments: () => false,
+    hasBetaAccess: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
@@ -34,10 +38,12 @@ beforeEach(async () => {
   fragment = await factory.build('fragment', { atf: '1. ku' })
   element = render(
     <MemoryRouter>
-      <CuneiformFragment
-        fragment={fragment}
-        fragmentService={fragmentService}
-        onChange={onChange} />
+      <SessionContext.Provider value={session}>
+        <CuneiformFragment
+          fragment={fragment}
+          fragmentService={fragmentService}
+          onChange={onChange} />
+      </SessionContext.Provider>
     </MemoryRouter>)
   container = element.container
 })
