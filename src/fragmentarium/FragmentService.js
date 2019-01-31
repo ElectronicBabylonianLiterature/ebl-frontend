@@ -56,21 +56,6 @@ class FragmentService {
     const fileName = 'Babel_Project_01_cropped.svg'
     return this.imageRepository.find(fileName)
   }
-  isAllowedToRead () {
-    return this.auth.isAllowedToReadFragments()
-  }
-
-  isAllowedToTransliterate () {
-    return this.auth.isAllowedToTransliterateFragments()
-  }
-
-  isAllowedToLemmatize () {
-    return this.auth.isAllowedToLemmatizeFragments()
-  }
-
-  hasBetaAccess () {
-    return this.auth.hasBetaAccess()
-  }
 
   folioPager (folio, fragmentNumber) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
