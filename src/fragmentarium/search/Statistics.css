@@ -1,9 +1,19 @@
+.Wrapper {
+  text-align: center;
+}
+
 .Statistics {
   font-size: 1.5em;
   margin: auto;
-  width: 40%;
+  text-align: left;
+  display: inline-block;
+
 }
 
 .Statistics__values {
-  padding-left: 2em;
+  margin-top: 1em;
+}
+
+.Statistics_value {
+  font-weight: bold;
 }
