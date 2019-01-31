@@ -8,6 +8,7 @@ import RandomButton from './RandomButton'
 import PioneersButton from './PioneersButton'
 import Statistics from './search/Statistics'
 import Image from './Image'
+import SessionContext from 'auth/SessionContext'
 
 import './Fragmentarium.css'
 
@@ -49,26 +50,27 @@ class Fragmentarium extends Component {
 
       <section className='App-content'>
         <this.MainHeader />
-        {this.props.fragmentService.isAllowedToRead()
-
-          ? (
-            <Grid fluid>
-              <Row>
-                <Col md={6}>
-                  <this.LeftColumn number={number} transliteration={transliteration} />
-                  <Statistics fragmentService={this.props.fragmentService} />
-                </Col>
-                <Col md={6}>
-                  <this.RightColumn />
-                </Col>
-              </Row>
-            </Grid>
-          )
-          : <>
-            <p>You do not have the rights to access the fragmentarium.</p>
-            <Statistics fragmentService={this.props.fragmentService} />
-          </>
-        }
+        <SessionContext.Consumer>
+          {session => session.isAllowedToReadFragments()
+            ? (
+              <Grid fluid>
+                <Row>
+                  <Col md={6}>
+                    <this.LeftColumn number={number} transliteration={transliteration} />
+                    <Statistics fragmentService={this.props.fragmentService} />
+                  </Col>
+                  <Col md={6}>
+                    <this.RightColumn />
+                  </Col>
+                </Row>
+              </Grid>
+            )
+            : <>
+              <p>You do not have the rights to access the fragmentarium.</p>
+              <Statistics fragmentService={this.props.fragmentService} />
+            </>
+          }
+        </SessionContext.Consumer>
       </section>
     )
   }

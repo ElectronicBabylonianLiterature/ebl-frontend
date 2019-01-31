@@ -3,18 +3,24 @@ import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
+import SessionContext from 'auth/SessionContext'
 import Fragmentarium from './Fragmentarium'
 
 let fragmentService
+let session
 let container
 let element
 let statistics
 
 async function renderFragmentarium (path = '/fragmentarium') {
   const FragmentariumWithRouter = withRouter(Fragmentarium)
-  element = render(<MemoryRouter initialEntries={[path]}>
-    <FragmentariumWithRouter fragmentService={fragmentService} />
-  </MemoryRouter>)
+  element = render(
+    <MemoryRouter initialEntries={[path]}>
+      <SessionContext.Provider value={session}>
+        <FragmentariumWithRouter fragmentService={fragmentService} />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  )
   container = element.container
   await waitForElement(() => element.getByText('Current size of the corpus:'))
 }
@@ -22,16 +28,17 @@ async function renderFragmentarium (path = '/fragmentarium') {
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
-    statistics: jest.fn(),
-    isAllowedToRead: jest.fn(),
-    isAllowedToTransliterate: () => false
+    statistics: jest.fn()
+  }
+  session = {
+    isAllowedToReadFragments: jest.fn()
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
 
 describe('Statistics', () => {
   beforeEach(async () => {
-    fragmentService.isAllowedToRead.mockReturnValue(false)
+    session.isAllowedToReadFragments.mockReturnValue(false)
     await renderFragmentarium()
   })
 
