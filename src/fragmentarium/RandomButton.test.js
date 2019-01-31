@@ -51,10 +51,6 @@ describe('On failed request', () => {
     await waitForElement(() => element.getByText(message))
   })
 
-  it('Shows error message', async () => {
-    await expect(element.container).toHaveTextContent(message)
-  })
-
   it('Does not redirect', async () => {
     expect(history.push).not.toHaveBeenCalled()
   })
