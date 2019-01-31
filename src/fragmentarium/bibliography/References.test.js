@@ -7,6 +7,14 @@ import { Promise } from 'bluebird'
 import { changeValueByLabel, clickNth, submitForm } from 'testHelpers'
 import References from './References'
 
+const defaultReference = {
+  id: '',
+  type: 'DISCUSSION',
+  pages: '',
+  notes: '',
+  linesCited: []
+}
+
 let expectedReference
 let fragment
 let element
@@ -16,7 +24,10 @@ let searchEntry
 
 beforeEach(async () => {
   entry = await factory.build('bibliographyEntry')
-  searchEntry = await factory.build('bibliographyEntry', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
+  searchEntry = await factory.build('bibliographyEntry', {
+    author: [{ family: 'Borger' }],
+    issued: { 'date-parts': [[1957]] }
+  })
   expectedReference = {
     id: searchEntry.id,
     type: 'COPY',
@@ -26,7 +37,7 @@ beforeEach(async () => {
   }
   fragmentService = {
     updateReferences: jest.fn(),
-    findBibliography: () => Promise.resolve(entry),
+    findBibliography: jest.fn(),
     searchBibliography: () => Promise.resolve([searchEntry])
   }
 })
@@ -34,23 +45,22 @@ beforeEach(async () => {
 describe('Edit references', () => {
   beforeEach(async () => {
     fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve())
+    fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
+    fragment = await factory.build('fragment')
+    await renderReferencesAndWait()
   })
 
   test('Add reference', async () => {
-    fragment = await factory.build('fragment', { references: [] })
-    await renderReferences()
-
     await clickNth(element, 'Add Reference')
-    await inputReference()
     await submitForm(element, 'form')
 
-    expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [expectedReference])
+    expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [
+      ...fragment.references,
+      defaultReference
+    ])
   })
 
   test('Delete reference', async () => {
-    fragment = await factory.build('fragment')
-    await renderReferences()
-
     await clickNth(element, 'Delete Reference')
     await submitForm(element, 'form')
 
@@ -58,9 +68,6 @@ describe('Edit references', () => {
   })
 
   test('Edit reference', async () => {
-    fragment = await factory.build('fragment')
-    await renderReferences()
-
     await inputReference()
     await submitForm(element, 'form')
 
@@ -75,8 +82,9 @@ it('Cancels submit on unmount', async () => {
   const promise = new Promise(_.noop)
   jest.spyOn(promise, 'cancel')
   fragmentService.updateReferences.mockReturnValueOnce(promise)
+  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
   fragment = await factory.build('fragment')
-  await renderReferences()
+  await renderReferencesAndWait()
 
   await inputReference()
   submitForm(element, 'form')
@@ -87,8 +95,9 @@ it('Cancels submit on unmount', async () => {
 it('Shows error if updating fails', async () => {
   const errorMessage = 'An error occurred!'
   fragmentService.updateReferences.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
   fragment = await factory.build('fragment')
-  await renderReferences()
+  await renderReferencesAndWait()
 
   await inputReference()
   submitForm(element, 'form')
@@ -96,8 +105,20 @@ it('Shows error if updating fails', async () => {
   await waitForElement(() => element.getByText(errorMessage))
 })
 
-async function renderReferences () {
+it('Shows error if hydrating fails', async () => {
+  const errorMessage = 'An error occurred!'
+  fragmentService.findBibliography.mockImplementation(() => Promise.reject(new Error(errorMessage)))
+  fragment = await factory.build('fragment')
+  renderReferences()
+  await waitForElement(() => element.getByText(errorMessage))
+})
+
+function renderReferences () {
   element = render(<References fragment={fragment} fragmentService={fragmentService} />)
+}
+
+async function renderReferencesAndWait () {
+  renderReferences()
   await waitForElement(() => element.getByText('References'))
 }
 
