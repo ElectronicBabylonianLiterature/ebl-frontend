@@ -4,17 +4,23 @@ import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
+import SessionContext from 'auth/SessionContext'
 
 let fragmentService
+let session
 let container
 let element
 let statistics
 
 async function renderFragmentariumSearch (path = '/fragmentarium/search') {
   const FragmentariumSearchWithRouter = withRouter(FragmentariumSearch)
-  element = render(<MemoryRouter initialEntries={[path]}>
-    <FragmentariumSearchWithRouter fragmentService={fragmentService} />
-  </MemoryRouter>)
+  element = render(
+    <MemoryRouter initialEntries={[path]}>
+      <SessionContext.Provider value={session}>
+        <FragmentariumSearchWithRouter fragmentService={fragmentService} />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  )
   container = element.container
   await waitForElement(() => element.getByText('Current size of the corpus:'))
 }
@@ -24,9 +30,11 @@ beforeEach(async () => {
   fragmentService = {
     statistics: jest.fn(),
     searchNumber: jest.fn(),
-    searchTransliteration: jest.fn(),
-    isAllowedToRead: jest.fn(),
-    isAllowedToTransliterate: () => false
+    searchTransliteration: jest.fn()
+  }
+  session = {
+    isAllowedToReadFragments: jest.fn(),
+    isAllowedToTransliterateFragments: () => false
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
@@ -35,7 +43,7 @@ describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    fragmentService.isAllowedToRead.mockReturnValue(true)
+    session.isAllowedToReadFragments.mockReturnValue(true)
   })
 
   describe('Searching fragments by number', () => {

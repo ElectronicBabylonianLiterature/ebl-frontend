@@ -7,6 +7,7 @@ import TransliterationSearchFormResults from 'fragmentarium/search/Transliterati
 import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import RandomButton from 'fragmentarium/RandomButton'
 import PioneersButton from 'fragmentarium/PioneersButton'
+import SessionContext from 'auth/SessionContext'
 
 import './FragmentariumSearch.css'
 
@@ -42,16 +43,18 @@ class FragmentariumSearch extends Component {
     return (
       <section className='App-content'>
         <this.MainHeader />
-        {this.props.fragmentService.isAllowedToRead()
-          ? (
-            <section className='FragmentariumSearch-search'>
-              <this.SectionHeader number={number} transliteration={transliteration} />
-              <NumberSearch number={number} fragmentService={this.props.fragmentService} />
-              <TransliterationSearch transliteration={transliteration} fragmentService={this.props.fragmentService} />
-            </section>
-          )
-          : <p>You do not have the rights to access the fragmentarium.</p>
-        }
+        <SessionContext.Consumer>
+          {session => session.isAllowedToReadFragments()
+            ? (
+              <section className='FragmentariumSearch-search'>
+                <this.SectionHeader number={number} transliteration={transliteration} />
+                <NumberSearch number={number} fragmentService={this.props.fragmentService} />
+                <TransliterationSearch transliteration={transliteration} fragmentService={this.props.fragmentService} />
+              </section>
+            )
+            : <p>You do not have the rights to access the fragmentarium.</p>
+          }
+        </SessionContext.Consumer>
       </section>
     )
   }
