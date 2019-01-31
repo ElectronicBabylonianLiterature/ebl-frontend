@@ -2,27 +2,12 @@ import auth0 from 'auth0-js'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import Session from './Session'
+import applicationScopes from './applicationScopes.json'
 
 const scopes = [
   'openid',
   'profile'
 ]
-
-const applicationScopes = {
-  readWords: 'read:words',
-  writeWords: 'write:words',
-  readFragments: 'read:fragments',
-  transliterateFragments: 'transliterate:fragments',
-  lemmatizeFragments: 'lemmatize:fragments',
-  readBibliography: 'read:bibliography',
-  writeBiblioGraphy: 'write:bibliography',
-  accessBeta: 'access:beta',
-  readWglFolios: 'read:WGL-folios',
-  readFwgFolios: 'read:FWG-folios',
-  readElFolios: 'read:EL-folios',
-  readAkgFolios: 'read:AKG-folios',
-  readMjgFolios: 'read:MJG-folios'
-}
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')
 

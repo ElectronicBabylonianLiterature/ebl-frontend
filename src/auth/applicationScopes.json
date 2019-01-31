@@ -1,0 +1,15 @@
+{
+  "readWords": "read:words",
+  "writeWords": "write:words",
+  "readFragments": "read:fragments",
+  "transliterateFragments": "transliterate:fragments",
+  "lemmatizeFragments": "lemmatize:fragments",
+  "readBibliography": "read:bibliography",
+  "writeBiblioGraphy": "write:bibliography",
+  "accessBeta": "access:beta",
+  "readWglFolios": "read:WGL-folios",
+  "readFwgFolios": "read:FWG-folios",
+  "readElFolios": "read:EL-folios",
+  "readAkgFolios": "read:AKG-folios",
+  "readMjgFolios": "read:MJG-folios"
+}
