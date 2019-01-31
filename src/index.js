@@ -36,7 +36,7 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyRepository
 )
-const wordService = new WordService(auth, wordRepository)
+const wordService = new WordService(wordRepository)
 const ravenErrorReporter = new RavenErrorReporter()
 
 ReactDOM.render(

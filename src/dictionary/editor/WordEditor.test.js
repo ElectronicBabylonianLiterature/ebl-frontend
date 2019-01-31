@@ -3,21 +3,25 @@ import { matchPath, MemoryRouter } from 'react-router'
 import { render, waitForElement } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
+import { factory } from 'factory-girl'
+import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'testHelpers'
 import WordEditor from './WordEditor'
-import { factory } from 'factory-girl'
 
 const errorMessage = 'error'
 let result
 let wordService
+let session
 
 beforeEach(async () => {
   result = await factory.build('verb')
+  session = {
+    isAllowedToReadWords: _.stubTrue(),
+    isAllowedToWriteWords: jest.fn()
+  }
   wordService = {
     find: jest.fn(),
-    update: jest.fn(),
-    isAllowedToRead: _.stubTrue(),
-    isAllowedToWrite: jest.fn()
+    update: jest.fn()
   }
   wordService.find.mockReturnValueOnce(Promise.resolve(result))
 })
@@ -77,11 +81,13 @@ async function renderWithRouter (isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })
-  wordService.isAllowedToWrite.mockReturnValueOnce(isAllowedTo)
+  session.isAllowedToWriteWords.mockReturnValueOnce(isAllowedTo)
 
   const element = render(
     <MemoryRouter>
-      <WordEditor match={match} wordService={wordService} />
+      <SessionContext.Provider value={session}>
+        <WordEditor match={match} wordService={wordService} />
+      </SessionContext.Provider>
     </MemoryRouter>
   )
   await waitForElement(() => element.getByText(result.lemma.join(' ')))

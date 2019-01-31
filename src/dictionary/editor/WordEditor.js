@@ -7,8 +7,11 @@ import WordForm from './WordForm'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import withData from 'http/withData'
+import SessionContext from 'auth/SessionContext'
 
 class WordEditor extends Component {
+  static contextType = SessionContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -24,7 +27,7 @@ class WordEditor extends Component {
   }
 
   get disabled () {
-    return this.state.saving || !this.props.wordService.isAllowedToWrite()
+    return this.state.saving || !this.context.isAllowedToWriteWords()
   }
 
   updateWord = word => {

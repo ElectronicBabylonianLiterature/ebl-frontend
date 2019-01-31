@@ -1,6 +1,5 @@
 class WordService {
-  constructor (auth, wordRepository) {
-    this.auth = auth
+  constructor (wordRepository) {
     this.wordRepository = wordRepository
   }
 
@@ -14,14 +13,6 @@ class WordService {
 
   update (word) {
     return this.wordRepository.update(word)
-  }
-
-  isAllowedToRead () {
-    return this.auth.isAllowedToReadWords()
-  }
-
-  isAllowedToWrite () {
-    return this.auth.isAllowedToWriteWords()
   }
 }
 

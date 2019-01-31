@@ -23,7 +23,7 @@ routes.forEach(route => {
     const fragmentRepository = new FragmentRepository(apiClient)
     const imageRepository = new ImageRepository(apiClient)
     const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
-    const wordService = new WordService(auth, wordRepository)
+    const wordService = new WordService(wordRepository)
 
     jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
 
