@@ -60,6 +60,10 @@ class Auth {
     })
   }
 
+  getSession () {
+    return this.sessionStore.getSession()
+  }
+
   isAuthenticated () {
     return this.sessionStore.getSession().isAuthenticated()
   }

@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import './App.css'
 
 import Header from './Header'
 import Callback from './auth/Callback'
+import SessionContext from './auth/SessionContext'
 import Introduction from 'Introduction'
 import Dictionary from 'dictionary/search/Dictionary'
 import WordEditor from 'dictionary/editor/WordEditor'
@@ -14,7 +15,7 @@ import FragmentariumSearch from 'fragmentarium/search/FragmentariumSearch'
 
 function App ({ auth, wordService, fragmentService }) {
   return (
-    <Fragment>
+    <SessionContext.Provider value={auth.getSession()}>
       <Header auth={auth} />
       <ErrorBoundary>
         <Switch>
@@ -27,7 +28,7 @@ function App ({ auth, wordService, fragmentService }) {
           <Route component={Introduction} />
         </Switch>
       </ErrorBoundary>
-    </Fragment>
+    </SessionContext.Provider>
   )
 }
 

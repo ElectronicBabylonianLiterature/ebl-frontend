@@ -141,6 +141,10 @@ describe('Session', () => {
     ['hasBetaAccess', [], session.hasBetaAccess, true]
   ])
 
+  it('getSession', () => {
+    expect(auth.getSession()).toEqual(session)
+  })
+
   it('getAccessToken', () => {
     expect(auth.getAccessToken()).toEqual(session.accessToken)
   })
