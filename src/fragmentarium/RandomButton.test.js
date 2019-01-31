@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import createMemoryHistory from 'history/createMemoryHistory'
-import { render } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
@@ -48,10 +48,11 @@ describe('On failed request', () => {
   beforeEach(async () => {
     fragmentService.random.mockReturnValueOnce(Promise.reject(new Error(message)))
     await clickNth(element, buttonText, 0)
+    await waitForElement(() => element.getByText(message))
   })
 
   it('Shows error message', async () => {
-    expect(element.container).toHaveTextContent(message)
+    await expect(element.container).toHaveTextContent(message)
   })
 
   it('Does not redirect', async () => {
