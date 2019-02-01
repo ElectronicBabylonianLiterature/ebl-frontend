@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 class ArrayInput extends Component {
@@ -16,7 +16,7 @@ class ArrayInput extends Component {
   render () {
     return (
       <FormGroup controlId={this.id}>
-        <ControlLabel>{this.props.children}</ControlLabel>
+        <FormLabel>{this.props.children}</FormLabel>
         <FormControl
           type='text'
           value={this.props.value.join(this.props.separator)}

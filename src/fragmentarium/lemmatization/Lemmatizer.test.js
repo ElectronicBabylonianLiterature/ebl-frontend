@@ -120,6 +120,7 @@ it('Cancels submit on unmount', async () => {
 })
 
 async function lemmatizeWord () {
+  await waitForElement(() => element.getByText('kur'))
   clickNth(element, 'kur', 0)
   await waitForElement(() => element.getByLabelText('Lemma'))
   changeValueByLabel(element, 'Lemma', 'a')

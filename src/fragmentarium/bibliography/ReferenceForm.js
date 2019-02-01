@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl, Col } from 'react-bootstrap'
+import { FormGroup, FormLabel, FormControl, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
@@ -40,7 +40,7 @@ export default class ReferenceForm extends Component {
       <FormGroup>
         <Col md={4}>
           <FormGroup controlId={`${this.id}-Pages`}>
-            <ControlLabel>Pages</ControlLabel>
+            <FormLabel>Pages</FormLabel>
             <FormControl
               type='text'
               value={this.props.value.pages}
@@ -49,9 +49,9 @@ export default class ReferenceForm extends Component {
         </Col>
         <Col md={4}>
           <FormGroup controlId={`${this.id}-Type`}>
-            <ControlLabel>Type</ControlLabel>
+            <FormLabel>Type</FormLabel>
             <FormControl
-              componentClass='select'
+              as='select'
               value={this.props.value.type}
               onChange={this.handleEvent('type')}
               required >
@@ -72,7 +72,7 @@ export default class ReferenceForm extends Component {
         </Col>
       </FormGroup>
       <FormGroup controlId={`${this.id}-Notes`}>
-        <ControlLabel>Notes</ControlLabel>
+        <FormLabel>Notes</FormLabel>
         {' '}
         <HelpTrigger overlay={NotesHelp()} />
         <FormControl

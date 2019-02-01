@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
+import { Form, FormGroup, FormLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import HelpTrigger from 'common/HelpTrigger'
 
@@ -44,21 +44,21 @@ class TransliterationSearchForm extends Component {
       <Form horizontal onSubmit={this.submit}>
         <FormGroup controlId='transliteration'>
           <Col sm={2} />
-          <Col sm={2} componentClass={ControlLabel} >
+          <Col sm={2} as={FormLabel} >
           Transliteration
             {' '}
             <HelpTrigger overlay={SearchHelp()} />
           </Col>
           <Col sm={4}>
             <FormControl
-              componentClass='textarea'
+              as='textarea'
               value={this.state.transliteration}
               rows={Math.max(2, rows)}
               placeholder='Search transliterations'
               onChange={this.onChange} />
           </Col>
           <Col sm={1}>
-            <Button type='submit' bsStyle='primary'>Search</Button>
+            <Button type='submit' variant='primary'>Search</Button>
           </Col>
           <Col sm={3} />
         </FormGroup>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
 import Template from './Template'
 
 import HelpTrigger from 'common/HelpTrigger'
@@ -34,9 +34,9 @@ class TemplateForm extends Component {
     return (
       <Form inline onSubmit={this.submit}>
         <FormGroup controlId='template' validationState={this.state.validationState}>
-          <ControlLabel>
+          <FormLabel>
             <HelpTrigger overlay={TemplateHelp()} />
-          </ControlLabel>
+          </FormLabel>
           {' '}
           <FormControl
             type='text'

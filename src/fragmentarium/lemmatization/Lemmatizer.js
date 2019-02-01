@@ -50,7 +50,7 @@ class Lemmatizer extends Component {
     <Button
       onClick={this.submit}
       disabled={this.state.disabled || !this.hasChanges}
-      bsStyle='primary'>
+      variant='primary'>
       Save
     </Button>
   )

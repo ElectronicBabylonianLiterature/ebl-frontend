@@ -30,3 +30,16 @@ bluebird.config({
 })
 
 afterEach(() => localStorage.clear())
+
+if (global.document) {
+  // Fixes "TypeError: document.createRange is not a function" with Popover.
+  // See: https://github.com/FezVrasta/popper.js/issues/478
+  document.createRange = () => ({
+    setStart: () => {},
+    setEnd: () => {},
+    commonAncestorContainer: {
+      nodeName: 'BODY',
+      ownerDocument: document
+    }
+  })
+}

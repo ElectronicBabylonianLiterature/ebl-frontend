@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, Button, Grid, Row, Col } from 'react-bootstrap'
+import { FormGroup, FormLabel, Button, Container, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
@@ -77,7 +77,7 @@ class TransliteratioForm extends Component {
 
   EditorFormGroup = ({ property, error, showHelp }) => (
     <FormGroup controlId={property}>
-      <ControlLabel>{_.startCase(property)}</ControlLabel>
+      <FormLabel>{_.startCase(property)}</FormLabel>
       {' '}
       {showHelp && <HelpTrigger overlay={SpecialCharactersHelp()} /> }
       <Editor
@@ -103,7 +103,7 @@ class TransliteratioForm extends Component {
   SubmitButton = () => (
     <Button
       type='submit'
-      bsStyle='primary'
+      variant='primary'
       disabled={this.state.disabled || !this.hasChanges}
       form='transliteration-form'>
       Save
@@ -112,7 +112,7 @@ class TransliteratioForm extends Component {
 
   render () {
     return (
-      <Grid fluid>
+      <Container fluid>
         <Row>
           <Col sm={12}>
             <this.Form />
@@ -126,7 +126,7 @@ class TransliteratioForm extends Component {
             <TemplateForm onSubmit={this.onTemplate} />
           </Col>
         </Row>
-      </Grid>
+      </Container>
     )
   }
 }

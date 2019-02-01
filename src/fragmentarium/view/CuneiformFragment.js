@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
 import References from 'fragmentarium/bibliography/References'
@@ -81,7 +81,7 @@ function RightColumn ({ fragment, fragmentService, activeFolio }) {
 
 function CuneiformFragment ({ fragment, fragmentService, activeFolio, onChange, autoFocusLemmaSelect }) {
   return (
-    <Grid fluid>
+    <Container fluid>
       <Row>
         <Col md={2}>
           <LeftColumn fragment={fragment} />
@@ -100,7 +100,7 @@ function CuneiformFragment ({ fragment, fragmentService, activeFolio, onChange, 
             activeFolio={activeFolio} />
         </Col>
       </Row>
-    </Grid>
+    </Container>
   )
 }
 

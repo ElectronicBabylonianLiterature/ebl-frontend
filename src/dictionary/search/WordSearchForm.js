@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import { Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
 class WordSearch extends Component {
@@ -23,7 +23,7 @@ class WordSearch extends Component {
     return (
       <Form inline onSubmit={this.submit}>
         <FormGroup controlId='query'>
-          <ControlLabel>Query</ControlLabel>
+          <FormLabel>Query</FormLabel>
           {' '}
           <FormControl
             type='text'
@@ -32,7 +32,7 @@ class WordSearch extends Component {
             onChange={this.onChange} />
         </FormGroup>
         {' '}
-        <Button type='submit' bsStyle='primary'>Query</Button>
+        <Button type='submit' variant='primary'>Query</Button>
       </Form>
     )
   }

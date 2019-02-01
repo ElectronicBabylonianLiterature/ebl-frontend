@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
 class TextInput extends Component {
   onChange = event => {
@@ -9,7 +9,7 @@ class TextInput extends Component {
   render () {
     return (
       <FormGroup controlId={`${this.props.id}`}>
-        {this.props.children && <ControlLabel>{this.props.children}</ControlLabel>}
+        {this.props.children && <FormLabel>{this.props.children}</FormLabel>}
         <FormControl type='text' value={this.props.value} onChange={this.onChange} />
       </FormGroup>
     )

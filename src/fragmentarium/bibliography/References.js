@@ -33,7 +33,7 @@ function References ({ searchBibliography, references, onChange, onSubmit, error
       </List>
       <Button
         type='submit'
-        bsStyle='primary'
+        variant='primary'
         disabled={disabled}>
         Save
       </Button>
