@@ -2,6 +2,7 @@ import React from 'react'
 import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
+import { factory } from 'factory-girl'
 import { changeValueByLabel, submitForm } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
@@ -46,8 +47,11 @@ xit('Updates notes on change', () => {
 })
 
 describe('Save', () => {
+  let updatedFragment
+
   beforeEach(async () => {
-    fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
+    updatedFragment = await factory.build('fragment')
+    fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve(updatedFragment))
     submitForm(element, '#transliteration-form')
   })
 
@@ -57,7 +61,7 @@ describe('Save', () => {
   })
 
   it('Calls onChange', async () => {
-    await wait(() => expect(onChange).toHaveBeenCalled())
+    await wait(() => expect(onChange).toHaveBeenCalledWith(updatedFragment))
   })
 })
 

@@ -59,12 +59,12 @@ class TransliteratioForm extends Component {
       this.state.transliteration,
       this.state.notes
     )
-      .then(() => {
+      .then(updatedFragment => {
         this.setState({
           ...this.state,
           disabled: false
         })
-        this.props.onChange()
+        this.props.onChange(updatedFragment)
       })
       .catch(error => {
         this.setState({
