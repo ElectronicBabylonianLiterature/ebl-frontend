@@ -58,13 +58,13 @@ describe('postJson', () => {
   }
 
   it('Resolves on success', async () => {
-    setUpSuccessResponse('')
+    setUpSuccessResponse()
 
-    await expect(apiClient.postJson(path, json)).resolves.toBeDefined()
+    await expect(apiClient.postJson(path, json)).resolves.toEqual(result)
   })
 
   it('Makes a post request with given parameters', async () => {
-    setUpSuccessResponse('')
+    setUpSuccessResponse()
 
     await apiClient.postJson(path, json)
 
@@ -117,9 +117,9 @@ describe('fetchBlob', () => {
   commonTests(() => apiClient.fetchBlob(path, true))
 })
 
-function setUpSuccessResponse (data = JSON.stringify(result)) {
+function setUpSuccessResponse () {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
-  fetch.mockResponse(data)
+  fetch.mockResponse(JSON.stringify(result))
 }
 
 function commonTests (action) {
