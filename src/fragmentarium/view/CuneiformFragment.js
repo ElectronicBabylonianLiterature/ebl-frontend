@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -104,4 +104,27 @@ function CuneiformFragment ({ fragment, fragmentService, activeFolio, onChange, 
   )
 }
 
-export default CuneiformFragment
+class CuneiformFragmentController extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      fragment: props.fragment
+    }
+  }
+
+  handleChange = updatedFragment => this.setState({
+    fragment: updatedFragment
+  })
+
+  render () {
+    return <CuneiformFragment
+      fragment={this.state.fragment}
+      fragmentService={this.props.fragmentService}
+      activeFolio={this.props.activeFolio}
+      onChange={this.handleChange}
+      autoFocusLemmaSelect={this.props.autoFocusLemmaSelect}
+    />
+  }
+}
+
+export default CuneiformFragmentController

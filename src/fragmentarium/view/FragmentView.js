@@ -8,9 +8,8 @@ import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 
 const FragmentWithData = withData(
-  ({ data, reload, ...props }) => <CuneiformFragment
+  ({ data, ...props }) => <CuneiformFragment
     fragment={data}
-    onChange={reload}
     {...props}
   />,
   props => props.fragmentService.find(props.number),

@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from 'react-testing-library'
+import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
@@ -85,10 +85,11 @@ it('Links museum record', () => {
     .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
 })
 
-it('Calls onChange on save', async () => {
-  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
+it('Updates view on save', async () => {
+  const updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
+  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve(updatedFragment))
 
   await submitForm(element, '#transliteration-form')
 
-  expect(onChange).toHaveBeenCalled()
+  await waitForElement(() => element.getByText(updatedFragment.cdliNumber))
 })
