@@ -71,34 +71,6 @@ class Auth {
   getAccessToken () {
     return this.sessionStore.getSession().accessToken
   }
-
-  isAllowedToReadWords () {
-    return this.hasScope('isAllowedToReadWords')
-  }
-
-  isAllowedToWriteWords () {
-    return this.hasScope('isAllowedToWriteWords')
-  }
-
-  isAllowedToReadFragments () {
-    return this.hasScope('isAllowedToReadFragments')
-  }
-
-  isAllowedToTransliterateFragments () {
-    return this.hasScope('isAllowedToTransliterateFragments')
-  }
-
-  isAllowedToLemmatizeFragments () {
-    return this.hasScope('isAllowedToLemmatizeFragments')
-  }
-
-  hasBetaAccess () {
-    return this.hasScope('hasBetaAccess')
-  }
-
-  hasScope (method) {
-    return this.sessionStore.getSession()[method]()
-  }
 }
 
 export default Auth

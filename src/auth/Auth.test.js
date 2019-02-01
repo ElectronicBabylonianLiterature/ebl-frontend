@@ -121,24 +121,11 @@ describe('handleAuthentication', () => {
 describe('Session', () => {
   const session = new Session('accessToken', 'idToken', now.getTime(), [])
   jest.spyOn(session, 'isAuthenticated')
-  jest.spyOn(session, 'hasScope')
-  jest.spyOn(session, 'isAllowedToReadWords')
-  jest.spyOn(session, 'isAllowedToWriteWords')
-  jest.spyOn(session, 'isAllowedToReadFragments')
-  jest.spyOn(session, 'isAllowedToTransliterateFragments')
-  jest.spyOn(session, 'isAllowedToLemmatizeFragments')
-  jest.spyOn(session, 'hasBetaAccess')
 
   beforeEach(() => sessionStore.getSession.mockReturnValue(session))
 
   testDelegation(() => auth, [
-    ['isAuthenticated', [], session.isAuthenticated, true],
-    ['isAllowedToReadWords', [], session.isAllowedToReadWords, true],
-    ['isAllowedToWriteWords', [], session.isAllowedToWriteWords, true],
-    ['isAllowedToReadFragments', [], session.isAllowedToReadFragments, true],
-    ['isAllowedToTransliterateFragments', [], session.isAllowedToTransliterateFragments, true],
-    ['isAllowedToLemmatizeFragments', [], session.isAllowedToLemmatizeFragments, true],
-    ['hasBetaAccess', [], session.hasBetaAccess, true]
+    ['isAuthenticated', [], session.isAuthenticated, true]
   ])
 
   it('getSession', () => {
