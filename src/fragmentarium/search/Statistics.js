@@ -8,17 +8,17 @@ function Statistics ({ data }) {
   const localizedStatistics = _.mapValues(data, value => value.toLocaleString())
 
   return (
-    <div className='Wrapper'>
-      <section className='Statistics'>
+    <section className='Statistics'>
+      <div className='Statistics__content'>
         <header>Current size of the corpus:</header>
-        <p className='Statistics__values'>
-          <span className='Statistics_value'> {localizedStatistics.transliteratedFragments} </span> tablets transliterated
+        <p className='Statistics__row'>
+          <span className='Statistics__value'> {localizedStatistics.transliteratedFragments} </span> tablets transliterated
         </p>
-        <p className='Statistics__values'>
-          <span className='Statistics_value'> {localizedStatistics.lines} </span> lines of text
+        <p className='Statistics__row'>
+          <span className='Statistics__value'> {localizedStatistics.lines} </span> lines of text
         </p>
-      </section>
-    </div>
+      </div>
+    </section>
   )
 }
 

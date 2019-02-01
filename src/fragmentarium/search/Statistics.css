@@ -1,19 +1,18 @@
-.Wrapper {
+.Statistics {
+  font-size: 1.5em;
   text-align: center;
 }
 
-.Statistics {
-  font-size: 1.5em;
-  margin: auto;
-  text-align: left;
+.Statistics__content {
   display: inline-block;
-
+  text-align: left;
 }
 
-.Statistics__values {
+.Statistics__row {
   margin-top: 1em;
+  padding-left: 2em;
 }
 
-.Statistics_value {
+.Statistics__value {
   font-weight: bold;
 }
