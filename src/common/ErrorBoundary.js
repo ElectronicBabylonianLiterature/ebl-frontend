@@ -13,7 +13,7 @@ class ErrorBoundary extends Component {
 
   componentDidCatch (error, info) {
     this.setState({ error: error, info: info })
-    this.context.captureException(error, { extra: { componentStack: expect.any(String) } })
+    this.context.captureException(error, { extra: info })
   }
 
   render () {

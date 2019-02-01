@@ -17,15 +17,21 @@ describe('Children throw an error', () => {
       showReportDialog: jest.fn()
     }
     const CrashingComponent = () => { throw error }
-    element = render(<ErrorReporterContext.Provider value={errorReportingService}><ErrorBoundary><CrashingComponent /></ErrorBoundary></ErrorReporterContext.Provider>)
+    element = render(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <ErrorBoundary>
+          <CrashingComponent />
+        </ErrorBoundary>
+      </ErrorReporterContext.Provider>
+    )
   })
 
-  it('Displays error message if children crash', async () => {
+  it('Displays error message if children crash', () => {
     expect(element.container).toHaveTextContent('Something\'s gone wrong')
   })
 
-  it('Sends report to Sentry', async () => {
-    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, { extra: { componentStack: 'some string' } })
+  it('Sends report to Sentry', () => {
+    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, { extra: { componentStack: expect.any(String) } })
   })
 
   it('Clicking report button opens report dialog', async () => {
@@ -35,7 +41,7 @@ describe('Children throw an error', () => {
   })
 })
 
-it('Displays children if they do not crash', async () => {
+it('Displays children if they do not crash', () => {
   const content = 'Did not crash'
   const { container } = render(
     <ErrorReporterContext.Provider value={null}>
