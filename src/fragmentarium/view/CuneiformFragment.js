@@ -58,7 +58,7 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
                 autoFocusLemmaSelect />
             </ContentSection>
           </Tab>
-          <Tab eventKey={4} title='References' disabled={!session.hasBetaAccess()}>
+          <Tab eventKey={4} title='References' disabled={!session.isAllowedToTransliterateFragments()}>
             <ContentSection>
               <References
                 fragmentService={fragmentService}

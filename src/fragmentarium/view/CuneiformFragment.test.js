@@ -28,8 +28,7 @@ beforeEach(async () => {
   }
   session = {
     isAllowedToTransliterateFragments: () => true,
-    isAllowedToLemmatizeFragments: () => false,
-    hasBetaAccess: () => false
+    isAllowedToLemmatizeFragments: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
