@@ -46,7 +46,7 @@ export default class BibliographySelect extends Component {
     return (<>
       <AsyncSelect
         aria-labelledby={this.props['aria-labelledby']}
-        placeholder='Family Name + Year + First few characters of the title'
+        placeholder='Name Year Title'
         cacheOptions
         loadOptions={this.loadOptions}
         onChange={this.handleChange}
