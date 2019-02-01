@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import { FormGroup, ControlLabel, FormControl, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
@@ -37,25 +37,39 @@ export default class ReferenceForm extends Component {
           searchBibliography={this.props.searchBibliography}
           onChange={this.handleDocumentChange} />
       </FormGroup>
-      <FormGroup controlId={`${this.id}-Pages`}>
-        <ControlLabel>Pages</ControlLabel>
-        <FormControl
-          type='text'
-          value={this.props.value.pages}
-          onChange={this.handleEvent('pages')} />
-      </FormGroup>
-      <FormGroup controlId={`${this.id}-Type`}>
-        <ControlLabel>Type</ControlLabel>
-        <FormControl
-          componentClass='select'
-          value={this.props.value.type}
-          onChange={this.handleEvent('type')}
-          required >
-          <option value='EDITION'>Edition</option>
-          <option value='DISCUSSION'>Discussion</option>
-          <option value='COPY'>Copy</option>
-          <option value='PHOTO'>Photo</option>
-        </FormControl>
+      <FormGroup>
+        <Col md={4}>
+          <FormGroup controlId={`${this.id}-Pages`}>
+            <ControlLabel>Pages</ControlLabel>
+            <FormControl
+              type='text'
+              value={this.props.value.pages}
+              onChange={this.handleEvent('pages')} />
+          </FormGroup>
+        </Col>
+        <Col md={4}>
+          <FormGroup controlId={`${this.id}-Type`}>
+            <ControlLabel>Type</ControlLabel>
+            <FormControl
+              componentClass='select'
+              value={this.props.value.type}
+              onChange={this.handleEvent('type')}
+              required >
+              <option value='EDITION'>Edition</option>
+              <option value='DISCUSSION'>Discussion</option>
+              <option value='COPY'>Copy</option>
+              <option value='PHOTO'>Photo</option>
+            </FormControl>
+          </FormGroup>
+        </Col>
+        <Col md={4}>
+          <ArrayInput
+            separator=','
+            value={this.props.value.linesCited}
+            onChange={this.handleChange('linesCited')}>
+            Lines Cited
+          </ArrayInput>
+        </Col>
       </FormGroup>
       <FormGroup controlId={`${this.id}-Notes`}>
         <ControlLabel>Notes</ControlLabel>
@@ -66,12 +80,6 @@ export default class ReferenceForm extends Component {
           defaultValue={this.props.value.notes}
           onChange={this.handleEvent('notes')} />
       </FormGroup>
-      <ArrayInput
-        separator=','
-        value={this.props.value.linesCited}
-        onChange={this.handleChange('linesCited')}>
-        Lines Cited
-      </ArrayInput>
     </>)
   }
 }

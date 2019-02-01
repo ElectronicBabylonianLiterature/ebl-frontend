@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 import List from 'common/List'
@@ -17,7 +17,7 @@ const defaultReference = {
 
 function References ({ searchBibliography, references, onChange, onSubmit, error, disabled }) {
   return (
-    <form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <List
         label='References'
         value={references}
@@ -38,7 +38,7 @@ function References ({ searchBibliography, references, onChange, onSubmit, error
         Save
       </Button>
       <ErrorAlert error={error} />
-    </form>
+    </Form>
   )
 }
 
