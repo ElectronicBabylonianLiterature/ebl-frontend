@@ -51,17 +51,21 @@ class FragmentRepository {
         transliteration: transliteration,
         notes: notes
       }
-    )
+    ).then(createFragment)
   }
 
   updateLemmatization (number, lemmatization) {
     const path = `/fragments/${encodeURIComponent(number)}/lemmatization`
-    return this.apiClient.postJson(path, { lemmatization: lemmatization })
+    return this.apiClient
+      .postJson(path, { lemmatization: lemmatization })
+      .then(createFragment)
   }
 
   updateReferences (number, references) {
     const path = `/fragments/${encodeURIComponent(number)}/references`
-    return this.apiClient.postJson(path, { references: references })
+    return this.apiClient
+      .postJson(path, { references: references })
+      .then(createFragment)
   }
 
   folioPager (folio, number) {

@@ -71,9 +71,9 @@ export function testDelegation (object, testData) {
         expect(target).toHaveBeenCalledWith(...(expectedParams || params))
       })
 
-      it(`Returns`, () => {
+      it(`Returns`, async () => {
         if (result instanceof bluebird.Promise || result instanceof Promise) {
-          expect(result).resolves.toEqual(expectedResult)
+          await expect(result).resolves.toEqual(expectedResult)
         } else {
           expect(result).toEqual(expectedResult)
         }
