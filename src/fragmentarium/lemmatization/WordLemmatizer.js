@@ -49,7 +49,6 @@ export default class WordLemmatizer extends Component {
             token={this.props.token}
             fragmentService={this.props.fragmentService}
             onChange={this.handleCange}
-            autoFocus={this.props.autoFocusLemmaSelect}
           />
         </Popover>
       </Overlay>

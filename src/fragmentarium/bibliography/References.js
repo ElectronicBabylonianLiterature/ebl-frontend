@@ -3,7 +3,6 @@ import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 import List from 'common/List'
-import ErrorAlert from 'common/ErrorAlert'
 import withData from 'http/withData'
 import ReferenceForm from './ReferenceForm'
 
@@ -15,7 +14,7 @@ const defaultReference = {
   linesCited: []
 }
 
-function References ({ searchBibliography, references, onChange, onSubmit, error, disabled }) {
+function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
     <Form onSubmit={onSubmit} data-testid='references-form'>
       <List
@@ -37,7 +36,6 @@ function References ({ searchBibliography, references, onChange, onSubmit, error
         disabled={disabled}>
         Save
       </Button>
-      <ErrorAlert error={error} />
     </Form>
   )
 }
@@ -48,19 +46,8 @@ class ReferencesController extends Component {
     this.state = {
       references: _.isEmpty(props.data)
         ? [_.cloneDeep(defaultReference)]
-        : props.data,
-      saving: false,
-      error: null
+        : props.data
     }
-    this.updatePromise = Promise.resolve()
-  }
-
-  get hasChanges () {
-    return _.isEqual(this.props.fragment.references, this.state.references)
-  }
-
-  componentWillUnmount () {
-    this.updatePromise.cancel()
   }
 
   searchBibliography = query => this.props.fragmentService.searchBibliography(query)
@@ -69,29 +56,9 @@ class ReferencesController extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.updatePromise.cancel()
-    this.setState({
-      ...this.state,
-      saving: true,
-      error: null
-    })
-    this.updatePromise = this.props.fragmentService
-      .updateReferences(
-        this.props.fragment._id,
-        this.state.references.map(reference => _.omit(reference, 'document'))
-      )
-      .then(updatedFragment => {
-        this.setState({
-          ...this.state,
-          saving: false
-        })
-        this.props.onChange(updatedFragment)
-      })
-      .catch(error => this.setState({
-        ...this.state,
-        saving: false,
-        error: error
-      }))
+    this.props.updateReferences(
+      this.state.references.map(reference => _.omit(reference, 'document'))
+    )
   }
 
   render () {
@@ -101,8 +68,7 @@ class ReferencesController extends Component {
         references={this.state.references}
         onChange={this.handleChange}
         onSubmit={this.submit}
-        error={this.state.error}
-        disabled={this.state.saving || this.hasChanges} />
+        disabled={this.props.disabled || _.isEqual(this.props.data, this.state.references)} />
     </>
   }
 }
@@ -116,11 +82,13 @@ function hydrateReferences (references, fragmentService) {
         document: entry
       }))
   }
-
   return Promise.all(references.map(hydrate))
 }
 
 export default withData(
   ReferencesController,
-  ({ fragment, fragmentService }) => hydrateReferences(fragment.references, fragmentService)
+  ({ references, fragmentService }) => hydrateReferences(references, fragmentService),
+  {
+    shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.references, props.references)
+  }
 )

@@ -63,7 +63,7 @@ class LemmatizationForm extends Component {
         placeholder={label}
         cacheOptions
         isClearable
-        autoFocus={this.props.autoFocus}
+        autoFocus={process.env.NODE_ENV !== 'test'}
         loadOptions={this.loadOptions}
         defaultOptions={defaultOptions}
         onInputChange={this.onInputChange}

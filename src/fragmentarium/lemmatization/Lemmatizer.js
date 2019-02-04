@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
-import Promise from 'bluebird'
 import HelpTrigger from 'common/HelpTrigger'
-import ErrorAlert from 'common/ErrorAlert'
 import WordLemmatizer from './WordLemmatizer'
-import Spinner from 'common/Spinner'
 import withData from 'http/withData'
 
 import LemmatizationHelp from './LemmatizationHelp'
@@ -16,20 +13,8 @@ class Lemmatizer extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      error: null,
-      disabled: false,
-      previousTokens: _.cloneDeep(props.data.tokens),
-      lemmatization: props.data.applySuggestions()
+      lemmatization: _.cloneDeep(props.data)
     }
-    this.updatePromise = Promise.resolve()
-  }
-
-  get hasChanges () {
-    return !_.isEqual(this.state.lemmatization.tokens, this.state.previousTokens)
-  }
-
-  componentWillUnmount () {
-    this.updatePromise.cancel()
   }
 
   Row = ({ rowIndex, row }) => (
@@ -39,8 +24,7 @@ class Lemmatizer extends Component {
         <WordLemmatizer
           fragmentService={this.props.fragmentService}
           token={token}
-          onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
-          autoFocusLemmaSelect={this.props.autoFocusLemmaSelect} />
+          onChange={_.partial(this.setLemma, rowIndex, columnIndex)} />
         {' '}
       </Fragment>)}
     </Fragment>
@@ -49,7 +33,7 @@ class Lemmatizer extends Component {
   SubmitButton = () => (
     <Button
       onClick={this.submit}
-      disabled={this.state.disabled || !this.hasChanges}
+      disabled={this.props.disabled || _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens)}
       bsStyle='primary'>
       Save
     </Button>
@@ -57,61 +41,35 @@ class Lemmatizer extends Component {
 
   setLemma = (rowIndex, columnIndex, uniqueLemma) => {
     this.setState({
-      ...this.state,
       lemmatization: this.state.lemmatization.setLemma(rowIndex, columnIndex, uniqueLemma)
     })
   }
 
   submit = () => {
-    this.updatePromise.cancel()
-    this.setState({
-      ...this.state,
-      error: null,
-      disabled: true
-    })
-    this.updatePromise = this.props.fragmentService.updateLemmatization(
-      this.props.number,
-      this.state.lemmatization.toDto()
-    ).then(() => {
-      this.setState({
-        ...this.state,
-        disabled: false,
-        lemmatization: this.state.lemmatization.clearSuggestionFlags(),
-        previousTokens: _.cloneDeep(this.state.lemmatization.tokens)
-      })
-    }).catch(error => {
-      this.setState({
-        ...this.state,
-        error: error,
-        disabled: false
-      })
-    })
+    this.props.updateLemmatization(
+      this.state.lemmatization
+    )
   }
 
   render () {
     return <>
-      <Spinner loading={_.isNil(this.state.lemmatization) && _.isNil(this.state.error)} />
-      {this.state.lemmatization &&
-        <Fragment>
-          <ol className='Lemmatizer__transliteration'>
-            {this.state.lemmatization.tokens.map((row, rowIndex) => (
-              <li key={rowIndex} className='Lemmatizer__row'>
-                <this.Row rowIndex={rowIndex} row={row} />
-              </li>
-            ))}
-          </ol>
-          <HelpTrigger overlay={LemmatizationHelp()} />
-          {' '}
-          <this.SubmitButton />
-        </Fragment>}
-      <ErrorAlert error={this.state.error} />
+      <ol className='Lemmatizer__transliteration'>
+        {this.state.lemmatization.tokens.map((row, rowIndex) => (
+          <li key={rowIndex} className='Lemmatizer__row'>
+            <this.Row rowIndex={rowIndex} row={row} />
+          </li>
+        ))}
+      </ol>
+      <HelpTrigger overlay={LemmatizationHelp()} />
+      {' '}
+      <this.SubmitButton />
     </>
   }
 }
 
 export default withData(
   Lemmatizer,
-  props => props.fragmentService.createLemmatization(props.text),
+  props => props.fragmentService.createLemmatization(props.text).then(lemmatization => lemmatization.applySuggestions()),
   {
     shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.text, props.text)
   }

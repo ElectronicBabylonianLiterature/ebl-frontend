@@ -2,16 +2,15 @@ import React from 'react'
 import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 
 import { whenClicked, clickNth, changeValueByLabel } from 'testHelpers'
 import Lemma from './Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, { LemmatizationToken } from './Lemmatization'
 
-const number = 'K.1'
 let element
 let fragmentService
+let updateLemmatization
 let text
 let word
 let oldWord
@@ -21,8 +20,8 @@ beforeEach(async () => {
   word = await factory.build('word')
   lemma = new Lemma(word)
   oldWord = await factory.build('word')
+  updateLemmatization = jest.fn()
   fragmentService = {
-    updateLemmatization: jest.fn(),
     searchLemma: jest.fn(),
     createLemmatization: jest.fn()
   }
@@ -58,6 +57,7 @@ beforeEach(async () => {
   element = render(
     <Lemmatizer
       fragmentService={fragmentService}
+      updateLemmatization={updateLemmatization}
       number='K.1'
       text={text}
     />)
@@ -84,8 +84,6 @@ it('Clicking word shows form', async () => {
 })
 
 it('Clicking save calls fragmentService', async () => {
-  fragmentService.updateLemmatization.mockReturnValue(Promise.resolve())
-
   await lemmatizeWord()
 
   const expected = new Lemmatization(['1.'], [[
@@ -95,28 +93,9 @@ it('Clicking save calls fragmentService', async () => {
       [lemma],
       []
     )
-  ]]).toDto()
-  await whenClicked(element, 'Save').expect(fragmentService.updateLemmatization)
-    .toHaveBeenCalledWith(number, expected)
-})
-
-it('Shows error if saving transliteration fails', async () => {
-  const errorMessage = 'Lemmatization Error'
-  fragmentService.updateLemmatization.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-
-  await lemmatizeWord()
-  clickNth(element, 'Save', 0)
-  await waitForElement(() => element.getByText(errorMessage))
-})
-
-it('Cancels submit on unmount', async () => {
-  const promise = new Promise(_.noop)
-  jest.spyOn(promise, 'cancel')
-  fragmentService.updateLemmatization.mockReturnValueOnce(promise)
-  await lemmatizeWord()
-  clickNth(element, 'Save', 0)
-  element.unmount()
-  expect(promise.isCancelled()).toBe(true)
+  ]])
+  await whenClicked(element, 'Save').expect(updateLemmatization)
+    .toHaveBeenCalledWith(expected)
 })
 
 async function lemmatizeWord () {

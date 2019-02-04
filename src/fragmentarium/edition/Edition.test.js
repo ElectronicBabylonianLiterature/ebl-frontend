@@ -11,22 +11,19 @@ let fragment
 let element
 let container
 let fragmentService
-let onChange
+let updateTransliteration
 
 beforeEach(async () => {
-  onChange = jest.fn()
-  fragmentService = {
-    updateTransliteration: jest.fn(),
-    isAllowedToRead: () => true,
-    isAllowedToTransliterate: () => true
-  }
+  updateTransliteration = jest.fn()
+  updateTransliteration.mockReturnValue(Promise.resolve())
+  fragmentService = {}
   fragment = await factory.build('fragment', { atf: '1. ku' })
   element = render(
     <MemoryRouter>
       <Edition
         fragment={fragment}
         fragmentService={fragmentService}
-        onChange={onChange} />
+        updateTransliteration={updateTransliteration} />
     </MemoryRouter>)
   container = element.container
 })
@@ -43,10 +40,7 @@ xit('Renders notes field', () => {
   expect(element.getByLabelText('Notes')).toEqual(fragment.notes)
 })
 
-it('Calls onChange on save', async () => {
-  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
-
-  await submitFormByTestId(element, 'transliteration-form')
-
-  expect(onChange).toHaveBeenCalled()
+it('Calls updateTransliteration on save', () => {
+  submitFormByTestId(element, 'transliteration-form')
+  expect(updateTransliteration).toHaveBeenCalled()
 })
