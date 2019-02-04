@@ -111,5 +111,8 @@ class Lemmatizer extends Component {
 
 export default withData(
   Lemmatizer,
-  props => props.fragmentService.createLemmatization(props.text)
+  props => props.fragmentService.createLemmatization(props.text),
+  {
+    shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.text, props.text)
+  }
 )
