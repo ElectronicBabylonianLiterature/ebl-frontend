@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement, wait } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
@@ -21,6 +21,7 @@ let element
 let fragmentService
 let entry
 let searchEntry
+let onChange
 
 beforeEach(async () => {
   entry = await factory.build('bibliographyEntry')
@@ -40,13 +41,17 @@ beforeEach(async () => {
     findBibliography: jest.fn(),
     searchBibliography: () => Promise.resolve([searchEntry])
   }
+  onChange = jest.fn()
 })
 
 describe('Edit references', () => {
+  let updatedFragment
+
   beforeEach(async () => {
-    fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve())
-    fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
     fragment = await factory.build('fragment')
+    updatedFragment = await factory.build('fragment', { _id: fragment._id })
+    fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve(updatedFragment))
+    fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
     await renderReferencesAndWait()
   })
 
@@ -75,6 +80,14 @@ describe('Edit references', () => {
       expectedReference,
       ..._.tail(fragment.references)
     ])
+  })
+
+  it('Calls onChange on save', async () => {
+    await inputReference()
+    await submitForm(element, 'form')
+    await wait()
+
+    expect(onChange).toHaveBeenCalledWith(updatedFragment)
   })
 })
 
@@ -126,7 +139,10 @@ it('Shows error if hydrating fails', async () => {
 })
 
 function renderReferences () {
-  element = render(<References fragment={fragment} fragmentService={fragmentService} />)
+  element = render(<References
+    fragment={fragment}
+    fragmentService={fragmentService}
+    onChange={onChange} />)
 }
 
 async function renderReferencesAndWait () {

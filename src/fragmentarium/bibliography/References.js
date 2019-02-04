@@ -17,7 +17,7 @@ const defaultReference = {
 
 function References ({ searchBibliography, references, onChange, onSubmit, error, disabled }) {
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit} data-testid='references-form'>
       <List
         label='References'
         value={references}
@@ -80,10 +80,13 @@ class ReferencesController extends Component {
         this.props.fragment._id,
         this.state.references.map(reference => _.omit(reference, 'document'))
       )
-      .then(() => this.setState({
-        ...this.state,
-        saving: false
-      }))
+      .then(updatedFragment => {
+        this.setState({
+          ...this.state,
+          saving: false
+        })
+        this.props.onChange(updatedFragment)
+      })
       .catch(error => this.setState({
         ...this.state,
         saving: false,

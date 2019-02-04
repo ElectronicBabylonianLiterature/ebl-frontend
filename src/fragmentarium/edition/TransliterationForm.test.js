@@ -3,7 +3,7 @@ import { render, waitForElement, wait } from 'react-testing-library'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
-import { changeValueByLabel, submitForm } from 'testHelpers'
+import { changeValueByLabel, submitFormByTestId } from 'testHelpers'
 
 import TransliteratioForm from './TransliterationForm'
 
@@ -52,7 +52,7 @@ describe('Save', () => {
   beforeEach(async () => {
     updatedFragment = await factory.build('fragment')
     fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve(updatedFragment))
-    submitForm(element, '#transliteration-form')
+    submitFormByTestId(element, 'transliteration-form')
   })
 
   it('Posts transliteration to API', () => {
@@ -68,7 +68,7 @@ describe('Save', () => {
 it('Shows error if saving transliteration fails', async () => {
   fragmentService.updateTransliteration.mockReturnValueOnce(Promise.reject(new Error(errorMessage)))
 
-  submitForm(element, '#transliteration-form')
+  submitFormByTestId(element, 'transliteration-form')
 
   await waitForElement(() => element.getByText(errorMessage))
 })
@@ -77,7 +77,7 @@ it('Cancels post on unmount', () => {
   const promise = new Promise(_.noop)
   jest.spyOn(promise, 'cancel')
   fragmentService.updateTransliteration.mockReturnValueOnce(promise)
-  submitForm(element, '#transliteration-form')
+  submitFormByTestId(element, 'transliteration-form')
   element.unmount()
   expect(promise.isCancelled()).toBe(true)
 })

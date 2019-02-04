@@ -62,7 +62,8 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
             <ContentSection>
               <References
                 fragmentService={fragmentService}
-                fragment={fragment} />
+                fragment={fragment}
+                onChange={onChange} />
             </ContentSection>
           </Tab>
         </Tabs>

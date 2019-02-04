@@ -4,7 +4,7 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
-import { submitForm } from 'testHelpers'
+import { submitFormByTestId } from 'testHelpers'
 import Edition from './Edition'
 
 let fragment
@@ -46,7 +46,7 @@ xit('Renders notes field', () => {
 it('Calls onChange on save', async () => {
   fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve())
 
-  await submitForm(element, '#transliteration-form')
+  await submitFormByTestId(element, 'transliteration-form')
 
   expect(onChange).toHaveBeenCalled()
 })

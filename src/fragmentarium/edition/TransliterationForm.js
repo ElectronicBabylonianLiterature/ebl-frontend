@@ -91,7 +91,7 @@ class TransliteratioForm extends Component {
   )
 
   Form = () => (
-    <form onSubmit={this.submit} id='transliteration-form'>
+    <form onSubmit={this.submit} data-testid='transliteration-form'>
       <fieldset>
         <this.EditorFormGroup property='transliteration' error={this.state.error} showHelp />
         <this.EditorFormGroup property='notes' />
