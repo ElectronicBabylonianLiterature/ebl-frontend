@@ -37,16 +37,22 @@ beforeEach(async () => {
     linesCited: ['1', '2']
   }
   fragmentService = {
-    findBibliography: jest.fn(),
+    hydrateReferences: jest.fn(),
     searchBibliography: () => Promise.resolve([searchEntry])
   }
   updateReferences = jest.fn()
 })
 
 describe('Edit references', () => {
+  let hydratedReferences
+
   beforeEach(async () => {
     references = await factory.buildMany('reference', 2)
-    fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
+    hydratedReferences = references.map(reference => ({
+      ...reference,
+      document: entry
+    }))
+    fragmentService.hydrateReferences.mockReturnValueOnce(Promise.resolve(hydratedReferences))
     await renderReferencesAndWait()
   })
 
@@ -80,7 +86,7 @@ describe('Edit references', () => {
 
 it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
-  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
+  fragmentService.hydrateReferences.mockReturnValueOnce(Promise.resolve([]))
   references = []
   await renderReferencesAndWait()
   await submitForm(element, 'form')
@@ -92,7 +98,7 @@ it('Creates a default reference if none present', async () => {
 
 it('Shows error if hydrating fails', async () => {
   const errorMessage = 'An error occurred!'
-  fragmentService.findBibliography.mockImplementation(() => Promise.reject(new Error(errorMessage)))
+  fragmentService.hydrateReferences.mockImplementation(() => Promise.reject(new Error(errorMessage)))
   references = await factory.buildMany('reference', 2)
   renderReferences()
   await waitForElement(() => element.getByText(errorMessage))

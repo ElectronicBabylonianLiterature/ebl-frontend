@@ -35,7 +35,7 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    findBibliography: id => Promise.resolve(null)
+    hydrateReferences: references => Promise.resolve([])
   }
   session = {
     isAllowedToReadFragments: jest.fn(),

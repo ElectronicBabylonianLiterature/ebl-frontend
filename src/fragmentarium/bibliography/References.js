@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
-import { Promise } from 'bluebird'
 import List from 'common/List'
 import withData from 'http/withData'
 import ReferenceForm from './ReferenceForm'
@@ -11,7 +10,8 @@ const defaultReference = {
   type: 'DISCUSSION',
   pages: '',
   notes: '',
-  linesCited: []
+  linesCited: [],
+  document: null
 }
 
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
@@ -73,21 +73,9 @@ class ReferencesController extends Component {
   }
 }
 
-function hydrateReferences (references, fragmentService) {
-  function hydrate (reference) {
-    return fragmentService
-      .findBibliography(reference.id)
-      .then(entry => ({
-        ...reference,
-        document: entry
-      }))
-  }
-  return Promise.all(references.map(hydrate))
-}
-
 export default withData(
   ReferencesController,
-  ({ references, fragmentService }) => hydrateReferences(references, fragmentService),
+  ({ references, fragmentService }) => fragmentService.hydrateReferences(references),
   {
     shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.references, props.references)
   }

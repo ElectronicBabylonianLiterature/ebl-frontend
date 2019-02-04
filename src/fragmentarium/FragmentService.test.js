@@ -57,8 +57,7 @@ const testData = [
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],
-  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']],
-  ['findBibliography', ['RN2020'], bibliographyRepository.find, resultStub]
+  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']]
 ]
 
 testDelegation(fragmentService, testData)
@@ -131,4 +130,17 @@ it('createLemmatization', async () => {
 
   const result = await fragmentService.createLemmatization(text)
   expect(result).toEqual(expected)
+})
+
+test('hydrateReferences', async () => {
+  const entries = await factory.buildMany('bibliographyEntry', 2)
+  const references = await factory.buildMany('reference', 2, entries.map(entry => ({ id: entry.id })))
+  const expectedReferences = references.map((reference, index) => ({
+    ...reference,
+    document: entries[index]
+  }))
+
+  bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+
+  await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(expectedReferences)
 })

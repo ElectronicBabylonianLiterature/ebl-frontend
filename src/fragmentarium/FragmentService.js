@@ -67,10 +67,6 @@ class FragmentService {
       : this.wordRepository.searchLemma(lemma)
   }
 
-  findBibliography (id) {
-    return this.bibliographyRepository.find(id)
-  }
-
   searchBibliography (query) {
     const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
     const match = queryRegex.exec(query)
@@ -129,6 +125,17 @@ class FragmentService {
         ])
       )
     )
+  }
+
+  hydrateReferences (references) {
+    const hydrate = reference => this.bibliographyRepository
+      .find(reference.id)
+      .then(entry => ({
+        ...reference,
+        document: entry
+      }))
+
+    return Promise.all(references.map(hydrate))
   }
 }
 
