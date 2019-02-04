@@ -55,6 +55,11 @@ export async function submitForm (element, query) {
   await wait()
 }
 
+export async function submitFormByTestId (element, testId) {
+  fireEvent.submit(element.getByTestId(testId))
+  await wait()
+}
+
 export function testDelegation (object, testData) {
   describe.each(testData)(
     '%s',

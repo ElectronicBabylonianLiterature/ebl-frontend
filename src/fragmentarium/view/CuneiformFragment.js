@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
+import { Promise } from 'bluebird'
 
 import References from 'fragmentarium/bibliography/References'
 import Edition from 'fragmentarium/edition/Edition'
@@ -11,6 +12,8 @@ import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
 import Folios from './Folios'
 import SessionContext from 'auth/SessionContext'
+import ErrorAlert from 'common/ErrorAlert'
+import Spinner from 'common/Spinner'
 
 import './CuneiformFragment.css'
 
@@ -20,7 +23,7 @@ function ContentSection ({ children }) {
   </section>
 }
 
-function LeftColumn ({ fragment }) {
+function Info ({ fragment }) {
   return <>
     <Details fragment={fragment} />
     <Record record={fragment.record} />
@@ -30,8 +33,11 @@ function LeftColumn ({ fragment }) {
   </>
 }
 
-function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSelect }) {
+function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const tabsId = _.uniqueId('fragment-container-')
+  const updateTransliteration = (transliteration, notes) => onSave(fragmentService.updateTransliteration(fragment._id, transliteration, notes))
+  const updateLemmatization = lemmatization => onSave(fragmentService.updateLemmatization(fragment._id, lemmatization.toDto()))
+  const updateReferences = references => onSave(fragmentService.updateReferences(fragment._id, references))
   return (
     <SessionContext.Consumer>
       {session =>
@@ -44,7 +50,8 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
               <Edition
                 fragment={fragment}
                 fragmentService={fragmentService}
-                onChange={onChange} />
+                updateTransliteration={updateTransliteration}
+                disabled={disabled} />
             </ContentSection>
           </Tab>
           <Tab eventKey={3} title='Lemmatization' disabled={
@@ -53,16 +60,18 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
             <ContentSection>
               <Lemmatizer
                 fragmentService={fragmentService}
-                number={fragment._id}
+                updateLemmatization={updateLemmatization}
                 text={fragment.text}
-                autoFocusLemmaSelect />
+                disabled={disabled} />
             </ContentSection>
           </Tab>
           <Tab eventKey={4} title='References' disabled={!session.isAllowedToTransliterateFragments()}>
             <ContentSection>
               <References
                 fragmentService={fragmentService}
-                fragment={fragment} />
+                references={fragment.references}
+                updateReferences={updateReferences}
+                disabled={disabled} />
             </ContentSection>
           </Tab>
         </Tabs>
@@ -71,33 +80,28 @@ function MiddleColumn ({ fragment, fragmentService, onChange, autoFocusLemmaSele
   )
 }
 
-function RightColumn ({ fragment, fragmentService, activeFolio }) {
-  return <Folios
-    fragment={fragment}
-    fragmentService={fragmentService}
-    activeFolio={activeFolio}
-  />
-}
-
-function CuneiformFragment ({ fragment, fragmentService, activeFolio, onChange, autoFocusLemmaSelect }) {
+function CuneiformFragment ({ fragment, fragmentService, activeFolio, onSave, saving, error }) {
   return (
     <Container fluid>
       <Row>
         <Col md={2}>
-          <LeftColumn fragment={fragment} />
+          <Info fragment={fragment} />
         </Col>
         <Col md={5}>
-          <MiddleColumn
+          <EditorTabs
             fragment={fragment}
             fragmentService={fragmentService}
-            onChange={onChange}
-            autoFocusLemmaSelect={autoFocusLemmaSelect} />
+            onSave={onSave}
+            disabled={saving} />
+          <Spinner loading={saving}>Saving...</Spinner>
+          <ErrorAlert error={error} />
         </Col>
         <Col md={5}>
-          <RightColumn
+          <Folios
             fragment={fragment}
             fragmentService={fragmentService}
-            activeFolio={activeFolio} />
+            activeFolio={activeFolio}
+          />
         </Col>
       </Row>
     </Container>
@@ -108,22 +112,50 @@ class CuneiformFragmentController extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      fragment: props.fragment
+      fragment: props.fragment,
+      saving: false,
+      error: null
     }
+    this.updatePromise = Promise.resolve()
   }
 
-  handleChange = updatedFragment => this.setState({
-    fragment: updatedFragment
-  })
+  componentWillUnmount () {
+    this.updatePromise.cancel()
+  }
+
+  handleSave = promise => {
+    this.updatePromise.cancel()
+    this.setState({
+      ...this.state,
+      error: null,
+      saving: true
+    })
+    this.updatePromise = promise.then(updatedFragment => {
+      this.setState({
+        fragment: updatedFragment,
+        saving: false
+      })
+      return updatedFragment
+    })
+    this.updatePromise.catch(error => this.setState({
+      ...this.state,
+      saving: false,
+      error: error
+    }))
+    return this.updatePromise
+  }
 
   render () {
-    return <CuneiformFragment
-      fragment={this.state.fragment}
-      fragmentService={this.props.fragmentService}
-      activeFolio={this.props.activeFolio}
-      onChange={this.handleChange}
-      autoFocusLemmaSelect={this.props.autoFocusLemmaSelect}
-    />
+    return <>
+      <CuneiformFragment
+        fragment={this.state.fragment}
+        fragmentService={this.props.fragmentService}
+        activeFolio={this.props.activeFolio}
+        onSave={this.handleSave}
+        saving={this.state.saving}
+        error={this.state.error}
+      />
+    </>
   }
 }
 

@@ -16,11 +16,12 @@ const defaultReference = {
 }
 
 let expectedReference
-let fragment
+let references
 let element
 let fragmentService
 let entry
 let searchEntry
+let updateReferences
 
 beforeEach(async () => {
   entry = await factory.build('bibliographyEntry')
@@ -36,17 +37,16 @@ beforeEach(async () => {
     linesCited: ['1', '2']
   }
   fragmentService = {
-    updateReferences: jest.fn(),
     findBibliography: jest.fn(),
     searchBibliography: () => Promise.resolve([searchEntry])
   }
+  updateReferences = jest.fn()
 })
 
 describe('Edit references', () => {
   beforeEach(async () => {
-    fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve())
+    references = await factory.buildMany('reference', 2)
     fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
-    fragment = await factory.build('fragment')
     await renderReferencesAndWait()
   })
 
@@ -54,8 +54,8 @@ describe('Edit references', () => {
     await clickNth(element, 'Add Reference')
     await submitForm(element, 'form')
 
-    expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [
-      ...fragment.references,
+    expect(updateReferences).toHaveBeenCalledWith([
+      ...references,
       defaultReference
     ])
   })
@@ -64,69 +64,45 @@ describe('Edit references', () => {
     await clickNth(element, 'Delete Reference')
     await submitForm(element, 'form')
 
-    expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, _.tail(fragment.references))
+    expect(updateReferences).toHaveBeenCalledWith(_.tail(references))
   })
 
   test('Edit reference', async () => {
     await inputReference()
     await submitForm(element, 'form')
 
-    expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [
+    expect(updateReferences).toHaveBeenCalledWith([
       expectedReference,
-      ..._.tail(fragment.references)
+      ..._.tail(references)
     ])
   })
 })
 
 it('Creates a default reference if none present', async () => {
-  fragmentService.updateReferences.mockImplementationOnce(() => Promise.resolve())
+  updateReferences.mockImplementationOnce(() => Promise.resolve())
   fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
-  fragment = await factory.build('fragment', { references: [] })
+  references = []
   await renderReferencesAndWait()
   await submitForm(element, 'form')
 
-  expect(fragmentService.updateReferences).toHaveBeenCalledWith(fragment._id, [
+  expect(updateReferences).toHaveBeenCalledWith([
     defaultReference
   ])
-})
-
-it('Cancels submit on unmount', async () => {
-  const promise = new Promise(_.noop)
-  jest.spyOn(promise, 'cancel')
-  fragmentService.updateReferences.mockReturnValueOnce(promise)
-  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
-  fragment = await factory.build('fragment')
-  await renderReferencesAndWait()
-
-  await inputReference()
-  submitForm(element, 'form')
-  element.unmount()
-  expect(promise.isCancelled()).toBe(true)
-})
-
-it('Shows error if updating fails', async () => {
-  const errorMessage = 'An error occurred!'
-  fragmentService.updateReferences.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
-  fragment = await factory.build('fragment')
-  await renderReferencesAndWait()
-
-  await inputReference()
-  submitForm(element, 'form')
-
-  await waitForElement(() => element.getByText(errorMessage))
 })
 
 it('Shows error if hydrating fails', async () => {
   const errorMessage = 'An error occurred!'
   fragmentService.findBibliography.mockImplementation(() => Promise.reject(new Error(errorMessage)))
-  fragment = await factory.build('fragment')
+  references = await factory.buildMany('reference', 2)
   renderReferences()
   await waitForElement(() => element.getByText(errorMessage))
 })
 
 function renderReferences () {
-  element = render(<References fragment={fragment} fragmentService={fragmentService} />)
+  element = render(<References
+    references={references}
+    fragmentService={fragmentService}
+    updateReferences={updateReferences} />)
 }
 
 async function renderReferencesAndWait () {

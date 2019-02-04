@@ -4,7 +4,7 @@ import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
-import { submitForm } from 'testHelpers'
+import { submitFormByTestId, clickNth } from 'testHelpers'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'
@@ -15,12 +15,14 @@ let container
 let fragmentService
 let session
 let onChange
+let updatedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   onChange = jest.fn()
   fragmentService = {
     updateTransliteration: jest.fn(),
+    updateReferences: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
@@ -34,6 +36,7 @@ beforeEach(async () => {
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
   fragment = await factory.build('fragment', { atf: '1. ku' })
+  updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
@@ -85,11 +88,19 @@ it('Links museum record', () => {
     .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
 })
 
-it('Updates view on save', async () => {
-  const updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
+it('Updates view on Edition save', async () => {
   fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve(updatedFragment))
 
-  await submitForm(element, '#transliteration-form')
+  await submitFormByTestId(element, 'transliteration-form')
+
+  await waitForElement(() => element.getByText(updatedFragment.cdliNumber))
+})
+
+it('Updates view on References save', async () => {
+  fragmentService.updateReferences.mockReturnValueOnce(Promise.resolve(updatedFragment))
+  clickNth(element, 'References', 0)
+  await waitForElement(() => element.getByText('Document'))
+  await submitFormByTestId(element, 'references-form')
 
   await waitForElement(() => element.getByText(updatedFragment.cdliNumber))
 })
