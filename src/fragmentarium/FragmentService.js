@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
+import { createHydratedReference } from './createReference'
 
 class FragmentService {
   constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository) {
@@ -132,13 +133,7 @@ class FragmentService {
   }
 
   hydrateReferences (references) {
-    const hydrate = reference => this.bibliographyRepository
-      .find(reference.id)
-      .then(entry => ({
-        ...reference,
-        document: entry
-      }))
-
+    const hydrate = reference => createHydratedReference(reference, this.bibliographyRepository)
     return Promise.all(references.map(hydrate))
   }
 }

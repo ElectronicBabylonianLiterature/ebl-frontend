@@ -3,15 +3,9 @@ import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import List from 'common/List'
 import ReferenceForm from './ReferenceForm'
+import { createReference } from 'fragmentarium/createReference'
 
-const defaultReference = {
-  id: '',
-  type: 'DISCUSSION',
-  pages: '',
-  notes: '',
-  linesCited: [],
-  document: null
-}
+const defaultReference = createReference()
 
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
