@@ -30,10 +30,12 @@ export default function ReferenceList ({ references }) {
         {' : '}
         {reference.pages}
         {' '}
-        [l. {reference.linesCited.join(', ')}]
+        {!_.isEmpty(reference.linesCited) &&
+          <>[l. {reference.linesCited.join(', ')}]</>}
         {' '}
         ({reference.type[0]})
       </li>
     )}
+    {_.isEmpty(references) && <li>No references</li>}
   </ol>
 }
