@@ -128,6 +128,18 @@ factory.define('fragment', Object, async () => {
   return createFragment(dto)
 })
 
+factory.define('hydratedFragment', Object, async () => {
+  const dto = await factory.build('fragmentDto')
+  return {
+    ...createFragment(dto),
+    'references': await factory.assocAttrsMany('hydratedReference', 2)
+  }
+})
+
+factory.extend('fragment', 'hydratedFragment_', {
+  'references': factory.assocAttrsMany('hydratedReference', 2)
+})
+
 factory.define('folioPagerEntry', Object, {
   fragmentNumber: factory.chance('string'),
   folioNumber: factory.chance('string')

@@ -12,19 +12,18 @@ const defaultReference = {
   type: 'DISCUSSION',
   pages: '',
   notes: '',
-  linesCited: []
+  linesCited: [],
+  document: null
 }
 
 let expectedReference
 let references
 let element
 let fragmentService
-let entry
 let searchEntry
 let updateReferences
 
 beforeEach(async () => {
-  entry = await factory.build('bibliographyEntry')
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
@@ -34,25 +33,18 @@ beforeEach(async () => {
     type: 'COPY',
     pages: '1-2',
     notes: 'notes',
-    linesCited: ['1', '2']
+    linesCited: ['1', '2'],
+    document: searchEntry
   }
   fragmentService = {
-    hydrateReferences: jest.fn(),
     searchBibliography: () => Promise.resolve([searchEntry])
   }
   updateReferences = jest.fn()
 })
 
 describe('Edit references', () => {
-  let hydratedReferences
-
   beforeEach(async () => {
-    references = await factory.buildMany('reference', 2)
-    hydratedReferences = references.map(reference => ({
-      ...reference,
-      document: entry
-    }))
-    fragmentService.hydrateReferences.mockReturnValueOnce(Promise.resolve(hydratedReferences))
+    references = await factory.buildMany('hydratedReference', 2)
     await renderReferencesAndWait()
   })
 
@@ -86,7 +78,6 @@ describe('Edit references', () => {
 
 it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
-  fragmentService.hydrateReferences.mockReturnValueOnce(Promise.resolve([]))
   references = []
   await renderReferencesAndWait()
   await submitForm(element, 'form')
@@ -94,14 +85,6 @@ it('Creates a default reference if none present', async () => {
   expect(updateReferences).toHaveBeenCalledWith([
     defaultReference
   ])
-})
-
-it('Shows error if hydrating fails', async () => {
-  const errorMessage = 'An error occurred!'
-  fragmentService.hydrateReferences.mockImplementation(() => Promise.reject(new Error(errorMessage)))
-  references = await factory.buildMany('reference', 2)
-  renderReferences()
-  await waitForElement(() => element.getByText(errorMessage))
 })
 
 function renderReferences () {

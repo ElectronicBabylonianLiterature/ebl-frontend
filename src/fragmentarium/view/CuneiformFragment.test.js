@@ -25,8 +25,7 @@ beforeEach(async () => {
     updateReferences: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    hydrateReferences: references => Promise.resolve([])
+    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   session = {
     isAllowedToTransliterateFragments: () => true,
@@ -35,8 +34,8 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragment = await factory.build('fragment', { atf: '1. ku' })
-  updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
+  fragment = await factory.build('hydratedFragment', { atf: '1. ku' })
+  updatedFragment = await factory.build('hydratedFragment', { _id: fragment._id, atf: fragment.atf })
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>

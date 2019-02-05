@@ -34,8 +34,7 @@ beforeEach(async () => {
     find: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    hydrateReferences: references => Promise.resolve([])
+    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
@@ -54,7 +53,7 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     const folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
-    fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
+    fragment = await factory.build('hydratedFragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
     selectedFolio = fragment.folios[1]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)

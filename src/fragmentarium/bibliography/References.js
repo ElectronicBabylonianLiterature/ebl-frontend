@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import List from 'common/List'
-import withData from 'http/withData'
 import ReferenceForm from './ReferenceForm'
 
 const defaultReference = {
@@ -44,9 +43,9 @@ class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      references: _.isEmpty(props.data)
+      references: _.isEmpty(props.references)
         ? [_.cloneDeep(defaultReference)]
-        : props.data
+        : props.references
     }
   }
 
@@ -56,9 +55,7 @@ class ReferencesController extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.updateReferences(
-      this.state.references.map(reference => _.omit(reference, 'document'))
-    )
+    this.props.updateReferences(this.state.references)
   }
 
   render () {
@@ -68,15 +65,9 @@ class ReferencesController extends Component {
         references={this.state.references}
         onChange={this.handleChange}
         onSubmit={this.submit}
-        disabled={this.props.disabled || _.isEqual(this.props.data, this.state.references)} />
+        disabled={this.props.disabled || _.isEqual(this.props.references, this.state.references)} />
     </>
   }
 }
 
-export default withData(
-  ReferencesController,
-  ({ references, fragmentService }) => fragmentService.hydrateReferences(references),
-  {
-    shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.references, props.references)
-  }
-)
+export default ReferencesController

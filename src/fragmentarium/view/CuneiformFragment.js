@@ -37,7 +37,12 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) => onSave(fragmentService.updateTransliteration(fragment._id, transliteration, notes))
   const updateLemmatization = lemmatization => onSave(fragmentService.updateLemmatization(fragment._id, lemmatization.toDto()))
-  const updateReferences = references => onSave(fragmentService.updateReferences(fragment._id, references))
+  const updateReferences = references => onSave(
+    fragmentService.updateReferences(
+      fragment._id,
+      references.map(reference => _.omit(reference, 'document'))
+    )
+  )
   return (
     <SessionContext.Consumer>
       {session =>

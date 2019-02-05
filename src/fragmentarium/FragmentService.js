@@ -18,6 +18,10 @@ class FragmentService {
 
   find (number) {
     return this.fragmentRepository.find(number)
+      .then(async fragment => ({
+        ...fragment,
+        references: await this.hydrateReferences(fragment.references)
+      }))
   }
 
   random () {
