@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 
 import References from 'fragmentarium/bibliography/References'
+import ReferenceList from 'fragmentarium/bibliography/ReferenceList'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/view/Display'
@@ -26,6 +27,7 @@ function ContentSection ({ children }) {
 function Info ({ fragment }) {
   return <>
     <Details fragment={fragment} />
+    <ReferenceList references={fragment.references} />
     <Record record={fragment.record} />
     <OrganizationLinks
       cdliNumber={fragment.cdliNumber}
@@ -136,13 +138,18 @@ class CuneiformFragmentController extends Component {
       error: null,
       saving: true
     })
-    this.updatePromise = promise.then(updatedFragment => {
-      this.setState({
-        fragment: updatedFragment,
-        saving: false
+    this.updatePromise = promise
+      .then(async updatedFragment => ({
+        ...updatedFragment,
+        references: await this.props.fragmentService.hydrateReferences(updatedFragment.references)
+      }))
+      .then(hydaratedFragment => {
+        this.setState({
+          fragment: hydaratedFragment,
+          saving: false
+        })
+        return hydaratedFragment
       })
-      return updatedFragment
-    })
     this.updatePromise.catch(error => this.setState({
       ...this.state,
       saving: false,

@@ -16,16 +16,23 @@ let fragmentService
 let session
 let onChange
 let updatedFragment
+let expectedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
+  const hydratedReferences = await factory.buildMany('hydratedReference', 2)
+  fragment = await factory.build('hydratedFragment', { atf: '1. ku' })
+  updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
+  expectedFragment = { ...updatedFragment, references: hydratedReferences }
+
   onChange = jest.fn()
   fragmentService = {
     updateTransliteration: jest.fn(),
     updateReferences: jest.fn(),
     findFolio: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
+    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
+    hydrateReferences: () => Promise.resolve(hydratedReferences)
   }
   session = {
     isAllowedToTransliterateFragments: () => true,
@@ -34,8 +41,7 @@ beforeEach(async () => {
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragment = await factory.build('hydratedFragment', { atf: '1. ku' })
-  updatedFragment = await factory.build('hydratedFragment', { _id: fragment._id, atf: fragment.atf })
+
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
@@ -92,7 +98,7 @@ it('Updates view on Edition save', async () => {
 
   await submitFormByTestId(element, 'transliteration-form')
 
-  await waitForElement(() => element.getByText(updatedFragment.cdliNumber))
+  await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
 })
 
 it('Updates view on References save', async () => {
@@ -101,5 +107,5 @@ it('Updates view on References save', async () => {
   await waitForElement(() => element.getByText('Document'))
   await submitFormByTestId(element, 'references-form')
 
-  await waitForElement(() => element.getByText(updatedFragment.cdliNumber))
+  await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
 })
