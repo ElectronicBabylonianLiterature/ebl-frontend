@@ -49,8 +49,6 @@ class ReferencesController extends Component {
     }
   }
 
-  searchBibliography = query => this.props.fragmentService.searchBibliography(query)
-
   handleChange = value => this.setState({ references: value })
 
   submit = event => {
@@ -61,7 +59,7 @@ class ReferencesController extends Component {
   render () {
     return <>
       <References
-        searchBibliography={this.searchBibliography}
+        searchBibliography={this.props.searchBibliography}
         references={this.state.references}
         onChange={this.handleChange}
         onSubmit={this.submit}

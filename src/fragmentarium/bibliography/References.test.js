@@ -19,8 +19,8 @@ const defaultReference = {
 let expectedReference
 let references
 let element
-let fragmentService
 let searchEntry
+let searchBibliography
 let updateReferences
 
 beforeEach(async () => {
@@ -36,9 +36,7 @@ beforeEach(async () => {
     linesCited: ['1', '2'],
     document: searchEntry
   }
-  fragmentService = {
-    searchBibliography: () => Promise.resolve([searchEntry])
-  }
+  searchBibliography = () => Promise.resolve([searchEntry])
   updateReferences = jest.fn()
 })
 
@@ -90,7 +88,7 @@ it('Creates a default reference if none present', async () => {
 function renderReferences () {
   element = render(<References
     references={references}
-    fragmentService={fragmentService}
+    searchBibliography={searchBibliography}
     updateReferences={updateReferences} />)
 }
 

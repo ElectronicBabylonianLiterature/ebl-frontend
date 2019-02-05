@@ -43,6 +43,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
       references.map(reference => _.omit(reference, 'document'))
     )
   )
+  const searchBibliography = query => fragmentService.searchBibliography(query)
   return (
     <SessionContext.Consumer>
       {session =>
@@ -73,8 +74,8 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
           <Tab eventKey={4} title='References' disabled={!session.isAllowedToTransliterateFragments()}>
             <ContentSection>
               <References
-                fragmentService={fragmentService}
                 references={fragment.references}
+                searchBibliography={searchBibliography}
                 updateReferences={updateReferences}
                 disabled={disabled} />
             </ContentSection>
