@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 
+import './ReferenceList.css'
+
 const typeOrder = {
   COPY: 1,
   PHOTO: 2,
@@ -19,7 +21,7 @@ function compare (reference, other) {
 }
 
 export default function ReferenceList ({ references }) {
-  return <ol>
+  return <ol className='ReferenceList__list'>
     {references.sort(compare).map((reference, index) =>
       <li key={index}>
         {reference.document.author[0].family}

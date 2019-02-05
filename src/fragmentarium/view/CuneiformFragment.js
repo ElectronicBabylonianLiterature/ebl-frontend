@@ -27,7 +27,10 @@ function ContentSection ({ children }) {
 function Info ({ fragment }) {
   return <>
     <Details fragment={fragment} />
-    <ReferenceList references={fragment.references} />
+    <section>
+      <h3>Bibliography</h3>
+      <ReferenceList references={fragment.references} />
+    </section>
     <Record record={fragment.record} />
     <OrganizationLinks
       cdliNumber={fragment.cdliNumber}
