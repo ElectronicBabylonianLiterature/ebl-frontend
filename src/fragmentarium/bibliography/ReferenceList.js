@@ -27,8 +27,9 @@ export default function ReferenceList ({ references }) {
         {reference.author}
         {', '}
         {reference.year}
-        {' : '}
-        {reference.pages}
+        {reference.pages &&
+          <>: {reference.pages}</>
+        }
         {' '}
         {!reference.linesCited.isEmpty() &&
           <>[l. {reference.linesCited.join(', ')}]</>}

@@ -11,7 +11,7 @@ it('List all references', async () => {
   element = render(<ReferenceList references={references} />)
   for (let reference of references) {
     expect(element.container).toHaveTextContent(
-      `${reference.author}, ${reference.year} : ${reference.pages} [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
+      `${reference.author}, ${reference.year}: ${reference.pages} [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
     )
   }
 })
@@ -20,7 +20,7 @@ it('Hides non present elements', async () => {
   const reference = await factory.build('reference', { pages: '', linesCited: [] })
   element = render(<ReferenceList references={[reference]} />)
   expect(element.container).toHaveTextContent(
-    `${reference.author}, ${reference.year} : (${reference.typeAbbreviation})`
+    `${reference.author}, ${reference.year} (${reference.typeAbbreviation})`
   )
 })
 
