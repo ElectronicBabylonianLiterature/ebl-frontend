@@ -28,6 +28,17 @@ describe('Reference', () => {
     expect(reference[property]).toEqual(_.get(reference, path))
   )
 
+  test('non-dropping particle', async () => {
+    const entry = await factory.build('bibliographyEntry', { author: [
+      {
+        'non-dropping-particle': 'von',
+        'family': 'Soden'
+      }
+    ] })
+    reference = await factory.build('reference', { document: entry })
+    expect(reference.author).toEqual('von Soden')
+  })
+
   test('fallback link', async () => {
     const entry = await factory.build('bibliographyEntry', { URL: null, DOI: 'doi' })
     reference = await factory.build('reference', { document: entry })

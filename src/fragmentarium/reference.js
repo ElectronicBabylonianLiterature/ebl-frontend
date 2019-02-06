@@ -20,7 +20,11 @@ export default class Reference {
   }
 
   get author () {
-    return _.get(this.document, 'author.0.family', '')
+    const particle = _.get(this.document, 'author.0.non-dropping-particle', '')
+    const family = _.get(this.document, 'author.0.family', '')
+    return particle
+      ? `${particle} ${family}`
+      : family
   }
 
   get year () {
