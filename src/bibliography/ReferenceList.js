@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import CompactCitation from 'bibliography/CompactCitation'
 
 import './ReferenceList.css'
 
@@ -18,22 +19,6 @@ function compare (reference, other) {
   } else {
     return reference.author.localeCompare(other.author)
   }
-}
-
-function CompactCitation ({ reference }) {
-  return <>
-    {reference.author}
-    {', '}
-    {reference.year}
-    {reference.pages &&
-      <>: {reference.pages}</>
-    }
-    {' '}
-    {!reference.linesCited.isEmpty() &&
-      <>[l. {reference.linesCited.join(', ')}]</>}
-    {' '}
-    ({reference.typeAbbreviation})
-  </>
 }
 
 export default function ReferenceList ({ references }) {
