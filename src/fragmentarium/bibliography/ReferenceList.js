@@ -16,7 +16,7 @@ function compare (reference, other) {
       _.get(typeOrder, reference.type, 5) - _.get(typeOrder, other.type, 5)
     )
   } else {
-    return reference.document.author[0].family.localeCompare(other.document.author[0].family)
+    return reference.author.localeCompare(other.author)
   }
 }
 
@@ -24,16 +24,16 @@ export default function ReferenceList ({ references }) {
   return <ol className='ReferenceList__list'>
     {references.sort(compare).map((reference, index) =>
       <li key={index}>
-        {reference.document.author[0].family}
+        {reference.author}
         {', '}
-        {reference.document.issued['date-parts'][0][0]}
+        {reference.year}
         {' : '}
         {reference.pages}
         {' '}
-        {!_.isEmpty(reference.linesCited) &&
+        {!reference.linesCited.isEmpty() &&
           <>[l. {reference.linesCited.join(', ')}]</>}
         {' '}
-        ({reference.type[0]})
+        ({reference.typeAbbreviation})
       </li>
     )}
     {_.isEmpty(references) && <li>No references</li>}

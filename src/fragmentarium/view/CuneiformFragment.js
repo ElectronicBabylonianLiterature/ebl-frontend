@@ -15,6 +15,7 @@ import Folios from './Folios'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
+import { serializeReference } from 'fragmentarium/reference'
 
 import './CuneiformFragment.css'
 
@@ -45,7 +46,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const updateReferences = references => onSave(
     fragmentService.updateReferences(
       fragment._id,
-      references.map(reference => _.omit(reference, 'document'))
+      references.map(serializeReference)
     )
   )
   const searchBibliography = query => fragmentService.searchBibliography(query)

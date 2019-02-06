@@ -6,6 +6,7 @@ import FragmentService from './FragmentService'
 import createFolio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
+import Reference from './reference'
 
 const resultStub = {}
 const folio = createFolio('AKG', '375')
@@ -77,12 +78,15 @@ describe('find', () => {
 
   beforeEach(async () => {
     const entries = await factory.buildMany('bibliographyEntry', 2)
-    const references = await factory.buildMany('reference', 2, entries.map(entry => ({ id: entry.id })))
+    const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
     const fragment = await factory.build('fragment', { _id: number, references: references })
-    const expectedReferences = references.map((reference, index) => ({
-      ...reference,
-      document: entries[index]
-    }))
+    const expectedReferences = references.map((dto, index) => new Reference(
+      dto.type,
+      dto.pages,
+      dto.notes,
+      dto.linesCited,
+      entries[index]
+    ))
 
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
     bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
@@ -161,11 +165,14 @@ test('createLemmatization', async () => {
 
 test('hydrateReferences', async () => {
   const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany('reference', 2, entries.map(entry => ({ id: entry.id })))
-  const expectedReferences = references.map((reference, index) => ({
-    ...reference,
-    document: entries[index]
-  }))
+  const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
+  const expectedReferences = references.map((dto, index) => new Reference(
+    dto.type,
+    dto.pages,
+    dto.notes,
+    dto.linesCited,
+    entries[index]
+  ))
 
   bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
 

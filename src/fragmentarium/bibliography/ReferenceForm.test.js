@@ -20,19 +20,19 @@ beforeEach(async () => {
   element = render(<ReferenceForm value={reference} onChange={onChange} searchBibliography={searchBibliography} />)
 })
 
-it(`Changing document calls onChange with updated value`, async () => {
+test(`Changing document calls onChange with updated value`, async () => {
   changeValueByLabel(element, 'Document', 'Borger')
   await waitForElement(() => element.getByText(/Borger 1957/))
   clickNth(element, /Borger 1957/, 0)
 
-  expect(onChange).toHaveBeenCalledWith({ ...reference, id: entry.id, document: entry })
+  expect(onChange).toHaveBeenCalledWith(reference.setDocument(entry))
 })
 
 describe.each([
-  ['Pages', 'pages', '3'],
-  ['Type', 'type', 'EDITION'],
-  ['Notes', 'notes', 'new notes']
-])('%s', (label, property, newValue) => {
+  ['Pages', 'pages', 'setPages', '3'],
+  ['Type', 'type', 'setType', 'EDITION'],
+  ['Notes', 'notes', 'setNotes', 'new notes']
+])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
     expect(element.getByLabelText(label).value).toEqual(reference[property])
   })
@@ -40,7 +40,7 @@ describe.each([
   it(`Calls onChange with updated value`, async () => {
     whenChangedByLabel(element, label, newValue)
       .expect(onChange)
-      .toHaveBeenCalledWith(updatedItem => ({ ...reference, [property]: updatedItem }))
+      .toHaveBeenCalledWith(updatedItem => reference[setter](updatedItem))
   })
 })
 
@@ -51,5 +51,5 @@ it('Displays Lines Cited', () => {
 it(`Calls onChange with updated Lines Cited`, async () => {
   whenChangedByLabel(element, 'Lines Cited', '3.1,2')
     .expect(onChange)
-    .toHaveBeenCalledWith(updatedItem => ({ ...reference, linesCited: updatedItem.split(',') }))
+    .toHaveBeenCalledWith(updatedItem => reference.setLinesCited(updatedItem.split(',')))
 })

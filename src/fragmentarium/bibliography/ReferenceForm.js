@@ -14,18 +14,9 @@ export default class ReferenceForm extends Component {
     this.documentLabelId = _.uniqueId('ReferenceForm-Document-')
   }
 
-  handleDocumentChange = entry => this.props.onChange({
-    ...this.props.value,
-    id: entry.id,
-    document: entry
-  })
+  handleChange = setter => value => this.props.onChange(this.props.value[setter](value))
 
-  handleChange = property => value => this.props.onChange({
-    ...this.props.value,
-    [property]: value
-  })
-
-  handleEvent = property => ({ target }) => this.handleChange(property)(target.value)
+  handleEvent = setter => ({ target: { value } }) => this.handleChange(setter)(value)
 
   render () {
     return (<>
@@ -35,7 +26,7 @@ export default class ReferenceForm extends Component {
           aria-labelledby={this.documentLabelId}
           value={this.props.value.document}
           searchBibliography={this.props.searchBibliography}
-          onChange={this.handleDocumentChange} />
+          onChange={this.handleChange('setDocument')} />
       </FormGroup>
       <FormGroup>
         <Col md={4}>
@@ -44,7 +35,7 @@ export default class ReferenceForm extends Component {
             <FormControl
               type='text'
               value={this.props.value.pages}
-              onChange={this.handleEvent('pages')} />
+              onChange={this.handleEvent('setPages')} />
           </FormGroup>
         </Col>
         <Col md={4}>
@@ -53,7 +44,7 @@ export default class ReferenceForm extends Component {
             <FormControl
               componentClass='select'
               value={this.props.value.type}
-              onChange={this.handleEvent('type')}
+              onChange={this.handleEvent('setType')}
               required >
               <option value='EDITION'>Edition</option>
               <option value='DISCUSSION'>Discussion</option>
@@ -66,7 +57,7 @@ export default class ReferenceForm extends Component {
           <ArrayInput
             separator=','
             value={this.props.value.linesCited}
-            onChange={this.handleChange('linesCited')}>
+            onChange={this.handleChange('setLinesCited')}>
             Lines Cited
           </ArrayInput>
         </Col>
@@ -78,7 +69,7 @@ export default class ReferenceForm extends Component {
         <FormControl
           type='text'
           defaultValue={this.props.value.notes}
-          onChange={this.handleEvent('notes')} />
+          onChange={this.handleEvent('setNotes')} />
       </FormGroup>
     </>)
   }

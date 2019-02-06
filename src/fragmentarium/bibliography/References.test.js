@@ -6,15 +6,9 @@ import { Promise } from 'bluebird'
 
 import { changeValueByLabel, clickNth, submitForm } from 'testHelpers'
 import References from './References'
+import Reference from 'fragmentarium/reference'
 
-const defaultReference = {
-  id: '',
-  type: 'DISCUSSION',
-  pages: '',
-  notes: '',
-  linesCited: [],
-  document: null
-}
+const defaultReference = new Reference()
 
 let expectedReference
 let references
@@ -28,21 +22,20 @@ beforeEach(async () => {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
   })
-  expectedReference = {
-    id: searchEntry.id,
-    type: 'COPY',
-    pages: '1-2',
-    notes: 'notes',
-    linesCited: ['1', '2'],
-    document: searchEntry
-  }
+  expectedReference = new Reference(
+    'COPY',
+    '1-2',
+    'notes',
+    ['1', '2'],
+    searchEntry
+  )
   searchBibliography = () => Promise.resolve([searchEntry])
   updateReferences = jest.fn()
 })
 
 describe('Edit references', () => {
   beforeEach(async () => {
-    references = await factory.buildMany('hydratedReference', 2)
+    references = await factory.buildMany('reference', 2)
     await renderReferencesAndWait()
   })
 

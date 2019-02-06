@@ -1,6 +1,26 @@
-import { factory } from 'factory-girl'
+import { factory, DefaultAdapter } from 'factory-girl'
 import createFolio from 'fragmentarium/createFolio'
 import createFragment from 'fragmentarium/createFragment'
+import Reference from 'fragmentarium/reference'
+
+export default class ReferenceAdapter extends DefaultAdapter {
+  build (Model, props) {
+    const model = new Model(props.type, props.pages, props.notes, props.linesCited, props.document)
+    return model
+  }
+  async save (model, Model) {
+    return model
+  }
+  async destroy (model, Model) {
+    return model
+  }
+  get (model, attr, Model) {
+    return model[attr]
+  }
+  set (props, model, Model) {
+    throw new Error('ReferenceAdapter.set is not implemented.')
+  }
+}
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -84,7 +104,7 @@ factory.define('textDto', Object, {
   }
 })
 
-factory.define('reference', Object, {
+factory.define('referenceDto', Object, {
   id: factory.chance('string'),
   type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
   pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
@@ -92,9 +112,14 @@ factory.define('reference', Object, {
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
 })
 
-factory.extend('reference', 'hydratedReference', {
-  'document': factory.assocAttrs('bibliographyEntry')
+factory.define('reference', Reference, {
+  type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
+  pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
+  notes: factory.chance('string'),
+  linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
+  document: factory.assocAttrs('bibliographyEntry')
 })
+factory.setAdapter(new ReferenceAdapter(), 'reference')
 
 factory.define('fragmentDto', Object, {
   '_id': factory.chance('word'),
@@ -120,24 +145,12 @@ factory.define('fragmentDto', Object, {
   'text': factory.assocAttrs('textDto'),
   'notes': factory.chance('sentence'),
   'museum': 'The British Museum',
-  'references': factory.assocAttrsMany('reference', 2)
+  'references': factory.assocAttrsMany('referenceDto', 2)
 })
 
 factory.define('fragment', Object, async () => {
   const dto = await factory.build('fragmentDto')
   return createFragment(dto)
-})
-
-factory.define('hydratedFragment', Object, async () => {
-  const dto = await factory.build('fragmentDto')
-  return {
-    ...createFragment(dto),
-    'references': await factory.assocAttrsMany('hydratedReference', 2)
-  }
-})
-
-factory.extend('fragment', 'hydratedFragment_', {
-  'references': factory.assocAttrsMany('hydratedReference', 2)
 })
 
 factory.define('folioPagerEntry', Object, {
