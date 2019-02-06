@@ -1,6 +1,7 @@
 
 import { List } from 'immutable'
 import _ from 'lodash'
+import Cite from 'citation-js'
 
 export default class Reference {
   #document
@@ -32,6 +33,10 @@ export default class Reference {
 
   get typeAbbreviation () {
     return this.type[0]
+  }
+
+  get citation () {
+    return new Cite(this.document)
   }
 
   setType (type) {
