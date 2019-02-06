@@ -1,3 +1,7 @@
+.ReferenceList__citation {
+  cursor: pointer;
+}
+
 .ReferenceList__list {
   list-style: none;
   padding: 0;

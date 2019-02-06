@@ -31,10 +31,11 @@ function Citation ({ reference }) {
   )
 
   return <OverlayTrigger
+    rootClose
     overlay={popover}
-    trigger={['hover', 'focus']}
+    trigger={['click']}
     placement='right'>
-    <span><CompactCitation reference={reference} /></span>
+    <span className='ReferenceList__citation'><CompactCitation reference={reference} /></span>
   </OverlayTrigger>
 }
 
