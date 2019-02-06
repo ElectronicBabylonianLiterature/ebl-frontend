@@ -49,7 +49,8 @@ factory.define('bibliographyEntry', Object, {
   page: () => `${integer(1, 99)()}-${integer(100, 999)()}`,
   issue: integer(1, 99),
   'container-title': factory.chance('sentence'),
-  author: factory.assocAttrsMany('author', 2)
+  author: factory.assocAttrsMany('author', 2),
+  URL: factory.chance('url')
 })
 
 factory.define('referenceDto', Object, {

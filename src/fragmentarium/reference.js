@@ -35,6 +35,14 @@ export default class Reference {
     return this.type[0]
   }
 
+  get link () {
+    const url = this.document.URL
+    const doi = this.document.DOI
+    return url || (doi
+      ? `https://doi.org/${doi}`
+      : '')
+  }
+
   get citation () {
     return new Cite(this.document)
   }

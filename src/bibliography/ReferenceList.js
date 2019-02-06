@@ -25,7 +25,7 @@ function compare (reference, other) {
 
 function Citation ({ reference }) {
   const popover = (
-    <Popover id={_.uniqueId('Citation-')} title=''>
+    <Popover id={_.uniqueId('Citation-')} className='ReferenceList__popover'>
       <FullCitation reference={reference} />
     </Popover>
   )

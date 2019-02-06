@@ -6,3 +6,7 @@
   list-style: none;
   padding: 0;
 }
+
+.ReferenceList__popover {
+  max-width: 32em;
+}

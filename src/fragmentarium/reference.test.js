@@ -22,10 +22,17 @@ describe('Reference', () => {
     ['author', 'document.author.0.family'],
     ['year', 'document.issued.date-parts.0.0'],
     ['title', 'document.title'],
-    ['typeAbbreviation', 'type.0']
+    ['typeAbbreviation', 'type.0'],
+    ['link', 'document.URL']
   ])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
+
+  test('fallback link', async () => {
+    const entry = await factory.build('bibliographyEntry', { URL: null, DOI: 'doi' })
+    reference = await factory.build('reference', { document: entry })
+    expect(reference.link).toEqual(`https://doi.org/${entry.DOI}`)
+  })
 
   test('citation', () => {
     expect(reference.citation).toBeInstanceOf(Cite)
