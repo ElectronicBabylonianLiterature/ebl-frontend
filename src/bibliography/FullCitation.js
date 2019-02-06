@@ -8,7 +8,7 @@ export default function FullCitation ({ reference }) {
   const citation = reference.citation.format('bibliography', {
     format: 'html',
     template: 'deutsches-archaologisches-institut',
-    lang: 'en-US'
+    lang: 'de-DE'
   })
   const parsed = parser.parse(citation)
   return <div>
