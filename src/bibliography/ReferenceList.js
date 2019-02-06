@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
+import { Popover, OverlayTrigger } from 'react-bootstrap'
 import CompactCitation from 'bibliography/CompactCitation'
+import FullCitation from 'bibliography/FullCitation'
 
 import './ReferenceList.css'
 
@@ -21,11 +23,26 @@ function compare (reference, other) {
   }
 }
 
+function Citation ({ reference }) {
+  const popover = (
+    <Popover id={_.uniqueId('Citation-')} title=''>
+      <FullCitation reference={reference} />
+    </Popover>
+  )
+
+  return <OverlayTrigger
+    overlay={popover}
+    trigger={['hover', 'focus']}
+    placement='right'>
+    <span><CompactCitation reference={reference} /></span>
+  </OverlayTrigger>
+}
+
 export default function ReferenceList ({ references }) {
   return <ol className='ReferenceList__list'>
     {references.sort(compare).map((reference, index) =>
       <li key={index}>
-        <CompactCitation reference={reference} />
+        <Citation reference={reference} />
       </li>
     )}
     {_.isEmpty(references) && <li>No references</li>}
