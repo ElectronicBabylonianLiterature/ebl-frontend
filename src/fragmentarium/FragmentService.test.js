@@ -43,7 +43,6 @@ const fragmentService = new FragmentService(auth, fragmentRepository, imageRepos
 
 const testData = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
-  ['find', ['K.1'], fragmentRepository.find, resultStub],
   ['random', [], fragmentRepository.random, resultStub, null, Promise.resolve([resultStub])],
   ['interesting', [], fragmentRepository.interesting, resultStub, null, Promise.resolve([resultStub])],
   ['random', [], fragmentRepository.random, undefined, null, Promise.resolve([])],
@@ -57,8 +56,7 @@ const testData = [
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],
-  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']],
-  ['findBibliography', ['RN2020'], bibliographyRepository.find, resultStub]
+  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']]
 ]
 
 testDelegation(fragmentService, testData)
@@ -67,12 +65,40 @@ describe.each([
   'searchLemma',
   'searchBibliography'
 ])('%s', method => {
-  it('Resolves to empty array on zero length query', async () => {
+  test('Resolves to empty array on zero length query', async () => {
     await expect(fragmentService[method]('')).resolves.toEqual([])
   })
 })
 
-it('createLemmatization', async () => {
+describe('find', () => {
+  const number = 'K.1'
+  let expectedFragment
+  let result
+
+  beforeEach(async () => {
+    const entries = await factory.buildMany('bibliographyEntry', 2)
+    const references = await factory.buildMany('reference', 2, entries.map(entry => ({ id: entry.id })))
+    const fragment = await factory.build('fragment', { _id: number, references: references })
+    const expectedReferences = references.map((reference, index) => ({
+      ...reference,
+      document: entries[index]
+    }))
+
+    fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+    bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+
+    expectedFragment = {
+      ...fragment,
+      references: expectedReferences
+    }
+    result = await fragmentService.find(fragment._id)
+  })
+
+  test('Returns hydrated fragment', () => expect(result).toEqual(expectedFragment))
+  test('Finds correct fragment', () => expect(fragmentRepository.find).toHaveBeenCalledWith(number))
+})
+
+test('createLemmatization', async () => {
   const words = await factory.buildMany('word', 4)
   const wordMap = _.keyBy(words, '_id')
   const suggestions = {
@@ -131,4 +157,17 @@ it('createLemmatization', async () => {
 
   const result = await fragmentService.createLemmatization(text)
   expect(result).toEqual(expected)
+})
+
+test('hydrateReferences', async () => {
+  const entries = await factory.buildMany('bibliographyEntry', 2)
+  const references = await factory.buildMany('reference', 2, entries.map(entry => ({ id: entry.id })))
+  const expectedReferences = references.map((reference, index) => ({
+    ...reference,
+    document: entries[index]
+  }))
+
+  bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+
+  await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(expectedReferences)
 })

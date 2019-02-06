@@ -12,19 +12,18 @@ const defaultReference = {
   type: 'DISCUSSION',
   pages: '',
   notes: '',
-  linesCited: []
+  linesCited: [],
+  document: null
 }
 
 let expectedReference
 let references
 let element
-let fragmentService
-let entry
 let searchEntry
+let searchBibliography
 let updateReferences
 
 beforeEach(async () => {
-  entry = await factory.build('bibliographyEntry')
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
@@ -34,19 +33,16 @@ beforeEach(async () => {
     type: 'COPY',
     pages: '1-2',
     notes: 'notes',
-    linesCited: ['1', '2']
+    linesCited: ['1', '2'],
+    document: searchEntry
   }
-  fragmentService = {
-    findBibliography: jest.fn(),
-    searchBibliography: () => Promise.resolve([searchEntry])
-  }
+  searchBibliography = () => Promise.resolve([searchEntry])
   updateReferences = jest.fn()
 })
 
 describe('Edit references', () => {
   beforeEach(async () => {
-    references = await factory.buildMany('reference', 2)
-    fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
+    references = await factory.buildMany('hydratedReference', 2)
     await renderReferencesAndWait()
   })
 
@@ -80,7 +76,6 @@ describe('Edit references', () => {
 
 it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
-  fragmentService.findBibliography.mockImplementation(() => Promise.resolve(entry))
   references = []
   await renderReferencesAndWait()
   await submitForm(element, 'form')
@@ -90,18 +85,10 @@ it('Creates a default reference if none present', async () => {
   ])
 })
 
-it('Shows error if hydrating fails', async () => {
-  const errorMessage = 'An error occurred!'
-  fragmentService.findBibliography.mockImplementation(() => Promise.reject(new Error(errorMessage)))
-  references = await factory.buildMany('reference', 2)
-  renderReferences()
-  await waitForElement(() => element.getByText(errorMessage))
-})
-
 function renderReferences () {
   element = render(<References
     references={references}
-    fragmentService={fragmentService}
+    searchBibliography={searchBibliography}
     updateReferences={updateReferences} />)
 }
 

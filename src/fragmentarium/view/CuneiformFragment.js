@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 
 import References from 'fragmentarium/bibliography/References'
+import ReferenceList from 'fragmentarium/bibliography/ReferenceList'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/view/Display'
@@ -26,6 +27,10 @@ function ContentSection ({ children }) {
 function Info ({ fragment }) {
   return <>
     <Details fragment={fragment} />
+    <section>
+      <h3>Bibliography</h3>
+      <ReferenceList references={fragment.references} />
+    </section>
     <Record record={fragment.record} />
     <OrganizationLinks
       cdliNumber={fragment.cdliNumber}
@@ -37,7 +42,13 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) => onSave(fragmentService.updateTransliteration(fragment._id, transliteration, notes))
   const updateLemmatization = lemmatization => onSave(fragmentService.updateLemmatization(fragment._id, lemmatization.toDto()))
-  const updateReferences = references => onSave(fragmentService.updateReferences(fragment._id, references))
+  const updateReferences = references => onSave(
+    fragmentService.updateReferences(
+      fragment._id,
+      references.map(reference => _.omit(reference, 'document'))
+    )
+  )
+  const searchBibliography = query => fragmentService.searchBibliography(query)
   return (
     <SessionContext.Consumer>
       {session =>
@@ -68,8 +79,8 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
           <Tab eventKey={4} title='References' disabled={!session.isAllowedToTransliterateFragments()}>
             <ContentSection>
               <References
-                fragmentService={fragmentService}
                 references={fragment.references}
+                searchBibliography={searchBibliography}
                 updateReferences={updateReferences}
                 disabled={disabled} />
             </ContentSection>
@@ -130,13 +141,18 @@ class CuneiformFragmentController extends Component {
       error: null,
       saving: true
     })
-    this.updatePromise = promise.then(updatedFragment => {
-      this.setState({
-        fragment: updatedFragment,
-        saving: false
+    this.updatePromise = promise
+      .then(async updatedFragment => ({
+        ...updatedFragment,
+        references: await this.props.fragmentService.hydrateReferences(updatedFragment.references)
+      }))
+      .then(hydaratedFragment => {
+        this.setState({
+          fragment: hydaratedFragment,
+          saving: false
+        })
+        return hydaratedFragment
       })
-      return updatedFragment
-    })
     this.updatePromise.catch(error => this.setState({
       ...this.state,
       saving: false,

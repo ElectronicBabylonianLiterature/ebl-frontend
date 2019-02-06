@@ -92,6 +92,10 @@ factory.define('reference', Object, {
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
 })
 
+factory.extend('reference', 'hydratedReference', {
+  'document': factory.assocAttrs('bibliographyEntry')
+})
+
 factory.define('fragmentDto', Object, {
   '_id': factory.chance('word'),
   'cdliNumber': factory.chance('word'),
@@ -122,6 +126,18 @@ factory.define('fragmentDto', Object, {
 factory.define('fragment', Object, async () => {
   const dto = await factory.build('fragmentDto')
   return createFragment(dto)
+})
+
+factory.define('hydratedFragment', Object, async () => {
+  const dto = await factory.build('fragmentDto')
+  return {
+    ...createFragment(dto),
+    'references': await factory.assocAttrsMany('hydratedReference', 2)
+  }
+})
+
+factory.extend('fragment', 'hydratedFragment_', {
+  'references': factory.assocAttrsMany('hydratedReference', 2)
 })
 
 factory.define('folioPagerEntry', Object, {

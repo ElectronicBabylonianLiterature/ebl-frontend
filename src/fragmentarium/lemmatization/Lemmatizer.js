@@ -17,6 +17,11 @@ class Lemmatizer extends Component {
     }
   }
 
+  get hasNoChanges () {
+    return _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens) &&
+      !this.state.lemmatization.tokens.some(row => row.some(token => token.suggested))
+  }
+
   Row = ({ rowIndex, row }) => (
     <Fragment>
       {this.state.lemmatization.getRowPrefix(rowIndex)}{' '}
@@ -33,7 +38,7 @@ class Lemmatizer extends Component {
   SubmitButton = () => (
     <Button
       onClick={this.submit}
-      disabled={this.props.disabled || _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens)}
+      disabled={this.props.disabled || this.hasNoChanges}
       variant='primary'>
       Save
     </Button>

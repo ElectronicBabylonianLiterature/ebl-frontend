@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
+import { createHydratedReference } from './createReference'
 
 class FragmentService {
   constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository) {
@@ -18,6 +19,10 @@ class FragmentService {
 
   find (number) {
     return this.fragmentRepository.find(number)
+      .then(async fragment => ({
+        ...fragment,
+        references: await this.hydrateReferences(fragment.references)
+      }))
   }
 
   random () {
@@ -65,10 +70,6 @@ class FragmentService {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)
-  }
-
-  findBibliography (id) {
-    return this.bibliographyRepository.find(id)
   }
 
   searchBibliography (query) {
@@ -129,6 +130,11 @@ class FragmentService {
         ])
       )
     )
+  }
+
+  hydrateReferences (references) {
+    const hydrate = reference => createHydratedReference(reference, this.bibliographyRepository)
+    return Promise.all(references.map(hydrate))
   }
 }
 
