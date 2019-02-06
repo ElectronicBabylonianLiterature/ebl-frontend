@@ -20,21 +20,27 @@ function compare (reference, other) {
   }
 }
 
+function CompactCitation ({ reference }) {
+  return <>
+    {reference.author}
+    {', '}
+    {reference.year}
+    {reference.pages &&
+      <>: {reference.pages}</>
+    }
+    {' '}
+    {!reference.linesCited.isEmpty() &&
+      <>[l. {reference.linesCited.join(', ')}]</>}
+    {' '}
+    ({reference.typeAbbreviation})
+  </>
+}
+
 export default function ReferenceList ({ references }) {
   return <ol className='ReferenceList__list'>
     {references.sort(compare).map((reference, index) =>
       <li key={index}>
-        {reference.author}
-        {', '}
-        {reference.year}
-        {reference.pages &&
-          <>: {reference.pages}</>
-        }
-        {' '}
-        {!reference.linesCited.isEmpty() &&
-          <>[l. {reference.linesCited.join(', ')}]</>}
-        {' '}
-        ({reference.typeAbbreviation})
+        <CompactCitation reference={reference} />
       </li>
     )}
     {_.isEmpty(references) && <li>No references</li>}
