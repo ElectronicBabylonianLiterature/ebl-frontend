@@ -13,8 +13,8 @@ let element
 let searchBibliography
 
 beforeEach(async () => {
-  entry = await factory.build('bibliographyEntry')
-  searchEntry = await factory.build('bibliographyEntry')
+  entry = await factory.build('cslData')
+  searchEntry = await factory.build('cslData')
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))

@@ -29,7 +29,7 @@ factory.define('author', Object, {
   family: factory.chance('last')
 })
 
-factory.define('bibliographyEntry', Object, {
+factory.define('cslData', Object, {
   id: factory.chance('guid'),
   title: factory.chance('sentence'),
   type: factory.chance('pickone', ['article-journal', 'paper-conference']),
@@ -66,6 +66,6 @@ factory.define('reference', Reference, {
   pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
   notes: factory.chance('string'),
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
-  document: factory.assocAttrs('bibliographyEntry')
+  document: factory.assocAttrs('cslData')
 })
 factory.setAdapter(new ReferenceAdapter(), 'reference')

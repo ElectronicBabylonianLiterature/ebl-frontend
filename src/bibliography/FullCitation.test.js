@@ -10,7 +10,7 @@ let container
 
 describe('With link', () => {
   beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry')
+    entry = await factory.build('cslData')
     reference = await factory.build('reference', { document: entry })
     container = render(<FullCitation reference={reference} />).container
   })
@@ -24,7 +24,7 @@ describe('With link', () => {
 
 describe('Without link', () => {
   beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry', { URL: '' })
+    entry = await factory.build('cslData', { URL: '' })
     reference = await factory.build('reference', { document: entry })
     container = render(<FullCitation reference={reference} />).container
   })

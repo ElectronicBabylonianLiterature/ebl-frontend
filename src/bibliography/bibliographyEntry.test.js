@@ -8,7 +8,7 @@ describe('BibliographyEntry', () => {
   let entry
 
   beforeEach(async () => {
-    cslData = await factory.build('bibliographyEntry')
+    cslData = await factory.build('cslData')
     entry = new BibliographyEntry(cslData)
   })
 
@@ -23,7 +23,7 @@ describe('BibliographyEntry', () => {
   )
 
   test('non-dropping particle', async () => {
-    cslData = await factory.build('bibliographyEntry', { author: [
+    cslData = await factory.build('cslData', { author: [
       {
         'non-dropping-particle': 'von',
         'family': 'Soden'
@@ -34,7 +34,7 @@ describe('BibliographyEntry', () => {
   })
 
   test('fallback link', async () => {
-    cslData = await factory.build('bibliographyEntry', { URL: null, DOI: 'doi' })
+    cslData = await factory.build('cslData', { URL: null, DOI: 'doi' })
     entry = new BibliographyEntry(cslData)
     expect(entry.link).toEqual(`https://doi.org/${cslData.DOI}`)
   })

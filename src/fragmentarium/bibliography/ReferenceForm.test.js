@@ -13,7 +13,7 @@ let entry
 
 beforeEach(async () => {
   reference = await factory.build('reference')
-  entry = await factory.build('bibliographyEntry', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
+  entry = await factory.build('cslData', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([entry]))

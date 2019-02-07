@@ -29,7 +29,7 @@ describe('Reference', () => {
   )
 
   test('non-dropping particle', async () => {
-    const entry = await factory.build('bibliographyEntry', { author: [
+    const entry = await factory.build('cslData', { author: [
       {
         'non-dropping-particle': 'von',
         'family': 'Soden'
@@ -40,7 +40,7 @@ describe('Reference', () => {
   })
 
   test('fallback link', async () => {
-    const entry = await factory.build('bibliographyEntry', { URL: null, DOI: 'doi' })
+    const entry = await factory.build('cslData', { URL: null, DOI: 'doi' })
     reference = await factory.build('reference', { document: entry })
     expect(reference.link).toEqual(`https://doi.org/${entry.DOI}`)
   })
