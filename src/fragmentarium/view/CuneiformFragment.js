@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 
 import References from 'fragmentarium/bibliography/References'
-import ReferenceList from 'fragmentarium/bibliography/ReferenceList'
+import ReferenceList from 'bibliography/ReferenceList'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/view/Display'
@@ -15,6 +15,7 @@ import Folios from './Folios'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
+import { serializeReference } from 'fragmentarium/reference'
 
 import './CuneiformFragment.css'
 
@@ -45,7 +46,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const updateReferences = references => onSave(
     fragmentService.updateReferences(
       fragment._id,
-      references.map(reference => _.omit(reference, 'document'))
+      references.map(serializeReference)
     )
   )
   const searchBibliography = query => fragmentService.searchBibliography(query)

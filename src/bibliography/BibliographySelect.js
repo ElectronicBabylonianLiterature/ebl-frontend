@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/lib/Async'
-import _ from 'lodash'
+import Reference from 'fragmentarium/reference'
 
 function createLabel (entry) {
-  const author = _.get(entry, 'author.0.family', 'unknown author')
-  const year = _.get(entry, 'issued.date-parts.0.0', 'unknown year')
-  const title = _.get(entry, 'title', 'no title')
-  return `${author} ${year} ${title}`
+  const reference = new Reference('DISCUSSION', '', '', [], entry)
+  return `${reference.author} ${reference.year} ${reference.title}`
 }
 
 function createOption (entry) {

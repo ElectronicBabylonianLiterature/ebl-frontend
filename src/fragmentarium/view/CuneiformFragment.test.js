@@ -20,10 +20,11 @@ let expectedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
-  const hydratedReferences = await factory.buildMany('hydratedReference', 2)
-  fragment = await factory.build('hydratedFragment', { atf: '1. ku' })
+  const references = await factory.buildMany('reference', 2)
+  fragment = await factory.build('fragment', { atf: '1. ku' })
+  fragment.references = await factory.buildMany('reference', 2)
   updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
-  expectedFragment = { ...updatedFragment, references: hydratedReferences }
+  expectedFragment = { ...updatedFragment, references: references }
 
   onChange = jest.fn()
   fragmentService = {
@@ -32,7 +33,7 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    hydrateReferences: () => Promise.resolve(hydratedReferences)
+    hydrateReferences: () => Promise.resolve(references)
   }
   session = {
     isAllowedToTransliterateFragments: () => true,

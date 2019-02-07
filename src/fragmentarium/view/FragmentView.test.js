@@ -53,7 +53,8 @@ describe('Fragment is loaded', () => {
 
   beforeEach(async () => {
     const folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
-    fragment = await factory.build('hydratedFragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
+    fragment = await factory.build('fragment', { _id: fragmentNumber, folios: folios, atf: '1. ku' })
+    fragment.references = await factory.buildMany('reference', 2)
     selectedFolio = fragment.folios[1]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
