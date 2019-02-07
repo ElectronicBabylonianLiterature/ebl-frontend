@@ -13,8 +13,8 @@ let element
 let searchBibliography
 
 beforeEach(async () => {
-  entry = await factory.build('cslData')
-  searchEntry = await factory.build('cslData')
+  entry = await factory.build('bibliographyEntry')
+  searchEntry = await factory.build('bibliographyEntry')
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
@@ -45,5 +45,5 @@ async function fill () {
 }
 
 function expectedLabel (entry) {
-  return `${entry.author[0].family} ${entry.issued['date-parts'][0][0]} ${entry.title}`
+  return `${entry.author} ${entry.year} ${entry.title}`
 }

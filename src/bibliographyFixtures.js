@@ -1,5 +1,6 @@
 import { factory, DefaultAdapter } from 'factory-girl'
 import Reference from 'bibliography/reference'
+import BibliographyEntry from './bibliography/bibliographyEntry'
 
 export default class ReferenceAdapter extends DefaultAdapter {
   build (Model, props) {
@@ -53,6 +54,10 @@ factory.define('cslData', Object, {
   URL: factory.chance('url')
 })
 
+factory.define('bibliographyEntry', BibliographyEntry, async buildOptions => {
+  return buildOptions.cslData || factory.build('cslData')
+})
+
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
   type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
@@ -66,6 +71,6 @@ factory.define('reference', Reference, {
   pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
   notes: factory.chance('string'),
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
-  document: factory.assocAttrs('cslData')
+  document: factory.build('bibliographyEntry')
 })
 factory.setAdapter(new ReferenceAdapter(), 'reference')

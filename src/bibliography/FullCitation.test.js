@@ -10,7 +10,7 @@ let container
 
 describe('With link', () => {
   beforeEach(async () => {
-    entry = await factory.build('cslData')
+    entry = await factory.build('bibliographyEntry')
     reference = await factory.build('reference', { document: entry })
     container = render(<FullCitation reference={reference} />).container
   })
@@ -18,13 +18,13 @@ describe('With link', () => {
   commomTests()
 
   test('A', async () => {
-    expect(container.querySelector('a')).toHaveAttribute('href', reference.link)
+    expect(container.querySelector('a')).toHaveAttribute('href', entry.link)
   })
 })
 
 describe('Without link', () => {
   beforeEach(async () => {
-    entry = await factory.build('cslData', { URL: '' })
+    entry = await factory.build('bibliographyEntry', { URL: '' })
     reference = await factory.build('reference', { document: entry })
     container = render(<FullCitation reference={reference} />).container
   })

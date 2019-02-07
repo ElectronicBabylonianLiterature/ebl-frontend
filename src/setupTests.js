@@ -2,7 +2,6 @@ import 'jest-date-mock'
 import 'jest-dom/extend-expect'
 import 'react-testing-library/cleanup-after-each'
 import * as bluebird from 'bluebird'
-import { factory, ObjectAdapter } from 'factory-girl'
 
 import './bibliographyFixtures'
 import './fragmentFixtures'
@@ -31,5 +30,3 @@ bluebird.config({
 })
 
 afterEach(() => localStorage.clear())
-
-factory.setAdapter(new ObjectAdapter())

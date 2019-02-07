@@ -5,15 +5,15 @@ import ExternalLink from 'common/ExternalLink'
 
 export default function FullCitation ({ reference }) {
   const parser = new Parser()
-  const citation = reference.citation.format('bibliography', {
+  const citation = reference.document.citation.format('bibliography', {
     format: 'html',
     template: 'deutsches-archaologisches-institut',
     lang: 'de-DE'
   })
   const parsed = parser.parse(citation)
   return <div>
-    {reference.link
-      ? <ExternalLink href={reference.link}>{parsed}</ExternalLink>
+    {reference.document.link
+      ? <ExternalLink href={reference.document.link}>{parsed}</ExternalLink>
       : parsed
     }
     {reference.notes && <ReactMarkdown className='FullCitation__notes' source={`\\[${reference.notes}\\]`} />}

@@ -18,7 +18,7 @@ let searchBibliography
 let updateReferences
 
 beforeEach(async () => {
-  searchEntry = await factory.build('cslData', {
+  searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
   })

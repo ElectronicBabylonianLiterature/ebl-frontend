@@ -5,7 +5,7 @@ export default class BibliographyEntry {
   #cslData
 
   constructor (cslData) {
-    this.cslData = cslData
+    this.cslData = _.cloneDeep(cslData)
     Object.freeze(this)
   }
 

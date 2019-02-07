@@ -77,7 +77,7 @@ describe('find', () => {
   let result
 
   beforeEach(async () => {
-    const entries = await factory.buildMany('cslData', 2)
+    const entries = await factory.buildMany('bibliographyEntry', 2)
     const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
     const fragment = await factory.build('fragment', { _id: number, references: references })
     const expectedReferences = references.map((dto, index) => new Reference(
@@ -164,7 +164,7 @@ test('createLemmatization', async () => {
 })
 
 test('hydrateReferences', async () => {
-  const entries = await factory.buildMany('cslData', 2)
+  const entries = await factory.buildMany('bibliographyEntry', 2)
   const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
   const expectedReferences = references.map((dto, index) => new Reference(
     dto.type,

@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 
 export default function CompactCitation ({ reference }) {
   return <Fragment>
-    {reference.author}
+    {reference.document.author}
     {', '}
-    {reference.year}
+    {reference.document.year}
     {reference.pages &&
       <>: {reference.pages}</>
     }

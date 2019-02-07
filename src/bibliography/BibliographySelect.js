@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/lib/Async'
-import Reference from 'bibliography/reference'
 
 function createLabel (entry) {
-  const reference = new Reference('DISCUSSION', '', '', [], entry)
-  return `${reference.author} ${reference.year} ${reference.title}`
+  return `${entry.author} ${entry.year} ${entry.title}`
 }
 
 function createOption (entry) {

@@ -19,7 +19,7 @@ function compare (reference, other) {
       _.get(typeOrder, reference.type, 5) - _.get(typeOrder, other.type, 5)
     )
   } else {
-    return reference.author.localeCompare(other.author)
+    return reference.document.author.localeCompare(other.author)
   }
 }
 
