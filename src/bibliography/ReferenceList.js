@@ -13,16 +13,6 @@ const typeOrder = {
   DISCUSSION: 4
 }
 
-function compare (reference, other) {
-  if (reference.type !== other.type) {
-    return Math.sign(
-      _.get(typeOrder, reference.type, 5) - _.get(typeOrder, other.type, 5)
-    )
-  } else {
-    return reference.document.author.localeCompare(other.author)
-  }
-}
-
 function Citation ({ reference }) {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className='ReferenceList__popover'>
@@ -39,13 +29,26 @@ function Citation ({ reference }) {
   </OverlayTrigger>
 }
 
+function ReferenceGroup ({ references }) {
+  return (
+    <ol className='ReferenceList__list'>
+      {_.sortBy(references, 'document.author', 'document.year').map((reference, index) =>
+        <li key={index}>
+          <Citation reference={reference} />
+        </li>
+      )}
+    </ol>
+  )
+}
+
 export default function ReferenceList ({ references }) {
-  return <ol className='ReferenceList__list'>
-    {references.sort(compare).map((reference, index) =>
-      <li key={index}>
-        <Citation reference={reference} />
-      </li>
-    )}
-    {_.isEmpty(references) && <li>No references</li>}
-  </ol>
+  return <>
+    {_(references)
+      .groupBy('type')
+      .toPairs()
+      .sortBy(([type, group]) => _.get(typeOrder, type, 5))
+      .map(([type, group]) => <ReferenceGroup key={type} references={group} />)
+      .value()}
+    {_.isEmpty(references) && <p>No references</p>}
+  </>
 }
