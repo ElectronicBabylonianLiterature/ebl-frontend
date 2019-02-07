@@ -15,7 +15,7 @@ export default function FullCitation ({ reference }) {
   const parsed = parser.parse(citation)
   return <div>
     {reference.document.link &&
-      <ExternalLink className='FullCitation__link' href={reference.document.link}>
+      <ExternalLink className='FullCitation__link' href={reference.document.link} title='Open in a new window.'>
         <i className='fas fa-external-link-alt' />
       </ExternalLink>}
     {parsed}
