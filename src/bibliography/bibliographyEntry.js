@@ -22,7 +22,11 @@ export default class BibliographyEntry {
   }
 
   get year () {
-    return _.get(this.cslData, 'issued.date-parts.0.0', Number.NaN)
+    const start = _.get(this.cslData, 'issued.date-parts.0.0', '')
+    const end = _.get(this.cslData, 'issued.date-parts.1.0', '')
+    return end
+      ? `${start}–${end}`
+      : String(start)
   }
 
   get title () {

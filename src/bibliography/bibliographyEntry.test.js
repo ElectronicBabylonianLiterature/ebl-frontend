@@ -14,7 +14,6 @@ beforeEach(async () => {
 test.each([
   ['id', 'id'],
   ['author', 'author.0.family'],
-  ['year', 'issued.date-parts.0.0'],
   ['title', 'title'],
   ['link', 'URL']
 ])('%s', async (property, path) =>
@@ -36,6 +35,21 @@ test('fallback link', async () => {
   cslData = await factory.build('cslData', { URL: null, DOI: 'doi' })
   entry = new BibliographyEntry(cslData)
   expect(entry.link).toEqual(`https://doi.org/${cslData.DOI}`)
+})
+
+test('year', async () => {
+  expect(entry.year).toEqual(String(_.get(cslData, 'issued.date-parts.0.0')))
+})
+
+test('year range', async () => {
+  cslData = await factory.build('cslData', { issued: {
+    'date-parts': [
+      [1800],
+      [2900]
+    ]
+  } })
+  entry = new BibliographyEntry(cslData)
+  expect(entry.year).toEqual('1800–2900')
 })
 
 test('citation', () => {
