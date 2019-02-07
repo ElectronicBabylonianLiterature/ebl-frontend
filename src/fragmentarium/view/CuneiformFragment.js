@@ -15,7 +15,7 @@ import Folios from './Folios'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
-import { serializeReference } from 'fragmentarium/reference'
+import { serializeReference } from 'bibliography/reference'
 
 import './CuneiformFragment.css'
 

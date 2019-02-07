@@ -6,7 +6,7 @@ import FragmentService from './FragmentService'
 import createFolio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
-import Reference from './reference'
+import Reference from 'bibliography/reference'
 
 const resultStub = {}
 const folio = createFolio('AKG', '375')

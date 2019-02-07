@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/lib/Async'
-import Reference from 'fragmentarium/reference'
+import Reference from 'bibliography/reference'
 
 function createLabel (entry) {
   const reference = new Reference('DISCUSSION', '', '', [], entry)

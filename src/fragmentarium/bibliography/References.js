@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import List from 'common/List'
 import ReferenceForm from './ReferenceForm'
-import Reference from 'fragmentarium/reference'
+import Reference from 'bibliography/reference'
 
 const defaultReference = new Reference()
 

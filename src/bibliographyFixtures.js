@@ -1,5 +1,5 @@
 import { factory, DefaultAdapter } from 'factory-girl'
-import Reference from 'fragmentarium/reference'
+import Reference from 'bibliography/reference'
 
 export default class ReferenceAdapter extends DefaultAdapter {
   build (Model, props) {

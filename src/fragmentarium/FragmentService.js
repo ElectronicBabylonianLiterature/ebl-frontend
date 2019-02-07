@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Promise } from 'bluebird'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
-import { createReference } from './reference'
+import { createReference } from 'bibliography/reference'
 
 class FragmentService {
   constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository) {
