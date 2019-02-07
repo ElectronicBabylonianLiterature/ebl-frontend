@@ -3,7 +3,7 @@ import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
-import References from 'fragmentarium/bibliography/References'
+import References from 'bibliography/References'
 import ReferenceList from 'bibliography/ReferenceList'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
