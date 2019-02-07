@@ -69,7 +69,7 @@ factory.define('referenceDto', Object, {
 factory.define('reference', Reference, {
   type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
   pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
-  notes: factory.chance('string'),
+  notes: factory.chance('sentence'),
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
   document: factory.build('bibliographyEntry')
 })
