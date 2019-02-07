@@ -6,7 +6,6 @@ import FragmentService from './FragmentService'
 import createFolio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
-import Reference from 'bibliography/reference'
 
 const resultStub = {}
 const folio = createFolio('AKG', '375')
@@ -77,16 +76,8 @@ describe('find', () => {
   let result
 
   beforeEach(async () => {
-    const entries = await factory.buildMany('bibliographyEntry', 2)
-    const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
+    const { entries, references, expectedReferences } = await setUpHydration()
     const fragment = await factory.build('fragment', { _id: number, references: references })
-    const expectedReferences = references.map((dto, index) => new Reference(
-      dto.type,
-      dto.pages,
-      dto.notes,
-      dto.linesCited,
-      entries[index]
-    ))
 
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
     bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
@@ -164,17 +155,21 @@ test('createLemmatization', async () => {
 })
 
 test('hydrateReferences', async () => {
-  const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
-  const expectedReferences = references.map((dto, index) => new Reference(
-    dto.type,
-    dto.pages,
-    dto.notes,
-    dto.linesCited,
-    entries[index]
-  ))
-
-  bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
-
+  const { references, expectedReferences } = await setUpHydration()
   await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(expectedReferences)
 })
+
+async function setUpHydration () {
+  const entries = await factory.buildMany('bibliographyEntry', 2)
+  const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
+  const expectedReferences = await factory.buildMany('reference', 2, references.map((dto, index) => ({
+    ...dto,
+    document: entries[index]
+  })))
+  bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+  return {
+    entries,
+    references,
+    expectedReferences
+  }
+}

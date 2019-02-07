@@ -54,9 +54,8 @@ factory.define('cslData', Object, {
   URL: factory.chance('url')
 })
 
-factory.define('bibliographyEntry', BibliographyEntry, async buildOptions => {
-  return buildOptions.cslData || factory.build('cslData')
-})
+factory.define('bibliographyEntry', BibliographyEntry, async buildOptions =>
+  buildOptions.cslData || factory.build('cslData'))
 
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
@@ -66,11 +65,8 @@ factory.define('referenceDto', Object, {
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
 })
 
-factory.define('reference', Reference, {
-  type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
-  pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
-  notes: factory.chance('sentence'),
-  linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
-  document: factory.build('bibliographyEntry')
-})
+factory.define('reference', Reference, async buildOptions => ({
+  ...(await factory.build('referenceDto')),
+  document: await factory.build('bibliographyEntry')
+}))
 factory.setAdapter(new ReferenceAdapter(), 'reference')
