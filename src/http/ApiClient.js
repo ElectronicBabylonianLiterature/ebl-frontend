@@ -5,6 +5,12 @@ function apiUrl (path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
+function deserializeJson (response) {
+  return response.status === 204
+    ? null
+    : response.json()
+}
+
 export class ApiError extends Error {
   constructor (message, data) {
     super(message)
@@ -78,6 +84,6 @@ export default class ApiClient {
         'Content-Type': 'application/json; charset=utf-8'
       },
       method: 'POST'
-    }).then(response => response.json())
+    }).then(deserializeJson)
   }
 }

@@ -18,7 +18,7 @@ describe('With link', () => {
   commomTests()
 
   test('A', async () => {
-    expect(container.querySelector('a')).toHaveAttribute('href', reference.link)
+    expect(container.querySelector('a')).toHaveAttribute('href', entry.link)
   })
 })
 

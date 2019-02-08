@@ -1,7 +1,6 @@
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import Cite from 'citation-js'
 import Reference, { createReference, serializeReference } from './reference'
 
 test('default reference', () => {
@@ -18,40 +17,14 @@ describe('Reference', () => {
   })
 
   test.each([
-    ['id', 'document.id'],
-    ['author', 'document.author.0.family'],
-    ['year', 'document.issued.date-parts.0.0'],
-    ['title', 'document.title'],
-    ['typeAbbreviation', 'type.0'],
-    ['link', 'document.URL']
+    ['typeAbbreviation', 'type.0']
   ])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
-
-  test('non-dropping particle', async () => {
-    const entry = await factory.build('bibliographyEntry', { author: [
-      {
-        'non-dropping-particle': 'von',
-        'family': 'Soden'
-      }
-    ] })
-    reference = await factory.build('reference', { document: entry })
-    expect(reference.author).toEqual('von Soden')
-  })
-
-  test('fallback link', async () => {
-    const entry = await factory.build('bibliographyEntry', { URL: null, DOI: 'doi' })
-    reference = await factory.build('reference', { document: entry })
-    expect(reference.link).toEqual(`https://doi.org/${entry.DOI}`)
-  })
-
-  test('citation', () => {
-    expect(reference.citation).toBeInstanceOf(Cite)
-  })
 })
 
 test('createReference', async () => {
-  const entry = {}
+  const entry = await factory.build('bibliographyEntry')
   const bibliographyRepository = {
     find: jest.fn()
   }
@@ -71,7 +44,7 @@ test('createReference', async () => {
 test('serializeReference', async () => {
   const reference = await factory.build('reference')
   expect(serializeReference(reference)).toEqual({
-    id: reference.id,
+    id: reference.document.id,
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,

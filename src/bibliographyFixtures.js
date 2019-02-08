@@ -1,5 +1,6 @@
 import { factory, DefaultAdapter } from 'factory-girl'
-import Reference from 'fragmentarium/reference'
+import Reference from 'bibliography/reference'
+import BibliographyEntry from './bibliography/bibliographyEntry'
 
 export default class ReferenceAdapter extends DefaultAdapter {
   build (Model, props) {
@@ -29,7 +30,7 @@ factory.define('author', Object, {
   family: factory.chance('last')
 })
 
-factory.define('bibliographyEntry', Object, {
+factory.define('cslData', Object, {
   id: factory.chance('guid'),
   title: factory.chance('sentence'),
   type: factory.chance('pickone', ['article-journal', 'paper-conference']),
@@ -53,6 +54,9 @@ factory.define('bibliographyEntry', Object, {
   URL: factory.chance('url')
 })
 
+factory.define('bibliographyEntry', BibliographyEntry, async buildOptions =>
+  buildOptions.cslData || factory.build('cslData'))
+
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
   type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
@@ -61,11 +65,8 @@ factory.define('referenceDto', Object, {
   linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
 })
 
-factory.define('reference', Reference, {
-  type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
-  pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
-  notes: factory.chance('string'),
-  linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2),
-  document: factory.assocAttrs('bibliographyEntry')
-})
+factory.define('reference', Reference, async buildOptions => ({
+  ...(await factory.build('referenceDto')),
+  document: await factory.build('bibliographyEntry')
+}))
 factory.setAdapter(new ReferenceAdapter(), 'reference')

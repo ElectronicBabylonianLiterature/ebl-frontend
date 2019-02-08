@@ -45,5 +45,5 @@ async function fill () {
 }
 
 function expectedLabel (entry) {
-  return `${entry.author[0].family} ${entry.issued['date-parts'][0][0]} ${entry.title}`
+  return `${entry.author} ${entry.year} ${entry.title}`
 }

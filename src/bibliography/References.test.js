@@ -6,7 +6,7 @@ import { Promise } from 'bluebird'
 
 import { changeValueByLabel, clickNth, submitForm } from 'testHelpers'
 import References from './References'
-import Reference from 'fragmentarium/reference'
+import Reference from 'bibliography/reference'
 
 const defaultReference = new Reference()
 

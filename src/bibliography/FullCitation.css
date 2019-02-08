@@ -1,0 +1,9 @@
+.FullCitation__link {
+  float: right;
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+}
+
+.FullCitation__notes {
+  text-align: justify;
+}
