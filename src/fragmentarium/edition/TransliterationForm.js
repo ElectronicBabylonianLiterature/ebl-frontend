@@ -95,15 +95,15 @@ class TransliteratioForm extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col sm={12}>
+          <Col>
             <this.Form />
           </Col>
         </Row>
         <Row>
-          <Col sm={6}>
+          <Col>
             <this.SubmitButton />
           </Col>
-          <Col sm={6}>
+          <Col md='auto'>
             <TemplateForm onSubmit={this.onTemplate} />
           </Col>
         </Row>

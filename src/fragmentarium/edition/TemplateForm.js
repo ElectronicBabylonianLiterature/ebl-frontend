@@ -40,7 +40,6 @@ class TemplateForm extends Component {
           </Form.Label>
           <Form.Control
             type='text'
-            size={8}
             value={this.state.template.pattern}
             placeholder='obv, rev'
             onChange={this.onChange}
