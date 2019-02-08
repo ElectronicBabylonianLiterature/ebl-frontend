@@ -4,6 +4,7 @@
 
 .ReferenceList__list {
   list-style: none;
+  margin-bottom: 0.5em;
   padding: 0;
 }
 

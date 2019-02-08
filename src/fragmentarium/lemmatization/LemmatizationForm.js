@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Col, Form, Checkbox, FormGroup } from 'react-bootstrap'
+import { Col, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/lib/Async'
 import _ from 'lodash'
 import Lemma from './Lemma'
@@ -20,6 +20,7 @@ class LemmatizationForm extends Component {
         props.token.suggestions.length > 0
       ) || undefined
     }
+    this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
 
   loadOptions = (inputValue, callback) => {
@@ -76,29 +77,31 @@ class LemmatizationForm extends Component {
   }
 
   Checkbox = () => (
-    <Checkbox
-      disabled={this.props.token.uniqueLemma.length > 1}
-      checked={this.state.isComplex}
-      onChange={() => this.setState({
-        ...this.state,
-        isComplex: !this.state.isComplex
-      })}>
-      Complex
-    </Checkbox>
+    <Form.Group controlId={this.checkboxId}>
+      <Form.Check
+        type='checkbox'
+        label='Complex'
+        disabled={this.props.token.uniqueLemma.length > 1}
+        checked={this.state.isComplex}
+        onChange={() => this.setState({
+          ...this.state,
+          isComplex: !this.state.isComplex
+        })} />
+    </Form.Group>
   )
 
   render () {
     const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
-      <Form horizontal>
-        <FormGroup>
+      <Form>
+        <Form.Row>
           <Col md={9}>
             <this.Select label={label} />
           </Col>
           <Col md={3}>
             <this.Checkbox />
           </Col>
-        </FormGroup>
+        </Form.Row>
       </Form>
     )
   }

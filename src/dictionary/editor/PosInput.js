@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
+import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 import TextListInput from './TextListInput'
@@ -40,8 +40,8 @@ class PosInput extends Component {
     return (
       <FormGroup>
         <FormGroup controlId={this.props.id}>
-          <ControlLabel>Position of speech</ControlLabel>
-          <FormControl componentClass='select' value={this.props.value.pos} onChange={this.updatePos}>
+          <FormLabel>Position of speech</FormLabel>
+          <FormControl as='select' value={this.props.value.pos} onChange={this.updatePos}>
             {posOptions.map(option =>
               <option key={option.value} value={option.value}>
                 {option.label}

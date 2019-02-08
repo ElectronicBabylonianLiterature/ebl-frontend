@@ -26,7 +26,7 @@ class RandomButton extends Component {
   render () {
     return (
       <Fragment>
-        <Button bsStyle='primary' onClick={this.click}>
+        <Button variant='primary' onClick={this.click}>
           {this.state.loading
             ? <Spinner />
             : this.props.children

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col, Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
@@ -94,7 +94,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
 
 function CuneiformFragment ({ fragment, fragmentService, activeFolio, onSave, saving, error }) {
   return (
-    <Grid fluid>
+    <Container fluid>
       <Row>
         <Col md={2}>
           <Info fragment={fragment} />
@@ -116,7 +116,7 @@ function CuneiformFragment ({ fragment, fragmentService, activeFolio, onSave, sa
           />
         </Col>
       </Row>
-    </Grid>
+    </Container>
   )
 }
 

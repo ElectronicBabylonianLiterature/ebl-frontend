@@ -39,7 +39,7 @@ class Lemmatizer extends Component {
     <Button
       onClick={this.submit}
       disabled={this.props.disabled || this.hasNoChanges}
-      bsStyle='primary'>
+      variant='primary'>
       Save
     </Button>
   )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import queryString from 'query-string'
 import Breadcrumbs from 'common/Breadcrumbs'
 import NumberSearchForm from './search/NumberSearchForm'
@@ -53,7 +53,7 @@ class Fragmentarium extends Component {
         <SessionContext.Consumer>
           {session => session.isAllowedToReadFragments()
             ? (
-              <Grid fluid>
+              <Container fluid>
                 <Row>
                   <Col md={6}>
                     <this.LeftColumn number={number} transliteration={transliteration} />
@@ -63,7 +63,7 @@ class Fragmentarium extends Component {
                     <this.RightColumn />
                   </Col>
                 </Row>
-              </Grid>
+              </Container>
             )
             : <>
               <p>You do not have the rights to access the fragmentarium.</p>

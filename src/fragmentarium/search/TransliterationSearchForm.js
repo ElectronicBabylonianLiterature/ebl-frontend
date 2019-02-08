@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, ControlLabel, FormControl, Button, Col, Popover } from 'react-bootstrap'
+import { Form, Button, Row, Col, Popover } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
@@ -42,14 +42,14 @@ class TransliterationSearchForm extends Component {
   render () {
     const rows = this.state.transliteration.split('\n').length
     return (
-      <Form horizontal onSubmit={this.submit}>
-        <FormGroup controlId='transliteration'>
-          <Col sm={2} componentClass={ControlLabel} >
-            <HelpTrigger overlay={TransliterationSearchHelp()} />
+      <Form onSubmit={this.submit}>
+        <Form.Group as={Row} controlId='transliteration'>
+          <Col sm={2} as={Form.Label} >
+            <div className='TransliterationSearchForm__label'><HelpTrigger overlay={TransliterationSearchHelp()} /></div>
           </Col>
           <Col sm={7}>
-            <FormControl
-              componentClass='textarea'
+            <Form.Control
+              as='textarea'
               value={this.state.transliteration}
               rows={Math.max(2, rows)}
               placeholder='Search transliterations'
@@ -57,10 +57,10 @@ class TransliterationSearchForm extends Component {
               onChange={this.onChange} />
           </Col>
           <Col sm={1}>
-            <Button type='submit' bsStyle='primary'>Search</Button>
+            <Button type='submit' variant='primary'>Search</Button>
           </Col>
-          <Col sm={3} />
-        </FormGroup>
+          <Col sm={2} />
+        </Form.Group>
       </Form>
     )
   }

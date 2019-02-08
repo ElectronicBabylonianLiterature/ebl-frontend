@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, ControlLabel, FormControl, InputGroup } from 'react-bootstrap'
+import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 class LemmaInput extends Component {
@@ -31,16 +31,16 @@ class LemmaInput extends Component {
   render () {
     return (
       <FormGroup controlId={`${this.props.id}`}>
-        <ControlLabel>Lemma</ControlLabel>
+        <FormLabel>Lemma</FormLabel>
         {_.has(this.props.value, 'attested') ? (
           <InputGroup>
-            <InputGroup.Addon>
-              <input
+            <InputGroup.Prepend>
+              <InputGroup.Checkbox
                 type='checkbox'
                 aria-label='attested'
                 checked={this.props.value.attested}
                 onChange={this.attestedChanged} />
-            </InputGroup.Addon>
+            </InputGroup.Prepend>
             <this.lemmaFormControl />
           </InputGroup>
         )

@@ -14,7 +14,7 @@ class BlobImage extends Component {
 
   render () {
     return <ExternalLink href={this.image}>
-      <Image src={this.image} alt={this.props.alt} responsive />
+      <Image src={this.image} alt={this.props.alt} fluid />
     </ExternalLink>
   }
 }

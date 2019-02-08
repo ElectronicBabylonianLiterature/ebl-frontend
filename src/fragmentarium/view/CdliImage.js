@@ -8,7 +8,7 @@ export default function CdliImage ({ cdliNumber }) {
 
   return cdliNumber && (
     <ExternalLink href={src}>
-      <Image src={src} alt={filename} responsive />
+      <Image src={src} alt={filename} fluid />
     </ExternalLink>
   )
 }

@@ -99,6 +99,7 @@ it('Clicking save calls fragmentService', async () => {
 })
 
 async function lemmatizeWord () {
+  await waitForElement(() => element.getByText('kur'))
   clickNth(element, 'kur', 0)
   await waitForElement(() => element.getByLabelText('Lemma'))
   changeValueByLabel(element, 'Lemma', 'a')

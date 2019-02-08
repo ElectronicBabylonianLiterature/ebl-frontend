@@ -19,11 +19,11 @@ class ErrorBoundary extends Component {
   render () {
     return this.state.error
       ? (
-        <Alert bsStyle='danger'>
+        <Alert variant='danger'>
           <h4>Something's gone wrong.</h4>
           <p>Our team has been notified, but you can fill out a report by clicking the button below.</p>
           <p>
-            <Button bsStyle='danger' onClick={() => this.context.showReportDialog()}>
+            <Button variant='danger' onClick={() => this.context.showReportDialog()}>
               Send a report
             </Button>
           </p>

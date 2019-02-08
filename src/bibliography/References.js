@@ -25,7 +25,7 @@ function References ({ searchBibliography, references, onChange, onSubmit, disab
       </List>
       <Button
         type='submit'
-        bsStyle='primary'
+        variant='primary'
         disabled={disabled}>
         Save
       </Button>

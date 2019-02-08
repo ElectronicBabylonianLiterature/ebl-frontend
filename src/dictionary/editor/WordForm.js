@@ -138,7 +138,7 @@ class WordForm extends Component {
 
           <this.derivedFrom />
 
-          <Button type='submit' bsStyle='primary'>Save</Button>
+          <Button type='submit' variant='primary'>Save</Button>
         </fieldset>
       </form>
     )

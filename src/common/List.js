@@ -34,10 +34,10 @@ class List extends Component {
             {React.Children.map(this.props.children, child =>
               <li className='List__item' key={child.key}>
                 {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
-                <Button onClick={this.delete(Number(child.key))}>Delete {this.props.noun}</Button>
+                <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
               </li>
             )}
-            <li><Button onClick={this.add}>Add {this.props.noun}</Button></li>
+            <li><Button onClick={this.add} size='sm' variant='outline-secondary'>Add {this.props.noun}</Button></li>
           </Fragment>
         )}
       </FormGroup>
