@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
-import { Form, FormGroup, FormLabel, FormControl, Button, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
 class FragmentSearchForm extends Component {
@@ -21,14 +21,14 @@ class FragmentSearchForm extends Component {
 
   render () {
     return (
-      <Form horizontal onSubmit={this.submit}>
-        <FormGroup controlId='number'>
+      <Form onSubmit={this.submit}>
+        <Form.Group as={Row} controlId='number'>
           <Col sm={2} />
-          <Col as={FormLabel} sm={2}>
+          <Col as={Form.Label} sm={2}>
           Number
           </Col>
           <Col sm={4}>
-            <FormControl
+            <Form.Control
               type='text'
               value={this.state.number}
               placeholder='Search museum, accession, or CDLI number'
@@ -38,7 +38,7 @@ class FragmentSearchForm extends Component {
             <Button type='submit' variant='primary'>Search</Button>
           </Col>
           <Col sm={3} />
-        </FormGroup>
+        </Form.Group>
       </Form>
     )
   }

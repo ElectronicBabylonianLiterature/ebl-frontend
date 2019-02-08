@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import Template from './Template'
 
 import HelpTrigger from 'common/HelpTrigger'
@@ -8,7 +8,7 @@ import TemplateHelp from './TemplateHelp'
 class TemplateForm extends Component {
   state = {
     template: new Template(''),
-    validationState: null
+    isValid: false
   }
 
   onChange = event => {
@@ -16,15 +16,13 @@ class TemplateForm extends Component {
 
     this.setState({
       template: template,
-      validationState: template.isValid
-        ? 'success'
-        : template.isEmpty ? null : 'error'
+      isValid: template.isValid
     })
   }
 
   submit = event => {
     event.preventDefault()
-    if (this.state.validationState === 'success') {
+    if (this.state.isValid) {
       const generatedTemplate = this.state.template.generate()
       this.props.onSubmit(generatedTemplate)
     }
@@ -32,20 +30,24 @@ class TemplateForm extends Component {
 
   render () {
     return (
-      <Form inline onSubmit={this.submit}>
-        <FormGroup controlId='template' validationState={this.state.validationState}>
-          <FormLabel>
+      <Form
+        inline
+        noValidate
+        onSubmit={this.submit}>
+        <Form.Group controlId='template'>
+          <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />
-          </FormLabel>
-          {' '}
-          <FormControl
+          </Form.Label>
+          <Form.Control
             type='text'
             size={8}
             value={this.state.template.pattern}
             placeholder='obv, rev'
             onChange={this.onChange}
-            aria-label='Template' />
-        </FormGroup>
+            aria-label='Template'
+            isValid={this.state.isValid}
+            isInvalid={!(this.state.isValid || this.state.template.isEmpty)} />
+        </Form.Group>
       </Form>
     )
   }

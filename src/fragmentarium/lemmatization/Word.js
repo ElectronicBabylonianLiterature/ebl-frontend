@@ -10,6 +10,8 @@ function Word ({ token, onClick }) {
     ? (
       <Button
         onClick={onClick}
+        size='sm'
+        variant='outline-dark'
         className={classNames({
           Word: true,
           'Word--with-lemma': !_.isEmpty(token.uniqueLemma),

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FormGroup, FormLabel, FormControl, Col } from 'react-bootstrap'
+import { Form, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
@@ -20,28 +20,28 @@ export default class ReferenceForm extends Component {
 
   render () {
     return (<>
-      <FormGroup controlId={`${this.id}-Entry`}>
+      <Form.Group controlId={`${this.id}-Entry`}>
         <label id={this.documentLabelId}>Document</label>
         <BibliographySelect
           aria-labelledby={this.documentLabelId}
           value={this.props.value.document}
           searchBibliography={this.props.searchBibliography}
           onChange={this.handleChange('setDocument')} />
-      </FormGroup>
-      <FormGroup>
-        <Col md={4}>
-          <FormGroup controlId={`${this.id}-Pages`}>
-            <FormLabel>Pages</FormLabel>
-            <FormControl
+      </Form.Group>
+      <Form.Row>
+        <Col>
+          <Form.Group controlId={`${this.id}-Pages`}>
+            <Form.Label>Pages</Form.Label>
+            <Form.Control
               type='text'
               value={this.props.value.pages}
               onChange={this.handleEvent('setPages')} />
-          </FormGroup>
+          </Form.Group>
         </Col>
-        <Col md={4}>
-          <FormGroup controlId={`${this.id}-Type`}>
-            <FormLabel>Type</FormLabel>
-            <FormControl
+        <Col>
+          <Form.Group controlId={`${this.id}-Type`}>
+            <Form.Label>Type</Form.Label>
+            <Form.Control
               as='select'
               value={this.props.value.type}
               onChange={this.handleEvent('setType')}
@@ -50,10 +50,10 @@ export default class ReferenceForm extends Component {
               <option value='DISCUSSION'>Discussion</option>
               <option value='COPY'>Copy</option>
               <option value='PHOTO'>Photo</option>
-            </FormControl>
-          </FormGroup>
+            </Form.Control>
+          </Form.Group>
         </Col>
-        <Col md={4}>
+        <Col>
           <ArrayInput
             separator=','
             value={this.props.value.linesCited}
@@ -61,16 +61,16 @@ export default class ReferenceForm extends Component {
             Lines Cited
           </ArrayInput>
         </Col>
-      </FormGroup>
-      <FormGroup controlId={`${this.id}-Notes`}>
-        <FormLabel>Notes</FormLabel>
+      </Form.Row>
+      <Form.Group controlId={`${this.id}-Notes`}>
+        <Form.Label>Notes</Form.Label>
         {' '}
         <HelpTrigger overlay={NotesHelp()} />
-        <FormControl
+        <Form.Control
           type='text'
           defaultValue={this.props.value.notes}
           onChange={this.handleEvent('setNotes')} />
-      </FormGroup>
+      </Form.Group>
     </>)
   }
 }

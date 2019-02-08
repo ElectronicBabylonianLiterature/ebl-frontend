@@ -34,13 +34,13 @@ class LemmaInput extends Component {
         <FormLabel>Lemma</FormLabel>
         {_.has(this.props.value, 'attested') ? (
           <InputGroup>
-            <InputGroup.Append>
-              <input
+            <InputGroup.Prepend>
+              <InputGroup.Checkbox
                 type='checkbox'
                 aria-label='attested'
                 checked={this.props.value.attested}
                 onChange={this.attestedChanged} />
-            </InputGroup.Append>
+            </InputGroup.Prepend>
             <this.lemmaFormControl />
           </InputGroup>
         )
