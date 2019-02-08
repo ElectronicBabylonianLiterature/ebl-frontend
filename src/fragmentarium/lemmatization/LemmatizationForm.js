@@ -53,9 +53,11 @@ class LemmatizationForm extends Component {
 
   Select = ({ label }) => {
     const defaultOptions = this.state.isComplex
-      ? this.props.token.suggestions
+      ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
       : _.isArray(this.props.token.suggestions)
-        ? this.props.token.suggestions.map(_.head)
+        ? this.props.token.suggestions
+          .filter(suggestion => suggestion.length === 1)
+          .map(_.head)
         : []
 
     return (
