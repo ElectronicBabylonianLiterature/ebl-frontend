@@ -108,10 +108,15 @@ export default class BibliographyEntryForm extends Component {
     return (<>
       <Form onSubmit={this.handleSubmit}>
         <Form.Group controlId={'editor'}>
-          <Form.Label>Data</Form.Label>
+          <p>
+            You can enter a DOI, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
+            BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
+          </p>
           <InputGroup>
             <Form.Control
+              aria-label='Data'
               as='textarea'
+              rows={this.state.value.split('\n').length}
               value={this.state.value}
               onChange={this.handleChange}
               isValid={this.isValid}
@@ -120,17 +125,13 @@ export default class BibliographyEntryForm extends Component {
               Invalid entry
             </Form.Control.Feedback>
           </InputGroup>
-          <p>
-            You can enter a DOI, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
-            BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
-          </p>
         </Form.Group>
+        <Spinner loading={this.state.loading} />
+        {parsed}
         <Button variant='primary' type='submit' disabled={!this.isValid}>
           Save
         </Button>
       </Form>
-      <Spinner loading={this.state.loading} />
-      {parsed}
     </>)
   }
 }
