@@ -65,11 +65,16 @@ class Auth {
   }
 
   isAuthenticated () {
-    return this.sessionStore.getSession().isAuthenticated()
+    return this.getSession().isAuthenticated()
   }
 
   getAccessToken () {
-    return this.sessionStore.getSession().accessToken
+    const session = this.getSession()
+    if (session.isAuthenticated()) {
+      return session.accessToken
+    } else {
+      throw new Error('Session expired.')
+    }
   }
 }
 

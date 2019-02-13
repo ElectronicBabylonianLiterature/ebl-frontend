@@ -1,7 +1,7 @@
 import Auth from './Auth'
 import auth0 from 'auth0-js'
 import _ from 'lodash'
-import { advanceTo, clear } from 'jest-date-mock'
+import { advanceTo, clear, advanceBy } from 'jest-date-mock'
 import Session from './Session'
 
 const now = new Date()
@@ -130,7 +130,14 @@ describe('Session', () => {
     expect(auth.getSession()).toEqual(session)
   })
 
-  test('getAccessToken', () => {
-    expect(auth.getAccessToken()).toEqual(session.accessToken)
+  describe('getAccessToken', () => {
+    test('active session', () => {
+      advanceBy(-1)
+      expect(auth.getAccessToken()).toEqual(session.accessToken)
+    })
+
+    test('expired session', () => {
+      expect(() => auth.getAccessToken()).toThrow(new Error('Session expired.'))
+    })
   })
 })
