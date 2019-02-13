@@ -41,8 +41,20 @@ export default class BibliographyEntry {
       : '')
   }
 
-  get citation () {
-    return new Cite(this.cslData)
+  toHtml () {
+    return new Cite(this.cslData).format('bibliography', {
+      format: 'html',
+      template: 'citation-apa',
+      lang: 'de-DE'
+    })
+  }
+
+  toBibtex () {
+    return new Cite(this.cslData).get({
+      format: 'string',
+      type: 'string',
+      style: 'bibtex'
+    })
   }
 
   toJson () {

@@ -9,30 +9,14 @@ import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
 import BibliographyEntry from './bibliographyEntry'
 
-function getCitation (cite) {
-  return cite.format('bibliography', {
-    format: 'html',
-    template: 'citation-apa',
-    lang: 'de-DE'
-  })
-}
-
 export default class BibliographyEntryForm extends Component {
   constructor (props) {
     super(props)
     this.state = props.value
       ? {
-        citation: getCitation(props.value.citation),
-        cslData: props.value.citation.get({
-          format: 'real',
-          type: 'json',
-          style: 'csl'
-        }),
-        value: props.value.citation.get({
-          format: 'text',
-          type: 'string',
-          style: 'bibtex'
-        }),
+        citation: props.value.toHtml(),
+        cslData: [props.value.toJson()],
+        value: props.value.toBibtex(),
         loading: false,
         isInvalid: false
       }
@@ -78,7 +62,11 @@ export default class BibliographyEntryForm extends Component {
     }).then(cite => {
       this.setState({
         ...this.state,
-        citation: getCitation(cite),
+        citation: cite.format('bibliography', {
+          format: 'html',
+          template: 'citation-apa',
+          lang: 'de-DE'
+        }),
         cslData: cite.get({
           format: 'real',
           type: 'json',

@@ -7,11 +7,7 @@ import './FullCitation.css'
 
 export default function FullCitation ({ reference }) {
   const parser = new Parser()
-  const citation = reference.document.citation.format('bibliography', {
-    format: 'html',
-    template: 'citation-apa',
-    lang: 'de-DE'
-  })
+  const citation = reference.document.toHtml()
   const parsed = parser.parse(citation)
   return <div>
     {reference.document.link &&

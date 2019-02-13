@@ -5,10 +5,12 @@ import BibliographyEntry from './bibliographyEntry'
 
 let cslData
 let entry
+let cite
 
 beforeEach(async () => {
   cslData = await factory.build('cslData')
   entry = new BibliographyEntry(cslData)
+  cite = new Cite(cslData)
 })
 
 test.each([
@@ -52,8 +54,20 @@ test('year range', async () => {
   expect(entry.year).toEqual('1800–2900')
 })
 
-test('citation', () => {
-  expect(entry.citation).toBeInstanceOf(Cite)
+test('toHtml', () => {
+  expect(entry.toHtml()).toEqual(cite.format('bibliography', {
+    format: 'html',
+    template: 'citation-apa',
+    lang: 'de-DE'
+  }))
+})
+
+test('toBibtex', () => {
+  expect(entry.toBibtex()).toEqual(cite.get({
+    format: 'string',
+    type: 'string',
+    style: 'bibtex'
+  }))
 })
 
 test('toJson', () => {
