@@ -46,6 +46,14 @@ class Session {
     return this.hasApplicationScope('lemmatizeFragments')
   }
 
+  isAllowedToReadBibliography () {
+    return this.hasApplicationScope('readBibliography')
+  }
+
+  isAllowedToWriteBibliography () {
+    return this.hasApplicationScope('writeBibliography')
+  }
+
   hasBetaAccess () {
     return this.hasApplicationScope('accessBeta')
   }

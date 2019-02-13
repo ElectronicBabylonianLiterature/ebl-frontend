@@ -5,7 +5,7 @@
   "transliterateFragments": "transliterate:fragments",
   "lemmatizeFragments": "lemmatize:fragments",
   "readBibliography": "read:bibliography",
-  "writeBiblioGraphy": "write:bibliography",
+  "writeBibliography": "write:bibliography",
   "accessBeta": "access:beta",
   "readWglFolios": "read:WGL-folios",
   "readFwgFolios": "read:FWG-folios",

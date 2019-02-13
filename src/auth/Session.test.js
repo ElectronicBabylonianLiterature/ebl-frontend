@@ -78,6 +78,8 @@ describe.each([
   ['read:fragments', 'isAllowedToReadFragments'],
   ['transliterate:fragments', 'isAllowedToTransliterateFragments'],
   ['lemmatize:fragments', 'isAllowedToLemmatizeFragments'],
+  ['write:bibliography', 'isAllowedToWriteBibliography'],
+  ['read:bibliography', 'isAllowedToReadBibliography'],
   ['access:beta', 'hasBetaAccess']
 ])('%s %s', (scope, method) => {
   beforeEach(() => advanceBy(-1))
