@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Image } from 'react-bootstrap'
-import ExternalLink from './ExternalLink'
 
 class BlobImage extends Component {
   constructor (props) {
@@ -13,9 +12,7 @@ class BlobImage extends Component {
   }
 
   render () {
-    return <ExternalLink href={this.image}>
-      <Image src={this.image} alt={this.props.alt} fluid />
-    </ExternalLink>
+    return <Image src={this.image} alt={this.props.alt} fluid />
   }
 }
 
