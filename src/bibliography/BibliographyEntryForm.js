@@ -7,18 +7,42 @@ import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
-import BibliographyEntry from './bibliographyEntry';
+import BibliographyEntry from './bibliographyEntry'
+
+function getCitation (cite) {
+  return cite.format('bibliography', {
+    format: 'html',
+    template: 'citation-apa',
+    lang: 'de-DE'
+  })
+}
 
 export default class BibliographyEntryForm extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      citation: '',
-      cslData: null,
-      value: '',
-      loading: false,
-      isInvalid: false
-    }
+    this.state = props.value
+      ? {
+        citation: getCitation(props.value.citation),
+        cslData: props.value.citation.get({
+          format: 'real',
+          type: 'json',
+          style: 'csl'
+        }),
+        value: props.value.citation.get({
+          format: 'text',
+          type: 'string',
+          style: 'bibtex'
+        }),
+        loading: false,
+        isInvalid: false
+      }
+      : {
+        citation: '',
+        cslData: null,
+        value: '',
+        loading: false,
+        isInvalid: false
+      }
     this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, {
       leading: false,
@@ -54,11 +78,7 @@ export default class BibliographyEntryForm extends Component {
     }).then(cite => {
       this.setState({
         ...this.state,
-        citation: cite.format('bibliography', {
-          format: 'html',
-          template: 'citation-apa',
-          lang: 'de-DE'
-        }),
+        citation: getCitation(cite),
         cslData: cite.get({
           format: 'real',
           type: 'json',
@@ -66,8 +86,7 @@ export default class BibliographyEntryForm extends Component {
         }),
         loading: false
       })
-    }).catch(error => {
-      console.error(error)
+    }).catch(() => {
       this.setState({
         ...this.state,
         citation: '',
