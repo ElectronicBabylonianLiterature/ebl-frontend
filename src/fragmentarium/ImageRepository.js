@@ -3,8 +3,8 @@ class ImageRepository {
     this.apiClient = apiClient
   }
 
-  find (fileName) {
-    return this.apiClient.fetchBlob(`/images/${fileName}`, true)
+  find (fileName, authenticate) {
+    return this.apiClient.fetchBlob(`/images/${fileName}`, authenticate)
   }
 }
 

@@ -9,6 +9,7 @@ const fileName = 'image.jpg'
 let apiClient
 let imageRepository
 let promise
+let authenticate
 
 beforeEach(() => {
   apiClient = new ApiClient(new Auth())
@@ -22,7 +23,7 @@ describe('find', () => {
   })
 
   it('Queries the file', () => {
-    expect(apiClient.fetchBlob).toBeCalledWith(`/images/${encodeURIComponent(fileName)}`, true)
+    expect(apiClient.fetchBlob).toBeCalledWith(`/images/${encodeURIComponent(fileName)}`, authenticate)
   })
 
   it('Resolves to blob', async () => {
