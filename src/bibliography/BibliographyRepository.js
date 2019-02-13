@@ -22,4 +22,10 @@ export default class BibliographyRepository {
       .fetchJson(`/bibliography?${queryString.stringify(query)}`, true)
       .then(result => result.map(createEntry))
   }
+
+  update (entry) {
+    return this.apiClient
+      .postJson(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toJson())
+      .then(createEntry)
+  }
 }
