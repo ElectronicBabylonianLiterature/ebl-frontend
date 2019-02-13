@@ -2,7 +2,6 @@ import Auth from './Auth'
 import auth0 from 'auth0-js'
 import _ from 'lodash'
 import { advanceTo, clear } from 'jest-date-mock'
-import { testDelegation } from 'testHelpers'
 import Session from './Session'
 
 const now = new Date()
@@ -120,19 +119,18 @@ describe('handleAuthentication', () => {
 
 describe('Session', () => {
   const session = new Session('accessToken', 'idToken', now.getTime(), [])
-  jest.spyOn(session, 'isAuthenticated')
 
   beforeEach(() => sessionStore.getSession.mockReturnValue(session))
 
-  testDelegation(() => auth, [
-    ['isAuthenticated', [], session.isAuthenticated, true]
-  ])
+  test('isAuhenticated', () => {
+    expect(auth.isAuthenticated()).toEqual(session.isAuthenticated())
+  })
 
-  it('getSession', () => {
+  test('getSession', () => {
     expect(auth.getSession()).toEqual(session)
   })
 
-  it('getAccessToken', () => {
+  test('getAccessToken', () => {
     expect(auth.getAccessToken()).toEqual(session.accessToken)
   })
 })
