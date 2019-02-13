@@ -28,12 +28,14 @@ async function renderFragmentarium (path = '/fragmentarium') {
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
-    statistics: jest.fn()
+    statistics: jest.fn(),
+    findImage: jest.fn()
   }
   session = {
     isAllowedToReadFragments: jest.fn()
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
+  fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))
 })
 
 describe('Statistics', () => {
