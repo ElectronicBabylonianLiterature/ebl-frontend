@@ -9,6 +9,7 @@ import Lemma from 'fragmentarium/lemmatization/Lemma'
 
 const resultStub = {}
 const folio = createFolio('AKG', '375')
+const fileName = 'Babel_Project_01_cropped.svg'
 const auth = {
   isAllowedToReadFragments: jest.fn(),
   isAllowedToTransliterateFragments: jest.fn(),
@@ -52,7 +53,8 @@ const testData = [
   ['updateTransliteration', ['K.1', '1. kur', 'notes'], fragmentRepository.updateTransliteration, resultStub],
   ['updateLemmatization', ['K.1', [[{ value: 'kur', uniqueLemma: [] }]]], fragmentRepository.updateLemmatization, resultStub],
   ['updateReferences', ['K.1', [[{ id: 'id', type: 'EDITION', 'notes': '', pages: '', linesCited: [] }]]], fragmentRepository.updateReferences, resultStub],
-  ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName]],
+  ['findFolio', [folio], imageRepository.find, resultStub, [folio.fileName, true]],
+  ['findImage', [fileName], imageRepository.find, resultStub, [fileName, false]],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],

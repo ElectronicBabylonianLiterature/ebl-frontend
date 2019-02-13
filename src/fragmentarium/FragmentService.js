@@ -54,12 +54,11 @@ class FragmentService {
   }
 
   findFolio (folio) {
-    return this.imageRepository.find(folio.fileName)
+    return this.imageRepository.find(folio.fileName, true)
   }
 
-  findImage () {
-    const fileName = 'Babel_Project_01_cropped.svg'
-    return this.imageRepository.find(fileName)
+  findImage (fileName) {
+    return this.imageRepository.find(fileName, false)
   }
 
   folioPager (folio, fragmentNumber) {
