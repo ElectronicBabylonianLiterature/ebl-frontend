@@ -44,4 +44,8 @@ export default class BibliographyEntry {
   get citation () {
     return new Cite(this.cslData)
   }
+
+  toJson () {
+    return _.cloneDeep(this.cslData)
+  }
 }

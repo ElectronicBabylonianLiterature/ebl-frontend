@@ -55,3 +55,7 @@ test('year range', async () => {
 test('citation', () => {
   expect(entry.citation).toBeInstanceOf(Cite)
 })
+
+test('toJson', () => {
+  expect(entry.toJson()).toEqual(cslData)
+})
