@@ -8,9 +8,12 @@
 
 .Fragmentarium-search__header {
   padding-bottom: 1em;
+  margin: auto;
+  max-width: 55em;
 }
 
 .Fragmentarium-search__button-bar {
   margin: 1em;
-  padding-left: 6.5em;
+  text-align: center;
 }
+
