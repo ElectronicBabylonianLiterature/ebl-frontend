@@ -5,6 +5,7 @@ import BlobImage from './BlobImage'
 
 const objectUrl = 'object URL mock'
 let fragmentService
+let data
 let element
 
 beforeEach(async () => {
@@ -13,7 +14,7 @@ beforeEach(async () => {
   }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
   fragmentService.findFolio.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
-  element = render(<BlobImage fragmentService={fragmentService} />)
+  element = render(<BlobImage fragmentService={data} />)
 })
 
 it('Displays the loaded image', () => {
@@ -21,9 +22,8 @@ it('Displays the loaded image', () => {
     .toHaveAttribute('src', objectUrl)
 })
 
-it('Has a link to the image', () => {
-  expect(element.container.querySelector('a'))
-    .toHaveAttribute('href', objectUrl)
+it('Creates object Url', () => {
+  expect(URL.createObjectURL).toHaveBeenCalledWith(data)
 })
 
 it('Revokes objet URL on unmount', () => {
