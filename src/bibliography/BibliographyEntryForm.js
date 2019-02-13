@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, InputGroup } from 'react-bootstrap'
+import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
 import _ from 'lodash'
 import Promise from 'bluebird'
@@ -7,6 +7,7 @@ import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
+import BibliographyEntry from './bibliographyEntry';
 
 export default class BibliographyEntryForm extends Component {
   constructor (props) {
@@ -79,15 +80,16 @@ export default class BibliographyEntryForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    this.props.onSubmit(this.state.cite.format('bibliography'))
+    const entry = new BibliographyEntry(this.state.cslData[0])
+    this.props.onSubmit(entry)
   }
 
   render () {
     const parsed = new Parser().parse(this.state.citation)
     return (<>
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <Form.Group controlId={'editor'}>
-          <Form.Label>Bibtex</Form.Label>
+          <Form.Label>Data</Form.Label>
           <InputGroup>
             <Form.Control
               as='textarea'
@@ -104,6 +106,9 @@ export default class BibliographyEntryForm extends Component {
             BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
           </p>
         </Form.Group>
+        <Button variant='primary' type='submit' disabled={!this.isValid}>
+          Save
+        </Button>
       </Form>
       <Spinner loading={this.state.loading} />
       {parsed}
