@@ -9,7 +9,7 @@ const fileName = 'image.jpg'
 let apiClient
 let imageRepository
 let promise
-let authenticate
+let authenticate = true
 
 beforeEach(() => {
   apiClient = new ApiClient(new Auth())
@@ -19,7 +19,7 @@ beforeEach(() => {
 describe('find', () => {
   beforeEach(async () => {
     jest.spyOn(apiClient, 'fetchBlob').mockReturnValueOnce(Promise.resolve(image))
-    promise = imageRepository.find(fileName)
+    promise = imageRepository.find(fileName, authenticate)
   })
 
   it('Queries the file', () => {
