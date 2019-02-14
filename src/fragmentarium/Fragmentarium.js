@@ -33,7 +33,7 @@ class Fragmentarium extends Component {
               <SessionContext.Consumer>
                 {session => session.isAllowedToReadFragments()
                   ? (
-                    <SearchGroup number={number} transliteration={transliteration} />
+                    <SearchGroup number={number} transliteration={transliteration} fragmentService={this.props.fragmentService} />
                   )
                   : <p> Please log in to browse the Fragmentarium. </p>
                 }

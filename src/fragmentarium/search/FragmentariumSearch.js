@@ -29,7 +29,7 @@ class FragmentariumSearch extends Component {
             ? (
               <section className='Fragmentarium-search'>
                 <header className='Fragmentarium-search__header'>
-                  <SearchGroup number={number} transliteration={transliteration} />
+                  <SearchGroup number={number} transliteration={transliteration} fragmentService={this.props.fragmentService} />
                 </header>
                 <NumberSearch number={number} fragmentService={this.props.fragmentService} />
                 <TransliterationSearch transliteration={transliteration} fragmentService={this.props.fragmentService} />
