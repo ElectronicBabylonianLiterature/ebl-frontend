@@ -13,6 +13,7 @@ import Fragmentarium from 'fragmentarium/Fragmentarium'
 import ErrorBoundary from 'common/ErrorBoundary'
 import FragmentariumSearch from 'fragmentarium/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/BibliographyEditor'
+import Bibliography from 'bibliography/Bibliography'
 
 function App ({ auth, wordService, fragmentService, bibliographyRepository }) {
   return (
@@ -21,6 +22,7 @@ function App ({ auth, wordService, fragmentService, bibliographyRepository }) {
       <ErrorBoundary>
         <Switch>
           <Route path='/bibliography/:id' render={props => <BibliographyEditor bibliographyRepository={bibliographyRepository} {...props} />} />
+          <Route path='/bibliography' render={props => <Bibliography fragmentService={fragmentService} {...props} />} />
           <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
           <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />

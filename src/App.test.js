@@ -15,7 +15,7 @@ import SessionStore from './auth/SessionStore'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
 
 test.each(
-  ['/', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
+  ['/', '/bibliography', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 )('%s renders without crashing', route => {
   const auth = new Auth(new SessionStore())
   const apiClient = new ApiClient(auth)
