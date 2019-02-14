@@ -2,33 +2,29 @@
   background-color: white;
   border-bottom: 1px solid black;
   color: black;
-  padding: 1.5em;
   text-align: center;
 }
 
 .Header__title {
-  font-size: 2em;
+  font-size: 1em;
 }
 
 .Header__title-main {
   border-right: 0.05em solid black;
   display: inline-block;
+  line-height: 1.2;
   margin-right: 0.5em;
   padding-right: 0.5em;
   text-align: right;
+  font-weight: bold;
 }
 
 .Header__title-abbreviation {
   color: white;
   font-size: 4em;
-  text-shadow: -1px -2px 0 black,
-    2px -2px 0 black,
-    -2px 2px 0 black,
-    2px 2px 0 black;
-}
-
-.Header__nav,
-.Header__nav-item {
-  display: inline;
-  padding: 0.5em;
+  line-height: 0.7;
+  text-shadow: -1.5px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
