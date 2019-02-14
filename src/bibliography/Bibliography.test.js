@@ -49,7 +49,7 @@ describe('Searching bibliography', () => {
 })
 
 it('Displays a message if user is not logged in', () => {
-  session.isAllowedToReadWords.mockReturnValueOnce(false)
+  session.isAllowedToReadBibliography.mockReturnValueOnce(false)
 
   const { container } = renderDictionary('/bibliography')
 
