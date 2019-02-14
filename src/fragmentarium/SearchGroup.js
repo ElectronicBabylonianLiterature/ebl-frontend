@@ -11,7 +11,7 @@ export default function SearchGroup ({ number, transliteration, fragmentService 
     <>
       <NumberSearchForm number={number} />
       <TransliterationSearchForm transliteration={transliteration} />
-      <div className='Fragmentarium-search__button-bar'>
+      <div className='SearchGroup__button-bar'>
         <RandomButton fragmentService={fragmentService} method='random'>
                 I'm feeling lucky
         </RandomButton>
