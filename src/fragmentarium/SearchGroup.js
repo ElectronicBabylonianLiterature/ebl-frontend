@@ -4,7 +4,7 @@ import TransliterationSearchForm from './search/TransliterationSearchForm'
 import RandomButton from './RandomButton'
 import PioneersButton from './PioneersButton'
 
-import './Fragmentarium.css'
+import './SearchGroup.css'
 
 export default function SearchGroup ({ number, transliteration, fragmentService }) {
   return (
