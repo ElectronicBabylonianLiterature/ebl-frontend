@@ -23,7 +23,7 @@ class FragmentSearchForm extends Component {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId='number'>
-          <Col as={Form.Label} sm={2} />
+          <Col sm={2} />
           <Col sm={7}>
             <Form.Control
               type='text'
@@ -32,10 +32,9 @@ class FragmentSearchForm extends Component {
               aria-label='Number'
               onChange={this.onChange} />
           </Col>
-          <Col sm={1}>
+          <Col sm={3}>
             <Button type='submit' variant='primary'>Search</Button>
           </Col>
-          <Col sm={2} />
         </Form.Group>
       </Form>
     )

@@ -44,8 +44,8 @@ class TransliterationSearchForm extends Component {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId='transliteration'>
-          <Col sm={2} as={Form.Label} >
-            <div className='TransliterationSearchForm__label'><HelpTrigger overlay={TransliterationSearchHelp()} /></div>
+          <Col sm={2} as={Form.Label} className='TransliterationSearchForm__label'>
+            <HelpTrigger overlay={TransliterationSearchHelp()} />
           </Col>
           <Col sm={7}>
             <Form.Control
@@ -56,10 +56,9 @@ class TransliterationSearchForm extends Component {
               aria-label='Transliteration'
               onChange={this.onChange} />
           </Col>
-          <Col sm={1}>
+          <Col sm={3}>
             <Button type='submit' variant='primary'>Search</Button>
           </Col>
-          <Col sm={2} />
         </Form.Group>
       </Form>
     )
