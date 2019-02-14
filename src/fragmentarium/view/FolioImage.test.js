@@ -19,6 +19,11 @@ beforeEach(async () => {
   await waitForElement(() => element.getByAltText(folio.fileName))
 })
 
+it('Has a link to the image', () => {
+  expect(element.container.querySelector('a'))
+    .toHaveAttribute('href', objectUrl)
+})
+
 it('Queries the API with given parameters', () => {
   expect(fragmentService.findFolio).toBeCalledWith(folio)
 })
