@@ -116,7 +116,7 @@ export default class BibliographyEntryForm extends Component {
         </Form.Group>
         <Spinner loading={this.state.loading} />
         {parsed}
-        <Button variant='primary' type='submit' disabled={!this.isValid}>
+        <Button variant='primary' type='submit' disabled={!this.isValid || this.props.disabled}>
           Save
         </Button>
       </Form>

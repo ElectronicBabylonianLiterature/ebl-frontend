@@ -12,27 +12,28 @@ import ImageRepository from 'fragmentarium/ImageRepository'
 import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import SessionStore from './auth/SessionStore'
+import BibliographyRepository from 'bibliography/BibliographyRepository'
 
-const routes = ['/', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
+test.each(
+  ['/', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
+)('%s renders without crashing', route => {
+  const auth = new Auth(new SessionStore())
+  const apiClient = new ApiClient(auth)
+  const wordRepository = new WordRepository(apiClient)
+  const fragmentRepository = new FragmentRepository(apiClient)
+  const imageRepository = new ImageRepository(apiClient)
+  const bibliographyRepository = new BibliographyRepository(apiClient)
+  const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyRepository)
+  const wordService = new WordService(wordRepository)
 
-routes.forEach(route => {
-  it(`${route} renders without crashing`, () => {
-    const auth = new Auth(new SessionStore())
-    const apiClient = new ApiClient(auth)
-    const wordRepository = new WordRepository(apiClient)
-    const fragmentRepository = new FragmentRepository(apiClient)
-    const imageRepository = new ImageRepository(apiClient)
-    const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository)
-    const wordService = new WordService(wordRepository)
+  jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
 
-    jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
-
-    render(<MemoryRouter initialEntries={[route]}>
-      <App
-        auth={auth}
-        wordService={wordService}
-        fragmentService={fragmentService}
-      />
-    </MemoryRouter>)
-  })
+  render(<MemoryRouter initialEntries={[route]}>
+    <App
+      auth={auth}
+      wordService={wordService}
+      fragmentService={fragmentService}
+      bibliographyRepository={bibliographyRepository}
+    />
+  </MemoryRouter>)
 })

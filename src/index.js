@@ -47,6 +47,7 @@ ReactDOM.render(
           auth={auth}
           wordService={wordService}
           fragmentService={fragmentService}
+          bibliographyRepository={bibliographyRepository}
         />
       </Router>
     </ErrorBoundary>
