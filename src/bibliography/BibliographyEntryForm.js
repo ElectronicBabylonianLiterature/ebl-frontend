@@ -45,6 +45,10 @@ export default class BibliographyEntryForm extends Component {
     )
   }
 
+  get isDisabled () {
+    return !this.isValid || this.props.disabled
+  }
+
   handleChange = ({ target: { value } }) => {
     this.setState({
       ...this.state,
@@ -100,7 +104,7 @@ export default class BibliographyEntryForm extends Component {
             You can enter a DOI, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
             BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
           </p>
-          <InputGroup>
+          <InputGroup disabled={this.isDisabled}>
             <Form.Control
               aria-label='Data'
               as='textarea'
@@ -108,7 +112,8 @@ export default class BibliographyEntryForm extends Component {
               value={this.state.value}
               onChange={this.handleChange}
               isValid={this.isValid}
-              isInvalid={this.isInvalid} />
+              isInvalid={this.isInvalid}
+              disabled={!this.isValid || this.props.disabled} />
             <Form.Control.Feedback type='invalid'>
               Invalid entry
             </Form.Control.Feedback>
@@ -116,7 +121,7 @@ export default class BibliographyEntryForm extends Component {
         </Form.Group>
         <Spinner loading={this.state.loading} />
         {parsed}
-        <Button variant='primary' type='submit' disabled={!this.isValid || this.props.disabled}>
+        <Button variant='primary' type='submit' disabled={this.isDisabled}>
           Save
         </Button>
       </Form>
