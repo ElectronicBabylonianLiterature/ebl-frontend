@@ -2,6 +2,12 @@
   list-style-type: none;
 }
 
+.BibliographySearch__edit {
+  float: left;
+  margin-bottom: 0.5em;
+  margin-right: 0.5em;
+}
+
 .BibliographySearch__entry {
   margin-bottom: 0.5em;
 }
