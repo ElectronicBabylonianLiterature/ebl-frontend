@@ -1,20 +1,15 @@
 import React from 'react'
 import { render } from 'react-testing-library'
-import Promise from 'bluebird'
 import BlobImage from './BlobImage'
 
 const objectUrl = 'object URL mock'
-let fragmentService
 let data
 let element
 
 beforeEach(async () => {
-  fragmentService = {
-    findFolio: jest.fn()
-  }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  fragmentService.findFolio.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
-  element = render(<BlobImage fragmentService={data} />)
+  data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
+  element = render(<BlobImage data={data} />)
 })
 
 it('Displays the loaded image', () => {
