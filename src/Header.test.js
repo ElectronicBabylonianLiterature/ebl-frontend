@@ -32,8 +32,11 @@ describe('Logged in', () => {
 })
 
 function commonTests () {
+  test('Logo links to home', () => {
+    expect(element.getByTitle('electronic Babylonian Literature (eBL)')).toHaveAttribute('href', '/')
+  })
+
   test.each([
-    ['Home', '/'],
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
     ['Bibliography', '/bibliography']
