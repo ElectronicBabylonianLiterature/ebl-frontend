@@ -1,5 +1,7 @@
 import React from 'react'
 import queryString from 'query-string'
+import { LinkContainer } from 'react-router-bootstrap'
+import { Button } from 'react-bootstrap'
 
 import Breadcrumbs from 'common/Breadcrumbs'
 import BibliographySearchForm from './BibliographySearchForm'
@@ -12,22 +14,25 @@ export default function Bibliography ({ fragmentService, location }) {
   const query = queryString.parse(location.search).query
 
   return (
-    <section className='App-content'>
-      <header>
-        <Breadcrumbs section='Bibliography' />
-        <h2>Bibliography</h2>
-      </header>
-      <SessionContext.Consumer>
-        {session => session.isAllowedToReadBibliography()
-          ? <>
-            <header className='Bibliography__header'>
-              <BibliographySearchForm query={query} />
-            </header>
-            <BibliographySearch query={query} fragmentService={fragmentService} />
-          </>
-          : <p>Please log in to browse the Bibliography.</p>
-        }
-      </SessionContext.Consumer>
-    </section>
+    <SessionContext.Consumer>
+      {session =>
+        <section className='App-content'>
+          <header>
+            <Breadcrumbs section='Bibliography' />
+            <LinkContainer to='/bibliography_new'>
+              <Button className='float-right' variant='outline-primary'><i className='fas fa-plus-circle' /> Create</Button>
+            </LinkContainer>
+            <h2>Bibliography</h2>
+          </header>
+          {session.isAllowedToReadBibliography()
+            ? <>
+              <div className='Bibliography__search'><BibliographySearchForm query={query} /></div>
+              <BibliographySearch query={query} fragmentService={fragmentService} />
+            </>
+            : <p>Please log in to browse the Bibliography.</p>
+          }
+        </section>
+      }
+    </SessionContext.Consumer>
   )
 }

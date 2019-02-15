@@ -22,7 +22,8 @@ function App ({ auth, wordService, fragmentService, bibliographyRepository }) {
       <ErrorBoundary>
         <Switch>
           <Route path='/bibliography/:id' render={props => <BibliographyEditor bibliographyRepository={bibliographyRepository} {...props} />} />
-          <Route path='/bibliography' render={props => <Bibliography fragmentService={fragmentService} {...props} />} />
+          <Route path='/bibliography_new' render={props => <BibliographyEditor bibliographyRepository={bibliographyRepository} {...props} create />} />
+          <Route path='/bibliography' render={props => <Bibliography fragmentService={fragmentService} bibliographyRepository={bibliographyRepository} {...props} />} />
           <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
           <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />

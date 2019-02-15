@@ -61,3 +61,27 @@ export default class BibliographyEntry {
     return _.cloneDeep(this.cslData)
   }
 }
+
+export const template = new BibliographyEntry({
+  'id': '<id>',
+  'title': '<title>',
+  'type': '<type>',
+  'DOI': '<doi>',
+  'issued': {
+    'date-parts': [
+      [
+        '<year>'
+      ]
+    ]
+  },
+  'volume': '<volume>',
+  'page': '<page(s)>',
+  'issue': '<issue>',
+  'container-title': '<journal>',
+  'author': [
+    {
+      'given': '<given name>',
+      'family': '<family name>'
+    }
+  ]
+})
