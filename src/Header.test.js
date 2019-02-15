@@ -16,7 +16,7 @@ describe('Logged out', () => {
 
   commonTests()
 
-  it('Has login button', () => {
+  test('Login button', () => {
     expect(element.getByText('Login')).toBeVisible()
   })
 })
@@ -26,22 +26,19 @@ describe('Logged in', () => {
 
   commonTests()
 
-  it('Has logout button', () => {
+  test('Logout button', () => {
     expect(element.getByText('Logout')).toBeVisible()
   })
 })
 
 function commonTests () {
-  it('Navigation has Home link', () => {
-    expect(element.getByText('Home')).toHaveAttribute('href', '/')
-  })
-
-  it('Navigation has Dictionary link', () => {
-    expect(element.getByText('Dictionary')).toHaveAttribute('href', '/dictionary')
-  })
-
-  it('Navigation has Fragmentarium link', () => {
-    expect(element.getByText('Fragmentarium')).toHaveAttribute('href', '/fragmentarium')
+  test.each([
+    ['Home', '/'],
+    ['Dictionary', '/dictionary'],
+    ['Fragmentarium', '/fragmentarium'],
+    ['Bibliography', '/bibliography']
+  ])('%s links to %s', (title, href) => {
+    expect(element.getByText(title)).toHaveAttribute('href', href)
   })
 }
 

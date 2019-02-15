@@ -24,6 +24,7 @@ export default function Header ({ auth }) {
             <Nav.Item><LinkContainer to='/'><Nav.Link>Home</Nav.Link></LinkContainer></Nav.Item>
             <Nav.Item><LinkContainer to='/dictionary'><Nav.Link>Dictionary</Nav.Link></LinkContainer></Nav.Item>
             <Nav.Item><LinkContainer to='/fragmentarium'><Nav.Link>Fragmentarium</Nav.Link></LinkContainer></Nav.Item>
+            <Nav.Item><LinkContainer to='/bibliography'><Nav.Link>Bibliography</Nav.Link></LinkContainer></Nav.Item>
           </Nav>
         </Navbar.Collapse>
         <Navbar.Text>
