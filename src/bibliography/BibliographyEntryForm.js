@@ -9,6 +9,8 @@ import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
 import BibliographyEntry from './bibliographyEntry'
 
+import './BibliographyEntryForm.css'
+
 export default class BibliographyEntryForm extends Component {
   constructor (props) {
     super(props)
@@ -16,7 +18,7 @@ export default class BibliographyEntryForm extends Component {
       ? {
         citation: props.value.toHtml(),
         cslData: [props.value.toJson()],
-        value: props.value.toBibtex(),
+        value: JSON.stringify(props.value.toJson(), null, 2),
         loading: false,
         isInvalid: false
       }
@@ -104,7 +106,7 @@ export default class BibliographyEntryForm extends Component {
             You can enter a DOI, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
             BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
           </p>
-          <InputGroup disabled={this.isDisabled}>
+          <InputGroup>
             <Form.Control
               aria-label='Data'
               as='textarea'
@@ -113,7 +115,8 @@ export default class BibliographyEntryForm extends Component {
               onChange={this.handleChange}
               isValid={this.isValid}
               isInvalid={this.isInvalid}
-              disabled={!this.isValid || this.props.disabled} />
+              disabled={this.props.disabled}
+              className='BibliographyEntryForm__editor' />
             <Form.Control.Feedback type='invalid'>
               Invalid entry
             </Form.Control.Feedback>

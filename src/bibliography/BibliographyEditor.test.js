@@ -36,7 +36,7 @@ describe('Fecth entry', () => {
   it('Displays result on successfull query', async () => {
     const { container } = await renderWithRouter()
 
-    expect(container).toHaveTextContent(result.toBibtex().replace(/\s+/g, ' '))
+    expect(container).toHaveTextContent(JSON.stringify(result.toJson(), null, 1).replace(/\s+/g, ' '))
   })
 })
 
