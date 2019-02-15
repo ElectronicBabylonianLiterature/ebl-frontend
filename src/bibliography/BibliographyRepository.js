@@ -28,4 +28,10 @@ export default class BibliographyRepository {
       .postJson(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toJson())
       .then(createEntry)
   }
+
+  create (entry) {
+    return this.apiClient
+      .putJson(`/bibliography`, entry.toJson())
+      .then(createEntry)
+  }
 }
