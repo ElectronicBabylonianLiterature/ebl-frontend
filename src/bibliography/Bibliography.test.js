@@ -18,7 +18,8 @@ beforeEach(async () => {
     searchBibliography: jest.fn()
   }
   session = {
-    isAllowedToReadBibliography: jest.fn()
+    isAllowedToReadBibliography: jest.fn(),
+    isAllowedToWriteBibliography: () => false
   }
 })
 

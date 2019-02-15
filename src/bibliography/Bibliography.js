@@ -20,7 +20,9 @@ export default function Bibliography ({ fragmentService, location }) {
           <header>
             <Breadcrumbs section='Bibliography' />
             <LinkContainer to='/bibliography_new'>
-              <Button className='float-right' variant='outline-primary'><i className='fas fa-plus-circle' /> Create</Button>
+              <Button className='float-right' variant='outline-primary' disabled={!session.isAllowedToWriteBibliography()}>
+                <i className='fas fa-plus-circle' /> Create
+              </Button>
             </LinkContainer>
             <h2>Bibliography</h2>
           </header>
