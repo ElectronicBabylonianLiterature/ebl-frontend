@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import BlobImage from 'common/BlobImage'
 import withData from 'http/withData'
 import ExternalLink from 'common/ExternalLink'
 
-function FolioImage (props) {
-  let image = URL.createObjectURL(props.data)
-  return (
-    <ExternalLink href={image}>
-      <BlobImage data={props.data} alt={props.folio.fileName} />
+class FolioImage extends Component {
+  constructor (props) {
+    super(props)
+    this.image = URL.createObjectURL(props.data)
+  }
+
+  componentWillUnmount () {
+    URL.revokeObjectURL(this.image)
+  }
+
+  render () {
+    return <ExternalLink href={this.image}>
+      <BlobImage data={this.props.data} alt={this.props.folio.fileName} />
     </ExternalLink>
-  )
+  }
 }
 
 export default withData(
