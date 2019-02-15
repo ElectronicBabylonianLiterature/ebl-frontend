@@ -10,12 +10,7 @@ function Callback ({ location, history, auth }) {
   return <ErrorReporterContext.Consumer>
     { errorReporter => {
       if (/access_token|id_token|error/.test(location.hash)) {
-        auth.handleAuthentication()
-          .then(() => history.replace(redirectTarget))
-          .catch(error => {
-            errorReporter.captureException(error)
-            history.replace(redirectTarget)
-          })
+        handleAuthentication(auth, history, errorReporter)
         return <Spinner />
       } else {
         return <Redirect to={redirectTarget} />
@@ -26,3 +21,11 @@ function Callback ({ location, history, auth }) {
 }
 
 export default Callback
+function handleAuthentication (auth, history, errorReporter) {
+  auth.handleAuthentication()
+    .then(() => history.replace(redirectTarget))
+    .catch(error => {
+      errorReporter.captureException(error)
+      history.replace(redirectTarget)
+    })
+}
