@@ -13,7 +13,7 @@ function BibliographySearch ({ data }) {
     <ol className='BibliographySearch'>
       {data.map(entry =>
         <li key={entry.id} className='BibliographySearch__entry'>
-          <Link to={`/bibliography/${entry.id}`} className='BibliographySearch__edit'>
+          <Link to={`/bibliography/${encodeURIComponent(entry.id)}`} className='BibliographySearch__edit'>
             <i className='fas fa-edit' />
           </Link>
           {parser.parse(entry.toHtml())}
