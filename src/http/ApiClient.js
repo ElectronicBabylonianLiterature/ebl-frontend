@@ -11,6 +11,15 @@ function deserializeJson (response) {
     : response.json()
 }
 
+function createOptions (body, method) {
+  return {
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    method: method
+  }
+}
 export class ApiError extends Error {
   constructor (message, data) {
     super(message)
@@ -78,12 +87,10 @@ export default class ApiClient {
   }
 
   postJson (path, body) {
-    return this.cancellableFetch(path, true, {
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      method: 'POST'
-    }).then(deserializeJson)
+    return this.cancellableFetch(path, true, createOptions(body, 'POST')).then(deserializeJson)
+  }
+
+  putJson (path, body) {
+    return this.cancellableFetch(path, true, createOptions(body, 'PUT')).then(deserializeJson)
   }
 }

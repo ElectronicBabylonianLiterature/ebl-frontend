@@ -89,6 +89,43 @@ describe('postJson', () => {
   commonTests(() => apiClient.postJson(path, json))
 })
 
+describe('putJson', () => {
+  const json = {
+    'payload': 1
+  }
+
+  test('Resolves on success', async () => {
+    setUpSuccessResponse()
+
+    await expect(apiClient.putJson(path, json)).resolves.toEqual(result)
+  })
+
+  test('No Content resolves to falsy value', async () => {
+    setUpEmptyResponse(204)
+
+    await expect(apiClient.putJson(path, json)).resolves.toBeFalsy()
+  })
+
+  test('Makes a put request with given parameters', async () => {
+    setUpSuccessResponse()
+
+    await apiClient.putJson(path, json)
+
+    const expectedHeaders = new Headers({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json; charset=utf-8'
+    })
+    expect(fetch).toBeCalledWith(expectedUrl, {
+      body: JSON.stringify(json),
+      headers: expectedHeaders,
+      method: 'PUT',
+      signal: expectSignal
+    })
+  })
+
+  commonTests(() => apiClient.postJson(path, json))
+})
+
 describe('fetchBlob', () => {
   test('Resolves to dataURI', async () => {
     setUpSuccessResponse()
