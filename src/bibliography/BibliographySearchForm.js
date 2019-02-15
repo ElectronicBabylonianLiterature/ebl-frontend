@@ -25,9 +25,9 @@ class BibliographySearch extends Component {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId={this.id}>
-          <Form.Label column sm={2}>Query</Form.Label>
-          <Col sm={6}>
+          <Col sm={8}>
             <FormControl
+              aria-label='Query'
               type='text'
               value={this.state.query}
               placeholder='Author Year Title'
