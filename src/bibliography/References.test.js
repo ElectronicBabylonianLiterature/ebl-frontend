@@ -6,7 +6,7 @@ import { Promise } from 'bluebird'
 
 import { changeValueByLabel, clickNth, submitForm } from 'testHelpers'
 import References from './References'
-import Reference from 'bibliography/reference'
+import Reference from 'bibliography/Reference'
 
 const defaultReference = new Reference()
 

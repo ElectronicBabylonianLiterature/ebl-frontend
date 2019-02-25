@@ -7,7 +7,7 @@ import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'testHelpers'
 import BibliographyEditor from './BibliographyEditor'
-import { template } from 'bibliography/bibliographyEntry'
+import { template } from 'bibliography/BibliographyEntry'
 
 const errorMessage = 'error'
 const createWaitFor = /family name/

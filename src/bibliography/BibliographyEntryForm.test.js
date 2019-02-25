@@ -3,7 +3,7 @@ import { render, wait, waitForElement } from 'react-testing-library'
 import _ from 'lodash'
 
 import { changeValueByLabel, clickNth } from 'testHelpers'
-import BibliographyEntry from './bibliographyEntry'
+import BibliographyEntry from './BibliographyEntry'
 import BibliographyEntryForm from './BibliographyEntryForm'
 
 const cslJson = {

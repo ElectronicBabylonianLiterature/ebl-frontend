@@ -3,7 +3,7 @@ import React from 'react'
 import Breadcrumbs from 'common/Breadcrumbs'
 import withData from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/BibliographyEntryFormController'
-import { template } from 'bibliography/bibliographyEntry'
+import { template } from 'bibliography/BibliographyEntry'
 
 function BibliographyEditor ({ data, bibliographyService, create = false, history }) {
   function createEntry (entry) {

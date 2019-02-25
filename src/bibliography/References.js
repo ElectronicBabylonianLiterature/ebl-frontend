@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import List from 'common/List'
 import ReferenceForm from './ReferenceForm'
-import Reference from 'bibliography/reference'
+import Reference from 'bibliography/Reference'
 
 const defaultReference = new Reference()
 
