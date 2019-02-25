@@ -13,15 +13,11 @@ export default class Reference {
   }
 
   get id () {
-    return _.get(this.document, 'id', '')
+    return _.get(this, 'document.id', '')
   }
 
   get author () {
-    const particle = _.get(this.document, 'author.0.non-dropping-particle', '')
-    const family = _.get(this.document, 'author.0.family', '')
-    return particle
-      ? `${particle} ${family}`
-      : family
+    return _.get(this, 'document.author', '')
   }
 
   get typeAbbreviation () {
@@ -74,7 +70,7 @@ export default class Reference {
       this.pages,
       this.notes,
       this.linesCited,
-      _.cloneDeep(document_)
+      document_
     )
   }
 }
