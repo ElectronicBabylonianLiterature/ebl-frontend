@@ -7,26 +7,26 @@ import { factory } from 'factory-girl'
 
 const query = 'Börger'
 let entries
-let fragmentService
+let bibliographyService
 let element
 
 function renderWordSearch () {
   element = render(<MemoryRouter>
-    <BibliographySearch query={query} fragmentService={fragmentService} />
+    <BibliographySearch query={query} bibliographyService={bibliographyService} />
   </MemoryRouter>)
 }
 
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
-  fragmentService = {
-    searchBibliography: jest.fn()
+  bibliographyService = {
+    search: jest.fn()
   }
-  fragmentService.searchBibliography.mockReturnValueOnce(Promise.resolve(entries))
+  bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
   renderWordSearch()
 })
 
 test('Fetch results from service', () => {
-  expect(fragmentService.searchBibliography).toBeCalledWith(query)
+  expect(bibliographyService.search).toBeCalledWith(query)
 })
 
 test('Result display', async () => {

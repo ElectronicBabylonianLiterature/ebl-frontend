@@ -10,7 +10,7 @@ import SessionContext from 'auth/SessionContext'
 
 import './Bibliography.css'
 
-export default function Bibliography ({ fragmentService, location }) {
+export default function Bibliography ({ bibliographyService, location }) {
   const query = queryString.parse(location.search).query
 
   return (
@@ -29,7 +29,7 @@ export default function Bibliography ({ fragmentService, location }) {
           {session.isAllowedToReadBibliography()
             ? <>
               <div className='Bibliography__search'><BibliographySearchForm query={query} /></div>
-              <BibliographySearch query={query} fragmentService={fragmentService} />
+              <BibliographySearch query={query} bibliographyService={bibliographyService} />
             </>
             : <p>Please log in to browse the Bibliography.</p>
           }

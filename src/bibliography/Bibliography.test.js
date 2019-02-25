@@ -9,13 +9,13 @@ import Bibliography from './Bibliography'
 const BibliographyWithRouter = withRouter(Bibliography)
 
 let entries
-let fragmentService
+let bibliographyService
 let session
 
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
-  fragmentService = {
-    searchBibliography: jest.fn()
+  bibliographyService = {
+    search: jest.fn()
   }
   session = {
     isAllowedToReadBibliography: jest.fn(),
@@ -26,7 +26,7 @@ beforeEach(async () => {
 describe('Searching bibliography', () => {
   beforeEach(() => {
     session.isAllowedToReadBibliography.mockReturnValue(true)
-    fragmentService.searchBibliography.mockReturnValueOnce(Promise.resolve(entries))
+    bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
   })
 
   it('displays result on successfull query', async () => {
@@ -61,7 +61,7 @@ function renderDictionary (path) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <BibliographyWithRouter fragmentService={fragmentService} />
+        <BibliographyWithRouter bibliographyService={bibliographyService} />
       </SessionContext.Provider>
     </MemoryRouter>
   )

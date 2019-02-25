@@ -15,7 +15,7 @@ import FragmentariumSearch from 'fragmentarium/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/BibliographyEditor'
 import Bibliography from 'bibliography/Bibliography'
 
-function App ({ auth, wordService, fragmentService, bibliographyRepository }) {
+function App ({ auth, wordService, fragmentService, bibliographyService, bibliographyRepository }) {
   return (
     <SessionContext.Provider value={auth.getSession()}>
       <Header auth={auth} />
@@ -23,7 +23,7 @@ function App ({ auth, wordService, fragmentService, bibliographyRepository }) {
         <Switch>
           <Route path='/bibliography/:id' render={props => <BibliographyEditor bibliographyRepository={bibliographyRepository} {...props} />} />
           <Route path='/bibliography_new' render={props => <BibliographyEditor bibliographyRepository={bibliographyRepository} {...props} create />} />
-          <Route path='/bibliography' render={props => <Bibliography fragmentService={fragmentService} bibliographyRepository={bibliographyRepository} {...props} />} />
+          <Route path='/bibliography' render={props => <Bibliography bibliographyService={bibliographyService} {...props} />} />
           <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
           <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />

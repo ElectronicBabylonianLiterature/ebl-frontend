@@ -25,7 +25,7 @@ function BibliographySearch ({ data }) {
 
 export default withData(
   BibliographySearch,
-  props => props.fragmentService.searchBibliography(props.query),
+  props => props.bibliographyService.search(props.query),
   {
     shouldUpdate: (prevProps, props) => prevProps.query !== props.query,
     filter: props => !_.isEmpty(props.query),

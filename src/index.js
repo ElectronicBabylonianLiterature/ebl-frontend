@@ -18,6 +18,7 @@ import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import ErrorReporterContext from './ErrorReporterContext'
 import RavenErrorReporter from 'common/RavenErrorReporter'
+import BibliographyService from 'bibliography/BibliographyService'
 
 Promise.config({
   cancellation: true
@@ -29,6 +30,7 @@ const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)
 const imageRepository = new ImageRepository(apiClient)
 const bibliographyRepository = new BibliographyRepository(apiClient)
+const bibliographyService = new BibliographyService(bibliographyRepository)
 const fragmentService = new FragmentService(
   auth,
   fragmentRepository,
@@ -47,6 +49,7 @@ ReactDOM.render(
           auth={auth}
           wordService={wordService}
           fragmentService={fragmentService}
+          bibliographyService={bibliographyService}
           bibliographyRepository={bibliographyRepository}
         />
       </Router>
