@@ -50,7 +50,6 @@ ReactDOM.render(
           wordService={wordService}
           fragmentService={fragmentService}
           bibliographyService={bibliographyService}
-          bibliographyRepository={bibliographyRepository}
         />
       </Router>
     </ErrorBoundary>

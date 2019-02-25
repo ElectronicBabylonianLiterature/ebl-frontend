@@ -13,7 +13,7 @@ const errorMessage = 'error'
 const createWaitFor = /family name/
 const resultId = 'RN1000'
 let result
-let bibliographyRepository
+let bibliographyService
 let session
 
 beforeEach(async () => {
@@ -22,7 +22,7 @@ beforeEach(async () => {
     isAllowedToReadBibliography: _.stubTrue(),
     isAllowedToWriteBibliography: jest.fn()
   }
-  bibliographyRepository = {
+  bibliographyService = {
     find: jest.fn(),
     update: jest.fn(),
     create: jest.fn()
@@ -31,13 +31,13 @@ beforeEach(async () => {
 
 describe('Editing', () => {
   beforeEach(() => {
-    bibliographyRepository.find.mockReturnValueOnce(Promise.resolve(result))
+    bibliographyService.find.mockReturnValueOnce(Promise.resolve(result))
   })
 
   test('Queries the entry from API', async () => {
     await renderWithRouter(true, false, resultId)
 
-    expect(bibliographyRepository.find).toBeCalledWith('id')
+    expect(bibliographyService.find).toBeCalledWith('id')
   })
 
   test('Displays result on successfull query', async () => {
@@ -47,12 +47,12 @@ describe('Editing', () => {
   })
 
   test('Posts on submit', async () => {
-    bibliographyRepository.update.mockReturnValueOnce(Promise.resolve())
+    bibliographyService.update.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, false, resultId)
 
     await submitForm(element, 'form')
 
-    expect(bibliographyRepository.update).toHaveBeenCalledWith(result)
+    expect(bibliographyService.update).toHaveBeenCalledWith(result)
   })
 
   commonTests(false, resultId)
@@ -66,12 +66,12 @@ describe('Creating', () => {
   })
 
   test('Puts on submit', async () => {
-    bibliographyRepository.create.mockReturnValueOnce(Promise.resolve())
+    bibliographyService.create.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, true, createWaitFor)
 
     await submitForm(element, 'form')
 
-    expect(bibliographyRepository.create).toHaveBeenCalledWith(template)
+    expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
 
   commonTests(true, createWaitFor)
@@ -79,8 +79,8 @@ describe('Creating', () => {
 
 function commonTests (create, waitFor) {
   test('Displays error message failed submit', async () => {
-    bibliographyRepository.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    bibliographyRepository.create.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    bibliographyService.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    bibliographyService.create.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     const element = await renderWithRouter(true, create, waitFor)
 
     await submitForm(element, 'form')
@@ -91,8 +91,8 @@ function commonTests (create, waitFor) {
   test('Cancels promise on unmount', async () => {
     const promise = new Promise(_.noop)
     jest.spyOn(promise, 'cancel')
-    bibliographyRepository.update.mockReturnValueOnce(promise)
-    bibliographyRepository.create.mockReturnValueOnce(promise)
+    bibliographyService.update.mockReturnValueOnce(promise)
+    bibliographyService.create.mockReturnValueOnce(promise)
     const element = await renderWithRouter(true, create, waitFor)
     submitForm(element, 'form')
     element.unmount()
@@ -118,7 +118,7 @@ async function renderWithRouter (isAllowedTo = true, create = false, waitFor) {
   const element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <BibliographyEditor match={match} bibliographyRepository={bibliographyRepository} create={create} />
+        <BibliographyEditor match={match} bibliographyService={bibliographyService} create={create} />
       </SessionContext.Provider>
     </MemoryRouter>
   )

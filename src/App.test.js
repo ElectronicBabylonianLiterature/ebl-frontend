@@ -13,6 +13,7 @@ import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import SessionStore from './auth/SessionStore'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
+import BibliographyService from 'bibliography/BibliographyService'
 
 test.each(
   ['/', '/bibliography', '/bibliography_new', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
@@ -25,6 +26,7 @@ test.each(
   const bibliographyRepository = new BibliographyRepository(apiClient)
   const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyRepository)
   const wordService = new WordService(wordRepository)
+  const bibliographyService = new BibliographyService(bibliographyRepository)
 
   jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
 
@@ -33,7 +35,7 @@ test.each(
       auth={auth}
       wordService={wordService}
       fragmentService={fragmentService}
-      bibliographyRepository={bibliographyRepository}
+      bibliographyService={bibliographyService}
     />
   </MemoryRouter>)
 })

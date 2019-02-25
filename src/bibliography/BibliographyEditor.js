@@ -5,12 +5,13 @@ import withData from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/BibliographyEntryFormController'
 import { template } from 'bibliography/bibliographyEntry'
 
-function BibliographyEditor ({ data, bibliographyRepository, create = false, history }) {
+function BibliographyEditor ({ data, bibliographyService, create = false, history }) {
   function createEntry (entry) {
-    return bibliographyRepository.create(entry).then(() => history.push(`/bibliography/${encodeURIComponent(entry.id)}`))
+    return bibliographyService.create(entry).then(() => history.push(`/bibliography/${encodeURIComponent(entry.id)}`))
   }
+
   function updateEntry (entry) {
-    return bibliographyRepository.update(entry)
+    return bibliographyService.update(entry)
   }
 
   return (
@@ -28,7 +29,7 @@ function BibliographyEditor ({ data, bibliographyRepository, create = false, his
 
 export default withData(
   BibliographyEditor,
-  props => props.bibliographyRepository.find(props.match.params.id),
+  props => props.bibliographyService.find(props.match.params.id),
   {
     shouldUpdate: (prevProps, props) => prevProps.create !== props.create || prevProps.match.params.id !== props.match.params.id,
     filter: props => !props.create,
