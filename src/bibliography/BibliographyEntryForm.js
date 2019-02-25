@@ -103,7 +103,7 @@ export default class BibliographyEntryForm extends Component {
       <Form onSubmit={this.handleSubmit}>
         <Form.Group controlId={'editor'}>
           <p>
-            You can enter a DOI, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
+            You can enter a DOI, CSL-JSON, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
             BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
           </p>
           <InputGroup>
