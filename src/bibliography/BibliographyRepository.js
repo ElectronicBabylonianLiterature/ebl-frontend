@@ -1,5 +1,5 @@
 import queryString from 'query-string'
-import BibliographyEntry from './bibliographyEntry'
+import BibliographyEntry from './BibliographyEntry'
 
 function createEntry (cslData) {
   return new BibliographyEntry(cslData)
