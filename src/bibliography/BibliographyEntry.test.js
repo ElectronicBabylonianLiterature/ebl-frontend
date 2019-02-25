@@ -8,7 +8,7 @@ let entry
 let cite
 
 beforeEach(async () => {
-  cslData = await factory.build('cslData')
+  cslData = await factory.build('cslData', { author: [{ family: 'Family', extra: 'Extra' }] })
   entry = new BibliographyEntry(cslData)
   cite = new Cite(cslData)
 })
@@ -70,6 +70,7 @@ test('toBibtex', () => {
   }))
 })
 
-test('toJson', () => {
-  expect(entry.toJson()).toEqual(cslData)
+test('toJson', async () => {
+  const expectedCslData = await factory.build('cslData', { ...cslData, author: [{ family: 'Family' }] })
+  expect(entry.toJson()).toEqual(expectedCslData)
 })

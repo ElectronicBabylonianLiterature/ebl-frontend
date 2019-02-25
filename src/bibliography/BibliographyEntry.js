@@ -58,7 +58,24 @@ export default class BibliographyEntry {
   }
 
   toJson () {
-    return _.cloneDeep(this.#cslData)
+    const authorProperties = [
+      'family',
+      'given',
+      'dropping-particle',
+      'non-dropping-particle',
+      'suffix',
+      'comma-suffix',
+      'static-ordering',
+      'literal',
+      'parse-names'
+    ]
+
+    return _.has(this.#cslData, 'author')
+      ? {
+        ..._.cloneDeep(this.#cslData),
+        author: this.#cslData.author.map(author => _.pick(author, authorProperties))
+      }
+      : _.cloneDeep(this.#cslData)
   }
 }
 
