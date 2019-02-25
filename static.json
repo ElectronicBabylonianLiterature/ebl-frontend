@@ -11,15 +11,10 @@
   },
   "headers": {
     "/**": {
-      "Content-Security-Policy-Report-Only": "default-src 'self'; connect-src 'self' https://api.ebabylon.org https://auth.ebabylon.org https://electronic-babylonian-literature.eu.auth0.com https://sentry.io; script-src 'self' https://cdn.ravenjs.com https://storage.googleapis.com 'sha256-hfyUG63oY2A7i2GLLosmbZzqxYHDXHASfutrdCbC0XI='; img-src 'self' data: blob: https://cdli.ucla.edu https://cdn.auth0.com; font-src 'self' data: https://stackpath.bootstrapcdn.com https://use.fontawesome.com; style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; report-uri /csp",
+      "Content-Security-Policy-Report-Only": "default-src 'self'; connect-src 'self' https://api.ebabylon.org https://auth.ebabylon.org https://electronic-babylonian-literature.eu.auth0.com https://sentry.io; script-src 'self' https://storage.googleapis.com; img-src 'self' data: blob: https://cdli.ucla.edu https://cdn.auth0.com; font-src 'self' data: https://stackpath.bootstrapcdn.com https://use.fontawesome.com; style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none'; base-uri 'none'; form-action 'none';",
       "Strict-Transport-Security": "max-age=63072000; includeSubDomains;",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin"
-    }
-  },
-  "proxies": {
-    "/csp": {
-      "origin": "${REPORT_URI}"
     }
   }
 }

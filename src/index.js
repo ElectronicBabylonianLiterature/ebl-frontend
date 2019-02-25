@@ -17,8 +17,12 @@ import BibliographyRepository from 'bibliography/BibliographyRepository'
 import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import ErrorReporterContext from './ErrorReporterContext'
-import RavenErrorReporter from 'common/RavenErrorReporter'
+import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
+
+if (process.env.NODE_ENV === 'production') {
+  SentryErrorReporter.init()
+}
 
 Promise.config({
   cancellation: true
@@ -39,7 +43,7 @@ const fragmentService = new FragmentService(
   bibliographyService
 )
 const wordService = new WordService(wordRepository)
-const ravenErrorReporter = new RavenErrorReporter()
+const ravenErrorReporter = new SentryErrorReporter()
 
 ReactDOM.render(
   <ErrorReporterContext.Provider value={ravenErrorReporter}>
