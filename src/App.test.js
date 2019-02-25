@@ -24,9 +24,9 @@ test.each(
   const fragmentRepository = new FragmentRepository(apiClient)
   const imageRepository = new ImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
-  const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyRepository)
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
+  const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyService)
 
   jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
 

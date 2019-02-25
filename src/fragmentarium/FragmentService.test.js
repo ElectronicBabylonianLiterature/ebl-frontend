@@ -36,12 +36,11 @@ const wordRepository = {
 const imageRepository = {
   find: jest.fn()
 }
-const bibliographyRepository = {
+const bibliographyService = {
   find: jest.fn(),
   search: jest.fn()
 }
-const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository)
-
+const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, wordRepository, bibliographyService)
 const testData = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
   ['random', [], fragmentRepository.random, resultStub, null, Promise.resolve([resultStub])],
@@ -57,15 +56,13 @@ const testData = [
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName, false]],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
-  ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '1998', 'The Qualifications']],
-  ['searchBibliography', ['Alba Cecilia'], bibliographyRepository.search, [resultStub], ['Alba Cecilia', '', '']]
+  ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyService.search, [resultStub]]
 ]
 
 testDelegation(fragmentService, testData)
 
 describe.each([
-  'searchLemma',
-  'searchBibliography'
+  'searchLemma'
 ])('%s', method => {
   test('Resolves to empty array on zero length query', async () => {
     await expect(fragmentService[method]('')).resolves.toEqual([])
@@ -82,7 +79,7 @@ describe('find', () => {
     const fragment = await factory.build('fragment', { _id: number, references: references })
 
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
-    bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+    bibliographyService.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
 
     expectedFragment = {
       ...fragment,
@@ -168,7 +165,7 @@ async function setUpHydration () {
     ...dto,
     document: entries[index]
   })))
-  bibliographyRepository.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
+  bibliographyService.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
   return {
     entries,
     references,

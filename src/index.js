@@ -36,7 +36,7 @@ const fragmentService = new FragmentService(
   fragmentRepository,
   imageRepository,
   wordRepository,
-  bibliographyRepository
+  bibliographyService
 )
 const wordService = new WordService(wordRepository)
 const ravenErrorReporter = new RavenErrorReporter()

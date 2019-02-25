@@ -5,12 +5,12 @@ import Lemma from 'fragmentarium/lemmatization/Lemma'
 import { createReference } from 'bibliography/reference'
 
 class FragmentService {
-  constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyRepository) {
+  constructor (auth, fragmentRepository, imageRepository, wordRepository, bibliographyService) {
     this.auth = auth
     this.fragmentRepository = fragmentRepository
     this.imageRepository = imageRepository
     this.wordRepository = wordRepository
-    this.bibliographyRepository = bibliographyRepository
+    this.bibliographyService = bibliographyService
   }
 
   statistics () {
@@ -72,15 +72,7 @@ class FragmentService {
   }
 
   searchBibliography (query) {
-    const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
-    const match = queryRegex.exec(query)
-    return match
-      ? this.bibliographyRepository.search(
-        match[1],
-        match[2] || '',
-        match[3] || ''
-      )
-      : Promise.resolve([])
+    return this.bibliographyService.search(query)
   }
 
   createLemmatization (text) {
@@ -132,7 +124,7 @@ class FragmentService {
   }
 
   hydrateReferences (references) {
-    const hydrate = reference => createReference(reference, this.bibliographyRepository)
+    const hydrate = reference => createReference(reference, this.bibliographyService)
     return Promise.all(references.map(hydrate))
   }
 }
