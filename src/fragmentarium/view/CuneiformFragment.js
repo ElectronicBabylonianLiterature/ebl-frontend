@@ -29,7 +29,7 @@ function Info ({ fragment }) {
   return <>
     <Details fragment={fragment} />
     <section>
-      <h3>Bibliography</h3>
+      <h3>References</h3>
       <ReferenceList references={fragment.references} />
     </section>
     <Record record={fragment.record} />
