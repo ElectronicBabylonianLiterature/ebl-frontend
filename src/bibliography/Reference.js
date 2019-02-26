@@ -21,7 +21,7 @@ export default class Reference {
   }
 
   get typeAbbreviation () {
-    return this.type[0]
+    return _.get(this, 'type.0', '')
   }
 
   setType (type) {
