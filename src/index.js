@@ -20,9 +20,7 @@ import ErrorReporterContext from './ErrorReporterContext'
 import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
 
-if (process.env.NODE_ENV === 'production') {
-  SentryErrorReporter.init()
-}
+SentryErrorReporter.init()
 
 Promise.config({
   cancellation: true
