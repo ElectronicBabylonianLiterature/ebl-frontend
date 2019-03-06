@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import FragmentList from './FragmentList'
+import FragmentList from 'fragmentarium/FragmentList'
 import withData from 'http/withData'
 
 export default withData(
