@@ -29,10 +29,12 @@ beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
     statistics: jest.fn(),
-    findImage: jest.fn()
+    findImage: jest.fn(),
+    fetchLatestTransliterations: jest.fn()
   }
   session = {
-    isAllowedToReadFragments: jest.fn()
+    isAllowedToReadFragments: jest.fn(),
+    hasBetaAccess: jest.fn()
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))
@@ -41,6 +43,7 @@ beforeEach(async () => {
 describe('Statistics', () => {
   beforeEach(async () => {
     session.isAllowedToReadFragments.mockReturnValue(false)
+    session.hasBetaAccess.mockReturnValue(false)
     await renderFragmentarium()
   })
 
@@ -50,5 +53,20 @@ describe('Statistics', () => {
 
   it('Shows the number of transliterated lines', async () => {
     expect(container).toHaveTextContent(statistics.lines.toLocaleString())
+  })
+})
+
+describe('Latest additions', () => {
+  let latest
+
+  beforeEach(async () => {
+    latest = await factory.build('fragment')
+    session.hasBetaAccess.mockReturnValue(true)
+    fragmentService.fetchLatestTransliterations.mockReturnValueOnce(Promise.resolve([latest]))
+    await renderFragmentarium()
+  })
+
+  test('Shows the latest additions', () => {
+    expect(container).toHaveTextContent(latest._id)
   })
 })

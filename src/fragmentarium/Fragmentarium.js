@@ -6,6 +6,7 @@ import Statistics from './search/Statistics'
 import Image from './Image'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from './SearchGroup'
+import LatestTransliterations from './LatestTransliterations'
 
 import './Fragmentarium.css'
 
@@ -45,6 +46,9 @@ class Fragmentarium extends Component {
             </Col>
           </Row>
         </Container>
+        <SessionContext.Consumer>
+          {session => session.hasBetaAccess() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
+        </SessionContext.Consumer>
       </section>
     )
   }
