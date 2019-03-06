@@ -15,33 +15,40 @@ const expectedColumns = {
 let fragments
 let element
 
-beforeEach(async () => {
-  fragments = await factory.buildMany('fragment', numberOfFragments)
-  element = render(
-    <MemoryRouter>
-      <FragmentList fragments={fragments} />
-    </MemoryRouter>
-  )
-})
-
-test('Columns', () => {
-  const expectedHeader = _.values(expectedColumns).join('')
-  expect(element.container).toHaveTextContent(expectedHeader)
-})
-
-describe.each(_.range(numberOfFragments))('Fragment %i', index => {
-  let fragment
-
-  beforeEach(() => {
-    fragment = fragments[index]
+describe.each([
+  ['No config', null, {
+    _id: 'Number'
+  }],
+  ['With conifg', _.omit(expectedColumns, ['_id']), expectedColumns]
+])('%s', (name, columns, expectedColumns) => {
+  beforeEach(async () => {
+    fragments = await factory.buildMany('fragment', numberOfFragments)
+    element = render(
+      <MemoryRouter>
+        <FragmentList fragments={fragments} columns={columns} />
+      </MemoryRouter>
+    )
   })
 
-  test('Displays all properties', () => {
-    const expectedRow = _.keys(expectedColumns).map(property => fragment[property]).join('').replace('\n', ' ')
-    expect(element.container).toHaveTextContent(expectedRow)
+  test('Columns', () => {
+    const expectedHeader = _.values(expectedColumns).join('')
+    expect(element.container).toHaveTextContent(expectedHeader)
   })
 
-  test('Links to the fragment', () => {
-    expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
+  describe.each(_.range(numberOfFragments))('Fragment %i', index => {
+    let fragment
+
+    beforeEach(() => {
+      fragment = fragments[index]
+    })
+
+    test('Displays all properties', () => {
+      const expectedRow = _.keys(expectedColumns).map(property => fragment[property]).join('').replace('\n', ' ')
+      expect(element.container).toHaveTextContent(expectedRow)
+    })
+
+    test('Links to the fragment', () => {
+      expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
+    })
   })
 })
