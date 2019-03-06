@@ -12,10 +12,10 @@ let container
 let element
 let statistics
 
-async function renderFragmentarium (path = '/fragmentarium') {
+async function renderFragmentarium () {
   const FragmentariumWithRouter = withRouter(Fragmentarium)
   element = render(
-    <MemoryRouter initialEntries={[path]}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
         <FragmentariumWithRouter fragmentService={fragmentService} />
       </SessionContext.Provider>
