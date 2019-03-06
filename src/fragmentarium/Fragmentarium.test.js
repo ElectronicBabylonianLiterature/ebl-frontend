@@ -34,7 +34,7 @@ beforeEach(async () => {
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    hasBetaAccess: jest.fn()
+    isAllowedToTransliterateFragments: () => false
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))
@@ -43,7 +43,6 @@ beforeEach(async () => {
 describe('Statistics', () => {
   beforeEach(async () => {
     session.isAllowedToReadFragments.mockReturnValue(false)
-    session.hasBetaAccess.mockReturnValue(false)
     await renderFragmentarium()
   })
 
@@ -61,7 +60,7 @@ describe('Latest additions', () => {
 
   beforeEach(async () => {
     latest = await factory.build('fragment')
-    session.hasBetaAccess.mockReturnValue(true)
+    session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.fetchLatestTransliterations.mockReturnValueOnce(Promise.resolve([latest]))
     await renderFragmentarium()
   })

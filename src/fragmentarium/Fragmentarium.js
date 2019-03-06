@@ -48,7 +48,7 @@ class Fragmentarium extends Component {
           <Row>
             <Col>
               <SessionContext.Consumer>
-                {session => session.hasBetaAccess() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
+                {session => session.isAllowedToReadFragments() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
               </SessionContext.Consumer>
             </Col>
           </Row>
