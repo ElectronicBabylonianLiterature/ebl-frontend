@@ -14,6 +14,7 @@ import ErrorBoundary from 'common/ErrorBoundary'
 import FragmentariumSearch from 'fragmentarium/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/BibliographyEditor'
 import Bibliography from 'bibliography/Bibliography'
+import Corpus from 'corpus/Corpus'
 
 function App ({ auth, wordService, fragmentService, bibliographyService }) {
   return (
@@ -26,6 +27,7 @@ function App ({ auth, wordService, fragmentService, bibliographyService }) {
           <Route path='/bibliography' render={props => <Bibliography bibliographyService={bibliographyService} {...props} />} />
           <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
+          <Route path='/corpus' render={props => <Corpus fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium/:id' render={props => <FragmentView fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium' render={props => <Fragmentarium fragmentService={fragmentService} {...props} />} />
