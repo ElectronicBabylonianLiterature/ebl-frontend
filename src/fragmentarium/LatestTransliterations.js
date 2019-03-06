@@ -4,7 +4,7 @@ import withData from 'http/withData'
 
 function LatestTransliterations ({ data }) {
   return (<section>
-    <h3 class='SubsectionHeading--indented'>Latest additions:</h3>
+    <h3 className='SubsectionHeading--indented'>Latest additions:</h3>
     <FragmentList fragments={data} columns={{
       'Accession': 'accession',
       'Script': 'script',
