@@ -1,9 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import { Table } from 'react-bootstrap'
 
 import withData from 'http/withData'
-import FragmentLink from 'fragmentarium/FragmentLink'
+import FragmentList from 'fragmentarium/FragmentList'
 
 import './TransliterationSearch.css'
 
@@ -25,25 +24,10 @@ function Lines ({ fragment }) {
 
 function TransliterationSearchResult ({ data }) {
   return (
-    <Table responsive>
-      <thead>
-        <tr>
-          <th>Number</th>
-          <th>Script</th>
-          <th>Matching lines</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map(fragment =>
-          <tr key={fragment._id}>
-            <td><FragmentLink number={fragment._id}>{fragment._id}</FragmentLink></td>
-            <td>{fragment.script}</td>
-            <td><Lines fragment={fragment} /></td>
-          </tr>
-        )}
-        {_.isEmpty(data) && <tr><td colSpan={4}>No fragments found.</td></tr>}
-      </tbody>
-    </Table>
+    <FragmentList fragments={data} columns={{
+      'Script': 'script',
+      'Matching lines': fragment => <Lines fragment={fragment} />
+    }} />
   )
 }
 
