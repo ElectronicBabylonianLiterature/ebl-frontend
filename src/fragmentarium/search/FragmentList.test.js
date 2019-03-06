@@ -1,14 +1,22 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render } from 'react-testing-library'
-import FragmentList from './FragmentList'
 import { factory } from 'factory-girl'
+import _ from 'lodash'
+import FragmentList from './FragmentList'
 
+const numberOfFragments = 2
+const expectedColumns = {
+  _id: 'Number',
+  accession: 'Accession',
+  cdliNumber: 'CDLI Number',
+  description: 'Description'
+}
 let fragments
 let element
 
 beforeEach(async () => {
-  fragments = await factory.buildMany('fragment', 2)
+  fragments = await factory.buildMany('fragment', numberOfFragments)
   element = render(
     <MemoryRouter>
       <FragmentList fragments={fragments} />
@@ -16,17 +24,24 @@ beforeEach(async () => {
   )
 })
 
-it('Displays fragments', async () => {
-  for (let fragment of fragments) {
-    expect(element.container).toHaveTextContent(fragment._id)
-    expect(element.container).toHaveTextContent(fragment.accession)
-    expect(element.container).toHaveTextContent(fragment.cdliNumber)
-    expect(element.container).toHaveTextContent(fragment.description.replace('\n', ' '))
-  }
+test('Columns', () => {
+  const expectedHeader = _.values(expectedColumns).join('')
+  expect(element.container).toHaveTextContent(expectedHeader)
 })
 
-it('Results link to the fragment', async () => {
-  for (let fragment of fragments) {
+describe.each(_.range(numberOfFragments))('Fragment %i', index => {
+  let fragment
+
+  beforeEach(() => {
+    fragment = fragments[index]
+  })
+
+  test('Displays all properties', () => {
+    const expectedRow = _.keys(expectedColumns).map(property => fragment[property]).join('').replace('\n', ' ')
+    expect(element.container).toHaveTextContent(expectedRow)
+  })
+
+  test('Links to the fragment', () => {
     expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
-  }
+  })
 })
