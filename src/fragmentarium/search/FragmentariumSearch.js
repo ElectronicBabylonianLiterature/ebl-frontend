@@ -6,7 +6,7 @@ import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/SearchGroup'
 
-import 'fragmentarium/Fragmentarium.css'
+import './FragmentariumSearch.css'
 
 class FragmentariumSearch extends Component {
   MainHeader = () => {
