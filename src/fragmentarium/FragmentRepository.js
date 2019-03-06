@@ -1,7 +1,16 @@
 import createFragment from 'fragmentarium/createFragment'
+import queryString from 'query-string'
 
 function createFragments (dtos) {
   return dtos.map(createFragment)
+}
+
+function createFragmentPath (number, ...subResources) {
+  return [
+    '/fragments',
+    encodeURIComponent(number),
+    ...subResources
+  ].join('/')
 }
 
 class FragmentRepository {
@@ -15,42 +24,38 @@ class FragmentRepository {
 
   find (number) {
     return this.apiClient
-      .fetchJson(`/fragments/${encodeURIComponent(number)}`, true)
+      .fetchJson(createFragmentPath(number), true)
       .then(createFragment)
   }
 
   random () {
-    return this.apiClient
-      .fetchJson(`/fragments?random=true`, true)
-      .then(createFragments)
+    return this._fetch({ random: true })
   }
 
   interesting () {
-    return this.apiClient
-      .fetchJson(`/fragments?interesting=true`, true)
-      .then(createFragments)
+    return this._fetch({ interesting: true })
   }
 
   fetchLatestTransliterations () {
-    return this.apiClient
-      .fetchJson(`/fragments?latest=true`, true)
-      .then(createFragments)
+    return this._fetch({ latest: true })
   }
 
   searchNumber (number) {
-    return this.apiClient
-      .fetchJson(`/fragments?number=${encodeURIComponent(number)}`, true)
-      .then(createFragments)
+    return this._fetch({ number })
   }
 
   searchTransliteration (transliteration) {
+    return this._fetch({ transliteration })
+  }
+
+  _fetch (params) {
     return this.apiClient
-      .fetchJson(`/fragments?transliteration=${encodeURIComponent(transliteration)}`, true)
+      .fetchJson(`/fragments?${queryString.stringify(params)}`, true)
       .then(createFragments)
   }
 
   updateTransliteration (number, transliteration, notes) {
-    const path = `/fragments/${encodeURIComponent(number)}/transliteration`
+    const path = createFragmentPath(number, 'transliteration')
     return this.apiClient.postJson(
       path,
       {
@@ -61,14 +66,14 @@ class FragmentRepository {
   }
 
   updateLemmatization (number, lemmatization) {
-    const path = `/fragments/${encodeURIComponent(number)}/lemmatization`
+    const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
   }
 
   updateReferences (number, references) {
-    const path = `/fragments/${encodeURIComponent(number)}/references`
+    const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
       .then(createFragment)

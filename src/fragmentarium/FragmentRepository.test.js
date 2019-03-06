@@ -10,8 +10,8 @@ const apiClient = {
 }
 const fragmentRepository = new FragmentRepository(apiClient)
 
-const fragmentId = 'K+1234'
-const transliterationQuery = 'kur\nkur'
+const fragmentId = 'K 23+1234'
+const transliterationQuery = 'kur\nkur kur'
 const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
