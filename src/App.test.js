@@ -16,7 +16,7 @@ import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
 
 test.each(
-  ['/', '/bibliography', '/bibliography_new', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
+  ['/', '/bibliography', '/bibliography_new', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/corpus', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 )('%s renders without crashing', route => {
   const auth = new Auth(new SessionStore())
   const apiClient = new ApiClient(auth)
