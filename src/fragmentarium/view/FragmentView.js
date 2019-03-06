@@ -1,7 +1,7 @@
 import React from 'react'
 import queryString from 'query-string'
 
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
@@ -30,17 +30,17 @@ export default function FragmentView ({ match, location, fragmentService }) {
     : null
 
   return (
-    <section className='App-content App-content--wide'>
-      <header>
-        <Breadcrumbs section='Fragmentarium' active={number} />
-        <h2><FragmentPager number={number}> {number} </FragmentPager></h2>
-      </header>
+    <AppContent
+      section='Fragmentarium'
+      active={number}
+      title={<FragmentPager number={number}> {number} </FragmentPager>}
+      wide>
       <SessionContext.Consumer>
         {session => session.isAllowedToReadFragments()
           ? <FragmentWithData number={number} fragmentService={fragmentService} activeFolio={activeFolio} />
           : 'Please log in to browse the Fragmentarium.'
         }
       </SessionContext.Consumer>
-    </section>
+    </AppContent>
   )
 }

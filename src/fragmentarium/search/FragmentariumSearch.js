@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import queryString from 'query-string'
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import NumberSearch from 'fragmentarium/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
@@ -8,39 +8,27 @@ import SearchGroup from 'fragmentarium/SearchGroup'
 
 import './FragmentariumSearch.css'
 
-class FragmentariumSearch extends Component {
-  MainHeader = () => {
-    return (
-      <header>
-        <Breadcrumbs section='Fragmentarium' active='Search' />
-        <h2>Search</h2>
-      </header>
-    )
-  }
-
-  render () {
-    const number = queryString.parse(this.props.location.search).number
-    const transliteration = queryString.parse(this.props.location.search).transliteration
-    return (
-      <section className='App-content'>
-        <this.MainHeader />
-        <SessionContext.Consumer>
-          {session => session.isAllowedToReadFragments()
-            ? (
-              <section className='Fragmentarium-search'>
-                <header className='Fragmentarium-search__header'>
-                  <SearchGroup number={number} transliteration={transliteration} fragmentService={this.props.fragmentService} />
-                </header>
-                <NumberSearch number={number} fragmentService={this.props.fragmentService} />
-                <TransliterationSearch transliteration={transliteration} fragmentService={this.props.fragmentService} />
-              </section>
-            )
-            : <p>Please log in to browse the Fragmentarium.</p>
-          }
-        </SessionContext.Consumer>
-      </section>
-    )
-  }
+function FragmentariumSearch ({ location, fragmentService }) {
+  const number = queryString.parse(location.search).number
+  const transliteration = queryString.parse(location.search).transliteration
+  return (
+    <AppContent section='Fragmentarium' active='Search'>
+      <SessionContext.Consumer>
+        {session => session.isAllowedToReadFragments()
+          ? (
+            <section className='Fragmentarium-search'>
+              <header className='Fragmentarium-search__header'>
+                <SearchGroup number={number} transliteration={transliteration} fragmentService={fragmentService} />
+              </header>
+              <NumberSearch number={number} fragmentService={fragmentService} />
+              <TransliterationSearch transliteration={transliteration} fragmentService={fragmentService} />
+            </section>
+          )
+          : <p>Please log in to browse the Fragmentarium.</p>
+        }
+      </SessionContext.Consumer>
+    </AppContent>
+  )
 }
 
 export default FragmentariumSearch

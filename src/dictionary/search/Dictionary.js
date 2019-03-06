@@ -1,7 +1,7 @@
 import React from 'react'
 import queryString from 'query-string'
 
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import WordSearchForm from './WordSearchForm'
 import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
@@ -12,22 +12,18 @@ export default function Dictionary ({ wordService, location }) {
   const query = queryString.parse(location.search).query
 
   return (
-    <section className='App-content'>
-      <header>
-        <Breadcrumbs section='Dictionary' />
-        <h2>Dictionary</h2>
-      </header>
+    <AppContent section='Dictionary'>
       <SessionContext.Consumer>
         {session => session.isAllowedToReadWords()
           ? <>
-            <header className='Dictionary-search'>
+            <div className='Dictionary-search'>
               <WordSearchForm query={query} />
-            </header>
+            </div>
             <WordSearch query={query} wordService={wordService} />
           </>
           : <p>Please log in to browse the Dictionary.</p>
         }
       </SessionContext.Consumer>
-    </section>
+    </AppContent>
   )
 }

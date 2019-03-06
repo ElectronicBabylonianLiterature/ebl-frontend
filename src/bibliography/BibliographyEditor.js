@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/BibliographyEntryFormController'
 import { template } from 'bibliography/BibliographyEntry'
@@ -15,15 +15,12 @@ function BibliographyEditor ({ data, bibliographyService, create = false, histor
   }
 
   return (
-    <section className='App-content'>
-      <header>
-        <Breadcrumbs section='Bibliography' active={create ? 'New entry' : data.id} />
-        <h2>
-          {create ? 'Create' : `Edit ${data.id}`}
-        </h2>
-      </header>
+    <AppContent
+      section='Bibliography'
+      active={create ? 'New entry' : data.id}
+      title={create ? 'Create' : `Edit ${data.id}`}>
       <BibliographyEntryFormController entry={data} onSubmit={create ? createEntry : updateEntry} />
-    </section>
+    </AppContent>
   )
 }
 

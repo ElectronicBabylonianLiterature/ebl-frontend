@@ -1,20 +1,11 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Image from 'fragmentarium/Image'
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 
 import './Corpus.css'
 
 class Corpus extends Component {
-    MainHeader = () => {
-      return (
-        <header>
-          <Breadcrumbs section='Corpus' />
-          <h2 className='Corpus__header'>Corpus</h2>
-        </header>
-      )
-    }
-
     Texts = () => {
       return (
         <>
@@ -41,8 +32,7 @@ class Corpus extends Component {
 
     render () {
       return (
-        <section className='App-content'>
-          <this.MainHeader />
+        <AppContent section='Corpus'>
           <Container fluid>
             <Row>
               <Col md={6}>
@@ -53,7 +43,7 @@ class Corpus extends Component {
               </Col>
             </Row>
           </Container>
-        </section>
+        </AppContent>
       )
     }
 }

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import queryString from 'query-string'
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import Image from './Image'
 import SessionContext from 'auth/SessionContext'
@@ -10,52 +10,38 @@ import LatestTransliterations from './LatestTransliterations'
 
 import './Fragmentarium.css'
 
-class Fragmentarium extends Component {
-  MainHeader = () => {
-    return (
-      <header>
-        <Breadcrumbs section='Fragmentarium' />
-        <h2 className='Fragmentarium-header'>Fragmentarium</h2>
-      </header>
-    )
-  }
-
-  render () {
-    const number = queryString.parse(this.props.location.search).number
-    const transliteration = queryString.parse(this.props.location.search).transliteration
-    return (
-
-      <section className='App-content Fragmentarium'>
-        <this.MainHeader />
-
-        <Container fluid>
-          <Row>
-            <Col md={6}>
-              <SessionContext.Consumer>
-                {session => session.isAllowedToReadFragments()
-                  ? (
-                    <SearchGroup number={number} transliteration={transliteration} fragmentService={this.props.fragmentService} />
-                  )
-                  : <p> Please log in to browse the Fragmentarium. </p>
-                }
-              </SessionContext.Consumer>
-              <Statistics fragmentService={this.props.fragmentService} />
-            </Col>
-            <Col md={6}>
-              <Image fragmentService={this.props.fragmentService} fileName='Babel_Project_01_cropped.svg' />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <SessionContext.Consumer>
-                {session => session.isAllowedToReadFragments() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
-              </SessionContext.Consumer>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    )
-  }
+function Fragmentarium ({ location, fragmentService }) {
+  const number = queryString.parse(location.search).number
+  const transliteration = queryString.parse(location.search).transliteration
+  return (
+    <AppContent section='Fragmentarium'>
+      <Container fluid>
+        <Row>
+          <Col md={6}>
+            <SessionContext.Consumer>
+              {session => session.isAllowedToReadFragments()
+                ? (
+                  <SearchGroup number={number} transliteration={transliteration} fragmentService={fragmentService} />
+                )
+                : <p> Please log in to browse the Fragmentarium. </p>
+              }
+            </SessionContext.Consumer>
+            <Statistics fragmentService={fragmentService} />
+          </Col>
+          <Col md={6}>
+            <Image fragmentService={fragmentService} fileName='Babel_Project_01_cropped.svg' />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <SessionContext.Consumer>
+              {session => session.isAllowedToReadFragments() && <LatestTransliterations fragmentService={fragmentService} />}
+            </SessionContext.Consumer>
+          </Col>
+        </Row>
+      </Container>
+    </AppContent>
+  )
 }
 
 export default Fragmentarium

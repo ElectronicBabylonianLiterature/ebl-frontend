@@ -5,9 +5,12 @@
   padding-bottom: 1em;
   padding-left: 1.5em;
   padding-right: 1.5em;
-
 }
 
 .App-content--wide {
   max-width: initial;
+}
+
+.App-content__header {
+  margin-bottom: 1em;
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 
-import Breadcrumbs from 'common/Breadcrumbs'
+import AppContent from 'common/AppContent'
 import WordForm from './WordForm'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
@@ -43,18 +43,15 @@ class WordEditor extends Component {
 
   render () {
     return (
-      <section className='App-content'>
-        <header>
-          <Breadcrumbs section='Dictionary' active={this.props.match.params.id} />
-          <h2>
-            Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}
-          </h2>
-          <ReactMarkdown source={this.state.word.source} />
-          <Spinner loading={this.state.saving}>Saving...</Spinner>
-        </header>
+      <AppContent
+        section='Dictionary'
+        active={this.props.match.params.id}
+        title={<>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}</>}>
+        <ReactMarkdown source={this.state.word.source} />
+        <Spinner loading={this.state.saving}>Saving...</Spinner>
         <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={this.disabled} />
         <ErrorAlert error={this.state.error} />
-      </section>
+      </AppContent>
     )
   }
 }
