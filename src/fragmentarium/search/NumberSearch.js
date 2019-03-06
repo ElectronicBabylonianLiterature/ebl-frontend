@@ -6,7 +6,7 @@ import withData from 'http/withData'
 
 export default withData(
   ({ number, data }) => number
-    ? <FragmentList data={data} />
+    ? <FragmentList fragments={data} />
     : null
   ,
   props => props.fragmentService.searchNumber(props.number),

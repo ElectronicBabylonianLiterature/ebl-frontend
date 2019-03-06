@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import FragmentLink from 'fragmentarium/FragmentLink'
 
-function FragmentList ({ data }) {
+function FragmentList ({ fragments }) {
   return (
     <Table responsive>
       <thead>
@@ -15,7 +15,7 @@ function FragmentList ({ data }) {
         </tr>
       </thead>
       <tbody>
-        {data.map(fragment =>
+        {fragments.map(fragment =>
           <tr key={fragment._id}>
             <td><FragmentLink number={fragment._id}>{fragment._id}</FragmentLink></td>
             <td>{fragment.accession}</td>
@@ -23,7 +23,7 @@ function FragmentList ({ data }) {
             <td>{fragment.description}</td>
           </tr>
         )}
-        {_.isEmpty(data) && <tr><td colSpan={4}>No fragments found.</td></tr>}
+        {_.isEmpty(fragments) && <tr><td colSpan={4}>No fragments found.</td></tr>}
       </tbody>
     </Table>
   )

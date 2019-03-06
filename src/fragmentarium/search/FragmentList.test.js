@@ -11,7 +11,7 @@ beforeEach(async () => {
   fragments = await factory.buildMany('fragment', 2)
   element = render(
     <MemoryRouter>
-      <FragmentList data={fragments} />
+      <FragmentList fragments={fragments} />
     </MemoryRouter>
   )
 })
