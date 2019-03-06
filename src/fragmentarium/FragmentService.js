@@ -41,6 +41,10 @@ class FragmentService {
     return this.fragmentRepository.searchTransliteration(transliteration)
   }
 
+  fetchLatestTransliterations () {
+    return this.fragmentRepository.fetchLatestTransliterations()
+  }
+
   updateTransliteration (number, transliteration, notes) {
     return this.fragmentRepository.updateTransliteration(number, transliteration, notes)
   }

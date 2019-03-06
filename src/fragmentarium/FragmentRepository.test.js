@@ -65,6 +65,7 @@ const testData = [
   ['find', [fragmentId], apiClient.fetchJson, fragment, [`/fragments/${encodeURIComponent(fragmentId)}`, true], Promise.resolve(fragmentDto)],
   ['random', [], apiClient.fetchJson, [fragment], ['/fragments?random=true', true], Promise.resolve([fragmentDto])],
   ['interesting', [], apiClient.fetchJson, [fragment], ['/fragments?interesting=true', true], Promise.resolve([fragmentDto])],
+  ['fetchLatestTransliterations', [], apiClient.fetchJson, [fragment], ['/fragments?latest=true', true], Promise.resolve([fragmentDto])],
   ['searchNumber', [fragmentId], apiClient.fetchJson, [fragment], [`/fragments?number=${encodeURIComponent(fragmentId)}`, true], Promise.resolve([fragmentDto])],
   ['searchTransliteration', [transliterationQuery], apiClient.fetchJson, [fragment], [`/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`, true], Promise.resolve([fragmentDto])],
   ['updateTransliteration', [fragmentId, transliteration, notes], apiClient.postJson, fragment, [`/fragments/${encodeURIComponent(fragmentId)}/transliteration`, {

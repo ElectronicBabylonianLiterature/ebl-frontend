@@ -27,7 +27,8 @@ const fragmentRepository = {
   updateLemmatization: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
-  findLemmas: jest.fn()
+  findLemmas: jest.fn(),
+  fetchLatestTransliterations: jest.fn()
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -56,7 +57,8 @@ const testData = [
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName, false]],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
-  ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyService.search, [resultStub]]
+  ['searchBibliography', ['Alba Cecilia 1998 The Qualifications'], bibliographyService.search, [resultStub]],
+  ['fetchLatestTransliterations', [], fragmentRepository.fetchLatestTransliterations, resultStub]
 ]
 
 testDelegation(fragmentService, testData)

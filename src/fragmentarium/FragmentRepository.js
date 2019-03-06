@@ -31,6 +31,12 @@ class FragmentRepository {
       .then(createFragments)
   }
 
+  fetchLatestTransliterations () {
+    return this.apiClient
+      .fetchJson(`/fragments?latest=true`, true)
+      .then(createFragments)
+  }
+
   searchNumber (number) {
     return this.apiClient
       .fetchJson(`/fragments?number=${encodeURIComponent(number)}`, true)
