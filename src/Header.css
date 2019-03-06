@@ -12,11 +12,11 @@
 .Header__title-main {
   border-right: 0.05em solid black;
   display: inline-block;
+  font-weight: bold;
   line-height: 1.2;
   margin-right: 0.5em;
   padding-right: 0.5em;
   text-align: right;
-  font-weight: bold;
 }
 
 .Header__title-abbreviation {
