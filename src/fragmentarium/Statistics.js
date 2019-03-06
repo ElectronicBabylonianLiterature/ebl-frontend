@@ -9,15 +9,13 @@ function Statistics ({ data }) {
 
   return (
     <section className='Statistics'>
-      <div className='Statistics__content'>
-        <header>Current size of the corpus:</header>
-        <p className='Statistics__row'>
-          <span className='Statistics__value'> {localizedStatistics.transliteratedFragments} </span> tablets transliterated
-        </p>
-        <p className='Statistics__row'>
-          <span className='Statistics__value'> {localizedStatistics.lines} </span> lines of text
-        </p>
-      </div>
+      <h3>Current size of the corpus:</h3>
+      <p className='Statistics__row'>
+        <span className='Statistics__value'> {localizedStatistics.transliteratedFragments} </span> tablets transliterated
+      </p>
+      <p className='Statistics__row'>
+        <span className='Statistics__value'> {localizedStatistics.lines} </span> lines of text
+      </p>
     </section>
   )
 }

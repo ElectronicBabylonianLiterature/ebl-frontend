@@ -25,7 +25,7 @@ class Fragmentarium extends Component {
     const transliteration = queryString.parse(this.props.location.search).transliteration
     return (
 
-      <section className='App-content'>
+      <section className='App-content Fragmentarium'>
         <this.MainHeader />
 
         <Container fluid>
@@ -45,10 +45,14 @@ class Fragmentarium extends Component {
               <Image fragmentService={this.props.fragmentService} fileName='Babel_Project_01_cropped.svg' />
             </Col>
           </Row>
+          <Row>
+            <Col>
+              <SessionContext.Consumer>
+                {session => session.hasBetaAccess() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
+              </SessionContext.Consumer>
+            </Col>
+          </Row>
         </Container>
-        <SessionContext.Consumer>
-          {session => session.hasBetaAccess() && <LatestTransliterations fragmentService={this.props.fragmentService} />}
-        </SessionContext.Consumer>
       </section>
     )
   }

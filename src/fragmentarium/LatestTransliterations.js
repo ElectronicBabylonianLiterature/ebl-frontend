@@ -3,14 +3,14 @@ import FragmentList from 'fragmentarium/FragmentList'
 import withData from 'http/withData'
 
 function LatestTransliterations ({ data }) {
-  return (<>
+  return (<section>
     <h3>Latest additions:</h3>
     <FragmentList fragments={data} columns={{
       'Accession': 'accession',
       'Script': 'script',
       'Description': 'description'
     }} />
-  </>)
+  </section>)
 }
 
 export default withData(

@@ -1,16 +1,11 @@
 .Statistics {
   font-size: 1.5em;
-  text-align: center;
-}
-
-.Statistics__content {
-  display: inline-block;
-  text-align: left;
+  margin-top: 2em;
 }
 
 .Statistics__row {
   margin-top: 1em;
-  padding-left: 2em;
+  padding-left: 4em;
 }
 
 .Statistics__value {
