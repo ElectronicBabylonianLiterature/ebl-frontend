@@ -7,9 +7,9 @@ import withData from 'http/withData'
 export default withData(
   ({ number, data }) => number
     ? <FragmentList fragments={data} columns={{
-      accession: 'Accession',
-      cdliNumber: 'CDLI Number',
-      description: 'Description'
+      'Accession': 'Accession',
+      'CDLI Number': 'cdliNumber',
+      'Description': 'description'
     }} />
     : null
   ,

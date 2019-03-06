@@ -6,9 +6,9 @@ function LatestTransliterations ({ data }) {
   return (<>
     <h3>Latest additions:</h3>
     <FragmentList fragments={data} columns={{
-      accession: 'Accession',
-      script: 'Script',
-      description: 'Description'
+      'Accession': 'accession',
+      'Script': 'script',
+      'Description': 'description'
     }} />
   </>)
 }

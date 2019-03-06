@@ -6,20 +6,25 @@ import _ from 'lodash'
 import FragmentList from './FragmentList'
 
 const numberOfFragments = 2
-const expectedColumns = {
-  _id: 'Number',
-  accession: 'Accession',
-  cdliNumber: 'CDLI Number',
-  description: 'Description'
+const expectedStringColumns = {
+  'Number': '_id',
+  'Accession': 'accession',
+  'CDLI Number': 'cdliNumber',
+  'Description': 'description'
+}
+const expectedComputedColumns = {
+  'Number': '_id',
+  'Computed': fragment => fragment.description.toUpperCase()
 }
 let fragments
 let element
 
 describe.each([
   ['No config', null, {
-    _id: 'Number'
+    'Number': '_id'
   }],
-  ['With conifg', _.omit(expectedColumns, ['_id']), expectedColumns]
+  ['With strig columns', _.omit(expectedStringColumns, ['Number']), expectedStringColumns],
+  ['With computed columns', _.omit(expectedComputedColumns, ['Number']), expectedComputedColumns]
 ])('%s', (name, columns, expectedColumns) => {
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', numberOfFragments)
@@ -31,7 +36,7 @@ describe.each([
   })
 
   test('Columns', () => {
-    const expectedHeader = _.values(expectedColumns).join('')
+    const expectedHeader = _.keys(expectedColumns).join('')
     expect(element.container).toHaveTextContent(expectedHeader)
   })
 
@@ -43,7 +48,10 @@ describe.each([
     })
 
     test('Displays all properties', () => {
-      const expectedRow = _.keys(expectedColumns).map(property => fragment[property]).join('').replace('\n', ' ')
+      const expectedRow = _.values(expectedColumns).map(property => _.isFunction(property)
+        ? property(fragment)
+        : fragment[property]
+      ).join('').replace('\n', ' ')
       expect(element.container).toHaveTextContent(expectedRow)
     })
 
