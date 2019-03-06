@@ -43,7 +43,7 @@ describe('Editing', () => {
   test('Displays result on successfull query', async () => {
     const { container } = await renderWithRouter(true, false, resultId)
 
-    expect(container).toHaveTextContent(JSON.stringify(result.toJson(), null, 1).replace(/\s+/g, ' '))
+    expectTextContentToContainCslJson(container, result)
   })
 
   test('Posts on submit', async () => {
@@ -62,7 +62,7 @@ describe('Creating', () => {
   test('Displays template', async () => {
     const { container } = await renderWithRouter(true, true, createWaitFor)
 
-    expect(container).toHaveTextContent(JSON.stringify(template.toJson(), null, 1).replace(/\s+/g, ' '))
+    expectTextContentToContainCslJson(container, template)
   })
 
   test('Puts on submit', async () => {
@@ -76,6 +76,10 @@ describe('Creating', () => {
 
   commonTests(true, createWaitFor)
 })
+
+function expectTextContentToContainCslJson (container, entry) {
+  expect(container).toHaveTextContent(JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' '))
+}
 
 function commonTests (create, waitFor) {
   test('Displays error message failed submit', async () => {
