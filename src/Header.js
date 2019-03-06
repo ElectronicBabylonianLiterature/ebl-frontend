@@ -24,6 +24,7 @@ export default function Header ({ auth }) {
           <Navbar.Collapse id={id}>
             <Nav className='mx-auto'>
               <Nav.Item><LinkContainer to='/dictionary'><Nav.Link>Dictionary</Nav.Link></LinkContainer></Nav.Item>
+              <Nav.Item><LinkContainer to='/corpus'><Nav.Link>Corpus</Nav.Link></LinkContainer></Nav.Item>
               <Nav.Item><LinkContainer to='/fragmentarium'><Nav.Link>Fragmentarium</Nav.Link></LinkContainer></Nav.Item>
               <Nav.Item><LinkContainer to='/bibliography'><Nav.Link>Bibliography</Nav.Link></LinkContainer></Nav.Item>
             </Nav>
