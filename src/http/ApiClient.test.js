@@ -11,6 +11,9 @@ const expectSignal = expect.objectContaining({
   aborted: expect.any(Boolean),
   onabort: expect.any(Function)
 })
+const requestJson = {
+  'payload': 1
+}
 
 let apiClient
 let auth
@@ -53,77 +56,69 @@ describe('fetchJson', () => {
 })
 
 describe('postJson', () => {
-  const json = {
-    'payload': 1
-  }
-
   test('Resolves on success', async () => {
     setUpSuccessResponse()
 
-    await expect(apiClient.postJson(path, json)).resolves.toEqual(result)
+    await expect(apiClient.postJson(path, requestJson)).resolves.toEqual(result)
   })
 
   test('No Content resolves to falsy value', async () => {
     setUpEmptyResponse(204)
 
-    await expect(apiClient.postJson(path, json)).resolves.toBeFalsy()
+    await expect(apiClient.postJson(path, requestJson)).resolves.toBeFalsy()
   })
 
   test('Makes a post request with given parameters', async () => {
     setUpSuccessResponse()
 
-    await apiClient.postJson(path, json)
+    await apiClient.postJson(path, requestJson)
 
     const expectedHeaders = new Headers({
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
     expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(json),
+      body: JSON.stringify(requestJson),
       headers: expectedHeaders,
       method: 'POST',
       signal: expectSignal
     })
   })
 
-  commonTests(() => apiClient.postJson(path, json))
+  commonTests(() => apiClient.postJson(path, requestJson))
 })
 
 describe('putJson', () => {
-  const json = {
-    'payload': 1
-  }
-
   test('Resolves on success', async () => {
     setUpSuccessResponse()
 
-    await expect(apiClient.putJson(path, json)).resolves.toEqual(result)
+    await expect(apiClient.putJson(path, requestJson)).resolves.toEqual(result)
   })
 
   test('No Content resolves to falsy value', async () => {
     setUpEmptyResponse(204)
 
-    await expect(apiClient.putJson(path, json)).resolves.toBeFalsy()
+    await expect(apiClient.putJson(path, requestJson)).resolves.toBeFalsy()
   })
 
   test('Makes a put request with given parameters', async () => {
     setUpSuccessResponse()
 
-    await apiClient.putJson(path, json)
+    await apiClient.putJson(path, requestJson)
 
     const expectedHeaders = new Headers({
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
     expect(fetch).toBeCalledWith(expectedUrl, {
-      body: JSON.stringify(json),
+      body: JSON.stringify(requestJson),
       headers: expectedHeaders,
       method: 'PUT',
       signal: expectSignal
     })
   })
 
-  commonTests(() => apiClient.postJson(path, json))
+  commonTests(() => apiClient.postJson(path, requestJson))
 })
 
 describe('fetchBlob', () => {
