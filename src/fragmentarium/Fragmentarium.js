@@ -20,9 +20,7 @@ function Fragmentarium ({ location, fragmentService }) {
           <Col md={6}>
             <SessionContext.Consumer>
               {session => session.isAllowedToReadFragments()
-                ? (
-                  <SearchGroup number={number} transliteration={transliteration} fragmentService={fragmentService} />
-                )
+                ? <SearchGroup number={number} transliteration={transliteration} fragmentService={fragmentService} />
                 : <p> Please log in to browse the Fragmentarium. </p>
               }
             </SessionContext.Consumer>
