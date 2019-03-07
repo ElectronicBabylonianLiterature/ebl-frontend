@@ -4,12 +4,18 @@ import SentryErrorReporter from './SentryErrorReporter.js'
 
 const error = new Error('error')
 const sentryErrorReporter = new SentryErrorReporter()
+let scope
 
 beforeEach(async () => {
   jest.spyOn(Sentry, 'init')
   jest.spyOn(Sentry, 'withScope')
   jest.spyOn(Sentry, 'captureException')
   jest.spyOn(Sentry, 'showReportDialog')
+  Sentry.captureException.mockImplementationOnce(_.noop)
+  Sentry.withScope.mockImplementationOnce(f => f(scope))
+  scope = {
+    setExtra: jest.fn()
+  }
 })
 
 test('Initialization', () => {
@@ -18,19 +24,20 @@ test('Initialization', () => {
   expect(Sentry.init).toHaveBeenCalledWith({ dsn: 'http://example.com/sentry' })
 })
 
-test('Error reporting', async () => {
+test('Error reporting', () => {
   const info = { componentStack: 'Error happened!' }
-  const scope = {
-    setExtra: jest.fn()
-  }
-  Sentry.captureException.mockImplementationOnce(_.noop)
-  Sentry.withScope.mockImplementationOnce(f => f(scope))
   sentryErrorReporter.captureException(error, info)
   expect(scope.setExtra).toHaveBeenCalledWith('componentStack', 'Error happened!')
   expect(Sentry.captureException).toHaveBeenCalledWith(error)
 })
 
-test('Report dialog', async () => {
+test('Error reporting no info', () => {
+  sentryErrorReporter.captureException(error)
+  expect(scope.setExtra).not.toHaveBeenCalled()
+  expect(Sentry.captureException).toHaveBeenCalledWith(error)
+})
+
+test('Report dialog', () => {
   Sentry.showReportDialog.mockImplementationOnce(_.noop)
   sentryErrorReporter.showReportDialog()
   expect(Sentry.showReportDialog).toHaveBeenCalled()
