@@ -23,6 +23,14 @@ export default class BibliographySelect extends Component {
     }
   }
 
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (this.props.value !== prevProps.value) {
+      this.setState({
+        selectedOption: createOption(this.props.value)
+      })
+    }
+  }
+
   loadOptions = (inputValue, callback) => {
     this.props
       .searchBibliography(inputValue)
@@ -32,7 +40,6 @@ export default class BibliographySelect extends Component {
 
   handleChange = selectedOption => {
     this.setState({
-      ...this.state,
       selectedOption
     })
     this.props.onChange(selectedOption.entry)
