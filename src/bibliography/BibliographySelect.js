@@ -50,6 +50,7 @@ export default class BibliographySelect extends Component {
       <AsyncSelect
         aria-labelledby={this.props['aria-labelledby']}
         placeholder='Name Year Title'
+        cacheOptions
         loadOptions={this.loadOptions}
         onChange={this.handleChange}
         value={this.state.selectedOption}
