@@ -68,7 +68,7 @@ export default class ReferenceForm extends Component {
         <HelpTrigger overlay={NotesHelp()} />
         <Form.Control
           type='text'
-          defaultValue={this.props.value.notes}
+          value={this.props.value.notes}
           onChange={this.handleEvent('setNotes')} />
       </Form.Group>
     </>)
