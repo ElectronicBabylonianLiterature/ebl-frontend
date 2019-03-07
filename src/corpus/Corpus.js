@@ -4,8 +4,6 @@ import Image from 'fragmentarium/Image'
 import AppContent from 'common/AppContent'
 import ReactMarkdown from 'react-markdown'
 
-import './Corpus.css'
-
 class Corpus extends Component {
     Texts = () => {
       const texts = [
