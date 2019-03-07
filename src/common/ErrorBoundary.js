@@ -5,15 +5,14 @@ import ErrorReporterContext from 'ErrorReporterContext'
 
 class ErrorBoundary extends Component {
   state = {
-    error: null,
-    info: null
+    error: null
   }
 
   static contextType = ErrorReporterContext;
 
   componentDidCatch (error, info) {
-    this.setState({ error: error, info: info })
-    this.context.captureException(error, { extra: info })
+    this.setState({ error: error })
+    this.context.captureException(error, info)
   }
 
   render () {

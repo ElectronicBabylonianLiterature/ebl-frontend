@@ -31,7 +31,7 @@ describe('Children throw an error', () => {
   })
 
   it('Sends report to Sentry', () => {
-    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, { extra: { componentStack: expect.any(String) } })
+    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, { componentStack: expect.any(String) })
   })
 
   it('Clicking report button opens report dialog', async () => {
