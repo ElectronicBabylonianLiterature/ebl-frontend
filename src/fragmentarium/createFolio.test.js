@@ -1,5 +1,5 @@
 import Chance from 'chance'
-import createFolio from './createFolio'
+import createFolio, { Folio } from './createFolio'
 
 const chance = new Chance()
 
@@ -11,16 +11,27 @@ describe.each([
   ['AKG', 'Grayson', true],
   ['MJG', 'Geller', true]
 ])('%s folios', (name, humanized, hasImage) => {
-  it('Creates a correct folio', () => {
-    const number = chance.string()
-    const folio = createFolio(name, number)
+  let number
+  let folio
 
-    expect(folio).toEqual({
-      name: name,
-      number: number,
-      humanizedName: humanized,
-      fileName: `${name}_${number}.jpg`,
-      hasImage: hasImage
-    })
+  beforeEach(() => {
+    number = chance.string()
+    folio = createFolio(name, number)
+  })
+
+  test('Creates a correct folio', () => {
+    expect(folio).toEqual(new Folio(name, number))
+  })
+
+  test('Humanized name', () => {
+    expect(folio.humanizedName).toEqual(humanized)
+  })
+
+  test('File name', () => {
+    expect(folio.fileName).toEqual(`${name}_${number}.jpg`)
+  })
+
+  test('Has image', () => {
+    expect(folio.hasImage).toEqual(hasImage)
   })
 })
