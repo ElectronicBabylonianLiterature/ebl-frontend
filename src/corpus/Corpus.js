@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Image from 'fragmentarium/Image'
 import AppContent from 'common/AppContent'
@@ -46,16 +46,16 @@ class Corpus extends Component {
             ['8. Hymn to Ištar (“Ištar 2”)', '180 vv.']] }
       ]
 
-      return texts.map((block) => {
+      return texts.map((block, index) => {
         return (
-          <>
+          <Fragment key={index}>
             <h3> {block.genre} </h3>
             <Container fluid as='ol'>
-              {block.texts.map(([text, verses]) => {
-                return <Row as='li'> <Col md={8}> <ReactMarkdown source={text} /> </Col> <Col md={4}> {verses} </Col> </Row>
+              {block.texts.map(([text, verses], index) => {
+                return <Row as='li' key={index}> <Col md={8}> <ReactMarkdown source={text} /> </Col> <Col md={4}> {verses} </Col> </Row>
               })}
             </Container>
-        </>
+          </Fragment>
         )
       })
     }
