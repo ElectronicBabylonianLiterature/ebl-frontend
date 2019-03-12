@@ -33,5 +33,6 @@ export default class Lemma {
       ? ''
       : ` ${word.homonym}`
     this.label = `${this.lemma}${this.homonym}${createMeaning(word)}`
+    Object.freeze(this)
   }
 }
