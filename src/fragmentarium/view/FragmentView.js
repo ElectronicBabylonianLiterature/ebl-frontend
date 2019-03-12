@@ -6,6 +6,7 @@ import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
+import Folio from 'fragmentarium/createFolio'
 
 const FragmentWithData = withData(
   ({ data, ...props }) => <CuneiformFragment
@@ -23,10 +24,10 @@ export default function FragmentView ({ match, location, fragmentService }) {
   const folioName = queryString.parse(location.search).folioName
   const folioNumber = queryString.parse(location.search).folioNumber
   const activeFolio = folioName || folioNumber
-    ? {
+    ? new Folio({
       name: folioName,
       number: folioNumber
-    }
+    })
     : null
 
   return (

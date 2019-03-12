@@ -1,6 +1,7 @@
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
+import { fromJS } from 'immutable'
 import Reference, { createReference, serializeReference } from './Reference'
 
 test('default reference', () => {
@@ -29,13 +30,13 @@ test('createReference', async () => {
     find: jest.fn()
   }
   bibliographyRepository.find.mockReturnValueOnce(Promise.resolve(entry))
-  const dto = await factory.build('referenceDto')
+  const dto = fromJS(await factory.build('referenceDto'))
   await expect(createReference(dto, bibliographyRepository)).resolves.toEqual(
     new Reference(
-      dto.type,
-      dto.pages,
-      dto.notes,
-      dto.linesCited,
+      dto.get('type'),
+      dto.get('pages'),
+      dto.get('notes'),
+      dto.get('linesCited'),
       entry
     )
   )

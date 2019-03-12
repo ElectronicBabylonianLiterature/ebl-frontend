@@ -56,8 +56,8 @@ describe('Search', () => {
     })
 
     it('Displays result on successfull query', async () => {
-      await waitForElement(() => element.getByText(fragments[0]._id))
-      expect(container).toHaveTextContent(fragments[1]._id)
+      await waitForElement(() => element.getByText(fragments[0].number))
+      expect(container).toHaveTextContent(fragments[1].number)
     })
 
     it('Fills in search form query', () => {
@@ -70,16 +70,16 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2, [
-        { matching_lines: [['line 1', 'line 2']] },
-        { matching_lines: [['line 3'], ['line 4']] }
+        { matchingLines: [['line 1', 'line 2']] },
+        { matchingLines: [['line 3'], ['line 4']] }
       ])
       fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
       renderFragmentariumSearch(`/fragmentarium/search?transliteration=${transliteration}`)
     })
 
     it('Displays result on successfull query', async () => {
-      await waitForElement(() => element.getByText(fragments[0]._id))
-      expect(container).toHaveTextContent(fragments[1]._id)
+      await waitForElement(() => element.getByText(fragments[0].number))
+      expect(container).toHaveTextContent(fragments[1].number)
     })
 
     it('Fills in search form query', () => {

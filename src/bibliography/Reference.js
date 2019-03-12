@@ -77,9 +77,9 @@ export default class Reference {
 
 export function createReference (data, bibliographyRepository) {
   return bibliographyRepository
-    .find(data.id)
+    .find(data.get('id'))
     .then(entry => new Reference(
-      data.type, data.pages, data.notes, data.linesCited, entry
+      data.get('type'), data.get('pages'), data.get('notes'), data.get('linesCited'), entry
     ))
 }
 

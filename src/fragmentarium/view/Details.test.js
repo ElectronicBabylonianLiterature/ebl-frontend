@@ -3,6 +3,8 @@ import { MemoryRouter } from 'react-router-dom'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Details from './Details'
+import { List } from 'immutable'
+import { Measure } from 'fragmentarium/createFragment'
 
 let fragment
 let container
@@ -71,11 +73,13 @@ describe('Missing details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       collection: '',
-      joins: [],
+      joins: List(),
       cdliNumber: '',
       accession: '',
       bmIdNumber: '',
-      width: {}
+      measures: await factory.build('measures', {
+        width: new Measure({})
+      })
     })
     renderDetails()
   })

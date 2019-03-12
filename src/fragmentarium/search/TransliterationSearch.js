@@ -9,7 +9,7 @@ import './TransliterationSearch.css'
 function Lines ({ fragment }) {
   return (
     <ol className='TransliterationSearch__list'>
-      {fragment.matching_lines.map((group, index) =>
+      {fragment.matchingLines.map((group, index) =>
         <li key={index} className='TransliterationSearch__list_item'>
           <ol className='TransliterationSearch__list'>
             {group.map((line, index) =>

@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { List } from 'immutable'
 import { Promise } from 'bluebird'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
@@ -19,10 +20,8 @@ class FragmentService {
 
   find (number) {
     return this.fragmentRepository.find(number)
-      .then(async fragment => ({
-        ...fragment,
-        references: await this.hydrateReferences(fragment.references)
-      }))
+      .then(fragment => this.hydrateReferences(fragment.references)
+        .then(hydrated => fragment.setReferences(hydrated)))
   }
 
   random () {
@@ -87,19 +86,20 @@ class FragmentService {
       const lemmas = _.keyBy(lemmaData, 'value')
       const suggestions = _.fromPairs(suggestionsData)
       return new Lemmatization(
-        _.map(text.lines, 'prefix'),
-        _(text.lines)
-          .map('content')
-          .map(tokens => tokens.map(token => token.lemmatizable
+        text.lines.map(line => line.prefix).toJS(),
+        text.lines
+          .toSeq()
+          .map(line => line.content)
+          .map(tokens => tokens.map(token => token.get('lemmatizable', false)
             ? new LemmatizationToken(
-              token.value,
+              token.get('value'),
               true,
-              token.uniqueLemma.map(id => lemmas[id]),
-              suggestions[token.value]
+              token.get('uniqueLemma', []).map(id => lemmas[id]).toJS(),
+              suggestions[token.get('value')]
             )
-            : new LemmatizationToken(token.value, false))
+            : new LemmatizationToken(token.get('value'), false))
           )
-          .value()
+          .toJS()
       )
     })
   }
@@ -108,7 +108,7 @@ class FragmentService {
     return Promise.all(
       mapText(
         text,
-        line => line.map(token => token.uniqueLemma),
+        line => line.map(token => token.get('uniqueLemma', List())),
         uniqueLemma => this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
       )
     )
@@ -118,7 +118,7 @@ class FragmentService {
     return Promise.all(
       mapText(
         text,
-        line => line.filter(token => token.lemmatizable).map(token => token.value),
+        line => line.filter(token => token.get('lemmatizable', false)).map(token => token.get('value')),
         value => this.fragmentRepository.findLemmas(value).then(result => [
           value,
           result.map(complexLemma => complexLemma.map(word => new Lemma(word)))
@@ -134,14 +134,13 @@ class FragmentService {
 }
 
 function mapText (text, mapLine, mapToken) {
-  return _(text.lines)
-    .map('content')
-    .map(mapLine)
-    .flattenDeep()
-    .compact()
-    .uniq()
+  return text.lines
+    .toSeq()
+    .map(({ content }) => mapLine(content))
+    .flatten(false)
+    .filterNot(_.isNil)
+    .toOrderedSet()
     .map(mapToken)
-    .value()
 }
 
 export default FragmentService

@@ -32,23 +32,26 @@ function Citation ({ reference }) {
 function ReferenceGroup ({ references }) {
   return (
     <ol className='ReferenceList__list'>
-      {_.sortBy(references, 'document.author', 'document.year').map((reference, index) =>
-        <li key={index}>
-          <Citation reference={reference} />
-        </li>
-      )}
+      {references
+        .toSeq()
+        .sortBy(reference => `${reference.document.author} # ${reference.document.year}`)
+        .map((reference, index) =>
+          <li key={index}>
+            <Citation reference={reference} />
+          </li>
+        )
+      }
     </ol>
   )
 }
 
 export default function ReferenceList ({ references }) {
   return <>
-    {_(references)
-      .groupBy('type')
-      .toPairs()
+    {references
+      .groupBy(reference => reference.type)
+      .entrySeq()
       .sortBy(([type, group]) => _.get(typeOrder, type, 5))
-      .map(([type, group]) => <ReferenceGroup key={type} references={group} />)
-      .value()}
-    {_.isEmpty(references) && <p>No references</p>}
+      .map(([type, group]) => <ReferenceGroup key={type} references={group} />)}
+    {references.isEmpty() && <p>No references</p>}
   </>
 }

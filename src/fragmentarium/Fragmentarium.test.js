@@ -66,6 +66,6 @@ describe('Latest additions', () => {
   })
 
   test('Shows the latest additions', () => {
-    expect(container).toHaveTextContent(latest._id)
+    expect(container).toHaveTextContent(latest.number)
   })
 })

@@ -2,7 +2,6 @@ import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 import { Promise } from 'bluebird'
 import FolioPager from './FolioPager'
 
@@ -19,11 +18,11 @@ beforeEach(async () => {
   pagerData = await factory.build('folioPager')
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
   fragment = await factory.build('fragment')
-  folio = _.head(fragment.folios)
+  folio = fragment.folios.first()
   element = render(<MemoryRouter>
     <FolioPager fragmentService={fragmentService}
       folio={folio}
-      fragmentNumber={fragment._id} />
+      fragmentNumber={fragment.number} />
   </MemoryRouter>)
   await waitForElement(() => element.getByText(/Browse/))
 })

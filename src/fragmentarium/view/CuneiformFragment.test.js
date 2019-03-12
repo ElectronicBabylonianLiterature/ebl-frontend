@@ -21,10 +21,10 @@ let expectedFragment
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const references = await factory.buildMany('reference', 2)
-  fragment = await factory.build('fragment', { atf: '1. ku' })
-  fragment.references = await factory.buildMany('reference', 2)
-  updatedFragment = await factory.build('fragment', { _id: fragment._id, atf: fragment.atf })
-  expectedFragment = { ...updatedFragment, references: references }
+  fragment = (await factory.build('fragment', { atf: '1. ku' }))
+    .setReferences(await factory.buildMany('reference', 2))
+  updatedFragment = await factory.build('fragment', { number: fragment.number, atf: fragment.atf })
+  expectedFragment = updatedFragment.setReferences(references)
 
   onChange = jest.fn()
   fragmentService = {

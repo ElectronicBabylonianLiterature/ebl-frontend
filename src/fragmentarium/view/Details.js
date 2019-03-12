@@ -29,7 +29,7 @@ class Details extends Component {
   get joins () {
     return (
       <Fragment>
-        Joins: {_.isEmpty(this.props.fragment.joins)
+        Joins: {this.props.fragment.joins.isEmpty()
           ? '-'
           : (
             <ul className='Details-joins'>
@@ -47,9 +47,9 @@ class Details extends Component {
 
   get measurements () {
     const measurements = _([
-      this.props.fragment.length.value,
-      this.props.fragment.width.value,
-      this.props.fragment.thickness.value
+      this.props.fragment.measures.length.value,
+      this.props.fragment.measures.width.value,
+      this.props.fragment.measures.thickness.value
     ]).compact().join(' × ')
 
     return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`

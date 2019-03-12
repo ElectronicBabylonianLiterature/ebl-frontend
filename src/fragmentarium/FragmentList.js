@@ -14,8 +14,8 @@ function FragmentList ({ fragments, columns }) {
       </thead>
       <tbody>
         {fragments.map(fragment =>
-          <tr key={fragment._id}>
-            <td><FragmentLink number={fragment._id}>{fragment._id}</FragmentLink></td>
+          <tr key={fragment.number}>
+            <td><FragmentLink number={fragment.number}>{fragment.number}</FragmentLink></td>
             {_.values(columns).map((property, index) => <td key={index} >{_.isFunction(property)
               ? property(fragment)
               : fragment[property]

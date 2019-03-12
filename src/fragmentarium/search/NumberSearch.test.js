@@ -28,8 +28,8 @@ it('Searches for the given parameters', () => {
 })
 
 it('Displays and links results', async () => {
-  await waitForElement(() => element.getByText(fragments[0]._id))
+  await waitForElement(() => element.getByText(fragments[0].number))
   for (let fragment of fragments) {
-    expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
+    expect(element.getByText(fragment.number)).toHaveAttribute('href', `/fragmentarium/${fragment.number}`)
   }
 })

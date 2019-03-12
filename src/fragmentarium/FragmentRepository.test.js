@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
-import createFolio from 'fragmentarium/createFolio'
+import Folio from 'fragmentarium/createFolio'
 import createFragment from 'fragmentarium/createFragment'
 
 const apiClient = {
@@ -16,7 +16,7 @@ const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
 const notes = 'notes'
 const resultStub = {}
-const folio = createFolio('MJG', 'K1')
+const folio = new Folio({ name: 'MJG', number: 'K1' })
 const word = 'šim'
 
 const fragmentDto = {

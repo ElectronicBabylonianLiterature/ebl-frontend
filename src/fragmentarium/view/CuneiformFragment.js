@@ -41,11 +41,11 @@ function Info ({ fragment }) {
 
 function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   const tabsId = _.uniqueId('fragment-container-')
-  const updateTransliteration = (transliteration, notes) => onSave(fragmentService.updateTransliteration(fragment._id, transliteration, notes))
-  const updateLemmatization = lemmatization => onSave(fragmentService.updateLemmatization(fragment._id, lemmatization.toDto()))
+  const updateTransliteration = (transliteration, notes) => onSave(fragmentService.updateTransliteration(fragment.number, transliteration, notes))
+  const updateLemmatization = lemmatization => onSave(fragmentService.updateLemmatization(fragment.number, lemmatization.toDto()))
   const updateReferences = references => onSave(
     fragmentService.updateReferences(
-      fragment._id,
+      fragment.number,
       references.map(serializeReference)
     )
   )
@@ -67,7 +67,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
             </ContentSection>
           </Tab>
           <Tab eventKey={3} title='Lemmatization' disabled={
-            _.isEmpty(fragment.text.lines) || !session.isAllowedToLemmatizeFragments()
+            fragment.text.lines.isEmpty() || !session.isAllowedToLemmatizeFragments()
           }>
             <ContentSection>
               <Lemmatizer
@@ -143,10 +143,8 @@ class CuneiformFragmentController extends Component {
       saving: true
     })
     this.updatePromise = promise
-      .then(async updatedFragment => ({
-        ...updatedFragment,
-        references: await this.props.fragmentService.hydrateReferences(updatedFragment.references)
-      }))
+      .then(updatedFragment => this.props.fragmentService.hydrateReferences(updatedFragment.references)
+        .then(hydratedReferences => updatedFragment.setReferences(hydratedReferences)))
       .then(hydaratedFragment => {
         this.setState({
           fragment: hydaratedFragment,

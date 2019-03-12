@@ -30,7 +30,7 @@ it('Redirects to interesting when clicked', async () => {
   fragmentService.interesting.mockReturnValueOnce(Promise.resolve(fragment))
   await whenClicked(element, 'Path of the Pioneers')
     .expect(history.push)
-    .toHaveBeenCalledWith(`/fragmentarium/${fragment._id}`)
+    .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
 })
 
 it('Hides button if user does not have transliteration rights', async () => {

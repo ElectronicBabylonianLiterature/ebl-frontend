@@ -27,15 +27,15 @@ function Folios ({ fragment, fragmentService, activeFolio, history }) {
 
   function onSelect (key) {
     if (key >= 0) {
-      const folio = fragment.folios[key]
-      history.push(createFragmentUrlWithFolio(fragment._id, folio.name, folio.number))
+      const folio = fragment.folios.get(key)
+      history.push(createFragmentUrlWithFolio(fragment.number, folio.name, folio.number))
     } else {
-      history.push(createFragmentUrl(fragment._id))
+      history.push(createFragmentUrl(fragment.number))
     }
   }
 
   const activeKey = activeFolio
-    ? _.findIndex(fragment.folios, activeFolio)
+    ? fragment.folios.findIndex(folio => _.isEqual(folio, activeFolio))
     : cdliKey
 
   return (
@@ -50,7 +50,7 @@ function Folios ({ fragment, fragmentService, activeFolio, history }) {
             eventKey={index}
             title={`${folio.humanizedName} Folio ${folio.number}`}
             disabled={!folio.hasImage}>
-            <FolioDetails fragmentService={fragmentService} fragmentNumber={fragment._id} folio={folio} />
+            <FolioDetails fragmentService={fragmentService} fragmentNumber={fragment.number} folio={folio} />
           </Tab>
         )}
         {fragment.cdliNumber && (
@@ -59,7 +59,7 @@ function Folios ({ fragment, fragmentService, activeFolio, history }) {
           </Tab>
         )}
       </Tabs>
-      {_.isEmpty(fragment.folios) && _.isEmpty(fragment.cdliNumber) && 'No folios'}
+      {fragment.folios.isEmpty() && _.isEmpty(fragment.cdliNumber) && 'No folios'}
     </Fragment>
   )
 }

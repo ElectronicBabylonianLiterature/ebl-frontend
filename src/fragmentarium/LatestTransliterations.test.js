@@ -8,7 +8,7 @@ import LatestTransliterations from './LatestTransliterations'
 
 const numberOfFragments = 2
 const expectedColumns = {
-  _id: 'Number',
+  number: 'Number',
   accession: 'Accession',
   script: 'Script',
   description: 'Description'

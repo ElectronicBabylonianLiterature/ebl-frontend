@@ -56,7 +56,7 @@ describe.each([
     })
 
     test('Links to the fragment', () => {
-      expect(element.getByText(fragment._id)).toHaveAttribute('href', `/fragmentarium/${fragment._id}`)
+      expect(element.getByText(fragment.number)).toHaveAttribute('href', `/fragmentarium/${fragment.number}`)
     })
   })
 })

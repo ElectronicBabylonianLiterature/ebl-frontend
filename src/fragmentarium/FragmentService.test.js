@@ -1,14 +1,16 @@
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
+import { List, fromJS } from 'immutable'
 import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
-import createFolio from 'fragmentarium/createFolio'
+import Folio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
+import { Text, Line } from 'fragmentarium/createFragment'
 
 const resultStub = {}
-const folio = createFolio('AKG', '375')
+const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
 const auth = {
   isAllowedToReadFragments: jest.fn(),
@@ -78,16 +80,14 @@ describe('find', () => {
 
   beforeEach(async () => {
     const { entries, references, expectedReferences } = await setUpHydration()
-    const fragment = await factory.build('fragment', { _id: number, references: references })
+    const fragment = await factory.build('fragment', { number: number, references: references })
 
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
     bibliographyService.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
 
-    expectedFragment = {
-      ...fragment,
-      references: expectedReferences
-    }
-    result = await fragmentService.find(fragment._id)
+    expectedFragment = fragment.setReferences(expectedReferences)
+
+    result = await fragmentService.find(fragment.number)
   })
 
   test('Returns hydrated fragment', () => expect(result).toEqual(expectedFragment))
@@ -101,32 +101,30 @@ test('createLemmatization', async () => {
     'kur': words[2],
     'nu': words[3]
   }
-  const text = {
-    lines: [
-      {
-        type: 'TextLine',
-        prefix: '1.',
-        content: [
-          {
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          },
-          {
-            type: 'Word',
-            value: 'nu',
-            uniqueLemma: [words[1]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          }
-        ]
-      }
-    ]
-  }
+  const text = new Text({ lines: List([
+    new Line({
+      type: 'TextLine',
+      prefix: '1.',
+      content: [
+        {
+          type: 'Word',
+          value: 'kur',
+          uniqueLemma: [words[0]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        },
+        {
+          type: 'Word',
+          value: 'nu',
+          uniqueLemma: [words[1]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        }
+      ]
+    })
+  ]) })
   wordRepository.find.mockImplementation(id => wordMap[id]
     ? Promise.resolve(wordMap[id])
     : Promise.reject(new Error())
@@ -162,8 +160,9 @@ test('hydrateReferences', async () => {
 
 async function setUpHydration () {
   const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
-  const expectedReferences = await factory.buildMany('reference', 2, references.map((dto, index) => ({
+  const referenceDtos = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
+  const references = List(referenceDtos).map(dto => fromJS(dto))
+  const expectedReferences = await factory.buildMany('reference', 2, referenceDtos.map((dto, index) => ({
     ...dto,
     document: entries[index]
   })))

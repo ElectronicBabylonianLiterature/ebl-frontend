@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import _ from 'lodash'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 
@@ -42,7 +41,7 @@ function Entry ({ entry }) {
 
 class Record extends Component {
   get record () {
-    return _.sortBy(this.props.record, 'date')
+    return this.props.record
   }
 
   render () {
@@ -55,7 +54,7 @@ class Record extends Component {
               <Entry entry={entry} />
             </li>
           )}
-          {_.isEmpty(this.record) && <li className='Record__entry'>No record</li>}
+          {this.record.isEmpty() && <li className='Record__entry'>No record</li>}
         </ol>
       </section>
     )

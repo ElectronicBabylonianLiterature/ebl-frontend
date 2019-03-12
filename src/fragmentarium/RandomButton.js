@@ -17,7 +17,7 @@ class RandomButton extends Component {
     this.fetchPromise.cancel()
     this.setState({ error: null, loading: true })
     this.fetchPromise = this.props.fragmentService[this.props.method]()
-      .then(fragments => this.props.history.push(createFragmentUrl(fragments._id)))
+      .then(fragment => this.props.history.push(createFragmentUrl(fragment.number)))
       .catch(error => this.setState({ error: error, loading: false }))
   }
 

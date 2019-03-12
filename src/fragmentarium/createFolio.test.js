@@ -1,5 +1,5 @@
 import Chance from 'chance'
-import createFolio, { Folio } from './createFolio'
+import Folio from './createFolio'
 
 const chance = new Chance()
 
@@ -16,11 +16,15 @@ describe.each([
 
   beforeEach(() => {
     number = chance.string()
-    folio = createFolio(name, number)
+    folio = new Folio({ name, number })
   })
 
-  test('Creates a correct folio', () => {
-    expect(folio).toEqual(new Folio(name, number))
+  test('Name', () => {
+    expect(folio.name).toEqual(name)
+  })
+
+  test('Number', () => {
+    expect(folio.number).toEqual(number)
   })
 
   test('Humanized name', () => {
