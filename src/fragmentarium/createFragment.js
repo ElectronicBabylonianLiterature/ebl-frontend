@@ -44,6 +44,14 @@ export class Text {
     Object.freeze(this)
   }
 }
+
+export class UncuratedReference {
+  constructor ({ document, lines = List() }) {
+    this.document = document
+    this.line = lines
+    Object.freeze(this)
+  }
+}
 export class Fragment {
   constructor ({
     number,
@@ -62,6 +70,7 @@ export class Fragment {
     notes = '',
     museum = '',
     references = List(),
+    uncuratedReferences = null,
     hits = null,
     atf = '',
     matchingLines = List()
@@ -82,6 +91,7 @@ export class Fragment {
     this.notes = notes
     this.museum = museum
     this.references = List(references)
+    this.uncuratedReferences = uncuratedReferences && List(uncuratedReferences)
     this.hits = hits
     this.atf = atf
     this.matchingLines = List(matchingLines)
@@ -118,6 +128,7 @@ export class Fragment {
       notes: this.notes,
       museum: this.museum,
       references: references,
+      uncuratedReferences: this.uncuratedReferences,
       hits: this.hits,
       atf: this.atf,
       matchingLines: this.matchingLines
