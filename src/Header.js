@@ -1,11 +1,15 @@
 import React from 'react'
-import { Navbar, Nav, Container } from 'react-bootstrap'
+import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
 
 import './Header.css'
+
+function NavItem (props) {
+  return <Nav.Item><LinkContainer to={props.href}><Nav.Link>{props.title}</Nav.Link></LinkContainer></Nav.Item>
+}
 
 export default function Header ({ auth }) {
   const id = _.uniqueId('Header-')
@@ -23,10 +27,10 @@ export default function Header ({ auth }) {
           </LinkContainer>
           <Navbar.Collapse id={id}>
             <Nav className='mx-auto'>
-              <Nav.Item><LinkContainer to='/dictionary'><Nav.Link>Dictionary</Nav.Link></LinkContainer></Nav.Item>
-              <Nav.Item><LinkContainer to='/corpus'><Nav.Link>Corpus</Nav.Link></LinkContainer></Nav.Item>
-              <Nav.Item><LinkContainer to='/fragmentarium'><Nav.Link>Fragmentarium</Nav.Link></LinkContainer></Nav.Item>
-              <Nav.Item><LinkContainer to='/bibliography'><Nav.Link>Bibliography</Nav.Link></LinkContainer></Nav.Item>
+              <NavItem href='/dictionary' title='Dictionary' />
+              <NavItem href='/corpus' title='Corpus' />
+              <NavItem href='/fragmentarium' title='Fragmentarium' />
+              <NavItem href='/bibliography' title='Bibliography' />
             </Nav>
             <Navbar.Text>
               <User auth={auth} />
