@@ -1,5 +1,4 @@
 import { fromJS, List } from 'immutable'
-import Folio from 'fragmentarium/createFolio'
 
 export class RecordEntry {
   constructor ({ user, date, type }) {
@@ -135,24 +134,3 @@ export class Fragment {
     })
   }
 }
-
-function createFragment (dto) {
-  return new Fragment({
-    ...dto,
-    number: dto._id,
-    measures: new Measures({
-      length: new Measure(dto.length),
-      width: new Measure(dto.width),
-      thickness: new Measure(dto.thickness)
-    }),
-    folios: dto.folios.map(folioDto => new Folio(folioDto)),
-    record: dto.record.map(recordEntryDto => new RecordEntry(recordEntryDto)),
-    text: new Text({ lines: List(dto.text.lines).map(lineDto => new Line(lineDto)) }),
-    references: dto.references.map(reference => fromJS(reference)),
-    matchingLines: dto.matching_lines
-      ? dto.matching_lines.map(line => fromJS(line))
-      : []
-  })
-}
-
-export default createFragment

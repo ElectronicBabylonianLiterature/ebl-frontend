@@ -2,7 +2,8 @@ import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
 import Folio from 'fragmentarium/createFolio'
-import createFragment from 'fragmentarium/createFragment'
+import { Fragment, Measures, Measure, RecordEntry, Line, Text } from 'fragmentarium/createFragment'
+import { List, Map } from 'immutable'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -53,8 +54,87 @@ const fragmentDto = {
   'references': [
     { 'id': 'RN52', 'type': 'DISCUSSION', 'pages': '', 'notes': '', 'linesCited': [] }
   ],
-  'atf': '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x' }
-const fragment = createFragment(fragmentDto)
+  'atf': '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x'
+}
+const fragment = new Fragment({
+  number: 'Test.Fragment',
+  accession: '',
+  cdliNumber: '',
+  bmIdNumber: '',
+  publication: 'Electronic Babylonian Literature',
+  description: 'A fragment to be used when testing the eBL application',
+  joins: List(),
+  measures: new Measures({
+    length: new Measure({ 'value': 3.14, 'note': '(complete)' }),
+    width: new Measure({ 'value': 0.30282212, 'note': '' }),
+    thickness: new Measure({})
+  }),
+  collection: '',
+  script: 'NB',
+  notes: '',
+  museum: '',
+  record: List([
+    new RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:22:40.201231', type: 'Revision' }),
+    new RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:23:25.214166', type: 'Revision' })
+  ]),
+  folios: List([
+    new Folio({ name: 'FWG', number: 'M134' })
+  ]),
+  text: new Text({
+    lines: List([
+      new Line({
+        type: 'TextLine',
+        prefix: '10.',
+        content: List([
+          Map({ 'type': 'Word', 'value': 'sal/:', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
+          Map({ 'type': 'Word', 'value': 'š[im', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true }),
+          Map({ 'type': 'LoneDeterminative', 'value': '{gu}', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false, 'partial': List([false, true]) }),
+          Map({ 'type': 'Token', 'value': '[...]' }),
+          Map({ 'type': 'Word', 'value': '.GA', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false })
+        ])
+      }),
+      new Line({
+        type: 'TextLine',
+        prefix: '10.',
+        content: List([
+          Map({ 'type': 'Word', 'value': '::/sal', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
+          Map({ 'type': 'Word', 'value': 'ši]m', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true })
+        ])
+      }),
+      new Line({
+        type: 'TextLine',
+        prefix: '10.',
+        content: List([
+          Map({ 'type': 'Word', 'value': 'šim', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true }),
+          Map({ 'type': 'Token', 'value': '|' }),
+          Map({ 'type': 'Word', 'value': 'šim', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true })
+        ])
+      }),
+      new Line({
+        type: 'TextLine',
+        prefix: '10.',
+        content: List([
+          Map({ 'type': 'Token', 'value': '...' }),
+          Map({ 'type': 'Word', 'value': '+ku', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
+          Map({ 'type': 'LoneDeterminative', 'value': '{KA.G[A}', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false, 'partial': List([false, false]) }),
+          Map({ 'type': 'Token', 'value': '...' }),
+          Map({ 'type': 'Token', 'value': '...' }),
+          Map({ 'type': 'Word', 'value': '.ku', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
+          Map({ 'type': 'Word', 'value': 'x', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false })
+        ])
+      })
+    ])
+  }),
+  references: List([Map({
+    id: 'RN52',
+    type: 'DISCUSSION',
+    pages: '',
+    notes: '',
+    linesCited: List()
+  })]),
+  atf: '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x'
+})
+
 const references = [
   { 'id': 'RN52', 'type': 'DISCUSSION', 'pages': '', 'notes': '', 'linesCited': [] },
   { 'id': 'RN54', 'type': 'COPY', 'pages': '', 'notes': '', 'linesCited': [] }
