@@ -35,19 +35,11 @@ export class RecordEntry {
     Object.freeze(this)
   }
 }
-export class Measure {
-  constructor ({ value = null, note = null }) {
-    this.value = value
-    this.note = note
-    Object.freeze(this)
-  }
-}
-
 export class Measures {
   constructor ({
-    length = new Measure({}),
-    width = new Measure({}),
-    thickness = new Measure({})
+    length = null,
+    width = null,
+    thickness = null
   }) {
     this.length = length
     this.width = width
@@ -122,18 +114,6 @@ export class Fragment {
     this.atf = atf
     this.matchingLines = List(matchingLines)
     Object.freeze(this)
-  }
-
-  get length () {
-    return this.measures.length
-  }
-
-  get width () {
-    return this.measures.width
-  }
-
-  get thickness () {
-    return this.measures.thickness
   }
 
   setReferences (references) {

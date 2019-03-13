@@ -2,7 +2,7 @@
 import { Map, List } from 'immutable'
 import _ from 'lodash'
 import Chance from 'chance'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text, UncuratedReference, Folio } from './fragment'
+import { Fragment, Measures, RecordEntry, Line, Text, UncuratedReference, Folio } from './fragment'
 
 describe('Fragment', () => {
   const config = {
@@ -14,9 +14,9 @@ describe('Fragment', () => {
     joins: List(['K.2']),
     description: 'A clay tabled',
     measures: new Measures({
-      length: new Measure({ value: 3 }),
-      width: new Measure({ value: 5 }),
-      thickness: new Measure({ value: 3.6 })
+      length: 3,
+      width: 5,
+      thickness: 3.6
     }),
     collection: 'The collection',
     script: 'NA',

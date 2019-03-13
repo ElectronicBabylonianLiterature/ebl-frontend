@@ -1,15 +1,15 @@
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
+import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 
 function createFragment (dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
     measures: new Measures({
-      length: new Measure(dto.length),
-      width: new Measure(dto.width),
-      thickness: new Measure(dto.thickness)
+      length: dto.length.value,
+      width: dto.width.value,
+      thickness: dto.thickness.value
     }),
     folios: dto.folios.map(folioDto => new Folio(folioDto)),
     record: dto.record.map(recordEntryDto => new RecordEntry(recordEntryDto)),

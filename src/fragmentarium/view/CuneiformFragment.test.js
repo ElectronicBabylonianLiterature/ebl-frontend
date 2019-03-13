@@ -73,7 +73,7 @@ it('Renders all joins', () => {
 
 it('Renders all measures', () => {
   for (let property of ['length', 'width', 'thickness']) {
-    expect(container).toHaveTextContent(fragment[property].value)
+    expect(container).toHaveTextContent(fragment.measures[property])
   }
 })
 

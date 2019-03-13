@@ -1,6 +1,6 @@
 import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
+import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -19,15 +19,10 @@ factory.define('historicalRecord', RecordEntry, {
   type: 'HistoricalTransliteration'
 })
 
-factory.define('measure', Measure, {
-  value: factory.chance('floating', { min: 0, max: 100 }),
-  note: factory.chance('sentence')
-})
-
 factory.define('measures', Measures, {
-  length: factory.assocAttrs('measure'),
-  width: factory.assocAttrs('measure'),
-  thickness: factory.assocAttrs('measure')
+  length: factory.chance('floating', { min: 0, max: 100 }),
+  width: factory.chance('floating', { min: 0, max: 100 }),
+  thickness: factory.chance('floating', { min: 0, max: 100 })
 })
 
 factory.define('folio', Folio, {

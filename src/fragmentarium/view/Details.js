@@ -47,9 +47,9 @@ class Details extends Component {
 
   get measurements () {
     const measurements = _([
-      this.props.fragment.measures.length.value,
-      this.props.fragment.measures.width.value,
-      this.props.fragment.measures.thickness.value
+      this.props.fragment.measures.length,
+      this.props.fragment.measures.width,
+      this.props.fragment.measures.thickness
     ]).compact().join(' × ')
 
     return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`

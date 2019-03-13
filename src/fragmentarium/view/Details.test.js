@@ -4,7 +4,6 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import { List } from 'immutable'
-import { Measure } from 'fragmentarium/fragment'
 
 let fragment
 let container
@@ -47,7 +46,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.length.value} × ${fragment.width.value} × ${fragment.thickness.value} cm`
+    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 
@@ -78,7 +77,7 @@ describe('Missing details', () => {
       accession: '',
       bmIdNumber: '',
       measures: await factory.build('measures', {
-        width: new Measure({})
+        width: null
       })
     })
     renderDetails()
@@ -101,7 +100,7 @@ describe('Missing details', () => {
   })
 
   it('Does not renders missing measures', () => {
-    const expectedMeasures = `${fragment.length.value} × ${fragment.thickness.value} cm`
+    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.thickness} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 

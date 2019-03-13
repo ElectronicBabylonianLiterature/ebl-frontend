@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
+import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 import { List, Map } from 'immutable'
 
 const apiClient = {
@@ -64,9 +64,9 @@ const fragment = new Fragment({
   description: 'A fragment to be used when testing the eBL application',
   joins: List(),
   measures: new Measures({
-    length: new Measure({ 'value': 3.14, 'note': '(complete)' }),
-    width: new Measure({ 'value': 0.30282212, 'note': '' }),
-    thickness: new Measure({})
+    length: 3.14,
+    width: 0.30282212,
+    thickness: null
   }),
   collection: '',
   script: 'NB',
