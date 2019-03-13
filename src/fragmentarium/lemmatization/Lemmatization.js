@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { updateIn } from 'immutable'
 
 export class LemmatizationToken {
   constructor (value, lemmatizable, uniqueLemma = null, suggestions = null, suggested = false) {
@@ -7,24 +8,37 @@ export class LemmatizationToken {
     this.suggestions = suggestions
     this.lemmatizable = lemmatizable
     this.suggested = suggested
+    Object.freeze(this)
   }
 
-  setUniqueLemma (uniqueLemma) {
-    this.uniqueLemma = uniqueLemma
-    this.suggested = false
+  setUniqueLemma (uniqueLemma, suggested = false) {
+    return new LemmatizationToken(
+      this.value,
+      this.lemmatizable,
+      uniqueLemma,
+      this.suggestions,
+      suggested
+    )
   }
 
   applySuggestion () {
     if (_.isArray(this.suggestions) &&
       this.suggestions.length === 1 &&
       _.isEmpty(this.uniqueLemma)) {
-      this.uniqueLemma = this.suggestions[0]
-      this.suggested = true
+      return this.setUniqueLemma(this.suggestions[0], true)
+    } else {
+      return this
     }
   }
 
   clearSuggestionFlag () {
-    this.suggested = false
+    return new LemmatizationToken(
+      this.value,
+      this.lemmatizable,
+      this.uniqueLemma,
+      this.suggestions,
+      false
+    )
   }
 
   toDto () {
@@ -43,6 +57,7 @@ export default class Lemmatization {
   constructor (lines, tokens) {
     this.lines = lines
     this.tokens = tokens
+    Object.freeze(this)
   }
 
   getRowPrefix (rowIndex) {
@@ -50,25 +65,31 @@ export default class Lemmatization {
   }
 
   setLemma (rowIndex, columnIndex, uniqueLemma) {
-    this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma)
-    return this
+    return new Lemmatization(
+      this.lines,
+      updateIn(this.tokens, [rowIndex, columnIndex], token => token.setUniqueLemma(uniqueLemma))
+    )
   }
 
   applySuggestions () {
-    this._forEachToken(token => token.applySuggestion())
-    return this
+    return new Lemmatization(
+      this.lines,
+      this._mapTokens(token => token.applySuggestion())
+    )
   }
 
   clearSuggestionFlags () {
-    this._forEachToken(token => token.clearSuggestionFlag())
-    return this
+    return new Lemmatization(
+      this.lines,
+      this._mapTokens(token => token.clearSuggestionFlag())
+    )
   }
 
   toDto () {
     return this.tokens.map(row => row.map(token => token.toDto()))
   }
 
-  _forEachToken (iteratee) {
-    _(this.tokens).flatten().forEach(iteratee)
+  _mapTokens (iteratee) {
+    return this.tokens.map(row => row.map(iteratee))
   }
 }

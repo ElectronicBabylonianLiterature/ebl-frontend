@@ -48,8 +48,7 @@ it('Sets unique lemma', () => {
     )
   ]])
   const uniqueLemma = [new Lemma(words[1])]
-  lemmatization.setLemma(0, 0, uniqueLemma)
-  expect(lemmatization.tokens[0][0].uniqueLemma).toEqual(uniqueLemma)
+  expect(lemmatization.setLemma(0, 0, uniqueLemma).tokens[0][0].uniqueLemma).toEqual(uniqueLemma)
 })
 
 it('setUniqueLemma clears sugegsted', () => {
@@ -62,8 +61,7 @@ it('setUniqueLemma clears sugegsted', () => {
       true
     )
   ]])
-  lemmatization.setLemma(0, 0, [new Lemma(words[1])])
-  expect(lemmatization.tokens[0][0].suggested).toEqual(false)
+  expect(lemmatization.setLemma(0, 0, [new Lemma(words[1])]).tokens[0][0].suggested).toEqual(false)
 })
 
 it('Creates correct DTO', () => {
@@ -105,8 +103,7 @@ it('applySuggestions sets suggestions', () => {
       [[new Lemma(words[1])]]
     )
   ]])
-  lemmatization.applySuggestions()
-  expect(_.map(lemmatization.tokens[0], 'uniqueLemma')).toEqual([
+  expect(_.map(lemmatization.applySuggestions().tokens[0], 'uniqueLemma')).toEqual([
     [new Lemma(words[0])],
     [new Lemma(words[1])]
   ])
@@ -128,6 +125,5 @@ it('clearSuggestionFlags clears flags', () => {
       true
     )
   ]])
-  lemmatization.clearSuggestionFlags()
-  expect(_.map(lemmatization.tokens[0], 'suggested')).toEqual([false, false])
+  expect(_.map(lemmatization.clearSuggestionFlags().tokens[0], 'suggested')).toEqual([false, false])
 })
