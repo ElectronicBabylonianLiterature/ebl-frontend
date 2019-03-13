@@ -14,9 +14,8 @@ class Corpus extends Component {
     return (
       corpusTexts.map((block, index) =>
         <Fragment key={index}>
-          {block.hasOwnProperty('genre')
-            ? <h3> {block.genre} </h3>
-            : ''}
+          {block.hasOwnProperty('genre') &&
+            <h3> {block.genre} </h3>}
           <Container fluid as='ol'>
             {block.texts.map((text, index) =>
               this.createRow(text, index)
