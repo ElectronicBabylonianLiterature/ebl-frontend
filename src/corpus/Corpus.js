@@ -5,7 +5,7 @@ import AppContent from 'common/AppContent'
 import ReactMarkdown from 'react-markdown'
 import corpusTexts from './CorpusTexts.json'
 
-function CreateRow (props) {
+function Text (props) {
   return (
     <Row as='li'>
       <Col md={8}> <ReactMarkdown source={props.source} disallowedTypes={['paragraph']} unwrapDisallowed /> </Col>
@@ -23,7 +23,7 @@ class Corpus extends Component {
             <h3> {block.genre} </h3>}
           <Container fluid as='ol'>
             {block.texts.map((text, index) =>
-              <CreateRow key={index} source={text.text} text={text}> {text.verses} </CreateRow>
+              <Text key={index} source={text.text} text={text}> {text.verses} </Text>
             )}
           </Container>
         </Fragment>
