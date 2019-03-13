@@ -1,7 +1,6 @@
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text } from 'fragmentarium/fragment'
-import Folio from 'fragmentarium/createFolio'
+import { Fragment, Measures, Measure, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 
 function createFragment (dto) {
   return new Fragment({

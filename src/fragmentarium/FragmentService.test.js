@@ -4,10 +4,9 @@ import _ from 'lodash'
 import { List, fromJS } from 'immutable'
 import { testDelegation } from 'testHelpers'
 import FragmentService from './FragmentService'
-import Folio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
-import { Text, Line } from 'fragmentarium/fragment'
+import { Text, Line, Folio } from 'fragmentarium/fragment'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })

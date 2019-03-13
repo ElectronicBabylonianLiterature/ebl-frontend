@@ -1,8 +1,7 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'testHelpers'
 import FragmentRepository from './FragmentRepository'
-import Folio from 'fragmentarium/createFolio'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text } from 'fragmentarium/fragment'
+import { Fragment, Measures, Measure, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 import { List, Map } from 'immutable'
 
 const apiClient = {

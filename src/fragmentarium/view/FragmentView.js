@@ -6,7 +6,7 @@ import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
-import Folio from 'fragmentarium/createFolio'
+import { Folio } from 'fragmentarium/fragment'
 
 const FragmentWithData = withData(
   ({ data, ...props }) => <CuneiformFragment
