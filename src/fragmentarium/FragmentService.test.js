@@ -7,7 +7,7 @@ import FragmentService from './FragmentService'
 import Folio from 'fragmentarium/createFolio'
 import Lemmatization, { LemmatizationToken } from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
-import { Text, Line } from 'fragmentarium/createFragment'
+import { Text, Line } from 'fragmentarium/fragment'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })

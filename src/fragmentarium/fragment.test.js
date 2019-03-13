@@ -1,7 +1,7 @@
 
 import { Map, List } from 'immutable'
 import _ from 'lodash'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text, UncuratedReference } from './createFragment'
+import { Fragment, Measures, Measure, RecordEntry, Line, Text, UncuratedReference } from './fragment'
 import Folio from 'fragmentarium/createFolio'
 
 const config = {

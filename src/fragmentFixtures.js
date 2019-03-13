@@ -2,7 +2,7 @@ import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
 import _ from 'lodash'
 import Folio from 'fragmentarium/createFolio'
-import { Fragment, Measures, Measure, RecordEntry, Line, Text } from 'fragmentarium/createFragment'
+import { Fragment, Measures, Measure, RecordEntry, Line, Text } from 'fragmentarium/fragment'
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),

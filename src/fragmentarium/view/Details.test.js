@@ -4,7 +4,7 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import { List } from 'immutable'
-import { Measure } from 'fragmentarium/createFragment'
+import { Measure } from 'fragmentarium/fragment'
 
 let fragment
 let container
