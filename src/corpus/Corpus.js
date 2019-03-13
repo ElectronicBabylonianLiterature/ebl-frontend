@@ -7,7 +7,7 @@ import corpusTexts from './CorpusTexts.json'
 
 class Corpus extends Component {
   createRow (text, index) {
-    return <Row as='li' key={index}> <Col md={8}> <ReactMarkdown source={text.text} /> </Col> <Col md={4}> {text.verses} </Col> </Row>
+    return <Row as='li' key={index}> <Col md={8}> <ReactMarkdown source={text.text} disallowedTypes={['paragraph']} unwrapDisallowed /> </Col> <Col md={4}> {text.verses} </Col> </Row>
   }
 
   texts = () => {
