@@ -2,7 +2,7 @@ import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
 import FolioImage from './FolioImage'
-import Folio from 'fragmentarium/createFolio'
+import { Folio } from 'fragmentarium/fragment'
 
 const folio = new Folio({ name: 'WGL', number: '00000' })
 const objectUrl = 'object URL mock'
