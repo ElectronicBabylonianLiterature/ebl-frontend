@@ -1,6 +1,9 @@
 import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
+import { Chance } from 'chance'
+import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
+
+const chance = new Chance()
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -78,6 +81,11 @@ factory.define('text', Text, {
       await factory.build('textLine')
     ])
   }
+})
+
+factory.define('uncuratedReference', UncuratedReference, {
+  document: factory.chance('sentence'),
+  lines: async () => List(await factory.chance('n', chance.email, 5)())
 })
 
 factory.define('fragment', Fragment, {
