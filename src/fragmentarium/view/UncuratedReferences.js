@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 export default function UncuratedReferences ({ uncuratedReferences }) {
-  return <Fragment>{uncuratedReferences.count()} uncurated references</Fragment>
+  return <p>{uncuratedReferences.count()} uncurated references</p>
 }

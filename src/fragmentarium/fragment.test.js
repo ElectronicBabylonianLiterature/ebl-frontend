@@ -57,6 +57,15 @@ describe('Fragment', () => {
   })
 })
 
+test.each([
+  [List([new UncuratedReference({ document: 'CAD 7', lines: List() })]), true],
+  [List(), true],
+  [null, false]
+])('', (uncuratedReferences, expected) => {
+  const fragment = new Fragment({ uncuratedReferences })
+  expect(fragment.hasUncuratedReferences).toEqual(expected)
+})
+
 describe('Folio', () => {
   const chance = new Chance()
 

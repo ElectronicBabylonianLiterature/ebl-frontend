@@ -62,10 +62,6 @@ describe('All details', () => {
   it('Renders accession', () => {
     expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
   })
-
-  it('Renders hits', () => {
-    expect(container).toHaveTextContent(`Cited in ${fragment.hits} documents`)
-  })
 })
 
 describe('Missing details', () => {
@@ -89,10 +85,6 @@ describe('Missing details', () => {
 
   it('Does not render colection', () => {
     expect(container).not.toHaveTextContent('Collection')
-  })
-
-  it('Does not render hits', () => {
-    expect(container).not.toHaveTextContent('Cited in')
   })
 
   it(`Renders dash for joins`, () => {

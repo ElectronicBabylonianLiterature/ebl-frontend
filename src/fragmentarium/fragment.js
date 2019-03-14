@@ -116,6 +116,10 @@ export class Fragment {
     Object.freeze(this)
   }
 
+  get hasUncuratedReferences () {
+    return List.isList(this.uncuratedReferences)
+  }
+
   setReferences (references) {
     return new Fragment({
       number: this.number,

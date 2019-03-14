@@ -15,6 +15,7 @@ import Folios from './Folios'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
+import UncuratedReferences from './UncuratedReferences'
 import { serializeReference } from 'bibliography/Reference'
 
 import './CuneiformFragment.css'
@@ -31,6 +32,7 @@ function Info ({ fragment }) {
     <section>
       <h3>References</h3>
       <ReferenceList references={fragment.references} />
+      {fragment.hasUncuratedReferences && <UncuratedReferences uncuratedReferences={fragment.uncuratedReferences} />}
     </section>
     <Record record={fragment.record} />
     <OrganizationLinks
