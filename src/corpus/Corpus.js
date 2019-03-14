@@ -8,8 +8,8 @@ import corpusTexts from './CorpusTexts.json'
 function Text (props) {
   return (
     <Row as='li'>
-      <Col md={8}> <ReactMarkdown source={props.source} disallowedTypes={['paragraph']} unwrapDisallowed /> </Col>
-      <Col md={4}> {props.children} </Col>
+      <Col md={8}> <ReactMarkdown source={props.text.text} disallowedTypes={['paragraph']} unwrapDisallowed /> </Col>
+      <Col md={4}> {props.text.verses} </Col>
     </Row>
   )
 }
@@ -23,7 +23,7 @@ class Corpus extends Component {
             <h3> {block.genre} </h3>}
           <Container fluid as='ol'>
             {block.texts.map((text, index) =>
-              <Text key={index} source={text.text} text={text}> {text.verses} </Text>
+              <Text key={index} text={text} />
             )}
           </Container>
         </Fragment>
