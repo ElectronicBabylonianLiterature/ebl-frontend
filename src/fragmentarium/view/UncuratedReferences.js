@@ -19,9 +19,9 @@ function UncuratedReferencesHelp () {
 
 function UncuratedReferencesList ({ uncuratedReferences }) {
   return <Popover id={_.uniqueId('UncuratedReferencesList-')} className='UncuratedReferences__popover'>
-    <ListGroup variant='flush' className='UncuratedReferences__list'>
+    <ListGroup as='ul' variant='flush' className='UncuratedReferences__list'>
       {uncuratedReferences.map((reference, index) =>
-        <ListGroup.Item key={index}>
+        <ListGroup.Item as='li' key={index}>
           {reference.document}
           {!reference.pages.isEmpty() && <>: {reference.pages.join(', ')}</>}
         </ListGroup.Item>
