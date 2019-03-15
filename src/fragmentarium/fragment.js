@@ -64,12 +64,13 @@ export class Text {
 }
 
 export class UncuratedReference {
-  constructor ({ document, lines = List() }) {
+  constructor ({ document, pages = List() }) {
     this.document = document
-    this.line = lines
+    this.pages = pages
     Object.freeze(this)
   }
 }
+
 export class Fragment {
   constructor ({
     number,

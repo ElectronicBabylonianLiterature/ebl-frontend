@@ -1,6 +1,6 @@
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
+import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
 
 function createFragment (dto) {
   return new Fragment({
@@ -15,6 +15,10 @@ function createFragment (dto) {
     record: dto.record.map(recordEntryDto => new RecordEntry(recordEntryDto)),
     text: new Text({ lines: List(dto.text.lines).map(lineDto => new Line(lineDto)) }),
     references: dto.references.map(reference => fromJS(reference)),
+    uncuratedReferences: dto.uncuratedReferences && List(dto.uncuratedReferences).map(reference => new UncuratedReference({
+      document: reference.document,
+      pages: List(reference.pages)
+    })),
     matchingLines: dto.matching_lines
       ? dto.matching_lines.map(line => fromJS(line))
       : []
