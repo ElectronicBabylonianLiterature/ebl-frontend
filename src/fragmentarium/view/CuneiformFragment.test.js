@@ -77,6 +77,12 @@ it('Renders all measures', () => {
   }
 })
 
+it('Renders all references', () => {
+  for (let reference of fragment.references) {
+    expect(container).toHaveTextContent(reference.author)
+  }
+})
+
 it('Renders all records', () => {
   for (let record of fragment.record) {
     expect(container).toHaveTextContent(record.user)
