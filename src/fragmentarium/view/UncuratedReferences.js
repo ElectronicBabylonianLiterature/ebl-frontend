@@ -1,7 +1,8 @@
 import React from 'react'
-import { Popover, OverlayTrigger, Button, ListGroup } from 'react-bootstrap'
+import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
+import UncuratedReferencesList from './UncuratedReferencesList'
 
 import './UncuratedReferences.css'
 
@@ -17,34 +18,31 @@ function UncuratedReferencesHelp () {
   )
 }
 
-function UncuratedReferencesList ({ uncuratedReferences }) {
+function UncuratedReferencesPopOver ({ uncuratedReferences }) {
   return <Popover id={_.uniqueId('UncuratedReferencesList-')} className='UncuratedReferences__popover'>
-    <ListGroup as='ul' variant='flush' className='UncuratedReferences__list'>
-      {uncuratedReferences.map((reference, index) =>
-        <ListGroup.Item as='li' key={index}>
-          {reference.document}
-          {!reference.pages.isEmpty() && <>: {reference.pages.join(', ')}</>}
-        </ListGroup.Item>
-      )}
-    </ListGroup>
+    <UncuratedReferencesList uncuratedReferences={uncuratedReferences} className='UncuratedReferences__list' />
   </Popover>
 }
 
-export default function UncuratedReferences ({ uncuratedReferences }) {
+function createText (uncuratedReferences) {
   const count = uncuratedReferences.count()
   const text = count === 1
     ? '1 uncurated reference'
     : `${count} uncurated references`
+  return text
+}
+
+export default function UncuratedReferences ({ uncuratedReferences }) {
   return <p>
     <HelpTrigger overlay={UncuratedReferencesHelp()} />
     &nbsp;
     <OverlayTrigger
       rootClose
-      overlay={UncuratedReferencesList({ uncuratedReferences })}
+      overlay={UncuratedReferencesPopOver({ uncuratedReferences })}
       trigger={['click']}
       placement='right'>
       <Button variant='outline-info' size='sm' disabled={uncuratedReferences.isEmpty()}>
-        {text}
+        {createText(uncuratedReferences)}
       </Button>
     </OverlayTrigger>
   </p>
