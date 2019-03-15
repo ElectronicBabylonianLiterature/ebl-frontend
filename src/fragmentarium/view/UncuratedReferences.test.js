@@ -4,8 +4,17 @@ import { factory } from 'factory-girl'
 import { List } from 'immutable'
 import UncuratedReferences from './UncuratedReferences'
 
-test('Shows number of uncurated references', async () => {
-  const references = List(await factory.buildMany('uncuratedReference', 3))
-  const { container } = render(<UncuratedReferences uncuratedReferences={references} />)
-  expect(container).toHaveTextContent(`${references.count()} uncurated references`)
+let references
+let element
+
+test.each([
+  [0, '0 uncurated references'],
+  [1, '1 uncurated reference'],
+  [2, '2 uncurated references']
+])('%i references', async (numberOfReferences, expectedText) => {
+  references = numberOfReferences > 0
+    ? List(await factory.buildMany('uncuratedReference', numberOfReferences))
+    : List()
+  element = render(<UncuratedReferences uncuratedReferences={references} />)
+  expect(element.getByText(expectedText)).toBeTruthy()
 })

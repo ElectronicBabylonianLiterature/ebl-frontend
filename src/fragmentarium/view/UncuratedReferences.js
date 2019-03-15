@@ -31,6 +31,10 @@ function UncuratedReferencesList ({ uncuratedReferences }) {
 }
 
 export default function UncuratedReferences ({ uncuratedReferences }) {
+  const count = uncuratedReferences.count()
+  const text = count === 1
+    ? '1 uncurated reference'
+    : `${count} uncurated references`
   return <p>
     <HelpTrigger overlay={UncuratedReferencesHelp()} />
     &nbsp;
@@ -40,7 +44,7 @@ export default function UncuratedReferences ({ uncuratedReferences }) {
       trigger={['click']}
       placement='right'>
       <Button variant='outline-info' size='sm' disabled={uncuratedReferences.isEmpty()}>
-        {uncuratedReferences.count()} uncurated references
+        {text}
       </Button>
     </OverlayTrigger>
   </p>
