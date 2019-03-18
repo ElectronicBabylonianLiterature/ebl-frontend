@@ -75,7 +75,8 @@ describe('Folio', () => {
     ['FWG', 'Geers', false],
     ['EL', 'Leichty', true],
     ['AKG', 'Grayson', true],
-    ['MJG', 'Geller', true]
+    ['MJG', 'Geller', true],
+    ['WRM', 'Mayer', true]
   ])('%s folios', (name, humanized, hasImage) => {
     let number
     let folio

@@ -5,9 +5,10 @@ const folioNames = {
   FWG: 'Geers',
   EL: 'Leichty',
   AKG: 'Grayson',
-  MJG: 'Geller'
+  MJG: 'Geller',
+  WRM: 'Mayer'
 }
-const foliosWithImages = ['WGL', 'AKG', 'MJG', 'EL']
+const foliosWithImages = ['WGL', 'AKG', 'MJG', 'EL', 'WRM']
 export class Folio {
   constructor ({ name, number }) {
     this.name = name
