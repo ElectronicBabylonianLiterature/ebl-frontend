@@ -38,6 +38,7 @@ class TemplateForm extends Component {
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />
           </Form.Label>
+          &nbsp;
           <Form.Control
             type='text'
             value={this.state.template.pattern}
