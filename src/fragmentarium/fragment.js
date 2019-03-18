@@ -1,27 +1,31 @@
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Record, Map } from 'immutable'
 
-const folioNames = {
-  WGL: 'Lambert',
-  FWG: 'Geers',
-  EL: 'Leichty',
-  AKG: 'Grayson',
-  MJG: 'Geller',
-  WRM: 'Mayer'
-}
-const foliosWithImages = ['WGL', 'AKG', 'MJG', 'EL', 'WRM']
+const FolioType = Record({ name: '', hasImage: false })
+const folioTypes = Map({
+  WGL: FolioType({ name: 'Lambert', hasImage: true }),
+  FWG: FolioType({ name: 'Geers', hasImage: false }),
+  EL: FolioType({ name: 'Leichty', hasImage: true }),
+  AKG: FolioType({ name: 'Grayson', hasImage: true }),
+  MJG: FolioType({ name: 'Geller', hasImage: true }),
+  WRM: FolioType({ name: 'Mayer', hasImage: true })
+})
+
 export class Folio {
+  #type
+
   constructor ({ name, number }) {
     this.name = name
     this.number = number
+    this.#type = folioTypes.get(name, FolioType({ name }))
     Object.freeze(this)
   }
 
   get humanizedName () {
-    return folioNames[this.name] || this.name
+    return this.#type.name
   }
 
   get hasImage () {
-    return foliosWithImages.includes(this.name)
+    return this.#type.hasImage
   }
 
   get fileName () {
