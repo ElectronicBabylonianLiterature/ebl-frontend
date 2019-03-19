@@ -1,28 +1,25 @@
 import React, { Component, Fragment } from 'react'
 import { FormGroup, Button } from 'react-bootstrap'
 import _ from 'lodash'
+import { set, remove, merge, isValueObject } from 'immutable'
 
 import './List.css'
 
 class List extends Component {
   add = () => {
-    const newItem = _.isObjectLike(this.props.default) ? _.cloneDeep(this.props.default) : this.props.default
-    this.props.onChange([...this.props.value, newItem])
+    const defaultValue = this.props.default
+    const newItem = _.isObjectLike(this.props.default) && !isValueObject(defaultValue)
+      ? _.cloneDeep(defaultValue)
+      : defaultValue
+    this.props.onChange(merge(this.props.value, [newItem]))
   }
 
   delete = index => () => {
-    this.props.onChange([
-      ..._.take(this.props.value, index),
-      ..._.drop(this.props.value, index + 1)
-    ])
+    this.props.onChange(remove(this.props.value, index))
   }
 
   update = index => updated => {
-    this.props.onChange([
-      ..._.take(this.props.value, index),
-      updated,
-      ..._.drop(this.props.value, index + 1)
-    ])
+    this.props.onChange(set(this.props.value, index, updated))
   }
 
   render () {
