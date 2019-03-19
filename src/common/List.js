@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react'
-import { FormGroup, Button } from 'react-bootstrap'
+import React, { Component } from 'react'
+import { Button, ListGroup, Card } from 'react-bootstrap'
 import _ from 'lodash'
 import { set, remove, merge, isValueObject } from 'immutable'
 
@@ -24,20 +24,24 @@ class List extends Component {
 
   render () {
     return (
-      <FormGroup>
-        <label>{this.props.label}</label>
-        {React.createElement(this.props.ordered ? 'ol' : 'ul', { className: 'List' },
-          <Fragment>
+      <div className='List'>
+        <Card border='light'>
+          {this.props.label && <Card.Header>{this.props.label}</Card.Header>}
+          <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
             {React.Children.map(this.props.children, child =>
-              <li className='List__item' key={child.key}>
+              <ListGroup.Item as='li' key={child.key}>
                 {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
                 <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
-              </li>
+              </ListGroup.Item>
             )}
-            <li><Button onClick={this.add} size='sm' variant='outline-secondary'>Add {this.props.noun}</Button></li>
-          </Fragment>
-        )}
-      </FormGroup>
+          </ListGroup>
+          <Card.Body>
+            <Button onClick={this.add} size='sm' variant='outline-secondary'>
+              Add {this.props.noun}
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
     )
   }
 }
