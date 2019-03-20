@@ -2,6 +2,7 @@ import React from 'react'
 import MemoryRouter from 'react-router/MemoryRouter'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
+import { List } from 'immutable'
 import Promise from 'bluebird'
 import Folios from './Folios'
 
@@ -24,7 +25,7 @@ beforeEach(async () => {
 
 describe('Folios', () => {
   beforeEach(async () => {
-    folios = await factory.buildMany('folio', 3)
+    folios = List(await factory.buildMany('folio', 3))
     fragment = await factory.build('fragment', { 'folios': folios })
     container = renderFolios().container
   })
@@ -47,16 +48,16 @@ describe('Folios', () => {
 })
 
 it('Displays selected folio', async () => {
-  folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  folios = List(await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }]))
   fragment = await factory.build('fragment', { 'folios': folios })
-  const selected = folios[1]
+  const selected = folios.first()
   const element = renderFolios(selected)
   await waitForElement(() => element.getByText(/Browse/))
   expect(element.getByText(`${selected.humanizedName} Folio ${selected.number}`)).toHaveAttribute('aria-selected', 'true')
 })
 
 it('Displays CDLI image if no folio specified', async () => {
-  folios = await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  folios = List(await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }]))
   fragment = await factory.build('fragment', { 'folios': folios })
   const element = renderFolios()
   await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
@@ -64,7 +65,7 @@ it('Displays CDLI image if no folio specified', async () => {
 
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { 'folios': [], 'cdliNumber': '' })
+    fragment = await factory.build('fragment', { 'folios': List(), 'cdliNumber': '' })
     container = renderFolios().container
   })
 
