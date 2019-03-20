@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import _ from 'lodash'
 import { Record, List, setIn, set } from 'immutable'
-import { Form, Col, Container } from 'react-bootstrap'
+import { Form, Col } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
@@ -33,10 +33,37 @@ const Text = Record({
   rows: List.of(TextRow(), TextRow())
 })
 
+const exampleText = Text({
+  rows: List.of(
+    TextRow({
+      number: '1\'',
+      standard: 'ammeni (?) | [...]',
+      manuscripts: List.of(ManuscriptRow({
+        row: '1\'',
+        atf: 'am#-me#ni# X [x x x x x x x x]'
+      })),
+      translations: List.of(TranslationRow({
+        translation: '*Why do you* [...]?'
+      }))
+    }),
+    TextRow({
+      number: '2\'',
+      standard: '    anaku-ma | [arhanu (?) || ...]',
+      manuscripts: List.of(ManuscriptRow({
+        row: '2\'',
+        atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
+      })),
+      translations: List.of(TranslationRow({
+        translation: '    "I am [Palm, the ...],'
+      }))
+    })
+  )
+})
+
 class TextEditorController extends Component {
   constructor (props) {
     super(props)
-    this.state = { text: Text() }
+    this.state = { text: exampleText }
   }
 
   render () {
@@ -75,13 +102,13 @@ function TextEdit ({ value, onChange, placeholder }) {
 }
 
 function RowEdit ({ value, onChange }) {
-  return (<Container>
+  return (<>
     <Form.Row>
-      <Form.Group as='Col' md={2} controlId={_.uniqueId('number-')}>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('number-')}>
         <Form.Label>Number</Form.Label>
         <Form.Control type='text' value={value.number} onChange={event => onChange(set(value, 'number', event.target.value))} />
       </Form.Group>
-      <Form.Group as='Col' md={10} controlId={_.uniqueId('standard-')}>
+      <Form.Group as={Col} md={10} controlId={_.uniqueId('standard-')}>
         <Form.Label>Standard</Form.Label>
         <Form.Control type='text' value={value.standard} onChange={event => onChange(set(value, 'standard', event.target.value))} />
       </Form.Group>
@@ -107,47 +134,45 @@ function RowEdit ({ value, onChange }) {
         </ListForm>
       </Col>
     </Form.Row>
-  </Container>)
+  </>)
 }
 
 function ManuscriptRowEdit ({ value, onChange }) {
-  return (<Container>
+  return (
     <Form.Row>
-      <Form.Group as='Col' controlId={_.uniqueId('name-')}>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('name-')}>
         <Form.Label>Name</Form.Label>
         <Form.Control type='text' value={value.name} onChange={event => onChange(set(value, 'name', event.target.value))} />
       </Form.Group>
-      <Form.Group as='Col' controlId={_.uniqueId('side-')}>
+      <Form.Group as={Col} md={1} controlId={_.uniqueId('side-')}>
         <Form.Label>Side</Form.Label>
         <Form.Control type='text' value={value.side} onChange={event => onChange(set(value, 'side', event.target.value))} />
       </Form.Group>
-      <Form.Group as='Col' controlId={_.uniqueId('row-')}>
+      <Form.Group as={Col} md={1} controlId={_.uniqueId('row-')}>
         <Form.Label>Row</Form.Label>
         <Form.Control type='text' value={value.row} onChange={event => onChange(set(value, 'row', event.target.value))} />
       </Form.Group>
-    </Form.Row>
-    <Form.Row>
-      <Form.Group as='Col' controlId={_.uniqueId('atf-')}>
+      <Form.Group as={Col} md={8} controlId={_.uniqueId('atf-')}>
         <Form.Label>ATF</Form.Label>
         <Form.Control type='text' value={value.atf} onChange={event => onChange(set(value, 'atf', event.target.value))} />
       </Form.Group>
     </Form.Row>
-  </Container>)
+  )
 }
 
 function TranslationRowEdit ({ value, onChange }) {
-  return (<Container>
+  return (
     <Form.Row>
-      <Form.Group as='Col' controlId={_.uniqueId('language-')}>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('language-')}>
         <Form.Label>Language</Form.Label>
         <Form.Control type='text' value={value.language} onChange={event => onChange(set(value, 'language', event.target.value))} />
       </Form.Group>
-      <Form.Group as='Col' controlId={_.uniqueId('translation-')}>
+      <Form.Group as={Col} md={10} ontrolId={_.uniqueId('translation-')}>
         <Form.Label>Translation</Form.Label>
         <Form.Control type='text' value={value.translation} onChange={event => onChange(set(value, 'translation', event.target.value))} />
       </Form.Group>
     </Form.Row>
-  </Container>)
+  )
 }
 
 export function TextEditorPrototype ({ text, handleManuscriptChange, handleLanguageChange, handleRowsChange }) {
@@ -155,7 +180,7 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleLangu
   return <SessionContext.Consumer>
     {session => session.hasBetaAccess()
       ? (
-        <AppContent section='Corpus' active={text.name}>
+        <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
           <Form>
             <Form.Row>
               <Col>
@@ -174,14 +199,10 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleLangu
                 </ListForm>
               </Col>
             </Form.Row>
-            <Form.Row>
-              <Col>
-                <h3>Rows</h3>
-                <ListForm default={TextRow()} value={text.rows} onChange={handleRowsChange}>
-                  {text.rows.map((row, index) => <RowEdit key={index} value={row} index={index} />)}
-                </ListForm>
-              </Col>
-            </Form.Row>
+            <h3>Rows</h3>
+            <ListForm default={TextRow()} value={text.rows} onChange={handleRowsChange}>
+              {text.rows.map((row, index) => <RowEdit key={index} value={row} index={index} />)}
+            </ListForm>
           </Form>
         </AppContent>
       )
