@@ -190,7 +190,7 @@ function TranslationRowEdit ({ value, onChange, languages }) {
           )}
         </Form.Control>
       </Form.Group>
-      <Form.Group as={Col} md={10} ontrolId={_.uniqueId('translation-')}>
+      <Form.Group as={Col} md={10} controlId={_.uniqueId('translation-')}>
         <Form.Label>Translation</Form.Label>
         <Form.Control type='text' value={value.translation} onChange={event => onChange(set(value, 'translation', event.target.value))} />
       </Form.Group>
