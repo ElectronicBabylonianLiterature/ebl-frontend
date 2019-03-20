@@ -110,7 +110,7 @@ function TextEdit ({ value, onChange, placeholder }) {
   )
 }
 
-function RowEdit ({ value, onChange }) {
+function RowEdit ({ value, onChange, manuscripts, languages }) {
   return (<>
     <Form.Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('number-')}>
@@ -133,7 +133,7 @@ function RowEdit ({ value, onChange }) {
           )}
         </ListForm>
       </Col><Col>
-        <ListForm label='Translations' default={ManuscriptRow()} value={value.translations} onChange={event => onChange(set(value, 'translations', event))}>
+        <ListForm label='Translations' default={TranslationRow()} value={value.translations} onChange={event => onChange(set(value, 'translations', event))}>
           {value.translations.map((translationRow, index2) =>
             <TranslationRowEdit
               key={index2}
@@ -206,8 +206,19 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleLangu
                 </ListForm>
               </Col>
             </Form.Row>
-            <ListForm label='Rows' default={TextRow()} value={text.rows} onChange={handleRowsChange}>
-              {text.rows.map((row, index) => <RowEdit key={index} value={row} index={index} />)}
+            <ListForm label='Rows' default={TextRow({
+              manuscripts: text.manuscripts.map(manuscript => ManuscriptRow({
+                name: manuscript
+              })),
+              translations: text.languages.map(lang => TranslationRow({
+                language: lang
+              }))
+            })} value={text.rows} onChange={handleRowsChange}>
+              {text.rows.map((row, index) =>
+                <RowEdit key={index} value={row} index={index}
+                  manuscripts={text.manuscripts}
+                  langugaes={text.langugaes} />)
+              }
             </ListForm>
           </Form>
         </AppContent>
