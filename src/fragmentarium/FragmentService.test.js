@@ -161,10 +161,10 @@ async function setUpHydration () {
   const entries = await factory.buildMany('bibliographyEntry', 2)
   const referenceDtos = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
   const references = List(referenceDtos).map(dto => fromJS(dto))
-  const expectedReferences = await factory.buildMany('reference', 2, referenceDtos.map((dto, index) => ({
+  const expectedReferences = List(await factory.buildMany('reference', 2, referenceDtos.map((dto, index) => ({
     ...dto,
     document: entries[index]
-  })))
+  }))))
   bibliographyService.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
   return {
     entries,
