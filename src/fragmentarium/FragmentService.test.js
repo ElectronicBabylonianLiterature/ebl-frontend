@@ -100,30 +100,30 @@ test('createLemmatization', async () => {
     'kur': words[2],
     'nu': words[3]
   }
-  const text = new Text({ lines: List([
-    new Line({
+  const text = Text({ lines: List.of(
+    Line({
       type: 'TextLine',
       prefix: '1.',
-      content: [
-        {
+      content: List.of(
+        fromJS({
           type: 'Word',
           value: 'kur',
           uniqueLemma: [words[0]._id],
           language: 'AKKADIAN',
           normalized: false,
           lemmatizable: true
-        },
-        {
+        }),
+        fromJS({
           type: 'Word',
           value: 'nu',
           uniqueLemma: [words[1]._id],
           language: 'AKKADIAN',
           normalized: false,
           lemmatizable: true
-        }
-      ]
+        })
+      )
     })
-  ]) })
+  ) })
   wordRepository.find.mockImplementation(id => wordMap[id]
     ? Promise.resolve(wordMap[id])
     : Promise.reject(new Error())
@@ -161,10 +161,10 @@ async function setUpHydration () {
   const entries = await factory.buildMany('bibliographyEntry', 2)
   const referenceDtos = await factory.buildMany('referenceDto', 2, entries.map(entry => ({ id: entry.id })))
   const references = List(referenceDtos).map(dto => fromJS(dto))
-  const expectedReferences = await factory.buildMany('reference', 2, referenceDtos.map((dto, index) => ({
+  const expectedReferences = List(await factory.buildMany('reference', 2, referenceDtos.map((dto, index) => ({
     ...dto,
     document: entries[index]
-  })))
+  }))))
   bibliographyService.find.mockImplementation(id => Promise.resolve(entries.find(entry => entry.id === id)))
   return {
     entries,

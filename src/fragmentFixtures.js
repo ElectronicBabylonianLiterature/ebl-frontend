@@ -1,9 +1,18 @@
 import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
 import { Chance } from 'chance'
+import FactoryAdapter from './FactoryAdapter'
 import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
 
 const chance = new Chance()
+
+function date () {
+  return factory.chance('date')().toISOString()
+}
+
+function dateRange () {
+  return `${date()}/${date()}`
+}
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -11,14 +20,14 @@ factory.define('statistics', Object, {
 })
 
 factory.define('record', RecordEntry, {
-  user: factory.chance('email'),
-  date: () => factory.chance('date')().toISOString(),
+  user: factory.chance('last'),
+  date: date,
   type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
 })
+factory.setAdapter(new FactoryAdapter(), 'record')
 
-factory.define('historicalRecord', RecordEntry, {
-  user: factory.chance('email'),
-  date: async () => `${await factory.chance('date')().toISOString()}/${await factory.chance('date')().toISOString()}`,
+factory.extend('record', 'historicalRecord', {
+  date: dateRange,
   type: 'HistoricalTransliteration'
 })
 
@@ -27,6 +36,7 @@ factory.define('measures', Measures, {
   width: factory.chance('floating', { min: 0, max: 100 }),
   thickness: factory.chance('floating', { min: 0, max: 100 })
 })
+factory.setAdapter(new FactoryAdapter(), 'measures')
 
 factory.define('folio', Folio, {
   name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
@@ -51,12 +61,14 @@ factory.define('textLine', Line, {
   ]),
   type: 'TextLine'
 })
+factory.setAdapter(new FactoryAdapter(), 'textLine')
 
 factory.define('emptyLine', Line, {
   type: 'EmptyLine',
   prefix: '',
   content: List()
 })
+factory.setAdapter(new FactoryAdapter(), 'emptyLine')
 
 factory.define('controlLine', Line, {
   prefix: factory.chance('pickone', ['$', '#', '&']),
@@ -68,6 +80,7 @@ factory.define('controlLine', Line, {
   ]),
   type: 'ControlLine'
 })
+factory.setAdapter(new FactoryAdapter(), 'controlLine')
 
 factory.define('text', Text, {
   lines: async () => {

@@ -129,7 +129,7 @@ class FragmentService {
 
   hydrateReferences (references) {
     const hydrate = reference => createReference(reference, this.bibliographyService)
-    return Promise.all(references.map(hydrate))
+    return Promise.all(references.map(hydrate)).then(List)
   }
 }
 

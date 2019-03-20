@@ -66,13 +66,6 @@ class Details extends Component {
     )
   }
 
-  get hits () {
-    const hits = this.props.fragment.hits
-    return (
-      `Cited in ${hits} documents`
-    )
-  }
-
   render () {
     return (
       <ul className='Details'>

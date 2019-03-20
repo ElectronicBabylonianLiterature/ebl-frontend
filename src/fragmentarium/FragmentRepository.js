@@ -6,22 +6,26 @@ function createFragment (dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
-    measures: new Measures({
+    joins: List(dto.joins),
+    measures: Measures({
       length: dto.length.value,
       width: dto.width.value,
       thickness: dto.thickness.value
     }),
-    folios: dto.folios.map(folioDto => new Folio(folioDto)),
-    record: dto.record.map(recordEntryDto => new RecordEntry(recordEntryDto)),
-    text: new Text({ lines: List(dto.text.lines).map(lineDto => new Line(lineDto)) }),
-    references: dto.references.map(reference => fromJS(reference)),
-    uncuratedReferences: dto.uncuratedReferences && List(dto.uncuratedReferences).map(reference => new UncuratedReference({
+    folios: List(dto.folios).map(folioDto => new Folio(folioDto)),
+    record: List(dto.record).map(RecordEntry),
+    text: Text({ lines: List(dto.text.lines).map(dto => Line({
+      ...dto,
+      content: List(dto.content).map(token => fromJS(token))
+    })) }),
+    references: List(dto.references).map(reference => fromJS(reference)),
+    uncuratedReferences: dto.uncuratedReferences && List(dto.uncuratedReferences).map(reference => UncuratedReference({
       document: reference.document,
       pages: List(reference.pages)
     })),
     matchingLines: dto.matching_lines
-      ? dto.matching_lines.map(line => fromJS(line))
-      : []
+      ? List(dto.matching_lines).map(line => fromJS(line))
+      : List()
   })
 }
 

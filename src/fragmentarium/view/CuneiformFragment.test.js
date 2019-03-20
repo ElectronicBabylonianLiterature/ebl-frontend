@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
+import { List } from 'immutable'
 
 import { submitFormByTestId, clickNth } from 'testHelpers'
 import SessionContext from 'auth/SessionContext'
@@ -20,9 +21,9 @@ let expectedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
-  const references = await factory.buildMany('reference', 2)
+  const references = List(await factory.buildMany('reference', 2))
   fragment = (await factory.build('fragment', { atf: '1. ku' }))
-    .setReferences(await factory.buildMany('reference', 2))
+    .setReferences(List(await factory.buildMany('reference', 2)))
   updatedFragment = await factory.build('fragment', { number: fragment.number, atf: fragment.atf })
   expectedFragment = updatedFragment.setReferences(references)
 

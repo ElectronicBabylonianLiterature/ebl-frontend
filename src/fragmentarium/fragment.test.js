@@ -13,7 +13,7 @@ describe('Fragment', () => {
     publication: 'A journal',
     joins: List(['K.2']),
     description: 'A clay tabled',
-    measures: new Measures({
+    measures: Measures({
       length: 3,
       width: 5,
       thickness: 3.6
@@ -23,15 +23,15 @@ describe('Fragment', () => {
     folios: List([
       new Folio({ name: 'AKG', number: '435' })
     ]),
-    record: List([
-      new RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-    ]),
-    text: new Text({
-      lines: List([new Line({
+    record: List.of(
+      RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+    ),
+    text: Text({
+      lines: List.of(Line({
         type: 'ControlLine',
         prefix: '$',
-        content: List([Map({ type: 'Token', value: '(atf)' })])
-      })])
+        content: List.of(Map({ type: 'Token', value: '(atf)' }))
+      }))
     }),
     notes: 'Some notes',
     museum: 'The museum',
@@ -42,11 +42,10 @@ describe('Fragment', () => {
       pages: '34-54',
       type: 'DISCUSSION'
     })]),
-    uncuratedReferences: List([new UncuratedReference({
+    uncuratedReferences: List.of(UncuratedReference({
       document: 'CAD 7',
-      lines: List([3, 208])
-    })]),
-    hits: 0,
+      lines: List.of(3, 208)
+    })),
     atf: '$ (atf)',
     matchingLines: List()
   }
@@ -58,7 +57,7 @@ describe('Fragment', () => {
 })
 
 test.each([
-  [List([new UncuratedReference({ document: 'CAD 7', lines: List() })]), true],
+  [List.of(UncuratedReference({ document: 'CAD 7', lines: List() })), true],
   [List(), true],
   [null, false]
 ])('', (uncuratedReferences, expected) => {

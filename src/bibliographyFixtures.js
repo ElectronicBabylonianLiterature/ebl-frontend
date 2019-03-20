@@ -2,7 +2,7 @@ import { factory, DefaultAdapter } from 'factory-girl'
 import Reference from 'bibliography/Reference'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 
-export default class ReferenceAdapter extends DefaultAdapter {
+class ReferenceAdapter extends DefaultAdapter {
   build (Model, props) {
     const model = new Model(props.type, props.pages, props.notes, props.linesCited, props.document)
     return model
