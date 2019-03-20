@@ -42,10 +42,10 @@ describe('Fragment', () => {
       pages: '34-54',
       type: 'DISCUSSION'
     })]),
-    uncuratedReferences: List([new UncuratedReference({
+    uncuratedReferences: List.of(UncuratedReference({
       document: 'CAD 7',
-      lines: List([3, 208])
-    })]),
+      lines: List.of(3, 208)
+    })),
     hits: 0,
     atf: '$ (atf)',
     matchingLines: List()
@@ -58,7 +58,7 @@ describe('Fragment', () => {
 })
 
 test.each([
-  [List([new UncuratedReference({ document: 'CAD 7', lines: List() })]), true],
+  [List.of(UncuratedReference({ document: 'CAD 7', lines: List() })), true],
   [List(), true],
   [null, false]
 ])('', (uncuratedReferences, expected) => {

@@ -41,13 +41,7 @@ export const Line = Record({ type: '', prefix: '', content: List() })
 
 export const Text = Record({ lines: List() })
 
-export class UncuratedReference {
-  constructor ({ document, pages = List() }) {
-    this.document = document
-    this.pages = pages
-    Object.freeze(this)
-  }
-}
+export const UncuratedReference = Record({ document: '', pages: List() })
 
 export class Fragment {
   constructor ({
