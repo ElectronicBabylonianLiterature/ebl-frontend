@@ -79,7 +79,7 @@ const fragment = new Fragment({
   folios: List([
     new Folio({ name: 'FWG', number: 'M134' })
   ]),
-  text: new Text({
+  text: Text({
     lines: List.of(
       Line({
         type: 'TextLine',

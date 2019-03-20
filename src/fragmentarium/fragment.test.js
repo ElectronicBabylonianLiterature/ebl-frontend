@@ -26,7 +26,7 @@ describe('Fragment', () => {
     record: List.of(
       RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
     ),
-    text: new Text({
+    text: Text({
       lines: List.of(Line({
         type: 'ControlLine',
         prefix: '$',

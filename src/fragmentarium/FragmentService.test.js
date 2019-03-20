@@ -100,7 +100,7 @@ test('createLemmatization', async () => {
     'kur': words[2],
     'nu': words[3]
   }
-  const text = new Text({ lines: List.of(
+  const text = Text({ lines: List.of(
     Line({
       type: 'TextLine',
       prefix: '1.',

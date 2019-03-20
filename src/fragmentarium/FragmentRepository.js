@@ -13,7 +13,7 @@ function createFragment (dto) {
     }),
     folios: dto.folios.map(folioDto => new Folio(folioDto)),
     record: dto.record.map(recordEntryDto => RecordEntry(recordEntryDto)),
-    text: new Text({ lines: List(dto.text.lines).map(dto => Line({
+    text: Text({ lines: List(dto.text.lines).map(dto => Line({
       ...dto,
       content: List(dto.content).map(token => fromJS(token))
     })) }),

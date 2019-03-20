@@ -39,12 +39,7 @@ export const Measures = Record({ length: null, width: null, thickness: null })
 
 export const Line = Record({ type: '', prefix: '', content: List() })
 
-export class Text {
-  constructor ({ lines = List() }) {
-    this.lines = lines
-    Object.freeze(this)
-  }
-}
+export const Text = Record({ lines: List() })
 
 export class UncuratedReference {
   constructor ({ document, pages = List() }) {
@@ -68,7 +63,7 @@ export class Fragment {
     script,
     folios = List(),
     record = List(),
-    text = new Text({}),
+    text = Text(),
     notes = '',
     museum = '',
     references = List(),
