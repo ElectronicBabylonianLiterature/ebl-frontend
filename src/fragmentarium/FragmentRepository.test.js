@@ -80,39 +80,39 @@ const fragment = new Fragment({
     new Folio({ name: 'FWG', number: 'M134' })
   ]),
   text: new Text({
-    lines: List([
-      new Line({
+    lines: List.of(
+      Line({
         type: 'TextLine',
         prefix: '10.',
-        content: List([
+        content: List.of(
           Map({ 'type': 'Word', 'value': 'sal/:', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
           Map({ 'type': 'Word', 'value': 'š[im', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true }),
           Map({ 'type': 'LoneDeterminative', 'value': '{gu}', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false, 'partial': List([false, true]) }),
           Map({ 'type': 'Token', 'value': '[...]' }),
           Map({ 'type': 'Word', 'value': '.GA', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false })
-        ])
+        )
       }),
-      new Line({
+      Line({
         type: 'TextLine',
         prefix: '10.',
-        content: List([
+        content: List.of(
           Map({ 'type': 'Word', 'value': '::/sal', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
           Map({ 'type': 'Word', 'value': 'ši]m', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true })
-        ])
+        )
       }),
-      new Line({
+      Line({
         type: 'TextLine',
         prefix: '10.',
-        content: List([
+        content: List.of(
           Map({ 'type': 'Word', 'value': 'šim', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true }),
           Map({ 'type': 'Token', 'value': '|' }),
           Map({ 'type': 'Word', 'value': 'šim', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': true })
-        ])
+        )
       }),
-      new Line({
+      Line({
         type: 'TextLine',
         prefix: '10.',
-        content: List([
+        content: List.of(
           Map({ 'type': 'Token', 'value': '...' }),
           Map({ 'type': 'Word', 'value': '+ku', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
           Map({ 'type': 'LoneDeterminative', 'value': '{KA.G[A}', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false, 'partial': List([false, false]) }),
@@ -120,9 +120,9 @@ const fragment = new Fragment({
           Map({ 'type': 'Token', 'value': '...' }),
           Map({ 'type': 'Word', 'value': '.ku', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false }),
           Map({ 'type': 'Word', 'value': 'x', 'uniqueLemma': List(), 'normalized': false, 'language': 'AKKADIAN', 'lemmatizable': false })
-        ])
+        )
       })
-    ])
+    )
   }),
   references: List([Map({
     id: 'RN52',

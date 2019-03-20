@@ -61,12 +61,14 @@ factory.define('textLine', Line, {
   ]),
   type: 'TextLine'
 })
+factory.setAdapter(new FactoryAdapter(), 'textLine')
 
 factory.define('emptyLine', Line, {
   type: 'EmptyLine',
   prefix: '',
   content: List()
 })
+factory.setAdapter(new FactoryAdapter(), 'emptyLine')
 
 factory.define('controlLine', Line, {
   prefix: factory.chance('pickone', ['$', '#', '&']),
@@ -78,6 +80,7 @@ factory.define('controlLine', Line, {
   ]),
   type: 'ControlLine'
 })
+factory.setAdapter(new FactoryAdapter(), 'controlLine')
 
 factory.define('text', Text, {
   lines: async () => {

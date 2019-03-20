@@ -1,4 +1,4 @@
-import { fromJS, List, Record, Map } from 'immutable'
+import { List, Record, Map } from 'immutable'
 
 const FolioType = Record({ name: '', hasImage: false })
 const folioTypes = Map({
@@ -37,14 +37,7 @@ export const RecordEntry = Record({ user: '', date: '', type: '' })
 
 export const Measures = Record({ length: null, width: null, thickness: null })
 
-export class Line {
-  constructor ({ type, prefix, content }) {
-    this.type = type
-    this.prefix = prefix
-    this.content = fromJS(content)
-    Object.freeze(this)
-  }
-}
+export const Line = Record({ type: '', prefix: '', content: List() })
 
 export class Text {
   constructor ({ lines = List() }) {

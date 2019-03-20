@@ -27,11 +27,11 @@ describe('Fragment', () => {
       RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
     ),
     text: new Text({
-      lines: List([new Line({
+      lines: List.of(Line({
         type: 'ControlLine',
         prefix: '$',
-        content: List([Map({ type: 'Token', value: '(atf)' })])
-      })])
+        content: List.of(Map({ type: 'Token', value: '(atf)' }))
+      }))
     }),
     notes: 'Some notes',
     museum: 'The museum',
