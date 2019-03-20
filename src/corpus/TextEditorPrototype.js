@@ -8,36 +8,39 @@ import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 
 const TranslationRow = Record({
-  language: 'en',
-  translation: '...'
+  language: '',
+  translation: ''
 })
 
 const ManuscriptRow = Record({
-  name: 'UrkHel1',
-  side: '0',
-  row: '5\'',
-  atf: '...'
+  name: '',
+  side: '',
+  row: '',
+  atf: ''
 })
 
 const TextRow = Record({
-  number: '1',
-  standard: '...',
-  manuscripts: List.of(ManuscriptRow()),
-  translations: List.of(TranslationRow())
+  number: '',
+  ideal: '',
+  manuscripts: List(),
+  translations: List()
 })
 
 const Text = Record({
-  name: 'Palm & Vine',
-  manuscripts: List.of('UrkHel1', 'UrkHel2'),
-  languages: List.of('en', 'de'),
-  rows: List.of(TextRow(), TextRow())
+  name: '',
+  manuscripts: List(),
+  languages: List(),
+  rows: List()
 })
 
 const exampleText = Text({
+  name: 'Palm & Vine',
+  manuscripts: List.of('UrkHel1', 'UrkHel2'),
+  languages: List.of('en', 'de'),
   rows: List.of(
     TextRow({
       number: '1\'',
-      standard: 'ammeni (?) | [...]',
+      ideal: 'ammeni (?) | [...]',
       manuscripts: List.of(ManuscriptRow({
         row: '1\'',
         atf: 'am#-me#ni# X [x x x x x x x x]'
@@ -48,7 +51,7 @@ const exampleText = Text({
     }),
     TextRow({
       number: '2\'',
-      standard: '    anaku-ma | [arhanu (?) || ...]',
+      ideal: '    anaku-ma | [arhanu (?) || ...]',
       manuscripts: List.of(ManuscriptRow({
         row: '2\'',
         atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
@@ -108,14 +111,14 @@ function RowEdit ({ value, onChange }) {
         <Form.Label>Number</Form.Label>
         <Form.Control type='text' value={value.number} onChange={event => onChange(set(value, 'number', event.target.value))} />
       </Form.Group>
-      <Form.Group as={Col} md={10} controlId={_.uniqueId('standard-')}>
-        <Form.Label>Standard</Form.Label>
-        <Form.Control type='text' value={value.standard} onChange={event => onChange(set(value, 'standard', event.target.value))} />
+      <Form.Group as={Col} md={10} controlId={_.uniqueId('ideal-')}>
+        <Form.Label>Ideal reconstruction</Form.Label>
+        <Form.Control type='text' value={value.ideal} onChange={event => onChange(set(value, 'ideal', event.target.value))} />
       </Form.Group>
     </Form.Row>
     <Form.Row>
       <Col>
-        <ListForm default={ManuscriptRow()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
+        <ListForm label='Manuscripts' default={ManuscriptRow()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
           {value.manuscripts.map((manuscriptRow, index2) =>
             <ManuscriptRowEdit
               key={index2}
@@ -124,7 +127,7 @@ function RowEdit ({ value, onChange }) {
           )}
         </ListForm>
       </Col><Col>
-        <ListForm default={ManuscriptRow()} value={value.translations} onChange={event => onChange(set(value, 'translations', event))}>
+        <ListForm label='Translations' default={ManuscriptRow()} value={value.translations} onChange={event => onChange(set(value, 'translations', event))}>
           {value.translations.map((translationRow, index2) =>
             <TranslationRowEdit
               key={index2}
@@ -184,23 +187,20 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleLangu
           <Form>
             <Form.Row>
               <Col>
-                <h3>Manuscripts</h3>
-                <ListForm default='' value={text.manuscripts} onChange={handleManuscriptChange}>
+                <ListForm label='Manuscripts' default='' value={text.manuscripts} onChange={handleManuscriptChange}>
                   {text.manuscripts.map((key, index) =>
                     <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
                   )}
                 </ListForm>
               </Col><Col>
-                <h3>Translations</h3>
-                <ListForm default='' value={text.languages} onChange={handleLanguageChange}>
+                <ListForm label='Translations' default='' value={text.languages} onChange={handleLanguageChange}>
                   {text.languages.map((key, index) =>
                     <TextEdit key={index} index={index} value={key} placeholder='Language' />
                   )}
                 </ListForm>
               </Col>
             </Form.Row>
-            <h3>Rows</h3>
-            <ListForm default={TextRow()} value={text.rows} onChange={handleRowsChange}>
+            <ListForm label='Rows' default={TextRow()} value={text.rows} onChange={handleRowsChange}>
               {text.rows.map((row, index) => <RowEdit key={index} value={row} index={index} />)}
             </ListForm>
           </Form>
