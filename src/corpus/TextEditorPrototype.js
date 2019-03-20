@@ -129,6 +129,7 @@ function RowEdit ({ value, onChange, manuscripts, languages }) {
             <ManuscriptRowEdit
               key={index2}
               value={manuscriptRow}
+              manuscripts={manuscripts}
             />
           )}
         </ListForm>
@@ -138,6 +139,7 @@ function RowEdit ({ value, onChange, manuscripts, languages }) {
             <TranslationRowEdit
               key={index2}
               value={translationRow}
+              languages={languages}
             />
           )}
         </ListForm>
@@ -146,12 +148,16 @@ function RowEdit ({ value, onChange, manuscripts, languages }) {
   </>)
 }
 
-function ManuscriptRowEdit ({ value, onChange }) {
+function ManuscriptRowEdit ({ value, onChange, manuscripts }) {
   return (
     <Form.Row>
-      <Form.Group as={Col} md={2} controlId={_.uniqueId('name-')}>
+      <Form.Group as={Col} md={3} controlId={_.uniqueId('name-')}>
         <Form.Label>Name</Form.Label>
-        <Form.Control type='text' value={value.name} onChange={event => onChange(set(value, 'name', event.target.value))} />
+        <Form.Control as='select' value={value.name} onChange={event => onChange(set(value, 'name', event.target.value))}>
+          {manuscripts.map(manuscript =>
+            <option key={manuscript} value={manuscript}>{manuscript}</option>
+          )}
+        </Form.Control>
       </Form.Group>
       <Form.Group as={Col} md={1} controlId={_.uniqueId('side-')}>
         <Form.Label>Side</Form.Label>
@@ -161,7 +167,7 @@ function ManuscriptRowEdit ({ value, onChange }) {
         <Form.Label>Row</Form.Label>
         <Form.Control type='text' value={value.row} onChange={event => onChange(set(value, 'row', event.target.value))} />
       </Form.Group>
-      <Form.Group as={Col} md={8} controlId={_.uniqueId('atf-')}>
+      <Form.Group as={Col} md={7} controlId={_.uniqueId('atf-')}>
         <Form.Label>ATF</Form.Label>
         <Form.Control type='text' value={value.atf} onChange={event => onChange(set(value, 'atf', event.target.value))} />
       </Form.Group>
@@ -169,12 +175,16 @@ function ManuscriptRowEdit ({ value, onChange }) {
   )
 }
 
-function TranslationRowEdit ({ value, onChange }) {
+function TranslationRowEdit ({ value, onChange, languages }) {
   return (
     <Form.Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('language-')}>
         <Form.Label>Language</Form.Label>
-        <Form.Control type='text' value={value.language} onChange={event => onChange(set(value, 'language', event.target.value))} />
+        <Form.Control as='select' value={value.language} onChange={event => onChange(set(value, 'language', event.target.value))}>
+          {languages.map(lang =>
+            <option key={lang} value={lang}>{lang}</option>
+          )}
+        </Form.Control>
       </Form.Group>
       <Form.Group as={Col} md={10} ontrolId={_.uniqueId('translation-')}>
         <Form.Label>Translation</Form.Label>
@@ -217,7 +227,7 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleLangu
               {text.rows.map((row, index) =>
                 <RowEdit key={index} value={row} index={index}
                   manuscripts={text.manuscripts}
-                  langugaes={text.langugaes} />)
+                  languages={text.languages} />)
               }
             </ListForm>
           </Form>
