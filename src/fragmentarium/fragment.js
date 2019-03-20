@@ -32,14 +32,8 @@ export class Folio {
     return `${this.name}_${this.number}.jpg`
   }
 }
-export class RecordEntry {
-  constructor ({ user, date, type }) {
-    this.user = user
-    this.date = date
-    this.type = type
-    Object.freeze(this)
-  }
-}
+export const RecordEntry = Record({ user: '', date: '', type: '' })
+
 export class Measures {
   constructor ({
     length = null,

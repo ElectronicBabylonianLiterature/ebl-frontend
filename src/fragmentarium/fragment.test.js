@@ -23,9 +23,9 @@ describe('Fragment', () => {
     folios: List([
       new Folio({ name: 'AKG', number: '435' })
     ]),
-    record: List([
-      new RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-    ]),
+    record: List.of(
+      RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+    ),
     text: new Text({
       lines: List([new Line({
         type: 'ControlLine',

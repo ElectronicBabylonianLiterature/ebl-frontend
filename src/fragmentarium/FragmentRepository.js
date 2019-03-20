@@ -12,7 +12,7 @@ function createFragment (dto) {
       thickness: dto.thickness.value
     }),
     folios: dto.folios.map(folioDto => new Folio(folioDto)),
-    record: dto.record.map(recordEntryDto => new RecordEntry(recordEntryDto)),
+    record: dto.record.map(recordEntryDto => RecordEntry(recordEntryDto)),
     text: new Text({ lines: List(dto.text.lines).map(lineDto => new Line(lineDto)) }),
     references: dto.references.map(reference => fromJS(reference)),
     uncuratedReferences: dto.uncuratedReferences && List(dto.uncuratedReferences).map(reference => new UncuratedReference({

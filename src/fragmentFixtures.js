@@ -1,9 +1,18 @@
 import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
 import { Chance } from 'chance'
+import FactoryAdapter from './FactoryAdapter'
 import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
 
 const chance = new Chance()
+
+function date () {
+  return factory.chance('date')().toISOString()
+}
+
+function dateRange () {
+  return `${date()}/${date()}`
+}
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
@@ -11,14 +20,14 @@ factory.define('statistics', Object, {
 })
 
 factory.define('record', RecordEntry, {
-  user: factory.chance('email'),
-  date: () => factory.chance('date')().toISOString(),
+  user: factory.chance('last'),
+  date: date,
   type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
 })
+factory.setAdapter(new FactoryAdapter(), 'record')
 
-factory.define('historicalRecord', RecordEntry, {
-  user: factory.chance('email'),
-  date: async () => `${await factory.chance('date')().toISOString()}/${await factory.chance('date')().toISOString()}`,
+factory.extend('record', 'historicalRecord', {
+  date: dateRange,
   type: 'HistoricalTransliteration'
 })
 

@@ -72,10 +72,10 @@ const fragment = new Fragment({
   script: 'NB',
   notes: '',
   museum: '',
-  record: List([
-    new RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:22:40.201231', type: 'Revision' }),
-    new RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:23:25.214166', type: 'Revision' })
-  ]),
+  record: List.of(
+    RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:22:40.201231', type: 'Revision' }),
+    RecordEntry({ user: 'Laasonen', date: '2019-02-01T14:23:25.214166', type: 'Revision' })
+  ),
   folios: List([
     new Folio({ name: 'FWG', number: 'M134' })
   ]),
