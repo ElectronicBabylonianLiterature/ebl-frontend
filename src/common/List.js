@@ -24,22 +24,24 @@ class List extends Component {
 
   render () {
     return (
-      <Card>
-        {this.props.label && <Card.Header>{this.props.label}</Card.Header>}
-        <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
-          {React.Children.map(this.props.children, child =>
-            <ListGroup.Item as='li' key={child.key}>
-              {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
-              <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
-            </ListGroup.Item>
-          )}
-        </ListGroup>
-        <Card.Body>
-          <Button onClick={this.add} size='sm' variant='outline-secondary'>
-            Add {this.props.noun}
-          </Button>
-        </Card.Body>
-      </Card>
+      <div className='List'>
+        <Card border='light'>
+          {this.props.label && <Card.Header>{this.props.label}</Card.Header>}
+          <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
+            {React.Children.map(this.props.children, child =>
+              <ListGroup.Item as='li' key={child.key}>
+                {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
+                <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+          <Card.Body>
+            <Button onClick={this.add} size='sm' variant='outline-secondary'>
+              Add {this.props.noun}
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
     )
   }
 }
