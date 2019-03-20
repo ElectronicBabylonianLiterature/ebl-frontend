@@ -43,7 +43,7 @@ const exampleText = Text({
       ideal: 'ammeni (?) | [...]',
       manuscripts: List.of(ManuscriptRow({
         name: 'UrkHel1',
-        side: '0',
+        side: '@obverse',
         row: '1\'',
         atf: 'am#-me#ni# X [x x x x x x x x]'
       })),
@@ -57,7 +57,7 @@ const exampleText = Text({
       ideal: '    anaku-ma | [arhanu (?) || ...]',
       manuscripts: List.of(ManuscriptRow({
         name: 'UrkHel1',
-        side: '0',
+        side: '@obverse',
         row: '2\'',
         atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
       })),
@@ -159,15 +159,19 @@ function ManuscriptRowEdit ({ value, onChange, manuscripts }) {
           )}
         </Form.Control>
       </Form.Group>
-      <Form.Group as={Col} md={1} controlId={_.uniqueId('side-')}>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('side-')}>
         <Form.Label>Side</Form.Label>
-        <Form.Control type='text' value={value.side} onChange={event => onChange(set(value, 'side', event.target.value))} />
+        <Form.Control as='select' value={value.side} onChange={event => onChange(set(value, 'side', event.target.value))}>
+          <option value=''>--</option>
+          <option value='@obverse'>Obverse</option>
+          <option value='@reverse'>Reverse</option>
+        </Form.Control>
       </Form.Group>
       <Form.Group as={Col} md={1} controlId={_.uniqueId('row-')}>
         <Form.Label>Row</Form.Label>
         <Form.Control type='text' value={value.row} onChange={event => onChange(set(value, 'row', event.target.value))} />
       </Form.Group>
-      <Form.Group as={Col} md={7} controlId={_.uniqueId('atf-')}>
+      <Form.Group as={Col} md={6} controlId={_.uniqueId('atf-')}>
         <Form.Label>ATF</Form.Label>
         <Form.Control type='text' value={value.atf} onChange={event => onChange(set(value, 'atf', event.target.value))} />
       </Form.Group>
