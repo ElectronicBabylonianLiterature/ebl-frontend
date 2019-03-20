@@ -42,10 +42,13 @@ const exampleText = Text({
       number: '1\'',
       ideal: 'ammeni (?) | [...]',
       manuscripts: List.of(ManuscriptRow({
+        name: 'UrkHel1',
+        side: '0',
         row: '1\'',
         atf: 'am#-me#ni# X [x x x x x x x x]'
       })),
       translations: List.of(TranslationRow({
+        language: 'en',
         translation: '*Why do you* [...]?'
       }))
     }),
@@ -53,10 +56,13 @@ const exampleText = Text({
       number: '2\'',
       ideal: '    anaku-ma | [arhanu (?) || ...]',
       manuscripts: List.of(ManuscriptRow({
+        name: 'UrkHel1',
+        side: '0',
         row: '2\'',
         atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
       })),
       translations: List.of(TranslationRow({
+        language: 'en',
         translation: '    "I am [Palm, the ...],'
       }))
     })
