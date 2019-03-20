@@ -46,7 +46,6 @@ describe('Fragment', () => {
       document: 'CAD 7',
       lines: List.of(3, 208)
     })),
-    hits: 0,
     atf: '$ (atf)',
     matchingLines: List()
   }

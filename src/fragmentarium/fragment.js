@@ -61,7 +61,6 @@ export class Fragment extends Record({
   museum: '',
   references: List(),
   uncuratedReferences: null,
-  hits: null,
   atf: '',
   matchingLines: List()
 }) {
