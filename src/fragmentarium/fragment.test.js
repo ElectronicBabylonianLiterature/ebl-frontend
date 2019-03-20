@@ -13,7 +13,7 @@ describe('Fragment', () => {
     publication: 'A journal',
     joins: List(['K.2']),
     description: 'A clay tabled',
-    measures: new Measures({
+    measures: Measures({
       length: 3,
       width: 5,
       thickness: 3.6

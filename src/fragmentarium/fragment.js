@@ -32,20 +32,11 @@ export class Folio {
     return `${this.name}_${this.number}.jpg`
   }
 }
+
 export const RecordEntry = Record({ user: '', date: '', type: '' })
 
-export class Measures {
-  constructor ({
-    length = null,
-    width = null,
-    thickness = null
-  }) {
-    this.length = length
-    this.width = width
-    this.thickness = thickness
-    Object.freeze(this)
-  }
-}
+export const Measures = Record({ length: null, width: null, thickness: null })
+
 export class Line {
   constructor ({ type, prefix, content }) {
     this.type = type
@@ -79,7 +70,7 @@ export class Fragment {
     publication = '',
     joins = List(),
     description = '',
-    measures = new Measures({}),
+    measures = Measures(),
     collection,
     script,
     folios = List(),

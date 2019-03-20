@@ -36,6 +36,7 @@ factory.define('measures', Measures, {
   width: factory.chance('floating', { min: 0, max: 100 }),
   thickness: factory.chance('floating', { min: 0, max: 100 })
 })
+factory.setAdapter(new FactoryAdapter(), 'measures')
 
 factory.define('folio', Folio, {
   name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),

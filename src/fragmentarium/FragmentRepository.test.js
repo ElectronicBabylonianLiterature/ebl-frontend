@@ -63,7 +63,7 @@ const fragment = new Fragment({
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',
   joins: List(),
-  measures: new Measures({
+  measures: Measures({
     length: 3.14,
     width: 0.30282212,
     thickness: null

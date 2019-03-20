@@ -6,7 +6,7 @@ function createFragment (dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
-    measures: new Measures({
+    measures: Measures({
       length: dto.length.value,
       width: dto.width.value,
       thickness: dto.thickness.value
