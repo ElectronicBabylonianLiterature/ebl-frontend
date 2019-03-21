@@ -20,10 +20,17 @@ const testData = [
   ['find', [wordId], apiClient.fetchJson, resultStub, [`/words/${encodeURIComponent(wordId)}`, true], Promise.resolve(resultStub)],
   ['search', [query], apiClient.fetchJson, [resultStub], [`/words?query=${encodeURIComponent(query)}`, true], Promise.resolve([resultStub])],
   ['searchLemma', [query], apiClient.fetchJson, [resultStub], [`/words?lemma=${encodeURIComponent(query)}`, true], Promise.resolve([resultStub])],
-  ['find', [wordId], apiClient.fetchJson, resultStub, [`/words/${encodeURIComponent(wordId)}`, true], Promise.resolve(resultStubPosString)],
-  ['search', [query], apiClient.fetchJson, [resultStub], [`/words?query=${encodeURIComponent(query)}`, true], Promise.resolve([resultStubPosString])],
-  ['searchLemma', [query], apiClient.fetchJson, [resultStub], [`/words?lemma=${encodeURIComponent(query)}`, true], Promise.resolve([resultStubPosString])],
   ['update', [word], apiClient.postJson, resultStub, [`/words/${encodeURIComponent(word._id)}`, word], Promise.resolve(resultStub)]
+
 ]
 
 testDelegation(wordRepository, testData)
+
+describe('Mapping string pos to array', () => {
+  testDelegation(wordRepository, [
+    ['find', [wordId], apiClient.fetchJson, resultStub, [`/words/${encodeURIComponent(wordId)}`, true], Promise.resolve(resultStubPosString)],
+    ['search', [query], apiClient.fetchJson, [resultStub], [`/words?query=${encodeURIComponent(query)}`, true], Promise.resolve([resultStubPosString])],
+    ['searchLemma', [query], apiClient.fetchJson, [resultStub], [`/words?lemma=${encodeURIComponent(query)}`, true], Promise.resolve([resultStubPosString])],
+    ['update', [word], apiClient.postJson, resultStub, [`/words/${encodeURIComponent(word._id)}`, word], Promise.resolve(resultStubPosString)]
+  ])
+})
