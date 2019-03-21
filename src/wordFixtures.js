@@ -1,5 +1,7 @@
 import { factory } from 'factory-girl'
 
+const nonVerbPos = ['AJ', 'AV', 'N', 'NU', 'DP', 'IP', 'PP', 'QP', 'RP', 'XP', 'REL', 'DET', 'CNJ', 'J', 'MOD', 'PRP', 'SBJ']
+
 function pickOne (values) {
   return factory.chance('pickone', values)
 }
@@ -62,7 +64,7 @@ factory.define('word', Object, {
   legacyLemma: factory.chance('word'),
   homonym: homonym(),
   meaning: factory.chance('sentence'),
-  pos: pickOne(['', 'AJ', 'AV', 'N', 'NU', 'DP', 'IP', 'PP', 'QP', 'RP', 'XP', 'REL', 'DET', 'CNJ', 'J', 'MOD', 'PRP', 'SBJ']),
+  pos: factory.chance('pickset', nonVerbPos, 2),
   forms: factory.assocAttrsMany('form', 2),
   amplifiedMeanings: factory.assocAttrsMany('amplifiedMeaning', 2),
   logograms: factory.assocAttrsMany('logogram', 2),
@@ -75,6 +77,6 @@ factory.define('word', Object, {
 })
 
 factory.extend('word', 'verb', {
-  pos: 'V',
+  pos: ['V'],
   roots: ['rrr', 'ttt']
 })

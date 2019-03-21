@@ -48,14 +48,16 @@ describe('Not verb', () => {
 
 function commonTests () {
   it('Displays POS', () => {
-    expect(element.getByValue(value.pos)).toBeVisible()
+    for (let pos of value.pos) {
+      expect(element.getByText(pos)).toHaveAttribute('selected')
+    }
   })
 
   it('Calls onChange with updated value on pos change', () => {
     whenChangedByLabel(element, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
-        pos: newValue
+        pos: [newValue]
       }))
   })
 }

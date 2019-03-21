@@ -1,10 +1,19 @@
+import _ from 'lodash'
+
 class WordRepository {
   constructor (apiClient) {
     this.apiClient = apiClient
   }
 
   find (id) {
-    return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
+    return this.apiClient
+      .fetchJson(`/words/${encodeURIComponent(id)}`, true)
+      .then(({ pos, ...word }) => ({
+        ...word,
+        pos: _.isArray(pos)
+          ? pos
+          : pos ? [pos] : []
+      }))
   }
 
   search (query) {
