@@ -28,7 +28,6 @@ const posOptions = _.map(positionsOfScpeech, (value, key) => ({ value: key, labe
 
 class PosInput extends Component {
   updatePos = event => {
-    console.log(event.target.options)
     this.props.onChange({ pos: _(event.target.options).filter('selected').map('value').value() })
   }
 
