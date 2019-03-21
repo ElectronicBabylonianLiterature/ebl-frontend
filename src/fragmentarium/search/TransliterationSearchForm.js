@@ -16,7 +16,7 @@ function TransliterationSearchHelp () {
           Signs in consecutive lines can be searched by entering them in consecutive lines of the search field.
         </li>
         <li>
-          Unicode should be used throughout, including in the subindex numbers (<code>ša₂</code> and <code>ṣu₂</code>).
+          You can use standard combinations and characters without diacritics for special characters (e.g. <code>sz</code> for <code>š</code>, <code>t,</code> for <code>ṭ</code>, <code>g</code> for <code>g̃</code> etc.)
         </li>
       </ul>
     </Popover>
@@ -37,6 +37,14 @@ class TransliterationSearchForm extends Component {
   submit = event => {
     event.preventDefault()
     this.props.history.push(`/fragmentarium/search/?${queryString.stringify({ transliteration: this.state.transliteration })}`)
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (this.props.transliteration !== prevProps.transliteration) {
+      this.setState({
+        transliteration: this.props.transliteration
+      })
+    }
   }
 
   render () {
