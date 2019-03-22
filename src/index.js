@@ -28,7 +28,7 @@ Promise.config({
 
 const errorReporter = new SentryErrorReporter()
 const auth = new Auth(new SessionStore(), errorReporter)
-const apiClient = new ApiClient(auth)
+const apiClient = new ApiClient(auth, errorReporter)
 const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)
 const imageRepository = new ImageRepository(apiClient)
