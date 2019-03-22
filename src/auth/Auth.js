@@ -28,7 +28,7 @@ class Auth {
       domain: config.domain,
       clientID: config.clientID,
       redirectUri: config.redirectUri,
-      audience: 'dictionary-api',
+      audience: config.audience,
       responseType: 'token id_token',
       scope: scopeString
     })

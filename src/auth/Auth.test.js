@@ -11,7 +11,8 @@ const auth0Config = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN,
   clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
   redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
+  audience: 'dictionary-api'
 }
 const expectedScope = [
   'openid',
@@ -55,7 +56,7 @@ test('WebAuth is created', () => {
     domain: auth0Config.domain,
     clientID: auth0Config.clientID,
     redirectUri: auth0Config.redirectUri,
-    audience: 'dictionary-api',
+    audience: auth0Config.audience,
     responseType: 'token id_token',
     scope: expectedScope
   })
