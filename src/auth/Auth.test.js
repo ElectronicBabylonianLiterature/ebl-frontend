@@ -4,8 +4,10 @@ import _ from 'lodash'
 import { advanceTo, clear, advanceBy } from 'jest-date-mock'
 import Session from './Session'
 
+const eblNameProperty = 'https://ebabylon.org/eblName'
 const now = new Date()
 let sessionStore
+let errorReporter
 let auth
 
 beforeEach(() => {
@@ -15,18 +17,22 @@ beforeEach(() => {
     clearSession: jest.fn(),
     setSession: jest.fn()
   }
-  auth = new Auth(sessionStore)
+  errorReporter = {
+    setUser: jest.fn(),
+    clearScope: jest.fn()
+  }
+  auth = new Auth(sessionStore, errorReporter)
   jest.spyOn(auth.auth0, 'parseHash')
   jest.spyOn(auth.auth0, 'authorize')
 })
 
 afterEach(clear)
 
-it('WebAuth is created', () => {
+test('WebAuth is created', () => {
   expect(auth.auth0).toEqual(expect.any(auth0.WebAuth))
 })
 
-it('Login calls WebAuth.authorize', () => {
+test('Login calls WebAuth.authorize', () => {
   jest.spyOn(auth.auth0, 'authorize').mockImplementationOnce(_.noop)
   auth.login()
   expect(auth.auth0.authorize).toBeCalled()
@@ -38,11 +44,15 @@ describe('logout', () => {
     auth.logout()
   })
 
-  it('Clears session', () => {
+  test('Clears session', () => {
     expect(sessionStore.clearSession).toBeCalled()
   })
 
-  it('Calls WebAuth.logout', () => {
+  test('Clears scope', () => {
+    expect(errorReporter.clearScope).toBeCalled()
+  })
+
+  test('Calls WebAuth.logout', () => {
     expect(auth.auth0.logout).toBeCalledWith({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
@@ -56,6 +66,11 @@ describe('handleAuthentication', () => {
       accessToken: 'accessToken',
       idToken: 'idToken',
       expiresIn: 1,
+      idTokenPayload: {
+        'https://ebabylon.org/eblName': 'Tester',
+        name: 'test@example.com',
+        sub: 'auth0|1234'
+      },
       ...authResultConfig
     }
 
@@ -74,6 +89,11 @@ describe('handleAuthentication', () => {
 
     it('Sets session', () => {
       expect(sessionStore.setSession).toBeCalledWith(expectedSession)
+    })
+
+    it('Sets user', () => {
+      const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+      expect(errorReporter.setUser).toBeCalledWith(sub, name, eblName)
     })
   }
 
@@ -111,7 +131,7 @@ describe('handleAuthentication', () => {
         )
     })
 
-    it('Rejects with the error', async () => {
+    test('Rejects with the error', async () => {
       await expect(auth.handleAuthentication()).rejects.toEqual(new Error(error.error))
     })
   })

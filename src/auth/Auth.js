@@ -4,6 +4,7 @@ import Promise from 'bluebird'
 import Session from './Session'
 import applicationScopes from './applicationScopes.json'
 
+const eblNameProperty = 'https://ebabylon.org/eblName'
 const scopes = [
   'openid',
   'profile'
@@ -30,8 +31,9 @@ class Auth {
     scope: scopeString
   })
 
-  constructor (sessionStore) {
+  constructor (sessionStore, errorReporter) {
     this.sessionStore = sessionStore
+    this.errorReporter = errorReporter
   }
 
   login () {
@@ -44,8 +46,9 @@ class Auth {
         if (err) {
           reject(err instanceof Error ? err : new Error(err.error))
         } else {
+          const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+          this.errorReporter.setUser(sub, name, eblName)
           const session = createSession(authResult)
-          console.log(authResult)
           this.sessionStore.setSession(session)
           resolve()
         }
@@ -55,6 +58,7 @@ class Auth {
 
   logout () {
     this.sessionStore.clearSession()
+    this.errorReporter.clearScope()
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
