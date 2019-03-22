@@ -26,7 +26,8 @@ Promise.config({
   cancellation: true
 })
 
-const auth = new Auth(new SessionStore())
+const errorReporter = new SentryErrorReporter()
+const auth = new Auth(new SessionStore(), errorReporter)
 const apiClient = new ApiClient(auth)
 const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)
@@ -41,10 +42,9 @@ const fragmentService = new FragmentService(
   bibliographyService
 )
 const wordService = new WordService(wordRepository)
-const ravenErrorReporter = new SentryErrorReporter()
 
 ReactDOM.render(
-  <ErrorReporterContext.Provider value={ravenErrorReporter}>
+  <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
         <App
