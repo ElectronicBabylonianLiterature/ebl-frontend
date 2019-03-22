@@ -9,12 +9,16 @@ let scope
 beforeEach(async () => {
   jest.spyOn(Sentry, 'init')
   jest.spyOn(Sentry, 'withScope')
+  jest.spyOn(Sentry, 'configureScope')
   jest.spyOn(Sentry, 'captureException')
   jest.spyOn(Sentry, 'showReportDialog')
   Sentry.captureException.mockImplementationOnce(_.noop)
   Sentry.withScope.mockImplementationOnce(f => f(scope))
+  Sentry.configureScope.mockImplementationOnce(f => f(scope))
   scope = {
-    setExtra: jest.fn()
+    setExtra: jest.fn(),
+    setUser: jest.fn(),
+    clear: jest.fn()
   }
 })
 
@@ -41,4 +45,17 @@ test('Report dialog', () => {
   Sentry.showReportDialog.mockImplementationOnce(_.noop)
   sentryErrorReporter.showReportDialog()
   expect(Sentry.showReportDialog).toHaveBeenCalled()
+})
+
+test('Capturing user', () => {
+  const sub = 'auth0|1234'
+  const username = 'test@example.com'
+  const eblName = 'Test'
+  sentryErrorReporter.setUser(sub, username, eblName)
+  expect(scope.setUser).toHaveBeenCalledWith({ id: sub, username: username, eblName: eblName })
+})
+
+test('Clear scope', () => {
+  sentryErrorReporter.clearScope()
+  expect(scope.clear).toHaveBeenCalled()
 })

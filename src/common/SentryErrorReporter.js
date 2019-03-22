@@ -19,6 +19,18 @@ class SentryErrorReporter {
   showReportDialog () {
     Sentry.showReportDialog()
   }
+
+  setUser (id, username, eblName) {
+    Sentry.configureScope(scope => {
+      scope.setUser({ id, username, eblName })
+    })
+  }
+
+  clearScope () {
+    Sentry.configureScope(scope => {
+      scope.clear()
+    })
+  }
 }
 
 export default SentryErrorReporter

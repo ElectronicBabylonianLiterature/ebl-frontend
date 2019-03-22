@@ -45,6 +45,7 @@ class Auth {
           reject(err instanceof Error ? err : new Error(err.error))
         } else {
           const session = createSession(authResult)
+          console.log(authResult)
           this.sessionStore.setSession(session)
           resolve()
         }

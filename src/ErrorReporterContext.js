@@ -4,7 +4,9 @@ const ErrorReporterContext = React.createContext({
   captureException (error, errorInfo = {}) {
     console.error(error, errorInfo)
   },
-  showReportDialog () { }
+  showReportDialog () { },
+  setUser () { },
+  clearScope () { }
 })
 
 export default ErrorReporterContext
