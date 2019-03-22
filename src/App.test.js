@@ -14,11 +14,19 @@ import WordService from 'dictionary/WordService'
 import SessionStore from './auth/SessionStore'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
+import { deafaultErrorReporter } from 'ErrorReporterContext'
+
+const auth0Config = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
+  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+}
 
 test.each(
   ['/', '/bibliography', '/bibliography_new', '/bibliography/entry_id', '/dictionary', '/dictionary/object_id', '/corpus', '/fragmentarium', '/fragmentarium/fragment_number', '/callback']
 )('%s renders without crashing', route => {
-  const auth = new Auth(new SessionStore())
+  const auth = new Auth(new SessionStore(), deafaultErrorReporter, auth0Config)
   const apiClient = new ApiClient(auth)
   const wordRepository = new WordRepository(apiClient)
   const fragmentRepository = new FragmentRepository(apiClient)

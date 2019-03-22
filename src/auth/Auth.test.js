@@ -5,6 +5,12 @@ import { advanceTo, clear, advanceBy } from 'jest-date-mock'
 import Session from './Session'
 
 const eblNameProperty = 'https://ebabylon.org/eblName'
+const auth0Config = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
+  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+}
 const now = new Date()
 let sessionStore
 let errorReporter
@@ -21,7 +27,7 @@ beforeEach(() => {
     setUser: jest.fn(),
     clearScope: jest.fn()
   }
-  auth = new Auth(sessionStore, errorReporter)
+  auth = new Auth(sessionStore, errorReporter, auth0Config)
   jest.spyOn(auth.auth0, 'parseHash')
   jest.spyOn(auth.auth0, 'authorize')
 })
@@ -54,8 +60,8 @@ describe('logout', () => {
 
   test('Calls WebAuth.logout', () => {
     expect(auth.auth0.logout).toBeCalledWith({
-      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+      clientID: auth0Config.clientID,
+      returnTo: auth0Config.returnTo
     })
   })
 })

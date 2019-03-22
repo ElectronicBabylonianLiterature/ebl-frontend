@@ -22,16 +22,16 @@ function createSession (authResult) {
 }
 
 class Auth {
-  auth0 = new auth0.WebAuth({
-    domain: process.env.REACT_APP_AUTH0_DOMAIN,
-    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-    audience: 'dictionary-api',
-    responseType: 'token id_token',
-    scope: scopeString
-  })
-
-  constructor (sessionStore, errorReporter) {
+  constructor (sessionStore, errorReporter, config) {
+    this.config = config
+    this.auth0 = new auth0.WebAuth({
+      domain: config.domain,
+      clientID: config.clientID,
+      redirectUri: config.redirectUri,
+      audience: 'dictionary-api',
+      responseType: 'token id_token',
+      scope: scopeString
+    })
     this.sessionStore = sessionStore
     this.errorReporter = errorReporter
   }
@@ -60,8 +60,8 @@ class Auth {
     this.sessionStore.clearSession()
     this.errorReporter.clearScope()
     this.auth0.logout({
-      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+      clientID: this.config.clientID,
+      returnTo: this.config.returnTo
     })
   }
 
