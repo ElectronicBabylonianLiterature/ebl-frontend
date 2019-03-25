@@ -6,9 +6,10 @@ import { Form, Col, Tabs, Tab } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
+import References from 'bibliography/References'
 
 const ManuscriptLine = Record({
-  name: '',
+  siglum: '',
   side: '',
   line: '',
   atf: ''
@@ -18,6 +19,16 @@ const ChapterLine = Record({
   number: '',
   ideal: '',
   manuscripts: List()
+})
+
+const Manuscript = Record({
+  id: '',
+  siglum: '',
+  idType: 'Museum',
+  period: 'NA',
+  provenance: 'Nin',
+  type: '',
+  references: List()
 })
 
 const Chapter = Record({
@@ -36,13 +47,16 @@ const exampleText = Text({
   chapters: List.of(
     Chapter({
       name: 'I',
-      manuscripts: List.of('UrkHel1', 'UrkHel2'),
+      manuscripts: List.of(
+        Manuscript({ siglum: 'UruHel1', provenance: 'Uru', period: 'Hel' }),
+        Manuscript({ siglum: 'UruHel2', provenance: 'Uru', period: 'Hel' })
+      ),
       lines: List.of(
         ChapterLine({
           number: '1\'',
           ideal: 'ammeni (?) | [...]',
           manuscripts: List.of(ManuscriptLine({
-            name: 'UrkHel1',
+            siglum: 'UruHel1',
             side: '@obverse',
             line: '1\'',
             atf: 'am#-me#ni# X [x x x x x x x x]'
@@ -52,7 +66,7 @@ const exampleText = Text({
           number: '2\'',
           ideal: '    anaku-ma | [arhanu (?) || ...]',
           manuscripts: List.of(ManuscriptLine({
-            name: 'UrkHel1',
+            siglum: 'UruHel1',
             side: '@obverse',
             line: '2\'',
             atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
@@ -76,6 +90,7 @@ class TextEditorController extends Component {
     const chapter = this.state.text.chapters.get(chapterIndex)
     return chapterIndex >= 0
       ? <TextEditorPrototype
+        searchBibliography={query => this.props.fragmentService.searchBibliography(query)}
         handleChapterChange={chapter => {
           this.setState(setIn(
             this.state,
@@ -124,11 +139,11 @@ function LineEdit ({ value, onChange, manuscripts }) {
 function ManuscriptLineEdit ({ value, onChange, manuscripts }) {
   return (
     <Form.Row>
-      <Form.Group as={Col} md={3} controlId={_.uniqueId('name-')}>
-        <Form.Label>Name</Form.Label>
-        <Form.Control as='select' value={value.name} onChange={event => onChange(set(value, 'name', event.target.value))}>
+      <Form.Group as={Col} md={3} controlId={_.uniqueId('siglum-')}>
+        <Form.Label>Siglum</Form.Label>
+        <Form.Control as='select' value={value.siglum} onChange={event => onChange(set(value, 'siglum', event.target.value))}>
           {manuscripts.map(manuscript =>
-            <option key={manuscript} value={manuscript}>{manuscript}</option>
+            <option key={manuscript} value={manuscript.siglum}>{manuscript.siglum}</option>
           )}
         </Form.Control>
       </Form.Group>
@@ -152,7 +167,72 @@ function ManuscriptLineEdit ({ value, onChange, manuscripts }) {
   )
 }
 
-function ChapterEdit ({ chapter, index, onChange }) {
+function ManuscriptEdit ({ value, onChange, searchBibliography }) {
+  return <>
+    <Form.Row>
+      <Form.Group as={Col} md={1} controlId={_.uniqueId('id-')}>
+        <Form.Label>ID</Form.Label>
+        <Form.Control type='text' value={value.id} onChange={event => onChange(set(value, 'id', event.target.value))} />
+      </Form.Group>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('type-')}>
+        <Form.Label>ID Type</Form.Label>
+        <Form.Control as='select' value={value.type} onChange={event => onChange(set(value, 'type', event.target.value))}>
+          <option value='Museum'>Museum</option>
+          <option value='Accession'>Accession</option>
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} md={5} controlId={_.uniqueId('period-')}>
+        <Form.Label>Period</Form.Label>
+        <Form.Control as='select' value={value.period} onChange={event => onChange(set(value, 'period', event.target.value))}>
+          <option value='UrIII'>Ur III (ca. 2100-2000 BC)</option>
+          <option value='OA'>Old Assyrian (ca. 1950-1850 BC)</option>
+          <option value='OB'>Old Babylonian (ca. 2000-1600 BC)</option>
+          <option value='MB'>Middle Babylonian (ca. 1400-1100 BC)</option>
+          <option value='MA'>Middle Assyrian (ca. 1400-1000 BC)</option>
+          <option value='Hit'>Hittite (ca. 1500-1100 BC)</option>
+          <option value='NA'>Neo-Assyrian (ca. 911-612 BC)</option>
+          <option value='NB'>Neo-Babylonian (ca. 626-539 BC)</option>
+          <option value='Ach'>Achaemenid (547-331 BC)</option>
+          <option value='Hel'>Hellenistic (323-63 BC)</option>
+          <option value='Par'>Parthian (247-224 BC)</option>
+          <option value='Unc'>Uncertain</option>
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('provenance-')}>
+        <Form.Label>Provenance</Form.Label>
+        <Form.Control as='select' value={value.period} onChange={event => onChange(set(value, 'provenance', event.target.value))}>
+          <option value='Ašš'>Aššur</option>
+          <option value='Bab'>Babylon</option>
+          <option value='Baba'>Babylonia</option>
+          <option value='Bor'>Borsippa</option>
+          <option value='Ḫuz'>Ḫuzirina</option>
+          <option value='Kal'>Kalḫu</option>
+          <option value='Nin'>Nineveh</option>
+          <option value='Nip'>Nippur</option>
+          <option value='Sip'>Sippar</option>
+          <option value='Šad'>Šaduppûm</option>
+          <option value='Ur'>Ur</option>
+          <option value='Uru'>Uruk</option>
+          <option value='Unc'>Unclear</option>
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} md={2} controlId={_.uniqueId('type-')}>
+        <Form.Label>Type</Form.Label>
+        <Form.Control as='select' value={value.type} onChange={event => onChange(set(value, 'type', event.target.value))}>
+          <option value=''>Library</option>
+          <option value='Sch'>School</option>
+          <option value='Var'>Varia</option>
+        </Form.Control>
+      </Form.Group>
+    </Form.Row>
+    <References
+      references={value.references}
+      searchBibliography={searchBibliography}
+      updateReferences={references => onChange(set(value, 'references', references))} />
+  </>
+}
+
+function ChapterEdit ({ chapter, onChange, searchBibliography }) {
   const handleManuscriptChange = manuscripts => {
     onChange(setIn(
       chapter,
@@ -179,15 +259,15 @@ function ChapterEdit ({ chapter, index, onChange }) {
     <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
       <Tab eventKey='manuscripts' title='Manuscripts'>
         <ListForm default='' value={chapter.manuscripts} onChange={handleManuscriptChange}>
-          {chapter.manuscripts.map((key, index) =>
-            <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
+          {chapter.manuscripts.map((manuscript, index) =>
+            <ManuscriptEdit key={index} value={manuscript} searchBibliography={searchBibliography} />
           )}
         </ListForm>
       </Tab>
       <Tab eventKey='lines' title='Lines'>
         <ListForm default={ChapterLine({
           manuscripts: chapter.manuscripts.map(manuscript => ManuscriptLine({
-            name: manuscript
+            siglum: manuscript.siglum
           }))
         })} value={chapter.lines} onChange={handleRowsChange}>
           {chapter.lines.map((line, index) =>
@@ -200,13 +280,13 @@ function ChapterEdit ({ chapter, index, onChange }) {
     </Tabs>
   </section>
 }
-export function TextEditorPrototype ({ text, chapter, handleChapterChange }) {
+export function TextEditorPrototype ({ text, chapter, handleChapterChange, searchBibliography }) {
   return <SessionContext.Consumer>
     {session => session.hasBetaAccess()
       ? (
         <AppContent section={`Corpus / ${text.name}`} active={chapter.name} title={`Edit ${text.name} ${chapter.name}`}>
           <Form>
-            <ChapterEdit chapter={chapter} onChange={handleChapterChange} />
+            <ChapterEdit chapter={chapter} onChange={handleChapterChange} searchBibliography={searchBibliography} />
           </Form>
         </AppContent>
       )
