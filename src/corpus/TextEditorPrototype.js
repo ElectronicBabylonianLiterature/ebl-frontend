@@ -7,14 +7,14 @@ import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 
-const ManuscriptRow = Record({
+const ManuscriptLine = Record({
   name: '',
   side: '',
-  row: '',
+  line: '',
   atf: ''
 })
 
-const TextRow = Record({
+const ChapterLine = Record({
   number: '',
   ideal: '',
   manuscripts: List()
@@ -23,30 +23,30 @@ const TextRow = Record({
 const Text = Record({
   name: '',
   manuscripts: List(),
-  rows: List()
+  lines: List()
 })
 
 const exampleText = Text({
   name: 'Palm & Vine',
   manuscripts: List.of('UrkHel1', 'UrkHel2'),
-  rows: List.of(
-    TextRow({
+  lines: List.of(
+    ChapterLine({
       number: '1\'',
       ideal: 'ammeni (?) | [...]',
-      manuscripts: List.of(ManuscriptRow({
+      manuscripts: List.of(ManuscriptLine({
         name: 'UrkHel1',
         side: '@obverse',
-        row: '1\'',
+        line: '1\'',
         atf: 'am#-me#ni# X [x x x x x x x x]'
       }))
     }),
-    TextRow({
+    ChapterLine({
       number: '2\'',
       ideal: '    anaku-ma | [arhanu (?) || ...]',
-      manuscripts: List.of(ManuscriptRow({
+      manuscripts: List.of(ManuscriptLine({
         name: 'UrkHel1',
         side: '@obverse',
-        row: '2\'',
+        line: '2\'',
         atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
       }))
     })
@@ -68,11 +68,11 @@ class TextEditorController extends Component {
           manuscripts
         ))
       }
-      handleRowsChange={rows =>
+      handleRowsChange={lines =>
         this.setState(setIn(
           this.state,
-          ['text', 'rows'],
-          rows
+          ['text', 'lines'],
+          lines
         ))
       }
       text={this.state.text} />
@@ -87,7 +87,7 @@ function TextEdit ({ value, onChange, placeholder }) {
   )
 }
 
-function RowEdit ({ value, onChange, manuscripts }) {
+function LineEdit ({ value, onChange, manuscripts }) {
   return (<>
     <Form.Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('number-')}>
@@ -99,9 +99,9 @@ function RowEdit ({ value, onChange, manuscripts }) {
         <Form.Control type='text' value={value.ideal} onChange={event => onChange(set(value, 'ideal', event.target.value))} />
       </Form.Group>
     </Form.Row>
-    <ListForm label='Manuscripts' default={ManuscriptRow()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
+    <ListForm label='Manuscripts' default={ManuscriptLine()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
       {value.manuscripts.map((manuscriptRow, index2) =>
-        <ManuscriptRowEdit
+        <ManuscriptLineEdit
           key={index2}
           value={manuscriptRow}
           manuscripts={manuscripts}
@@ -111,7 +111,7 @@ function RowEdit ({ value, onChange, manuscripts }) {
   </>)
 }
 
-function ManuscriptRowEdit ({ value, onChange, manuscripts }) {
+function ManuscriptLineEdit ({ value, onChange, manuscripts }) {
   return (
     <Form.Row>
       <Form.Group as={Col} md={3} controlId={_.uniqueId('name-')}>
@@ -130,9 +130,9 @@ function ManuscriptRowEdit ({ value, onChange, manuscripts }) {
           <option value='@reverse'>Reverse</option>
         </Form.Control>
       </Form.Group>
-      <Form.Group as={Col} md={1} controlId={_.uniqueId('row-')}>
+      <Form.Group as={Col} md={1} controlId={_.uniqueId('line-')}>
         <Form.Label>Row</Form.Label>
-        <Form.Control type='text' value={value.row} onChange={event => onChange(set(value, 'row', event.target.value))} />
+        <Form.Control type='text' value={value.line} onChange={event => onChange(set(value, 'line', event.target.value))} />
       </Form.Group>
       <Form.Group as={Col} md={6} controlId={_.uniqueId('atf-')}>
         <Form.Label>ATF</Form.Label>
@@ -157,14 +157,14 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleRowsC
                   )}
                 </ListForm>
               </Tab>
-              <Tab eventKey='rows' title='Lines'>
-                <ListForm default={TextRow({
-                  manuscripts: text.manuscripts.map(manuscript => ManuscriptRow({
+              <Tab eventKey='lines' title='Lines'>
+                <ListForm default={ChapterLine({
+                  manuscripts: text.manuscripts.map(manuscript => ManuscriptLine({
                     name: manuscript
                   }))
-                })} value={text.rows} onChange={handleRowsChange}>
-                  {text.rows.map((row, index) =>
-                    <RowEdit key={index} value={row} index={index}
+                })} value={text.lines} onChange={handleRowsChange}>
+                  {text.lines.map((line, index) =>
+                    <LineEdit key={index} value={line} index={index}
                       manuscripts={text.manuscripts}
                       languages={text.languages} />)
                   }
