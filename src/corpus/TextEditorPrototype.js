@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import _ from 'lodash'
 import { Record, List, setIn, set } from 'immutable'
-import { Form, Col } from 'react-bootstrap'
+import { Form, Col, Tabs, Tab } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
@@ -149,22 +149,28 @@ export function TextEditorPrototype ({ text, handleManuscriptChange, handleRowsC
       ? (
         <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
           <Form>
-            <ListForm label='Manuscripts' default='' value={text.manuscripts} onChange={handleManuscriptChange}>
-              {text.manuscripts.map((key, index) =>
-                <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
-              )}
-            </ListForm>
-            <ListForm label='Rows' default={TextRow({
-              manuscripts: text.manuscripts.map(manuscript => ManuscriptRow({
-                name: manuscript
-              }))
-            })} value={text.rows} onChange={handleRowsChange}>
-              {text.rows.map((row, index) =>
-                <RowEdit key={index} value={row} index={index}
-                  manuscripts={text.manuscripts}
-                  languages={text.languages} />)
-              }
-            </ListForm>
+            <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
+              <Tab eventKey='manuscripts' title='Manuscripts'>
+                <ListForm default='' value={text.manuscripts} onChange={handleManuscriptChange}>
+                  {text.manuscripts.map((key, index) =>
+                    <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
+                  )}
+                </ListForm>
+              </Tab>
+              <Tab eventKey='rows' title='Lines'>
+                <ListForm default={TextRow({
+                  manuscripts: text.manuscripts.map(manuscript => ManuscriptRow({
+                    name: manuscript
+                  }))
+                })} value={text.rows} onChange={handleRowsChange}>
+                  {text.rows.map((row, index) =>
+                    <RowEdit key={index} value={row} index={index}
+                      manuscripts={text.manuscripts}
+                      languages={text.languages} />)
+                  }
+                </ListForm>
+              </Tab>
+            </Tabs>
           </Form>
         </AppContent>
       )
