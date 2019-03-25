@@ -7,6 +7,31 @@ import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 
+const romanMatrix = List.of(
+  List.of(1000, 'M'),
+  List.of(900, 'CM'),
+  List.of(500, 'D'),
+  List.of(400, 'CD'),
+  List.of(100, 'C'),
+  List.of(90, 'XC'),
+  List.of(50, 'L'),
+  List.of(40, 'XL'),
+  List.of(10, 'X'),
+  List.of(9, 'IX'),
+  List.of(5, 'V'),
+  List.of(4, 'IV'),
+  List.of(1, 'I')
+)
+
+function convertToRoman (number) {
+  // Derived from https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript#37723879
+  return romanMatrix
+    .toSeq()
+    .filter(roman => number >= roman.first())
+    .map(roman => roman.last() + convertToRoman(number - roman.first()))
+    .first('')
+}
+
 const ManuscriptLine = Record({
   name: '',
   side: '',
@@ -21,7 +46,6 @@ const ChapterLine = Record({
 })
 
 const Chapter = Record({
-  name: '',
   manuscripts: List(),
   lines: List()
 })
@@ -35,7 +59,6 @@ const exampleText = Text({
   name: 'Palm & Vine',
   chapters: List.of(
     Chapter({
-      name: 'I',
       manuscripts: List.of('UrkHel1', 'UrkHel2'),
       lines: List.of(
         ChapterLine({
@@ -145,7 +168,7 @@ function ManuscriptLineEdit ({ value, onChange, manuscripts }) {
   )
 }
 
-function ChapterEdit ({ chapter, onChange }) {
+function ChapterEdit ({ chapter, index, onChange }) {
   const handleManuscriptChange = manuscripts => {
     onChange(setIn(
       chapter,
@@ -160,16 +183,8 @@ function ChapterEdit ({ chapter, onChange }) {
       lines
     ))
   }
-  const hadnleNameChange = name => {
-    onChange(setIn(
-      chapter,
-      ['name'],
-      name
-    ))
-  }
   return <section>
-    <header><h3>Chapter {chapter.name}</h3></header>
-    <TextEdit value={chapter.name} onChange={hadnleNameChange} />
+    <header><h3>Chapter {convertToRoman(index + 1)}</h3></header>
     <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
       <Tab eventKey='manuscripts' title='Manuscripts'>
         <ListForm default='' value={chapter.manuscripts} onChange={handleManuscriptChange}>
@@ -201,7 +216,7 @@ export function TextEditorPrototype ({ text, handleChaptersChange }) {
         <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
           <Form>
             <ListForm label='Chapters' default={Chapter()} value={text.chapters} onChange={handleChaptersChange}>
-              {text.chapters.map((chapter, index) => <ChapterEdit chapter={chapter} key={index} />)}
+              {text.chapters.map((chapter, index) => <ChapterEdit chapter={chapter} key={index} index={index} />)}
             </ListForm>
           </Form>
         </AppContent>
