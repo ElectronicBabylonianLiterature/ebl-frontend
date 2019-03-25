@@ -7,11 +7,6 @@ import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 
-const TranslationRow = Record({
-  language: '',
-  translation: ''
-})
-
 const ManuscriptRow = Record({
   name: '',
   side: '',
@@ -22,21 +17,18 @@ const ManuscriptRow = Record({
 const TextRow = Record({
   number: '',
   ideal: '',
-  manuscripts: List(),
-  translations: List()
+  manuscripts: List()
 })
 
 const Text = Record({
   name: '',
   manuscripts: List(),
-  languages: List(),
   rows: List()
 })
 
 const exampleText = Text({
   name: 'Palm & Vine',
   manuscripts: List.of('UrkHel1', 'UrkHel2'),
-  languages: List.of('en', 'de'),
   rows: List.of(
     TextRow({
       number: '1\'',
@@ -46,10 +38,6 @@ const exampleText = Text({
         side: '@obverse',
         row: '1\'',
         atf: 'am#-me#ni# X [x x x x x x x x]'
-      })),
-      translations: List.of(TranslationRow({
-        language: 'en',
-        translation: '*Why do you* [...]?'
       }))
     }),
     TextRow({
@@ -60,10 +48,6 @@ const exampleText = Text({
         side: '@obverse',
         row: '2\'',
         atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
-      })),
-      translations: List.of(TranslationRow({
-        language: 'en',
-        translation: '    "I am [Palm, the ...],'
       }))
     })
   )
@@ -82,13 +66,6 @@ class TextEditorController extends Component {
           this.state,
           ['text', 'manuscripts'],
           manuscripts
-        ))
-      }
-      handleLanguageChange={languages =>
-        this.setState(setIn(
-          this.state,
-          ['text', 'languages'],
-          languages
         ))
       }
       handleRowsChange={rows =>
@@ -110,7 +87,7 @@ function TextEdit ({ value, onChange, placeholder }) {
   )
 }
 
-function RowEdit ({ value, onChange, manuscripts, languages }) {
+function RowEdit ({ value, onChange, manuscripts }) {
   return (<>
     <Form.Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('number-')}>
@@ -122,29 +99,15 @@ function RowEdit ({ value, onChange, manuscripts, languages }) {
         <Form.Control type='text' value={value.ideal} onChange={event => onChange(set(value, 'ideal', event.target.value))} />
       </Form.Group>
     </Form.Row>
-    <Form.Row>
-      <Col>
-        <ListForm label='Manuscripts' default={ManuscriptRow()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
-          {value.manuscripts.map((manuscriptRow, index2) =>
-            <ManuscriptRowEdit
-              key={index2}
-              value={manuscriptRow}
-              manuscripts={manuscripts}
-            />
-          )}
-        </ListForm>
-      </Col><Col>
-        <ListForm label='Translations' default={TranslationRow()} value={value.translations} onChange={event => onChange(set(value, 'translations', event))}>
-          {value.translations.map((translationRow, index2) =>
-            <TranslationRowEdit
-              key={index2}
-              value={translationRow}
-              languages={languages}
-            />
-          )}
-        </ListForm>
-      </Col>
-    </Form.Row>
+    <ListForm label='Manuscripts' default={ManuscriptRow()} value={value.manuscripts} onChange={event => onChange(set(value, 'manuscripts', event))}>
+      {value.manuscripts.map((manuscriptRow, index2) =>
+        <ManuscriptRowEdit
+          key={index2}
+          value={manuscriptRow}
+          manuscripts={manuscripts}
+        />
+      )}
+    </ListForm>
   </>)
 }
 
@@ -179,53 +142,21 @@ function ManuscriptRowEdit ({ value, onChange, manuscripts }) {
   )
 }
 
-function TranslationRowEdit ({ value, onChange, languages }) {
-  return (
-    <Form.Row>
-      <Form.Group as={Col} md={2} controlId={_.uniqueId('language-')}>
-        <Form.Label>Language</Form.Label>
-        <Form.Control as='select' value={value.language} onChange={event => onChange(set(value, 'language', event.target.value))}>
-          {languages.map(lang =>
-            <option key={lang} value={lang}>{lang}</option>
-          )}
-        </Form.Control>
-      </Form.Group>
-      <Form.Group as={Col} md={10} controlId={_.uniqueId('translation-')}>
-        <Form.Label>Translation</Form.Label>
-        <Form.Control type='text' value={value.translation} onChange={event => onChange(set(value, 'translation', event.target.value))} />
-      </Form.Group>
-    </Form.Row>
-  )
-}
-
-export function TextEditorPrototype ({ text, handleManuscriptChange, handleLanguageChange, handleRowsChange }) {
+export function TextEditorPrototype ({ text, handleManuscriptChange, handleRowsChange }) {
   console.log(text)
   return <SessionContext.Consumer>
     {session => session.hasBetaAccess()
       ? (
         <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
           <Form>
-            <Form.Row>
-              <Col>
-                <ListForm label='Manuscripts' default='' value={text.manuscripts} onChange={handleManuscriptChange}>
-                  {text.manuscripts.map((key, index) =>
-                    <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
-                  )}
-                </ListForm>
-              </Col><Col>
-                <ListForm label='Translations' default='' value={text.languages} onChange={handleLanguageChange}>
-                  {text.languages.map((key, index) =>
-                    <TextEdit key={index} index={index} value={key} placeholder='Language' />
-                  )}
-                </ListForm>
-              </Col>
-            </Form.Row>
+            <ListForm label='Manuscripts' default='' value={text.manuscripts} onChange={handleManuscriptChange}>
+              {text.manuscripts.map((key, index) =>
+                <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
+              )}
+            </ListForm>
             <ListForm label='Rows' default={TextRow({
               manuscripts: text.manuscripts.map(manuscript => ManuscriptRow({
                 name: manuscript
-              })),
-              translations: text.languages.map(lang => TranslationRow({
-                language: lang
               }))
             })} value={text.rows} onChange={handleRowsChange}>
               {text.rows.map((row, index) =>
