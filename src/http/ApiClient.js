@@ -40,8 +40,9 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
-  constructor (auth) {
+  constructor (auth, errorReporter) {
     this.auth = auth
+    this.errorReporter = errorReporter
   }
 
   createHeaders (authenticate, headers) {
@@ -62,13 +63,16 @@ export default class ApiClient {
         ...options,
         headers: headers,
         signal: abortController.signal
-      }).then(response => {
+      }).then(async response => {
         if (response.ok) {
           resolve(response)
         } else {
-          ApiError.fromResponse(response).then(reject)
+          return ApiError.fromResponse(response).then(error => { throw error })
         }
-      }).catch(reject)
+      }).catch(error => {
+        this.errorReporter.captureException(error)
+        reject(error)
+      })
 
       onCancel(function () {
         abortController.abort()

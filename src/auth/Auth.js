@@ -4,6 +4,7 @@ import Promise from 'bluebird'
 import Session from './Session'
 import applicationScopes from './applicationScopes.json'
 
+const eblNameProperty = 'https://ebabylon.org/eblName'
 const scopes = [
   'openid',
   'profile'
@@ -21,17 +22,18 @@ function createSession (authResult) {
 }
 
 class Auth {
-  auth0 = new auth0.WebAuth({
-    domain: process.env.REACT_APP_AUTH0_DOMAIN,
-    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-    audience: 'dictionary-api',
-    responseType: 'token id_token',
-    scope: scopeString
-  })
-
-  constructor (sessionStore) {
+  constructor (sessionStore, errorReporter, config) {
+    this.config = config
+    this.auth0 = new auth0.WebAuth({
+      domain: config.domain,
+      clientID: config.clientID,
+      redirectUri: config.redirectUri,
+      audience: config.audience,
+      responseType: 'token id_token',
+      scope: scopeString
+    })
     this.sessionStore = sessionStore
+    this.errorReporter = errorReporter
   }
 
   login () {
@@ -44,6 +46,8 @@ class Auth {
         if (err) {
           reject(err instanceof Error ? err : new Error(err.error))
         } else {
+          const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+          this.errorReporter.setUser(sub, name, eblName)
           const session = createSession(authResult)
           this.sessionStore.setSession(session)
           resolve()
@@ -54,9 +58,10 @@ class Auth {
 
   logout () {
     this.sessionStore.clearSession()
+    this.errorReporter.clearScope()
     this.auth0.logout({
-      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+      clientID: this.config.clientID,
+      returnTo: this.config.returnTo
     })
   }
 

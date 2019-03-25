@@ -17,11 +17,13 @@ const requestJson = {
 
 let apiClient
 let auth
+let errorReporter
 
 beforeEach(() => {
   fetch.resetMocks()
   auth = { getAccessToken: jest.fn() }
-  apiClient = new ApiClient(auth)
+  errorReporter = { captureException: jest.fn() }
+  apiClient = new ApiClient(auth, errorReporter)
 })
 
 describe('fetchJson', () => {
@@ -184,17 +186,21 @@ function commonTests (action) {
   test('Rejects with error if fetch fails', async () => {
     fetch.mockRejectOnce(error)
     await expect(action()).rejects.toEqual(error)
+    expect(errorReporter.captureException).toBeCalledWith(error)
   })
 
   test('Rejects with status text as error message if response not ok', async () => {
     const expectedError = new ApiError(errorResponse.statusText, {})
     fetch.mockResponseOnce('', errorResponse)
     await expect(action()).rejects.toEqual(expectedError)
+    expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })
 
   test('Rejects with description as error message if response not ok and is JSON', async () => {
     const jsonError = { title: 'error title', description: 'error description' }
+    const expectedError = new ApiError(jsonError.description, jsonError)
     fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
-    await expect(action()).rejects.toEqual(new ApiError(jsonError.description, jsonError))
+    await expect(action()).rejects.toEqual(expectedError)
+    expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })
 }

@@ -26,8 +26,17 @@ Promise.config({
   cancellation: true
 })
 
-const auth = new Auth(new SessionStore())
-const apiClient = new ApiClient(auth)
+const auth0Config = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
+  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
+  audience: 'dictionary-api'
+}
+
+const errorReporter = new SentryErrorReporter()
+const auth = new Auth(new SessionStore(), errorReporter, auth0Config)
+const apiClient = new ApiClient(auth, errorReporter)
 const wordRepository = new WordRepository(apiClient)
 const fragmentRepository = new FragmentRepository(apiClient)
 const imageRepository = new ImageRepository(apiClient)
@@ -41,10 +50,9 @@ const fragmentService = new FragmentService(
   bibliographyService
 )
 const wordService = new WordService(wordRepository)
-const ravenErrorReporter = new SentryErrorReporter()
 
 ReactDOM.render(
-  <ErrorReporterContext.Provider value={ravenErrorReporter}>
+  <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
         <App

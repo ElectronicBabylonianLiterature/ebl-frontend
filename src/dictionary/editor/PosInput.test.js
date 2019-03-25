@@ -9,6 +9,27 @@ let value
 let element
 let onChange
 
+const positionsOfScpeech = {
+  'AJ': 'adjective',
+  'AV': 'adverb',
+  'N': 'noun',
+  'NU': 'number',
+  'V': 'verb',
+  'DP': 'demonstrative pronoun',
+  'IP': 'independent/anaphoric pronoun',
+  'PP': 'possessive pronoun',
+  'QP': 'interrogative pronoun',
+  'RP': 'reflexive/reciprocal pronoun',
+  'XP': 'indefinite pronoun',
+  'REL': 'relative pronoun',
+  'DET': 'determinative pronoun',
+  'CNJ': 'conjunction',
+  'J': 'interjection',
+  'MOD': 'modal, negative, or conditional particle',
+  'PRP': 'preposition',
+  'SBJ': 'subjunction'
+}
+
 beforeEach(() => {
   onChange = jest.fn()
 })
@@ -47,15 +68,23 @@ describe('Not verb', () => {
 })
 
 function commonTests () {
-  it('Displays POS', () => {
-    expect(element.getByValue(value.pos)).toBeVisible()
+  it('Word POS are selected', () => {
+    for (let pos of value.pos) {
+      expect(element.getByText(positionsOfScpeech[pos]).selected).toBe(true)
+    }
+  })
+
+  it('Other POS are not selected', () => {
+    for (let pos of _(positionsOfScpeech).omit(value.pos).values().value()) {
+      expect(element.getByText(pos).selected).toBe(false)
+    }
   })
 
   it('Calls onChange with updated value on pos change', () => {
     whenChangedByLabel(element, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
-        pos: newValue
+        pos: [newValue]
       }))
   })
 }

@@ -5,7 +5,6 @@ import _ from 'lodash'
 import TextListInput from './TextListInput'
 
 const positionsOfScpeech = {
-  '': 'undefined',
   'AJ': 'adjective',
   'AV': 'adverb',
   'N': 'noun',
@@ -29,7 +28,7 @@ const posOptions = _.map(positionsOfScpeech, (value, key) => ({ value: key, labe
 
 class PosInput extends Component {
   updatePos = event => {
-    this.props.onChange({ pos: event.target.value })
+    this.props.onChange({ pos: _(event.target.options).filter('selected').map('value').value() })
   }
 
   updateRoots = roots => {
@@ -41,7 +40,7 @@ class PosInput extends Component {
       <FormGroup>
         <FormGroup controlId={this.props.id}>
           <FormLabel>Position of speech</FormLabel>
-          <FormControl as='select' value={this.props.value.pos} onChange={this.updatePos}>
+          <FormControl as='select' value={this.props.value.pos} onChange={this.updatePos} multiple>
             {posOptions.map(option =>
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -49,7 +48,7 @@ class PosInput extends Component {
             )}
           </FormControl>
         </FormGroup>
-        {this.props.value.pos === 'V' &&
+        {this.props.value.pos.includes('V') &&
           <TextListInput id='roots' value={this.props.value.roots || []} onChange={this.updateRoots}>
             Roots
           </TextListInput>

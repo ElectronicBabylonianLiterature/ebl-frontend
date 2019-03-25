@@ -4,48 +4,88 @@ import _ from 'lodash'
 import { advanceTo, clear, advanceBy } from 'jest-date-mock'
 import Session from './Session'
 
+jest.mock('auth0-js')
+
+const eblNameProperty = 'https://ebabylon.org/eblName'
+const auth0Config = {
+  domain: process.env.REACT_APP_AUTH0_DOMAIN,
+  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
+  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
+  audience: 'dictionary-api'
+}
+const expectedScope = [
+  'openid',
+  'profile',
+  'read:words write:words',
+  'read:fragments transliterate:fragments lemmatize:fragments',
+  'read:bibliography write:bibliography',
+  'access:beta',
+  'read:WGL-folios',
+  'read:FWG-folios',
+  'read:EL-folios',
+  'read:AKG-folios',
+  'read:MJG-folios'
+].join(' ')
 const now = new Date()
 let sessionStore
+let errorReporter
 let auth
+let auth0mock
 
 beforeEach(() => {
+  auth0.WebAuth.mockClear()
   advanceTo(now)
   sessionStore = {
     getSession: jest.fn(),
     clearSession: jest.fn(),
     setSession: jest.fn()
   }
-  auth = new Auth(sessionStore)
-  jest.spyOn(auth.auth0, 'parseHash')
-  jest.spyOn(auth.auth0, 'authorize')
+  errorReporter = {
+    setUser: jest.fn(),
+    clearScope: jest.fn()
+  }
+  auth = new Auth(sessionStore, errorReporter, auth0Config)
+  auth0mock = auth0.WebAuth.mock.instances[0]
 })
 
 afterEach(clear)
 
-it('WebAuth is created', () => {
-  expect(auth.auth0).toEqual(expect.any(auth0.WebAuth))
+test('WebAuth is created', () => {
+  expect(auth0.WebAuth).toBeCalledWith({
+    domain: auth0Config.domain,
+    clientID: auth0Config.clientID,
+    redirectUri: auth0Config.redirectUri,
+    audience: auth0Config.audience,
+    responseType: 'token id_token',
+    scope: expectedScope
+  })
 })
 
-it('Login calls WebAuth.authorize', () => {
-  jest.spyOn(auth.auth0, 'authorize').mockImplementationOnce(_.noop)
+test('Login calls WebAuth.authorize', () => {
+  auth0mock.authorize.mockImplementationOnce(_.noop)
   auth.login()
-  expect(auth.auth0.authorize).toBeCalled()
+  expect(auth0mock.authorize).toBeCalled()
 })
 
 describe('logout', () => {
   beforeEach(() => {
-    jest.spyOn(auth.auth0, 'logout').mockImplementationOnce(_.noop)
+    auth0mock.logout.mockImplementationOnce(_.noop)
     auth.logout()
   })
 
-  it('Clears session', () => {
+  test('Clears session', () => {
     expect(sessionStore.clearSession).toBeCalled()
   })
 
-  it('Calls WebAuth.logout', () => {
-    expect(auth.auth0.logout).toBeCalledWith({
-      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO
+  test('Clears scope', () => {
+    expect(errorReporter.clearScope).toBeCalled()
+  })
+
+  test('Calls WebAuth.logout', () => {
+    expect(auth0mock.logout).toBeCalledWith({
+      clientID: auth0Config.clientID,
+      returnTo: auth0Config.returnTo
     })
   })
 })
@@ -56,6 +96,11 @@ describe('handleAuthentication', () => {
       accessToken: 'accessToken',
       idToken: 'idToken',
       expiresIn: 1,
+      idTokenPayload: {
+        'https://ebabylon.org/eblName': 'Tester',
+        name: 'test@example.com',
+        sub: 'auth0|1234'
+      },
       ...authResultConfig
     }
 
@@ -67,13 +112,17 @@ describe('handleAuthentication', () => {
     )
 
     beforeEach(async () => {
-      jest.spyOn(auth.auth0, 'parseHash')
-        .mockImplementationOnce(callback => callback(null, authResult))
+      auth0mock.parseHash.mockImplementationOnce(callback => callback(null, authResult))
       await auth.handleAuthentication()
     })
 
     it('Sets session', () => {
       expect(sessionStore.setSession).toBeCalledWith(expectedSession)
+    })
+
+    it('Sets user', () => {
+      const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+      expect(errorReporter.setUser).toBeCalledWith(sub, name, eblName)
     })
   }
 
@@ -83,19 +132,6 @@ describe('handleAuthentication', () => {
   })
 
   describe('authResult does not have scope', () => {
-    const expectedScope = [
-      'openid',
-      'profile',
-      'read:words write:words',
-      'read:fragments transliterate:fragments lemmatize:fragments',
-      'read:bibliography write:bibliography',
-      'access:beta',
-      'read:WGL-folios',
-      'read:FWG-folios',
-      'read:EL-folios',
-      'read:AKG-folios',
-      'read:MJG-folios'
-    ].join(' ')
     testParseHash({ scope: null }, expectedScope)
   })
 
@@ -105,13 +141,12 @@ describe('handleAuthentication', () => {
       errorDescription: 'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property'
     }
     beforeEach(() => {
-      jest.spyOn(auth.auth0, 'parseHash')
-        .mockImplementationOnce(callback =>
-          callback(error, null)
-        )
+      auth0mock.parseHash.mockImplementationOnce(callback =>
+        callback(error, null)
+      )
     })
 
-    it('Rejects with the error', async () => {
+    test('Rejects with the error', async () => {
       await expect(auth.handleAuthentication()).rejects.toEqual(new Error(error.error))
     })
   })
