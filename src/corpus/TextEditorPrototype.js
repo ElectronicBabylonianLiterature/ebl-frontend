@@ -20,35 +20,45 @@ const ChapterLine = Record({
   manuscripts: List()
 })
 
-const Text = Record({
+const Chapter = Record({
   name: '',
   manuscripts: List(),
   lines: List()
 })
 
+const Text = Record({
+  name: '',
+  chapters: List()
+})
+
 const exampleText = Text({
   name: 'Palm & Vine',
-  manuscripts: List.of('UrkHel1', 'UrkHel2'),
-  lines: List.of(
-    ChapterLine({
-      number: '1\'',
-      ideal: 'ammeni (?) | [...]',
-      manuscripts: List.of(ManuscriptLine({
-        name: 'UrkHel1',
-        side: '@obverse',
-        line: '1\'',
-        atf: 'am#-me#ni# X [x x x x x x x x]'
-      }))
-    }),
-    ChapterLine({
-      number: '2\'',
-      ideal: '    anaku-ma | [arhanu (?) || ...]',
-      manuscripts: List.of(ManuscriptLine({
-        name: 'UrkHel1',
-        side: '@obverse',
-        line: '2\'',
-        atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
-      }))
+  chapters: List.of(
+    Chapter({
+      name: 'I',
+      manuscripts: List.of('UrkHel1', 'UrkHel2'),
+      lines: List.of(
+        ChapterLine({
+          number: '1\'',
+          ideal: 'ammeni (?) | [...]',
+          manuscripts: List.of(ManuscriptLine({
+            name: 'UrkHel1',
+            side: '@obverse',
+            line: '1\'',
+            atf: 'am#-me#ni# X [x x x x x x x x]'
+          }))
+        }),
+        ChapterLine({
+          number: '2\'',
+          ideal: '    anaku-ma | [arhanu (?) || ...]',
+          manuscripts: List.of(ManuscriptLine({
+            name: 'UrkHel1',
+            side: '@obverse',
+            line: '2\'',
+            atf: 'a#-na-ku-ma [ar-ha-nu X x x x x x]'
+          }))
+        })
+      )
     })
   )
 })
@@ -61,20 +71,13 @@ class TextEditorController extends Component {
 
   render () {
     return <TextEditorPrototype
-      handleManuscriptChange={manuscripts =>
+      handleChaptersChange={chapters => {
         this.setState(setIn(
           this.state,
-          ['text', 'manuscripts'],
-          manuscripts
+          ['text', 'chapters'],
+          chapters
         ))
-      }
-      handleRowsChange={lines =>
-        this.setState(setIn(
-          this.state,
-          ['text', 'lines'],
-          lines
-        ))
-      }
+      }}
       text={this.state.text} />
   }
 }
@@ -142,35 +145,64 @@ function ManuscriptLineEdit ({ value, onChange, manuscripts }) {
   )
 }
 
-export function TextEditorPrototype ({ text, handleManuscriptChange, handleRowsChange }) {
-  console.log(text)
+function ChapterEdit ({ chapter, onChange }) {
+  const handleManuscriptChange = manuscripts => {
+    onChange(setIn(
+      chapter,
+      ['manuscripts'],
+      manuscripts
+    ))
+  }
+  const handleRowsChange = lines => {
+    onChange(setIn(
+      chapter,
+      ['lines'],
+      lines
+    ))
+  }
+  const hadnleNameChange = name => {
+    onChange(setIn(
+      chapter,
+      ['name'],
+      name
+    ))
+  }
+  return <section>
+    <header><h3>Chapter {chapter.name}</h3></header>
+    <TextEdit value={chapter.name} onChange={hadnleNameChange} />
+    <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
+      <Tab eventKey='manuscripts' title='Manuscripts'>
+        <ListForm default='' value={chapter.manuscripts} onChange={handleManuscriptChange}>
+          {chapter.manuscripts.map((key, index) =>
+            <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
+          )}
+        </ListForm>
+      </Tab>
+      <Tab eventKey='lines' title='Lines'>
+        <ListForm default={ChapterLine({
+          manuscripts: chapter.manuscripts.map(manuscript => ManuscriptLine({
+            name: manuscript
+          }))
+        })} value={chapter.lines} onChange={handleRowsChange}>
+          {chapter.lines.map((line, index) =>
+            <LineEdit key={index} value={line} index={index}
+              manuscripts={chapter.manuscripts}
+            />)
+          }
+        </ListForm>
+      </Tab>
+    </Tabs>
+  </section>
+}
+export function TextEditorPrototype ({ text, handleChaptersChange }) {
   return <SessionContext.Consumer>
     {session => session.hasBetaAccess()
       ? (
         <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
           <Form>
-            <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
-              <Tab eventKey='manuscripts' title='Manuscripts'>
-                <ListForm default='' value={text.manuscripts} onChange={handleManuscriptChange}>
-                  {text.manuscripts.map((key, index) =>
-                    <TextEdit key={index} index={index} value={key} placeholder='Manuscript identifier' />
-                  )}
-                </ListForm>
-              </Tab>
-              <Tab eventKey='lines' title='Lines'>
-                <ListForm default={ChapterLine({
-                  manuscripts: text.manuscripts.map(manuscript => ManuscriptLine({
-                    name: manuscript
-                  }))
-                })} value={text.lines} onChange={handleRowsChange}>
-                  {text.lines.map((line, index) =>
-                    <LineEdit key={index} value={line} index={index}
-                      manuscripts={text.manuscripts}
-                      languages={text.languages} />)
-                  }
-                </ListForm>
-              </Tab>
-            </Tabs>
+            <ListForm label='Chapters' default={Chapter()} value={text.chapters} onChange={handleChaptersChange}>
+              {text.chapters.map((chapter, index) => <ChapterEdit chapter={chapter} key={index} />)}
+            </ListForm>
           </Form>
         </AppContent>
       )
