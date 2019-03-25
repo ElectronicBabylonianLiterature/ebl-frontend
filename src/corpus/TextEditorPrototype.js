@@ -7,31 +7,6 @@ import SessionContext from 'auth/SessionContext'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 
-const romanMatrix = List.of(
-  List.of(1000, 'M'),
-  List.of(900, 'CM'),
-  List.of(500, 'D'),
-  List.of(400, 'CD'),
-  List.of(100, 'C'),
-  List.of(90, 'XC'),
-  List.of(50, 'L'),
-  List.of(40, 'XL'),
-  List.of(10, 'X'),
-  List.of(9, 'IX'),
-  List.of(5, 'V'),
-  List.of(4, 'IV'),
-  List.of(1, 'I')
-)
-
-function convertToRoman (number) {
-  // Derived from https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript#37723879
-  return romanMatrix
-    .toSeq()
-    .filter(roman => number >= roman.first())
-    .map(roman => roman.last() + convertToRoman(number - roman.first()))
-    .first('')
-}
-
 const ManuscriptLine = Record({
   name: '',
   side: '',
@@ -46,6 +21,7 @@ const ChapterLine = Record({
 })
 
 const Chapter = Record({
+  name: '',
   manuscripts: List(),
   lines: List()
 })
@@ -59,6 +35,7 @@ const exampleText = Text({
   name: 'Palm & Vine',
   chapters: List.of(
     Chapter({
+      name: 'I',
       manuscripts: List.of('UrkHel1', 'UrkHel2'),
       lines: List.of(
         ChapterLine({
@@ -82,7 +59,8 @@ const exampleText = Text({
           }))
         })
       )
-    })
+    }),
+    Chapter({ name: 'II' })
   )
 })
 
@@ -93,15 +71,21 @@ class TextEditorController extends Component {
   }
 
   render () {
-    return <TextEditorPrototype
-      handleChaptersChange={chapters => {
-        this.setState(setIn(
-          this.state,
-          ['text', 'chapters'],
-          chapters
-        ))
-      }}
-      text={this.state.text} />
+    const chapterName = this.props.match.params.id
+    const chapterIndex = this.state.text.chapters.findIndex(chapter => chapter.name === chapterName)
+    const chapter = this.state.text.chapters.get(chapterIndex)
+    return chapterIndex >= 0
+      ? <TextEditorPrototype
+        handleChapterChange={chapter => {
+          this.setState(setIn(
+            this.state,
+            ['text', 'chapters', chapterIndex],
+            chapter
+          ))
+        }}
+        text={this.state.text}
+        chapter={chapter} />
+      : <span>Chapter {chapterName} not found.</span>
   }
 }
 
@@ -183,8 +167,15 @@ function ChapterEdit ({ chapter, index, onChange }) {
       lines
     ))
   }
+  const handleNameChange = name => {
+    onChange(setIn(
+      chapter,
+      ['name'],
+      name
+    ))
+  }
   return <section>
-    <header><h3>Chapter {convertToRoman(index + 1)}</h3></header>
+    <TextEdit value={chapter.name} onChange={handleNameChange} />
     <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('tabs-')}>
       <Tab eventKey='manuscripts' title='Manuscripts'>
         <ListForm default='' value={chapter.manuscripts} onChange={handleManuscriptChange}>
@@ -209,15 +200,13 @@ function ChapterEdit ({ chapter, index, onChange }) {
     </Tabs>
   </section>
 }
-export function TextEditorPrototype ({ text, handleChaptersChange }) {
+export function TextEditorPrototype ({ text, chapter, handleChapterChange }) {
   return <SessionContext.Consumer>
     {session => session.hasBetaAccess()
       ? (
-        <AppContent section='Corpus' active={text.name} title={`Edit ${text.name}`}>
+        <AppContent section={`Corpus / ${text.name}`} active={chapter.name} title={`Edit ${text.name} ${chapter.name}`}>
           <Form>
-            <ListForm label='Chapters' default={Chapter()} value={text.chapters} onChange={handleChaptersChange}>
-              {text.chapters.map((chapter, index) => <ChapterEdit chapter={chapter} key={index} index={index} />)}
-            </ListForm>
+            <ChapterEdit chapter={chapter} onChange={handleChapterChange} />
           </Form>
         </AppContent>
       )

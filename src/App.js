@@ -27,7 +27,7 @@ function App ({ auth, wordService, fragmentService, bibliographyService }) {
           <Route path='/bibliography' render={props => <Bibliography bibliographyService={bibliographyService} {...props} />} />
           <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
           <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
-          <Route path='/corpus/proto' render={props => <TextEditorPrototype {...props} />} />
+          <Route path='/corpus/proto/:id' render={props => <TextEditorPrototype {...props} />} />
           <Route path='/corpus' render={props => <Corpus fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />
           <Route path='/fragmentarium/:id' render={props => <FragmentView fragmentService={fragmentService} {...props} />} />
