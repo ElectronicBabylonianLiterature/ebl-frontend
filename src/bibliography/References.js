@@ -11,7 +11,6 @@ function References ({ searchBibliography, references, onChange, onSubmit, disab
   return (
     <Form onSubmit={onSubmit} data-testid='references-form'>
       <List
-        label='References'
         value={references}
         onChange={onChange}
         noun='Reference'
