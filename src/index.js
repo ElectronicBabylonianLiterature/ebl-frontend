@@ -20,7 +20,7 @@ import ErrorReporterContext from './ErrorReporterContext'
 import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
 
-SentryErrorReporter.init()
+SentryErrorReporter.init(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
 
 Promise.config({
   cancellation: true
@@ -34,7 +34,7 @@ const auth0Config = {
   audience: 'dictionary-api'
 }
 
-const errorReporter = new SentryErrorReporter(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
+const errorReporter = new SentryErrorReporter()
 const auth = new Auth(new SessionStore(), errorReporter, auth0Config)
 const apiClient = new ApiClient(auth, errorReporter)
 const wordRepository = new WordRepository(apiClient)
