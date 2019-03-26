@@ -79,7 +79,7 @@ function renderReferences () {
 
 async function renderReferencesAndWait () {
   renderReferences()
-  await waitForElement(() => element.getByText('References'))
+  await waitForElement(() => element.getByText('Document'))
 }
 
 async function inputReference () {
