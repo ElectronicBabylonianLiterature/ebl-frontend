@@ -1,6 +1,7 @@
 import React from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 import Breadcrumbs from 'common/Breadcrumbs'
 
@@ -13,7 +14,7 @@ export default function AppContent ({ section, active, title, children, actions,
       'App-content--wide': wide
     })}>
       <header className='App-content__header'>
-        <Breadcrumbs section={section} active={active} />
+        <Breadcrumbs crumbs={_.compact([section, active])} />
         <ButtonGroup className='float-right'>{actions}</ButtonGroup>
         <h2>{title || active || section}</h2>
       </header>
