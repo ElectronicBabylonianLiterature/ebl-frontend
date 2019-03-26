@@ -23,9 +23,11 @@ beforeEach(async () => {
 })
 
 test('Initialization', () => {
+  const dsn = 'http://example.com/sentry'
+  const environment = 'test'
   Sentry.init.mockImplementationOnce(_.noop)
-  SentryErrorReporter.init()
-  expect(Sentry.init).toHaveBeenCalledWith({ dsn: 'http://example.com/sentry' })
+  SentryErrorReporter.init(dsn, environment)
+  expect(Sentry.init).toHaveBeenCalledWith({ dsn: dsn, environment: environment })
 })
 
 test('Error reporting', () => {

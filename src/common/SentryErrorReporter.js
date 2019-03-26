@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/browser'
 
 class SentryErrorReporter {
-  static init () {
+  static init (dsn, environment) {
     Sentry.init({
-      dsn: process.env.REACT_APP_SENTRY_DSN
+      dsn,
+      environment
     })
   }
 

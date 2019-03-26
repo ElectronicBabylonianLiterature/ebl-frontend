@@ -34,7 +34,7 @@ const auth0Config = {
   audience: 'dictionary-api'
 }
 
-const errorReporter = new SentryErrorReporter()
+const errorReporter = new SentryErrorReporter(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
 const auth = new Auth(new SessionStore(), errorReporter, auth0Config)
 const apiClient = new ApiClient(auth, errorReporter)
 const wordRepository = new WordRepository(apiClient)
