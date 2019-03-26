@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
-import List from 'common/List'
+import { List } from 'immutable'
+import ListForm from 'common/List'
 import ReferenceForm from './ReferenceForm'
 import Reference from 'bibliography/Reference'
 
@@ -10,7 +11,7 @@ const defaultReference = new Reference()
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
     <Form onSubmit={onSubmit} data-testid='references-form'>
-      <List
+      <ListForm
         value={references}
         onChange={onChange}
         noun='Reference'
@@ -21,7 +22,7 @@ function References ({ searchBibliography, references, onChange, onSubmit, disab
             key={index}
             value={reference} />
         )}
-      </List>
+      </ListForm>
       <Button
         type='submit'
         variant='primary'
@@ -36,8 +37,8 @@ class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      references: _.isEmpty(props.references)
-        ? [_.cloneDeep(defaultReference)]
+      references: props.references.isEmpty()
+        ? List.of(defaultReference)
         : props.references
     }
   }
