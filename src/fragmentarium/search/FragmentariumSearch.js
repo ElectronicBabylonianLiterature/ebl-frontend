@@ -5,7 +5,7 @@ import NumberSearch from 'fragmentarium/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/SearchGroup'
-import replaceSpecialCharacters from './SpecialCharacters'
+import replaceSpecialCharacters from './replaceSpecialCharacters'
 
 import './FragmentariumSearch.css'
 
