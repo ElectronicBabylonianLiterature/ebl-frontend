@@ -44,8 +44,7 @@ class WordEditor extends Component {
   render () {
     return (
       <AppContent
-        section='Dictionary'
-        active={this.props.match.params.id}
+        crumbs={['Dictionary', this.props.match.params.id]}
         title={<>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}</>}>
         <ReactMarkdown source={this.state.word.source} />
         <Spinner loading={this.state.saving}>Saving...</Spinner>

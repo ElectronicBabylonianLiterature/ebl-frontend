@@ -12,7 +12,7 @@ export default function Dictionary ({ wordService, location }) {
   const query = queryString.parse(location.search).query
 
   return (
-    <AppContent section='Dictionary'>
+    <AppContent crumbs={['Dictionary']}>
       <SessionContext.Consumer>
         {session => session.isAllowedToReadWords()
           ? <>

@@ -33,7 +33,7 @@ class Corpus extends Component {
 
   render () {
     return (
-      <AppContent section='Corpus'>
+      <AppContent crumbs={['Corpus']}>
         <Container fluid>
           <Row>
             <Col md={5}>

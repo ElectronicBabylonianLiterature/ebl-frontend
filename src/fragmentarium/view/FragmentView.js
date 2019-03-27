@@ -32,8 +32,7 @@ export default function FragmentView ({ match, location, fragmentService }) {
 
   return (
     <AppContent
-      section='Fragmentarium'
-      active={number}
+      crumbs={['Fragmentarium', number]}
       title={<FragmentPager number={number}> {number} </FragmentPager>}
       wide>
       <SessionContext.Consumer>

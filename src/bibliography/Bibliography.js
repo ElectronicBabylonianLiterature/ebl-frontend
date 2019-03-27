@@ -23,7 +23,7 @@ export default function Bibliography ({ bibliographyService, location }) {
   return (
     <SessionContext.Consumer>
       {session =>
-        <AppContent section='Bibliography' actions={<CreateButton session={session} />}>
+        <AppContent crumbs={['Bibliography']} actions={<CreateButton session={session} />}>
           {session.isAllowedToReadBibliography()
             ? <>
               <div className='Bibliography__search'><BibliographySearchForm query={query} /></div>

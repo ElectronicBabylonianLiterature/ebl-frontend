@@ -6,17 +6,17 @@ import AppContent from './AppContent'
 let element
 
 test('Title', () => {
-  element = render(<MemoryRouter><AppContent section='Dictionary' active='Active' title='Title' /></MemoryRouter>)
+  element = render(<MemoryRouter><AppContent crumbs={['Dictionary', 'Active']} title='Title' /></MemoryRouter>)
   expect(element.container).toHaveTextContent('eBLDictionaryActiveTitle')
 })
 
 test('Section and active', () => {
-  element = render(<MemoryRouter><AppContent section='Dictionary' active='Active' /></MemoryRouter>)
+  element = render(<MemoryRouter><AppContent crumbs={['Dictionary', 'Active']} /></MemoryRouter>)
   expect(element.container).toHaveTextContent('eBLDictionaryActive')
 })
 
 test('Section', () => {
-  element = render(<MemoryRouter><AppContent section='The Section' /></MemoryRouter>)
+  element = render(<MemoryRouter><AppContent crumbs={['The Section']} /></MemoryRouter>)
   expect(element.container).toHaveTextContent('eBLThe Section')
 })
 

@@ -7,16 +7,16 @@ import Breadcrumbs from 'common/Breadcrumbs'
 
 import './AppContent.css'
 
-export default function AppContent ({ section, active, title, children, actions, wide }) {
+export default function AppContent ({ crumbs, title, children, actions, wide }) {
   return (
     <section className={classNames({
       'App-content': true,
       'App-content--wide': wide
     })}>
       <header className='App-content__header'>
-        <Breadcrumbs crumbs={_.compact([section, active])} />
+        <Breadcrumbs crumbs={crumbs} />
         <ButtonGroup className='float-right'>{actions}</ButtonGroup>
-        <h2>{title || active || section}</h2>
+        <h2>{title || _.last(crumbs)}</h2>
       </header>
       {children}
     </section>

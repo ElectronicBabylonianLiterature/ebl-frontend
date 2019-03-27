@@ -16,8 +16,7 @@ function BibliographyEditor ({ data, bibliographyService, create = false, histor
 
   return (
     <AppContent
-      section='Bibliography'
-      active={create ? 'New entry' : data.id}
+      crumbs={['Bibliography', create ? 'New entry' : data.id]}
       title={create ? 'Create' : `Edit ${data.id}`}>
       <BibliographyEntryFormController entry={data} onSubmit={create ? createEntry : updateEntry} />
     </AppContent>

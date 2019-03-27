@@ -14,7 +14,7 @@ function FragmentariumSearch ({ location, fragmentService }) {
   const transliteration = queryString.parse(location.search).transliteration
   const replacedTransliteration = transliteration && replaceSpecialCharacters(transliteration)
   return (
-    <AppContent section='Fragmentarium' active='Search'>
+    <AppContent crumbs={['Fragmentarium', 'Search']}>
       <SessionContext.Consumer>
         {session => session.isAllowedToReadFragments()
           ? (

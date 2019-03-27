@@ -14,7 +14,7 @@ function Fragmentarium ({ location, fragmentService }) {
   const number = queryString.parse(location.search).number
   const transliteration = queryString.parse(location.search).transliteration
   return (
-    <AppContent section='Fragmentarium'>
+    <AppContent crmbs={['Fragmentarium']}>
       <Container fluid>
         <Row>
           <Col md={6}>
