@@ -1,4 +1,4 @@
-import replaceSpecialCharacters from './SpecialCharacters.js'
+import replaceSpecialCharacters from './replaceSpecialCharacters.js'
 
 test.each([
   ['c', 'š'],
@@ -22,7 +22,7 @@ test.each([
   ['G̃', 'G'],
   ['Ĝ', 'G'],
   ['SZA ḫa-t,i u ma-ŋi-cu G̃A s,u-lu-mu at-ta-şi-szu', 'ŠA ha-ṭi u ma-gi-šu GA ṣu-lu-mu at-ta-ṣi-šu']
-])('%s', async (character, replacement) => {
+])('%s', (character, replacement) => {
   const text = replaceSpecialCharacters(character)
   expect(text).toEqual(replacement)
 })
