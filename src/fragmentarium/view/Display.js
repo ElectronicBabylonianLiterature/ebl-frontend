@@ -33,6 +33,8 @@ function Display ({ fragment }) {
               .flatten(1)
               .filter(token => !token.get('uniqueLemma').isEmpty())
               .groupBy(token => token.get('uniqueLemma'))
+              .toOrderedMap()
+              .sortBy((tokensByLemma, lemma) => lemma.first())
               .map((tokensByLemma, lemma) => <div key={lemma.join(' ')}>
                 {lemma.map(l => <span> <Link to={`/dictionary/${l}`}>{l}</Link></span>)}{': '}
                 {tokensByLemma.groupBy(token => token.get('value')).map((tokensByValue, value) =>
