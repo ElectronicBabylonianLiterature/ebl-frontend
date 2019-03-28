@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-testing-library'
-import { changeValueByLabel, submitFormByTestId } from 'test-helpers/testHelpers'
+import { changeValueByLabel, submitFormByTestId } from 'test-helpers/utils'
 import { Promise } from 'bluebird'
 
 import TransliteratioForm from './TransliterationForm'

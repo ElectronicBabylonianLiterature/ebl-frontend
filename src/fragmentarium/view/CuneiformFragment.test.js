@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import { List } from 'immutable'
 
-import { submitFormByTestId, clickNth } from 'test-helpers/testHelpers'
+import { submitFormByTestId, clickNth } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'fragmentarium/lemmatization/Lemmatization'

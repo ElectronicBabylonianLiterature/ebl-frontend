@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
 import Lemma from './Lemma'
-import { changeValueByLabel, clickNth } from 'test-helpers/testHelpers'
+import { changeValueByLabel, clickNth } from 'test-helpers/utils'
 
 let searchWord
 let onChange

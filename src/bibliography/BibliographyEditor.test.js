@@ -5,7 +5,7 @@ import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
-import { submitForm } from 'test-helpers/testHelpers'
+import { submitForm } from 'test-helpers/utils'
 import BibliographyEditor from './BibliographyEditor'
 import { template } from 'bibliography/BibliographyEntry'
 

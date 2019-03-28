@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChangedByValue } from 'test-helpers/testHelpers'
+import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const noun = 'item'
 const property = 'value'

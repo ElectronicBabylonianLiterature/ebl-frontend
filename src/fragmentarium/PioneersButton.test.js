@@ -4,7 +4,7 @@ import createMemoryHistory from 'history/createMemoryHistory'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import { whenClicked } from 'test-helpers/testHelpers'
+import { whenClicked } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
 import PioneersButton from './PioneersButton'
 

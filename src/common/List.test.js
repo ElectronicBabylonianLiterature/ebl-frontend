@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { FormControl } from 'react-bootstrap'
 import List from './List'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChangedByValue } from 'test-helpers/testHelpers'
+import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'List'
 const defaultValue = ''

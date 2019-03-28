@@ -5,7 +5,7 @@ import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
-import { whenClicked, clickNth } from 'test-helpers/testHelpers'
+import { whenClicked, clickNth } from 'test-helpers/utils'
 import RandomButton from './RandomButton'
 
 const buttonText = 'I\'m feeling lucky'

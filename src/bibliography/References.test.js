@@ -4,7 +4,7 @@ import { factory } from 'factory-girl'
 import { List } from 'immutable'
 import { Promise } from 'bluebird'
 
-import { changeValueByLabel, clickNth, submitForm } from 'test-helpers/testHelpers'
+import { changeValueByLabel, clickNth, submitForm } from 'test-helpers/utils'
 import References from './References'
 import Reference from 'bibliography/Reference'
 

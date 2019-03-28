@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-testing-library'
-import { changeValueByLabel, submitForm } from 'test-helpers/testHelpers'
+import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
 import TemplateForm from './TemplateForm'
 

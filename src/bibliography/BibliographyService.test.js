@@ -1,5 +1,5 @@
 
-import { testDelegation } from 'test-helpers/testHelpers'
+import { testDelegation } from 'test-helpers/utils'
 import BibliographyService from './BibliographyService'
 
 const resultStub = {}

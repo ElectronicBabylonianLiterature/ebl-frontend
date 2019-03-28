@@ -2,7 +2,7 @@ import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChangedByValue } from 'test-helpers/testHelpers'
+import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 let value
 let element

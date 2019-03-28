@@ -1,7 +1,7 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
 import { render, fireEvent, wait } from 'react-testing-library'
-import { changeValueByLabel } from 'test-helpers/testHelpers'
+import { changeValueByLabel } from 'test-helpers/utils'
 
 let value
 let element

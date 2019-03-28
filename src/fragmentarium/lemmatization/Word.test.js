@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { clickNth } from '../../testHelpers'
+import { clickNth } from 'test-helpers/utils'
 import Word from './Word'
 import Lemma from './Lemma'
 

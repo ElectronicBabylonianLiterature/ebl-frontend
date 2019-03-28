@@ -3,7 +3,7 @@ import _ from 'lodash'
 import DerivedList from './DerivedList'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChangedByValue } from 'test-helpers/testHelpers'
+import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'Derived'
 
