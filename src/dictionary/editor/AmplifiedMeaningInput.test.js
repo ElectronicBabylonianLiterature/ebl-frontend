@@ -3,7 +3,7 @@ import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
-import { whenChangedByValue } from 'testHelpers'
+import { whenChangedByValue } from 'test-helpers/testHelpers'
 
 let value
 let element

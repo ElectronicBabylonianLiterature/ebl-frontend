@@ -1,6 +1,6 @@
 
 import Promise from 'bluebird'
-import { testDelegation } from 'testHelpers'
+import { testDelegation } from 'test-helpers/testHelpers'
 import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from './BibliographyEntry'
 

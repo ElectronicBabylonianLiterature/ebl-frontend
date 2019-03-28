@@ -3,9 +3,9 @@ import 'jest-dom/extend-expect'
 import 'react-testing-library/cleanup-after-each'
 import * as bluebird from 'bluebird'
 
-import './bibliographyFixtures'
-import './fragmentFixtures'
-import './wordFixtures'
+import 'test-helpers/bibliographyFixtures'
+import 'test-helpers/fragmentFixtures'
+import 'test-helpers/wordFixtures'
 
 global.fetch = require('jest-fetch-mock')
 

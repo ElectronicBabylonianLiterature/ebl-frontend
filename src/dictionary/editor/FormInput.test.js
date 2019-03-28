@@ -3,7 +3,7 @@ import FormInput from './FormInput'
 import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 
-import { whenClicked, changeValueByLabel } from 'testHelpers'
+import { whenClicked, changeValueByLabel } from 'test-helpers/testHelpers'
 
 let value
 let element

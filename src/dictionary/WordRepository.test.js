@@ -1,6 +1,6 @@
 
 import Promise from 'bluebird'
-import { testDelegation } from 'testHelpers'
+import { testDelegation } from 'test-helpers/testHelpers'
 import WordRepository from './WordRepository'
 
 const apiClient = {

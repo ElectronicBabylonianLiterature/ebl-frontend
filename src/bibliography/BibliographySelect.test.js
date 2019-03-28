@@ -4,7 +4,7 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import BibliographySelect from './BibliographySelect'
-import { changeValueByLabel, clickNth } from 'testHelpers'
+import { changeValueByLabel, clickNth } from 'test-helpers/testHelpers'
 
 let entry
 let searchEntry

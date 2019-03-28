@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'testHelpers'
+import { testDelegation } from 'test-helpers/testHelpers'
 import FragmentRepository from './FragmentRepository'
 import { Fragment, Measures, RecordEntry, Line, Text, Folio } from 'fragmentarium/fragment'
 import { List, Map } from 'immutable'

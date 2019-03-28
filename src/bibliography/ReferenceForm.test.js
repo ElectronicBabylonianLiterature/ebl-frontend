@@ -2,7 +2,7 @@ import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 
-import { whenChangedByLabel, changeValueByLabel, clickNth } from 'testHelpers'
+import { whenChangedByLabel, changeValueByLabel, clickNth } from 'test-helpers/testHelpers'
 import ReferenceForm from './ReferenceForm'
 
 let reference

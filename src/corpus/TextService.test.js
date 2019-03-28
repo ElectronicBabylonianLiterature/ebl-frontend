@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'testHelpers'
+import { testDelegation } from 'test-helpers/testHelpers'
 import TextService from './TextService'
 
 const apiClient = {

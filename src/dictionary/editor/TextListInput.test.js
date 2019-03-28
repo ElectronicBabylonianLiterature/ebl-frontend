@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
 import { render } from 'react-testing-library'
-import { whenClicked, whenChangedByValue } from 'testHelpers'
+import { whenClicked, whenChangedByValue } from 'test-helpers/testHelpers'
 
 const label = 'List'
 

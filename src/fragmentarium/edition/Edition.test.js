@@ -4,7 +4,7 @@ import { render } from 'react-testing-library'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
-import { submitFormByTestId } from 'testHelpers'
+import { submitFormByTestId } from 'test-helpers/testHelpers'
 import Edition from './Edition'
 
 let fragment

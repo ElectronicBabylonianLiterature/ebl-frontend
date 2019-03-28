@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { render } from 'react-testing-library'
-import { clickNth } from 'testHelpers'
+import { clickNth } from 'test-helpers/testHelpers'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext from 'ErrorReporterContext'
 
