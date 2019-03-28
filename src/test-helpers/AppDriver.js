@@ -14,6 +14,33 @@ import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
 import { defaultErrorReporter } from 'ErrorReporterContext'
 
+function createApp (api, sessionStore) {
+  const auth0Config = {
+    domain: process.env.REACT_APP_AUTH0_DOMAIN,
+    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
+    returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
+    audience: 'dictionary-api'
+  }
+  const auth = new Auth(sessionStore, defaultErrorReporter, auth0Config)
+  const wordRepository = new WordRepository(api)
+  const fragmentRepository = new FragmentRepository(api)
+  const imageRepository = new ImageRepository(api)
+  const bibliographyRepository = new BibliographyRepository(api)
+  const wordService = new WordService(wordRepository)
+  const bibliographyService = new BibliographyService(bibliographyRepository)
+  const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyService)
+  const textService = new TextService(api)
+
+  return <App
+    auth={auth}
+    wordService={wordService}
+    fragmentService={fragmentService}
+    bibliographyService={bibliographyService}
+    textService={textService}
+  />
+}
+
 export default class AppDriver {
   initialEntries = []
   element = null
@@ -34,37 +61,15 @@ export default class AppDriver {
   }
 
   render () {
-    const auth0Config = {
-      domain: process.env.REACT_APP_AUTH0_DOMAIN,
-      clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-      redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-      returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
-      audience: 'dictionary-api'
-    }
     const fakeSessionStore = {
       setSession: session => { this.session = session },
       clearSession: () => { this.session = null },
       getSession: () => this.session || new Session('', '', 0, [])
     }
-    const auth = new Auth(fakeSessionStore, defaultErrorReporter, auth0Config)
-    const wordRepository = new WordRepository(this.api)
-    const fragmentRepository = new FragmentRepository(this.api)
-    const imageRepository = new ImageRepository(this.api)
-    const bibliographyRepository = new BibliographyRepository(this.api)
-    const wordService = new WordService(wordRepository)
-    const bibliographyService = new BibliographyService(bibliographyRepository)
-    const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyService)
-    const textService = new TextService(this.api)
 
     this.element = render(
       <MemoryRouter initialEntries={this.initialEntries}>
-        <App
-          auth={auth}
-          wordService={wordService}
-          fragmentService={fragmentService}
-          bibliographyService={bibliographyService}
-          textService={textService}
-        />
+        {createApp(this.api, fakeSessionStore)}
       </MemoryRouter>
     )
 
