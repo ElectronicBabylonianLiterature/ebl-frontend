@@ -1,5 +1,5 @@
-import Promise from 'bluebird'
 import AppDriver from 'test-helpers/AppDriver'
+import FakeApi from 'test-helpers/FakeApi'
 
 const text = {
   category: 1,
@@ -22,27 +22,6 @@ const chapter = text.chapters[1]
 
 let apiDriver
 let reactDriver
-
-class FakeApi {
-  gets = []
-  client = {
-    fetchJson: (path, authenticate) => {
-      const expectation = this.gets.find(entry => entry.path === path && entry.authenticate === authenticate)
-      return expectation
-        ? Promise.resolve(expectation.response)
-        : Promise.reject(new Error(`Unexpected ${authenticate ? 'authenticated' : 'not-authenticated'} GET request: ${path}`))
-    }
-  }
-
-  expectText (text) {
-    this.gets.push({
-      path: `/texts/${text.category}.${text.index}`,
-      authenticate: true,
-      response: text
-    })
-    return this
-  }
-}
 
 beforeEach(async () => {
   apiDriver = new FakeApi().expectText(text)
