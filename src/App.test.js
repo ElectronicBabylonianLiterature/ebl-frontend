@@ -15,6 +15,7 @@ import SessionStore from './auth/SessionStore'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
 import { deafaultErrorReporter } from 'ErrorReporterContext'
+import TextService from './corpus/TextService'
 
 const auth0Config = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN,
@@ -36,6 +37,7 @@ test.each(
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyService)
+  const textService = new TextService(apiClient)
 
   jest.spyOn(fragmentRepository, 'statistics').mockReturnValue(Promise.resolve(factory.build('statistics')))
 
@@ -45,6 +47,7 @@ test.each(
       wordService={wordService}
       fragmentService={fragmentService}
       bibliographyService={bibliographyService}
+      textService={textService}
     />
   </MemoryRouter>)
 })

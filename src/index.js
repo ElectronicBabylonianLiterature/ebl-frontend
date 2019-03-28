@@ -19,6 +19,7 @@ import WordService from 'dictionary/WordService'
 import ErrorReporterContext from './ErrorReporterContext'
 import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
+import TextService from 'corpus/TextService'
 
 SentryErrorReporter.init(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
 
@@ -50,6 +51,7 @@ const fragmentService = new FragmentService(
   bibliographyService
 )
 const wordService = new WordService(wordRepository)
+const textService = new TextService(apiClient)
 
 ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
@@ -60,6 +62,7 @@ ReactDOM.render(
           wordService={wordService}
           fragmentService={fragmentService}
           bibliographyService={bibliographyService}
+          textService={textService}
         />
       </Router>
     </ErrorBoundary>
