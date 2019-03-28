@@ -12,7 +12,7 @@ import TextService from 'corpus/TextService'
 import Session from 'auth/Session'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
-import { deafaultErrorReporter } from 'ErrorReporterContext'
+import { defaultErrorReporter } from 'ErrorReporterContext'
 
 export default class AppDriver {
   initialEntries = []
@@ -46,7 +46,7 @@ export default class AppDriver {
       clearSession: () => { this.session = null },
       getSession: () => this.session || new Session('', '', 0, [])
     }
-    const auth = new Auth(fakeSessionStore, deafaultErrorReporter, auth0Config)
+    const auth = new Auth(fakeSessionStore, defaultErrorReporter, auth0Config)
     const wordRepository = new WordRepository(this.api)
     const fragmentRepository = new FragmentRepository(this.api)
     const imageRepository = new ImageRepository(this.api)

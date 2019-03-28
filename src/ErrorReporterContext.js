@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const deafaultErrorReporter = {
+export const defaultErrorReporter = {
   captureException (error, errorInfo = {}) {
     console.error(error, errorInfo)
   },
@@ -9,6 +9,4 @@ export const deafaultErrorReporter = {
   clearScope () { }
 }
 
-const ErrorReporterContext = React.createContext(deafaultErrorReporter)
-
-export default ErrorReporterContext
+export default React.createContext(defaultErrorReporter)
