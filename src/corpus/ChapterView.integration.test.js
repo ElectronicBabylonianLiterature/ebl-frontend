@@ -44,7 +44,7 @@ describe('Chapter found', () => {
     reactDriver.expectBreadcrumbs([
       'eBL',
       'Corpus',
-      `${text.category}.${text.index}`,
+      text.name,
       `${chapter.period} ${romanChapterNumber}`
     ])
   })

@@ -27,7 +27,7 @@ function DetailsRow ({ chapter }) {
 function ChapterView ({ text, chapterId }) {
   const chapter = text.chapters.find(chapter => chapterId === `${chapter.period} ${convertToRoman(chapter.number)}`)
   return (
-    <AppContent crumbs={['Corpus', `${text.category}.${text.index}`, chapterId]} title={`Edit ${text.name} ${chapterId}`}>
+    <AppContent crumbs={['Corpus', text.name, chapterId]} title={`Edit ${text.name} ${chapterId}`}>
       {chapter
         ? (
           <Form>
