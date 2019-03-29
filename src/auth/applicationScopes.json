@@ -6,6 +6,7 @@
   "lemmatizeFragments": "lemmatize:fragments",
   "readBibliography": "read:bibliography",
   "writeBibliography": "write:bibliography",
+  "readTexts": "read:texts",
   "accessBeta": "access:beta",
   "readWglFolios": "read:WGL-folios",
   "readFwgFolios": "read:FWG-folios",
