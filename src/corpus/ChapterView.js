@@ -5,6 +5,25 @@ import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import convertToRoman from './convertToRoman'
 
+function DetailsRow ({ chapter }) {
+  return (
+    <Form.Row>
+      <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
+        <Form.Label>Classification</Form.Label>
+        <Form.Control plaintext readOnly defaultValue={chapter.classification} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
+        <Form.Label>Period</Form.Label>
+        <Form.Control plaintext readOnly defaultValue={chapter.period} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
+        <Form.Label>Number</Form.Label>
+        <Form.Control plaintext readOnly defaultValue={chapter.number} />
+      </Form.Group>
+    </Form.Row>
+  )
+}
+
 function ChapterView ({ text, chapterId }) {
   const chapter = text.chapters.find(chapter => chapterId === `${chapter.period} ${convertToRoman(chapter.number)}`)
   return (
@@ -12,20 +31,7 @@ function ChapterView ({ text, chapterId }) {
       {chapter
         ? (
           <Form>
-            <Form.Row>
-              <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-                <Form.Label>Classification</Form.Label>
-                <Form.Control plaintext readOnly defaultValue={chapter.classification} />
-              </Form.Group>
-              <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-                <Form.Label>Period</Form.Label>
-                <Form.Control plaintext readOnly defaultValue={chapter.period} />
-              </Form.Group>
-              <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-                <Form.Label>Number</Form.Label>
-                <Form.Control plaintext readOnly defaultValue={chapter.number} />
-              </Form.Group>
-            </Form.Row>
+            <DetailsRow chapter={chapter} />
           </Form>
         )
         : <Alert variant='danger'>Chapter {chapterId} not found.</Alert>
