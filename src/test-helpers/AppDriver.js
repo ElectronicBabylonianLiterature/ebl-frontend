@@ -80,8 +80,12 @@ export default class AppDriver {
     await waitForElement(() => this.element.getByText(text))
   }
 
+  expectTextContent (text) {
+    expect(this.element.container).toHaveTextContent(text)
+  }
+
   expectBreadcrumbs (crumbs) {
-    expect(this.element.container).toHaveTextContent(crumbs.join(''))
+    this.expectTextContent(crumbs.join(''))
   }
 
   expectInputElement (label, expectedValue) {
