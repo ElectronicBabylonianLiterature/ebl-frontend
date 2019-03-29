@@ -1,5 +1,6 @@
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
+import convertToRoman from './convertToRoman'
 
 const text = {
   category: 1,
@@ -8,17 +9,18 @@ const text = {
   chapters: [
     {
       classification: 'Ancient',
-      period: 'NB',
+      period: 'Neo-Babylonian',
       number: 1
     },
     {
       classification: 'Ancient',
-      period: 'OB',
+      period: 'Old Babylonian',
       number: 1
     }
   ]
 }
 const chapter = text.chapters[1]
+const romanChapterNumber = convertToRoman(chapter.number)
 
 let apiDriver
 let reactDriver
@@ -26,11 +28,11 @@ let reactDriver
 beforeEach(async () => {
   apiDriver = new FakeApi().expectText(text)
   reactDriver = new AppDriver(apiDriver.client)
-    .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.period + ' ' + chapter.number)}`)
+    .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.period + ' ' + romanChapterNumber)}`)
     .withSession()
     .render()
 
-  await reactDriver.waitForText(`Edit ${text.name} ${chapter.period} ${chapter.number}`)
+  await reactDriver.waitForText(`Edit ${text.name} ${chapter.period} ${romanChapterNumber}`)
 })
 
 test('Breadcrumbs', async () => {
@@ -38,7 +40,7 @@ test('Breadcrumbs', async () => {
     'eBL',
     'Corpus',
     `${text.category}.${text.index}`,
-    `${chapter.period} ${chapter.number}`
+    `${chapter.period} ${romanChapterNumber}`
   ])
 })
 
