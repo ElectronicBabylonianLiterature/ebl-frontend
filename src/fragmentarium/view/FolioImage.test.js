@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
@@ -19,20 +20,6 @@ beforeEach(async () => {
   data = new Blob(['WGL'], { type: 'image/jpeg' })
   element = render(<FolioImage fragmentService={fragmentService} folio={folio} data={data} />)
   await waitForElement(() => element.getByAltText(folio.fileName))
-})
-
-it('Creates object Url', () => {
-  expect(URL.createObjectURL).toHaveBeenCalledWith(data)
-})
-
-it('Revokes objet URL on unmount', () => {
-  element.unmount()
-  expect(URL.revokeObjectURL).toHaveBeenCalledWith(objectUrl)
-})
-
-it('Has a link to the image', () => {
-  expect(element.container.querySelector('a'))
-    .toHaveAttribute('href', objectUrl)
 })
 
 it('Queries the API with given parameters', () => {
