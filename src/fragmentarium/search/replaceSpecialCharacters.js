@@ -28,6 +28,7 @@ export default function replaceSpecialCharacters (userInput) {
     .map(character => {
       return _.escapeRegExp(character)
     })
-  const regExp = new RegExp(specialCharacters.join('|'), 'g')
+    .join('|')
+  const regExp = new RegExp(specialCharacters, 'g')
   return userInput.replace(regExp, match => characters[match] || match)
 }
