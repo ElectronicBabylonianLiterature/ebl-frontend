@@ -6,12 +6,16 @@ const objectUrl = 'object URL mock'
 let data
 let element
 
-function testImage (hasLink) {
+function configureImage (hasLink = true) {
   beforeEach(async () => {
     URL.createObjectURL.mockReturnValueOnce(objectUrl)
     data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
     element = render(<BlobImage data={data} hasLink={hasLink} />)
   })
+}
+
+describe(('Displays image, creates and revokes object Url'), () => {
+  configureImage()
   it('Displays the loaded image', () => {
     expect(element.container.querySelector('img'))
       .toHaveAttribute('src', objectUrl)
@@ -19,14 +23,14 @@ function testImage (hasLink) {
   it('Creates object Url', () => {
     expect(URL.createObjectURL).toHaveBeenCalledWith(data)
   })
-  it('Revokes objet URL on unmount', () => {
+  it('Revokes object URL on unmount', () => {
     element.unmount()
     expect(URL.revokeObjectURL).toHaveBeenCalledWith(objectUrl)
   })
-}
+})
 
 describe(('Has a link to the image'), () => {
-  testImage(true)
+  configureImage()
   it('Has a link to the image', () => {
     expect(element.container.querySelector('a'))
       .toHaveAttribute('href', objectUrl)
@@ -34,7 +38,7 @@ describe(('Has a link to the image'), () => {
 })
 
 describe(('Does not have a link to the image'), () => {
-  testImage(false)
+  configureImage(false)
   it('Does not have a link to the image', () => {
     expect(element.container.querySelector('a'))
       .toBeNull()
