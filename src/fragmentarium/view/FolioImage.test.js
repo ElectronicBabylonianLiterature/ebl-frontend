@@ -29,3 +29,8 @@ it('Queries the API with given parameters', () => {
 it('Has the filename as alt text', () => {
   expect(element.container.querySelector('img')).toHaveAttribute('alt', folio.fileName)
 })
+
+it('Has a link to the image', () => {
+  expect(element.container.querySelector('a'))
+    .toHaveAttribute('href', objectUrl)
+})
