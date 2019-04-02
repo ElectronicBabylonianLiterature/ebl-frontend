@@ -14,8 +14,7 @@ function configureImage (hasLink = true) {
   })
 }
 
-describe(('Displays image, creates and revokes object Url'), () => {
-  configureImage()
+function testImageDisplayAndUrl () {
   it('Displays the loaded image', () => {
     expect(element.container.querySelector('img'))
       .toHaveAttribute('src', objectUrl)
@@ -27,10 +26,11 @@ describe(('Displays image, creates and revokes object Url'), () => {
     element.unmount()
     expect(URL.revokeObjectURL).toHaveBeenCalledWith(objectUrl)
   })
-})
+}
 
 describe(('Has a link to the image'), () => {
   configureImage()
+  testImageDisplayAndUrl()
   it('Has a link to the image', () => {
     expect(element.container.querySelector('a'))
       .toHaveAttribute('href', objectUrl)
@@ -39,6 +39,7 @@ describe(('Has a link to the image'), () => {
 
 describe(('Does not have a link to the image'), () => {
   configureImage(false)
+  testImageDisplayAndUrl()
   it('Does not have a link to the image', () => {
     expect(element.container.querySelector('a'))
       .toBeNull()
