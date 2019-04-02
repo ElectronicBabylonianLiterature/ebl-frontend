@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement, fireEvent } from 'react-testing-library'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
 import Auth from 'auth/Auth'
@@ -90,5 +90,16 @@ export default class AppDriver {
 
   expectInputElement (label, expectedValue) {
     expect(this.element.getByLabelText(label).value).toEqual(String(expectedValue))
+  }
+
+  changeValueByLabel (label, newValue) {
+    const input = this.element.getByLabelText(label)
+    fireEvent.change(input, { target: { value: newValue } })
+  }
+
+  click (text, n = 0) {
+    const clickable = this.element.getAllByText(text)[n]
+    fireEvent.click(clickable)
+    // await wait()
   }
 }

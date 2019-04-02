@@ -1,3 +1,4 @@
+import { Record } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 import convertToRoman from './convertToRoman'
@@ -9,66 +10,127 @@ const text = {
   chapters: [
     {
       classification: 'Ancient',
-      period: 'Neo-Babylonian',
-      number: 1
+      stage: 'Neo-Babylonian',
+      number: 1,
+      manuscripts: []
     },
     {
       classification: 'Ancient',
-      period: 'Old Babylonian',
-      number: 1
+      stage: 'Old Babylonian',
+      number: 1,
+      manuscripts: [
+        {
+          uniqueId: 'abc-cde-123',
+          siglum: 'UIII Nippur 1',
+          idType: 'Museum',
+          id: 'X.1',
+          period: 'Ur III',
+          provenance: 'Nippur',
+          type: 'School',
+          bibliography: []
+        }
+      ]
     }
   ]
 }
-const chapter = text.chapters[1]
+
 let romanChapterNumber
 
 let apiDriver
-let reactDriver
+let appDriver
 
 beforeEach(async () => {
   apiDriver = new FakeApi().expectText(text)
-  reactDriver = new AppDriver(apiDriver.client).withSession()
+  appDriver = new AppDriver(apiDriver.client).withSession()
 })
 
-describe('Chapter found', () => {
+describe('Diplay chapter', () => {
+  const chapter = text.chapters[1]
+
   beforeEach(async () => {
     romanChapterNumber = convertToRoman(chapter.number)
-    reactDriver = reactDriver
-      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.period + ' ' + romanChapterNumber)}`)
+    appDriver = appDriver
+      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + romanChapterNumber)}`)
       .render()
 
-    await reactDriver.waitForText(`Edit ${text.name} ${chapter.period} ${romanChapterNumber}`)
+    await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${romanChapterNumber}`)
   })
 
   test('Breadcrumbs', () => {
-    reactDriver.expectBreadcrumbs([
+    appDriver.expectBreadcrumbs([
       'eBL',
       'Corpus',
       text.name,
-      `${chapter.period} ${romanChapterNumber}`
+      `${chapter.stage} ${romanChapterNumber}`
     ])
   })
 
   test.each([
     ['Classification', 'classification'],
-    ['Period', 'period'],
+    ['Stage', 'stage'],
     ['Number', 'number']
   ])('%s', (label, property) => {
-    reactDriver.expectInputElement(label, chapter[property])
+    appDriver.expectInputElement(label, chapter[property])
+  })
+
+  describe('Manuscript', () => {
+    const manuscript = chapter.manuscripts[0]
+
+    test.each([
+      ['Siglum', 'siglum', 'SB Hel 1'],
+      ['ID Type', 'idType', 'Accession'],
+      ['ID', 'id', '12345'],
+      ['Period', 'period', 'Hellenistic'],
+      ['Provenance', 'provenance', 'Borsippa'],
+      ['Type', 'type', 'Commentary']
+    ])('%s', (label, property, newValue) => {
+      const value = manuscript[property]
+      const expectedValue = Record.isRecord(value) ? value.name : value
+      appDriver.expectInputElement(label, expectedValue)
+      appDriver.changeValueByLabel(label, newValue)
+      appDriver.expectInputElement(label, newValue)
+    })
+  })
+})
+
+describe('Add manuscript', () => {
+  const chapter = text.chapters[0]
+
+  beforeEach(async () => {
+    romanChapterNumber = convertToRoman(chapter.number)
+    appDriver = appDriver
+      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + romanChapterNumber)}`)
+      .render()
+
+    await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${romanChapterNumber}`)
+  })
+
+  test.each([
+    ['Siglum', 'siglum', ''],
+    ['ID Type', 'idType', 'Museum'],
+    ['ID', 'id', ''],
+    ['Period', 'period', 'Neo-Assyrian'],
+    ['Provenance', 'provenance', 'Nineveh'],
+    ['Type', 'type', 'Library']
+  ])('%s', (label, property, expectedValue) => {
+    appDriver.click('Add manuscript')
+    appDriver.expectInputElement(label, expectedValue)
   })
 })
 
 describe('Chapter not found', () => {
+  const chapter = text.chapters[1]
+
   beforeEach(async () => {
     romanChapterNumber = 'II'
-    reactDriver = reactDriver
-      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.period + ' ' + romanChapterNumber)}`)
+    appDriver = appDriver
+      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + romanChapterNumber)}`)
       .render()
 
-    await reactDriver.waitForText(`Edit ${text.name} ${chapter.period} ${romanChapterNumber}`)
+    await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${romanChapterNumber}`)
   })
 
   test('Error message', () => {
-    reactDriver.expectTextContent(`Chapter ${chapter.period} ${romanChapterNumber} not found.`)
+    appDriver.expectTextContent(`Chapter ${chapter.stage} ${romanChapterNumber} not found.`)
   })
 })
