@@ -12,16 +12,13 @@ class BlobImage extends Component {
     URL.revokeObjectURL(this.image)
   }
 
-  imageToDisplay = () => {
-    return <Image src={this.image} alt={this.props.alt} fluid />
-  }
-
   render () {
     const hasLink = this.props.hasLink
+    const image = <Image src={this.image} alt={this.props.alt} fluid />
     return (
       hasLink
-        ? <ExternalLink href={this.image}> <this.imageToDisplay /> </ExternalLink>
-        : <this.imageToDisplay />
+        ? <ExternalLink href={this.image}> {image} </ExternalLink>
+        : image
     )
   }
 }
