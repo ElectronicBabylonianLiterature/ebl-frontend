@@ -1,34 +1,37 @@
-const indices = {
-  'á': '₂',
-  'à': '₃',
-  'é': '₂',
-  'è': '₃',
-  'í': '₂',
-  'ì': '₃',
-  'ú': '₂',
-  'ù': '₃'
+const charactersWithAccents = {
+  'á': { 'letter': 'a', 'index': '₂' },
+  'à': { 'letter': 'a', 'index': '₃' },
+  'é': { 'letter': 'e', 'index': '₂' },
+  'è': { 'letter': 'e', 'index': '₃' },
+  'í': { 'letter': 'i', 'index': '₂' },
+  'ì': { 'letter': 'i', 'index': '₃' },
+  'ú': { 'letter': 'u', 'index': '₂' },
+  'ù': { 'letter': 'u', 'index': '₃' },
+  'Á': { 'letter': 'A', 'index': '₂' },
+  'À': { 'letter': 'A', 'index': '₃' },
+  'É': { 'letter': 'E', 'index': '₂' },
+  'È': { 'letter': 'E', 'index': '₃' },
+  'Í': { 'letter': 'I', 'index': '₂' },
+  'Ì': { 'letter': 'I', 'index': '₃' },
+  'Ú': { 'letter': 'U', 'index': '₂' },
+  'Ù': { 'letter': 'U', 'index': '₃' }
 }
 
 export default function normalizeAccents (userInput) {
-  const charactersWithoutAccents = {
-    'á': 'a',
-    'à': 'a',
-    'é': 'e',
-    'è': 'e',
-    'í': 'i',
-    'ì': 'i',
-    'ú': 'u',
-    'ù': 'u'
-  }
-  return userInput.replace(/(á|à|é|è|í|ì|ú|ù)\w?/g, match => {
-    const subindex = match.split('').map(character => {
-      return indices[character]
-    })
+  return userInput.replace(/(á|à|é|è|í|ì|ú|ù|Á|À|Ú|Ù|É|È|Í|Ì)\w*/g,
+    match => {
+      const subindex = match.split('').map(character => {
+        return charactersWithAccents.hasOwnProperty(character)
+          ? charactersWithAccents[character].index
+          : null
+      })
 
-    const withoutAccent = match.split('').map(character => {
-      return charactersWithoutAccents[character] || character
-    })
+      const withoutAccent = match.split('').map(character => {
+        return charactersWithAccents.hasOwnProperty(character)
+          ? charactersWithAccents[character].letter
+          : character
+      })
 
-    return withoutAccent.concat(subindex).join('')
-  })
+      return withoutAccent.concat(subindex).join('')
+    })
 }
