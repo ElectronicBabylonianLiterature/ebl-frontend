@@ -12,12 +12,14 @@ describe('Text', () => {
       new Chapter({
         classification: 'Ancient',
         stage: 'Neo-Babylonian',
-        number: 1
+        name: 'Morrigan',
+        order: 77
       }),
       new Chapter({
         classification: 'Ancient',
         stage: 'Old Babylonian',
-        number: 1,
+        name: 'IIc',
+        order: 1,
         manuscripts: List.of(
           new Manuscript({
             uniqueId: 'abc-cde-123',
@@ -44,7 +46,8 @@ describe('Chapter', () => {
   const config = {
     classification: 'Ancient',
     stage: 'Old Babylonian',
-    number: 1,
+    name: 'III',
+    order: -1,
     manuscripts: List.of(
       new Manuscript({
         uniqueId: 'abc-cde-123',

@@ -4,7 +4,6 @@ import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 import withData from 'http/withData'
-import convertToRoman from './convertToRoman'
 import { Manuscript, periods, provenances, types } from './text'
 
 function DetailsRow ({ chapter }) {
@@ -19,8 +18,12 @@ function DetailsRow ({ chapter }) {
         <Form.Control plaintext readOnly defaultValue={chapter.stage} />
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-        <Form.Label>Number</Form.Label>
-        <Form.Control plaintext readOnly defaultValue={chapter.number} />
+        <Form.Label>Name</Form.Label>
+        <Form.Control plaintext readOnly defaultValue={chapter.name} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
+        <Form.Label>Order</Form.Label>
+        <Form.Control plaintext readOnly defaultValue={chapter.order} />
       </Form.Group>
     </Form.Row>
   )
@@ -65,7 +68,7 @@ function ManuscriptForm ({ manuscript, onChange }) {
 }
 
 function ChapterView ({ text, chapterId, onChange }) {
-  const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapterId === `${chapter.stage} ${convertToRoman(chapter.number)}`) || [-1, null]
+  const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapterId === `${chapter.stage} ${chapter.name}`) || [-1, null]
   const handeManuscriptsChange = manuscripts => onChange(text.setIn(['chapters', chapterIndex, 'manuscripts'], manuscripts))
   return (
     <AppContent crumbs={['Corpus', text.name, chapterId]} title={`Edit ${text.name} ${chapterId}`}>

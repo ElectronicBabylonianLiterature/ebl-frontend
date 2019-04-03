@@ -56,7 +56,8 @@ export const Manuscript = Record({
 export const Chapter = Record({
   classification: 'Ancient',
   stage: 'Neo-Assyrian',
-  number: 0,
+  name: '',
+  order: 0,
   manuscripts: new List()
 })
 

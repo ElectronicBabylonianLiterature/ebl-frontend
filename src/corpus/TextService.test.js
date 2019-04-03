@@ -17,7 +17,8 @@ const textDto = {
     {
       classification: 'Ancient',
       stage: 'Old Babylonian',
-      number: 1,
+      name: 'The Only Chapter',
+      order: 1,
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
@@ -42,7 +43,8 @@ const text = Text({
     new Chapter({
       classification: 'Ancient',
       stage: 'Old Babylonian',
-      number: 1,
+      name: 'The Only Chapter',
+      order: 1,
       manuscripts: List.of(
         new Manuscript({
           uniqueId: 'abc-cde-123',
