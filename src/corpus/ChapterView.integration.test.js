@@ -78,7 +78,7 @@ describe('Diplay chapter', () => {
 
     test.each([
       ['Siglum', 'siglum', 'SB Hel 1'],
-      ['Museum Number', 'musemNmber', 'BM.X2'],
+      ['Museum Number', 'museumNumber', 'BM.X2'],
       ['Accession', 'accession', 'X.2'],
       ['Period', 'period', 'Hellenistic'],
       ['Provenance', 'provenance', 'Borsippa'],
@@ -107,8 +107,8 @@ describe('Add manuscript', () => {
 
   test.each([
     ['Siglum', 'siglum', ''],
-    ['ID Type', 'idType', 'Museum'],
-    ['ID', 'id', ''],
+    ['Museum Number', 'museumNumber', ''],
+    ['Accession', 'accession', ''],
     ['Period', 'period', 'Neo-Assyrian'],
     ['Provenance', 'provenance', 'Nineveh'],
     ['Type', 'type', 'Library']
