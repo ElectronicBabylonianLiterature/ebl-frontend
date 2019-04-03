@@ -36,12 +36,12 @@ export default function normalizeAccents (userInput) {
           : null
       })
 
-      const withoutAccent = match.split('').map(character => {
+      const characterWithoutAccent = match.split('').map(character => {
         return charactersWithAccents.hasOwnProperty(character)
           ? charactersWithAccents[character].letter
           : character
       })
 
-      return withoutAccent.concat(subindex).join('')
+      return characterWithoutAccent.concat(subindex).join('')
     })
 }
