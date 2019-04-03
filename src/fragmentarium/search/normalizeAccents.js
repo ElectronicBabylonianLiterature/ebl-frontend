@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const charactersWithAccents = {
   'á': { 'letter': 'a', 'index': '₂' },
   'à': { 'letter': 'a', 'index': '₃' },
@@ -18,7 +20,15 @@ const charactersWithAccents = {
 }
 
 export default function normalizeAccents (userInput) {
-  return userInput.replace(/(á|à|é|è|í|ì|ú|ù|Á|À|Ú|Ù|É|È|Í|Ì)\w*/g,
+  const specialCharacters = Object.keys(charactersWithAccents)
+    .map(character => {
+      return _.escapeRegExp(character)
+    })
+    .join('|')
+
+  const regExp = new RegExp(`(${specialCharacters})\\w*`, 'g')
+
+  return userInput.replace(regExp,
     match => {
       const subindex = match.split('').map(character => {
         return charactersWithAccents.hasOwnProperty(character)
