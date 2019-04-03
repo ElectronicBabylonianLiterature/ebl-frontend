@@ -12,7 +12,9 @@ test.each([
   ['Á', 'A₂'],
   ['PÈL', 'PEL₃'],
   ['LÚ', 'LU₂'],
-  ['ÀMA', 'AMA₃']
+  ['ÀMA', 'AMA₃'],
+  ['ÀMA.KÚR', 'AMA₃.KUR₂'],
+  ['LÌ gí-la-ka₃', 'LI₃ gi₂-la-ka₃']
 ])('%s', (character, replacement) => {
   const text = normalizeAccents(character)
   expect(text).toEqual(replacement)
