@@ -22,8 +22,8 @@ const text = {
         {
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
-          idType: 'Museum',
-          id: 'X.1',
+          museumNumber: 'BM.X',
+          accession: 'X.1',
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
@@ -78,8 +78,8 @@ describe('Diplay chapter', () => {
 
     test.each([
       ['Siglum', 'siglum', 'SB Hel 1'],
-      ['ID Type', 'idType', 'Accession'],
-      ['ID', 'id', '12345'],
+      ['Museum Number', 'musemNmber', 'BM.X2'],
+      ['Accession', 'accession', 'X.2'],
       ['Period', 'period', 'Hellenistic'],
       ['Provenance', 'provenance', 'Borsippa'],
       ['Type', 'type', 'Commentary']

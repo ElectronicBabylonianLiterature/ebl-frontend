@@ -5,7 +5,7 @@ import AppContent from 'common/AppContent'
 import ListForm from 'common/List'
 import withData from 'http/withData'
 import convertToRoman from './convertToRoman'
-import { Manuscript, periods, provenances, types, idTypes } from './text'
+import { Manuscript, periods, provenances, types } from './text'
 
 function DetailsRow ({ chapter }) {
   return (
@@ -36,14 +36,12 @@ function ManuscriptForm ({ manuscript, onChange }) {
       <Form.Control value={manuscript.siglum} onChange={handleChange('siglum')} />
     </Form.Group>
     <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>ID Type</Form.Label>
-      <Form.Control as='select' value={manuscript.idType} onChange={handleChange('idType')}>
-        {idTypes.map(idType => <option key={idType} value={idType}>{idType}</option>)}
-      </Form.Control>
+      <Form.Label>Museum Number</Form.Label>
+      <Form.Control value={manuscript.museumNumber} onChange={handleChange('museumNumber')} />
     </Form.Group>
     <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>ID</Form.Label>
-      <Form.Control value={manuscript.id} onChange={handleChange('id')} />
+      <Form.Label>Accession</Form.Label>
+      <Form.Control value={manuscript.accession} onChange={handleChange('accession')} />
     </Form.Group>
     <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
       <Form.Label>Period</Form.Label>

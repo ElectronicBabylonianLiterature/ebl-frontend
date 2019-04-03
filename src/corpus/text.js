@@ -42,13 +42,11 @@ export const types = OrderedMap({
   'Quotation': ManuscriptType({ name: 'Quotation', abbreviation: 'Quo' })
 })
 
-export const idTypes = List.of('Museum', 'Accession')
-
 export const Manuscript = Record({
   uniqueId: '',
   siglum: '',
-  idType: idTypes.first(),
-  id: '',
+  museumNumber: '',
+  accession: '',
   period: periods.get('Neo-Assyrian'),
   provenance: provenances.get('Nineveh'),
   type: types.get('Library'),

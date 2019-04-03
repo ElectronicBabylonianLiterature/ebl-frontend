@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
-import { Text, Chapter, Manuscript, periods, provenances, types, idTypes } from './text'
+import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 import TextService from './TextService'
 
 const apiClient = {
@@ -22,8 +22,8 @@ const textDto = {
         {
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
-          idType: 'Museum',
-          id: 'X.1',
+          museumNumber: 'BM.X',
+          accession: 'X.1',
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
@@ -47,8 +47,8 @@ const text = Text({
         new Manuscript({
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
-          idType: idTypes.first(),
-          id: 'X.1',
+          museumNumber: 'BM.X',
+          accession: 'X.1',
           period: periods.get('Ur III'),
           provenance: provenances.get('Nippur'),
           type: types.get('School'),

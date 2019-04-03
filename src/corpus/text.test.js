@@ -1,7 +1,7 @@
 
 import { List } from 'immutable'
 import _ from 'lodash'
-import { Text, Chapter, Manuscript, periods, provenances, types, idTypes } from './text'
+import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 
 describe('Text', () => {
   const config = {
@@ -22,8 +22,8 @@ describe('Text', () => {
           new Manuscript({
             uniqueId: 'abc-cde-123',
             siglum: 'UIII Nippur 1',
-            idType: idTypes.first(),
-            id: 'X.1',
+            museumNumber: 'BM.X',
+            accession: 'X.1',
             period: periods.get('Ur III'),
             provenance: provenances.get('Nippur'),
             type: types.get('School'),
@@ -49,8 +49,8 @@ describe('Chapter', () => {
       new Manuscript({
         uniqueId: 'abc-cde-123',
         siglum: 'UIII Nippur 1',
-        idType: idTypes.first(),
-        id: 'X.1',
+        museumNumber: 'BM.X',
+        accession: 'X.1',
         stage: periods.get('Ur III'),
         provenance: provenances.get('Nippur'),
         type: types.get('School'),
@@ -69,8 +69,8 @@ describe('Manuscript', () => {
   const config = new Manuscript({
     uniqueId: 'abc-cde-123',
     siglum: 'UIII Nippur 1',
-    idType: idTypes.first(),
-    id: 'X.1',
+    museumNumber: 'BM.X',
+    accession: 'X.1',
     period: periods.get('Ur III'),
     provenance: provenances.get('Nippur'),
     type: types.get('School'),
