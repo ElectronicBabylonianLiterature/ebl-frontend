@@ -17,3 +17,13 @@ it('Adds number to query string on submit', async () => {
 
   expect(history.push).toBeCalledWith(`/fragmentarium/search/?transliteration=${encodeURIComponent(transliteration)}`)
 })
+
+it('calling render with the same component on the same container does not remount', () => {
+  const history = createMemoryHistory()
+  jest.spyOn(history, 'push')
+  const { getByLabelText, rerender } = render(<Router history={history}><TransliterationSearchForm transliteration='pak' /></Router>)
+  expect(getByLabelText('Transliteration').value).toBe('pak')
+
+  rerender(<Router history={history}><TransliterationSearchForm transliteration={undefined} /></Router>)
+  expect(getByLabelText('Transliteration').value).toBe('')
+})

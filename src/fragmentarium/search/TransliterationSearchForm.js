@@ -42,7 +42,7 @@ class TransliterationSearchForm extends Component {
   componentDidUpdate (prevProps, prevState, snapshot) {
     if (this.props.transliteration !== prevProps.transliteration) {
       this.setState({
-        transliteration: this.props.transliteration
+        transliteration: this.props.transliteration || ''
       })
     }
   }
