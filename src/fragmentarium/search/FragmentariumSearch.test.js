@@ -66,7 +66,8 @@ describe('Search', () => {
   })
 
   describe('Searching fragments by transliteration', () => {
-    let transliteration = 'pak'
+    let transliteration = 'szak'
+    let replacedTransliteration = 'šak'
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2, [
@@ -83,7 +84,7 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
+      expect(element.getByLabelText('Transliteration').value).toEqual(replacedTransliteration)
     })
   })
 })
