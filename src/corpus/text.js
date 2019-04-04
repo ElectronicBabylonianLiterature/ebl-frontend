@@ -65,5 +65,7 @@ export const Text = Record({
   category: 0,
   index: 0,
   name: '',
+  numberOfVerses: 0,
+  approximateVerses: false,
   chapters: new List()
 })

@@ -8,6 +8,8 @@ describe('Text', () => {
     category: 1,
     index: 1,
     name: 'Palm and Vine',
+    numberOfVerses: 930,
+    approximateVerses: true,
     chapters: List.of(
       new Chapter({
         classification: 'Ancient',

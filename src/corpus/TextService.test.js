@@ -14,6 +14,8 @@ const textDto = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',
+  numberOfVerses: 10,
+  approximateVerses: true,
   chapters: [
     {
       classification: 'Ancient',
@@ -40,6 +42,8 @@ const text = Text({
   category: 1,
   index: 1,
   name: 'Palm and Vine',
+  numberOfVerses: 10,
+  approximateVerses: true,
   chapters: List.of(
     new Chapter({
       classification: 'Ancient',
