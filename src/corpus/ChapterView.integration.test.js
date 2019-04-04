@@ -1,4 +1,4 @@
-import { Record } from 'immutable'
+import { Record, List } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 
@@ -38,17 +38,18 @@ const text = {
 let apiDriver
 let appDriver
 
-beforeEach(async () => {
-  apiDriver = new FakeApi().expectText(text)
-  appDriver = new AppDriver(apiDriver.client).withSession()
+afterEach(() => {
+  expect(apiDriver.verifyExpectations()).toEqual(List())
 })
 
 describe('Diplay chapter', () => {
   const chapter = text.chapters[1]
 
   beforeEach(async () => {
-    appDriver = appDriver
-      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + chapter.name)}`)
+    apiDriver = new FakeApi().expectText(text)
+    appDriver = new AppDriver(apiDriver.client)
+      .withSession()
+      .withPath(`/corpus/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(chapter.name)}`)
       .render()
 
     await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${chapter.name}`)
@@ -58,8 +59,7 @@ describe('Diplay chapter', () => {
     appDriver.expectBreadcrumbs([
       'eBL',
       'Corpus',
-      text.name,
-      `${chapter.stage} ${chapter.name}`
+      `${text.name} ${chapter.stage} ${chapter.name}`
     ])
   })
 
@@ -96,8 +96,10 @@ describe('Add manuscript', () => {
   const chapter = text.chapters[0]
 
   beforeEach(async () => {
-    appDriver = appDriver
-      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + chapter.name)}`)
+    apiDriver = new FakeApi().allowText(text)
+    appDriver = new AppDriver(apiDriver.client)
+      .withSession()
+      .withPath(`/corpus/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(chapter.name)}`)
       .render()
 
     await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${chapter.name}`)
@@ -111,8 +113,10 @@ describe('Add manuscript', () => {
     ['Provenance', 'provenance', 'Nineveh'],
     ['Type', 'type', 'Library']
   ])('%s', (label, property, expectedValue) => {
+    apiDriver.expectUpdateText(text)
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
+    appDriver.click('Save')
   })
 })
 
@@ -121,14 +125,16 @@ describe('Chapter not found', () => {
   const chapterName = 'Unknown Chapter'
 
   beforeEach(async () => {
-    appDriver = appDriver
-      .withPath(`/corpus/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage + ' ' + chapterName)}`)
+    apiDriver = new FakeApi().allowText(text)
+    appDriver = new AppDriver(apiDriver.client)
+      .withSession()
+      .withPath(`/corpus/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(chapterName)}`)
       .render()
 
     await appDriver.waitForText(`Edit ${text.name} ${chapter.stage} ${chapterName}`)
   })
 
   test('Error message', () => {
-    appDriver.expectTextContent(`Chapter ${chapter.stage} ${chapterName} not found.`)
+    appDriver.expectTextContent(`Chapter ${text.name} ${chapter.stage} ${chapterName} not found.`)
   })
 })
