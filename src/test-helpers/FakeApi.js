@@ -17,7 +17,7 @@ export default class FakeApi {
 
   expectText (text) {
     this.gets.push({
-      path: `/texts/${text.category}.${text.index}`,
+      path: `/texts/${text.category}/${text.index}`,
       authenticate: true,
       response: text
     })

@@ -5,7 +5,8 @@ import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 import TextService from './TextService'
 
 const apiClient = {
-  fetchJson: jest.fn()
+  fetchJson: jest.fn(),
+  postJson: jest.fn()
 }
 const testService = new TextService(apiClient)
 
@@ -62,7 +63,8 @@ const text = Text({
 })
 
 const testData = [
-  ['find', [text.category, text.index], apiClient.fetchJson, text, [`/texts/${encodeURIComponent(text.category)}.${encodeURIComponent(text.index)}`, true], Promise.resolve(textDto)]
+  ['find', [text.category, text.index], apiClient.fetchJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, true], Promise.resolve(textDto)],
+  ['update', [text.category, text.index, text], apiClient.postJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, textDto], Promise.resolve(textDto)]
 ]
 
 testDelegation(testService, testData)
