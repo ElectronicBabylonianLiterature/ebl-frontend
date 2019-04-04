@@ -5,14 +5,14 @@ import NumberSearch from 'fragmentarium/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/SearchGroup'
-import replaceSpecialCharacters from './replaceSpecialCharacters'
+import replaceTransliteration from './replaceTransliteration'
 
 import './FragmentariumSearch.css'
 
 function FragmentariumSearch ({ location, fragmentService }) {
   const number = queryString.parse(location.search).number
   const transliteration = queryString.parse(location.search).transliteration
-  const replacedTransliteration = transliteration && replaceSpecialCharacters(transliteration)
+  const replacedTransliteration = transliteration && replaceTransliteration(transliteration)
   return (
     <AppContent crumbs={['Fragmentarium', 'Search']}>
       <SessionContext.Consumer>

@@ -66,8 +66,8 @@ describe('Search', () => {
   })
 
   describe('Searching fragments by transliteration', () => {
-    let transliteration = 'szak'
-    let replacedTransliteration = 'šak'
+    let transliteration = 'LI23 cí-s,a-pèl-t,a3'
+    let replacedTransliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2, [
