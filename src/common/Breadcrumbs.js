@@ -6,6 +6,7 @@ import _ from 'lodash'
 const sections = {
   eBL: '/',
   Bibliography: '/bibliography',
+  Corpus: '/corpus',
   Dictionary: '/dictionary',
   Fragmentarium: '/fragmentarium'
 }
