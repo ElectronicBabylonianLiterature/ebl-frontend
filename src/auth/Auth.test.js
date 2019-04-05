@@ -20,7 +20,7 @@ const expectedScope = [
   'read:words write:words',
   'read:fragments transliterate:fragments lemmatize:fragments',
   'read:bibliography write:bibliography',
-  'read:texts',
+  'read:texts write:texts',
   'access:beta',
   'read:WGL-folios',
   'read:FWG-folios',

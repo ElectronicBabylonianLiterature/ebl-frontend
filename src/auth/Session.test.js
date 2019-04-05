@@ -79,6 +79,7 @@ describe.each([
   ['transliterate:fragments', 'isAllowedToTransliterateFragments'],
   ['lemmatize:fragments', 'isAllowedToLemmatizeFragments'],
   ['write:bibliography', 'isAllowedToWriteBibliography'],
+  ['write:texts', 'isAllowedToWriteTexts'],
   ['read:bibliography', 'isAllowedToReadBibliography'],
   ['access:beta', 'hasBetaAccess']
 ])('%s %s', (scope, method) => {

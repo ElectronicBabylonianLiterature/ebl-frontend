@@ -7,6 +7,7 @@
   "readBibliography": "read:bibliography",
   "writeBibliography": "write:bibliography",
   "readTexts": "read:texts",
+  "writeTexts": "write:texts",
   "accessBeta": "access:beta",
   "readWglFolios": "read:WGL-folios",
   "readFwgFolios": "read:FWG-folios",

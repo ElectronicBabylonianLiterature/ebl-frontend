@@ -54,6 +54,10 @@ class Session {
     return this.hasApplicationScope('writeBibliography')
   }
 
+  isAllowedToWriteTexts () {
+    return this.hasApplicationScope('writeTexts')
+  }
+
   hasBetaAccess () {
     return this.hasApplicationScope('accessBeta')
   }
