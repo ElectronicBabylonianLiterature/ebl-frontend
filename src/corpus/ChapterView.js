@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Button, Col, Alert, Badge, Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
@@ -73,7 +74,7 @@ function ManuscriptForm ({ manuscript, onChange }) {
 
 function ChapterView ({ text, stage, name, onChange, onSubmit, disabled }) {
   const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapter.stage === stage && chapter.name === name) || [-1, null]
-  const chapterId = `${text.name} ${stage} ${name}`
+  const chapterId = <><ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}</>
   const handeManuscriptsChange = manuscripts => onChange(text.setIn(['chapters', chapterIndex, 'manuscripts'], manuscripts))
   return (
     <AppContent crumbs={['Corpus', chapterId]} title={<>Edit {chapterId} <small><Badge variant='warning'>Beta</Badge></small></>}>
