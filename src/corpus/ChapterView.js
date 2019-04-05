@@ -78,7 +78,7 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, disabled }) {
   return (
     <AppContent crumbs={['Corpus', chapterId]} title={<>Edit {chapterId} <small><Badge variant='warning'>Beta</Badge></small></>}>
       <Nav variant='tabs'>
-        {text.chapters.map((chapter, index) =>
+        {text.chapters.sortBy(chapter => chapter.order).map((chapter, index) =>
           <Nav.Item key={index}>
             <LinkContainer to={`/corpus/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}>
               <Nav.Link>{chapter.stage} {chapter.name}</Nav.Link>
