@@ -8,21 +8,29 @@ import Reference from 'bibliography/Reference'
 
 const defaultReference = new Reference()
 
+export function ReferencesForm ({ searchBibliography, value, onChange }) {
+  return <ListForm
+    value={value}
+    onChange={onChange}
+    noun='Reference'
+    default={defaultReference}>
+    {value.map((reference, index) =>
+      <ReferenceForm
+        searchBibliography={searchBibliography}
+        key={index}
+        value={reference} />
+    )}
+  </ListForm>
+}
+
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
     <Form onSubmit={onSubmit} data-testid='references-form'>
-      <ListForm
+      <ReferencesForm
         value={references}
         onChange={onChange}
-        noun='Reference'
-        default={defaultReference}>
-        {references.map((reference, index) =>
-          <ReferenceForm
-            searchBibliography={searchBibliography}
-            key={index}
-            value={reference} />
-        )}
-      </ListForm>
+        searchBibliography={searchBibliography}
+      />
       <Button
         type='submit'
         variant='primary'
@@ -33,7 +41,7 @@ function References ({ searchBibliography, references, onChange, onSubmit, disab
   )
 }
 
-class ReferencesController extends Component {
+export default class ReferencesController extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -61,5 +69,3 @@ class ReferencesController extends Component {
     </>
   }
 }
-
-export default ReferencesController
