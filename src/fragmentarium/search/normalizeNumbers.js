@@ -20,6 +20,11 @@ function convertNumbers (number) {
   }).join('')
 }
 
+function replacer (match, p1, p2) {
+  const convertedP2 = convertNumbers(p2)
+  return [p1, convertedP2].join('')
+}
+
 export default function normalizeNumbers (userInput) {
-  return userInput.replace(/(?<=\D\B)\d+/g, match => convertNumbers(match) || match)
+  return userInput.replace(/(\D\B)(\d+)/g, replacer)
 }
