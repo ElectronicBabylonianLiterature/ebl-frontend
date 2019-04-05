@@ -101,7 +101,7 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, disabled }) {
             </fieldset>
           </Form>
         )
-        : <Alert variant='danger'>Chapter {chapterId} not found.</Alert>
+        : (stage !== '' && name !== '') && <Alert variant='danger'>Chapter {chapterId} not found.</Alert>
       }
     </AppContent>
   )
@@ -159,8 +159,8 @@ class ChapterController extends Component {
     return <>
       <ChapterView
         text={this.state.text}
-        stage={decodeURIComponent(this.props.match.params.stage)}
-        name={decodeURIComponent(this.props.match.params.chapter)}
+        stage={decodeURIComponent(this.props.match.params.stage || '')}
+        name={decodeURIComponent(this.props.match.params.chapter || '')}
         onChange={this.handleChange}
         onSubmit={this.submit}
         disabled={this.state.saving}
