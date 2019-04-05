@@ -31,7 +31,7 @@ describe('Text', () => {
             period: periods.get('Ur III'),
             provenance: provenances.get('Nippur'),
             type: types.get('School'),
-            bibliography: new List()
+            references: new List()
           })
         )
       })
@@ -59,7 +59,7 @@ describe('Chapter', () => {
         stage: periods.get('Ur III'),
         provenance: provenances.get('Nippur'),
         type: types.get('School'),
-        bibliography: new List()
+        references: new List()
       })
     )
   }
@@ -79,7 +79,7 @@ describe('Manuscript', () => {
     period: periods.get('Ur III'),
     provenance: provenances.get('Nippur'),
     type: types.get('School'),
-    bibliography: new List()
+    references: new List()
   })
 
   const manuscript = new Manuscript(config)

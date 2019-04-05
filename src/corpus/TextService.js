@@ -13,7 +13,7 @@ function fromDto (textDto) {
             period: periods.get(manuscriptDto.period),
             provenance: provenances.get(manuscriptDto.provenance),
             type: types.get(manuscriptDto.type),
-            bibliography: new List()
+            references: new List()
           })
         )
       })

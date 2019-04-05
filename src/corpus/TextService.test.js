@@ -31,7 +31,7 @@ const textDto = {
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
-          bibliography: []
+          references: []
         }
       ]
     }
@@ -59,7 +59,7 @@ const text = Text({
           period: periods.get('Ur III'),
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
-          bibliography: new List()
+          references: new List()
         })
       )
     })
