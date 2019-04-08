@@ -83,7 +83,7 @@ describe('Search', () => {
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
-    xit('Fills in search form query', () => {
+    it('Fills in search form query', () => {
       expect(element.getByLabelText('Transliteration').value).toEqual(replacedTransliteration)
     })
   })

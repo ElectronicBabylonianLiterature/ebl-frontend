@@ -1,7 +1,9 @@
 import replaceSpecialCharacters from './replaceSpecialCharacters'
+import normalizeNumbers from './normalizeNumbers.js'
 import normalizeAccents from './normalizeAccents'
 
 export default function replaceTransliteration (transliteration) {
   const replacedTransliteration = replaceSpecialCharacters(transliteration)
-  return normalizeAccents(replacedTransliteration)
+  const normalizedNumbers = normalizeNumbers(replacedTransliteration)
+  return normalizeAccents(normalizedNumbers)
 }
