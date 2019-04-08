@@ -21,7 +21,8 @@ test.each([
   ['Ŋ', 'G'],
   ['G̃', 'G'],
   ['Ĝ', 'G'],
-  ['SZA ḫa-t,i u ma-ŋi-cu G̃A s,u-lu-mu at-ta-şi-szu', 'ŠA ha-ṭi u ma-gi-šu GA ṣu-lu-mu at-ta-ṣi-šu']
+  ['\'', 'ʾ'],
+  ['SZA ḫa\'-t,i u ma-ŋi-cu\' G̃A s,u\'-lu-mu at-ta-şi-szu', 'ŠA haʾ-ṭi u ma-gi-šuʾ GA ṣuʾ-lu-mu at-ta-ṣi-šu']
 ])('%s', (character, replacement) => {
   const text = replaceSpecialCharacters(character)
   expect(text).toEqual(replacement)

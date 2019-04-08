@@ -20,7 +20,8 @@ const characters = {
   'J': 'G',
   'Ŋ': 'G',
   'G̃': 'G',
-  'Ĝ': 'G'
+  'Ĝ': 'G',
+  '\'': 'ʾ'
 }
 
 export default function replaceSpecialCharacters (userInput) {
