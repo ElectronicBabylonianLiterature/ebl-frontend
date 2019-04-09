@@ -32,6 +32,7 @@ describe('Text', () => {
             new Manuscript({
               uniqueId: 'abc-cde-123',
               siglum: 'UIII Nippur 1',
+              siglumNumber: 1,
               museumNumber: 'BM.X',
               accession: 'X.1',
               period: periods.get('Ur III'),
@@ -67,6 +68,7 @@ describe('Chapter', () => {
       new Manuscript({
         uniqueId: 'abc-cde-123',
         siglum: 'UIII Nippur 1',
+        siglumNumber: 1,
         museumNumber: 'BM.X',
         accession: 'X.1',
         stage: periods.get('Ur III'),
@@ -87,6 +89,7 @@ describe('Manuscript', () => {
   const config = new Manuscript({
     uniqueId: 'abc-cde-123',
     siglum: 'UIII Nippur 1',
+    siglumNumber: 1,
     museumNumber: 'BM.X',
     accession: 'X.1',
     period: periods.get('Ur III'),

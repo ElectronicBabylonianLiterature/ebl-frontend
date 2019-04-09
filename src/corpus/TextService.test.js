@@ -28,6 +28,7 @@ const textDto = {
         {
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
+          siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: 'Ur III',
@@ -63,6 +64,7 @@ const textUpdateDto = {
         {
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
+          siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: 'Ur III',
@@ -97,6 +99,7 @@ const text = Text({
         new Manuscript({
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
+          siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: periods.get('Ur III'),
