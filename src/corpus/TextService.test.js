@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
+import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
 import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 import TextService from './TextService'
@@ -106,7 +107,7 @@ const text = Text({
             '34-54',
             '',
             List(),
-            { id: 'RN1853' }
+            new BibliographyEntry({ id: 'RN1853' })
           ))
         })
       )

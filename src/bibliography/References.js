@@ -8,10 +8,11 @@ import Reference from 'bibliography/Reference'
 
 const defaultReference = new Reference()
 
-export function ReferencesForm ({ searchBibliography, value, onChange }) {
+export function ReferencesForm ({ searchBibliography, value, onChange, label }) {
   return <ListForm
     value={value}
     onChange={onChange}
+    label={label}
     noun='Reference'
     default={defaultReference}>
     {value.map((reference, index) =>

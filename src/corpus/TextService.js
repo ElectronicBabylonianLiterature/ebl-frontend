@@ -1,4 +1,5 @@
 import { List, Seq } from 'immutable'
+import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
 import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 
@@ -19,7 +20,7 @@ function fromDto (textDto) {
               referenceDto.pages,
               referenceDto.notes,
               referenceDto.linesCited,
-              referenceDto.document
+              new BibliographyEntry(referenceDto.document)
             )).toList()
           })
         )

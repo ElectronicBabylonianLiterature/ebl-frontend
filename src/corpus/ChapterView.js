@@ -10,6 +10,7 @@ import withData from 'http/withData'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import { Manuscript, periods, provenances, types } from './text'
+import { ReferencesForm } from 'bibliography/References'
 
 function DetailsRow ({ chapter }) {
   return (
@@ -34,45 +35,48 @@ function DetailsRow ({ chapter }) {
   )
 }
 
-function ManuscriptForm ({ manuscript, onChange }) {
+function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
   const handleChange = property => event => onChange(manuscript.set(property, event.target.value))
   const handelRecordChange = (property, values) => event => onChange(manuscript.set(property, values.get(event.target.value)))
 
-  return <Form.Row>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Siglum</Form.Label>
-      <Form.Control value={manuscript.siglum} onChange={handleChange('siglum')} />
-    </Form.Group>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Museum Number</Form.Label>
-      <Form.Control value={manuscript.museumNumber} onChange={handleChange('museumNumber')} />
-    </Form.Group>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Accession</Form.Label>
-      <Form.Control value={manuscript.accession} onChange={handleChange('accession')} />
-    </Form.Group>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Period</Form.Label>
-      <Form.Control as='select' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
-        {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
-      </Form.Control>
-    </Form.Group>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Provenance</Form.Label>
-      <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
-        {provenances.toIndexedSeq().map(provenance => <option key={provenance.name} value={provenance.name}>{provenance.name}</option>)}
-      </Form.Control>
-    </Form.Group>
-    <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-      <Form.Label>Type</Form.Label>
-      <Form.Control as='select' value={manuscript.type.name} onChange={handelRecordChange('type', types)}>
-        {types.toIndexedSeq().map(type => <option key={type.name} value={type.name}>{type.name}</option>)}
-      </Form.Control>
-    </Form.Group>
-  </Form.Row>
+  return <>
+    <Form.Row>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Siglum</Form.Label>
+        <Form.Control value={manuscript.siglum} onChange={handleChange('siglum')} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Museum Number</Form.Label>
+        <Form.Control value={manuscript.museumNumber} onChange={handleChange('museumNumber')} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Accession</Form.Label>
+        <Form.Control value={manuscript.accession} onChange={handleChange('accession')} />
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Period</Form.Label>
+        <Form.Control as='select' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
+          {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Provenance</Form.Label>
+        <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
+          {provenances.toIndexedSeq().map(provenance => <option key={provenance.name} value={provenance.name}>{provenance.name}</option>)}
+        </Form.Control>
+      </Form.Group>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Type</Form.Label>
+        <Form.Control as='select' value={manuscript.type.name} onChange={handelRecordChange('type', types)}>
+          {types.toIndexedSeq().map(type => <option key={type.name} value={type.name}>{type.name}</option>)}
+        </Form.Control>
+      </Form.Group>
+    </Form.Row>
+    <ReferencesForm value={manuscript.references} label='References' onChange={value => onChange(manuscript.set('references', value))} searchBibliography={searchBibliography} />
+  </>
 }
 
-function ChapterView ({ text, stage, name, onChange, onSubmit, disabled }) {
+function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliography, disabled }) {
   const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapter.stage === stage && chapter.name === name) || [-1, null]
   const chapterId = <><ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}</>
   const handeManuscriptsChange = manuscripts => onChange(text.setIn(['chapters', chapterIndex, 'manuscripts'], manuscripts))
@@ -94,7 +98,7 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, disabled }) {
               <DetailsRow chapter={chapter} />
               <ListForm label='Manuscripts' noun='manuscript' default={Manuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
                 {chapter.manuscripts.map((manuscript, index) =>
-                  <ManuscriptForm key={index} manuscript={manuscript} />
+                  <ManuscriptForm key={index} manuscript={manuscript} searchBibliography={searchBibliography} />
                 )}
               </ListForm>
               <Button variant='primary' type='submit'>Save</Button>
@@ -163,6 +167,7 @@ class ChapterController extends Component {
         name={decodeURIComponent(this.props.match.params.chapter || '')}
         onChange={this.handleChange}
         onSubmit={this.submit}
+        searchBibliography={query => this.props.bibliographyService.search(query)}
         disabled={this.state.saving}
       />
       <Spinner loading={this.state.saving}>Saving...</Spinner>
