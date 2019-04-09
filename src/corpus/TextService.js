@@ -1,4 +1,5 @@
-import { List } from 'immutable'
+import { List, Seq } from 'immutable'
+import Reference, { serializeReference } from 'bibliography/Reference'
 import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
 
 function fromDto (textDto) {
@@ -13,7 +14,13 @@ function fromDto (textDto) {
             period: periods.get(manuscriptDto.period),
             provenance: provenances.get(manuscriptDto.provenance),
             type: types.get(manuscriptDto.type),
-            references: new List()
+            references: Seq.Indexed(manuscriptDto.references).map(referenceDto => new Reference(
+              referenceDto.type,
+              referenceDto.pages,
+              referenceDto.notes,
+              referenceDto.linesCited,
+              referenceDto.document
+            )).toList()
           })
         )
       })
@@ -33,6 +40,7 @@ function toDto (text) {
           .update('period', toName)
           .update('provenance', toName)
           .update('type', toName)
+          .update('references', references => references.map(serializeReference))
       ))
     ))
     .toJS()
