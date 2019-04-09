@@ -72,7 +72,12 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
         </Form.Control>
       </Form.Group>
     </Form.Row>
-    <ReferencesForm value={manuscript.references} label='References' onChange={value => onChange(manuscript.set('references', value))} searchBibliography={searchBibliography} />
+    <ReferencesForm
+      value={manuscript.references}
+      label='References'
+      onChange={value => onChange(manuscript.set('references', value))}
+      searchBibliography={searchBibliography}
+      collapsed />
   </>
 }
 

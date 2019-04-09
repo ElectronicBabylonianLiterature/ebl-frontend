@@ -1,3 +1,7 @@
 .List {
   margin-bottom: 0.5em;
 }
+
+.List__toggle {
+  cursor: pointer;
+}
