@@ -31,12 +31,13 @@ class List extends Component {
   }
 
   render () {
+    const collapseId = _.uniqueId('List-collapse-')
     return (
       <div className='List'>
         <Card border='light'>
           {this.props.label && <Card.Header>
             <span className='List__toggle' onClick={() => this.setState({ open: !this.state.open })}
-              aria-controls='example-collapse-text'
+              aria-controls={collapseId}
               aria-expanded={this.state.open}>
               {this.props.label}
               {' '}
@@ -48,7 +49,7 @@ class List extends Component {
             </span>
           </Card.Header>}
           <Collapse in={this.state.open}>
-            <div id='example-collapse-text'>
+            <div id={collapseId}>
               <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
                 {React.Children.map(this.props.children, child =>
                   <ListGroup.Item as='li' key={child.key}>
