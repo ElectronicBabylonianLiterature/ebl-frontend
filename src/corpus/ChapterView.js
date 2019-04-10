@@ -27,10 +27,6 @@ function DetailsRow ({ chapter }) {
         <Form.Label>Name</Form.Label>
         <Form.Control plaintext readOnly value={chapter.name} />
       </Form.Group>
-      <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
-        <Form.Label>Order</Form.Label>
-        <Form.Control plaintext readOnly value={chapter.order} />
-      </Form.Group>
     </Form.Row>
   )
 }

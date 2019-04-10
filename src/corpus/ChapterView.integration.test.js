@@ -67,8 +67,7 @@ describe('Diplay chapter', () => {
   test.each([
     ['Classification', 'classification'],
     ['Stage', 'stage'],
-    ['Name', 'name'],
-    ['Order', 'order']
+    ['Name', 'name']
   ])('%s', (label, property) => {
     appDriver.expectInputElement(label, chapter[property])
   })
