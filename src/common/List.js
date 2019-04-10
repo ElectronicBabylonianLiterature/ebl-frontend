@@ -44,7 +44,7 @@ class List extends Component {
               aria-expanded={this.state.open}>
               {this.props.label}
               {' '}
-              {size > 0 && <Badge variant='info'>{size}</Badge>}
+              {size > 0 && <Badge variant='light' pill>{size}</Badge>}
               {' '}
               <i className={classNames({
                 'fas': true,
