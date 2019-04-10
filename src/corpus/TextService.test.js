@@ -33,6 +33,7 @@ const textDto = {
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
+          notes: 'a note',
           references: [{
             id: 'RN1853',
             linesCited: [],
@@ -68,6 +69,7 @@ const textUpdateDto = {
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
+          notes: 'a note',
           references: [{
             id: 'RN1853',
             linesCited: [],
@@ -102,6 +104,7 @@ const text = Text({
           period: periods.get('Ur III'),
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
+          notes: 'a note',
           references: List.of(new Reference(
             'DISCUSSION',
             '34-54',

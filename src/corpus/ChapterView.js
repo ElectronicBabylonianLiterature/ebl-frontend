@@ -78,6 +78,10 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
         </Form.Control>
       </Form.Group>
     </Form.Row>
+    <Form.Group controlId={_.uniqueId('manuscript-')}>
+      <Form.Label>Notes</Form.Label>
+      <Form.Control value={manuscript.notes} onChange={handleChange('notes')} />
+    </Form.Group>
     <ReferencesForm
       value={manuscript.references}
       label='References'

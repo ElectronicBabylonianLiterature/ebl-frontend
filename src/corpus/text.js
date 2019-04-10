@@ -50,6 +50,7 @@ export const Manuscript = Record({
   period: periods.get('Neo-Assyrian'),
   provenance: provenances.get('Nineveh'),
   type: types.get('Library'),
+  notes: '',
   references: new List()
 })
 

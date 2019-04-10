@@ -29,6 +29,7 @@ const text = {
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
+          notes: 'some notes',
           bibliography: []
         }
       ]
@@ -81,7 +82,8 @@ describe('Diplay chapter', () => {
       ['Accession', 'accession', 'X.2'],
       ['Period', 'period', 'Hellenistic'],
       ['Provenance', 'provenance', 'Borsippa'],
-      ['Type', 'type', 'Commentary']
+      ['Type', 'type', 'Commentary'],
+      ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
       const value = manuscript[property]
       const expectedValue = Record.isRecord(value) ? value.name : value
@@ -111,7 +113,8 @@ describe('Add manuscript', () => {
     ['Accession', 'accession', ''],
     ['Period', 'period', 'Neo-Assyrian'],
     ['Provenance', 'provenance', 'Nineveh'],
-    ['Type', 'type', 'Library']
+    ['Type', 'type', 'Library'],
+    ['Notes', 'notes', '']
   ])('%s', (label, property, expectedValue) => {
     apiDriver.expectUpdateText(text)
     appDriver.click('Add manuscript')

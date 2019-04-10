@@ -37,6 +37,7 @@ describe('Text', () => {
               period: periods.get('Ur III'),
               provenance: provenances.get('Nippur'),
               type: types.get('School'),
+              note: 'some notes',
               references: List.of(new Reference(
                 'DISCUSSION',
                 '34-54',
@@ -72,6 +73,7 @@ describe('Chapter', () => {
         stage: periods.get('Ur III'),
         provenance: provenances.get('Nippur'),
         type: types.get('School'),
+        note: 'some notes',
         references: new List()
       })
     )
@@ -84,7 +86,7 @@ describe('Chapter', () => {
 })
 
 describe('Manuscript', () => {
-  const config = new Manuscript({
+  const config = {
     uniqueId: 'abc-cde-123',
     siglumNumber: 1,
     museumNumber: 'BM.X',
@@ -92,8 +94,9 @@ describe('Manuscript', () => {
     period: periods.get('Ur III'),
     provenance: provenances.get('Nippur'),
     type: types.get('School'),
+    notes: 'some notes',
     references: new List()
-  })
+  }
 
   const manuscript = new Manuscript(config)
 
