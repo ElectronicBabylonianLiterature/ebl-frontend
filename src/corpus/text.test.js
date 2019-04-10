@@ -31,7 +31,7 @@ describe('Text', () => {
           manuscripts: List.of(
             new Manuscript({
               uniqueId: 'abc-cde-123',
-              siglumDisambiquator: '1',
+              siglumDisambiguator: '1',
               museumNumber: 'BM.X',
               accession: 'X.1',
               period: periods.get('Ur III'),
@@ -67,7 +67,7 @@ describe('Chapter', () => {
     manuscripts: List.of(
       new Manuscript({
         uniqueId: 'abc-cde-123',
-        siglumDisambiquator: '1',
+        siglumDisambiguator: '1',
         museumNumber: 'BM.X',
         accession: 'X.1',
         stage: periods.get('Ur III'),
@@ -88,7 +88,7 @@ describe('Chapter', () => {
 describe('Manuscript', () => {
   const config = {
     uniqueId: 'abc-cde-123',
-    siglumDisambiquator: '1',
+    siglumDisambiguator: '1',
     museumNumber: 'BM.X',
     accession: 'X.1',
     period: periods.get('Ur III'),

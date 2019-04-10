@@ -47,7 +47,7 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
               {manuscript.type.abbreviation}
             </InputGroup.Text>
           </InputGroup.Prepend>
-          <Form.Control value={manuscript.siglumDisambiquator} onChange={handleChange('siglumDisambiquator')} />
+          <Form.Control value={manuscript.siglumDisambiguator} onChange={handleChange('siglumDisambiguator')} />
         </InputGroup>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>

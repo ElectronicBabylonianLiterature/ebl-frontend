@@ -27,7 +27,7 @@ const textDto = {
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
-          siglumDisambiquator: '1',
+          siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: 'Ur III',
@@ -63,7 +63,7 @@ const textUpdateDto = {
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
-          siglumDisambiquator: '1',
+          siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: 'Ur III',
@@ -98,7 +98,7 @@ const text = Text({
       manuscripts: List.of(
         new Manuscript({
           uniqueId: 'abc-cde-123',
-          siglumDisambiquator: '1',
+          siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: periods.get('Ur III'),
