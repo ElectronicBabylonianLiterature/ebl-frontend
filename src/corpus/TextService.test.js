@@ -27,7 +27,6 @@ const textDto = {
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
-          siglum: 'UIII Nippur 1',
           siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -63,7 +62,6 @@ const textUpdateDto = {
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
-          siglum: 'UIII Nippur 1',
           siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -98,7 +96,6 @@ const text = Text({
       manuscripts: List.of(
         new Manuscript({
           uniqueId: 'abc-cde-123',
-          siglum: 'UIII Nippur 1',
           siglumNumber: 1,
           museumNumber: 'BM.X',
           accession: 'X.1',

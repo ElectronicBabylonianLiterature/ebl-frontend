@@ -31,7 +31,6 @@ describe('Text', () => {
           manuscripts: List.of(
             new Manuscript({
               uniqueId: 'abc-cde-123',
-              siglum: 'UIII Nippur 1',
               siglumNumber: 1,
               museumNumber: 'BM.X',
               accession: 'X.1',
@@ -67,7 +66,6 @@ describe('Chapter', () => {
     manuscripts: List.of(
       new Manuscript({
         uniqueId: 'abc-cde-123',
-        siglum: 'UIII Nippur 1',
         siglumNumber: 1,
         museumNumber: 'BM.X',
         accession: 'X.1',
@@ -88,7 +86,6 @@ describe('Chapter', () => {
 describe('Manuscript', () => {
   const config = new Manuscript({
     uniqueId: 'abc-cde-123',
-    siglum: 'UIII Nippur 1',
     siglumNumber: 1,
     museumNumber: 'BM.X',
     accession: 'X.1',

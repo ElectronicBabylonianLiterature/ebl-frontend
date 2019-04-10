@@ -44,7 +44,6 @@ export const types = OrderedMap({
 
 export const Manuscript = Record({
   uniqueId: '',
-  siglum: '',
   siglumNumber: 1,
   museumNumber: '',
   accession: '',
