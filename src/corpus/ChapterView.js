@@ -33,7 +33,6 @@ function DetailsRow ({ chapter }) {
 
 function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
   const handleChange = property => event => onChange(manuscript.set(property, event.target.value))
-  const handleSiglumChange = event => onChange(manuscript.set('siglumNumber', Number(event.target.value)))
   const handelRecordChange = (property, values) => event => onChange(manuscript.set(property, values.get(event.target.value)))
 
   return <>
@@ -48,7 +47,7 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
               {manuscript.type.abbreviation}
             </InputGroup.Text>
           </InputGroup.Prepend>
-          <Form.Control value={manuscript.siglumNumber} type='number' min={0} step={1} onChange={handleSiglumChange} />
+          <Form.Control value={manuscript.siglumDisambiquator} onChange={handleChange('siglumDisambiquator')} />
         </InputGroup>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>

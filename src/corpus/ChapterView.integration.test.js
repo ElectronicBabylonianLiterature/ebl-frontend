@@ -23,7 +23,7 @@ const text = {
         {
           uniqueId: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
-          siglumNumber: 1,
+          siglumDisambiquator: '1c',
           museumNumber: 'BM.X',
           accession: 'X.1',
           period: 'Ur III',
@@ -77,7 +77,7 @@ describe('Diplay chapter', () => {
     const manuscript = chapter.manuscripts[0]
 
     test.each([
-      ['Siglum', 'siglumNumber', 2],
+      ['Siglum', 'siglumDisambiquator', 'b'],
       ['Museum Number', 'museumNumber', 'BM.X2'],
       ['Accession', 'accession', 'X.2'],
       ['Period', 'period', 'Hellenistic'],
@@ -108,7 +108,7 @@ describe('Add manuscript', () => {
   })
 
   test.each([
-    ['Siglum', 'siglumNumber', 1],
+    ['Siglum', 'siglumDisambiquator', ''],
     ['Museum Number', 'museumNumber', ''],
     ['Accession', 'accession', ''],
     ['Period', 'period', 'Neo-Assyrian'],

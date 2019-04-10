@@ -44,7 +44,7 @@ export const types = OrderedMap({
 
 export const Manuscript = Record({
   uniqueId: '',
-  siglumNumber: 1,
+  siglumDisambiquator: '',
   museumNumber: '',
   accession: '',
   period: periods.get('Neo-Assyrian'),
