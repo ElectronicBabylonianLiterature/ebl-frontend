@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Button, ListGroup, Card, Collapse } from 'react-bootstrap'
+import { Button, ListGroup, Card, Collapse, Badge } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
-import { set, remove, merge, isValueObject } from 'immutable'
+import { set, remove, merge, isValueObject, isCollection } from 'immutable'
 
 import './List.css'
 
@@ -32,6 +32,9 @@ class List extends Component {
 
   render () {
     const collapseId = _.uniqueId('List-collapse-')
+    const size = isCollection(this.props.value)
+      ? this.props.value.count()
+      : this.props.value.length
     return (
       <div className='List'>
         <Card border='light'>
@@ -40,6 +43,8 @@ class List extends Component {
               aria-controls={collapseId}
               aria-expanded={this.state.open}>
               {this.props.label}
+              {' '}
+              {size > 0 && <Badge variant='info'>{size}</Badge>}
               {' '}
               <i className={classNames({
                 'fas': true,
