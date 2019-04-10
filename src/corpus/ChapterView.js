@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Button, Col, Alert, Badge, Nav } from 'react-bootstrap'
+import { Form, Button, Col, Alert, Badge, Nav, InputGroup } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
@@ -37,13 +37,23 @@ function DetailsRow ({ chapter }) {
 
 function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
   const handleChange = property => event => onChange(manuscript.set(property, event.target.value))
+  const handleSiglumChange = event => onChange(manuscript.set('siglumNumber', Number(event.target.value)))
   const handelRecordChange = (property, values) => event => onChange(manuscript.set(property, values.get(event.target.value)))
 
   return <>
     <Form.Row>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Siglum</Form.Label>
-        <Form.Control value={manuscript.siglum} onChange={handleChange('siglum')} />
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Text>
+              {manuscript.provenance.abbreviation}
+              {manuscript.period.abbreviation}
+              {manuscript.type.abbreviation}
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control value={manuscript.siglumNumber} type='number' min={0} step={1} onChange={handleSiglumChange} />
+        </InputGroup>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Museum Number</Form.Label>
