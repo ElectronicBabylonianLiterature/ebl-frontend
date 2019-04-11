@@ -10,6 +10,7 @@ const text = {
     {
       classification: 'Ancient',
       stage: 'Neo-Babylonian',
+      version: 'A',
       name: 'III',
       order: 3,
       manuscripts: []
@@ -17,6 +18,7 @@ const text = {
     {
       classification: 'Ancient',
       stage: 'Old Babylonian',
+      version: 'B',
       name: 'The First Chapter',
       order: 1,
       manuscripts: [
@@ -69,6 +71,7 @@ describe('Diplay chapter', () => {
   test.each([
     ['Classification', 'classification'],
     ['Stage', 'stage'],
+    ['Version', 'version'],
     ['Name', 'name']
   ])('%s', (label, property) => {
     appDriver.expectInputElement(label, chapter[property])

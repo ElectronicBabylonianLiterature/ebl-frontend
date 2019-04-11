@@ -22,6 +22,7 @@ const textDto = {
     {
       classification: 'Ancient',
       stage: 'Old Babylonian',
+      version: 'A',
       name: 'The Only Chapter',
       order: 1,
       manuscripts: [
@@ -59,6 +60,7 @@ const textUpdateDto = {
     {
       classification: 'Ancient',
       stage: 'Old Babylonian',
+      version: 'A',
       name: 'The Only Chapter',
       order: 1,
       manuscripts: [
@@ -95,6 +97,7 @@ const text = Text({
     new Chapter({
       classification: 'Ancient',
       stage: 'Old Babylonian',
+      version: 'A',
       name: 'The Only Chapter',
       order: 1,
       manuscripts: List.of(

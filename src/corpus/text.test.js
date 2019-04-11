@@ -20,6 +20,7 @@ describe('Text', () => {
         new Chapter({
           classification: 'Ancient',
           stage: 'Neo-Babylonian',
+          version: 'A',
           name: 'Morrigan',
           order: 77
         }),
@@ -63,6 +64,7 @@ describe('Chapter', () => {
   const config = {
     classification: 'Ancient',
     stage: 'Old Babylonian',
+    version: 'A',
     name: 'III',
     order: -1,
     manuscripts: List.of(
