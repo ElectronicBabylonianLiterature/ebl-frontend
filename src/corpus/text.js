@@ -1,5 +1,12 @@
 import { List, Record, OrderedMap } from 'immutable'
 
+const PeriodModifier = Record({ name: '', displayName: '' })
+export const periodModifiers = OrderedMap({
+  'None': PeriodModifier({ name: 'None', displayName: '-' }),
+  'Early': PeriodModifier({ name: 'Early', displayName: 'Early' }),
+  'Late': PeriodModifier({ name: 'Late', displayName: 'Late' })
+})
+
 const Period = Record({ name: '', abbreviation: '', description: '' })
 export const periods = OrderedMap({
   'Ur III': Period({ name: 'Ur III', abbreviation: 'UrIII', description: '(ca. 2100-2000 BC)' }),
@@ -47,6 +54,7 @@ export const Manuscript = Record({
   siglumDisambiguator: '',
   museumNumber: '',
   accession: '',
+  periodModifier: periodModifiers.get('None'),
   period: periods.get('Neo-Assyrian'),
   provenance: provenances.get('Nineveh'),
   type: types.get('Library'),

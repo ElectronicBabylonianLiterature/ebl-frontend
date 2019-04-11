@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
-import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
+import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
 import TextService from './TextService'
 
 const apiClient = {
@@ -30,6 +30,7 @@ const textDto = {
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
+          periodModifier: 'Early',
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
@@ -66,6 +67,7 @@ const textUpdateDto = {
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
+          periodModifier: 'Early',
           period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
@@ -101,6 +103,7 @@ const text = Text({
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
+          periodModifier: periodModifiers.get('Early'),
           period: periods.get('Ur III'),
           provenance: provenances.get('Nippur'),
           type: types.get('School'),

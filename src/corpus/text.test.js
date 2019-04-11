@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import Reference from 'bibliography/Reference'
-import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
+import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
 
 describe('Text', () => {
   let config
@@ -34,6 +34,7 @@ describe('Text', () => {
               siglumDisambiguator: '1',
               museumNumber: 'BM.X',
               accession: 'X.1',
+              periodModifier: periodModifiers.get('Late'),
               period: periods.get('Ur III'),
               provenance: provenances.get('Nippur'),
               type: types.get('School'),
@@ -70,7 +71,8 @@ describe('Chapter', () => {
         siglumDisambiguator: '1',
         museumNumber: 'BM.X',
         accession: 'X.1',
-        stage: periods.get('Ur III'),
+        periodModifier: periodModifiers.get('Late'),
+        period: periods.get('Ur III'),
         provenance: provenances.get('Nippur'),
         type: types.get('School'),
         note: 'some notes',
@@ -91,6 +93,7 @@ describe('Manuscript', () => {
     siglumDisambiguator: '1',
     museumNumber: 'BM.X',
     accession: 'X.1',
+    periodModifier: periodModifiers.get('Late'),
     period: periods.get('Ur III'),
     provenance: provenances.get('Nippur'),
     type: types.get('School'),

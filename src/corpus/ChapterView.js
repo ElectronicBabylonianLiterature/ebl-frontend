@@ -9,7 +9,7 @@ import ListForm from 'common/List'
 import withData from 'http/withData'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
-import { Manuscript, periods, provenances, types } from './text'
+import { Manuscript, periodModifiers, periods, provenances, types } from './text'
 import { ReferencesForm } from 'bibliography/References'
 
 function DetailsRow ({ chapter }) {
@@ -58,11 +58,18 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
         <Form.Label>Accession</Form.Label>
         <Form.Control value={manuscript.accession} onChange={handleChange('accession')} />
       </Form.Group>
-      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-        <Form.Label>Period</Form.Label>
-        <Form.Control as='select' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
-          {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
-        </Form.Control>
+    </Form.Row>
+    <Form.Row>
+      <Form.Group as={Col}>
+        <label>Period</label>
+        <InputGroup>
+          <Form.Control as='select' aria-label='Period modifier' value={manuscript.periodModifier.name} onChange={handelRecordChange('periodModifier', periodModifiers)} >
+            {periodModifiers.toIndexedSeq().map(modifier => <option key={modifier.name} value={modifier.name}>{modifier.displayName}</option>)}
+          </Form.Control>
+          <Form.Control as='select' aria-label='Period' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
+            {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
+          </Form.Control>
+        </InputGroup>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Provenance</Form.Label>

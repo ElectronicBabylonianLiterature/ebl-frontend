@@ -1,7 +1,7 @@
 import { List, Seq } from 'immutable'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
-import { Text, Chapter, Manuscript, periods, provenances, types } from './text'
+import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
 
 function fromDto (textDto) {
   return Text({
@@ -12,6 +12,7 @@ function fromDto (textDto) {
         manuscripts: new List(chapterDto.manuscripts).map(manuscriptDto =>
           new Manuscript({
             ...manuscriptDto,
+            periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
             period: periods.get(manuscriptDto.period),
             provenance: provenances.get(manuscriptDto.provenance),
             type: types.get(manuscriptDto.type),
@@ -38,6 +39,7 @@ function toDto (text) {
     .updateIn(['chapters'], chapters => chapters.map(chapter =>
       chapter.updateIn(['manuscripts'], manuscripts => manuscripts.map(manuscript =>
         manuscript
+          .update('periodModifier', toName)
           .update('period', toName)
           .update('provenance', toName)
           .update('type', toName)
