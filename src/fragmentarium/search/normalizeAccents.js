@@ -11,17 +11,17 @@ export default function normalizeAccents (userInput) {
 
   return userInput.replace(regExp,
     match => {
-      const subindex = match.split('').map(character => {
-        return charactersWithAccents.hasOwnProperty(character)
+      const subindex = match.split('').map(character =>
+        charactersWithAccents.hasOwnProperty(character)
           ? charactersWithAccents[character].index
           : null
-      })
+      )
 
-      const characterWithoutAccent = match.split('').map(character => {
-        return charactersWithAccents.hasOwnProperty(character)
+      const characterWithoutAccent = match.split('').map(character =>
+        charactersWithAccents.hasOwnProperty(character)
           ? charactersWithAccents[character].letter
           : character
-      })
+      )
 
       return characterWithoutAccent.concat(subindex).join('')
     })
