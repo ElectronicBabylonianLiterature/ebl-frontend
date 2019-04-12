@@ -1,9 +1,12 @@
 import replaceSpecialCharacters from './replaceSpecialCharacters'
-import normalizeNumbers from './normalizeNumbers.js'
+import normalizeNumbers from './normalizeNumbers'
 import normalizeAccents from './normalizeAccents'
+import _ from 'lodash'
 
 export default function replaceTransliteration (transliteration) {
-  const replacedTransliteration = replaceSpecialCharacters(transliteration)
-  const normalizedNumbers = normalizeNumbers(replacedTransliteration)
-  return normalizeAccents(normalizedNumbers)
+  return _(transliteration)
+    .thru(replaceSpecialCharacters)
+    .thru(normalizeNumbers)
+    .thru(normalizeAccents)
+    .value()
 }
