@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import escapeRegExp from './escapeRegExp'
 
 const characters = {
   'c': 'š',
@@ -25,11 +25,7 @@ const characters = {
 }
 
 export default function replaceSpecialCharacters (userInput) {
-  const specialCharacters = Object.keys(characters)
-    .map(character => {
-      return _.escapeRegExp(character)
-    })
-    .join('|')
+  const specialCharacters = escapeRegExp(Object.keys(characters))
   const regExp = new RegExp(specialCharacters, 'g')
   return userInput.replace(regExp, match => characters[match] || match)
 }
