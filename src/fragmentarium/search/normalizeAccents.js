@@ -1,14 +1,21 @@
 import _ from 'lodash'
 import charactersWithAccents from './charactersWithAccents.json'
+import specialTransliterationCharacters from './specialTransliterationCharacters.json'
 
 export default function normalizeAccents (userInput) {
-  const specialCharacters = Object.keys(charactersWithAccents)
+  const charactersWithAccentsAsString = Object.keys(charactersWithAccents)
     .map(character => {
       return _.escapeRegExp(character)
     })
     .join('|')
 
-  const regExp = new RegExp(`(${specialCharacters})\\w*`, 'g')
+  const specialTransliterationCharactersAsString = specialTransliterationCharacters
+    .map(character => {
+      return _.escapeRegExp(character)
+    })
+    .join('|')
+
+  const regExp = new RegExp(`(${charactersWithAccentsAsString})(${specialTransliterationCharactersAsString}|)\\w*`, 'g')
 
   return userInput.replace(regExp,
     match => {
