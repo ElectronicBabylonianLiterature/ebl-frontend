@@ -56,7 +56,7 @@ export const provenances = OrderedMap({
   'Megiddo': Provenance({ name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' }),
   'Susa': Provenance({ name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' }),
   'Ugarit': Provenance({ name: 'Ugarit', abbreviation: 'Uga', parent: 'Periphery' }),
-  'Unclear': Provenance({ name: 'Unclear', abbreviation: 'Unc' })
+  'Uncertain': Provenance({ name: 'Uncertain', abbreviation: 'Unc' })
 })
 
 const ManuscriptType = Record({ name: '', abbreviation: '' })
