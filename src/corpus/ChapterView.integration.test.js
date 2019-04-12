@@ -1,4 +1,5 @@
-import { Record, List } from 'immutable'
+import { List } from 'immutable'
+import _ from 'lodash'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 
@@ -24,7 +25,6 @@ const text = {
       manuscripts: [
         {
           uniqueId: 'abc-cde-123',
-          siglum: 'UIII Nippur 1',
           siglumDisambiguator: '1c',
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -86,15 +86,21 @@ describe('Diplay chapter', () => {
       ['Accession', 'accession', 'X.2'],
       ['Period modifier', 'periodModifier', 'Early'],
       ['Period', 'period', 'Hellenistic'],
-      ['Provenance', 'provenance', 'Borsippa'],
+      ['City', 'provenance', 'Borsippa'],
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
-      const value = manuscript[property]
-      const expectedValue = Record.isRecord(value) ? value.name : value
+      const expectedValue = _.get(manuscript, property)
       appDriver.expectInputElement(label, expectedValue)
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
+    })
+
+    test('Region', () => {
+      const label = 'Region'
+      appDriver.expectInputElement(label, 'Babylonia')
+      appDriver.changeValueByLabel(label, 'Assyria')
+      appDriver.expectInputElement(label, 'Assyria')
     })
   })
 })
@@ -113,15 +119,16 @@ describe('Add manuscript', () => {
   })
 
   test.each([
-    ['Siglum', 'siglumDisambiguator', ''],
-    ['Museum Number', 'museumNumber', ''],
-    ['Accession', 'accession', ''],
-    ['Period modifier', 'periodModifier', 'None'],
-    ['Period', 'period', 'Neo-Assyrian'],
-    ['Provenance', 'provenance', 'Nineveh'],
-    ['Type', 'type', 'Library'],
-    ['Notes', 'notes', '']
-  ])('%s', (label, property, expectedValue) => {
+    ['Siglum', ''],
+    ['Museum Number', ''],
+    ['Accession', ''],
+    ['Period modifier', 'None'],
+    ['Period', 'Neo-Assyrian'],
+    ['Region', 'Assyria'],
+    ['City', 'Nineveh'],
+    ['Type', 'Library'],
+    ['Notes', '']
+  ])('%s', (label, expectedValue) => {
     apiDriver.expectUpdateText(text)
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
