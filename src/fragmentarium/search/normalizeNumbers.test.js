@@ -10,7 +10,8 @@ test.each([
   ['1. ar-mu', '1. ar-mu'],
   ['9(ILIMMU5)', '9(ILIMMU₅)'],
   ['NAGA@180', 'NAGA@180'],
-  ['|3×AN|', '|3×AN|']
+  ['|3×AN|', '|3×AN|'],
+  ['peṭ2', 'peṭ₂']
 ])('%s', (character, replacement) => {
   const text = normalizeNumbers(character)
   expect(text).toEqual(replacement)

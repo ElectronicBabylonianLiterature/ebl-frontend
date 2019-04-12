@@ -1,3 +1,4 @@
+import specialTransliterationCharacters from './specialTransliterationCharacters'
 
 function convertNumbers (number) {
   const numbers = {
@@ -26,5 +27,7 @@ function replacer (match, p1, p2) {
 }
 
 export default function normalizeNumbers (userInput) {
-  return userInput.replace(/(\D\B)(\d+)/g, replacer)
+  const specialTransliterationCharactersAsString = specialTransliterationCharacters.join('|')
+  const regExp = new RegExp(`(\\D\\B|${specialTransliterationCharactersAsString})(\\d+)`, 'g')
+  return userInput.replace(regExp, replacer)
 }
