@@ -9,17 +9,18 @@ export const periodModifiers = OrderedMap({
 
 const Period = Record({ name: '', abbreviation: '', description: '' })
 export const periods = OrderedMap({
-  'Ur III': Period({ name: 'Ur III', abbreviation: 'UrIII', description: '(ca. 2100-2000 BC)' }),
-  'Old Assyrian': Period({ name: 'Old Assyrian', abbreviation: 'OA', description: '(ca. 1950-1850 BC)' }),
-  'Old Babylonian': Period({ name: 'Old Babylonian', abbreviation: 'OB', description: '(ca. 2000-1600 BC)' }),
-  'Middle Babylonian': Period({ name: 'Middle Babylonian', abbreviation: 'MB', description: '(ca. 1400-1100 BC)' }),
-  'Middle Assyrian': Period({ name: 'Middle Assyrian', abbreviation: 'MA', description: '(ca. 1400-1000 BC)' }),
-  'Hittite': Period({ name: 'Hittite', abbreviation: 'Hit', description: '(ca. 1500-1100 BC)' }),
-  'Neo-Assyrian': Period({ name: 'Neo-Assyrian', abbreviation: 'NA', description: '(ca. 911-612 BC)' }),
-  'Neo-Babylonian': Period({ name: 'Neo-Babylonian', abbreviation: 'NB', description: '(ca. 626-539 BC)' }),
-  'Achaemenid': Period({ name: 'Achaemenid', abbreviation: 'Ach', description: '(547-331 BC)' }),
-  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(323-63 BC)' }),
-  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(247-224 BC)' }),
+  'Ur III': Period({ name: 'Ur III', abbreviation: 'Ur3', description: '(ca. 2100–2002 BCE)' }),
+  'Old Assyrian': Period({ name: 'Old Assyrian', abbreviation: 'OA', description: '(ca. 1950–1850 BCE)' }),
+  'Old Babylonian': Period({ name: 'Old Babylonian', abbreviation: 'OB', description: '(ca. 2002–1595 BCE)' }),
+  'Middle Babylonian': Period({ name: 'Middle Babylonian', abbreviation: 'MB', description: '(ca. 1595–1000 BCE)' }),
+  'Middle Assyrian': Period({ name: 'Middle Assyrian', abbreviation: 'MA', description: '(ca. 1595–1000 BCE)' }),
+  'Hittite': Period({ name: 'Hittite', abbreviation: 'Hit', description: '(ca. 1500–1100 BCE)' }),
+  'Neo-Assyrian': Period({ name: 'Neo-Assyrian', abbreviation: 'NA', description: '(ca. 1000–609 BCE)' }),
+  'Neo-Babylonian': Period({ name: 'Neo-Babylonian', abbreviation: 'NB', description: '(ca. 1000–539 BCE)' }),
+  'Late Babylonian': Period({ name: 'Late Babylonian', abbreviation: 'LB', description: '(ca. 539 BCE–ca. 100 CE)' }),
+  'Persian': Period({ name: 'Persian', abbreviation: 'Per', description: '(539–331 BCE)' }),
+  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(331–141 BCE)' }),
+  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(141 BCE–ca. 100 CE)' }),
   'Uncertain': Period({ name: 'Uncertain', abbreviation: 'Unc', description: '' })
 })
 
