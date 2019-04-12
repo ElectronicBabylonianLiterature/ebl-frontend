@@ -24,21 +24,39 @@ export const periods = OrderedMap({
   'Uncertain': Period({ name: 'Uncertain', abbreviation: 'Unc', description: '' })
 })
 
-const Provenance = Record({ name: '', abbreviation: '' })
+const Provenance = Record({ name: '', abbreviation: '', parent: null })
 export const provenances = OrderedMap({
-  'Aššur': Provenance({ name: 'Aššur', abbreviation: 'Ašš' }),
-  'Babylon': Provenance({ name: 'Babylon', abbreviation: 'Bab' }),
+  'Assyria': Provenance({ name: 'Assyria', abbreviation: 'Assa' }),
+  'Aššur': Provenance({ name: 'Aššur', abbreviation: 'Ašš', parent: 'Assyria' }),
+  'Ḫuzirina': Provenance({ name: 'Ḫuzirina', abbreviation: 'Huz', parent: 'Assyria' }),
+  'Kalḫu': Provenance({ name: 'Kalḫu', abbreviation: 'Kal', parent: 'Assyria' }),
+  'Khorsabad': Provenance({ name: 'Khorsabad', abbreviation: 'Kho', parent: 'Assyria' }),
+  'Nineveh': Provenance({ name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' }),
+  'Tarbiṣu': Provenance({ name: 'Tarbiṣu', abbreviation: 'Tar', parent: 'Assyria' }),
   'Babylonia': Provenance({ name: 'Babylonia', abbreviation: 'Baba' }),
-  'Borsippa': Provenance({ name: 'Borsippa', abbreviation: 'Bor' }),
-  'Ḫuzirina': Provenance({ name: 'Ḫuzirina', abbreviation: 'Ḫuz' }),
-  'Kalḫu': Provenance({ name: 'Kalḫu', abbreviation: 'Kal' }),
-  'Nineveh': Provenance({ name: 'Nineveh', abbreviation: 'Nin' }),
-  'Nippur': Provenance({ name: 'Nippur', abbreviation: 'Nip' }),
-  'Sippar': Provenance({ name: 'Sippar', abbreviation: 'Sip' }),
-  'Šaduppûm': Provenance({ name: 'Šaduppûm', abbreviation: 'Šad' }),
-  'Ur': Provenance({ name: 'Ur', abbreviation: 'Ur' }),
-  'Uruk': Provenance({ name: 'Uruk', abbreviation: 'Uru' }),
-  'Unclear': Provenance({ name: 'Unclear', abbreviation: 'Unc' })
+  'Babylon': Provenance({ name: 'Babylon', abbreviation: 'Bab', parent: 'Babylonia' }),
+  'Borsippa': Provenance({ name: 'Borsippa', abbreviation: 'Bor', parent: 'Babylonia' }),
+  'Cutha': Provenance({ name: 'Cutha', abbreviation: 'Cut', parent: 'Babylonia' }),
+  'Isin': Provenance({ name: 'Isin', abbreviation: 'Isn', parent: 'Babylonia' }),
+  'Kiš': Provenance({ name: 'Kiš', abbreviation: 'Kiš', parent: 'Babylonia' }),
+  'Larsa': Provenance({ name: 'Larsa', abbreviation: 'Lar', parent: 'Babylonia' }),
+  'Meturan': Provenance({ name: 'Meturan', abbreviation: 'Met', parent: 'Babylonia' }),
+  'Nērebtum': Provenance({ name: 'Nērebtum', abbreviation: 'Nēr', parent: 'Babylonia' }),
+  'Nippur': Provenance({ name: 'Nippur', abbreviation: 'Nip', parent: 'Babylonia' }),
+  'Sippar': Provenance({ name: 'Sippar', abbreviation: 'Sip', parent: 'Babylonia' }),
+  'Šaduppûm': Provenance({ name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' }),
+  'Ur': Provenance({ name: 'Ur', abbreviation: 'Ur', parent: 'Babylonia' }),
+  'Uruk': Provenance({ name: 'Uruk', abbreviation: 'Urk', parent: 'Babylonia' }),
+  'Periphery': Provenance({ name: 'Periphery', abbreviation: '' }),
+  'Alalakh': Provenance({ name: 'Alalakh', abbreviation: 'Ala', parent: 'Periphery' }),
+  'Tell el-Amarna': Provenance({ name: 'Tell el-Amarna', abbreviation: 'Ama', parent: 'Periphery' }),
+  'Emar': Provenance({ name: 'Emar', abbreviation: 'Emr', parent: 'Periphery' }),
+  'Ḫattuša': Provenance({ name: 'Ḫattuša', abbreviation: 'Hat', parent: 'Periphery' }),
+  'Mari': Provenance({ name: 'Mari', abbreviation: 'Mar', parent: 'Periphery' }),
+  'Megiddo': Provenance({ name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' }),
+  'Susa': Provenance({ name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' }),
+  'Ugarit': Provenance({ name: 'Ugarit', abbreviation: 'Uga', parent: 'Periphery' }),
+  'Unclear': Provenance({ name: 'Unclear', abbreviation: 'Unc', parent: 'Periphery' })
 })
 
 const ManuscriptType = Record({ name: '', abbreviation: '' })
