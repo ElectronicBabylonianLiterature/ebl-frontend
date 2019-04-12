@@ -22,9 +22,9 @@ function convertNumbers (number) {
   }).join('')
 }
 
-function replacer (match, p1, p2) {
-  const convertedP2 = convertNumbers(p2)
-  return [p1, convertedP2].join('')
+function replacer (match, characters, numbers) {
+  const convertedNumbers = convertNumbers(numbers)
+  return [characters, convertedNumbers].join('')
 }
 
 export default function normalizeNumbers (userInput) {
