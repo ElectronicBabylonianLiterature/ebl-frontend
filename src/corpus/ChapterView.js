@@ -64,6 +64,12 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
       </Form.Group>
     </Form.Row>
     <Form.Row>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Provenance</Form.Label>
+        <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
+          {provenances.toIndexedSeq().map(provenance => <option key={provenance.name} value={provenance.name}>{provenance.name}</option>)}
+        </Form.Control>
+      </Form.Group>
       <Form.Group as={Col}>
         <label>Period</label>
         <InputGroup>
@@ -74,12 +80,6 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
             {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
           </Form.Control>
         </InputGroup>
-      </Form.Group>
-      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-        <Form.Label>Provenance</Form.Label>
-        <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
-          {provenances.toIndexedSeq().map(provenance => <option key={provenance.name} value={provenance.name}>{provenance.name}</option>)}
-        </Form.Control>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Type</Form.Label>
