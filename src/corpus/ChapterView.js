@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Button, Col, Alert, Badge, Nav, InputGroup } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import classNames from 'classnames'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import Promise from 'bluebird'
@@ -66,29 +67,19 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
       </Form.Group>
     </Form.Row>
     <Form.Row>
-      <Form.Group as={Col}>
-        <label>Provenance</label>
-        <InputGroup>
-          <Form.Control as='select' aria-label='Region' value={_.isNil(manuscript.provenance.parent) ? manuscript.provenance.name : manuscript.provenance.parent} onChange={handelRecordChange('provenance', provenances)}>
-            {provenances.toIndexedSeq().filter(provenance => _.isNil(provenance.parent)).map(provenance =>
-              <option key={provenance.name} value={provenance.name}>
-                {provenance.name}
-              </option>
-            )}
-          </Form.Control>
-          <Form.Control as='select' aria-label='City' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
-            {provenances.toIndexedSeq().filter(provenance =>
-              manuscript.provenance.name === provenance.parent ||
-              manuscript.provenance.name === provenance.name ||
-              (manuscript.provenance.parent && manuscript.provenance.parent === provenance.parent) ||
-              (manuscript.provenance.parent && manuscript.provenance.parent === provenance.name)
-            ).map(provenance =>
-              <option key={provenance.name} value={provenance.name}>
-                {provenance.parent ? provenance.name : '-'}
-              </option>
-            )}
-          </Form.Control>
-        </InputGroup>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Provenance</Form.Label>
+        <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
+          {provenances.toIndexedSeq().map(provenance =>
+            <option key={provenance.name} value={provenance.name} className={classNames({
+              'manuscript__provenance': true,
+              'manuscript__provenance--city': !_.isNil(provenance.parent),
+              'manuscript__provenance--area': _.isNil(provenance.parent)
+            })}>
+              {provenance.name}
+            </option>
+          )}
+        </Form.Control>
       </Form.Group>
       <Form.Group as={Col}>
         <label>Period</label>
