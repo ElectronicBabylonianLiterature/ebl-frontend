@@ -29,7 +29,7 @@ const text = {
           museumNumber: 'BM.X',
           accession: 'X.1',
           periodModifier: 'Late',
-          period: 'Middle Assyrian',
+          period: 'Ur III',
           provenance: 'Nippur',
           type: 'School',
           notes: 'some notes',
@@ -98,7 +98,7 @@ describe('Diplay chapter', () => {
     test('Period', () => {
       const label = 'Period'
       const newValue = 'None#Hellenistic'
-      appDriver.expectInputElement(label, 'Late#Middle Assyrian')
+      appDriver.expectInputElement(label, 'Late#Ur III')
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
     })

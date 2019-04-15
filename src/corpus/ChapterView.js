@@ -93,7 +93,7 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
               <option value={`None#${period.name}`}>
                 {period.name} {period.description}
               </option>
-              {period.hasModifiers && <>
+              {period.name !== 'Uncertain' && <>
                 <option value={`Early#${period.name}`}>
                   &nbsp;&nbsp;&nbsp;&nbsp;Early {period.name}
                 </option>
@@ -106,7 +106,7 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
               <option value={`None#${period.name}`}>
                 &nbsp;&nbsp;&nbsp;&nbsp;{period.name} {period.description}
               </option>
-              {period.hasModifiers && <>
+              {period.name !== 'Uncertain' && <>
                 <option value={`Early#${period.name}`}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Early {period.name}
                 </option>
