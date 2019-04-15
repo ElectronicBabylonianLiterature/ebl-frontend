@@ -85,7 +85,15 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
             {periodModifiers.toIndexedSeq().map(modifier => <option key={modifier.name} value={modifier.name}>{modifier.displayName}</option>)}
           </Form.Control>
           <Form.Control as='select' aria-label='Period' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
-            {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
+            {periods.toIndexedSeq().map(period =>
+              _.isNil(period.parent)
+                ? <option key={period.name} value={period.name}>
+                  {period.name} {period.description}
+                </option>
+                : <option key={period.name} value={period.name}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;{period.name} {period.description}
+                </option>
+            )}
           </Form.Control>
         </InputGroup>
       </Form.Group>

@@ -7,7 +7,7 @@ export const periodModifiers = OrderedMap({
   'Late': PeriodModifier({ name: 'Late', displayName: 'Late' })
 })
 
-const Period = Record({ name: '', abbreviation: '', description: '' })
+const Period = Record({ name: '', abbreviation: '', description: '', parent: null })
 export const periods = OrderedMap({
   'Ur III': Period({ name: 'Ur III', abbreviation: 'Ur3', description: '(ca. 2100–2002 BCE)' }),
   'Old Assyrian': Period({ name: 'Old Assyrian', abbreviation: 'OA', description: '(ca. 1950–1850 BCE)' }),
@@ -18,9 +18,9 @@ export const periods = OrderedMap({
   'Neo-Assyrian': Period({ name: 'Neo-Assyrian', abbreviation: 'NA', description: '(ca. 1000–609 BCE)' }),
   'Neo-Babylonian': Period({ name: 'Neo-Babylonian', abbreviation: 'NB', description: '(ca. 1000–539 BCE)' }),
   'Late Babylonian': Period({ name: 'Late Babylonian', abbreviation: 'LB', description: '(ca. 539 BCE–ca. 100 CE)' }),
-  'Persian': Period({ name: 'Persian', abbreviation: 'Per', description: '(539–331 BCE)' }),
-  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(331–141 BCE)' }),
-  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(141 BCE–ca. 100 CE)' }),
+  'Persian': Period({ name: 'Persian', abbreviation: 'Per', description: '(539–331 BCE)', parent: 'Late Babylonian' }),
+  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(331–141 BCE)', parent: 'Late Babylonian' }),
+  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(141 BCE–ca. 100 CE)', parent: 'Late Babylonian' }),
   'Uncertain': Period({ name: 'Uncertain', abbreviation: 'Unc', description: '' })
 })
 
