@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Fragment, Component } from 'react'
 import { Form, Button, Col, Alert, Badge, Nav, InputGroup } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import ReactMarkdown from 'react-markdown'
@@ -37,7 +37,14 @@ function DetailsRow ({ chapter }) {
 
 function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
   const handleChange = property => event => onChange(manuscript.set(property, event.target.value))
-  const handelRecordChange = (property, values) => event => onChange(manuscript.set(property, values.get(event.target.value)))
+  const handleRecordChange = (property, values) => event => onChange(manuscript.set(property, values.get(event.target.value)))
+  const handlePeriodChange = event => {
+    const [modifier, period] = event.target.value.split('#')
+    onChange(manuscript
+      .set('periodModifier', periodModifiers.get(modifier))
+      .set('period', periods.get(period))
+    )
+  }
 
   return <>
     <Form.Row>
@@ -66,7 +73,7 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
     <Form.Row>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Provenance</Form.Label>
-        <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
+        <Form.Control as='select' value={manuscript.provenance.name} onChange={handleRecordChange('provenance', provenances)}>
           {provenances.toIndexedSeq().map(provenance =>
             _.isNil(provenance.parent)
               ? <option key={provenance.name} value={provenance.name}>
@@ -78,20 +85,42 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
           )}
         </Form.Control>
       </Form.Group>
-      <Form.Group as={Col}>
-        <label>Period</label>
-        <InputGroup>
-          <Form.Control as='select' aria-label='Period modifier' value={manuscript.periodModifier.name} onChange={handelRecordChange('periodModifier', periodModifiers)} >
-            {periodModifiers.toIndexedSeq().map(modifier => <option key={modifier.name} value={modifier.name}>{modifier.displayName}</option>)}
-          </Form.Control>
-          <Form.Control as='select' aria-label='Period' value={manuscript.period.name} onChange={handelRecordChange('period', periods)}>
-            {periods.toIndexedSeq().map(period => <option key={period.name} value={period.name}>{period.name} {period.description}</option>)}
-          </Form.Control>
-        </InputGroup>
+      <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
+        <Form.Label>Period</Form.Label>
+        <Form.Control as='select' aria-label='Period' value={`${manuscript.periodModifier.name}#${manuscript.period.name}`} onChange={handlePeriodChange}>
+          {periods.toIndexedSeq().map(period => _.isNil(period.parent)
+            ? <Fragment key={period.name}>
+              <option value={`None#${period.name}`}>
+                {period.name} {period.description}
+              </option>
+              {period.name !== 'Uncertain' && <>
+                <option value={`Early#${period.name}`}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;Early {period.name}
+                </option>
+                <option value={`Late#${period.name}`}>
+                &nbsp;&nbsp;&nbsp;&nbsp;Late {period.name}
+                </option>
+              </>}
+            </Fragment>
+            : <Fragment key={period.name}>
+              <option value={`None#${period.name}`}>
+                &nbsp;&nbsp;&nbsp;&nbsp;{period.name} {period.description}
+              </option>
+              {period.name !== 'Uncertain' && <>
+                <option value={`Early#${period.name}`}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Early {period.name}
+                </option>
+                <option value={`Late#${period.name}`}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Late {period.name}
+                </option>
+              </>}
+            </Fragment>
+          )}
+        </Form.Control>
       </Form.Group>
       <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
         <Form.Label>Type</Form.Label>
-        <Form.Control as='select' value={manuscript.type.name} onChange={handelRecordChange('type', types)}>
+        <Form.Control as='select' value={manuscript.type.name} onChange={handleRecordChange('type', types)}>
           {types.toIndexedSeq().map(type => <option key={type.name} value={type.name}>{type.name}</option>)}
         </Form.Control>
       </Form.Group>

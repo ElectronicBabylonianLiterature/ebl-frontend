@@ -7,21 +7,21 @@ export const periodModifiers = OrderedMap({
   'Late': PeriodModifier({ name: 'Late', displayName: 'Late' })
 })
 
-const Period = Record({ name: '', abbreviation: '', description: '' })
+const Period = Record({ name: '', abbreviation: '', description: '', parent: null })
 export const periods = OrderedMap({
-  'Ur III': Period({ name: 'Ur III', abbreviation: 'Ur3', description: '(ca. 2100–2002 BCE)' }),
-  'Old Assyrian': Period({ name: 'Old Assyrian', abbreviation: 'OA', description: '(ca. 1950–1850 BCE)' }),
-  'Old Babylonian': Period({ name: 'Old Babylonian', abbreviation: 'OB', description: '(ca. 2002–1595 BCE)' }),
-  'Middle Babylonian': Period({ name: 'Middle Babylonian', abbreviation: 'MB', description: '(ca. 1595–1000 BCE)' }),
-  'Middle Assyrian': Period({ name: 'Middle Assyrian', abbreviation: 'MA', description: '(ca. 1595–1000 BCE)' }),
-  'Hittite': Period({ name: 'Hittite', abbreviation: 'Hit', description: '(ca. 1500–1100 BCE)' }),
-  'Neo-Assyrian': Period({ name: 'Neo-Assyrian', abbreviation: 'NA', description: '(ca. 1000–609 BCE)' }),
-  'Neo-Babylonian': Period({ name: 'Neo-Babylonian', abbreviation: 'NB', description: '(ca. 1000–539 BCE)' }),
-  'Late Babylonian': Period({ name: 'Late Babylonian', abbreviation: 'LB', description: '(ca. 539 BCE–ca. 100 CE)' }),
-  'Persian': Period({ name: 'Persian', abbreviation: 'Per', description: '(539–331 BCE)' }),
-  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(331–141 BCE)' }),
-  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(141 BCE–ca. 100 CE)' }),
-  'Uncertain': Period({ name: 'Uncertain', abbreviation: 'Unc', description: '' })
+  'Ur III': Period({ name: 'Ur III', abbreviation: 'Ur3', description: '(ca. 2100–2002 BCE)', parent: null }),
+  'Old Assyrian': Period({ name: 'Old Assyrian', abbreviation: 'OA', description: '(ca. 1950–1850 BCE)', parent: null }),
+  'Old Babylonian': Period({ name: 'Old Babylonian', abbreviation: 'OB', description: '(ca. 2002–1595 BCE)', parent: null }),
+  'Middle Babylonian': Period({ name: 'Middle Babylonian', abbreviation: 'MB', description: '(ca. 1595–1000 BCE)', parent: null }),
+  'Middle Assyrian': Period({ name: 'Middle Assyrian', abbreviation: 'MA', description: '(ca. 1595–1000 BCE)', parent: null }),
+  'Hittite': Period({ name: 'Hittite', abbreviation: 'Hit', description: '(ca. 1500–1100 BCE)', parent: null }),
+  'Neo-Assyrian': Period({ name: 'Neo-Assyrian', abbreviation: 'NA', description: '(ca. 1000–609 BCE)', parent: null }),
+  'Neo-Babylonian': Period({ name: 'Neo-Babylonian', abbreviation: 'NB', description: '(ca. 1000–539 BCE)', parent: null }),
+  'Late Babylonian': Period({ name: 'Late Babylonian', abbreviation: 'LB', description: '(ca. 539 BCE–ca. 100 CE)', parent: null }),
+  'Persian': Period({ name: 'Persian', abbreviation: 'Per', description: '(539–331 BCE)', parent: 'Late Babylonian' }),
+  'Hellenistic': Period({ name: 'Hellenistic', abbreviation: 'Hel', description: '(331–141 BCE)', parent: 'Late Babylonian' }),
+  'Parthian': Period({ name: 'Parthian', abbreviation: 'Par', description: '(141 BCE–ca. 100 CE)', parent: 'Late Babylonian' }),
+  'Uncertain': Period({ name: 'Uncertain', abbreviation: 'Unc', description: '', parent: null })
 })
 
 const Provenance = Record({ name: '', abbreviation: '', parent: null })
