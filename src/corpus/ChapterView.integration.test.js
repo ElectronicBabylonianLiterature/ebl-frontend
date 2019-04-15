@@ -84,6 +84,8 @@ describe('Diplay chapter', () => {
       ['Siglum', 'siglumDisambiguator', 'b'],
       ['Museum Number', 'museumNumber', 'BM.X2'],
       ['Accession', 'accession', 'X.2'],
+      ['Period modifier', 'periodModifier', 'Early'],
+      ['Period', 'period', 'Hellenistic'],
       ['Provenance', 'provenance', 'Borsippa'],
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
@@ -91,14 +93,6 @@ describe('Diplay chapter', () => {
       const value = manuscript[property]
       const expectedValue = Record.isRecord(value) ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
-      appDriver.changeValueByLabel(label, newValue)
-      appDriver.expectInputElement(label, newValue)
-    })
-
-    test('Period', () => {
-      const label = 'Period'
-      const newValue = 'None#Hellenistic'
-      appDriver.expectInputElement(label, 'Late#Ur III')
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
     })
@@ -122,6 +116,8 @@ describe('Add manuscript', () => {
     ['Siglum', 'siglumDisambiguator', ''],
     ['Museum Number', 'museumNumber', ''],
     ['Accession', 'accession', ''],
+    ['Period modifier', 'periodModifier', 'None'],
+    ['Period', 'period', 'Neo-Assyrian'],
     ['Provenance', 'provenance', 'Nineveh'],
     ['Type', 'type', 'Library'],
     ['Notes', 'notes', '']
