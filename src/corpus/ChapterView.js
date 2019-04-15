@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Button, Col, Alert, Badge, Nav, InputGroup } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import classNames from 'classnames'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import Promise from 'bluebird'
@@ -12,8 +11,6 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import { Manuscript, periodModifiers, periods, provenances, types } from './text'
 import { ReferencesForm } from 'bibliography/References'
-
-import './ChapterView.css'
 
 function DetailsRow ({ chapter }) {
   return (
@@ -71,13 +68,13 @@ function ManuscriptForm ({ manuscript, onChange, searchBibliography }) {
         <Form.Label>Provenance</Form.Label>
         <Form.Control as='select' value={manuscript.provenance.name} onChange={handelRecordChange('provenance', provenances)}>
           {provenances.toIndexedSeq().map(provenance =>
-            <option key={provenance.name} value={provenance.name} className={classNames({
-              'manuscript__provenance': true,
-              'manuscript__provenance--city': !_.isNil(provenance.parent),
-              'manuscript__provenance--area': _.isNil(provenance.parent)
-            })}>
-              {provenance.name}
-            </option>
+            _.isNil(provenance.parent)
+              ? <option key={provenance.name} value={provenance.name}>
+                {provenance.name}
+              </option>
+              : <option key={provenance.name} value={provenance.name}>
+                &nbsp;&nbsp;&nbsp;&nbsp;{provenance.name}
+              </option>
           )}
         </Form.Control>
       </Form.Group>
