@@ -6,14 +6,51 @@ import { set, remove, merge, isValueObject, isCollection } from 'immutable'
 
 import './List.css'
 
-class List extends Component {
+function CollapseIndicator ({ open }) {
+  return <i className={classNames({
+    'fas': true,
+    'fa-angle-up': open,
+    'fa-angle-down': !open
+  })} />
+}
+
+class CollapsibleCard extends Component {
   constructor (props) {
     super(props)
     this.state = {
       open: !this.props.collapsed
     }
+    this.collapseId = _.uniqueId('List-collapse-')
   }
 
+  render () {
+    return <Card border='light'>
+      {this.props.label && <Card.Header>
+        <span className='List__toggle' onClick={() => this.setState({ open: !this.state.open })}
+          aria-controls={this.collapseId}
+          aria-expanded={this.state.open}>
+          {this.props.label}
+          {' '}
+          <CollapseIndicator open={this.state.open} />
+        </span>
+      </Card.Header>}
+      <Collapse in={this.state.open}>
+        <div id={this.collapseId}>
+          {this.props.children}
+        </div>
+      </Collapse>
+    </Card>
+  }
+}
+
+function SizeBadge ({ collection }) {
+  const size = isCollection(collection)
+    ? collection.count()
+    : collection.length
+  return size > 0 && <Badge variant='light' pill>{size}</Badge>
+}
+
+class List extends Component {
   add = () => {
     const defaultValue = this.props.default
     const newItem = _.isObjectLike(this.props.default) && !isValueObject(defaultValue)
@@ -31,46 +68,25 @@ class List extends Component {
   }
 
   render () {
-    const collapseId = _.uniqueId('List-collapse-')
-    const size = isCollection(this.props.value)
-      ? this.props.value.count()
-      : this.props.value.length
     return (
       <div className='List'>
-        <Card border='light'>
-          {this.props.label && <Card.Header>
-            <span className='List__toggle' onClick={() => this.setState({ open: !this.state.open })}
-              aria-controls={collapseId}
-              aria-expanded={this.state.open}>
-              {this.props.label}
-              {' '}
-              {size > 0 && <Badge variant='light' pill>{size}</Badge>}
-              {' '}
-              <i className={classNames({
-                'fas': true,
-                'fa-angle-up': this.state.open,
-                'fa-angle-down': !this.state.open
-              })} />
-            </span>
-          </Card.Header>}
-          <Collapse in={this.state.open}>
-            <div id={collapseId}>
-              <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
-                {React.Children.map(this.props.children, child =>
-                  <ListGroup.Item as='li' key={child.key}>
-                    {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
-                    <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-              <Card.Body>
-                <Button onClick={this.add} size='sm' variant='outline-secondary'>
-                  Add {this.props.noun}
-                </Button>
-              </Card.Body>
-            </div>
-          </Collapse>
-        </Card>
+        <CollapsibleCard
+          label={<>{this.props.label}{' '}<SizeBadge collection={this.props.value} /></>}
+          collapsed={this.props.collapsed}>
+          <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
+            {React.Children.map(this.props.children, child =>
+              <ListGroup.Item as='li' key={child.key}>
+                {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
+                <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+          <Card.Body>
+            <Button onClick={this.add} size='sm' variant='outline-secondary'>
+              Add {this.props.noun}
+            </Button>
+          </Card.Body>
+        </CollapsibleCard>
       </div>
     )
   }
