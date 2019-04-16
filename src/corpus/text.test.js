@@ -1,111 +1,53 @@
 
 import { List } from 'immutable'
 import _ from 'lodash'
-import { factory } from 'factory-girl'
-import Reference from 'bibliography/Reference'
 import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
 
+const manuscriptConfig = {
+  uniqueId: 'abc-cde-123',
+  siglumDisambiguator: '1',
+  museumNumber: 'BM.X',
+  accession: 'X.1',
+  periodModifier: periodModifiers.get('Late'),
+  period: periods.get('Ur III'),
+  provenance: provenances.get('Nippur'),
+  type: types.get('School'),
+  notes: 'some notes',
+  references: new List()
+}
+
+const chapterConfig = {
+  classification: 'Ancient',
+  stage: 'Old Babylonian',
+  version: 'A',
+  name: 'III',
+  order: -1,
+  manuscripts: List.of(new Manuscript(manuscriptConfig))
+}
+
+const textConfig = {
+  category: 1,
+  index: 1,
+  name: 'Palm and Vine',
+  numberOfVerses: 930,
+  approximateVerses: true,
+  chapters: List.of(new Chapter(chapterConfig))
+}
+
 describe('Text', () => {
-  let config
-  let text
-
-  beforeEach(async () => {
-    config = {
-      category: 1,
-      index: 1,
-      name: 'Palm and Vine',
-      numberOfVerses: 930,
-      approximateVerses: true,
-      chapters: List.of(
-        new Chapter({
-          classification: 'Ancient',
-          stage: 'Neo-Babylonian',
-          version: 'A',
-          name: 'Morrigan',
-          order: 77
-        }),
-        new Chapter({
-          classification: 'Ancient',
-          stage: 'Old Babylonian',
-          name: 'IIc',
-          order: 1,
-          manuscripts: List.of(
-            new Manuscript({
-              uniqueId: 'abc-cde-123',
-              siglumDisambiguator: '1',
-              museumNumber: 'BM.X',
-              accession: 'X.1',
-              periodModifier: periodModifiers.get('Late'),
-              period: periods.get('Ur III'),
-              provenance: provenances.get('Nippur'),
-              type: types.get('School'),
-              note: 'some notes',
-              references: List.of(new Reference(
-                'DISCUSSION',
-                '34-54',
-                '',
-                List(),
-                await factory.build('bibliographyEntry')
-              ))
-            })
-          )
-        })
-      )
-    }
-    text = new Text(config)
-  })
-
-  test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(text[property]).toEqual(expected)
-  })
+  testProperties(textConfig, Text)
 })
 
 describe('Chapter', () => {
-  const config = {
-    classification: 'Ancient',
-    stage: 'Old Babylonian',
-    version: 'A',
-    name: 'III',
-    order: -1,
-    manuscripts: List.of(
-      new Manuscript({
-        uniqueId: 'abc-cde-123',
-        siglumDisambiguator: '1',
-        museumNumber: 'BM.X',
-        accession: 'X.1',
-        periodModifier: periodModifiers.get('Late'),
-        period: periods.get('Ur III'),
-        provenance: provenances.get('Nippur'),
-        type: types.get('School'),
-        note: 'some notes',
-        references: new List()
-      })
-    )
-  }
-  const chapter = new Chapter(config)
-
-  test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(chapter[property]).toEqual(expected)
-  })
+  testProperties(chapterConfig, Chapter)
 })
 
 describe('Manuscript', () => {
-  const config = {
-    uniqueId: 'abc-cde-123',
-    siglumDisambiguator: '1',
-    museumNumber: 'BM.X',
-    accession: 'X.1',
-    periodModifier: periodModifiers.get('Late'),
-    period: periods.get('Ur III'),
-    provenance: provenances.get('Nippur'),
-    type: types.get('School'),
-    notes: 'some notes',
-    references: new List()
-  }
-
-  const manuscript = new Manuscript(config)
-
-  test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(manuscript[property]).toEqual(expected)
-  })
+  testProperties(manuscriptConfig, Manuscript)
 })
+
+function testProperties (config, Model) {
+  test.each(_.toPairs(config))('%s', (property, expected) => {
+    expect(new Model(config)[property]).toEqual(expected)
+  })
+}
