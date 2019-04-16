@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Button, Col, Alert, Badge, Nav } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Form, Button, Col, Alert, Badge } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import Promise from 'bluebird'
@@ -11,6 +10,7 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import { Manuscript } from './text'
 import ManuscriptForm from './ManuscriptForm'
+import ChapterNavigation from './ChapterNavigation'
 
 function DetailsRow ({ chapter }) {
   return (
@@ -41,15 +41,7 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliograph
   const handeManuscriptsChange = manuscripts => onChange(text.setIn(['chapters', chapterIndex, 'manuscripts'], manuscripts))
   return (
     <AppContent crumbs={['Corpus', chapterId]} title={<>Edit {chapterId} <small><Badge variant='warning'>Beta</Badge></small></>}>
-      <Nav variant='tabs'>
-        {text.chapters.sortBy(chapter => chapter.order).map((chapter, index) =>
-          <Nav.Item key={index}>
-            <LinkContainer to={`/corpus/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}>
-              <Nav.Link>{chapter.stage} {chapter.name}</Nav.Link>
-            </LinkContainer>
-          </Nav.Item>
-        )}
-      </Nav>
+      <ChapterNavigation text={text} />
       {chapter
         ? (
           <Form onSubmit={onSubmit}>
