@@ -6,27 +6,19 @@ export default class FakeApi {
   expectations = List()
 
   client = {
-    fetchJson: (path, authenticate) => {
-      const expectationIndex = this.expectations.findIndex(entry => entry.method === 'GET' && entry.path === path && entry.authenticate === authenticate)
-      if (expectationIndex >= 0) {
-        const expectation = this.expectations.get(expectationIndex)
-        this.expectations = this.expectations.setIn([expectationIndex, 'called'], true)
-        return Promise.resolve(expectation.response)
-      } else {
-        return Promise.reject(new Error(`Unexpected ${authenticate ? 'authenticated' : 'not-authenticated'} fetchJson: ${path}`))
-      }
-    },
+    fetchJson: jest.fn().mockImplementation((path, authenticate) => {
+      const expectation = this.expectations.find(entry => entry.method === 'GET' && entry.path === path && entry.authenticate === authenticate)
+      return expectation
+        ? Promise.resolve(expectation.response)
+        : Promise.reject(new Error(`Unexpected ${authenticate ? 'authenticated' : 'not-authenticated'} fetchJson: ${path}`))
+    }),
 
-    postJson: (path, authenticate) => {
-      const expectationIndex = this.expectations.findIndex(entry => entry.method === 'POST' && entry.path === path)
-      if (expectationIndex >= 0) {
-        const expectation = this.expectations.get(expectationIndex)
-        this.expectations = this.expectations.setIn([expectationIndex, 'called'], true)
-        return Promise.resolve(expectation.response)
-      } else {
-        return Promise.reject(new Error(`Unexpected ${authenticate ? 'authenticated' : 'not-authenticated'} postJson: ${path}`))
-      }
-    },
+    postJson: jest.fn().mockImplementation(path => {
+      const expectation = this.expectations.find(entry => entry.method === 'POST' && entry.path === path)
+      return expectation
+        ? Promise.resolve(expectation.response)
+        : Promise.reject(new Error(`Unexpected postJson: ${path}`))
+    }),
 
     fetchBlob: (path, authenticate) => {
       return Promise.reject(new Error(`Unexpected ${authenticate ? 'authenticated' : 'not-authenticated'} fetchBlob: ${path}`))
@@ -75,6 +67,17 @@ export default class FakeApi {
   }
 
   verifyExpectations () {
-    return this.expectations.filter(request => request.verify && !request.called)
+    this.expectations
+      .filter(expectation => expectation.verify)
+      .forEach(expectation => {
+        switch (expectation.method) {
+          case 'GET':
+            expect(this.client.fetchJson).toHaveBeenCalledWith(expectation.path, expectation.authenticate)
+            break
+          case 'POST':
+            expect(this.client.postJson).toHaveBeenCalledWith(expectation.path, expect.anything())
+            break
+        }
+      })
   }
 }

@@ -1,4 +1,4 @@
-import { Record, List } from 'immutable'
+import { Record } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 
@@ -42,11 +42,11 @@ const textDto = {
   ]
 }
 
-let apiDriver
+let fakeApi
 let appDriver
 
 afterEach(() => {
-  expect(apiDriver.verifyExpectations()).toEqual(List())
+  fakeApi.verifyExpectations()
 })
 
 describe('Diplay chapter', () => {
@@ -54,8 +54,8 @@ describe('Diplay chapter', () => {
   const chapterTitle = createChapterTitle(chapter)
 
   beforeEach(async () => {
-    apiDriver = new FakeApi().expectText(textDto)
-    appDriver = new AppDriver(apiDriver.client)
+    fakeApi = new FakeApi().expectText(textDto)
+    appDriver = new AppDriver(fakeApi.client)
       .withSession()
       .withPath(createChapterPath(chapter.stage, chapter.name))
       .render()
@@ -106,8 +106,8 @@ describe('Add manuscript', () => {
   const chapter = textDto.chapters[0]
 
   beforeEach(async () => {
-    apiDriver = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(apiDriver.client)
+    fakeApi = new FakeApi().allowText(textDto)
+    appDriver = new AppDriver(fakeApi.client)
       .withSession()
       .withPath(createChapterPath(chapter.stage, chapter.name))
       .render()
@@ -125,7 +125,7 @@ describe('Add manuscript', () => {
     ['Type', 'type', 'Library'],
     ['Notes', 'notes', '']
   ])('%s', (label, property, expectedValue) => {
-    apiDriver.expectUpdateText(textDto)
+    fakeApi.expectUpdateText(textDto)
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
     appDriver.click('Save')
@@ -137,8 +137,8 @@ describe('Chapter not found', () => {
   const chapterName = 'Unknown Chapter'
 
   beforeEach(async () => {
-    apiDriver = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(apiDriver.client)
+    fakeApi = new FakeApi().allowText(textDto)
+    appDriver = new AppDriver(fakeApi.client)
       .withSession()
       .withPath(createChapterPath(chapter.stage, chapterName))
       .render()
