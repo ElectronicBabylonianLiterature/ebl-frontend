@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { is } from 'immutable'
 import { Alert, Badge } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
-import _ from 'lodash'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
@@ -9,6 +9,17 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ChapterForm from './ChapterForm'
 import ChapterNavigation from './ChapterNavigation'
+
+function textChanged (prevProps, props) {
+  return prevProps.match.params.category !== props.match.params.category ||
+    prevProps.match.params.index !== props.match.params.index
+}
+
+function chapterChanged (prevProps, props) {
+  return !is(prevProps.text, props.text) ||
+    prevProps.match.params.stage !== props.match.params.stage ||
+    prevProps.match.params.name !== props.match.params.name
+}
 
 function ChapterTitle ({ text, stage, name }) {
   return <>
@@ -43,7 +54,7 @@ class ChapterController extends Component {
   }
 
   shouldUpdate (prevProps, props) {
-    return !_.isEqual(prevProps.match.params, props.match.params)
+    return chapterChanged(prevProps, props)
   }
 
   componentWillUnmount () {
@@ -107,6 +118,6 @@ export default withData(
     return textService.find(category, index)
   },
   {
-    shouldUpdate: (prevProps, props) => prevProps.match.params.category !== props.match.params.category || prevProps.match.params.index !== props.match.params.index
+    shouldUpdate: textChanged
   }
 )
