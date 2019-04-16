@@ -10,16 +10,22 @@ import ErrorAlert from 'common/ErrorAlert'
 import ChapterForm from './ChapterForm'
 import ChapterNavigation from './ChapterNavigation'
 
+function ChapterTitle ({ text, stage, name }) {
+  return <>
+    <ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}
+  </>
+}
+
 function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliography, disabled }) {
   const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapter.stage === stage && chapter.name === name) || [-1, null]
-  const chapterId = <><ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}</>
+  const title = <ChapterTitle text={text} stage={stage} name={name} />
   const handleChange = chapter => onChange(text.setIn(['chapters', chapterIndex], chapter))
   return (
-    <AppContent crumbs={['Corpus', chapterId]} title={<>Edit {chapterId} <small><Badge variant='warning'>Beta</Badge></small></>}>
+    <AppContent crumbs={['Corpus', title]} title={<>Edit {title} <small><Badge variant='warning'>Beta</Badge></small></>}>
       <ChapterNavigation text={text} />
       {chapter
         ? <ChapterForm chapter={chapter} disabled={disabled} searchBibliography={searchBibliography} onChange={handleChange} onSubmit={onSubmit} />
-        : (stage !== '' && name !== '') && <Alert variant='danger'>Chapter {chapterId} not found.</Alert>
+        : (stage !== '' && name !== '') && <Alert variant='danger'>Chapter {title} not found.</Alert>
       }
     </AppContent>
   )
