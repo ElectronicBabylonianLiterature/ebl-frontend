@@ -25,7 +25,7 @@ const textDto = {
       order: 1,
       manuscripts: [
         {
-          uniqueId: 'abc-cde-123',
+          id: 'abc-cde-123',
           siglum: 'UIII Nippur 1',
           siglumDisambiguator: '1c',
           museumNumber: 'BM.X',

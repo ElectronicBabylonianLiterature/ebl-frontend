@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
 
 const manuscriptConfig = {
-  uniqueId: 'abc-cde-123',
+  id: 'abc-cde-123',
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
   accession: 'X.1',
