@@ -61,33 +61,46 @@ class ChapterController extends Component {
     this.updatePromise.cancel()
   }
 
-  handleChange = text => {
+  setText = text => {
     this.setState({
       ...this.state,
       text: text
     })
   }
 
+  setStateUpdating = () => this.setState({
+    ...this.state,
+    saving: true,
+    error: null
+  })
+
+  setStateError = error => this.setState({
+    saving: false,
+    error: error
+  })
+
+  setStateUpdated = updatedText => this.setState({
+    text: updatedText,
+    saving: false,
+    error: null
+  })
+
+  updateText = () => {
+    this.setStateUpdating()
+    return this.props.textService
+      .update(
+        this.props.text.category,
+        this.props.text.index,
+        this.state.text
+      )
+      .then(this.setStateUpdated)
+      .catch(this.setStateError)
+  }
+
   submit = event => {
     event.preventDefault()
     this.updatePromise.cancel()
-    this.setState({
-      ...this.state,
-      saving: true,
-      error: null
-    })
-    this.updatePromise = this.props.textService.update(
-      this.props.text.category,
-      this.props.text.index,
-      this.state.text
-    ).then(updatedText => this.setState({
-      text: updatedText,
-      saving: false,
-      error: null
-    })).catch(error => this.setState({
-      saving: false,
-      error: error
-    }))
+    this.updatePromise = this.updateText()
   }
 
   render () {
@@ -96,7 +109,7 @@ class ChapterController extends Component {
         text={this.state.text}
         stage={decodeURIComponent(this.props.match.params.stage || '')}
         name={decodeURIComponent(this.props.match.params.chapter || '')}
-        onChange={this.handleChange}
+        onChange={this.setText}
         onSubmit={this.submit}
         searchBibliography={query => this.props.bibliographyService.search(query)}
         disabled={this.state.saving}
