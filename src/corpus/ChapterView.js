@@ -10,7 +10,7 @@ import withData from 'http/withData'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import { Manuscript, periodModifiers, periods, provenances, types } from './text'
-import { ReferencesForm } from 'bibliography/References'
+import ReferencesForm from 'bibliography/ReferencesForm'
 
 function DetailsRow ({ chapter }) {
   return (

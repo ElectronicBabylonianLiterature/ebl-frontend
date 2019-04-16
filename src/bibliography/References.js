@@ -2,28 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import { List } from 'immutable'
-import ListForm from 'common/List'
-import ReferenceForm from './ReferenceForm'
-import Reference from 'bibliography/Reference'
-
-const defaultReference = new Reference()
-
-export function ReferencesForm ({ searchBibliography, value, onChange, label, collapsed }) {
-  return <ListForm
-    value={value}
-    onChange={onChange}
-    label={label}
-    noun='Reference'
-    default={defaultReference}
-    collapsed={collapsed}>
-    {value.map((reference, index) =>
-      <ReferenceForm
-        searchBibliography={searchBibliography}
-        key={index}
-        value={reference} />
-    )}
-  </ListForm>
-}
+import ReferencesForm, { defaultReference } from './ReferencesForm'
 
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
