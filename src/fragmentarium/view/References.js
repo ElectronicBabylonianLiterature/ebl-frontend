@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import { List } from 'immutable'
-import ReferencesForm, { defaultReference } from './ReferencesForm'
+import ReferencesForm, { defaultReference } from 'bibliography/ReferencesForm'
 
 function References ({ searchBibliography, references, onChange, onSubmit, disabled }) {
   return (
