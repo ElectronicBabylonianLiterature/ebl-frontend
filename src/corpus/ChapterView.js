@@ -12,7 +12,7 @@ import { Manuscript } from './text'
 import ManuscriptForm from './ManuscriptForm'
 import ChapterNavigation from './ChapterNavigation'
 
-function DetailsRow ({ chapter }) {
+function ChapterDetails ({ chapter }) {
   return (
     <Form.Row>
       <Form.Group as={Col} controlId={_.uniqueId('ChapterView-')}>
@@ -35,10 +35,19 @@ function DetailsRow ({ chapter }) {
   )
 }
 
+function ChapterManuscripts ({ chapter, onChange, searchBibliography }) {
+  const handeManuscriptsChange = manuscripts => onChange(chapter.set('manuscripts', manuscripts))
+  return <ListForm label='Manuscripts' noun='manuscript' default={Manuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
+    {chapter.manuscripts.map((manuscript, index) =>
+      <ManuscriptForm key={index} manuscript={manuscript} searchBibliography={searchBibliography} />
+    )}
+  </ListForm>
+}
+
 function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliography, disabled }) {
   const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapter.stage === stage && chapter.name === name) || [-1, null]
   const chapterId = <><ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}</>
-  const handeManuscriptsChange = manuscripts => onChange(text.setIn(['chapters', chapterIndex, 'manuscripts'], manuscripts))
+  const handleChange = chapter => onChange(text.setIn(['chapters', chapterIndex], chapter))
   return (
     <AppContent crumbs={['Corpus', chapterId]} title={<>Edit {chapterId} <small><Badge variant='warning'>Beta</Badge></small></>}>
       <ChapterNavigation text={text} />
@@ -46,12 +55,8 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliograph
         ? (
           <Form onSubmit={onSubmit}>
             <fieldset disabled={disabled}>
-              <DetailsRow chapter={chapter} />
-              <ListForm label='Manuscripts' noun='manuscript' default={Manuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
-                {chapter.manuscripts.map((manuscript, index) =>
-                  <ManuscriptForm key={index} manuscript={manuscript} searchBibliography={searchBibliography} />
-                )}
-              </ListForm>
+              <ChapterDetails chapter={chapter} />
+              <ChapterManuscripts chapter={chapter} searchBibliography={searchBibliography} onChange={handleChange} />
               <Button variant='primary' type='submit'>Save</Button>
             </fieldset>
           </Form>
