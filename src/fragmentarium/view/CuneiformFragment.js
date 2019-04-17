@@ -34,7 +34,7 @@ function Info ({ fragment }) {
       <ReferenceList references={fragment.references} />
       {fragment.hasUncuratedReferences && <UncuratedReferences uncuratedReferences={fragment.uncuratedReferences} />}
     </section>
-    <Record record={fragment.record} />
+    <Record record={fragment.uniqueRecord} />
     <OrganizationLinks
       cdliNumber={fragment.cdliNumber}
       bmIdNumber={fragment.bmIdNumber} />

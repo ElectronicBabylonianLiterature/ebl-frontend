@@ -86,8 +86,8 @@ it('Renders all references', () => {
 })
 
 it('Renders all records', () => {
-  for (let record of fragment.record) {
-    expect(container).toHaveTextContent(record.user)
+  for (let uniqueRecord of fragment.uniqueRecord) {
+    expect(container).toHaveTextContent(uniqueRecord.user)
   }
 })
 
