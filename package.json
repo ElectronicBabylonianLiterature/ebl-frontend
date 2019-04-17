@@ -38,6 +38,7 @@
   "devDependencies": {
     "chance": "^1.0.16",
     "factory-girl": "^5.0.2",
+    "flow-bin": "^0.97.0",
     "jest-date-mock": "^1.0.2",
     "jest-dom": "^3.0.0",
     "jest-fetch-mock": "^2.1.0",
