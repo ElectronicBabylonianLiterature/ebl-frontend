@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, Button, Col } from 'react-bootstrap'
 import _ from 'lodash'
 import ListForm from 'common/List'
-import { Manuscript } from './text'
+import { createManuscript } from './text'
 import ManuscriptForm from './ManuscriptForm'
 
 function ChapterDetails ({ chapter }) {
@@ -30,7 +30,7 @@ function ChapterDetails ({ chapter }) {
 
 function ChapterManuscripts ({ chapter, onChange, searchBibliography }) {
   const handeManuscriptsChange = manuscripts => onChange(chapter.set('manuscripts', manuscripts))
-  return <ListForm label='Manuscripts' noun='manuscript' default={Manuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
+  return <ListForm label='Manuscripts' noun='manuscript' default={createManuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
     {chapter.manuscripts.map((manuscript, index) =>
       <ManuscriptForm key={index} manuscript={manuscript} searchBibliography={searchBibliography} />
     )}

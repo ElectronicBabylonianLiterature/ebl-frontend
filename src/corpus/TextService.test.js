@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
-import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
+import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types } from './text'
 import TextService from './TextService'
 
 const apiClient = {
@@ -87,21 +87,21 @@ const textUpdateDto = {
   ]
 }
 
-const text = Text({
+const text = createText({
   category: 1,
   index: 1,
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
   chapters: List.of(
-    new Chapter({
+    createChapter({
       classification: 'Ancient',
       stage: 'Old Babylonian',
       version: 'A',
       name: 'The Only Chapter',
       order: 1,
       manuscripts: List.of(
-        new Manuscript({
+        createManuscript({
           id: 'abc-cde-123',
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',

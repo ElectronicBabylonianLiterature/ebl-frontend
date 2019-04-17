@@ -1,7 +1,7 @@
 
 import { List } from 'immutable'
 import _ from 'lodash'
-import { Text, Chapter, Manuscript, periodModifiers, periods, provenances, types } from './text'
+import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types } from './text'
 
 const manuscriptConfig = {
   id: 'abc-cde-123',
@@ -22,7 +22,7 @@ const chapterConfig = {
   version: 'A',
   name: 'III',
   order: -1,
-  manuscripts: List.of(new Manuscript(manuscriptConfig))
+  manuscripts: List.of(createManuscript(manuscriptConfig))
 }
 
 const textConfig = {
@@ -31,23 +31,23 @@ const textConfig = {
   name: 'Palm and Vine',
   numberOfVerses: 930,
   approximateVerses: true,
-  chapters: List.of(new Chapter(chapterConfig))
+  chapters: List.of(createChapter(chapterConfig))
 }
 
 describe('Text', () => {
-  testProperties(textConfig, Text)
+  testProperties(textConfig, createText)
 })
 
 describe('Chapter', () => {
-  testProperties(chapterConfig, Chapter)
+  testProperties(chapterConfig, createChapter)
 })
 
 describe('Manuscript', () => {
-  testProperties(manuscriptConfig, Manuscript)
+  testProperties(manuscriptConfig, createManuscript)
 })
 
-function testProperties (config, Model) {
+function testProperties (config, factory) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(new Model(config)[property]).toEqual(expected)
+    expect(factory(config)[property]).toEqual(expected)
   })
 }
