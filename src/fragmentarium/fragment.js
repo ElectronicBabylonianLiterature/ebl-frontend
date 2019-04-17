@@ -1,4 +1,5 @@
 import { List, Record, Map } from 'immutable'
+import Moment from 'moment'
 
 const FolioType = Record({ name: '', hasImage: false })
 const folioTypes = Map({
@@ -9,6 +10,28 @@ const folioTypes = Map({
   MJG: FolioType({ name: 'Geller', hasImage: true }),
   WRM: FolioType({ name: 'Mayer', hasImage: true })
 })
+
+function getYear (date) {
+  return Moment(date).year()
+}
+
+function getDay (date) {
+  return Moment(date).dayOfYear()
+}
+
+function filterRecords (record) {
+  return record.reduce((newList, recordEntry, index) => {
+    let prevRecordEntry = record.get(index - 1)
+    return index === 0
+      ? newList.push(recordEntry)
+      : recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
+      getYear(recordEntry.date) === getYear(prevRecordEntry.date) &&
+      getDay(recordEntry.date) === getDay(prevRecordEntry.date)
+        ? newList
+        : newList.push(recordEntry)
+  },
+  List())
+}
 
 export class Folio {
   #type
@@ -66,6 +89,10 @@ export class Fragment extends Record({
 }) {
   get hasUncuratedReferences () {
     return List.isList(this.uncuratedReferences)
+  }
+
+  get uniqueRecord () {
+    return filterRecords(this.record)
   }
 
   setReferences (references) {

@@ -65,6 +65,37 @@ test.each([
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
 
+test.each([
+  [List.of({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'SameDate', date: '2018-11-21T10:27:36.127248', type: 'Transliteration' }),
+  List.of({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+  ],
+
+  [List.of({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' }),
+  List.of({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+  ],
+
+  [List.of({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' }),
+  List.of({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+  ],
+
+  [List.of({ user: 'User1SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'User2SameDate', date: '2018-11-21T10:27:36.127248', type: 'Transliteration' },
+    { user: 'User1SameDate', date: '2018-11-21T10:27:36.127249', type: 'Transliteration' }),
+  List.of({ user: 'User1SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' },
+    { user: 'User2SameDate', date: '2018-11-21T10:27:36.127248', type: 'Transliteration' },
+    { user: 'User1SameDate', date: '2018-11-21T10:27:36.127249', type: 'Transliteration' })
+  ]
+
+])('', (record, expected) => {
+  const fragment = new Fragment({ record })
+  expect(fragment.uniqueRecord).toEqual(expected)
+})
+
 describe('Folio', () => {
   const chance = new Chance()
 
