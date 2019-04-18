@@ -19,7 +19,7 @@ function getDay (date) {
   return moment(date).dayOfYear()
 }
 
-function filterRecords (record) {
+function filterRecord (record) {
   return record.reduce((filteredRecord, recordEntry, index) => {
     let prevRecordEntry = record.get(index - 1)
     return index === 0
@@ -92,7 +92,7 @@ export class Fragment extends Record({
   }
 
   get uniqueRecord () {
-    return filterRecords(this.record)
+    return filterRecord(this.record)
   }
 
   setReferences (references) {
