@@ -28,11 +28,9 @@ function compareRecordEntries (prevRecordEntry, recordEntry) {
 function filterRecord (record) {
   return record.reduce((filteredRecord, recordEntry, index) => {
     let prevRecordEntry = filteredRecord.get(index - 1)
-    return index === 0
+    return filteredRecord.isEmpty() || !compareRecordEntries(prevRecordEntry, recordEntry)
       ? filteredRecord.push(recordEntry)
-      : compareRecordEntries(prevRecordEntry, recordEntry)
-        ? filteredRecord
-        : filteredRecord.push(recordEntry)
+      : filteredRecord
   },
   List())
 }
