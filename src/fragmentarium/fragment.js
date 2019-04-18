@@ -20,15 +20,15 @@ function getDay (date) {
 }
 
 function filterRecords (record) {
-  return record.reduce((newList, recordEntry, index) => {
+  return record.reduce((filteredRecord, recordEntry, index) => {
     let prevRecordEntry = record.get(index - 1)
     return index === 0
-      ? newList.push(recordEntry)
+      ? filteredRecord.push(recordEntry)
       : recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
       getYear(recordEntry.date) === getYear(prevRecordEntry.date) &&
       getDay(recordEntry.date) === getDay(prevRecordEntry.date)
-        ? newList
-        : newList.push(recordEntry)
+        ? filteredRecord
+        : filteredRecord.push(recordEntry)
   },
   List())
 }
