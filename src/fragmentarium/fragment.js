@@ -1,5 +1,5 @@
 import { List, Record, Map } from 'immutable'
-import Moment from 'moment'
+import moment from 'moment'
 
 const FolioType = Record({ name: '', hasImage: false })
 const folioTypes = Map({
@@ -12,11 +12,11 @@ const folioTypes = Map({
 })
 
 function getYear (date) {
-  return Moment(date).year()
+  return moment(date).year()
 }
 
 function getDay (date) {
-  return Moment(date).dayOfYear()
+  return moment(date).dayOfYear()
 }
 
 function filterRecords (record) {
