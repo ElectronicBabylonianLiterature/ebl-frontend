@@ -19,14 +19,18 @@ function getDay (date) {
   return moment(date).dayOfYear()
 }
 
+function compareRecordEntries (prevRecordEntry, recordEntry) {
+  return recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
+  getYear(recordEntry.date) === getYear(prevRecordEntry.date) &&
+  getDay(recordEntry.date) === getDay(prevRecordEntry.date)
+}
+
 function filterRecord (record) {
   return record.reduce((filteredRecord, recordEntry, index) => {
     let prevRecordEntry = filteredRecord.get(index - 1)
     return index === 0
       ? filteredRecord.push(recordEntry)
-      : recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
-      getYear(recordEntry.date) === getYear(prevRecordEntry.date) &&
-      getDay(recordEntry.date) === getDay(prevRecordEntry.date)
+      : compareRecordEntries(prevRecordEntry, recordEntry)
         ? filteredRecord
         : filteredRecord.push(recordEntry)
   },
