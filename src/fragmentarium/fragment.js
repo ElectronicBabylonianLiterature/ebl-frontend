@@ -21,7 +21,7 @@ function getDay (date) {
 
 function filterRecord (record) {
   return record.reduce((filteredRecord, recordEntry, index) => {
-    let prevRecordEntry = record.get(index - 1)
+    let prevRecordEntry = filteredRecord.get(index - 1)
     return index === 0
       ? filteredRecord.push(recordEntry)
       : recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
