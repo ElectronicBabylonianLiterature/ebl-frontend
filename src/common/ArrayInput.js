@@ -9,7 +9,10 @@ class ArrayInput extends Component {
   }
 
   onChange = event => {
-    const array = event.target.value.split(this.props.separator)
+    const value = event.target.value
+    const array = _.isEmpty(value)
+      ? []
+      : value.split(this.props.separator)
     this.props.onChange(array)
   }
 

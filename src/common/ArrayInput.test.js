@@ -11,19 +11,32 @@ let onChange
 
 beforeEach(() => {
   onChange = jest.fn()
-  element = renderArrayInput()
 })
 
 test('Input element', () => {
+  element = renderArrayInput(value)
   expect(element.getByLabelText(label).value).toEqual(value.join(separator))
 })
 
+test('Displays empty input on empty array', () => {
+  element = renderArrayInput([])
+  expect(element.getByLabelText(label).value).toEqual('')
+})
+
 test('Calls onChange with updated value on change', () => {
+  element = renderArrayInput(value)
   whenChangedByValue(element, value.join(separator), 'new value')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => newValue.split(separator))
 })
 
-function renderArrayInput () {
+test('Calls onChange with empty array on empty value', () => {
+  element = renderArrayInput(value)
+  whenChangedByValue(element, value.join(separator), '')
+    .expect(onChange)
+    .toHaveBeenCalledWith(newValue => [])
+})
+
+function renderArrayInput (value) {
   return render(<ArrayInput id='array' value={value} separator={separator} onChange={onChange}>{label}</ArrayInput>)
 }
