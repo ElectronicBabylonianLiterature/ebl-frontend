@@ -18,15 +18,15 @@ describe('Record has entries', () => {
 
   it(`Renders all entries`, () => {
     for (let entry of record) {
-      const expectedEntry = `${entry.user} (${entry.type}, ${moment(entry.date).format('D/M/YYYY')})`
+      const expectedEntry = `${entry.user} (${entry.type}, ${entry.moment.format('D/M/YYYY')})`
       expect(container).toHaveTextContent(expectedEntry)
     }
   })
 
   it(`Entries have correct datetTime`, () => {
     for (let entry of record) {
-      expect(element.getByText(moment(entry.date).format('D/M/YYYY')))
-        .toHaveAttribute('datetime', moment(entry.date).format('YYYY-MM-DD'))
+      expect(element.getByText(entry.moment.format('D/M/YYYY')))
+        .toHaveAttribute('datetime', entry.moment.format('YYYY-MM-DD'))
     }
   })
 })

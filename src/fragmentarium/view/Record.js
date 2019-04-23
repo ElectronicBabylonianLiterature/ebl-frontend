@@ -1,10 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import Moment from 'moment'
-import { extendMoment } from 'moment-range'
 
 import './Record.css'
-
-const moment = extendMoment(Moment)
 
 function Date ({ date, humanFormat, machineFormat }) {
   const humanDate = date.format(humanFormat)
@@ -19,7 +15,7 @@ function Year ({ date }) {
 function BasicEntry ({ entry }) {
   return (<Fragment>
     {entry.user} ({entry.type}, <Date
-      date={moment(entry.date)}
+      date={entry.moment}
       humanFormat='D/M/YYYY'
       machineFormat='YYYY-MM-DD'
     />)
@@ -27,9 +23,8 @@ function BasicEntry ({ entry }) {
 }
 
 function HistoricalTransliteration ({ entry }) {
-  const range = moment.range(entry.date)
   return (<Fragment>
-    {entry.user} (Transliteration, <Year date={range.start} />–<Year date={range.end} />)
+    {entry.user} (Transliteration, <Year date={entry.moment.start} />–<Year date={entry.moment.end} />)
   </Fragment>)
 }
 
