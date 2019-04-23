@@ -24,7 +24,7 @@ describe('Fragment', () => {
       new Folio({ name: 'AKG', number: '435' })
     ]),
     record: List.of(
-      RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+      new RecordEntry({ user: 'Smith', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
     ),
     text: Text({
       lines: List.of(Line({
@@ -65,22 +65,41 @@ test.each([
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
 
-const ten = RecordEntry({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const eleven = RecordEntry({ user: 'SameDate', date: '2018-11-21T11:27:36.127248', type: 'Transliteration' })
-const twelve = RecordEntry({ user: 'SameDate', date: '2018-11-21T12:27:36.127248', type: 'Transliteration' })
+const ten = new RecordEntry({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+const eleven = new RecordEntry({ user: 'SameDate', date: '2018-11-21T11:27:36.127248', type: 'Transliteration' })
+const twelve = new RecordEntry({ user: 'SameDate', date: '2018-11-21T12:27:36.127248', type: 'Transliteration' })
 
-const day21 = RecordEntry({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const day22 = RecordEntry({ user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+const day21 = new RecordEntry({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+const day22 = new RecordEntry({ user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
 
-const year2017 = RecordEntry({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' })
-const year2018 = RecordEntry({ user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+const year2017 = new RecordEntry({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' })
+const year2018 = new RecordEntry({ user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
 
-const user1Ten = RecordEntry({ user: 'User1', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const user2Eleven = RecordEntry({ user: 'User2', date: '2018-11-21T11:00:36.127247', type: 'Review' })
-const user1ElevenThirty = RecordEntry({ user: 'User2', date: '2018-11-21T11:30:36.127247', type: 'Transliteration' })
+const transliterationTen = new RecordEntry({ user: 'User2', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+const revisionEleven = new RecordEntry({ user: 'User2', date: '2018-11-21T11:00:36.127247', type: 'Revision' })
+const transliterationElevenThirty = new RecordEntry({ user: 'User2', date: '2018-11-21T11:30:36.127247', type: 'Transliteration' })
 
-const historicalTransliteration = RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' })
-const revision = RecordEntry({ user: 'User2', date: '1999-04-17T10:50:36.127247', type: 'Revision' })
+const historicalTransliteration = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' })
+const revision = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247', type: 'Revision' })
+const transliteration = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247', type: 'Transliteration' })
+
+describe('RecordEntry', () => {
+  test.each([
+    [ten, eleven, true],
+    [day21, day22, false],
+    [year2017, year2018, false],
+    [transliterationTen, revisionEleven, false],
+    [historicalTransliteration, transliteration, false],
+    [transliteration, revision, false],
+    [historicalTransliteration, new RecordEntry({ user: 'User1', date: '1998-01-17T11:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' }), false],
+    [historicalTransliteration, new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-04-17T12:29:39.127247', type: 'HistoricalTransliteration' }), false],
+    [historicalTransliteration, new RecordEntry({ user: 'User1', date: '1998-01-18T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' }), false],
+    [historicalTransliteration, new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-05-17T10:29:39.127247', type: 'HistoricalTransliteration' }), false]
+  ])('%s dateEquals %s is %p', (first, second, expected) => {
+    expect(first.dateEquals(second)).toBe(expected)
+    expect(second.dateEquals(first)).toBe(expected)
+  })
+})
 
 test.each([
   [
@@ -99,8 +118,13 @@ test.each([
   ],
 
   [
-    List.of(user1Ten, user2Eleven, user1ElevenThirty),
-    List.of(user1Ten, user2Eleven, user1ElevenThirty)
+    List.of(transliterationTen, revisionEleven, transliterationElevenThirty),
+    List.of(transliterationTen, revisionEleven, transliterationElevenThirty)
+  ],
+
+  [
+    List.of(historicalTransliteration, transliteration),
+    List.of(historicalTransliteration, transliteration)
   ],
 
   [

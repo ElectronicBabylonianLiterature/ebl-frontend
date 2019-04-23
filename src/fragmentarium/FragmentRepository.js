@@ -13,7 +13,7 @@ function createFragment (dto) {
       thickness: dto.thickness.value
     }),
     folios: List(dto.folios).map(folioDto => new Folio(folioDto)),
-    record: List(dto.record).map(RecordEntry),
+    record: List(dto.record).map(recordDto => new RecordEntry(recordDto)),
     text: Text({ lines: List(dto.text.lines).map(dto => Line({
       ...dto,
       content: List(dto.content).map(token => fromJS(token))

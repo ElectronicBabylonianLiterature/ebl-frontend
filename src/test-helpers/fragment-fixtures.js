@@ -24,7 +24,6 @@ factory.define('record', RecordEntry, {
   date: date,
   type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
 })
-factory.setAdapter(new FactoryAdapter(), 'record')
 
 factory.extend('record', 'historicalRecord', {
   date: dateRange,

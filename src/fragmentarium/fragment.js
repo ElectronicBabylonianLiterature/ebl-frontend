@@ -57,7 +57,28 @@ export class Folio {
   }
 }
 
-export const RecordEntry = Record({ user: '', date: '', type: '' })
+export class RecordEntry extends Record({
+  user: '',
+  date: '',
+  type: ''
+}) {
+  get moment () {
+    return moment(this.date)
+  }
+
+  dateEquals (other) {
+    const sameUser = this.user === other.user
+    const sameType = this.type === other.type
+
+    if (!sameUser || !sameType || this.type === 'HistoricalTransliteration') {
+      return false
+    } else {
+      const sameYear = this.moment.year() === other.moment.year()
+      const sameDayOfYear = this.moment.dayOfYear() === other.moment.dayOfYear()
+      return sameYear && sameDayOfYear
+    }
+  }
+}
 
 export const Measures = Record({ length: null, width: null, thickness: null })
 
