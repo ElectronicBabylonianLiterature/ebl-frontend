@@ -55,16 +55,17 @@ export class RecordEntry extends Record({
   }
 
   dateEquals (other) {
+    const onSameDate = (first, second) => {
+      const sameYear = first.year() === second.year()
+      const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
+      return sameYear && sameDayOfYear
+    }
     const differentUser = this.user !== other.user
     const differentType = this.type !== other.type
 
-    if (differentUser || differentType || this.isHistorical) {
-      return false
-    } else {
-      const sameYear = this.moment.year() === other.moment.year()
-      const sameDayOfYear = this.moment.dayOfYear() === other.moment.dayOfYear()
-      return sameYear && sameDayOfYear
-    }
+    return differentUser || differentType || this.isHistorical
+      ? false
+      : onSameDate(this.moment, other.moment)
   }
 }
 
