@@ -45,16 +45,20 @@ export class RecordEntry extends Record({
   type: ''
 }) {
   get moment () {
-    return this.type === historicalTransliteration
+    return this.isHistorical
       ? moment.range(this.date)
       : moment(this.date)
   }
 
-  dateEquals (other) {
-    const sameUser = this.user === other.user
-    const sameType = this.type === other.type
+  get isHistorical () {
+    return this.type === historicalTransliteration
+  }
 
-    if (!sameUser || !sameType || this.type === historicalTransliteration) {
+  dateEquals (other) {
+    const differentUser = this.user !== other.user
+    const differentType = this.type !== other.type
+
+    if (differentUser || differentType || this.isHistorical) {
       return false
     } else {
       const sameYear = this.moment.year() === other.moment.year()

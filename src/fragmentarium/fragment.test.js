@@ -110,6 +110,14 @@ describe('RecordEntry', () => {
   ])('%s.moment is %s', (recordEntry, expected) => {
     expect(recordEntry.moment).toEqual(expected)
   })
+
+  test.each([
+    [transliteration, false],
+    [revision, false],
+    [historicalTransliteration, true]
+  ])('%s.isHistorical is %s', (recordEntry, expected) => {
+    expect(recordEntry.isHistorical).toEqual(expected)
+  })
 })
 
 test.each([

@@ -29,7 +29,7 @@ function HistoricalTransliteration ({ entry }) {
 }
 
 function Entry ({ entry }) {
-  return entry.type === 'HistoricalTransliteration'
+  return entry.isHistorical
     ? <HistoricalTransliteration entry={entry} />
     : <BasicEntry entry={entry} />
 }
