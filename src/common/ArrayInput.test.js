@@ -14,15 +14,11 @@ beforeEach(() => {
   element = renderArrayInput()
 })
 
-it('Displays value', () => {
-  expect(element.getByValue(value.join(separator))).toBeVisible()
+test('Input element', () => {
+  expect(element.getByLabelText(label).value).toEqual(value.join(separator))
 })
 
-it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
-})
-
-it('Calls onChange with updated value on change', () => {
+test('Calls onChange with updated value on change', () => {
   whenChangedByValue(element, value.join(separator), 'new value')
     .expect(onChange)
     .toHaveBeenCalledWith(newValue => newValue.split(separator))
