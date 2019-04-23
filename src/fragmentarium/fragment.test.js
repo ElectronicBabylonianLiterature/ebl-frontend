@@ -1,8 +1,11 @@
-
 import { Map, List } from 'immutable'
 import _ from 'lodash'
 import Chance from 'chance'
 import { Fragment, Measures, RecordEntry, Line, Text, UncuratedReference, Folio } from './fragment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
+
+const moment = extendMoment(Moment)
 
 describe('Fragment', () => {
   const config = {
@@ -98,6 +101,14 @@ describe('RecordEntry', () => {
   ])('%s dateEquals %s is %p', (first, second, expected) => {
     expect(first.dateEquals(second)).toBe(expected)
     expect(second.dateEquals(first)).toBe(expected)
+  })
+
+  test.each([
+    [transliteration, moment(transliteration.date)],
+    [revision, moment(revision.date)],
+    [historicalTransliteration, moment.range(historicalTransliteration.date)]
+  ])('%s.moment is %s', (recordEntry, expected) => {
+    expect(recordEntry.moment).toEqual(expected)
   })
 })
 

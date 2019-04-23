@@ -1,5 +1,8 @@
 import { List, Record, Map } from 'immutable'
-import moment from 'moment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
+
+const moment = extendMoment(Moment)
 
 const FolioType = Record({ name: '', hasImage: false })
 const folioTypes = Map({
@@ -34,20 +37,24 @@ export class Folio {
   }
 }
 
+const historicalTransliteration = 'HistoricalTransliteration'
+
 export class RecordEntry extends Record({
   user: '',
   date: '',
   type: ''
 }) {
   get moment () {
-    return moment(this.date)
+    return this.type === historicalTransliteration
+      ? moment.range(this.date)
+      : moment(this.date)
   }
 
   dateEquals (other) {
     const sameUser = this.user === other.user
     const sameType = this.type === other.type
 
-    if (!sameUser || !sameType || this.type === 'HistoricalTransliteration') {
+    if (!sameUser || !sameType || this.type === historicalTransliteration) {
       return false
     } else {
       const sameYear = this.moment.year() === other.moment.year()
