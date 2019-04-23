@@ -78,6 +78,7 @@ const atTwelve = atTen.set('date', '2018-11-21T12:27:36.127248')
 
 const on21thOctober = transliteration.set('user', 'Different Day').set('date', '2018-11-21T10:27:36.127247')
 const on22ndOctober = on21thOctober.set('date', '2018-11-22T10:27:36.127247')
+const on21stDecember = on21thOctober.set('date', '2018-12-22T10:27:36.127247')
 
 const userBob = revision.set('user', 'Bob')
 const userAlice = revision.set('user', 'Alice')
@@ -133,6 +134,11 @@ test.each([
   [
     List.of(on21thOctober, on22ndOctober),
     List.of(on21thOctober, on22ndOctober)
+  ],
+
+  [
+    List.of(on21thOctober, on21stDecember),
+    List.of(on21thOctober, on21stDecember)
   ],
 
   [
