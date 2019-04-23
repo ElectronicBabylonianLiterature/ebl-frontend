@@ -60,7 +60,7 @@ test.each([
   [List.of(UncuratedReference({ document: 'CAD 7', lines: List() })), true],
   [List(), true],
   [null, false]
-])('', (uncuratedReferences, expected) => {
+])('uncurated references: %s', (uncuratedReferences, expected) => {
   const fragment = new Fragment({ uncuratedReferences })
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
