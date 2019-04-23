@@ -68,30 +68,34 @@ test.each([
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
 
-const ten = new RecordEntry({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const eleven = new RecordEntry({ user: 'SameDate', date: '2018-11-21T11:27:36.127248', type: 'Transliteration' })
-const twelve = new RecordEntry({ user: 'SameDate', date: '2018-11-21T12:27:36.127248', type: 'Transliteration' })
+const historicalTransliteration = new RecordEntry({ user: 'User', date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' })
+const revision = new RecordEntry({ user: 'User', date: '1998-01-17T10:50:36.127247', type: 'Revision' })
+const transliteration = new RecordEntry({ user: 'User', date: '1998-01-17T10:50:36.127247', type: 'Transliteration' })
 
-const day21 = new RecordEntry({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const day22 = new RecordEntry({ user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+const atTen = transliteration.set('user', 'Same Date').set('date', '2018-11-21T10:27:36.127247')
+const atEleven = atTen.set('date', '2018-11-21T11:27:36.127248')
+const atTwelve = atTen.set('date', '2018-11-21T12:27:36.127248')
 
-const year2017 = new RecordEntry({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' })
-const year2018 = new RecordEntry({ user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
+const on21thOctober = transliteration.set('user', 'Different Day').set('date', '2018-11-21T10:27:36.127247')
+const on22ndOctober = on21thOctober.set('date', '2018-11-22T10:27:36.127247')
 
-const transliterationTen = new RecordEntry({ user: 'User2', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const revisionEleven = new RecordEntry({ user: 'User2', date: '2018-11-21T11:00:36.127247', type: 'Revision' })
-const transliterationElevenThirty = new RecordEntry({ user: 'User2', date: '2018-11-21T11:30:36.127247', type: 'Transliteration' })
+const userBob = revision.set('user', 'Bob')
+const userAlice = revision.set('user', 'Alice')
 
-const historicalTransliteration = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' })
-const revision = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247', type: 'Revision' })
-const transliteration = new RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247', type: 'Transliteration' })
+const year2017 = transliteration.set('user', 'Different Year').set('date', '2017-11-21T10:27:36.127247')
+const year2018 = year2017.set('date', '2018-11-22T10:27:36.127247')
+
+const transliterationAtTen = transliteration.set('user', 'Alternating Types').set('date', '2018-11-21T10:27:36.127247')
+const revisionAtEleven = revision.set('user', 'Alternating Types').set('date', '2018-11-21T11:00:36.127247')
+const transliterationAtElevenThirty = transliterationAtTen.set('date', '2018-11-21T11:30:36.127247')
 
 describe('RecordEntry', () => {
   test.each([
-    [ten, eleven, true],
-    [day21, day22, false],
+    [atTen, atEleven, true],
+    [on21thOctober, on22ndOctober, false],
+    [userAlice, userBob, false],
     [year2017, year2018, false],
-    [transliterationTen, revisionEleven, false],
+    [transliterationAtTen, revisionAtEleven, false],
     [historicalTransliteration, transliteration, false],
     [transliteration, revision, false],
     [historicalTransliteration, new RecordEntry({ user: 'User1', date: '1998-01-17T11:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' }), false],
@@ -122,13 +126,13 @@ describe('RecordEntry', () => {
 
 test.each([
   [
-    List.of(ten, eleven, twelve),
-    List.of(ten)
+    List.of(atTen, atEleven, atTwelve),
+    List.of(atTen)
   ],
 
   [
-    List.of(day21, day22),
-    List.of(day21, day22)
+    List.of(on21thOctober, on22ndOctober),
+    List.of(on21thOctober, on22ndOctober)
   ],
 
   [
@@ -137,8 +141,13 @@ test.each([
   ],
 
   [
-    List.of(transliterationTen, revisionEleven, transliterationElevenThirty),
-    List.of(transliterationTen, revisionEleven, transliterationElevenThirty)
+    List.of(userAlice, userBob),
+    List.of(userAlice, userBob)
+  ],
+
+  [
+    List.of(transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty),
+    List.of(transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty)
   ],
 
   [
