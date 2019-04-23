@@ -11,29 +11,6 @@ const folioTypes = Map({
   WRM: FolioType({ name: 'Mayer', hasImage: true })
 })
 
-function getYear (date) {
-  return moment(date).year()
-}
-
-function getDay (date) {
-  return moment(date).dayOfYear()
-}
-
-function compareRecordEntries (prevRecordEntry, recordEntry) {
-  return recordEntry.user === prevRecordEntry.user && recordEntry.type === prevRecordEntry.type &&
-  getYear(recordEntry.date) === getYear(prevRecordEntry.date) &&
-  getDay(recordEntry.date) === getDay(prevRecordEntry.date)
-}
-
-function filterRecord (record) {
-  return record.reduce((filteredRecord, recordEntry, index) => {
-    return filteredRecord.isEmpty() || !compareRecordEntries(filteredRecord.last(), recordEntry)
-      ? filteredRecord.push(recordEntry)
-      : filteredRecord
-  },
-  List())
-}
-
 export class Folio {
   #type
 
@@ -114,7 +91,13 @@ export class Fragment extends Record({
   }
 
   get uniqueRecord () {
-    return filterRecord(this.record)
+    const reducer = (filteredRecord, recordEntry, index) => {
+      const keepRecord = filteredRecord.isEmpty() || !filteredRecord.last().dateEquals(recordEntry)
+      return keepRecord
+        ? filteredRecord.push(recordEntry)
+        : filteredRecord
+    }
+    return this.record.reduce(reducer, List())
   }
 
   setReferences (references) {
