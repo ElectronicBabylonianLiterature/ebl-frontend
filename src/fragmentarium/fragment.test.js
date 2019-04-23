@@ -65,55 +65,50 @@ test.each([
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
 
-const tenAM = RecordEntry({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const elevenAM = RecordEntry({ user: 'SameDate', date: '2018-11-21T11:27:36.127248', type: 'Transliteration' })
+const ten = RecordEntry({ user: 'SameDate', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+const eleven = RecordEntry({ user: 'SameDate', date: '2018-11-21T11:27:36.127248', type: 'Transliteration' })
+const twelve = RecordEntry({ user: 'SameDate', date: '2018-11-21T12:27:36.127248', type: 'Transliteration' })
 
 const day21 = RecordEntry({ user: 'DiffDay', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const day22 = RecordEntry({ user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Review' })
+const day22 = RecordEntry({ user: 'DiffDay', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
 
 const year2017 = RecordEntry({ user: 'DiffYear', date: '2017-11-21T10:27:36.127247', type: 'Transliteration' })
-const year2018 = RecordEntry({ user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Review' })
+const year2018 = RecordEntry({ user: 'DiffYear', date: '2018-11-22T10:27:36.127247', type: 'Transliteration' })
 
-const user1TenAM = RecordEntry({ user: 'User1', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
-const user2ElevenAM = RecordEntry({ user: 'User2', date: '2018-11-21T11:00:36.127247', type: 'Review' })
-const user1ElevenThirtyAM = RecordEntry({ user: 'User2', date: '2018-11-21T11:30:36.127247', type: 'Transliteration' })
+const user1Ten = RecordEntry({ user: 'User1', date: '2018-11-21T10:27:36.127247', type: 'Transliteration' })
+const user2Eleven = RecordEntry({ user: 'User2', date: '2018-11-21T11:00:36.127247', type: 'Review' })
+const user1ElevenThirty = RecordEntry({ user: 'User2', date: '2018-11-21T11:30:36.127247', type: 'Transliteration' })
 
 const historicalTransliteration = RecordEntry({ user: 'User1', date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247', type: 'HistoricalTransliteration' })
 const revision = RecordEntry({ user: 'User2', date: '1999-04-17T10:50:36.127247', type: 'Revision' })
 
 test.each([
-  [List.of(tenAM,
-    elevenAM),
-  List.of(tenAM)
+  [
+    List.of(ten, eleven, twelve),
+    List.of(ten)
   ],
 
-  [List.of(day21,
-    day22),
-  List.of(day21,
-    day22)
+  [
+    List.of(day21, day22),
+    List.of(day21, day22)
   ],
 
-  [List.of(year2017,
-    year2018),
-  List.of(year2017,
-    year2018)
+  [
+    List.of(year2017, year2018),
+    List.of(year2017, year2018)
   ],
 
-  [List.of(user1TenAM,
-    user2ElevenAM,
-    user1ElevenThirtyAM),
-  List.of(user1TenAM,
-    user2ElevenAM,
-    user1ElevenThirtyAM)
+  [
+    List.of(user1Ten, user2Eleven, user1ElevenThirty),
+    List.of(user1Ten, user2Eleven, user1ElevenThirty)
   ],
 
-  [List.of(historicalTransliteration,
-    revision),
-  List.of(historicalTransliteration,
-    revision)
+  [
+    List.of(historicalTransliteration, revision),
+    List.of(historicalTransliteration, revision)
   ]
 
-])('', (record, expected) => {
+])('%s is filtered to %s', (record, expected) => {
   const fragment = new Fragment({ record })
   expect(fragment.uniqueRecord).toEqual(expected)
 })

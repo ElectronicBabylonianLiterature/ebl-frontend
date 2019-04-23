@@ -27,8 +27,7 @@ function compareRecordEntries (prevRecordEntry, recordEntry) {
 
 function filterRecord (record) {
   return record.reduce((filteredRecord, recordEntry, index) => {
-    let prevRecordEntry = filteredRecord.get(index - 1)
-    return filteredRecord.isEmpty() || !compareRecordEntries(prevRecordEntry, recordEntry)
+    return filteredRecord.isEmpty() || !compareRecordEntries(filteredRecord.last(), recordEntry)
       ? filteredRecord.push(recordEntry)
       : filteredRecord
   },
