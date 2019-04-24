@@ -29,10 +29,10 @@ function ChapterDetails ({ chapter }) {
   )
 }
 
-function ChapterManuscripts ({ chapter, onChange, searchBibliography }) {
-  const populateIds = manuscripts => {
-    const existingIds = manuscripts.toSeq().map(manuscript => manuscript.id).filterNot(_.isNil)
-    const ids = Range(1).filterNot(id => existingIds.has(id))
+function populateIds (manuscripts) {
+  const existingIds = manuscripts.map(manuscript => manuscript.id)
+  if (existingIds.includes(null)) {
+    const ids = Range((existingIds.max() || 0) + 1)
     const map_ = (manuscripts, ids) => {
       if (manuscripts.isEmpty()) {
         return Seq.Indexed()
@@ -44,8 +44,12 @@ function ChapterManuscripts ({ chapter, onChange, searchBibliography }) {
       }
     }
     return map_(manuscripts, ids).toList()
+  } else {
+    return manuscripts
   }
+}
 
+function ChapterManuscripts ({ chapter, onChange, searchBibliography }) {
   const handeManuscriptsChange = manuscripts => onChange(chapter.set('manuscripts', populateIds(manuscripts)))
   return <ListForm label='Manuscripts' noun='manuscript' default={createManuscript()} value={chapter.manuscripts} onChange={handeManuscriptsChange}>
     {chapter.manuscripts.map((manuscript, index) =>
