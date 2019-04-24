@@ -6,7 +6,7 @@ function apiUrl (path) {
 }
 
 function deserializeJson (response) {
-  return response.status === 204
+  return [201, 204].includes(response.status)
     ? null
     : response.json()
 }

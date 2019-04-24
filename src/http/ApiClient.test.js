@@ -64,10 +64,10 @@ describe('postJson', () => {
     await expect(apiClient.postJson(path, requestJson)).resolves.toEqual(result)
   })
 
-  test('No Content resolves to falsy value', async () => {
-    setUpEmptyResponse(204)
+  test.each([201, 204])('%i resolves to null', async status => {
+    setUpEmptyResponse(status)
 
-    await expect(apiClient.postJson(path, requestJson)).resolves.toBeFalsy()
+    await expect(apiClient.postJson(path, requestJson)).resolves.toBeNull()
   })
 
   test('Makes a post request with given parameters', async () => {

@@ -31,7 +31,7 @@ export default class BibliographyRepository {
 
   create (entry) {
     return this.apiClient
-      .putJson(`/bibliography`, entry.toJson())
+      .postJson(`/bibliography`, entry.toJson())
       .then(createEntry)
   }
 }
