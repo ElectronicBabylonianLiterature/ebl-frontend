@@ -1,7 +1,16 @@
 import Promise from 'bluebird'
 import { Record, List } from 'immutable'
 
-const Expectation = Record({ method: 'GET', path: '', authenticate: true, response: {}, verify: false, called: false })
+const Expectation = Record({
+  method: 'GET',
+  path: '',
+  authenticate: true,
+  response: {},
+  verify: false,
+  called: false,
+  body: null
+})
+
 export default class FakeApi {
   expectations = List()
 
@@ -51,7 +60,8 @@ export default class FakeApi {
       method: 'POST',
       path: `/texts/${text.category}/${text.index}`,
       response: text,
-      verify: true
+      verify: true,
+      body: text
     }))
     return this
   }
@@ -67,17 +77,12 @@ export default class FakeApi {
   }
 
   verifyExpectations () {
+    const methods = {
+      'GET': expectation => expect(this.client.fetchJson).toHaveBeenCalledWith(expectation.path, expectation.authenticate),
+      'POST': expectation => expect(this.client.postJson).toHaveBeenCalledWith(expectation.path, expectation.body || expect.anything())
+    }
     this.expectations
       .filter(expectation => expectation.verify)
-      .forEach(expectation => {
-        switch (expectation.method) {
-          case 'GET':
-            expect(this.client.fetchJson).toHaveBeenCalledWith(expectation.path, expectation.authenticate)
-            break
-          case 'POST':
-            expect(this.client.postJson).toHaveBeenCalledWith(expectation.path, expect.anything())
-            break
-        }
-      })
+      .forEach(expectation => methods[expectation.method](expectation))
   }
 }

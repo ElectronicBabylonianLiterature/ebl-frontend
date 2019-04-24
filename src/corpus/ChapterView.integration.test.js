@@ -1,4 +1,4 @@
-import { Record } from 'immutable'
+import { Record, set, setIn } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 
@@ -8,6 +8,8 @@ const textDto = {
   category: category,
   index: index,
   name: 'Palm and Vine',
+  numberOfVerses: 99,
+  approximateVerses: false,
   chapters: [
     {
       classification: 'Ancient',
@@ -26,7 +28,6 @@ const textDto = {
       manuscripts: [
         {
           id: 'abc-cde-123',
-          siglum: 'UIII Nippur 1',
           siglumDisambiguator: '1c',
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -35,11 +36,23 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'some notes',
-          bibliography: []
+          references: []
         }
       ]
     }
   ]
+}
+const defaultManuscriptDto = {
+  id: '',
+  siglumDisambiguator: '',
+  museumNumber: '',
+  accession: '',
+  periodModifier: 'None',
+  period: 'Neo-Assyrian',
+  provenance: 'Nineveh',
+  type: 'Library',
+  notes: '',
+  references: []
 }
 
 let fakeApi
@@ -93,11 +106,13 @@ describe('Diplay chapter', () => {
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
+      fakeApi.expectUpdateText(setIn(textDto, ['chapters', 1, 'manuscripts', 0, property], newValue))
       const value = manuscript[property]
       const expectedValue = Record.isRecord(value) ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
+      appDriver.click('Save')
     })
   })
 })
@@ -125,7 +140,8 @@ describe('Add manuscript', () => {
     ['Type', 'type', 'Library'],
     ['Notes', 'notes', '']
   ])('%s', (label, property, expectedValue) => {
-    fakeApi.expectUpdateText(textDto)
+    const manuscript = set(defaultManuscriptDto, property, expectedValue)
+    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript))
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
     appDriver.click('Save')
