@@ -1,4 +1,4 @@
-import { Record, set, setIn } from 'immutable'
+import { Record, setIn } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
 
@@ -140,7 +140,11 @@ describe('Add manuscript', () => {
     ['Type', 'type', 'Library'],
     ['Notes', 'notes', '']
   ])('%s', (label, property, expectedValue) => {
-    const manuscript = set(defaultManuscriptDto, property, expectedValue)
+    const manuscript = {
+      ...defaultManuscriptDto,
+      [property]: expectedValue,
+      id: 1
+    }
     fakeApi.expectUpdateText(setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript))
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
