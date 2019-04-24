@@ -27,7 +27,7 @@ const textDto = {
       order: 1,
       manuscripts: [
         {
-          id: 'abc-cde-123',
+          id: 1,
           siglumDisambiguator: '1c',
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -43,7 +43,7 @@ const textDto = {
   ]
 }
 const defaultManuscriptDto = {
-  id: '',
+  id: null,
   siglumDisambiguator: '',
   museumNumber: '',
   accession: '',

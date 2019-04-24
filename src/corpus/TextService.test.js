@@ -27,7 +27,7 @@ const textDto = {
       order: 1,
       manuscripts: [
         {
-          id: 'abc-cde-123',
+          id: 1,
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -65,7 +65,7 @@ const textUpdateDto = {
       order: 1,
       manuscripts: [
         {
-          id: 'abc-cde-123',
+          id: 1,
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',
@@ -102,7 +102,7 @@ const text = createText({
       order: 1,
       manuscripts: List.of(
         createManuscript({
-          id: 'abc-cde-123',
+          id: 1,
           siglumDisambiguator: '1',
           museumNumber: 'BM.X',
           accession: 'X.1',

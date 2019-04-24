@@ -80,7 +80,7 @@ export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
 })
 
 type ManuscriptProps = {
-  id: string,
+  id: ?number,
   siglumDisambiguator: string,
   museumNumber: string,
   accession: string,
@@ -92,7 +92,7 @@ type ManuscriptProps = {
   references: List<Reference>
 }
 export const createManuscript: RecordFactory<ManuscriptProps> = Record({
-  id: '',
+  id: null,
   siglumDisambiguator: '',
   museumNumber: '',
   accession: '',
