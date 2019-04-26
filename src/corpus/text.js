@@ -105,10 +105,24 @@ export const createManuscript: RecordFactory<ManuscriptProps> = Record({
 })
 export type Manuscript = RecordOf<ManuscriptProps>
 
+type ManuscriptLineProps = {
+  manuscriptId: number,
+  side: string,
+  number: string,
+  atf: string,
+}
+export const createManuscriptLine: RecordFactory<ManuscriptLineProps> = Record({
+  manuscriptId: 0,
+  side: '',
+  number: '',
+  atf: ''
+})
+export type ManuscriptLine = RecordOf<ManuscriptLineProps>
+
 type LineProps = {
   number: string,
   reconstruction: string,
-  lines: List<Object>
+  manuscripts: List<ManuscriptLine>
 }
 export const createLine: RecordFactory<LineProps> = Record({
   number: '',
