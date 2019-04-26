@@ -79,11 +79,6 @@ const textDto = {
           number: '1\'',
           reconstruction: 'ideal',
           manuscripts: [
-            /* {
-              id: 1,
-              side: 'iii',
-              atf: 'a+1. kur'
-            } */
           ]
         }
       ]
