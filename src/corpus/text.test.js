@@ -1,7 +1,7 @@
 
 import { List } from 'immutable'
 import _ from 'lodash'
-import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types } from './text'
+import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types, createLine } from './text'
 
 const manuscriptConfig = {
   id: 'abc-cde-123',
@@ -13,7 +13,13 @@ const manuscriptConfig = {
   provenance: provenances.get('Nippur'),
   type: types.get('School'),
   notes: 'some notes',
-  references: new List()
+  references: List()
+}
+
+const lineConfig = {
+  number: '2',
+  reconstruction: 'reconstructed text',
+  manuscripts: List()
 }
 
 const chapterConfig = {
@@ -22,7 +28,8 @@ const chapterConfig = {
   version: 'A',
   name: 'III',
   order: -1,
-  manuscripts: List.of(createManuscript(manuscriptConfig))
+  manuscripts: List.of(createManuscript(manuscriptConfig)),
+  lines: List.of(createLine(lineConfig))
 }
 
 const textConfig = {
@@ -44,6 +51,10 @@ describe('Chapter', () => {
 
 describe('Manuscript', () => {
   testProperties(manuscriptConfig, createManuscript)
+})
+
+describe('Line', () => {
+  testProperties(lineConfig, createLine)
 })
 
 function testProperties (config, factory) {

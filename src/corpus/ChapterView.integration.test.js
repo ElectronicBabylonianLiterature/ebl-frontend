@@ -17,7 +17,8 @@ const textDto = {
       version: 'A',
       name: 'III',
       order: 3,
-      manuscripts: []
+      manuscripts: [],
+      lines: []
     },
     {
       classification: 'Ancient',
@@ -38,6 +39,53 @@ const textDto = {
           notes: 'some notes',
           references: []
         }
+      ],
+      lines: []
+    },
+    {
+      classification: 'Ancient',
+      stage: 'Old Babylonian',
+      version: '',
+      name: 'The Second Chapter',
+      order: 5,
+      manuscripts: [
+        {
+          id: 1,
+          siglumDisambiguator: 'A',
+          museumNumber: '',
+          accession: '',
+          periodModifier: 'Late',
+          period: 'Ur III',
+          provenance: 'Nippur',
+          type: 'School',
+          notes: '',
+          references: []
+        },
+        {
+          id: 2,
+          siglumDisambiguator: 'B',
+          museumNumber: '',
+          accession: '',
+          periodModifier: 'Late',
+          period: 'Ur III',
+          provenance: 'Nippur',
+          type: 'School',
+          notes: '',
+          references: []
+        }
+      ],
+      lines: [
+        {
+          number: '1\'',
+          reconstruction: 'ideal',
+          manuscripts: [
+            /* {
+              id: 1,
+              side: 'iii',
+              atf: 'a+1. kur'
+            } */
+          ]
+        }
       ]
     }
   ]
@@ -53,6 +101,12 @@ const defaultManuscriptDto = {
   type: 'Library',
   notes: '',
   references: []
+}
+
+const defaultLineDto = {
+  number: '',
+  reconstruction: '',
+  manuscripts: []
 }
 
 let fakeApi
@@ -148,6 +202,57 @@ describe('Add manuscript', () => {
     fakeApi.expectUpdateText(setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript))
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
+    appDriver.click('Save')
+  })
+})
+
+describe('Lines', () => {
+  const chapter = textDto.chapters[2]
+  const line = chapter.lines[0]
+
+  beforeEach(async () => {
+    fakeApi = new FakeApi().allowText(textDto)
+    appDriver = new AppDriver(fakeApi.client)
+      .withSession()
+      .withPath(createChapterPath(chapter.stage, chapter.name))
+      .render()
+
+    await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+  })
+
+  test.each([
+    ['Number', 'number', '2'],
+    ['Ideal reconstruction', 'reconstruction', 'edited']
+  ])('%s', (label, property, newValue) => {
+    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 2, 'lines', 0, property], newValue))
+    const expectedValue = line[property]
+    appDriver.expectInputElement(label, expectedValue)
+    appDriver.changeValueByLabel(label, newValue)
+    appDriver.expectInputElement(label, newValue)
+    appDriver.click('Save')
+  })
+})
+
+describe('Add line', () => {
+  const chapter = textDto.chapters[1]
+
+  beforeEach(async () => {
+    fakeApi = new FakeApi().allowText(textDto)
+    appDriver = new AppDriver(fakeApi.client)
+      .withSession()
+      .withPath(createChapterPath(chapter.stage, chapter.name))
+      .render()
+
+    await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+  })
+
+  test.each([
+    ['Number', 'number'],
+    ['Ideal reconstruction', 'reconstruction']
+  ])('%s', (label, property) => {
+    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 1, 'lines', 0], defaultLineDto))
+    appDriver.click('Add line')
+    appDriver.expectInputElement(label, defaultLineDto[property])
     appDriver.click('Save')
   })
 })

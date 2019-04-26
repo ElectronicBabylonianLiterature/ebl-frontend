@@ -68,10 +68,13 @@ class List extends Component {
   }
 
   render () {
+    const label = this.props.label
+      ? <>{this.props.label}{' '}<SizeBadge collection={this.props.value} /></>
+      : null
     return (
       <div className='List'>
         <CollapsibleCard
-          label={<>{this.props.label}{' '}<SizeBadge collection={this.props.value} /></>}
+          label={label}
           collapsed={this.props.collapsed}>
           <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
             {React.Children.map(this.props.children, child =>

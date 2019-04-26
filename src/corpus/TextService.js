@@ -1,15 +1,15 @@
 import { List, Seq } from 'immutable'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
-import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types } from './text'
+import { createText, createChapter, createManuscript, createLine, periodModifiers, periods, provenances, types } from './text'
 
 function fromDto (textDto) {
   return createText({
     ...textDto,
-    chapters: new List(textDto.chapters).map(chapterDto =>
+    chapters: List(textDto.chapters).map(chapterDto =>
       createChapter({
         ...chapterDto,
-        manuscripts: new List(chapterDto.manuscripts).map(manuscriptDto =>
+        manuscripts: List(chapterDto.manuscripts).map(manuscriptDto =>
           createManuscript({
             ...manuscriptDto,
             periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
@@ -24,7 +24,11 @@ function fromDto (textDto) {
               new BibliographyEntry(referenceDto.document)
             )).toList()
           })
-        )
+        ),
+        lines: List(chapterDto.lines).map(lineDto => createLine({
+          ...lineDto,
+          manuscripts: List(lineDto.manuscripts)
+        }))
       })
     )
   })

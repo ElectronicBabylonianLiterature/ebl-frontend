@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
-import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types } from './text'
+import { createText, createChapter, createManuscript, createLine, periodModifiers, periods, provenances, types } from './text'
 import TextService from './TextService'
 
 const apiClient = {
@@ -45,6 +45,13 @@ const textDto = {
             document: { id: 'RN1853' }
           }]
         }
+      ],
+      lines: [
+        {
+          number: '1',
+          reconstruction: 'reconstructed text',
+          manuscripts: []
+        }
       ]
     }
   ]
@@ -82,6 +89,13 @@ const textUpdateDto = {
             type: 'DISCUSSION'
           }]
         }
+      ],
+      lines: [
+        {
+          number: '1',
+          reconstruction: 'reconstructed text',
+          manuscripts: []
+        }
       ]
     }
   ]
@@ -118,6 +132,13 @@ const text = createText({
             List(),
             new BibliographyEntry({ id: 'RN1853' })
           ))
+        })
+      ),
+      lines: List.of(
+        createLine({
+          number: '1',
+          reconstruction: 'reconstructed text',
+          manuscripts: List()
         })
       )
     })

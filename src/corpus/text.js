@@ -101,9 +101,21 @@ export const createManuscript: RecordFactory<ManuscriptProps> = Record({
   provenance: provenances.get('Nineveh'),
   type: types.get('Library'),
   notes: '',
-  references: new List()
+  references: List()
 })
 export type Manuscript = RecordOf<ManuscriptProps>
+
+type LineProps = {
+  number: string,
+  reconstruction: string,
+  lines: List<Object>
+}
+export const createLine: RecordFactory<LineProps> = Record({
+  number: '',
+  reconstruction: '',
+  manuscripts: List()
+})
+export type Line = RecordOf<LineProps>
 
 type ChapterProps = {
   classification: string,
@@ -111,7 +123,8 @@ type ChapterProps = {
   version: string,
   name: string,
   order: number,
-  manuscripts: List<Manuscript>
+  manuscripts: List<Manuscript>,
+  lines: List<Line>
 }
 export const createChapter: RecordFactory<ChapterProps> = Record({
   classification: 'Ancient',
@@ -119,7 +132,8 @@ export const createChapter: RecordFactory<ChapterProps> = Record({
   version: '',
   name: '',
   order: 0,
-  manuscripts: new List()
+  manuscripts: List(),
+  lines: List()
 })
 export type Chapter = RecordOf<ChapterProps>
 
@@ -137,6 +151,6 @@ export const createText: RecordFactory<TextProps> = Record({
   name: '',
   numberOfVerses: 0,
   approximateVerses: false,
-  chapters: new List()
+  chapters: List()
 })
 export type Text = RecordOf<TextProps>
