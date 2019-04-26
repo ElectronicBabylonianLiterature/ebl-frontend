@@ -221,8 +221,7 @@ describe('Lines', () => {
   })
 
   test.each([
-    ['Number', 'number', '2'],
-    ['Ideal reconstruction', 'reconstruction', 'edited']
+    ['Number', 'number', '2']
   ])('%s', (label, property, newValue) => {
     fakeApi.expectUpdateText(setIn(textDto, ['chapters', 2, 'lines', 0, property], newValue))
     const expectedValue = line[property]
@@ -247,8 +246,7 @@ describe('Add line', () => {
   })
 
   test.each([
-    ['Number', 'number'],
-    ['Ideal reconstruction', 'reconstruction']
+    ['Number', 'number']
   ])('%s', (label, property) => {
     fakeApi.expectUpdateText(setIn(textDto, ['chapters', 1, 'lines', 0], defaultLineDto))
     appDriver.click('Add line')
