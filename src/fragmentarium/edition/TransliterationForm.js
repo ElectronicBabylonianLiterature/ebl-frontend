@@ -3,10 +3,9 @@ import { FormGroup, FormLabel, Button, Container, Row, Col } from 'react-bootstr
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
-import Editor from './Editor'
+import Editor from 'editor/Editor'
+import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
-import HelpTrigger from 'common/HelpTrigger'
-import SpecialCharactersHelp from './SpecialCharactersHelp'
 
 class TransliteratioForm extends Component {
   constructor (props) {
@@ -63,7 +62,7 @@ class TransliteratioForm extends Component {
     <FormGroup controlId={`${this.formId}-${property}`}>
       <FormLabel>{_.startCase(property)}</FormLabel>
       {' '}
-      {showHelp && <HelpTrigger overlay={SpecialCharactersHelp()} /> }
+      {showHelp && <SpecialCharactersHelp /> }
       <Editor
         name={property}
         value={this.state[property]}

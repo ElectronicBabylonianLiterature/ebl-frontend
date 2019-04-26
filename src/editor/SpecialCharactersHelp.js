@@ -1,8 +1,9 @@
 import React from 'react'
 import { Popover } from 'react-bootstrap'
+import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 
-export default function SpecialCharactersHelp () {
+function SpecialCharactersHelp () {
   return (
     <Popover id={_.uniqueId('SpecialCharactersHelp-')} title='Special characters'>
       <p>
@@ -20,3 +21,5 @@ export default function SpecialCharactersHelp () {
     </Popover>
   )
 }
+
+export default () => <HelpTrigger overlay={SpecialCharactersHelp()} />
