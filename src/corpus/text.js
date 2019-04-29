@@ -107,13 +107,13 @@ export type Manuscript = RecordOf<ManuscriptProps>
 
 type ManuscriptLineProps = {
   manuscriptId: number,
-  side: string,
+  side: List<string>,
   number: string,
   atf: string,
 }
 export const createManuscriptLine: RecordFactory<ManuscriptLineProps> = Record({
   manuscriptId: 0,
-  side: '',
+  side: List(),
   number: '',
   atf: ''
 })

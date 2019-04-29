@@ -81,7 +81,7 @@ const textDto = {
           manuscripts: [
             {
               manuscriptId: 1,
-              side: 'iii',
+              side: ['iii'],
               number: 'a+1.',
               atf: 'kur'
             }

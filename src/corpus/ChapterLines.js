@@ -4,6 +4,7 @@ import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
 import { createLine, createManuscriptLine } from './text'
+import ArrayInput from 'common/ArrayInput'
 
 function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event => onChange(value.set(property, event.target.value))
@@ -21,10 +22,9 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
         )}
       </Form.Control>
     </Form.Group>
-    <Form.Group as={Col} md={1} controlId={_.uniqueId('ManuscriptLine-')}>
-      <Form.Label>Side</Form.Label>
-      <Form.Control value={value.side} onChange={handleChange('side')} />
-    </Form.Group>
+    <Col as={Col} md={1}>
+      <ArrayInput value={value.side} separator={' '} onChange={side => onChange(value.set('side', side))} >Side</ArrayInput>
+    </Col>
     <Form.Group as={Col} md={1} controlId={_.uniqueId('ManuscriptLine-')}>
       <Form.Label>Line nr.</Form.Label>
       <Form.Control value={value.number} onChange={handleChange('number')} />
