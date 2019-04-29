@@ -29,7 +29,7 @@ function fromDto (textDto) {
           ...lineDto,
           manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto => createManuscriptLine({
             manuscriptId: manuscriptLineDto['manuscriptId'],
-            side: List(manuscriptLineDto['side']),
+            labels: List(manuscriptLineDto['labels']),
             number: manuscriptLineDto['number'],
             atf: manuscriptLineDto['atf']
           }))

@@ -53,7 +53,7 @@ const textDto = {
           manuscripts: [
             {
               manuscriptId: 1,
-              side: ['o', 'iii'],
+              labels: ['o', 'iii'],
               number: 'a+1.',
               atf: 'kur'
             }
@@ -104,7 +104,7 @@ const textUpdateDto = {
           manuscripts: [
             {
               manuscriptId: 1,
-              side: ['o', 'iii'],
+              labels: ['o', 'iii'],
               number: 'a+1.',
               atf: 'kur'
             }
@@ -155,7 +155,7 @@ const text = createText({
           manuscripts: List.of(
             createManuscriptLine({
               manuscriptId: 1,
-              side: List.of('o', 'iii'),
+              labels: List.of('o', 'iii'),
               number: 'a+1.',
               atf: 'kur'
             })

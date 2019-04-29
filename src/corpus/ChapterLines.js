@@ -23,7 +23,7 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
       </Form.Control>
     </Form.Group>
     <Col as={Col} md={1}>
-      <ArrayInput value={value.side} separator={' '} onChange={side => onChange(value.set('side', side))} >Side</ArrayInput>
+      <ArrayInput value={value.labels} separator={' '} onChange={labels => onChange(value.set('labels', labels))} >Side</ArrayInput>
     </Col>
     <Form.Group as={Col} md={1} controlId={_.uniqueId('ManuscriptLine-')}>
       <Form.Label>Line nr.</Form.Label>
