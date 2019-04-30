@@ -8,10 +8,12 @@ import ArrayInput from 'common/ArrayInput'
 
 function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event => onChange(value.set(property, event.target.value))
+  const handleIdChange = event => onChange(value.set('manuscriptId', Number(event.target.value)))
   return <Form.Row>
     <Form.Group as={Col} md={2} controlId={_.uniqueId('ManuscriptLine-')}>
       <Form.Label>Siglum</Form.Label>
-      <Form.Control as='select' value={value.manuscriptId} onChange={handleChange('manuscriptId')}>
+      <Form.Control as='select' value={value.manuscriptId} onChange={handleIdChange}>
+        <option value='0' disabled>--</option>
         {manuscripts.map(manuscript =>
           <option key={manuscript.id} value={manuscript.id}>
             {manuscript.provenance.abbreviation}
