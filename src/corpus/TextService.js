@@ -1,4 +1,5 @@
 import { List, Seq } from 'immutable'
+import _ from 'lodash'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
 import { createText, createChapter, createManuscript, createLine, periodModifiers, periods, provenances, types, createManuscriptLine } from './text'
@@ -30,8 +31,8 @@ function fromDto (textDto) {
           manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto => createManuscriptLine({
             manuscriptId: manuscriptLineDto['manuscriptId'],
             labels: List(manuscriptLineDto['labels']),
-            number: manuscriptLineDto['number'],
-            atf: manuscriptLineDto['atf']
+            number: _(manuscriptLineDto['atf']).split(' ').head(),
+            atf: _(manuscriptLineDto['atf']).split(' ').tail().join(' ')
           }))
         }))
       })
@@ -53,10 +54,20 @@ function toDto (text) {
           .update('provenance', toName)
           .update('type', toName)
           .update('references', references => references.map(serializeReference))
+      )).update(['lines'], lines => lines.map(line =>
+        line.update('manuscripts', manuscripts => manuscripts.map(manuscriptLine =>
+          _.omit(
+            manuscriptLine
+              .set('atf', `${manuscriptLine.number} ${manuscriptLine.atf}`)
+              .toJS(),
+            'number'
+          )
+        ))
       ))
     ))
     .toJS()
 }
+
 export default class TextService {
   #apiClient
 

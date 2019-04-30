@@ -82,8 +82,7 @@ const textDto = {
             {
               manuscriptId: 1,
               labels: ['iii'],
-              number: 'a+1.',
-              atf: 'kur'
+              atf: 'a+1. kur'
             }
           ]
         }

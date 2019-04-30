@@ -54,8 +54,7 @@ const textDto = {
             {
               manuscriptId: 1,
               labels: ['o', 'iii'],
-              number: 'a+1.',
-              atf: 'kur'
+              atf: 'a+1. kur'
             }
           ]
         }
@@ -105,8 +104,7 @@ const textUpdateDto = {
             {
               manuscriptId: 1,
               labels: ['o', 'iii'],
-              number: 'a+1.',
-              atf: 'kur'
+              atf: 'a+1. kur'
             }
           ]
         }
