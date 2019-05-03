@@ -1,5 +1,4 @@
 import { List, Seq } from 'immutable'
-import _ from 'lodash'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
 import { createText, createChapter, createManuscript, createLine, periodModifiers, periods, provenances, types, createManuscriptLine } from './text'
