@@ -31,8 +31,8 @@ function fromDto (textDto) {
           manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto => createManuscriptLine({
             manuscriptId: manuscriptLineDto['manuscriptId'],
             labels: List(manuscriptLineDto['labels']),
-            number: _(manuscriptLineDto['atf']).split(' ').head(),
-            atf: _(manuscriptLineDto['atf']).split(' ').tail().join(' ')
+            number: manuscriptLineDto['number'],
+            atf: manuscriptLineDto['atf']
           }))
         }))
       })
@@ -54,15 +54,6 @@ function toDto (text) {
           .update('provenance', toName)
           .update('type', toName)
           .update('references', references => references.map(serializeReference))
-      )).update(['lines'], lines => lines.map(line =>
-        line.update('manuscripts', manuscripts => manuscripts.map(manuscriptLine =>
-          _.omit(
-            manuscriptLine
-              .set('atf', `${manuscriptLine.number} ${manuscriptLine.atf}`)
-              .toJS(),
-            'number'
-          )
-        ))
       ))
     ))
     .toJS()

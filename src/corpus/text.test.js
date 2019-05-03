@@ -18,7 +18,7 @@ const manuscriptConfig = {
 const manuscrpitLineConfig = {
   manuscriptId: 1,
   labels: List.of('iii'),
-  number: 'a+1.',
+  number: 'a+1',
   atf: 'kur'
 }
 

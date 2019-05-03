@@ -54,7 +54,8 @@ const textDto = {
             {
               manuscriptId: 1,
               labels: ['o', 'iii'],
-              atf: 'a+1. kur'
+              number: 'a+1',
+              atf: 'kur'
             }
           ]
         }
@@ -104,7 +105,8 @@ const textUpdateDto = {
             {
               manuscriptId: 1,
               labels: ['o', 'iii'],
-              atf: 'a+1. kur'
+              number: 'a+1',
+              atf: 'kur'
             }
           ]
         }
@@ -154,7 +156,7 @@ const text = createText({
             createManuscriptLine({
               manuscriptId: 1,
               labels: List.of('o', 'iii'),
-              number: 'a+1.',
+              number: 'a+1',
               atf: 'kur'
             })
           )
