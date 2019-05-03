@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { is } from 'immutable'
-import { Alert, Badge } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
@@ -32,7 +32,7 @@ function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliograph
   const title = <ChapterTitle text={text} stage={stage} name={name} />
   const handleChange = chapter => onChange(text.setIn(['chapters', chapterIndex], chapter))
   return (
-    <AppContent crumbs={['Corpus', title]} title={<>Edit {title} <small><Badge variant='warning'>Beta</Badge></small></>}>
+    <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
       {chapter
         ? <ChapterForm chapter={chapter} disabled={disabled} searchBibliography={searchBibliography} onChange={handleChange} onSubmit={onSubmit} />
