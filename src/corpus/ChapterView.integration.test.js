@@ -1,6 +1,7 @@
 import { Record, setIn } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
+import ChapterLines from './ChapterLines';
 
 const category = 1
 const index = 1
@@ -122,13 +123,7 @@ describe('Diplay chapter', () => {
   const chapterTitle = createChapterTitle(chapter)
 
   beforeEach(async () => {
-    fakeApi = new FakeApi().expectText(textDto)
-    appDriver = new AppDriver(fakeApi.client)
-      .withSession()
-      .withPath(createChapterPath(chapter.stage, chapter.name))
-      .render()
-
-    await appDriver.waitForText(`Edit ${chapterTitle}`)
+    await setup(chapter)
   })
 
   test('Breadcrumbs', () => {
@@ -176,13 +171,7 @@ describe('Add manuscript', () => {
   const chapter = textDto.chapters[0]
 
   beforeEach(async () => {
-    fakeApi = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(fakeApi.client)
-      .withSession()
-      .withPath(createChapterPath(chapter.stage, chapter.name))
-      .render()
-
-    await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+    await setup(chapter)
   })
 
   test.each([
@@ -237,13 +226,7 @@ describe('Add line', () => {
   const chapter = textDto.chapters[1]
 
   beforeEach(async () => {
-    fakeApi = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(fakeApi.client)
-      .withSession()
-      .withPath(createChapterPath(chapter.stage, chapter.name))
-      .render()
-
-    await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+    await setup(chapter)
   })
 
   test.each([
@@ -274,6 +257,15 @@ describe('Chapter not found', () => {
     appDriver.expectTextContent(`Chapter ${textDto.name} ${chapter.stage} ${chapterName} not found.`)
   })
 })
+
+async function setup (chapter) {
+  fakeApi = new FakeApi().expectText(textDto)
+  appDriver = new AppDriver(fakeApi.client)
+    .withSession()
+    .withPath(createChapterPath(chapter.stage, chapter.name))
+    .render()
+  await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+}
 
 function createChapterPath (stage, name) {
   return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(index)}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
