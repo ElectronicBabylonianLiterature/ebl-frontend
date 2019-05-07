@@ -71,6 +71,12 @@ export default class TextService {
       .then(fromDto)
   }
 
+  list () {
+    return this.#apiClient
+      .fetchJson('/texts', true)
+      .then(texts => texts.map(fromDto))
+  }
+
   update (category, index, text) {
     return this.#apiClient
       .postJson(`/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`, toDto(text))

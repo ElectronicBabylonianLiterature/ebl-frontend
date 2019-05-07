@@ -168,6 +168,7 @@ const text = createText({
 
 const testData = [
   ['find', [text.category, text.index], apiClient.fetchJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, true], Promise.resolve(textDto)],
+  ['list', [], apiClient.fetchJson, [text], ['/texts', true], Promise.resolve([textDto])],
   ['update', [text.category, text.index, text], apiClient.postJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, textUpdateDto], Promise.resolve(textDto)]
 ]
 
