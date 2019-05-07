@@ -1,7 +1,6 @@
 import { Record, setIn } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
-import ChapterLines from './ChapterLines';
 
 const category = 1
 const index = 1
