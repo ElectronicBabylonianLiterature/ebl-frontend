@@ -56,7 +56,7 @@ export default class AppDriver {
   }
 
   withSession () {
-    this.session = new Session('accessToken', 'idToken', Number.MAX_SAFE_INTEGER, [])
+    this.session = new Session('accessToken', 'idToken', Number.MAX_SAFE_INTEGER, ['write:texts'])
     return this
   }
 
@@ -82,6 +82,14 @@ export default class AppDriver {
 
   expectTextContent (text) {
     expect(this.element.container).toHaveTextContent(text)
+  }
+
+  expectNotInContent (text) {
+    expect(this.element.queryByText(text)).toBeNull()
+  }
+
+  expectLink (text, expectedHref) {
+    expect(this.element.getByText(text)).toHaveAttribute('href', expectedHref)
   }
 
   expectBreadcrumbs (crumbs) {

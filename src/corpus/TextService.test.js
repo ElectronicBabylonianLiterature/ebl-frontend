@@ -166,9 +166,29 @@ const text = createText({
   )
 })
 
+const textsDto = [{
+  category: 1,
+  index: 1,
+  name: 'Palm and Vine',
+  numberOfVerses: 10,
+  approximateVerses: true,
+  chapters: []
+}]
+
+const texts = List.of(
+  createText({
+    category: 1,
+    index: 1,
+    name: 'Palm and Vine',
+    numberOfVerses: 10,
+    approximateVerses: true,
+    chapters: List()
+  })
+)
+
 const testData = [
   ['find', [text.category, text.index], apiClient.fetchJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, true], Promise.resolve(textDto)],
-  ['list', [], apiClient.fetchJson, [text], ['/texts', true], Promise.resolve([textDto])],
+  ['list', [], apiClient.fetchJson, texts, ['/texts', false], Promise.resolve(textsDto)],
   ['update', [text.category, text.index, text], apiClient.postJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, textUpdateDto], Promise.resolve(textDto)]
 ]
 

@@ -73,8 +73,8 @@ export default class TextService {
 
   list () {
     return this.#apiClient
-      .fetchJson('/texts', true)
-      .then(texts => texts.map(fromDto))
+      .fetchJson('/texts', false)
+      .then(texts => Seq(texts).map(fromDto).toList())
   }
 
   update (category, index, text) {

@@ -1,64 +1,73 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Image from 'fragmentarium/Image'
 import AppContent from 'common/AppContent'
 import ReactMarkdown from 'react-markdown'
-import corpusTexts from './CorpusTexts.json'
+import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 
-function Text ({ text, category, index }) {
-  const title = <ReactMarkdown source={text.text} disallowedTypes={['paragraph']} unwrapDisallowed />
+function Text ({ text }) {
+  const title = <>{text.index}. <ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /></>
   return (
     <Row as='li'>
       <Col md={8}>
         <SessionContext.Consumer>
           {session => session.isAllowedToWriteTexts()
-            ? <Link to={`/corpus/${category}/${category === 0 ? index : index + 1}`}>
-              {title}
-            </Link>
+            ? <Link to={`/corpus/${text.category}/${text.index}`}>{title}</Link>
             : title
           }
         </SessionContext.Consumer>
       </Col>
-      <Col md={4}> {text.verses} </Col>
+      <Col md={4}>{text.numberOfVerses > 0 && <>
+        {text.approximateVerses ? '±' : ''}{text.numberOfVerses} vv.
+      </>}</Col>
     </Row>
   )
 }
 
-class Corpus extends Component {
-  texts = () => {
-    return (
-      corpusTexts.map((block, category) =>
-        <Fragment key={category}>
-          {block.hasOwnProperty('genre') &&
-            <h3> {block.genre} </h3>}
-          <Container fluid as='ol'>
-            {block.texts.map((text, index) =>
-              <Text key={index} text={text} category={category} index={index} />
-            )}
-          </Container>
-        </Fragment>
-      )
-    )
-  }
+function Texts ({ texts }) {
+  return [
+    '',
+    'I. Narrative Poetry',
+    'II. Monologue and dialogue literature',
+    'III. Literary Hymns and Prayers'
+  ].map((title, category) => <section key={category}>
+    <h3>{title}</h3>
+    <Container fluid as='ol'>
+      {texts
+        .toSeq()
+        .filter(text => text.category === category)
+        .sortBy(text => text.index)
+        .map((text, index) => <Text key={index} text={text} />)
+      }
+    </Container>
+  </section>)
+}
 
-  render () {
-    return (
-      <AppContent crumbs={['Corpus']}>
-        <Container fluid>
-          <Row>
-            <Col md={5}>
-              <this.texts />
-            </Col>
-            <Col md={7}>
-              <Image fragmentService={this.props.fragmentService} fileName='LibraryCropped.svg' />
-            </Col>
-          </Row>
-        </Container>
-      </AppContent>
-    )
-  }
+const TextsWithData = withData(
+  ({ data, ...props }) => <Texts
+    texts={data}
+    {...props}
+  />,
+  ({ textService }) => textService.list()
+)
+
+function Corpus ({ fragmentService, textService }) {
+  return (
+    <AppContent crumbs={['Corpus']}>
+      <Container fluid>
+        <Row>
+          <Col md={5}>
+            <TextsWithData textService={textService} />
+          </Col>
+          <Col md={7}>
+            <Image fragmentService={fragmentService} fileName='LibraryCropped.svg' />
+          </Col>
+        </Row>
+      </Container>
+    </AppContent>
+  )
 }
 
 export default Corpus
