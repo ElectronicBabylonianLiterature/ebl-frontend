@@ -15,12 +15,12 @@ function replaceIgnoredCharacters (word) {
 function checkForInvalidCharacters (word, anotherWord) {
   let invalidCharacters = word.split('').concat(anotherWord.split('')).filter(character => !alphabet.includes(character))
   if (!_.isEmpty(invalidCharacters)) {
-   throw new Error(`Invalid character(s) ${invalidCharacters} in the input`)
+    throw new Error(`Invalid character(s) ${invalidCharacters} in the input`)
   }
 }
 
 function hasHigherAlphabetIndex (word, anotherWord, indexOfCharacter) {
-  return alphabet.indexOf(word[indexOfCharacter]) > alphabet.indexOf(anotherWord[indexOfCharacter]) 
+  return alphabet.indexOf(word[indexOfCharacter]) > alphabet.indexOf(anotherWord[indexOfCharacter])
 }
 
 function hasLowerAlphabetIndex (word, anotherWord, indexOfCharacter) {
@@ -44,13 +44,13 @@ export default function compareStrings (word, anotherWord) {
       return -1
     } else if (areFinalCharacters(replacedWord, anotherWordReplaced, indexOfCharacter)) {
       return 0
-    } 
-}
-    if (replacedWord.length > anotherWordReplaced.length) {
-      return 1
-    } else if (replacedWord.length < anotherWordReplaced.length) {
-      return -1
-    } else {
-      return 0
     }
+  }
+  if (replacedWord.length > anotherWordReplaced.length) {
+    return 1
+  } else if (replacedWord.length < anotherWordReplaced.length) {
+    return -1
+  } else {
+    return 0
+  }
 }
