@@ -19,7 +19,7 @@ test.each([
   ['abu', 'abama', 1],
   ['abu', '', 1],
   ['', '', 0],
-  ['KUR.KUR', 'KUR-KUR?',  0],
+  ['KUR.KUR', 'KUR-KUR?', 0],
   ['Amar-Suen', 'Amar-Suen?', 0],
   ['[Uruk]', '[Uruk]?', 0]
 ])('compares %s and %s', (word, anotherWord, expected) => {
