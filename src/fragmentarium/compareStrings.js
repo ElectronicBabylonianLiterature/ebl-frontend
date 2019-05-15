@@ -27,10 +27,6 @@ function hasLowerAlphabetIndex (word, anotherWord, indexOfCharacter) {
   return alphabet.indexOf(word[indexOfCharacter]) < alphabet.indexOf(anotherWord[indexOfCharacter])
 }
 
-function areFinalCharacters (word, anotherWord, indexOfCharacter) {
-  return indexOfCharacter === (word.length - 1) && indexOfCharacter === (anotherWord.length - 1)
-}
-
 export default function compareStrings (word, anotherWord) {
   isString(word, anotherWord)
   let replacedWord = replaceIgnoredCharacters(word)
@@ -42,15 +38,7 @@ export default function compareStrings (word, anotherWord) {
       return 1
     } else if (hasLowerAlphabetIndex(replacedWord, anotherWordReplaced, indexOfCharacter)) {
       return -1
-    } else if (areFinalCharacters(replacedWord, anotherWordReplaced, indexOfCharacter)) {
-      return 0
     }
   }
-  if (replacedWord.length > anotherWordReplaced.length) {
-    return 1
-  } else if (replacedWord.length < anotherWordReplaced.length) {
-    return -1
-  } else {
-    return 0
-  }
+  return Math.sign(replacedWord.length - anotherWordReplaced.length)
 }
