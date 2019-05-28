@@ -22,7 +22,7 @@ function findMeanig (word) {
 
 function createMeaning (word) {
   const markdown = findMeanig(word)
-  const truncated = _.truncate(markdown.replace(/\*|\\/g, ''), {
+  const truncated = _.truncate(markdown.replace(/[*\\]/g, ''), {
     separator: ' ',
     omission: '…'
   })
