@@ -1,47 +1,10 @@
 import React, { Component } from 'react'
-import { Button, ListGroup, Card, Collapse, Badge } from 'react-bootstrap'
-import classNames from 'classnames'
+import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { set, remove, merge, isValueObject, isCollection } from 'immutable'
+import { isCollection, isValueObject, merge, remove, set } from 'immutable'
 
 import './List.css'
-
-function CollapseIndicator ({ open }) {
-  return <i className={classNames({
-    'fas': true,
-    'fa-angle-up': open,
-    'fa-angle-down': !open
-  })} />
-}
-
-class CollapsibleCard extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      open: !this.props.collapsed
-    }
-    this.collapseId = _.uniqueId('List-collapse-')
-  }
-
-  render () {
-    return <Card border='light'>
-      {this.props.label && <Card.Header>
-        <span className='List__toggle' onClick={() => this.setState({ open: !this.state.open })}
-          aria-controls={this.collapseId}
-          aria-expanded={this.state.open}>
-          {this.props.label}
-          {' '}
-          <CollapseIndicator open={this.state.open} />
-        </span>
-      </Card.Header>}
-      <Collapse in={this.state.open}>
-        <div id={this.collapseId}>
-          {this.props.children}
-        </div>
-      </Collapse>
-    </Card>
-  }
-}
+import { CollapsibleCard } from './CollabsibleCard'
 
 function SizeBadge ({ collection }) {
   const size = isCollection(collection)
