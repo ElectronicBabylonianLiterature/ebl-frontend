@@ -6,19 +6,20 @@ import _ from 'lodash'
 import './Word.css'
 
 function Word ({ token, onClick }) {
-  return token.lemmatizable
-    ? (
-      <Button
-        onClick={onClick}
-        size='sm'
-        variant='outline-dark'
-        className={classNames({
-          Word: true,
-          'Word--with-lemma': !_.isEmpty(token.uniqueLemma),
-          'Word--suggestion': token.suggested
-        })}>
-        {token.value}
-        {_.isArray(token.uniqueLemma) && <span className='Word__lemmatization'>
+  return token.lemmatizable ? (
+    <Button
+      onClick={onClick}
+      size='sm'
+      variant='outline-dark'
+      className={classNames({
+        Word: true,
+        'Word--with-lemma': !_.isEmpty(token.uniqueLemma),
+        'Word--suggestion': token.suggested
+      })}
+    >
+      {token.value}
+      {_.isArray(token.uniqueLemma) && (
+        <span className='Word__lemmatization'>
           {token.uniqueLemma.map((lemma, index) => (
             <Fragment key={index}>
               {index > 0 && ', '}
@@ -26,10 +27,12 @@ function Word ({ token, onClick }) {
               {lemma.homonym}
             </Fragment>
           ))}
-        </span>}
-      </Button>
-    )
-    : <span className='Word'>{token.value}</span>
+        </span>
+      )}
+    </Button>
+  ) : (
+    <span className='Word'>{token.value}</span>
+  )
 }
 
 export default Word

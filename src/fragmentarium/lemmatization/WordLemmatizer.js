@@ -32,26 +32,30 @@ export default class WordLemmatizer extends Component {
   }
 
   render () {
-    return <span className='WordLemmatizer'>
-      <Word token={this.props.token} onClick={this.handleClick} />
-      <Overlay
-        rootClose
-        onHide={this.hide}
-        show={this.state.show}
-        target={this.state.target}
-        placement='top'
-        container={this}>
-        <Popover
-          id={this.popOverId}
-          title='Lemmatize'
-          className='WordLemmatizer__form'>
-          <LemmatizationForm
-            token={this.props.token}
-            fragmentService={this.props.fragmentService}
-            onChange={this.handleCange}
-          />
-        </Popover>
-      </Overlay>
-    </span>
+    return (
+      <span className='WordLemmatizer'>
+        <Word token={this.props.token} onClick={this.handleClick} />
+        <Overlay
+          rootClose
+          onHide={this.hide}
+          show={this.state.show}
+          target={this.state.target}
+          placement='top'
+          container={this}
+        >
+          <Popover
+            id={this.popOverId}
+            title='Lemmatize'
+            className='WordLemmatizer__form'
+          >
+            <LemmatizationForm
+              token={this.props.token}
+              fragmentService={this.props.fragmentService}
+              onChange={this.handleCange}
+            />
+          </Popover>
+        </Overlay>
+      </span>
+    )
   }
 }

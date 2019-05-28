@@ -1,6 +1,24 @@
 import { factory } from 'factory-girl'
 
-const nonVerbPos = ['AJ', 'AV', 'N', 'NU', 'DP', 'IP', 'PP', 'QP', 'RP', 'XP', 'REL', 'DET', 'CNJ', 'J', 'MOD', 'PRP', 'SBJ']
+const nonVerbPos = [
+  'AJ',
+  'AV',
+  'N',
+  'NU',
+  'DP',
+  'IP',
+  'PP',
+  'QP',
+  'RP',
+  'XP',
+  'REL',
+  'DET',
+  'CNJ',
+  'J',
+  'MOD',
+  'PRP',
+  'SBJ'
+]
 
 function pickOne (values) {
   return factory.chance('pickone', values)
@@ -15,10 +33,7 @@ function vowel () {
 }
 
 function wordArray () {
-  return [
-    factory.chance('word'),
-    factory.chance('word')
-  ]
+  return [factory.chance('word'), factory.chance('word')]
 }
 
 factory.define('form', Object, {
@@ -28,10 +43,7 @@ factory.define('form', Object, {
 })
 
 factory.define('vowels', Object, {
-  value: [
-    vowel(),
-    vowel()
-  ],
+  value: [vowel(), vowel()],
   notes: wordArray()
 })
 
@@ -41,7 +53,27 @@ factory.define('entry', Object, {
 })
 
 factory.extend('entry', 'amplifiedMeaning', {
-  key: pickOne(['G', 'Gtn', 'Gt', 'D', 'Dtn', 'Dt', 'Dtt', 'Š', 'Štn', 'Št', 'ŠD', 'N', 'Ntn', 'R', 'Št2', 'A.', 'B.', 'C.', 'D.']),
+  key: pickOne([
+    'G',
+    'Gtn',
+    'Gt',
+    'D',
+    'Dtn',
+    'Dt',
+    'Dtt',
+    'Š',
+    'Štn',
+    'Št',
+    'ŠD',
+    'N',
+    'Ntn',
+    'R',
+    'Št2',
+    'A.',
+    'B.',
+    'C.',
+    'D.'
+  ]),
   meaning: factory.chance('sentence'),
   entries: factory.assocAttrsMany('entry', 2)
 })
@@ -53,7 +85,11 @@ factory.define('derived', Object, {
 })
 
 factory.define('logogram', Object, {
-  logogram: factory.chance('pickset', ['alpha', 'bravo', 'charlie', 'delta', 'echo'], 2),
+  logogram: factory.chance(
+    'pickset',
+    ['alpha', 'bravo', 'charlie', 'delta', 'echo'],
+    2
+  ),
   notes: wordArray()
 })
 

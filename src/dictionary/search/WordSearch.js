@@ -9,11 +9,11 @@ import './WordSearch.css'
 function WordSearch ({ data }) {
   return (
     <ul className='WordSearch-results'>
-      {data.map(word =>
+      {data.map(word => (
         <li key={word._id} className='WordSearch-results__result'>
           <Word value={word} />
         </li>
-      )}
+      ))}
     </ul>
   )
 }

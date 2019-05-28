@@ -51,7 +51,9 @@ describe('Update word', () => {
   })
 
   it('Displays error message failure', async () => {
-    wordService.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    wordService.update.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    )
     const element = await renderWithRouter()
 
     await submitForm(element, 'form')

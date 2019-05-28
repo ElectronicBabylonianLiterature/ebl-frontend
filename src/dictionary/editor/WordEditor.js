@@ -45,17 +45,30 @@ class WordEditor extends Component {
     return (
       <AppContent
         crumbs={['Dictionary', this.props.match.params.id]}
-        title={<>Edit <strong>{this.state.word.attested === false && '*'}{this.state.word.lemma.join(' ')}</strong> {this.state.word.homonym}</>}>
+        title={
+          <>
+            Edit{' '}
+            <strong>
+              {this.state.word.attested === false && '*'}
+              {this.state.word.lemma.join(' ')}
+            </strong>{' '}
+            {this.state.word.homonym}
+          </>
+        }
+      >
         <ReactMarkdown source={this.state.word.source} />
         <Spinner loading={this.state.saving}>Saving...</Spinner>
-        <WordForm value={this.state.word} onSubmit={this.updateWord} disabled={this.disabled} />
+        <WordForm
+          value={this.state.word}
+          onSubmit={this.updateWord}
+          disabled={this.disabled}
+        />
         <ErrorAlert error={this.state.error} />
       </AppContent>
     )
   }
 }
 
-export default withData(
-  WordEditor,
-  props => props.wordService.find(props.match.params.id)
+export default withData(WordEditor, props =>
+  props.wordService.find(props.match.params.id)
 )

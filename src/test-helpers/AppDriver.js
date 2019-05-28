@@ -29,16 +29,23 @@ function createApp (api, sessionStore) {
   const bibliographyRepository = new BibliographyRepository(api)
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
-  const fragmentService = new FragmentService(auth, fragmentRepository, imageRepository, bibliographyService)
+  const fragmentService = new FragmentService(
+    auth,
+    fragmentRepository,
+    imageRepository,
+    bibliographyService
+  )
   const textService = new TextService(api)
 
-  return <App
-    auth={auth}
-    wordService={wordService}
-    fragmentService={fragmentService}
-    bibliographyService={bibliographyService}
-    textService={textService}
-  />
+  return (
+    <App
+      auth={auth}
+      wordService={wordService}
+      fragmentService={fragmentService}
+      bibliographyService={bibliographyService}
+      textService={textService}
+    />
+  )
 }
 
 export default class AppDriver {
@@ -56,14 +63,23 @@ export default class AppDriver {
   }
 
   withSession () {
-    this.session = new Session('accessToken', 'idToken', Number.MAX_SAFE_INTEGER, ['write:texts'])
+    this.session = new Session(
+      'accessToken',
+      'idToken',
+      Number.MAX_SAFE_INTEGER,
+      ['write:texts']
+    )
     return this
   }
 
   render () {
     const fakeSessionStore = {
-      setSession: session => { this.session = session },
-      clearSession: () => { this.session = null },
+      setSession: session => {
+        this.session = session
+      },
+      clearSession: () => {
+        this.session = null
+      },
       getSession: () => this.session || new Session('', '', 0, [])
     }
 
@@ -97,7 +113,9 @@ export default class AppDriver {
   }
 
   expectInputElement (label, expectedValue) {
-    expect(this.element.getByLabelText(label).value).toEqual(String(expectedValue))
+    expect(this.element.getByLabelText(label).value).toEqual(
+      String(expectedValue)
+    )
   }
 
   changeValueByLabel (label, newValue) {

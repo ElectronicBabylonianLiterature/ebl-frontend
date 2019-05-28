@@ -23,7 +23,9 @@ beforeEach(async () => {
   fragmentService = {
     fetchLatestTransliterations: jest.fn()
   }
-  fragmentService.fetchLatestTransliterations.mockReturnValueOnce(Promise.resolve(fragments))
+  fragmentService.fetchLatestTransliterations.mockReturnValueOnce(
+    Promise.resolve(fragments)
+  )
   element = render(
     <MemoryRouter>
       <LatestTransliterations fragmentService={fragmentService} />
@@ -39,6 +41,9 @@ test('Columns', () => {
 })
 
 test.each(_.range(numberOfFragments))('Fragment %i', index => {
-  const expectedRow = _.keys(expectedColumns).map(property => fragments[index][property]).join('').replace('\n', ' ')
+  const expectedRow = _.keys(expectedColumns)
+    .map(property => fragments[index][property])
+    .join('')
+    .replace('\n', ' ')
   expect(container).toHaveTextContent(expectedRow)
 })

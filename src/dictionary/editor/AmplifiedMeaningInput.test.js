@@ -34,9 +34,9 @@ describe('Conjugation/Function', () => {
   })
 
   it('Displays entries', () => {
-    value.entries.map(entry => entry.meaning).forEach(entry =>
-      expect(element.queryByValue(entry)).toBeVisible()
-    )
+    value.entries
+      .map(entry => entry.meaning)
+      .forEach(entry => expect(element.queryByValue(entry)).toBeVisible())
   })
 
   it('Calls onChange with updated value on key', () => {
@@ -104,5 +104,12 @@ function commonUpdateTests () {
 }
 
 function renderAmplifiedMeaningInput (entry) {
-  return render(<AmplifiedMeaningInput id='entry' value={value} onChange={onChange} entry={entry} />)
+  return render(
+    <AmplifiedMeaningInput
+      id='entry'
+      value={value}
+      onChange={onChange}
+      entry={entry}
+    />
+  )
 }

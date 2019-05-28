@@ -7,16 +7,40 @@ test.each([
   ['', false, null],
   ['value', true, null],
   ['value', false, {}],
-  ['value', false, { errors: [{
-    type: 'SyntaxError',
-    description: 'Invalid line',
-    lineNumber: 2
-  }] }],
-  ['value', false, { errors: [{
-    type: 'OtherError'
-  }] }]
+  [
+    'value',
+    false,
+    {
+      errors: [
+        {
+          type: 'SyntaxError',
+          description: 'Invalid line',
+          lineNumber: 2
+        }
+      ]
+    }
+  ],
+  [
+    'value',
+    false,
+    {
+      errors: [
+        {
+          type: 'OtherError'
+        }
+      ]
+    }
+  ]
 ])('Renders without crashing with props %s %p %p', (value, disabled, error) => {
   const onChange = jest.fn()
   const name = 'transliteration'
-  render(<Editor name={name} value={value} onChange={onChange} disabled={disabled} error={error} />)
+  render(
+    <Editor
+      name={name}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      error={error}
+    />
+  )
 })

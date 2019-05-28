@@ -37,7 +37,7 @@ it('Creates specified number of rows obverse and reverse', async () => {
 })
 
 it('Adds suffix after row number', async () => {
-  await submit('1\', 1#')
+  await submit("1', 1#")
   expect(onSubmit).toBeCalledWith(`@obverse
 1'. [...]  [...]
 

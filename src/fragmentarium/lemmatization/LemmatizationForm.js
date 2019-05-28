@@ -8,23 +8,25 @@ class LemmatizationForm extends Component {
   constructor (props) {
     super(props)
     const isComplex = props.token.uniqueLemma.length > 1
-    const singleLemmaToOption = () => props.token.uniqueLemma.length === 1
-      ? props.token.uniqueLemma[0]
-      : null
+    const singleLemmaToOption = () =>
+      props.token.uniqueLemma.length === 1 ? props.token.uniqueLemma[0] : null
 
     this.state = {
       isComplex: isComplex,
-      selectedOption: isComplex ? props.token.uniqueLemma : singleLemmaToOption(),
-      menuIsOpen: (
-        _.isArray(props.token.suggestions) &&
-        props.token.suggestions.length > 0
-      ) || undefined
+      selectedOption: isComplex
+        ? props.token.uniqueLemma
+        : singleLemmaToOption(),
+      menuIsOpen:
+        (_.isArray(props.token.suggestions) &&
+          props.token.suggestions.length > 0) ||
+        undefined
     }
     this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
 
   loadOptions = (inputValue, callback) => {
-    this.props.fragmentService.searchLemma(inputValue)
+    this.props.fragmentService
+      .searchLemma(inputValue)
       .then(words => words.map(word => new Lemma(word)))
       .then(callback)
   }
@@ -34,12 +36,13 @@ class LemmatizationForm extends Component {
       ...this.state,
       selectedOption
     })
-    this.props.onChange(_.isNil(selectedOption)
-      ? []
-      : (_.isArray(selectedOption)
+    this.props.onChange(
+      _.isNil(selectedOption)
+        ? []
+        : _.isArray(selectedOption)
         ? selectedOption
         : [selectedOption]
-      ))
+    )
   }
 
   onInputChange = (inputValue, { action }) => {
@@ -53,12 +56,15 @@ class LemmatizationForm extends Component {
 
   Select = ({ label }) => {
     const defaultOptions = this.state.isComplex
-      ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
+      ? _(this.props.token.suggestions)
+          .flatMap()
+          .uniqBy('value')
+          .value()
       : _.isArray(this.props.token.suggestions)
-        ? this.props.token.suggestions
+      ? this.props.token.suggestions
           .filter(suggestion => suggestion.length === 1)
           .map(_.head)
-        : []
+      : []
 
     return (
       <AsyncSelect
@@ -85,10 +91,13 @@ class LemmatizationForm extends Component {
         label='Complex'
         disabled={this.props.token.uniqueLemma.length > 1}
         checked={this.state.isComplex}
-        onChange={() => this.setState({
-          ...this.state,
-          isComplex: !this.state.isComplex
-        })} />
+        onChange={() =>
+          this.setState({
+            ...this.state,
+            isComplex: !this.state.isComplex
+          })
+        }
+      />
     </Form.Group>
   )
 

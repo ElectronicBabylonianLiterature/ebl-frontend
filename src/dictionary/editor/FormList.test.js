@@ -57,5 +57,14 @@ it('Calls onChange with updated value on change', () => {
 })
 
 function renderForms () {
-  return render(<FormList id='form' value={value} onChange={onChange} fields={['lemma', 'attested', 'homonym', 'notes']}>{label}</FormList>)
+  return render(
+    <FormList
+      id='form'
+      value={value}
+      onChange={onChange}
+      fields={['lemma', 'attested', 'homonym', 'notes']}
+    >
+      {label}
+    </FormList>
+  )
 }

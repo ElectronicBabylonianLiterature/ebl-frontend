@@ -8,10 +8,13 @@ class LemmaInput extends Component {
   }
 
   lemmaFormControl = () => {
-    return <FormControl
-      type='text'
-      value={this.props.value.lemma.join(' ')}
-      onChange={this.lemmaChanged} />
+    return (
+      <FormControl
+        type='text'
+        value={this.props.value.lemma.join(' ')}
+        onChange={this.lemmaChanged}
+      />
+    )
   }
 
   lemmaChanged = event => {
@@ -39,13 +42,14 @@ class LemmaInput extends Component {
                 type='checkbox'
                 aria-label='attested'
                 checked={this.props.value.attested}
-                onChange={this.attestedChanged} />
+                onChange={this.attestedChanged}
+              />
             </InputGroup.Prepend>
             <this.lemmaFormControl />
           </InputGroup>
-        )
-          : <this.lemmaFormControl />
-        }
+        ) : (
+          <this.lemmaFormControl />
+        )}
       </FormGroup>
     )
   }

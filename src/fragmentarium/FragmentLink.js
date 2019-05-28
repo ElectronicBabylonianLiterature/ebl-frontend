@@ -8,7 +8,10 @@ export function createFragmentUrl (number) {
 }
 
 export function createFragmentUrlWithFolio (number, folioName, folioNumber) {
-  const query = queryString.stringify({ folioName: folioName, folioNumber: folioNumber }, { strict: false })
+  const query = queryString.stringify(
+    { folioName: folioName, folioNumber: folioNumber },
+    { strict: false }
+  )
   return `${createFragmentUrl(number)}?${query}`
 }
 

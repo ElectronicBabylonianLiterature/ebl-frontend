@@ -31,22 +31,21 @@ test.each([
   }
 })
 
-test.each([
-  ['', 2, '2'],
-  [53, '', '53'],
-  [29, 98, '29,98']
-])('throws an error if the %s or %s is not a string', (word, anotherWord, number) => {
-  function compareInvalidWords () {
-    compareStrings(word, anotherWord)
+test.each([['', 2, '2'], [53, '', '53'], [29, 98, '29,98']])(
+  'throws an error if the %s or %s is not a string',
+  (word, anotherWord, number) => {
+    function compareInvalidWords () {
+      compareStrings(word, anotherWord)
+    }
+    expect(compareInvalidWords).toThrowError(`${number} is not a string`)
   }
-  expect(compareInvalidWords).toThrowError(`${number} is not a string`)
-})
+)
 
 test.each([
   ['', 'abalu*', '*'],
   ['a&maru', 'bitu', '&'],
   ['belu\\EN', 'bitu', '\\'],
-  ['\'belu\'', 'bitu', '\',\''],
+  ["'belu'", 'bitu', "','"],
   ['EN=belu', 'amtu', '='],
   ['Amar|Suen', 'Hammurabi', '|'],
   ['matate;', 'amtu', ';'],
@@ -54,9 +53,14 @@ test.each([
   ['bälu!', 'bitu', 'ä,!'],
   ['ḫarru', 'bjtu', 'ḫ,j'],
   ['belü!', 'byt(u)', 'ü,!,(,)']
-])('throws an error on word(s) with invalid character(s) %s or %s', (word, anotherWord, invalidCharacters) => {
-  function compareInvalidWords () {
-    compareStrings(word, anotherWord)
+])(
+  'throws an error on word(s) with invalid character(s) %s or %s',
+  (word, anotherWord, invalidCharacters) => {
+    function compareInvalidWords () {
+      compareStrings(word, anotherWord)
+    }
+    expect(compareInvalidWords).toThrowError(
+      `Invalid character(s) ${invalidCharacters} in the input`
+    )
   }
-  expect(compareInvalidWords).toThrowError(`Invalid character(s) ${invalidCharacters} in the input`)
-})
+)

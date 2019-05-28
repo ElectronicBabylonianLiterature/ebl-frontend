@@ -13,18 +13,27 @@ function replaceIgnoredCharacters (word) {
 }
 
 function checkForInvalidCharacters (word, anotherWord) {
-  let invalidCharacters = word.split('').concat(anotherWord.split('')).filter(character => !alphabet.includes(character))
+  let invalidCharacters = word
+    .split('')
+    .concat(anotherWord.split(''))
+    .filter(character => !alphabet.includes(character))
   if (!_.isEmpty(invalidCharacters)) {
     throw new Error(`Invalid character(s) ${invalidCharacters} in the input`)
   }
 }
 
 function hasHigherAlphabetIndex (word, anotherWord, indexOfCharacter) {
-  return alphabet.indexOf(word[indexOfCharacter]) > alphabet.indexOf(anotherWord[indexOfCharacter])
+  return (
+    alphabet.indexOf(word[indexOfCharacter]) >
+    alphabet.indexOf(anotherWord[indexOfCharacter])
+  )
 }
 
 function hasLowerAlphabetIndex (word, anotherWord, indexOfCharacter) {
-  return alphabet.indexOf(word[indexOfCharacter]) < alphabet.indexOf(anotherWord[indexOfCharacter])
+  return (
+    alphabet.indexOf(word[indexOfCharacter]) <
+    alphabet.indexOf(anotherWord[indexOfCharacter])
+  )
 }
 
 export default function compareStrings (word, anotherWord) {
@@ -33,10 +42,22 @@ export default function compareStrings (word, anotherWord) {
   let anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
-  for (let indexOfCharacter = 0; indexOfCharacter < replacedWord.length; indexOfCharacter++) {
-    if (hasHigherAlphabetIndex(replacedWord, anotherWordReplaced, indexOfCharacter)) {
+  for (
+    let indexOfCharacter = 0;
+    indexOfCharacter < replacedWord.length;
+    indexOfCharacter++
+  ) {
+    if (
+      hasHigherAlphabetIndex(
+        replacedWord,
+        anotherWordReplaced,
+        indexOfCharacter
+      )
+    ) {
       return 1
-    } else if (hasLowerAlphabetIndex(replacedWord, anotherWordReplaced, indexOfCharacter)) {
+    } else if (
+      hasLowerAlphabetIndex(replacedWord, anotherWordReplaced, indexOfCharacter)
+    ) {
       return -1
     }
   }

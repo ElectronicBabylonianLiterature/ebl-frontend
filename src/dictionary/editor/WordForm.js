@@ -42,30 +42,26 @@ class WordForm extends Component {
     <TextInput
       id={property}
       value={this.state.word[property]}
-      onChange={this.onChangeValue(property)}>
+      onChange={this.onChangeValue(property)}
+    >
       {_.startCase(property)}
     </TextInput>
   )
 
   lemma = () => (
-    <LemmaInput
-      id='lemma'
-      value={this.state.word}
-      onChange={this.updateWord} />
+    <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
   )
 
   pos = () => (
-    <PosInput
-      id='pos'
-      value={this.state.word}
-      onChange={this.updateWord} />
+    <PosInput id='pos' value={this.state.word} onChange={this.updateWord} />
   )
 
   amplifiedMeanings = () => (
     <AmplifiedMeaningList
       id={`amplifiedMeaning`}
       value={this.state.word.amplifiedMeanings}
-      onChange={this.onChangeValue('amplifiedMeanings')}>
+      onChange={this.onChangeValue('amplifiedMeanings')}
+    >
       Amplified meanings
     </AmplifiedMeaningList>
   )
@@ -75,7 +71,8 @@ class WordForm extends Component {
       id='forms'
       value={this.state.word.forms}
       onChange={this.onChangeValue('forms')}
-      fields={['lemma', 'attested', 'notes']}>
+      fields={['lemma', 'attested', 'notes']}
+    >
       Forms
     </FormList>
   )
@@ -87,14 +84,16 @@ class WordForm extends Component {
       separator=' '
       property='logogram'
       noun='logogram'
-      onChange={this.onChangeValue('logograms')} />
+      onChange={this.onChangeValue('logograms')}
+    />
   )
 
   derived = () => (
     <DerivedList
       id='derived'
       value={this.state.word.derived}
-      onChange={this.onChangeValue('derived')}>
+      onChange={this.onChangeValue('derived')}
+    >
       Derived
     </DerivedList>
   )
@@ -103,19 +102,22 @@ class WordForm extends Component {
     <DerivedFromInput
       id='derivedFrom'
       value={this.state.word.derivedFrom}
-      onChange={this.onChangeValue('derivedFrom')} />
+      onChange={this.onChangeValue('derivedFrom')}
+    />
   )
 
   jsonPreview = () => {
-    return <div>
-      <h3>JSON preview</h3>
-      <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
-    </div>
+    return (
+      <div>
+        <h3>JSON preview</h3>
+        <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
+      </div>
+    )
   }
 
   render () {
     return (
-      <form className='WordForm' onSubmit={this.submit} >
+      <form className='WordForm' onSubmit={this.submit}>
         <fieldset disabled={this.props.disabled}>
           <this.lemma />
           <this.textInput property='legacyLemma' />
@@ -138,7 +140,9 @@ class WordForm extends Component {
 
           <this.derivedFrom />
 
-          <Button type='submit' variant='primary'>Save</Button>
+          <Button type='submit' variant='primary'>
+            Save
+          </Button>
         </fieldset>
       </form>
     )

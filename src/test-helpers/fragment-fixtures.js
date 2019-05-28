@@ -2,12 +2,22 @@ import { factory } from 'factory-girl'
 import { fromJS, List } from 'immutable'
 import { Chance } from 'chance'
 import FactoryAdapter from './FactoryAdapter'
-import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
+import {
+  Fragment,
+  Measures,
+  RecordEntry,
+  Line,
+  Text,
+  Folio,
+  UncuratedReference
+} from 'fragmentarium/fragment'
 
 const chance = new Chance()
 
 function date () {
-  return factory.chance('date')().toISOString()
+  return factory
+    .chance('date')()
+    .toISOString()
 }
 
 function dateRange () {
@@ -107,11 +117,10 @@ factory.define('fragment', Fragment, {
   accession: factory.chance('word'),
   publication: factory.chance('sentence', { words: 4 }),
   joins: async () => List([await factory.chance('word')()]),
-  description: async () => `${
-    await factory.chance('sentence')()
-  }\n${
-    await factory.chance('sentence')()
-  }`,
+  description: async () =>
+    `${await factory.chance('sentence')()}\n${await factory.chance(
+      'sentence'
+    )()}`,
   measures: factory.assocAttrs('measures'),
   collection: 'Kuyunjik',
   script: factory.chance('pickone', ['NA', 'NB']),
@@ -120,7 +129,8 @@ factory.define('fragment', Fragment, {
   text: factory.assocAttrs('text'),
   notes: factory.chance('sentence'),
   museum: 'The British Museum',
-  references: async () => List(await factory.buildMany('referenceDto', 2)).map(dto => fromJS(dto))
+  references: async () =>
+    List(await factory.buildMany('referenceDto', 2)).map(dto => fromJS(dto))
 })
 
 factory.define('folioPagerEntry', Object, {

@@ -16,23 +16,30 @@ class WordSearch extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?${queryString.stringify({ query: this.state.query })}`)
+    this.props.history.push(
+      `?${queryString.stringify({ query: this.state.query })}`
+    )
   }
 
   render () {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId='query'>
-          <Form.Label column sm={2}>Query</Form.Label>
+          <Form.Label column sm={2}>
+            Query
+          </Form.Label>
           <Col sm={6}>
             <FormControl
               type='text'
               value={this.state.query}
               placeholder='lemma or meaning'
-              onChange={this.onChange} />
+              onChange={this.onChange}
+            />
           </Col>
           <Col sm={4}>
-            <Button type='submit' variant='primary'>Query</Button>
+            <Button type='submit' variant='primary'>
+              Query
+            </Button>
           </Col>
         </Form.Group>
       </Form>

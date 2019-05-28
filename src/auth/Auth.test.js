@@ -113,7 +113,9 @@ describe('handleAuthentication', () => {
     )
 
     beforeEach(async () => {
-      auth0mock.parseHash.mockImplementationOnce(callback => callback(null, authResult))
+      auth0mock.parseHash.mockImplementationOnce(callback =>
+        callback(null, authResult)
+      )
       await auth.handleAuthentication()
     })
 
@@ -122,7 +124,11 @@ describe('handleAuthentication', () => {
     })
 
     it('Sets user', () => {
-      const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+      const {
+        sub,
+        [eblNameProperty]: eblName,
+        name
+      } = authResult.idTokenPayload
       expect(errorReporter.setUser).toBeCalledWith(sub, name, eblName)
     })
   }
@@ -139,7 +145,8 @@ describe('handleAuthentication', () => {
   describe('Hash is parsed with error', () => {
     const error = {
       error: 'invalid_hash',
-      errorDescription: 'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property'
+      errorDescription:
+        'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property'
     }
     beforeEach(() => {
       auth0mock.parseHash.mockImplementationOnce(callback =>
@@ -148,7 +155,9 @@ describe('handleAuthentication', () => {
     })
 
     test('Rejects with the error', async () => {
-      await expect(auth.handleAuthentication()).rejects.toEqual(new Error(error.error))
+      await expect(auth.handleAuthentication()).rejects.toEqual(
+        new Error(error.error)
+      )
     })
   })
 })

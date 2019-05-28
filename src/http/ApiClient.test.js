@@ -12,7 +12,7 @@ const expectSignal = expect.objectContaining({
   onabort: expect.any(Function)
 })
 const requestJson = {
-  'payload': 1
+  payload: 1
 }
 
 let apiClient
@@ -37,7 +37,9 @@ describe('fetchJson', () => {
     })
 
     test('Makes a request with given parameters', async () => {
-      const expectedHeaders = new Headers({ 'Authorization': `Bearer ${accessToken}` })
+      const expectedHeaders = new Headers({
+        Authorization: `Bearer ${accessToken}`
+      })
       await apiClient.fetchJson(path, true, expectSignal)
       expect(fetch).toBeCalledWith(expectedUrl, {
         headers: expectedHeaders,
@@ -76,7 +78,7 @@ describe('postJson', () => {
     await apiClient.postJson(path, requestJson)
 
     const expectedHeaders = new Headers({
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
     expect(fetch).toBeCalledWith(expectedUrl, {
@@ -109,7 +111,7 @@ describe('putJson', () => {
     await apiClient.putJson(path, requestJson)
 
     const expectedHeaders = new Headers({
-      'Authorization': `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json; charset=utf-8'
     })
     expect(fetch).toBeCalledWith(expectedUrl, {
@@ -136,7 +138,9 @@ describe('fetchBlob', () => {
 
     await apiClient.fetchBlob(path, true)
 
-    const expectedHeaders = new Headers({ 'Authorization': `Bearer ${accessToken}` })
+    const expectedHeaders = new Headers({
+      Authorization: `Bearer ${accessToken}`
+    })
     expect(fetch).toBeCalledWith(expectedUrl, {
       headers: expectedHeaders,
       signal: expectSignal
@@ -173,13 +177,18 @@ function commonTests (action) {
     const callback = jest.fn()
     const promise = action()
     const waitable = promise.then(() => null)
-    promise.then(callback).catch(callback).cancel()
+    promise
+      .then(callback)
+      .catch(callback)
+      .cancel()
     await waitable
     expect(callback).not.toHaveBeenCalled()
   })
 
   test('Rejects with error if not authorized', async () => {
-    auth.getAccessToken.mockImplementationOnce(() => { throw error })
+    auth.getAccessToken.mockImplementationOnce(() => {
+      throw error
+    })
     await expect(action()).rejects.toEqual(error)
   })
 

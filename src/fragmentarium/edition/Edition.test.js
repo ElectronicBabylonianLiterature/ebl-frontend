@@ -23,8 +23,10 @@ beforeEach(async () => {
       <Edition
         fragment={fragment}
         fragmentService={fragmentService}
-        updateTransliteration={updateTransliteration} />
-    </MemoryRouter>)
+        updateTransliteration={updateTransliteration}
+      />
+    </MemoryRouter>
+  )
   container = element.container
 })
 

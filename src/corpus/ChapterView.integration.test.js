@@ -76,7 +76,7 @@ const textDto = {
       ],
       lines: [
         {
-          number: '1\'',
+          number: "1'",
           reconstruction: 'ideal',
           manuscripts: [
             {
@@ -126,11 +126,7 @@ describe('Diplay chapter', () => {
   })
 
   test('Breadcrumbs', () => {
-    appDriver.expectBreadcrumbs([
-      'eBL',
-      'Corpus',
-      chapterTitle
-    ])
+    appDriver.expectBreadcrumbs(['eBL', 'Corpus', chapterTitle])
   })
 
   test.each([
@@ -155,7 +151,9 @@ describe('Diplay chapter', () => {
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
-      fakeApi.expectUpdateText(setIn(textDto, ['chapters', 1, 'manuscripts', 0, property], newValue))
+      fakeApi.expectUpdateText(
+        setIn(textDto, ['chapters', 1, 'manuscripts', 0, property], newValue)
+      )
       const value = manuscript[property]
       const expectedValue = Record.isRecord(value) ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
@@ -188,7 +186,9 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1
     }
-    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript))
+    fakeApi.expectUpdateText(
+      setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript)
+    )
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
     appDriver.click('Save')
@@ -209,10 +209,10 @@ describe('Lines', () => {
     await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
   })
 
-  test.each([
-    ['Number', 'number', '2']
-  ])('%s', (label, property, newValue) => {
-    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 2, 'lines', 0, property], newValue))
+  test.each([['Number', 'number', '2']])('%s', (label, property, newValue) => {
+    fakeApi.expectUpdateText(
+      setIn(textDto, ['chapters', 2, 'lines', 0, property], newValue)
+    )
     const expectedValue = line[property]
     appDriver.expectInputElement(label, expectedValue)
     appDriver.changeValueByLabel(label, newValue)
@@ -228,10 +228,10 @@ describe('Add line', () => {
     await setup(chapter)
   })
 
-  test.each([
-    ['Number', 'number']
-  ])('%s', (label, property) => {
-    fakeApi.expectUpdateText(setIn(textDto, ['chapters', 1, 'lines', 0], defaultLineDto))
+  test.each([['Number', 'number']])('%s', (label, property) => {
+    fakeApi.expectUpdateText(
+      setIn(textDto, ['chapters', 1, 'lines', 0], defaultLineDto)
+    )
     appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
     appDriver.click('Save')
@@ -249,11 +249,15 @@ describe('Chapter not found', () => {
       .withPath(createChapterPath(chapter.stage, chapterName))
       .render()
 
-    await appDriver.waitForText(`Edit ${textDto.name} ${chapter.stage} ${chapterName}`)
+    await appDriver.waitForText(
+      `Edit ${textDto.name} ${chapter.stage} ${chapterName}`
+    )
   })
 
   test('Error message', () => {
-    appDriver.expectTextContent(`Chapter ${textDto.name} ${chapter.stage} ${chapterName} not found.`)
+    appDriver.expectTextContent(
+      `Chapter ${textDto.name} ${chapter.stage} ${chapterName} not found.`
+    )
   })
 })
 
@@ -267,7 +271,9 @@ async function setup (chapter) {
 }
 
 function createChapterPath (stage, name) {
-  return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(index)}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
+  return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
+    index
+  )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
 }
 
 function createChapterTitle (chapter) {

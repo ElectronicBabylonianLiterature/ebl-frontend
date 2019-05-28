@@ -11,10 +11,16 @@ export default function OrganizationLinks ({ cdliNumber, bmIdNumber }) {
   return (
     <p className='OrganizationLinks'>
       {bmIdNumber && (
-        <ExternalLink alt='The British Museum'
+        <ExternalLink
+          alt='The British Museum'
           href={`https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${bmIdNumber}&partId=1`}
-          aria-label={`The British Museum object ${bmIdNumber}`}>
-          <img className='OrganizationLinks__image' src={bmLogo} alt='The British Museum' />
+          aria-label={`The British Museum object ${bmIdNumber}`}
+        >
+          <img
+            className='OrganizationLinks__image'
+            src={bmLogo}
+            alt='The British Museum'
+          />
         </ExternalLink>
       )}
       {cdliNumber && (

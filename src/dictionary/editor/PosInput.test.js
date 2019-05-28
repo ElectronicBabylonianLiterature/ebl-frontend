@@ -10,24 +10,24 @@ let element
 let onChange
 
 const positionsOfScpeech = {
-  'AJ': 'adjective',
-  'AV': 'adverb',
-  'N': 'noun',
-  'NU': 'number',
-  'V': 'verb',
-  'DP': 'demonstrative pronoun',
-  'IP': 'independent/anaphoric pronoun',
-  'PP': 'possessive pronoun',
-  'QP': 'interrogative pronoun',
-  'RP': 'reflexive/reciprocal pronoun',
-  'XP': 'indefinite pronoun',
-  'REL': 'relative pronoun',
-  'DET': 'determinative pronoun',
-  'CNJ': 'conjunction',
-  'J': 'interjection',
-  'MOD': 'modal, negative, or conditional particle',
-  'PRP': 'preposition',
-  'SBJ': 'subjunction'
+  AJ: 'adjective',
+  AV: 'adverb',
+  N: 'noun',
+  NU: 'number',
+  V: 'verb',
+  DP: 'demonstrative pronoun',
+  IP: 'independent/anaphoric pronoun',
+  PP: 'possessive pronoun',
+  QP: 'interrogative pronoun',
+  RP: 'reflexive/reciprocal pronoun',
+  XP: 'indefinite pronoun',
+  REL: 'relative pronoun',
+  DET: 'determinative pronoun',
+  CNJ: 'conjunction',
+  J: 'interjection',
+  MOD: 'modal, negative, or conditional particle',
+  PRP: 'preposition',
+  SBJ: 'subjunction'
 }
 
 beforeEach(() => {
@@ -48,10 +48,7 @@ describe('Verb', () => {
     whenChangedByValue(element, value.roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith(newValue => ({
-        roots: [
-          newValue,
-          ..._.tail(value.roots)
-        ]
+        roots: [newValue, ..._.tail(value.roots)]
       }))
   })
 
@@ -75,7 +72,10 @@ function commonTests () {
   })
 
   it('Other POS are not selected', () => {
-    for (let pos of _(positionsOfScpeech).omit(value.pos).values().value()) {
+    for (let pos of _(positionsOfScpeech)
+      .omit(value.pos)
+      .values()
+      .value()) {
       expect(element.getByText(pos).selected).toBe(false)
     }
   })

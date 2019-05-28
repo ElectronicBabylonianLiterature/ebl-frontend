@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { render, wait, waitForElement } from 'react-testing-library'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
@@ -47,7 +46,9 @@ describe('Error', () => {
   })
 
   it('Reports error', async () => {
-    await wait(() => expect(errorReportingService.captureException).toHaveBeenCalledWith(error))
+    await wait(() =>
+      expect(errorReportingService.captureException).toHaveBeenCalledWith(error)
+    )
   })
 
   itRedirectsToHome()
@@ -74,7 +75,10 @@ function renderCallback (hash) {
     <ErrorReporterContext.Provider value={errorReportingService}>
       <MemoryRouter initialEntries={[`/callback#${hash}`]}>
         <Switch>
-          <Route path='/callback' render={() => <CallbackWithRouter auth={auth} />} />
+          <Route
+            path='/callback'
+            render={() => <CallbackWithRouter auth={auth} />}
+          />
           <Route path='/' render={() => <div>Home</div>} />
         </Switch>
       </MemoryRouter>

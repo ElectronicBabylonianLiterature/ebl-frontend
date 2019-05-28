@@ -11,9 +11,14 @@ let bibliographyService
 let element
 
 function renderWordSearch () {
-  element = render(<MemoryRouter>
-    <BibliographySearch query={query} bibliographyService={bibliographyService} />
-  </MemoryRouter>)
+  element = render(
+    <MemoryRouter>
+      <BibliographySearch
+        query={query}
+        bibliographyService={bibliographyService}
+      />
+    </MemoryRouter>
+  )
 }
 
 beforeEach(async () => {

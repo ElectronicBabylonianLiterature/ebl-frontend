@@ -15,12 +15,14 @@ let element
 beforeEach(() => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
-  element = render(<TransliteratioForm
-    number={number}
-    transliteration={transliteration}
-    notes={notes}
-    updateTransliteration={updateTransliteration}
-  />)
+  element = render(
+    <TransliteratioForm
+      number={number}
+      transliteration={transliteration}
+      notes={notes}
+      updateTransliteration={updateTransliteration}
+    />
+  )
 })
 
 test('Submitting the from calls updateTransliteration', () => {
@@ -32,7 +34,9 @@ xit('Updates transliteration on change', () => {
   const newTransliteration = 'line1\nline2\nnew line'
   changeValueByLabel(element, 'Transliteration', newTransliteration)
 
-  expect(element.getByLabelText('Transliteration').value).toEqual(newTransliteration)
+  expect(element.getByLabelText('Transliteration').value).toEqual(
+    newTransliteration
+  )
 })
 
 xit('Updates notes on change', () => {
@@ -43,7 +47,9 @@ xit('Updates notes on change', () => {
 })
 
 xit('Shows transliteration', () => {
-  expect(element.getByLabelText('Transliteration').value).toEqual(transliteration)
+  expect(element.getByLabelText('Transliteration').value).toEqual(
+    transliteration
+  )
 })
 
 xit('Shows notes', () => {

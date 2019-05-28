@@ -1,4 +1,3 @@
-
 import Promise from 'bluebird'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyRepository from './BibliographyRepository'
@@ -19,10 +18,43 @@ const resultStub = {
 const entry = new BibliographyEntry(resultStub)
 
 const testData = [
-  ['find', [id], apiClient.fetchJson, entry, [`/bibliography/${encodeURIComponent(id)}`, true], Promise.resolve(resultStub)],
-  ['search', [author, year, title], apiClient.fetchJson, [entry], [`/bibliography?author=${encodeURIComponent(author)}&title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}`, true], Promise.resolve([resultStub])],
-  ['update', [entry], apiClient.postJson, entry, [`/bibliography/${encodeURIComponent(id)}`, resultStub], Promise.resolve(resultStub)],
-  ['create', [entry], apiClient.postJson, entry, ['/bibliography', resultStub], Promise.resolve(resultStub)]
+  [
+    'find',
+    [id],
+    apiClient.fetchJson,
+    entry,
+    [`/bibliography/${encodeURIComponent(id)}`, true],
+    Promise.resolve(resultStub)
+  ],
+  [
+    'search',
+    [author, year, title],
+    apiClient.fetchJson,
+    [entry],
+    [
+      `/bibliography?author=${encodeURIComponent(
+        author
+      )}&title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}`,
+      true
+    ],
+    Promise.resolve([resultStub])
+  ],
+  [
+    'update',
+    [entry],
+    apiClient.postJson,
+    entry,
+    [`/bibliography/${encodeURIComponent(id)}`, resultStub],
+    Promise.resolve(resultStub)
+  ],
+  [
+    'create',
+    [entry],
+    apiClient.postJson,
+    entry,
+    ['/bibliography', resultStub],
+    Promise.resolve(resultStub)
+  ]
 ]
 
 testDelegation(wordRepository, testData)

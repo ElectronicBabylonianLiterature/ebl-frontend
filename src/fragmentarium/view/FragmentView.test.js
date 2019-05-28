@@ -16,13 +16,22 @@ let session
 let container
 let element
 
-function renderFragmentView (initialEntry = `/${encodeURIComponent(fragmentNumber)}`) {
+function renderFragmentView (
+  initialEntry = `/${encodeURIComponent(fragmentNumber)}`
+) {
   element = render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={session}>
-        <Route path='/:id' render={({ match, location }) =>
-          <FragmentView match={match} location={location} fragmentService={fragmentService} />
-        } />
+        <Route
+          path='/:id'
+          render={({ match, location }) => (
+            <FragmentView
+              match={match}
+              location={location}
+              fragmentService={fragmentService}
+            />
+          )}
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )
@@ -44,7 +53,9 @@ beforeEach(async () => {
     hasBetaAccess: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
-  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 })
 
@@ -53,13 +64,25 @@ describe('Fragment is loaded', () => {
   let selectedFolio
 
   beforeEach(async () => {
-    const folios = List(await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }]))
-    fragment = (await factory.build('fragment', { number: fragmentNumber, folios: folios, atf: '1. ku' }))
-      .setReferences(List(await factory.buildMany('reference', 2)))
+    const folios = List(
+      await factory.buildMany('folio', 2, {}, [
+        { name: 'WGL' },
+        { name: 'AKG' }
+      ])
+    )
+    fragment = (await factory.build('fragment', {
+      number: fragmentNumber,
+      folios: folios,
+      atf: '1. ku'
+    })).setReferences(List(await factory.buildMany('reference', 2)))
     selectedFolio = fragment.folios.first()
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
-    renderFragmentView(`/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(selectedFolio.name)}&folioNumber=${encodeURIComponent(selectedFolio.number)}`)
+    renderFragmentView(
+      `/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(
+        selectedFolio.name
+      )}&folioNumber=${encodeURIComponent(selectedFolio.number)}`
+    )
     await waitForElement(() => element.getByText('Edition'))
   })
 
@@ -80,7 +103,11 @@ describe('Fragment is loaded', () => {
   })
 
   it('Selects active folio', () => {
-    expect(element.getByText(`${selectedFolio.humanizedName} Folio ${selectedFolio.number}`)).toHaveAttribute('aria-selected', 'true')
+    expect(
+      element.getByText(
+        `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`
+      )
+    ).toHaveAttribute('aria-selected', 'true')
   })
 })
 
@@ -103,5 +130,7 @@ describe('On error', () => {
 it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadFragments.mockReturnValue(false)
   renderFragmentView()
-  await waitForElement(() => element.getByText('Please log in to browse the Fragmentarium.'))
+  await waitForElement(() =>
+    element.getByText('Please log in to browse the Fragmentarium.')
+  )
 })

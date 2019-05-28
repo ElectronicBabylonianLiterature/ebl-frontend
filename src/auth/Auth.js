@@ -5,10 +5,7 @@ import Session from './Session'
 import applicationScopes from './applicationScopes.json'
 
 const eblNameProperty = 'https://ebabylon.org/eblName'
-const scopes = [
-  'openid',
-  'profile'
-]
+const scopes = ['openid', 'profile']
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')
 
@@ -16,7 +13,7 @@ function createSession (authResult) {
   return new Session(
     authResult.accessToken,
     authResult.idToken,
-    (1000 * authResult.expiresIn) + new Date().getTime(),
+    1000 * authResult.expiresIn + new Date().getTime(),
     (authResult.scope || scopeString).split(' ')
   )
 }
@@ -46,7 +43,11 @@ class Auth {
         if (err) {
           reject(err instanceof Error ? err : new Error(err.error))
         } else {
-          const { sub, [eblNameProperty]: eblName, name } = authResult.idTokenPayload
+          const {
+            sub,
+            [eblNameProperty]: eblName,
+            name
+          } = authResult.idTokenPayload
           this.errorReporter.setUser(sub, name, eblName)
           const session = createSession(authResult)
           this.sessionStore.setSession(session)

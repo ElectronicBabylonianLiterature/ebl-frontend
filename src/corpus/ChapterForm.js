@@ -27,19 +27,40 @@ function ChapterDetails ({ chapter }) {
   )
 }
 
-export default function ChapterForm ({ onSubmit, disabled, chapter, searchBibliography, onChange }) {
-  return <Form onSubmit={onSubmit}>
-    <fieldset disabled={disabled}>
-      <ChapterDetails chapter={chapter} />
-      <Tabs defaultActiveKey='manuscripts' id={_.uniqueId('ChapterFormTabs-')}>
-        <Tab eventKey='manuscripts' title='Manuscripts'>
-          <ChapterManuscripts chapter={chapter} searchBibliography={searchBibliography} onChange={onChange} />
-        </Tab>
-        <Tab eventKey='lines' title='Lines'>
-          <ChapterLines chapter={chapter} onChange={onChange} disabled={disabled} />
-        </Tab>
-      </Tabs>
-      <Button variant='primary' type='submit'>Save</Button>
-    </fieldset>
-  </Form>
+export default function ChapterForm ({
+  onSubmit,
+  disabled,
+  chapter,
+  searchBibliography,
+  onChange
+}) {
+  return (
+    <Form onSubmit={onSubmit}>
+      <fieldset disabled={disabled}>
+        <ChapterDetails chapter={chapter} />
+        <Tabs
+          defaultActiveKey='manuscripts'
+          id={_.uniqueId('ChapterFormTabs-')}
+        >
+          <Tab eventKey='manuscripts' title='Manuscripts'>
+            <ChapterManuscripts
+              chapter={chapter}
+              searchBibliography={searchBibliography}
+              onChange={onChange}
+            />
+          </Tab>
+          <Tab eventKey='lines' title='Lines'>
+            <ChapterLines
+              chapter={chapter}
+              onChange={onChange}
+              disabled={disabled}
+            />
+          </Tab>
+        </Tabs>
+        <Button variant='primary' type='submit'>
+          Save
+        </Button>
+      </fieldset>
+    </Form>
+  )
 }

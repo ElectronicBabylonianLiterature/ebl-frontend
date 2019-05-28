@@ -11,33 +11,65 @@ import ChapterForm from './ChapterForm'
 import ChapterNavigation from './ChapterNavigation'
 
 function textChanged (prevProps, props) {
-  return prevProps.match.params.category !== props.match.params.category ||
+  return (
+    prevProps.match.params.category !== props.match.params.category ||
     prevProps.match.params.index !== props.match.params.index
+  )
 }
 
 function chapterChanged (prevProps, props) {
-  return !is(prevProps.text, props.text) ||
+  return (
+    !is(prevProps.text, props.text) ||
     prevProps.match.params.stage !== props.match.params.stage ||
     prevProps.match.params.name !== props.match.params.name
+  )
 }
 
 function ChapterTitle ({ text, stage, name }) {
-  return <>
-    <ReactMarkdown source={text.name} disallowedTypes={['paragraph']} unwrapDisallowed /> {stage} {name}
-  </>
+  return (
+    <>
+      <ReactMarkdown
+        source={text.name}
+        disallowedTypes={['paragraph']}
+        unwrapDisallowed
+      />{' '}
+      {stage} {name}
+    </>
+  )
 }
 
-function ChapterView ({ text, stage, name, onChange, onSubmit, searchBibliography, disabled }) {
-  const [chapterIndex, chapter] = text.chapters.findEntry(chapter => chapter.stage === stage && chapter.name === name) || [-1, null]
+function ChapterView ({
+  text,
+  stage,
+  name,
+  onChange,
+  onSubmit,
+  searchBibliography,
+  disabled
+}) {
+  const [chapterIndex, chapter] = text.chapters.findEntry(
+    chapter => chapter.stage === stage && chapter.name === name
+  ) || [-1, null]
   const title = <ChapterTitle text={text} stage={stage} name={name} />
-  const handleChange = chapter => onChange(text.setIn(['chapters', chapterIndex], chapter))
+  const handleChange = chapter =>
+    onChange(text.setIn(['chapters', chapterIndex], chapter))
   return (
     <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
-      {chapter
-        ? <ChapterForm chapter={chapter} disabled={disabled} searchBibliography={searchBibliography} onChange={handleChange} onSubmit={onSubmit} />
-        : (stage !== '' && name !== '') && <Alert variant='danger'>Chapter {title} not found.</Alert>
-      }
+      {chapter ? (
+        <ChapterForm
+          chapter={chapter}
+          disabled={disabled}
+          searchBibliography={searchBibliography}
+          onChange={handleChange}
+          onSubmit={onSubmit}
+        />
+      ) : (
+        stage !== '' &&
+        name !== '' && (
+          <Alert variant='danger'>Chapter {title} not found.</Alert>
+        )
+      )}
     </AppContent>
   )
 }
@@ -68,31 +100,30 @@ class ChapterController extends Component {
     })
   }
 
-  setStateUpdating = () => this.setState({
-    ...this.state,
-    saving: true,
-    error: null
-  })
+  setStateUpdating = () =>
+    this.setState({
+      ...this.state,
+      saving: true,
+      error: null
+    })
 
-  setStateError = error => this.setState({
-    saving: false,
-    error: error
-  })
+  setStateError = error =>
+    this.setState({
+      saving: false,
+      error: error
+    })
 
-  setStateUpdated = updatedText => this.setState({
-    text: updatedText,
-    saving: false,
-    error: null
-  })
+  setStateUpdated = updatedText =>
+    this.setState({
+      text: updatedText,
+      saving: false,
+      error: null
+    })
 
   updateText = () => {
     this.setStateUpdating()
     return this.props.textService
-      .update(
-        this.props.text.category,
-        this.props.text.index,
-        this.state.text
-      )
+      .update(this.props.text.category, this.props.text.index, this.state.text)
       .then(this.setStateUpdated)
       .catch(this.setStateError)
   }
@@ -104,27 +135,28 @@ class ChapterController extends Component {
   }
 
   render () {
-    return <>
-      <ChapterView
-        text={this.state.text}
-        stage={decodeURIComponent(this.props.match.params.stage || '')}
-        name={decodeURIComponent(this.props.match.params.chapter || '')}
-        onChange={this.setText}
-        onSubmit={this.submit}
-        searchBibliography={query => this.props.bibliographyService.search(query)}
-        disabled={this.state.saving}
-      />
-      <Spinner loading={this.state.saving}>Saving...</Spinner>
-      <ErrorAlert error={this.state.error} />
-    </>
+    return (
+      <>
+        <ChapterView
+          text={this.state.text}
+          stage={decodeURIComponent(this.props.match.params.stage || '')}
+          name={decodeURIComponent(this.props.match.params.chapter || '')}
+          onChange={this.setText}
+          onSubmit={this.submit}
+          searchBibliography={query =>
+            this.props.bibliographyService.search(query)
+          }
+          disabled={this.state.saving}
+        />
+        <Spinner loading={this.state.saving}>Saving...</Spinner>
+        <ErrorAlert error={this.state.error} />
+      </>
+    )
   }
 }
 
 export default withData(
-  ({ data, ...props }) => <ChapterController
-    text={data}
-    {...props}
-  />,
+  ({ data, ...props }) => <ChapterController text={data} {...props} />,
   ({ match, textService }) => {
     const category = decodeURIComponent(match.params.category)
     const index = decodeURIComponent(match.params.index)

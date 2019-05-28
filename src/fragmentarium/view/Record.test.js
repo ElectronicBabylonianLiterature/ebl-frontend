@@ -18,15 +18,18 @@ describe('Record has entries', () => {
 
   it(`Renders all entries`, () => {
     for (let entry of record) {
-      const expectedEntry = `${entry.user} (${entry.type}, ${entry.moment.format('D/M/YYYY')})`
+      const expectedEntry = `${entry.user} (${
+        entry.type
+      }, ${entry.moment.format('D/M/YYYY')})`
       expect(container).toHaveTextContent(expectedEntry)
     }
   })
 
   it(`Entries have correct datetTime`, () => {
     for (let entry of record) {
-      expect(element.getByText(entry.moment.format('D/M/YYYY')))
-        .toHaveAttribute('datetime', entry.moment.format('YYYY-MM-DD'))
+      expect(
+        element.getByText(entry.moment.format('D/M/YYYY'))
+      ).toHaveAttribute('datetime', entry.moment.format('YYYY-MM-DD'))
     }
   })
 })
@@ -48,7 +51,9 @@ describe('Historical transliteration', () => {
   let entry
 
   beforeEach(async () => {
-    entry = await factory.build('historicalRecord', { date: `${start.toISOString()}/${end.toISOString()}` })
+    entry = await factory.build('historicalRecord', {
+      date: `${start.toISOString()}/${end.toISOString()}`
+    })
     element = render(<Record record={List([entry])} />)
     container = element.container
   })
@@ -60,8 +65,7 @@ describe('Historical transliteration', () => {
 
   it(`Entries have correct range `, () => {
     for (let year of years) {
-      expect(element.getByText(year))
-        .toHaveAttribute('datetime', year)
+      expect(element.getByText(year)).toHaveAttribute('datetime', year)
     }
   })
 })

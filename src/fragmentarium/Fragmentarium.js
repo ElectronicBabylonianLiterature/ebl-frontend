@@ -19,21 +19,35 @@ function Fragmentarium ({ location, fragmentService }) {
         <Row>
           <Col md={6}>
             <SessionContext.Consumer>
-              {session => session.isAllowedToReadFragments()
-                ? <SearchGroup number={number} transliteration={transliteration} fragmentService={fragmentService} />
-                : <p> Please log in to browse the Fragmentarium. </p>
+              {session =>
+                session.isAllowedToReadFragments() ? (
+                  <SearchGroup
+                    number={number}
+                    transliteration={transliteration}
+                    fragmentService={fragmentService}
+                  />
+                ) : (
+                  <p> Please log in to browse the Fragmentarium. </p>
+                )
               }
             </SessionContext.Consumer>
             <Statistics fragmentService={fragmentService} />
           </Col>
           <Col md={6}>
-            <Image fragmentService={fragmentService} fileName='Babel_Project_01_cropped.svg' />
+            <Image
+              fragmentService={fragmentService}
+              fileName='Babel_Project_01_cropped.svg'
+            />
           </Col>
         </Row>
         <Row>
           <Col>
             <SessionContext.Consumer>
-              {session => session.isAllowedToReadFragments() && <LatestTransliterations fragmentService={fragmentService} />}
+              {session =>
+                session.isAllowedToReadFragments() && (
+                  <LatestTransliterations fragmentService={fragmentService} />
+                )
+              }
             </SessionContext.Consumer>
           </Col>
         </Row>

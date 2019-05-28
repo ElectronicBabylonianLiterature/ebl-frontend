@@ -10,9 +10,7 @@ class ArrayInput extends Component {
 
   onChange = event => {
     const value = event.target.value
-    const array = _.isEmpty(value)
-      ? []
-      : value.split(this.props.separator)
+    const array = _.isEmpty(value) ? [] : value.split(this.props.separator)
     this.props.onChange(array)
   }
 
@@ -23,7 +21,8 @@ class ArrayInput extends Component {
         <FormControl
           type='text'
           value={this.props.value.join(this.props.separator)}
-          onChange={this.onChange} />
+          onChange={this.onChange}
+        />
       </FormGroup>
     )
   }

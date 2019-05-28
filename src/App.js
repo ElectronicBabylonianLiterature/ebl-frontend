@@ -16,24 +16,113 @@ import Bibliography from 'bibliography/Bibliography'
 import Corpus from 'corpus/Corpus'
 import ChapterView from './corpus/ChapterView'
 
-function App ({ auth, wordService, fragmentService, bibliographyService, textService }) {
+function App ({
+  auth,
+  wordService,
+  fragmentService,
+  bibliographyService,
+  textService
+}) {
   return (
     <SessionContext.Provider value={auth.getSession()}>
       <Header auth={auth} />
       <ErrorBoundary>
         <Switch>
-          <Route path='/bibliography/:id' render={props => <BibliographyEditor bibliographyService={bibliographyService} {...props} />} />
-          <Route path='/bibliography_new' render={props => <BibliographyEditor bibliographyService={bibliographyService} {...props} create />} />
-          <Route path='/bibliography' render={props => <Bibliography bibliographyService={bibliographyService} {...props} />} />
-          <Route path='/dictionary/:id' render={props => <WordEditor wordService={wordService} {...props} />} />
-          <Route path='/dictionary' render={props => <Dictionary wordService={wordService} {...props} />} />
-          <Route path='/corpus/:category/:index/:stage/:chapter' render={props => <ChapterView textService={textService} bibliographyService={bibliographyService} {...props} />} />
-          <Route path='/corpus/:category/:index' render={props => <ChapterView textService={textService} bibliographyService={bibliographyService} {...props} />} />
-          <Route path='/corpus' render={props => <Corpus textService={textService} fragmentService={fragmentService} {...props} />} />
-          <Route path='/fragmentarium/search' render={props => <FragmentariumSearch fragmentService={fragmentService} {...props} />} />
-          <Route path='/fragmentarium/:id' render={props => <FragmentView fragmentService={fragmentService} {...props} />} />
-          <Route path='/fragmentarium' render={props => <Fragmentarium fragmentService={fragmentService} {...props} />} />
-          <Route path='/callback' render={props => <Callback auth={auth} {...props} />} />
+          <Route
+            path='/bibliography/:id'
+            render={props => (
+              <BibliographyEditor
+                bibliographyService={bibliographyService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/bibliography_new'
+            render={props => (
+              <BibliographyEditor
+                bibliographyService={bibliographyService}
+                {...props}
+                create
+              />
+            )}
+          />
+          <Route
+            path='/bibliography'
+            render={props => (
+              <Bibliography
+                bibliographyService={bibliographyService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/dictionary/:id'
+            render={props => (
+              <WordEditor wordService={wordService} {...props} />
+            )}
+          />
+          <Route
+            path='/dictionary'
+            render={props => (
+              <Dictionary wordService={wordService} {...props} />
+            )}
+          />
+          <Route
+            path='/corpus/:category/:index/:stage/:chapter'
+            render={props => (
+              <ChapterView
+                textService={textService}
+                bibliographyService={bibliographyService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/corpus/:category/:index'
+            render={props => (
+              <ChapterView
+                textService={textService}
+                bibliographyService={bibliographyService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/corpus'
+            render={props => (
+              <Corpus
+                textService={textService}
+                fragmentService={fragmentService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/fragmentarium/search'
+            render={props => (
+              <FragmentariumSearch
+                fragmentService={fragmentService}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path='/fragmentarium/:id'
+            render={props => (
+              <FragmentView fragmentService={fragmentService} {...props} />
+            )}
+          />
+          <Route
+            path='/fragmentarium'
+            render={props => (
+              <Fragmentarium fragmentService={fragmentService} {...props} />
+            )}
+          />
+          <Route
+            path='/callback'
+            render={props => <Callback auth={auth} {...props} />}
+          />
           <Route component={Introduction} />
         </Switch>
       </ErrorBoundary>

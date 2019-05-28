@@ -22,19 +22,15 @@ describe.each([
 ])('%#', (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
   beforeEach(async () => {
     token = {
-      'type': 'Word',
-      'value': 'DIŠ',
-      'uniqueLemma': hasLemma ? lemmas : [],
-      'language': 'AKKADIAN',
-      'normalized': false,
-      'lemmatizable': true,
-      'suggested': suggested
+      type: 'Word',
+      value: 'DIŠ',
+      uniqueLemma: hasLemma ? lemmas : [],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      suggested: suggested
     }
-    element = render(
-      <Word
-        token={token}
-        onClick={onClick}
-      />)
+    element = render(<Word token={token} onClick={onClick} />)
   })
 
   it('Displays the value', () => {
@@ -43,7 +39,9 @@ describe.each([
 
   if (hasLemma) {
     it('Displays the lemma', () => {
-      expect(element.container).toHaveTextContent(lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', '))
+      expect(element.container).toHaveTextContent(
+        lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', ')
+      )
     })
   }
 
@@ -64,17 +62,13 @@ describe.each([
 describe('Not-lemmatizable word', () => {
   beforeEach(async () => {
     token = {
-      'value': 'DIŠ',
-      'uniqueLemma': [],
-      'language': 'AKKADIAN',
-      'normalized': true,
-      'lemmatizable': false
+      value: 'DIŠ',
+      uniqueLemma: [],
+      language: 'AKKADIAN',
+      normalized: true,
+      lemmatizable: false
     }
-    element = render(
-      <Word
-        token={token}
-        onClick={onClick}
-      />)
+    element = render(<Word token={token} onClick={onClick} />)
   })
 
   it('Displays the value', () => {

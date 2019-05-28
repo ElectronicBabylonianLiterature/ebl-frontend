@@ -15,13 +15,15 @@ class ArrayWithNotes extends Component {
         <ArrayInput
           separator={this.props.separator}
           value={this.props.value[this.props.property]}
-          onChange={this.update(this.props.property)}>
+          onChange={this.update(this.props.property)}
+        >
           {_.startCase(this.props.noun)}
         </ArrayInput>
         <TextListInput
           id={`${this.props.id}-notes`}
           value={this.props.value.notes}
-          onChange={this.update('notes')}>
+          onChange={this.update('notes')}
+        >
           Notes
         </TextListInput>
       </Fragment>

@@ -9,18 +9,22 @@ function Statistics ({ data }) {
 
   return (
     <section className='Statistics'>
-      <h3 className='SubsectionHeading--indented'>Current size of the corpus:</h3>
+      <h3 className='SubsectionHeading--indented'>
+        Current size of the corpus:
+      </h3>
       <p className='Statistics__row'>
-        <span className='Statistics__value'> {localizedStatistics.transliteratedFragments} </span> tablets transliterated
+        <span className='Statistics__value'>
+          {' '}
+          {localizedStatistics.transliteratedFragments}{' '}
+        </span>{' '}
+        tablets transliterated
       </p>
       <p className='Statistics__row'>
-        <span className='Statistics__value'> {localizedStatistics.lines} </span> lines of text
+        <span className='Statistics__value'> {localizedStatistics.lines} </span>{' '}
+        lines of text
       </p>
     </section>
   )
 }
 
-export default withData(
-  Statistics,
-  props => props.fragmentService.statistics()
-)
+export default withData(Statistics, props => props.fragmentService.statistics())

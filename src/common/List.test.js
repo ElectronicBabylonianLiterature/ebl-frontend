@@ -62,7 +62,9 @@ function commonTests () {
     it(`Removes the item when Delete is clicked`, async () => {
       await whenClicked(element, `Delete ${noun}`, index)
         .expect(onChange)
-        .toHaveBeenCalledWith(_.reject(items, (value, itemIndex) => itemIndex === index))
+        .toHaveBeenCalledWith(
+          _.reject(items, (value, itemIndex) => itemIndex === index)
+        )
     })
 
     it(`Calls onChange with updated value on item change`, () => {
@@ -79,13 +81,26 @@ function commonTests () {
 
 function renderList () {
   function TestFormControl ({ onChange, value }) {
-    return <FormControl type='text' value={value} onChange={event => onChange(event.target.value)} />
+    return (
+      <FormControl
+        type='text'
+        value={value}
+        onChange={event => onChange(event.target.value)}
+      />
+    )
   }
   return render(
-    <List id={id} value={items} onChange={onChange} label={label} noun={noun} default={defaultValue}>
-      {items.map((item, index) =>
+    <List
+      id={id}
+      value={items}
+      onChange={onChange}
+      label={label}
+      noun={noun}
+      default={defaultValue}
+    >
+      {items.map((item, index) => (
         <TestFormControl key={index} value={item} />
-      )}
+      ))}
     </List>
   )
 }

@@ -11,20 +11,24 @@ function doubleEncode (string) {
 
 it('Creates double encoded URL', () => {
   const number = chance.string()
-  expect(createFragmentUrl(number))
-    .toEqual(`/fragmentarium/${doubleEncode(number)}`)
+  expect(createFragmentUrl(number)).toEqual(
+    `/fragmentarium/${doubleEncode(number)}`
+  )
 })
 
 it('Creates URL with folio query', () => {
   const number = chance.string()
   const folioName = chance.string()
   const folioNumber = chance.string()
-  expect(queryString.parseUrl(createFragmentUrlWithFolio(number, folioName, folioNumber)))
-    .toEqual({
-      url: `/fragmentarium/${doubleEncode(number)}`,
-      query: {
-        folioName: folioName,
-        folioNumber: folioNumber
-      }
-    })
+  expect(
+    queryString.parseUrl(
+      createFragmentUrlWithFolio(number, folioName, folioNumber)
+    )
+  ).toEqual({
+    url: `/fragmentarium/${doubleEncode(number)}`,
+    query: {
+      folioName: folioName,
+      folioNumber: folioNumber
+    }
+  })
 })

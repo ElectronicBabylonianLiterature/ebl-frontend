@@ -16,7 +16,11 @@ class FragmentSearchForm extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`/fragmentarium/search/?${queryString.stringify({ number: this.state.number })}`)
+    this.props.history.push(
+      `/fragmentarium/search/?${queryString.stringify({
+        number: this.state.number
+      })}`
+    )
   }
 
   render () {
@@ -30,10 +34,13 @@ class FragmentSearchForm extends Component {
               value={this.state.number}
               placeholder='Search museum, accession, or CDLI number'
               aria-label='Number'
-              onChange={this.onChange} />
+              onChange={this.onChange}
+            />
           </Col>
           <Col sm={3}>
-            <Button type='submit' variant='primary'>Search</Button>
+            <Button type='submit' variant='primary'>
+              Search
+            </Button>
           </Col>
         </Form.Group>
       </Form>

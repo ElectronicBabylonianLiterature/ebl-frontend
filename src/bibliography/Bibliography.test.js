@@ -54,7 +54,9 @@ it('Displays a message if user is not logged in', () => {
 
   const { container } = renderDictionary('/bibliography')
 
-  expect(container).toHaveTextContent('Please log in to browse the Bibliography.')
+  expect(container).toHaveTextContent(
+    'Please log in to browse the Bibliography.'
+  )
 })
 
 function renderDictionary (path) {

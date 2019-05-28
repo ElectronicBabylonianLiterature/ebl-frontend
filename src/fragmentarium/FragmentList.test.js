@@ -7,24 +7,36 @@ import FragmentList from './FragmentList'
 
 const numberOfFragments = 2
 const expectedStringColumns = {
-  'Number': '_id',
-  'Accession': 'accession',
+  Number: '_id',
+  Accession: 'accession',
   'CDLI Number': 'cdliNumber',
-  'Description': 'description'
+  Description: 'description'
 }
 const expectedComputedColumns = {
-  'Number': '_id',
-  'Computed': fragment => fragment.description.toUpperCase()
+  Number: '_id',
+  Computed: fragment => fragment.description.toUpperCase()
 }
 let fragments
 let element
 
 describe.each([
-  ['No config', null, {
-    'Number': '_id'
-  }],
-  ['With strig columns', _.omit(expectedStringColumns, ['Number']), expectedStringColumns],
-  ['With computed columns', _.omit(expectedComputedColumns, ['Number']), expectedComputedColumns]
+  [
+    'No config',
+    null,
+    {
+      Number: '_id'
+    }
+  ],
+  [
+    'With strig columns',
+    _.omit(expectedStringColumns, ['Number']),
+    expectedStringColumns
+  ],
+  [
+    'With computed columns',
+    _.omit(expectedComputedColumns, ['Number']),
+    expectedComputedColumns
+  ]
 ])('%s', (name, columns, expectedColumns) => {
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', numberOfFragments)
@@ -48,15 +60,20 @@ describe.each([
     })
 
     test('Displays all properties', () => {
-      const expectedRow = _.values(expectedColumns).map(property => _.isFunction(property)
-        ? property(fragment)
-        : fragment[property]
-      ).join('').replace('\n', ' ')
+      const expectedRow = _.values(expectedColumns)
+        .map(property =>
+          _.isFunction(property) ? property(fragment) : fragment[property]
+        )
+        .join('')
+        .replace('\n', ' ')
       expect(element.container).toHaveTextContent(expectedRow)
     })
 
     test('Links to the fragment', () => {
-      expect(element.getByText(fragment.number)).toHaveAttribute('href', `/fragmentarium/${fragment.number}`)
+      expect(element.getByText(fragment.number)).toHaveAttribute(
+        'href',
+        `/fragmentarium/${fragment.number}`
+      )
     })
   })
 })

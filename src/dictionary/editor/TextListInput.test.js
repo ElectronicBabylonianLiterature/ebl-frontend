@@ -15,10 +15,7 @@ beforeEach(() => {
 })
 
 beforeEach(() => {
-  value = [
-    'first',
-    'second'
-  ]
+  value = ['first', 'second']
   element = renderListInput()
 })
 
@@ -41,12 +38,13 @@ it('Adds emtpy item when Add is clicked', async () => {
 it('Calls onChange with updated value on change', () => {
   whenChangedByValue(element, value[0], 'new')
     .expect(onChange)
-    .toHaveBeenCalledWith(newValue => [
-      newValue,
-      ..._.tail(value)
-    ])
+    .toHaveBeenCalledWith(newValue => [newValue, ..._.tail(value)])
 })
 
 function renderListInput () {
-  return render(<TextListInput id='list' value={value} onChange={onChange}>{label}</TextListInput>)
+  return render(
+    <TextListInput id='list' value={value} onChange={onChange}>
+      {label}
+    </TextListInput>
+  )
 }

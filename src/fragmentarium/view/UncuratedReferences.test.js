@@ -12,9 +12,10 @@ test.each([
   [1, '1 uncurated reference'],
   [2, '2 uncurated references']
 ])('%i references', async (numberOfReferences, expectedText) => {
-  references = numberOfReferences > 0
-    ? List(await factory.buildMany('uncuratedReference', numberOfReferences))
-    : List()
+  references =
+    numberOfReferences > 0
+      ? List(await factory.buildMany('uncuratedReference', numberOfReferences))
+      : List()
   element = render(<UncuratedReferences uncuratedReferences={references} />)
   expect(element.getByText(expectedText)).toBeTruthy()
 })

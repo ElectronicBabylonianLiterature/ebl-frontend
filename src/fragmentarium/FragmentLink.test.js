@@ -22,8 +22,10 @@ describe('Without folio', () => {
   })
 
   it('Links to the fragment', () => {
-    expect(element.getByLabelText(label))
-      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(number)}`)
+    expect(element.getByLabelText(label)).toHaveAttribute(
+      'href',
+      `/fragmentarium/${encodeURIComponent(number)}`
+    )
   })
 
   expectToRenderChildren()
@@ -49,8 +51,10 @@ describe('With folio', () => {
     const encodedNumber = encodeURIComponent(number)
     const encodedFolioName = encodeURIComponent(folio.name)
     const encodedFolioNumber = encodeURIComponent(folio.number)
-    expect(element.getByLabelText(label))
-      .toHaveAttribute('href', `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}`)
+    expect(element.getByLabelText(label)).toHaveAttribute(
+      'href',
+      `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}`
+    )
   })
 
   expectToRenderChildren()

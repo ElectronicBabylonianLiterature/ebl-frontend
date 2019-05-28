@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import Promise from 'bluebird'
@@ -16,9 +15,13 @@ beforeEach(async () => {
     findFolio: jest.fn()
   }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  fragmentService.findFolio.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValueOnce(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
   data = new Blob(['WGL'], { type: 'image/jpeg' })
-  element = render(<FolioImage fragmentService={fragmentService} folio={folio} data={data} />)
+  element = render(
+    <FolioImage fragmentService={fragmentService} folio={folio} data={data} />
+  )
   await waitForElement(() => element.getByAltText(folio.fileName))
 })
 
@@ -27,10 +30,15 @@ it('Queries the API with given parameters', () => {
 })
 
 it('Has the filename as alt text', () => {
-  expect(element.container.querySelector('img')).toHaveAttribute('alt', folio.fileName)
+  expect(element.container.querySelector('img')).toHaveAttribute(
+    'alt',
+    folio.fileName
+  )
 })
 
 it('Has a link to the image', () => {
-  expect(element.container.querySelector('a'))
-    .toHaveAttribute('href', objectUrl)
+  expect(element.container.querySelector('a')).toHaveAttribute(
+    'href',
+    objectUrl
+  )
 })

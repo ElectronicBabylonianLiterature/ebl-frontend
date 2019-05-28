@@ -6,12 +6,12 @@ function createLabel (entry) {
 }
 
 function createOption (entry) {
-  return (entry && entry.id)
+  return entry && entry.id
     ? {
-      value: entry.id,
-      label: createLabel(entry),
-      entry: entry
-    }
+        value: entry.id,
+        label: createLabel(entry),
+        entry: entry
+      }
     : null
 }
 
@@ -46,15 +46,17 @@ export default class BibliographySelect extends Component {
   }
 
   render () {
-    return (<>
-      <AsyncSelect
-        aria-labelledby={this.props['aria-labelledby']}
-        placeholder='Name Year Title'
-        cacheOptions
-        loadOptions={this.loadOptions}
-        onChange={this.handleChange}
-        value={this.state.selectedOption}
-      />
-    </>)
+    return (
+      <>
+        <AsyncSelect
+          aria-labelledby={this.props['aria-labelledby']}
+          placeholder='Name Year Title'
+          cacheOptions
+          loadOptions={this.loadOptions}
+          onChange={this.handleChange}
+          value={this.state.selectedOption}
+        />
+      </>
+    )
   }
 }

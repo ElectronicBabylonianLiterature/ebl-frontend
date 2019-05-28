@@ -1,6 +1,16 @@
 import { List } from 'immutable'
 import _ from 'lodash'
-import { createText, createChapter, createManuscript, periodModifiers, periods, provenances, types, createLine, createManuscriptLine } from './text'
+import {
+  createText,
+  createChapter,
+  createManuscript,
+  periodModifiers,
+  periods,
+  provenances,
+  types,
+  createLine,
+  createManuscriptLine
+} from './text'
 
 const manuscriptConfig = {
   id: 'abc-cde-123',

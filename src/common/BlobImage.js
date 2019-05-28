@@ -15,10 +15,10 @@ class BlobImage extends Component {
   render () {
     const hasLink = this.props.hasLink
     const image = <Image src={this.image} alt={this.props.alt} fluid />
-    return (
-      hasLink
-        ? <ExternalLink href={this.image}> {image} </ExternalLink>
-        : image
+    return hasLink ? (
+      <ExternalLink href={this.image}> {image} </ExternalLink>
+    ) : (
+      image
     )
   }
 }

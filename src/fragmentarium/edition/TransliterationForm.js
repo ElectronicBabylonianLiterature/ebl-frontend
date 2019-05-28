@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { FormGroup, FormLabel, Button, Container, Row, Col } from 'react-bootstrap'
+import {
+  FormGroup,
+  FormLabel,
+  Button,
+  Container,
+  Row,
+  Col
+} from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
 
@@ -24,7 +31,8 @@ class TransliteratioForm extends Component {
   }
 
   get hasChanges () {
-    const transliterationChanged = this.state.transliteration !== this.props.transliteration
+    const transliterationChanged =
+      this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
     return transliterationChanged || notesChanged
   }
@@ -49,20 +57,20 @@ class TransliteratioForm extends Component {
       ...this.state,
       error: null
     })
-    this.updatePromise = this.props.updateTransliteration(
-      this.state.transliteration,
-      this.state.notes
-    ).catch(error => this.setState({
-      ...this.state,
-      error: error
-    }))
+    this.updatePromise = this.props
+      .updateTransliteration(this.state.transliteration, this.state.notes)
+      .catch(error =>
+        this.setState({
+          ...this.state,
+          error: error
+        })
+      )
   }
 
   EditorFormGroup = ({ property, error, showHelp }) => (
     <FormGroup controlId={`${this.formId}-${property}`}>
-      <FormLabel>{_.startCase(property)}</FormLabel>
-      {' '}
-      {showHelp && <SpecialCharactersHelp /> }
+      <FormLabel>{_.startCase(property)}</FormLabel>{' '}
+      {showHelp && <SpecialCharactersHelp />}
       <Editor
         name={property}
         value={this.state[property]}
@@ -74,8 +82,16 @@ class TransliteratioForm extends Component {
   )
 
   Form = () => (
-    <form onSubmit={this.submit} id={this.formId} data-testid='transliteration-form'>
-      <this.EditorFormGroup property='transliteration' error={this.state.error} showHelp />
+    <form
+      onSubmit={this.submit}
+      id={this.formId}
+      data-testid='transliteration-form'
+    >
+      <this.EditorFormGroup
+        property='transliteration'
+        error={this.state.error}
+        showHelp
+      />
       <this.EditorFormGroup property='notes' />
     </form>
   )
@@ -85,7 +101,8 @@ class TransliteratioForm extends Component {
       type='submit'
       variant='primary'
       disabled={this.state.disabled || !this.hasChanges}
-      form={this.formId}>
+      form={this.formId}
+    >
       Save
     </Button>
   )

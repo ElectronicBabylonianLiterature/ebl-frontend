@@ -18,11 +18,17 @@ beforeEach(async () => {
 })
 
 it('Shows the number of transliterated tablets', async () => {
-  const { textContent } = await waitForElement(() => element.getByText(/tablets transliterated$/))
-  expect(textContent).toContain(statistics.transliteratedFragments.toLocaleString())
+  const { textContent } = await waitForElement(() =>
+    element.getByText(/tablets transliterated$/)
+  )
+  expect(textContent).toContain(
+    statistics.transliteratedFragments.toLocaleString()
+  )
 })
 
 it('Shows the number of transliterated lines', async () => {
-  const { textContent } = await waitForElement(() => element.getByText(/lines of text$/))
+  const { textContent } = await waitForElement(() =>
+    element.getByText(/lines of text$/)
+  )
   expect(textContent).toContain(statistics.lines.toLocaleString())
 })

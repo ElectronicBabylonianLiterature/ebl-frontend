@@ -18,7 +18,9 @@ class BibliographySearch extends Component {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(`?${queryString.stringify({ query: this.state.query })}`)
+    this.props.history.push(
+      `?${queryString.stringify({ query: this.state.query })}`
+    )
   }
 
   render () {
@@ -31,10 +33,13 @@ class BibliographySearch extends Component {
               type='text'
               value={this.state.query}
               placeholder='Author Year Title'
-              onChange={this.onChange} />
+              onChange={this.onChange}
+            />
           </Col>
           <Col sm={4}>
-            <Button type='submit' variant='primary'>Search</Button>
+            <Button type='submit' variant='primary'>
+              Search
+            </Button>
           </Col>
         </Form.Group>
       </Form>

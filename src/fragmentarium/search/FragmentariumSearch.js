@@ -12,21 +12,30 @@ import './FragmentariumSearch.css'
 function FragmentariumSearch ({ location, fragmentService }) {
   const number = queryString.parse(location.search).number
   const transliteration = queryString.parse(location.search).transliteration
-  const replacedTransliteration = transliteration && replaceTransliteration(transliteration)
+  const replacedTransliteration =
+    transliteration && replaceTransliteration(transliteration)
   return (
     <AppContent crumbs={['Fragmentarium', 'Search']}>
       <SessionContext.Consumer>
-        {session => session.isAllowedToReadFragments()
-          ? (
+        {session =>
+          session.isAllowedToReadFragments() ? (
             <section className='Fragmentarium-search'>
               <header className='Fragmentarium-search__header'>
-                <SearchGroup number={number} transliteration={replacedTransliteration} fragmentService={fragmentService} />
+                <SearchGroup
+                  number={number}
+                  transliteration={replacedTransliteration}
+                  fragmentService={fragmentService}
+                />
               </header>
               <NumberSearch number={number} fragmentService={fragmentService} />
-              <TransliterationSearch transliteration={replacedTransliteration} fragmentService={fragmentService} />
+              <TransliterationSearch
+                transliteration={replacedTransliteration}
+                fragmentService={fragmentService}
+              />
             </section>
+          ) : (
+            <p>Please log in to browse the Fragmentarium.</p>
           )
-          : <p>Please log in to browse the Fragmentarium.</p>
         }
       </SessionContext.Consumer>
     </AppContent>

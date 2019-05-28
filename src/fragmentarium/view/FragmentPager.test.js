@@ -9,13 +9,19 @@ let nextNumber
 let element
 
 function renderPager () {
-  element = render(<MemoryRouter><FragmentPager number={number}>{child}</FragmentPager></MemoryRouter>)
+  element = render(
+    <MemoryRouter>
+      <FragmentPager number={number}>{child}</FragmentPager>
+    </MemoryRouter>
+  )
 }
 
 function commonTests () {
   it('Next links to the "next" fragment', () => {
-    expect(element.getByLabelText('Next'))
-      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent(nextNumber)}`)
+    expect(element.getByLabelText('Next')).toHaveAttribute(
+      'href',
+      `/fragmentarium/${encodeURIComponent(nextNumber)}`
+    )
   })
 
   it('Renders children', () => {
@@ -27,12 +33,18 @@ describe('Number is greater than 1', () => {
   beforeEach(() => {
     number = 'prefix 123'
     nextNumber = 'prefix 124'
-    element = render(<MemoryRouter><FragmentPager number={number}>{child}</FragmentPager></MemoryRouter>)
+    element = render(
+      <MemoryRouter>
+        <FragmentPager number={number}>{child}</FragmentPager>
+      </MemoryRouter>
+    )
   })
 
   it('Previous links to the "previous" fragment', () => {
-    expect(element.getByLabelText('Previous'))
-      .toHaveAttribute('href', `/fragmentarium/${encodeURIComponent('prefix 122')}`)
+    expect(element.getByLabelText('Previous')).toHaveAttribute(
+      'href',
+      `/fragmentarium/${encodeURIComponent('prefix 122')}`
+    )
   })
 
   commonTests()

@@ -16,19 +16,19 @@ export default class BibliographyEntryForm extends Component {
     super(props)
     this.state = props.value
       ? {
-        citation: props.value.toHtml(),
-        cslData: [props.value.toJson()],
-        value: JSON.stringify(props.value.toJson(), null, 2),
-        loading: false,
-        isInvalid: false
-      }
+          citation: props.value.toHtml(),
+          cslData: [props.value.toJson()],
+          value: JSON.stringify(props.value.toJson(), null, 2),
+          loading: false,
+          isInvalid: false
+        }
       : {
-        citation: '',
-        cslData: null,
-        value: '',
-        loading: false,
-        isInvalid: false
-      }
+          citation: '',
+          cslData: null,
+          value: '',
+          loading: false,
+          isInvalid: false
+        }
     this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, {
       leading: false,
@@ -41,9 +41,10 @@ export default class BibliographyEntryForm extends Component {
   }
 
   get isInvalid () {
-    return !this.state.loading &&
-      !_.isEmpty(this.state.value) && (
-      this.state.isInvalid || !this.isValid
+    return (
+      !this.state.loading &&
+      !_.isEmpty(this.state.value) &&
+      (this.state.isInvalid || !this.isValid)
     )
   }
 
@@ -64,31 +65,35 @@ export default class BibliographyEntryForm extends Component {
   load = value => {
     this.promise.cancel()
     return new Promise((resolve, reject) => {
-      Cite.async(value).then(resolve).catch(reject)
-    }).then(cite => {
-      this.setState({
-        ...this.state,
-        citation: cite.format('bibliography', {
-          format: 'html',
-          template: 'citation-apa',
-          lang: 'de-DE'
-        }),
-        cslData: cite.get({
-          format: 'real',
-          type: 'json',
-          style: 'csl'
-        }),
-        loading: false
-      })
-    }).catch(() => {
-      this.setState({
-        ...this.state,
-        citation: '',
-        cslData: null,
-        loading: false,
-        isInvalid: true
-      })
+      Cite.async(value)
+        .then(resolve)
+        .catch(reject)
     })
+      .then(cite => {
+        this.setState({
+          ...this.state,
+          citation: cite.format('bibliography', {
+            format: 'html',
+            template: 'citation-apa',
+            lang: 'de-DE'
+          }),
+          cslData: cite.get({
+            format: 'real',
+            type: 'json',
+            style: 'csl'
+          }),
+          loading: false
+        })
+      })
+      .catch(() => {
+        this.setState({
+          ...this.state,
+          citation: '',
+          cslData: null,
+          loading: false,
+          isInvalid: true
+        })
+      })
   }
 
   handleSubmit = event => {
@@ -99,35 +104,45 @@ export default class BibliographyEntryForm extends Component {
 
   render () {
     const parsed = new Parser().parse(this.state.citation)
-    return (<>
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group controlId={'editor'}>
-          <p>
-            You can enter a DOI, CSL-JSON, BibTeX, or any <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>supported input format</ExternalLink>.
-            BibTeX can be generated with <ExternalLink href='https://truben.no/latex/bibtex/'>BibTeX Online Editor</ExternalLink>.
-          </p>
-          <InputGroup>
-            <Form.Control
-              aria-label='Data'
-              as='textarea'
-              rows={this.state.value.split('\n').length}
-              value={this.state.value}
-              onChange={this.handleChange}
-              isValid={this.isValid}
-              isInvalid={this.isInvalid}
-              disabled={this.props.disabled}
-              className='BibliographyEntryForm__editor' />
-            <Form.Control.Feedback type='invalid'>
-              Invalid entry
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
-        <Spinner loading={this.state.loading} />
-        {parsed}
-        <Button variant='primary' type='submit' disabled={this.isDisabled}>
-          Save
-        </Button>
-      </Form>
-    </>)
+    return (
+      <>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Group controlId={'editor'}>
+            <p>
+              You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
+              <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>
+                supported input format
+              </ExternalLink>
+              . BibTeX can be generated with{' '}
+              <ExternalLink href='https://truben.no/latex/bibtex/'>
+                BibTeX Online Editor
+              </ExternalLink>
+              .
+            </p>
+            <InputGroup>
+              <Form.Control
+                aria-label='Data'
+                as='textarea'
+                rows={this.state.value.split('\n').length}
+                value={this.state.value}
+                onChange={this.handleChange}
+                isValid={this.isValid}
+                isInvalid={this.isInvalid}
+                disabled={this.props.disabled}
+                className='BibliographyEntryForm__editor'
+              />
+              <Form.Control.Feedback type='invalid'>
+                Invalid entry
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
+          <Spinner loading={this.state.loading} />
+          {parsed}
+          <Button variant='primary' type='submit' disabled={this.isDisabled}>
+            Save
+          </Button>
+        </Form>
+      </>
+    )
   }
 }

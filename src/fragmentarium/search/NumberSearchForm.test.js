@@ -9,7 +9,11 @@ import NumberSearchForm from './NumberSearchForm'
 it('Adds number to query string on submit', async () => {
   const history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const element = render(<Router history={history}><NumberSearchForm /></Router>)
+  const element = render(
+    <Router history={history}>
+      <NumberSearchForm />
+    </Router>
+  )
 
   changeValueByLabel(element, 'Number', 'K.3')
   await submitForm(element, 'form')

@@ -55,7 +55,13 @@ export default function withData (WrappedComponent, getter, config = {}) {
         <ErrorBoundary>
           <Spinner loading={_.values(this.state).every(_.isNil)} />
           <ErrorAlert error={this.state.error} />
-          {this.state.data && <WrappedComponent data={this.state.data} reload={this.fetchData} {...this.props} />}
+          {this.state.data && (
+            <WrappedComponent
+              data={this.state.data}
+              reload={this.fetchData}
+              {...this.props}
+            />
+          )}
         </ErrorBoundary>
       )
     }

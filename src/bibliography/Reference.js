@@ -1,9 +1,14 @@
-
 import { List } from 'immutable'
 import _ from 'lodash'
 
 export default class Reference {
-  constructor (type = 'DISCUSSION', pages = '', notes = '', linesCited = [], document_ = null) {
+  constructor (
+    type = 'DISCUSSION',
+    pages = '',
+    notes = '',
+    linesCited = [],
+    document_ = null
+  ) {
     this.type = type
     this.pages = pages
     this.notes = notes
@@ -78,9 +83,16 @@ export default class Reference {
 export function createReference (data, bibliographyRepository) {
   return bibliographyRepository
     .find(data.get('id'))
-    .then(entry => new Reference(
-      data.get('type'), data.get('pages'), data.get('notes'), data.get('linesCited'), entry
-    ))
+    .then(
+      entry =>
+        new Reference(
+          data.get('type'),
+          data.get('pages'),
+          data.get('notes'),
+          data.get('linesCited'),
+          entry
+        )
+    )
 }
 
 export function serializeReference (reference) {

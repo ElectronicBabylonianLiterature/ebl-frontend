@@ -2,7 +2,13 @@ import _ from 'lodash'
 import { updateIn } from 'immutable'
 
 export class LemmatizationToken {
-  constructor (value, lemmatizable, uniqueLemma = null, suggestions = null, suggested = false) {
+  constructor (
+    value,
+    lemmatizable,
+    uniqueLemma = null,
+    suggestions = null,
+    suggested = false
+  ) {
     this.value = value
     this.uniqueLemma = uniqueLemma
     this.suggestions = suggestions
@@ -22,9 +28,11 @@ export class LemmatizationToken {
   }
 
   applySuggestion () {
-    if (_.isArray(this.suggestions) &&
+    if (
+      _.isArray(this.suggestions) &&
       this.suggestions.length === 1 &&
-      _.isEmpty(this.uniqueLemma)) {
+      _.isEmpty(this.uniqueLemma)
+    ) {
       return this.setUniqueLemma(this.suggestions[0], true)
     } else {
       return this
@@ -44,12 +52,12 @@ export class LemmatizationToken {
   toDto () {
     return _.isNil(this.uniqueLemma)
       ? {
-        value: this.value
-      }
+          value: this.value
+        }
       : {
-        value: this.value,
-        uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
-      }
+          value: this.value,
+          uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
+        }
   }
 }
 
@@ -67,7 +75,9 @@ export default class Lemmatization {
   setLemma (rowIndex, columnIndex, uniqueLemma) {
     return new Lemmatization(
       this.lines,
-      updateIn(this.tokens, [rowIndex, columnIndex], token => token.setUniqueLemma(uniqueLemma))
+      updateIn(this.tokens, [rowIndex, columnIndex], token =>
+        token.setUniqueLemma(uniqueLemma)
+      )
     )
   }
 

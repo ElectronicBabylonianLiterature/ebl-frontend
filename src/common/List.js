@@ -7,10 +7,14 @@ import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
 
 function SizeBadge ({ collection }) {
-  const size = isCollection(collection)
-    ? collection.count()
-    : collection.length
-  return size > 0 && <Badge variant='light' pill>{size}</Badge>
+  const size = isCollection(collection) ? collection.count() : collection.length
+  return (
+    size > 0 && (
+      <Badge variant='light' pill>
+        {size}
+      </Badge>
+    )
+  )
 }
 
 class List extends Component {
@@ -23,7 +27,10 @@ class List extends Component {
     const defaultValue = this.props.default
     if (_.isFunction(defaultValue)) {
       return defaultValue()
-    } else if (_.isObjectLike(this.props.default) && !isValueObject(defaultValue)) {
+    } else if (
+      _.isObjectLike(this.props.default) &&
+      !isValueObject(defaultValue)
+    ) {
       return _.cloneDeep(defaultValue)
     } else {
       return defaultValue
@@ -39,21 +46,29 @@ class List extends Component {
   }
 
   render () {
-    const label = this.props.label
-      ? <>{this.props.label}{' '}<SizeBadge collection={this.props.value} /></>
-      : null
+    const label = this.props.label ? (
+      <>
+        {this.props.label} <SizeBadge collection={this.props.value} />
+      </>
+    ) : null
     return (
       <div className='List'>
-        <CollapsibleCard
-          label={label}
-          collapsed={this.props.collapsed}>
+        <CollapsibleCard label={label} collapsed={this.props.collapsed}>
           <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
-            {React.Children.map(this.props.children, child =>
+            {React.Children.map(this.props.children, child => (
               <ListGroup.Item as='li' key={child.key}>
-                {React.cloneElement(child, { onChange: this.update(Number(child.key)) })}
-                <Button onClick={this.delete(Number(child.key))} size='sm' variant='outline-secondary'>Delete {this.props.noun}</Button>
+                {React.cloneElement(child, {
+                  onChange: this.update(Number(child.key))
+                })}
+                <Button
+                  onClick={this.delete(Number(child.key))}
+                  size='sm'
+                  variant='outline-secondary'
+                >
+                  Delete {this.props.noun}
+                </Button>
               </ListGroup.Item>
-            )}
+            ))}
           </ListGroup>
           <Card.Body>
             <Button onClick={this.add} size='sm' variant='outline-secondary'>

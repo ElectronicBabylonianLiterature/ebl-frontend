@@ -12,12 +12,14 @@ describe('CDLI number provided', () => {
   })
 
   it('Displays the image from CDLI', async () => {
-    expect(container.querySelector('img'))
-      .toHaveAttribute('src', url)
+    expect(container.querySelector('img')).toHaveAttribute('src', url)
   })
 
   it('Has the image filename as alt text', async () => {
-    expect(container.querySelector('img')).toHaveAttribute('alt', `${cdliNumber}.jpg`)
+    expect(container.querySelector('img')).toHaveAttribute(
+      'alt',
+      `${cdliNumber}.jpg`
+    )
   })
 
   it('Has a link to the image', () => {

@@ -10,7 +10,11 @@ let container
 let element
 
 function renderDetails () {
-  element = render(<MemoryRouter><Details fragment={fragment} /></MemoryRouter>)
+  element = render(
+    <MemoryRouter>
+      <Details fragment={fragment} />
+    </MemoryRouter>
+  )
   container = element.container
 }
 
@@ -25,7 +29,10 @@ describe('All details', () => {
   })
 
   it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum)).toHaveAttribute('href', 'https://britishmuseum.org/')
+    expect(element.getByText(fragment.museum)).toHaveAttribute(
+      'href',
+      'https://britishmuseum.org/'
+    )
   })
 
   it('Renders colection', () => {
@@ -40,13 +47,17 @@ describe('All details', () => {
 
   it(`Links all joins`, () => {
     for (let item of fragment.joins) {
-      expect(element.getByText(item))
-        .toHaveAttribute('href', `/fragmentarium/${item}`)
+      expect(element.getByText(item)).toHaveAttribute(
+        'href',
+        `/fragmentarium/${item}`
+      )
     }
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
+    const expectedMeasures = `${fragment.measures.length} × ${
+      fragment.measures.width
+    } × ${fragment.measures.thickness} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 
@@ -55,8 +66,10 @@ describe('All details', () => {
   })
 
   it('Links CDLI number', () => {
-    expect(element.getByText(fragment.cdliNumber))
-      .toHaveAttribute('href', `https://cdli.ucla.edu/${fragment.cdliNumber}`)
+    expect(element.getByText(fragment.cdliNumber)).toHaveAttribute(
+      'href',
+      `https://cdli.ucla.edu/${fragment.cdliNumber}`
+    )
   })
 
   it('Renders accession', () => {
@@ -92,7 +105,9 @@ describe('Missing details', () => {
   })
 
   it('Does not renders missing measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.thickness} cm`
+    const expectedMeasures = `${fragment.measures.length} × ${
+      fragment.measures.thickness
+    } cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 

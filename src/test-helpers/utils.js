@@ -69,7 +69,7 @@ export function testDelegation (object, testData) {
       beforeEach(() => {
         jest.clearAllMocks()
         target.mockReturnValueOnce(targetResult || expectedResult)
-        result = (_.isFunction(object) ? object() : object)[method](...(params))
+        result = (_.isFunction(object) ? object() : object)[method](...params)
       })
 
       it(`Delegates`, () => {

@@ -45,9 +45,7 @@ export class RecordEntry extends Record({
   type: ''
 }) {
   get moment () {
-    return this.isHistorical
-      ? moment.range(this.date)
-      : moment(this.date)
+    return this.isHistorical ? moment.range(this.date) : moment(this.date)
   }
 
   get isHistorical () {
@@ -104,10 +102,10 @@ export class Fragment extends Record({
 
   get uniqueRecord () {
     const reducer = (filteredRecord, recordEntry, index) => {
-      const keepRecord = filteredRecord.isEmpty() || !filteredRecord.last().dateEquals(recordEntry)
-      return keepRecord
-        ? filteredRecord.push(recordEntry)
-        : filteredRecord
+      const keepRecord =
+        filteredRecord.isEmpty() ||
+        !filteredRecord.last().dateEquals(recordEntry)
+      return keepRecord ? filteredRecord.push(recordEntry) : filteredRecord
     }
     return this.record.reduce(reducer, List())
   }

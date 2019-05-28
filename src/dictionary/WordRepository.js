@@ -4,18 +4,21 @@ class WordRepository {
   }
 
   find (id) {
-    return this.apiClient
-      .fetchJson(`/words/${encodeURIComponent(id)}`, true)
+    return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
   search (query) {
-    return this.apiClient
-      .fetchJson(`/words?query=${encodeURIComponent(query)}`, true)
+    return this.apiClient.fetchJson(
+      `/words?query=${encodeURIComponent(query)}`,
+      true
+    )
   }
 
   searchLemma (lemma) {
-    return this.apiClient
-      .fetchJson(`/words?lemma=${encodeURIComponent(lemma)}`, true)
+    return this.apiClient.fetchJson(
+      `/words?lemma=${encodeURIComponent(lemma)}`,
+      true
+    )
   }
 
   update (word) {

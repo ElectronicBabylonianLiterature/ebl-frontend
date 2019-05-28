@@ -5,9 +5,7 @@ import { fromJS } from 'immutable'
 import Reference, { createReference, serializeReference } from './Reference'
 
 test('default reference', () => {
-  expect(new Reference()).toEqual(
-    new Reference('DISCUSSION', '', '', [], null)
-  )
+  expect(new Reference()).toEqual(new Reference('DISCUSSION', '', '', [], null))
 })
 
 describe('Reference', () => {
@@ -17,9 +15,7 @@ describe('Reference', () => {
     reference = await factory.build('reference')
   })
 
-  test.each([
-    ['typeAbbreviation', 'type.0']
-  ])('%s', async (property, path) =>
+  test.each([['typeAbbreviation', 'type.0']])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
 })

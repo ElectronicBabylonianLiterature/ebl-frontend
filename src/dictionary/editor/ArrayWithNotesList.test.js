@@ -21,20 +21,20 @@ beforeEach(() => {
   value = [
     {
       [property]: ['LOG1', 'LOG2'],
-      'notes': ['note1']
+      notes: ['note1']
     },
     {
       [property]: [],
-      'notes': [
-        'note2'
-      ]
+      notes: ['note2']
     }
   ]
   element = renderArrayWithNotesList()
 })
 
 it('Displays all items', () => {
-  _.map(value, entry => entry[property].join(separator)).forEach(item => expect(element.getByValue(item)).toBeVisible())
+  _.map(value, entry => entry[property].join(separator)).forEach(item =>
+    expect(element.getByValue(item)).toBeVisible()
+  )
 })
 
 it('Displays label', () => {
@@ -44,10 +44,7 @@ it('Displays label', () => {
 it('Adds new entry when Add is clicked', async () => {
   await whenClicked(element, `Add ${noun}`)
     .expect(onChange)
-    .toHaveBeenCalledWith([
-      ...value,
-      { [property]: [], notes: [] }
-    ])
+    .toHaveBeenCalledWith([...value, { [property]: [], notes: [] }])
 })
 
 it('Calls onChange on change', () => {
@@ -63,13 +60,16 @@ it('Calls onChange on change', () => {
 })
 
 function renderArrayWithNotesList () {
-  return render(<ArrayWithNotesList
-    id='arrayWithNotesList'
-    property={property}
-    noun={noun}
-    separator={separator}
-    value={value}
-    onChange={onChange}>
-    {label}
-  </ArrayWithNotesList>)
+  return render(
+    <ArrayWithNotesList
+      id='arrayWithNotesList'
+      property={property}
+      noun={noun}
+      separator={separator}
+      value={value}
+      onChange={onChange}
+    >
+      {label}
+    </ArrayWithNotesList>
+  )
 }

@@ -32,9 +32,7 @@ class Template {
       .map(parseSide)
       .map(createTemplate)
 
-    return reverse
-      ? `@obverse\n${obverse}\n\n@reverse\n${reverse}`
-      : obverse
+    return reverse ? `@obverse\n${obverse}\n\n@reverse\n${reverse}` : obverse
   }
 }
 

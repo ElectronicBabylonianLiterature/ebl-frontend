@@ -43,7 +43,9 @@ describe('Edit references', () => {
     await clickNth(element, 'Add Reference')
     await submitForm(element, 'form')
 
-    expect(updateReferences).toHaveBeenCalledWith(references.push(defaultReference))
+    expect(updateReferences).toHaveBeenCalledWith(
+      references.push(defaultReference)
+    )
   })
 
   test('Delete reference', async () => {
@@ -57,7 +59,9 @@ describe('Edit references', () => {
     await inputReference()
     await submitForm(element, 'form')
 
-    expect(updateReferences).toHaveBeenCalledWith(references.set(0, expectedReference))
+    expect(updateReferences).toHaveBeenCalledWith(
+      references.set(0, expectedReference)
+    )
   })
 })
 
@@ -71,10 +75,13 @@ it('Creates a default reference if none present', async () => {
 })
 
 function renderReferences () {
-  element = render(<References
-    references={references}
-    searchBibliography={searchBibliography}
-    updateReferences={updateReferences} />)
+  element = render(
+    <References
+      references={references}
+      searchBibliography={searchBibliography}
+      updateReferences={updateReferences}
+    />
+  )
 }
 
 async function renderReferencesAndWait () {

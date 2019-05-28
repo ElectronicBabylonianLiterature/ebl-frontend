@@ -43,7 +43,11 @@ test('Empty meaning', async () => {
     meaning: ''
   })
   lemma = new Lemma(word)
-  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}, ${truncateMeaning(word.amplifiedMeanings[0].meaning)}`)
+  expect(lemma.label).toEqual(
+    `${lemma.lemma}${lemma.homonym}, ${truncateMeaning(
+      word.amplifiedMeanings[0].meaning
+    )}`
+  )
 })
 
 test('Empty amplified meaning', async () => {
@@ -56,7 +60,11 @@ test('Empty amplified meaning', async () => {
     ]
   })
   lemma = new Lemma(word)
-  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}, ${truncateMeaning(word.amplifiedMeanings[0].entries[0].meaning)}`)
+  expect(lemma.label).toEqual(
+    `${lemma.lemma}${lemma.homonym}, ${truncateMeaning(
+      word.amplifiedMeanings[0].entries[0].meaning
+    )}`
+  )
 })
 
 test('No meanings', async () => {
@@ -85,6 +93,8 @@ function commonTests () {
   })
 
   test('label', () => {
-    expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}, a very very long complicated…`)
+    expect(lemma.label).toEqual(
+      `${lemma.lemma}${lemma.homonym}, a very very long complicated…`
+    )
   })
 }

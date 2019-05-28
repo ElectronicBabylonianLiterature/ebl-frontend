@@ -14,14 +14,17 @@ export default function Dictionary ({ wordService, location }) {
   return (
     <AppContent crumbs={['Dictionary']}>
       <SessionContext.Consumer>
-        {session => session.isAllowedToReadWords()
-          ? <>
-            <div className='Dictionary-search'>
-              <WordSearchForm query={query} />
-            </div>
-            <WordSearch query={query} wordService={wordService} />
-          </>
-          : <p>Please log in to browse the Dictionary.</p>
+        {session =>
+          session.isAllowedToReadWords() ? (
+            <>
+              <div className='Dictionary-search'>
+                <WordSearchForm query={query} />
+              </div>
+              <WordSearch query={query} wordService={wordService} />
+            </>
+          ) : (
+            <p>Please log in to browse the Dictionary.</p>
+          )
         }
       </SessionContext.Consumer>
     </AppContent>

@@ -22,9 +22,13 @@ let expectedFragment
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const references = List(await factory.buildMany('reference', 2))
-  fragment = (await factory.build('fragment', { atf: '1. ku' }))
-    .setReferences(List(await factory.buildMany('reference', 2)))
-  updatedFragment = await factory.build('fragment', { number: fragment.number, atf: fragment.atf })
+  fragment = (await factory.build('fragment', { atf: '1. ku' })).setReferences(
+    List(await factory.buildMany('reference', 2))
+  )
+  updatedFragment = await factory.build('fragment', {
+    number: fragment.number,
+    atf: fragment.atf
+  })
   expectedFragment = updatedFragment.setReferences(references)
 
   onChange = jest.fn()
@@ -42,7 +46,9 @@ beforeEach(async () => {
     hasBetaAccess: () => false
   }
   URL.createObjectURL.mockReturnValue('url')
-  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 
   element = render(
@@ -51,15 +57,15 @@ beforeEach(async () => {
         <CuneiformFragment
           fragment={fragment}
           fragmentService={fragmentService}
-          onChange={onChange} />
+          onChange={onChange}
+        />
       </SessionContext.Provider>
-    </MemoryRouter>)
+    </MemoryRouter>
+  )
   container = element.container
 })
 
-const properties = [
-  'museum', 'collection', 'cdliNumber', 'accession'
-]
+const properties = ['museum', 'collection', 'cdliNumber', 'accession']
 
 for (let property of properties) {
   it(`Renders ${property}`, () => {
@@ -98,12 +104,20 @@ it('Renders all folios', () => {
 })
 
 it('Links museum record', () => {
-  expect(element.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`))
-    .toHaveAttribute('href', `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${fragment.bmIdNumber}&partId=1`)
+  expect(
+    element.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`)
+  ).toHaveAttribute(
+    'href',
+    `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${
+      fragment.bmIdNumber
+    }&partId=1`
+  )
 })
 
 it('Updates view on Edition save', async () => {
-  fragmentService.updateTransliteration.mockReturnValueOnce(Promise.resolve(updatedFragment))
+  fragmentService.updateTransliteration.mockReturnValueOnce(
+    Promise.resolve(updatedFragment)
+  )
 
   await submitFormByTestId(element, 'transliteration-form')
 
@@ -111,7 +125,9 @@ it('Updates view on Edition save', async () => {
 })
 
 it('Updates view on References save', async () => {
-  fragmentService.updateReferences.mockReturnValueOnce(Promise.resolve(updatedFragment))
+  fragmentService.updateReferences.mockReturnValueOnce(
+    Promise.resolve(updatedFragment)
+  )
   clickNth(element, 'References', 0)
   await waitForElement(() => element.getByText('Document'))
   await submitFormByTestId(element, 'references-form')

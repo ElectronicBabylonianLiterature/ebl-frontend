@@ -8,9 +8,11 @@ const children = 'The Link'
 let link
 
 beforeEach(() => {
-  const { getByText } = render(<ExternalLink href={href} title={title}>
-    {children}
-  </ExternalLink>)
+  const { getByText } = render(
+    <ExternalLink href={href} title={title}>
+      {children}
+    </ExternalLink>
+  )
   link = getByText(children)
 })
 

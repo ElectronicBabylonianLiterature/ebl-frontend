@@ -17,9 +17,11 @@ function convertNumbers (number) {
 
   const numberAsArray = number.split('')
 
-  return numberAsArray.map((number) => {
-    return numbers[number]
-  }).join('')
+  return numberAsArray
+    .map(number => {
+      return numbers[number]
+    })
+    .join('')
 }
 
 function replacer (match, characters, numbers) {
@@ -28,7 +30,12 @@ function replacer (match, characters, numbers) {
 }
 
 export default function normalizeNumbers (userInput) {
-  const specialTransliterationCharactersAsString = escapeRegExp(specialTransliterationCharacters)
-  const regExp = new RegExp(`(\\D\\B|${specialTransliterationCharactersAsString})(\\d+)`, 'g')
+  const specialTransliterationCharactersAsString = escapeRegExp(
+    specialTransliterationCharacters
+  )
+  const regExp = new RegExp(
+    `(\\D\\B|${specialTransliterationCharactersAsString})(\\d+)`,
+    'g'
+  )
   return userInput.replace(regExp, replacer)
 }

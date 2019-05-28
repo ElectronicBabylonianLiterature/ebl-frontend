@@ -1,6 +1,14 @@
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
-import { Fragment, Measures, RecordEntry, Line, Text, Folio, UncuratedReference } from 'fragmentarium/fragment'
+import {
+  Fragment,
+  Measures,
+  RecordEntry,
+  Line,
+  Text,
+  Folio,
+  UncuratedReference
+} from 'fragmentarium/fragment'
 
 function createFragment (dto) {
   return new Fragment({
@@ -14,15 +22,23 @@ function createFragment (dto) {
     }),
     folios: List(dto.folios).map(folioDto => new Folio(folioDto)),
     record: List(dto.record).map(recordDto => new RecordEntry(recordDto)),
-    text: Text({ lines: List(dto.text.lines).map(dto => Line({
-      ...dto,
-      content: List(dto.content).map(token => fromJS(token))
-    })) }),
+    text: Text({
+      lines: List(dto.text.lines).map(dto =>
+        Line({
+          ...dto,
+          content: List(dto.content).map(token => fromJS(token))
+        })
+      )
+    }),
     references: List(dto.references).map(reference => fromJS(reference)),
-    uncuratedReferences: dto.uncuratedReferences && List(dto.uncuratedReferences).map(reference => UncuratedReference({
-      document: reference.document,
-      pages: List(reference.pages)
-    })),
+    uncuratedReferences:
+      dto.uncuratedReferences &&
+      List(dto.uncuratedReferences).map(reference =>
+        UncuratedReference({
+          document: reference.document,
+          pages: List(reference.pages)
+        })
+      ),
     matchingLines: dto.matching_lines
       ? List(dto.matching_lines).map(line => fromJS(line))
       : List()
@@ -34,11 +50,7 @@ function createFragments (dtos) {
 }
 
 function createFragmentPath (number, ...subResources) {
-  return [
-    '/fragments',
-    encodeURIComponent(number),
-    ...subResources
-  ].join('/')
+  return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
 class FragmentRepository {
@@ -84,13 +96,12 @@ class FragmentRepository {
 
   updateTransliteration (number, transliteration, notes) {
     const path = createFragmentPath(number, 'transliteration')
-    return this.apiClient.postJson(
-      path,
-      {
+    return this.apiClient
+      .postJson(path, {
         transliteration: transliteration,
         notes: notes
-      }
-    ).then(createFragment)
+      })
+      .then(createFragment)
   }
 
   updateLemmatization (number, lemmatization) {
@@ -108,13 +119,19 @@ class FragmentRepository {
   }
 
   folioPager (folio, number) {
-    return this.apiClient
-      .fetchJson(`/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(folio.number)}/${encodeURIComponent(number)}`, true)
+    return this.apiClient.fetchJson(
+      `/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
+        folio.number
+      )}/${encodeURIComponent(number)}`,
+      true
+    )
   }
 
   findLemmas (word) {
-    return this.apiClient
-      .fetchJson(`/lemmas?word=${encodeURIComponent(word)}`, true)
+    return this.apiClient.fetchJson(
+      `/lemmas?word=${encodeURIComponent(word)}`,
+      true
+    )
   }
 }
 

@@ -29,5 +29,9 @@ it('Calls onChange with updated value on change', () => {
 })
 
 function renderTextInput () {
-  return render(<TextInput id='text' value={value} onChange={onChange}>{label}</TextInput>)
+  return render(
+    <TextInput id='text' value={value} onChange={onChange}>
+      {label}
+    </TextInput>
+  )
 }

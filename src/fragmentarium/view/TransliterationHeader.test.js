@@ -4,12 +4,10 @@ import { factory } from 'factory-girl'
 
 import TransliterationHeader from './TransliterationHeader'
 
-describe.each(
-  [
-    ['', '(Publication: - )'],
-    ['George, Gilgamesh II 047, d', '(Publication: George, Gilgamesh II 047, d)']
-  ]
-)('Publication "%s"', (publication, expectedPublication) => {
+describe.each([
+  ['', '(Publication: - )'],
+  ['George, Gilgamesh II 047, d', '(Publication: George, Gilgamesh II 047, d)']
+])('Publication "%s"', (publication, expectedPublication) => {
   let fragment
   let container
 

@@ -5,30 +5,38 @@ import _ from 'lodash'
 import TextListInput from './TextListInput'
 
 const positionsOfScpeech = {
-  'AJ': 'adjective',
-  'AV': 'adverb',
-  'N': 'noun',
-  'NU': 'number',
-  'V': 'verb',
-  'DP': 'demonstrative pronoun',
-  'IP': 'independent/anaphoric pronoun',
-  'PP': 'possessive pronoun',
-  'QP': 'interrogative pronoun',
-  'RP': 'reflexive/reciprocal pronoun',
-  'XP': 'indefinite pronoun',
-  'REL': 'relative pronoun',
-  'DET': 'determinative pronoun',
-  'CNJ': 'conjunction',
-  'J': 'interjection',
-  'MOD': 'modal, negative, or conditional particle',
-  'PRP': 'preposition',
-  'SBJ': 'subjunction'
+  AJ: 'adjective',
+  AV: 'adverb',
+  N: 'noun',
+  NU: 'number',
+  V: 'verb',
+  DP: 'demonstrative pronoun',
+  IP: 'independent/anaphoric pronoun',
+  PP: 'possessive pronoun',
+  QP: 'interrogative pronoun',
+  RP: 'reflexive/reciprocal pronoun',
+  XP: 'indefinite pronoun',
+  REL: 'relative pronoun',
+  DET: 'determinative pronoun',
+  CNJ: 'conjunction',
+  J: 'interjection',
+  MOD: 'modal, negative, or conditional particle',
+  PRP: 'preposition',
+  SBJ: 'subjunction'
 }
-const posOptions = _.map(positionsOfScpeech, (value, key) => ({ value: key, label: value }))
+const posOptions = _.map(positionsOfScpeech, (value, key) => ({
+  value: key,
+  label: value
+}))
 
 class PosInput extends Component {
   updatePos = event => {
-    this.props.onChange({ pos: _(event.target.options).filter('selected').map('value').value() })
+    this.props.onChange({
+      pos: _(event.target.options)
+        .filter('selected')
+        .map('value')
+        .value()
+    })
   }
 
   updateRoots = roots => {
@@ -40,19 +48,28 @@ class PosInput extends Component {
       <FormGroup>
         <FormGroup controlId={this.props.id}>
           <FormLabel>Position of speech</FormLabel>
-          <FormControl as='select' value={this.props.value.pos} onChange={this.updatePos} multiple>
-            {posOptions.map(option =>
+          <FormControl
+            as='select'
+            value={this.props.value.pos}
+            onChange={this.updatePos}
+            multiple
+          >
+            {posOptions.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
-            )}
+            ))}
           </FormControl>
         </FormGroup>
-        {this.props.value.pos.includes('V') &&
-          <TextListInput id='roots' value={this.props.value.roots || []} onChange={this.updateRoots}>
+        {this.props.value.pos.includes('V') && (
+          <TextListInput
+            id='roots'
+            value={this.props.value.roots || []}
+            onChange={this.updateRoots}
+          >
             Roots
           </TextListInput>
-        }
+        )}
       </FormGroup>
     )
   }

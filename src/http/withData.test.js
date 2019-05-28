@@ -26,12 +26,20 @@ errorReportingService = {
 }
 
 async function renderWithData () {
-  element = render(<ErrorReporterContext.Provider value={errorReportingService}><ComponentWithData prop={propValue} /> </ErrorReporterContext.Provider>)
+  element = render(
+    <ErrorReporterContext.Provider value={errorReportingService}>
+      <ComponentWithData prop={propValue} />{' '}
+    </ErrorReporterContext.Provider>
+  )
   await wait()
 }
 
 async function rerender (prop) {
-  element.rerender(<ErrorReporterContext.Provider value={errorReportingService}><ComponentWithData prop={prop} /> </ErrorReporterContext.Provider>)
+  element.rerender(
+    <ErrorReporterContext.Provider value={errorReportingService}>
+      <ComponentWithData prop={prop} />{' '}
+    </ErrorReporterContext.Provider>
+  )
   await wait()
 }
 
@@ -48,16 +56,20 @@ function expectGetterToBeCalled (expectedProp) {
 
 function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
   it('Renders the wrapped component', () => {
-    expect(element.container).toHaveTextContent(`${expectedPropValue} ${expectedData}`)
+    expect(element.container).toHaveTextContent(
+      `${expectedPropValue} ${expectedData}`
+    )
   })
 
   it('Passes properties to inner component', () => {
-    expect(InnerComponent).toHaveBeenCalledWith({
-      data: expectedData,
-      reload: expect.any(Function),
-      prop: expectedPropValue
-    },
-    {})
+    expect(InnerComponent).toHaveBeenCalledWith(
+      {
+        data: expectedData,
+        reload: expect.any(Function),
+        prop: expectedPropValue
+      },
+      {}
+    )
   })
 }
 
@@ -67,7 +79,11 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   getter = jest.fn()
   InnerComponent = jest.fn()
-  InnerComponent.mockImplementation(props => <h1>{props.prop} {props.data}</h1>)
+  InnerComponent.mockImplementation(props => (
+    <h1>
+      {props.prop} {props.data}
+    </h1>
+  ))
   config = {
     shouldUpdate,
     filter,
@@ -134,8 +150,7 @@ describe('On successful get', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    getter.mockImplementationOnce(() =>
-      Promise.reject(new Error(errorMessage)))
+    getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     renderWithData()
     await waitForElement(() => element.getByText(errorMessage))
   })
@@ -189,12 +204,18 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   beforeEach(() => {
-    const CrashingComponent = withData(() => { throw new Error(errorMessage) }, getter)
+    const CrashingComponent = withData(() => {
+      throw new Error(errorMessage)
+    }, getter)
     getter.mockReturnValueOnce(Promise.resolve(data))
-    element = render(<ErrorReporterContext.Provider value={errorReportingService}><CrashingComponent prop={propValue} /></ErrorReporterContext.Provider>)
+    element = render(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <CrashingComponent prop={propValue} />
+      </ErrorReporterContext.Provider>
+    )
   })
 
   it('Displays error message', async () => {
-    await waitForElement(() => element.getByText('Something\'s gone wrong.'))
+    await waitForElement(() => element.getByText("Something's gone wrong."))
   })
 })

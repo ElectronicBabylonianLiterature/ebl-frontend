@@ -16,7 +16,8 @@ class AmplifiedMeaningInput extends Component {
     <TextInput
       id={`${this.props.id}-${property}`}
       value={this.props.value[property]}
-      onChange={this.onChange(property)}>
+      onChange={this.onChange(property)}
+    >
       {children}
     </TextInput>
   )
@@ -34,13 +35,15 @@ class AmplifiedMeaningInput extends Component {
           property='value'
           noun='vowels'
           separator='/'
-          onChange={this.onChange('vowels')} />
+          onChange={this.onChange('vowels')}
+        />
         {!this.props.entry && (
           <AmplifiedMeaningList
             id={`${this.props.id}-entry`}
             value={this.props.value.entries}
             onChange={this.onChange('entries')}
-            entry>
+            entry
+          >
             Entries
           </AmplifiedMeaningList>
         )}

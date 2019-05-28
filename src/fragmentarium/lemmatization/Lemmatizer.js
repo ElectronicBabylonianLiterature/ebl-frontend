@@ -18,20 +18,26 @@ class Lemmatizer extends Component {
   }
 
   get hasNoChanges () {
-    return _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens) &&
-      !this.state.lemmatization.tokens.some(row => row.some(token => token.suggested))
+    return (
+      _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens) &&
+      !this.state.lemmatization.tokens.some(row =>
+        row.some(token => token.suggested)
+      )
+    )
   }
 
   Row = ({ rowIndex, row }) => (
     <Fragment>
       {this.state.lemmatization.getRowPrefix(rowIndex)}{' '}
-      {row.map((token, columnIndex) => <Fragment key={columnIndex}>
-        <WordLemmatizer
-          fragmentService={this.props.fragmentService}
-          token={token}
-          onChange={_.partial(this.setLemma, rowIndex, columnIndex)} />
-        {' '}
-      </Fragment>)}
+      {row.map((token, columnIndex) => (
+        <Fragment key={columnIndex}>
+          <WordLemmatizer
+            fragmentService={this.props.fragmentService}
+            token={token}
+            onChange={_.partial(this.setLemma, rowIndex, columnIndex)}
+          />{' '}
+        </Fragment>
+      ))}
     </Fragment>
   )
 
@@ -39,42 +45,48 @@ class Lemmatizer extends Component {
     <Button
       onClick={this.submit}
       disabled={this.props.disabled || this.hasNoChanges}
-      variant='primary'>
+      variant='primary'
+    >
       Save
     </Button>
   )
 
   setLemma = (rowIndex, columnIndex, uniqueLemma) => {
     this.setState({
-      lemmatization: this.state.lemmatization.setLemma(rowIndex, columnIndex, uniqueLemma)
+      lemmatization: this.state.lemmatization.setLemma(
+        rowIndex,
+        columnIndex,
+        uniqueLemma
+      )
     })
   }
 
   submit = () => {
-    this.props.updateLemmatization(
-      this.state.lemmatization
-    )
+    this.props.updateLemmatization(this.state.lemmatization)
   }
 
   render () {
-    return <>
-      <ol className='Lemmatizer__transliteration'>
-        {this.state.lemmatization.tokens.map((row, rowIndex) => (
-          <li key={rowIndex} className='Lemmatizer__row'>
-            <this.Row rowIndex={rowIndex} row={row} />
-          </li>
-        ))}
-      </ol>
-      <HelpTrigger overlay={LemmatizationHelp()} />
-      {' '}
-      <this.SubmitButton />
-    </>
+    return (
+      <>
+        <ol className='Lemmatizer__transliteration'>
+          {this.state.lemmatization.tokens.map((row, rowIndex) => (
+            <li key={rowIndex} className='Lemmatizer__row'>
+              <this.Row rowIndex={rowIndex} row={row} />
+            </li>
+          ))}
+        </ol>
+        <HelpTrigger overlay={LemmatizationHelp()} /> <this.SubmitButton />
+      </>
+    )
   }
 }
 
 export default withData(
   Lemmatizer,
-  props => props.fragmentService.createLemmatization(props.text).then(lemmatization => lemmatization.applySuggestions()),
+  props =>
+    props.fragmentService
+      .createLemmatization(props.text)
+      .then(lemmatization => lemmatization.applySuggestions()),
   {
     shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.text, props.text)
   }

@@ -44,23 +44,22 @@ beforeEach(async () => {
       }
     ]
   }
-  fragmentService.createLemmatization.mockImplementation(text => Promise.resolve(
-    new Lemmatization(['1.'], [[
-      new LemmatizationToken(
-        'kur',
-        true,
-        [new Lemma(oldWord)],
-        []
+  fragmentService.createLemmatization.mockImplementation(text =>
+    Promise.resolve(
+      new Lemmatization(
+        ['1.'],
+        [[new LemmatizationToken('kur', true, [new Lemma(oldWord)], [])]]
       )
-    ]])
-  ))
+    )
+  )
   element = render(
     <Lemmatizer
       fragmentService={fragmentService}
       updateLemmatization={updateLemmatization}
       number='K.1'
       text={text}
-    />)
+    />
+  )
   await waitForElement(() => element.getByText('1.'))
 })
 
@@ -86,15 +85,12 @@ it('Clicking word shows form', async () => {
 it('Clicking save calls fragmentService', async () => {
   await lemmatizeWord()
 
-  const expected = new Lemmatization(['1.'], [[
-    new LemmatizationToken(
-      'kur',
-      true,
-      [lemma],
-      []
-    )
-  ]])
-  await whenClicked(element, 'Save').expect(updateLemmatization)
+  const expected = new Lemmatization(
+    ['1.'],
+    [[new LemmatizationToken('kur', true, [lemma], [])]]
+  )
+  await whenClicked(element, 'Save')
+    .expect(updateLemmatization)
     .toHaveBeenCalledWith(expected)
 })
 

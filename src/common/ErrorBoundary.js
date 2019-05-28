@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import ErrorReporterContext from 'ErrorReporterContext'
@@ -8,7 +7,7 @@ class ErrorBoundary extends Component {
     error: null
   }
 
-  static contextType = ErrorReporterContext;
+  static contextType = ErrorReporterContext
 
   componentDidCatch (error, info) {
     this.setState({ error: error })
@@ -16,19 +15,25 @@ class ErrorBoundary extends Component {
   }
 
   render () {
-    return this.state.error
-      ? (
-        <Alert variant='danger'>
-          <h4>Something's gone wrong.</h4>
-          <p>Our team has been notified, but you can fill out a report by clicking the button below.</p>
-          <p>
-            <Button variant='danger' onClick={() => this.context.showReportDialog()}>
-              Send a report
-            </Button>
-          </p>
-        </Alert>
-      )
-      : this.props.children
+    return this.state.error ? (
+      <Alert variant='danger'>
+        <h4>Something's gone wrong.</h4>
+        <p>
+          Our team has been notified, but you can fill out a report by clicking
+          the button below.
+        </p>
+        <p>
+          <Button
+            variant='danger'
+            onClick={() => this.context.showReportDialog()}
+          >
+            Send a report
+          </Button>
+        </p>
+      </Alert>
+    ) : (
+      this.props.children
+    )
   }
 }
 

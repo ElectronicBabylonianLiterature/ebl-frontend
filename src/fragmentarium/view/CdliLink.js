@@ -4,6 +4,8 @@ import ExternalLink from 'common/ExternalLink'
 export default function CdliLink ({ cdliNumber, children }) {
   const cdliUrl = `https://cdli.ucla.edu/${cdliNumber}`
   return (
-    <ExternalLink href={cdliUrl} aria-label={`CDLI text ${cdliNumber}`}>{children}</ExternalLink>
+    <ExternalLink href={cdliUrl} aria-label={`CDLI text ${cdliNumber}`}>
+      {children}
+    </ExternalLink>
   )
 }

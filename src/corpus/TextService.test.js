@@ -3,7 +3,17 @@ import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
-import { createText, createChapter, createManuscript, createLine, createManuscriptLine, periodModifiers, periods, provenances, types } from './text'
+import {
+  createText,
+  createChapter,
+  createManuscript,
+  createLine,
+  createManuscriptLine,
+  periodModifiers,
+  periods,
+  provenances,
+  types
+} from './text'
 import TextService from './TextService'
 
 const apiClient = {
@@ -36,14 +46,16 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'a note',
-          references: [{
-            id: 'RN1853',
-            linesCited: [],
-            notes: '',
-            pages: '34-54',
-            type: 'DISCUSSION',
-            document: { id: 'RN1853' }
-          }]
+          references: [
+            {
+              id: 'RN1853',
+              linesCited: [],
+              notes: '',
+              pages: '34-54',
+              type: 'DISCUSSION',
+              document: { id: 'RN1853' }
+            }
+          ]
         }
       ],
       lines: [
@@ -88,13 +100,15 @@ const textUpdateDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'a note',
-          references: [{
-            id: 'RN1853',
-            linesCited: [],
-            notes: '',
-            pages: '34-54',
-            type: 'DISCUSSION'
-          }]
+          references: [
+            {
+              id: 'RN1853',
+              linesCited: [],
+              notes: '',
+              pages: '34-54',
+              type: 'DISCUSSION'
+            }
+          ]
         }
       ],
       lines: [
@@ -139,13 +153,15 @@ const text = createText({
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
           notes: 'a note',
-          references: List.of(new Reference(
-            'DISCUSSION',
-            '34-54',
-            '',
-            List(),
-            new BibliographyEntry({ id: 'RN1853' })
-          ))
+          references: List.of(
+            new Reference(
+              'DISCUSSION',
+              '34-54',
+              '',
+              List(),
+              new BibliographyEntry({ id: 'RN1853' })
+            )
+          )
         })
       ),
       lines: List.of(
@@ -166,14 +182,16 @@ const text = createText({
   )
 })
 
-const textsDto = [{
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 10,
-  approximateVerses: true,
-  chapters: []
-}]
+const textsDto = [
+  {
+    category: 1,
+    index: 1,
+    name: 'Palm and Vine',
+    numberOfVerses: 10,
+    approximateVerses: true,
+    chapters: []
+  }
+]
 
 const texts = List.of(
   createText({
@@ -187,9 +205,40 @@ const texts = List.of(
 )
 
 const testData = [
-  ['find', [text.category, text.index], apiClient.fetchJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, true], Promise.resolve(textDto)],
-  ['list', [], apiClient.fetchJson, texts, ['/texts', false], Promise.resolve(textsDto)],
-  ['update', [text.category, text.index, text], apiClient.postJson, text, [`/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(text.index)}`, textUpdateDto], Promise.resolve(textDto)]
+  [
+    'find',
+    [text.category, text.index],
+    apiClient.fetchJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}`,
+      true
+    ],
+    Promise.resolve(textDto)
+  ],
+  [
+    'list',
+    [],
+    apiClient.fetchJson,
+    texts,
+    ['/texts', false],
+    Promise.resolve(textsDto)
+  ],
+  [
+    'update',
+    [text.category, text.index, text],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}`,
+      textUpdateDto
+    ],
+    Promise.resolve(textDto)
+  ]
 ]
 
 testDelegation(testService, testData)

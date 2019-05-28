@@ -1,4 +1,3 @@
-
 import { DefaultAdapter } from 'factory-girl'
 
 export default class FactoryAdapter extends DefaultAdapter {

@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { render } from 'react-testing-library'
 import { clickNth } from 'test-helpers/utils'
@@ -16,7 +15,9 @@ describe('Children throw an error', () => {
       captureException: jest.fn(),
       showReportDialog: jest.fn()
     }
-    const CrashingComponent = () => { throw error }
+    const CrashingComponent = () => {
+      throw error
+    }
     element = render(
       <ErrorReporterContext.Provider value={errorReportingService}>
         <ErrorBoundary>
@@ -27,11 +28,13 @@ describe('Children throw an error', () => {
   })
 
   it('Displays error message if children crash', () => {
-    expect(element.container).toHaveTextContent('Something\'s gone wrong')
+    expect(element.container).toHaveTextContent("Something's gone wrong")
   })
 
   it('Sends report to Sentry', () => {
-    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, { componentStack: expect.any(String) })
+    expect(errorReportingService.captureException).toHaveBeenCalledWith(error, {
+      componentStack: expect.any(String)
+    })
   })
 
   it('Clicking report button opens report dialog', async () => {
@@ -46,6 +49,7 @@ it('Displays children if they do not crash', () => {
   const { container } = render(
     <ErrorReporterContext.Provider value={null}>
       <ErrorBoundary>{content}</ErrorBoundary>
-    </ErrorReporterContext.Provider>)
+    </ErrorReporterContext.Provider>
+  )
   expect(container).toHaveTextContent(content)
 })

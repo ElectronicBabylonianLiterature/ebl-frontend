@@ -19,26 +19,36 @@ beforeEach(async () => {
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
   fragment = await factory.build('fragment')
   folio = fragment.folios.first()
-  element = render(<MemoryRouter>
-    <FolioPager fragmentService={fragmentService}
-      folio={folio}
-      fragmentNumber={fragment.number} />
-  </MemoryRouter>)
+  element = render(
+    <MemoryRouter>
+      <FolioPager
+        fragmentService={fragmentService}
+        folio={folio}
+        fragmentNumber={fragment.number}
+      />
+    </MemoryRouter>
+  )
   await waitForElement(() => element.getByText(/Browse/))
 })
 
 it('Previous links to the previous fragment', () => {
-  expect(element.getByLabelText('Previous'))
-    .toHaveAttribute('href', expectedLink(pagerData.previous))
+  expect(element.getByLabelText('Previous')).toHaveAttribute(
+    'href',
+    expectedLink(pagerData.previous)
+  )
 })
 
 it('Next links to the next fragment', () => {
-  expect(element.getByLabelText('Next'))
-    .toHaveAttribute('href', expectedLink(pagerData.next))
+  expect(element.getByLabelText('Next')).toHaveAttribute(
+    'href',
+    expectedLink(pagerData.next)
+  )
 })
 
 it('Renders title', () => {
-  expect(element.container).toHaveTextContent(`Browse ${folio.humanizedName}'s Folios`)
+  expect(element.container).toHaveTextContent(
+    `Browse ${folio.humanizedName}'s Folios`
+  )
 })
 
 function expectedLink (pagerEntry) {

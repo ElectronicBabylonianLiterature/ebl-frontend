@@ -18,12 +18,17 @@ beforeEach(() => {
 
 describe('find', () => {
   beforeEach(async () => {
-    jest.spyOn(apiClient, 'fetchBlob').mockReturnValueOnce(Promise.resolve(image))
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockReturnValueOnce(Promise.resolve(image))
     promise = imageRepository.find(fileName, authenticate)
   })
 
   it('Queries the file', () => {
-    expect(apiClient.fetchBlob).toBeCalledWith(`/images/${encodeURIComponent(fileName)}`, authenticate)
+    expect(apiClient.fetchBlob).toBeCalledWith(
+      `/images/${encodeURIComponent(fileName)}`,
+      authenticate
+    )
   })
 
   it('Resolves to blob', async () => {

@@ -1,7 +1,17 @@
 import { List, Seq } from 'immutable'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
-import { createText, createChapter, createManuscript, createLine, periodModifiers, periods, provenances, types, createManuscriptLine } from './text'
+import {
+  createText,
+  createChapter,
+  createManuscript,
+  createLine,
+  periodModifiers,
+  periods,
+  provenances,
+  types,
+  createManuscriptLine
+} from './text'
 
 function fromDto (textDto) {
   return createText({
@@ -16,24 +26,33 @@ function fromDto (textDto) {
             period: periods.get(manuscriptDto.period),
             provenance: provenances.get(manuscriptDto.provenance),
             type: types.get(manuscriptDto.type),
-            references: Seq.Indexed(manuscriptDto.references).map(referenceDto => new Reference(
-              referenceDto.type,
-              referenceDto.pages,
-              referenceDto.notes,
-              referenceDto.linesCited,
-              new BibliographyEntry(referenceDto.document)
-            )).toList()
+            references: Seq.Indexed(manuscriptDto.references)
+              .map(
+                referenceDto =>
+                  new Reference(
+                    referenceDto.type,
+                    referenceDto.pages,
+                    referenceDto.notes,
+                    referenceDto.linesCited,
+                    new BibliographyEntry(referenceDto.document)
+                  )
+              )
+              .toList()
           })
         ),
-        lines: List(chapterDto.lines).map(lineDto => createLine({
-          ...lineDto,
-          manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto => createManuscriptLine({
-            manuscriptId: manuscriptLineDto['manuscriptId'],
-            labels: List(manuscriptLineDto['labels']),
-            number: manuscriptLineDto['number'],
-            atf: manuscriptLineDto['atf']
-          }))
-        }))
+        lines: List(chapterDto.lines).map(lineDto =>
+          createLine({
+            ...lineDto,
+            manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto =>
+              createManuscriptLine({
+                manuscriptId: manuscriptLineDto['manuscriptId'],
+                labels: List(manuscriptLineDto['labels']),
+                number: manuscriptLineDto['number'],
+                atf: manuscriptLineDto['atf']
+              })
+            )
+          })
+        )
       })
     )
   })
@@ -45,16 +64,22 @@ function toName (record) {
 
 function toDto (text) {
   return text
-    .updateIn(['chapters'], chapters => chapters.map(chapter =>
-      chapter.updateIn(['manuscripts'], manuscripts => manuscripts.map(manuscript =>
-        manuscript
-          .update('periodModifier', toName)
-          .update('period', toName)
-          .update('provenance', toName)
-          .update('type', toName)
-          .update('references', references => references.map(serializeReference))
-      ))
-    ))
+    .updateIn(['chapters'], chapters =>
+      chapters.map(chapter =>
+        chapter.updateIn(['manuscripts'], manuscripts =>
+          manuscripts.map(manuscript =>
+            manuscript
+              .update('periodModifier', toName)
+              .update('period', toName)
+              .update('provenance', toName)
+              .update('type', toName)
+              .update('references', references =>
+                references.map(serializeReference)
+              )
+          )
+        )
+      )
+    )
     .toJS()
 }
 
@@ -67,19 +92,27 @@ export default class TextService {
 
   find (category, index) {
     return this.#apiClient
-      .fetchJson(`/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`, true)
+      .fetchJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
+        true
+      )
       .then(fromDto)
   }
 
   list () {
-    return this.#apiClient
-      .fetchJson('/texts', false)
-      .then(texts => Seq(texts).map(fromDto).toList())
+    return this.#apiClient.fetchJson('/texts', false).then(texts =>
+      Seq(texts)
+        .map(fromDto)
+        .toList()
+    )
   }
 
   update (category, index, text) {
     return this.#apiClient
-      .postJson(`/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`, toDto(text))
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
+        toDto(text)
+      )
       .then(fromDto)
   }
 }

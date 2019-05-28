@@ -3,17 +3,21 @@ import FragmentList from 'fragmentarium/FragmentList'
 import withData from 'http/withData'
 
 function LatestTransliterations ({ data }) {
-  return (<section>
-    <h3 className='SubsectionHeading--indented'>Latest additions:</h3>
-    <FragmentList fragments={data} columns={{
-      'Accession': 'accession',
-      'Script': 'script',
-      'Description': 'description'
-    }} />
-  </section>)
+  return (
+    <section>
+      <h3 className='SubsectionHeading--indented'>Latest additions:</h3>
+      <FragmentList
+        fragments={data}
+        columns={{
+          Accession: 'accession',
+          Script: 'script',
+          Description: 'description'
+        }}
+      />
+    </section>
+  )
 }
 
-export default withData(
-  LatestTransliterations,
-  props => props.fragmentService.fetchLatestTransliterations()
+export default withData(LatestTransliterations, props =>
+  props.fragmentService.fetchLatestTransliterations()
 )

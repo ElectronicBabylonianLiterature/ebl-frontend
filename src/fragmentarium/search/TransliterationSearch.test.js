@@ -19,10 +19,15 @@ beforeEach(async () => {
     { matchingLines: fromJS([['line 1', 'line 2']]) },
     { matchingLines: fromJS([['line 3'], ['line 4']]) }
   ])
-  fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
+  fragmentService.searchTransliteration.mockReturnValueOnce(
+    Promise.resolve(fragments)
+  )
   element = render(
     <MemoryRouter>
-      <TransliterationSearch transliteration={transliteration} fragmentService={fragmentService} />
+      <TransliterationSearch
+        transliteration={transliteration}
+        fragmentService={fragmentService}
+      />
     </MemoryRouter>
   )
   await waitForElement(() => element.getByText(fragments[0].number))
@@ -34,7 +39,10 @@ it('Queries the API with given parameters', () => {
 
 it('Links results', () => {
   for (let fragment of fragments) {
-    expect(element.getByText(fragment.number)).toHaveAttribute('href', `/fragmentarium/${fragment.number}`)
+    expect(element.getByText(fragment.number)).toHaveAttribute(
+      'href',
+      `/fragmentarium/${fragment.number}`
+    )
   }
 })
 
@@ -45,7 +53,9 @@ it('Displays script', () => {
 })
 
 it('Displays matching lines', () => {
-  for (let line of Seq(fragments).map(fragment => fragment.matchingLines).flatten(false)) {
+  for (let line of Seq(fragments)
+    .map(fragment => fragment.matchingLines)
+    .flatten(false)) {
     expect(element.getByText(line)).not.toBeNull()
   }
 })

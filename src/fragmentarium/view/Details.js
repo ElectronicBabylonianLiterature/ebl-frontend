@@ -13,34 +13,33 @@ const museums = {
 
 class Details extends Component {
   get collection () {
-    return this.props.fragment.collection && `(${this.props.fragment.collection} Collection)`
+    return (
+      this.props.fragment.collection &&
+      `(${this.props.fragment.collection} Collection)`
+    )
   }
 
   get museum () {
     const museum = this.props.fragment.museum
     const museumUrl = museums[museum]
-    return (
-      <ExternalLink href={museumUrl}>
-        {museum}
-      </ExternalLink>
-    )
+    return <ExternalLink href={museumUrl}>{museum}</ExternalLink>
   }
 
   get joins () {
     return (
       <Fragment>
-        Joins: {this.props.fragment.joins.isEmpty()
-          ? '-'
-          : (
-            <ul className='Details-joins'>
-              {this.props.fragment.joins.map(join =>
-                <li className='Details-joins__join' key={join}>
-                  <FragmentLink number={join}>{join}</FragmentLink>
-                </li>
-              )}
-            </ul>
-          )
-        }
+        Joins:{' '}
+        {this.props.fragment.joins.isEmpty() ? (
+          '-'
+        ) : (
+          <ul className='Details-joins'>
+            {this.props.fragment.joins.map(join => (
+              <li className='Details-joins__join' key={join}>
+                <FragmentLink number={join}>{join}</FragmentLink>
+              </li>
+            ))}
+          </ul>
+        )}
       </Fragment>
     )
   }
@@ -50,7 +49,9 @@ class Details extends Component {
       this.props.fragment.measures.length,
       this.props.fragment.measures.width,
       this.props.fragment.measures.thickness
-    ]).compact().join(' × ')
+    ])
+      .compact()
+      .join(' × ')
 
     return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
   }
@@ -59,9 +60,12 @@ class Details extends Component {
     const cdliNumber = this.props.fragment.cdliNumber
     return (
       <Fragment>
-        CDLI: {cdliNumber
-          ? <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
-          : '-'}
+        CDLI:{' '}
+        {cdliNumber ? (
+          <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
+        ) : (
+          '-'
+        )}
       </Fragment>
     )
   }
@@ -72,9 +76,13 @@ class Details extends Component {
         <li className='Details__item'>{this.museum}</li>
         <li className='Details__item'>{this.collection}</li>
         <li className='Details__item'>{this.joins}</li>
-        <li className='Details__item Details-item--extra-margin'>{this.measurements}</li>
+        <li className='Details__item Details-item--extra-margin'>
+          {this.measurements}
+        </li>
         <li className='Details__item'>{this.cdliNumber}</li>
-        <li className='Details__item'>Accession: {this.props.fragment.accession || '-'}</li>
+        <li className='Details__item'>
+          Accession: {this.props.fragment.accession || '-'}
+        </li>
       </ul>
     )
   }

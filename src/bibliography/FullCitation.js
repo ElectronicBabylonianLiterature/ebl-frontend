@@ -9,12 +9,24 @@ export default function FullCitation ({ reference }) {
   const parser = new Parser()
   const citation = reference.document.toHtml()
   const parsed = parser.parse(citation)
-  return <div>
-    {reference.document.link &&
-      <ExternalLink className='FullCitation__link' href={reference.document.link} title='Open in a new window.'>
-        <i className='fas fa-external-link-alt' />
-      </ExternalLink>}
-    {parsed}
-    {reference.notes && <ReactMarkdown className='FullCitation__notes' source={`\\[${reference.notes}\\]`} />}
-  </div>
+  return (
+    <div>
+      {reference.document.link && (
+        <ExternalLink
+          className='FullCitation__link'
+          href={reference.document.link}
+          title='Open in a new window.'
+        >
+          <i className='fas fa-external-link-alt' />
+        </ExternalLink>
+      )}
+      {parsed}
+      {reference.notes && (
+        <ReactMarkdown
+          className='FullCitation__notes'
+          source={`\\[${reference.notes}\\]`}
+        />
+      )}
+    </div>
+  )
 }

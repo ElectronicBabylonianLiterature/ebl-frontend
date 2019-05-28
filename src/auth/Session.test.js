@@ -86,7 +86,9 @@ describe.each([
   beforeEach(() => advanceBy(-1))
 
   it('Method returns true if session has scope', () => {
-    const session = new Session('accessToken', 'idToken', now.getTime(), [scope])
+    const session = new Session('accessToken', 'idToken', now.getTime(), [
+      scope
+    ])
     expect(session[method]()).toBe(true)
   })
 

@@ -26,10 +26,13 @@ beforeEach(async () => {
   expectedReference = references.get(0).setDocument(searchEntry)
   searchBibliography = () => Promise.resolve([searchEntry])
   onChange = jest.fn()
-  element = render(<ReferencesForm
-    value={references}
-    onChange={onChange}
-    searchBibliography={searchBibliography} />)
+  element = render(
+    <ReferencesForm
+      value={references}
+      onChange={onChange}
+      searchBibliography={searchBibliography}
+    />
+  )
 })
 
 test('Add reference', async () => {

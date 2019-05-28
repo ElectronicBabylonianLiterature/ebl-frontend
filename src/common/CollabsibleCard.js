@@ -4,11 +4,16 @@ import _ from 'lodash'
 import { Card, Collapse } from 'react-bootstrap'
 
 function CollapseIndicator ({ open }) {
-  return <i data-testid='CollapseIndicator' className={classNames({
-    'fas': true,
-    'fa-angle-up': open,
-    'fa-angle-down': !open
-  })} />
+  return (
+    <i
+      data-testid='CollapseIndicator'
+      className={classNames({
+        fas: true,
+        'fa-angle-up': open,
+        'fa-angle-down': !open
+      })}
+    />
+  )
 }
 
 export class CollapsibleCard extends Component {
@@ -22,21 +27,24 @@ export class CollapsibleCard extends Component {
 
   render () {
     const toggleState = () => this.setState({ open: !this.state.open })
-    return <Card border='light'>
-      {this.props.label && <Card.Header>
-        <span className='List__toggle' onClick={toggleState}
-          aria-controls={this.collapseId}
-          aria-expanded={this.state.open}>
-          {this.props.label}
-          {' '}
-          <CollapseIndicator open={this.state.open} />
-        </span>
-      </Card.Header>}
-      <Collapse in={this.state.open}>
-        <div id={this.collapseId}>
-          {this.props.children}
-        </div>
-      </Collapse>
-    </Card>
+    return (
+      <Card border='light'>
+        {this.props.label && (
+          <Card.Header>
+            <span
+              className='List__toggle'
+              onClick={toggleState}
+              aria-controls={this.collapseId}
+              aria-expanded={this.state.open}
+            >
+              {this.props.label} <CollapseIndicator open={this.state.open} />
+            </span>
+          </Card.Header>
+        )}
+        <Collapse in={this.state.open}>
+          <div id={this.collapseId}>{this.props.children}</div>
+        </Collapse>
+      </Card>
+    )
   }
 }

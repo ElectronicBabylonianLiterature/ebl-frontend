@@ -8,7 +8,13 @@ import User from './auth/User'
 import './Header.css'
 
 function NavItem (props) {
-  return <Nav.Item><LinkContainer to={props.href}><Nav.Link>{props.title}</Nav.Link></LinkContainer></Nav.Item>
+  return (
+    <Nav.Item>
+      <LinkContainer to={props.href}>
+        <Nav.Link>{props.title}</Nav.Link>
+      </LinkContainer>
+    </Nav.Item>
+  )
 }
 
 export default function Header ({ auth }) {
@@ -20,7 +26,13 @@ export default function Header ({ auth }) {
           <LinkContainer to='/' title='electronic Babylonian Literature (eBL)'>
             <Navbar.Brand>
               <h1 className='Header__title'>
-                <span className='Header__title-main'>electronic<br />Babylonian<br />Literature</span>
+                <span className='Header__title-main'>
+                  electronic
+                  <br />
+                  Babylonian
+                  <br />
+                  Literature
+                </span>
                 <small className='Header__title-abbreviation'>eBL</small>
               </h1>
             </Navbar.Brand>

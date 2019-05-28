@@ -10,6 +10,8 @@ it('List all references', async () => {
     UncuratedReference({ document: 'Title One', pages: List() }),
     UncuratedReference({ document: 'Title Two', pages: List.of(2, 3) })
   )
-  const { container } = render(<UncuratedReferencesList uncuratedReferences={references} />)
+  const { container } = render(
+    <UncuratedReferencesList uncuratedReferences={references} />
+  )
   expect(container).toHaveTextContent('Title OneTitle Two: 2, 3')
 })

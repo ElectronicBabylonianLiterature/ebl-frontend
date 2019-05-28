@@ -16,15 +16,16 @@ beforeEach(() => {
 })
 
 beforeEach(async () => {
-  value = [
-    [await factory.build('derived')],
-    [await factory.build('derived')]
-  ]
+  value = [[await factory.build('derived')], [await factory.build('derived')]]
   element = renderDerivedList()
 })
 
 it('Displays all forms', () => {
-  _(value).flatten().forEach(item => expect(element.getByValue(item.lemma.join(' '))).toBeVisible())
+  _(value)
+    .flatten()
+    .forEach(item =>
+      expect(element.getByValue(item.lemma.join(' '))).toBeVisible()
+    )
 })
 
 it('Displays label', () => {
@@ -53,5 +54,9 @@ it('Calls onChange with updated value on change', () => {
 })
 
 function renderDerivedList () {
-  return render(<DerivedList id='derived' value={value} onChange={onChange}>{label}</DerivedList>)
+  return render(
+    <DerivedList id='derived' value={value} onChange={onChange}>
+      {label}
+    </DerivedList>
+  )
 }

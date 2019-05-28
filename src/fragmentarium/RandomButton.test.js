@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { whenClicked, clickNth } from 'test-helpers/utils'
 import RandomButton from './RandomButton'
 
-const buttonText = 'I\'m feeling lucky'
+const buttonText = "I'm feeling lucky"
 const message = 'Error'
 const method = 'random'
 
@@ -22,11 +22,13 @@ beforeEach(() => {
   fragmentService = {
     random: jest.fn()
   }
-  element = render(<Router history={history}>
-    <RandomButton fragmentService={fragmentService} method={method}>
-      {buttonText}
-    </RandomButton>
-  </Router>)
+  element = render(
+    <Router history={history}>
+      <RandomButton fragmentService={fragmentService} method={method}>
+        {buttonText}
+      </RandomButton>
+    </Router>
+  )
 })
 
 describe('On successful request', () => {
@@ -46,7 +48,9 @@ describe('On successful request', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    fragmentService.random.mockReturnValueOnce(Promise.reject(new Error(message)))
+    fragmentService.random.mockReturnValueOnce(
+      Promise.reject(new Error(message))
+    )
     await clickNth(element, buttonText, 0)
     await waitForElement(() => element.getByText(message))
   })

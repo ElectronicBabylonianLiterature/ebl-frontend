@@ -2,7 +2,11 @@ import React from 'react'
 import { render, waitForElement } from 'react-testing-library'
 import { factory } from 'factory-girl'
 
-import { whenChangedByLabel, changeValueByLabel, clickNth } from 'test-helpers/utils'
+import {
+  whenChangedByLabel,
+  changeValueByLabel,
+  clickNth
+} from 'test-helpers/utils'
 import ReferenceForm from './ReferenceForm'
 
 let reference
@@ -13,11 +17,20 @@ let entry
 
 beforeEach(async () => {
   reference = await factory.build('reference')
-  entry = await factory.build('bibliographyEntry', { author: [{ family: 'Borger' }], issued: { 'date-parts': [[1957]] } })
+  entry = await factory.build('bibliographyEntry', {
+    author: [{ family: 'Borger' }],
+    issued: { 'date-parts': [[1957]] }
+  })
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([entry]))
-  element = render(<ReferenceForm value={reference} onChange={onChange} searchBibliography={searchBibliography} />)
+  element = render(
+    <ReferenceForm
+      value={reference}
+      onChange={onChange}
+      searchBibliography={searchBibliography}
+    />
+  )
 })
 
 test(`Changing document calls onChange with updated value`, async () => {
@@ -45,11 +58,15 @@ describe.each([
 })
 
 it('Displays Lines Cited', () => {
-  expect(element.getByLabelText('Lines Cited').value).toEqual(reference.linesCited.join(','))
+  expect(element.getByLabelText('Lines Cited').value).toEqual(
+    reference.linesCited.join(',')
+  )
 })
 
 it(`Calls onChange with updated Lines Cited`, async () => {
   whenChangedByLabel(element, 'Lines Cited', '3.1,2')
     .expect(onChange)
-    .toHaveBeenCalledWith(updatedItem => reference.setLinesCited(updatedItem.split(',')))
+    .toHaveBeenCalledWith(updatedItem =>
+      reference.setLinesCited(updatedItem.split(','))
+    )
 })

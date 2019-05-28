@@ -13,8 +13,12 @@ beforeEach(async () => {
     findImage: jest.fn()
   }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  fragmentService.findImage.mockReturnValueOnce(Promise.resolve(new Blob([''], { type: 'image/svg+xml' })))
-  element = render(<Image fragmentService={fragmentService} fileName={fileName} />)
+  fragmentService.findImage.mockReturnValueOnce(
+    Promise.resolve(new Blob([''], { type: 'image/svg+xml' }))
+  )
+  element = render(
+    <Image fragmentService={fragmentService} fileName={fileName} />
+  )
   await waitForElement(() => element.getByAltText(fileName))
 })
 
@@ -23,5 +27,8 @@ it('Queries the API with given parameters', () => {
 })
 
 it('Has the filename as alt text', () => {
-  expect(element.container.querySelector('img')).toHaveAttribute('alt', fileName)
+  expect(element.container.querySelector('img')).toHaveAttribute(
+    'alt',
+    fileName
+  )
 })

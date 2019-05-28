@@ -8,7 +8,9 @@ let entry
 let cite
 
 beforeEach(async () => {
-  cslData = await factory.build('cslData', { author: [{ family: 'Family', extra: 'Extra' }] })
+  cslData = await factory.build('cslData', {
+    author: [{ family: 'Family', extra: 'Extra' }]
+  })
   entry = new BibliographyEntry(cslData)
   cite = new Cite(cslData)
 })
@@ -23,12 +25,14 @@ test.each([
 )
 
 test('non-dropping particle', async () => {
-  cslData = await factory.build('cslData', { author: [
-    {
-      'non-dropping-particle': 'von',
-      'family': 'Soden'
-    }
-  ] })
+  cslData = await factory.build('cslData', {
+    author: [
+      {
+        'non-dropping-particle': 'von',
+        family: 'Soden'
+      }
+    ]
+  })
   entry = new BibliographyEntry(cslData)
   expect(entry.author).toEqual('von Soden')
 })
@@ -44,33 +48,39 @@ test('year', async () => {
 })
 
 test('year range', async () => {
-  cslData = await factory.build('cslData', { issued: {
-    'date-parts': [
-      [1800],
-      [2900]
-    ]
-  } })
+  cslData = await factory.build('cslData', {
+    issued: {
+      'date-parts': [[1800], [2900]]
+    }
+  })
   entry = new BibliographyEntry(cslData)
   expect(entry.year).toEqual('1800–2900')
 })
 
 test('toHtml', () => {
-  expect(entry.toHtml()).toEqual(cite.format('bibliography', {
-    format: 'html',
-    template: 'citation-apa',
-    lang: 'de-DE'
-  }))
+  expect(entry.toHtml()).toEqual(
+    cite.format('bibliography', {
+      format: 'html',
+      template: 'citation-apa',
+      lang: 'de-DE'
+    })
+  )
 })
 
 test('toBibtex', () => {
-  expect(entry.toBibtex()).toEqual(cite.get({
-    format: 'string',
-    type: 'string',
-    style: 'bibtex'
-  }))
+  expect(entry.toBibtex()).toEqual(
+    cite.get({
+      format: 'string',
+      type: 'string',
+      style: 'bibtex'
+    })
+  )
 })
 
 test('toJson', async () => {
-  const expectedCslData = await factory.build('cslData', { ...cslData, author: [{ family: 'Family' }] })
+  const expectedCslData = await factory.build('cslData', {
+    ...cslData,
+    author: [{ family: 'Family' }]
+  })
   expect(entry.toJson()).toEqual(expectedCslData)
 })

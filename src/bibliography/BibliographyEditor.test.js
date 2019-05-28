@@ -78,13 +78,19 @@ describe('Creating', () => {
 })
 
 function expectTextContentToContainCslJson (container, entry) {
-  expect(container).toHaveTextContent(JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' '))
+  expect(container).toHaveTextContent(
+    JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' ')
+  )
 }
 
 function commonTests (create, waitFor) {
   test('Displays error message failed submit', async () => {
-    bibliographyService.update.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    bibliographyService.create.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
+    bibliographyService.update.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    )
+    bibliographyService.create.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    )
     const element = await renderWithRouter(true, create, waitFor)
 
     await submitForm(element, 'form')
@@ -112,17 +118,21 @@ function commonTests (create, waitFor) {
 async function renderWithRouter (isAllowedTo = true, create = false, waitFor) {
   const match = create
     ? matchPath('/bibliography', {
-      path: '/bibliography'
-    })
+        path: '/bibliography'
+      })
     : matchPath('/bibliography/id', {
-      path: '/bibliography/:id'
-    })
+        path: '/bibliography/:id'
+      })
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <BibliographyEditor match={match} bibliographyService={bibliographyService} create={create} />
+        <BibliographyEditor
+          match={match}
+          bibliographyService={bibliographyService}
+          create={create}
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )

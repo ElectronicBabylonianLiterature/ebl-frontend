@@ -14,9 +14,11 @@ const sections = {
 function SectionCrumb ({ section }) {
   const sectionLink = sections[section]
   const sectionItem = <Breadcrumb.Item>{section}</Breadcrumb.Item>
-  return sectionLink
-    ? <LinkContainer to={sectionLink}>{sectionItem}</LinkContainer>
-    : sectionItem
+  return sectionLink ? (
+    <LinkContainer to={sectionLink}>{sectionItem}</LinkContainer>
+  ) : (
+    sectionItem
+  )
 }
 
 export default function Breadcrumbs ({ crumbs }) {
@@ -24,7 +26,9 @@ export default function Breadcrumbs ({ crumbs }) {
   const last = _.last(crumbs)
   return (
     <Breadcrumb separator='/'>
-      {initial.map((section, index) => <SectionCrumb key={index} section={section} />)}
+      {initial.map((section, index) => (
+        <SectionCrumb key={index} section={section} />
+      ))}
       {last && <Breadcrumb.Item active>{last}</Breadcrumb.Item>}
     </Breadcrumb>
   )

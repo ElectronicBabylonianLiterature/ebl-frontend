@@ -15,8 +15,8 @@ let token
 
 beforeEach(async () => {
   searchWord = await factory.build('word', {
-    '_id': 'waklu I',
-    'meaning': 'a very very long complicated meaning of a word'
+    _id: 'waklu I',
+    meaning: 'a very very long complicated meaning of a word'
   })
   onChange = jest.fn()
   fragmentService = {
@@ -31,19 +31,20 @@ describe('Single lemma', () => {
   beforeEach(async () => {
     word = await factory.build('word')
     token = {
-      'type': 'Word',
-      'value': 'kur',
-      'uniqueLemma': [new Lemma(word)],
-      'language': 'AKKADIAN',
-      'normalized': false,
-      'lemmatizable': true
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [new Lemma(word)],
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
     }
     element = render(
       <LemmatizationForm
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
-      />)
+      />
+    )
   })
 
   it('Complex is not checked', async () => {
@@ -52,7 +53,9 @@ describe('Single lemma', () => {
 
   it('Calls onChange when selecting word', async () => {
     await lemmatize('Lemma')
-    await wait(() => expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)]))
+    await wait(() =>
+      expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)])
+    )
   })
 
   commonTests('Lemma')
@@ -64,19 +67,20 @@ describe('Complex lemma', () => {
   beforeEach(async () => {
     words = await factory.buildMany('word', 2)
     token = {
-      'type': 'Word',
-      'value': 'kur',
-      'uniqueLemma': words.map(word => new Lemma(word)),
-      'language': 'AKKADIAN',
-      'normalized': false,
-      'lemmatizable': true
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: words.map(word => new Lemma(word)),
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true
     }
     element = render(
       <LemmatizationForm
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
-      />)
+      />
+    )
   })
 
   it('Complex is checked', async () => {
@@ -85,10 +89,12 @@ describe('Complex lemma', () => {
 
   it('Calls onChange when selecting word', async () => {
     await lemmatize('Lemmata')
-    await wait(() => expect(onChange).toHaveBeenCalledWith([
-      ...token.uniqueLemma,
-      new Lemma(searchWord)
-    ]))
+    await wait(() =>
+      expect(onChange).toHaveBeenCalledWith([
+        ...token.uniqueLemma,
+        new Lemma(searchWord)
+      ])
+    )
   })
 
   commonTests('Lemmata')
@@ -100,7 +106,9 @@ function commonTests (lemmaLabel) {
   })
 
   it('Displays the word label', () => {
-    expect(element.container).toHaveTextContent(token.uniqueLemma.map(lemma => lemma.label).join(''))
+    expect(element.container).toHaveTextContent(
+      token.uniqueLemma.map(lemma => lemma.label).join('')
+    )
   })
 }
 

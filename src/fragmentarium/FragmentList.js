@@ -9,20 +9,33 @@ function FragmentList ({ fragments, columns }) {
       <thead>
         <tr>
           <th>Number</th>
-          {_.keys(columns).map((heading, index) => <th key={index}>{heading}</th>)}
+          {_.keys(columns).map((heading, index) => (
+            <th key={index}>{heading}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {fragments.map(fragment =>
+        {fragments.map(fragment => (
           <tr key={fragment.number}>
-            <td><FragmentLink number={fragment.number}>{fragment.number}</FragmentLink></td>
-            {_.values(columns).map((property, index) => <td key={index} >{_.isFunction(property)
-              ? property(fragment)
-              : fragment[property]
-            }</td>)}
+            <td>
+              <FragmentLink number={fragment.number}>
+                {fragment.number}
+              </FragmentLink>
+            </td>
+            {_.values(columns).map((property, index) => (
+              <td key={index}>
+                {_.isFunction(property)
+                  ? property(fragment)
+                  : fragment[property]}
+              </td>
+            ))}
+          </tr>
+        ))}
+        {_.isEmpty(fragments) && (
+          <tr>
+            <td colSpan={4}>No fragments found.</td>
           </tr>
         )}
-        {_.isEmpty(fragments) && <tr><td colSpan={4}>No fragments found.</td></tr>}
       </tbody>
     </Table>
   )

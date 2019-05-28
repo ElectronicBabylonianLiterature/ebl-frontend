@@ -21,12 +21,13 @@ export default function TemplateHelp () {
       </p>
       <pre>{obverse}</pre>
       <p>
-        If two numbers separated by a comma are given, then two lists are created,
-        the first preceded by <code>@obverse</code> and the second by <code>@reverse</code>.
+        If two numbers separated by a comma are given, then two lists are
+        created, the first preceded by <code>@obverse</code> and the second by{' '}
+        <code>@reverse</code>.
       </p>
       <p>
-        If the numbers of the field contain a suffix, then the suffix is added to each number of the list.
-        Thus, <code>1', 2</code> results in:
+        If the numbers of the field contain a suffix, then the suffix is added
+        to each number of the list. Thus, <code>1', 2</code> results in:
       </p>
       <pre>{obverseReverseAndsuffix}</pre>
     </Popover>

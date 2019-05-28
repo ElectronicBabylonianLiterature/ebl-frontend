@@ -27,13 +27,19 @@ test('Initialization', () => {
   const environment = 'test'
   Sentry.init.mockImplementationOnce(_.noop)
   SentryErrorReporter.init(dsn, environment)
-  expect(Sentry.init).toHaveBeenCalledWith({ dsn: dsn, environment: environment })
+  expect(Sentry.init).toHaveBeenCalledWith({
+    dsn: dsn,
+    environment: environment
+  })
 })
 
 test('Error reporting', () => {
   const info = { componentStack: 'Error happened!' }
   sentryErrorReporter.captureException(error, info)
-  expect(scope.setExtra).toHaveBeenCalledWith('componentStack', 'Error happened!')
+  expect(scope.setExtra).toHaveBeenCalledWith(
+    'componentStack',
+    'Error happened!'
+  )
   expect(Sentry.captureException).toHaveBeenCalledWith(error)
 })
 
@@ -54,7 +60,11 @@ test('Capturing user', () => {
   const username = 'test@example.com'
   const eblName = 'Test'
   sentryErrorReporter.setUser(sub, username, eblName)
-  expect(scope.setUser).toHaveBeenCalledWith({ id: sub, username: username, eblName: eblName })
+  expect(scope.setUser).toHaveBeenCalledWith({
+    id: sub,
+    username: username,
+    eblName: eblName
+  })
 })
 
 test('Clear scope', () => {

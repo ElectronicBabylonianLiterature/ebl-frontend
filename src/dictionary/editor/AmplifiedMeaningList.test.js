@@ -26,10 +26,7 @@ describe('Entries', () => {
   it('New entry has entry fields', async () => {
     await whenClicked(element, `Add ${noun}`)
       .expect(onChange)
-      .toHaveBeenCalledWith([
-        ...value,
-        { meaning: '', vowels: [] }
-      ])
+      .toHaveBeenCalledWith([...value, { meaning: '', vowels: [] }])
   })
 
   commonTests()
@@ -49,9 +46,10 @@ describe('Conjugations/Functions', () => {
   })
 
   it('Displays all entries', () => {
-    _(value).flatMap('entries').map('meaning').forEach(entry =>
-      expect(element.getByValue(entry)).toBeVisible()
-    )
+    _(value)
+      .flatMap('entries')
+      .map('meaning')
+      .forEach(entry => expect(element.getByValue(entry)).toBeVisible())
   })
 
   it('New entry has top level fields', async () => {
@@ -92,7 +90,13 @@ function commonTests () {
 
 function renderAmplifiedMeaningList (entry) {
   return render(
-    <AmplifiedMeaningList id='amplifiedMeanings' value={value} onChange={onChange} entry={entry}>
+    <AmplifiedMeaningList
+      id='amplifiedMeanings'
+      value={value}
+      onChange={onChange}
+      entry={entry}
+    >
       {label}
-    </AmplifiedMeaningList>)
+    </AmplifiedMeaningList>
+  )
 }

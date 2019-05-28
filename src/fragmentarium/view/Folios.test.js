@@ -19,14 +19,16 @@ beforeEach(async () => {
   }
   folioPager = await factory.build('folioPager')
   URL.createObjectURL.mockReturnValue('url')
-  fragmentService.findFolio.mockReturnValue(Promise.resolve(new Blob([''], { type: 'image/jpeg' })))
+  fragmentService.findFolio.mockReturnValue(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 })
 
 describe('Folios', () => {
   beforeEach(async () => {
     folios = List(await factory.buildMany('folio', 3))
-    fragment = await factory.build('fragment', { 'folios': folios })
+    fragment = await factory.build('fragment', { folios: folios })
     container = renderFolios().container
   })
 
@@ -38,7 +40,9 @@ describe('Folios', () => {
 
   it(`Renders folio numbers entries`, () => {
     for (let folio of folios) {
-      expect(container).toHaveTextContent(`${folio.humanizedName} Folio ${folio.number}`)
+      expect(container).toHaveTextContent(
+        `${folio.humanizedName} Folio ${folio.number}`
+      )
     }
   })
 
@@ -48,24 +52,33 @@ describe('Folios', () => {
 })
 
 it('Displays selected folio', async () => {
-  folios = List(await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }]))
-  fragment = await factory.build('fragment', { 'folios': folios })
+  folios = List(
+    await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  )
+  fragment = await factory.build('fragment', { folios: folios })
   const selected = folios.first()
   const element = renderFolios(selected)
   await waitForElement(() => element.getByText(/Browse/))
-  expect(element.getByText(`${selected.humanizedName} Folio ${selected.number}`)).toHaveAttribute('aria-selected', 'true')
+  expect(
+    element.getByText(`${selected.humanizedName} Folio ${selected.number}`)
+  ).toHaveAttribute('aria-selected', 'true')
 })
 
 it('Displays CDLI image if no folio specified', async () => {
-  folios = List(await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }]))
-  fragment = await factory.build('fragment', { 'folios': folios })
+  folios = List(
+    await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
+  )
+  fragment = await factory.build('fragment', { folios: folios })
   const element = renderFolios()
   await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
 })
 
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { 'folios': List(), 'cdliNumber': '' })
+    fragment = await factory.build('fragment', {
+      folios: List(),
+      cdliNumber: ''
+    })
     container = renderFolios().container
   })
 
@@ -75,7 +88,13 @@ describe('No folios or CDLI image', () => {
 })
 
 function renderFolios (activeFolio = null) {
-  return render(<MemoryRouter>
-    <Folios fragment={fragment} fragmentService={fragmentService} activeFolio={activeFolio} />
-  </MemoryRouter>)
+  return render(
+    <MemoryRouter>
+      <Folios
+        fragment={fragment}
+        fragmentService={fragmentService}
+        activeFolio={activeFolio}
+      />
+    </MemoryRouter>
+  )
 }

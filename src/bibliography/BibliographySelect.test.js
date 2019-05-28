@@ -18,14 +18,17 @@ beforeEach(async () => {
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
-  element = render(<>
-    <label id='label'>Entry</label>
-    <BibliographySelect
-      aria-labelledby='label'
-      searchBibliography={searchBibliography}
-      value={entry}
-      onChange={onChange} />
-  </>)
+  element = render(
+    <>
+      <label id='label'>Entry</label>
+      <BibliographySelect
+        aria-labelledby='label'
+        searchBibliography={searchBibliography}
+        value={entry}
+        onChange={onChange}
+      />
+    </>
+  )
 })
 
 it('Displays the entry label', () => {

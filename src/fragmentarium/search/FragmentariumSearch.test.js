@@ -51,7 +51,9 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2)
-      fragmentService.searchNumber.mockReturnValueOnce(Promise.resolve(fragments))
+      fragmentService.searchNumber.mockReturnValueOnce(
+        Promise.resolve(fragments)
+      )
       renderFragmentariumSearch(`/fragmentarium/search?number=${number}`)
     })
 
@@ -74,8 +76,12 @@ describe('Search', () => {
         { matchingLines: [['line 1', 'line 2']] },
         { matchingLines: [['line 3'], ['line 4']] }
       ])
-      fragmentService.searchTransliteration.mockReturnValueOnce(Promise.resolve(fragments))
-      renderFragmentariumSearch(`/fragmentarium/search?transliteration=${transliteration}`)
+      fragmentService.searchTransliteration.mockReturnValueOnce(
+        Promise.resolve(fragments)
+      )
+      renderFragmentariumSearch(
+        `/fragmentarium/search?transliteration=${transliteration}`
+      )
     })
 
     it('Displays result on successfull query', async () => {
@@ -84,7 +90,9 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Transliteration').value).toEqual(replacedTransliteration)
+      expect(element.getByLabelText('Transliteration').value).toEqual(
+        replacedTransliteration
+      )
     })
   })
 })

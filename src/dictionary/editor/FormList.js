@@ -26,13 +26,15 @@ class FormList extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
           noun='form'
-          default={this.defaultValue}>
-          {this.props.value.map((form, index) =>
+          default={this.defaultValue}
+        >
+          {this.props.value.map((form, index) => (
             <FormInput
               key={index}
               id={`${this.props.id}-${index}`}
-              value={form} />
-          )}
+              value={form}
+            />
+          ))}
         </List>
       </FormGroup>
     )

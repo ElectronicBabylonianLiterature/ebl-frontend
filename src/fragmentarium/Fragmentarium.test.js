@@ -47,7 +47,9 @@ describe('Statistics', () => {
   })
 
   it('Shows the number of transliterated tablets', async () => {
-    expect(container).toHaveTextContent(statistics.transliteratedFragments.toLocaleString())
+    expect(container).toHaveTextContent(
+      statistics.transliteratedFragments.toLocaleString()
+    )
   })
 
   it('Shows the number of transliterated lines', async () => {
@@ -61,7 +63,9 @@ describe('Latest additions', () => {
   beforeEach(async () => {
     latest = await factory.build('fragment')
     session.isAllowedToReadFragments.mockReturnValue(true)
-    fragmentService.fetchLatestTransliterations.mockReturnValueOnce(Promise.resolve([latest]))
+    fragmentService.fetchLatestTransliterations.mockReturnValueOnce(
+      Promise.resolve([latest])
+    )
     await renderFragmentarium()
   })
 

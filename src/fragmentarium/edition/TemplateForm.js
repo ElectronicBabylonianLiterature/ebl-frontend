@@ -30,10 +30,7 @@ class TemplateForm extends Component {
 
   render () {
     return (
-      <Form
-        inline
-        noValidate
-        onSubmit={this.submit}>
+      <Form inline noValidate onSubmit={this.submit}>
         <Form.Group controlId='template'>
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />
@@ -46,7 +43,8 @@ class TemplateForm extends Component {
             onChange={this.onChange}
             aria-label='Template'
             isValid={this.state.isValid}
-            isInvalid={!(this.state.isValid || this.state.template.isEmpty)} />
+            isInvalid={!(this.state.isValid || this.state.template.isEmpty)}
+          />
         </Form.Group>
       </Form>
     )

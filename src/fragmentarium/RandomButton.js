@@ -17,7 +17,9 @@ class RandomButton extends Component {
     this.fetchPromise.cancel()
     this.setState({ error: null, loading: true })
     this.fetchPromise = this.props.fragmentService[this.props.method]()
-      .then(fragment => this.props.history.push(createFragmentUrl(fragment.number)))
+      .then(fragment =>
+        this.props.history.push(createFragmentUrl(fragment.number))
+      )
       .catch(error => this.setState({ error: error, loading: false }))
   }
 
@@ -27,10 +29,7 @@ class RandomButton extends Component {
     return (
       <Fragment>
         <Button variant='primary' onClick={this.click}>
-          {this.state.loading
-            ? <Spinner />
-            : this.props.children
-          }
+          {this.state.loading ? <Spinner /> : this.props.children}
         </Button>
         <ErrorAlert error={this.state.error} />
       </Fragment>

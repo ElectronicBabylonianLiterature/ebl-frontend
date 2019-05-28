@@ -4,7 +4,13 @@ import BibliographyEntry from 'bibliography/BibliographyEntry'
 
 class ReferenceAdapter extends DefaultAdapter {
   build (Model, props) {
-    const model = new Model(props.type, props.pages, props.notes, props.linesCited, props.document)
+    const model = new Model(
+      props.type,
+      props.pages,
+      props.notes,
+      props.linesCited,
+      props.document
+    )
     return model
   }
   async save (model, Model) {
@@ -37,13 +43,7 @@ factory.define('cslData', Object, {
   issued: () => {
     const date = factory.chance('date')()
     return {
-      'date-parts': [
-        [
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate()
-        ]
-      ]
+      'date-parts': [[date.getFullYear(), date.getMonth(), date.getDate()]]
     }
   },
   volume: () => String(integer(1, 99)()),
@@ -54,15 +54,19 @@ factory.define('cslData', Object, {
   URL: factory.chance('url')
 })
 
-factory.define('bibliographyEntry', BibliographyEntry, async buildOptions =>
-  buildOptions.cslData || factory.build('cslData'))
+factory.define(
+  'bibliographyEntry',
+  BibliographyEntry,
+  async buildOptions => buildOptions.cslData || factory.build('cslData')
+)
 
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
   type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
-  pages: async () => `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
+  pages: async () =>
+    `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
   notes: factory.chance('sentence'),
-  linesCited: factory.chance('pickset', ['1.', '2.', '3\'.', '4\'.2.'], 2)
+  linesCited: factory.chance('pickset', ['1.', '2.', "3'.", "4'.2."], 2)
 })
 
 factory.define('reference', Reference, async buildOptions => ({

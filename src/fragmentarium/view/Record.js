@@ -13,25 +13,34 @@ function Year ({ date }) {
 }
 
 function BasicEntry ({ entry }) {
-  return (<Fragment>
-    {entry.user} ({entry.type}, <Date
-      date={entry.moment}
-      humanFormat='D/M/YYYY'
-      machineFormat='YYYY-MM-DD'
-    />)
-  </Fragment>)
+  return (
+    <Fragment>
+      {entry.user} ({entry.type},{' '}
+      <Date
+        date={entry.moment}
+        humanFormat='D/M/YYYY'
+        machineFormat='YYYY-MM-DD'
+      />
+      )
+    </Fragment>
+  )
 }
 
 function HistoricalTransliteration ({ entry }) {
-  return (<Fragment>
-    {entry.user} (Transliteration, <Year date={entry.moment.start} />–<Year date={entry.moment.end} />)
-  </Fragment>)
+  return (
+    <Fragment>
+      {entry.user} (Transliteration, <Year date={entry.moment.start} />–
+      <Year date={entry.moment.end} />)
+    </Fragment>
+  )
 }
 
 function Entry ({ entry }) {
-  return entry.isHistorical
-    ? <HistoricalTransliteration entry={entry} />
-    : <BasicEntry entry={entry} />
+  return entry.isHistorical ? (
+    <HistoricalTransliteration entry={entry} />
+  ) : (
+    <BasicEntry entry={entry} />
+  )
 }
 
 class Record extends Component {
@@ -44,12 +53,14 @@ class Record extends Component {
       <section>
         <h3>Record</h3>
         <ol className='Record'>
-          {this.record.map((entry, index) =>
+          {this.record.map((entry, index) => (
             <li className='Record__entry' key={index}>
               <Entry entry={entry} />
             </li>
+          ))}
+          {this.record.isEmpty() && (
+            <li className='Record__entry'>No record</li>
           )}
-          {this.record.isEmpty() && <li className='Record__entry'>No record</li>}
         </ol>
       </section>
     )

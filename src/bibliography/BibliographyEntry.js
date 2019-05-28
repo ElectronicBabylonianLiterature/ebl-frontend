@@ -16,17 +16,13 @@ export default class BibliographyEntry {
   get author () {
     const particle = _.get(this.#cslData, 'author.0.non-dropping-particle', '')
     const family = _.get(this.#cslData, 'author.0.family', '')
-    return particle
-      ? `${particle} ${family}`
-      : family
+    return particle ? `${particle} ${family}` : family
   }
 
   get year () {
     const start = _.get(this.#cslData, 'issued.date-parts.0.0', '')
     const end = _.get(this.#cslData, 'issued.date-parts.1.0', '')
-    return end
-      ? `${start}–${end}`
-      : String(start)
+    return end ? `${start}–${end}` : String(start)
   }
 
   get title () {
@@ -36,9 +32,7 @@ export default class BibliographyEntry {
   get link () {
     const url = this.#cslData.URL
     const doi = this.#cslData.DOI
-    return url || (doi
-      ? `https://doi.org/${doi}`
-      : '')
+    return url || (doi ? `https://doi.org/${doi}` : '')
   }
 
   toHtml () {
@@ -72,33 +66,31 @@ export default class BibliographyEntry {
 
     return _.has(this.#cslData, 'author')
       ? {
-        ..._.cloneDeep(this.#cslData),
-        author: this.#cslData.author.map(author => _.pick(author, authorProperties))
-      }
+          ..._.cloneDeep(this.#cslData),
+          author: this.#cslData.author.map(author =>
+            _.pick(author, authorProperties)
+          )
+        }
       : _.cloneDeep(this.#cslData)
   }
 }
 
 export const template = new BibliographyEntry({
-  'id': '<id>',
-  'title': '<title>',
-  'type': '<type>',
-  'DOI': '<doi>',
-  'issued': {
-    'date-parts': [
-      [
-        '<year>'
-      ]
-    ]
+  id: '<id>',
+  title: '<title>',
+  type: '<type>',
+  DOI: '<doi>',
+  issued: {
+    'date-parts': [['<year>']]
   },
-  'volume': '<volume>',
-  'page': '<page(s)>',
-  'issue': '<issue>',
+  volume: '<volume>',
+  page: '<page(s)>',
+  issue: '<issue>',
   'container-title': '<journal>',
-  'author': [
+  author: [
     {
-      'given': '<given name>',
-      'family': '<family name>'
+      given: '<given name>',
+      family: '<family name>'
     }
   ]
 })

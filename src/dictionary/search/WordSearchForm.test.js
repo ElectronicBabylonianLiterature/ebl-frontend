@@ -9,7 +9,11 @@ import WordSearchForm from './WordSearchForm'
 it('Adds lemma to query string on submit', async () => {
   const history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const element = render(<Router history={history}><WordSearchForm /></Router>)
+  const element = render(
+    <Router history={history}>
+      <WordSearchForm />
+    </Router>
+  )
 
   changeValueByLabel(element, 'Query', 'lemma')
   await submitForm(element, 'form')

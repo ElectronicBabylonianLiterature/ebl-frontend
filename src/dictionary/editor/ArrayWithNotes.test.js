@@ -16,7 +16,7 @@ beforeEach(() => {
   onChange = jest.fn()
   value = {
     [property]: ['LOG1', 'LOG2'],
-    'notes': ['note1']
+    notes: ['note1']
   }
   element = renderArrayWithNotes()
 })
@@ -52,11 +52,14 @@ it('Calls onChange with updated notes on change', async () => {
 })
 
 function renderArrayWithNotes () {
-  return render(<ArrayWithNotes
-    id='arrayWithNotes'
-    property={property}
-    noun={noun}
-    separator={separator}
-    value={value}
-    onChange={onChange} />)
+  return render(
+    <ArrayWithNotes
+      id='arrayWithNotes'
+      property={property}
+      noun={noun}
+      separator={separator}
+      value={value}
+      onChange={onChange}
+    />
+  )
 }

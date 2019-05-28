@@ -90,5 +90,7 @@ describe('Value does not have attested property', () => {
 })
 
 function renderLemmaInput () {
-  return render(<LemmaInput id='lemma-input' value={value} onChange={onChange} />)
+  return render(
+    <LemmaInput id='lemma-input' value={value} onChange={onChange} />
+  )
 }

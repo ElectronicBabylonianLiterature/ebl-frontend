@@ -11,28 +11,42 @@ import SessionContext from 'auth/SessionContext'
 import './Bibliography.css'
 
 function CreateButton ({ session }) {
-  return <LinkContainer to='/bibliography_new'>
-    <Button variant='outline-primary' disabled={!session.isAllowedToWriteBibliography()}>
-      <i className='fas fa-plus-circle' /> Create
-    </Button>
-  </LinkContainer>
+  return (
+    <LinkContainer to='/bibliography_new'>
+      <Button
+        variant='outline-primary'
+        disabled={!session.isAllowedToWriteBibliography()}
+      >
+        <i className='fas fa-plus-circle' /> Create
+      </Button>
+    </LinkContainer>
+  )
 }
 
 export default function Bibliography ({ bibliographyService, location }) {
   const query = queryString.parse(location.search).query
   return (
     <SessionContext.Consumer>
-      {session =>
-        <AppContent crumbs={['Bibliography']} actions={<CreateButton session={session} />}>
-          {session.isAllowedToReadBibliography()
-            ? <>
-              <div className='Bibliography__search'><BibliographySearchForm query={query} /></div>
-              <BibliographySearch query={query} bibliographyService={bibliographyService} />
+      {session => (
+        <AppContent
+          crumbs={['Bibliography']}
+          actions={<CreateButton session={session} />}
+        >
+          {session.isAllowedToReadBibliography() ? (
+            <>
+              <div className='Bibliography__search'>
+                <BibliographySearchForm query={query} />
+              </div>
+              <BibliographySearch
+                query={query}
+                bibliographyService={bibliographyService}
+              />
             </>
-            : <p>Please log in to browse the Bibliography.</p>
-          }
+          ) : (
+            <p>Please log in to browse the Bibliography.</p>
+          )}
         </AppContent>
-      }
+      )}
     </SessionContext.Consumer>
   )
 }

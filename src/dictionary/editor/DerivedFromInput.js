@@ -11,10 +11,22 @@ function DerivedFromInput ({ id, value, onChange }) {
         {value ? (
           <>
             <FormInput id={id} value={value} onChange={onChange} />
-            <Button onClick={() => onChange(null)} size='sm' variant='outline-secondary'>Delete derived from</Button>
+            <Button
+              onClick={() => onChange(null)}
+              size='sm'
+              variant='outline-secondary'
+            >
+              Delete derived from
+            </Button>
           </>
         ) : (
-          <Button onClick={() => onChange({ lemma: [], homonym: '', notes: [] })} size='sm' variant='outline-secondary'>Add derived from</Button>
+          <Button
+            onClick={() => onChange({ lemma: [], homonym: '', notes: [] })}
+            size='sm'
+            variant='outline-secondary'
+          >
+            Add derived from
+          </Button>
         )}
       </Card.Body>
     </Card>

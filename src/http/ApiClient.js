@@ -6,9 +6,7 @@ function apiUrl (path) {
 }
 
 function deserializeJson (response) {
-  return [201, 204].includes(response.status)
-    ? null
-    : response.json()
+  return [201, 204].includes(response.status) ? null : response.json()
 }
 
 function createOptions (body, method) {
@@ -28,13 +26,14 @@ export class ApiError extends Error {
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, this.constructor)
     } else {
-      this.stack = (new Error(message)).stack
+      this.stack = new Error(message).stack
     }
   }
 
   static async fromResponse (response) {
-    return response.json()
-      .then((body) => new ApiError(body.description || response.statusText, body))
+    return response
+      .json()
+      .then(body => new ApiError(body.description || response.statusText, body))
       .catch(() => new ApiError(response.statusText, {}))
   }
 }
@@ -47,7 +46,7 @@ export default class ApiClient {
 
   createHeaders (authenticate, headers) {
     const defaultHeaders = authenticate
-      ? { 'Authorization': `Bearer ${this.auth.getAccessToken()}` }
+      ? { Authorization: `Bearer ${this.auth.getAccessToken()}` }
       : {}
     return new Headers({
       ...defaultHeaders,
@@ -63,16 +62,20 @@ export default class ApiClient {
         ...options,
         headers: headers,
         signal: abortController.signal
-      }).then(async response => {
-        if (response.ok) {
-          resolve(response)
-        } else {
-          return ApiError.fromResponse(response).then(error => { throw error })
-        }
-      }).catch(error => {
-        this.errorReporter.captureException(error)
-        reject(error)
       })
+        .then(async response => {
+          if (response.ok) {
+            resolve(response)
+          } else {
+            return ApiError.fromResponse(response).then(error => {
+              throw error
+            })
+          }
+        })
+        .catch(error => {
+          this.errorReporter.captureException(error)
+          reject(error)
+        })
 
       onCancel(function () {
         abortController.abort()
@@ -81,20 +84,26 @@ export default class ApiClient {
   }
 
   fetchJson (path, authenticate) {
-    return this.cancellableFetch(path, authenticate, {})
-      .then(response => response.json())
+    return this.cancellableFetch(path, authenticate, {}).then(response =>
+      response.json()
+    )
   }
 
   fetchBlob (path, authenticate) {
-    return this.cancellableFetch(path, authenticate, {})
-      .then(response => response.blob())
+    return this.cancellableFetch(path, authenticate, {}).then(response =>
+      response.blob()
+    )
   }
 
   postJson (path, body) {
-    return this.cancellableFetch(path, true, createOptions(body, 'POST')).then(deserializeJson)
+    return this.cancellableFetch(path, true, createOptions(body, 'POST')).then(
+      deserializeJson
+    )
   }
 
   putJson (path, body) {
-    return this.cancellableFetch(path, true, createOptions(body, 'PUT')).then(deserializeJson)
+    return this.cancellableFetch(path, true, createOptions(body, 'PUT')).then(
+      deserializeJson
+    )
   }
 }
