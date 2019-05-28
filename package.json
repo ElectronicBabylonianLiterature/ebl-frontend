@@ -10,7 +10,8 @@
         "prettier-standard",
         "standard --fix",
         "git add"
-      ]
+      ],
+      "ignore": ["**/__snapshots__/*"]
     }
   },
   "scripts": {
