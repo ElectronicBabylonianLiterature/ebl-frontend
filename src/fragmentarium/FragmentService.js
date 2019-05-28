@@ -110,14 +110,14 @@ class FragmentService {
             tokens.map(token =>
               token.get('lemmatizable', false)
                 ? new LemmatizationToken(
-                    token.get('value'),
-                    true,
-                    token
-                      .get('uniqueLemma', [])
-                      .map(id => lemmas[id])
-                      .toJS(),
-                    suggestions[token.get('value')]
-                  )
+                  token.get('value'),
+                  true,
+                  token
+                    .get('uniqueLemma', [])
+                    .map(id => lemmas[id])
+                    .toJS(),
+                  suggestions[token.get('value')]
+                )
                 : new LemmatizationToken(token.get('value'), false)
             )
           )

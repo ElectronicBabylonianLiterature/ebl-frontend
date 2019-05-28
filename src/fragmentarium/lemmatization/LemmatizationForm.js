@@ -40,8 +40,8 @@ class LemmatizationForm extends Component {
       _.isNil(selectedOption)
         ? []
         : _.isArray(selectedOption)
-        ? selectedOption
-        : [selectedOption]
+          ? selectedOption
+          : [selectedOption]
     )
   }
 
@@ -57,14 +57,14 @@ class LemmatizationForm extends Component {
   Select = ({ label }) => {
     const defaultOptions = this.state.isComplex
       ? _(this.props.token.suggestions)
-          .flatMap()
-          .uniqBy('value')
-          .value()
+        .flatMap()
+        .uniqBy('value')
+        .value()
       : _.isArray(this.props.token.suggestions)
-      ? this.props.token.suggestions
+        ? this.props.token.suggestions
           .filter(suggestion => suggestion.length === 1)
           .map(_.head)
-      : []
+        : []
 
     return (
       <AsyncSelect

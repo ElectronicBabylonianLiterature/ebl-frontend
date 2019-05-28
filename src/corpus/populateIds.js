@@ -9,8 +9,8 @@ function setIds (manuscripts, ids) {
   function setId (manuscript, manuscripts) {
     return _.isNil(manuscript.id)
       ? Seq.Indexed.of(manuscript.set('id', ids.first())).concat(
-          setIds(manuscripts, ids.rest())
-        )
+        setIds(manuscripts, ids.rest())
+      )
       : Seq.Indexed.of(manuscript).concat(setIds(manuscripts, ids))
   }
 

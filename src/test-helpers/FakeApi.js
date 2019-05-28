@@ -27,12 +27,12 @@ export default class FakeApi {
       return expectation
         ? Promise.resolve(expectation.response)
         : Promise.reject(
-            new Error(
-              `Unexpected ${
-                authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchJson: ${path}`
-            )
+          new Error(
+            `Unexpected ${
+              authenticate ? 'authenticated' : 'not-authenticated'
+            } fetchJson: ${path}`
           )
+        )
     }),
 
     postJson: jest.fn().mockImplementation(path => {
@@ -55,12 +55,12 @@ export default class FakeApi {
       return expectation
         ? Promise.resolve(expectation.response)
         : Promise.reject(
-            new Error(
-              `Unexpected ${
-                authenticate ? 'authenticated' : 'not-authenticated'
-              } fetchBlob: ${path}`
-            )
+          new Error(
+            `Unexpected ${
+              authenticate ? 'authenticated' : 'not-authenticated'
+            } fetchBlob: ${path}`
           )
+        )
     })
   }
 

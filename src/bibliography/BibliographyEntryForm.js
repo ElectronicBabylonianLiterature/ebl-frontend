@@ -16,19 +16,19 @@ export default class BibliographyEntryForm extends Component {
     super(props)
     this.state = props.value
       ? {
-          citation: props.value.toHtml(),
-          cslData: [props.value.toJson()],
-          value: JSON.stringify(props.value.toJson(), null, 2),
-          loading: false,
-          isInvalid: false
-        }
+        citation: props.value.toHtml(),
+        cslData: [props.value.toJson()],
+        value: JSON.stringify(props.value.toJson(), null, 2),
+        loading: false,
+        isInvalid: false
+      }
       : {
-          citation: '',
-          cslData: null,
-          value: '',
-          loading: false,
-          isInvalid: false
-        }
+        citation: '',
+        cslData: null,
+        value: '',
+        loading: false,
+        isInvalid: false
+      }
     this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, {
       leading: false,

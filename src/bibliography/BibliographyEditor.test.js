@@ -118,11 +118,11 @@ function commonTests (create, waitFor) {
 async function renderWithRouter (isAllowedTo = true, create = false, waitFor) {
   const match = create
     ? matchPath('/bibliography', {
-        path: '/bibliography'
-      })
+      path: '/bibliography'
+    })
     : matchPath('/bibliography/id', {
-        path: '/bibliography/:id'
-      })
+      path: '/bibliography/:id'
+    })
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const element = render(

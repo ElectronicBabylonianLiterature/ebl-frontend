@@ -26,13 +26,13 @@ class Lemma extends Component {
       <Fragment>
         {this.props.value._id
           ? React.createElement(
-              container,
-              {},
-              <Link to={`/dictionary/${this.props.value._id}`}>
-                {attested}
-                {lemma}
-              </Link>
-            )
+            container,
+            {},
+            <Link to={`/dictionary/${this.props.value._id}`}>
+              {attested}
+              {lemma}
+            </Link>
+          )
           : React.createElement(container, {}, `${attested}${lemma}`)}
         {this.props.value.homonym && ` ${this.props.value.homonym}`}
       </Fragment>

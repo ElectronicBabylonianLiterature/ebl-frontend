@@ -66,11 +66,11 @@ export default class BibliographyEntry {
 
     return _.has(this.#cslData, 'author')
       ? {
-          ..._.cloneDeep(this.#cslData),
-          author: this.#cslData.author.map(author =>
-            _.pick(author, authorProperties)
-          )
-        }
+        ..._.cloneDeep(this.#cslData),
+        author: this.#cslData.author.map(author =>
+          _.pick(author, authorProperties)
+        )
+      }
       : _.cloneDeep(this.#cslData)
   }
 }

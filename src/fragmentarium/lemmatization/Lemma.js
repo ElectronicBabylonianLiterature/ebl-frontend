@@ -4,11 +4,11 @@ function extractMeanings (object, levels) {
   return _.isEmpty(levels)
     ? [object.meaning]
     : [
-        object.meaning,
-        ...object[_.head(levels)].map(inner =>
-          extractMeanings(inner, _.tail(levels))
-        )
-      ]
+      object.meaning,
+      ...object[_.head(levels)].map(inner =>
+        extractMeanings(inner, _.tail(levels))
+      )
+    ]
 }
 
 function findMeanig (word) {

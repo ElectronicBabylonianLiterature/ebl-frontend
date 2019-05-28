@@ -23,9 +23,9 @@ export default function FragmentView ({ match, location, fragmentService }) {
   const activeFolio =
     folioName || folioNumber
       ? new Folio({
-          name: folioName,
-          number: folioNumber
-        })
+        name: folioName,
+        number: folioNumber
+      })
       : null
 
   return (

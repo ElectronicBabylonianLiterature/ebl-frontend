@@ -8,10 +8,10 @@ function createLabel (entry) {
 function createOption (entry) {
   return entry && entry.id
     ? {
-        value: entry.id,
-        label: createLabel(entry),
-        entry: entry
-      }
+      value: entry.id,
+      label: createLabel(entry),
+      entry: entry
+    }
     : null
 }
 

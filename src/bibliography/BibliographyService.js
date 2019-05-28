@@ -24,10 +24,10 @@ export default class BibliographyService {
     const match = queryRegex.exec(query)
     return match
       ? this.#bibliographyRepository.search(
-          match[1],
-          match[2] || '',
-          match[3] || ''
-        )
+        match[1],
+        match[2] || '',
+        match[3] || ''
+      )
       : Promise.resolve([])
   }
 }

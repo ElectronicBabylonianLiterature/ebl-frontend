@@ -52,12 +52,12 @@ export class LemmatizationToken {
   toDto () {
     return _.isNil(this.uniqueLemma)
       ? {
-          value: this.value
-        }
+        value: this.value
+      }
       : {
-          value: this.value,
-          uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
-        }
+        value: this.value,
+        uniqueLemma: this.uniqueLemma.map(lemma => lemma.value)
+      }
   }
 }
 
