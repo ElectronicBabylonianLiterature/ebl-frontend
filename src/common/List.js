@@ -15,11 +15,19 @@ function SizeBadge ({ collection }) {
 
 class List extends Component {
   add = () => {
-    const defaultValue = this.props.default
-    const newItem = _.isObjectLike(this.props.default) && !isValueObject(defaultValue)
-      ? _.cloneDeep(defaultValue)
-      : defaultValue
+    let newItem = this.createDefaultValue()
     this.props.onChange(merge(this.props.value, [newItem]))
+  }
+
+  createDefaultValue = () => {
+    const defaultValue = this.props.default
+    if (_.isFunction(defaultValue)) {
+      return defaultValue()
+    } else if (_.isObjectLike(this.props.default) && !isValueObject(defaultValue)) {
+      return _.cloneDeep(defaultValue)
+    } else {
+      return defaultValue
+    }
   }
 
   delete = index => () => {
