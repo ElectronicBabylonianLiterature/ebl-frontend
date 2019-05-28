@@ -11,7 +11,7 @@ function extractMeanings (object, levels) {
     ]
 }
 
-function findMeanig (word) {
+function findMeaning (word) {
   return (
     _(extractMeanings(word, ['amplifiedMeanings', 'entries']))
       .flattenDeep()
@@ -21,7 +21,7 @@ function findMeanig (word) {
 }
 
 function createMeaning (word) {
-  const markdown = findMeanig(word)
+  const markdown = findMeaning(word)
   const truncated = _.truncate(markdown.replace(/[*\\]/g, ''), {
     separator: ' ',
     omission: '…'
