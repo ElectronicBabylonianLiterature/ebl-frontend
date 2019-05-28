@@ -185,7 +185,8 @@ exports[`With session 1`] = `
                     href="/corpus/1/1"
                   >
                     1
-                    . 
+                    .
+                     
                     First Category 1
                   </a>
                 </div>
@@ -207,7 +208,8 @@ exports[`With session 1`] = `
                     href="/corpus/1/2"
                   >
                     2
-                    . 
+                    .
+                     
                     First Category 2
                   </a>
                 </div>
@@ -238,7 +240,8 @@ exports[`With session 1`] = `
                     href="/corpus/2/1"
                   >
                     1
-                    . 
+                    .
+                     
                     Second Category
                   </a>
                 </div>
@@ -269,7 +272,8 @@ exports[`With session 1`] = `
                     href="/corpus/3/1"
                   >
                     1
-                    . 
+                    .
+                     
                     Third Category
                   </a>
                 </div>
