@@ -17,24 +17,20 @@ function SizeBadge ({ collection }) {
   )
 }
 
+function createDefaultValue (defaultValue) {
+  if (_.isFunction(defaultValue)) {
+    return defaultValue()
+  } else if (_.isObjectLike(defaultValue) && !isValueObject(defaultValue)) {
+    return _.cloneDeep(defaultValue)
+  } else {
+    return defaultValue
+  }
+}
+
 class List extends Component {
   add = () => {
-    let newItem = this.createDefaultValue()
+    let newItem = createDefaultValue(this.props.default)
     this.props.onChange(merge(this.props.value, [newItem]))
-  }
-
-  createDefaultValue = () => {
-    const defaultValue = this.props.default
-    if (_.isFunction(defaultValue)) {
-      return defaultValue()
-    } else if (
-      _.isObjectLike(this.props.default) &&
-      !isValueObject(defaultValue)
-    ) {
-      return _.cloneDeep(defaultValue)
-    } else {
-      return defaultValue
-    }
   }
 
   delete = index => () => {
