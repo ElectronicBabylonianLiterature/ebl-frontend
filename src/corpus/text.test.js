@@ -4,13 +4,12 @@ import {
   createText,
   createChapter,
   createManuscript,
-  periodModifiers,
-  periods,
   provenances,
   types,
   createLine,
   createManuscriptLine
 } from './text'
+import { periodModifiers, periods } from './period'
 
 const manuscriptConfig = {
   id: 'abc-cde-123',

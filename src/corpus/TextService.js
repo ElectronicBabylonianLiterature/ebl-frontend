@@ -6,12 +6,11 @@ import {
   createChapter,
   createManuscript,
   createLine,
-  periodModifiers,
-  periods,
   provenances,
   types,
   createManuscriptLine
 } from './text'
+import { periodModifiers, periods } from './period'
 
 function fromDto (textDto) {
   return createText({

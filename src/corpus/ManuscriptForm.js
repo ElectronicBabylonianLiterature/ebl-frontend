@@ -1,8 +1,9 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { periodModifiers, periods, provenances, types } from './text'
+import { provenances, types } from './text'
 import ReferencesForm from 'bibliography/ReferencesForm'
+import { periodModifiers, periods } from './period'
 
 export default function ManuscriptForm ({
   manuscript,
