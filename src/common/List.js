@@ -27,7 +27,50 @@ function createDefaultValue (defaultValue) {
   }
 }
 
-class List extends Component {
+function CardList ({
+  label,
+  noun,
+  children,
+  ordered,
+  collapsed,
+  value,
+  onAdd,
+  onDelete,
+  onUpdate
+}) {
+  const fullLabel = label && (
+    <>
+      {label} <SizeBadge collection={value} />
+    </>
+  )
+  return (
+    <CollapsibleCard label={fullLabel} collapsed={collapsed}>
+      <ListGroup as={ordered ? 'ol' : 'ul'} variant='flush'>
+        {React.Children.map(children, child => (
+          <ListGroup.Item as='li' key={child.key}>
+            {React.cloneElement(child, {
+              onChange: onUpdate(Number(child.key))
+            })}
+            <Button
+              onClick={onDelete(Number(child.key))}
+              size='sm'
+              variant='outline-secondary'
+            >
+              Delete {noun}
+            </Button>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+      <Card.Body>
+        <Button onClick={onAdd} size='sm' variant='outline-secondary'>
+          Add {noun}
+        </Button>
+      </Card.Body>
+    </CollapsibleCard>
+  )
+}
+
+export default class List extends Component {
   add = () => {
     let newItem = createDefaultValue(this.props.default)
     this.props.onChange(merge(this.props.value, [newItem]))
@@ -42,39 +85,15 @@ class List extends Component {
   }
 
   render () {
-    const label = this.props.label ? (
-      <>
-        {this.props.label} <SizeBadge collection={this.props.value} />
-      </>
-    ) : null
     return (
       <div className='List'>
-        <CollapsibleCard label={label} collapsed={this.props.collapsed}>
-          <ListGroup as={this.props.ordered ? 'ol' : 'ul'} variant='flush'>
-            {React.Children.map(this.props.children, child => (
-              <ListGroup.Item as='li' key={child.key}>
-                {React.cloneElement(child, {
-                  onChange: this.update(Number(child.key))
-                })}
-                <Button
-                  onClick={this.delete(Number(child.key))}
-                  size='sm'
-                  variant='outline-secondary'
-                >
-                  Delete {this.props.noun}
-                </Button>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-          <Card.Body>
-            <Button onClick={this.add} size='sm' variant='outline-secondary'>
-              Add {this.props.noun}
-            </Button>
-          </Card.Body>
-        </CollapsibleCard>
+        <CardList
+          {...this.props}
+          onUpdate={this.update}
+          onDelete={this.delete}
+          onAdd={this.add}
+        />
       </div>
     )
   }
 }
-
-export default List
