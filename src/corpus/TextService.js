@@ -6,11 +6,11 @@ import {
   createChapter,
   createManuscript,
   createLine,
-  provenances,
   types,
   createManuscriptLine
 } from './text'
 import { periodModifiers, periods } from './period'
+import { provenances } from './provenance'
 
 function fromDto (textDto) {
   return createText({

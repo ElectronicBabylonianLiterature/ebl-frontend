@@ -9,11 +9,11 @@ import {
   createManuscript,
   createLine,
   createManuscriptLine,
-  provenances,
   types
 } from './text'
 import TextService from './TextService'
 import { periodModifiers, periods } from './period'
+import { provenances } from './provenance'
 
 const apiClient = {
   fetchJson: jest.fn(),
