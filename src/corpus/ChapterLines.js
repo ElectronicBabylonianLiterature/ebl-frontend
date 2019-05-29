@@ -1,10 +1,11 @@
 import React from 'react'
-import { Form, Col } from 'react-bootstrap'
+import { Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
-import { createLine, createManuscriptLine } from './text'
+import { createManuscriptLine } from './text'
 import ArrayInput from 'common/ArrayInput'
+import { createDefaultLineFactory } from './line-factory'
 
 function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event =>
@@ -119,7 +120,7 @@ export default function ChapterLines ({ chapter, onChange, disabled }) {
   return (
     <ListForm
       noun='line'
-      default={createLine()}
+      default={createDefaultLineFactory(chapter.lines.last())}
       value={chapter.lines}
       onChange={handleChange}
     >
