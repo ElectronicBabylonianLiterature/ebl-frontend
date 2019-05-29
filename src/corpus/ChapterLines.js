@@ -64,18 +64,18 @@ function ManuscriptLines ({ lines, manuscripts, onChange, disabled }) {
   return (
     <ListForm
       noun='manuscript'
-      default={createManuscriptLine()}
+      defaultValue={createManuscriptLine()}
       value={lines}
       onChange={onChange}
     >
-      {lines.map((line, index) => (
+      {(line, onChange) => (
         <ManuscriptLineForm
-          key={index}
+          onChange={onChange}
           value={line}
           manuscripts={manuscripts}
           disabled={disabled}
         />
-      ))}
+      )}
     </ListForm>
   )
 }
@@ -120,18 +120,18 @@ export default function ChapterLines ({ chapter, onChange, disabled }) {
   return (
     <ListForm
       noun='line'
-      default={createDefaultLineFactory(chapter.lines.last())}
+      defaultValue={createDefaultLineFactory(chapter.lines.last())}
       value={chapter.lines}
       onChange={handleChange}
     >
-      {chapter.lines.map((line, index) => (
+      {(line, onChange) => (
         <ChapterLineForm
-          key={index}
+          onChange={onChange}
           value={line}
           manuscripts={chapter.manuscripts}
           disabled={disabled}
         />
-      ))}
+      )}
     </ListForm>
   )
 }

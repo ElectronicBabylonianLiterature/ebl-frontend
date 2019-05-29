@@ -105,11 +105,6 @@ function commonUpdateTests () {
 
 function renderAmplifiedMeaningInput (entry) {
   return render(
-    <AmplifiedMeaningInput
-      id='entry'
-      value={value}
-      onChange={onChange}
-      entry={entry}
-    />
+    <AmplifiedMeaningInput value={value} onChange={onChange} entry={entry} />
   )
 }

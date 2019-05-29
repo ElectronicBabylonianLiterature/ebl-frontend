@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
 import { isCollection, isValueObject, merge, remove, set } from 'immutable'
@@ -27,32 +27,58 @@ function createDefaultValue (defaultValue) {
   }
 }
 
-function CardList ({
+function listController (ListView) {
+  return ({ value, children, onChange, defaultValue, ...props }) => {
+    const add = () => {
+      const newItem = createDefaultValue(defaultValue)
+      onChange(merge(value, [newItem]))
+    }
+
+    const delete_ = index => () => {
+      onChange(remove(value, index))
+    }
+
+    const update = index => updated => {
+      onChange(set(value, index, updated))
+    }
+
+    return (
+      <div className='List'>
+        <ListView
+          {...props}
+          onDelete={delete_}
+          onAdd={add}
+          elements={value.map((item, index) =>
+            children(item, update(index), index)
+          )}
+        />
+      </div>
+    )
+  }
+}
+
+function CardListView ({
   label,
   noun,
-  children,
+  elements,
   ordered,
   collapsed,
-  value,
   onAdd,
-  onDelete,
-  onUpdate
+  onDelete
 }) {
   const fullLabel = label && (
     <>
-      {label} <SizeBadge collection={value} />
+      {label} <SizeBadge collection={elements} />
     </>
   )
   return (
     <CollapsibleCard label={fullLabel} collapsed={collapsed}>
       <ListGroup as={ordered ? 'ol' : 'ul'} variant='flush'>
-        {React.Children.map(children, child => (
-          <ListGroup.Item as='li' key={child.key}>
-            {React.cloneElement(child, {
-              onChange: onUpdate(Number(child.key))
-            })}
+        {elements.map((element, index) => (
+          <ListGroup.Item as='li' key={index}>
+            {element}
             <Button
-              onClick={onDelete(Number(child.key))}
+              onClick={onDelete(index)}
               size='sm'
               variant='outline-secondary'
             >
@@ -70,30 +96,4 @@ function CardList ({
   )
 }
 
-export default class List extends Component {
-  add = () => {
-    let newItem = createDefaultValue(this.props.default)
-    this.props.onChange(merge(this.props.value, [newItem]))
-  }
-
-  delete = index => () => {
-    this.props.onChange(remove(this.props.value, index))
-  }
-
-  update = index => updated => {
-    this.props.onChange(set(this.props.value, index, updated))
-  }
-
-  render () {
-    return (
-      <div className='List'>
-        <CardList
-          {...this.props}
-          onUpdate={this.update}
-          onDelete={this.delete}
-          onAdd={this.add}
-        />
-      </div>
-    )
-  }
-}
+export default listController(CardListView)

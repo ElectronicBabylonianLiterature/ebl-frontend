@@ -90,12 +90,7 @@ function commonTests () {
 
 function renderAmplifiedMeaningList (entry) {
   return render(
-    <AmplifiedMeaningList
-      id='amplifiedMeanings'
-      value={value}
-      onChange={onChange}
-      entry={entry}
-    >
+    <AmplifiedMeaningList value={value} onChange={onChange} entry={entry}>
       {label}
     </AmplifiedMeaningList>
   )

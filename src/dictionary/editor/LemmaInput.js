@@ -33,7 +33,7 @@ class LemmaInput extends Component {
 
   render () {
     return (
-      <FormGroup controlId={`${this.props.id}`}>
+      <FormGroup controlId={_.uniqueId('LemmaInput-')}>
         <FormLabel>Lemma</FormLabel>
         {_.has(this.props.value, 'attested') ? (
           <InputGroup>

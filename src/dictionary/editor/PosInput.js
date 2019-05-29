@@ -46,7 +46,7 @@ class PosInput extends Component {
   render () {
     return (
       <FormGroup>
-        <FormGroup controlId={this.props.id}>
+        <FormGroup controlId={_.uniqueId('PosInput-')}>
           <FormLabel>Position of speech</FormLabel>
           <FormControl
             as='select'
@@ -63,7 +63,6 @@ class PosInput extends Component {
         </FormGroup>
         {this.props.value.pos.includes('V') && (
           <TextListInput
-            id='roots'
             value={this.props.value.roots || []}
             onChange={this.updateRoots}
           >

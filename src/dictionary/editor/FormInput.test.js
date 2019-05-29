@@ -85,5 +85,5 @@ function commonChangeTests () {
 }
 
 function RendedFormInput () {
-  return render(<FormInput id='form-input' value={value} onChange={onChange} />)
+  return render(<FormInput value={value} onChange={onChange} />)
 }

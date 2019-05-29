@@ -33,14 +33,9 @@ class FormInput extends Component {
   render () {
     return (
       <FormGroup>
-        <LemmaInput
-          id={`${this.props.id}-lemma`}
-          value={this.props.value}
-          onChange={this.lemmaChanged}
-        />
+        <LemmaInput value={this.props.value} onChange={this.lemmaChanged} />
         {this.hasProperty('homonym') && (
           <TextInput
-            id={`${this.props.id}-homonym`}
             value={this.props.value.homonym}
             onChange={this.homonymChanged}
           >
@@ -49,7 +44,6 @@ class FormInput extends Component {
         )}
         {this.hasProperty('notes') && (
           <ListInput
-            id={`${this.props.id}-notes`}
             value={this.props.value.notes}
             onChange={this.notesChanged}
           >

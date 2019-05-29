@@ -12,15 +12,9 @@ class ListInput extends Component {
           label={this.props.children}
           value={this.props.value}
           onChange={this.props.onChange}
-          default=''
+          defaultValue=''
         >
-          {this.props.value.map((item, index) => (
-            <TextInput
-              key={index}
-              id={`${this.props.id}-${index}`}
-              value={item}
-            />
-          ))}
+          {(item, onChange) => <TextInput onChange={onChange} value={item} />}
         </List>
       </FormGroup>
     )

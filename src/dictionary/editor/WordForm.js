@@ -40,7 +40,6 @@ class WordForm extends Component {
 
   textInput = ({ property }) => (
     <TextInput
-      id={property}
       value={this.state.word[property]}
       onChange={this.onChangeValue(property)}
     >
@@ -49,16 +48,13 @@ class WordForm extends Component {
   )
 
   lemma = () => (
-    <LemmaInput id='lemma' value={this.state.word} onChange={this.updateWord} />
+    <LemmaInput value={this.state.word} onChange={this.updateWord} />
   )
 
-  pos = () => (
-    <PosInput id='pos' value={this.state.word} onChange={this.updateWord} />
-  )
+  pos = () => <PosInput value={this.state.word} onChange={this.updateWord} />
 
   amplifiedMeanings = () => (
     <AmplifiedMeaningList
-      id={`amplifiedMeaning`}
       value={this.state.word.amplifiedMeanings}
       onChange={this.onChangeValue('amplifiedMeanings')}
     >
@@ -68,7 +64,6 @@ class WordForm extends Component {
 
   forms = () => (
     <FormList
-      id='forms'
       value={this.state.word.forms}
       onChange={this.onChangeValue('forms')}
       fields={['lemma', 'attested', 'notes']}
@@ -79,7 +74,6 @@ class WordForm extends Component {
 
   logograms = () => (
     <ArrayWithNotesList
-      id='logograms'
       value={this.state.word.logograms}
       separator=' '
       property='logogram'
@@ -90,7 +84,6 @@ class WordForm extends Component {
 
   derived = () => (
     <DerivedList
-      id='derived'
       value={this.state.word.derived}
       onChange={this.onChangeValue('derived')}
     >
@@ -100,7 +93,6 @@ class WordForm extends Component {
 
   derivedFrom = () => (
     <DerivedFromInput
-      id='derivedFrom'
       value={this.state.word.derivedFrom}
       onChange={this.onChangeValue('derivedFrom')}
     />

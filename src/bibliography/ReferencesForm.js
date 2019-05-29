@@ -18,16 +18,16 @@ export default function ReferencesForm ({
       onChange={onChange}
       label={label}
       noun='Reference'
-      default={defaultReference}
+      defaultValue={defaultReference}
       collapsed={collapsed}
     >
-      {value.map((reference, index) => (
+      {(reference, onChange) => (
         <ReferenceForm
           searchBibliography={searchBibliography}
-          key={index}
+          onChange={onChange}
           value={reference}
         />
-      ))}
+      )}
     </ListForm>
   )
 }

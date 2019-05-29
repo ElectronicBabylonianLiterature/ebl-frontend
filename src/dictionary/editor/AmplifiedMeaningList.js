@@ -23,17 +23,16 @@ class AmplifiedMeaningList extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
           noun={this.noun}
-          default={this.defaultValue}
+          defaultValue={this.defaultValue}
           ordered={this.props.entry}
         >
-          {this.props.value.map((entry, index) => (
+          {(entry, onChange) => (
             <AmplifiedMeaningInput
-              key={index}
-              id={`${this.props.id}-${index}`}
+              onChange={onChange}
               value={entry}
               entry={this.props.entry}
             />
-          ))}
+          )}
         </List>
       </FormGroup>
     )

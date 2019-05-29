@@ -55,7 +55,7 @@ it('Calls onChange with updated value on change', () => {
 
 function renderDerivedList () {
   return render(
-    <DerivedList id='derived' value={value} onChange={onChange}>
+    <DerivedList value={value} onChange={onChange}>
       {label}
     </DerivedList>
   )

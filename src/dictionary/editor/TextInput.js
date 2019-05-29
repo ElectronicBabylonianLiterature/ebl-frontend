@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
 class TextInput extends Component {
@@ -8,7 +9,7 @@ class TextInput extends Component {
 
   render () {
     return (
-      <FormGroup controlId={`${this.props.id}`}>
+      <FormGroup controlId={_.uniqueId('TextInput-')}>
         {this.props.children && <FormLabel>{this.props.children}</FormLabel>}
         <FormControl
           type='text'

@@ -96,11 +96,11 @@ function renderList () {
       onChange={onChange}
       label={label}
       noun={noun}
-      default={defaultValue}
+      defaultValue={defaultValue}
     >
-      {items.map((item, index) => (
-        <TestFormControl key={index} value={item} />
-      ))}
+      {(value, onChange) => (
+        <TestFormControl value={value} onChange={onChange} />
+      )}
     </List>
   )
 }

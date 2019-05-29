@@ -14,17 +14,17 @@ export default function ChapterManuscripts ({
   return (
     <ListForm
       noun='manuscript'
-      default={createManuscript()}
+      defaultValue={createManuscript()}
       value={chapter.manuscripts}
       onChange={handeManuscriptsChange}
     >
-      {chapter.manuscripts.map((manuscript, index) => (
+      {(manuscript, onChange) => (
         <ManuscriptForm
-          key={index}
+          onChange={onChange}
           manuscript={manuscript}
           searchBibliography={searchBibliography}
         />
-      ))}
+      )}
     </ListForm>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { render, waitForElement } from 'react-testing-library'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
@@ -32,8 +33,12 @@ describe('Searching bibliography', () => {
   it('displays result on successfull query', async () => {
     const { getByText } = renderDictionary('/bibliography?query=Borger')
 
-    await waitForElement(() => getByText(new RegExp(entries[0].author)))
-    expect(getByText(new RegExp(entries[1].author))).toBeDefined()
+    await waitForElement(() =>
+      getByText(new RegExp(_.escapeRegExp(entries[0].author)))
+    )
+    expect(
+      getByText(new RegExp(_.escapeRegExp(entries[1].author)))
+    ).toBeDefined()
   })
 
   it('fills in search form query', () => {

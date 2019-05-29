@@ -62,7 +62,6 @@ it('Calls onChange on change', () => {
 function renderArrayWithNotesList () {
   return render(
     <ArrayWithNotesList
-      id='arrayWithNotesList'
       property={property}
       noun={noun}
       separator={separator}

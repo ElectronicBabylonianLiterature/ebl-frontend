@@ -77,7 +77,5 @@ describe('No derived from set', () => {
 })
 
 function renderDerivedFromInput () {
-  return render(
-    <DerivedFromInput id='derivedFrom' value={value} onChange={onChange} />
-  )
+  return render(<DerivedFromInput value={value} onChange={onChange} />)
 }

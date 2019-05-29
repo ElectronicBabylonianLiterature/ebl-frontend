@@ -43,7 +43,7 @@ it('Calls onChange with updated value on change', () => {
 
 function renderListInput () {
   return render(
-    <TextListInput id='list' value={value} onChange={onChange}>
+    <TextListInput value={value} onChange={onChange}>
       {label}
     </TextListInput>
   )

@@ -13,18 +13,17 @@ class DerivedList extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
           noun='group'
-          default={[]}
+          defaultValue={[]}
         >
-          {this.props.value.map((group, groupIndex) => (
+          {(group, onChange, groupIndex) => (
             <FormList
-              key={groupIndex}
-              id={`${this.props.id}-${groupIndex}`}
+              onChange={onChange}
               value={group}
               fields={['lemma', 'homonym', 'notes']}
             >
               {groupIndex + 1}. group
             </FormList>
-          ))}
+          )}
         </List>
       </FormGroup>
     )

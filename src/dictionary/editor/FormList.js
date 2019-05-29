@@ -26,15 +26,9 @@ class FormList extends Component {
           value={this.props.value}
           onChange={this.props.onChange}
           noun='form'
-          default={this.defaultValue}
+          defaultValue={this.defaultValue}
         >
-          {this.props.value.map((form, index) => (
-            <FormInput
-              key={index}
-              id={`${this.props.id}-${index}`}
-              value={form}
-            />
-          ))}
+          {(form, onChange) => <FormInput onChange={onChange} value={form} />}
         </List>
       </FormGroup>
     )

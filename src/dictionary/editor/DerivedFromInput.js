@@ -3,14 +3,14 @@ import { Button, Card } from 'react-bootstrap'
 
 import FormInput from './FormInput'
 
-function DerivedFromInput ({ id, value, onChange }) {
+function DerivedFromInput ({ value, onChange }) {
   return (
     <Card border='light'>
       <Card.Header>Derived from</Card.Header>
       <Card.Body>
         {value ? (
           <>
-            <FormInput id={id} value={value} onChange={onChange} />
+            <FormInput value={value} onChange={onChange} />
             <Button
               onClick={() => onChange(null)}
               size='sm'

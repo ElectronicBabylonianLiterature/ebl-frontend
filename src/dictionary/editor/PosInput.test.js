@@ -90,5 +90,5 @@ function commonTests () {
 }
 
 function renderPosInput () {
-  return render(<PosInput id='pos' value={value} onChange={onChange} />)
+  return render(<PosInput value={value} onChange={onChange} />)
 }
