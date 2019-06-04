@@ -4,6 +4,7 @@ import { factory } from 'factory-girl'
 import { clickNth } from 'test-helpers/utils'
 import Word from './Word'
 import Lemma from './Lemma'
+import _ from 'lodash'
 
 let element
 let token
@@ -50,13 +51,20 @@ describe.each([
     expect(onClick).toHaveBeenCalled()
   })
 
-  test.each(expectedClasses)('Has class %s', expectedClass => {
-    expect(element.getByText(token.value)).toHaveClass(expectedClass)
-  })
+  if (!_.isEmpty(expectedClasses)) {
+    test.each(expectedClasses)('Has class %s', expectedClass => {
+      expect(element.getByText(token.value)).toHaveClass(expectedClass)
+    })
+  }
 
-  test.each(notExpectedClasses)('Does not have class %s', notExpectedClass => {
-    expect(element.getByText(token.value)).not.toHaveClass(notExpectedClass)
-  })
+  if (!_.isEmpty(notExpectedClasses)) {
+    test.each(notExpectedClasses)(
+      'Does not have class %s',
+      notExpectedClass => {
+        expect(element.getByText(token.value)).not.toHaveClass(notExpectedClass)
+      }
+    )
+  }
 })
 
 describe('Not-lemmatizable word', () => {
