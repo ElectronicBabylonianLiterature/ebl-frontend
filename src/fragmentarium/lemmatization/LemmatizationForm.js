@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Col, Form } from 'react-bootstrap'
-import AsyncSelect from 'react-select/lib/Async'
+import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from './Lemma'
 
