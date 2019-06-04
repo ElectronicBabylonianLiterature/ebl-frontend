@@ -62,7 +62,7 @@
     "jest-date-mock": "^1.0.2",
     "jest-dom": "^3.0.0",
     "jest-fetch-mock": "^2.1.0",
-    "lighthouse": "^4.1.0",
+    "lighthouse": "^5.1.0",
     "lint-staged": "^8.1.7",
     "prettier-standard": "^9.1.1",
     "react-testing-library": "^6.0.0",
