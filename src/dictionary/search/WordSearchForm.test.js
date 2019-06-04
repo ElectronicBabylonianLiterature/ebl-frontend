@@ -1,6 +1,6 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
-import createMemoryHistory from 'history/createMemoryHistory'
+import { createMemoryHistory } from 'history'
 import { render } from 'react-testing-library'
 import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
