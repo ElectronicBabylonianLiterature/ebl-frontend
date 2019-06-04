@@ -2712,7 +2712,7 @@ circular-json@^0.3.1:
   resolved "https://registry.yarnpkg.com/circular-json/-/circularyar-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
   integrity sha512-UZK3NBx2Mca+b5LsG7bY183pHWt5Y1xts4P3Pz7ENTwGVnJOUWbRb3ocjvX7hx9tq/yTAdclXm9sZ38gNuem4A==
 
-citation-js@^0.4.0-11:
+citation-js@0.4.0-11:
   version "0.4.0-11"
   resolved "https://registry.yarnpkg.com/citation-js/-/citation-js-0.4.0-11.tgz#df6017540fffb5abba37735a814203419c227acf"
   integrity sha512-/vpxD3eCsnFNRdapoWfCXn8NJuh02JAicuIMajV9dW4oukH2ACxO2FpdqBzxI/0lPjcDg0HXTO/rcMH89n40Jw==
