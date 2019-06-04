@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'List'
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 it('Displays all elements', () => {
   for (let item of value) {
-    expect(element.getByValue(item)).toBeVisible()
+    expect(element.getByDisplayValue(item)).toBeVisible()
   }
 })
 

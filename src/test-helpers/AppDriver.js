@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement, fireEvent } from 'react-testing-library'
+import { render, waitForElement, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
 import Auth from 'auth/Auth'

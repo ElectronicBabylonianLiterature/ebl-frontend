@@ -25,9 +25,19 @@ function FolioPager ({ data, folio }) {
 
   return (
     <Fragment>
-      {data && <PagerLink direction='previous' label='Previous' />} Browse{' '}
-      {folio.humanizedName}'s Folios{' '}
-      {data && <PagerLink direction='next' label='Next' />}
+      {data && (
+        <PagerLink
+          direction='previous'
+          label={`Previous ${folio.humanizedName}'s Folio`}
+        />
+      )}{' '}
+      Browse {folio.humanizedName}'s Folios{' '}
+      {data && (
+        <PagerLink
+          direction='next'
+          label={`Next ${folio.humanizedName}'s Folio`}
+        />
+      )}
     </Fragment>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { FormControl } from 'react-bootstrap'
 import List from './List'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'List'
@@ -56,7 +56,7 @@ function commonTests () {
     const index = items.indexOf(item)
 
     it(`Displays the item`, () => {
-      expect(element.getByValue(item)).toBeVisible()
+      expect(element.getByDisplayValue(item)).toBeVisible()
     })
 
     it(`Removes the item when Delete is clicked`, async () => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import FragmentList from './FragmentList'

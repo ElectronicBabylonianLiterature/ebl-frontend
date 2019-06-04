@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, Route } from 'react-router-dom'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { List } from 'immutable'
 import Promise from 'bluebird'
@@ -83,7 +83,7 @@ describe('Fragment is loaded', () => {
         selectedFolio.name
       )}&folioNumber=${encodeURIComponent(selectedFolio.number)}`
     )
-    await waitForElement(() => element.getByText('Edition'))
+    await waitForElement(() => element.getByText('Display'))
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -123,7 +123,7 @@ describe('On error', () => {
   })
 
   it('Shows the fragment number', async () => {
-    await waitForElement(() => element.getByText(fragmentNumber))
+    expect(element.container).toHaveTextContent(fragmentNumber)
   })
 })
 

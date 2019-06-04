@@ -1,6 +1,6 @@
 import React from 'react'
 import { matchPath, MemoryRouter } from 'react-router'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
@@ -136,6 +136,6 @@ async function renderWithRouter (isAllowedTo = true, create = false, waitFor) {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(waitFor))
+  await waitForElement(() => element.getAllByText(waitFor))
   return element
 }

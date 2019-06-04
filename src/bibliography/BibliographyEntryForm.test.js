@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, waitForElement } from 'react-testing-library'
+import { render, wait, waitForElement } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 

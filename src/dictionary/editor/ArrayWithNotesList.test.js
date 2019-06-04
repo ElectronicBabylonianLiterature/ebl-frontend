@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotesList from './ArrayWithNotesList'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const noun = 'log'
@@ -33,7 +33,7 @@ beforeEach(() => {
 
 it('Displays all items', () => {
   _.map(value, entry => entry[property].join(separator)).forEach(item =>
-    expect(element.getByValue(item)).toBeVisible()
+    expect(element.getByDisplayValue(item)).toBeVisible()
   )
 })
 

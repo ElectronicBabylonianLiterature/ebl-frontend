@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import { List } from 'immutable'
@@ -129,7 +129,7 @@ it('Updates view on References save', async () => {
     Promise.resolve(updatedFragment)
   )
   clickNth(element, 'References', 0)
-  await waitForElement(() => element.getByText('Document'))
+  await waitForElement(() => element.getAllByText('Document'))
   await submitFormByTestId(element, 'references-form')
 
   await waitForElement(() => element.getByText(expectedFragment.cdliNumber))

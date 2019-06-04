@@ -1,4 +1,4 @@
-import { fireEvent, wait } from 'react-testing-library'
+import { fireEvent, wait } from '@testing-library/react'
 import * as bluebird from 'bluebird'
 import _ from 'lodash'
 
@@ -20,12 +20,12 @@ export async function clickNth (element, text, n = 0) {
   await wait()
 }
 
-export function changeValueByValue (element, value, newValue) {
-  changeValue(element.getByValue(value), newValue)
+export function changeValueByValue (element, value, newValue, n = 0) {
+  changeValue(element.getAllByDisplayValue(value)[n], newValue)
 }
 
-export function changeValueByLabel (element, label, newValue) {
-  changeValue(element.getByLabelText(label), newValue)
+export function changeValueByLabel (element, label, newValue, n = 0) {
+  changeValue(element.getAllByLabelText(label)[n], newValue)
 }
 
 export function whenClicked (element, text, n = 0) {

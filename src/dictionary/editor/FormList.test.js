@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import FormList from './FormList'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
@@ -22,7 +22,7 @@ beforeEach(async () => {
 
 it('Displays all forms', () => {
   for (let item of value) {
-    expect(element.getByValue(item.lemma.join(' '))).toBeVisible()
+    expect(element.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
   }
 })
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
@@ -48,7 +48,7 @@ it('Links results', () => {
 
 it('Displays script', () => {
   for (let fragment of fragments) {
-    expect(element.queryByText(fragment.script)).not.toBeNull()
+    expect(element.getAllByText(fragment.script)).not.toEqual([])
   }
 })
 

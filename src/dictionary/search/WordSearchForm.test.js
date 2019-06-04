@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
-import createMemoryHistory from 'history/createMemoryHistory'
-import { render } from 'react-testing-library'
+import { createMemoryHistory } from 'history'
+import { render } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
 import WordSearchForm from './WordSearchForm'

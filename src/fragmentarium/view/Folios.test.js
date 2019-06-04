@@ -1,6 +1,6 @@
 import React from 'react'
-import MemoryRouter from 'react-router/MemoryRouter'
-import { render, waitForElement } from 'react-testing-library'
+import { MemoryRouter } from 'react-router'
+import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { List } from 'immutable'
 import Promise from 'bluebird'
@@ -57,8 +57,9 @@ it('Displays selected folio', async () => {
   )
   fragment = await factory.build('fragment', { folios: folios })
   const selected = folios.first()
+  const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
   const element = renderFolios(selected)
-  await waitForElement(() => element.getByText(/Browse/))
+  await waitForElement(() => element.getByText(selectedTitle))
   expect(
     element.getByText(`${selected.humanizedName} Folio ${selected.number}`)
   ).toHaveAttribute('aria-selected', 'true')

@@ -1,6 +1,6 @@
 import React from 'react'
 import FormInput from './FormInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 
 import { whenClicked, changeValueByLabel } from 'test-helpers/utils'
@@ -58,7 +58,7 @@ function commonDisplayTests () {
 
   it('Displays all notes', () => {
     for (let note of value.notes) {
-      expect(element.getByValue(note)).toBeVisible()
+      expect(element.getByDisplayValue(note)).toBeVisible()
     }
   })
 }

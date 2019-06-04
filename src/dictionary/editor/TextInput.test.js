@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import TextInput from './TextInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'Text'
@@ -15,7 +15,7 @@ beforeEach(() => {
 })
 
 it('Displays value', () => {
-  expect(element.getByValue(value)).toBeVisible()
+  expect(element.getByDisplayValue(value)).toBeVisible()
 })
 
 it('Displays label', () => {

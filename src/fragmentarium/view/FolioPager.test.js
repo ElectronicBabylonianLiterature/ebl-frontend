@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
@@ -32,17 +32,15 @@ beforeEach(async () => {
 })
 
 it('Previous links to the previous fragment', () => {
-  expect(element.getByLabelText('Previous')).toHaveAttribute(
-    'href',
-    expectedLink(pagerData.previous)
-  )
+  expect(
+    element.getByLabelText(`Previous ${folio.humanizedName}'s Folio`)
+  ).toHaveAttribute('href', expectedLink(pagerData.previous))
 })
 
 it('Next links to the next fragment', () => {
-  expect(element.getByLabelText('Next')).toHaveAttribute(
-    'href',
-    expectedLink(pagerData.next)
-  )
+  expect(
+    element.getByLabelText(`Next ${folio.humanizedName}'s Folio`)
+  ).toHaveAttribute('href', expectedLink(pagerData.next))
 })
 
 it('Renders title', () => {

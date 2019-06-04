@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const noun = 'item'
@@ -22,11 +22,15 @@ beforeEach(() => {
 })
 
 it('Displays all array items', () => {
-  expect(element.getByValue(value[property].join(separator))).toBeVisible()
+  expect(
+    element.getByDisplayValue(value[property].join(separator))
+  ).toBeVisible()
 })
 
 it('Displays all notes', () => {
-  value.notes.forEach(note => expect(element.getByValue(note)).toBeVisible())
+  value.notes.forEach(note =>
+    expect(element.getByDisplayValue(note)).toBeVisible()
+  )
 })
 
 it('Displays label', () => {

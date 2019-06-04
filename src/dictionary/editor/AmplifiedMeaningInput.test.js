@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenChangedByValue } from 'test-helpers/utils'
 
@@ -30,13 +30,13 @@ describe('Conjugation/Function', () => {
   })
 
   it('Displays key', () => {
-    expect(element.getByValue(value.key)).toBeVisible()
+    expect(element.getByDisplayValue(value.key)).toBeVisible()
   })
 
   it('Displays entries', () => {
     value.entries
       .map(entry => entry.meaning)
-      .forEach(entry => expect(element.queryByValue(entry)).toBeVisible())
+      .forEach(entry => expect(element.getByDisplayValue(entry)).toBeVisible())
   })
 
   it('Calls onChange with updated value on key', () => {
@@ -70,11 +70,13 @@ describe('Conjugation/Function', () => {
 
 function commonDisplayTests () {
   it('Displays meaning', () => {
-    expect(element.getByValue(value.meaning)).toBeVisible()
+    expect(element.getByDisplayValue(value.meaning)).toBeVisible()
   })
 
   it('Displays vowels', () => {
-    expect(element.getByValue(value.vowels[0].value.join('/'))).toBeVisible()
+    expect(
+      element.getAllByDisplayValue(value.vowels[0].value.join('/'))[0]
+    ).toBeVisible()
   })
 }
 

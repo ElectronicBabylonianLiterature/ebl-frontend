@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
@@ -41,7 +41,7 @@ describe('Conjugations/Functions', () => {
 
   it('Displays all keys', () => {
     for (let item of value) {
-      expect(element.getByValue(item.key)).toBeVisible()
+      expect(element.getAllByDisplayValue(item.key)[0]).toBeVisible()
     }
   })
 
@@ -49,7 +49,7 @@ describe('Conjugations/Functions', () => {
     _(value)
       .flatMap('entries')
       .map('meaning')
-      .forEach(entry => expect(element.getByValue(entry)).toBeVisible())
+      .forEach(entry => expect(element.getByDisplayValue(entry)).toBeVisible())
   })
 
   it('New entry has top level fields', async () => {
@@ -67,7 +67,7 @@ describe('Conjugations/Functions', () => {
 function commonTests () {
   it('Displays all amplified meanings', () => {
     for (let item of value) {
-      expect(element.getByValue(item.meaning)).toBeVisible()
+      expect(element.getByDisplayValue(item.meaning)).toBeVisible()
     }
   })
 

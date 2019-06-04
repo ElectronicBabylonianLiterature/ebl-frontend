@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import BlobImage from './BlobImage'
 
 const objectUrl = 'object URL mock'

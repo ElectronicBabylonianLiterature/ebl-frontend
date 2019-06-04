@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement, wait } from 'react-testing-library'
+import { render, waitForElement, wait } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 

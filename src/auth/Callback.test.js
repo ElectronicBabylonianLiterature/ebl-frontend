@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, waitForElement } from 'react-testing-library'
+import { render, wait, waitForElement } from '@testing-library/react'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorReporterContext from 'ErrorReporterContext'

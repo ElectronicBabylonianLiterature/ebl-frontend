@@ -1,6 +1,6 @@
 import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
@@ -19,15 +19,17 @@ describe('Derived from set', () => {
   })
 
   it('Displays lemma', () => {
-    expect(element.getByValue(value.lemma.join(' '))).toBeVisible()
+    expect(element.getByDisplayValue(value.lemma.join(' '))).toBeVisible()
   })
 
   it('Displays homonym', () => {
-    expect(element.getByValue(value.homonym)).toBeVisible()
+    expect(element.getByDisplayValue(value.homonym)).toBeVisible()
   })
 
   it('Displays all notes', () => {
-    value.notes.forEach(note => expect(element.getByValue(note)).toBeVisible())
+    value.notes.forEach(note =>
+      expect(element.getByDisplayValue(note)).toBeVisible()
+    )
   })
 
   it('Does not display add button', () => {

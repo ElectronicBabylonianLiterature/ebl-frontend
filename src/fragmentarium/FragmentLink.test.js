@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
 import FragmentLink from './FragmentLink'

@@ -1,6 +1,6 @@
 import React from 'react'
 import PosInput from './PosInput'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import { whenChangedByValue, whenChangedByLabel } from 'test-helpers/utils'
@@ -41,7 +41,9 @@ describe('Verb', () => {
   })
 
   it('Displays all roots', () => {
-    value.roots.forEach(root => expect(element.getByValue(root)).toBeVisible())
+    value.roots.forEach(root =>
+      expect(element.getByDisplayValue(root)).toBeVisible()
+    )
   })
 
   it('Calls onChange with updated value on root change', () => {

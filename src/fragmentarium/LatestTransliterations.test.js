@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { List } from 'immutable'
 import { Promise } from 'bluebird'
@@ -86,7 +86,7 @@ function renderReferences () {
 
 async function renderReferencesAndWait () {
   renderReferences()
-  await waitForElement(() => element.getByText('Document'))
+  await waitForElement(() => element.getAllByText('Document'))
 }
 
 async function inputReference () {
