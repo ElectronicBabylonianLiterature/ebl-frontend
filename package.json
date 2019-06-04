@@ -32,7 +32,7 @@
     "node": "^11.13.0"
   },
   "dependencies": {
-    "@sentry/browser": "^4.6.3",
+    "@sentry/browser": "^5.4.0",
     "auth0-js": "^9.6.0",
     "bluebird": "^3.5.2",
     "citation-js": "0.4.0-11",
