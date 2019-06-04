@@ -75,9 +75,7 @@
       "es6": true
     },
     "parser": "babel-eslint",
-    "plugins": [
-      "flowtype"
-    ]
+    "plugins": [ "flowtype" ]
   },
   "browserslist": [
     ">0.2%",
