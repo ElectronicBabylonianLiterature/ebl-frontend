@@ -1,5 +1,7 @@
+// @flow
 import _ from 'lodash'
 import { Seq, Range } from 'immutable'
+import type { Manuscript } from './text'
 
 function createIdRange (existingIds) {
   return Range((existingIds.max() || 0) + 1)
@@ -19,7 +21,7 @@ function setIds (manuscripts, ids) {
     : setId(manuscripts.first(), manuscripts.rest())
 }
 
-export default function populateIds (manuscripts) {
+export default function populateIds (manuscripts: Seq.Indexed<Manuscript>) {
   const existingIds = manuscripts.map(manuscript => manuscript.id)
 
   return existingIds.includes(null)

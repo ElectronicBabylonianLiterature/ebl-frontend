@@ -1,3 +1,4 @@
+// @flow
 import type { RecordFactory, RecordOf } from 'immutable'
 import { OrderedMap, Record } from 'immutable'
 
