@@ -10,38 +10,55 @@ import {
   UncuratedReference
 } from 'fragmentarium/fragment'
 
+function createMeasures (dto) {
+  return Measures({
+    length: dto.length.value,
+    width: dto.width.value,
+    thickness: dto.thickness.value
+  })
+}
+
+function createText (dto) {
+  return Text({
+    lines: List(dto.text.lines).map(dto =>
+      Line({
+        ...dto,
+        content: List(dto.content).map(token => fromJS(token))
+      })
+    )
+  })
+}
+
+function createUncuratedReferences (dto) {
+  return (
+    dto.uncuratedReferences &&
+    List(dto.uncuratedReferences).map(reference =>
+      UncuratedReference({
+        document: reference.document,
+        pages: List(reference.pages)
+      })
+    )
+  )
+}
+
+function createMatchingLines (dto) {
+  return dto.matching_lines
+    ? List(dto.matching_lines).map(line => fromJS(line))
+    : List()
+}
+
 function createFragment (dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
     joins: List(dto.joins),
-    measures: Measures({
-      length: dto.length.value,
-      width: dto.width.value,
-      thickness: dto.thickness.value
-    }),
+    measures: createMeasures(dto),
     folios: List(dto.folios).map(folioDto => new Folio(folioDto)),
     record: List(dto.record).map(recordDto => new RecordEntry(recordDto)),
-    text: Text({
-      lines: List(dto.text.lines).map(dto =>
-        Line({
-          ...dto,
-          content: List(dto.content).map(token => fromJS(token))
-        })
-      )
-    }),
+    text: createText(dto),
     references: List(dto.references).map(reference => fromJS(reference)),
-    uncuratedReferences:
-      dto.uncuratedReferences &&
-      List(dto.uncuratedReferences).map(reference =>
-        UncuratedReference({
-          document: reference.document,
-          pages: List(reference.pages)
-        })
-      ),
-    matchingLines: dto.matching_lines
-      ? List(dto.matching_lines).map(line => fromJS(line))
-      : List()
+    uncuratedReferences: createUncuratedReferences(dto),
+    matchingLines: createMatchingLines(dto)
   })
 }
 
