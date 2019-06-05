@@ -4,6 +4,7 @@ import { render, waitForElement } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import { factory } from 'factory-girl'
+import _ from 'lodash'
 
 const query = 'Börger'
 let entries
@@ -34,7 +35,11 @@ test('Fetch results from service', () => {
   expect(bibliographyService.search).toBeCalledWith(query)
 })
 
+function createAuthorRegExp (entry) {
+  return new RegExp(_.escapeRegExp(entry.author))
+}
+
 test('Result display', async () => {
-  await waitForElement(() => element.getByText(new RegExp(entries[0].author)))
-  expect(element.getByText(new RegExp(entries[1].author))).toBeDefined()
+  await waitForElement(() => element.getByText(createAuthorRegExp(entries[0])))
+  expect(element.getByText(createAuthorRegExp(entries[1]))).toBeDefined()
 })
