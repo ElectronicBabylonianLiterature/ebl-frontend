@@ -22,7 +22,12 @@ yarn lighthouse <url>
 
 ## Promises
 
-[bluebird](bluebirdjs.com) promises are used whenever a cancellabe promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
+[bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
+
+
+## Flow
+
+When `jest` is upgraded it might be necessary to update the Flow type definitions. E.g. `yarn flow-typed install jest@24.8.0`
 
 ## Acknowledgements
 
