@@ -19,7 +19,7 @@ function createMeasures (dto) {
 }
 
 function createText (dto) {
-  return Text({
+  return new Text({
     lines: List(dto.text.lines).map(dto =>
       Line({
         ...dto,

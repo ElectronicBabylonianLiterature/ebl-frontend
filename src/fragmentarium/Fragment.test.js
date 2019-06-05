@@ -52,7 +52,7 @@ describe('Fragment', () => {
         type: 'Transliteration'
       })
     ),
-    text: Text({
+    text: new Text({
       lines: List.of(
         Line({
           type: 'ControlLine',

@@ -121,7 +121,7 @@ it('Updates view on Edition save', async () => {
 
   await submitFormByTestId(element, 'transliteration-form')
 
-  await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
+  await waitForElement(() => element.getAllByText(expectedFragment.cdliNumber))
 })
 
 it('Updates view on References save', async () => {

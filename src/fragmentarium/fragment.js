@@ -1,6 +1,9 @@
 import { List, Record, Map } from 'immutable'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
+import Lemmatization, {
+  LemmatizationToken
+} from 'fragmentarium/lemmatization/Lemmatization'
 
 const moment = extendMoment(Moment)
 
@@ -71,7 +74,34 @@ export const Measures = Record({ length: null, width: null, thickness: null })
 
 export const Line = Record({ type: '', prefix: '', content: List() })
 
-export const Text = Record({ lines: List() })
+export class Text extends Record({
+  lines: List()
+}) {
+  createLemmatization (lemmas, suggestions) {
+    return new Lemmatization(
+      this.lines.map(line => line.prefix).toJS(),
+      this.lines
+        .toSeq()
+        .map(line => line.content)
+        .map(tokens =>
+          tokens.map(token =>
+            token.get('lemmatizable', false)
+              ? new LemmatizationToken(
+                token.get('value'),
+                true,
+                token
+                  .get('uniqueLemma', [])
+                  .map(id => lemmas[id])
+                  .toJS(),
+                suggestions[token.get('value')]
+              )
+              : new LemmatizationToken(token.get('value'), false)
+          )
+        )
+        .toJS()
+    )
+  }
+}
 
 export const UncuratedReference = Record({ document: '', pages: List() })
 
@@ -88,7 +118,7 @@ export class Fragment extends Record({
   script: '',
   folios: List(),
   record: List(),
-  text: Text(),
+  text: new Text(),
   notes: '',
   museum: '',
   references: List(),

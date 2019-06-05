@@ -186,7 +186,7 @@ test('createLemmatization', async () => {
     kur: words[2],
     nu: words[3]
   }
-  const text = Text({
+  const text = new Text({
     lines: List.of(
       Line({
         type: 'TextLine',
@@ -219,6 +219,13 @@ test('createLemmatization', async () => {
     Promise.resolve(suggestions[word] ? [[suggestions[word]]] : [])
   )
 
+  const expectedLemmas = _([words[0], words[1]])
+    .map(word => new Lemma(word))
+    .keyBy('value')
+    .value()
+  const expectedSuggestions = _.mapValues(suggestions, word => [
+    [new Lemma(word)]
+  ])
   const expected = new Lemmatization(
     ['1.'],
     [
@@ -239,8 +246,15 @@ test('createLemmatization', async () => {
     ]
   )
 
+  jest.spyOn(text, 'createLemmatization')
+  text.createLemmatization.mockReturnValue(expected)
+
   const result = await fragmentService.createLemmatization(text)
   expect(result).toEqual(expected)
+  expect(text.createLemmatization).toHaveBeenCalledWith(
+    expectedLemmas,
+    expectedSuggestions
+  )
 })
 
 test('hydrateReferences', async () => {

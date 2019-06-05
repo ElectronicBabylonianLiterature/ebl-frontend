@@ -1,9 +1,6 @@
 import _ from 'lodash'
 import { List } from 'immutable'
 import { Promise } from 'bluebird'
-import Lemmatization, {
-  LemmatizationToken
-} from 'fragmentarium/lemmatization/Lemmatization'
 import Lemma from 'fragmentarium/lemmatization/Lemma'
 import { createReference } from 'bibliography/Reference'
 
@@ -95,35 +92,14 @@ class FragmentService {
   }
 
   createLemmatization (text) {
-    return Promise.all([
-      this._fetchLemmas(text),
-      this._fetchSuggestions(text)
-    ]).then(([lemmaData, suggestionsData]) => {
-      const lemmas = _.keyBy(lemmaData, 'value')
-      const suggestions = _.fromPairs(suggestionsData)
-      return new Lemmatization(
-        text.lines.map(line => line.prefix).toJS(),
-        text.lines
-          .toSeq()
-          .map(line => line.content)
-          .map(tokens =>
-            tokens.map(token =>
-              token.get('lemmatizable', false)
-                ? new LemmatizationToken(
-                  token.get('value'),
-                  true,
-                  token
-                    .get('uniqueLemma', [])
-                    .map(id => lemmas[id])
-                    .toJS(),
-                  suggestions[token.get('value')]
-                )
-                : new LemmatizationToken(token.get('value'), false)
-            )
-          )
-          .toJS()
+    return Promise.all([this._fetchLemmas(text), this._fetchSuggestions(text)])
+      .then(([lemmaData, suggestionsData]) => [
+        _.keyBy(lemmaData, 'value'),
+        _.fromPairs(suggestionsData)
+      ])
+      .then(([lemmas, suggestions]) =>
+        text.createLemmatization(lemmas, suggestions)
       )
-    })
   }
 
   _fetchLemmas (text) {

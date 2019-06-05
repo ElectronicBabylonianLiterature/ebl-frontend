@@ -197,7 +197,7 @@ export const fragment = new Fragment({
     })
   ),
   folios: List([new Folio({ name: 'FWG', number: 'M134' })]),
-  text: Text({
+  text: new Text({
     lines: List.of(
       Line({
         type: 'TextLine',
