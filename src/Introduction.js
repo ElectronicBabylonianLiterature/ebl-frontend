@@ -22,12 +22,9 @@ function Auth0Badge () {
   )
 }
 
-export default function Inroduction () {
+function IntroText () {
   return (
-    <AppContent
-      className='App-content'
-      title='The “Electronic Babylonian Literature” (eBL) Project: A general introduction'
-    >
+    <>
       <p>
         The Electronic Babylonian Literature (eBL) Project brings together
         ancient Near Eastern specialists and data scientists to revolutionize
@@ -68,6 +65,17 @@ export default function Inroduction () {
         experienced by ancient audiences.
       </p>
       <img className='Introduction__chart' src={eblChart} alt='eBL chart' />
+    </>
+  )
+}
+
+export default function Introduction () {
+  return (
+    <AppContent
+      className='App-content'
+      title='The “Electronic Babylonian Literature” (eBL) Project: A general introduction'
+    >
+      <IntroText />
 
       <footer className='Introduction__footer'>
         <Auth0Badge />
