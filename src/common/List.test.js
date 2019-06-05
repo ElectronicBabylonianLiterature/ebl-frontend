@@ -1,10 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import { Promise } from 'bluebird'
 import { FormControl } from 'react-bootstrap'
 import List from './List'
 import { render } from '@testing-library/react'
-import { whenClicked, whenChangedByValue, clickNth } from 'test-helpers/utils'
+import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
 
 const label = 'List'
 const id = 'list'
@@ -13,11 +12,9 @@ const items = ['text1', 'text2', 'text3']
 let defaultValue
 let element
 let onChange
-let beforeAdd
 
 beforeEach(() => {
   onChange = jest.fn()
-  beforeAdd = null
 })
 
 describe('Default is not a function', () => {
@@ -45,30 +42,6 @@ describe('Default is a function', () => {
     await whenClicked(element, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...items, defaultValue()])
-  })
-
-  commonTests()
-})
-
-describe('beforeAddIsGiven', () => {
-  beforeEach(async () => {
-    beforeAdd = jest.fn()
-    defaultValue = () => ''
-    element = renderList()
-  })
-
-  it('New entry has the default value', async () => {
-    beforeAdd.mockReturnValue(Promise.resolve())
-    await whenClicked(element, `Add ${noun}`)
-      .expect(onChange)
-      .toHaveBeenCalledWith([...items, defaultValue()])
-    expect(beforeAdd).toHaveBeenCalled()
-  })
-
-  it('Does not call onChange if beforeAdd is rejected', async () => {
-    beforeAdd.mockReturnValue(Promise.reject(new Error()))
-    await clickNth(element, `Add ${noun}`)
-    expect(onChange).not.toHaveBeenCalled()
   })
 
   commonTests()
@@ -124,7 +97,6 @@ function renderList () {
       label={label}
       noun={noun}
       defaultValue={defaultValue}
-      beforeAdd={beforeAdd}
     >
       {(value, onChange) => (
         <TestFormControl value={value} onChange={onChange} />

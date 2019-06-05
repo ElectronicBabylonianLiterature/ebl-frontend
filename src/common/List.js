@@ -28,22 +28,10 @@ function createDefaultValue (defaultValue) {
 }
 
 function listController (ListView) {
-  return ({
-    value,
-    children,
-    onChange,
-    defaultValue,
-    beforeAdd = null,
-    ...props
-  }) => {
+  return ({ value, children, onChange, defaultValue, ...props }) => {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
-      const newValue = merge(value, [newItem])
-      if (_.isFunction(beforeAdd)) {
-        beforeAdd().then(() => onChange(newValue))
-      } else {
-        onChange(newValue)
-      }
+      onChange(merge(value, [newItem]))
     }
 
     const delete_ = index => () => {
