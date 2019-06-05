@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement, fireEvent } from '@testing-library/react'
+import { fireEvent, render, waitForElement } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
 import Auth from 'auth/Auth'
@@ -13,15 +13,10 @@ import Session from 'auth/Session'
 import BibliographyRepository from 'bibliography/BibliographyRepository'
 import BibliographyService from 'bibliography/BibliographyService'
 import { defaultErrorReporter } from 'ErrorReporterContext'
+import createAuth0Config from 'auth/createAuth0Config'
 
 function createApp (api, sessionStore) {
-  const auth0Config = {
-    domain: process.env.REACT_APP_AUTH0_DOMAIN,
-    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-    returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
-    audience: 'dictionary-api'
-  }
+  const auth0Config = createAuth0Config()
   const auth = new Auth(sessionStore, defaultErrorReporter, auth0Config)
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)

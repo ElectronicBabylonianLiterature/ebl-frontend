@@ -20,6 +20,7 @@ import ErrorReporterContext from './ErrorReporterContext'
 import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
 import TextService from 'corpus/TextService'
+import createAuth0Config from 'auth/createAuth0Config'
 
 SentryErrorReporter.init(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
 
@@ -27,13 +28,7 @@ Promise.config({
   cancellation: true
 })
 
-const auth0Config = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN,
-  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  redirectUri: process.env.REACT_APP_AUTH0_REDIRECT_URI,
-  returnTo: process.env.REACT_APP_AUTH0_RETURN_TO,
-  audience: 'dictionary-api'
-}
+const auth0Config = createAuth0Config()
 
 const errorReporter = new SentryErrorReporter()
 const auth = new Auth(new SessionStore(), errorReporter, auth0Config)
