@@ -1,13 +1,13 @@
 // @flow
 import _ from 'lodash'
 import { immerable } from 'immer'
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 
 class Reference {
   +type: string
   +pages: string
   +notes: string
-  +linesCited: Array<string>
+  +linesCited: List<string>
   +document: ?Object
 
   constructor (
@@ -20,7 +20,7 @@ class Reference {
     this.type = type
     this.pages = pages
     this.notes = notes
-    this.linesCited = linesCited
+    this.linesCited = List(linesCited)
     this.document = document_
   }
 
@@ -114,6 +114,6 @@ export function serializeReference (reference: Reference) {
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
-    linesCited: reference.linesCited
+    linesCited: reference.linesCited.toJS()
   }
 }
