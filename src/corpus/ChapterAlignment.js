@@ -8,13 +8,13 @@ export default function ChapterAlignment ({ chapter }: Props) {
   return (
     <>
       <Badge variant='danger'>WIP</Badge>
-      {chapter.lines.map(line => (
-        <section>
+      {chapter.lines.map((line, index) => (
+        <section key={index}>
           <header>
             {line.number} {line.reconstruction}
           </header>
-          {line.manuscripts.map(manuscript => (
-            <article>
+          {line.manuscripts.map((manuscript, index) => (
+            <article key={index}>
               {manuscript.manuscriptId} {manuscript.labels} {manuscript.number}{' '}
               {manuscript.atf}
             </article>
