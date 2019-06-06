@@ -68,7 +68,7 @@ describe('createDefaultLineFactory', () => {
     ).toEqual(
       createLine({
         manuscripts: produce(manuscripts, draft => {
-          draft.manuscripts.forEach(manuscript => {
+          draft.forEach(manuscript => {
             manuscript.atf = ''
           })
         })
