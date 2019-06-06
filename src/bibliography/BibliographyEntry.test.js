@@ -9,7 +9,8 @@ let cite
 
 beforeEach(async () => {
   cslData = await factory.build('cslData', {
-    author: [{ family: 'Family', extra: 'Extra' }]
+    author: [{ family: 'Family', extra: 'Extra' }],
+    _underscored: 'should be omitted'
   })
   entry = new BibliographyEntry(cslData)
   cite = new Cite(cslData)
@@ -79,7 +80,7 @@ test('toBibtex', () => {
 
 test('toJson', async () => {
   const expectedCslData = await factory.build('cslData', {
-    ...cslData,
+    ..._.omit(cslData, '_underscored'),
     author: [{ family: 'Family' }]
   })
   expect(entry.toJson()).toEqual(expectedCslData)

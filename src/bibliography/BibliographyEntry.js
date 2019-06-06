@@ -1,11 +1,13 @@
 import _ from 'lodash'
 import Cite from 'citation-js'
+import { immerable, produce } from 'immer'
 
 export default class BibliographyEntry {
   #cslData
 
   constructor (cslData) {
     this.#cslData = _.cloneDeep(cslData)
+    this[immerable] = true
     Object.freeze(this)
   }
 
@@ -64,14 +66,12 @@ export default class BibliographyEntry {
       'parse-names'
     ]
 
-    return _.has(this.#cslData, 'author')
-      ? {
-        ..._.cloneDeep(this.#cslData),
-        author: this.#cslData.author.map(author =>
-          _.pick(author, authorProperties)
-        )
-      }
-      : _.cloneDeep(this.#cslData)
+    return produce(this.#cslData, draft => {
+      _.keys(draft)
+        .filter(key => key.startsWith('_'))
+        .forEach(_.partial(_.unset, draft))
+      draft.author = draft.author.map(_.partialRight(_.pick, authorProperties))
+    })
   }
 }
 
