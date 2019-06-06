@@ -8,20 +8,11 @@ import {
   createLine,
   createManuscriptLine
 } from './text'
-import type {
-  ManuscriptProps,
-  ManuscriptLineProps,
-  LineProps,
-  ChapterProps,
-  TextProps
-} from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-import type { RecordFactory } from 'immutable'
-import { List } from 'immutable'
-import type { Any } from 'flow-bin'
+import type { Chapter, Line, Manuscript, ManuscriptLine, Text } from './text'
 
-const manuscriptConfig: ManuscriptProps = {
+const manuscriptConfig: Manuscript = {
   id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
@@ -31,39 +22,39 @@ const manuscriptConfig: ManuscriptProps = {
   provenance: provenances.first(),
   type: types.first(),
   notes: 'some notes',
-  references: List()
+  references: []
 }
 
-const manuscrpitLineConfig: ManuscriptLineProps = {
+const manuscrpitLineConfig: ManuscriptLine = {
   manuscriptId: 1,
-  labels: List.of('iii'),
+  labels: ['iii'],
   number: 'a+1',
   atf: 'kur'
 }
 
-const lineConfig: LineProps = {
+const lineConfig: Line = {
   number: '2',
   reconstruction: 'reconstructed text',
-  manuscripts: List.of(createManuscriptLine(manuscrpitLineConfig))
+  manuscripts: [createManuscriptLine(manuscrpitLineConfig)]
 }
 
-const chapterConfig: ChapterProps = {
+const chapterConfig: Chapter = {
   classification: 'Ancient',
   stage: 'Old Babylonian',
   version: 'A',
   name: 'III',
   order: -1,
-  manuscripts: List.of(createManuscript(manuscriptConfig)),
-  lines: List.of(createLine(lineConfig))
+  manuscripts: [createManuscript(manuscriptConfig)],
+  lines: [createLine(lineConfig)]
 }
 
-const textConfig: TextProps = {
+const textConfig: Text = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',
   numberOfVerses: 930,
   approximateVerses: true,
-  chapters: List.of(createChapter(chapterConfig))
+  chapters: [createChapter(chapterConfig)]
 }
 
 describe('Text', () => {
@@ -86,7 +77,7 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties (config, factory: RecordFactory<Any>) {
+function testProperties (config: any, factory: any => any) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })

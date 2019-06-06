@@ -30,15 +30,15 @@ export type Manuscript = {
   references: Array<Reference>
 }
 export const createManuscript: ($Shape<Manuscript>) => Manuscript = produce(
-  draft => ({
+  (draft: $Shape<Manuscript>): Manuscript => ({
     id: null,
     siglumDisambiguator: '',
     museumNumber: '',
     accession: '',
-    periodModifier: periodModifiers.get('None'),
-    period: periods.get('Neo-Assyrian'),
-    provenance: provenances.get('Nineveh'),
-    type: types.get('Library'),
+    periodModifier: periodModifiers.get('None', periodModifiers.first()),
+    period: periods.get('Neo-Assyrian', periods.first()),
+    provenance: provenances.get('Nineveh', provenances.first()),
+    type: types.get('Library', types.first()),
     notes: '',
     references: [],
     ...draft
@@ -53,25 +53,29 @@ export type ManuscriptLine = {
 }
 export const createManuscriptLine: (
   $Shape<ManuscriptLine>
-) => ManuscriptLine = produce(draft => ({
-  manuscriptId: 0,
-  labels: [],
-  number: '',
-  atf: '',
-  ...draft
-}))
+) => ManuscriptLine = produce(
+  (draft: $Shape<ManuscriptLine>): ManuscriptLine => ({
+    manuscriptId: 0,
+    labels: [],
+    number: '',
+    atf: '',
+    ...draft
+  })
+)
 
 export type Line = {
   number: string,
   reconstruction: string,
   manuscripts: Array<ManuscriptLine>
 }
-export const createLine: ($Shape<Line>) => Line = produce(draft => ({
-  number: '',
-  reconstruction: '',
-  manuscripts: [],
-  ...draft
-}))
+export const createLine: ($Shape<Line>) => Line = produce(
+  (draft: $Shape<Line>): Line => ({
+    number: '',
+    reconstruction: '',
+    manuscripts: [],
+    ...draft
+  })
+)
 
 export type Chapter = {
   classification: string,
@@ -82,16 +86,18 @@ export type Chapter = {
   manuscripts: Array<Manuscript>,
   lines: Array<Line>
 }
-export const createChapter: ($Shape<Chapter>) => Chapter = produce(draft => ({
-  classification: 'Ancient',
-  stage: 'Neo-Assyrian',
-  version: '',
-  name: '',
-  order: 0,
-  manuscripts: [],
-  lines: [],
-  ...draft
-}))
+export const createChapter: ($Shape<Chapter>) => Chapter = produce(
+  (draft: $Shape<Chapter>): Chapter => ({
+    classification: 'Ancient',
+    stage: 'Neo-Assyrian',
+    version: '',
+    name: '',
+    order: 0,
+    manuscripts: [],
+    lines: [],
+    ...draft
+  })
+)
 
 export type Text = {
   category: number,
@@ -101,12 +107,14 @@ export type Text = {
   approximateVerses: boolean,
   chapters: Array<Chapter>
 }
-export const createText: ($Shape<Text>) => Text = produce(draft => ({
-  category: 0,
-  index: 0,
-  name: '',
-  numberOfVerses: 0,
-  approximateVerses: false,
-  chapters: [],
-  ...draft
-}))
+export const createText: ($Shape<Text>) => Text = produce(
+  (draft: $Shape<Text>): Text => ({
+    category: 0,
+    index: 0,
+    name: '',
+    numberOfVerses: 0,
+    approximateVerses: false,
+    chapters: [],
+    ...draft
+  })
+)

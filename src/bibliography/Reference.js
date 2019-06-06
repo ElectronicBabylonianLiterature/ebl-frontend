@@ -1,23 +1,27 @@
 // @flow
-import { List } from 'immutable'
 import _ from 'lodash'
 import { immerable } from 'immer'
+import { Map } from 'immutable'
 
-export default class Reference {
+class Reference {
+  +type: string
+  +pages: string
+  +notes: string
+  +linesCited: Array<string>
+  +document: ?Object
+
   constructor (
-    type = 'DISCUSSION',
-    pages = '',
-    notes = '',
+    type: string = 'DISCUSSION',
+    pages: string = '',
+    notes: string = '',
     linesCited: Array<string> = [],
     document_: ?Object = null
   ) {
-    this[immerable] = true
     this.type = type
     this.pages = pages
     this.notes = notes
-    this.linesCited = List(linesCited)
+    this.linesCited = linesCited
     this.document = document_
-    Object.freeze(this)
   }
 
   get id () {
@@ -32,7 +36,7 @@ export default class Reference {
     return _.get(this, 'type.0', '')
   }
 
-  setType (type) {
+  setType (type: string) {
     return new Reference(
       type,
       this.pages,
@@ -42,7 +46,7 @@ export default class Reference {
     )
   }
 
-  setPages (pages) {
+  setPages (pages: string) {
     return new Reference(
       this.type,
       pages,
@@ -52,7 +56,7 @@ export default class Reference {
     )
   }
 
-  setNotes (notes) {
+  setNotes (notes: string) {
     return new Reference(
       this.type,
       this.pages,
@@ -62,17 +66,17 @@ export default class Reference {
     )
   }
 
-  setLinesCited (linesCited) {
+  setLinesCited (linesCited: Array<string>) {
     return new Reference(
       this.type,
       this.pages,
       this.notes,
-      List(linesCited),
+      linesCited,
       this.document
     )
   }
 
-  setDocument (document_) {
+  setDocument (document_: ?Object) {
     return new Reference(
       this.type,
       this.pages,
@@ -82,8 +86,14 @@ export default class Reference {
     )
   }
 }
+Reference[immerable] = true
 
-export function createReference (data, bibliographyRepository) {
+export default Reference
+
+export function createReference (
+  data: Map<string, any>,
+  bibliographyRepository: { find: any => any }
+) {
   return bibliographyRepository
     .find(data.get('id'))
     .then(
@@ -98,12 +108,12 @@ export function createReference (data, bibliographyRepository) {
     )
 }
 
-export function serializeReference (reference) {
+export function serializeReference (reference: Reference) {
   return {
     id: reference.id,
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
-    linesCited: reference.linesCited.toJS()
+    linesCited: reference.linesCited
   }
 }
