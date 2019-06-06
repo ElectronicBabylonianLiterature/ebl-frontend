@@ -70,7 +70,11 @@ export default class BibliographyEntry {
       _.keys(draft)
         .filter(key => key.startsWith('_'))
         .forEach(_.partial(_.unset, draft))
-      draft.author = draft.author.map(_.partialRight(_.pick, authorProperties))
+      if (draft.author) {
+        draft.author = draft.author.map(
+          _.partialRight(_.pick, authorProperties)
+        )
+      }
     })
   }
 }

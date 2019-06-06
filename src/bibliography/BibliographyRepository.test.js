@@ -57,4 +57,5 @@ const testData = [
   ]
 ]
 
-testDelegation(wordRepository, testData)
+describe('BibliographyRepository', () =>
+  testDelegation(wordRepository, testData))
