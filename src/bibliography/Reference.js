@@ -1,14 +1,17 @@
+// @flow
 import { List } from 'immutable'
 import _ from 'lodash'
+import { immerable } from 'immer'
 
 export default class Reference {
   constructor (
     type = 'DISCUSSION',
     pages = '',
     notes = '',
-    linesCited = [],
-    document_ = null
+    linesCited: Array<string> = [],
+    document_: ?Object = null
   ) {
+    this[immerable] = true
     this.type = type
     this.pages = pages
     this.notes = notes
@@ -101,6 +104,6 @@ export function serializeReference (reference) {
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
-    linesCited: reference.linesCited
+    linesCited: reference.linesCited.toJS()
   }
 }

@@ -1,11 +1,12 @@
 // @flow
-import type { RecordFactory, RecordOf } from 'immutable'
-import { List, OrderedMap, Record } from 'immutable'
+import { OrderedMap } from 'immutable'
 import Reference from '../bibliography/Reference'
 import type { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
 import type { Provenance } from './provenance'
 import { provenances } from './provenance'
+import { produce } from 'immer'
+import { $Shape } from 'flow-bin'
 
 export type ManuscriptType = { +name: string, +abbreviation: string }
 export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
@@ -16,7 +17,7 @@ export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
   Quotation: { name: 'Quotation', abbreviation: 'Quo' }
 })
 
-export type ManuscriptProps = {
+export type Manuscript = {
   id: ?number,
   siglumDisambiguator: string,
   museumNumber: string,
@@ -26,82 +27,86 @@ export type ManuscriptProps = {
   provenance: Provenance,
   type: ManuscriptType,
   notes: string,
-  references: List<Reference>
+  references: Array<Reference>
 }
-export const createManuscript: RecordFactory<ManuscriptProps> = Record({
-  id: null,
-  siglumDisambiguator: '',
-  museumNumber: '',
-  accession: '',
-  periodModifier: periodModifiers.get('None'),
-  period: periods.get('Neo-Assyrian'),
-  provenance: provenances.get('Nineveh'),
-  type: types.get('Library'),
-  notes: '',
-  references: List()
-})
-export type Manuscript = RecordOf<ManuscriptProps>
+export const createManuscript: ($Shape<Manuscript>) => Manuscript = produce(
+  draft => ({
+    id: null,
+    siglumDisambiguator: '',
+    museumNumber: '',
+    accession: '',
+    periodModifier: periodModifiers.get('None'),
+    period: periods.get('Neo-Assyrian'),
+    provenance: provenances.get('Nineveh'),
+    type: types.get('Library'),
+    notes: '',
+    references: [],
+    ...draft
+  })
+)
 
-export type ManuscriptLineProps = {
+export type ManuscriptLine = {
   manuscriptId: number,
-  labels: List<string>,
+  labels: Array<string>,
   number: string,
   atf: string
 }
-export const createManuscriptLine: RecordFactory<ManuscriptLineProps> = Record({
+export const createManuscriptLine: (
+  $Shape<ManuscriptLine>
+) => ManuscriptLine = produce(draft => ({
   manuscriptId: 0,
-  labels: List(),
+  labels: [],
   number: '',
-  atf: ''
-})
-export type ManuscriptLine = RecordOf<ManuscriptLineProps>
+  atf: '',
+  ...draft
+}))
 
-export type LineProps = {
+export type Line = {
   number: string,
   reconstruction: string,
-  manuscripts: List<ManuscriptLine>
+  manuscripts: Array<ManuscriptLine>
 }
-export const createLine: RecordFactory<LineProps> = Record({
+export const createLine: ($Shape<Line>) => Line = produce(draft => ({
   number: '',
   reconstruction: '',
-  manuscripts: List()
-})
-export type Line = RecordOf<LineProps>
+  manuscripts: [],
+  ...draft
+}))
 
-export type ChapterProps = {
+export type Chapter = {
   classification: string,
   stage: string,
   version: string,
   name: string,
   order: number,
-  manuscripts: List<Manuscript>,
-  lines: List<Line>
+  manuscripts: Array<Manuscript>,
+  lines: Array<Line>
 }
-export const createChapter: RecordFactory<ChapterProps> = Record({
+export const createChapter: ($Shape<Chapter>) => Chapter = produce(draft => ({
   classification: 'Ancient',
   stage: 'Neo-Assyrian',
   version: '',
   name: '',
   order: 0,
-  manuscripts: List(),
-  lines: List()
-})
-export type Chapter = RecordOf<ChapterProps>
+  manuscripts: [],
+  lines: [],
+  ...draft
+}))
 
-export type TextProps = {
+export type Text = {
   category: number,
   index: number,
   name: string,
   numberOfVerses: number,
   approximateVerses: boolean,
-  chapters: List<Chapter>
+  chapters: Array<Chapter>
 }
-export const createText: RecordFactory<TextProps> = Record({
+export const createText: ($Shape<Text>) => Text = produce(draft => ({
   category: 0,
   index: 0,
   name: '',
   numberOfVerses: 0,
   approximateVerses: false,
-  chapters: List()
-})
-export type Text = RecordOf<TextProps>
+  chapters: [],
+  ...draft
+}))

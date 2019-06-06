@@ -9,6 +9,7 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ChapterForm from './ChapterForm'
 import ChapterNavigation from './ChapterNavigation'
+import { produce } from 'immer'
 
 function textChanged (prevProps, props) {
   return (
@@ -47,18 +48,22 @@ function ChapterView ({
   searchBibliography,
   disabled
 }) {
-  const [chapterIndex, chapter] = text.chapters.findEntry(
+  const chapterIndex = text.chapters.findIndex(
     chapter => chapter.stage === stage && chapter.name === name
-  ) || [-1, null]
+  )
   const title = <ChapterTitle text={text} stage={stage} name={name} />
   const handleChange = chapter =>
-    onChange(text.setIn(['chapters', chapterIndex], chapter))
+    onChange(
+      produce(text, draft => {
+        draft.chapters[chapterIndex] = chapter
+      })
+    )
   return (
     <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
-      {chapter ? (
+      {chapterIndex >= 0 ? (
         <ChapterForm
-          chapter={chapter}
+          chapter={text.chapters[chapterIndex]}
           disabled={disabled}
           searchBibliography={searchBibliography}
           onChange={handleChange}
@@ -94,24 +99,28 @@ class ChapterController extends Component {
   }
 
   setText = text => {
-    this.setState({
-      ...this.state,
-      text: text
-    })
+    this.setState(
+      produce(state => {
+        state.text = text
+      })
+    )
   }
 
   setStateUpdating = () =>
-    this.setState({
-      ...this.state,
-      saving: true,
-      error: null
-    })
+    this.setState(
+      produce(state => {
+        state.saving = true
+        state.error = null
+      })
+    )
 
   setStateError = error =>
-    this.setState({
-      saving: false,
-      error: error
-    })
+    this.setState(
+      produce(state => {
+        state.saving = false
+        state.error = error
+      })
+    )
 
   setStateUpdated = updatedText =>
     this.setState({

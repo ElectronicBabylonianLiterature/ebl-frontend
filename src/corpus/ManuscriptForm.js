@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
@@ -5,16 +6,30 @@ import { types } from './text'
 import ReferencesForm from 'bibliography/ReferencesForm'
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
+import type { Manuscript } from './text'
+import { produce } from 'immer'
 
 export default function ManuscriptForm ({
   manuscript,
   onChange,
   searchBibliography
+}: {
+  manuscript: Manuscript,
+  onChange: Manuscript => void,
+  searchBibliography: any
 }) {
   const handleChange = property => event =>
-    onChange(manuscript.set(property, event.target.value))
+    onChange(
+      produce(manuscript, draft => {
+        draft[property] = event.target.value
+      })
+    )
   const handelRecordChange = (property, values) => event =>
-    onChange(manuscript.set(property, values.get(event.target.value)))
+    onChange(
+      produce(manuscript, draft => {
+        draft[property] = values.get(event.target.value)
+      })
+    )
 
   return (
     <>
@@ -131,7 +146,13 @@ export default function ManuscriptForm ({
       <ReferencesForm
         value={manuscript.references}
         label='References'
-        onChange={value => onChange(manuscript.set('references', value))}
+        onChange={value =>
+          onChange(
+            produce(manuscript, draft => {
+              draft.references = value
+            })
+          )
+        }
         searchBibliography={searchBibliography}
         collapsed
       />

@@ -1,30 +1,21 @@
 // @flow
 import _ from 'lodash'
-import { Seq, Range } from 'immutable'
 import type { Manuscript } from './text'
+import { produce } from 'immer'
 
-function createIdRange (existingIds) {
-  return Range((existingIds.max() || 0) + 1)
-}
-
-function setIds (manuscripts, ids) {
-  function setId (manuscript, manuscripts) {
-    return _.isNil(manuscript.id)
-      ? Seq.Indexed.of(manuscript.set('id', ids.first())).concat(
-        setIds(manuscripts, ids.rest())
-      )
-      : Seq.Indexed.of(manuscript).concat(setIds(manuscripts, ids))
-  }
-
-  return manuscripts.isEmpty()
-    ? Seq.Indexed()
-    : setId(manuscripts.first(), manuscripts.rest())
-}
-
-export default function populateIds (manuscripts: Seq.Indexed<Manuscript>) {
+function calculateNextId (manuscripts) {
   const existingIds = manuscripts.map(manuscript => manuscript.id)
+  const maxId = _.max(existingIds) || 0
+  return maxId + 1
+}
 
-  return existingIds.includes(null)
-    ? setIds(manuscripts, createIdRange(existingIds)).toList()
-    : manuscripts
+export default function populateIds (manuscripts: Array<Manuscript>) {
+  const firstId = calculateNextId(manuscripts)
+  return produce(manuscripts, draft => {
+    draft
+      .filter(manuscript => _.isNil(manuscript.id))
+      .forEach((manuscript, index) => {
+        manuscript.id = firstId + index
+      })
+  })
 }

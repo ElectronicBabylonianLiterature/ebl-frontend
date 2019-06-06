@@ -3,6 +3,7 @@ import ListForm from 'common/List'
 import { createManuscript } from './text'
 import ManuscriptForm from './ManuscriptForm'
 import populateIds from './populateIds'
+import { produce } from 'immer'
 
 export default function ChapterManuscripts ({
   chapter,
@@ -10,7 +11,11 @@ export default function ChapterManuscripts ({
   searchBibliography
 }) {
   const handeManuscriptsChange = manuscripts =>
-    onChange(chapter.set('manuscripts', populateIds(manuscripts)))
+    onChange(
+      produce(chapter, draft => {
+        draft.manuscripts = populateIds(manuscripts)
+      })
+    )
   return (
     <ListForm
       noun='manuscript'

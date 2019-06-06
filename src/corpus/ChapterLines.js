@@ -6,12 +6,21 @@ import Editor from 'editor/Editor'
 import { createManuscriptLine } from './text'
 import ArrayInput from 'common/ArrayInput'
 import { createDefaultLineFactory } from './line-factory'
+import { produce } from 'immer'
 
 function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event =>
-    onChange(value.set(property, event.target.value))
+    onChange(
+      produce(value, draft => {
+        draft[property] = event.target.value
+      })
+    )
   const handleIdChange = event =>
-    onChange(value.set('manuscriptId', Number(event.target.value)))
+    onChange(
+      produce(value, draft => {
+        draft.manuscriptId = event.target.value
+      })
+    )
   return (
     <Form.Row>
       <Form.Group as={Col} md={2} controlId={_.uniqueId('ManuscriptLine-')}>
@@ -38,7 +47,13 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
         <ArrayInput
           value={value.labels}
           separator={' '}
-          onChange={labels => onChange(value.set('labels', labels))}
+          onChange={labels =>
+            onChange(
+              produce(value, draft => {
+                draft.labels = labels
+              })
+            )
+          }
         >
           Side
         </ArrayInput>
@@ -52,7 +67,13 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
         <Editor
           name={_.uniqueId('Text-')}
           value={value.atf}
-          onChange={atf => onChange(value.set('atf', atf))}
+          onChange={atf =>
+            onChange(
+              produce(value, draft => {
+                draft.atf = atf
+              })
+            )
+          }
           disabled={disabled}
         />
       </Col>
@@ -82,9 +103,17 @@ function ManuscriptLines ({ lines, manuscripts, onChange, disabled }) {
 
 function ChapterLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleChangeValue = property => propertyValue =>
-    onChange(value.set(property, propertyValue))
+    onChange(
+      produce(value, draft => {
+        draft[property] = propertyValue
+      })
+    )
   const handleChange = property => event =>
-    onChange(value.set(property, event.target.value))
+    onChange(
+      produce(value, draft => {
+        draft[property] = event.target.value
+      })
+    )
   return (
     <>
       <Form.Row>
@@ -116,11 +145,16 @@ function ChapterLineForm ({ value, manuscripts, onChange, disabled }) {
 }
 
 export default function ChapterLines ({ chapter, onChange, disabled }) {
-  const handleChange = lines => onChange(chapter.set('lines', lines))
+  const handleChange = lines =>
+    onChange(
+      produce(chapter, draft => {
+        draft.lines = lines
+      })
+    )
   return (
     <ListForm
       noun='line'
-      defaultValue={createDefaultLineFactory(chapter.lines.last())}
+      defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
       value={chapter.lines}
       onChange={handleChange}
     >

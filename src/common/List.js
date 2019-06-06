@@ -5,6 +5,7 @@ import { isCollection, isValueObject, merge, remove, set } from 'immutable'
 
 import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
+import { produce } from 'immer'
 
 function SizeBadge ({ collection }) {
   const size = isCollection(collection) ? collection.count() : collection.length
@@ -31,15 +32,33 @@ function listController (ListView) {
   return ({ value, children, onChange, defaultValue, ...props }) => {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
-      onChange(merge(value, [newItem]))
+      onChange(
+        isCollection(value)
+          ? merge(value, [newItem])
+          : produce(value, draft => {
+            draft.push(newItem)
+          })
+      )
     }
 
     const delete_ = index => () => {
-      onChange(remove(value, index))
+      onChange(
+        isCollection(value)
+          ? remove(value, index)
+          : produce(value, draft => {
+            draft.splice(index, 1)
+          })
+      )
     }
 
     const update = index => updated => {
-      onChange(set(value, index, updated))
+      onChange(
+        isCollection(value)
+          ? set(value, index, updated)
+          : produce(value, draft => {
+            draft[index] = updated
+          })
+      )
     }
 
     return (

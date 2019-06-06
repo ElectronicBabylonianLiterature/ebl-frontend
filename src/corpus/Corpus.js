@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Image from 'fragmentarium/Image'
@@ -53,13 +54,11 @@ function Texts ({ texts }) {
     <section key={category}>
       <h3>{title}</h3>
       <Container fluid as='ol'>
-        {texts
-          .toSeq()
+        {_(texts)
           .filter(text => text.category === category)
           .sortBy(text => text.index)
-          .map((text, index) => (
-            <Text key={index} text={text} />
-          ))}
+          .map((text, index) => <Text key={index} text={text} />)
+          .value()}
       </Container>
     </section>
   ))

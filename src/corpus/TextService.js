@@ -1,4 +1,3 @@
-import { List, Seq } from 'immutable'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference, { serializeReference } from 'bibliography/Reference'
 import {
@@ -11,41 +10,40 @@ import {
 } from './text'
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
+import { produce } from 'immer'
 
 function fromDto (textDto) {
   return createText({
     ...textDto,
-    chapters: List(textDto.chapters).map(chapterDto =>
+    chapters: textDto.chapters.map(chapterDto =>
       createChapter({
         ...chapterDto,
-        manuscripts: List(chapterDto.manuscripts).map(manuscriptDto =>
+        manuscripts: chapterDto.manuscripts.map(manuscriptDto =>
           createManuscript({
             ...manuscriptDto,
             periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
             period: periods.get(manuscriptDto.period),
             provenance: provenances.get(manuscriptDto.provenance),
             type: types.get(manuscriptDto.type),
-            references: Seq.Indexed(manuscriptDto.references)
-              .map(
-                referenceDto =>
-                  new Reference(
-                    referenceDto.type,
-                    referenceDto.pages,
-                    referenceDto.notes,
-                    referenceDto.linesCited,
-                    new BibliographyEntry(referenceDto.document)
-                  )
-              )
-              .toList()
+            references: manuscriptDto.references.map(
+              referenceDto =>
+                new Reference(
+                  referenceDto.type,
+                  referenceDto.pages,
+                  referenceDto.notes,
+                  referenceDto.linesCited,
+                  new BibliographyEntry(referenceDto.document)
+                )
+            )
           })
         ),
-        lines: List(chapterDto.lines).map(lineDto =>
+        lines: chapterDto.lines.map(lineDto =>
           createLine({
             ...lineDto,
-            manuscripts: List(lineDto.manuscripts).map(manuscriptLineDto =>
+            manuscripts: lineDto.manuscripts.map(manuscriptLineDto =>
               createManuscriptLine({
                 manuscriptId: manuscriptLineDto['manuscriptId'],
-                labels: List(manuscriptLineDto['labels']),
+                labels: manuscriptLineDto['labels'],
                 number: manuscriptLineDto['number'],
                 atf: manuscriptLineDto['atf']
               })
@@ -61,26 +59,17 @@ function toName (record) {
   return record.name
 }
 
-function toDto (text) {
-  return text
-    .updateIn(['chapters'], chapters =>
-      chapters.map(chapter =>
-        chapter.updateIn(['manuscripts'], manuscripts =>
-          manuscripts.map(manuscript =>
-            manuscript
-              .update('periodModifier', toName)
-              .update('period', toName)
-              .update('provenance', toName)
-              .update('type', toName)
-              .update('references', references =>
-                references.map(serializeReference)
-              )
-          )
-        )
-      )
-    )
-    .toJS()
-}
+const toDto = produce(draft => {
+  draft.chapters.forEach(chapter =>
+    chapter.manuscripts.forEach(manuscript => {
+      manuscript.periodModifier = toName(manuscript.periodModifier)
+      manuscript.period = toName(manuscript.period)
+      manuscript.provenance = toName(manuscript.provenance)
+      manuscript.type = toName(manuscript.type)
+      manuscript.references = manuscript.references.map(serializeReference)
+    })
+  )
+})
 
 export default class TextService {
   #apiClient
@@ -99,11 +88,9 @@ export default class TextService {
   }
 
   list () {
-    return this.#apiClient.fetchJson('/texts', false).then(texts =>
-      Seq(texts)
-        .map(fromDto)
-        .toList()
-    )
+    return this.#apiClient
+      .fetchJson('/texts', false)
+      .then(texts => texts.map(fromDto))
   }
 
   update (category, index, text) {

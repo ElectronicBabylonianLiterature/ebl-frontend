@@ -1,6 +1,6 @@
 import { createLine, createManuscriptLine } from './text'
 import { createDefaultLineFactory } from './line-factory'
-import { List } from 'immutable'
+import { produce } from 'immer'
 
 describe('createDefaultLineFactory', () => {
   test('no lines', () => {
@@ -28,20 +28,20 @@ describe('createDefaultLineFactory', () => {
         expect(
           createDefaultLineFactory(
             createLine({
-              manuscripts: List.of(
+              manuscripts: [
                 createManuscriptLine({
                   number: number
                 })
-              )
+              ]
             })
           )()
         ).toEqual(
           createLine({
-            manuscripts: List.of(
+            manuscripts: [
               createManuscriptLine({
                 number: expected
               })
-            )
+            ]
           })
         )
       })
@@ -49,16 +49,16 @@ describe('createDefaultLineFactory', () => {
   )
 
   test('Has the manuscripts without transliteration in same order.', () => {
-    const manuscripts = List.of(
+    const manuscripts = [
       createManuscriptLine({
         manuscriptId: 2,
-        labels: List.of('ii')
+        labels: ['ii']
       }),
       createManuscriptLine({
         manuscriptId: 1,
         atf: 'kur'
       })
-    )
+    ]
     expect(
       createDefaultLineFactory(
         createLine({
@@ -67,7 +67,11 @@ describe('createDefaultLineFactory', () => {
       )()
     ).toEqual(
       createLine({
-        manuscripts: manuscripts.map(manuscript => manuscript.set('atf', ''))
+        manuscripts: produce(manuscripts, draft => {
+          draft.manuscripts.forEach(manuscript => {
+            manuscript.atf = ''
+          })
+        })
       })
     )
   })

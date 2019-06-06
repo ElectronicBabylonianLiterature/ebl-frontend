@@ -1,11 +1,12 @@
 import React from 'react'
+import _ from 'lodash'
 import { Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
 export default function ChapterNavigation ({ text }) {
   return (
     <Nav variant='tabs'>
-      {text.chapters
+      {_(text.chapters)
         .sortBy(chapter => chapter.order)
         .map((chapter, index) => (
           <Nav.Item key={index}>
@@ -19,7 +20,8 @@ export default function ChapterNavigation ({ text }) {
               </Nav.Link>
             </LinkContainer>
           </Nav.Item>
-        ))}
+        ))
+        .value()}
     </Nav>
   )
 }

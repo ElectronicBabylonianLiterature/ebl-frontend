@@ -1,5 +1,4 @@
 import Promise from 'bluebird'
-import { List } from 'immutable'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 import Reference from 'bibliography/Reference'
@@ -134,14 +133,14 @@ const text = createText({
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
-  chapters: List.of(
+  chapters: [
     createChapter({
       classification: 'Ancient',
       stage: 'Old Babylonian',
       version: 'A',
       name: 'The Only Chapter',
       order: 1,
-      manuscripts: List.of(
+      manuscripts: [
         createManuscript({
           id: 1,
           siglumDisambiguator: '1',
@@ -152,33 +151,33 @@ const text = createText({
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
           notes: 'a note',
-          references: List.of(
+          references: [
             new Reference(
               'DISCUSSION',
               '34-54',
               '',
-              List(),
+              [],
               new BibliographyEntry({ id: 'RN1853' })
             )
-          )
+          ]
         })
-      ),
-      lines: List.of(
+      ],
+      lines: [
         createLine({
           number: '1',
           reconstruction: 'reconstructed text',
-          manuscripts: List.of(
+          manuscripts: [
             createManuscriptLine({
               manuscriptId: 1,
-              labels: List.of('o', 'iii'),
+              labels: ['o', 'iii'],
               number: 'a+1',
               atf: 'kur'
             })
-          )
+          ]
         })
-      )
+      ]
     })
-  )
+  ]
 })
 
 const textsDto = [
@@ -192,16 +191,16 @@ const textsDto = [
   }
 ]
 
-const texts = List.of(
+const texts = [
   createText({
     category: 1,
     index: 1,
     name: 'Palm and Vine',
     numberOfVerses: 10,
     approximateVerses: true,
-    chapters: List()
+    chapters: []
   })
-)
+]
 
 const testData = [
   [
@@ -240,4 +239,4 @@ const testData = [
   ]
 ]
 
-testDelegation(testService, testData)
+describe('TextService', () => testDelegation(testService, testData))
