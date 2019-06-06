@@ -39,6 +39,7 @@
     "classnames": "^2.2.6",
     "flow-typed": "^2.5.2",
     "html-to-react": "^1.3.4",
+    "immer": "^3.1.2",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
@@ -83,7 +84,7 @@
     "plugins": [
       "flowtype"
     ],
-    "ignore":[
+    "ignore": [
       "flow-typed"
     ]
   },
