@@ -7,21 +7,16 @@ import { periodModifiers, periods } from './period'
 import type { Provenance } from './provenance'
 import { provenances } from './provenance'
 
-type ManuscriptTypeProps = { name: string, abbreviation: string }
-const createManuscriptType: RecordFactory<ManuscriptTypeProps> = Record({
-  name: '',
-  abbreviation: ''
-})
-export type ManuscriptType = RecordOf<ManuscriptTypeProps>
+export type ManuscriptType = { +name: string, +abbreviation: string }
 export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
-  Library: createManuscriptType({ name: 'Library', abbreviation: '' }),
-  School: createManuscriptType({ name: 'School', abbreviation: 'Sch' }),
-  Varia: createManuscriptType({ name: 'Varia', abbreviation: 'Var' }),
-  Commentary: createManuscriptType({ name: 'Commentary', abbreviation: 'Com' }),
-  Quotation: createManuscriptType({ name: 'Quotation', abbreviation: 'Quo' })
+  Library: { name: 'Library', abbreviation: '' },
+  School: { name: 'School', abbreviation: 'Sch' },
+  Varia: { name: 'Varia', abbreviation: 'Var' },
+  Commentary: { name: 'Commentary', abbreviation: 'Com' },
+  Quotation: { name: 'Quotation', abbreviation: 'Quo' }
 })
 
-type ManuscriptProps = {
+export type ManuscriptProps = {
   id: ?number,
   siglumDisambiguator: string,
   museumNumber: string,
@@ -47,7 +42,7 @@ export const createManuscript: RecordFactory<ManuscriptProps> = Record({
 })
 export type Manuscript = RecordOf<ManuscriptProps>
 
-type ManuscriptLineProps = {
+export type ManuscriptLineProps = {
   manuscriptId: number,
   labels: List<string>,
   number: string,
@@ -61,7 +56,7 @@ export const createManuscriptLine: RecordFactory<ManuscriptLineProps> = Record({
 })
 export type ManuscriptLine = RecordOf<ManuscriptLineProps>
 
-type LineProps = {
+export type LineProps = {
   number: string,
   reconstruction: string,
   manuscripts: List<ManuscriptLine>
@@ -73,7 +68,7 @@ export const createLine: RecordFactory<LineProps> = Record({
 })
 export type Line = RecordOf<LineProps>
 
-type ChapterProps = {
+export type ChapterProps = {
   classification: string,
   stage: string,
   version: string,
@@ -93,7 +88,7 @@ export const createChapter: RecordFactory<ChapterProps> = Record({
 })
 export type Chapter = RecordOf<ChapterProps>
 
-type TextProps = {
+export type TextProps = {
   category: number,
   index: number,
   name: string,

@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+// @flow
 import _ from 'lodash'
 import {
   createText,
@@ -8,36 +8,46 @@ import {
   createLine,
   createManuscriptLine
 } from './text'
-import { periodModifiers, periods } from './period'
+import type {
+  ManuscriptProps,
+  ManuscriptLineProps,
+  LineProps,
+  ChapterProps,
+  TextProps
+} from './text'
+import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
+import type { RecordFactory } from 'immutable'
+import { List } from 'immutable'
+import type { Any } from 'flow-bin'
 
-const manuscriptConfig = {
-  id: 'abc-cde-123',
+const manuscriptConfig: ManuscriptProps = {
+  id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
   accession: 'X.1',
-  periodModifier: periodModifiers.get('Late'),
-  period: periods.get('Ur III'),
-  provenance: provenances.get('Nippur'),
-  type: types.get('School'),
+  periodModifier: periodModifiers.first(),
+  period: periods.first(),
+  provenance: provenances.first(),
+  type: types.first(),
   notes: 'some notes',
   references: List()
 }
 
-const manuscrpitLineConfig = {
+const manuscrpitLineConfig: ManuscriptLineProps = {
   manuscriptId: 1,
   labels: List.of('iii'),
   number: 'a+1',
   atf: 'kur'
 }
 
-const lineConfig = {
+const lineConfig: LineProps = {
   number: '2',
   reconstruction: 'reconstructed text',
   manuscripts: List.of(createManuscriptLine(manuscrpitLineConfig))
 }
 
-const chapterConfig = {
+const chapterConfig: ChapterProps = {
   classification: 'Ancient',
   stage: 'Old Babylonian',
   version: 'A',
@@ -47,7 +57,7 @@ const chapterConfig = {
   lines: List.of(createLine(lineConfig))
 }
 
-const textConfig = {
+const textConfig: TextProps = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',
@@ -76,7 +86,7 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties (config, factory) {
+function testProperties (config, factory: RecordFactory<Any>) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })
