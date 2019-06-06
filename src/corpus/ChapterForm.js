@@ -3,6 +3,8 @@ import { Form, Button, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import ChapterManuscripts from './ChapterManuscripts'
 import ChapterLines from './ChapterLines'
+import ChapterAlignment from './ChapterAlignment'
+import SessionContext from '../auth/SessionContext'
 
 function ChapterDetails ({ chapter }) {
   return (
@@ -35,32 +37,47 @@ export default function ChapterForm ({
   onChange
 }) {
   return (
-    <Form onSubmit={onSubmit}>
-      <fieldset disabled={disabled}>
-        <ChapterDetails chapter={chapter} />
-        <Tabs
-          defaultActiveKey='manuscripts'
-          id={_.uniqueId('ChapterFormTabs-')}
-        >
-          <Tab eventKey='manuscripts' title='Manuscripts'>
-            <ChapterManuscripts
-              chapter={chapter}
-              searchBibliography={searchBibliography}
-              onChange={onChange}
-            />
-          </Tab>
-          <Tab eventKey='lines' title='Lines'>
-            <ChapterLines
-              chapter={chapter}
-              onChange={onChange}
-              disabled={disabled}
-            />
-          </Tab>
-        </Tabs>
-        <Button variant='primary' type='submit'>
-          Save
-        </Button>
-      </fieldset>
-    </Form>
+    <SessionContext.Consumer>
+      {session => (
+        <Form onSubmit={onSubmit}>
+          <fieldset disabled={disabled}>
+            <ChapterDetails chapter={chapter} />
+            <Tabs
+              defaultActiveKey='manuscripts'
+              id={_.uniqueId('ChapterFormTabs-')}
+            >
+              <Tab eventKey='manuscripts' title='Manuscripts'>
+                <ChapterManuscripts
+                  chapter={chapter}
+                  searchBibliography={searchBibliography}
+                  onChange={onChange}
+                />
+              </Tab>
+              <Tab eventKey='lines' title='Lines'>
+                <ChapterLines
+                  chapter={chapter}
+                  onChange={onChange}
+                  disabled={disabled}
+                />
+              </Tab>
+              <Tab
+                eventKey='alignment'
+                title='Alignment'
+                disabled={!session.hasBetaAccess()}
+              >
+                <ChapterAlignment
+                  chapter={chapter}
+                  onChange={onChange}
+                  disabled={disabled}
+                />
+              </Tab>
+            </Tabs>
+            <Button variant='primary' type='submit'>
+              Save
+            </Button>
+          </fieldset>
+        </Form>
+      )}
+    </SessionContext.Consumer>
   )
 }
