@@ -19,7 +19,7 @@ export default function ChapterManuscripts ({
   return (
     <ListForm
       noun='manuscript'
-      defaultValue={createManuscript()}
+      defaultValue={createManuscript({})}
       value={chapter.manuscripts}
       onChange={handeManuscriptsChange}
     >
