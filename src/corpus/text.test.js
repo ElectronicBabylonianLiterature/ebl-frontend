@@ -11,7 +11,6 @@ import {
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
 import type { Chapter, Line, Manuscript, ManuscriptLine, Text } from './text'
-import type { $Shape } from 'flow-bin'
 
 const manuscriptConfig: $Shape<Manuscript> = {
   id: 1,
@@ -78,7 +77,7 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties (config: any, factory: any => any) {
+function testProperties(config: any, factory: any => any) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })

@@ -9,7 +9,7 @@ const scopes = ['openid', 'profile']
 
 const scopeString = scopes.concat(_.values(applicationScopes)).join(' ')
 
-function createSession (authResult) {
+function createSession(authResult) {
   return new Session(
     authResult.accessToken,
     authResult.idToken,
@@ -19,7 +19,7 @@ function createSession (authResult) {
 }
 
 class Auth {
-  constructor (sessionStore, errorReporter, config) {
+  constructor(sessionStore, errorReporter, config) {
     this.config = config
     this.auth0 = new auth0.WebAuth({
       domain: config.domain,
@@ -33,11 +33,11 @@ class Auth {
     this.errorReporter = errorReporter
   }
 
-  login () {
+  login() {
     this.auth0.authorize()
   }
 
-  handleAuthentication () {
+  handleAuthentication() {
     return new Promise((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
         if (err) {
@@ -57,7 +57,7 @@ class Auth {
     })
   }
 
-  logout () {
+  logout() {
     this.sessionStore.clearSession()
     this.errorReporter.clearScope()
     this.auth0.logout({
@@ -66,15 +66,15 @@ class Auth {
     })
   }
 
-  getSession () {
+  getSession() {
     return this.sessionStore.getSession()
   }
 
-  isAuthenticated () {
+  isAuthenticated() {
     return this.getSession().isAuthenticated()
   }
 
-  getAccessToken () {
+  getAccessToken() {
     const session = this.getSession()
     if (session.isAuthenticated()) {
       return session.accessToken

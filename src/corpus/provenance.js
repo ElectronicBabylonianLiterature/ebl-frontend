@@ -6,10 +6,8 @@ export type Provenance = {
   +abbreviation: string,
   +parent?: string
 }
-export const provenances: OrderedMap<
-  string,
-  Provenance
-> = OrderedMap().withMutations(map =>
+export const provenances: OrderedMap<string,
+  Provenance> = OrderedMap().withMutations(map =>
   [
     { name: 'Assyria', abbreviation: 'Assa' },
     { name: 'Aššur', abbreviation: 'Ašš', parent: 'Assyria' },

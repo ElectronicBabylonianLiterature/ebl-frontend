@@ -7,7 +7,6 @@ import type { Provenance } from './provenance'
 import { provenances } from './provenance'
 // $FlowFixMe
 import { Draft, immerable, produce } from 'immer'
-import { $Shape, $ReadOnlyArray } from 'flow-bin'
 import _ from 'lodash'
 
 export type ManuscriptType = { +name: string, +abbreviation: string }
@@ -34,7 +33,7 @@ export class Manuscript {
   notes: string = ''
   references: $ReadOnlyArray<Reference> = []
 
-  get siglum () {
+  get siglum() {
     return [
       _.get(this, 'provenance.abbreviation', ''),
       _.get(this, 'period.abbreviation', ''),
@@ -45,7 +44,7 @@ export class Manuscript {
 }
 Manuscript[immerable] = true
 
-export function createManuscript (data: $Shape<Manuscript>): Manuscript {
+export function createManuscript(data: $Shape<Manuscript>): Manuscript {
   return produce(new Manuscript(), (draft: Draft<Manuscript>) => {
     _.assign(draft, data)
   })
