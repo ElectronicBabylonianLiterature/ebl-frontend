@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import _ from 'lodash'
 
 export default function CompactCitation ({ reference }) {
   return (
@@ -7,7 +8,7 @@ export default function CompactCitation ({ reference }) {
       {', '}
       {reference.document.year}
       {reference.pages && <>: {reference.pages}</>}{' '}
-      {!reference.linesCited.isEmpty() && (
+      {!_.isEmpty(reference.linesCited) && (
         <>[l. {reference.linesCited.join(', ')}]</>
       )}{' '}
       ({reference.typeAbbreviation})

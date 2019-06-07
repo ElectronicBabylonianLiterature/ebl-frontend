@@ -32,7 +32,7 @@ test('createReference', async () => {
       dto.get('type'),
       dto.get('pages'),
       dto.get('notes'),
-      dto.get('linesCited'),
+      dto.get('linesCited').toJS(),
       entry
     )
   )
@@ -45,6 +45,6 @@ test('serializeReference', async () => {
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
-    linesCited: reference.linesCited.toJS()
+    linesCited: reference.linesCited
   })
 })
