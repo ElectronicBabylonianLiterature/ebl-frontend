@@ -45,6 +45,8 @@ export default function ChapterForm({
             <Tabs
               defaultActiveKey="manuscripts"
               id={_.uniqueId('ChapterFormTabs-')}
+              mountOnEnter
+              unmountOnExit
             >
               <Tab eventKey="manuscripts" title="Manuscripts">
                 <ChapterManuscripts
