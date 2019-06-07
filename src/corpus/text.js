@@ -7,6 +7,7 @@ import type { Provenance } from './provenance'
 import { provenances } from './provenance'
 import { produce } from 'immer'
 import { $Shape } from 'flow-bin'
+import _ from 'lodash'
 
 export type ManuscriptType = { +name: string, +abbreviation: string }
 export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
@@ -29,20 +30,22 @@ export type Manuscript = {
   notes: string,
   references: Array<Reference>
 }
+const defaultManuscript: Manuscript = {
+  id: null,
+  siglumDisambiguator: '',
+  museumNumber: '',
+  accession: '',
+  periodModifier: periodModifiers.get('None', periodModifiers.first()),
+  period: periods.get('Neo-Assyrian', periods.first()),
+  provenance: provenances.get('Nineveh', provenances.first()),
+  type: types.get('Library', types.first()),
+  notes: '',
+  references: []
+}
 export const createManuscript: ($Shape<Manuscript>) => Manuscript = produce(
-  (draft: $Shape<Manuscript>): Manuscript => ({
-    id: null,
-    siglumDisambiguator: '',
-    museumNumber: '',
-    accession: '',
-    periodModifier: periodModifiers.get('None', periodModifiers.first()),
-    period: periods.get('Neo-Assyrian', periods.first()),
-    provenance: provenances.get('Nineveh', provenances.first()),
-    type: types.get('Library', types.first()),
-    notes: '',
-    references: [],
-    ...draft
-  })
+  (draft: $Shape<Manuscript>) => {
+    _.defaults(draft, defaultManuscript)
+  }
 )
 
 export type ManuscriptLine = {

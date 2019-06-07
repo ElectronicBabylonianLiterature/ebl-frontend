@@ -14,7 +14,7 @@ class Reference {
     type: string = 'DISCUSSION',
     pages: string = '',
     notes: string = '',
-    linesCited: Array<string> = [],
+    linesCited: Array<string> | List<string> = [],
     document_: ?Object = null
   ) {
     this.type = type
