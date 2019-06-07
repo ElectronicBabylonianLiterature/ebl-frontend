@@ -3,6 +3,7 @@ import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 import { types } from './text'
+// $FlowFixMe
 import ReferencesForm from 'bibliography/ReferencesForm'
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'

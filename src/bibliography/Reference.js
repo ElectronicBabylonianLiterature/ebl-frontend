@@ -1,5 +1,6 @@
 // @flow
 import _ from 'lodash'
+// $FlowFixMe
 import { immerable } from 'immer'
 import { Map, List } from 'immutable'
 
