@@ -36,9 +36,9 @@ export class Manuscript {
 
   get siglum () {
     return [
-      this.provenance.abbreviation,
-      this.period.abbreviation,
-      this.type.abbreviation,
+      _.get(this, 'provenance.abbreviation', ''),
+      _.get(this, 'period.abbreviation', ''),
+      _.get(this, 'type.abbreviation', ''),
       this.siglumDisambiguator
     ].join('')
   }

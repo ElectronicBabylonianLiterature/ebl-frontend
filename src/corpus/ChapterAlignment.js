@@ -12,7 +12,7 @@ function getSiglum (chapter: Chapter, manuscriptLine: ManuscriptLine) {
   if (manuscript) {
     return manuscript.siglum
   } else {
-    throw new Error(`Unknown manuscript ID ${manuscriptLine.manuscriptId}.`)
+    return `<unknown ID: ${manuscriptLine.manuscriptId}>`
   }
 }
 

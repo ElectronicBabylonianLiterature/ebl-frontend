@@ -18,7 +18,7 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   const handleIdChange = event =>
     onChange(
       produce(value, draft => {
-        draft.manuscriptId = event.target.value
+        draft.manuscriptId = Number(event.target.value)
       })
     )
   return (
