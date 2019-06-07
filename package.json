@@ -62,7 +62,7 @@
     "jest-fetch-mock": "^2.1.0",
     "lighthouse": "^5.1.0",
     "lint-staged": "^8.1.7",
-    "prettier": "1.18.0"
+    "prettier": "1.18.1"
   },
   "resolutions": {
     "@citation-js/plugin-wikidata": "0.4.0-rc.4",
