@@ -11,8 +11,9 @@ import {
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
 import type { Chapter, Line, Manuscript, ManuscriptLine, Text } from './text'
+import type { $Shape } from 'flow-bin'
 
-const manuscriptConfig: Manuscript = {
+const manuscriptConfig: $Shape<Manuscript> = {
   id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',

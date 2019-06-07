@@ -35,10 +35,7 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
           </option>
           {manuscripts.map(manuscript => (
             <option key={manuscript.id} value={manuscript.id}>
-              {manuscript.provenance.abbreviation}
-              {manuscript.period.abbreviation}
-              {manuscript.type.abbreviation}
-              {manuscript.siglumDisambiguator}
+              {manuscript.siglum}
             </option>
           ))}
         </Form.Control>

@@ -8,7 +8,9 @@ import ReferencesForm from 'bibliography/ReferencesForm'
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
 import type { Manuscript } from './text'
-import { produce } from 'immer'
+// $FlowFixMe
+import produce, { Draft } from 'immer'
+import { Map } from 'immutable'
 
 export default function ManuscriptForm ({
   manuscript,
@@ -19,15 +21,18 @@ export default function ManuscriptForm ({
   onChange: Manuscript => void,
   searchBibliography: any
 }) {
-  const handleChange = property => event =>
+  const handleChange = (property: string) => event =>
     onChange(
-      produce(manuscript, draft => {
+      produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = event.target.value
       })
     )
-  const handelRecordChange = (property, values) => event =>
+  const handelRecordChange = (
+    property: string,
+    values: Map<string, any>
+  ) => event =>
     onChange(
-      produce(manuscript, draft => {
+      produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = values.get(event.target.value)
       })
     )
@@ -149,7 +154,7 @@ export default function ManuscriptForm ({
         label='References'
         onChange={value =>
           onChange(
-            produce(manuscript, draft => {
+            produce(manuscript, (draft: Draft<Manuscript>) => {
               draft.references = value
             })
           )

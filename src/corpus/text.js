@@ -5,8 +5,9 @@ import type { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
 import type { Provenance } from './provenance'
 import { provenances } from './provenance'
-import { produce } from 'immer'
-import { $Shape } from 'flow-bin'
+// $FlowFixMe
+import { Draft, immerable, produce } from 'immer'
+import { $Shape, $ReadOnlyArray } from 'flow-bin'
 import _ from 'lodash'
 
 export type ManuscriptType = { +name: string, +abbreviation: string }
@@ -18,35 +19,37 @@ export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
   Quotation: { name: 'Quotation', abbreviation: 'Quo' }
 })
 
-export type Manuscript = {
-  id: ?number,
-  siglumDisambiguator: string,
-  museumNumber: string,
-  accession: string,
-  periodModifier: PeriodModifier,
-  period: Period,
-  provenance: Provenance,
-  type: ManuscriptType,
-  notes: string,
-  references: Array<Reference>
-}
-const defaultManuscript: Manuscript = {
-  id: null,
-  siglumDisambiguator: '',
-  museumNumber: '',
-  accession: '',
-  periodModifier: periodModifiers.get('None', periodModifiers.first()),
-  period: periods.get('Neo-Assyrian', periods.first()),
-  provenance: provenances.get('Nineveh', provenances.first()),
-  type: types.get('Library', types.first()),
-  notes: '',
-  references: []
-}
-export const createManuscript: ($Shape<Manuscript>) => Manuscript = produce(
-  (draft: $Shape<Manuscript>) => {
-    _.defaults(draft, defaultManuscript)
+export class Manuscript {
+  id: ?number = null
+  siglumDisambiguator: string = ''
+  museumNumber: string = ''
+  accession: string = ''
+  periodModifier: PeriodModifier = periodModifiers.get(
+    'None',
+    periodModifiers.first()
+  )
+  period: Period = periods.get('Neo-Assyrian', periods.first())
+  provenance: Provenance = provenances.get('Nineveh', provenances.first())
+  type: ManuscriptType = types.get('Library', types.first())
+  notes: string = ''
+  references: $ReadOnlyArray<Reference> = []
+
+  get siglum () {
+    return [
+      this.provenance.abbreviation,
+      this.period.abbreviation,
+      this.type.abbreviation,
+      this.siglumDisambiguator
+    ].join('')
   }
-)
+}
+Manuscript[immerable] = true
+
+export function createManuscript (data: $Shape<Manuscript>): Manuscript {
+  return produce(new Manuscript(), (draft: Draft<Manuscript>) => {
+    _.assign(draft, data)
+  })
+}
 
 export type ManuscriptLine = {
   manuscriptId: number,
