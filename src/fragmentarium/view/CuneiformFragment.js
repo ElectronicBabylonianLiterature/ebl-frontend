@@ -20,11 +20,11 @@ import { serializeReference } from 'bibliography/Reference'
 
 import './CuneiformFragment.css'
 
-function ContentSection ({ children }) {
-  return <section className='CuneiformFragment__content'>{children}</section>
+function ContentSection({ children }) {
+  return <section className="CuneiformFragment__content">{children}</section>
 }
 
-function Info ({ fragment }) {
+function Info({ fragment }) {
   return (
     <>
       <Details fragment={fragment} />
@@ -46,7 +46,7 @@ function Info ({ fragment }) {
   )
 }
 
-function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
+function EditorTabs({ fragment, fragmentService, onSave, disabled }) {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
     onSave(
@@ -78,14 +78,14 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
           id={tabsId}
           defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}
         >
-          <Tab eventKey={1} title='Display'>
+          <Tab eventKey={1} title="Display">
             <ContentSection>
               <Display fragment={fragment} />{' '}
             </ContentSection>
           </Tab>
           <Tab
             eventKey={2}
-            title='Edition'
+            title="Edition"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
             <ContentSection>
@@ -99,7 +99,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
           </Tab>
           <Tab
             eventKey={3}
-            title='Lemmatization'
+            title="Lemmatization"
             disabled={
               fragment.text.lines.isEmpty() ||
               !session.isAllowedToLemmatizeFragments()
@@ -116,7 +116,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
           </Tab>
           <Tab
             eventKey={4}
-            title='References'
+            title="References"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
             <ContentSection>
@@ -134,7 +134,7 @@ function EditorTabs ({ fragment, fragmentService, onSave, disabled }) {
   )
 }
 
-function CuneiformFragment ({
+function CuneiformFragment({
   fragment,
   fragmentService,
   activeFolio,
@@ -171,7 +171,7 @@ function CuneiformFragment ({
 }
 
 class CuneiformFragmentController extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       fragment: props.fragment,
@@ -181,7 +181,7 @@ class CuneiformFragmentController extends Component {
     this.updatePromise = Promise.resolve()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.updatePromise.cancel()
   }
 
@@ -217,7 +217,7 @@ class CuneiformFragmentController extends Component {
     return this.updatePromise
   }
 
-  render () {
+  render() {
     return (
       <>
         <CuneiformFragment

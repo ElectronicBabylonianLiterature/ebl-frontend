@@ -21,8 +21,6 @@ test('Empty elements are hidden', async () => {
   })
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
-    `${reference.document.author}, ${reference.document.year} (${
-      reference.typeAbbreviation
-    })`
+    `${reference.document.author}, ${reference.document.year} (${reference.typeAbbreviation})`
   )
 })

@@ -8,7 +8,7 @@ import SessionContext from 'auth/SessionContext'
 
 import './Dictionary.css'
 
-export default function Dictionary ({ wordService, location }) {
+export default function Dictionary({ wordService, location }) {
   const query = queryString.parse(location.search).query
 
   return (
@@ -17,7 +17,7 @@ export default function Dictionary ({ wordService, location }) {
         {session =>
           session.isAllowedToReadWords() ? (
             <>
-              <div className='Dictionary-search'>
+              <div className="Dictionary-search">
                 <WordSearchForm query={query} />
               </div>
               <WordSearch query={query} wordService={wordService} />

@@ -41,7 +41,7 @@ it('Calls onChange with updated value on change', () => {
     .toHaveBeenCalledWith(newValue => [newValue, ..._.tail(value)])
 })
 
-function renderListInput () {
+function renderListInput() {
   return render(
     <TextListInput value={value} onChange={onChange}>
       {label}

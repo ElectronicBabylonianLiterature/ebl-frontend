@@ -31,7 +31,7 @@ it('calling render with the same component on the same container does not remoun
   jest.spyOn(history, 'push')
   const { getByLabelText, rerender } = render(
     <Router history={history}>
-      <TransliterationSearchForm transliteration='pak' />
+      <TransliterationSearchForm transliteration="pak" />
     </Router>
   )
   expect(getByLabelText('Transliteration').value).toBe('pak')

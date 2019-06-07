@@ -60,7 +60,7 @@ describe('With folio', () => {
   expectToRenderChildren()
 })
 
-function expectToRenderChildren () {
+function expectToRenderChildren() {
   it('Renders children', () => {
     expect(element.container).toHaveTextContent(children)
   })

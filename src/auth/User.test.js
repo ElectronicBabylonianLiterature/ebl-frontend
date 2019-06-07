@@ -24,7 +24,7 @@ it('Calls Auth0 login if user is logged out', () => {
   expect(auth.login).toHaveBeenCalled()
 })
 
-function renderUser (isAuthenticated) {
+function renderUser(isAuthenticated) {
   auth.isAuthenticated.mockReturnValueOnce(isAuthenticated)
   return render(<User auth={auth} />)
 }

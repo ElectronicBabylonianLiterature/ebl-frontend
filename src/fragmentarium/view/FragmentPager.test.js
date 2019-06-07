@@ -8,7 +8,7 @@ let number
 let nextNumber
 let element
 
-function renderPager () {
+function renderPager() {
   element = render(
     <MemoryRouter>
       <FragmentPager number={number}>{child}</FragmentPager>
@@ -16,7 +16,7 @@ function renderPager () {
   )
 }
 
-function commonTests () {
+function commonTests() {
   it('Next links to the "next" fragment', () => {
     expect(element.getByLabelText('Next')).toHaveAttribute(
       'href',

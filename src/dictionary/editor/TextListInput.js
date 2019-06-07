@@ -5,14 +5,14 @@ import TextInput from './TextInput'
 import List from 'common/List'
 
 class ListInput extends Component {
-  render () {
+  render() {
     return (
       <FormGroup>
         <List
           label={this.props.children}
           value={this.props.value}
           onChange={this.props.onChange}
-          defaultValue=''
+          defaultValue=""
         >
           {(item, onChange) => <TextInput onChange={onChange} value={item} />}
         </List>

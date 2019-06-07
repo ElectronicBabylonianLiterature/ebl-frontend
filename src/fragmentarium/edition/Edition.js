@@ -6,7 +6,7 @@ import PioneersButton from 'fragmentarium/PioneersButton'
 import './Edition.css'
 import TransliterationHeader from 'fragmentarium/view/TransliterationHeader'
 
-function Edition ({
+function Edition({
   fragment,
   fragmentService,
   updateTransliteration,
@@ -21,7 +21,7 @@ function Edition ({
         updateTransliteration={updateTransliteration}
         disable={disabled}
       />
-      <p className='Edition__navigation'>
+      <p className="Edition__navigation">
         <PioneersButton fragmentService={fragmentService} />
       </p>
     </Fragment>

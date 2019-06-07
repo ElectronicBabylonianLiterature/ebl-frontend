@@ -2,7 +2,7 @@ import applicationScopes from './applicationScopes.json'
 import { Set } from 'immutable'
 
 class Session {
-  constructor (accessToken, idToken, expiresAt, scopes) {
+  constructor(accessToken, idToken, expiresAt, scopes) {
     this.accessToken = accessToken
     this.idToken = idToken
     this.expiresAt = expiresAt
@@ -10,11 +10,11 @@ class Session {
     Object.freeze(this)
   }
 
-  isAuthenticated () {
+  isAuthenticated() {
     return new Date().getTime() < this.expiresAt
   }
 
-  getAccessToken () {
+  getAccessToken() {
     if (this.accessToken) {
       return this.accessToken
     } else {
@@ -22,47 +22,47 @@ class Session {
     }
   }
 
-  hasScope (scope) {
+  hasScope(scope) {
     return this.isAuthenticated() && this.scopes.has(scope)
   }
 
-  isAllowedToReadWords () {
+  isAllowedToReadWords() {
     return this.hasApplicationScope('readWords')
   }
 
-  isAllowedToWriteWords () {
+  isAllowedToWriteWords() {
     return this.hasApplicationScope('writeWords')
   }
 
-  isAllowedToReadFragments () {
+  isAllowedToReadFragments() {
     return this.hasApplicationScope('readFragments')
   }
 
-  isAllowedToTransliterateFragments () {
+  isAllowedToTransliterateFragments() {
     return this.hasApplicationScope('transliterateFragments')
   }
 
-  isAllowedToLemmatizeFragments () {
+  isAllowedToLemmatizeFragments() {
     return this.hasApplicationScope('lemmatizeFragments')
   }
 
-  isAllowedToReadBibliography () {
+  isAllowedToReadBibliography() {
     return this.hasApplicationScope('readBibliography')
   }
 
-  isAllowedToWriteBibliography () {
+  isAllowedToWriteBibliography() {
     return this.hasApplicationScope('writeBibliography')
   }
 
-  isAllowedToWriteTexts () {
+  isAllowedToWriteTexts() {
     return this.hasApplicationScope('writeTexts')
   }
 
-  hasBetaAccess () {
+  hasBetaAccess() {
     return this.hasApplicationScope('accessBeta')
   }
 
-  hasApplicationScope (applicationScope) {
+  hasApplicationScope(applicationScope) {
     const scope = applicationScopes[applicationScope]
     return this.hasScope(scope)
   }

@@ -51,7 +51,7 @@ describe('Value is a form', () => {
   commonChangeTests()
 })
 
-function commonDisplayTests () {
+function commonDisplayTests() {
   it('Displays lemma', () => {
     expect(element.getByLabelText('Lemma').value).toEqual(value.lemma.join(' '))
   })
@@ -63,7 +63,7 @@ function commonDisplayTests () {
   })
 }
 
-function commonChangeTests () {
+function commonChangeTests() {
   it('onChanged is called with updated lemma', () => {
     const newLemma = 'new lemma'
     changeValueByLabel(element, 'Lemma', newLemma)
@@ -84,6 +84,6 @@ function commonChangeTests () {
   })
 }
 
-function RendedFormInput () {
+function RendedFormInput() {
   return render(<FormInput value={value} onChange={onChange} />)
 }

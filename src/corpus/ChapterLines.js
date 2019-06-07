@@ -8,7 +8,7 @@ import ArrayInput from 'common/ArrayInput'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
 
-function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
+function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event =>
     onChange(
       produce(value, draft => {
@@ -26,11 +26,11 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
       <Form.Group as={Col} md={2} controlId={_.uniqueId('ManuscriptLine-')}>
         <Form.Label>Siglum</Form.Label>
         <Form.Control
-          as='select'
+          as="select"
           value={value.manuscriptId}
           onChange={handleIdChange}
         >
-          <option value='0' disabled>
+          <option value="0" disabled>
             --
           </option>
           {manuscripts.map(manuscript => (
@@ -78,10 +78,10 @@ function ManuscriptLineForm ({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-function ManuscriptLines ({ lines, manuscripts, onChange, disabled }) {
+function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
   return (
     <ListForm
-      noun='manuscript'
+      noun="manuscript"
       defaultValue={createManuscriptLine()}
       value={lines}
       onChange={onChange}
@@ -98,7 +98,7 @@ function ManuscriptLines ({ lines, manuscripts, onChange, disabled }) {
   )
 }
 
-function ChapterLineForm ({ value, manuscripts, onChange, disabled }) {
+function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
   const handleChangeValue = property => propertyValue =>
     onChange(
       produce(value, draft => {
@@ -141,7 +141,7 @@ function ChapterLineForm ({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-export default function ChapterLines ({ chapter, onChange, disabled }) {
+export default function ChapterLines({ chapter, onChange, disabled }) {
   const handleChange = lines =>
     onChange(
       produce(chapter, draft => {
@@ -150,7 +150,7 @@ export default function ChapterLines ({ chapter, onChange, disabled }) {
     )
   return (
     <ListForm
-      noun='line'
+      noun="line"
       defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
       value={chapter.lines}
       onChange={handleChange}

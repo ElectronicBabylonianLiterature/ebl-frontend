@@ -25,7 +25,7 @@ errorReportingService = {
   captureException: jest.fn()
 }
 
-async function renderWithData () {
+async function renderWithData() {
   element = render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={propValue} />{' '}
@@ -34,7 +34,7 @@ async function renderWithData () {
   await wait()
 }
 
-async function rerender (prop) {
+async function rerender(prop) {
   element.rerender(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={prop} />{' '}
@@ -43,18 +43,18 @@ async function rerender (prop) {
   await wait()
 }
 
-function clearMocks () {
+function clearMocks() {
   InnerComponent.mockClear()
   getter.mockClear()
 }
 
-function expectGetterToBeCalled (expectedProp) {
+function expectGetterToBeCalled(expectedProp) {
   it('Calls getter with props', () => {
     expect(getter).toBeCalledWith({ prop: expectedProp })
   })
 }
 
-function expectWrappedComponentToBeRendered (expectedPropValue, expectedData) {
+function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
   it('Renders the wrapped component', () => {
     expect(element.container).toHaveTextContent(
       `${expectedPropValue} ${expectedData}`

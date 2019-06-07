@@ -3,7 +3,7 @@ import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
 class ArrayInput extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.id = _.uniqueId('ArrayInput-')
   }
@@ -14,12 +14,12 @@ class ArrayInput extends Component {
     this.props.onChange(array)
   }
 
-  render () {
+  render() {
     return (
       <FormGroup controlId={this.id}>
         <FormLabel>{this.props.children}</FormLabel>
         <FormControl
-          type='text'
+          type="text"
           value={this.props.value.join(this.props.separator)}
           onChange={this.onChange}
         />

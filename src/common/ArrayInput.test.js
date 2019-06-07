@@ -37,10 +37,10 @@ test('Calls onChange with empty array on empty value', () => {
     .toHaveBeenCalledWith(newValue => [])
 })
 
-function renderArrayInput (value) {
+function renderArrayInput(value) {
   return render(
     <ArrayInput
-      id='array'
+      id="array"
       value={value}
       separator={separator}
       onChange={onChange}

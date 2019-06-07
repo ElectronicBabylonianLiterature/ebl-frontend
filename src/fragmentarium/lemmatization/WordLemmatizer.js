@@ -7,7 +7,7 @@ import Word from './Word'
 import './WordLemmatizer.css'
 
 export default class WordLemmatizer extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.popOverId = _.uniqueId('LemmatizationPopOver-')
     this.state = {
@@ -31,22 +31,22 @@ export default class WordLemmatizer extends Component {
     this.setState({ show: false })
   }
 
-  render () {
+  render() {
     return (
-      <span className='WordLemmatizer'>
+      <span className="WordLemmatizer">
         <Word token={this.props.token} onClick={this.handleClick} />
         <Overlay
           rootClose
           onHide={this.hide}
           show={this.state.show}
           target={this.state.target}
-          placement='top'
+          placement="top"
           container={this}
         >
           <Popover
             id={this.popOverId}
-            title='Lemmatize'
-            className='WordLemmatizer__form'
+            title="Lemmatize"
+            className="WordLemmatizer__form"
           >
             <LemmatizationForm
               token={this.props.token}

@@ -20,19 +20,19 @@ const nonVerbPos = [
   'SBJ'
 ]
 
-function pickOne (values) {
+function pickOne(values) {
   return factory.chance('pickone', values)
 }
 
-function homonym () {
+function homonym() {
   return pickOne(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'])
 }
 
-function vowel () {
+function vowel() {
   return pickOne(['i', 'a', 'u', 'e'])
 }
 
-function wordArray () {
+function wordArray() {
   return [factory.chance('word'), factory.chance('word')]
 }
 

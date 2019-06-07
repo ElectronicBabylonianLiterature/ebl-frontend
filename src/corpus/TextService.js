@@ -12,7 +12,7 @@ import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
 import { produce } from 'immer'
 
-function fromDto (textDto) {
+function fromDto(textDto) {
   return createText({
     ...textDto,
     chapters: textDto.chapters.map(chapterDto =>
@@ -55,7 +55,7 @@ function fromDto (textDto) {
   })
 }
 
-function toName (record) {
+function toName(record) {
   return record.name
 }
 
@@ -74,11 +74,11 @@ const toDto = produce(draft => {
 export default class TextService {
   #apiClient
 
-  constructor (apiClient) {
+  constructor(apiClient) {
     this.#apiClient = apiClient
   }
 
-  find (category, index) {
+  find(category, index) {
     return this.#apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
@@ -87,13 +87,13 @@ export default class TextService {
       .then(fromDto)
   }
 
-  list () {
+  list() {
     return this.#apiClient
       .fetchJson('/texts', false)
       .then(texts => texts.map(fromDto))
   }
 
-  update (category, index, text) {
+  update(category, index, text) {
     return this.#apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,

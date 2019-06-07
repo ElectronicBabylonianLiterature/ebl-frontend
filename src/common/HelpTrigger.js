@@ -1,10 +1,10 @@
 import React from 'react'
 import { OverlayTrigger } from 'react-bootstrap'
 
-function HelpTrigger (props) {
+function HelpTrigger(props) {
   return (
-    <OverlayTrigger placement='auto' {...props}>
-      <i className='fas fa-info-circle' />
+    <OverlayTrigger placement="auto" {...props}>
+      <i className="fas fa-info-circle" />
     </OverlayTrigger>
   )
 }

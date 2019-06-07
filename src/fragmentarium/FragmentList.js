@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import FragmentLink from 'fragmentarium/FragmentLink'
 
-function FragmentList ({ fragments, columns }) {
+function FragmentList({ fragments, columns }) {
   return (
     <Table responsive>
       <thead>

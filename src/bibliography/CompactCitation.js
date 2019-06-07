@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
 
-export default function CompactCitation ({ reference }) {
+export default function CompactCitation({ reference }) {
   return (
     <Fragment>
       {reference.document.author}

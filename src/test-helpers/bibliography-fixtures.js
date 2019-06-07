@@ -3,7 +3,7 @@ import Reference from 'bibliography/Reference'
 import BibliographyEntry from 'bibliography/BibliographyEntry'
 
 class ReferenceAdapter extends DefaultAdapter {
-  build (Model, props) {
+  build(Model, props) {
     const model = new Model(
       props.type,
       props.pages,
@@ -13,21 +13,21 @@ class ReferenceAdapter extends DefaultAdapter {
     )
     return model
   }
-  async save (model, Model) {
+  async save(model, Model) {
     return model
   }
-  async destroy (model, Model) {
+  async destroy(model, Model) {
     return model
   }
-  get (model, attr, Model) {
+  get(model, attr, Model) {
     return model[attr]
   }
-  set (props, model, Model) {
+  set(props, model, Model) {
     throw new Error('ReferenceAdapter.set is not implemented.')
   }
 }
 
-function integer (min, max) {
+function integer(min, max) {
   return factory.chance('integer', { min: min, max: max })
 }
 

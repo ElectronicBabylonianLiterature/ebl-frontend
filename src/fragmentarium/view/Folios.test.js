@@ -88,7 +88,7 @@ describe('No folios or CDLI image', () => {
   })
 })
 
-function renderFolios (activeFolio = null) {
+function renderFolios(activeFolio = null) {
   return render(
     <MemoryRouter>
       <Folios

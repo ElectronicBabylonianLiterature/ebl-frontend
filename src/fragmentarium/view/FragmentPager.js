@@ -4,7 +4,7 @@ import FragmentLink from 'fragmentarium/FragmentLink'
 
 const numberRegexp = /^([^\d]*)(\d+)$/
 
-export default function FragmentPager ({ number, children }) {
+export default function FragmentPager({ number, children }) {
   const match = numberRegexp.exec(number)
   if (match) {
     const prefix = match[1]
@@ -24,9 +24,9 @@ export default function FragmentPager ({ number, children }) {
 
     return (
       <Fragment>
-        {current > 1 && <PagerLink offset={-1} label='Previous' />}
+        {current > 1 && <PagerLink offset={-1} label="Previous" />}
         {children}
-        <PagerLink offset={1} label='Next' />
+        <PagerLink offset={1} label="Next" />
       </Fragment>
     )
   } else {

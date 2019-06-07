@@ -9,14 +9,14 @@ class ErrorBoundary extends Component {
 
   static contextType = ErrorReporterContext
 
-  componentDidCatch (error, info) {
+  componentDidCatch(error, info) {
     this.setState({ error: error })
     this.context.captureException(error, info)
   }
 
-  render () {
+  render() {
     return this.state.error ? (
-      <Alert variant='danger'>
+      <Alert variant="danger">
         <h4>Something's gone wrong.</h4>
         <p>
           Our team has been notified, but you can fill out a report by clicking
@@ -24,7 +24,7 @@ class ErrorBoundary extends Component {
         </p>
         <p>
           <Button
-            variant='danger'
+            variant="danger"
             onClick={() => this.context.showReportDialog()}
           >
             Send a report

@@ -11,7 +11,7 @@ const defaultConfig = {
   defaultData: null
 }
 
-export default function withData (WrappedComponent, getter, config = {}) {
+export default function withData(WrappedComponent, getter, config = {}) {
   const fullConfig = {
     ...defaultConfig,
     ...config
@@ -36,21 +36,21 @@ export default function withData (WrappedComponent, getter, config = {}) {
       }
     }
 
-    componentDidMount () {
+    componentDidMount() {
       this.fetchData()
     }
 
-    componentDidUpdate (prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
       if (fullConfig.shouldUpdate(prevProps, this.props)) {
         this.fetchData()
       }
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
       this.fetchPromise.cancel()
     }
 
-    render () {
+    render() {
       return (
         <ErrorBoundary>
           <Spinner loading={_.values(this.state).every(_.isNil)} />

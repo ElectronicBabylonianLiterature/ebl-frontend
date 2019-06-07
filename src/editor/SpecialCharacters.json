@@ -1,4 +1,4 @@
- {
+{
   "Ā": { "win": "Ctrl-Shift-a", "mac": "Command-Shift-a" },
   "ā": { "win": "Ctrl-a", "mac": "Command-a" },
   "Ē": { "win": "Ctrl-Shift-e", "mac": "Command-Shift-e" },
@@ -38,4 +38,3 @@
   "₀": { "win": "Alt-0", "mac": "Option-0" },
   "ₓ": { "win": "Alt-x", "mac": "Option-x" }
 }
-

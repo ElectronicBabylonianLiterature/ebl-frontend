@@ -1,18 +1,18 @@
 import _ from 'lodash'
 import alphabet from './alphabet'
 
-function isString (word, anotherWord) {
+function isString(word, anotherWord) {
   let notStrings = [word, anotherWord].filter(word => !_.isString(word))
   if (!_.isEmpty(notStrings)) {
     throw new TypeError(`${notStrings} is not a string`)
   }
 }
 
-function replaceIgnoredCharacters (word) {
+function replaceIgnoredCharacters(word) {
   return word.replace(/\]|\?|\[|-|\]|\./g, '')
 }
 
-function checkForInvalidCharacters (word, anotherWord) {
+function checkForInvalidCharacters(word, anotherWord) {
   let invalidCharacters = word
     .split('')
     .concat(anotherWord.split(''))
@@ -22,21 +22,21 @@ function checkForInvalidCharacters (word, anotherWord) {
   }
 }
 
-function hasHigherAlphabetIndex (word, anotherWord, indexOfCharacter) {
+function hasHigherAlphabetIndex(word, anotherWord, indexOfCharacter) {
   return (
     alphabet.indexOf(word[indexOfCharacter]) >
     alphabet.indexOf(anotherWord[indexOfCharacter])
   )
 }
 
-function hasLowerAlphabetIndex (word, anotherWord, indexOfCharacter) {
+function hasLowerAlphabetIndex(word, anotherWord, indexOfCharacter) {
   return (
     alphabet.indexOf(word[indexOfCharacter]) <
     alphabet.indexOf(anotherWord[indexOfCharacter])
   )
 }
 
-export default function compareStrings (word, anotherWord) {
+export default function compareStrings(word, anotherWord) {
   isString(word, anotherWord)
   let replacedWord = replaceIgnoredCharacters(word)
   let anotherWordReplaced = replaceIgnoredCharacters(anotherWord)

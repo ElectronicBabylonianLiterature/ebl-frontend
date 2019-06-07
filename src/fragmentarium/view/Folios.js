@@ -10,11 +10,11 @@ import { createFragmentUrlWithFolio, createFragmentUrl } from '../FragmentLink'
 
 import './Folios.css'
 
-function FolioDetails ({ fragmentService, fragmentNumber, folio }) {
+function FolioDetails({ fragmentService, fragmentNumber, folio }) {
   return (
     folio.hasImage && (
       <Fragment>
-        <header className='Folios__Pager'>
+        <header className="Folios__Pager">
           <FolioPager
             fragmentService={fragmentService}
             folio={folio}
@@ -31,10 +31,10 @@ function FolioDetails ({ fragmentService, fragmentNumber, folio }) {
   )
 }
 
-function Folios ({ fragment, fragmentService, activeFolio, history }) {
+function Folios({ fragment, fragmentService, activeFolio, history }) {
   const cdliKey = -1
 
-  function onSelect (key) {
+  function onSelect(key) {
     if (key >= 0) {
       const folio = fragment.folios.get(key)
       history.push(
@@ -51,7 +51,7 @@ function Folios ({ fragment, fragmentService, activeFolio, history }) {
 
   return (
     <Fragment>
-      <Tabs id='folio-container' activeKey={activeKey} onSelect={onSelect}>
+      <Tabs id="folio-container" activeKey={activeKey} onSelect={onSelect}>
         {fragment.folios.map((folio, index) => (
           <Tab
             key={index}
@@ -67,7 +67,7 @@ function Folios ({ fragment, fragmentService, activeFolio, history }) {
           </Tab>
         ))}
         {fragment.cdliNumber && (
-          <Tab eventKey={cdliKey} title='CDLI Image'>
+          <Tab eventKey={cdliKey} title="CDLI Image">
             <CdliImage cdliNumber={fragment.cdliNumber} />
           </Tab>
         )}

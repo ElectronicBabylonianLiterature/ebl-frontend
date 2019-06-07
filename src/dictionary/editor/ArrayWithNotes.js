@@ -9,7 +9,7 @@ class ArrayWithNotes extends Component {
     this.props.onChange({ ...this.props.value, [property]: value })
   }
 
-  render () {
+  render() {
     return (
       <>
         <ArrayInput

@@ -5,7 +5,7 @@ import ExternalLink from 'common/ExternalLink'
 
 import './FullCitation.css'
 
-export default function FullCitation ({ reference }) {
+export default function FullCitation({ reference }) {
   const parser = new Parser()
   const citation = reference.document.toHtml()
   const parsed = parser.parse(citation)
@@ -13,17 +13,17 @@ export default function FullCitation ({ reference }) {
     <div>
       {reference.document.link && (
         <ExternalLink
-          className='FullCitation__link'
+          className="FullCitation__link"
           href={reference.document.link}
-          title='Open in a new window.'
+          title="Open in a new window."
         >
-          <i className='fas fa-external-link-alt' />
+          <i className="fas fa-external-link-alt" />
         </ExternalLink>
       )}
       {parsed}
       {reference.notes && (
         <ReactMarkdown
-          className='FullCitation__notes'
+          className="FullCitation__notes"
           source={`\\[${reference.notes}\\]`}
         />
       )}

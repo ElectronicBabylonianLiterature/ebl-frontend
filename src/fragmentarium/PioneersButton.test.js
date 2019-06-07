@@ -38,7 +38,7 @@ it('Hides button if user does not have transliteration rights', async () => {
   expect(element.container.textContent).toEqual('')
 })
 
-function renderPioneersButton (isAllowedTo) {
+function renderPioneersButton(isAllowedTo) {
   session.isAllowedToTransliterateFragments.mockReturnValue(isAllowedTo)
   element = render(
     <Router history={history}>

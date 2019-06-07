@@ -74,7 +74,7 @@ it('Creates a default reference if none present', async () => {
   expect(updateReferences).toHaveBeenCalledWith(List.of(defaultReference))
 })
 
-function renderReferences () {
+function renderReferences() {
   element = render(
     <References
       references={references}
@@ -84,12 +84,12 @@ function renderReferences () {
   )
 }
 
-async function renderReferencesAndWait () {
+async function renderReferencesAndWait() {
   renderReferences()
   await waitForElement(() => element.getAllByText('Document'))
 }
 
-async function inputReference () {
+async function inputReference() {
   changeValueByLabel(element, 'Document', 'Borger')
   await waitForElement(() => element.getByText(/Borger 1957/))
   clickNth(element, /Borger 1957/, 0)

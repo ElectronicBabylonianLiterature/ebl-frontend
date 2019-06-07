@@ -64,22 +64,22 @@ describe('Hash does not contain token', () => {
   itRedirectsToHome()
 })
 
-function itRedirectsToHome () {
+function itRedirectsToHome() {
   it('Redirects to home', async () => {
     await waitForElement(() => element.getByText('Home'))
   })
 }
 
-function renderCallback (hash) {
+function renderCallback(hash) {
   element = render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <MemoryRouter initialEntries={[`/callback#${hash}`]}>
         <Switch>
           <Route
-            path='/callback'
+            path="/callback"
             render={() => <CallbackWithRouter auth={auth} />}
           />
-          <Route path='/' render={() => <div>Home</div>} />
+          <Route path="/" render={() => <div>Home</div>} />
         </Switch>
       </MemoryRouter>
     </ErrorReporterContext.Provider>

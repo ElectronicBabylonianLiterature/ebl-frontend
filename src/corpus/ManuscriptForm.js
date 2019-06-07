@@ -12,7 +12,7 @@ import type { Manuscript } from './text'
 import produce, { Draft } from 'immer'
 import { Map } from 'immutable'
 
-export default function ManuscriptForm ({
+export default function ManuscriptForm({
   manuscript,
   onChange,
   searchBibliography
@@ -75,7 +75,7 @@ export default function ManuscriptForm ({
         <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
           <Form.Label>Provenance</Form.Label>
           <Form.Control
-            as='select'
+            as="select"
             value={manuscript.provenance.name}
             onChange={handelRecordChange('provenance', provenances)}
           >
@@ -96,8 +96,8 @@ export default function ManuscriptForm ({
           <label>Period</label>
           <InputGroup>
             <Form.Control
-              as='select'
-              aria-label='Period modifier'
+              as="select"
+              aria-label="Period modifier"
               value={manuscript.periodModifier.name}
               onChange={handelRecordChange('periodModifier', periodModifiers)}
             >
@@ -108,8 +108,8 @@ export default function ManuscriptForm ({
               ))}
             </Form.Control>
             <Form.Control
-              as='select'
-              aria-label='Period'
+              as="select"
+              aria-label="Period"
               value={manuscript.period.name}
               onChange={handelRecordChange('period', periods)}
             >
@@ -130,7 +130,7 @@ export default function ManuscriptForm ({
         <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
           <Form.Label>Type</Form.Label>
           <Form.Control
-            as='select'
+            as="select"
             value={manuscript.type.name}
             onChange={handelRecordChange('type', types)}
           >
@@ -151,7 +151,7 @@ export default function ManuscriptForm ({
       </Form.Group>
       <ReferencesForm
         value={manuscript.references}
-        label='References'
+        label="References"
         onChange={value =>
           onChange(
             produce(manuscript, (draft: Draft<Manuscript>) => {

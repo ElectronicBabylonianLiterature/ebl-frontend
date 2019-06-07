@@ -77,13 +77,13 @@ describe('Creating', () => {
   commonTests(true, createWaitFor)
 })
 
-function expectTextContentToContainCslJson (container, entry) {
+function expectTextContentToContainCslJson(container, entry) {
   expect(container).toHaveTextContent(
     JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' ')
   )
 }
 
-function commonTests (create, waitFor) {
+function commonTests(create, waitFor) {
   test('Displays error message failed submit', async () => {
     bibliographyService.update.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage))
@@ -115,14 +115,14 @@ function commonTests (create, waitFor) {
   })
 }
 
-async function renderWithRouter (isAllowedTo = true, create = false, waitFor) {
+async function renderWithRouter(isAllowedTo = true, create = false, waitFor) {
   const match = create
     ? matchPath('/bibliography', {
-      path: '/bibliography'
-    })
+        path: '/bibliography'
+      })
     : matchPath('/bibliography/id', {
-      path: '/bibliography/:id'
-    })
+        path: '/bibliography/:id'
+      })
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const element = render(

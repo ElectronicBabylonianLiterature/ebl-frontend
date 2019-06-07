@@ -5,11 +5,11 @@ import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
-function TransliterationSearchHelp () {
+function TransliterationSearchHelp() {
   return (
     <Popover
       id={_.uniqueId('TransliterationSearchHelp-')}
-      title='Search transliterations'
+      title="Search transliterations"
     >
       <ul>
         <li>
@@ -57,7 +57,7 @@ class TransliterationSearchForm extends Component {
     )
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.transliteration !== prevProps.transliteration) {
       this.setState({
         transliteration: this.props.transliteration || ''
@@ -65,30 +65,30 @@ class TransliterationSearchForm extends Component {
     }
   }
 
-  render () {
+  render() {
     const rows = this.state.transliteration.split('\n').length
     return (
       <Form onSubmit={this.submit}>
-        <Form.Group as={Row} controlId='transliteration'>
+        <Form.Group as={Row} controlId="transliteration">
           <Col
             sm={2}
             as={Form.Label}
-            className='TransliterationSearchForm__label'
+            className="TransliterationSearchForm__label"
           >
             <HelpTrigger overlay={TransliterationSearchHelp()} />
           </Col>
           <Col sm={7}>
             <Form.Control
-              as='textarea'
+              as="textarea"
               value={this.state.transliteration}
               rows={Math.max(2, rows)}
-              placeholder='Search transliterations'
-              aria-label='Transliteration'
+              placeholder="Search transliterations"
+              aria-label="Transliteration"
               onChange={this.onChange}
             />
           </Col>
           <Col sm={3}>
-            <Button type='submit' variant='primary'>
+            <Button type="submit" variant="primary">
               Search
             </Button>
           </Col>

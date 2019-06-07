@@ -7,12 +7,12 @@ class TextInput extends Component {
     this.props.onChange(event.target.value)
   }
 
-  render () {
+  render() {
     return (
       <FormGroup controlId={_.uniqueId('TextInput-')}>
         {this.props.children && <FormLabel>{this.props.children}</FormLabel>}
         <FormControl
-          type='text'
+          type="text"
           value={this.props.value}
           onChange={this.onChange}
         />

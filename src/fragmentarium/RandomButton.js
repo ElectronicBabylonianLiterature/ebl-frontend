@@ -25,10 +25,10 @@ class RandomButton extends Component {
 
   componentWillUnmount = () => this.fetchPromise.cancel()
 
-  render () {
+  render() {
     return (
       <Fragment>
-        <Button variant='primary' onClick={this.click}>
+        <Button variant="primary" onClick={this.click}>
           {this.state.loading ? <Spinner /> : this.props.children}
         </Button>
         <ErrorAlert error={this.state.error} />

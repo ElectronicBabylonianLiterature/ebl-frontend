@@ -20,22 +20,22 @@ const folioTypes = Map({
 export class Folio {
   #type
 
-  constructor ({ name, number }) {
+  constructor({ name, number }) {
     this.name = name
     this.number = number
     this.#type = folioTypes.get(name, FolioType({ name }))
     Object.freeze(this)
   }
 
-  get humanizedName () {
+  get humanizedName() {
     return this.#type.name
   }
 
-  get hasImage () {
+  get hasImage() {
     return this.#type.hasImage
   }
 
-  get fileName () {
+  get fileName() {
     return `${this.name}_${this.number}.jpg`
   }
 }
@@ -47,15 +47,15 @@ export class RecordEntry extends Record({
   date: '',
   type: ''
 }) {
-  get moment () {
+  get moment() {
     return this.isHistorical ? moment.range(this.date) : moment(this.date)
   }
 
-  get isHistorical () {
+  get isHistorical() {
     return this.type === historicalTransliteration
   }
 
-  dateEquals (other) {
+  dateEquals(other) {
     const onSameDate = (first, second) => {
       const sameYear = first.year() === second.year()
       const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
@@ -77,7 +77,7 @@ export const Line = Record({ type: '', prefix: '', content: List() })
 export class Text extends Record({
   lines: List()
 }) {
-  createLemmatization (lemmas, suggestions) {
+  createLemmatization(lemmas, suggestions) {
     return new Lemmatization(
       this.lines.map(line => line.prefix).toJS(),
       this.lines
@@ -87,14 +87,14 @@ export class Text extends Record({
           tokens.map(token =>
             token.get('lemmatizable', false)
               ? new LemmatizationToken(
-                token.get('value'),
-                true,
-                token
-                  .get('uniqueLemma', [])
-                  .map(id => lemmas[id])
-                  .toJS(),
-                suggestions[token.get('value')]
-              )
+                  token.get('value'),
+                  true,
+                  token
+                    .get('uniqueLemma', [])
+                    .map(id => lemmas[id])
+                    .toJS(),
+                  suggestions[token.get('value')]
+                )
               : new LemmatizationToken(token.get('value'), false)
           )
         )
@@ -126,11 +126,11 @@ export class Fragment extends Record({
   atf: '',
   matchingLines: List()
 }) {
-  get hasUncuratedReferences () {
+  get hasUncuratedReferences() {
     return List.isList(this.uncuratedReferences)
   }
 
-  get uniqueRecord () {
+  get uniqueRecord() {
     const reducer = (filteredRecord, recordEntry, index) => {
       const keepRecord =
         filteredRecord.isEmpty() ||
@@ -140,7 +140,7 @@ export class Fragment extends Record({
     return this.record.reduce(reducer, List())
   }
 
-  setReferences (references) {
+  setReferences(references) {
     return this.set('references', references)
   }
 }

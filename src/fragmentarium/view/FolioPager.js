@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import withData from 'http/withData'
 import FragmentLink from 'fragmentarium/FragmentLink'
 
-function FolioPager ({ data, folio }) {
+function FolioPager({ data, folio }) {
   const PagerLink = ({ label, direction }) => (
     <FragmentLink
       number={data[direction].fragmentNumber}
@@ -27,14 +27,14 @@ function FolioPager ({ data, folio }) {
     <Fragment>
       {data && (
         <PagerLink
-          direction='previous'
+          direction="previous"
           label={`Previous ${folio.humanizedName}'s Folio`}
         />
       )}{' '}
       Browse {folio.humanizedName}'s Folios{' '}
       {data && (
         <PagerLink
-          direction='next'
+          direction="next"
           label={`Next ${folio.humanizedName}'s Folio`}
         />
       )}

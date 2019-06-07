@@ -5,7 +5,7 @@ import { Badge, Col, Form } from 'react-bootstrap'
 
 type Props = { chapter: Chapter }
 
-function getSiglum (chapter: Chapter, manuscriptLine: ManuscriptLine) {
+function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
     candidate => candidate.id === manuscriptLine.manuscriptId
   )
@@ -16,10 +16,10 @@ function getSiglum (chapter: Chapter, manuscriptLine: ManuscriptLine) {
   }
 }
 
-export default function ChapterAlignment ({ chapter }: Props) {
+export default function ChapterAlignment({ chapter }: Props) {
   return (
     <>
-      <Badge variant='danger'>WIP</Badge>
+      <Badge variant="danger">WIP</Badge>
       {chapter.lines.map((line, index) => (
         <section key={index}>
           <Form.Row>

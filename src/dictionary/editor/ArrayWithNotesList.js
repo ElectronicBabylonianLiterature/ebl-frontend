@@ -5,7 +5,7 @@ import ArrayWithNotes from './ArrayWithNotes'
 import List from 'common/List'
 
 class ArrayWithNotesList extends Component {
-  render () {
+  render() {
     return (
       <FormGroup>
         <List

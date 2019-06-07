@@ -12,7 +12,7 @@ import DerivedFromInput from './DerivedFromInput'
 import PosInput from './PosInput'
 
 class WordForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -75,9 +75,9 @@ class WordForm extends Component {
   logograms = () => (
     <ArrayWithNotesList
       value={this.state.word.logograms}
-      separator=' '
-      property='logogram'
-      noun='logogram'
+      separator=" "
+      property="logogram"
+      noun="logogram"
       onChange={this.onChangeValue('logograms')}
     />
   )
@@ -107,15 +107,15 @@ class WordForm extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
-      <form className='WordForm' onSubmit={this.submit}>
+      <form className="WordForm" onSubmit={this.submit}>
         <fieldset disabled={this.props.disabled}>
           <this.lemma />
-          <this.textInput property='legacyLemma' />
-          <this.textInput property='homonym' />
+          <this.textInput property="legacyLemma" />
+          <this.textInput property="homonym" />
           <this.pos />
-          <this.textInput property='meaning' />
+          <this.textInput property="meaning" />
           <hr />
 
           <this.forms />
@@ -132,7 +132,7 @@ class WordForm extends Component {
 
           <this.derivedFrom />
 
-          <Button type='submit' variant='primary'>
+          <Button type="submit" variant="primary">
             Save
           </Button>
         </fieldset>

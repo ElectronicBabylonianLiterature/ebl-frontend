@@ -7,11 +7,11 @@ import SessionContext from 'auth/SessionContext'
 
 import './Display.css'
 
-function Display ({ fragment }) {
+function Display({ fragment }) {
   return (
     <Fragment>
       <TransliterationHeader fragment={fragment} />
-      <ol className='Display__lines'>
+      <ol className="Display__lines">
         {fragment.atf.split('\n').map((line, index) => (
           <li key={index}>{line}</li>
         ))}
@@ -23,7 +23,7 @@ function Display ({ fragment }) {
               <h4>
                 Glossary{' '}
                 <small>
-                  <Badge variant='warning'>Beta</Badge>
+                  <Badge variant="warning">Beta</Badge>
                 </small>
               </h4>
               {fragment.text.lines

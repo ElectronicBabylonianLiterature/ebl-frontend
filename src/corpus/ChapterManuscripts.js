@@ -5,7 +5,7 @@ import ManuscriptForm from './ManuscriptForm'
 import populateIds from './populateIds'
 import { produce } from 'immer'
 
-export default function ChapterManuscripts ({
+export default function ChapterManuscripts({
   chapter,
   onChange,
   searchBibliography
@@ -18,7 +18,7 @@ export default function ChapterManuscripts ({
     )
   return (
     <ListForm
-      noun='manuscript'
+      noun="manuscript"
       defaultValue={createManuscript({})}
       value={chapter.manuscripts}
       onChange={handeManuscriptsChange}

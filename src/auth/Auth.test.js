@@ -87,7 +87,7 @@ describe('logout', () => {
 })
 
 describe('handleAuthentication', () => {
-  function testParseHash (authResultConfig, scopes) {
+  function testParseHash(authResultConfig, scopes) {
     const authResult = {
       accessToken: 'accessToken',
       idToken: 'idToken',

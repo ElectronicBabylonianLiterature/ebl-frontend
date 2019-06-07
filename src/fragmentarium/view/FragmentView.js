@@ -16,16 +16,16 @@ const FragmentWithData = withData(
   }
 )
 
-export default function FragmentView ({ match, location, fragmentService }) {
+export default function FragmentView({ match, location, fragmentService }) {
   const number = decodeURIComponent(match.params.id)
   const folioName = queryString.parse(location.search).folioName
   const folioNumber = queryString.parse(location.search).folioNumber
   const activeFolio =
     folioName || folioNumber
       ? new Folio({
-        name: folioName,
-        number: folioNumber
-      })
+          name: folioName,
+          number: folioNumber
+        })
       : null
 
   return (

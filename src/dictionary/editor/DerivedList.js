@@ -5,14 +5,14 @@ import FormList from './FormList'
 import List from 'common/List'
 
 class DerivedList extends Component {
-  render () {
+  render() {
     return (
       <FormGroup>
         <List
           label={this.props.children}
           value={this.props.value}
           onChange={this.props.onChange}
-          noun='group'
+          noun="group"
           defaultValue={[]}
         >
           {(group, onChange, groupIndex) => (

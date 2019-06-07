@@ -12,23 +12,23 @@ import BibliographyEntry from './BibliographyEntry'
 import './BibliographyEntryForm.css'
 
 export default class BibliographyEntryForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = props.value
       ? {
-        citation: props.value.toHtml(),
-        cslData: [props.value.toJson()],
-        value: JSON.stringify(props.value.toJson(), null, 2),
-        loading: false,
-        isInvalid: false
-      }
+          citation: props.value.toHtml(),
+          cslData: [props.value.toJson()],
+          value: JSON.stringify(props.value.toJson(), null, 2),
+          loading: false,
+          isInvalid: false
+        }
       : {
-        citation: '',
-        cslData: null,
-        value: '',
-        loading: false,
-        isInvalid: false
-      }
+          citation: '',
+          cslData: null,
+          value: '',
+          loading: false,
+          isInvalid: false
+        }
     this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, {
       leading: false,
@@ -36,11 +36,11 @@ export default class BibliographyEntryForm extends Component {
     })
   }
 
-  get isValid () {
+  get isValid() {
     return _.isArray(this.state.cslData) && this.state.cslData.length === 1
   }
 
-  get isInvalid () {
+  get isInvalid() {
     return (
       !this.state.loading &&
       !_.isEmpty(this.state.value) &&
@@ -48,7 +48,7 @@ export default class BibliographyEntryForm extends Component {
     )
   }
 
-  get isDisabled () {
+  get isDisabled() {
     return !this.isValid || this.props.disabled
   }
 
@@ -102,7 +102,7 @@ export default class BibliographyEntryForm extends Component {
     this.props.onSubmit(entry)
   }
 
-  render () {
+  render() {
     const parsed = new Parser().parse(this.state.citation)
     return (
       <>
@@ -110,35 +110,35 @@ export default class BibliographyEntryForm extends Component {
           <Form.Group controlId={'editor'}>
             <p>
               You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
-              <ExternalLink href='https://citation.js.org/api/tutorial-input_formats.html'>
+              <ExternalLink href="https://citation.js.org/api/tutorial-input_formats.html">
                 supported input format
               </ExternalLink>
               . BibTeX can be generated with{' '}
-              <ExternalLink href='https://truben.no/latex/bibtex/'>
+              <ExternalLink href="https://truben.no/latex/bibtex/">
                 BibTeX Online Editor
               </ExternalLink>
               .
             </p>
             <InputGroup>
               <Form.Control
-                aria-label='Data'
-                as='textarea'
+                aria-label="Data"
+                as="textarea"
                 rows={this.state.value.split('\n').length}
                 value={this.state.value}
                 onChange={this.handleChange}
                 isValid={this.isValid}
                 isInvalid={this.isInvalid}
                 disabled={this.props.disabled}
-                className='BibliographyEntryForm__editor'
+                className="BibliographyEntryForm__editor"
               />
-              <Form.Control.Feedback type='invalid'>
+              <Form.Control.Feedback type="invalid">
                 Invalid entry
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
           <Spinner loading={this.state.loading} />
           {parsed}
-          <Button variant='primary' type='submit' disabled={this.isDisabled}>
+          <Button variant="primary" type="submit" disabled={this.isDisabled}>
             Save
           </Button>
         </Form>

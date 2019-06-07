@@ -3,16 +3,16 @@ import { Image } from 'react-bootstrap'
 import ExternalLink from 'common/ExternalLink'
 
 class BlobImage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.image = URL.createObjectURL(props.data)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     URL.revokeObjectURL(this.image)
   }
 
-  render () {
+  render() {
     const hasLink = this.props.hasLink
     const image = <Image src={this.image} alt={this.props.alt} fluid />
     return hasLink ? (

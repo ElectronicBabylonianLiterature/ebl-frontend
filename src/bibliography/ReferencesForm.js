@@ -5,7 +5,7 @@ import Reference from 'bibliography/Reference'
 
 export const defaultReference = new Reference()
 
-export default function ReferencesForm ({
+export default function ReferencesForm({
   searchBibliography,
   value,
   onChange,
@@ -17,7 +17,7 @@ export default function ReferencesForm ({
       value={value}
       onChange={onChange}
       label={label}
-      noun='Reference'
+      noun="Reference"
       defaultValue={defaultReference}
       collapsed={collapsed}
     >

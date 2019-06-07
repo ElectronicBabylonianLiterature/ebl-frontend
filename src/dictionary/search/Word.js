@@ -5,10 +5,10 @@ import _ from 'lodash'
 import './Word.css'
 
 class InlineMarkdown extends Component {
-  render () {
+  render() {
     return (
       <ReactMarkdown
-        className='InlineMarkdown'
+        className="InlineMarkdown"
         source={this.props.source}
         disallowedTypes={['paragraph']}
         unwrapDisallowed
@@ -18,7 +18,7 @@ class InlineMarkdown extends Component {
 }
 
 class Lemma extends Component {
-  render () {
+  render() {
     const container = this.props.container || 'em'
     const attested = this.props.value.attested === false ? '*' : ''
     const lemma = this.props.value.lemma.join(' ')
@@ -26,13 +26,13 @@ class Lemma extends Component {
       <Fragment>
         {this.props.value._id
           ? React.createElement(
-            container,
-            {},
-            <Link to={`/dictionary/${this.props.value._id}`}>
-              {attested}
-              {lemma}
-            </Link>
-          )
+              container,
+              {},
+              <Link to={`/dictionary/${this.props.value._id}`}>
+                {attested}
+                {lemma}
+              </Link>
+            )
           : React.createElement(container, {}, `${attested}${lemma}`)}
         {this.props.value.homonym && ` ${this.props.value.homonym}`}
       </Fragment>
@@ -41,21 +41,21 @@ class Lemma extends Component {
 }
 
 class Notes extends Component {
-  render () {
+  render() {
     const preNote = _.head(this.props.value)
     const postNote = _.tail(this.props.value).join(' ')
     return (
       <Fragment>
         {!_.isEmpty(preNote) && (
-          <span className='Notes-note'>
+          <span className="Notes-note">
             <InlineMarkdown source={preNote} />{' '}
           </span>
         )}
         {this.props.children}
         {!_.isEmpty(postNote) && (
-          <span className='Notes-note'>
+          <span className="Notes-note">
             {' '}
-            <InlineMarkdown className='Notes-note' source={postNote} />
+            <InlineMarkdown className="Notes-note" source={postNote} />
           </span>
         )}
       </Fragment>
@@ -64,19 +64,19 @@ class Notes extends Component {
 }
 
 class Form extends Component {
-  render () {
+  render() {
     return _.isString(this.props.value) ? (
       <InlineMarkdown source={this.props.value} />
     ) : (
       <Notes value={this.props.value.notes}>
-        <Lemma value={this.props.value} container='em' />
+        <Lemma value={this.props.value} container="em" />
       </Notes>
     )
   }
 }
 
 class AmplifiedMeanings extends Component {
-  render () {
+  render() {
     return (
       <ul>
         {_.map(this.props.value, (value, topLevelindex) => (
@@ -85,7 +85,7 @@ class AmplifiedMeanings extends Component {
             <InlineMarkdown source={value.meaning} />{' '}
             <ul>
               {value.entries.map((value, enryIndex) => (
-                <li className='AmplifiedMeanings__entry' key={enryIndex}>
+                <li className="AmplifiedMeanings__entry" key={enryIndex}>
                   <strong>{`${enryIndex + 1}.`}</strong>{' '}
                   <InlineMarkdown source={value.meaning} />
                 </li>
@@ -99,14 +99,14 @@ class AmplifiedMeanings extends Component {
 }
 
 class Derived extends Component {
-  render () {
+  render() {
     return (
       <ul>
         {this.props.value.map((group, index) => (
           <li key={index}>
-            <ul className='Derived__group'>
+            <ul className="Derived__group">
               {group.map((derived, innerIndex) => (
-                <li className='Derived__entry' key={innerIndex}>
+                <li className="Derived__entry" key={innerIndex}>
                   <Form value={derived} />
                 </li>
               ))}
@@ -119,15 +119,15 @@ class Derived extends Component {
 }
 
 class Word extends Component {
-  get word () {
+  get word() {
     return this.props.value
   }
 
-  get forms () {
+  get forms() {
     return (
-      <ul className='Word__forms'>
+      <ul className="Word__forms">
         {this.word.forms.map((form, index) => (
-          <li key={index} className='Word__form'>
+          <li key={index} className="Word__form">
             <Form value={form} />
           </li>
         ))}
@@ -135,15 +135,15 @@ class Word extends Component {
     )
   }
 
-  isNotEmpty (property) {
+  isNotEmpty(property) {
     return !_.isEmpty(this.word[property])
   }
 
-  render () {
+  render() {
     return (
-      <div className='Word'>
+      <div className="Word">
         <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
-          <Lemma value={this.word} container='strong' />
+          <Lemma value={this.word} container="strong" />
         </dfn>
         {!_.isEmpty(this.forms) && this.forms}{' '}
         <InlineMarkdown source={this.word.meaning} />{' '}
@@ -152,7 +152,7 @@ class Word extends Component {
         )}{' '}
         {this.isNotEmpty('derived') && <Derived value={this.word.derived} />}{' '}
         {this.word.derivedFrom && (
-          <span className='Word__derivedFrom'>
+          <span className="Word__derivedFrom">
             <Form value={this.word.derivedFrom} />
           </span>
         )}

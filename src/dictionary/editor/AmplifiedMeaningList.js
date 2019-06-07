@@ -5,17 +5,17 @@ import { FormGroup } from 'react-bootstrap'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 
 class AmplifiedMeaningList extends Component {
-  get noun () {
+  get noun() {
     return this.props.entry ? 'entry' : 'amplified meaning'
   }
 
-  get defaultValue () {
+  get defaultValue() {
     return this.props.entry
       ? { meaning: '', vowels: [] }
       : { key: '', meaning: '', vowels: [], entries: [] }
   }
 
-  render () {
+  render() {
     return (
       <FormGroup>
         <List

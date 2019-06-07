@@ -12,7 +12,7 @@ let container
 let element
 let statistics
 
-async function renderFragmentariumSearch (path = '/fragmentarium/search') {
+async function renderFragmentariumSearch(path = '/fragmentarium/search') {
   const FragmentariumSearchWithRouter = withRouter(FragmentariumSearch)
   element = render(
     <MemoryRouter initialEntries={[path]}>

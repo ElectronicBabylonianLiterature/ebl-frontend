@@ -32,7 +32,7 @@ describe('Logged in', () => {
   })
 })
 
-function commonTests () {
+function commonTests() {
   test('Logo links to home', () => {
     expect(
       element.getByTitle('electronic Babylonian Literature (eBL)')
@@ -48,7 +48,7 @@ function commonTests () {
   })
 }
 
-function renderHeader (loggedIn) {
+function renderHeader(loggedIn) {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(loggedIn)
   element = render(
     <MemoryRouter>

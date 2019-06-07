@@ -15,7 +15,7 @@ import BibliographyService from 'bibliography/BibliographyService'
 import { defaultErrorReporter } from 'ErrorReporterContext'
 import createAuth0Config from 'auth/createAuth0Config'
 
-function createApp (api, sessionStore) {
+function createApp(api, sessionStore) {
   const auth0Config = createAuth0Config()
   const auth = new Auth(sessionStore, defaultErrorReporter, auth0Config)
   const wordRepository = new WordRepository(api)
@@ -48,16 +48,16 @@ export default class AppDriver {
   element = null
   session = null
 
-  constructor (api) {
+  constructor(api) {
     this.api = api
   }
 
-  withPath (path) {
+  withPath(path) {
     this.initialEntries = [path]
     return this
   }
 
-  withSession () {
+  withSession() {
     this.session = new Session(
       'accessToken',
       'idToken',
@@ -67,7 +67,7 @@ export default class AppDriver {
     return this
   }
 
-  render () {
+  render() {
     const fakeSessionStore = {
       setSession: session => {
         this.session = session
@@ -87,38 +87,38 @@ export default class AppDriver {
     return this
   }
 
-  async waitForText (text) {
+  async waitForText(text) {
     await waitForElement(() => this.element.getByText(text))
   }
 
-  expectTextContent (text) {
+  expectTextContent(text) {
     expect(this.element.container).toHaveTextContent(text)
   }
 
-  expectNotInContent (text) {
+  expectNotInContent(text) {
     expect(this.element.queryByText(text)).toBeNull()
   }
 
-  expectLink (text, expectedHref) {
+  expectLink(text, expectedHref) {
     expect(this.element.getByText(text)).toHaveAttribute('href', expectedHref)
   }
 
-  expectBreadcrumbs (crumbs) {
+  expectBreadcrumbs(crumbs) {
     this.expectTextContent(crumbs.join(''))
   }
 
-  expectInputElement (label, expectedValue) {
+  expectInputElement(label, expectedValue) {
     expect(this.element.getByLabelText(label).value).toEqual(
       String(expectedValue)
     )
   }
 
-  changeValueByLabel (label, newValue) {
+  changeValueByLabel(label, newValue) {
     const input = this.element.getByLabelText(label)
     fireEvent.change(input, { target: { value: newValue } })
   }
 
-  click (text, n = 0) {
+  click(text, n = 0) {
     const clickable = this.element.getAllByText(text)[n]
     fireEvent.click(clickable)
     // await wait()

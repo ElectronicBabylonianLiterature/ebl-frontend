@@ -7,18 +7,18 @@ import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
 import { produce } from 'immer'
 
-function SizeBadge ({ collection }) {
+function SizeBadge({ collection }) {
   const size = isCollection(collection) ? collection.count() : collection.length
   return (
     size > 0 && (
-      <Badge variant='light' pill>
+      <Badge variant="light" pill>
         {size}
       </Badge>
     )
   )
 }
 
-function createDefaultValue (defaultValue) {
+function createDefaultValue(defaultValue) {
   if (_.isFunction(defaultValue)) {
     return defaultValue()
   } else if (_.isObjectLike(defaultValue) && !isValueObject(defaultValue)) {
@@ -28,7 +28,7 @@ function createDefaultValue (defaultValue) {
   }
 }
 
-function listController (ListView) {
+function listController(ListView) {
   return ({ value, children, onChange, defaultValue, ...props }) => {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
@@ -36,8 +36,8 @@ function listController (ListView) {
         isCollection(value)
           ? merge(value, [newItem])
           : produce(value, draft => {
-            draft.push(newItem)
-          })
+              draft.push(newItem)
+            })
       )
     }
 
@@ -46,8 +46,8 @@ function listController (ListView) {
         isCollection(value)
           ? remove(value, index)
           : produce(value, draft => {
-            draft.splice(index, 1)
-          })
+              draft.splice(index, 1)
+            })
       )
     }
 
@@ -56,13 +56,13 @@ function listController (ListView) {
         isCollection(value)
           ? set(value, index, updated)
           : produce(value, draft => {
-            draft[index] = updated
-          })
+              draft[index] = updated
+            })
       )
     }
 
     return (
-      <div className='List'>
+      <div className="List">
         <ListView
           {...props}
           onDelete={delete_}
@@ -76,7 +76,7 @@ function listController (ListView) {
   }
 }
 
-function CardListView ({
+function CardListView({
   label,
   noun,
   elements,
@@ -92,14 +92,14 @@ function CardListView ({
   )
   return (
     <CollapsibleCard label={fullLabel} collapsed={collapsed}>
-      <ListGroup as={ordered ? 'ol' : 'ul'} variant='flush'>
+      <ListGroup as={ordered ? 'ol' : 'ul'} variant="flush">
         {elements.map((element, index) => (
-          <ListGroup.Item as='li' key={index}>
+          <ListGroup.Item as="li" key={index}>
             {element}
             <Button
               onClick={onDelete(index)}
-              size='sm'
-              variant='outline-secondary'
+              size="sm"
+              variant="outline-secondary"
             >
               Delete {noun}
             </Button>
@@ -107,7 +107,7 @@ function CardListView ({
         ))}
       </ListGroup>
       <Card.Body>
-        <Button onClick={onAdd} size='sm' variant='outline-secondary'>
+        <Button onClick={onAdd} size="sm" variant="outline-secondary">
           Add {noun}
         </Button>
       </Card.Body>

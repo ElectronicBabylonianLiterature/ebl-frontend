@@ -10,20 +10,20 @@ import SessionContext from 'auth/SessionContext'
 
 import './Bibliography.css'
 
-function CreateButton ({ session }) {
+function CreateButton({ session }) {
   return (
-    <LinkContainer to='/bibliography_new'>
+    <LinkContainer to="/bibliography_new">
       <Button
-        variant='outline-primary'
+        variant="outline-primary"
         disabled={!session.isAllowedToWriteBibliography()}
       >
-        <i className='fas fa-plus-circle' /> Create
+        <i className="fas fa-plus-circle" /> Create
       </Button>
     </LinkContainer>
   )
 }
 
-export default function Bibliography ({ bibliographyService, location }) {
+export default function Bibliography({ bibliographyService, location }) {
   const query = queryString.parse(location.search).query
   return (
     <SessionContext.Consumer>
@@ -34,7 +34,7 @@ export default function Bibliography ({ bibliographyService, location }) {
         >
           {session.isAllowedToReadBibliography() ? (
             <>
-              <div className='Bibliography__search'>
+              <div className="Bibliography__search">
                 <BibliographySearchForm query={query} />
               </div>
               <BibliographySearch

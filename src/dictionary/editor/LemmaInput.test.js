@@ -89,6 +89,6 @@ describe('Value does not have attested property', () => {
   })
 })
 
-function renderLemmaInput () {
+function renderLemmaInput() {
   return render(<LemmaInput value={value} onChange={onChange} />)
 }

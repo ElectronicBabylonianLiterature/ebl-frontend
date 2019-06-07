@@ -20,9 +20,9 @@ beforeEach(async () => {
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
   element = render(
     <>
-      <label id='label'>Entry</label>
+      <label id="label">Entry</label>
       <BibliographySelect
-        aria-labelledby='label'
+        aria-labelledby="label"
         searchBibliography={searchBibliography}
         value={entry}
         onChange={onChange}
@@ -40,13 +40,13 @@ it('Calls onChange when selecting an entry', async () => {
   await wait(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })
 
-async function fill () {
+async function fill() {
   const label = expectedLabel(searchEntry)
   changeValueByLabel(element, 'Entry', 'Borger')
   await waitForElement(() => element.getByText(label))
   clickNth(element, label, 0)
 }
 
-function expectedLabel (entry) {
+function expectedLabel(entry) {
   return `${entry.author} ${entry.year} ${entry.title}`
 }

@@ -28,7 +28,7 @@ it('Calls onChange with updated value on change', () => {
     .toHaveBeenCalledWith(_.identity)
 })
 
-function renderTextInput () {
+function renderTextInput() {
   return render(
     <TextInput value={value} onChange={onChange}>
       {label}

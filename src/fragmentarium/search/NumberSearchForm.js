@@ -23,22 +23,22 @@ class FragmentSearchForm extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <Form onSubmit={this.submit}>
-        <Form.Group as={Row} controlId='number'>
+        <Form.Group as={Row} controlId="number">
           <Col sm={2} />
           <Col sm={7}>
             <Form.Control
-              type='text'
+              type="text"
               value={this.state.number}
-              placeholder='Search museum, accession, or CDLI number'
-              aria-label='Number'
+              placeholder="Search museum, accession, or CDLI number"
+              aria-label="Number"
               onChange={this.onChange}
             />
           </Col>
           <Col sm={3}>
-            <Button type='submit' variant='primary'>
+            <Button type="submit" variant="primary">
               Search
             </Button>
           </Col>

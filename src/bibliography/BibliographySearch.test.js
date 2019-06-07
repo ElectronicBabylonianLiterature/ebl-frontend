@@ -11,7 +11,7 @@ let entries
 let bibliographyService
 let element
 
-function renderWordSearch () {
+function renderWordSearch() {
   element = render(
     <MemoryRouter>
       <BibliographySearch
@@ -35,7 +35,7 @@ test('Fetch results from service', () => {
   expect(bibliographyService.search).toBeCalledWith(query)
 })
 
-function createAuthorRegExp (entry) {
+function createAuthorRegExp(entry) {
   return new RegExp(_.escapeRegExp(entry.author))
 }
 

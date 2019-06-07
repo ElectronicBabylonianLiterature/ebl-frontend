@@ -28,20 +28,20 @@ class TemplateForm extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <Form inline noValidate onSubmit={this.submit}>
-        <Form.Group controlId='template'>
+        <Form.Group controlId="template">
           <Form.Label>
             <HelpTrigger overlay={TemplateHelp()} />
           </Form.Label>
           &nbsp;
           <Form.Control
-            type='text'
+            type="text"
             value={this.state.template.pattern}
-            placeholder='obv, rev'
+            placeholder="obv, rev"
             onChange={this.onChange}
-            aria-label='Template'
+            aria-label="Template"
             isValid={this.state.isValid}
             isInvalid={!(this.state.isValid || this.state.template.isEmpty)}
           />

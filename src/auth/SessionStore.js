@@ -1,21 +1,21 @@
 import Session from './Session'
 
 class SessionStore {
-  setSession (session) {
+  setSession(session) {
     localStorage.setItem('access_token', session.accessToken)
     localStorage.setItem('id_token', session.idToken)
     localStorage.setItem('expires_at', JSON.stringify(session.expiresAt))
     localStorage.setItem('scopes', session.scopes.join(' '))
   }
 
-  clearSession () {
+  clearSession() {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     localStorage.removeItem('scopes')
   }
 
-  getSession () {
+  getSession() {
     const expiresAt = localStorage.getItem('expires_at')
     const scopes = localStorage.getItem('scopes')
     return new Session(

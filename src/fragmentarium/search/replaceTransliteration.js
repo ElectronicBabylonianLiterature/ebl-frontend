@@ -3,7 +3,7 @@ import normalizeNumbers from './normalizeNumbers'
 import normalizeAccents from './normalizeAccents'
 import _ from 'lodash'
 
-export default function replaceTransliteration (transliteration) {
+export default function replaceTransliteration(transliteration) {
   return _(transliteration)
     .thru(replaceSpecialCharacters)
     .thru(normalizeNumbers)

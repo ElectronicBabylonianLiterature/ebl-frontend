@@ -6,7 +6,7 @@ const objectUrl = 'object URL mock'
 let data
 let element
 
-function configureImage (hasLink = true) {
+function configureImage(hasLink = true) {
   beforeEach(async () => {
     URL.createObjectURL.mockReturnValueOnce(objectUrl)
     data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
@@ -14,7 +14,7 @@ function configureImage (hasLink = true) {
   })
 }
 
-function testImageDisplayAndUrl () {
+function testImageDisplayAndUrl() {
   it('Displays the loaded image', () => {
     expect(element.container.querySelector('img')).toHaveAttribute(
       'src',

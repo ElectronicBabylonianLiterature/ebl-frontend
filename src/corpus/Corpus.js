@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 
-function Text ({ text }) {
+function Text({ text }) {
   const title = (
     <>
       {text.index}.{' '}
@@ -20,7 +20,7 @@ function Text ({ text }) {
     </>
   )
   return (
-    <Row as='li'>
+    <Row as="li">
       <Col md={8}>
         <SessionContext.Consumer>
           {session =>
@@ -44,7 +44,7 @@ function Text ({ text }) {
   )
 }
 
-function Texts ({ texts }) {
+function Texts({ texts }) {
   return [
     '',
     'I. Narrative Poetry',
@@ -53,7 +53,7 @@ function Texts ({ texts }) {
   ].map((title, category) => (
     <section key={category}>
       <h3>{title}</h3>
-      <Container fluid as='ol'>
+      <Container fluid as="ol">
         {_(texts)
           .filter(text => text.category === category)
           .sortBy(text => text.index)
@@ -69,7 +69,7 @@ const TextsWithData = withData(
   ({ textService }) => textService.list()
 )
 
-function Corpus ({ fragmentService, textService }) {
+function Corpus({ fragmentService, textService }) {
   return (
     <AppContent crumbs={['Corpus']}>
       <Container fluid>
@@ -80,7 +80,7 @@ function Corpus ({ fragmentService, textService }) {
           <Col md={7}>
             <Image
               fragmentService={fragmentService}
-              fileName='LibraryCropped.svg'
+              fileName="LibraryCropped.svg"
             />
           </Col>
         </Row>

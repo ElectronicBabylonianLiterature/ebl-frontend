@@ -16,8 +16,6 @@
   color: white;
   font-size: 4em;
   line-height: 0.7;
-  text-shadow: -1.5px -1px 0 black,
-    1px -1px 0 black,
-    -1px 1px 0 black,
+  text-shadow: -1.5px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
     1px 1px 0 black;
 }

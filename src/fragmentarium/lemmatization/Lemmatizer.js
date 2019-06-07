@@ -10,14 +10,14 @@ import LemmatizationHelp from './LemmatizationHelp'
 import './Lemmatizer.css'
 
 class Lemmatizer extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       lemmatization: _.cloneDeep(props.data)
     }
   }
 
-  get hasNoChanges () {
+  get hasNoChanges() {
     return (
       _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens) &&
       !this.state.lemmatization.tokens.some(row =>
@@ -45,7 +45,7 @@ class Lemmatizer extends Component {
     <Button
       onClick={this.submit}
       disabled={this.props.disabled || this.hasNoChanges}
-      variant='primary'
+      variant="primary"
     >
       Save
     </Button>
@@ -65,12 +65,12 @@ class Lemmatizer extends Component {
     this.props.updateLemmatization(this.state.lemmatization)
   }
 
-  render () {
+  render() {
     return (
       <>
-        <ol className='Lemmatizer__transliteration'>
+        <ol className="Lemmatizer__transliteration">
           {this.state.lemmatization.tokens.map((row, rowIndex) => (
-            <li key={rowIndex} className='Lemmatizer__row'>
+            <li key={rowIndex} className="Lemmatizer__row">
               <this.Row rowIndex={rowIndex} row={row} />
             </li>
           ))}

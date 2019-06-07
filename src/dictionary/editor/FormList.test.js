@@ -56,7 +56,7 @@ it('Calls onChange with updated value on change', () => {
     ])
 })
 
-function renderForms () {
+function renderForms() {
   return render(
     <FormList
       value={value}

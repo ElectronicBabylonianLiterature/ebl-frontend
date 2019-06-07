@@ -11,7 +11,6 @@
   margin-bottom: 1em;
 }
 
-
 .Details-joins {
   display: inline;
   padding: 0;
@@ -22,6 +21,5 @@
 }
 
 .Details-joins__join + .Details-joins__join::before {
-  content: ", ";
+  content: ', ';
 }
-

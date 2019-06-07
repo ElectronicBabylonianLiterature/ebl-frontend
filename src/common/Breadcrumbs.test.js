@@ -71,7 +71,7 @@ describe('One crumb', () => {
   commonTests()
 })
 
-function commonTests () {
+function commonTests() {
   test('Links to home', async () => {
     expect(element.getByText('eBL')).toHaveAttribute('href', `/`)
   })

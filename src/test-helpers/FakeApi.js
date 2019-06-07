@@ -27,12 +27,12 @@ export default class FakeApi {
       return expectation
         ? Promise.resolve(expectation.response)
         : Promise.reject(
-          new Error(
-            `Unexpected ${
-              authenticate ? 'authenticated' : 'not-authenticated'
-            } fetchJson: ${path}`
+            new Error(
+              `Unexpected ${
+                authenticate ? 'authenticated' : 'not-authenticated'
+              } fetchJson: ${path}`
+            )
           )
-        )
     }),
 
     postJson: jest.fn().mockImplementation(path => {
@@ -55,16 +55,16 @@ export default class FakeApi {
       return expectation
         ? Promise.resolve(expectation.response)
         : Promise.reject(
-          new Error(
-            `Unexpected ${
-              authenticate ? 'authenticated' : 'not-authenticated'
-            } fetchBlob: ${path}`
+            new Error(
+              `Unexpected ${
+                authenticate ? 'authenticated' : 'not-authenticated'
+              } fetchBlob: ${path}`
+            )
           )
-        )
     })
   }
 
-  expectTexts (texts) {
+  expectTexts(texts) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'GET',
@@ -77,7 +77,7 @@ export default class FakeApi {
     return this
   }
 
-  allowText (text) {
+  allowText(text) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'GET',
@@ -89,7 +89,7 @@ export default class FakeApi {
     return this
   }
 
-  expectText (text) {
+  expectText(text) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'GET',
@@ -102,7 +102,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateText (text) {
+  expectUpdateText(text) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'POST',
@@ -115,7 +115,7 @@ export default class FakeApi {
     return this
   }
 
-  allowStatistics (statistics) {
+  allowStatistics(statistics) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'GET',
@@ -127,7 +127,7 @@ export default class FakeApi {
     return this
   }
 
-  allowImage (file) {
+  allowImage(file) {
     this.expectations = this.expectations.push(
       Expectation({
         method: 'GET',
@@ -139,7 +139,7 @@ export default class FakeApi {
     return this
   }
 
-  verifyExpectations () {
+  verifyExpectations() {
     const methods = {
       GET: expectation =>
         expect(

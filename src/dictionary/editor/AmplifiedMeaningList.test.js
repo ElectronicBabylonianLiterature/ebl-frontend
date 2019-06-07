@@ -64,7 +64,7 @@ describe('Conjugations/Functions', () => {
   commonTests()
 })
 
-function commonTests () {
+function commonTests() {
   it('Displays all amplified meanings', () => {
     for (let item of value) {
       expect(element.getByDisplayValue(item.meaning)).toBeVisible()
@@ -88,7 +88,7 @@ function commonTests () {
   })
 }
 
-function renderAmplifiedMeaningList (entry) {
+function renderAmplifiedMeaningList(entry) {
   return render(
     <AmplifiedMeaningList value={value} onChange={onChange} entry={entry}>
       {label}

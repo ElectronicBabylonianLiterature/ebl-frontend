@@ -11,7 +11,7 @@ const sections = {
   Fragmentarium: '/fragmentarium'
 }
 
-function SectionCrumb ({ section }) {
+function SectionCrumb({ section }) {
   const sectionLink = sections[section]
   const sectionItem = <Breadcrumb.Item>{section}</Breadcrumb.Item>
   return sectionLink ? (
@@ -21,11 +21,11 @@ function SectionCrumb ({ section }) {
   )
 }
 
-export default function Breadcrumbs ({ crumbs }) {
+export default function Breadcrumbs({ crumbs }) {
   const initial = ['eBL', ..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
-    <Breadcrumb separator='/'>
+    <Breadcrumb separator="/">
       {initial.map((section, index) => (
         <SectionCrumb key={index} section={section} />
       ))}

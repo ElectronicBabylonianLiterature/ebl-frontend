@@ -49,7 +49,7 @@ it('Renders title', () => {
   )
 })
 
-function expectedLink (pagerEntry) {
+function expectedLink(pagerEntry) {
   const encodedNumber = encodeURIComponent(pagerEntry.fragmentNumber)
   const encodedFolioName = encodeURIComponent(folio.name)
   const encodedFolioNumber = encodeURIComponent(pagerEntry.folioNumber)

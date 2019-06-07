@@ -14,7 +14,7 @@ global.URL = {
   revokeObjectURL: jest.fn()
 }
 
-global.AbortController = function AbortControllerMock () {}
+global.AbortController = function AbortControllerMock() {}
 global.AbortController.prototype.abort = jest.fn()
 global.AbortController.prototype.signal = {
   aborted: false,

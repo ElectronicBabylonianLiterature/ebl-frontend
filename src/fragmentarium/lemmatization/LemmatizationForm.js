@@ -5,7 +5,7 @@ import _ from 'lodash'
 import Lemma from './Lemma'
 
 class LemmatizationForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     const isComplex = props.token.uniqueLemma.length > 1
     const singleLemmaToOption = () =>
@@ -40,8 +40,8 @@ class LemmatizationForm extends Component {
       _.isNil(selectedOption)
         ? []
         : _.isArray(selectedOption)
-          ? selectedOption
-          : [selectedOption]
+        ? selectedOption
+        : [selectedOption]
     )
   }
 
@@ -57,14 +57,14 @@ class LemmatizationForm extends Component {
   Select = ({ label }) => {
     const defaultOptions = this.state.isComplex
       ? _(this.props.token.suggestions)
-        .flatMap()
-        .uniqBy('value')
-        .value()
+          .flatMap()
+          .uniqBy('value')
+          .value()
       : _.isArray(this.props.token.suggestions)
-        ? this.props.token.suggestions
+      ? this.props.token.suggestions
           .filter(suggestion => suggestion.length === 1)
           .map(_.head)
-        : []
+      : []
 
     return (
       <AsyncSelect
@@ -87,8 +87,8 @@ class LemmatizationForm extends Component {
   Checkbox = () => (
     <Form.Group controlId={this.checkboxId}>
       <Form.Check
-        type='checkbox'
-        label='Complex'
+        type="checkbox"
+        label="Complex"
         disabled={this.props.token.uniqueLemma.length > 1}
         checked={this.state.isComplex}
         onChange={() =>
@@ -101,7 +101,7 @@ class LemmatizationForm extends Component {
     </Form.Group>
   )
 
-  render () {
+  render() {
     const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
       <Form>

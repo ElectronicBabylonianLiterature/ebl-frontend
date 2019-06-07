@@ -64,7 +64,7 @@ it('Displays a message if user is not logged in', () => {
   )
 })
 
-function renderDictionary (path) {
+function renderDictionary(path) {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>

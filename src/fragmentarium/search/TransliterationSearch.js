@@ -6,12 +6,12 @@ import FragmentList from 'fragmentarium/FragmentList'
 
 import './TransliterationSearch.css'
 
-function Lines ({ fragment }) {
+function Lines({ fragment }) {
   return (
-    <ol className='TransliterationSearch__list'>
+    <ol className="TransliterationSearch__list">
       {fragment.matchingLines.map((group, index) => (
-        <li key={index} className='TransliterationSearch__list_item'>
-          <ol className='TransliterationSearch__list'>
+        <li key={index} className="TransliterationSearch__list_item">
+          <ol className="TransliterationSearch__list">
             {group.map((line, index) => (
               <li key={index}>{line}</li>
             ))}
@@ -22,7 +22,7 @@ function Lines ({ fragment }) {
   )
 }
 
-function TransliterationSearchResult ({ data }) {
+function TransliterationSearchResult({ data }) {
   return (
     <FragmentList
       fragments={data}

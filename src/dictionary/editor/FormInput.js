@@ -30,7 +30,7 @@ class FormInput extends Component {
 
   hasProperty = property => _.has(this.props.value, property)
 
-  render () {
+  render() {
     return (
       <FormGroup>
         <LemmaInput value={this.props.value} onChange={this.lemmaChanged} />

@@ -1,27 +1,27 @@
 class WordRepository {
-  constructor (apiClient) {
+  constructor(apiClient) {
     this.apiClient = apiClient
   }
 
-  find (id) {
+  find(id) {
     return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
-  search (query) {
+  search(query) {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
       true
     )
   }
 
-  searchLemma (lemma) {
+  searchLemma(lemma) {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
       true
     )
   }
 
-  update (word) {
+  update(word) {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
       word

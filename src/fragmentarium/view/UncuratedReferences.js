@@ -6,7 +6,7 @@ import UncuratedReferencesList from './UncuratedReferencesList'
 
 import './UncuratedReferences.css'
 
-function UncuratedReferencesHelp () {
+function UncuratedReferencesHelp() {
   return (
     <Popover id={_.uniqueId('UncuratedReferencesHelp-')}>
       <p>
@@ -19,28 +19,28 @@ function UncuratedReferencesHelp () {
   )
 }
 
-function UncuratedReferencesPopOver ({ uncuratedReferences }) {
+function UncuratedReferencesPopOver({ uncuratedReferences }) {
   return (
     <Popover
       id={_.uniqueId('UncuratedReferencesList-')}
-      className='UncuratedReferences__popover'
+      className="UncuratedReferences__popover"
     >
       <UncuratedReferencesList
         uncuratedReferences={uncuratedReferences}
-        className='UncuratedReferences__list'
+        className="UncuratedReferences__list"
       />
     </Popover>
   )
 }
 
-function createText (uncuratedReferences) {
+function createText(uncuratedReferences) {
   const count = uncuratedReferences.count()
   const text =
     count === 1 ? '1 uncurated reference' : `${count} uncurated references`
   return text
 }
 
-export default function UncuratedReferences ({ uncuratedReferences }) {
+export default function UncuratedReferences({ uncuratedReferences }) {
   return (
     <p>
       <HelpTrigger overlay={UncuratedReferencesHelp()} />
@@ -49,11 +49,11 @@ export default function UncuratedReferences ({ uncuratedReferences }) {
         rootClose
         overlay={UncuratedReferencesPopOver({ uncuratedReferences })}
         trigger={['click']}
-        placement='right'
+        placement="right"
       >
         <Button
-          variant='outline-info'
-          size='sm'
+          variant="outline-info"
+          size="sm"
           disabled={uncuratedReferences.isEmpty()}
         >
           {createText(uncuratedReferences)}

@@ -12,7 +12,7 @@ class Reference {
   +linesCited: Array<string>
   +document: ?BibliographyEntry
 
-  constructor (
+  constructor(
     type: string = 'DISCUSSION',
     pages: string = '',
     notes: string = '',
@@ -26,43 +26,43 @@ class Reference {
     this.document = document_
   }
 
-  get id () {
+  get id() {
     return _.get(this, 'document.id', '')
   }
 
-  get author () {
+  get author() {
     return _.get(this, 'document.author', '')
   }
 
-  get typeAbbreviation () {
+  get typeAbbreviation() {
     return _.get(this, 'type.0', '')
   }
 
-  setType (type: string) {
+  setType(type: string) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.type = type
     })
   }
 
-  setPages (pages: string) {
+  setPages(pages: string) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.pages = pages
     })
   }
 
-  setNotes (notes: string) {
+  setNotes(notes: string) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.notes = notes
     })
   }
 
-  setLinesCited (linesCited: Array<string>) {
+  setLinesCited(linesCited: Array<string>) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.linesCited = linesCited
     })
   }
 
-  setDocument (document_: ?BibliographyEntry) {
+  setDocument(document_: ?BibliographyEntry) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
     })
@@ -72,7 +72,7 @@ Reference[immerable] = true
 
 export default Reference
 
-export function createReference (
+export function createReference(
   data: Map<string, any>,
   bibliographyRepository: { find: any => any }
 ) {
@@ -90,7 +90,7 @@ export function createReference (
     )
 }
 
-export function serializeReference (reference: Reference) {
+export function serializeReference(reference: Reference) {
   return {
     id: reference.id,
     type: reference.type,

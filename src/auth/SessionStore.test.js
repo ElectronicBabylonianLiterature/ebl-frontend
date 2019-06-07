@@ -45,7 +45,7 @@ describe('getSession', () => {
   })
 })
 
-function setItems () {
+function setItems() {
   _.forEach(localStorageItems, (value, key) => {
     localStorage.setItem(key, value)
   })

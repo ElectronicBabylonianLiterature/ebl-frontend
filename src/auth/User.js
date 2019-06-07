@@ -10,13 +10,13 @@ class User extends Component {
     this.props.auth.login()
   }
 
-  render () {
+  render() {
     return this.props.auth.isAuthenticated() ? (
-      <Button size='sm' variant='outline-secondary' onClick={this.logout}>
+      <Button size="sm" variant="outline-secondary" onClick={this.logout}>
         Logout
       </Button>
     ) : (
-      <Button size='sm' variant='outline-secondary' onClick={this.login}>
+      <Button size="sm" variant="outline-secondary" onClick={this.login}>
         Login
       </Button>
     )

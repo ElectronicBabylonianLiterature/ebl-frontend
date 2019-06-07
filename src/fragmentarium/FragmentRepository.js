@@ -10,7 +10,7 @@ import {
   UncuratedReference
 } from 'fragmentarium/fragment'
 
-function createMeasures (dto) {
+function createMeasures(dto) {
   return Measures({
     length: dto.length.value,
     width: dto.width.value,
@@ -18,7 +18,7 @@ function createMeasures (dto) {
   })
 }
 
-function createText (dto) {
+function createText(dto) {
   return new Text({
     lines: List(dto.text.lines).map(dto =>
       Line({
@@ -29,7 +29,7 @@ function createText (dto) {
   })
 }
 
-function createUncuratedReferences (dto) {
+function createUncuratedReferences(dto) {
   return (
     dto.uncuratedReferences &&
     List(dto.uncuratedReferences).map(reference =>
@@ -41,13 +41,13 @@ function createUncuratedReferences (dto) {
   )
 }
 
-function createMatchingLines (dto) {
+function createMatchingLines(dto) {
   return dto.matching_lines
     ? List(dto.matching_lines).map(line => fromJS(line))
     : List()
 }
 
-function createFragment (dto) {
+function createFragment(dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
@@ -62,56 +62,56 @@ function createFragment (dto) {
   })
 }
 
-function createFragments (dtos) {
+function createFragments(dtos) {
   return dtos.map(createFragment)
 }
 
-function createFragmentPath (number, ...subResources) {
+function createFragmentPath(number, ...subResources) {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
 class FragmentRepository {
-  constructor (apiClient) {
+  constructor(apiClient) {
     this.apiClient = apiClient
   }
 
-  statistics () {
+  statistics() {
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
-  find (number) {
+  find(number) {
     return this.apiClient
       .fetchJson(createFragmentPath(number), true)
       .then(createFragment)
   }
 
-  random () {
+  random() {
     return this._fetch({ random: true })
   }
 
-  interesting () {
+  interesting() {
     return this._fetch({ interesting: true })
   }
 
-  fetchLatestTransliterations () {
+  fetchLatestTransliterations() {
     return this._fetch({ latest: true })
   }
 
-  searchNumber (number) {
+  searchNumber(number) {
     return this._fetch({ number })
   }
 
-  searchTransliteration (transliteration) {
+  searchTransliteration(transliteration) {
     return this._fetch({ transliteration })
   }
 
-  _fetch (params) {
+  _fetch(params) {
     return this.apiClient
       .fetchJson(`/fragments?${queryString.stringify(params)}`, true)
       .then(createFragments)
   }
 
-  updateTransliteration (number, transliteration, notes) {
+  updateTransliteration(number, transliteration, notes) {
     const path = createFragmentPath(number, 'transliteration')
     return this.apiClient
       .postJson(path, {
@@ -121,21 +121,21 @@ class FragmentRepository {
       .then(createFragment)
   }
 
-  updateLemmatization (number, lemmatization) {
+  updateLemmatization(number, lemmatization) {
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
   }
 
-  updateReferences (number, references) {
+  updateReferences(number, references) {
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
       .then(createFragment)
   }
 
-  folioPager (folio, number) {
+  folioPager(folio, number) {
     return this.apiClient.fetchJson(
       `/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
         folio.number
@@ -144,7 +144,7 @@ class FragmentRepository {
     )
   }
 
-  findLemmas (word) {
+  findLemmas(word) {
     return this.apiClient.fetchJson(
       `/lemmas?word=${encodeURIComponent(word)}`,
       true

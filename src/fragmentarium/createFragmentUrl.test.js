@@ -4,7 +4,7 @@ import queryString from 'query-string'
 
 const chance = new Chance()
 
-function doubleEncode (string) {
+function doubleEncode(string) {
   // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
   return encodeURIComponent(encodeURIComponent(string))
 }

@@ -2,10 +2,10 @@ import React from 'react'
 import FragmentList from 'fragmentarium/FragmentList'
 import withData from 'http/withData'
 
-function LatestTransliterations ({ data }) {
+function LatestTransliterations({ data }) {
   return (
     <section>
-      <h3 className='SubsectionHeading--indented'>Latest additions:</h3>
+      <h3 className="SubsectionHeading--indented">Latest additions:</h3>
       <FragmentList
         fragments={data}
         columns={{

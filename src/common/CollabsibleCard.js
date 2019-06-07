@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Card, Collapse } from 'react-bootstrap'
 
-function CollapseIndicator ({ open }) {
+function CollapseIndicator({ open }) {
   return (
     <i
-      data-testid='CollapseIndicator'
+      data-testid="CollapseIndicator"
       className={classNames({
         fas: true,
         'fa-angle-up': open,
@@ -17,7 +17,7 @@ function CollapseIndicator ({ open }) {
 }
 
 export class CollapsibleCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       open: !this.props.collapsed
@@ -25,14 +25,14 @@ export class CollapsibleCard extends Component {
     this.collapseId = _.uniqueId('List-collapse-')
   }
 
-  render () {
+  render() {
     const toggleState = () => this.setState({ open: !this.state.open })
     return (
-      <Card border='light'>
+      <Card border="light">
         {this.props.label && (
           <Card.Header>
             <span
-              className='List__toggle'
+              className="List__toggle"
               onClick={toggleState}
               aria-controls={this.collapseId}
               aria-expanded={this.state.open}

@@ -1,29 +1,29 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
 
-function createLabel (entry) {
+function createLabel(entry) {
   return `${entry.author} ${entry.year} ${entry.title}`
 }
 
-function createOption (entry) {
+function createOption(entry) {
   return entry && entry.id
     ? {
-      value: entry.id,
-      label: createLabel(entry),
-      entry: entry
-    }
+        value: entry.id,
+        label: createLabel(entry),
+        entry: entry
+      }
     : null
 }
 
 export default class BibliographySelect extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       selectedOption: createOption(props.value)
     }
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.value !== prevProps.value) {
       this.setState({
         selectedOption: createOption(this.props.value)
@@ -45,12 +45,12 @@ export default class BibliographySelect extends Component {
     this.props.onChange(selectedOption.entry)
   }
 
-  render () {
+  render() {
     return (
       <>
         <AsyncSelect
           aria-labelledby={this.props['aria-labelledby']}
-          placeholder='Name Year Title'
+          placeholder="Name Year Title"
           cacheOptions
           loadOptions={this.loadOptions}
           onChange={this.handleChange}

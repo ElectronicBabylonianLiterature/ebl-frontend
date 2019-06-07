@@ -59,7 +59,7 @@ it('Calls onChange on change', () => {
     ])
 })
 
-function renderArrayWithNotesList () {
+function renderArrayWithNotesList() {
   return render(
     <ArrayWithNotesList
       property={property}

@@ -11,14 +11,14 @@ import ChapterForm from './ChapterForm'
 import ChapterNavigation from './ChapterNavigation'
 import { produce } from 'immer'
 
-function textChanged (prevProps, props) {
+function textChanged(prevProps, props) {
   return (
     prevProps.match.params.category !== props.match.params.category ||
     prevProps.match.params.index !== props.match.params.index
   )
 }
 
-function chapterChanged (prevProps, props) {
+function chapterChanged(prevProps, props) {
   return (
     !is(prevProps.text, props.text) ||
     prevProps.match.params.stage !== props.match.params.stage ||
@@ -26,7 +26,7 @@ function chapterChanged (prevProps, props) {
   )
 }
 
-function ChapterTitle ({ text, stage, name }) {
+function ChapterTitle({ text, stage, name }) {
   return (
     <>
       <ReactMarkdown
@@ -39,7 +39,7 @@ function ChapterTitle ({ text, stage, name }) {
   )
 }
 
-function ChapterView ({
+function ChapterView({
   text,
   stage,
   name,
@@ -72,7 +72,7 @@ function ChapterView ({
       ) : (
         stage !== '' &&
         name !== '' && (
-          <Alert variant='danger'>Chapter {title} not found.</Alert>
+          <Alert variant="danger">Chapter {title} not found.</Alert>
         )
       )}
     </AppContent>
@@ -80,7 +80,7 @@ function ChapterView ({
 }
 
 class ChapterController extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       text: props.text,
@@ -90,11 +90,11 @@ class ChapterController extends Component {
     this.updatePromise = Promise.resolve()
   }
 
-  shouldUpdate (prevProps, props) {
+  shouldUpdate(prevProps, props) {
     return chapterChanged(prevProps, props)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.updatePromise.cancel()
   }
 
@@ -143,7 +143,7 @@ class ChapterController extends Component {
     this.updatePromise = this.updateText()
   }
 
-  render () {
+  render() {
     return (
       <>
         <ChapterView

@@ -3,11 +3,11 @@ import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 
-function SpecialCharactersHelp () {
+function SpecialCharactersHelp() {
   return (
     <Popover
       id={_.uniqueId('SpecialCharactersHelp-')}
-      title='Special characters'
+      title="Special characters"
     >
       <p>
         For characters with a macron and <code>š</code> use <code>Ctrl</code> or{' '}

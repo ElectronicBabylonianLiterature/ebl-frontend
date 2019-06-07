@@ -264,7 +264,7 @@ test('hydrateReferences', async () => {
   )
 })
 
-async function setUpHydration () {
+async function setUpHydration() {
   const entries = await factory.buildMany('bibliographyEntry', 2)
   const referenceDtos = await factory.buildMany(
     'referenceDto',

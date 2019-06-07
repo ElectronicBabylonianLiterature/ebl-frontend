@@ -68,7 +68,7 @@ describe('Conjugation/Function', () => {
   commonUpdateTests()
 })
 
-function commonDisplayTests () {
+function commonDisplayTests() {
   it('Displays meaning', () => {
     expect(element.getByDisplayValue(value.meaning)).toBeVisible()
   })
@@ -80,7 +80,7 @@ function commonDisplayTests () {
   })
 }
 
-function commonUpdateTests () {
+function commonUpdateTests() {
   it('Calls onChange with updated value on meaning chnage', () => {
     whenChangedByValue(element, value.meaning, 'new meaning')
       .expect(onChange)
@@ -105,7 +105,7 @@ function commonUpdateTests () {
   })
 }
 
-function renderAmplifiedMeaningInput (entry) {
+function renderAmplifiedMeaningInput(entry) {
   return render(
     <AmplifiedMeaningInput value={value} onChange={onChange} entry={entry} />
   )

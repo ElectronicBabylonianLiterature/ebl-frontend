@@ -12,9 +12,9 @@ const obverseReverseAndsuffix = `@obverse
 1. [...]  [...]
 2. [...]  [...]`
 
-export default function TemplateHelp () {
+export default function TemplateHelp() {
   return (
-    <Popover id={_.uniqueId('TemplateHelp-')} title='Create template'>
+    <Popover id={_.uniqueId('TemplateHelp-')} title="Create template">
       <p>
         If only the first number is given, then only one list is created:
         <code>2</code> results in:

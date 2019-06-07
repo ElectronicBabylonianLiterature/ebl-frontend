@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { List } from 'immutable'
 import ReferencesForm, { defaultReference } from 'bibliography/ReferencesForm'
 
-function References ({
+function References({
   searchBibliography,
   references,
   onChange,
@@ -12,13 +12,13 @@ function References ({
   disabled
 }) {
   return (
-    <Form onSubmit={onSubmit} data-testid='references-form'>
+    <Form onSubmit={onSubmit} data-testid="references-form">
       <ReferencesForm
         value={references}
         onChange={onChange}
         searchBibliography={searchBibliography}
       />
-      <Button type='submit' variant='primary' disabled={disabled}>
+      <Button type="submit" variant="primary" disabled={disabled}>
         Save
       </Button>
     </Form>
@@ -26,7 +26,7 @@ function References ({
 }
 
 export default class ReferencesController extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       references: props.references.isEmpty()
@@ -42,7 +42,7 @@ export default class ReferencesController extends Component {
     this.props.updateReferences(this.state.references)
   }
 
-  render () {
+  render() {
     return (
       <>
         <References

@@ -16,7 +16,7 @@ import Bibliography from 'bibliography/Bibliography'
 import Corpus from 'corpus/Corpus'
 import ChapterView from './corpus/ChapterView'
 
-function App ({
+function App({
   auth,
   wordService,
   fragmentService,
@@ -29,7 +29,7 @@ function App ({
       <ErrorBoundary>
         <Switch>
           <Route
-            path='/bibliography/:id'
+            path="/bibliography/:id"
             render={props => (
               <BibliographyEditor
                 bibliographyService={bibliographyService}
@@ -38,7 +38,7 @@ function App ({
             )}
           />
           <Route
-            path='/bibliography_new'
+            path="/bibliography_new"
             render={props => (
               <BibliographyEditor
                 bibliographyService={bibliographyService}
@@ -48,7 +48,7 @@ function App ({
             )}
           />
           <Route
-            path='/bibliography'
+            path="/bibliography"
             render={props => (
               <Bibliography
                 bibliographyService={bibliographyService}
@@ -57,19 +57,19 @@ function App ({
             )}
           />
           <Route
-            path='/dictionary/:id'
+            path="/dictionary/:id"
             render={props => (
               <WordEditor wordService={wordService} {...props} />
             )}
           />
           <Route
-            path='/dictionary'
+            path="/dictionary"
             render={props => (
               <Dictionary wordService={wordService} {...props} />
             )}
           />
           <Route
-            path='/corpus/:category/:index/:stage/:chapter'
+            path="/corpus/:category/:index/:stage/:chapter"
             render={props => (
               <ChapterView
                 textService={textService}
@@ -79,7 +79,7 @@ function App ({
             )}
           />
           <Route
-            path='/corpus/:category/:index'
+            path="/corpus/:category/:index"
             render={props => (
               <ChapterView
                 textService={textService}
@@ -89,7 +89,7 @@ function App ({
             )}
           />
           <Route
-            path='/corpus'
+            path="/corpus"
             render={props => (
               <Corpus
                 textService={textService}
@@ -99,7 +99,7 @@ function App ({
             )}
           />
           <Route
-            path='/fragmentarium/search'
+            path="/fragmentarium/search"
             render={props => (
               <FragmentariumSearch
                 fragmentService={fragmentService}
@@ -108,19 +108,19 @@ function App ({
             )}
           />
           <Route
-            path='/fragmentarium/:id'
+            path="/fragmentarium/:id"
             render={props => (
               <FragmentView fragmentService={fragmentService} {...props} />
             )}
           />
           <Route
-            path='/fragmentarium'
+            path="/fragmentarium"
             render={props => (
               <Fragmentarium fragmentService={fragmentService} {...props} />
             )}
           />
           <Route
-            path='/callback'
+            path="/callback"
             render={props => <Callback auth={auth} {...props} />}
           />
           <Route component={Introduction} />

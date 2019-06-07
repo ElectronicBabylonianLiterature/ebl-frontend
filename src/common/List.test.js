@@ -47,7 +47,7 @@ describe('Default is a function', () => {
   commonTests()
 })
 
-function commonTests () {
+function commonTests() {
   it('Displays the label', () => {
     expect(element.getByText(label)).toBeVisible()
   })
@@ -79,11 +79,11 @@ function commonTests () {
   })
 }
 
-function renderList () {
-  function TestFormControl ({ onChange, value }) {
+function renderList() {
+  function TestFormControl({ onChange, value }) {
     return (
       <FormControl
-        type='text'
+        type="text"
         value={value}
         onChange={event => onChange(event.target.value)}
       />

@@ -12,7 +12,7 @@ import SessionContext from 'auth/SessionContext'
 class WordEditor extends Component {
   static contextType = SessionContext
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       word: props.data,
@@ -22,11 +22,11 @@ class WordEditor extends Component {
     this.updatePromise = Promise.resolve()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.updatePromise.cancel()
   }
 
-  get disabled () {
+  get disabled() {
     return this.state.saving || !this.context.isAllowedToWriteWords()
   }
 
@@ -41,7 +41,7 @@ class WordEditor extends Component {
       })
   }
 
-  render () {
+  render() {
     return (
       <AppContent
         crumbs={['Dictionary', this.props.match.params.id]}

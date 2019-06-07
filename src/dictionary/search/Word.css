@@ -11,29 +11,29 @@
 }
 
 .Word__forms::before {
-  content: ", ";
+  content: ', ';
 }
 
 .Word__form + .Word__form::before {
-  content: ", ";
+  content: ', ';
 }
 
 .Word__derivedFrom::before {
-  content: "< ";
+  content: '< ';
 }
 
 .AmplifiedMeanings__entry::before {
-  content: " ";
+  content: ' ';
 }
 
 .Derived::before {
-  content: "> ";
+  content: '> ';
 }
 
 .Derived__group::after {
-  content: "; ";
+  content: '; ';
 }
 
 .Derived__entry + .Derived__entry::before {
-  content: ", ";
+  content: ', ';
 }

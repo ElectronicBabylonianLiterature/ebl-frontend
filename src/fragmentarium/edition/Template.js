@@ -1,32 +1,32 @@
 import _ from 'lodash'
 
-function parseSide (side) {
+function parseSide(side) {
   const match = /(\d+)([^\d]*)/.exec(side)
   return {
     rows: Number(match[1]),
     suffix: match[2]
   }
 }
-function createTemplate ({ rows, suffix = '' }) {
+function createTemplate({ rows, suffix = '' }) {
   return _.range(1, rows + 1)
     .map(row => `${row}${suffix}. [...]  [...]`)
     .join('\n')
 }
 
 class Template {
-  constructor (pattern) {
+  constructor(pattern) {
     this.pattern = pattern
   }
 
-  get isEmpty () {
+  get isEmpty() {
     return this.pattern === ''
   }
 
-  get isValid () {
+  get isValid() {
     return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.test(this.pattern)
   }
 
-  generate () {
+  generate() {
     const [obverse, reverse] = this.pattern
       .split(/,\s*/)
       .map(parseSide)

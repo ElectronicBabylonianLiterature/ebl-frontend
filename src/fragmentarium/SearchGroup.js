@@ -6,7 +6,7 @@ import PioneersButton from './PioneersButton'
 
 import './SearchGroup.css'
 
-export default function SearchGroup ({
+export default function SearchGroup({
   number,
   transliteration,
   fragmentService
@@ -15,8 +15,8 @@ export default function SearchGroup ({
     <>
       <NumberSearchForm number={number} />
       <TransliterationSearchForm transliteration={transliteration} />
-      <div className='SearchGroup__button-bar'>
-        <RandomButton fragmentService={fragmentService} method='random'>
+      <div className="SearchGroup__button-bar">
+        <RandomButton fragmentService={fragmentService} method="random">
           I'm feeling lucky
         </RandomButton>{' '}
         <PioneersButton fragmentService={fragmentService} />

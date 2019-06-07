@@ -6,23 +6,23 @@ import eblChart from './ebl_chart.jpg'
 
 import './Introduction.css'
 
-function Auth0Badge () {
+function Auth0Badge() {
   return (
     <ExternalLink
-      className='Auth0Badge'
-      href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss'
-      title='Single Sign On & Token Based Authentication - Auth0'
+      className="Auth0Badge"
+      href="https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss"
+      title="Single Sign On & Token Based Authentication - Auth0"
     >
       <img
-        className='Auth0Badge__image'
-        alt='JWT Auth for open source projects'
-        src='//cdn.auth0.com/oss/badges/a0-badge-light.png'
+        className="Auth0Badge__image"
+        alt="JWT Auth for open source projects"
+        src="//cdn.auth0.com/oss/badges/a0-badge-light.png"
       />
     </ExternalLink>
   )
 }
 
-function IntroText () {
+function IntroText() {
   return (
     <>
       <p>
@@ -64,20 +64,20 @@ function IntroText () {
         change our conceptions of how Babylonian literature was composed and
         experienced by ancient audiences.
       </p>
-      <img className='Introduction__chart' src={eblChart} alt='eBL chart' />
+      <img className="Introduction__chart" src={eblChart} alt="eBL chart" />
     </>
   )
 }
 
-export default function Introduction () {
+export default function Introduction() {
   return (
     <AppContent
-      className='App-content'
-      title='The “Electronic Babylonian Literature” (eBL) Project: A general introduction'
+      className="App-content"
+      title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction"
     >
       <IntroText />
 
-      <footer className='Introduction__footer'>
+      <footer className="Introduction__footer">
         <Auth0Badge />
       </footer>
     </AppContent>

@@ -19,7 +19,7 @@ const authorProperties = [
 class BibliographyEntry {
   +cslData: ?{ [string]: any }
 
-  constructor (cslData: ?{ [string]: any }) {
+  constructor(cslData: ?{ [string]: any }) {
     this.cslData =
       cslData &&
       produce(cslData, draft => {
@@ -34,33 +34,33 @@ class BibliographyEntry {
       })
   }
 
-  get id () {
+  get id() {
     return _.get(this.cslData, 'id', '')
   }
 
-  get author () {
+  get author() {
     const particle = _.get(this.cslData, 'author.0.non-dropping-particle', '')
     const family = _.get(this.cslData, 'author.0.family', '')
     return particle ? `${particle} ${family}` : family
   }
 
-  get year () {
+  get year() {
     const start = _.get(this.cslData, 'issued.date-parts.0.0', '')
     const end = _.get(this.cslData, 'issued.date-parts.1.0', '')
     return end ? `${start}–${end}` : String(start)
   }
 
-  get title () {
+  get title() {
     return _.get(this.cslData, 'title', '')
   }
 
-  get link () {
+  get link() {
     const url = _.get(this.cslData, 'URL', '')
     const doi = _.get(this.cslData, 'DOI', '')
     return url || (doi ? `https://doi.org/${doi}` : '')
   }
 
-  toHtml () {
+  toHtml() {
     return new Cite(_.cloneDeep(this.cslData)).format('bibliography', {
       format: 'html',
       template: 'citation-apa',
@@ -68,7 +68,7 @@ class BibliographyEntry {
     })
   }
 
-  toBibtex () {
+  toBibtex() {
     return new Cite(_.cloneDeep(this.cslData)).get({
       format: 'string',
       type: 'string',
@@ -76,7 +76,7 @@ class BibliographyEntry {
     })
   }
 
-  toJson () {
+  toJson() {
     return this.cslData
   }
 }

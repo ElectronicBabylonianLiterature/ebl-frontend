@@ -13,19 +13,19 @@ const defaultForm = {
 }
 
 class FormList extends Component {
-  get defaultValue () {
+  get defaultValue() {
     const fields = this.props.fields || _.keys(defaultForm)
     return _.pick(defaultForm, fields)
   }
 
-  render () {
+  render() {
     return (
       <FormGroup>
         <List
           label={this.props.children}
           value={this.props.value}
           onChange={this.props.onChange}
-          noun='form'
+          noun="form"
           defaultValue={this.defaultValue}
         >
           {(form, onChange) => <FormInput onChange={onChange} value={form} />}

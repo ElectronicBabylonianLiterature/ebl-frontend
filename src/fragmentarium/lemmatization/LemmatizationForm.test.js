@@ -100,7 +100,7 @@ describe('Complex lemma', () => {
   commonTests('Lemmata')
 })
 
-function commonTests (lemmaLabel) {
+function commonTests(lemmaLabel) {
   it('Displays the label', () => {
     expect(element.getByLabelText(lemmaLabel)).toBeInTheDocument()
   })
@@ -112,7 +112,7 @@ function commonTests (lemmaLabel) {
   })
 }
 
-async function lemmatize (lemmaLabel) {
+async function lemmatize(lemmaLabel) {
   const searchLemma = new Lemma(searchWord)
   changeValueByLabel(element, lemmaLabel, 'waklu')
   await waitForElement(() => element.getByText(searchLemma.label))

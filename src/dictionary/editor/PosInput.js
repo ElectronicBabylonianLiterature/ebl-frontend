@@ -43,13 +43,13 @@ class PosInput extends Component {
     this.props.onChange({ roots: roots })
   }
 
-  render () {
+  render() {
     return (
       <FormGroup>
         <FormGroup controlId={_.uniqueId('PosInput-')}>
           <FormLabel>Position of speech</FormLabel>
           <FormControl
-            as='select'
+            as="select"
             value={this.props.value.pos}
             onChange={this.updatePos}
             multiple

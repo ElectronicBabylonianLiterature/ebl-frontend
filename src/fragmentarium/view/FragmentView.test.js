@@ -16,14 +16,14 @@ let session
 let container
 let element
 
-function renderFragmentView (
+function renderFragmentView(
   initialEntry = `/${encodeURIComponent(fragmentNumber)}`
 ) {
   element = render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <SessionContext.Provider value={session}>
         <Route
-          path='/:id'
+          path="/:id"
           render={({ match, location }) => (
             <FragmentView
               match={match}

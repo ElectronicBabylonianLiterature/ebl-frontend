@@ -1,15 +1,15 @@
 /* global AbortController */
 import Promise from 'bluebird'
 
-function apiUrl (path) {
+function apiUrl(path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-function deserializeJson (response) {
+function deserializeJson(response) {
   return [201, 204].includes(response.status) ? null : response.json()
 }
 
-function createOptions (body, method) {
+function createOptions(body, method) {
   return {
     body: JSON.stringify(body),
     headers: {
@@ -19,7 +19,7 @@ function createOptions (body, method) {
   }
 }
 export class ApiError extends Error {
-  constructor (message, data) {
+  constructor(message, data) {
     super(message)
     this.name = this.constructor.name
     this.data = data
@@ -30,7 +30,7 @@ export class ApiError extends Error {
     }
   }
 
-  static async fromResponse (response) {
+  static async fromResponse(response) {
     return response
       .json()
       .then(body => new ApiError(body.description || response.statusText, body))
@@ -39,12 +39,12 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
-  constructor (auth, errorReporter) {
+  constructor(auth, errorReporter) {
     this.auth = auth
     this.errorReporter = errorReporter
   }
 
-  createHeaders (authenticate, headers) {
+  createHeaders(authenticate, headers) {
     const defaultHeaders = authenticate
       ? { Authorization: `Bearer ${this.auth.getAccessToken()}` }
       : {}
@@ -54,7 +54,7 @@ export default class ApiClient {
     })
   }
 
-  cancellableFetch (path, authenticate, options) {
+  cancellableFetch(path, authenticate, options) {
     return new Promise((resolve, reject, onCancel) => {
       const headers = this.createHeaders(authenticate, options.headers)
       const abortController = new AbortController()
@@ -77,31 +77,31 @@ export default class ApiClient {
           reject(error)
         })
 
-      onCancel(function () {
+      onCancel(function() {
         abortController.abort()
       })
     })
   }
 
-  fetchJson (path, authenticate) {
+  fetchJson(path, authenticate) {
     return this.cancellableFetch(path, authenticate, {}).then(response =>
       response.json()
     )
   }
 
-  fetchBlob (path, authenticate) {
+  fetchBlob(path, authenticate) {
     return this.cancellableFetch(path, authenticate, {}).then(response =>
       response.blob()
     )
   }
 
-  postJson (path, body) {
+  postJson(path, body) {
     return this.cancellableFetch(path, true, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }
 
-  putJson (path, body) {
+  putJson(path, body) {
     return this.cancellableFetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson
     )

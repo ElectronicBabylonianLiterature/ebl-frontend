@@ -1,17 +1,17 @@
 class WordService {
-  constructor (wordRepository) {
+  constructor(wordRepository) {
     this.wordRepository = wordRepository
   }
 
-  find (id) {
+  find(id) {
     return this.wordRepository.find(id)
   }
 
-  search (query) {
+  search(query) {
     return this.wordRepository.search(query)
   }
 
-  update (word) {
+  update(word) {
     return this.wordRepository.update(word)
   }
 }

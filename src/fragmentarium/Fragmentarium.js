@@ -10,7 +10,7 @@ import LatestTransliterations from './LatestTransliterations'
 
 import './Fragmentarium.css'
 
-function Fragmentarium ({ location, fragmentService }) {
+function Fragmentarium({ location, fragmentService }) {
   const number = queryString.parse(location.search).number
   const transliteration = queryString.parse(location.search).transliteration
   return (
@@ -36,7 +36,7 @@ function Fragmentarium ({ location, fragmentService }) {
           <Col md={6}>
             <Image
               fragmentService={fragmentService}
-              fileName='Babel_Project_01_cropped.svg'
+              fileName="Babel_Project_01_cropped.svg"
             />
           </Col>
         </Row>

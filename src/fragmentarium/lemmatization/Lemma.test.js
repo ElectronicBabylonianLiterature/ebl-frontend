@@ -76,14 +76,14 @@ test('No meanings', async () => {
   expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}`)
 })
 
-function truncateMeaning (meaning) {
+function truncateMeaning(meaning) {
   return _.truncate(meaning.replace(/\*|\\/g, ''), {
     separator: ' ',
     omission: '…'
   })
 }
 
-function commonTests () {
+function commonTests() {
   test('value', () => {
     expect(lemma.value).toEqual(word._id)
   })

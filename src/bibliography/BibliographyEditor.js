@@ -5,19 +5,19 @@ import withData from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/BibliographyEntryFormController'
 import { template } from 'bibliography/BibliographyEntry'
 
-function BibliographyEditor ({
+function BibliographyEditor({
   data,
   bibliographyService,
   create = false,
   history
 }) {
-  function createEntry (entry) {
+  function createEntry(entry) {
     return bibliographyService
       .create(entry)
       .then(() => history.push(`/bibliography/${encodeURIComponent(entry.id)}`))
   }
 
-  function updateEntry (entry) {
+  function updateEntry(entry) {
     return bibliographyService.update(entry)
   }
 

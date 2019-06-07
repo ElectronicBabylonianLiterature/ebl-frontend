@@ -12,29 +12,29 @@ const museums = {
 }
 
 class Details extends Component {
-  get collection () {
+  get collection() {
     return (
       this.props.fragment.collection &&
       `(${this.props.fragment.collection} Collection)`
     )
   }
 
-  get museum () {
+  get museum() {
     const museum = this.props.fragment.museum
     const museumUrl = museums[museum]
     return <ExternalLink href={museumUrl}>{museum}</ExternalLink>
   }
 
-  get joins () {
+  get joins() {
     return (
       <Fragment>
         Joins:{' '}
         {this.props.fragment.joins.isEmpty() ? (
           '-'
         ) : (
-          <ul className='Details-joins'>
+          <ul className="Details-joins">
             {this.props.fragment.joins.map(join => (
-              <li className='Details-joins__join' key={join}>
+              <li className="Details-joins__join" key={join}>
                 <FragmentLink number={join}>{join}</FragmentLink>
               </li>
             ))}
@@ -44,7 +44,7 @@ class Details extends Component {
     )
   }
 
-  get measurements () {
+  get measurements() {
     const measurements = _([
       this.props.fragment.measures.length,
       this.props.fragment.measures.width,
@@ -56,7 +56,7 @@ class Details extends Component {
     return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
   }
 
-  get cdliNumber () {
+  get cdliNumber() {
     const cdliNumber = this.props.fragment.cdliNumber
     return (
       <Fragment>
@@ -70,17 +70,17 @@ class Details extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
-      <ul className='Details'>
-        <li className='Details__item'>{this.museum}</li>
-        <li className='Details__item'>{this.collection}</li>
-        <li className='Details__item'>{this.joins}</li>
-        <li className='Details__item Details-item--extra-margin'>
+      <ul className="Details">
+        <li className="Details__item">{this.museum}</li>
+        <li className="Details__item">{this.collection}</li>
+        <li className="Details__item">{this.joins}</li>
+        <li className="Details__item Details-item--extra-margin">
           {this.measurements}
         </li>
-        <li className='Details__item'>{this.cdliNumber}</li>
-        <li className='Details__item'>
+        <li className="Details__item">{this.cdliNumber}</li>
+        <li className="Details__item">
           Accession: {this.props.fragment.accession || '-'}
         </li>
       </ul>

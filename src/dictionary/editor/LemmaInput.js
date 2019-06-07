@@ -3,14 +3,14 @@ import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 class LemmaInput extends Component {
-  get hasAttested () {
+  get hasAttested() {
     return _.has(this.props.value, 'attested')
   }
 
   lemmaFormControl = () => {
     return (
       <FormControl
-        type='text'
+        type="text"
         value={this.props.value.lemma.join(' ')}
         onChange={this.lemmaChanged}
       />
@@ -31,7 +31,7 @@ class LemmaInput extends Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <FormGroup controlId={_.uniqueId('LemmaInput-')}>
         <FormLabel>Lemma</FormLabel>
@@ -39,8 +39,8 @@ class LemmaInput extends Component {
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Checkbox
-                type='checkbox'
-                aria-label='attested'
+                type="checkbox"
+                aria-label="attested"
                 checked={this.props.value.attested}
                 onChange={this.attestedChanged}
               />

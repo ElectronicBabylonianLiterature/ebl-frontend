@@ -9,7 +9,7 @@ import replaceTransliteration from './replaceTransliteration'
 
 import './FragmentariumSearch.css'
 
-function FragmentariumSearch ({ location, fragmentService }) {
+function FragmentariumSearch({ location, fragmentService }) {
   const number = queryString.parse(location.search).number
   const transliteration = queryString.parse(location.search).transliteration
   const replacedTransliteration =
@@ -19,8 +19,8 @@ function FragmentariumSearch ({ location, fragmentService }) {
       <SessionContext.Consumer>
         {session =>
           session.isAllowedToReadFragments() ? (
-            <section className='Fragmentarium-search'>
-              <header className='Fragmentarium-search__header'>
+            <section className="Fragmentarium-search">
+              <header className="Fragmentarium-search__header">
                 <SearchGroup
                   number={number}
                   transliteration={replacedTransliteration}

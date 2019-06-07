@@ -14,13 +14,13 @@ import {
 
 const chance = new Chance()
 
-function date () {
+function date() {
   return factory
     .chance('date')()
     .toISOString()
 }
 
-function dateRange () {
+function dateRange() {
   return `${date()}/${date()}`
 }
 

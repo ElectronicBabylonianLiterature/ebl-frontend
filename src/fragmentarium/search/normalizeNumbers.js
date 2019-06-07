@@ -1,7 +1,7 @@
 import specialTransliterationCharacters from './specialTransliterationCharacters'
 import escapeRegExp from './escapeRegExp.js'
 
-function convertNumbers (number) {
+function convertNumbers(number) {
   const numbers = {
     '0': '₀',
     '1': '₁',
@@ -24,12 +24,12 @@ function convertNumbers (number) {
     .join('')
 }
 
-function replacer (match, characters, numbers) {
+function replacer(match, characters, numbers) {
   const convertedNumbers = convertNumbers(numbers)
   return [characters, convertedNumbers].join('')
 }
 
-export default function normalizeNumbers (userInput) {
+export default function normalizeNumbers(userInput) {
   const specialTransliterationCharactersAsString = escapeRegExp(
     specialTransliterationCharacters
   )

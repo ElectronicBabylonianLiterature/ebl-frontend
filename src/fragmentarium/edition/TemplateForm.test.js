@@ -7,7 +7,7 @@ import TemplateForm from './TemplateForm'
 let onSubmit
 let element
 
-async function submit (value) {
+async function submit(value) {
   changeValueByLabel(element, 'Template', value)
   await submitForm(element, 'form')
 }

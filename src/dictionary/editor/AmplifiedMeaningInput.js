@@ -21,18 +21,18 @@ class AmplifiedMeaningInput extends Component {
     </TextInput>
   )
 
-  render () {
+  render() {
     return (
       <Fragment>
         {!this.props.entry && (
-          <this.textInput property='key'>Conjugation/Function</this.textInput>
+          <this.textInput property="key">Conjugation/Function</this.textInput>
         )}
-        <this.textInput property='meaning'>Meaning</this.textInput>
+        <this.textInput property="meaning">Meaning</this.textInput>
         <ArrayWithNotesList
           value={this.props.value.vowels}
-          property='value'
-          noun='vowels'
-          separator='/'
+          property="value"
+          noun="vowels"
+          separator="/"
           onChange={this.onChange('vowels')}
         />
         {!this.props.entry && (

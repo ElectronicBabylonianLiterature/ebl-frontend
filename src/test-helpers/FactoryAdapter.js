@@ -1,20 +1,20 @@
 import { DefaultAdapter } from 'factory-girl'
 
 export default class FactoryAdapter extends DefaultAdapter {
-  build (Factory, props) {
+  build(Factory, props) {
     const model = Factory(props)
     return model
   }
-  async save (model, Factory) {
+  async save(model, Factory) {
     return model
   }
-  async destroy (model, Factory) {
+  async destroy(model, Factory) {
     return model
   }
-  get (model, attr, Factory) {
+  get(model, attr, Factory) {
     return model[attr]
   }
-  set (props, model, Factory) {
+  set(props, model, Factory) {
     throw new Error('FactoryAdapter.set is not implemented.')
   }
 }

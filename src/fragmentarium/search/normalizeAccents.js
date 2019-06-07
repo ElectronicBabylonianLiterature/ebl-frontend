@@ -15,7 +15,7 @@ const accentExpression = new RegExp(
   'g'
 )
 
-export default function normalizeAccents (userInput) {
+export default function normalizeAccents(userInput) {
   return userInput.replace(accentExpression, match => {
     const subindex = match
       .split('')

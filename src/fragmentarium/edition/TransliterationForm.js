@@ -15,7 +15,7 @@ import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
 
 class TransliteratioForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.formId = _.uniqueId('TransliteratioForm-')
     this.state = {
@@ -26,11 +26,11 @@ class TransliteratioForm extends Component {
     this.updatePromise = Promise.resolve()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.updatePromise.cancel()
   }
 
-  get hasChanges () {
+  get hasChanges() {
     const transliterationChanged =
       this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
@@ -85,21 +85,21 @@ class TransliteratioForm extends Component {
     <form
       onSubmit={this.submit}
       id={this.formId}
-      data-testid='transliteration-form'
+      data-testid="transliteration-form"
     >
       <this.EditorFormGroup
-        property='transliteration'
+        property="transliteration"
         error={this.state.error}
         showHelp
       />
-      <this.EditorFormGroup property='notes' />
+      <this.EditorFormGroup property="notes" />
     </form>
   )
 
   SubmitButton = () => (
     <Button
-      type='submit'
-      variant='primary'
+      type="submit"
+      variant="primary"
       disabled={this.state.disabled || !this.hasChanges}
       form={this.formId}
     >
@@ -107,7 +107,7 @@ class TransliteratioForm extends Component {
     </Button>
   )
 
-  render () {
+  render() {
     return (
       <Container fluid>
         <Row>
@@ -119,7 +119,7 @@ class TransliteratioForm extends Component {
           <Col>
             <this.SubmitButton />
           </Col>
-          <Col md='auto'>
+          <Col md="auto">
             <TemplateForm onSubmit={this.onTemplate} />
           </Col>
         </Row>

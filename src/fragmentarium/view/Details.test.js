@@ -9,7 +9,7 @@ let fragment
 let container
 let element
 
-function renderDetails () {
+function renderDetails() {
   element = render(
     <MemoryRouter>
       <Details fragment={fragment} />
@@ -55,9 +55,7 @@ describe('All details', () => {
   })
 
   it('Renders measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${
-      fragment.measures.width
-    } × ${fragment.measures.thickness} cm`
+    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 
@@ -105,9 +103,7 @@ describe('Missing details', () => {
   })
 
   it('Does not renders missing measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${
-      fragment.measures.thickness
-    } cm`
+    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.thickness} cm`
     expect(container).toHaveTextContent(expectedMeasures)
   })
 

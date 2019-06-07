@@ -12,7 +12,7 @@ let container
 let element
 let statistics
 
-async function renderFragmentarium () {
+async function renderFragmentarium() {
   const FragmentariumWithRouter = withRouter(Fragmentarium)
   element = render(
     <MemoryRouter>

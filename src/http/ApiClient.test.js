@@ -161,17 +161,17 @@ describe('fetchBlob', () => {
   commonTests(() => apiClient.fetchBlob(path, true))
 })
 
-function setUpSuccessResponse () {
+function setUpSuccessResponse() {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
   fetch.mockResponse(JSON.stringify(result))
 }
 
-function setUpEmptyResponse () {
+function setUpEmptyResponse() {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
   fetch.mockResponse('', { status: 204 })
 }
 
-function commonTests (action) {
+function commonTests(action) {
   test('Can be cancelled', async () => {
     setUpSuccessResponse()
     const callback = jest.fn()

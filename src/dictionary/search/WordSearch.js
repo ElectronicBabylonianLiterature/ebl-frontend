@@ -6,11 +6,11 @@ import withData from 'http/withData'
 
 import './WordSearch.css'
 
-function WordSearch ({ data }) {
+function WordSearch({ data }) {
   return (
-    <ul className='WordSearch-results'>
+    <ul className="WordSearch-results">
       {data.map(word => (
-        <li key={word._id} className='WordSearch-results__result'>
+        <li key={word._id} className="WordSearch-results__result">
           <Word value={word} />
         </li>
       ))}

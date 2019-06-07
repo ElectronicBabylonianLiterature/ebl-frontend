@@ -8,7 +8,7 @@ import BibliographySelect from 'bibliography/BibliographySelect'
 import NotesHelp from './NotesHelp'
 
 export default class ReferenceForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.id = _.uniqueId('ReferenceForm-')
     this.documentLabelId = _.uniqueId('ReferenceForm-Document-')
@@ -20,7 +20,7 @@ export default class ReferenceForm extends Component {
   handleEvent = setter => ({ target: { value } }) =>
     this.handleChange(setter)(value)
 
-  render () {
+  render() {
     return (
       <>
         <Form.Group controlId={`${this.id}-Entry`}>
@@ -37,7 +37,7 @@ export default class ReferenceForm extends Component {
             <Form.Group controlId={`${this.id}-Pages`}>
               <Form.Label>Pages</Form.Label>
               <Form.Control
-                type='text'
+                type="text"
                 value={this.props.value.pages}
                 onChange={this.handleEvent('setPages')}
               />
@@ -47,21 +47,21 @@ export default class ReferenceForm extends Component {
             <Form.Group controlId={`${this.id}-Type`}>
               <Form.Label>Type</Form.Label>
               <Form.Control
-                as='select'
+                as="select"
                 value={this.props.value.type}
                 onChange={this.handleEvent('setType')}
                 required
               >
-                <option value='EDITION'>Edition</option>
-                <option value='DISCUSSION'>Discussion</option>
-                <option value='COPY'>Copy</option>
-                <option value='PHOTO'>Photo</option>
+                <option value="EDITION">Edition</option>
+                <option value="DISCUSSION">Discussion</option>
+                <option value="COPY">Copy</option>
+                <option value="PHOTO">Photo</option>
               </Form.Control>
             </Form.Group>
           </Col>
           <Col>
             <ArrayInput
-              separator=','
+              separator=","
               value={this.props.value.linesCited}
               onChange={this.handleChange('setLinesCited')}
             >
@@ -72,7 +72,7 @@ export default class ReferenceForm extends Component {
         <Form.Group controlId={`${this.id}-Notes`}>
           <Form.Label>Notes</Form.Label> <HelpTrigger overlay={NotesHelp()} />
           <Form.Control
-            type='text'
+            type="text"
             value={this.props.value.notes}
             onChange={this.handleEvent('setNotes')}
           />

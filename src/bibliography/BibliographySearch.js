@@ -7,17 +7,17 @@ import withData from 'http/withData'
 
 import './BibliographySearch.css'
 
-function BibliographySearch ({ data }) {
+function BibliographySearch({ data }) {
   const parser = new Parser()
   return (
-    <ol className='BibliographySearch'>
+    <ol className="BibliographySearch">
       {data.map(entry => (
-        <li key={entry.id} className='BibliographySearch__entry'>
+        <li key={entry.id} className="BibliographySearch__entry">
           <Link
             to={`/bibliography/${encodeURIComponent(entry.id)}`}
-            className='BibliographySearch__edit'
+            className="BibliographySearch__edit"
           >
-            <i className='fas fa-edit' />
+            <i className="fas fa-edit" />
           </Link>
           {parser.parse(entry.toHtml())}
         </li>

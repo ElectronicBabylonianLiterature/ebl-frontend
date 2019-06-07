@@ -79,7 +79,7 @@ describe('User is not allowed to write:words', () => {
   })
 })
 
-async function renderWithRouter (isAllowedTo = true) {
+async function renderWithRouter(isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   })

@@ -66,7 +66,7 @@ describe('Not verb', () => {
   commonTests()
 })
 
-function commonTests () {
+function commonTests() {
   it('Word POS are selected', () => {
     for (let pos of value.pos) {
       expect(element.getByText(positionsOfScpeech[pos]).selected).toBe(true)
@@ -91,6 +91,6 @@ function commonTests () {
   })
 }
 
-function renderPosInput () {
+function renderPosInput() {
   return render(<PosInput value={value} onChange={onChange} />)
 }

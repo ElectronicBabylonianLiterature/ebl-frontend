@@ -261,7 +261,7 @@ describe('Chapter not found', () => {
   })
 })
 
-async function setup (chapter) {
+async function setup(chapter) {
   fakeApi = new FakeApi().expectText(textDto)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
@@ -270,12 +270,12 @@ async function setup (chapter) {
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
 }
 
-function createChapterPath (stage, name) {
+function createChapterPath(stage, name) {
   return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
     index
   )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
 }
 
-function createChapterTitle (chapter) {
+function createChapterTitle(chapter) {
   return `${textDto.name} ${chapter.stage} ${chapter.name}`
 }

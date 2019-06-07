@@ -5,7 +5,7 @@ import Lemma from 'fragmentarium/lemmatization/Lemma'
 import { createReference } from 'bibliography/Reference'
 
 class FragmentService {
-  constructor (
+  constructor(
     auth,
     fragmentRepository,
     imageRepository,
@@ -19,11 +19,11 @@ class FragmentService {
     this.bibliographyService = bibliographyService
   }
 
-  statistics () {
+  statistics() {
     return this.fragmentRepository.statistics()
   }
 
-  find (number) {
+  find(number) {
     return this.fragmentRepository
       .find(number)
       .then(fragment =>
@@ -33,27 +33,27 @@ class FragmentService {
       )
   }
 
-  random () {
+  random() {
     return this.fragmentRepository.random().then(_.head)
   }
 
-  interesting () {
+  interesting() {
     return this.fragmentRepository.interesting().then(_.head)
   }
 
-  searchNumber (number) {
+  searchNumber(number) {
     return this.fragmentRepository.searchNumber(number)
   }
 
-  searchTransliteration (transliteration) {
+  searchTransliteration(transliteration) {
     return this.fragmentRepository.searchTransliteration(transliteration)
   }
 
-  fetchLatestTransliterations () {
+  fetchLatestTransliterations() {
     return this.fragmentRepository.fetchLatestTransliterations()
   }
 
-  updateTransliteration (number, transliteration, notes) {
+  updateTransliteration(number, transliteration, notes) {
     return this.fragmentRepository.updateTransliteration(
       number,
       transliteration,
@@ -61,37 +61,37 @@ class FragmentService {
     )
   }
 
-  updateLemmatization (number, lemmatization) {
+  updateLemmatization(number, lemmatization) {
     return this.fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
-  updateReferences (number, references) {
+  updateReferences(number, references) {
     return this.fragmentRepository.updateReferences(number, references)
   }
 
-  findFolio (folio) {
+  findFolio(folio) {
     return this.imageRepository.find(folio.fileName, true)
   }
 
-  findImage (fileName) {
+  findImage(fileName) {
     return this.imageRepository.find(fileName, false)
   }
 
-  folioPager (folio, fragmentNumber) {
+  folioPager(folio, fragmentNumber) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
-  searchLemma (lemma) {
+  searchLemma(lemma) {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)
   }
 
-  searchBibliography (query) {
+  searchBibliography(query) {
     return this.bibliographyService.search(query)
   }
 
-  createLemmatization (text) {
+  createLemmatization(text) {
     return Promise.all([this._fetchLemmas(text), this._fetchSuggestions(text)])
       .then(([lemmaData, suggestionsData]) => [
         _.keyBy(lemmaData, 'value'),
@@ -102,7 +102,7 @@ class FragmentService {
       )
   }
 
-  _fetchLemmas (text) {
+  _fetchLemmas(text) {
     return Promise.all(
       mapText(
         text,
@@ -113,7 +113,7 @@ class FragmentService {
     )
   }
 
-  _fetchSuggestions (text) {
+  _fetchSuggestions(text) {
     return Promise.all(
       mapText(
         text,
@@ -134,14 +134,14 @@ class FragmentService {
     )
   }
 
-  hydrateReferences (references) {
+  hydrateReferences(references) {
     const hydrate = reference =>
       createReference(reference, this.bibliographyService)
     return Promise.all(references.map(hydrate)).then(List)
   }
 }
 
-function mapText (text, mapLine, mapToken) {
+function mapText(text, mapLine, mapToken) {
   return text.lines
     .toSeq()
     .map(({ content }) => mapLine(content))

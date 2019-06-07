@@ -36,7 +36,7 @@ describe('Without link', () => {
   })
 })
 
-function commomTests () {
+function commomTests() {
   test('Formatted citation', async () => {
     expect(container).toHaveTextContent(entry.title)
   })

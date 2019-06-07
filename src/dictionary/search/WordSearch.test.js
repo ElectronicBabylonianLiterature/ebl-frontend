@@ -10,7 +10,7 @@ let words
 let wordService
 let element
 
-function renderWordSearch () {
+function renderWordSearch() {
   element = render(
     <MemoryRouter>
       <WordSearch query={query} wordService={wordService} />

@@ -1,17 +1,17 @@
 import _ from 'lodash'
 
-function extractMeanings (object, levels) {
+function extractMeanings(object, levels) {
   return _.isEmpty(levels)
     ? [object.meaning]
     : [
-      object.meaning,
-      ...object[_.head(levels)].map(inner =>
-        extractMeanings(inner, _.tail(levels))
-      )
-    ]
+        object.meaning,
+        ...object[_.head(levels)].map(inner =>
+          extractMeanings(inner, _.tail(levels))
+        )
+      ]
 }
 
-function findMeaning (word) {
+function findMeaning(word) {
   return (
     _(extractMeanings(word, ['amplifiedMeanings', 'entries']))
       .flattenDeep()
@@ -20,7 +20,7 @@ function findMeaning (word) {
   )
 }
 
-function createMeaning (word) {
+function createMeaning(word) {
   const markdown = findMeaning(word)
   const truncated = _.truncate(markdown.replace(/[*\\]/g, ''), {
     separator: ' ',
@@ -30,7 +30,7 @@ function createMeaning (word) {
 }
 
 export default class Lemma {
-  constructor (word) {
+  constructor(word) {
     this.value = word._id
     this.lemma = word.lemma.join(' ')
     this.homonym = word.homonym === 'I' ? '' : ` ${word.homonym}`

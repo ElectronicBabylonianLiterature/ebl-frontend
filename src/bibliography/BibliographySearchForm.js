@@ -23,21 +23,21 @@ class BibliographySearch extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <Form onSubmit={this.submit}>
         <Form.Group as={Row} controlId={this.id}>
           <Col sm={8}>
             <FormControl
-              aria-label='Query'
-              type='text'
+              aria-label="Query"
+              type="text"
               value={this.state.query}
-              placeholder='Author Year Title'
+              placeholder="Author Year Title"
               onChange={this.onChange}
             />
           </Col>
           <Col sm={4}>
-            <Button type='submit' variant='primary'>
+            <Button type="submit" variant="primary">
               Search
             </Button>
           </Col>

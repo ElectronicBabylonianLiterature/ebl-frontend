@@ -7,7 +7,7 @@ import User from './auth/User'
 
 import './Header.css'
 
-function NavItem (props) {
+function NavItem(props) {
   return (
     <Nav.Item>
       <LinkContainer to={props.href}>
@@ -17,32 +17,32 @@ function NavItem (props) {
   )
 }
 
-export default function Header ({ auth }) {
+export default function Header({ auth }) {
   const id = _.uniqueId('Header-')
   return (
-    <header className='Header'>
-      <Navbar variant='light' expand='md'>
+    <header className="Header">
+      <Navbar variant="light" expand="md">
         <Container>
-          <LinkContainer to='/' title='electronic Babylonian Literature (eBL)'>
+          <LinkContainer to="/" title="electronic Babylonian Literature (eBL)">
             <Navbar.Brand>
-              <h1 className='Header__title'>
-                <span className='Header__title-main'>
+              <h1 className="Header__title">
+                <span className="Header__title-main">
                   electronic
                   <br />
                   Babylonian
                   <br />
                   Literature
                 </span>
-                <small className='Header__title-abbreviation'>eBL</small>
+                <small className="Header__title-abbreviation">eBL</small>
               </h1>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Collapse id={id}>
-            <Nav className='mx-auto'>
-              <NavItem href='/dictionary' title='Dictionary' />
-              <NavItem href='/corpus' title='Corpus' />
-              <NavItem href='/fragmentarium' title='Fragmentarium' />
-              <NavItem href='/bibliography' title='Bibliography' />
+            <Nav className="mx-auto">
+              <NavItem href="/dictionary" title="Dictionary" />
+              <NavItem href="/corpus" title="Corpus" />
+              <NavItem href="/fragmentarium" title="Fragmentarium" />
+              <NavItem href="/bibliography" title="Bibliography" />
             </Nav>
             <Navbar.Text>
               <User auth={auth} />

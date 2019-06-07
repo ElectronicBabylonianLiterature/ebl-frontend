@@ -3,9 +3,9 @@ import { Button, Card } from 'react-bootstrap'
 
 import FormInput from './FormInput'
 
-function DerivedFromInput ({ value, onChange }) {
+function DerivedFromInput({ value, onChange }) {
   return (
-    <Card border='light'>
+    <Card border="light">
       <Card.Header>Derived from</Card.Header>
       <Card.Body>
         {value ? (
@@ -13,8 +13,8 @@ function DerivedFromInput ({ value, onChange }) {
             <FormInput value={value} onChange={onChange} />
             <Button
               onClick={() => onChange(null)}
-              size='sm'
-              variant='outline-secondary'
+              size="sm"
+              variant="outline-secondary"
             >
               Delete derived from
             </Button>
@@ -22,8 +22,8 @@ function DerivedFromInput ({ value, onChange }) {
         ) : (
           <Button
             onClick={() => onChange({ lemma: [], homonym: '', notes: [] })}
-            size='sm'
-            variant='outline-secondary'
+            size="sm"
+            variant="outline-secondary"
           >
             Add derived from
           </Button>

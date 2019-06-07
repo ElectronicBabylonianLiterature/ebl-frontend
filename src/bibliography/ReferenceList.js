@@ -13,9 +13,9 @@ const typeOrder = {
   DISCUSSION: 4
 }
 
-function Citation ({ reference }) {
+function Citation({ reference }) {
   const popover = (
-    <Popover id={_.uniqueId('Citation-')} className='ReferenceList__popover'>
+    <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
       <FullCitation reference={reference} />
     </Popover>
   )
@@ -25,18 +25,18 @@ function Citation ({ reference }) {
       rootClose
       overlay={popover}
       trigger={['click']}
-      placement='right'
+      placement="right"
     >
-      <span className='ReferenceList__citation'>
+      <span className="ReferenceList__citation">
         <CompactCitation reference={reference} />
       </span>
     </OverlayTrigger>
   )
 }
 
-function ReferenceGroup ({ references }) {
+function ReferenceGroup({ references }) {
   return (
-    <ol className='ReferenceList__list'>
+    <ol className="ReferenceList__list">
       {references
         .toSeq()
         .sortBy(
@@ -52,7 +52,7 @@ function ReferenceGroup ({ references }) {
   )
 }
 
-export default function ReferenceList ({ references }) {
+export default function ReferenceList({ references }) {
   return (
     <>
       {references

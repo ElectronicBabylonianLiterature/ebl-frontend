@@ -8,7 +8,7 @@ let element
 test('Title', () => {
   element = render(
     <MemoryRouter>
-      <AppContent crumbs={['Dictionary', 'Active']} title='Title' />
+      <AppContent crumbs={['Dictionary', 'Active']} title="Title" />
     </MemoryRouter>
   )
   expect(element.container).toHaveTextContent('eBLDictionaryActiveTitle')

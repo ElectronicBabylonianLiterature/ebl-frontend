@@ -56,7 +56,7 @@ beforeEach(async () => {
     <Lemmatizer
       fragmentService={fragmentService}
       updateLemmatization={updateLemmatization}
-      number='K.1'
+      number="K.1"
       text={text}
     />
   )
@@ -94,7 +94,7 @@ it('Clicking save calls fragmentService', async () => {
     .toHaveBeenCalledWith(expected)
 })
 
-async function lemmatizeWord () {
+async function lemmatizeWord() {
   await waitForElement(() => element.getByText('kur'))
   clickNth(element, 'kur', 0)
   await waitForElement(() => element.getByLabelText('Lemma'))

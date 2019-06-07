@@ -9,7 +9,7 @@ import SessionContext from 'auth/SessionContext'
 export default class BibliographyEntryFormController extends Component {
   static contextType = SessionContext
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       error: null,
@@ -17,11 +17,11 @@ export default class BibliographyEntryFormController extends Component {
     }
     this.updatePromise = Promise.resolve()
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.updatePromise.cancel()
   }
 
-  get disabled () {
+  get disabled() {
     return this.state.saving || !this.context.isAllowedToWriteBibliography()
   }
 
@@ -36,7 +36,7 @@ export default class BibliographyEntryFormController extends Component {
       })
   }
 
-  render () {
+  render() {
     return (
       <>
         <BibliographyEntryForm

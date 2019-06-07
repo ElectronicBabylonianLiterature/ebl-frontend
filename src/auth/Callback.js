@@ -5,7 +5,7 @@ import ErrorReporterContext from 'ErrorReporterContext'
 
 const redirectTarget = '/'
 
-function Callback ({ location, history, auth }) {
+function Callback({ location, history, auth }) {
   return (
     <ErrorReporterContext.Consumer>
       {errorReporter => {
@@ -21,7 +21,7 @@ function Callback ({ location, history, auth }) {
 }
 
 export default Callback
-function handleAuthentication (auth, history, errorReporter) {
+function handleAuthentication(auth, history, errorReporter) {
   auth
     .handleAuthentication()
     .then(() => history.replace(redirectTarget))

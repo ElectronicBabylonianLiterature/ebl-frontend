@@ -55,7 +55,7 @@ it('Calls onChange with updated notes on change', async () => {
     })
 })
 
-function renderArrayWithNotes () {
+function renderArrayWithNotes() {
   return render(
     <ArrayWithNotes
       property={property}
