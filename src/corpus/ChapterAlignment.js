@@ -1,7 +1,7 @@
 // @flow
-import React from 'react'
+import React, { Fragment } from 'react'
 import type { Chapter, ManuscriptLine } from './text'
-import { Badge, Col, Form } from 'react-bootstrap'
+import { Badge, Table } from 'react-bootstrap'
 
 type Props = { chapter: Chapter }
 
@@ -16,26 +16,56 @@ function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   }
 }
 
+function Line({ line, chapter }) {
+  const reconstruction = line.reconstruction.split(' ')
+  const breaks = []
+  let breakNumber = 0
+  reconstruction.forEach((token, index) => {
+    if (['|', '||', '(|)', '(||)'].includes(token)) {
+      breaks.push(index - breakNumber)
+      ++breakNumber
+    }
+  })
+  return (
+    <Table size="sm" responsive>
+      <thead>
+        <tr>
+          <th>{line.number}</th>
+          <th />
+          <th />
+          {reconstruction.map((token, index) => (
+            <th key={index}>{token}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {line.manuscripts.map((manuscript, index) => (
+          <tr key={index}>
+            <td />
+            <td>{getSiglum(chapter, manuscript)}</td>
+            <td>
+              {manuscript.labels} {manuscript.number}
+            </td>
+            {manuscript.atf.split(/(?!>[xX]) (?![xX])/g).map((token, index) => (
+              <Fragment key={index}>
+                {breaks.includes(index) && <td />}
+                <td key={index}>{token}</td>
+              </Fragment>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  )
+}
+
 export default function ChapterAlignment({ chapter }: Props) {
   return (
     <>
       <Badge variant="danger">WIP</Badge>
       {chapter.lines.map((line, index) => (
         <section key={index}>
-          <Form.Row>
-            <Col md={3}>{line.number}</Col>
-            <Col md={9}>{line.reconstruction}</Col>
-          </Form.Row>
-          {line.manuscripts.map((manuscript, index) => (
-            <Form.Row key={index}>
-              <Col md={1} />
-              <Col md={1}>{getSiglum(chapter, manuscript)}</Col>
-              <Col md={1}>
-                {manuscript.labels} {manuscript.number}
-              </Col>
-              <Col md={9}>{manuscript.atf}</Col>
-            </Form.Row>
-          ))}
+          <Line line={line} chapter={chapter} />
         </section>
       ))}
     </>
