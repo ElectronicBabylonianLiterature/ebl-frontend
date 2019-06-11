@@ -1,6 +1,6 @@
-import { Record, setIn } from 'immutable'
 import AppDriver from 'test-helpers/AppDriver'
 import FakeApi from 'test-helpers/FakeApi'
+import { produce } from 'immer'
 
 const category = 1
 const index = 1
@@ -152,10 +152,12 @@ describe('Diplay chapter', () => {
       ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
       fakeApi.expectUpdateText(
-        setIn(textDto, ['chapters', 1, 'manuscripts', 0, property], newValue)
+        produce(textDto, draft => {
+          draft.chapters[1].manuscripts[0][property] = newValue
+        })
       )
       const value = manuscript[property]
-      const expectedValue = Record.isRecord(value) ? value.name : value
+      const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
@@ -187,7 +189,9 @@ describe('Add manuscript', () => {
       id: 1
     }
     fakeApi.expectUpdateText(
-      setIn(textDto, ['chapters', 0, 'manuscripts', 0], manuscript)
+      produce(textDto, draft => {
+        draft.chapters[0].manuscripts[0] = manuscript
+      })
     )
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
@@ -200,18 +204,15 @@ describe('Lines', () => {
   const line = chapter.lines[0]
 
   beforeEach(async () => {
-    fakeApi = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(fakeApi.client)
-      .withSession()
-      .withPath(createChapterPath(chapter.stage, chapter.name))
-      .render()
-
-    await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
+    await setup(chapter, false)
+    appDriver.click('Lines')
   })
 
   test.each([['Number', 'number', '2']])('%s', (label, property, newValue) => {
     fakeApi.expectUpdateText(
-      setIn(textDto, ['chapters', 2, 'lines', 0, property], newValue)
+      produce(textDto, draft => {
+        draft.chapters[2].lines[0][property] = newValue
+      })
     )
     const expectedValue = line[property]
     appDriver.expectInputElement(label, expectedValue)
@@ -226,11 +227,14 @@ describe('Add line', () => {
 
   beforeEach(async () => {
     await setup(chapter)
+    appDriver.click('Lines')
   })
 
   test.each([['Number', 'number']])('%s', (label, property) => {
     fakeApi.expectUpdateText(
-      setIn(textDto, ['chapters', 1, 'lines', 0], defaultLineDto)
+      produce(textDto, draft => {
+        draft.chapters[1].lines[0] = defaultLineDto
+      })
     )
     appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
@@ -261,8 +265,10 @@ describe('Chapter not found', () => {
   })
 })
 
-async function setup(chapter) {
-  fakeApi = new FakeApi().expectText(textDto)
+async function setup(chapter, expectText = true) {
+  fakeApi = expectText
+    ? new FakeApi().expectText(textDto)
+    : new FakeApi().allowText(textDto)
   appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(createChapterPath(chapter.stage, chapter.name))
