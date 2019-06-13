@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import type { Chapter, ManuscriptLine } from './text'
-import { Badge, Col, Form } from 'react-bootstrap'
+import { Badge, Col, Form, Button } from 'react-bootstrap'
 
 type Props = { chapter: Chapter }
 
@@ -33,7 +33,19 @@ export default function ChapterAlignment({ chapter }: Props) {
               <Col md={1}>
                 {manuscript.labels} {manuscript.number}
               </Col>
-              <Col md={9}>{manuscript.atf}</Col>
+              <Col md={9}>
+                {manuscript.atfTokens.map((token, index) =>
+                  token.lemmatizable ? (
+                    <span key={index}>
+                      <Button size="sm" variant="outline-dark">
+                        {token.value}
+                      </Button>{' '}
+                    </span>
+                  ) : (
+                    <span key={index}>{token.value} </span>
+                  )
+                )}
+              </Col>
             </Form.Row>
           ))}
         </section>
