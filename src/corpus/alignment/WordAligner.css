@@ -1,0 +1,8 @@
+.WordAligner {
+  position: relative;
+}
+
+.WordAligner__form {
+  max-width: none;
+  min-width: 32em;
+}

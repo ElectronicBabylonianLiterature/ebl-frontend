@@ -3,8 +3,8 @@ import { Form, Button, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import ChapterManuscripts from './ChapterManuscripts'
 import ChapterLines from './ChapterLines'
-import ChapterAlignment from './ChapterAlignment'
-import SessionContext from '../auth/SessionContext'
+import ChapterAlignment from 'corpus/alignment/ChapterAlignment'
+import SessionContext from 'auth/SessionContext'
 
 function ChapterDetails({ chapter }) {
   return (

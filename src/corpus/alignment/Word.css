@@ -1,0 +1,15 @@
+.Word--suggestion {
+  color: red;
+}
+
+.Word--with-alignment {
+  font-weight: bolder;
+}
+
+.Word__alignment {
+  font-style: italic;
+  font-size: 75%;
+  font-weight: normal;
+  margin-left: 0.33em;
+  vertical-align: sub;
+}

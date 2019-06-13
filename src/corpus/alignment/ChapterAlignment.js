@@ -1,7 +1,9 @@
 // @flow
 import React from 'react'
-import type { Chapter, Line, ManuscriptLine } from './text'
-import { Badge, Col, Form, Button } from 'react-bootstrap'
+import type { Chapter, Line, ManuscriptLine } from '../text'
+import { Badge, Col, Form } from 'react-bootstrap'
+import WordAligner from './WordAligner'
+import { produce } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
@@ -25,8 +27,17 @@ function Reconstruction(props: { line: Line }) {
 
 function ManuscriptAlignment(props: {
   chapter: Chapter,
-  manuscriptLine: ManuscriptLine
+  line: Line,
+  manuscriptLine: ManuscriptLine,
+  onChange: ManuscriptLine => void
 }) {
+  const handleChange = index => token => {
+    props.onChange(
+      produce(props.manuscriptLine, draft => {
+        draft.atfTokens[index] = token
+      })
+    )
+  }
   return (
     <Form.Row>
       <Col md={1} />
@@ -38,9 +49,11 @@ function ManuscriptAlignment(props: {
         {props.manuscriptLine.atfTokens.map((token, index) =>
           token.lemmatizable ? (
             <span key={index}>
-              <Button size="sm" variant="outline-dark">
-                {token.value}
-              </Button>{' '}
+              <WordAligner
+                token={token}
+                reconstructionTokens={props.line.reconstructionTokens}
+                onChange={handleChange(index)}
+              />{' '}
             </span>
           ) : (
             <span key={index}>{token.value} </span>
@@ -51,18 +64,32 @@ function ManuscriptAlignment(props: {
   )
 }
 
-export default function ChapterAlignment({ chapter }: { chapter: Chapter }) {
+export default function ChapterAlignment({
+  chapter,
+  onChange
+}: {
+  chapter: Chapter,
+  onChange: Chapter => void
+}) {
+  const handleChange = lineIndex => manuscriptIndex => manuscript =>
+    onChange(
+      produce(chapter, draft => {
+        draft.lines[lineIndex].manuscripts[manuscriptIndex] = manuscript
+      })
+    )
   return (
     <>
       <Badge variant="danger">WIP</Badge>
-      {chapter.lines.map((line, index) => (
-        <section key={index}>
+      {chapter.lines.map((line, lineIndex) => (
+        <section key={lineIndex}>
           <Reconstruction line={line} />
-          {line.manuscripts.map((manuscript, index) => (
+          {line.manuscripts.map((manuscript, manuscriptIndex) => (
             <ManuscriptAlignment
-              key={index}
+              key={manuscriptIndex}
               chapter={chapter}
+              line={line}
               manuscriptLine={manuscript}
+              onChange={handleChange(lineIndex)(manuscriptIndex)}
             />
           ))}
         </section>

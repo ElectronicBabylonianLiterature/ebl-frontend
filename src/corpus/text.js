@@ -57,7 +57,8 @@ type AtfToken = {|
   normalized?: boolean,
   language?: string,
   lemmatizable?: boolean,
-  erasure?: string
+  erasure?: string,
+  alignment?: ?number
 |}
 export type ManuscriptLine = {|
   manuscriptId: number,
