@@ -64,7 +64,7 @@ export type ManuscriptLine = {|
   labels: Array<string>,
   number: string,
   atf: string,
-  atfTokens?: AtfToken[]
+  atfTokens: AtfToken[]
 |}
 export const createManuscriptLine: (
   $Shape<ManuscriptLine>
