@@ -29,12 +29,33 @@ const manuscrpitLineConfig: ManuscriptLine = {
   manuscriptId: 1,
   labels: ['iii'],
   number: 'a+1',
-  atf: 'kur'
+  atf: 'kur',
+  atfTokens: [
+    {
+      type: 'Word',
+      value: 'kur',
+      uniqueLemma: [],
+      normalized: false,
+      language: 'AKKADIAN',
+      lemmatizable: true,
+      erasure: 'NONE'
+    }
+  ]
 }
 
 const lineConfig: Line = {
   number: '2',
   reconstruction: 'reconstructed text',
+  reconstructionTokens: [
+    {
+      type: 'AkkadianWord',
+      value: 'reconstructed'
+    },
+    {
+      type: 'AkkadianWord',
+      value: 'text'
+    }
+  ],
   manuscripts: [createManuscriptLine(manuscrpitLineConfig)]
 }
 
