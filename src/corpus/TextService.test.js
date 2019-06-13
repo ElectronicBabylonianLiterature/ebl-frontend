@@ -60,12 +60,33 @@ const textDto = {
         {
           number: '1',
           reconstruction: 'reconstructed text',
+          reconstructionTokens: [
+            {
+              type: 'AkkadianWord',
+              value: 'reconstructed'
+            },
+            {
+              type: 'AkkadianWord',
+              value: 'text'
+            }
+          ],
           manuscripts: [
             {
               manuscriptId: 1,
               labels: ['o', 'iii'],
               number: 'a+1',
-              atf: 'kur'
+              atf: 'kur',
+              atfTokens: [
+                {
+                  type: 'Word',
+                  value: 'kur',
+                  uniqueLemma: [],
+                  normalized: false,
+                  language: 'AKKADIAN',
+                  lemmatizable: true,
+                  erasure: 'NONE'
+                }
+              ]
             }
           ]
         }
@@ -166,12 +187,33 @@ const text = createText({
         createLine({
           number: '1',
           reconstruction: 'reconstructed text',
+          reconstructionTokens: [
+            {
+              type: 'AkkadianWord',
+              value: 'reconstructed'
+            },
+            {
+              type: 'AkkadianWord',
+              value: 'text'
+            }
+          ],
           manuscripts: [
             createManuscriptLine({
               manuscriptId: 1,
               labels: ['o', 'iii'],
               number: 'a+1',
-              atf: 'kur'
+              atf: 'kur',
+              atfTokens: [
+                {
+                  type: 'Word',
+                  value: 'kur',
+                  uniqueLemma: [],
+                  normalized: false,
+                  language: 'AKKADIAN',
+                  lemmatizable: true,
+                  erasure: 'NONE'
+                }
+              ]
             })
           ]
         })

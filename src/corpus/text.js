@@ -50,12 +50,22 @@ export function createManuscript(data: $Shape<Manuscript>): Manuscript {
   })
 }
 
-export type ManuscriptLine = {
+type AtfToken = {|
+  type: string,
+  value: string,
+  uniqueLemma?: string[],
+  normalized?: boolean,
+  language?: string,
+  lemmatizable?: boolean,
+  erasure?: string
+|}
+export type ManuscriptLine = {|
   manuscriptId: number,
   labels: Array<string>,
   number: string,
-  atf: string
-}
+  atf: string,
+  atfTokens?: AtfToken[]
+|}
 export const createManuscriptLine: (
   $Shape<ManuscriptLine>
 ) => ManuscriptLine = produce(
@@ -64,15 +74,20 @@ export const createManuscriptLine: (
     labels: [],
     number: '',
     atf: '',
+    atfTokens: [],
     ...draft
   })
 )
-
-export type Line = {
+type ReconstructionToken = {|
+  type: string,
+  value: string
+|}
+export type Line = {|
   number: string,
   reconstruction: string,
-  manuscripts: Array<ManuscriptLine>
-}
+  reconstructionTokens: ReconstructionToken[],
+  manuscripts: ManuscriptLine[]
+|}
 export const createLine: ($Shape<Line>) => Line = produce(
   (draft: $Shape<Line>): Line => ({
     number: '',
