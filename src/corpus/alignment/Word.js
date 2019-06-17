@@ -1,11 +1,21 @@
+// @flow
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
+import type { AtfToken, ReconstructionToken } from '../text'
 
-function Word({ token, onClick, reconstructionTokens }) {
+function Word({
+  token,
+  reconstructionTokens,
+  onClick
+}: {
+  +token: AtfToken,
+  +reconstructionTokens: ReconstructionToken[],
+  +onClick: (SyntheticEvent<>) => void
+}) {
   return token.lemmatizable ? (
     <Button
       onClick={onClick}
@@ -13,14 +23,13 @@ function Word({ token, onClick, reconstructionTokens }) {
       variant="outline-dark"
       className={classNames({
         Word: true,
-        'Word--with-alignment': _.isNumber(token.alignment),
-        'Word--suggestion': token.suggested
+        'Word--with-alignment': _.isNumber(token.alignment)
       })}
     >
       {token.value}
       {_.isNumber(token.alignment) && (
         <span className="Word__alignment">
-          {reconstructionTokens[token.alignment].value}
+          {reconstructionTokens[Number(token.alignment)].value}
         </span>
       )}
     </Button>
