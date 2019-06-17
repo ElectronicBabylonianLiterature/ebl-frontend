@@ -3,7 +3,8 @@ import React from 'react'
 import type { Chapter, Line, ManuscriptLine } from '../text'
 import { Badge, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-import { produce } from 'immer'
+// $FlowFixMe
+import { Draft, produce } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
@@ -33,7 +34,7 @@ function ManuscriptAlignment(props: {
 }) {
   const handleChange = index => token => {
     props.onChange(
-      produce(props.manuscriptLine, draft => {
+      produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
         draft.atfTokens[index] = token
       })
     )
@@ -73,7 +74,7 @@ export default function ChapterAlignment({
 }) {
   const handleChange = lineIndex => manuscriptIndex => manuscript =>
     onChange(
-      produce(chapter, draft => {
+      produce(chapter, (draft: Draft<Chapter>) => {
         draft.lines[lineIndex].manuscripts[manuscriptIndex] = manuscript
       })
     )

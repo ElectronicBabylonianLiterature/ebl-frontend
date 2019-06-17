@@ -13,7 +13,7 @@ function Word({
   onClick
 }: {
   +token: AtfToken,
-  +reconstructionTokens: ReconstructionToken[],
+  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
   +onClick: (SyntheticEvent<>) => void
 }) {
   return token.lemmatizable ? (

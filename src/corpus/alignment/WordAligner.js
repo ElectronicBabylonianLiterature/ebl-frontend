@@ -5,12 +5,13 @@ import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-import { produce } from 'immer'
+// $FlowFixMe
+import { Draft, produce } from 'immer'
 import type { AtfToken, ReconstructionToken } from '../text'
 
 type Props = {
   +token: AtfToken,
-  +reconstructionTokens: ReconstructionToken[],
+  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
   +onChange: AtfToken => void
 }
 
@@ -39,7 +40,7 @@ export default class WordAligner extends Component<Props, State> {
 
   handleChange = (event: SyntheticEvent<HTMLSelectElement>) => {
     this.props.onChange(
-      produce(this.props.token, draft => {
+      produce(this.props.token, (draft: Draft<AtfToken>) => {
         const alignmentIndex = (event.target: any).value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)

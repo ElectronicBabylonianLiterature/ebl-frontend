@@ -9,7 +9,7 @@ import { provenances } from './provenance'
 import { Draft, immerable, produce } from 'immer'
 import _ from 'lodash'
 
-export type ManuscriptType = { +name: string, +abbreviation: string }
+export type ManuscriptType = {| +name: string, +abbreviation: string |}
 export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
   Library: { name: 'Library', abbreviation: '' },
   School: { name: 'School', abbreviation: 'Sch' },
@@ -31,7 +31,7 @@ export class Manuscript {
   provenance: Provenance = provenances.get('Nineveh', provenances.first())
   type: ManuscriptType = types.get('Library', types.first())
   notes: string = ''
-  references: $ReadOnlyArray<Reference> = []
+  references: $ReadOnlyArray<Reference> = Array()
 
   get siglum() {
     return [
@@ -51,62 +51,62 @@ export function createManuscript(data: $Shape<Manuscript>): Manuscript {
 }
 
 export type AtfToken = {|
-  type: string,
-  value: string,
-  uniqueLemma?: string[],
-  normalized?: boolean,
-  language?: string,
-  lemmatizable?: boolean,
-  erasure?: string,
-  alignment?: ?number
+  +type: string,
+  +value: string,
+  +uniqueLemma?: $ReadOnlyArray<string>,
+  +normalized?: boolean,
+  +language?: string,
+  +lemmatizable?: boolean,
+  +erasure?: string,
+  +alignment?: ?number
 |}
 export type ManuscriptLine = {|
-  manuscriptId: number,
-  labels: Array<string>,
-  number: string,
-  atf: string,
-  atfTokens: AtfToken[]
+  +manuscriptId: number,
+  +labels: $ReadOnlyArray<string>,
+  +number: string,
+  +atf: string,
+  +atfTokens: $ReadOnlyArray<AtfToken>
 |}
 export const createManuscriptLine: (
   $Shape<ManuscriptLine>
 ) => ManuscriptLine = produce(
   (draft: $Shape<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
-    labels: [],
+    labels: Array(),
     number: '',
     atf: '',
-    atfTokens: [],
+    atfTokens: Array(),
     ...draft
   })
 )
 export type ReconstructionToken = {|
-  type: string,
-  value: string
+  +type: string,
+  +value: string
 |}
 export type Line = {|
-  number: string,
-  reconstruction: string,
-  reconstructionTokens: ReconstructionToken[],
-  manuscripts: ManuscriptLine[]
+  +number: string,
+  +reconstruction: string,
+  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
+  +manuscripts: $ReadOnlyArray<ManuscriptLine>
 |}
 export const createLine: ($Shape<Line>) => Line = produce(
   (draft: $Shape<Line>): Line => ({
     number: '',
     reconstruction: '',
-    manuscripts: [],
+    manuscripts: Array(),
     ...draft
   })
 )
 
-export type Chapter = {
-  classification: string,
-  stage: string,
-  version: string,
-  name: string,
-  order: number,
-  manuscripts: Array<Manuscript>,
-  lines: Array<Line>
-}
+export type Chapter = {|
+  +classification: string,
+  +stage: string,
+  +version: string,
+  +name: string,
+  +order: number,
+  +manuscripts: $ReadOnlyArray<Manuscript>,
+  +lines: $ReadOnlyArray<Line>
+|}
 export const createChapter: ($Shape<Chapter>) => Chapter = produce(
   (draft: $Shape<Chapter>): Chapter => ({
     classification: 'Ancient',
@@ -114,20 +114,20 @@ export const createChapter: ($Shape<Chapter>) => Chapter = produce(
     version: '',
     name: '',
     order: 0,
-    manuscripts: [],
-    lines: [],
+    manuscripts: Array(),
+    lines: Array(),
     ...draft
   })
 )
 
-export type Text = {
-  category: number,
-  index: number,
-  name: string,
-  numberOfVerses: number,
-  approximateVerses: boolean,
-  chapters: Array<Chapter>
-}
+export type Text = {|
+  +category: number,
+  +index: number,
+  +name: string,
+  +numberOfVerses: number,
+  +approximateVerses: boolean,
+  +chapters: $ReadOnlyArray<Chapter>
+|}
 export const createText: ($Shape<Text>) => Text = produce(
   (draft: $Shape<Text>): Text => ({
     category: 0,
@@ -135,7 +135,7 @@ export const createText: ($Shape<Text>) => Text = produce(
     name: '',
     numberOfVerses: 0,
     approximateVerses: false,
-    chapters: [],
+    chapters: Array(),
     ...draft
   })
 )
