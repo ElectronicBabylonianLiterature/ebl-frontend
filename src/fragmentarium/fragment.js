@@ -14,7 +14,9 @@ const folioTypes = Map({
   EL: FolioType({ name: 'Leichty', hasImage: true }),
   AKG: FolioType({ name: 'Grayson', hasImage: true }),
   MJG: FolioType({ name: 'Geller', hasImage: true }),
-  WRM: FolioType({ name: 'Mayer', hasImage: true })
+  WRM: FolioType({ name: 'Mayer', hasImage: true }),
+  CB: FolioType({ name: 'Bezold', hasImage: false }),
+  JS: FolioType({ name: 'Strassmaier', hasImage: false })
 })
 
 export class Folio {
