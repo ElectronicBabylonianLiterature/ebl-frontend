@@ -23,7 +23,8 @@ function Word({
       variant="outline-dark"
       className={classNames({
         Word: true,
-        'Word--with-alignment': _.isNumber(token.alignment)
+        'Word--with-alignment': _.isNumber(token.alignment),
+        'Word--with-apparatus': token.hasApparatusEntry
       })}
     >
       {token.value}

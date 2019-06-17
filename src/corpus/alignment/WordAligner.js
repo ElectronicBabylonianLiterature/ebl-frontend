@@ -38,13 +38,22 @@ export default class WordAligner extends Component<Props, State> {
     })
   }
 
-  handleChange = (event: SyntheticEvent<HTMLSelectElement>) => {
+  handleAlignmentChange = (event: SyntheticEvent<HTMLSelectElement>) => {
     this.props.onChange(
       produce(this.props.token, (draft: Draft<AtfToken>) => {
         const alignmentIndex = (event.target: any).value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
+      })
+    )
+    this.hide()
+  }
+
+  handleApparatusChange = () => {
+    this.props.onChange(
+      produce(this.props.token, (draft: Draft<AtfToken>) => {
+        draft.hasApparatusEntry = !draft.hasApparatusEntry
       })
     )
     this.hide()
@@ -75,12 +84,12 @@ export default class WordAligner extends Component<Props, State> {
             title="Align"
             className="WordAligner__form"
           >
-            <Form.Group controlId={_.uniqueId('WordAligner-')}>
+            <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
               <Form.Label>Ideal word</Form.Label>
               <Form.Control
                 as="select"
                 value={this.props.token.alignment}
-                onChange={this.handleChange}
+                onChange={this.handleAlignmentChange}
               >
                 <option value="">--</option>
                 {this.props.reconstructionTokens.map(
@@ -96,6 +105,14 @@ export default class WordAligner extends Component<Props, State> {
                   )
                 )}
               </Form.Control>
+            </Form.Group>
+            <Form.Group controlId={_.uniqueId('WordAligner-Check-')}>
+              <Form.Check
+                type="checkbox"
+                label="Has an apparatus entry"
+                checked={this.props.token.hasApparatusEntry}
+                onChange={this.handleApparatusChange}
+              />
             </Form.Group>
           </Popover>
         </Overlay>

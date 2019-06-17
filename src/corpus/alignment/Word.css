@@ -13,3 +13,8 @@
   margin-left: 0.33em;
   vertical-align: sub;
 }
+
+.Word--with-apparatus .Word__alignment::before,
+.Word--with-apparatus .Word__alignment::after {
+  content: "†";
+}
