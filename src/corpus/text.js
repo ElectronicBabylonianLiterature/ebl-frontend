@@ -50,7 +50,7 @@ export function createManuscript(data: $Shape<Manuscript>): Manuscript {
   })
 }
 
-type AtfToken = {|
+export type AtfToken = {|
   type: string,
   value: string,
   uniqueLemma?: string[],
@@ -79,7 +79,7 @@ export const createManuscriptLine: (
     ...draft
   })
 )
-type ReconstructionToken = {|
+export type ReconstructionToken = {|
   type: string,
   value: string
 |}

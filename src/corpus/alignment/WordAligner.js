@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react'
 import { Popover, Overlay, Form } from 'react-bootstrap'
 import _ from 'lodash'
@@ -5,9 +6,23 @@ import Word from './Word'
 
 import './WordAligner.css'
 import { produce } from 'immer'
+import type { AtfToken, ReconstructionToken } from '../text'
 
-export default class WordAligner extends Component {
-  constructor(props) {
+type Props = {
+  +token: AtfToken,
+  +reconstructionTokens: ReconstructionToken[],
+  +onChange: AtfToken => void
+}
+
+type State = {
+  +target?: EventTarget,
+  +show: boolean
+}
+
+export default class WordAligner extends Component<Props, State> {
+  +popOverId: string
+
+  constructor(props: Props) {
     super(props)
     this.popOverId = _.uniqueId('AlignmentPopOver-')
     this.state = {
@@ -15,18 +30,17 @@ export default class WordAligner extends Component {
     }
   }
 
-  handleClick = e => {
+  handleClick = (event: SyntheticEvent<>) => {
     this.setState({
-      target: e.target,
+      target: event.target,
       show: !this.state.show
     })
   }
 
-  handleChange = event => {
+  handleChange = (event: SyntheticEvent<HTMLSelectElement>) => {
     this.props.onChange(
       produce(this.props.token, draft => {
-        const alignmentIndex = event.target.value
-        console.log(alignmentIndex)
+        const alignmentIndex = (event.target: any).value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
