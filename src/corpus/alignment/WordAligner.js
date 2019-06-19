@@ -15,6 +15,69 @@ type Props = {
   +onChange: AtfToken => void
 }
 
+class AlignmentForm extends Component<Props> {
+  handleAlignmentChange = (event: SyntheticEvent<HTMLSelectElement>) => {
+    this.props.onChange(
+      produce(this.props.token, (draft: Draft<AtfToken>) => {
+        const alignmentIndex = (event.target: any).value
+        draft.alignment = /\d+/.test(alignmentIndex)
+          ? Number(alignmentIndex)
+          : null
+        if (_.isNil(draft.alignment)) {
+          draft.hasApparatusEntry = null
+        } else {
+          draft.hasApparatusEntry = draft.hasApparatusEntry || false
+        }
+      })
+    )
+  }
+
+  handleApparatusChange = () => {
+    this.props.onChange(
+      produce(this.props.token, (draft: Draft<AtfToken>) => {
+        draft.hasApparatusEntry = !draft.hasApparatusEntry
+      })
+    )
+  }
+
+  render() {
+    return (
+      <>
+        <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
+          <Form.Label>Ideal word</Form.Label>
+          <Form.Control
+            as="select"
+            value={this.props.token.alignment}
+            onChange={this.handleAlignmentChange}
+          >
+            <option value="">--</option>
+            {this.props.reconstructionTokens.map(
+              (reconstructionToken, index) => (
+                <option
+                  key={index}
+                  value={index}
+                  disabled={reconstructionToken.type !== 'AkkadianWord'}
+                >
+                  {' '}
+                  {reconstructionToken.value}
+                </option>
+              )
+            )}
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId={_.uniqueId('WordAligner-Check-')}>
+          <Form.Check
+            type="checkbox"
+            label="Has an apparatus entry"
+            checked={this.props.token.hasApparatusEntry}
+            onChange={this.handleApparatusChange}
+          />
+        </Form.Group>
+      </>
+    )
+  }
+}
+
 type State = {
   +target?: EventTarget,
   +show: boolean
@@ -38,29 +101,8 @@ export default class WordAligner extends Component<Props, State> {
     })
   }
 
-  handleAlignmentChange = (event: SyntheticEvent<HTMLSelectElement>) => {
-    this.props.onChange(
-      produce(this.props.token, (draft: Draft<AtfToken>) => {
-        const alignmentIndex = (event.target: any).value
-        draft.alignment = /\d+/.test(alignmentIndex)
-          ? Number(alignmentIndex)
-          : null
-        if (_.isNil(draft.alignment)) {
-          draft.hasApparatusEntry = null
-        } else {
-          draft.hasApparatusEntry = draft.hasApparatusEntry || false
-        }
-      })
-    )
-    this.hide()
-  }
-
-  handleApparatusChange = () => {
-    this.props.onChange(
-      produce(this.props.token, (draft: Draft<AtfToken>) => {
-        draft.hasApparatusEntry = !draft.hasApparatusEntry
-      })
-    )
+  handleChange = (value: AtfToken) => {
+    this.props.onChange(value)
     this.hide()
   }
 
@@ -89,36 +131,11 @@ export default class WordAligner extends Component<Props, State> {
             title="Align"
             className="WordAligner__form"
           >
-            <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
-              <Form.Label>Ideal word</Form.Label>
-              <Form.Control
-                as="select"
-                value={this.props.token.alignment}
-                onChange={this.handleAlignmentChange}
-              >
-                <option value="">--</option>
-                {this.props.reconstructionTokens.map(
-                  (reconstructionToken, index) => (
-                    <option
-                      key={index}
-                      value={index}
-                      disabled={reconstructionToken.type !== 'AkkadianWord'}
-                    >
-                      {' '}
-                      {reconstructionToken.value}
-                    </option>
-                  )
-                )}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId={_.uniqueId('WordAligner-Check-')}>
-              <Form.Check
-                type="checkbox"
-                label="Has an apparatus entry"
-                checked={this.props.token.hasApparatusEntry}
-                onChange={this.handleApparatusChange}
-              />
-            </Form.Group>
+            <AlignmentForm
+              token={this.props.token}
+              reconstructionTokens={this.props.reconstructionTokens}
+              onChange={this.handleChange}
+            />
           </Popover>
         </Overlay>
       </span>
