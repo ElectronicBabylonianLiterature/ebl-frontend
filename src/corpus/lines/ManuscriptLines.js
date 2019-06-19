@@ -1,12 +1,11 @@
+import ListForm from 'common/List'
+import { createManuscriptLine } from 'corpus/text'
 import React from 'react'
+import { produce } from 'immer'
 import { Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
-import ListForm from 'common/List'
-import Editor from 'editor/Editor'
-import { createManuscriptLine } from './text'
 import ArrayInput from 'common/ArrayInput'
-import { createDefaultLineFactory } from './line-factory'
-import { produce } from 'immer'
+import Editor from 'editor/Editor'
 
 function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
   const handleChange = property => event =>
@@ -78,7 +77,7 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
+export function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
   return (
     <ListForm
       noun="manuscript"
@@ -91,75 +90,6 @@ function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
           onChange={onChange}
           value={line}
           manuscripts={manuscripts}
-          disabled={disabled}
-        />
-      )}
-    </ListForm>
-  )
-}
-
-function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
-  const handleChangeValue = property => propertyValue =>
-    onChange(
-      produce(value, draft => {
-        draft[property] = propertyValue
-      })
-    )
-  const handleChange = property => event =>
-    onChange(
-      produce(value, draft => {
-        draft[property] = event.target.value
-      })
-    )
-  return (
-    <>
-      <Form.Row>
-        <Form.Group as={Col} md={1} controlId={_.uniqueId('Lines-')}>
-          <Form.Label>Number</Form.Label>
-          <Form.Control
-            value={value.number}
-            onChange={handleChange('number')}
-          />
-        </Form.Group>
-        <Col>
-          <label>Ideal reconstruction</label>
-          <Editor
-            name={_.uniqueId('IdealReconstruction-')}
-            value={value.reconstruction}
-            onChange={handleChangeValue('reconstruction')}
-            disabled={disabled}
-          />
-        </Col>
-      </Form.Row>
-      <ManuscriptLines
-        lines={value.manuscripts}
-        manuscripts={manuscripts}
-        onChange={handleChangeValue('manuscripts')}
-        disabled={disabled}
-      />
-    </>
-  )
-}
-
-export default function ChapterLines({ chapter, onChange, disabled }) {
-  const handleChange = lines =>
-    onChange(
-      produce(chapter, draft => {
-        draft.lines = lines
-      })
-    )
-  return (
-    <ListForm
-      noun="line"
-      defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
-      value={chapter.lines}
-      onChange={handleChange}
-    >
-      {(line, onChange) => (
-        <ChapterLineForm
-          onChange={onChange}
-          value={line}
-          manuscripts={chapter.manuscripts}
           disabled={disabled}
         />
       )}

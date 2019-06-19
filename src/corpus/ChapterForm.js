@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, Button, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import ChapterManuscripts from './manuscripts/ChapterManuscripts'
-import ChapterLines from './ChapterLines'
+import ChapterLines from './lines/ChapterLines'
 import ChapterAlignment from 'corpus/alignment/ChapterAlignment'
 import SessionContext from 'auth/SessionContext'
 
