@@ -2,12 +2,12 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { types } from './text'
+import { types } from 'corpus/text'
 // $FlowFixMe
 import ReferencesForm from 'bibliography/ReferencesForm'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
-import type { Manuscript } from './text'
+import { periodModifiers, periods } from 'corpus/period'
+import { provenances } from 'corpus/provenance'
+import type { Manuscript } from 'corpus/text'
 // $FlowFixMe
 import produce, { Draft } from 'immer'
 import { Map } from 'immutable'

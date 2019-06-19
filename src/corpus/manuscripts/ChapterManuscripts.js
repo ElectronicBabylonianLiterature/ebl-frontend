@@ -1,6 +1,6 @@
 import React from 'react'
 import ListForm from 'common/List'
-import { createManuscript } from './text'
+import { createManuscript } from 'corpus/text'
 import ManuscriptForm from './ManuscriptForm'
 import populateIds from './populateIds'
 import { produce } from 'immer'
