@@ -7,8 +7,8 @@
 }
 
 .Word__alignment {
-  font-style: italic;
   font-size: 75%;
+  font-style: italic;
   font-weight: normal;
   margin-left: 0.33em;
   vertical-align: sub;
