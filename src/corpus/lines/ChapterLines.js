@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Form } from 'react-bootstrap'
+import { Button, Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
@@ -58,20 +58,25 @@ export default function ChapterLines({ chapter, onChange, disabled }) {
       })
     )
   return (
-    <ListForm
-      noun="line"
-      defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
-      value={chapter.lines}
-      onChange={handleChange}
-    >
-      {(line, onChange) => (
-        <ChapterLineForm
-          onChange={onChange}
-          value={line}
-          manuscripts={chapter.manuscripts}
-          disabled={disabled}
-        />
-      )}
-    </ListForm>
+    <>
+      <ListForm
+        noun="line"
+        defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
+        value={chapter.lines}
+        onChange={handleChange}
+      >
+        {(line, onChange) => (
+          <ChapterLineForm
+            onChange={onChange}
+            value={line}
+            manuscripts={chapter.manuscripts}
+            disabled={disabled}
+          />
+        )}
+      </ListForm>
+      <Button variant="primary" type="submit">
+        Save
+      </Button>
+    </>
   )
 }

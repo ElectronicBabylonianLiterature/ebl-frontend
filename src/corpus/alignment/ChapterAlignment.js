@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import type { Chapter, Line, ManuscriptLine } from '../text'
-import { Badge, Col, Form } from 'react-bootstrap'
+import { Alert, Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 // $FlowFixMe
 import { Draft, produce } from 'immer'
@@ -67,10 +67,12 @@ function ManuscriptAlignment(props: {
 
 export default function ChapterAlignment({
   chapter,
-  onChange
+  onChange,
+  onSave
 }: {
   chapter: Chapter,
-  onChange: Chapter => void
+  onChange: Chapter => void,
+  onSave: void => void
 }) {
   const handleChange = lineIndex => manuscriptIndex => manuscript =>
     onChange(
@@ -81,6 +83,10 @@ export default function ChapterAlignment({
   return (
     <>
       <Badge variant="danger">WIP</Badge>
+      <Alert variant="warning">
+        Saving in <strong>Manuscripts</strong> or <strong>Lines</strong> tabs
+        will wipe all alignments in all chapters!
+      </Alert>
       {chapter.lines.map((line, lineIndex) => (
         <section key={lineIndex}>
           <Reconstruction line={line} />
@@ -95,6 +101,7 @@ export default function ChapterAlignment({
           ))}
         </section>
       ))}
+      <Button onClick={onSave}>Save alignment</Button>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button, Col, Tabs, Tab } from 'react-bootstrap'
+import { Form, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import ChapterManuscripts from './manuscripts/ChapterManuscripts'
 import ChapterLines from './lines/ChapterLines'
@@ -31,6 +31,7 @@ function ChapterDetails({ chapter }) {
 
 export default function ChapterForm({
   onSubmit,
+  onSaveAlignment,
   disabled,
   chapter,
   searchBibliography,
@@ -70,13 +71,11 @@ export default function ChapterForm({
                 <ChapterAlignment
                   chapter={chapter}
                   onChange={onChange}
+                  onSave={onSaveAlignment}
                   disabled={disabled}
                 />
               </Tab>
             </Tabs>
-            <Button variant="primary" type="submit">
-              Save
-            </Button>
           </fieldset>
         </Form>
       )}
