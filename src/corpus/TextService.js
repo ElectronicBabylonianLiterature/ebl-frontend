@@ -78,6 +78,20 @@ const toDto = produce(draft => {
   })
 })
 
+const toAlignmentDto = produce((draft, chapterIndex) => {
+  return {
+    alignment: draft.chapters[chapterIndex].lines.map(line =>
+      line.manuscripts.map(manuscript =>
+        manuscript.atfTokens.map(token => ({
+          value: token.value,
+          alignment: token.alignment,
+          hasApparatusEntry: token.hasApparatusEntry
+        }))
+      )
+    )
+  }
+})
+
 export default class TextService {
   #apiClient
 
@@ -105,6 +119,17 @@ export default class TextService {
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
         toDto(text)
+      )
+      .then(fromDto)
+  }
+
+  updateAlignment(category, index, chapterIndex, text) {
+    return this.#apiClient
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
+        toAlignmentDto(text, chapterIndex)
       )
       .then(fromDto)
   }

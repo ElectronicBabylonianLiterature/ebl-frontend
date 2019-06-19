@@ -75,7 +75,7 @@ const textDto = {
               manuscriptId: 1,
               labels: ['o', 'iii'],
               number: 'a+1',
-              atf: 'kur',
+              atf: 'kur ra',
               atfTokens: [
                 {
                   type: 'Word',
@@ -85,6 +85,17 @@ const textDto = {
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE'
+                },
+                {
+                  type: 'Word',
+                  value: 'ra',
+                  uniqueLemma: [],
+                  normalized: false,
+                  language: 'AKKADIAN',
+                  lemmatizable: true,
+                  erasure: 'NONE',
+                  alignment: 1,
+                  hasApparatusEntry: false
                 }
               ]
             }
@@ -139,7 +150,7 @@ const textUpdateDto = {
               manuscriptId: 1,
               labels: ['o', 'iii'],
               number: 'a+1',
-              atf: 'kur'
+              atf: 'kur ra'
             }
           ]
         }
@@ -202,7 +213,7 @@ const text = createText({
               manuscriptId: 1,
               labels: ['o', 'iii'],
               number: 'a+1',
-              atf: 'kur',
+              atf: 'kur ra',
               atfTokens: [
                 {
                   type: 'Word',
@@ -212,6 +223,17 @@ const text = createText({
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE'
+                },
+                {
+                  type: 'Word',
+                  value: 'ra',
+                  uniqueLemma: [],
+                  normalized: false,
+                  language: 'AKKADIAN',
+                  lemmatizable: true,
+                  erasure: 'NONE',
+                  alignment: 1,
+                  hasApparatusEntry: false
                 }
               ]
             })
@@ -221,6 +243,23 @@ const text = createText({
     })
   ]
 })
+
+const alignmentDto = {
+  alignment: [
+    [
+      [
+        {
+          value: 'kur'
+        },
+        {
+          value: 'ra',
+          alignment: 1,
+          hasApparatusEntry: false
+        }
+      ]
+    ]
+  ]
+}
 
 const textsDto = [
   {
@@ -276,6 +315,19 @@ const testData = [
         text.index
       )}`,
       textUpdateDto
+    ],
+    Promise.resolve(textDto)
+  ],
+  [
+    'updateAlignment',
+    [text.category, text.index, 0, text],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/alignment`,
+      alignmentDto
     ],
     Promise.resolve(textDto)
   ]
