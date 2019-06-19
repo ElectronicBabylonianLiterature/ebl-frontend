@@ -59,7 +59,7 @@ export type AtfToken = {|
   +lemmatizable?: boolean,
   +erasure?: string,
   +alignment?: ?number,
-  +hasApparatusEntry?: boolean
+  +hasApparatusEntry?: ?boolean
 |}
 export type ManuscriptLine = {|
   +manuscriptId: number,

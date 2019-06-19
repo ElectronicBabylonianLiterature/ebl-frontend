@@ -45,6 +45,11 @@ export default class WordAligner extends Component<Props, State> {
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
+        if (_.isNil(draft.alignment)) {
+          draft.hasApparatusEntry = null
+        } else {
+          draft.hasApparatusEntry = draft.hasApparatusEntry || false
+        }
       })
     )
     this.hide()
