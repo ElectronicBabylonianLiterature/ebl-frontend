@@ -1,6 +1,6 @@
 // @flow
 import _ from 'lodash'
-import type { Manuscript } from 'corpus/text'
+import type { Manuscript } from '../text'
 // $FlowFixMe
 import produce, { Draft } from 'immer'
 
