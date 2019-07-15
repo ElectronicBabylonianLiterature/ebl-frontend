@@ -84,8 +84,7 @@ const toAlignmentDto = produce((draft, chapterIndex) => {
       line.manuscripts.map(manuscript =>
         manuscript.atfTokens.map(token => ({
           value: token.value,
-          alignment: token.alignment,
-          hasApparatusEntry: token.hasApparatusEntry
+          alignment: token.alignment
         }))
       )
     )

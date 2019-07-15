@@ -23,19 +23,6 @@ class AlignmentForm extends Component<Props> {
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
-        if (_.isNil(draft.alignment)) {
-          draft.hasApparatusEntry = null
-        } else {
-          draft.hasApparatusEntry = draft.hasApparatusEntry || false
-        }
-      })
-    )
-  }
-
-  handleApparatusChange = () => {
-    this.props.onChange(
-      produce(this.props.token, (draft: Draft<AtfToken>) => {
-        draft.hasApparatusEntry = !draft.hasApparatusEntry
       })
     )
   }
@@ -64,14 +51,6 @@ class AlignmentForm extends Component<Props> {
               )
             )}
           </Form.Control>
-        </Form.Group>
-        <Form.Group controlId={_.uniqueId('WordAligner-Check-')}>
-          <Form.Check
-            type="checkbox"
-            label="Has an apparatus entry"
-            checked={this.props.token.hasApparatusEntry}
-            onChange={this.handleApparatusChange}
-          />
         </Form.Group>
       </>
     )

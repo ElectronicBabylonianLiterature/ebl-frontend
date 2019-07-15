@@ -94,8 +94,7 @@ const textDto = {
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
-                  alignment: 1,
-                  hasApparatusEntry: false
+                  alignment: 1
                 }
               ]
             }
@@ -232,8 +231,7 @@ const text = createText({
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
-                  alignment: 1,
-                  hasApparatusEntry: false
+                  alignment: 1
                 }
               ]
             })
@@ -253,8 +251,7 @@ const alignmentDto = {
         },
         {
           value: 'ra',
-          alignment: 1,
-          hasApparatusEntry: false
+          alignment: 1
         }
       ]
     ]
