@@ -7,7 +7,7 @@ import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
-import ChapterForm from './ChapterForm'
+import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import { produce } from 'immer'
 
@@ -64,7 +64,7 @@ function ChapterView({
     <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
       {chapterIndex >= 0 ? (
-        <ChapterForm
+        <ChapterEditor
           chapter={text.chapters[chapterIndex]}
           disabled={disabled}
           searchBibliography={searchBibliography}

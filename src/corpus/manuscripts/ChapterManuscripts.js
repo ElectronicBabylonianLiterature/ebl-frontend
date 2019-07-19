@@ -4,13 +4,14 @@ import { createManuscript } from 'corpus/text'
 import ManuscriptForm from './ManuscriptForm'
 import populateIds from './populateIds'
 import { produce } from 'immer'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 
 export default function ChapterManuscripts({
   chapter,
   onChange,
   onSave,
-  searchBibliography
+  searchBibliography,
+  disabled
 }) {
   const handeManuscriptsChange = manuscripts =>
     onChange(
@@ -19,22 +20,24 @@ export default function ChapterManuscripts({
       })
     )
   return (
-    <>
-      <ListForm
-        noun="manuscript"
-        defaultValue={createManuscript({})}
-        value={chapter.manuscripts}
-        onChange={handeManuscriptsChange}
-      >
-        {(manuscript, onChange) => (
-          <ManuscriptForm
-            onChange={onChange}
-            manuscript={manuscript}
-            searchBibliography={searchBibliography}
-          />
-        )}
-      </ListForm>
-      <Button onClick={onSave}>Save manuscripts</Button>
-    </>
+    <Form>
+      <fieldset disabled={disabled}>
+        <ListForm
+          noun="manuscript"
+          defaultValue={createManuscript({})}
+          value={chapter.manuscripts}
+          onChange={handeManuscriptsChange}
+        >
+          {(manuscript, onChange) => (
+            <ManuscriptForm
+              onChange={onChange}
+              manuscript={manuscript}
+              searchBibliography={searchBibliography}
+            />
+          )}
+        </ListForm>
+        <Button onClick={onSave}>Save manuscripts</Button>
+      </fieldset>
+    </Form>
   )
 }

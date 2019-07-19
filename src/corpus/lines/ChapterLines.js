@@ -58,23 +58,25 @@ export default function ChapterLines({ chapter, onChange, onSave, disabled }) {
       })
     )
   return (
-    <>
-      <ListForm
-        noun="line"
-        defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
-        value={chapter.lines}
-        onChange={handleChange}
-      >
-        {(line, onChange) => (
-          <ChapterLineForm
-            onChange={onChange}
-            value={line}
-            manuscripts={chapter.manuscripts}
-            disabled={disabled}
-          />
-        )}
-      </ListForm>
-      <Button onClick={onSave}>Save lines</Button>
-    </>
+    <Form>
+      <fieldset disabled={disabled}>
+        <ListForm
+          noun="line"
+          defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
+          value={chapter.lines}
+          onChange={handleChange}
+        >
+          {(line, onChange) => (
+            <ChapterLineForm
+              onChange={onChange}
+              value={line}
+              manuscripts={chapter.manuscripts}
+              disabled={disabled}
+            />
+          )}
+        </ListForm>
+        <Button onClick={onSave}>Save lines</Button>
+      </fieldset>
+    </Form>
   )
 }

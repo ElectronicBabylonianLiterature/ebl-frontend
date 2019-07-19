@@ -68,11 +68,13 @@ function ManuscriptAlignment(props: {
 export default function ChapterAlignment({
   chapter,
   onChange,
-  onSave
+  onSave,
+  disabled
 }: {
   chapter: Chapter,
   onChange: Chapter => void,
-  onSave: void => void
+  onSave: void => void,
+  disabled: boolean
 }) {
   const handleChange = lineIndex => manuscriptIndex => manuscript =>
     onChange(
@@ -81,23 +83,25 @@ export default function ChapterAlignment({
       })
     )
   return (
-    <>
-      <Badge variant="warning">Beta</Badge>
-      {chapter.lines.map((line, lineIndex) => (
-        <section key={lineIndex}>
-          <Reconstruction line={line} />
-          {line.manuscripts.map((manuscript, manuscriptIndex) => (
-            <ManuscriptAlignment
-              key={manuscriptIndex}
-              chapter={chapter}
-              line={line}
-              manuscriptLine={manuscript}
-              onChange={handleChange(lineIndex)(manuscriptIndex)}
-            />
-          ))}
-        </section>
-      ))}
-      <Button onClick={onSave}>Save alignment</Button>
-    </>
+    <Form>
+      <fieldset disabled={disabled}>
+        <Badge variant="warning">Beta</Badge>
+        {chapter.lines.map((line, lineIndex) => (
+          <section key={lineIndex}>
+            <Reconstruction line={line} />
+            {line.manuscripts.map((manuscript, manuscriptIndex) => (
+              <ManuscriptAlignment
+                key={manuscriptIndex}
+                chapter={chapter}
+                line={line}
+                manuscriptLine={manuscript}
+                onChange={handleChange(lineIndex)(manuscriptIndex)}
+              />
+            ))}
+          </section>
+        ))}
+        <Button onClick={onSave}>Save alignment</Button>
+      </fieldset>
+    </Form>
   )
 }
