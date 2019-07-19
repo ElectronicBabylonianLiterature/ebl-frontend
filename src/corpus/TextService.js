@@ -60,6 +60,19 @@ function toName(record) {
   return record.name
 }
 
+const toManuscriptDto = produce(draft => ({
+  id: draft.id,
+  siglumDisambiguator: draft.siglumDisambiguator,
+  museumNumber: draft.museumNumber,
+  accession: draft.accession,
+  provenance: toName(draft.provenance),
+  periodModifier: toName(draft.periodModifier),
+  period: toName(draft.period),
+  type: toName(draft.type),
+  notes: draft.notes,
+  references: draft.references.map(serializeReference)
+}))
+
 const toDto = produce(draft => {
   draft.chapters.forEach(chapter => {
     chapter.manuscripts.forEach(manuscript => {
@@ -89,6 +102,10 @@ const toAlignmentDto = produce((draft, chapterIndex) => {
       )
     )
   }
+})
+
+const toManuscriptsDto = (text, chapterIndex) => ({
+  manuscripts: text.chapters[chapterIndex].manuscripts.map(toManuscriptDto)
 })
 
 export default class TextService {
@@ -129,6 +146,17 @@ export default class TextService {
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
         toAlignmentDto(text, chapterIndex)
+      )
+      .then(fromDto)
+  }
+
+  updateManuscripts(category, index, chapterIndex, text) {
+    return this.#apiClient
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
+        toManuscriptsDto(text, chapterIndex)
       )
       .then(fromDto)
   }

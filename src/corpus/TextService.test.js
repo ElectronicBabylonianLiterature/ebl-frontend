@@ -258,6 +258,31 @@ const alignmentDto = {
   ]
 }
 
+const manuscriptsDto = {
+  manuscripts: [
+    {
+      id: 1,
+      siglumDisambiguator: '1',
+      museumNumber: 'BM.X',
+      accession: 'X.1',
+      periodModifier: 'Early',
+      period: 'Ur III',
+      provenance: 'Nippur',
+      type: 'School',
+      notes: 'a note',
+      references: [
+        {
+          id: 'RN1853',
+          linesCited: [],
+          notes: '',
+          pages: '34-54',
+          type: 'DISCUSSION'
+        }
+      ]
+    }
+  ]
+}
+
 const textsDto = [
   {
     category: 1,
@@ -325,6 +350,19 @@ const testData = [
         text.index
       )}/chapters/0/alignment`,
       alignmentDto
+    ],
+    Promise.resolve(textDto)
+  ],
+  [
+    'updateManuscripts',
+    [text.category, text.index, 0, text],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/manuscripts`,
+      manuscriptsDto
     ],
     Promise.resolve(textDto)
   ]
