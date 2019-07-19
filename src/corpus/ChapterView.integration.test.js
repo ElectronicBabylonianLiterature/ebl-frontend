@@ -214,7 +214,7 @@ describe('Lines', () => {
   test.each([['Number', 'number', '2']])('%s', (label, property, newValue) => {
     fakeApi.expectUpdateLines(textDto, 2, {
       lines: [
-        produce(draft.chapters[2].lines[0], draft => {
+        produce(textDto.chapters[2].lines[0], draft => {
           draft[property] = newValue
         })
       ]
