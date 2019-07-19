@@ -46,6 +46,7 @@ function ChapterView({
   onChange,
   onSubmit,
   onSaveAlignment,
+  onSaveManuscripts,
   searchBibliography,
   disabled
 }) {
@@ -69,6 +70,7 @@ function ChapterView({
           searchBibliography={searchBibliography}
           onChange={handleChange}
           onSubmit={onSubmit}
+          onSaveManuscripts={onSaveManuscripts(chapterIndex)}
           onSaveAlignment={onSaveAlignment(chapterIndex)}
         />
       ) : (
@@ -152,6 +154,19 @@ class ChapterController extends Component {
       .catch(this.setStateError)
   }
 
+  updateManuscripts = chapterIndex => () => {
+    this.setStateUpdating()
+    return this.props.textService
+      .updateManuscripts(
+        this.props.text.category,
+        this.props.text.index,
+        chapterIndex,
+        this.state.text
+      )
+      .then(this.setStateUpdated)
+      .catch(this.setStateError)
+  }
+
   submit = event => {
     event.preventDefault()
     this.updatePromise.cancel()
@@ -167,6 +182,7 @@ class ChapterController extends Component {
           name={decodeURIComponent(this.props.match.params.chapter || '')}
           onChange={this.setText}
           onSubmit={this.submit}
+          onSaveManuscripts={this.updateManuscripts}
           onSaveAlignment={this.updateAlignment}
           searchBibliography={query =>
             this.props.bibliographyService.search(query)

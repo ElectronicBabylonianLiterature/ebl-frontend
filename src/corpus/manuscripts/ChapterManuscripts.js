@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap'
 export default function ChapterManuscripts({
   chapter,
   onChange,
+  onSave,
   searchBibliography
 }) {
   const handeManuscriptsChange = manuscripts =>
@@ -33,9 +34,7 @@ export default function ChapterManuscripts({
           />
         )}
       </ListForm>
-      <Button variant="primary" type="submit">
-        Save
-      </Button>
+      <Button onClick={onSave}>Save manuscripts</Button>
     </>
   )
 }

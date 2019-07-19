@@ -151,17 +151,24 @@ describe('Diplay chapter', () => {
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
     ])('%s', (label, property, newValue) => {
-      fakeApi.expectUpdateText(
-        produce(textDto, draft => {
-          draft.chapters[1].manuscripts[0][property] = newValue
-        })
+      fakeApi.expectUpdateManuscripts(
+        textDto,
+        1,
+        produce(textDto.chapters[1].manuscripts, draft => ({
+          manuscripts: [
+            {
+              ...draft[0],
+              [property]: newValue
+            }
+          ]
+        }))
       )
       const value = manuscript[property]
       const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
-      appDriver.click('Save')
+      appDriver.click('Save manuscripts')
     })
   })
 })
@@ -188,14 +195,10 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1
     }
-    fakeApi.expectUpdateText(
-      produce(textDto, draft => {
-        draft.chapters[0].manuscripts[0] = manuscript
-      })
-    )
+    fakeApi.expectUpdateManuscripts(textDto, 0, { manuscripts: [manuscript] })
     appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
-    appDriver.click('Save')
+    appDriver.click('Save manuscripts')
   })
 })
 

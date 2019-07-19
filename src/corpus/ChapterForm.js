@@ -31,6 +31,7 @@ function ChapterDetails({ chapter }) {
 
 export default function ChapterForm({
   onSubmit,
+  onSaveManuscripts,
   onSaveAlignment,
   disabled,
   chapter,
@@ -54,6 +55,7 @@ export default function ChapterForm({
                   chapter={chapter}
                   searchBibliography={searchBibliography}
                   onChange={onChange}
+                  onSave={onSaveManuscripts}
                 />
               </Tab>
               <Tab eventKey="lines" title="Lines">
