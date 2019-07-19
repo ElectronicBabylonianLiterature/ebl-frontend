@@ -30,7 +30,7 @@ function ChapterDetails({ chapter }) {
 }
 
 export default function ChapterForm({
-  onSubmit,
+  onSaveLines,
   onSaveManuscripts,
   onSaveAlignment,
   disabled,
@@ -41,7 +41,7 @@ export default function ChapterForm({
   return (
     <SessionContext.Consumer>
       {session => (
-        <Form onSubmit={onSubmit}>
+        <Form>
           <fieldset disabled={disabled}>
             <ChapterDetails chapter={chapter} />
             <Tabs
@@ -62,6 +62,7 @@ export default function ChapterForm({
                 <ChapterLines
                   chapter={chapter}
                   onChange={onChange}
+                  onSave={onSaveLines}
                   disabled={disabled}
                 />
               </Tab>

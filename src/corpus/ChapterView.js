@@ -44,7 +44,7 @@ function ChapterView({
   stage,
   name,
   onChange,
-  onSubmit,
+  onSaveLines,
   onSaveAlignment,
   onSaveManuscripts,
   searchBibliography,
@@ -69,7 +69,7 @@ function ChapterView({
           disabled={disabled}
           searchBibliography={searchBibliography}
           onChange={handleChange}
-          onSubmit={onSubmit}
+          onSaveLines={onSaveLines(chapterIndex)}
           onSaveManuscripts={onSaveManuscripts(chapterIndex)}
           onSaveAlignment={onSaveAlignment(chapterIndex)}
         />
@@ -110,13 +110,15 @@ class ChapterController extends Component {
     )
   }
 
-  setStateUpdating = () =>
+  setStateUpdating = () => {
+    this.updatePromise.cancel()
     this.setState(
       produce(state => {
         state.saving = true
         state.error = null
       })
     )
+  }
 
   setStateError = error =>
     this.setState(
@@ -133,17 +135,9 @@ class ChapterController extends Component {
       error: null
     })
 
-  updateText = () => {
-    this.setStateUpdating()
-    return this.props.textService
-      .update(this.props.text.category, this.props.text.index, this.state.text)
-      .then(this.setStateUpdated)
-      .catch(this.setStateError)
-  }
-
   updateAlignment = chapterIndex => () => {
     this.setStateUpdating()
-    return this.props.textService
+    this.updatePromise = this.props.textService
       .updateAlignment(
         this.props.text.category,
         this.props.text.index,
@@ -156,7 +150,7 @@ class ChapterController extends Component {
 
   updateManuscripts = chapterIndex => () => {
     this.setStateUpdating()
-    return this.props.textService
+    this.updatePromise = this.props.textService
       .updateManuscripts(
         this.props.text.category,
         this.props.text.index,
@@ -167,10 +161,17 @@ class ChapterController extends Component {
       .catch(this.setStateError)
   }
 
-  submit = event => {
-    event.preventDefault()
-    this.updatePromise.cancel()
-    this.updatePromise = this.updateText()
+  updateLines = chapterIndex => () => {
+    this.setStateUpdating()
+    this.updatePromise = this.props.textService
+      .updateLines(
+        this.props.text.category,
+        this.props.text.index,
+        chapterIndex,
+        this.state.text
+      )
+      .then(this.setStateUpdated)
+      .catch(this.setStateError)
   }
 
   render() {
@@ -181,8 +182,8 @@ class ChapterController extends Component {
           stage={decodeURIComponent(this.props.match.params.stage || '')}
           name={decodeURIComponent(this.props.match.params.chapter || '')}
           onChange={this.setText}
-          onSubmit={this.submit}
           onSaveManuscripts={this.updateManuscripts}
+          onSaveLines={this.updateLines}
           onSaveAlignment={this.updateAlignment}
           searchBibliography={query =>
             this.props.bibliographyService.search(query)

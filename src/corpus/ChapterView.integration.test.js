@@ -212,16 +212,18 @@ describe('Lines', () => {
   })
 
   test.each([['Number', 'number', '2']])('%s', (label, property, newValue) => {
-    fakeApi.expectUpdateText(
-      produce(textDto, draft => {
-        draft.chapters[2].lines[0][property] = newValue
-      })
-    )
+    fakeApi.expectUpdateLines(textDto, 2, {
+      lines: [
+        produce(draft.chapters[2].lines[0], draft => {
+          draft[property] = newValue
+        })
+      ]
+    })
     const expectedValue = line[property]
     appDriver.expectInputElement(label, expectedValue)
     appDriver.changeValueByLabel(label, newValue)
     appDriver.expectInputElement(label, newValue)
-    appDriver.click('Save')
+    appDriver.click('Save lines')
   })
 })
 
@@ -234,14 +236,10 @@ describe('Add line', () => {
   })
 
   test.each([['Number', 'number']])('%s', (label, property) => {
-    fakeApi.expectUpdateText(
-      produce(textDto, draft => {
-        draft.chapters[1].lines[0] = defaultLineDto
-      })
-    )
+    fakeApi.expectUpdateLines(textDto, 1, { lines: [defaultLineDto] })
     appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
-    appDriver.click('Save')
+    appDriver.click('Save lines')
   })
 })
 

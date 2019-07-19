@@ -50,7 +50,7 @@ function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-export default function ChapterLines({ chapter, onChange, disabled }) {
+export default function ChapterLines({ chapter, onChange, onSave, disabled }) {
   const handleChange = lines =>
     onChange(
       produce(chapter, draft => {
@@ -74,9 +74,7 @@ export default function ChapterLines({ chapter, onChange, disabled }) {
           />
         )}
       </ListForm>
-      <Button variant="primary" type="submit">
-        Save
-      </Button>
+      <Button onClick={onSave}>Save lines</Button>
     </>
   )
 }

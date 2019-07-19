@@ -82,11 +82,7 @@ export default function ChapterAlignment({
     )
   return (
     <>
-      <Badge variant="danger">WIP</Badge>
-      <Alert variant="warning">
-        Saving in <strong>Lines</strong> tab will wipe all alignments in all
-        chapters!
-      </Alert>
+      <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
         <section key={lineIndex}>
           <Reconstruction line={line} />
