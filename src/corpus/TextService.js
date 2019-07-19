@@ -11,6 +11,7 @@ import {
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
 import { produce } from 'immer'
+import _ from 'lodash'
 
 function fromDto(textDto) {
   return createText({
@@ -73,6 +74,13 @@ const toManuscriptDto = produce(draft => ({
   references: draft.references.map(serializeReference)
 }))
 
+const toLineDto = produce(draft => ({
+  ..._.omit(draft, 'reconstructionTokens'),
+  manuscripts: draft.manuscripts.map(manuscript =>
+    _.omit(manuscript, 'atfTokens')
+  )
+}))
+
 const toDto = produce(draft => {
   draft.chapters.forEach(chapter => {
     chapter.manuscripts.forEach(manuscript => {
@@ -106,6 +114,10 @@ const toAlignmentDto = produce((draft, chapterIndex) => {
 
 const toManuscriptsDto = (text, chapterIndex) => ({
   manuscripts: text.chapters[chapterIndex].manuscripts.map(toManuscriptDto)
+})
+
+const toLinesDto = (text, chapterIndex) => ({
+  lines: text.chapters[chapterIndex].lines.map(toLineDto)
 })
 
 export default class TextService {
@@ -157,6 +169,17 @@ export default class TextService {
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
         toManuscriptsDto(text, chapterIndex)
+      )
+      .then(fromDto)
+  }
+
+  updateLines(category, index, chapterIndex, text) {
+    return this.#apiClient
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(chapterIndex)}/lines`,
+        toLinesDto(text, chapterIndex)
       )
       .then(fromDto)
   }

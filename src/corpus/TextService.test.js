@@ -283,6 +283,23 @@ const manuscriptsDto = {
   ]
 }
 
+const linesDto = {
+  lines: [
+    {
+      number: '1',
+      reconstruction: 'reconstructed text',
+      manuscripts: [
+        {
+          manuscriptId: 1,
+          labels: ['o', 'iii'],
+          number: 'a+1',
+          atf: 'kur ra'
+        }
+      ]
+    }
+  ]
+}
+
 const textsDto = [
   {
     category: 1,
@@ -363,6 +380,19 @@ const testData = [
         text.index
       )}/chapters/0/manuscripts`,
       manuscriptsDto
+    ],
+    Promise.resolve(textDto)
+  ],
+  [
+    'updateLines',
+    [text.category, text.index, 0, text],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/lines`,
+      linesDto
     ],
     Promise.resolve(textDto)
   ]
