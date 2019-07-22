@@ -39,51 +39,7 @@ function ChapterTitle({ text, stage, name }) {
   )
 }
 
-function ChapterView({
-  text,
-  stage,
-  name,
-  onChange,
-  onSaveLines,
-  onSaveAlignment,
-  onSaveManuscripts,
-  searchBibliography,
-  disabled
-}) {
-  const chapterIndex = text.chapters.findIndex(
-    chapter => chapter.stage === stage && chapter.name === name
-  )
-  const title = <ChapterTitle text={text} stage={stage} name={name} />
-  const handleChange = chapter =>
-    onChange(
-      produce(text, draft => {
-        draft.chapters[chapterIndex] = chapter
-      })
-    )
-  return (
-    <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
-      <ChapterNavigation text={text} />
-      {chapterIndex >= 0 ? (
-        <ChapterEditor
-          chapter={text.chapters[chapterIndex]}
-          disabled={disabled}
-          searchBibliography={searchBibliography}
-          onChange={handleChange}
-          onSaveLines={onSaveLines(chapterIndex)}
-          onSaveManuscripts={onSaveManuscripts(chapterIndex)}
-          onSaveAlignment={onSaveAlignment(chapterIndex)}
-        />
-      ) : (
-        stage !== '' &&
-        name !== '' && (
-          <Alert variant="danger">Chapter {title} not found.</Alert>
-        )
-      )}
-    </AppContent>
-  )
-}
-
-class ChapterController extends Component {
+class ChapterView extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -100,14 +56,6 @@ class ChapterController extends Component {
 
   componentWillUnmount() {
     this.updatePromise.cancel()
-  }
-
-  setText = text => {
-    this.setState(
-      produce(state => {
-        state.text = text
-      })
-    )
   }
 
   setStateUpdating = () => {
@@ -175,30 +123,50 @@ class ChapterController extends Component {
   }
 
   render() {
+    const stage = decodeURIComponent(this.props.match.params.stage || '')
+    const name = decodeURIComponent(this.props.match.params.chapter || '')
+    const chapterIndex = this.props.text.chapters.findIndex(
+      chapter => chapter.stage === stage && chapter.name === name
+    )
+    const title = (
+      <ChapterTitle text={this.props.text} stage={stage} name={name} />
+    )
+    const handleChange = chapter =>
+      this.setState(
+        produce(this.state, draft => {
+          draft.text.chapters[chapterIndex] = chapter
+        })
+      )
     return (
-      <>
-        <ChapterView
-          text={this.state.text}
-          stage={decodeURIComponent(this.props.match.params.stage || '')}
-          name={decodeURIComponent(this.props.match.params.chapter || '')}
-          onChange={this.setText}
-          onSaveManuscripts={this.updateManuscripts}
-          onSaveLines={this.updateLines}
-          onSaveAlignment={this.updateAlignment}
-          searchBibliography={query =>
-            this.props.bibliographyService.search(query)
-          }
-          disabled={this.state.saving}
-        />
+      <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
+        <ChapterNavigation text={this.props.text} />
+        {chapterIndex >= 0 ? (
+          <ChapterEditor
+            chapter={this.state.text.chapters[chapterIndex]}
+            disabled={this.state.saving}
+            searchBibliography={query =>
+              this.props.bibliographyService.search(query)
+            }
+            onChange={handleChange}
+            onSaveLines={this.updateLines(chapterIndex)}
+            onSaveManuscripts={this.updateManuscripts(chapterIndex)}
+            onSaveAlignment={this.updateAlignment(chapterIndex)}
+          />
+        ) : (
+          stage !== '' &&
+          name !== '' && (
+            <Alert variant="danger">Chapter {title} not found.</Alert>
+          )
+        )}
         <Spinner loading={this.state.saving}>Saving...</Spinner>
         <ErrorAlert error={this.state.error} />
-      </>
+      </AppContent>
     )
   }
 }
 
 export default withData(
-  ({ data, ...props }) => <ChapterController text={data} {...props} />,
+  ({ data, ...props }) => <ChapterView text={data} {...props} />,
   ({ match, textService }) => {
     const category = decodeURIComponent(match.params.category)
     const index = decodeURIComponent(match.params.index)
