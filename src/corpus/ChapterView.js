@@ -30,7 +30,14 @@ function ChapterTitle({ text, stage, name }) {
   )
 }
 
-function ChapterView({ text, textService, bibliographyService, match }) {
+function ChapterView({
+  text,
+  stage,
+  name,
+  chapterIndex,
+  textService,
+  bibliographyService
+}) {
   const [state, setState] = useState({
     text: text,
     saving: false,
@@ -94,11 +101,6 @@ function ChapterView({ text, textService, bibliographyService, match }) {
       .catch(setStateError)
   }
 
-  const stage = decodeURIComponent(match.params.stage || '')
-  const name = decodeURIComponent(match.params.chapter || '')
-  const chapterIndex = text.chapters.findIndex(
-    chapter => chapter.stage === stage && chapter.name === name
-  )
   const title = <ChapterTitle text={text} stage={stage} name={name} />
   const handleChange = chapter =>
     setState(
@@ -132,7 +134,22 @@ function ChapterView({ text, textService, bibliographyService, match }) {
 }
 
 export default withData(
-  ({ data, ...props }) => <ChapterView text={data} {...props} />,
+  ({ data, match, ...props }) => {
+    const stage = decodeURIComponent(match.params.stage || '')
+    const name = decodeURIComponent(match.params.chapter || '')
+    const chapterIndex = data.chapters.findIndex(
+      chapter => chapter.stage === stage && chapter.name === name
+    )
+    return (
+      <ChapterView
+        text={data}
+        stage={stage}
+        name={name}
+        chapterIndex={chapterIndex}
+        {...props}
+      />
+    )
+  },
   ({ match, textService }) => {
     const category = decodeURIComponent(match.params.category)
     const index = decodeURIComponent(match.params.index)
