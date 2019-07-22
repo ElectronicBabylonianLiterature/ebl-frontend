@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import type { Chapter, Line, ManuscriptLine } from '../text'
-import { Alert, Badge, Button, Col, Form } from 'react-bootstrap'
+import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 // $FlowFixMe
 import { Draft, produce } from 'immer'
