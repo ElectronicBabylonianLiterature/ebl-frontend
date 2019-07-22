@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { is } from 'immutable'
+import React, { useState, useRef, useEffect } from 'react'
 import { Alert } from 'react-bootstrap'
 import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
@@ -18,14 +17,6 @@ function textChanged(prevProps, props) {
   )
 }
 
-function chapterChanged(prevProps, props) {
-  return (
-    !is(prevProps.text, props.text) ||
-    prevProps.match.params.stage !== props.match.params.stage ||
-    prevProps.match.params.name !== props.match.params.name
-  )
-}
-
 function ChapterTitle({ text, stage, name }) {
   return (
     <>
@@ -39,28 +30,24 @@ function ChapterTitle({ text, stage, name }) {
   )
 }
 
-class ChapterView extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      text: props.text,
-      saving: false,
-      error: null
+function ChapterView({ text, textService, bibliographyService, match }) {
+  const [state, setState] = useState({
+    text: text,
+    saving: false,
+    error: null
+  })
+
+  const updateRef = useRef()
+  useEffect(() => {
+    updateRef.current = Promise.resolve()
+    return () => {
+      updateRef.current.cancel()
     }
-    this.updatePromise = Promise.resolve()
-  }
+  }, [text])
 
-  shouldUpdate(prevProps, props) {
-    return chapterChanged(prevProps, props)
-  }
-
-  componentWillUnmount() {
-    this.updatePromise.cancel()
-  }
-
-  setStateUpdating = () => {
-    this.updatePromise.cancel()
-    this.setState(
+  const setStateUpdating = () => {
+    updateRef.current.cancel()
+    setState(
       produce(state => {
         state.saving = true
         state.error = null
@@ -68,101 +55,80 @@ class ChapterView extends Component {
     )
   }
 
-  setStateError = error =>
-    this.setState(
+  const setStateError = error =>
+    setState(
       produce(state => {
         state.saving = false
         state.error = error
       })
     )
 
-  setStateUpdated = updatedText =>
-    this.setState({
+  const setStateUpdated = updatedText =>
+    setState({
       text: updatedText,
       saving: false,
       error: null
     })
 
-  updateAlignment = chapterIndex => () => {
-    this.setStateUpdating()
-    this.updatePromise = this.props.textService
-      .updateAlignment(
-        this.props.text.category,
-        this.props.text.index,
-        chapterIndex,
-        this.state.text
-      )
-      .then(this.setStateUpdated)
-      .catch(this.setStateError)
+  const updateAlignment = chapterIndex => () => {
+    setStateUpdating()
+    updateRef.current = textService
+      .updateAlignment(text.category, text.index, chapterIndex, state.text)
+      .then(setStateUpdated)
+      .catch(setStateError)
   }
 
-  updateManuscripts = chapterIndex => () => {
-    this.setStateUpdating()
-    this.updatePromise = this.props.textService
-      .updateManuscripts(
-        this.props.text.category,
-        this.props.text.index,
-        chapterIndex,
-        this.state.text
-      )
-      .then(this.setStateUpdated)
-      .catch(this.setStateError)
+  const updateManuscripts = chapterIndex => () => {
+    setStateUpdating()
+    updateRef.current = textService
+      .updateManuscripts(text.category, text.index, chapterIndex, state.text)
+      .then(setStateUpdated)
+      .catch(setStateError)
   }
 
-  updateLines = chapterIndex => () => {
-    this.setStateUpdating()
-    this.updatePromise = this.props.textService
-      .updateLines(
-        this.props.text.category,
-        this.props.text.index,
-        chapterIndex,
-        this.state.text
-      )
-      .then(this.setStateUpdated)
-      .catch(this.setStateError)
+  const updateLines = chapterIndex => () => {
+    setStateUpdating()
+    updateRef.current = textService
+      .updateLines(text.category, text.index, chapterIndex, state.text)
+      .then(setStateUpdated)
+      .catch(setStateError)
   }
 
-  render() {
-    const stage = decodeURIComponent(this.props.match.params.stage || '')
-    const name = decodeURIComponent(this.props.match.params.chapter || '')
-    const chapterIndex = this.props.text.chapters.findIndex(
-      chapter => chapter.stage === stage && chapter.name === name
+  const stage = decodeURIComponent(match.params.stage || '')
+  const name = decodeURIComponent(match.params.chapter || '')
+  const chapterIndex = text.chapters.findIndex(
+    chapter => chapter.stage === stage && chapter.name === name
+  )
+  const title = <ChapterTitle text={text} stage={stage} name={name} />
+  const handleChange = chapter =>
+    setState(
+      produce(state, draft => {
+        draft.text.chapters[chapterIndex] = chapter
+      })
     )
-    const title = (
-      <ChapterTitle text={this.props.text} stage={stage} name={name} />
-    )
-    const handleChange = chapter =>
-      this.setState(
-        produce(this.state, draft => {
-          draft.text.chapters[chapterIndex] = chapter
-        })
-      )
-    return (
-      <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
-        <ChapterNavigation text={this.props.text} />
-        {chapterIndex >= 0 ? (
-          <ChapterEditor
-            chapter={this.state.text.chapters[chapterIndex]}
-            disabled={this.state.saving}
-            searchBibliography={query =>
-              this.props.bibliographyService.search(query)
-            }
-            onChange={handleChange}
-            onSaveLines={this.updateLines(chapterIndex)}
-            onSaveManuscripts={this.updateManuscripts(chapterIndex)}
-            onSaveAlignment={this.updateAlignment(chapterIndex)}
-          />
-        ) : (
-          stage !== '' &&
-          name !== '' && (
-            <Alert variant="danger">Chapter {title} not found.</Alert>
-          )
-        )}
-        <Spinner loading={this.state.saving}>Saving...</Spinner>
-        <ErrorAlert error={this.state.error} />
-      </AppContent>
-    )
-  }
+  return (
+    <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
+      <ChapterNavigation text={text} />
+      {chapterIndex >= 0 ? (
+        <ChapterEditor
+          chapter={state.text.chapters[chapterIndex]}
+          disabled={state.saving}
+          searchBibliography={query => bibliographyService.search(query)}
+          onChange={handleChange}
+          onSaveLines={updateLines(chapterIndex)}
+          onSaveManuscripts={updateManuscripts(chapterIndex)}
+          onSaveAlignment={updateAlignment(chapterIndex)}
+        />
+      ) : (
+        stage !== '' &&
+        name !== '' && (
+          <Alert variant="danger">Chapter {title} not found.</Alert>
+        )
+      )}
+      <Spinner loading={state.saving}>Saving...</Spinner>
+      <ErrorAlert error={state.error} />
+    </AppContent>
+  )
 }
 
 export default withData(
