@@ -10,6 +10,8 @@ test.each([
   '/dictionary',
   '/dictionary/object_id',
   '/corpus',
+  '/corpus/1/1',
+  '/corpus/1/1/stage/name',
   '/fragmentarium',
   '/fragmentarium/fragment_number',
   '/callback'

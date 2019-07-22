@@ -122,10 +122,7 @@ function ChapterView({
           onSaveAlignment={updateAlignment(chapterIndex)}
         />
       ) : (
-        stage !== '' &&
-        name !== '' && (
-          <Alert variant="danger">Chapter {title} not found.</Alert>
-        )
+        <Alert variant="danger">Chapter {title} not found.</Alert>
       )}
       <Spinner loading={state.saving}>Saving...</Spinner>
       <ErrorAlert error={state.error} />
@@ -135,8 +132,8 @@ function ChapterView({
 
 export default withData(
   ({ data, match, ...props }) => {
-    const stage = decodeURIComponent(match.params.stage || '')
-    const name = decodeURIComponent(match.params.chapter || '')
+    const stage = decodeURIComponent(match.params.stage)
+    const name = decodeURIComponent(match.params.chapter)
     const chapterIndex = data.chapters.findIndex(
       chapter => chapter.stage === stage && chapter.name === name
     )

@@ -14,7 +14,8 @@ import FragmentariumSearch from 'fragmentarium/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/BibliographyEditor'
 import Bibliography from 'bibliography/Bibliography'
 import Corpus from 'corpus/Corpus'
-import ChapterView from './corpus/ChapterView'
+import ChapterView from 'corpus/ChapterView'
+import TextView from 'corpus/TextView'
 
 function App({
   auth,
@@ -80,13 +81,7 @@ function App({
           />
           <Route
             path="/corpus/:category/:index"
-            render={props => (
-              <ChapterView
-                textService={textService}
-                bibliographyService={bibliographyService}
-                {...props}
-              />
-            )}
+            render={props => <TextView textService={textService} {...props} />}
           />
           <Route
             path="/corpus"
