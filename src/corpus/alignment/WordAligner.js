@@ -38,17 +38,13 @@ class AlignmentForm extends Component<Props> {
             onChange={this.handleAlignmentChange}
           >
             <option value="">--</option>
-            {this.props.reconstructionTokens.map(
-              (reconstructionToken, index) => (
-                <option
-                  key={index}
-                  value={index}
-                  disabled={reconstructionToken.type !== 'AkkadianWord'}
-                >
+            {this.props.reconstructionTokens.map((reconstructionToken, index) =>
+              reconstructionToken.type === 'AkkadianWord' ? (
+                <option key={index} value={index}>
                   {' '}
                   {reconstructionToken.value}
                 </option>
-              )
+              ) : null
             )}
           </Form.Control>
         </Form.Group>
