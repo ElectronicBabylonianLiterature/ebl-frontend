@@ -142,15 +142,6 @@ export default class TextService {
       .then(texts => texts.map(fromDto))
   }
 
-  update(category, index, text) {
-    return this.#apiClient
-      .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
-        toDto(text)
-      )
-      .then(fromDto)
-  }
-
   updateAlignment(category, index, chapterIndex, lines) {
     return this.#apiClient
       .postJson(

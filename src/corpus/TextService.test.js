@@ -345,19 +345,6 @@ const testData = [
     Promise.resolve(textsDto)
   ],
   [
-    'update',
-    [text.category, text.index, text],
-    apiClient.postJson,
-    text,
-    [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}`,
-      textUpdateDto
-    ],
-    Promise.resolve(textDto)
-  ],
-  [
     'updateAlignment',
     [text.category, text.index, 0, text.chapters[0].lines],
     apiClient.postJson,
