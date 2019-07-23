@@ -1,36 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Image from 'fragmentarium/Image'
 import AppContent from 'common/AppContent'
-import ReactMarkdown from 'react-markdown'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
+import InlineMarkdown from 'common/InlineMarkdown'
 
 function Text({ text }) {
   const title = (
     <>
-      {text.index}.{' '}
-      <ReactMarkdown
-        source={text.name}
-        disallowedTypes={['paragraph']}
-        unwrapDisallowed
-      />
+      {text.index}. <InlineMarkdown source={text.name} />
     </>
   )
+  const session = useContext(SessionContext)
   return (
     <Row as="li">
       <Col md={8}>
-        <SessionContext.Consumer>
-          {session =>
-            session.isAllowedToWriteTexts() ? (
-              <Link to={`/corpus/${text.category}/${text.index}`}>{title}</Link>
-            ) : (
-              title
-            )
-          }
-        </SessionContext.Consumer>
+        {session.isAllowedToWriteTexts() ? (
+          <Link to={`/corpus/${text.category}/${text.index}`}>{title}</Link>
+        ) : (
+          title
+        )}
       </Col>
       <Col md={4}>
         {text.numberOfVerses > 0 && (
