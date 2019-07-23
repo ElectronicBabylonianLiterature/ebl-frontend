@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Alert } from 'react-bootstrap'
-import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'

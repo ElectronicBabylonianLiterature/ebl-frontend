@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
 import AppContent from 'common/AppContent'
 import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
