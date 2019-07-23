@@ -15,7 +15,7 @@ function TextView({ text }) {
   const title = <InlineMarkdown source={text.name} />
 
   return (
-    <AppContent crumbs={['Corpus', title]} title={title}>
+    <AppContent crumbs={['Corpus', title]}>
       <ChapterNavigation text={text} />
     </AppContent>
   )
