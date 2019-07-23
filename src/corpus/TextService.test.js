@@ -359,7 +359,7 @@ const testData = [
   ],
   [
     'updateAlignment',
-    [text.category, text.index, 0, text],
+    [text.category, text.index, 0, text.chapters[0].lines],
     apiClient.postJson,
     text,
     [
@@ -372,7 +372,7 @@ const testData = [
   ],
   [
     'updateManuscripts',
-    [text.category, text.index, 0, text],
+    [text.category, text.index, 0, text.chapters[0].manuscripts],
     apiClient.postJson,
     text,
     [
@@ -385,7 +385,7 @@ const testData = [
   ],
   [
     'updateLines',
-    [text.category, text.index, 0, text],
+    [text.category, text.index, 0, text.chapters[0].lines],
     apiClient.postJson,
     text,
     [

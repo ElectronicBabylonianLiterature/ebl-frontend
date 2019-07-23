@@ -99,9 +99,9 @@ const toDto = produce(draft => {
   })
 })
 
-const toAlignmentDto = produce((draft, chapterIndex) => {
+const toAlignmentDto = produce(lines => {
   return {
-    alignment: draft.chapters[chapterIndex].lines.map(line =>
+    alignment: lines.map(line =>
       line.manuscripts.map(manuscript =>
         manuscript.atfTokens.map(token => ({
           value: token.value,
@@ -112,12 +112,12 @@ const toAlignmentDto = produce((draft, chapterIndex) => {
   }
 })
 
-const toManuscriptsDto = (text, chapterIndex) => ({
-  manuscripts: text.chapters[chapterIndex].manuscripts.map(toManuscriptDto)
+const toManuscriptsDto = manuscripts => ({
+  manuscripts: manuscripts.map(toManuscriptDto)
 })
 
-const toLinesDto = (text, chapterIndex) => ({
-  lines: text.chapters[chapterIndex].lines.map(toLineDto)
+const toLinesDto = lines => ({
+  lines: lines.map(toLineDto)
 })
 
 export default class TextService {
@@ -151,35 +151,35 @@ export default class TextService {
       .then(fromDto)
   }
 
-  updateAlignment(category, index, chapterIndex, text) {
+  updateAlignment(category, index, chapterIndex, lines) {
     return this.#apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
-        toAlignmentDto(text, chapterIndex)
+        toAlignmentDto(lines)
       )
       .then(fromDto)
   }
 
-  updateManuscripts(category, index, chapterIndex, text) {
+  updateManuscripts(category, index, chapterIndex, manuscripts) {
     return this.#apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
-        toManuscriptsDto(text, chapterIndex)
+        toManuscriptsDto(manuscripts)
       )
       .then(fromDto)
   }
 
-  updateLines(category, index, chapterIndex, text) {
+  updateLines(category, index, chapterIndex, lines) {
     return this.#apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/lines`,
-        toLinesDto(text, chapterIndex)
+        toLinesDto(lines)
       )
       .then(fromDto)
   }

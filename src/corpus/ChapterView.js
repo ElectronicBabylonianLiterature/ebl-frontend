@@ -20,7 +20,7 @@ function ChapterTitle({ text, chapter }) {
 }
 
 function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
-  const [currentText, setText] = useState(text)
+  const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
 
@@ -33,7 +33,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   }, [text])
 
   const setStateUpdating = () => {
-    setIsSaving(false)
+    setIsSaving(true)
     setError(null)
   }
 
@@ -43,7 +43,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   }
 
   const setStateUpdated = updatedText => {
-    setText(updatedText)
+    setChapter(updatedText.chapters[chapterIndex])
     setIsSaving(false)
     setError(null)
   }
@@ -62,7 +62,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        currentText
+        chapter.lines
       )
     )
   }
@@ -73,7 +73,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        currentText
+        chapter.manuscripts
       )
     )
   }
@@ -84,18 +84,12 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        currentText
+        chapter.lines
       )
     )
   }
-  const chapter = currentText.chapters[chapterIndex]
   const title = <ChapterTitle text={text} chapter={chapter} />
-  const handleChange = chapter =>
-    setText(
-      produce(draft => {
-        draft.chapters[chapterIndex] = chapter
-      })
-    )
+
   return (
     <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
@@ -104,7 +98,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
           chapter={chapter}
           disabled={isSaving}
           searchBibliography={query => bibliographyService.search(query)}
-          onChange={handleChange}
+          onChange={setChapter}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}
           onSaveAlignment={updateAlignment}
