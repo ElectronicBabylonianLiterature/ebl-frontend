@@ -20,11 +20,9 @@ function ChapterTitle({ text, chapter }) {
 }
 
 function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
-  const [state, setState] = useState({
-    text: text,
-    saving: false,
-    error: null
-  })
+  const [currentText, setText] = useState(text)
+  const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState(null)
 
   const updateRef = useRef()
   useEffect(() => {
@@ -35,31 +33,23 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   }, [text])
 
   const setStateUpdating = () => {
-    updateRef.current.cancel()
-    setState(
-      produce(state => {
-        state.saving = true
-        state.error = null
-      })
-    )
+    setIsSaving(false)
+    setError(null)
   }
 
-  const setStateError = error =>
-    setState(
-      produce(state => {
-        state.saving = false
-        state.error = error
-      })
-    )
+  const setStateError = error => {
+    setIsSaving(false)
+    setError(error)
+  }
 
-  const setStateUpdated = updatedText =>
-    setState({
-      text: updatedText,
-      saving: false,
-      error: null
-    })
+  const setStateUpdated = updatedText => {
+    setText(updatedText)
+    setIsSaving(false)
+    setError(null)
+  }
 
   const update = updater => {
+    updateRef.current.cancel()
     setStateUpdating()
     updateRef.current = updater()
       .then(setStateUpdated)
@@ -72,7 +62,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        state.text
+        currentText
       )
     )
   }
@@ -83,7 +73,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        state.text
+        currentText
       )
     )
   }
@@ -94,16 +84,16 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         text.category,
         text.index,
         chapterIndex,
-        state.text
+        currentText
       )
     )
   }
-  const chapter = state.text.chapters[chapterIndex]
+  const chapter = currentText.chapters[chapterIndex]
   const title = <ChapterTitle text={text} chapter={chapter} />
   const handleChange = chapter =>
-    setState(
-      produce(state, draft => {
-        draft.text.chapters[chapterIndex] = chapter
+    setText(
+      produce(draft => {
+        draft.chapters[chapterIndex] = chapter
       })
     )
   return (
@@ -112,7 +102,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       {chapter ? (
         <ChapterEditor
           chapter={chapter}
-          disabled={state.saving}
+          disabled={isSaving}
           searchBibliography={query => bibliographyService.search(query)}
           onChange={handleChange}
           onSaveLines={updateLines}
@@ -122,8 +112,8 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       ) : (
         <Alert variant="danger">Chapter not found.</Alert>
       )}
-      <Spinner loading={state.saving}>Saving...</Spinner>
-      <ErrorAlert error={state.error} />
+      <Spinner loading={isSaving}>Saving...</Spinner>
+      <ErrorAlert error={error} />
     </AppContent>
   )
 }
