@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Alert } from 'react-bootstrap'
-import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -8,7 +7,7 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
-import { produce } from 'immer'
+import usePromiseEffect from 'common/usePromiseEffect'
 
 function ChapterTitle({ text, chapter }) {
   return (
@@ -23,14 +22,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
-
-  const updateRef = useRef()
-  useEffect(() => {
-    updateRef.current = Promise.resolve()
-    return () => {
-      updateRef.current.cancel()
-    }
-  }, [text])
+  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect()
 
   const setStateUpdating = () => {
     setIsSaving(true)
@@ -49,11 +41,13 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   }
 
   const update = updater => {
-    updateRef.current.cancel()
+    cancelUpdatePromise()
     setStateUpdating()
-    updateRef.current = updater()
-      .then(setStateUpdated)
-      .catch(setStateError)
+    setUpdatePromise(
+      updater()
+        .then(setStateUpdated)
+        .catch(setStateError)
+    )
   }
 
   const updateAlignment = () => {
