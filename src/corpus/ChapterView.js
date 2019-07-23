@@ -10,13 +10,6 @@ import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import { produce } from 'immer'
 
-function textChanged(prevProps, props) {
-  return (
-    prevProps.match.params.category !== props.match.params.category ||
-    prevProps.match.params.index !== props.match.params.index
-  )
-}
-
 function ChapterTitle({ text, chapter }) {
   return (
     <>
@@ -120,23 +113,12 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
 }
 
 export default withData(
-  ({ data, match, ...props }) => {
-    const stage = decodeURIComponent(match.params.stage)
-    const name = decodeURIComponent(match.params.chapter)
-    return (
-      <ChapterView
-        text={data}
-        chapterIndex={data.findChapterIndex(stage, name)}
-        {...props}
-      />
-    )
-  },
-  ({ match, textService }) => {
-    const category = decodeURIComponent(match.params.category)
-    const index = decodeURIComponent(match.params.index)
-    return textService.find(category, index)
-  },
-  {
-    shouldUpdate: textChanged
-  }
+  ({ data, stage, name, ...props }) => (
+    <ChapterView
+      text={data}
+      chapterIndex={data.findChapterIndex(stage, name)}
+      {...props}
+    />
+  ),
+  ({ category, index, textService }) => textService.find(category, index)
 )

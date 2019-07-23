@@ -17,6 +17,21 @@ import Corpus from 'corpus/Corpus'
 import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 
+function parseTextParams(params) {
+  return {
+    category: decodeURIComponent(params.category),
+    index: decodeURIComponent(params.index)
+  }
+}
+
+function parseChapterParams(params) {
+  return {
+    ...parseTextParams(params),
+    stage: decodeURIComponent(params.stage),
+    name: decodeURIComponent(params.chapter)
+  }
+}
+
 function App({
   auth,
   wordService,
@@ -71,17 +86,22 @@ function App({
           />
           <Route
             path="/corpus/:category/:index/:stage/:chapter"
-            render={props => (
+            render={({ match }) => (
               <ChapterView
                 textService={textService}
                 bibliographyService={bibliographyService}
-                {...props}
+                {...parseChapterParams(match.params)}
               />
             )}
           />
           <Route
             path="/corpus/:category/:index"
-            render={props => <TextView textService={textService} {...props} />}
+            render={({ match }) => (
+              <TextView
+                textService={textService}
+                {...parseTextParams(match.params)}
+              />
+            )}
           />
           <Route
             path="/corpus"

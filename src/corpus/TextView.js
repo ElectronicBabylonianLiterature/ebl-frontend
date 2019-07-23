@@ -4,13 +4,6 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
 
-function textChanged(prevProps, props) {
-  return (
-    prevProps.match.params.category !== props.match.params.category ||
-    prevProps.match.params.index !== props.match.params.index
-  )
-}
-
 function TextView({ text }) {
   const title = <InlineMarkdown source={text.name} />
 
@@ -23,12 +16,5 @@ function TextView({ text }) {
 
 export default withData(
   ({ data }) => <TextView text={data} />,
-  ({ match, textService }) => {
-    const category = decodeURIComponent(match.params.category)
-    const index = decodeURIComponent(match.params.index)
-    return textService.find(category, index)
-  },
-  {
-    shouldUpdate: textChanged
-  }
+  ({ category, index, textService }) => textService.find(category, index)
 )
