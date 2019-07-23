@@ -59,28 +59,44 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       error: null
     })
 
-  const updateAlignment = () => {
+  const update = updater => {
     setStateUpdating()
-    updateRef.current = textService
-      .updateAlignment(text.category, text.index, chapterIndex, state.text)
+    updateRef.current = updater()
       .then(setStateUpdated)
       .catch(setStateError)
+  }
+
+  const updateAlignment = () => {
+    update(() =>
+      textService.updateAlignment(
+        text.category,
+        text.index,
+        chapterIndex,
+        state.text
+      )
+    )
   }
 
   const updateManuscripts = () => {
-    setStateUpdating()
-    updateRef.current = textService
-      .updateManuscripts(text.category, text.index, chapterIndex, state.text)
-      .then(setStateUpdated)
-      .catch(setStateError)
+    update(() =>
+      textService.updateManuscripts(
+        text.category,
+        text.index,
+        chapterIndex,
+        state.text
+      )
+    )
   }
 
   const updateLines = () => {
-    setStateUpdating()
-    updateRef.current = textService
-      .updateLines(text.category, text.index, chapterIndex, state.text)
-      .then(setStateUpdated)
-      .catch(setStateError)
+    update(() =>
+      textService.updateLines(
+        text.category,
+        text.index,
+        chapterIndex,
+        state.text
+      )
+    )
   }
   const chapter = state.text.chapters[chapterIndex]
   const title = <ChapterTitle text={text} chapter={chapter} />
