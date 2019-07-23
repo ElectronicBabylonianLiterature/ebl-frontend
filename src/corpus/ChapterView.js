@@ -111,8 +111,15 @@ export default withData(
     <ChapterView
       text={data}
       chapterIndex={data.findChapterIndex(stage, name)}
+      stage={stage}
+      name={name}
       {...props}
     />
   ),
-  ({ category, index, textService }) => textService.find(category, index)
+  ({ category, index, textService }) => textService.find(category, index),
+  {
+    shouldUpdate: (prevProps, props) => {
+      return prevProps.stage !== props.stage || prevProps.name !== props.name
+    }
+  }
 )
