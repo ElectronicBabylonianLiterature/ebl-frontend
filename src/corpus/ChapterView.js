@@ -59,7 +59,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       error: null
     })
 
-  const updateAlignment = chapterIndex => () => {
+  const updateAlignment = () => {
     setStateUpdating()
     updateRef.current = textService
       .updateAlignment(text.category, text.index, chapterIndex, state.text)
@@ -67,7 +67,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       .catch(setStateError)
   }
 
-  const updateManuscripts = chapterIndex => () => {
+  const updateManuscripts = () => {
     setStateUpdating()
     updateRef.current = textService
       .updateManuscripts(text.category, text.index, chapterIndex, state.text)
@@ -75,7 +75,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       .catch(setStateError)
   }
 
-  const updateLines = chapterIndex => () => {
+  const updateLines = () => {
     setStateUpdating()
     updateRef.current = textService
       .updateLines(text.category, text.index, chapterIndex, state.text)
@@ -99,9 +99,9 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
           disabled={state.saving}
           searchBibliography={query => bibliographyService.search(query)}
           onChange={handleChange}
-          onSaveLines={updateLines(chapterIndex)}
-          onSaveManuscripts={updateManuscripts(chapterIndex)}
-          onSaveAlignment={updateAlignment(chapterIndex)}
+          onSaveLines={updateLines}
+          onSaveManuscripts={updateManuscripts}
+          onSaveAlignment={updateAlignment}
         />
       ) : (
         <Alert variant="danger">Chapter not found.</Alert>
