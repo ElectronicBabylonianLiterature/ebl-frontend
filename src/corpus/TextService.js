@@ -81,24 +81,6 @@ const toLineDto = produce(draft => ({
   )
 }))
 
-const toDto = produce(draft => {
-  draft.chapters.forEach(chapter => {
-    chapter.manuscripts.forEach(manuscript => {
-      manuscript.periodModifier = toName(manuscript.periodModifier)
-      manuscript.period = toName(manuscript.period)
-      manuscript.provenance = toName(manuscript.provenance)
-      manuscript.type = toName(manuscript.type)
-      manuscript.references = manuscript.references.map(serializeReference)
-    })
-    chapter.lines.forEach(line => {
-      delete line.reconstructionTokens
-      line.manuscripts.forEach(manuscript => {
-        delete manuscript.atfTokens
-      })
-    })
-  })
-})
-
 const toAlignmentDto = produce(lines => {
   return {
     alignment: lines.map(line =>
