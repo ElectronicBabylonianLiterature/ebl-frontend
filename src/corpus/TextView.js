@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import AppContent from 'common/AppContent'
+import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
 
@@ -12,13 +13,7 @@ function textChanged(prevProps, props) {
 }
 
 function TextView({ text }) {
-  const title = (
-    <ReactMarkdown
-      source={text.name}
-      disallowedTypes={['paragraph']}
-      unwrapDisallowed
-    />
-  )
+  const title = <InlineMarkdown source={text.name} />
 
   return (
     <AppContent crumbs={['Corpus', title]} title={title}>

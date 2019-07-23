@@ -1,21 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
 import './Word.css'
-
-class InlineMarkdown extends Component {
-  render() {
-    return (
-      <ReactMarkdown
-        className="InlineMarkdown"
-        source={this.props.source}
-        disallowedTypes={['paragraph']}
-        unwrapDisallowed
-      />
-    )
-  }
-}
+import InlineMarkdown from 'common/InlineMarkdown'
 
 class Lemma extends Component {
   render() {

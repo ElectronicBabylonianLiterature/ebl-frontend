@@ -1,9 +1,3 @@
-.InlineMarkdown,
-.InlineMarkdown p,
-.InlineMarkdown div {
-  display: inline;
-}
-
 .Word li,
 .Word ul {
   display: inline;

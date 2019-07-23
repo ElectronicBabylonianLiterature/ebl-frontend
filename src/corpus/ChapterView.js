@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
+import InlineMarkdown from 'common/InlineMarkdown'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ChapterEditor from './ChapterEditor'
@@ -20,12 +21,7 @@ function textChanged(prevProps, props) {
 function ChapterTitle({ text, stage, name }) {
   return (
     <>
-      <ReactMarkdown
-        source={text.name}
-        disallowedTypes={['paragraph']}
-        unwrapDisallowed
-      />{' '}
-      {stage} {name}
+      <InlineMarkdown source={text.name} /> {stage} {name}
     </>
   )
 }
