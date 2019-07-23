@@ -17,22 +17,16 @@ function textChanged(prevProps, props) {
   )
 }
 
-function ChapterTitle({ text, stage, name }) {
+function ChapterTitle({ text, chapter }) {
   return (
     <>
-      <InlineMarkdown source={text.name} /> {stage} {name}
+      <InlineMarkdown source={text.name} />{' '}
+      {chapter && `${chapter.stage} ${chapter.name}`}
     </>
   )
 }
 
-function ChapterView({
-  text,
-  stage,
-  name,
-  chapterIndex,
-  textService,
-  bibliographyService
-}) {
+function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   const [state, setState] = useState({
     text: text,
     saving: false,
@@ -95,8 +89,8 @@ function ChapterView({
       .then(setStateUpdated)
       .catch(setStateError)
   }
-
-  const title = <ChapterTitle text={text} stage={stage} name={name} />
+  const chapter = state.text.chapters[chapterIndex]
+  const title = <ChapterTitle text={text} chapter={chapter} />
   const handleChange = chapter =>
     setState(
       produce(state, draft => {
@@ -106,9 +100,9 @@ function ChapterView({
   return (
     <AppContent crumbs={['Corpus', title]} title={<>Edit {title}</>}>
       <ChapterNavigation text={text} />
-      {chapterIndex >= 0 ? (
+      {chapter ? (
         <ChapterEditor
-          chapter={state.text.chapters[chapterIndex]}
+          chapter={chapter}
           disabled={state.saving}
           searchBibliography={query => bibliographyService.search(query)}
           onChange={handleChange}
@@ -117,7 +111,7 @@ function ChapterView({
           onSaveAlignment={updateAlignment(chapterIndex)}
         />
       ) : (
-        <Alert variant="danger">Chapter {title} not found.</Alert>
+        <Alert variant="danger">Chapter not found.</Alert>
       )}
       <Spinner loading={state.saving}>Saving...</Spinner>
       <ErrorAlert error={state.error} />
@@ -129,15 +123,10 @@ export default withData(
   ({ data, match, ...props }) => {
     const stage = decodeURIComponent(match.params.stage)
     const name = decodeURIComponent(match.params.chapter)
-    const chapterIndex = data.chapters.findIndex(
-      chapter => chapter.stage === stage && chapter.name === name
-    )
     return (
       <ChapterView
         text={data}
-        stage={stage}
-        name={name}
-        chapterIndex={chapterIndex}
+        chapterIndex={data.findChapterIndex(stage, name)}
         {...props}
       />
     )

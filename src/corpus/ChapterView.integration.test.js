@@ -254,15 +254,11 @@ describe('Chapter not found', () => {
       .withPath(createChapterPath(chapter.stage, chapterName))
       .render()
 
-    await appDriver.waitForText(
-      `Edit ${textDto.name} ${chapter.stage} ${chapterName}`
-    )
+    await appDriver.waitForText(`Edit ${textDto.name}`)
   })
 
   test('Error message', () => {
-    appDriver.expectTextContent(
-      `Chapter ${textDto.name} ${chapter.stage} ${chapterName} not found.`
-    )
+    appDriver.expectTextContent(`Chapter not found.`)
   })
 })
 

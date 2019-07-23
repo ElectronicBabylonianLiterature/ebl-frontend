@@ -10,7 +10,8 @@ import {
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-import type { Chapter, Line, Manuscript, ManuscriptLine, Text } from './text'
+import { Text } from './text'
+import type { Chapter, Line, Manuscript, ManuscriptLine } from './text'
 
 const manuscriptConfig: $Shape<Manuscript> = {
   id: 1,
@@ -69,7 +70,7 @@ const chapterConfig: Chapter = {
   lines: [createLine(lineConfig)]
 }
 
-const textConfig: Text = {
+const textConfig: $Shape<Text> = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',

@@ -120,22 +120,24 @@ export const createChapter: ($Shape<Chapter>) => Chapter = produce(
   })
 )
 
-export type Text = {|
-  +category: number,
-  +index: number,
-  +name: string,
-  +numberOfVerses: number,
-  +approximateVerses: boolean,
-  +chapters: $ReadOnlyArray<Chapter>
-|}
-export const createText: ($Shape<Text>) => Text = produce(
-  (draft: $Shape<Text>): Text => ({
-    category: 0,
-    index: 0,
-    name: '',
-    numberOfVerses: 0,
-    approximateVerses: false,
-    chapters: Array(),
-    ...draft
+export class Text {
+  category: number = 0
+  index: number = 0
+  name: string = ''
+  numberOfVerses: number = 0
+  approximateVerses: boolean = false
+  chapters: $ReadOnlyArray<Chapter> = Array()
+
+  findChapterIndex(stage: string, name: string) {
+    return this.chapters.findIndex(
+      chapter => chapter.stage === stage && chapter.name === name
+    )
+  }
+}
+Text[immerable] = true
+
+export function createText(data: $Shape<Text>): Text {
+  return produce(new Text(), (draft: Draft<Text>) => {
+    _.assign(draft, data)
   })
-)
+}
