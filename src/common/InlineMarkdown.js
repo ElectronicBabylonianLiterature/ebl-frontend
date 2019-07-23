@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
+// @flow
+import React from 'react'
 import ReactMarkdown from 'react-markdown'
 
-export default class InlineMarkdown extends Component {
-  render() {
-    return (
-      <ReactMarkdown
-        source={this.props.source}
-        disallowedTypes={['paragraph']}
-        unwrapDisallowed
-      />
-    )
-  }
+export default function InlineMarkdown({ source }: { source: string }) {
+  return (
+    <ReactMarkdown
+      source={source}
+      disallowedTypes={['paragraph']}
+      unwrapDisallowed
+    />
+  )
 }
