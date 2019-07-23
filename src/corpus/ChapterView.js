@@ -20,6 +20,7 @@ function ChapterTitle({ text, chapter }) {
 
 function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
+  const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
   const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect()
@@ -37,6 +38,7 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   const setStateUpdated = updatedText => {
     setChapter(updatedText.chapters[chapterIndex])
     setIsSaving(false)
+    setIsDirty(false)
     setError(null)
   }
 
@@ -82,6 +84,11 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
       )
     )
   }
+
+  const handleChange = chapter => {
+    setChapter(chapter)
+    setIsDirty(true)
+  }
   const title = <ChapterTitle text={text} chapter={chapter} />
 
   return (
@@ -91,8 +98,9 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
         <ChapterEditor
           chapter={chapter}
           disabled={isSaving}
+          dirty={isDirty}
           searchBibliography={query => bibliographyService.search(query)}
-          onChange={setChapter}
+          onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}
           onSaveAlignment={updateAlignment}

@@ -12,6 +12,7 @@ export default function ChapterEditor({
   onSaveManuscripts,
   onSaveAlignment,
   disabled,
+  dirty,
   chapter,
   searchBibliography,
   onChange
@@ -27,7 +28,7 @@ export default function ChapterEditor({
             mountOnEnter
             unmountOnExit
           >
-            <Tab eventKey="manuscripts" title="Manuscripts">
+            <Tab eventKey="manuscripts" title="Manuscripts" disabled={dirty}>
               <ChapterManuscripts
                 chapter={chapter}
                 searchBibliography={searchBibliography}
@@ -36,7 +37,7 @@ export default function ChapterEditor({
                 disabled={disabled}
               />
             </Tab>
-            <Tab eventKey="lines" title="Lines">
+            <Tab eventKey="lines" title="Lines" disabled={dirty}>
               <ChapterLines
                 chapter={chapter}
                 onChange={onChange}
@@ -47,7 +48,7 @@ export default function ChapterEditor({
             <Tab
               eventKey="alignment"
               title="Alignment"
-              disabled={!session.hasBetaAccess()}
+              disabled={!session.hasBetaAccess() || dirty}
             >
               <ChapterAlignment
                 chapter={chapter}
