@@ -102,19 +102,6 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateText(text) {
-    this.expectations = this.expectations.push(
-      Expectation({
-        method: 'POST',
-        path: `/texts/${text.category}/${text.index}`,
-        response: text,
-        verify: true,
-        body: text
-      })
-    )
-    return this
-  }
-
   expectUpdateManuscripts(text, chapterIndex, manuscripts) {
     this.expectations = this.expectations.push(
       Expectation({
