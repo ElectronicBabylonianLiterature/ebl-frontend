@@ -47,19 +47,19 @@ function ManuscriptAlignment(props: {
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
       <Col md={9}>
-        {props.manuscriptLine.atfTokens.map((token, index) =>
-          token.lemmatizable ? (
-            <span key={index}>
+        {props.manuscriptLine.atfTokens.map((token, index) => (
+          <span key={index}>
+            {token.lemmatizable ? (
               <WordAligner
                 token={token}
                 reconstructionTokens={props.line.reconstructionTokens}
                 onChange={handleChange(index)}
-              />{' '}
-            </span>
-          ) : (
-            <span key={index}>{token.value} </span>
-          )
-        )}
+              />
+            ) : (
+              token.value
+            )}{' '}
+          </span>
+        ))}
       </Col>
     </Form.Row>
   )
