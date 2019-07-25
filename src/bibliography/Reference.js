@@ -2,7 +2,7 @@
 import _ from 'lodash'
 // $FlowFixMe
 import { Draft, immerable, produce } from 'immer'
-import { List, Map, isCollection } from 'immutable'
+import { List, Map } from 'immutable'
 import BibliographyEntry from './BibliographyEntry'
 
 type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
