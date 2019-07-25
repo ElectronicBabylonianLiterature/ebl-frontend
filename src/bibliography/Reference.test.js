@@ -57,3 +57,13 @@ test('compactCitation', async () => {
 
   expect(reference.compactCitation).toEqual(expected)
 })
+
+test('Empty elements in compactCitation', async () => {
+  const reference = await factory.build('reference', {
+    pages: '',
+    linesCited: []
+  })
+  expect(reference.compactCitation).toEqual(
+    `${reference.document.author}, ${reference.document.year} (${reference.typeAbbreviation})`
+  )
+})
