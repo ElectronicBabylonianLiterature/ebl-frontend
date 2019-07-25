@@ -39,10 +39,7 @@ function ReferenceGroup({ references }) {
     <ol className="ReferenceList__list">
       {references
         .toSeq()
-        .sortBy(
-          reference =>
-            `${reference.document.author} # ${reference.document.year}`
-        )
+        .sortBy(reference => `${reference.author} # ${reference.year}`)
         .map((reference, index) => (
           <li key={index}>
             <Citation reference={reference} />

@@ -1,20 +1,22 @@
+// @flow
 import React from 'react'
 import { Parser } from 'html-to-react'
 import ReactMarkdown from 'react-markdown'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from '../common/ExternalLink'
+import Reference from './Reference'
 
 import './FullCitation.css'
 
-export default function FullCitation({ reference }) {
+export default function FullCitation({ reference }: { reference: Reference }) {
   const parser = new Parser()
-  const citation = reference.document.toHtml()
+  const citation = reference.toHtml()
   const parsed = parser.parse(citation)
   return (
     <div>
-      {reference.document.link && (
+      {reference.link && (
         <ExternalLink
           className="FullCitation__link"
-          href={reference.document.link}
+          href={reference.link}
           title="Open in a new window."
         >
           <i className="fas fa-external-link-alt" />

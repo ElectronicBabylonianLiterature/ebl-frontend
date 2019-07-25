@@ -41,7 +41,7 @@ test('createReference', async () => {
 test('serializeReference', async () => {
   const reference = await factory.build('reference')
   expect(serializeReference(reference)).toEqual({
-    id: reference.document.id,
+    id: reference.id,
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
@@ -51,7 +51,7 @@ test('serializeReference', async () => {
 
 test('compactCitation', async () => {
   const reference = await factory.build('reference')
-  const expected = `${reference.document.author}, ${reference.document.year}: ${
+  const expected = `${reference.author}, ${reference.year}: ${
     reference.pages
   } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
 
@@ -64,6 +64,12 @@ test('Empty elements in compactCitation', async () => {
     linesCited: []
   })
   expect(reference.compactCitation).toEqual(
-    `${reference.document.author}, ${reference.document.year} (${reference.typeAbbreviation})`
+    `${reference.author}, ${reference.year} (${reference.typeAbbreviation})`
   )
+})
+
+test('toHtml', async () => {
+  const entry = await factory.build('bibliographyEntry')
+  const reference = await factory.build('reference', { document: entry })
+  expect(reference.toHtml()).toEqual(entry.toHtml())
 })

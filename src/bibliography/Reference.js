@@ -34,6 +34,14 @@ class Reference {
     return _.get(this, 'document.author', '')
   }
 
+  get year() {
+    return _.get(this, 'document.year', '')
+  }
+
+  get link() {
+    return _.get(this, 'document.link', '')
+  }
+
   get typeAbbreviation() {
     return _.get(this, 'type.0', '')
   }
@@ -78,6 +86,10 @@ class Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
     })
+  }
+
+  toHtml() {
+    return this.document ? this.document.toHtml() : ''
   }
 }
 Reference[immerable] = true
