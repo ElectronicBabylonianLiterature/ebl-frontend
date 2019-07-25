@@ -54,6 +54,10 @@ class BibliographyEntry {
     return _.get(this.#cslData, 'title', '')
   }
 
+  get shortContainerTitle() {
+    return _.get(this.#cslData, 'container-title-short', '')
+  }
+
   get link() {
     const url = _.get(this.#cslData, 'URL', '')
     const doi = _.get(this.#cslData, 'DOI', '')

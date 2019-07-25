@@ -54,6 +54,10 @@ factory.define('cslData', Object, {
   URL: factory.chance('url')
 })
 
+factory.extend('cslData', 'cslDataWithContainerTitleShort', {
+  'container-title-short': factory.chance('sentence')
+})
+
 factory.define(
   'bibliographyEntry',
   BibliographyEntry,

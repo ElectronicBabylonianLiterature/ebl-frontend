@@ -73,3 +73,55 @@ test('toHtml', async () => {
   const reference = await factory.build('reference', { document: entry })
   expect(reference.toHtml()).toEqual(entry.toHtml())
 })
+
+test.each([
+  [factory.build('reference'), false],
+  [
+    factory
+      .build('cslDataWithContainerTitleShort')
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'DISCUSSION', document: entry })
+      ),
+    false
+  ],
+  [
+    factory
+      .build('cslDataWithContainerTitleShort')
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'COPY', document: entry })
+      ),
+    true
+  ],
+  [
+    factory
+      .build('cslDataWithContainerTitleShort')
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'EDITION', document: entry })
+      ),
+    true
+  ],
+  [
+    factory
+      .build('cslDataWithContainerTitleShort', { id: 'RN2720' })
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'DISCUSSION', document: entry })
+      ),
+    true
+  ],
+  [
+    factory
+      .build('cslDataWithContainerTitleShort', { id: 'RN2721' })
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'DISCUSSION', document: entry })
+      ),
+    true
+  ]
+])('useContainerTitle %#', async (factoryPromise, expected) => {
+  const reference = await factoryPromise
+  expect(reference.useContainerTitle).toEqual(expected)
+})

@@ -10,7 +10,8 @@ let cite
 beforeEach(async () => {
   cslData = await factory.build('cslData', {
     author: [{ family: 'Family', extra: 'Extra' }],
-    _underscored: 'should be omitted'
+    _underscored: 'should be omitted',
+    'container-title-short': 'short title'
   })
   entry = new BibliographyEntry(cslData)
   cite = new Cite(cslData)
@@ -20,7 +21,8 @@ test.each([
   ['id', 'id'],
   ['author', 'author.0.family'],
   ['title', 'title'],
-  ['link', 'URL']
+  ['link', 'URL'],
+  ['shortContainerTitle', 'container-title-short']
 ])('%s', async (property, path) =>
   expect(entry[property]).toEqual(_.get(cslData, path))
 )

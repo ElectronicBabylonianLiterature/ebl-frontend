@@ -2,18 +2,21 @@
 import _ from 'lodash'
 // $FlowFixMe
 import { Draft, immerable, produce } from 'immer'
-import { List, Map } from 'immutable'
+import { List, Map, isCollection } from 'immutable'
 import BibliographyEntry from './BibliographyEntry'
 
+type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
+const defaultType = 'DISCUSSION'
+
 class Reference {
-  +type: string
+  +type: ReferenceType
   +pages: string
   +notes: string
   +linesCited: Array<string>
   +document: ?BibliographyEntry
 
   constructor(
-    type: string = 'DISCUSSION',
+    type: ReferenceType = defaultType,
     pages: string = '',
     notes: string = '',
     linesCited: Array<string> = [],
@@ -46,6 +49,15 @@ class Reference {
     return _.get(this, 'type.0', '')
   }
 
+  get useContainerTitle(): boolean {
+    return (
+      !!this.document &&
+      (!_.isEmpty(this.document.shortContainerTitle) &&
+        (['COPY', 'EDITION'].includes(this.type) ||
+          ['RN2720', 'RN2721'].includes(this.id)))
+    )
+  }
+
   get compactCitation() {
     const document = this.document || new BibliographyEntry()
     return [
@@ -58,7 +70,7 @@ class Reference {
     ].join('')
   }
 
-  setType(type: string) {
+  setType(type: ReferenceType) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.type = type
     })
@@ -105,7 +117,7 @@ export function createReference(
     .then(
       entry =>
         new Reference(
-          data.get('type', ''),
+          data.get('type', defaultType),
           data.get('pages', ''),
           data.get('notes', ''),
           ((data.get('linesCited', List()).toJS(): any): Array<string>),
