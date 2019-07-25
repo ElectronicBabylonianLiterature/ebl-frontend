@@ -56,12 +56,12 @@
     "eslint-plugin-flowtype": "^3.9.1",
     "factory-girl": "^5.0.2",
     "flow-bin": "^0.100.0",
-    "husky": "^2.3.0",
+    "husky": "^3.0.1",
     "jest-date-mock": "^1.0.2",
     "jest-dom": "^3.0.0",
     "jest-fetch-mock": "^2.1.0",
     "lighthouse": "^5.1.0",
-    "lint-staged": "^8.1.7",
+    "lint-staged": "^9.2.1",
     "prettier": "1.18.1"
   },
   "prettier": {
