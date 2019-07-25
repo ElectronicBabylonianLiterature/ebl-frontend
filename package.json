@@ -64,6 +64,9 @@
     "lint-staged": "^9.2.1",
     "prettier": "1.18.1"
   },
+  "resolutions": {
+    "@citation-js/plugin-csl": "0.4.0-rc.4"
+  },
   "prettier": {
     "semi": false,
     "singleQuote": true

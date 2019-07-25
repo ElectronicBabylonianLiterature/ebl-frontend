@@ -979,12 +979,12 @@
     "@citation-js/date" "^0.4.4"
     "@citation-js/name" "^0.4.2"
 
-"@citation-js/plugin-csl@0.4.8", "@citation-js/plugin-csl@^0.4.8":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@citation-js/plugin-csl/-/plugin-csl-0.4.8.tgz#2a821724529fb78d42b224b41bf0a89ce9b9af33"
-  integrity sha512-OLdNpqk4Kom3QUdzwXKLLBUcNkYkfLk7R1GFiwhsIvabtiqzJLdytB8saqaEZGlN3kYxPRy3luafljZcyeya8A==
+"@citation-js/plugin-csl@0.4.0-rc.4", "@citation-js/plugin-csl@0.4.8", "@citation-js/plugin-csl@^0.4.8":
+  version "0.4.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@citation-js/plugin-csl/-/plugin-csl-0.4.0-rc.4.tgz#3e28c9852234762ff3d026a3592e292cec4eba79"
+  integrity sha512-On39JqxqzqPMjo3fN0eA9ykMPbawQpvrMiKNBQaYQ6E1dIwxkk2r9GStafNjZz/1CP0Kn8VdP7o7mlgby0WmeQ==
   dependencies:
-    citeproc "^2.2.9"
+    citeproc "^2.1.220"
 
 "@citation-js/plugin-doi@0.4.8", "@citation-js/plugin-doi@^0.4.8":
   version "0.4.8"
@@ -3066,7 +3066,7 @@ citation-js@^0.4.0:
     "@citation-js/plugin-wikidata" "0.4.8"
     citeproc "^2.2.10"
 
-citeproc@^2.2.10, citeproc@^2.2.9:
+citeproc@^2.1.220, citeproc@^2.2.10:
   version "2.2.19"
   resolved "https://registry.yarnpkg.com/citeproc/-/citeproc-2.2.19.tgz#bc73b9c900e8eb86ddc0374da37afa37048ba855"
   integrity sha512-tsu4fa/ZFMU+dVnExFXLK2wUWNt+3HR74Z5xBtikbzAJC9kXrNw1lckBDR2mQfHKSCCDg9uLGZrIASsZmSX+bQ==
