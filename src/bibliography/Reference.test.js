@@ -48,3 +48,12 @@ test('serializeReference', async () => {
     linesCited: reference.linesCited
   })
 })
+
+test('compactCitation', async () => {
+  const reference = await factory.build('reference')
+  const expected = `${reference.document.author}, ${reference.document.year}: ${
+    reference.pages
+  } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
+
+  expect(reference.compactCitation).toEqual(expected)
+})

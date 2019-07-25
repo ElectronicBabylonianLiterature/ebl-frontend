@@ -38,6 +38,18 @@ class Reference {
     return _.get(this, 'type.0', '')
   }
 
+  get compactCitation() {
+    const document = this.document || new BibliographyEntry()
+    return [
+      document.author,
+      ', ',
+      document.year,
+      this.pages ? `: ${this.pages} ` : ' ',
+      !_.isEmpty(this.linesCited) ? `[l. ${this.linesCited.join(', ')}] ` : '',
+      `(${this.typeAbbreviation})`
+    ].join('')
+  }
+
   setType(type: string) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.type = type
