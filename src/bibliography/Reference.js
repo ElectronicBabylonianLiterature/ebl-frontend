@@ -45,6 +45,14 @@ class Reference {
     return _.get(this, 'document.link', '')
   }
 
+  get shortContainerTitle() {
+    return _.get(this, 'document.shortContainerTitle', '')
+  }
+
+  get collectionNumber() {
+    return _.get(this, 'document.collectionNumber', '')
+  }
+
   get typeAbbreviation() {
     return _.get(this, 'type.0', '')
   }

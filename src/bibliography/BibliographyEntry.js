@@ -58,6 +58,10 @@ class BibliographyEntry {
     return _.get(this.#cslData, 'container-title-short', '')
   }
 
+  get collectionNumber() {
+    return _.get(this.#cslData, 'collection-number', '')
+  }
+
   get link() {
     const url = _.get(this.#cslData, 'URL', '')
     const doi = _.get(this.#cslData, 'DOI', '')
