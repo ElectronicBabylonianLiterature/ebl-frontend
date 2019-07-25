@@ -1,5 +1,5 @@
 import 'jest-date-mock'
-import 'jest-dom/extend-expect'
+import '@testing-library/jest-dom/extend-expect'
 import '@testing-library/react/cleanup-after-each'
 import * as bluebird from 'bluebird'
 
