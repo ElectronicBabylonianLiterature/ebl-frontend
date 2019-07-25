@@ -52,7 +52,7 @@
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
     "chance": "^1.0.16",
-    "eslint-config-prettier": "^4.3.0",
+    "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-flowtype": "^3.9.1",
     "factory-girl": "^5.0.2",
     "flow-bin": "^0.100.0",
