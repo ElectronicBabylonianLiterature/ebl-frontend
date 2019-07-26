@@ -81,7 +81,7 @@ test.each([
       .build('cslDataWithContainerTitleShort')
       .then(cslData => factory.build('bibliographyEntry', cslData))
       .then(entry =>
-        factory.build('reference', { type: 'DISCUSSION', document: entry })
+        factory.build('reference', { type: 'PHOTO', document: entry })
       ),
     false
   ],
@@ -105,7 +105,7 @@ test.each([
   ],
   [
     factory
-      .build('cslDataWithContainerTitleShort', { id: 'RN2720' })
+      .build('cslDataWithContainerTitleShort')
       .then(cslData => factory.build('bibliographyEntry', cslData))
       .then(entry =>
         factory.build('reference', { type: 'DISCUSSION', document: entry })
@@ -114,10 +114,19 @@ test.each([
   ],
   [
     factory
+      .build('cslDataWithContainerTitleShort', { id: 'RN2720' })
+      .then(cslData => factory.build('bibliographyEntry', cslData))
+      .then(entry =>
+        factory.build('reference', { type: 'PHOTO', document: entry })
+      ),
+    true
+  ],
+  [
+    factory
       .build('cslDataWithContainerTitleShort', { id: 'RN2721' })
       .then(cslData => factory.build('bibliographyEntry', cslData))
       .then(entry =>
-        factory.build('reference', { type: 'DISCUSSION', document: entry })
+        factory.build('reference', { type: 'PHOTO', document: entry })
       ),
     true
   ]

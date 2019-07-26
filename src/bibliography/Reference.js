@@ -61,7 +61,7 @@ class Reference {
     return (
       !!this.document &&
       (!_.isEmpty(this.document.shortContainerTitle) &&
-        (['COPY', 'EDITION'].includes(this.type) ||
+        (['COPY', 'EDITION', 'DISCUSSION'].includes(this.type) ||
           ['RN2720', 'RN2721'].includes(this.id)))
     )
   }
