@@ -11,7 +11,7 @@ export default function CompactCitation({
 }) {
   return (
     <>
-      {reference.useContainerTitle ? (
+      {reference.useContainerCitation ? (
         <>
           <span className="CompactCitation__container-title">
             {reference.shortContainerTitle}

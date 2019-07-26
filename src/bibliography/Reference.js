@@ -57,11 +57,13 @@ class Reference {
     return this.type[0]
   }
 
-  get useContainerTitle(): boolean {
+  get useContainerCitation(): boolean {
+    const typesRequiringContainerCitation = ['COPY', 'EDITION', 'DISCUSSION']
+    const idsRequiringContainerCitation = ['RN2720', 'RN2721']
     return (
-      !_.isEmpty(this.document.shortContainerTitle) &&
-      (['COPY', 'EDITION', 'DISCUSSION'].includes(this.type) ||
-        ['RN2720', 'RN2721'].includes(this.id))
+      !_.isEmpty(this.shortContainerTitle) &&
+      (typesRequiringContainerCitation.includes(this.type) ||
+        idsRequiringContainerCitation.includes(this.id))
     )
   }
 
