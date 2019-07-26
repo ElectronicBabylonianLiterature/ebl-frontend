@@ -35,6 +35,6 @@ test('Shows compact citation with container title and collection number', async 
     )
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
-    `${reference.shortContainerTitle} ${collectionNumber}, ${reference.pages}`
+    `${reference.shortContainerTitle} ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
   )
 })
