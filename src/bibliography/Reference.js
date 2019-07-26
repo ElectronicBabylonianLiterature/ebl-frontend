@@ -2,8 +2,8 @@
 import _ from 'lodash'
 // $FlowFixMe
 import { Draft, immerable, produce } from 'immer'
-import { List, Map } from 'immutable'
 import BibliographyEntry from './BibliographyEntry'
+import { Promise } from 'bluebird'
 
 type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 const defaultType = 'DISCUSSION'
@@ -118,18 +118,18 @@ Reference[immerable] = true
 export default Reference
 
 export function createReference(
-  data: Map<string, any>,
-  bibliographyRepository: { find: any => any }
+  data: { [string]: any },
+  bibliographyRepository: { find: string => Promise<BibliographyEntry> }
 ) {
   return bibliographyRepository
-    .find(data.get('id'))
+    .find(data.id)
     .then(
       entry =>
         new Reference(
-          data.get('type', defaultType),
-          data.get('pages', ''),
-          data.get('notes', ''),
-          ((data.get('linesCited', List()).toJS(): any): Array<string>),
+          data.type || defaultType,
+          data.pages || '',
+          data.notes || '',
+          data.linesCited || [],
           entry
         )
     )

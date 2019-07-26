@@ -259,9 +259,9 @@ test('createLemmatization', async () => {
 
 test('hydrateReferences', async () => {
   const { references, expectedReferences } = await setUpHydration()
-  await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(
-    expectedReferences
-  )
+  await expect(
+    fragmentService.hydrateReferences(references.toJS())
+  ).resolves.toEqual(expectedReferences)
 })
 
 async function setUpHydration() {

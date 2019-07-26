@@ -27,7 +27,7 @@ class FragmentService {
     return this.fragmentRepository
       .find(number)
       .then(fragment =>
-        this.hydrateReferences(fragment.references).then(hydrated =>
+        this.hydrateReferences(fragment.references.toJS()).then(hydrated =>
           fragment.setReferences(hydrated)
         )
       )
