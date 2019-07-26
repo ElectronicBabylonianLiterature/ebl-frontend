@@ -1,32 +1,36 @@
-import { List, Record, Map } from 'immutable'
+// @flow
+import { List, Record } from 'immutable'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
+import Lemma from './lemmatization/Lemma'
 import Lemmatization, {
   LemmatizationToken
-} from 'fragmentarium/lemmatization/Lemmatization'
+} from './lemmatization/Lemmatization'
+import Reference from '../bibliography/Reference'
 
 const moment = extendMoment(Moment)
 
-const FolioType = Record({ name: '', hasImage: false })
-const folioTypes = Map({
-  WGL: FolioType({ name: 'Lambert', hasImage: true }),
-  FWG: FolioType({ name: 'Geers', hasImage: false }),
-  EL: FolioType({ name: 'Leichty', hasImage: true }),
-  AKG: FolioType({ name: 'Grayson', hasImage: true }),
-  MJG: FolioType({ name: 'Geller', hasImage: true }),
-  WRM: FolioType({ name: 'Mayer', hasImage: true }),
-  CB: FolioType({ name: 'Bezold', hasImage: false }),
-  JS: FolioType({ name: 'Strassmaier', hasImage: false })
-})
+type FolioType = {| +name: string, +hasImage: boolean |}
+const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
+  WGL: { name: 'Lambert', hasImage: true },
+  FWG: { name: 'Geers', hasImage: false },
+  EL: { name: 'Leichty', hasImage: true },
+  AKG: { name: 'Grayson', hasImage: true },
+  MJG: { name: 'Geller', hasImage: true },
+  WRM: { name: 'Mayer', hasImage: true },
+  CB: { name: 'Bezold', hasImage: false },
+  JS: { name: 'Strassmaier', hasImage: false }
+}
 
 export class Folio {
-  #type
+  +name: string
+  +number: string
+  #type: FolioType
 
-  constructor({ name, number }) {
+  constructor({ name, number }: { name: string, number: string }) {
     this.name = name
     this.number = number
-    this.#type = folioTypes.get(name, FolioType({ name }))
-    Object.freeze(this)
+    this.#type = folioTypes[name] || { name, hasImage: false }
   }
 
   get humanizedName() {
@@ -50,21 +54,23 @@ export class RecordEntry extends Record({
   type: ''
 }) {
   get moment() {
-    return this.isHistorical ? moment.range(this.date) : moment(this.date)
+    return this.isHistorical
+      ? moment.range(this.get('date'))
+      : moment(this.get('date'))
   }
 
   get isHistorical() {
-    return this.type === historicalTransliteration
+    return this.get('type') === historicalTransliteration
   }
 
-  dateEquals(other) {
+  dateEquals(other: RecordEntry) {
     const onSameDate = (first, second) => {
       const sameYear = first.year() === second.year()
       const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
       return sameYear && sameDayOfYear
     }
-    const differentUser = this.user !== other.user
-    const differentType = this.type !== other.type
+    const differentUser = this.get('user') !== other.get('user')
+    const differentType = this.get('type') !== other.get('type')
 
     return differentUser || differentType || this.isHistorical
       ? false
@@ -76,13 +82,19 @@ export const Measures = Record({ length: null, width: null, thickness: null })
 
 export const Line = Record({ type: '', prefix: '', content: List() })
 
+type UniqueLemma = $ReadOnlyArray<Lemma>
 export class Text extends Record({
   lines: List()
 }) {
-  createLemmatization(lemmas, suggestions) {
+  createLemmatization(
+    lemmas: { [string]: $ReadOnlyArray<Lemma> },
+    suggestions: { [string]: $ReadOnlyArray<UniqueLemma> }
+  ) {
     return new Lemmatization(
-      this.lines.map(line => line.prefix).toJS(),
-      this.lines
+      this.get('lines')
+        .map(line => line.prefix)
+        .toJS(),
+      this.get('lines')
         .toSeq()
         .map(line => line.content)
         .map(tokens =>
@@ -129,7 +141,7 @@ export class Fragment extends Record({
   matchingLines: List()
 }) {
   get hasUncuratedReferences() {
-    return List.isList(this.uncuratedReferences)
+    return List.isList(this.get('uncuratedReferences'))
   }
 
   get uniqueRecord() {
@@ -139,10 +151,10 @@ export class Fragment extends Record({
         !filteredRecord.last().dateEquals(recordEntry)
       return keepRecord ? filteredRecord.push(recordEntry) : filteredRecord
     }
-    return this.record.reduce(reducer, List())
+    return this.get('record').reduce(reducer, List())
   }
 
-  setReferences(references) {
+  setReferences(references: List<Reference>) {
     return this.set('references', references)
   }
 }
