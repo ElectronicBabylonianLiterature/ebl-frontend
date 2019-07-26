@@ -1,9 +1,11 @@
+// @flow
 import React from 'react'
-import ListForm from 'common/List'
+import ListForm from '../common/List'
 import ReferenceForm from './ReferenceForm'
-import Reference from 'bibliography/Reference'
+import Reference from './Reference'
+import BibliographyEntry from './BibliographyEntry'
 
-export const defaultReference = new Reference()
+export const defaultReference = () => new Reference()
 
 export default function ReferencesForm({
   searchBibliography,
@@ -11,6 +13,12 @@ export default function ReferencesForm({
   onChange,
   label,
   collapsed
+}: {
+  searchBibliography: string => $ReadOnlyArray<BibliographyEntry>,
+  value: $ReadOnlyArray<Reference>,
+  onChange: ($ReadOnlyArray<Reference>) => void,
+  label: string,
+  collapsed: boolean
 }) {
   return (
     <ListForm

@@ -13,14 +13,14 @@ class Reference {
   +pages: string
   +notes: string
   +linesCited: Array<string>
-  +document: ?BibliographyEntry
+  +document: BibliographyEntry
 
   constructor(
     type: ReferenceType = defaultType,
     pages: string = '',
     notes: string = '',
     linesCited: Array<string> = [],
-    document_: ?BibliographyEntry = null
+    document_: BibliographyEntry = new BibliographyEntry()
   ) {
     this.type = type
     this.pages = pages
@@ -30,39 +30,38 @@ class Reference {
   }
 
   get id() {
-    return _.get(this, 'document.id', '')
+    return this.document.id
   }
 
   get author() {
-    return _.get(this, 'document.author', '')
+    return this.document.author
   }
 
   get year() {
-    return _.get(this, 'document.year', '')
+    return this.document.year
   }
 
   get link() {
-    return _.get(this, 'document.link', '')
+    return this.document.link
   }
 
   get shortContainerTitle() {
-    return _.get(this, 'document.shortContainerTitle', '')
+    return this.document.shortContainerTitle
   }
 
   get collectionNumber() {
-    return _.get(this, 'document.collectionNumber', '')
+    return this.document.collectionNumber
   }
 
   get typeAbbreviation() {
-    return _.get(this, 'type.0', '')
+    return this.type[0]
   }
 
   get useContainerTitle(): boolean {
     return (
-      !!this.document &&
-      (!_.isEmpty(this.document.shortContainerTitle) &&
-        (['COPY', 'EDITION', 'DISCUSSION'].includes(this.type) ||
-          ['RN2720', 'RN2721'].includes(this.id)))
+      !_.isEmpty(this.document.shortContainerTitle) &&
+      (['COPY', 'EDITION', 'DISCUSSION'].includes(this.type) ||
+        ['RN2720', 'RN2721'].includes(this.id))
     )
   }
 
@@ -102,7 +101,7 @@ class Reference {
     })
   }
 
-  setDocument(document_: ?BibliographyEntry) {
+  setDocument(document_: BibliographyEntry) {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
     })

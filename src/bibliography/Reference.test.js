@@ -3,9 +3,12 @@ import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { fromJS } from 'immutable'
 import Reference, { createReference, serializeReference } from './Reference'
+import BibliographyEntry from './BibliographyEntry'
 
 test('default reference', () => {
-  expect(new Reference()).toEqual(new Reference('DISCUSSION', '', '', [], null))
+  expect(new Reference()).toEqual(
+    new Reference('DISCUSSION', '', '', [], new BibliographyEntry())
+  )
 })
 
 describe('Reference', () => {

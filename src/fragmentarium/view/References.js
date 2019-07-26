@@ -30,7 +30,7 @@ export default class ReferencesController extends Component {
     super(props)
     this.state = {
       references: props.references.isEmpty()
-        ? List.of(defaultReference)
+        ? List.of(defaultReference())
         : props.references
     }
   }

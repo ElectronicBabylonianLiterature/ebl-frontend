@@ -17,21 +17,21 @@ const authorProperties = [
 ]
 
 class BibliographyEntry {
-  #cslData: ?{ [string]: any }
+  #cslData: { [string]: any }
 
   constructor(cslData: ?{ [string]: any }) {
-    this.#cslData =
-      cslData &&
-      produce(cslData, draft => {
-        _.keys(draft)
-          .filter(key => key.startsWith('_'))
-          .forEach(_.partial(_.unset, draft))
-        if (draft.author) {
-          draft.author = draft.author.map(
-            _.partialRight(_.pick, authorProperties)
-          )
-        }
-      })
+    this.#cslData = cslData
+      ? produce(cslData, draft => {
+          _.keys(draft)
+            .filter(key => key.startsWith('_'))
+            .forEach(_.partial(_.unset, draft))
+          if (draft.author) {
+            draft.author = draft.author.map(
+              _.partialRight(_.pick, authorProperties)
+            )
+          }
+        })
+      : {}
   }
 
   get id() {
