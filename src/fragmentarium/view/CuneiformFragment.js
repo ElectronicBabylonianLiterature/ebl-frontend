@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
