@@ -1,5 +1,6 @@
 // @flow
 import { List, Record } from 'immutable'
+import type { RecordOf, RecordFactory } from 'immutable'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import Lemma from './lemmatization/Lemma'
@@ -48,11 +49,18 @@ export class Folio {
 
 const historicalTransliteration = 'HistoricalTransliteration'
 
-export class RecordEntry extends Record({
+type RecordEntryProps = {
+  user: string,
+  date: string,
+  type: string
+}
+const recordEntryDefaults: RecordEntryProps = {
   user: '',
   date: '',
   type: ''
-}) {
+}
+const RecordEntryRecord = Record(recordEntryDefaults)
+export class RecordEntry extends RecordEntryRecord {
   get moment() {
     return this.isHistorical
       ? moment.range(this.get('date'))
@@ -78,14 +86,30 @@ export class RecordEntry extends Record({
   }
 }
 
-export const Measures = Record({ length: null, width: null, thickness: null })
+type MeasuresProps = { length: ?number, width: ?number, thickness: ?number }
+export const Measures: RecordFactory<MeasuresProps> = Record({
+  length: null,
+  width: null,
+  thickness: null
+})
 
-export const Line = Record({ type: '', prefix: '', content: List() })
+type LineProps = { type: string, prefix: string, content: List<any> }
+export const Line: RecordFactory<LineProps> = Record({
+  type: '',
+  prefix: '',
+  content: List()
+})
 
 type UniqueLemma = $ReadOnlyArray<Lemma>
-export class Text extends Record({
+
+type TextProps = {
+  lines: List<RecordOf<LineProps>>
+}
+const textDefaults: TextProps = {
   lines: List()
-}) {
+}
+const TextRecord = Record(textDefaults)
+export class Text extends TextRecord {
   createLemmatization(
     lemmas: { [string]: $ReadOnlyArray<Lemma> },
     suggestions: { [string]: $ReadOnlyArray<UniqueLemma> }
@@ -117,9 +141,33 @@ export class Text extends Record({
   }
 }
 
-export const UncuratedReference = Record({ document: '', pages: List() })
+type UncuratedReferenceProps = { document: string, pages: List<String> }
+export const UncuratedReference: RecordFactory<UncuratedReferenceProps> = Record(
+  { document: '', pages: List() }
+)
 
-export class Fragment extends Record({
+type FragmentProps = {
+  number: string,
+  cdliNumber: string,
+  bmIdNumber: string,
+  accession: string,
+  publication: string,
+  joins: List<string>,
+  description: string,
+  measures: RecordOf<MeasuresProps>,
+  collection: '',
+  script: '',
+  folios: List<Folio>,
+  record: List<RecordEntry>,
+  text: Text,
+  notes: string,
+  museum: string,
+  references: List<any>,
+  uncuratedReferences: ?List<RecordOf<UncuratedReference>>,
+  atf: string,
+  matchingLines: List<any>
+}
+const fragmentDefaults: FragmentProps = {
   number: '',
   cdliNumber: '',
   bmIdNumber: '',
@@ -139,7 +187,9 @@ export class Fragment extends Record({
   uncuratedReferences: null,
   atf: '',
   matchingLines: List()
-}) {
+}
+const FragmentRecord = Record(fragmentDefaults)
+export class Fragment extends FragmentRecord {
   get hasUncuratedReferences() {
     return List.isList(this.get('uncuratedReferences'))
   }
