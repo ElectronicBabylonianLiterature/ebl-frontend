@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
@@ -195,7 +196,7 @@ class CuneiformFragmentController extends Component {
     this.updatePromise = promise
       .then(updatedFragment =>
         this.props.fragmentService
-          .hydrateReferences(updatedFragment.references)
+          .hydrateReferences(updatedFragment.references.toJS())
           .then(hydratedReferences =>
             updatedFragment.setReferences(hydratedReferences)
           )
