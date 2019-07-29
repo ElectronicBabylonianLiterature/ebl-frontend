@@ -45,8 +45,8 @@ function Display({ fragment }) {
                 .sortBy((tokensByLemma, lemma) => lemma.first())
                 .map((tokensByLemma, lemma) => (
                   <div key={lemma.join(' ')}>
-                    {lemma.map(l => (
-                      <span>
+                    {lemma.map((l, index) => (
+                      <span key={index}>
                         {' '}
                         <Link to={`/dictionary/${l}`}>{l}</Link>
                       </span>
