@@ -6,7 +6,7 @@ import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
 import WordSearchForm from './WordSearchForm'
 
-it('Adds lemma to query string on submit', async () => {
+it('Adds lemma to query string on submit', () => {
   const history = createMemoryHistory()
   jest.spyOn(history, 'push')
   const element = render(
@@ -16,7 +16,7 @@ it('Adds lemma to query string on submit', async () => {
   )
 
   changeValueByLabel(element, 'Query', 'lemma')
-  await submitForm(element, 'form')
+  submitForm(element, 'form')
 
   expect(history.push).toBeCalledWith('?query=lemma')
 })

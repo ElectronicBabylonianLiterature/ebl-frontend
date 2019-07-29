@@ -1,4 +1,4 @@
-import { fireEvent, wait } from '@testing-library/react'
+import { fireEvent, wait, act } from '@testing-library/react'
 import * as bluebird from 'bluebird'
 import _ from 'lodash'
 
@@ -11,13 +11,16 @@ function when(createMatcher) {
 }
 
 export function changeValue(input, newValue) {
-  fireEvent.change(input, { target: { value: newValue } })
+  act(() => {
+    fireEvent.change(input, { target: { value: newValue } })
+  })
 }
 
-export async function clickNth(element, text, n = 0) {
+export function clickNth(element, text, n = 0) {
   const clickable = element.getAllByText(text)[n]
-  fireEvent.click(clickable)
-  await wait()
+  act(() => {
+    fireEvent.click(clickable)
+  })
 }
 
 export function changeValueByValue(element, value, newValue, n = 0) {
@@ -30,7 +33,7 @@ export function changeValueByLabel(element, label, newValue, n = 0) {
 
 export function whenClicked(element, text, n = 0) {
   return when(onChange => async (...expectedChange) => {
-    await clickNth(element, text, n)
+    clickNth(element, text, n)
     await wait(() => expect(onChange).toHaveBeenCalledWith(...expectedChange))
   })
 }
@@ -50,14 +53,16 @@ export function whenChangedByLabel(element, label, newValue) {
   return whenChangedBy(element, label, newValue, changeValueByLabel)
 }
 
-export async function submitForm(element, query) {
-  fireEvent.submit(element.container.querySelector(query))
-  await wait()
+export function submitForm(element, query) {
+  act(() => {
+    fireEvent.submit(element.container.querySelector(query))
+  })
 }
 
-export async function submitFormByTestId(element, testId) {
-  fireEvent.submit(element.getByTestId(testId))
-  await wait()
+export function submitFormByTestId(element, testId) {
+  act(() => {
+    fireEvent.submit(element.getByTestId(testId))
+  })
 }
 
 export function testDelegation(object, testData) {

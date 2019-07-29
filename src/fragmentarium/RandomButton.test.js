@@ -51,7 +51,7 @@ describe('On failed request', () => {
     fragmentService.random.mockReturnValueOnce(
       Promise.reject(new Error(message))
     )
-    await clickNth(element, buttonText, 0)
+    clickNth(element, buttonText, 0)
     await waitForElement(() => element.getByText(message))
   })
 
@@ -64,7 +64,7 @@ describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
     fragmentService.random.mockReturnValueOnce(promise)
-    await clickNth(element, buttonText, 0)
+    clickNth(element, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
   })

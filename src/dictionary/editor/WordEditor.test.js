@@ -45,7 +45,7 @@ describe('Update word', () => {
     wordService.update.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter()
 
-    await submitForm(element, 'form')
+    submitForm(element, 'form')
 
     expect(wordService.update).toHaveBeenCalledWith(result)
   })
@@ -56,7 +56,7 @@ describe('Update word', () => {
     )
     const element = await renderWithRouter()
 
-    await submitForm(element, 'form')
+    submitForm(element, 'form')
 
     await waitForElement(() => element.getByText(errorMessage))
   })

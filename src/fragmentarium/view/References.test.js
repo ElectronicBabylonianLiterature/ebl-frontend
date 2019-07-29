@@ -39,25 +39,25 @@ describe('Edit references', () => {
     await renderReferencesAndWait()
   })
 
-  test('Add reference', async () => {
-    await clickNth(element, 'Add Reference')
-    await submitForm(element, 'form')
+  test('Add reference', () => {
+    clickNth(element, 'Add Reference')
+    submitForm(element, 'form')
 
     expect(updateReferences).toHaveBeenCalledWith(
       references.push(defaultReference)
     )
   })
 
-  test('Delete reference', async () => {
-    await clickNth(element, 'Delete Reference')
-    await submitForm(element, 'form')
+  test('Delete reference', () => {
+    clickNth(element, 'Delete Reference')
+    submitForm(element, 'form')
 
     expect(updateReferences).toHaveBeenCalledWith(references.skip(1))
   })
 
   test('Edit reference', async () => {
     await inputReference()
-    await submitForm(element, 'form')
+    submitForm(element, 'form')
 
     expect(updateReferences).toHaveBeenCalledWith(
       references.set(0, expectedReference)
@@ -69,7 +69,7 @@ it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
   references = List()
   await renderReferencesAndWait()
-  await submitForm(element, 'form')
+  submitForm(element, 'form')
 
   expect(updateReferences).toHaveBeenCalledWith(List.of(defaultReference))
 })

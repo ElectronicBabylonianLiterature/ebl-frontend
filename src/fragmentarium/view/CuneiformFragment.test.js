@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render, waitForElement, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import { List } from 'immutable'
@@ -51,17 +51,19 @@ beforeEach(async () => {
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 
-  element = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <CuneiformFragment
-          fragment={fragment}
-          fragmentService={fragmentService}
-          onChange={onChange}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
+  act(() => {
+    element = render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <CuneiformFragment
+            fragment={fragment}
+            fragmentService={fragmentService}
+            onChange={onChange}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  })
   container = element.container
 })
 
@@ -117,7 +119,7 @@ it('Updates view on Edition save', async () => {
     Promise.resolve(updatedFragment)
   )
 
-  await submitFormByTestId(element, 'transliteration-form')
+  submitFormByTestId(element, 'transliteration-form')
 
   await waitForElement(() => element.getAllByText(expectedFragment.cdliNumber))
 })
@@ -128,7 +130,7 @@ it('Updates view on References save', async () => {
   )
   clickNth(element, 'References', 0)
   await waitForElement(() => element.getAllByText('Document'))
-  await submitFormByTestId(element, 'references-form')
+  submitFormByTestId(element, 'references-form')
 
   await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
 })

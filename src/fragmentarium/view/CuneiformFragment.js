@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import { Promise } from 'bluebird'
@@ -7,7 +7,7 @@ import References from './References'
 import ReferenceList from 'bibliography/ReferenceList'
 import Edition from 'fragmentarium/edition/Edition'
 import Lemmatizer from 'fragmentarium/lemmatization/Lemmatizer'
-import Display from 'fragmentarium/view/Display'
+import Display from './Display'
 import Details from './Details'
 import Record from './Record'
 import OrganizationLinks from './OrganizationLinks'
@@ -17,6 +17,9 @@ import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
 import UncuratedReferences from './UncuratedReferences'
 import { serializeReference } from 'bibliography/Reference'
+import usePromiseEffect from 'common/usePromiseEffect'
+import { Fragment, Folio } from 'fragmentarium/fragment'
+import FragmentService from 'fragmentarium/FragmentService'
 
 import './CuneiformFragment.css'
 
@@ -170,67 +173,54 @@ function CuneiformFragment({
   )
 }
 
-class CuneiformFragmentController extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      fragment: props.fragment,
-      saving: false,
-      error: null
-    }
-    this.updatePromise = Promise.resolve()
-  }
+function CuneiformFragmentController({
+  fragment,
+  fragmentService,
+  activeFolio
+}) {
+  const [currentFragment, setFragment] = useState(fragment)
+  const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState(null)
+  const [setPromise, cancelPromise] = usePromiseEffect()
 
-  componentWillUnmount() {
-    this.updatePromise.cancel()
-  }
+  const handleSave = promise => {
+    cancelPromise()
+    setError(null)
+    setIsSaving(true)
 
-  handleSave = promise => {
-    this.updatePromise.cancel()
-    this.setState({
-      ...this.state,
-      error: null,
-      saving: true
-    })
-    this.updatePromise = promise
+    const updatePromise = promise
       .then(updatedFragment =>
-        this.props.fragmentService
+        fragmentService
           .hydrateReferences(updatedFragment.references.toJS())
           .then(hydratedReferences =>
             updatedFragment.setReferences(hydratedReferences)
           )
       )
       .then(hydaratedFragment => {
-        this.setState({
-          fragment: hydaratedFragment,
-          saving: false
-        })
-        return hydaratedFragment
+        setFragment(hydaratedFragment)
+        setIsSaving(false)
       })
-    this.updatePromise.catch(error =>
-      this.setState({
-        ...this.state,
-        saving: false,
-        error: error
+    setPromise(
+      updatePromise.catch(error => {
+        setError(error)
+        setIsSaving(false)
       })
     )
-    return this.updatePromise
+    return updatePromise
   }
 
-  render() {
-    return (
-      <>
-        <CuneiformFragment
-          fragment={this.state.fragment}
-          fragmentService={this.props.fragmentService}
-          activeFolio={this.props.activeFolio}
-          onSave={this.handleSave}
-          saving={this.state.saving}
-          error={this.state.error}
-        />
-      </>
-    )
-  }
+  return (
+    <>
+      <CuneiformFragment
+        fragment={currentFragment}
+        fragmentService={fragmentService}
+        activeFolio={activeFolio}
+        onSave={handleSave}
+        saving={isSaving}
+        error={error}
+      />
+    </>
+  )
 }
 
 export default CuneiformFragmentController

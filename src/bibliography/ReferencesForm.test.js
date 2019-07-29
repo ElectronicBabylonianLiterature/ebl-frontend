@@ -36,7 +36,7 @@ beforeEach(async () => {
 })
 
 test('Add reference', async () => {
-  await clickNth(element, 'Add Reference')
+  clickNth(element, 'Add Reference')
 
   expect(onChange).toHaveBeenCalledWith(references.push(defaultReference))
 })

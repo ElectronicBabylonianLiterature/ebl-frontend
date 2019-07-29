@@ -50,7 +50,7 @@ describe('Editing', () => {
     bibliographyService.update.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, false, resultId)
 
-    await submitForm(element, 'form')
+    submitForm(element, 'form')
 
     expect(bibliographyService.update).toHaveBeenCalledWith(result)
   })
@@ -69,7 +69,7 @@ describe('Creating', () => {
     bibliographyService.create.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, true, createWaitFor)
 
-    await submitForm(element, 'form')
+    submitForm(element, 'form')
 
     expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
