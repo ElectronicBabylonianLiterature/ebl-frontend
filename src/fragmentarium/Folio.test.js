@@ -12,7 +12,7 @@ describe('Folio', () => {
     ['AKG', 'Grayson', true],
     ['MJG', 'Geller', true],
     ['WRM', 'Mayer', true],
-    ['CB', 'Bezold', false],
+    ['CB', 'Bezold', true],
     ['JS', 'Strassmaier', false]
   ])('%s folios', (name, humanized, hasImage) => {
     let number

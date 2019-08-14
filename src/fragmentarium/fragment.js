@@ -19,7 +19,7 @@ const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
   AKG: { name: 'Grayson', hasImage: true },
   MJG: { name: 'Geller', hasImage: true },
   WRM: { name: 'Mayer', hasImage: true },
-  CB: { name: 'Bezold', hasImage: false },
+  CB: { name: 'Bezold', hasImage: true },
   JS: { name: 'Strassmaier', hasImage: false }
 }
 
