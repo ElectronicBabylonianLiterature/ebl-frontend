@@ -14,7 +14,7 @@ const moment = extendMoment(Moment)
 type FolioType = {| +name: string, +hasImage: boolean |}
 const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
   WGL: { name: 'Lambert', hasImage: true },
-  FWG: { name: 'Geers', hasImage: false },
+  FWG: { name: 'Geers', hasImage: true },
   EL: { name: 'Leichty', hasImage: true },
   AKG: { name: 'Grayson', hasImage: true },
   MJG: { name: 'Geller', hasImage: true },

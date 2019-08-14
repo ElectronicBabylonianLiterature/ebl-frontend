@@ -7,7 +7,7 @@ describe('Folio', () => {
   describe.each([
     ['Unknown', 'Unknown', false],
     ['WGL', 'Lambert', true],
-    ['FWG', 'Geers', false],
+    ['FWG', 'Geers', true],
     ['EL', 'Leichty', true],
     ['AKG', 'Grayson', true],
     ['MJG', 'Geller', true],
