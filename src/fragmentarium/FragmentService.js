@@ -114,23 +114,21 @@ class FragmentService {
   }
 
   _fetchSuggestions(text) {
-    return Promise.all(
-      mapText(
-        text,
-        line =>
-          line
-            .filter(token => token.get('lemmatizable', false))
-            .map(token => token.get('value')),
-        value =>
-          this.fragmentRepository
-            .findLemmas(value)
-            .then(result => [
-              value,
-              result.map(complexLemma =>
-                complexLemma.map(word => new Lemma(word))
-              )
-            ])
-      )
+    return Promise.mapSeries(
+      mapLines(text, line =>
+        line
+          .filter(token => token.get('lemmatizable', false))
+          .map(token => token.get('value'))
+      ),
+      value =>
+        this.fragmentRepository
+          .findLemmas(value)
+          .then(lemmas => [
+            value,
+            lemmas.map(complexLemma =>
+              complexLemma.map(word => new Lemma(word))
+            )
+          ])
     )
   }
 
@@ -142,13 +140,16 @@ class FragmentService {
 }
 
 function mapText(text, mapLine, mapToken) {
+  return mapLines(text, mapLine).map(mapToken)
+}
+
+function mapLines(text, mapLine) {
   return text.lines
     .toSeq()
     .map(({ content }) => mapLine(content))
     .flatten(false)
     .filterNot(_.isNil)
     .toOrderedSet()
-    .map(mapToken)
 }
 
 export default FragmentService
