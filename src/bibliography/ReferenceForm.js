@@ -15,7 +15,7 @@ export default function ReferenceForm({ value, onChange, searchBibliography }) {
   const handleChange = setter => newValue => onChange(value[setter](newValue))
 
   const handleEvent = setter => ({ target }) =>
-    handleChange(setter)(target.value || new BibliographyEntry())
+    handleChange(setter)(target.value)
 
   return (
     <>

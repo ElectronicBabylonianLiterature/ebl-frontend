@@ -43,14 +43,16 @@ test(`Changing document calls onChange with updated value`, async () => {
 
 describe.each([
   ['Pages', 'pages', 'setPages', '3'],
+  ['Pages', 'pages', 'setPages', ''],
   ['Type', 'type', 'setType', 'EDITION'],
-  ['Notes', 'notes', 'setNotes', 'new notes']
+  ['Notes', 'notes', 'setNotes', 'new notes'],
+  ['Notes', 'notes', 'setNotes', '']
 ])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
     expect(element.getByLabelText(label).value).toEqual(reference[property])
   })
 
-  it(`Calls onChange with updated value`, async () => {
+  it(`Calls onChange with updated value`, () => {
     whenChangedByLabel(element, label, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith(updatedItem => reference[setter](updatedItem))
@@ -63,10 +65,13 @@ it('Displays Lines Cited', () => {
   )
 })
 
-it(`Calls onChange with updated Lines Cited`, async () => {
-  whenChangedByLabel(element, 'Lines Cited', '3.1,2')
-    .expect(onChange)
-    .toHaveBeenCalledWith(updatedItem =>
-      reference.setLinesCited(updatedItem.split(','))
-    )
-})
+test.each([['3.1,2', ['3.1', '2']], ['', []]])(
+  'Calls onChange with updated Lines Cited %s',
+  (newValue, expectedValue) => {
+    whenChangedByLabel(element, 'Lines Cited', newValue)
+      .expect(onChange)
+      .toHaveBeenCalledWith(updatedItem =>
+        reference.setLinesCited(expectedValue)
+      )
+  }
+)
