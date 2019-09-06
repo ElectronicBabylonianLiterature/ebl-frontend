@@ -24,6 +24,37 @@ const references = [
   { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] }
 ]
 
+const fragmentInfo = {
+  number: 'K.1',
+  accession: '1234',
+  script: 'NA',
+  description: 'a fragment',
+  matchingLines: []
+}
+
+const fragmentInfoDto = {
+  number: 'K.1',
+  accession: '1234',
+  script: 'NA',
+  description: 'a fragment'
+}
+
+const fragmentInfoWithLines = {
+  number: 'K.1',
+  accession: '1234',
+  script: 'NA',
+  description: 'a fragment',
+  matchingLines: [['1. kur']]
+}
+
+const fragmentInfoWithLinesDtoOld = {
+  _id: 'K.1',
+  accession: '1234',
+  script: 'NA',
+  description: 'a fragment',
+  matching_lines: [['1. kur']]
+}
+
 const testData = [
   [
     'statistics',
@@ -45,44 +76,55 @@ const testData = [
     'random',
     [],
     apiClient.fetchJson,
-    [fragment],
+    [fragmentInfo],
     ['/fragments?random=true', true],
-    Promise.resolve([fragmentDto])
+    Promise.resolve([fragmentInfoDto])
   ],
   [
     'interesting',
     [],
     apiClient.fetchJson,
-    [fragment],
+    [fragmentInfo],
     ['/fragments?interesting=true', true],
-    Promise.resolve([fragmentDto])
+    Promise.resolve([fragmentInfoDto])
   ],
   [
     'fetchLatestTransliterations',
     [],
     apiClient.fetchJson,
-    [fragment],
+    [fragmentInfo],
     ['/fragments?latest=true', true],
-    Promise.resolve([fragmentDto])
+    Promise.resolve([fragmentInfoDto])
   ],
   [
     'searchNumber',
     [fragmentId],
     apiClient.fetchJson,
-    [fragment],
+    [fragmentInfo],
     [`/fragments?number=${encodeURIComponent(fragmentId)}`, true],
-    Promise.resolve([fragmentDto])
+    Promise.resolve([fragmentInfoDto])
   ],
   [
     'searchTransliteration',
     [transliterationQuery],
     apiClient.fetchJson,
-    [fragment],
+    [fragmentInfoWithLines],
     [
       `/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`,
       true
     ],
-    Promise.resolve([fragmentDto])
+    Promise.resolve([fragmentInfoWithLines])
+  ],
+  [
+    'searchTransliteration',
+    [transliterationQuery],
+    apiClient.fetchJson,
+    [fragmentInfoWithLines],
+    [
+      `/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`,
+      true
+    ],
+    Promise.resolve([fragmentInfoWithLinesDtoOld])
   ],
   [
     'updateTransliteration',

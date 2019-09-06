@@ -1,3 +1,5 @@
+// @flow
+import Promise from 'bluebird'
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
 import {
@@ -8,7 +10,8 @@ import {
   Text,
   Folio,
   UncuratedReference
-} from 'fragmentarium/fragment'
+} from './fragment'
+import type { FragmentInfo } from './fragment'
 
 function createMeasures(dto) {
   return Measures({
@@ -62,16 +65,17 @@ function createFragment(dto) {
   })
 }
 
-function createFragments(dtos) {
-  return dtos.map(createFragment)
-}
-
 function createFragmentPath(number, ...subResources) {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
 class FragmentRepository {
-  constructor(apiClient) {
+  +apiClient
+
+  constructor(apiClient: {
+    fetchJson: (string, boolean) => Promise<any>,
+    postJson: (string, any) => Promise<any>
+  }) {
     this.apiClient = apiClient
   }
 
@@ -79,39 +83,51 @@ class FragmentRepository {
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
-  find(number) {
+  find(number: string) {
     return this.apiClient
       .fetchJson(createFragmentPath(number), true)
       .then(createFragment)
   }
 
-  random() {
+  random(): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ random: true })
   }
 
-  interesting() {
+  interesting(): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ interesting: true })
   }
 
-  fetchLatestTransliterations() {
+  fetchLatestTransliterations(): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ latest: true })
   }
 
-  searchNumber(number) {
+  searchNumber(number: string): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ number })
   }
 
-  searchTransliteration(transliteration) {
+  searchTransliteration(transliteration: string): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ transliteration })
   }
 
-  _fetch(params) {
+  _fetch(params: any): Promise<$ReadOnlyArray<FragmentInfo>> {
     return this.apiClient
       .fetchJson(`/fragments?${queryString.stringify(params)}`, true)
-      .then(createFragments)
+      .then(infos =>
+        infos.map(info => ({
+          number: info.number || info._id,
+          accession: info.accession,
+          script: info.script,
+          description: info.description,
+          matchingLines: info.matchingLines || info.matching_lines || []
+        }))
+      )
   }
 
-  updateTransliteration(number, transliteration, notes) {
+  updateTransliteration(
+    number: string,
+    transliteration: string,
+    notes: string
+  ) {
     const path = createFragmentPath(number, 'transliteration')
     return this.apiClient
       .postJson(path, {
@@ -121,21 +137,21 @@ class FragmentRepository {
       .then(createFragment)
   }
 
-  updateLemmatization(number, lemmatization) {
+  updateLemmatization(number: string, lemmatization: string) {
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
   }
 
-  updateReferences(number, references) {
+  updateReferences(number: string, references: string) {
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
       .then(createFragment)
   }
 
-  folioPager(folio, number) {
+  folioPager(folio: Folio, number: string) {
     return this.apiClient.fetchJson(
       `/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
         folio.number
@@ -144,7 +160,7 @@ class FragmentRepository {
     )
   }
 
-  findLemmas(word) {
+  findLemmas(word: string) {
     return this.apiClient.fetchJson(
       `/lemmas?word=${encodeURIComponent(word)}`,
       true

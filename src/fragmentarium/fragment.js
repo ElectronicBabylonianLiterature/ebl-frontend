@@ -11,6 +11,14 @@ import Reference from '../bibliography/Reference'
 
 const moment = extendMoment(Moment)
 
+export type FragmentInfo = {|
+  +number: string,
+  +accession: string,
+  +script: string,
+  +description: string,
+  +matchingLines: $ReadOnlyArray<$ReadOnlyArray<string>>
+|}
+
 type FolioType = {| +name: string, +hasImage: boolean |}
 const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
   WGL: { name: 'Lambert', hasImage: true },
