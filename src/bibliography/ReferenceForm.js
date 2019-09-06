@@ -6,7 +6,6 @@ import ArrayInput from 'common/ArrayInput'
 import HelpTrigger from 'common/HelpTrigger'
 import BibliographySelect from 'bibliography/BibliographySelect'
 import NotesHelp from './NotesHelp'
-import BibliographyEntry from './BibliographyEntry'
 
 export default function ReferenceForm({ value, onChange, searchBibliography }) {
   const id = _.uniqueId('ReferenceForm-')
