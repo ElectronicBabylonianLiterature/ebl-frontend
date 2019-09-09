@@ -47,14 +47,6 @@ const fragmentInfoWithLines = {
   matchingLines: [['1. kur']]
 }
 
-const fragmentInfoWithLinesDtoOld = {
-  _id: 'K.1',
-  accession: '1234',
-  script: 'NA',
-  description: 'a fragment',
-  matching_lines: [['1. kur']]
-}
-
 const testData = [
   [
     'statistics',
@@ -114,17 +106,6 @@ const testData = [
       true
     ],
     Promise.resolve([fragmentInfoWithLines])
-  ],
-  [
-    'searchTransliteration',
-    [transliterationQuery],
-    apiClient.fetchJson,
-    [fragmentInfoWithLines],
-    [
-      `/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`,
-      true
-    ],
-    Promise.resolve([fragmentInfoWithLinesDtoOld])
   ],
   [
     'updateTransliteration',
