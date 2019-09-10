@@ -114,11 +114,11 @@ class FragmentRepository {
       .fetchJson(`/fragments?${queryString.stringify(params)}`, true)
       .then(infos =>
         infos.map(info => ({
-          number: info.number || info._id,
+          number: info.number,
           accession: info.accession,
           script: info.script,
           description: info.description,
-          matchingLines: info.matchingLines || info.matching_lines || []
+          matchingLines: info.matchingLines || []
         }))
       )
   }
