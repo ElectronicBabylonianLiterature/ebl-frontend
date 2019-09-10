@@ -133,6 +133,19 @@ factory.define('fragment', Fragment, {
     List(await factory.buildMany('referenceDto', 2)).map(dto => fromJS(dto))
 })
 
+factory.define('fragmentInfo', Object, {
+  number: factory.chance('word'),
+  accession: factory.chance('word'),
+  description: async () =>
+    `${await factory.chance('sentence')()}\n${await factory.chance(
+      'sentence'
+    )()}`,
+  script: factory.chance('pickone', ['NA', 'NB']),
+  matchingLines: [['1. kur']],
+  editor: factory.chance('last'),
+  date: date
+})
+
 factory.define('folioPagerEntry', Object, {
   fragmentNumber: factory.chance('string'),
   folioNumber: factory.chance('string')

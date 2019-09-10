@@ -7,6 +7,7 @@ import Image from './Image'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from './SearchGroup'
 import LatestTransliterations from './LatestTransliterations'
+import NeedsRevision from './NeedsRevision'
 
 import './Fragmentarium.css'
 
@@ -38,6 +39,17 @@ function Fragmentarium({ location, fragmentService }) {
               fragmentService={fragmentService}
               fileName="Babel_Project_01_cropped.svg"
             />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <SessionContext.Consumer>
+              {session =>
+                session.isAllowedToTransliterateFragments() && (
+                  <NeedsRevision fragmentService={fragmentService} />
+                )
+              }
+            </SessionContext.Consumer>
           </Col>
         </Row>
         <Row>
