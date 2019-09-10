@@ -101,6 +101,10 @@ class FragmentRepository {
     return this._fetch({ latest: true })
   }
 
+  fetchNeedsRevision(): $ReadOnlyArray<FragmentInfo> {
+    return this._fetch({ needsRevision: true })
+  }
+
   searchNumber(number: string): $ReadOnlyArray<FragmentInfo> {
     return this._fetch({ number })
   }
@@ -110,17 +114,10 @@ class FragmentRepository {
   }
 
   _fetch(params: any): Promise<$ReadOnlyArray<FragmentInfo>> {
-    return this.apiClient
-      .fetchJson(`/fragments?${queryString.stringify(params)}`, true)
-      .then(infos =>
-        infos.map(info => ({
-          number: info.number,
-          accession: info.accession,
-          script: info.script,
-          description: info.description,
-          matchingLines: info.matchingLines || []
-        }))
-      )
+    return this.apiClient.fetchJson(
+      `/fragments?${queryString.stringify(params)}`,
+      true
+    )
   }
 
   updateTransliteration(

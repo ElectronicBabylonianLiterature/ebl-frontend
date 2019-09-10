@@ -29,14 +29,9 @@ const fragmentInfo = {
   accession: '1234',
   script: 'NA',
   description: 'a fragment',
-  matchingLines: []
-}
-
-const fragmentInfoDto = {
-  number: 'K.1',
-  accession: '1234',
-  script: 'NA',
-  description: 'a fragment'
+  matchingLines: [],
+  editor: 'Editor',
+  edition_date: '2019-09-10T13:03:37.575580'
 }
 
 const fragmentInfoWithLines = {
@@ -44,7 +39,9 @@ const fragmentInfoWithLines = {
   accession: '1234',
   script: 'NA',
   description: 'a fragment',
-  matchingLines: [['1. kur']]
+  matchingLines: [['1. kur']],
+  editor: 'Editor',
+  edition_date: '2019-09-10T13:03:37.575580'
 }
 
 const testData = [
@@ -70,7 +67,7 @@ const testData = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?random=true', true],
-    Promise.resolve([fragmentInfoDto])
+    Promise.resolve([fragmentInfo])
   ],
   [
     'interesting',
@@ -78,7 +75,7 @@ const testData = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?interesting=true', true],
-    Promise.resolve([fragmentInfoDto])
+    Promise.resolve([fragmentInfo])
   ],
   [
     'fetchLatestTransliterations',
@@ -86,7 +83,15 @@ const testData = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?latest=true', true],
-    Promise.resolve([fragmentInfoDto])
+    Promise.resolve([fragmentInfo])
+  ],
+  [
+    'fetchNeedsRevision',
+    [],
+    apiClient.fetchJson,
+    [fragmentInfo],
+    ['/fragments?needsRevision=true', true],
+    Promise.resolve([fragmentInfo])
   ],
   [
     'searchNumber',
@@ -94,7 +99,7 @@ const testData = [
     apiClient.fetchJson,
     [fragmentInfo],
     [`/fragments?number=${encodeURIComponent(fragmentId)}`, true],
-    Promise.resolve([fragmentInfoDto])
+    Promise.resolve([fragmentInfo])
   ],
   [
     'searchTransliteration',

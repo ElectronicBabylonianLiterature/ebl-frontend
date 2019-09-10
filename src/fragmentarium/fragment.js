@@ -16,7 +16,9 @@ export type FragmentInfo = {|
   +accession: string,
   +script: string,
   +description: string,
-  +matchingLines: $ReadOnlyArray<$ReadOnlyArray<string>>
+  +matchingLines: $ReadOnlyArray<$ReadOnlyArray<string>>,
+  +editor: string,
+  +edition_date: string
 |}
 
 type FolioType = {| +name: string, +hasImage: boolean |}

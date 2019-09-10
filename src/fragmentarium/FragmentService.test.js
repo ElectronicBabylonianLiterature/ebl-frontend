@@ -31,7 +31,8 @@ const fragmentRepository = {
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   findLemmas: jest.fn(),
-  fetchLatestTransliterations: jest.fn()
+  fetchLatestTransliterations: jest.fn(),
+  fetchNeedsRevision: jest.fn()
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -140,7 +141,8 @@ const testData = [
     [],
     fragmentRepository.fetchLatestTransliterations,
     resultStub
-  ]
+  ],
+  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub]
 ]
 
 testDelegation(fragmentService, testData)
