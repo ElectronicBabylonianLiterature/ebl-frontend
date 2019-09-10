@@ -39,7 +39,6 @@ const imageRepository = new ImageRepository(apiClient)
 const bibliographyRepository = new BibliographyRepository(apiClient)
 const bibliographyService = new BibliographyService(bibliographyRepository)
 const fragmentService = new FragmentService(
-  auth,
   fragmentRepository,
   imageRepository,
   wordRepository,

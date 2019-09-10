@@ -13,12 +13,6 @@ import { Text, Line, Folio } from 'fragmentarium/fragment'
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
-const auth = {
-  isAllowedToReadFragments: jest.fn(),
-  isAllowedToTransliterateFragments: jest.fn(),
-  isAllowedToLemmatizeFragments: jest.fn(),
-  hasBetaAccess: jest.fn()
-}
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
@@ -46,7 +40,6 @@ const bibliographyService = {
   search: jest.fn()
 }
 const fragmentService = new FragmentService(
-  auth,
   fragmentRepository,
   imageRepository,
   wordRepository,

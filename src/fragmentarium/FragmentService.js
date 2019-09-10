@@ -1,18 +1,17 @@
+// @flow
 import _ from 'lodash'
 import { List } from 'immutable'
 import { Promise } from 'bluebird'
-import Lemma from 'fragmentarium/lemmatization/Lemma'
-import { createReference } from 'bibliography/Reference'
+import Lemma from './lemmatization/Lemma'
+import { createReference } from '../bibliography/Reference'
 
 class FragmentService {
   constructor(
-    auth,
     fragmentRepository,
     imageRepository,
     wordRepository,
     bibliographyService
   ) {
-    this.auth = auth
     this.fragmentRepository = fragmentRepository
     this.imageRepository = imageRepository
     this.wordRepository = wordRepository

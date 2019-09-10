@@ -25,7 +25,6 @@ function createApp(api, sessionStore) {
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)
   const fragmentService = new FragmentService(
-    auth,
     fragmentRepository,
     imageRepository,
     bibliographyService
