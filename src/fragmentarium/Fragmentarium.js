@@ -16,12 +16,12 @@ function Fragmentarium({ location, fragmentService }) {
   const transliteration = queryString.parse(location.search).transliteration
   return (
     <AppContent crmbs={['Fragmentarium']}>
-      <Container fluid>
-        <Row>
-          <Col md={6}>
-            <SessionContext.Consumer>
-              {session =>
-                session.isAllowedToReadFragments() ? (
+      <SessionContext.Consumer>
+        {session => (
+          <Container fluid>
+            <Row>
+              <Col md={6}>
+                {session.isAllowedToReadFragments() ? (
                   <SearchGroup
                     number={number}
                     transliteration={transliteration}
@@ -29,41 +29,33 @@ function Fragmentarium({ location, fragmentService }) {
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>
-                )
-              }
-            </SessionContext.Consumer>
-            <Statistics fragmentService={fragmentService} />
-          </Col>
-          <Col md={6}>
-            <Image
-              fragmentService={fragmentService}
-              fileName="Babel_Project_01_cropped.svg"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <SessionContext.Consumer>
-              {session =>
-                session.isAllowedToTransliterateFragments() && (
-                  <NeedsRevision fragmentService={fragmentService} />
-                )
-              }
-            </SessionContext.Consumer>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <SessionContext.Consumer>
-              {session =>
-                session.isAllowedToReadFragments() && (
+                )}
+                <Statistics fragmentService={fragmentService} />
+              </Col>
+              <Col md={6}>
+                <Image
+                  fragmentService={fragmentService}
+                  fileName="Babel_Project_01_cropped.svg"
+                />
+              </Col>
+            </Row>
+            {session.isAllowedToReadFragments() && (
+              <Row>
+                <Col>
                   <LatestTransliterations fragmentService={fragmentService} />
-                )
-              }
-            </SessionContext.Consumer>
-          </Col>
-        </Row>
-      </Container>
+                </Col>
+              </Row>
+            )}
+            {session.isAllowedToTransliterateFragments() && (
+              <Row>
+                <Col>
+                  <NeedsRevision fragmentService={fragmentService} />
+                </Col>
+              </Row>
+            )}
+          </Container>
+        )}
+      </SessionContext.Consumer>
     </AppContent>
   )
 }
