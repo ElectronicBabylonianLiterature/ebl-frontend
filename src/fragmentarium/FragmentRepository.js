@@ -4,24 +4,24 @@ import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
 import {
   Fragment,
-  Measures,
   RecordEntry,
   Line,
   Text,
   Folio,
   UncuratedReference
 } from './fragment'
+import type { Measures } from './fragment'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
 } from './FragmentSearchService'
 
-function createMeasures(dto) {
-  return Measures({
+function createMeasures(dto): Measures {
+  return {
     length: dto.length.value,
     width: dto.width.value,
     thickness: dto.thickness.value
-  })
+  }
 }
 
 function createText(dto) {

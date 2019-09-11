@@ -1,14 +1,15 @@
+// @flow
 import { List, Map } from 'immutable'
 import _ from 'lodash'
 import {
   Folio,
   Fragment,
   Line,
-  Measures,
   RecordEntry,
   Text,
   UncuratedReference
 } from './fragment'
+import type { Measures } from './fragment'
 import {
   atEleven,
   atTen,
@@ -37,11 +38,11 @@ describe('Fragment', () => {
     publication: 'A journal',
     joins: List(['K.2']),
     description: 'A clay tabled',
-    measures: Measures({
+    measures: {
       length: 3,
       width: 5,
       thickness: 3.6
-    }),
+    },
     collection: 'The collection',
     script: 'NA',
     folios: List([new Folio({ name: 'AKG', number: '435' })]),
@@ -75,7 +76,7 @@ describe('Fragment', () => {
     uncuratedReferences: List.of(
       UncuratedReference({
         document: 'CAD 7',
-        lines: List.of(3, 208)
+        pages: List.of(3, 208)
       })
     ),
     atf: '$ (atf)',
@@ -84,12 +85,12 @@ describe('Fragment', () => {
   const fragment = new Fragment(config)
 
   test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(fragment[property]).toEqual(expected)
+    expect(fragment.get(property)).toEqual(expected)
   })
 })
 
 test.each([
-  [List.of(UncuratedReference({ document: 'CAD 7', lines: List() })), true],
+  [List.of(UncuratedReference({ document: 'CAD 7', pages: List() })), true],
   [List(), true],
   [null, false]
 ])('uncurated references: %s', (uncuratedReferences, expected) => {

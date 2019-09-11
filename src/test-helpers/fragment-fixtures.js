@@ -4,7 +4,6 @@ import { Chance } from 'chance'
 import FactoryAdapter from './FactoryAdapter'
 import {
   Fragment,
-  Measures,
   RecordEntry,
   Line,
   Text,
@@ -40,12 +39,11 @@ factory.extend('record', 'historicalRecord', {
   type: 'HistoricalTransliteration'
 })
 
-factory.define('measures', Measures, {
+factory.define('measures', Object, {
   length: factory.chance('floating', { min: 0, max: 100 }),
   width: factory.chance('floating', { min: 0, max: 100 }),
   thickness: factory.chance('floating', { min: 0, max: 100 })
 })
-factory.setAdapter(new FactoryAdapter(), 'measures')
 
 factory.define('folio', Folio, {
   name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),

@@ -63,10 +63,16 @@ Folio[immerable] = true
 
 const historicalTransliteration = 'HistoricalTransliteration'
 
+type RecordType =
+  | 'HistoricalTransliteration'
+  | 'Revision'
+  | 'Transliteration'
+  | 'Collation'
+
 export class RecordEntry {
   +user: string
   +date: string
-  +type: string
+  +type: RecordType
 
   constructor({
     user,
@@ -75,7 +81,7 @@ export class RecordEntry {
   }: {
     user: string,
     date: string,
-    type: string
+    type: RecordType
   }) {
     this.user = user
     this.date = date
@@ -106,12 +112,11 @@ export class RecordEntry {
 }
 RecordEntry[immerable] = true
 
-type MeasuresProps = { length: ?number, width: ?number, thickness: ?number }
-export const Measures: RecordFactory<MeasuresProps> = Record({
-  length: null,
-  width: null,
-  thickness: null
-})
+export type Measures = {|
+  +length: ?number,
+  +width: ?number,
+  +thickness: ?number
+|}
 
 type LineProps = { type: string, prefix: string, content: List<any> }
 export const Line: RecordFactory<LineProps> = Record({
@@ -161,7 +166,7 @@ export class Text extends TextRecord {
   }
 }
 
-type UncuratedReferenceProps = { document: string, pages: List<String> }
+type UncuratedReferenceProps = { document: string, pages: List<number> }
 export const UncuratedReference: RecordFactory<UncuratedReferenceProps> = Record(
   { document: '', pages: List() }
 )
@@ -174,7 +179,7 @@ type FragmentProps = {
   publication: string,
   joins: List<string>,
   description: string,
-  measures: RecordOf<MeasuresProps>,
+  measures: Measures,
   collection: '',
   script: '',
   folios: List<Folio>,
@@ -195,7 +200,7 @@ const fragmentDefaults: FragmentProps = {
   publication: '',
   joins: List(),
   description: '',
-  measures: Measures(),
+  measures: { length: null, width: null, thickness: null },
   collection: '',
   script: '',
   folios: List(),
