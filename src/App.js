@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+import queryString from 'query-string'
 
 import Header from './Header'
 import Callback from './auth/Callback'
@@ -29,6 +30,13 @@ function parseChapterParams(params) {
     ...parseTextParams(params),
     stage: decodeURIComponent(params.stage),
     name: decodeURIComponent(params.chapter)
+  }
+}
+
+function parseFragmentSearchParams(location) {
+  return {
+    number: queryString.parse(location.search).number,
+    transliteration: queryString.parse(location.search).transliteration
   }
 }
 
@@ -115,10 +123,10 @@ function App({
           />
           <Route
             path="/fragmentarium/search"
-            render={props => (
+            render={({ location }) => (
               <FragmentariumSearch
                 fragmentService={fragmentService}
-                {...props}
+                {...parseFragmentSearchParams(location)}
               />
             )}
           />
@@ -130,8 +138,11 @@ function App({
           />
           <Route
             path="/fragmentarium"
-            render={props => (
-              <Fragmentarium fragmentService={fragmentService} {...props} />
+            render={({ location }) => (
+              <Fragmentarium
+                fragmentService={fragmentService}
+                {...parseFragmentSearchParams(location)}
+              />
             )}
           />
           <Route

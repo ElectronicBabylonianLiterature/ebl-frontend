@@ -1,6 +1,5 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import queryString from 'query-string'
 import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import Image from './Image'
@@ -11,9 +10,7 @@ import NeedsRevision from './NeedsRevision'
 
 import './Fragmentarium.css'
 
-function Fragmentarium({ location, fragmentService }) {
-  const number = queryString.parse(location.search).number
-  const transliteration = queryString.parse(location.search).transliteration
+function Fragmentarium({ number, transliteration, fragmentService }) {
   return (
     <AppContent crmbs={['Fragmentarium']}>
       <SessionContext.Consumer>

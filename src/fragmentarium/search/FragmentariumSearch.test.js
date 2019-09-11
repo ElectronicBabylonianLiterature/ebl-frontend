@@ -5,6 +5,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
+import { transliteration } from './../test-record'
 
 let fragmentService
 let session
@@ -12,12 +13,16 @@ let container
 let element
 let statistics
 
-async function renderFragmentariumSearch(path = '/fragmentarium/search') {
+async function renderFragmentariumSearch({ number, transliteration }) {
   const FragmentariumSearchWithRouter = withRouter(FragmentariumSearch)
   element = render(
-    <MemoryRouter initialEntries={[path]}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <FragmentariumSearchWithRouter fragmentService={fragmentService} />
+        <FragmentariumSearchWithRouter
+          number={number}
+          transliteration={transliteration}
+          fragmentService={fragmentService}
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )
@@ -54,7 +59,7 @@ describe('Search', () => {
       fragmentService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
-      renderFragmentariumSearch(`/fragmentarium/search?number=${number}`)
+      renderFragmentariumSearch({ number })
     })
 
     it('Displays result on successfull query', async () => {
@@ -79,9 +84,7 @@ describe('Search', () => {
       fragmentService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
-      renderFragmentariumSearch(
-        `/fragmentarium/search?transliteration=${transliteration}`
-      )
+      renderFragmentariumSearch({ transliteration })
     })
 
     it('Displays result on successfull query', async () => {

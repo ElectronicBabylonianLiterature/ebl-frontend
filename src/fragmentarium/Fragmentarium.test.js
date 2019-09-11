@@ -30,11 +30,12 @@ beforeEach(async () => {
   fragmentService = {
     statistics: jest.fn(),
     findImage: jest.fn(),
-    fetchLatestTransliterations: jest.fn()
+    fetchLatestTransliterations: jest.fn(),
+    fetchNeedsRevision: jest.fn()
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: () => false
+    isAllowedToTransliterateFragments: jest.fn()
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))
@@ -43,6 +44,7 @@ beforeEach(async () => {
 describe('Statistics', () => {
   beforeEach(async () => {
     session.isAllowedToReadFragments.mockReturnValue(false)
+    session.isAllowedToTransliterateFragments.mockReturnValue(false)
     await renderFragmentarium()
   })
 
@@ -57,8 +59,9 @@ describe('Statistics', () => {
   })
 })
 
-describe('Latest additions', () => {
+describe('Fragment lists', () => {
   let latest
+  let needsRevision
 
   beforeEach(async () => {
     latest = await factory.build('fragment')
@@ -66,10 +69,21 @@ describe('Latest additions', () => {
     fragmentService.fetchLatestTransliterations.mockReturnValueOnce(
       Promise.resolve([latest])
     )
+
+    needsRevision = await factory.build('fragment')
+    session.isAllowedToTransliterateFragments.mockReturnValue(true)
+    fragmentService.fetchNeedsRevision.mockReturnValueOnce(
+      Promise.resolve([needsRevision])
+    )
+
     await renderFragmentarium()
   })
 
   test('Shows the latest additions', () => {
     expect(container).toHaveTextContent(latest.number)
+  })
+
+  test('Shows the fragments needing revision.', () => {
+    expect(container).toHaveTextContent(needsRevision.number)
   })
 })
