@@ -19,5 +19,5 @@ function LatestTransliterations({ data }) {
 }
 
 export default withData(LatestTransliterations, props =>
-  props.fragmentService.fetchLatestTransliterations()
+  props.fragmentSearchService.fetchLatestTransliterations()
 )

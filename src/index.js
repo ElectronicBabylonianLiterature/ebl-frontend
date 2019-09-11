@@ -21,6 +21,7 @@ import SentryErrorReporter from 'common/SentryErrorReporter'
 import BibliographyService from 'bibliography/BibliographyService'
 import TextService from 'corpus/TextService'
 import createAuth0Config from 'auth/createAuth0Config'
+import FragmentSearchService from 'fragmentarium/FragmentSearchService'
 
 SentryErrorReporter.init(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
 
@@ -44,6 +45,7 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
+const fragmentSearchService = new FragmentSearchService(fragmentRepository)
 const wordService = new WordService(wordRepository)
 const textService = new TextService(apiClient)
 
@@ -55,6 +57,7 @@ ReactDOM.render(
           auth={auth}
           wordService={wordService}
           fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
           bibliographyService={bibliographyService}
           textService={textService}
         />

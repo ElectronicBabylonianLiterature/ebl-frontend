@@ -14,6 +14,7 @@ let fragment
 let element
 let container
 let fragmentService
+let fragmentSearchService
 let session
 let onChange
 let updatedFragment
@@ -40,6 +41,7 @@ beforeEach(async () => {
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     hydrateReferences: () => Promise.resolve(references)
   }
+  fragmentSearchService = {}
   session = {
     isAllowedToTransliterateFragments: () => true,
     isAllowedToLemmatizeFragments: () => false,
@@ -58,6 +60,7 @@ beforeEach(async () => {
           <CuneiformFragment
             fragment={fragment}
             fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
             onChange={onChange}
           />
         </SessionContext.Provider>

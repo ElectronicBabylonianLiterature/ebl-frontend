@@ -12,6 +12,7 @@ import {
   UncuratedReference
 } from './fragment'
 import type { FragmentInfo } from './fragment'
+import type { FragmentInfosPromise } from './FragmentSearchService'
 
 function createMeasures(dto) {
   return Measures({
@@ -89,31 +90,31 @@ class FragmentRepository {
       .then(createFragment)
   }
 
-  random(): $ReadOnlyArray<FragmentInfo> {
+  random(): FragmentInfosPromise {
     return this._fetch({ random: true })
   }
 
-  interesting(): $ReadOnlyArray<FragmentInfo> {
+  interesting(): FragmentInfosPromise {
     return this._fetch({ interesting: true })
   }
 
-  fetchLatestTransliterations(): $ReadOnlyArray<FragmentInfo> {
+  fetchLatestTransliterations(): FragmentInfosPromise {
     return this._fetch({ latest: true })
   }
 
-  fetchNeedsRevision(): $ReadOnlyArray<FragmentInfo> {
+  fetchNeedsRevision(): FragmentInfosPromise {
     return this._fetch({ needsRevision: true })
   }
 
-  searchNumber(number: string): $ReadOnlyArray<FragmentInfo> {
+  searchNumber(number: string): FragmentInfosPromise {
     return this._fetch({ number })
   }
 
-  searchTransliteration(transliteration: string): $ReadOnlyArray<FragmentInfo> {
+  searchTransliteration(transliteration: string): FragmentInfosPromise {
     return this._fetch({ transliteration })
   }
 
-  _fetch(params: any): Promise<$ReadOnlyArray<FragmentInfo>> {
+  _fetch(params: any): FragmentInfosPromise {
     return this.apiClient.fetchJson(
       `/fragments?${queryString.stringify(params)}`,
       true

@@ -16,7 +16,12 @@ const FragmentWithData = withData(
   }
 )
 
-export default function FragmentView({ match, location, fragmentService }) {
+export default function FragmentView({
+  match,
+  location,
+  fragmentService,
+  fragmentSearchService
+}) {
   const number = decodeURIComponent(match.params.id)
   const folioName = queryString.parse(location.search).folioName
   const folioNumber = queryString.parse(location.search).folioNumber
@@ -40,6 +45,7 @@ export default function FragmentView({ match, location, fragmentService }) {
             <FragmentWithData
               number={number}
               fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
               activeFolio={activeFolio}
             />
           ) : (

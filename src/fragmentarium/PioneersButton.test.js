@@ -8,13 +8,13 @@ import { whenClicked } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
 import PioneersButton from './PioneersButton'
 
-let fragmentService
+let fragmentSearchService
 let session
 let element
 let history
 
 beforeEach(async () => {
-  fragmentService = {
+  fragmentSearchService = {
     interesting: jest.fn()
   }
   session = {
@@ -27,7 +27,9 @@ beforeEach(async () => {
 it('Redirects to interesting when clicked', async () => {
   renderPioneersButton(true)
   const fragment = await factory.build('fragment')
-  fragmentService.interesting.mockReturnValueOnce(Promise.resolve(fragment))
+  fragmentSearchService.interesting.mockReturnValueOnce(
+    Promise.resolve(fragment)
+  )
   await whenClicked(element, 'Path of the Pioneers')
     .expect(history.push)
     .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
@@ -43,7 +45,7 @@ function renderPioneersButton(isAllowedTo) {
   element = render(
     <Router history={history}>
       <SessionContext.Provider value={session}>
-        <PioneersButton fragmentService={fragmentService} />
+        <PioneersButton fragmentSearchService={fragmentSearchService} />
       </SessionContext.Provider>
     </Router>
   )

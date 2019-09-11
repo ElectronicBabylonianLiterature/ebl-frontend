@@ -37,7 +37,8 @@ function TransliterationSearchResult({ data }) {
 export default withData(
   ({ transliteration, data }) =>
     transliteration ? <TransliterationSearchResult data={data} /> : null,
-  props => props.fragmentService.searchTransliteration(props.transliteration),
+  props =>
+    props.fragmentSearchService.searchTransliteration(props.transliteration),
   {
     shouldUpdate: (prevProps, props) =>
       prevProps.transliteration !== props.transliteration,

@@ -19,5 +19,5 @@ function NeedsRevision({ data }) {
 }
 
 export default withData(NeedsRevision, props =>
-  props.fragmentService.fetchNeedsRevision()
+  props.fragmentSearchService.fetchNeedsRevision()
 )

@@ -16,7 +16,7 @@ export default withData(
         }}
       />
     ) : null,
-  props => props.fragmentService.searchNumber(props.number),
+  props => props.fragmentSearchService.searchNumber(props.number),
   {
     shouldUpdate: (prevProps, props) => prevProps.number !== props.number,
     filter: props => !_.isEmpty(props.number),

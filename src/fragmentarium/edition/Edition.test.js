@@ -10,19 +10,19 @@ import Edition from './Edition'
 let fragment
 let element
 let container
-let fragmentService
+let fragmentSearchService
 let updateTransliteration
 
 beforeEach(async () => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
-  fragmentService = {}
+  fragmentSearchService = {}
   fragment = await factory.build('fragment', { atf: '1. ku' })
   element = render(
     <MemoryRouter>
       <Edition
         fragment={fragment}
-        fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
         updateTransliteration={updateTransliteration}
       />
     </MemoryRouter>

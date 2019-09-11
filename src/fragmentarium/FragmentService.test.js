@@ -48,45 +48,6 @@ const fragmentService = new FragmentService(
 const testData = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
   [
-    'random',
-    [],
-    fragmentRepository.random,
-    resultStub,
-    null,
-    Promise.resolve([resultStub])
-  ],
-  [
-    'interesting',
-    [],
-    fragmentRepository.interesting,
-    resultStub,
-    null,
-    Promise.resolve([resultStub])
-  ],
-  [
-    'random',
-    [],
-    fragmentRepository.random,
-    undefined,
-    null,
-    Promise.resolve([])
-  ],
-  [
-    'interesting',
-    [],
-    fragmentRepository.interesting,
-    undefined,
-    null,
-    Promise.resolve([])
-  ],
-  ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
-  [
-    'searchTransliteration',
-    ['kur'],
-    fragmentRepository.searchTransliteration,
-    resultStub
-  ],
-  [
     'updateTransliteration',
     ['K.1', '1. kur', 'notes'],
     fragmentRepository.updateTransliteration,
@@ -128,14 +89,7 @@ const testData = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
     [resultStub]
-  ],
-  [
-    'fetchLatestTransliterations',
-    [],
-    fragmentRepository.fetchLatestTransliterations,
-    resultStub
-  ],
-  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub]
+  ]
 ]
 
 testDelegation(fragmentService, testData)

@@ -7,6 +7,7 @@ import SessionContext from 'auth/SessionContext'
 import Fragmentarium from './Fragmentarium'
 
 let fragmentService
+let fragmentSearchService
 let session
 let container
 let element
@@ -17,7 +18,10 @@ async function renderFragmentarium() {
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <FragmentariumWithRouter fragmentService={fragmentService} />
+        <FragmentariumWithRouter
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )
@@ -29,7 +33,9 @@ beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
     statistics: jest.fn(),
-    findImage: jest.fn(),
+    findImage: jest.fn()
+  }
+  fragmentSearchService = {
     fetchLatestTransliterations: jest.fn(),
     fetchNeedsRevision: jest.fn()
   }
@@ -66,13 +72,13 @@ describe('Fragment lists', () => {
   beforeEach(async () => {
     latest = await factory.build('fragment')
     session.isAllowedToReadFragments.mockReturnValue(true)
-    fragmentService.fetchLatestTransliterations.mockReturnValueOnce(
+    fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
       Promise.resolve([latest])
     )
 
     needsRevision = await factory.build('fragment')
     session.isAllowedToTransliterateFragments.mockReturnValue(true)
-    fragmentService.fetchNeedsRevision.mockReturnValueOnce(
+    fragmentSearchService.fetchNeedsRevision.mockReturnValueOnce(
       Promise.resolve([needsRevision])
     )
 

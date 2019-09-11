@@ -13,22 +13,22 @@ const expectedColumns = {
   script: 'Script',
   description: 'Description'
 }
-let fragmentService
+let fragmentSearchService
 let container
 let element
 let fragments
 
 beforeEach(async () => {
   fragments = await factory.buildMany('fragment', numberOfFragments)
-  fragmentService = {
+  fragmentSearchService = {
     fetchLatestTransliterations: jest.fn()
   }
-  fragmentService.fetchLatestTransliterations.mockReturnValueOnce(
+  fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
   element = render(
     <MemoryRouter>
-      <LatestTransliterations fragmentService={fragmentService} />
+      <LatestTransliterations fragmentSearchService={fragmentSearchService} />
     </MemoryRouter>
   )
   container = element.container

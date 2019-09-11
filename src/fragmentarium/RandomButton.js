@@ -16,7 +16,7 @@ class RandomButton extends Component {
   click = event => {
     this.fetchPromise.cancel()
     this.setState({ error: null, loading: true })
-    this.fetchPromise = this.props.fragmentService[this.props.method]()
+    this.fetchPromise = this.props.fragmentSearchService[this.props.method]()
       .then(fragment =>
         this.props.history.push(createFragmentUrl(fragment.number))
       )

@@ -44,6 +44,7 @@ function App({
   auth,
   wordService,
   fragmentService,
+  fragmentSearchService,
   bibliographyService,
   textService
 }) {
@@ -126,6 +127,7 @@ function App({
             render={({ location }) => (
               <FragmentariumSearch
                 fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
               />
             )}
@@ -133,7 +135,11 @@ function App({
           <Route
             path="/fragmentarium/:id"
             render={props => (
-              <FragmentView fragmentService={fragmentService} {...props} />
+              <FragmentView
+                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
+                {...props}
+              />
             )}
           />
           <Route
@@ -141,6 +147,7 @@ function App({
             render={({ location }) => (
               <Fragmentarium
                 fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
               />
             )}

@@ -8,25 +8,25 @@ import { fromJS, Seq } from 'immutable'
 
 const transliteration = 'ma i-ra\nka li'
 let fragments
-let fragmentService
+let fragmentSearchService
 let element
 
 beforeEach(async () => {
-  fragmentService = {
+  fragmentSearchService = {
     searchTransliteration: jest.fn()
   }
   fragments = await factory.buildMany('fragment', 2, [
     { matchingLines: fromJS([['line 1', 'line 2']]) },
     { matchingLines: fromJS([['line 3'], ['line 4']]) }
   ])
-  fragmentService.searchTransliteration.mockReturnValueOnce(
+  fragmentSearchService.searchTransliteration.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
   element = render(
     <MemoryRouter>
       <TransliterationSearch
         transliteration={transliteration}
-        fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
       />
     </MemoryRouter>
   )
@@ -34,7 +34,9 @@ beforeEach(async () => {
 })
 
 it('Queries the API with given parameters', () => {
-  expect(fragmentService.searchTransliteration).toBeCalledWith(transliteration)
+  expect(fragmentSearchService.searchTransliteration).toBeCalledWith(
+    transliteration
+  )
 })
 
 it('Links results', () => {

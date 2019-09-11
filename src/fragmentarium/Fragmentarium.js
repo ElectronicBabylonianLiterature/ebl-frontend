@@ -10,7 +10,12 @@ import NeedsRevision from './NeedsRevision'
 
 import './Fragmentarium.css'
 
-function Fragmentarium({ number, transliteration, fragmentService }) {
+function Fragmentarium({
+  number,
+  transliteration,
+  fragmentService,
+  fragmentSearchService
+}) {
   return (
     <AppContent crmbs={['Fragmentarium']}>
       <SessionContext.Consumer>
@@ -22,7 +27,7 @@ function Fragmentarium({ number, transliteration, fragmentService }) {
                   <SearchGroup
                     number={number}
                     transliteration={transliteration}
-                    fragmentService={fragmentService}
+                    fragmentSearchService={fragmentSearchService}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>
@@ -39,14 +44,18 @@ function Fragmentarium({ number, transliteration, fragmentService }) {
             {session.isAllowedToReadFragments() && (
               <Row>
                 <Col>
-                  <LatestTransliterations fragmentService={fragmentService} />
+                  <LatestTransliterations
+                    fragmentSearchService={fragmentSearchService}
+                  />
                 </Col>
               </Row>
             )}
             {session.isAllowedToTransliterateFragments() && (
               <Row>
                 <Col>
-                  <NeedsRevision fragmentService={fragmentService} />
+                  <NeedsRevision
+                    fragmentSearchService={fragmentSearchService}
+                  />
                 </Col>
               </Row>
             )}

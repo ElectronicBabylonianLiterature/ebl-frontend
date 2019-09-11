@@ -9,17 +9,20 @@ import './SearchGroup.css'
 export default function SearchGroup({
   number,
   transliteration,
-  fragmentService
+  fragmentSearchService
 }) {
   return (
     <>
       <NumberSearchForm number={number} />
       <TransliterationSearchForm transliteration={transliteration} />
       <div className="SearchGroup__button-bar">
-        <RandomButton fragmentService={fragmentService} method="random">
+        <RandomButton
+          fragmentSearchService={fragmentSearchService}
+          method="random"
+        >
           I'm feeling lucky
         </RandomButton>{' '}
-        <PioneersButton fragmentService={fragmentService} />
+        <PioneersButton fragmentSearchService={fragmentSearchService} />
       </div>
     </>
   )

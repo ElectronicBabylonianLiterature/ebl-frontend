@@ -13,18 +13,21 @@ const message = 'Error'
 const method = 'random'
 
 let history
-let fragmentService
+let fragmentSearchService
 let element
 
 beforeEach(() => {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  fragmentService = {
+  fragmentSearchService = {
     random: jest.fn()
   }
   element = render(
     <Router history={history}>
-      <RandomButton fragmentService={fragmentService} method={method}>
+      <RandomButton
+        fragmentSearchService={fragmentSearchService}
+        method={method}
+      >
         {buttonText}
       </RandomButton>
     </Router>
@@ -36,7 +39,7 @@ describe('On successful request', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment')
-    fragmentService.random.mockReturnValueOnce(Promise.resolve(fragment))
+    fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
   })
 
   it('Redirects to the fragment when clicked', async () => {
@@ -48,7 +51,7 @@ describe('On successful request', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    fragmentService.random.mockReturnValueOnce(
+    fragmentSearchService.random.mockReturnValueOnce(
       Promise.reject(new Error(message))
     )
     clickNth(element, buttonText, 0)
@@ -63,7 +66,7 @@ describe('On failed request', () => {
 describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
-    fragmentService.random.mockReturnValueOnce(promise)
+    fragmentSearchService.random.mockReturnValueOnce(promise)
     clickNth(element, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)

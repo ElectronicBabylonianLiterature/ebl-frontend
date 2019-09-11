@@ -8,6 +8,7 @@ import SessionContext from 'auth/SessionContext'
 import { transliteration } from './../test-record'
 
 let fragmentService
+let fragmentSearchService
 let session
 let container
 let element
@@ -22,6 +23,7 @@ async function renderFragmentariumSearch({ number, transliteration }) {
           number={number}
           transliteration={transliteration}
           fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
         />
       </SessionContext.Provider>
     </MemoryRouter>
@@ -33,7 +35,9 @@ async function renderFragmentariumSearch({ number, transliteration }) {
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
-    statistics: jest.fn(),
+    statistics: jest.fn()
+  }
+  fragmentSearchService = {
     searchNumber: jest.fn(),
     searchTransliteration: jest.fn()
   }
@@ -56,7 +60,7 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragment', 2)
-      fragmentService.searchNumber.mockReturnValueOnce(
+      fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
       renderFragmentariumSearch({ number })
@@ -81,7 +85,7 @@ describe('Search', () => {
         { matchingLines: [['line 1', 'line 2']] },
         { matchingLines: [['line 3'], ['line 4']] }
       ])
-      fragmentService.searchTransliteration.mockReturnValueOnce(
+      fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
       renderFragmentariumSearch({ transliteration })

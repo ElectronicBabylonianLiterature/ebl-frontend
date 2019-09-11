@@ -8,7 +8,7 @@ import TransliterationHeader from 'fragmentarium/view/TransliterationHeader'
 
 function Edition({
   fragment,
-  fragmentService,
+  fragmentSearchService,
   updateTransliteration,
   disabled
 }) {
@@ -22,7 +22,7 @@ function Edition({
         disable={disabled}
       />
       <p className="Edition__navigation">
-        <PioneersButton fragmentService={fragmentService} />
+        <PioneersButton fragmentSearchService={fragmentSearchService} />
       </p>
     </Fragment>
   )

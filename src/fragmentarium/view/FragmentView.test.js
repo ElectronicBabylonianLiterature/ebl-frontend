@@ -12,6 +12,7 @@ const message = 'message'
 const fragmentNumber = 'K,K.1'
 
 let fragmentService
+let fragmentSearchService
 let session
 let container
 let element
@@ -29,6 +30,7 @@ function renderFragmentView(
               match={match}
               location={location}
               fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
             />
           )}
         />
@@ -46,6 +48,7 @@ beforeEach(async () => {
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
+  fragmentSearchService = {}
   session = {
     isAllowedToReadFragments: jest.fn(),
     isAllowedToTransliterateFragments: () => false,

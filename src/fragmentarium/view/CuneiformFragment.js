@@ -46,7 +46,13 @@ function Info({ fragment }) {
   )
 }
 
-function EditorTabs({ fragment, fragmentService, onSave, disabled }) {
+function EditorTabs({
+  fragment,
+  fragmentService,
+  fragmentSearchService,
+  onSave,
+  disabled
+}) {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
     onSave(
@@ -93,6 +99,7 @@ function EditorTabs({ fragment, fragmentService, onSave, disabled }) {
                 fragment={fragment}
                 fragmentService={fragmentService}
                 updateTransliteration={updateTransliteration}
+                fragmentSearchService={fragmentSearchService}
                 disabled={disabled}
               />
             </ContentSection>
@@ -137,6 +144,7 @@ function EditorTabs({ fragment, fragmentService, onSave, disabled }) {
 function CuneiformFragment({
   fragment,
   fragmentService,
+  fragmentSearchService,
   activeFolio,
   onSave,
   saving,
@@ -152,6 +160,7 @@ function CuneiformFragment({
           <EditorTabs
             fragment={fragment}
             fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
             onSave={onSave}
             disabled={saving}
           />
@@ -173,6 +182,7 @@ function CuneiformFragment({
 function CuneiformFragmentController({
   fragment,
   fragmentService,
+  fragmentSearchService,
   activeFolio
 }) {
   const [currentFragment, setFragment] = useState(fragment)
@@ -211,6 +221,7 @@ function CuneiformFragmentController({
       <CuneiformFragment
         fragment={currentFragment}
         fragmentService={fragmentService}
+        fragmentSearchService={fragmentSearchService}
         activeFolio={activeFolio}
         onSave={handleSave}
         saving={isSaving}

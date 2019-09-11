@@ -8,7 +8,12 @@ import replaceTransliteration from './replaceTransliteration'
 
 import './FragmentariumSearch.css'
 
-function FragmentariumSearch({ number, transliteration, fragmentService }) {
+function FragmentariumSearch({
+  number,
+  transliteration,
+  fragmentService,
+  fragmentSearchService
+}) {
   const replacedTransliteration =
     transliteration && replaceTransliteration(transliteration)
   return (
@@ -21,13 +26,16 @@ function FragmentariumSearch({ number, transliteration, fragmentService }) {
                 <SearchGroup
                   number={number}
                   transliteration={replacedTransliteration}
-                  fragmentService={fragmentService}
+                  fragmentSearchService={fragmentSearchService}
                 />
               </header>
-              <NumberSearch number={number} fragmentService={fragmentService} />
+              <NumberSearch
+                number={number}
+                fragmentSearchService={fragmentSearchService}
+              />
               <TransliterationSearch
                 transliteration={replacedTransliteration}
-                fragmentService={fragmentService}
+                fragmentSearchService={fragmentSearchService}
               />
             </section>
           ) : (
