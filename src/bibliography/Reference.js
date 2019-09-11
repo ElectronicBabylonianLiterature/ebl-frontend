@@ -3,7 +3,7 @@ import _ from 'lodash'
 // $FlowFixMe
 import { Draft, immerable, produce } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 
 type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 const defaultType = 'DISCUSSION'

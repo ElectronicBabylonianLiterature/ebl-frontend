@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-test('Cancels the promise on unmount', () => {
+test('Cancels the promise on unmount', async () => {
   const promise = new Promise(_.noop)
   const TestComponent = () => {
     const [setPromise, cancelPromise] = usePromiseEffect()
@@ -14,10 +14,10 @@ test('Cancels the promise on unmount', () => {
   }
   const element = render(<TestComponent />)
   element.unmount()
-  expect(promise.isCancelled()).toBe(true)
+  expect((await promise.reflect()).isCancelled()).toBe(true)
 })
 
-test('Cancels the promise when cancelPromise is called', () => {
+test('Cancels the promise when cancelPromise is called', async () => {
   const promise = new Promise(_.noop)
   const TestComponent = () => {
     const [setPromise, cancelPromise] = usePromiseEffect()
@@ -26,5 +26,5 @@ test('Cancels the promise when cancelPromise is called', () => {
     return 'Test'
   }
   const element = render(<TestComponent />)
-  expect(promise.isCancelled()).toBe(true)
+  expect((await promise.reflect()).isCancelled()).toBe(true)
 })

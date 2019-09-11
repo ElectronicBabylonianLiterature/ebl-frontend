@@ -1,6 +1,6 @@
 // @flow
 import _ from 'lodash'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 import type { FragmentInfo } from './fragment'
 
 export type FragmentInfosPromise = Promise<$ReadOnlyArray<FragmentInfo>>
