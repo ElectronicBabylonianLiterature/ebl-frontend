@@ -1,13 +1,28 @@
+// @flow
 import React, { useState } from 'react'
+import type { Node } from 'react'
 import { Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import ErrorAlert from 'common/ErrorAlert'
-import Spinner from 'common/Spinner'
-import { createFragmentUrl } from 'fragmentarium/FragmentLink'
-import usePromiseEffect from 'common/usePromiseEffect'
+import ErrorAlert from '../common/ErrorAlert'
+import Spinner from '../common/Spinner'
+import { createFragmentUrl } from './FragmentLink'
+import usePromiseEffect from '../common/usePromiseEffect'
+import type { FragmentInfo } from './fragment'
 
-function FragmentButton({ query, history, children }) {
+interface History {
+  push(string): void;
+}
+
+function FragmentButton({
+  query,
+  history,
+  children
+}: {
+  query: () => Promise<FragmentInfo>,
+  history: History,
+  children?: Node
+}) {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
@@ -24,13 +39,16 @@ function FragmentButton({ query, history, children }) {
     cancelPromise()
     setIsLoading(true)
     setError(null)
-    setPromise(query().then(navigateToFragment).catch(onError)
+    setPromise(
+      query()
+        .then(navigateToFragment)
+        .catch(onError)
     )
   }
 
   return (
     <>
-      <Button variant='primary' onClick={handleClick}>
+      <Button variant="primary" onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Button>
       <ErrorAlert error={error} />

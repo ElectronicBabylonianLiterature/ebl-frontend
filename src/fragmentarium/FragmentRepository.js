@@ -11,8 +11,10 @@ import {
   Folio,
   UncuratedReference
 } from './fragment'
-import type { FragmentInfo } from './fragment'
-import type { FragmentInfosPromise } from './FragmentSearchService'
+import type {
+  FragmentInfosPromise,
+  FragmentInfoRepository
+} from './FragmentSearchService'
 
 function createMeasures(dto) {
   return Measures({
@@ -70,7 +72,7 @@ function createFragmentPath(number, ...subResources) {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
-class FragmentRepository {
+class FragmentRepository implements FragmentInfoRepository {
   +apiClient
 
   constructor(apiClient: {

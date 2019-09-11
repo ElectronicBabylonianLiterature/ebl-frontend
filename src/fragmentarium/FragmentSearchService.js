@@ -1,21 +1,24 @@
 // @flow
 import _ from 'lodash'
 import { Promise } from 'bluebird'
+import type { FragmentInfo } from './fragment'
 
-type FragmentInfosPromise = Promise<$ReadOnlyArray<FragmentInfo>>
-type FragmentInfoPromise = Promise<FragmentInfo>
+export type FragmentInfosPromise = Promise<$ReadOnlyArray<FragmentInfo>>
+export type FragmentInfoPromise = Promise<FragmentInfo>
+
+export interface FragmentInfoRepository {
+  random(): FragmentInfosPromise;
+  interesting(): FragmentInfosPromise;
+  searchNumber(string): FragmentInfosPromise;
+  searchTransliteration(string): FragmentInfosPromise;
+  fetchLatestTransliterations(): FragmentInfosPromise;
+  fetchNeedsRevision(): FragmentInfosPromise;
+}
 
 export default class FragmentSearchService {
-  +#fragmentRepository
+  #fragmentRepository
 
-  constructor(fragmentRepository: {
-    random: () => FragmentInfosPromise,
-    interesting: () => FragmentInfosPromise,
-    searchNumber: string => FragmentInfosPromise,
-    searchTransliteration: string => FragmentInfosPromise,
-    fetchLatestTransliterations: () => FragmentInfosPromise,
-    fetchNeedsRevision: () => FragmentInfosPromise
-  }) {
+  constructor(fragmentRepository: FragmentInfoRepository) {
     this.#fragmentRepository = fragmentRepository
   }
 

@@ -1,9 +1,9 @@
-// @flow
 import _ from 'lodash'
 import { List } from 'immutable'
 import { Promise } from 'bluebird'
 import Lemma from './lemmatization/Lemma'
 import { createReference } from '../bibliography/Reference'
+import { Text } from './fragment'
 
 class FragmentService {
   constructor(
@@ -111,7 +111,7 @@ class FragmentService {
         text,
         line => line.map(token => token.get('uniqueLemma', List())),
         uniqueLemma =>
-          this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
+          this.#wordRepository.find(uniqueLemma).then(word => new Lemma(word))
       )
     )
   }
@@ -124,7 +124,7 @@ class FragmentService {
           .map(token => token.get('value'))
       ),
       value =>
-        this.fragmentRepository
+        this.#fragmentRepository
           .findLemmas(value)
           .then(lemmas => [
             value,
@@ -137,7 +137,7 @@ class FragmentService {
 
   hydrateReferences(references) {
     const hydrate = reference =>
-      createReference(reference, this.bibliographyService)
+      createReference(reference, this.#bibliographyService)
     return Promise.all(references.map(hydrate)).then(List)
   }
 }
