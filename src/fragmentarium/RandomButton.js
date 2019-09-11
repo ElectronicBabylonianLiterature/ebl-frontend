@@ -1,40 +1,44 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
 import { createFragmentUrl } from 'fragmentarium/FragmentLink'
+import usePromiseEffect from 'common/usePromiseEffect'
 
-class RandomButton extends Component {
-  fetchPromise = Promise.resolve()
-  state = {
-    error: null,
-    loading: false
+function RandomButton({ fragmentSearchService, method, history, children }) {
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [setPromise, cancelPromise] = usePromiseEffect()
+
+  const onError = error => {
+    setIsLoading(false)
+    setError(error)
   }
 
-  click = event => {
-    this.fetchPromise.cancel()
-    this.setState({ error: null, loading: true })
-    this.fetchPromise = this.props.fragmentSearchService[this.props.method]()
-      .then(fragment =>
-        this.props.history.push(createFragmentUrl(fragment.number))
-      )
-      .catch(error => this.setState({ error: error, loading: false }))
-  }
+  const navigateToFragment = fragmentInfo =>
+    history.push(createFragmentUrl(fragmentInfo.number))
 
-  componentWillUnmount = () => this.fetchPromise.cancel()
-
-  render() {
-    return (
-      <Fragment>
-        <Button variant="primary" onClick={this.click}>
-          {this.state.loading ? <Spinner /> : this.props.children}
-        </Button>
-        <ErrorAlert error={this.state.error} />
-      </Fragment>
+  const handleClick = event => {
+    cancelPromise()
+    setIsLoading(true)
+    setError(null)
+    setPromise(
+      fragmentSearchService[method]()
+        .then(navigateToFragment)
+        .catch(onError)
     )
   }
+
+  return (
+    <>
+      <Button variant="primary" onClick={handleClick}>
+        {isLoading ? <Spinner /> : children}
+      </Button>
+      <ErrorAlert error={error} />
+    </>
+  )
 }
 
 export default withRouter(RandomButton)

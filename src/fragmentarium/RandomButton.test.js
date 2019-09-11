@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, waitForElement } from '@testing-library/react'
+import { render, waitForElement, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
@@ -22,16 +22,18 @@ beforeEach(() => {
   fragmentSearchService = {
     random: jest.fn()
   }
-  element = render(
-    <Router history={history}>
-      <RandomButton
-        fragmentSearchService={fragmentSearchService}
-        method={method}
-      >
-        {buttonText}
-      </RandomButton>
-    </Router>
-  )
+  act(() => {
+    element = render(
+      <Router history={history}>
+        <RandomButton
+          fragmentSearchService={fragmentSearchService}
+          method={method}
+        >
+          {buttonText}
+        </RandomButton>
+      </Router>
+    )
+  })
 })
 
 describe('On successful request', () => {
