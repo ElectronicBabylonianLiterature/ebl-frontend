@@ -1,6 +1,5 @@
 import 'jest-date-mock'
 import '@testing-library/jest-dom/extend-expect'
-import '@testing-library/react/cleanup-after-each'
 import * as bluebird from 'bluebird'
 
 import 'test-helpers/bibliography-fixtures'

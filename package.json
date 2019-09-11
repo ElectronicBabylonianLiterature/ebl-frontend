@@ -51,7 +51,7 @@
     "react-select": "^3.0.4"
   },
   "devDependencies": {
-    "@testing-library/react": "^8.0.1",
+    "@testing-library/react": "^9.1.4",
     "chance": "^1.0.16",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-flowtype": "^4.3.0",
