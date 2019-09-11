@@ -3,7 +3,6 @@ import { List } from 'immutable'
 import { Promise } from 'bluebird'
 import Lemma from './lemmatization/Lemma'
 import { createReference } from '../bibliography/Reference'
-import { Text } from './fragment'
 
 class FragmentService {
   constructor(
