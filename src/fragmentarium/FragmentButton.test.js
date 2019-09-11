@@ -6,31 +6,26 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { whenClicked, clickNth } from 'test-helpers/utils'
-import RandomButton from './RandomButton'
+import FragmentButton from './FragmentButton'
 
 const buttonText = "I'm feeling lucky"
 const message = 'Error'
 const method = 'random'
 
 let history
-let fragmentSearchService
+let query
 let element
 
 beforeEach(() => {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  fragmentSearchService = {
-    random: jest.fn()
-  }
+  query = jest.fn()
   act(() => {
     element = render(
       <Router history={history}>
-        <RandomButton
-          fragmentSearchService={fragmentSearchService}
-          method={method}
-        >
+        <FragmentButton query={query}>
           {buttonText}
-        </RandomButton>
+        </FragmentButton>
       </Router>
     )
   })
@@ -41,7 +36,7 @@ describe('On successful request', () => {
 
   beforeEach(async () => {
     fragment = await factory.build('fragment')
-    fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
+    query.mockReturnValueOnce(Promise.resolve(fragment))
   })
 
   it('Redirects to the fragment when clicked', async () => {
@@ -53,7 +48,7 @@ describe('On successful request', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    fragmentSearchService.random.mockReturnValueOnce(
+    query.mockReturnValueOnce(
       Promise.reject(new Error(message))
     )
     clickNth(element, buttonText, 0)
@@ -68,7 +63,7 @@ describe('On failed request', () => {
 describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
-    fragmentSearchService.random.mockReturnValueOnce(promise)
+    query.mockReturnValueOnce(promise)
     clickNth(element, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)

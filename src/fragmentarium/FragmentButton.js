@@ -7,7 +7,7 @@ import Spinner from 'common/Spinner'
 import { createFragmentUrl } from 'fragmentarium/FragmentLink'
 import usePromiseEffect from 'common/usePromiseEffect'
 
-function RandomButton({ fragmentSearchService, method, history, children }) {
+function FragmentButton({ query, history, children }) {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
@@ -24,16 +24,13 @@ function RandomButton({ fragmentSearchService, method, history, children }) {
     cancelPromise()
     setIsLoading(true)
     setError(null)
-    setPromise(
-      fragmentSearchService[method]()
-        .then(navigateToFragment)
-        .catch(onError)
+    setPromise(query().then(navigateToFragment).catch(onError)
     )
   }
 
   return (
     <>
-      <Button variant="primary" onClick={handleClick}>
+      <Button variant='primary' onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Button>
       <ErrorAlert error={error} />
@@ -41,4 +38,4 @@ function RandomButton({ fragmentSearchService, method, history, children }) {
   )
 }
 
-export default withRouter(RandomButton)
+export default withRouter(FragmentButton)

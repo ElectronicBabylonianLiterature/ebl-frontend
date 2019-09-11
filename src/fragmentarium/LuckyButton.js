@@ -2,13 +2,13 @@ import React from 'react'
 import SessionContext from 'auth/SessionContext'
 import FragmentButton from './FragmentButton'
 
-export default function PioneersButton({ fragmentSearchService }) {
+export default function LuckyButton({ fragmentSearchService }) {
   return (
     <SessionContext.Consumer>
       {session =>
-        session.isAllowedToTransliterateFragments() && (
-          <FragmentButton query={() => fragmentSearchService.interesting()}>
-            Path of the Pioneers
+        session.isAllowedToReadFragments() && (
+          <FragmentButton query={() => fragmentSearchService.random()}>
+            I'm feeling lucky
           </FragmentButton>
         )
       }
