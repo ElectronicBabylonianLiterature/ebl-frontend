@@ -1,4 +1,4 @@
-// flow-typed signature: 1fbae22a15d76c9e842774618f82063b
+// flow-typed signature: 75f1794ef2bb0d1f6e7c4aa39faab995
 // flow-typed version: <<STUB>>/react-bootstrap_v^1.0.0-beta.9/flow_v0.107.0
 
 /**
@@ -450,6 +450,14 @@ declare module 'react-bootstrap/es/Popover' {
   declare module.exports: any;
 }
 
+declare module 'react-bootstrap/es/PopoverContent' {
+  declare module.exports: any;
+}
+
+declare module 'react-bootstrap/es/PopoverTitle' {
+  declare module.exports: any;
+}
+
 declare module 'react-bootstrap/es/ProgressBar' {
   declare module.exports: any;
 }
@@ -506,10 +514,6 @@ declare module 'react-bootstrap/es/Tabs' {
   declare module.exports: any;
 }
 
-declare module 'react-bootstrap/es/test/ButtonGroup' {
-  declare module.exports: any;
-}
-
 declare module 'react-bootstrap/es/ThemeProvider' {
   declare module.exports: any;
 }
@@ -539,6 +543,10 @@ declare module 'react-bootstrap/es/ToggleButtonGroup' {
 }
 
 declare module 'react-bootstrap/es/Tooltip' {
+  declare module.exports: any;
+}
+
+declare module 'react-bootstrap/es/useAccordionToggle' {
   declare module.exports: any;
 }
 
@@ -734,6 +742,14 @@ declare module 'react-bootstrap/Popover' {
   declare module.exports: any;
 }
 
+declare module 'react-bootstrap/PopoverContent' {
+  declare module.exports: any;
+}
+
+declare module 'react-bootstrap/PopoverTitle' {
+  declare module.exports: any;
+}
+
 declare module 'react-bootstrap/ProgressBar' {
   declare module.exports: any;
 }
@@ -790,10 +806,6 @@ declare module 'react-bootstrap/Tabs' {
   declare module.exports: any;
 }
 
-declare module 'react-bootstrap/test/ButtonGroup' {
-  declare module.exports: any;
-}
-
 declare module 'react-bootstrap/ThemeProvider' {
   declare module.exports: any;
 }
@@ -823,6 +835,10 @@ declare module 'react-bootstrap/ToggleButtonGroup' {
 }
 
 declare module 'react-bootstrap/Tooltip' {
+  declare module.exports: any;
+}
+
+declare module 'react-bootstrap/useAccordionToggle' {
   declare module.exports: any;
 }
 
@@ -1175,6 +1191,12 @@ declare module 'react-bootstrap/es/Pagination.js' {
 declare module 'react-bootstrap/es/Popover.js' {
   declare module.exports: $Exports<'react-bootstrap/es/Popover'>;
 }
+declare module 'react-bootstrap/es/PopoverContent.js' {
+  declare module.exports: $Exports<'react-bootstrap/es/PopoverContent'>;
+}
+declare module 'react-bootstrap/es/PopoverTitle.js' {
+  declare module.exports: $Exports<'react-bootstrap/es/PopoverTitle'>;
+}
 declare module 'react-bootstrap/es/ProgressBar.js' {
   declare module.exports: $Exports<'react-bootstrap/es/ProgressBar'>;
 }
@@ -1217,9 +1239,6 @@ declare module 'react-bootstrap/es/TabPane.js' {
 declare module 'react-bootstrap/es/Tabs.js' {
   declare module.exports: $Exports<'react-bootstrap/es/Tabs'>;
 }
-declare module 'react-bootstrap/es/test/ButtonGroup.js' {
-  declare module.exports: $Exports<'react-bootstrap/es/test/ButtonGroup'>;
-}
 declare module 'react-bootstrap/es/ThemeProvider.js' {
   declare module.exports: $Exports<'react-bootstrap/es/ThemeProvider'>;
 }
@@ -1243,6 +1262,9 @@ declare module 'react-bootstrap/es/ToggleButtonGroup.js' {
 }
 declare module 'react-bootstrap/es/Tooltip.js' {
   declare module.exports: $Exports<'react-bootstrap/es/Tooltip'>;
+}
+declare module 'react-bootstrap/es/useAccordionToggle.js' {
+  declare module.exports: $Exports<'react-bootstrap/es/useAccordionToggle'>;
 }
 declare module 'react-bootstrap/es/utils/BootstrapModalManager.js' {
   declare module.exports: $Exports<'react-bootstrap/es/utils/BootstrapModalManager'>;
@@ -1394,6 +1416,12 @@ declare module 'react-bootstrap/Pagination.js' {
 declare module 'react-bootstrap/Popover.js' {
   declare module.exports: $Exports<'react-bootstrap/Popover'>;
 }
+declare module 'react-bootstrap/PopoverContent.js' {
+  declare module.exports: $Exports<'react-bootstrap/PopoverContent'>;
+}
+declare module 'react-bootstrap/PopoverTitle.js' {
+  declare module.exports: $Exports<'react-bootstrap/PopoverTitle'>;
+}
 declare module 'react-bootstrap/ProgressBar.js' {
   declare module.exports: $Exports<'react-bootstrap/ProgressBar'>;
 }
@@ -1436,9 +1464,6 @@ declare module 'react-bootstrap/TabPane.js' {
 declare module 'react-bootstrap/Tabs.js' {
   declare module.exports: $Exports<'react-bootstrap/Tabs'>;
 }
-declare module 'react-bootstrap/test/ButtonGroup.js' {
-  declare module.exports: $Exports<'react-bootstrap/test/ButtonGroup'>;
-}
 declare module 'react-bootstrap/ThemeProvider.js' {
   declare module.exports: $Exports<'react-bootstrap/ThemeProvider'>;
 }
@@ -1462,6 +1487,9 @@ declare module 'react-bootstrap/ToggleButtonGroup.js' {
 }
 declare module 'react-bootstrap/Tooltip.js' {
   declare module.exports: $Exports<'react-bootstrap/Tooltip'>;
+}
+declare module 'react-bootstrap/useAccordionToggle.js' {
+  declare module.exports: $Exports<'react-bootstrap/useAccordionToggle'>;
 }
 declare module 'react-bootstrap/utils/BootstrapModalManager.js' {
   declare module.exports: $Exports<'react-bootstrap/utils/BootstrapModalManager'>;
