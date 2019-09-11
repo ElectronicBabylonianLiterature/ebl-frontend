@@ -26,7 +26,7 @@ import {
   userBob,
   year2017,
   year2018
-} from './test-record'
+} from '../test-helpers/record-fixtures'
 
 describe('Fragment', () => {
   const config = {

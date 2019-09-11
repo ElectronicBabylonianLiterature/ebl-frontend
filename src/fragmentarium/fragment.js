@@ -3,6 +3,9 @@ import { List, Record } from 'immutable'
 import type { RecordOf, RecordFactory } from 'immutable'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
+import type { DateRange } from 'moment-range'
+// $FlowFixMe
+import { immerable } from 'immer'
 import Lemma from './lemmatization/Lemma'
 import Lemmatization, {
   LemmatizationToken
@@ -56,45 +59,52 @@ export class Folio {
     return `${this.name}_${this.number}.jpg`
   }
 }
+Folio[immerable] = true
 
 const historicalTransliteration = 'HistoricalTransliteration'
 
-type RecordEntryProps = {
-  user: string,
-  date: string,
-  type: string
-}
-const recordEntryDefaults: RecordEntryProps = {
-  user: '',
-  date: '',
-  type: ''
-}
-const RecordEntryRecord = Record(recordEntryDefaults)
-export class RecordEntry extends RecordEntryRecord {
-  get moment() {
-    return this.isHistorical
-      ? moment.range(this.get('date'))
-      : moment(this.get('date'))
+export class RecordEntry {
+  +user: string
+  +date: string
+  +type: string
+
+  constructor({
+    user,
+    date,
+    type
+  }: {
+    user: string,
+    date: string,
+    type: string
+  }) {
+    this.user = user
+    this.date = date
+    this.type = type
   }
 
-  get isHistorical() {
-    return this.get('type') === historicalTransliteration
+  get moment(): DateRange | Moment {
+    return this.isHistorical ? moment.range(this.date) : moment(this.date)
   }
 
-  dateEquals(other: RecordEntry) {
+  get isHistorical(): boolean {
+    return this.type === historicalTransliteration
+  }
+
+  dateEquals(other: RecordEntry): boolean {
     const onSameDate = (first, second) => {
       const sameYear = first.year() === second.year()
       const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
       return sameYear && sameDayOfYear
     }
-    const differentUser = this.get('user') !== other.get('user')
-    const differentType = this.get('type') !== other.get('type')
+    const differentUser = this.user !== other.user
+    const differentType = this.type !== other.type
 
     return differentUser || differentType || this.isHistorical
       ? false
       : onSameDate(this.moment, other.moment)
   }
 }
+RecordEntry[immerable] = true
 
 type MeasuresProps = { length: ?number, width: ?number, thickness: ?number }
 export const Measures: RecordFactory<MeasuresProps> = Record({

@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
-import { transliteration } from './../test-record'
+import { transliteration } from '../../test-helpers/record-fixtures'
 
 let fragmentService
 let fragmentSearchService
