@@ -1,13 +1,8 @@
 // @flow
 import { List, Map } from 'immutable'
 import _ from 'lodash'
-import {
-  Folio,
-  Fragment,
-  RecordEntry,
-  Text,
-  UncuratedReference
-} from './fragment'
+import { Folio, Fragment, RecordEntry, UncuratedReference } from './fragment'
+import { Text } from './text'
 import type { Measures, Line } from './fragment'
 import {
   atEleven,

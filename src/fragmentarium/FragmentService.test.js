@@ -9,7 +9,8 @@ import Lemmatization, {
   LemmatizationToken
 } from './lemmatization/Lemmatization'
 import Lemma from './lemmatization/Lemma'
-import { Text, Folio } from './fragment'
+import { Folio } from './fragment'
+import { Text } from './text'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })

@@ -5,10 +5,10 @@ import FactoryAdapter from './FactoryAdapter'
 import {
   Fragment,
   RecordEntry,
-  Text,
   Folio,
   UncuratedReference
 } from 'fragmentarium/fragment'
+import { Text } from 'fragmentarium/text'
 
 const chance = new Chance()
 

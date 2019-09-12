@@ -1,5 +1,6 @@
 // @flow
-import { Folio, Fragment, RecordEntry, Text } from '../fragmentarium/fragment'
+import { Folio, Fragment, RecordEntry } from '../fragmentarium/fragment'
+import { Text } from '../fragmentarium/text'
 import { List, Map } from 'immutable'
 
 export const fragmentDto = {

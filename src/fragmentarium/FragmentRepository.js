@@ -3,13 +3,8 @@ import Promise from 'bluebird'
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
 import produce from 'immer'
-import {
-  Fragment,
-  RecordEntry,
-  Text,
-  Folio,
-  UncuratedReference
-} from './fragment'
+import { Fragment, RecordEntry, Folio, UncuratedReference } from './fragment'
+import { Text } from './text'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
