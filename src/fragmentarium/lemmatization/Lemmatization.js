@@ -1,7 +1,6 @@
 import _ from 'lodash'
 // $FlowFixMe
-import { immerable } from 'immer'
-import { updateIn } from 'immutable'
+import produce, { immerable } from 'immer'
 
 export class LemmatizationToken {
   constructor(
@@ -16,17 +15,13 @@ export class LemmatizationToken {
     this.suggestions = suggestions
     this.lemmatizable = lemmatizable
     this.suggested = suggested
-    Object.freeze(this)
   }
 
   setUniqueLemma(uniqueLemma, suggested = false) {
-    return new LemmatizationToken(
-      this.value,
-      this.lemmatizable,
-      uniqueLemma,
-      this.suggestions,
-      suggested
-    )
+    return produce(this, draft => {
+      draft.uniqueLemma = uniqueLemma
+      draft.suggested = suggested
+    })
   }
 
   applySuggestion() {
@@ -42,13 +37,9 @@ export class LemmatizationToken {
   }
 
   clearSuggestionFlag() {
-    return new LemmatizationToken(
-      this.value,
-      this.lemmatizable,
-      this.uniqueLemma,
-      this.suggestions,
-      false
-    )
+    return produce(this, draft => {
+      draft.suggested = false
+    })
   }
 
   toDto() {
@@ -68,7 +59,6 @@ export default class Lemmatization {
   constructor(lines, tokens) {
     this.lines = lines
     this.tokens = tokens
-    Object.freeze(this)
   }
 
   getRowPrefix(rowIndex) {
@@ -76,26 +66,22 @@ export default class Lemmatization {
   }
 
   setLemma(rowIndex, columnIndex, uniqueLemma) {
-    return new Lemmatization(
-      this.lines,
-      updateIn(this.tokens, [rowIndex, columnIndex], token =>
-        token.setUniqueLemma(uniqueLemma)
-      )
-    )
+    return produce(this, draft => {
+      const token = draft.tokens[rowIndex][columnIndex]
+      draft.tokens[rowIndex][columnIndex] = token.setUniqueLemma(uniqueLemma)
+    })
   }
 
   applySuggestions() {
-    return new Lemmatization(
-      this.lines,
-      this._mapTokens(token => token.applySuggestion())
-    )
+    return produce(this, draft => {
+      draft.tokens = this._mapTokens(token => token.applySuggestion())
+    })
   }
 
   clearSuggestionFlags() {
-    return new Lemmatization(
-      this.lines,
-      this._mapTokens(token => token.clearSuggestionFlag())
-    )
+    return produce(this, draft => {
+      draft.tokens = this._mapTokens(token => token.clearSuggestionFlag())
+    })
   }
 
   toDto() {
