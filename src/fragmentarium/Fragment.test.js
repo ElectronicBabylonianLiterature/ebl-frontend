@@ -53,11 +53,13 @@ describe('Fragment', () => {
       })
     ),
     text: new Text({
-      lines: List.of({
-        type: 'ControlLine',
-        prefix: '$',
-        content: [{ type: 'Token', value: '(atf)' }]
-      })
+      lines: [
+        {
+          type: 'ControlLine',
+          prefix: '$',
+          content: [{ type: 'Token', value: '(atf)' }]
+        }
+      ]
     }),
     notes: 'Some notes',
     museum: 'The museum',

@@ -26,7 +26,7 @@ function Display({ fragment }) {
                   <Badge variant="warning">Beta</Badge>
                 </small>
               </h4>
-              {fragment.text.lines
+              {List(fragment.text.lines)
                 .map(line =>
                   List(
                     line.content

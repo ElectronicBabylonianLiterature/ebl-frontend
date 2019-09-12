@@ -137,28 +137,32 @@ test('createLemmatization', async () => {
     nu: words[3]
   }
   const text = new Text({
-    lines: List.of({
-      type: 'TextLine',
-      prefix: '1.',
-      content: [
-        {
-          type: 'Word',
-          value: 'kur',
-          uniqueLemma: [words[0]._id],
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true
-        },
-        {
-          type: 'Word',
-          value: 'nu',
-          uniqueLemma: [words[1]._id],
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true
-        }
-      ]
-    })
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur',
+            uniqueLemma: [words[0]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true,
+            erasure: 'NONE'
+          },
+          {
+            type: 'Word',
+            value: 'nu',
+            uniqueLemma: [words[1]._id],
+            language: 'AKKADIAN',
+            normalized: false,
+            lemmatizable: true,
+            erasure: 'NONE'
+          }
+        ]
+      }
+    ]
   })
   wordRepository.find.mockImplementation(id =>
     wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error())

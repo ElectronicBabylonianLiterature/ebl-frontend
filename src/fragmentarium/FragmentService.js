@@ -108,7 +108,7 @@ class FragmentService {
     return Promise.all(
       mapText(
         text,
-        line => List(line.map(token => List(token.uniqueLemma || []))),
+        line => line.map(token => token.uniqueLemma || []),
         uniqueLemma =>
           this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
       )
@@ -118,9 +118,7 @@ class FragmentService {
   _fetchSuggestions(text) {
     return Promise.mapSeries(
       mapLines(text, line =>
-        line
-          .filter(token => token.lemmatizable || false)
-          .map(token => token.value)
+        line.filter(token => token.lemmatizable).map(token => token.value)
       ),
       value =>
         this.fragmentRepository
@@ -146,12 +144,12 @@ function mapText(text, mapLine, mapToken) {
 }
 
 function mapLines(text, mapLine) {
-  return text.lines
-    .toSeq()
-    .map(({ content }) => List(mapLine(content)))
-    .flatten(false)
-    .filterNot(_.isNil)
-    .toOrderedSet()
+  return _(text.lines)
+    .flatMapDeep(({ content }) => mapLine(content))
+    .reject(_.isNil)
+    .uniq()
+    .sort()
+    .value()
 }
 
 export default FragmentService

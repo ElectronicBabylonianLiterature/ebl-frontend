@@ -108,7 +108,7 @@ function EditorTabs({
             eventKey={3}
             title="Lemmatization"
             disabled={
-              fragment.text.lines.isEmpty() ||
+              _.isEmpty(fragment.text.lines) ||
               !session.isAllowedToLemmatizeFragments()
             }
           >

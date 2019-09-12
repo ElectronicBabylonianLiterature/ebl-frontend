@@ -87,7 +87,7 @@ factory.define('controlLine', Object, {
 
 factory.define('text', Text, {
   lines: async () => {
-    return List([
+    return [
       await factory.build('controlLine'),
       await factory.build('textLine'),
       await factory.build('emptyLine'),
@@ -95,7 +95,7 @@ factory.define('text', Text, {
       await factory.build('textLine'),
       await factory.build('textLine'),
       await factory.build('textLine')
-    ])
+    ]
   }
 })
 

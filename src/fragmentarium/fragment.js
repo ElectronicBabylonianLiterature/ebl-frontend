@@ -119,7 +119,18 @@ export type Measures = {
 }
 
 type Word = {|
-  +type: 'Word' | 'LoneDeterminative',
+  +type: 'Word',
+  +value: string,
+  +uniqueLemma: $ReadOnlyArray<string>,
+  +normalized: boolean,
+  +language: string,
+  +lemmatizable: boolean,
+  +erasure: string,
+  +alignment?: number
+|}
+
+type LoneDeterminative = {|
+  +type: 'LoneDeterminative',
   +value: string,
   +uniqueLemma: $ReadOnlyArray<string>,
   +normalized: boolean,
@@ -149,6 +160,7 @@ export type Token =
       +value: string
     |}
   | Word
+  | LoneDeterminative
   | Shift
   | Erasure
 
@@ -160,24 +172,20 @@ export type Line = {|
 
 type UniqueLemma = $ReadOnlyArray<Lemma>
 
-type TextProps = {
-  lines: List<Line>
-}
-const textDefaults: TextProps = {
-  lines: List()
-}
-const TextRecord = Record(textDefaults)
-export class Text extends TextRecord {
+export class Text {
+  +lines: $ReadOnlyArray<Line>
+
+  constructor({ lines }: { lines: $ReadOnlyArray<Line> }) {
+    this.lines = lines
+  }
+
   createLemmatization(
     lemmas: { [string]: UniqueLemma },
     suggestions: { [string]: $ReadOnlyArray<UniqueLemma> }
   ) {
     return new Lemmatization(
-      this.get('lines')
-        .map(line => line.prefix)
-        .toJS(),
-      this.get('lines')
-        .toSeq()
+      this.lines.map(line => line.prefix),
+      this.lines
         .map(line => line.content)
         .map(tokens =>
           tokens.map(token =>
@@ -191,10 +199,10 @@ export class Text extends TextRecord {
               : new LemmatizationToken(token.value, false)
           )
         )
-        .toJS()
     )
   }
 }
+Text[immerable] = true
 
 type UncuratedReferenceProps = { document: string, pages: List<number> }
 export const UncuratedReference: RecordFactory<UncuratedReferenceProps> = Record(
@@ -235,7 +243,7 @@ const fragmentDefaults: FragmentProps = {
   script: '',
   folios: List(),
   record: List(),
-  text: new Text(),
+  text: new Text({ lines: [] }),
   notes: '',
   museum: '',
   references: List(),

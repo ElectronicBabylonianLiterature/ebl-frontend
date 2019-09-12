@@ -1,4 +1,6 @@
 import _ from 'lodash'
+// $FlowFixMe
+import { immerable } from 'immer'
 import { updateIn } from 'immutable'
 
 export class LemmatizationToken {
@@ -60,6 +62,7 @@ export class LemmatizationToken {
         }
   }
 }
+LemmatizationToken[immerable] = true
 
 export default class Lemmatization {
   constructor(lines, tokens) {
@@ -103,3 +106,4 @@ export default class Lemmatization {
     return this.tokens.map(row => row.map(iteratee))
   }
 }
+Lemmatization[immerable] = true

@@ -34,7 +34,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -42,7 +43,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           },
           {
             type: 'LoneDeterminative',
@@ -51,7 +53,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, true]
+            partial: [false, true],
+            erasure: 'NONE'
           },
           { type: 'Token', value: '[...]' },
           {
@@ -60,7 +63,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           }
         ],
         type: 'TextLine'
@@ -74,7 +78,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -82,7 +87,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           }
         ],
         type: 'TextLine'
@@ -96,7 +102,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           },
           { type: 'Token', value: '|' },
           {
@@ -105,7 +112,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           }
         ],
         type: 'TextLine'
@@ -120,7 +128,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'LoneDeterminative',
@@ -129,7 +138,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, false]
+            partial: [false, false],
+            erasure: 'NONE'
           },
           { type: 'Token', value: '...' },
           { type: 'Token', value: '...' },
@@ -139,7 +149,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -147,7 +158,8 @@ export const fragmentDto = {
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           }
         ],
         type: 'TextLine'
@@ -192,7 +204,7 @@ export const fragment = new Fragment({
   ),
   folios: List([new Folio({ name: 'FWG', number: 'M134' })]),
   text: new Text({
-    lines: List.of(
+    lines: [
       {
         type: 'TextLine',
         prefix: '10.',
@@ -203,7 +215,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -211,7 +224,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           },
           {
             type: 'LoneDeterminative',
@@ -220,7 +234,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, true]
+            partial: [false, true],
+            erasure: 'NONE'
           },
           { type: 'Token', value: '[...]' },
           {
@@ -229,7 +244,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           }
         ]
       },
@@ -243,7 +259,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -251,7 +268,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           }
         ]
       },
@@ -265,7 +283,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           },
           { type: 'Token', value: '|' },
           {
@@ -274,7 +293,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: true
+            lemmatizable: true,
+            erasure: 'NONE'
           }
         ]
       },
@@ -289,7 +309,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'LoneDeterminative',
@@ -298,7 +319,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, false]
+            partial: [false, false],
+            erasure: 'NONE'
           },
           { type: 'Token', value: '...' },
           { type: 'Token', value: '...' },
@@ -308,7 +330,8 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           },
           {
             type: 'Word',
@@ -316,11 +339,12 @@ export const fragment = new Fragment({
             uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
-            lemmatizable: false
+            lemmatizable: false,
+            erasure: 'NONE'
           }
         ]
       }
-    )
+    ]
   }),
   references: List([
     Map({

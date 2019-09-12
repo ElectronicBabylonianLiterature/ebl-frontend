@@ -21,12 +21,12 @@ const createMeasures = produce((draft: any): any => ({
   thickness: draft.thickness.value || null
 }))
 
-function createText(dto) {
-  const lines = produce(dto, (draft: any): any => draft.text.lines)
-  return new Text({
-    lines: List(lines)
-  })
-}
+const createText = produce(
+  (draft: any): any =>
+    new Text({
+      lines: draft.text.lines
+    })
+)
 
 function createUncuratedReferences(dto) {
   return (
