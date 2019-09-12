@@ -10,6 +10,7 @@ import Lemma from './lemmatization/Lemma'
 import Lemmatization, {
   LemmatizationToken
 } from './lemmatization/Lemmatization'
+import type { UniqueLemma } from './lemmatization/Lemmatization'
 import Reference from '../bibliography/Reference'
 
 const moment = extendMoment(Moment)
@@ -112,11 +113,11 @@ export class RecordEntry {
 }
 RecordEntry[immerable] = true
 
-export type Measures = {
+export type Measures = {|
   +length: ?number,
   +width: ?number,
   +thickness: ?number
-}
+|}
 
 type Word = {|
   +type: 'Word',
@@ -169,8 +170,6 @@ export type Line = {|
   +prefix: string,
   +content: $ReadOnlyArray<Token>
 |}
-
-type UniqueLemma = $ReadOnlyArray<Lemma>
 
 export class Text {
   +lines: $ReadOnlyArray<Line>
