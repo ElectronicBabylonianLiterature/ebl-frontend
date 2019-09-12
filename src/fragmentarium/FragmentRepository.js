@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
 import produce from 'immer'
-import { Fragment, RecordEntry, Folio, UncuratedReference } from './fragment'
+import { Fragment, RecordEntry, Folio } from './fragment'
 import { Text } from './text'
 import type {
   FragmentInfosPromise,
@@ -26,12 +26,10 @@ const createText = produce(
 function createUncuratedReferences(dto) {
   return (
     dto.uncuratedReferences &&
-    List(dto.uncuratedReferences).map(reference =>
-      UncuratedReference({
-        document: reference.document,
-        pages: List(reference.pages)
-      })
-    )
+    List(dto.uncuratedReferences).map(reference => ({
+      document: reference.document,
+      pages: reference.pages
+    }))
   )
 }
 

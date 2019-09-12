@@ -1,7 +1,7 @@
 // @flow
 import { List, Map } from 'immutable'
 import _ from 'lodash'
-import { Folio, Fragment, RecordEntry, UncuratedReference } from './fragment'
+import { Folio, Fragment, RecordEntry } from './fragment'
 import { Text } from './text'
 import type { Measures, Line } from './fragment'
 import {
@@ -67,12 +67,10 @@ describe('Fragment', () => {
         type: 'DISCUSSION'
       })
     ]),
-    uncuratedReferences: List.of(
-      UncuratedReference({
-        document: 'CAD 7',
-        pages: List.of(3, 208)
-      })
-    ),
+    uncuratedReferences: List.of({
+      document: 'CAD 7',
+      pages: [3, 208]
+    }),
     atf: '$ (atf)',
     matchingLines: List()
   }
@@ -84,7 +82,7 @@ describe('Fragment', () => {
 })
 
 test.each([
-  [List.of(UncuratedReference({ document: 'CAD 7', pages: List() })), true],
+  [List.of({ document: 'CAD 7', pages: [] }), true],
   [List(), true],
   [null, false]
 ])('uncurated references: %s', (uncuratedReferences, expected) => {

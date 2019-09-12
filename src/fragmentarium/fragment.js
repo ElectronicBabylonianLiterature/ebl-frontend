@@ -115,10 +115,10 @@ export type Measures = {|
   +thickness: ?number
 |}
 
-type UncuratedReferenceProps = { document: string, pages: List<number> }
-export const UncuratedReference: RecordFactory<UncuratedReferenceProps> = Record(
-  { document: '', pages: List() }
-)
+export type UncuratedReference = {|
+  +document: string,
+  +pages: $ReadOnlyArray<number>
+|}
 
 type FragmentProps = {
   number: string,
@@ -137,7 +137,7 @@ type FragmentProps = {
   notes: string,
   museum: string,
   references: List<any>,
-  uncuratedReferences: ?List<RecordOf<UncuratedReference>>,
+  uncuratedReferences: ?List<UncuratedReference>,
   atf: string,
   matchingLines: List<any>
 }
