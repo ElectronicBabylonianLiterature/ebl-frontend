@@ -31,30 +31,6 @@ class FragmentService {
       )
   }
 
-  random() {
-    return this.fragmentRepository.random().then(_.head)
-  }
-
-  interesting() {
-    return this.fragmentRepository.interesting().then(_.head)
-  }
-
-  searchNumber(number) {
-    return this.fragmentRepository.searchNumber(number)
-  }
-
-  searchTransliteration(transliteration) {
-    return this.fragmentRepository.searchTransliteration(transliteration)
-  }
-
-  fetchLatestTransliterations() {
-    return this.fragmentRepository.fetchLatestTransliterations()
-  }
-
-  fetchNeedsRevision() {
-    return this.fragmentRepository.fetchNeedsRevision()
-  }
-
   updateTransliteration(number, transliteration, notes) {
     return this.fragmentRepository.updateTransliteration(
       number,
