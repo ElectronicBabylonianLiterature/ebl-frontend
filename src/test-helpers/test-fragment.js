@@ -1,10 +1,5 @@
-import {
-  Folio,
-  Fragment,
-  Line,
-  RecordEntry,
-  Text
-} from '../fragmentarium/fragment'
+// @flow
+import { Folio, Fragment, RecordEntry, Text } from '../fragmentarium/fragment'
 import { List, Map } from 'immutable'
 
 export const fragmentDto = {
@@ -198,133 +193,133 @@ export const fragment = new Fragment({
   folios: List([new Folio({ name: 'FWG', number: 'M134' })]),
   text: new Text({
     lines: List.of(
-      Line({
+      {
         type: 'TextLine',
         prefix: '10.',
-        content: List.of(
-          Map({
+        content: [
+          {
             type: 'Word',
             value: 'sal/:',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          }),
-          Map({
+          },
+          {
             type: 'Word',
             value: 'š[im',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true
-          }),
-          Map({
+          },
+          {
             type: 'LoneDeterminative',
             value: '{gu}',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: List([false, true])
-          }),
-          Map({ type: 'Token', value: '[...]' }),
-          Map({
+            partial: [false, true]
+          },
+          { type: 'Token', value: '[...]' },
+          {
             type: 'Word',
             value: '.GA',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          })
-        )
-      }),
-      Line({
+          }
+        ]
+      },
+      {
         type: 'TextLine',
         prefix: '10.',
-        content: List.of(
-          Map({
+        content: [
+          {
             type: 'Word',
             value: '::/sal',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          }),
-          Map({
+          },
+          {
             type: 'Word',
             value: 'ši]m',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true
-          })
-        )
-      }),
-      Line({
+          }
+        ]
+      },
+      {
         type: 'TextLine',
         prefix: '10.',
-        content: List.of(
-          Map({
+        content: [
+          {
             type: 'Word',
             value: 'šim',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true
-          }),
-          Map({ type: 'Token', value: '|' }),
-          Map({
+          },
+          { type: 'Token', value: '|' },
+          {
             type: 'Word',
             value: 'šim',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true
-          })
-        )
-      }),
-      Line({
+          }
+        ]
+      },
+      {
         type: 'TextLine',
         prefix: '10.',
-        content: List.of(
-          Map({ type: 'Token', value: '...' }),
-          Map({
+        content: [
+          { type: 'Token', value: '...' },
+          {
             type: 'Word',
             value: '+ku',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          }),
-          Map({
+          },
+          {
             type: 'LoneDeterminative',
             value: '{KA.G[A}',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: List([false, false])
-          }),
-          Map({ type: 'Token', value: '...' }),
-          Map({ type: 'Token', value: '...' }),
-          Map({
+            partial: [false, false]
+          },
+          { type: 'Token', value: '...' },
+          { type: 'Token', value: '...' },
+          {
             type: 'Word',
             value: '.ku',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          }),
-          Map({
+          },
+          {
             type: 'Word',
             value: 'x',
-            uniqueLemma: List(),
+            uniqueLemma: [],
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false
-          })
-        )
-      })
+          }
+        ]
+      }
     )
   }),
   references: List([

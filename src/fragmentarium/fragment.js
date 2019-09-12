@@ -112,23 +112,56 @@ export class RecordEntry {
 }
 RecordEntry[immerable] = true
 
-export type Measures = {|
+export type Measures = {
   +length: ?number,
   +width: ?number,
   +thickness: ?number
+}
+
+type Word = {|
+  +type: 'Word' | 'LoneDeterminative',
+  +value: string,
+  +uniqueLemma: $ReadOnlyArray<string>,
+  +normalized: boolean,
+  +language: string,
+  +lemmatizable: boolean,
+  +partial: [boolean, boolean],
+  +erasure: string,
+  +alignment?: number
 |}
 
-type LineProps = { type: string, prefix: string, content: List<any> }
-export const Line: RecordFactory<LineProps> = Record({
-  type: '',
-  prefix: '',
-  content: List()
-})
+type Shift = {|
+  +type: 'LanguageShift',
+  +value: string,
+  +normalized: boolean,
+  +language: string
+|}
+
+type Erasure = {|
+  +type: 'Erasure',
+  +value: string,
+  +side: string
+|}
+
+export type Token =
+  | {|
+      +type: string,
+      +value: string
+    |}
+  | Word
+  | Shift
+  | Erasure
+
+export type Line = {|
+  +type: 'ControlLine' | 'EmptyLine' | 'TextLine',
+  +prefix: string,
+  +content: $ReadOnlyArray<Token>
+|}
 
 type UniqueLemma = $ReadOnlyArray<Lemma>
 
 type TextProps = {
-  lines: List<RecordOf<LineProps>>
+  lines: List<Line>
 }
 const textDefaults: TextProps = {
   lines: List()
@@ -136,7 +169,7 @@ const textDefaults: TextProps = {
 const TextRecord = Record(textDefaults)
 export class Text extends TextRecord {
   createLemmatization(
-    lemmas: { [string]: $ReadOnlyArray<Lemma> },
+    lemmas: { [string]: UniqueLemma },
     suggestions: { [string]: $ReadOnlyArray<UniqueLemma> }
   ) {
     return new Lemmatization(
@@ -148,17 +181,14 @@ export class Text extends TextRecord {
         .map(line => line.content)
         .map(tokens =>
           tokens.map(token =>
-            token.get('lemmatizable', false)
+            token.lemmatizable
               ? new LemmatizationToken(
-                  token.get('value'),
+                  token.value,
                   true,
-                  token
-                    .get('uniqueLemma', [])
-                    .map(id => lemmas[id])
-                    .toJS(),
-                  suggestions[token.get('value')]
+                  (token.uniqueLemma || []).map(id => lemmas[id]),
+                  suggestions[token.value]
                 )
-              : new LemmatizationToken(token.get('value'), false)
+              : new LemmatizationToken(token.value, false)
           )
         )
         .toJS()

@@ -1,6 +1,7 @@
+// @flow
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { Line, Text } from './fragment'
+import { Text } from './fragment'
 import { fromJS, List } from 'immutable'
 import Lemmatization, {
   LemmatizationToken
@@ -18,30 +19,28 @@ test('createLemmatization', async () => {
     nu: [[new Lemma(words[3])]]
   }
   const text = new Text({
-    lines: List.of(
-      Line({
-        type: 'TextLine',
-        prefix: '1.',
-        content: List.of(
-          fromJS({
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          }),
-          fromJS({
-            type: 'Word',
-            value: 'nu',
-            uniqueLemma: [words[1]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          })
-        )
-      })
-    )
+    lines: List.of({
+      type: 'TextLine',
+      prefix: '1.',
+      content: [
+        {
+          type: 'Word',
+          value: 'kur',
+          uniqueLemma: [words[0]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        },
+        {
+          type: 'Word',
+          value: 'nu',
+          uniqueLemma: [words[1]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        }
+      ]
+    })
   })
 
   const expected = new Lemmatization(

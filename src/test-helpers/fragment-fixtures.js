@@ -5,7 +5,6 @@ import FactoryAdapter from './FactoryAdapter'
 import {
   Fragment,
   RecordEntry,
-  Line,
   Text,
   Folio,
   UncuratedReference
@@ -50,9 +49,9 @@ factory.define('folio', Folio, {
   number: factory.chance('string')
 })
 
-factory.define('textLine', Line, {
+factory.define('textLine', Object, {
   prefix: async () => `${await factory.chance('natural')}.`,
-  content: fromJS([
+  content: [
     {
       type: 'Token',
       value: factory.chance('pickone', ['[...]', '&', '&1'])
@@ -65,29 +64,26 @@ factory.define('textLine', Line, {
       language: factory.chance('pickone', ['AKKADIAN', 'SUMERIAN']),
       lemmatizable: factory.chance('bool')
     }
-  ]),
+  ],
   type: 'TextLine'
 })
-factory.setAdapter(new FactoryAdapter(), 'textLine')
 
-factory.define('emptyLine', Line, {
+factory.define('emptyLine', Object, {
   type: 'EmptyLine',
   prefix: '',
-  content: List()
+  content: []
 })
-factory.setAdapter(new FactoryAdapter(), 'emptyLine')
 
-factory.define('controlLine', Line, {
+factory.define('controlLine', Object, {
   prefix: factory.chance('pickone', ['$', '#', '&']),
-  content: fromJS([
+  content: [
     {
       type: 'Token',
       value: factory.chance('word')
     }
-  ]),
+  ],
   type: 'ControlLine'
 })
-factory.setAdapter(new FactoryAdapter(), 'controlLine')
 
 factory.define('text', Text, {
   lines: async () => {

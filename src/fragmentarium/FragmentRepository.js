@@ -2,36 +2,29 @@
 import Promise from 'bluebird'
 import queryString from 'query-string'
 import { fromJS, List } from 'immutable'
+import produce from 'immer'
 import {
   Fragment,
   RecordEntry,
-  Line,
   Text,
   Folio,
   UncuratedReference
 } from './fragment'
-import type { Measures } from './fragment'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
 } from './FragmentSearchService'
 
-function createMeasures(dto): Measures {
-  return {
-    length: dto.length.value,
-    width: dto.width.value,
-    thickness: dto.thickness.value
-  }
-}
+const createMeasures = produce((draft: any): any => ({
+  length: draft.length.value || null,
+  width: draft.width.value || null,
+  thickness: draft.thickness.value || null
+}))
 
 function createText(dto) {
+  const lines = produce(dto, (draft: any): any => draft.text.lines)
   return new Text({
-    lines: List(dto.text.lines).map(dto =>
-      Line({
-        ...dto,
-        content: List(dto.content).map(token => fromJS(token))
-      })
-    )
+    lines: List(lines)
   })
 }
 

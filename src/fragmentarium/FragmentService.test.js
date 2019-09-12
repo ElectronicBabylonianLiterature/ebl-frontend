@@ -1,14 +1,15 @@
+// @flow
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { List, fromJS } from 'immutable'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation } from '../test-helpers/utils'
 import FragmentService from './FragmentService'
 import Lemmatization, {
   LemmatizationToken
-} from 'fragmentarium/lemmatization/Lemmatization'
-import Lemma from 'fragmentarium/lemmatization/Lemma'
-import { Text, Line, Folio } from 'fragmentarium/fragment'
+} from './lemmatization/Lemmatization'
+import Lemma from './lemmatization/Lemma'
+import { Text, Folio } from './fragment'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -136,30 +137,28 @@ test('createLemmatization', async () => {
     nu: words[3]
   }
   const text = new Text({
-    lines: List.of(
-      Line({
-        type: 'TextLine',
-        prefix: '1.',
-        content: List.of(
-          fromJS({
-            type: 'Word',
-            value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          }),
-          fromJS({
-            type: 'Word',
-            value: 'nu',
-            uniqueLemma: [words[1]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true
-          })
-        )
-      })
-    )
+    lines: List.of({
+      type: 'TextLine',
+      prefix: '1.',
+      content: [
+        {
+          type: 'Word',
+          value: 'kur',
+          uniqueLemma: [words[0]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        },
+        {
+          type: 'Word',
+          value: 'nu',
+          uniqueLemma: [words[1]._id],
+          language: 'AKKADIAN',
+          normalized: false,
+          lemmatizable: true
+        }
+      ]
+    })
   })
   wordRepository.find.mockImplementation(id =>
     wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error())

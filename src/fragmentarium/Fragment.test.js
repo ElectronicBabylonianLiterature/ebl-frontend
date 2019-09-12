@@ -4,12 +4,11 @@ import _ from 'lodash'
 import {
   Folio,
   Fragment,
-  Line,
   RecordEntry,
   Text,
   UncuratedReference
 } from './fragment'
-import type { Measures } from './fragment'
+import type { Measures, Line } from './fragment'
 import {
   atEleven,
   atTen,
@@ -54,13 +53,11 @@ describe('Fragment', () => {
       })
     ),
     text: new Text({
-      lines: List.of(
-        Line({
-          type: 'ControlLine',
-          prefix: '$',
-          content: List.of(Map({ type: 'Token', value: '(atf)' }))
-        })
-      )
+      lines: List.of({
+        type: 'ControlLine',
+        prefix: '$',
+        content: [{ type: 'Token', value: '(atf)' }]
+      })
     }),
     notes: 'Some notes',
     museum: 'The museum',

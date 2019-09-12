@@ -108,7 +108,7 @@ class FragmentService {
     return Promise.all(
       mapText(
         text,
-        line => line.map(token => token.get('uniqueLemma', List())),
+        line => List(line.map(token => List(token.uniqueLemma || []))),
         uniqueLemma =>
           this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
       )
@@ -119,8 +119,8 @@ class FragmentService {
     return Promise.mapSeries(
       mapLines(text, line =>
         line
-          .filter(token => token.get('lemmatizable', false))
-          .map(token => token.get('value'))
+          .filter(token => token.lemmatizable || false)
+          .map(token => token.value)
       ),
       value =>
         this.fragmentRepository
@@ -148,7 +148,7 @@ function mapText(text, mapLine, mapToken) {
 function mapLines(text, mapLine) {
   return text.lines
     .toSeq()
-    .map(({ content }) => mapLine(content))
+    .map(({ content }) => List(mapLine(content)))
     .flatten(false)
     .filterNot(_.isNil)
     .toOrderedSet()
