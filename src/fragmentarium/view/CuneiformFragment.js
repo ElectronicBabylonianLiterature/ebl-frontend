@@ -198,7 +198,7 @@ function CuneiformFragmentController({
     const updatePromise = promise
       .then(updatedFragment =>
         fragmentService
-          .hydrateReferences(updatedFragment.references.toJS())
+          .hydrateReferences(updatedFragment.references)
           .then(hydratedReferences =>
             updatedFragment.setReferences(hydratedReferences)
           )

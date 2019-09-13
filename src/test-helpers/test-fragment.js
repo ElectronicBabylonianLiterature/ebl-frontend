@@ -1,7 +1,6 @@
 // @flow
 import { Folio, Fragment, RecordEntry } from '../fragmentarium/fragment'
 import { Text } from '../fragmentarium/text'
-import { List, Map } from 'immutable'
 
 export const fragmentDto = {
   _id: 'Test.Fragment',
@@ -181,7 +180,7 @@ export const fragment = new Fragment({
   bmIdNumber: '',
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',
-  joins: List(),
+  joins: [],
   measures: {
     length: 3.14,
     width: 0.30282212,
@@ -191,7 +190,7 @@ export const fragment = new Fragment({
   script: 'NB',
   notes: '',
   museum: '',
-  record: List.of(
+  record: [
     new RecordEntry({
       user: 'Laasonen',
       date: '2019-02-01T14:22:40.201231',
@@ -202,8 +201,8 @@ export const fragment = new Fragment({
       date: '2019-02-01T14:23:25.214166',
       type: 'Revision'
     })
-  ),
-  folios: List([new Folio({ name: 'FWG', number: 'M134' })]),
+  ],
+  folios: [new Folio({ name: 'FWG', number: 'M134' })],
   text: new Text({
     lines: [
       {
@@ -347,15 +346,15 @@ export const fragment = new Fragment({
       }
     ]
   }),
-  references: List([
-    Map({
+  references: [
+    {
       id: 'RN52',
       type: 'DISCUSSION',
       pages: '',
       notes: '',
-      linesCited: List()
-    })
-  ]),
+      linesCited: []
+    }
+  ],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x'
 })

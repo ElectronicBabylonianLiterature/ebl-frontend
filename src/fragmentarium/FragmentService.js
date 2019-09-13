@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { List } from 'immutable'
 import { Promise } from 'bluebird'
 import Lemma from './lemmatization/Lemma'
 import { createReference } from '../bibliography/Reference'
@@ -25,7 +24,7 @@ class FragmentService {
     return this.fragmentRepository
       .find(number)
       .then(fragment =>
-        this.hydrateReferences(fragment.references.toJS()).then(hydrated =>
+        this.hydrateReferences(fragment.references).then(hydrated =>
           fragment.setReferences(hydrated)
         )
       )
@@ -111,7 +110,7 @@ class FragmentService {
   hydrateReferences(references) {
     const hydrate = reference =>
       createReference(reference, this.bibliographyService)
-    return Promise.all(references.map(hydrate)).then(List)
+    return Promise.all(references.map(hydrate))
   }
 }
 

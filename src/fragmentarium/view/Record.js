@@ -1,6 +1,12 @@
-import React, { Component, Fragment } from 'react'
+// @flow
+import React from 'react'
+import _ from 'lodash'
+import type { DateRange } from 'moment-range'
 
 import './Record.css'
+import { RecordEntry } from '../fragment'
+
+type EntryProps = { entry: RecordEntry }
 
 function Date({ date, humanFormat, machineFormat }) {
   const humanDate = date.format(humanFormat)
@@ -12,9 +18,9 @@ function Year({ date }) {
   return <Date date={date} humanFormat="YYYY" machineFormat="YYYY" />
 }
 
-function BasicEntry({ entry }) {
+function BasicEntry({ entry }: EntryProps) {
   return (
-    <Fragment>
+    <>
       {entry.user} ({entry.type},{' '}
       <Date
         date={entry.moment}
@@ -22,20 +28,21 @@ function BasicEntry({ entry }) {
         machineFormat="YYYY-MM-DD"
       />
       )
-    </Fragment>
+    </>
   )
 }
 
-function HistoricalTransliteration({ entry }) {
+function HistoricalTransliteration({ entry }: EntryProps) {
+  const range = (entry.moment: DateRange)
   return (
-    <Fragment>
-      {entry.user} (Transliteration, <Year date={entry.moment.start} />–
-      <Year date={entry.moment.end} />)
-    </Fragment>
+    <>
+      {entry.user} (Transliteration, <Year date={range.start} />–
+      <Year date={range.end} />)
+    </>
   )
 }
 
-function Entry({ entry }) {
+function Entry({ entry }: EntryProps) {
   return entry.isHistorical ? (
     <HistoricalTransliteration entry={entry} />
   ) : (
@@ -43,28 +50,20 @@ function Entry({ entry }) {
   )
 }
 
-class Record extends Component {
-  get record() {
-    return this.props.record
-  }
-
-  render() {
-    return (
-      <section>
-        <h3>Record</h3>
-        <ol className="Record">
-          {this.record.map((entry, index) => (
-            <li className="Record__entry" key={index}>
-              <Entry entry={entry} />
-            </li>
-          ))}
-          {this.record.isEmpty() && (
-            <li className="Record__entry">No record</li>
-          )}
-        </ol>
-      </section>
-    )
-  }
+function Record({ record }: { record: $ReadOnlyArray<RecordEntry> }) {
+  return (
+    <section>
+      <h3>Record</h3>
+      <ol className="Record">
+        {record.map((entry, index) => (
+          <li className="Record__entry" key={index}>
+            <Entry entry={entry} />
+          </li>
+        ))}
+        {_.isEmpty(record) && <li className="Record__entry">No record</li>}
+      </ol>
+    </section>
+  )
 }
 
 export default Record

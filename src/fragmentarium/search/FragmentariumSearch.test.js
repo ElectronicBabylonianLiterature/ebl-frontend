@@ -59,7 +59,7 @@ describe('Search', () => {
     let number = 'K.2'
 
     beforeEach(async () => {
-      fragments = await factory.buildMany('fragment', 2)
+      fragments = await factory.buildMany('fragmentInfo', 2)
       fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
@@ -81,7 +81,7 @@ describe('Search', () => {
     let replacedTransliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
     beforeEach(async () => {
-      fragments = await factory.buildMany('fragment', 2, [
+      fragments = await factory.buildMany('fragmentInfo', 2, [
         { matchingLines: [['line 1', 'line 2']] },
         { matchingLines: [['line 3'], ['line 4']] }
       ])

@@ -1,9 +1,8 @@
 // @flow
-import { List, Map } from 'immutable'
 import _ from 'lodash'
 import { Folio, Fragment, RecordEntry } from './fragment'
 import { Text } from './text'
-import type { Measures, Line } from './fragment'
+import type { Measures } from './fragment'
 import {
   atEleven,
   atTen,
@@ -23,113 +22,98 @@ import {
   year2018
 } from '../test-helpers/record-fixtures'
 
-describe('Fragment', () => {
-  const config = {
-    number: 'K.1',
-    cdliNumber: 'cdli.1',
-    bmIdNumber: 'bm.1',
-    accession: '1',
-    publication: 'A journal',
-    joins: List(['K.2']),
-    description: 'A clay tabled',
-    measures: {
-      length: 3,
-      width: 5,
-      thickness: 3.6
-    },
-    collection: 'The collection',
-    script: 'NA',
-    folios: List([new Folio({ name: 'AKG', number: '435' })]),
-    record: List.of(
-      new RecordEntry({
-        user: 'Smith',
-        date: '2018-11-21T10:27:36.127247',
-        type: 'Transliteration'
-      })
-    ),
-    text: new Text({
-      lines: [
-        {
-          type: 'ControlLine',
-          prefix: '$',
-          content: [{ type: 'Token', value: '(atf)' }]
-        }
-      ]
-    }),
-    notes: 'Some notes',
-    museum: 'The museum',
-    references: List([
-      Map({
-        id: 'RN1853',
-        linesCited: List(),
-        notes: '',
-        pages: '34-54',
-        type: 'DISCUSSION'
-      })
-    ]),
-    uncuratedReferences: List.of({
+const config = {
+  number: 'K.1',
+  cdliNumber: 'cdli.1',
+  bmIdNumber: 'bm.1',
+  accession: '1',
+  publication: 'A journal',
+  joins: ['K.2'],
+  description: 'A clay tabled',
+  measures: {
+    length: 3,
+    width: 5,
+    thickness: 3.6
+  },
+  collection: 'The collection',
+  script: 'NA',
+  folios: [new Folio({ name: 'AKG', number: '435' })],
+  record: [
+    new RecordEntry({
+      user: 'Smith',
+      date: '2018-11-21T10:27:36.127247',
+      type: 'Transliteration'
+    })
+  ],
+  text: new Text({
+    lines: [
+      {
+        type: 'ControlLine',
+        prefix: '$',
+        content: [{ type: 'Token', value: '(atf)' }]
+      }
+    ]
+  }),
+  notes: 'Some notes',
+  museum: 'The museum',
+  references: [
+    {
+      id: 'RN1853',
+      linesCited: [],
+      notes: '',
+      pages: '34-54',
+      type: 'DISCUSSION'
+    }
+  ],
+  uncuratedReferences: [
+    {
       document: 'CAD 7',
       pages: [3, 208]
-    }),
-    atf: '$ (atf)',
-    matchingLines: List()
-  }
+    }
+  ],
+  atf: '$ (atf)'
+}
+
+describe('Fragment', () => {
   const fragment = new Fragment(config)
 
   test.each(_.toPairs(config))('%s', (property, expected) => {
-    expect(fragment.get(property)).toEqual(expected)
+    expect(_.get(fragment, property)).toEqual(expected)
   })
 })
 
 test.each([
-  [List.of({ document: 'CAD 7', pages: [] }), true],
-  [List(), true],
+  [[{ document: 'CAD 7', pages: [] }], true],
+  [[], true],
   [null, false]
 ])('uncurated references: %s', (uncuratedReferences, expected) => {
-  const fragment = new Fragment({ uncuratedReferences })
+  const fragment = new Fragment({ ...config, uncuratedReferences })
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })
 
 test.each([
-  [List.of(atTen, atEleven, atTwelve), List.of(atTen)],
+  [[atTen, atEleven, atTwelve], [atTen]],
+
+  [[on21thOctober, on22ndOctober], [on21thOctober, on22ndOctober]],
+
+  [[on21thOctober, on21stDecember], [on21thOctober, on21stDecember]],
+
+  [[year2017, year2018], [year2017, year2018]],
+
+  [[userAlice, userBob], [userAlice, userBob]],
 
   [
-    List.of(on21thOctober, on22ndOctober),
-    List.of(on21thOctober, on22ndOctober)
+    [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty],
+    [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty]
   ],
 
   [
-    List.of(on21thOctober, on21stDecember),
-    List.of(on21thOctober, on21stDecember)
+    [historicalTransliteration, transliteration],
+    [historicalTransliteration, transliteration]
   ],
 
-  [List.of(year2017, year2018), List.of(year2017, year2018)],
-
-  [List.of(userAlice, userBob), List.of(userAlice, userBob)],
-
-  [
-    List.of(
-      transliterationAtTen,
-      revisionAtEleven,
-      transliterationAtElevenThirty
-    ),
-    List.of(
-      transliterationAtTen,
-      revisionAtEleven,
-      transliterationAtElevenThirty
-    )
-  ],
-
-  [
-    List.of(historicalTransliteration, transliteration),
-    List.of(historicalTransliteration, transliteration)
-  ],
-
-  [
-    List.of(historicalTransliteration, revision),
-    List.of(historicalTransliteration, revision)
-  ]
-])('%s is filtered to %s', (record, expected) => {
-  const fragment = new Fragment({ record })
+  [[historicalTransliteration, revision], [historicalTransliteration, revision]]
+])('%s is filtered to %s', async (record, expected) => {
+  const fragment = new Fragment({ ...config, record: record })
   expect(fragment.uniqueRecord).toEqual(expected)
 })

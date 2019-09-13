@@ -1,8 +1,6 @@
 // @flow
 import Promise from 'bluebird'
 import queryString from 'query-string'
-import { fromJS, List } from 'immutable'
-import produce from 'immer'
 import { Fragment, RecordEntry, Folio } from './fragment'
 import { Text } from './text'
 import type {
@@ -10,47 +8,21 @@ import type {
   FragmentInfoRepository
 } from './FragmentSearchService'
 
-const createMeasures = produce((draft: any): any => ({
-  length: draft.length.value || null,
-  width: draft.width.value || null,
-  thickness: draft.thickness.value || null
-}))
-
-const createText = produce(
-  (draft: any): any =>
-    new Text({
-      lines: draft.text.lines
-    })
-)
-
-function createUncuratedReferences(dto) {
-  return (
-    dto.uncuratedReferences &&
-    List(dto.uncuratedReferences).map(reference => ({
-      document: reference.document,
-      pages: reference.pages
-    }))
-  )
-}
-
-function createMatchingLines(dto) {
-  return dto.matching_lines
-    ? List(dto.matching_lines).map(line => fromJS(line))
-    : List()
-}
-
 function createFragment(dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
-    joins: List(dto.joins),
-    measures: createMeasures(dto),
-    folios: List(dto.folios).map(folioDto => new Folio(folioDto)),
-    record: List(dto.record).map(recordDto => new RecordEntry(recordDto)),
-    text: createText(dto),
-    references: List(dto.references).map(reference => fromJS(reference)),
-    uncuratedReferences: createUncuratedReferences(dto),
-    matchingLines: createMatchingLines(dto)
+    joins: dto.joins,
+    measures: {
+      length: dto.length.value || null,
+      width: dto.width.value || null,
+      thickness: dto.thickness.value || null
+    },
+    folios: dto.folios.map(folioDto => new Folio(folioDto)),
+    record: dto.record.map(recordDto => new RecordEntry(recordDto)),
+    text: new Text({ lines: dto.text.lines }),
+    references: dto.references,
+    uncuratedReferences: dto.uncuratedReferences
   })
 }
 

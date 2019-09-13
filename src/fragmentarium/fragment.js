@@ -1,11 +1,10 @@
 // @flow
-import { List, Record } from 'immutable'
-import type { RecordOf, RecordFactory } from 'immutable'
+import _ from 'lodash'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import type { DateRange } from 'moment-range'
 // $FlowFixMe
-import { immerable } from 'immer'
+import produce, { immerable, Draft } from 'immer'
 import Reference from '../bibliography/Reference'
 import { Text } from './text'
 
@@ -120,65 +119,106 @@ export type UncuratedReference = {|
   +pages: $ReadOnlyArray<number>
 |}
 
-type FragmentProps = {
-  number: string,
-  cdliNumber: string,
-  bmIdNumber: string,
-  accession: string,
-  publication: string,
-  joins: List<string>,
-  description: string,
-  measures: Measures,
-  collection: '',
-  script: '',
-  folios: List<Folio>,
-  record: List<RecordEntry>,
-  text: Text,
-  notes: string,
-  museum: string,
-  references: List<any>,
-  uncuratedReferences: ?List<UncuratedReference>,
-  atf: string,
-  matchingLines: List<any>
-}
-const fragmentDefaults: FragmentProps = {
-  number: '',
-  cdliNumber: '',
-  bmIdNumber: '',
-  accession: '',
-  publication: '',
-  joins: List(),
-  description: '',
-  measures: { length: null, width: null, thickness: null },
-  collection: '',
-  script: '',
-  folios: List(),
-  record: List(),
-  text: new Text({ lines: [] }),
-  notes: '',
-  museum: '',
-  references: List(),
-  uncuratedReferences: null,
-  atf: '',
-  matchingLines: List()
-}
-const FragmentRecord = Record(fragmentDefaults)
-export class Fragment extends FragmentRecord {
-  get hasUncuratedReferences() {
-    return List.isList(this.get('uncuratedReferences'))
+export class Fragment {
+  +number: string
+  +cdliNumber: string
+  +bmIdNumber: string
+  +accession: string
+  +publication: string
+  +joins: $ReadOnlyArray<string>
+  +description: string
+  +measures: Measures
+  +collection: string
+  +script: string
+  +folios: $ReadOnlyArray<Folio>
+  +record: $ReadOnlyArray<RecordEntry>
+  +text: Text
+  +notes: string
+  +museum: string
+  +references: $ReadOnlyArray<any>
+  +uncuratedReferences: ?$ReadOnlyArray<UncuratedReference>
+  +atf: string
+
+  constructor({
+    number,
+    cdliNumber,
+    bmIdNumber,
+    accession,
+    publication,
+    joins,
+    description,
+    measures,
+    collection,
+    script,
+    folios,
+    record,
+    text,
+    notes,
+    museum,
+    references,
+    uncuratedReferences,
+    atf
+  }: {
+    number: string,
+    cdliNumber: string,
+    bmIdNumber: string,
+    accession: string,
+    publication: string,
+    joins: $ReadOnlyArray<string>,
+    description: string,
+    measures: Measures,
+    collection: string,
+    script: string,
+    folios: $ReadOnlyArray<Folio>,
+    record: $ReadOnlyArray<RecordEntry>,
+    text: Text,
+    notes: string,
+    museum: string,
+    references: $ReadOnlyArray<any>,
+    uncuratedReferences?: ?$ReadOnlyArray<UncuratedReference>,
+    atf: string
+  }) {
+    this.number = number
+    this.cdliNumber = cdliNumber
+    this.bmIdNumber = bmIdNumber
+    this.accession = accession
+    this.publication = publication
+    this.joins = joins
+    this.description = description
+    this.measures = measures
+    this.collection = collection
+    this.script = script
+    this.folios = folios
+    this.record = record
+    this.text = text
+    this.notes = notes
+    this.museum = museum
+    this.references = references
+    this.uncuratedReferences = uncuratedReferences
+    this.atf = atf
   }
 
-  get uniqueRecord() {
-    const reducer = (filteredRecord, recordEntry, index) => {
+  get hasUncuratedReferences(): boolean {
+    return !_.isNil(this.uncuratedReferences)
+  }
+
+  get uniqueRecord(): $ReadOnlyArray<RecordEntry> {
+    const reducer = (filteredRecord, recordEntry) => {
       const keepRecord =
-        filteredRecord.isEmpty() ||
-        !filteredRecord.last().dateEquals(recordEntry)
-      return keepRecord ? filteredRecord.push(recordEntry) : filteredRecord
+        _.isEmpty(filteredRecord) ||
+        !_.last(filteredRecord).dateEquals(recordEntry)
+      if (keepRecord) {
+        filteredRecord.push(recordEntry)
+      }
+      return filteredRecord
     }
-    return this.get('record').reduce(reducer, List())
+    return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: List<Reference>) {
-    return this.set('references', references)
+  setReferences(references: $ReadOnlyArray<Reference>): Fragment {
+    return produce(this, (draft: Draft<Fragment>) => {
+      draft.references = references
+    })
   }
 }
+Fragment[immerable] = true

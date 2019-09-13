@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import { Promise } from 'bluebird'
+import _ from 'lodash'
 
 import { changeValueByLabel, clickNth, submitForm } from 'test-helpers/utils'
 import References from './References'
@@ -35,7 +35,7 @@ beforeEach(async () => {
 
 describe('Edit references', () => {
   beforeEach(async () => {
-    references = List(await factory.buildMany('reference', 2))
+    references = await factory.buildMany('reference', 2)
     await renderReferencesAndWait()
   })
 
@@ -43,35 +43,37 @@ describe('Edit references', () => {
     clickNth(element, 'Add Reference')
     submitForm(element, 'form')
 
-    expect(updateReferences).toHaveBeenCalledWith(
-      references.push(defaultReference)
-    )
+    expect(updateReferences).toHaveBeenCalledWith([
+      ...references,
+      defaultReference
+    ])
   })
 
   test('Delete reference', () => {
     clickNth(element, 'Delete Reference')
     submitForm(element, 'form')
 
-    expect(updateReferences).toHaveBeenCalledWith(references.skip(1))
+    expect(updateReferences).toHaveBeenCalledWith(_.tail(references))
   })
 
   test('Edit reference', async () => {
     await inputReference()
     submitForm(element, 'form')
 
-    expect(updateReferences).toHaveBeenCalledWith(
-      references.set(0, expectedReference)
-    )
+    expect(updateReferences).toHaveBeenCalledWith([
+      expectedReference,
+      ..._.tail(references)
+    ])
   })
 })
 
 it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
-  references = List()
+  references = []
   await renderReferencesAndWait()
   submitForm(element, 'form')
 
-  expect(updateReferences).toHaveBeenCalledWith(List.of(defaultReference))
+  expect(updateReferences).toHaveBeenCalledWith([defaultReference])
 })
 
 function renderReferences() {

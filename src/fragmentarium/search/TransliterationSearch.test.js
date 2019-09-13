@@ -4,7 +4,7 @@ import { render, waitForElement } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
-import { fromJS, Seq } from 'immutable'
+import _ from 'lodash'
 
 const transliteration = 'ma i-ra\nka li'
 let fragments
@@ -15,9 +15,9 @@ beforeEach(async () => {
   fragmentSearchService = {
     searchTransliteration: jest.fn()
   }
-  fragments = await factory.buildMany('fragment', 2, [
-    { matchingLines: fromJS([['line 1', 'line 2']]) },
-    { matchingLines: fromJS([['line 3'], ['line 4']]) }
+  fragments = await factory.buildMany('fragmentInfo', 2, [
+    { matchingLines: [['line 1', 'line 2']] },
+    { matchingLines: [['line 3'], ['line 4']] }
   ])
   fragmentSearchService.searchTransliteration.mockReturnValueOnce(
     Promise.resolve(fragments)
@@ -55,9 +55,10 @@ it('Displays script', () => {
 })
 
 it('Displays matching lines', () => {
-  for (let line of Seq(fragments)
-    .map(fragment => fragment.matchingLines)
-    .flatten(false)) {
-    expect(element.getByText(line)).not.toBeNull()
+  for (let line of _.flatMapDeep(
+    fragments,
+    fragment => fragment.matchingLines
+  )) {
+    expect(element.getAllByText(line)).not.toEqual([])
   }
 })

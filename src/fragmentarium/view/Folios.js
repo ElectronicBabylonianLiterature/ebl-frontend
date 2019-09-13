@@ -1,3 +1,4 @@
+// @flow
 import React, { Fragment } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
@@ -36,7 +37,7 @@ function Folios({ fragment, fragmentService, activeFolio, history }) {
 
   function onSelect(key) {
     if (key >= 0) {
-      const folio = fragment.folios.get(key)
+      const folio = fragment.folios[key]
       history.push(
         createFragmentUrlWithFolio(fragment.number, folio.name, folio.number)
       )
@@ -72,7 +73,7 @@ function Folios({ fragment, fragmentService, activeFolio, history }) {
           </Tab>
         )}
       </Tabs>
-      {fragment.folios.isEmpty() &&
+      {_.isEmpty(fragment.folios) &&
         _.isEmpty(fragment.cdliNumber) &&
         'No folios'}
     </Fragment>

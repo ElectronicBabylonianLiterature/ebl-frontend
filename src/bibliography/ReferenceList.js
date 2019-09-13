@@ -1,8 +1,10 @@
+// @flow
 import React from 'react'
 import _ from 'lodash'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import CompactCitation from 'bibliography/CompactCitation'
-import FullCitation from 'bibliography/FullCitation'
+import CompactCitation from './CompactCitation'
+import FullCitation from './FullCitation'
+import Reference from './Reference'
 
 import './ReferenceList.css'
 
@@ -13,7 +15,7 @@ const typeOrder = {
   DISCUSSION: 4
 }
 
-function Citation({ reference }) {
+function Citation({ reference }: { reference: Reference }) {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
       <FullCitation reference={reference} />
@@ -34,32 +36,41 @@ function Citation({ reference }) {
   )
 }
 
-function ReferenceGroup({ references }) {
+function ReferenceGroup({
+  references
+}: {
+  references: $ReadOnlyArray<Reference>
+}) {
   return (
     <ol className="ReferenceList__list">
-      {references
-        .toSeq()
+      {_.chain(references)
         .sortBy(reference => `${reference.author} # ${reference.year}`)
         .map((reference, index) => (
           <li key={index}>
             <Citation reference={reference} />
           </li>
-        ))}
+        ))
+        .value()}
     </ol>
   )
 }
 
-export default function ReferenceList({ references }) {
+export default function ReferenceList({
+  references
+}: {
+  references: $ReadOnlyArray<Reference>
+}) {
   return (
     <>
-      {references
+      {_.chain(references)
         .groupBy(reference => reference.type)
-        .entrySeq()
+        .toPairs()
         .sortBy(([type, group]) => _.get(typeOrder, type, 5))
         .map(([type, group]) => (
           <ReferenceGroup key={type} references={group} />
-        ))}
-      {references.isEmpty() && <p>No references</p>}
+        ))
+        .value()}
+      {_.isEmpty(references) && <p>No references</p>}
     </>
   )
 }

@@ -2,7 +2,6 @@ import React from 'react'
 import { MemoryRouter, Route } from 'react-router-dom'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
@@ -67,18 +66,16 @@ describe('Fragment is loaded', () => {
   let selectedFolio
 
   beforeEach(async () => {
-    const folios = List(
-      await factory.buildMany('folio', 2, {}, [
-        { name: 'WGL' },
-        { name: 'AKG' }
-      ])
-    )
+    const folios = await factory.buildMany('folio', 2, {}, [
+      { name: 'WGL' },
+      { name: 'AKG' }
+    ])
     fragment = (await factory.build('fragment', {
       number: fragmentNumber,
       folios: folios,
       atf: '1. ku'
-    })).setReferences(List(await factory.buildMany('reference', 2)))
-    selectedFolio = fragment.folios.first()
+    })).setReferences(await factory.buildMany('reference', 2))
+    selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(

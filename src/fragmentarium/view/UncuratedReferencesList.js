@@ -1,10 +1,14 @@
+// @flow
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
+import type { UncuratedReference } from '../fragment'
 
 export default function UncuratedReferencesList({
   uncuratedReferences,
   ...props
+}: {
+  uncuratedReferences: $ReadOnlyArray<UncuratedReference>
 }) {
   return (
     <ListGroup as="ul" variant="flush" {...props}>

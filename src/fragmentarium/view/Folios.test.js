@@ -2,7 +2,6 @@ import React from 'react'
 import { MemoryRouter } from 'react-router'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import Promise from 'bluebird'
 import Folios from './Folios'
 
@@ -27,7 +26,7 @@ beforeEach(async () => {
 
 describe('Folios', () => {
   beforeEach(async () => {
-    folios = List(await factory.buildMany('folio', 3))
+    folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', { folios: folios })
     container = renderFolios().container
   })
@@ -52,11 +51,12 @@ describe('Folios', () => {
 })
 
 it('Displays selected folio', async () => {
-  folios = List(
-    await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
-  )
+  folios = await factory.buildMany('folio', 2, {}, [
+    { name: 'WGL' },
+    { name: 'AKG' }
+  ])
   fragment = await factory.build('fragment', { folios: folios })
-  const selected = folios.first()
+  const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
   const element = renderFolios(selected)
   await waitForElement(() => element.getByText(selectedTitle))
@@ -66,9 +66,10 @@ it('Displays selected folio', async () => {
 })
 
 it('Displays CDLI image if no folio specified', async () => {
-  folios = List(
-    await factory.buildMany('folio', 2, {}, [{ name: 'WGL' }, { name: 'AKG' }])
-  )
+  folios = await factory.buildMany('folio', 2, {}, [
+    { name: 'WGL' },
+    { name: 'AKG' }
+  ])
   fragment = await factory.build('fragment', { folios: folios })
   const element = renderFolios()
   await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
@@ -77,7 +78,7 @@ it('Displays CDLI image if no folio specified', async () => {
 describe('No folios or CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
-      folios: List(),
+      folios: [],
       cdliNumber: ''
     })
     container = renderFolios().container

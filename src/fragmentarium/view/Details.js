@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react'
+// @flow
+import React from 'react'
 import _ from 'lodash'
 
+import type { Fragment } from '../fragment'
 import CdliLink from './CdliLink'
-import FragmentLink from 'fragmentarium/FragmentLink'
-import ExternalLink from 'common/ExternalLink'
+import FragmentLink from '../FragmentLink'
+import ExternalLink from '../../common/ExternalLink'
 
 import './Details.css'
 
@@ -11,81 +13,90 @@ const museums = {
   'The British Museum': 'https://britishmuseum.org/'
 }
 
-class Details extends Component {
-  get collection() {
-    return (
-      this.props.fragment.collection &&
-      `(${this.props.fragment.collection} Collection)`
-    )
-  }
+type Props = { fragment: Fragment }
 
-  get museum() {
-    const museum = this.props.fragment.museum
-    const museumUrl = museums[museum]
-    return <ExternalLink href={museumUrl}>{museum}</ExternalLink>
-  }
+function Collection({ fragment }: Props) {
+  return fragment.collection && `(${fragment.collection} Collection)`
+}
 
-  get joins() {
-    return (
-      <Fragment>
-        Joins:{' '}
-        {this.props.fragment.joins.isEmpty() ? (
-          '-'
-        ) : (
-          <ul className="Details-joins">
-            {this.props.fragment.joins.map(join => (
-              <li className="Details-joins__join" key={join}>
-                <FragmentLink number={join}>{join}</FragmentLink>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Fragment>
-    )
-  }
+function Museum({ fragment }: Props) {
+  const museum = fragment.museum
+  const museumUrl = museums[museum]
+  return <ExternalLink href={museumUrl}>{museum}</ExternalLink>
+}
 
-  get measurements() {
-    const measurements = _([
-      this.props.fragment.measures.length,
-      this.props.fragment.measures.width,
-      this.props.fragment.measures.thickness
-    ])
-      .compact()
-      .join(' × ')
+function Joins({ fragment }: Props) {
+  return (
+    <>
+      Joins:{' '}
+      {_.isEmpty(fragment.joins) ? (
+        '-'
+      ) : (
+        <ul className="Details-joins">
+          {fragment.joins.map(join => (
+            <li className="Details-joins__join" key={join}>
+              <FragmentLink number={join}>{join}</FragmentLink>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
+  )
+}
 
-    return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
-  }
+function Measurements({ fragment }: Props) {
+  const measurements = _([
+    fragment.measures.length,
+    fragment.measures.width,
+    fragment.measures.thickness
+  ])
+    .compact()
+    .join(' × ')
 
-  get cdliNumber() {
-    const cdliNumber = this.props.fragment.cdliNumber
-    return (
-      <Fragment>
-        CDLI:{' '}
-        {cdliNumber ? (
-          <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
-        ) : (
-          '-'
-        )}
-      </Fragment>
-    )
-  }
+  return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
+}
 
-  render() {
-    return (
-      <ul className="Details">
-        <li className="Details__item">{this.museum}</li>
-        <li className="Details__item">{this.collection}</li>
-        <li className="Details__item">{this.joins}</li>
-        <li className="Details__item Details-item--extra-margin">
-          {this.measurements}
-        </li>
-        <li className="Details__item">{this.cdliNumber}</li>
-        <li className="Details__item">
-          Accession: {this.props.fragment.accession || '-'}
-        </li>
-      </ul>
-    )
-  }
+function CdliNumber({ fragment }: Props) {
+  const cdliNumber = fragment.cdliNumber
+  return (
+    <>
+      CDLI:{' '}
+      {cdliNumber ? (
+        <CdliLink cdliNumber={cdliNumber}>{cdliNumber}</CdliLink>
+      ) : (
+        '-'
+      )}
+    </>
+  )
+}
+
+function Accession({ fragment }: Props) {
+  return <>Accession: {fragment.accession || '-'}</>
+}
+
+function Details({ fragment }: Props) {
+  return (
+    <ul className="Details">
+      <li className="Details__item">
+        <Museum fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Collection fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Joins fragment={fragment} />
+      </li>
+      <li className="Details__item Details-item--extra-margin">
+        <Measurements fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <CdliNumber fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Accession fragment={fragment} />
+      </li>
+    </ul>
+  )
 }
 
 export default Details

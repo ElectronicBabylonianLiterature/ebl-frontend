@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
-import { List } from 'immutable'
 
 let fragment
 let container
@@ -79,7 +78,7 @@ describe('Missing details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       collection: '',
-      joins: List(),
+      joins: [],
       cdliNumber: '',
       accession: '',
       bmIdNumber: '',

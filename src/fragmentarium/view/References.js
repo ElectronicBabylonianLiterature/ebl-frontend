@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
-import { List } from 'immutable'
 import ReferencesForm, { defaultReference } from 'bibliography/ReferencesForm'
 
 function References({
@@ -29,8 +28,8 @@ export default class ReferencesController extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      references: props.references.isEmpty()
-        ? List.of(defaultReference())
+      references: _.isEmpty(props.references)
+        ? [defaultReference()]
         : props.references
     }
   }

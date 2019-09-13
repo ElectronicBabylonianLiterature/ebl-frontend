@@ -1,12 +1,14 @@
+// @flow
 import React from 'react'
 import _ from 'lodash'
 
-import withData from 'http/withData'
-import FragmentList from 'fragmentarium/FragmentList'
+import withData from '../../http/withData'
+import FragmentList from '../FragmentList'
+import type { FragmentInfo } from '../fragment'
 
 import './TransliterationSearch.css'
 
-function Lines({ fragment }) {
+function Lines({ fragment }: { fragment: FragmentInfo }) {
   return (
     <ol className="TransliterationSearch__list">
       {fragment.matchingLines.map((group, index) => (

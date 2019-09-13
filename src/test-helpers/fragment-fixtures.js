@@ -105,7 +105,7 @@ factory.define('fragment', Fragment, {
   bmIdNumber: factory.chance('word'),
   accession: factory.chance('word'),
   publication: factory.chance('sentence', { words: 4 }),
-  joins: async () => List([await factory.chance('word')()]),
+  joins: async () => [await factory.chance('word')()],
   description: async () =>
     `${await factory.chance('sentence')()}\n${await factory.chance(
       'sentence'
@@ -113,13 +113,12 @@ factory.define('fragment', Fragment, {
   measures: factory.assocAttrs('measures'),
   collection: 'Kuyunjik',
   script: factory.chance('pickone', ['NA', 'NB']),
-  folios: async () => List(await factory.buildMany('folio', 2)),
-  record: async () => List(await factory.buildMany('record', 2)),
+  folios: async () => await factory.buildMany('folio', 2),
+  record: async () => await factory.buildMany('record', 2),
   text: factory.assocAttrs('text'),
   notes: factory.chance('sentence'),
   museum: 'The British Museum',
-  references: async () =>
-    List(await factory.buildMany('referenceDto', 2)).map(dto => fromJS(dto))
+  references: async () => await factory.buildMany('referenceDto', 2)
 })
 
 factory.define('fragmentInfo', Object, {

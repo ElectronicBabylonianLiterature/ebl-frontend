@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import Record from './Record'
 import moment from 'moment'
 
@@ -11,7 +10,7 @@ let container
 
 describe('Record has entries', () => {
   beforeEach(async () => {
-    record = List(await factory.buildMany('record', 3))
+    record = await factory.buildMany('record', 3)
     element = render(<Record record={record} />)
     container = element.container
   })
@@ -36,7 +35,7 @@ describe('Record has entries', () => {
 
 describe('Record is empty', () => {
   beforeEach(() => {
-    container = render(<Record record={List()} />).container
+    container = render(<Record record={[]} />).container
   })
 
   it(`Shows no record text`, () => {
@@ -54,7 +53,7 @@ describe('Historical transliteration', () => {
     entry = await factory.build('historicalRecord', {
       date: `${start.toISOString()}/${end.toISOString()}`
     })
-    element = render(<Record record={List([entry])} />)
+    element = render(<Record record={[entry]} />)
     container = element.container
   })
 
