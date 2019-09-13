@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 
 import ReferenceList from './ReferenceList'
 
