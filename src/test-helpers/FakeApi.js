@@ -1,19 +1,22 @@
 import Promise from 'bluebird'
-import { Record, List } from 'immutable'
 
-const Expectation = Record({
-  method: 'GET',
-  path: '',
-  authenticate: true,
-  response: {},
-  verify: false,
-  called: false,
-  body: null,
-  isBlob: false
-})
+class Expectation {
+  method = 'GET'
+  path = ''
+  authenticate = true
+  response = {}
+  verify = false
+  called = false
+  body = null
+  isBlob = false
+
+  constructor(data) {
+    Object.assign(this, data)
+  }
+}
 
 export default class FakeApi {
-  expectations = List()
+  expectations = []
 
   client = {
     fetchJson: jest.fn().mockImplementation((path, authenticate) => {
@@ -65,8 +68,8 @@ export default class FakeApi {
   }
 
   expectTexts(texts) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'GET',
         path: `/texts`,
         authenticate: false,
@@ -78,8 +81,8 @@ export default class FakeApi {
   }
 
   allowText(text) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'GET',
         path: `/texts/${text.category}/${text.index}`,
         authenticate: true,
@@ -90,8 +93,8 @@ export default class FakeApi {
   }
 
   expectText(text) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'GET',
         path: `/texts/${text.category}/${text.index}`,
         authenticate: true,
@@ -103,8 +106,8 @@ export default class FakeApi {
   }
 
   expectUpdateManuscripts(text, chapterIndex, manuscripts) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'POST',
         path: `/texts/${text.category}/${text.index}/chapters/${chapterIndex}/manuscripts`,
         response: text,
@@ -116,8 +119,8 @@ export default class FakeApi {
   }
 
   expectUpdateLines(text, chapterIndex, lines) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'POST',
         path: `/texts/${text.category}/${text.index}/chapters/${chapterIndex}/lines`,
         response: text,
@@ -129,8 +132,8 @@ export default class FakeApi {
   }
 
   allowStatistics(statistics) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'GET',
         path: `/statistics`,
         authenticate: false,
@@ -141,8 +144,8 @@ export default class FakeApi {
   }
 
   allowImage(file) {
-    this.expectations = this.expectations.push(
-      Expectation({
+    this.expectations.push(
+      new Expectation({
         method: 'GET',
         path: `/images/${file}`,
         authenticate: false,
