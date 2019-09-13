@@ -1,14 +1,13 @@
 import React from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { isCollection, isValueObject, merge, remove, set } from 'immutable'
 
 import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
 import { produce } from 'immer'
 
 function SizeBadge({ collection }) {
-  const size = isCollection(collection) ? collection.count() : collection.length
+  const size = collection.length
   return (
     size > 0 && (
       <Badge variant="light" pill>
@@ -21,7 +20,7 @@ function SizeBadge({ collection }) {
 function createDefaultValue(defaultValue) {
   if (_.isFunction(defaultValue)) {
     return defaultValue()
-  } else if (_.isObjectLike(defaultValue) && !isValueObject(defaultValue)) {
+  } else if (_.isObjectLike(defaultValue)) {
     return _.cloneDeep(defaultValue)
   } else {
     return defaultValue
@@ -33,31 +32,25 @@ function listController(ListView) {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
       onChange(
-        isCollection(value)
-          ? merge(value, [newItem])
-          : produce(value, draft => {
-              draft.push(newItem)
-            })
+        produce(value, draft => {
+          draft.push(newItem)
+        })
       )
     }
 
     const delete_ = index => () => {
       onChange(
-        isCollection(value)
-          ? remove(value, index)
-          : produce(value, draft => {
-              draft.splice(index, 1)
-            })
+        produce(value, draft => {
+          draft.splice(index, 1)
+        })
       )
     }
 
     const update = index => updated => {
       onChange(
-        isCollection(value)
-          ? set(value, index, updated)
-          : produce(value, draft => {
-              draft[index] = updated
-            })
+        produce(value, draft => {
+          draft[index] = updated
+        })
       )
     }
 
