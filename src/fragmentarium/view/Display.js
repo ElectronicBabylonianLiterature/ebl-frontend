@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { List } from 'immutable'
+import _ from 'lodash'
 import { Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import TransliterationHeader from 'fragmentarium/view/TransliterationHeader'
@@ -26,24 +26,25 @@ function Display({ fragment }) {
                   <Badge variant="warning">Beta</Badge>
                 </small>
               </h4>
-              {List(fragment.text.lines)
-                .map(line =>
-                  List(
-                    line.content
-                      .filter(token => token.lemmatizable)
-                      .map(token => ({
-                        number: line.prefix,
-                        value: token.value,
-                        uniqueLemma: List(token.uniqueLemma)
-                      }))
-                  )
+              {_(fragment.text.lines)
+                .flatMap(line =>
+                  line.content
+                    .filter(token => token.lemmatizable)
+                    .map(token => ({
+                      number: line.prefix,
+                      value: token.value,
+                      uniqueLemma: token.uniqueLemma
+                    }))
                 )
-                .flatten(1)
-                .filter(token => !token.uniqueLemma.isEmpty())
+                .reject(token => _.isEmpty(token.uniqueLemma))
                 .groupBy(token => token.uniqueLemma)
-                .toOrderedMap()
-                .sortBy((tokensByLemma, lemma) => lemma.first())
-                .map((tokensByLemma, lemma) => (
+                .toPairs()
+                .map(([lemma, tokensByLemma]) => [
+                  tokensByLemma[0].uniqueLemma,
+                  tokensByLemma
+                ])
+                .sortBy(([lemma, tokensByLemma]) => lemma[0])
+                .map(([lemma, tokensByLemma]) => (
                   <div key={lemma.join(' ')}>
                     {lemma.map((l, index) => (
                       <span key={index}>
@@ -52,7 +53,7 @@ function Display({ fragment }) {
                       </span>
                     ))}
                     {': '}
-                    {tokensByLemma
+                    {_(tokensByLemma)
                       .groupBy(token => token.value)
                       .map(
                         (tokensByValue, value) =>
@@ -64,7 +65,7 @@ function Display({ fragment }) {
                       .join(', ')}
                   </div>
                 ))
-                .toList()}
+                .value()}
             </section>
           )
         }
