@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import UncuratedReferences from './UncuratedReferences'
 
 let references
@@ -14,8 +13,8 @@ test.each([
 ])('%i references', async (numberOfReferences, expectedText) => {
   references =
     numberOfReferences > 0
-      ? List(await factory.buildMany('uncuratedReference', numberOfReferences))
-      : List()
+      ? await factory.buildMany('uncuratedReference', numberOfReferences)
+      : []
   element = render(<UncuratedReferences uncuratedReferences={references} />)
   expect(element.getByText(expectedText)).toBeTruthy()
 })

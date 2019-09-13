@@ -1,10 +1,14 @@
+// @flow
 import React from 'react'
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import _ from 'lodash'
-import HelpTrigger from 'common/HelpTrigger'
+import HelpTrigger from '../../common/HelpTrigger'
+import type { UncuratedReference } from '../fragment'
 import UncuratedReferencesList from './UncuratedReferencesList'
 
 import './UncuratedReferences.css'
+
+type Props = { +uncuratedReferences: $ReadOnlyArray<UncuratedReference> }
 
 function UncuratedReferencesHelp() {
   return (
@@ -19,7 +23,7 @@ function UncuratedReferencesHelp() {
   )
 }
 
-function UncuratedReferencesPopOver({ uncuratedReferences }) {
+function UncuratedReferencesPopOver({ uncuratedReferences }: Props) {
   return (
     <Popover
       id={_.uniqueId('UncuratedReferencesList-')}
@@ -33,14 +37,12 @@ function UncuratedReferencesPopOver({ uncuratedReferences }) {
   )
 }
 
-function createText(uncuratedReferences) {
-  const count = uncuratedReferences.count()
-  const text =
-    count === 1 ? '1 uncurated reference' : `${count} uncurated references`
-  return text
+function createText(uncuratedReferences: $ReadOnlyArray<UncuratedReference>) {
+  const count = uncuratedReferences.length
+  return count === 1 ? '1 uncurated reference' : `${count} uncurated references`
 }
 
-export default function UncuratedReferences({ uncuratedReferences }) {
+export default function UncuratedReferences({ uncuratedReferences }: Props) {
   return (
     <p>
       <HelpTrigger overlay={UncuratedReferencesHelp()} />
@@ -54,7 +56,7 @@ export default function UncuratedReferences({ uncuratedReferences }) {
         <Button
           variant="outline-info"
           size="sm"
-          disabled={uncuratedReferences.isEmpty()}
+          disabled={_.isEmpty(uncuratedReferences)}
         >
           {createText(uncuratedReferences)}
         </Button>
