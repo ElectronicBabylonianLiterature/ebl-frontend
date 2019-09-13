@@ -18,7 +18,7 @@ beforeEach(async () => {
   pagerData = await factory.build('folioPager')
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
   fragment = await factory.build('fragment')
-  folio = fragment.folios.first()
+  folio = fragment.folios[0]
   element = render(
     <MemoryRouter>
       <FolioPager
