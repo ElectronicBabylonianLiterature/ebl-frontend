@@ -173,7 +173,7 @@ describe('Session', () => {
   describe('getAccessToken', () => {
     test('active session', () => {
       advanceBy(-1)
-      expect(auth.getAccessToken()).toEqual(session.accessToken)
+      expect(auth.getAccessToken()).toEqual(session.getAccessToken())
     })
 
     test('expired session', () => {

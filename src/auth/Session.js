@@ -1,13 +1,29 @@
 import applicationScopes from './applicationScopes.json'
-import { Set } from 'immutable'
 
 class Session {
+  #accessToken
+  #idToken
+  #expiresAt
+  #scopes
+
   constructor(accessToken, idToken, expiresAt, scopes) {
-    this.accessToken = accessToken
-    this.idToken = idToken
-    this.expiresAt = expiresAt
-    this.scopes = Set(scopes)
-    Object.freeze(this)
+    this.#accessToken = accessToken
+    this.#idToken = idToken
+    this.#expiresAt = expiresAt
+    this.#scopes = new Set(scopes)
+  }
+
+  get accessToken() {
+    return this.#accessToken
+  }
+  get idToken() {
+    return this.#idToken
+  }
+  get expiresAt() {
+    return this.#expiresAt
+  }
+  get scopes() {
+    return [...this.#scopes]
   }
 
   isAuthenticated() {
@@ -23,7 +39,7 @@ class Session {
   }
 
   hasScope(scope) {
-    return this.isAuthenticated() && this.scopes.has(scope)
+    return this.isAuthenticated() && this.#scopes.has(scope)
   }
 
   isAllowedToReadWords() {

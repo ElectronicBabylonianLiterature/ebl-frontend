@@ -1,5 +1,4 @@
 import { advanceBy, advanceTo, clear } from 'jest-date-mock'
-import { Set } from 'immutable'
 import Session from './Session'
 
 const now = new Date()
@@ -17,7 +16,7 @@ test('constructor', () => {
   expect(session.accessToken).toEqual('accessToken')
   expect(session.idToken).toEqual('idToken')
   expect(session.expiresAt).toEqual(expiresAt)
-  expect(session.scopes).toEqual(Set(scopes))
+  expect(session.scopes).toEqual(scopes)
 })
 
 describe('isAuthenticated', () => {
