@@ -1,5 +1,4 @@
 import { factory } from 'factory-girl'
-import { fromJS, List } from 'immutable'
 import { Chance } from 'chance'
 import FactoryAdapter from './FactoryAdapter'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/fragment'
