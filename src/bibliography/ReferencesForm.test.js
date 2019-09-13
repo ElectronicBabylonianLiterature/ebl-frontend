@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { List } from 'immutable'
 import { Promise } from 'bluebird'
+import _ from 'lodash'
 
 import { changeValueByLabel, clickNth } from 'test-helpers/utils'
 import ReferencesForm from './ReferencesForm'
@@ -18,12 +18,12 @@ let searchBibliography
 let onChange
 
 beforeEach(async () => {
-  references = List(await factory.buildMany('reference', 2))
+  references = await factory.buildMany('reference', 2)
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
   })
-  expectedReference = references.get(0).setDocument(searchEntry)
+  expectedReference = _.head(references).setDocument(searchEntry)
   searchBibliography = () => Promise.resolve([searchEntry])
   onChange = jest.fn()
   element = render(
@@ -38,13 +38,13 @@ beforeEach(async () => {
 test('Add reference', async () => {
   clickNth(element, 'Add Reference')
 
-  expect(onChange).toHaveBeenCalledWith(references.push(defaultReference))
+  expect(onChange).toHaveBeenCalledWith([...references, defaultReference])
 })
 
 test('Delete reference', async () => {
   await clickNth(element, 'Delete Reference')
 
-  expect(onChange).toHaveBeenCalledWith(references.skip(1))
+  expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
 
 test('Edit reference', async () => {
@@ -52,5 +52,8 @@ test('Edit reference', async () => {
   await waitForElement(() => element.getByText(/Borger 1957/))
   clickNth(element, /Borger 1957/, 0)
 
-  expect(onChange).toHaveBeenCalledWith(references.set(0, expectedReference))
+  expect(onChange).toHaveBeenCalledWith([
+    expectedReference,
+    ..._.tail(references)
+  ])
 })
