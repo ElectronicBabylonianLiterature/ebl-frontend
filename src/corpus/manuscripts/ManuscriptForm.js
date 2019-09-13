@@ -3,14 +3,12 @@ import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 import { types } from '../text'
-// $FlowFixMe
-import ReferencesForm from 'bibliography/ReferencesForm'
+import ReferencesForm from '../../bibliography/ReferencesForm'
 import { periodModifiers, periods } from '../period'
 import { provenances } from '../provenance'
 import type { Manuscript } from '../text'
 // $FlowFixMe
 import produce, { Draft } from 'immer'
-import { Map } from 'immutable'
 
 export default function ManuscriptForm({
   manuscript,
@@ -27,9 +25,9 @@ export default function ManuscriptForm({
         draft[property] = event.target.value
       })
     )
-  const handelRecordChange = (
+  const handleMapChange = (
     property: string,
-    values: Map<string, any>
+    values: $ReadOnlyMap<string, any>
   ) => event =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
@@ -77,9 +75,9 @@ export default function ManuscriptForm({
           <Form.Control
             as="select"
             value={manuscript.provenance.name}
-            onChange={handelRecordChange('provenance', provenances)}
+            onChange={handleMapChange('provenance', provenances)}
           >
-            {provenances.toIndexedSeq().map(provenance =>
+            {[...provenances.values()].map(provenance =>
               _.isNil(provenance.parent) ? (
                 <option key={provenance.name} value={provenance.name}>
                   {provenance.name}
@@ -99,9 +97,9 @@ export default function ManuscriptForm({
               as="select"
               aria-label="Period modifier"
               value={manuscript.periodModifier.name}
-              onChange={handelRecordChange('periodModifier', periodModifiers)}
+              onChange={handleMapChange('periodModifier', periodModifiers)}
             >
-              {periodModifiers.toIndexedSeq().map(modifier => (
+              {[...periodModifiers.values()].map(modifier => (
                 <option key={modifier.name} value={modifier.name}>
                   {modifier.displayName}
                 </option>
@@ -111,9 +109,9 @@ export default function ManuscriptForm({
               as="select"
               aria-label="Period"
               value={manuscript.period.name}
-              onChange={handelRecordChange('period', periods)}
+              onChange={handleMapChange('period', periods)}
             >
-              {periods.toIndexedSeq().map(period =>
+              {[...periods.values()].map(period =>
                 _.isNil(period.parent) ? (
                   <option key={period.name} value={period.name}>
                     {period.name} {period.description}
@@ -132,9 +130,9 @@ export default function ManuscriptForm({
           <Form.Control
             as="select"
             value={manuscript.type.name}
-            onChange={handelRecordChange('type', types)}
+            onChange={handleMapChange('type', types)}
           >
-            {types.toIndexedSeq().map(type => (
+            {[...types.values()].map(type => (
               <option key={type.name} value={type.name}>
                 {type.name}
               </option>

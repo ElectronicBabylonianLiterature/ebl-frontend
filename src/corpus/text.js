@@ -1,5 +1,4 @@
 // @flow
-import { OrderedMap } from 'immutable'
 import Reference from '../bibliography/Reference'
 import type { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
@@ -10,26 +9,27 @@ import { Draft, immerable, produce } from 'immer'
 import _ from 'lodash'
 
 export type ManuscriptType = {| +name: string, +abbreviation: string |}
-export const types: OrderedMap<string, ManuscriptType> = OrderedMap({
-  Library: { name: 'Library', abbreviation: '' },
-  School: { name: 'School', abbreviation: 'Sch' },
-  Varia: { name: 'Varia', abbreviation: 'Var' },
-  Commentary: { name: 'Commentary', abbreviation: 'Com' },
-  Quotation: { name: 'Quotation', abbreviation: 'Quo' }
-})
+export const types: $ReadOnlyMap<string, ManuscriptType> = new Map([
+  ['Library', { name: 'Library', abbreviation: '' }],
+  ['School', { name: 'School', abbreviation: 'Sch' }],
+  ['Varia', { name: 'Varia', abbreviation: 'Var' }],
+  ['Commentary', { name: 'Commentary', abbreviation: 'Com' }],
+  ['Quotation', { name: 'Quotation', abbreviation: 'Quo' }]
+])
 
 export class Manuscript {
   id: ?number = null
   siglumDisambiguator: string = ''
   museumNumber: string = ''
   accession: string = ''
-  periodModifier: PeriodModifier = periodModifiers.get(
-    'None',
-    periodModifiers.first()
-  )
-  period: Period = periods.get('Neo-Assyrian', periods.first())
-  provenance: Provenance = provenances.get('Nineveh', provenances.first())
-  type: ManuscriptType = types.get('Library', types.first())
+  // $FlowFixMe
+  periodModifier: PeriodModifier = periodModifiers.get('None')
+  // $FlowFixMe
+  period: Period = periods.get('Neo-Assyrian')
+  // $FlowFixMe
+  provenance: Provenance = provenances.get('Nineveh')
+  // $FlowFixMe
+  type: ManuscriptType = types.get('Library')
   notes: string = ''
   references: $ReadOnlyArray<Reference> = Array()
 

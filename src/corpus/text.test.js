@@ -18,10 +18,10 @@ const manuscriptConfig: $Shape<Manuscript> = {
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
   accession: 'X.1',
-  periodModifier: periodModifiers.first(),
-  period: periods.first(),
-  provenance: provenances.first(),
-  type: types.first(),
+  periodModifier: periodModifiers.values().next().value,
+  period: periods.values().next().value,
+  provenance: provenances.values().next().value,
+  type: types.values().next().value,
   notes: 'some notes',
   references: []
 }

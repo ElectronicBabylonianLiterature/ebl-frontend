@@ -1,44 +1,42 @@
 // @flow
-import { OrderedMap } from 'immutable'
-
 export type Provenance = {
   +name: string,
   +abbreviation: string,
   +parent?: string
 }
-export const provenances: OrderedMap<string,
-  Provenance> = OrderedMap().withMutations(map =>
+export const provenances: $ReadOnlyMap<string, Provenance> = new Map([
+  ['Assyria', { name: 'Assyria', abbreviation: 'Assa' }],
+  ['Aššur', { name: 'Aššur', abbreviation: 'Ašš', parent: 'Assyria' }],
+  ['Ḫuzirina', { name: 'Ḫuzirina', abbreviation: 'Huz', parent: 'Assyria' }],
+  ['Kalḫu', { name: 'Kalḫu', abbreviation: 'Kal', parent: 'Assyria' }],
+  ['Khorsabad', { name: 'Khorsabad', abbreviation: 'Kho', parent: 'Assyria' }],
+  ['Nineveh', { name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' }],
+  ['Tarbiṣu', { name: 'Tarbiṣu', abbreviation: 'Tar', parent: 'Assyria' }],
+  ['Babylonia', { name: 'Babylonia', abbreviation: 'Baba' }],
+  ['Babylon', { name: 'Babylon', abbreviation: 'Bab', parent: 'Babylonia' }],
+  ['Borsippa', { name: 'Borsippa', abbreviation: 'Bor', parent: 'Babylonia' }],
+  ['Cutha', { name: 'Cutha', abbreviation: 'Cut', parent: 'Babylonia' }],
+  ['Isin', { name: 'Isin', abbreviation: 'Isn', parent: 'Babylonia' }],
+  ['Kiš', { name: 'Kiš', abbreviation: 'Kiš', parent: 'Babylonia' }],
+  ['Larsa', { name: 'Larsa', abbreviation: 'Lar', parent: 'Babylonia' }],
+  ['Meturan', { name: 'Meturan', abbreviation: 'Met', parent: 'Babylonia' }],
+  ['Nērebtum', { name: 'Nērebtum', abbreviation: 'Nēr', parent: 'Babylonia' }],
+  ['Nippur', { name: 'Nippur', abbreviation: 'Nip', parent: 'Babylonia' }],
+  ['Sippar', { name: 'Sippar', abbreviation: 'Sip', parent: 'Babylonia' }],
+  ['Šaduppûm', { name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' }],
+  ['Ur', { name: 'Ur', abbreviation: 'Ur', parent: 'Babylonia' }],
+  ['Uruk', { name: 'Uruk', abbreviation: 'Urk', parent: 'Babylonia' }],
+  ['Periphery', { name: 'Periphery', abbreviation: '' }],
+  ['Alalakh', { name: 'Alalakh', abbreviation: 'Ala', parent: 'Periphery' }],
   [
-    { name: 'Assyria', abbreviation: 'Assa' },
-    { name: 'Aššur', abbreviation: 'Ašš', parent: 'Assyria' },
-    { name: 'Ḫuzirina', abbreviation: 'Huz', parent: 'Assyria' },
-    { name: 'Kalḫu', abbreviation: 'Kal', parent: 'Assyria' },
-    { name: 'Khorsabad', abbreviation: 'Kho', parent: 'Assyria' },
-    { name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' },
-    { name: 'Tarbiṣu', abbreviation: 'Tar', parent: 'Assyria' },
-    { name: 'Babylonia', abbreviation: 'Baba' },
-    { name: 'Babylon', abbreviation: 'Bab', parent: 'Babylonia' },
-    { name: 'Borsippa', abbreviation: 'Bor', parent: 'Babylonia' },
-    { name: 'Cutha', abbreviation: 'Cut', parent: 'Babylonia' },
-    { name: 'Isin', abbreviation: 'Isn', parent: 'Babylonia' },
-    { name: 'Kiš', abbreviation: 'Kiš', parent: 'Babylonia' },
-    { name: 'Larsa', abbreviation: 'Lar', parent: 'Babylonia' },
-    { name: 'Meturan', abbreviation: 'Met', parent: 'Babylonia' },
-    { name: 'Nērebtum', abbreviation: 'Nēr', parent: 'Babylonia' },
-    { name: 'Nippur', abbreviation: 'Nip', parent: 'Babylonia' },
-    { name: 'Sippar', abbreviation: 'Sip', parent: 'Babylonia' },
-    { name: 'Šaduppûm', abbreviation: 'Šad', parent: 'Babylonia' },
-    { name: 'Ur', abbreviation: 'Ur', parent: 'Babylonia' },
-    { name: 'Uruk', abbreviation: 'Urk', parent: 'Babylonia' },
-    { name: 'Periphery', abbreviation: '' },
-    { name: 'Alalakh', abbreviation: 'Ala', parent: 'Periphery' },
-    { name: 'Tell el-Amarna', abbreviation: 'Ama', parent: 'Periphery' },
-    { name: 'Emar', abbreviation: 'Emr', parent: 'Periphery' },
-    { name: 'Ḫattuša', abbreviation: 'Hat', parent: 'Periphery' },
-    { name: 'Mari', abbreviation: 'Mar', parent: 'Periphery' },
-    { name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' },
-    { name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' },
-    { name: 'Ugarit', abbreviation: 'Uga', parent: 'Periphery' },
-    { name: 'Uncertain', abbreviation: 'Unc' }
-  ].forEach(provenance => map.set(provenance.name, provenance))
-)
+    'Tell el-Amarna',
+    { name: 'Tell el-Amarna', abbreviation: 'Ama', parent: 'Periphery' }
+  ],
+  ['Emar', { name: 'Emar', abbreviation: 'Emr', parent: 'Periphery' }],
+  ['Ḫattuša', { name: 'Ḫattuša', abbreviation: 'Hat', parent: 'Periphery' }],
+  ['Mari', { name: 'Mari', abbreviation: 'Mar', parent: 'Periphery' }],
+  ['Megiddo', { name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' }],
+  ['Susa', { name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' }],
+  ['Ugarit', { name: 'Ugarit', abbreviation: 'Uga', parent: 'Periphery' }],
+  ['Uncertain', { name: 'Uncertain', abbreviation: 'Unc' }]
+])
