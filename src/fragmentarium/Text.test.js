@@ -2,7 +2,6 @@
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { Text } from './text'
-import { fromJS, List } from 'immutable'
 import Lemmatization, {
   LemmatizationToken
 } from './lemmatization/Lemmatization'

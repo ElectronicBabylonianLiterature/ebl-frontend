@@ -2,7 +2,6 @@
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { List, fromJS } from 'immutable'
 import { testDelegation } from '../test-helpers/utils'
 import FragmentService from './FragmentService'
 import Lemmatization, {
