@@ -106,11 +106,13 @@ export default class WordAligner extends Component<Props, State> {
             title="Align"
             className="WordAligner__form"
           >
-            <AlignmentForm
-              token={this.props.token}
-              reconstructionTokens={this.props.reconstructionTokens}
-              onChange={this.handleChange}
-            />
+            <Popover.Content>
+              <AlignmentForm
+                token={this.props.token}
+                reconstructionTokens={this.props.reconstructionTokens}
+                onChange={this.handleChange}
+              />
+            </Popover.Content>
           </Popover>
         </Overlay>
       </span>

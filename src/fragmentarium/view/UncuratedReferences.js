@@ -13,12 +13,14 @@ type Props = { +uncuratedReferences: $ReadOnlyArray<UncuratedReference> }
 function UncuratedReferencesHelp() {
   return (
     <Popover id={_.uniqueId('UncuratedReferencesHelp-')}>
-      <p>
-        <dfn>Uncurated references</dfn> have been obtained by performing a
-        search on a collection of PDFs. The names of the references are the
-        filenames of the PDFs. Uncurated references should be transformed into
-        proper bibliographical references manually.
-      </p>
+      <Popover.Content>
+        <p>
+          <dfn>Uncurated references</dfn> have been obtained by performing a
+          search on a collection of PDFs. The names of the references are the
+          filenames of the PDFs. Uncurated references should be transformed into
+          proper bibliographical references manually.
+        </p>
+      </Popover.Content>
     </Popover>
   )
 }

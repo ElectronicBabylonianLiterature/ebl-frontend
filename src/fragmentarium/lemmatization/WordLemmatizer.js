@@ -48,11 +48,13 @@ export default class WordLemmatizer extends Component {
             title="Lemmatize"
             className="WordLemmatizer__form"
           >
-            <LemmatizationForm
-              token={this.props.token}
-              fragmentService={this.props.fragmentService}
-              onChange={this.handleCange}
-            />
+            <Popover.Content>
+              <LemmatizationForm
+                token={this.props.token}
+                fragmentService={this.props.fragmentService}
+                onChange={this.handleCange}
+              />
+            </Popover.Content>
           </Popover>
         </Overlay>
       </span>

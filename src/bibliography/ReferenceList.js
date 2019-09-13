@@ -18,7 +18,9 @@ const typeOrder = {
 function Citation({ reference }: { reference: Reference }) {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
-      <FullCitation reference={reference} />
+      <Popover.Content>
+        <FullCitation reference={reference} />
+      </Popover.Content>
     </Popover>
   )
 
