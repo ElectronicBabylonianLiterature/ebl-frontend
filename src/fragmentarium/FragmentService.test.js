@@ -4,6 +4,7 @@ import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { testDelegation } from '../test-helpers/utils'
 import FragmentService from './FragmentService'
+import type { ImageRepository } from './FragmentService'
 import Lemmatization, {
   LemmatizationToken
 } from './lemmatization/Lemmatization'
@@ -33,9 +34,10 @@ const wordRepository = {
   searchLemma: jest.fn(),
   find: jest.fn()
 }
-const imageRepository = {
+const imageRepository: ImageRepository = {
   find: jest.fn(),
-  findFolio: jest.fn()
+  findFolio: jest.fn(),
+  findPhoto: jest.fn()
 }
 const bibliographyService = {
   find: jest.fn(),
@@ -72,6 +74,7 @@ const testData = [
   ],
   ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
+  ['findPhoto', ['K.1'], imageRepository.findPhoto, resultStub, ['K.1']],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   [

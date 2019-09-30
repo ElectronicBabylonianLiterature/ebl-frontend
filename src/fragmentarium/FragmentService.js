@@ -11,6 +11,7 @@ import type { Token } from './text'
 export interface ImageRepository {
   find(string): Blob;
   findFolio(Folio): Blob;
+  findPhoto(string): Blob;
 }
 
 class FragmentService {
@@ -71,6 +72,10 @@ class FragmentService {
 
   findImage(fileName: string) {
     return this.#imageRepository.find(fileName)
+  }
+
+  findPhoto(number: string) {
+    return this.#imageRepository.findPhoto(number)
   }
 
   folioPager(folio: string, fragmentNumber: string) {

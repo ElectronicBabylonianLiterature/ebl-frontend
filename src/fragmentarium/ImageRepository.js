@@ -9,13 +9,23 @@ class ApiImageRepository implements ImageRepository {
   }
 
   find(fileName: string): Blob {
-    return this.#apiClient.fetchBlob(`/images/${fileName}`, false)
+    return this.#apiClient.fetchBlob(
+      `/images/${encodeURIComponent(fileName)}`,
+      false
+    )
   }
 
   findFolio(folio: Folio): Blob {
     const name = encodeURIComponent(folio.name)
     const number = encodeURIComponent(folio.number)
     return this.#apiClient.fetchBlob(`/folios/${name}/${number}`, true)
+  }
+
+  findPhoto(number: string): Blob {
+    return this.#apiClient.fetchBlob(
+      `/fragments/${encodeURIComponent(number)}/photo`,
+      true
+    )
   }
 }
 

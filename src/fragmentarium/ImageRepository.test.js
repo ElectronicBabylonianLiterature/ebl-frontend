@@ -5,7 +5,6 @@ import { Folio } from './fragment'
 import { factory } from 'factory-girl'
 
 const image = new Blob([''], { type: 'image/jpeg' })
-const fileName = 'image.jpg'
 
 let apiClient
 let imageRepository
@@ -19,6 +18,8 @@ beforeEach(() => {
 })
 
 describe('find', () => {
+  const fileName = 'image of tower of babel.jpg'
+
   beforeEach(async () => {
     jest
       .spyOn(apiClient, 'fetchBlob')
@@ -54,6 +55,28 @@ describe('findFolio', () => {
       `/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
         folio.number
       )}`,
+      true
+    )
+  })
+
+  it('Resolves to blob', async () => {
+    await expect(promise).resolves.toEqual(image)
+  })
+})
+
+describe('findPhoto', () => {
+  const number = 'ABC 123+456'
+
+  beforeEach(async () => {
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockReturnValueOnce(Promise.resolve(image))
+    promise = imageRepository.findPhoto(number)
+  })
+
+  it('Queries the photo', () => {
+    expect(apiClient.fetchBlob).toBeCalledWith(
+      `/fragments/${encodeURIComponent(number)}/photo`,
       true
     )
   })
