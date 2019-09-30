@@ -33,19 +33,22 @@ type Shift = {|
   +type: 'LanguageShift',
   +value: string,
   +normalized: boolean,
-  +language: string
+  +language: string,
+  +lemmatizable?: false
 |}
 
 type Erasure = {|
   +type: 'Erasure',
   +value: string,
-  +side: string
+  +side: string,
+  +lemmatizable?: false
 |}
 
 export type Token =
   | {|
       +type: string,
-      +value: string
+      +value: string,
+      +lemmatizable?: false
     |}
   | Word
   | LoneDeterminative

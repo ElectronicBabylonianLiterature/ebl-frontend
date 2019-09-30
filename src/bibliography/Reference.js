@@ -8,7 +8,7 @@ import Promise from 'bluebird'
 type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 const defaultType = 'DISCUSSION'
 
-class Reference {
+export class Reference {
   +type: ReferenceType
   +pages: string
   +notes: string
@@ -120,7 +120,7 @@ export default Reference
 export function createReference(
   data: { [string]: any },
   bibliographyRepository: { find: string => Promise<BibliographyEntry> }
-) {
+): Promise<Reference> {
   return bibliographyRepository
     .find(data.id)
     .then(

@@ -1,27 +1,42 @@
+// @flow
 import _ from 'lodash'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 import Lemma from './lemmatization/Lemma'
-import { createReference } from '../bibliography/Reference'
+import Lemmatization from './lemmatization/Lemmatization'
+import { Folio } from './fragment'
+import { Reference, createReference } from '../bibliography/Reference'
+import { Text } from './text'
+import type { Token } from './text'
+
+export interface ImageRepository {
+  find(string): Blob;
+  findFolio(Folio): Blob;
+}
 
 class FragmentService {
+  #fragmentRepository
+  #imageRepository
+  #wordRepository
+  #bibliographyService
+
   constructor(
-    fragmentRepository,
-    imageRepository,
-    wordRepository,
-    bibliographyService
+    fragmentRepository: any,
+    imageRepository: ImageRepository,
+    wordRepository: any,
+    bibliographyService: any
   ) {
-    this.fragmentRepository = fragmentRepository
-    this.imageRepository = imageRepository
-    this.wordRepository = wordRepository
-    this.bibliographyService = bibliographyService
+    this.#fragmentRepository = fragmentRepository
+    this.#imageRepository = imageRepository
+    this.#wordRepository = wordRepository
+    this.#bibliographyService = bibliographyService
   }
 
   statistics() {
-    return this.fragmentRepository.statistics()
+    return this.#fragmentRepository.statistics()
   }
 
-  find(number) {
-    return this.fragmentRepository
+  find(number: string) {
+    return this.#fragmentRepository
       .find(number)
       .then(fragment =>
         this.hydrateReferences(fragment.references).then(hydrated =>
@@ -30,45 +45,49 @@ class FragmentService {
       )
   }
 
-  updateTransliteration(number, transliteration, notes) {
-    return this.fragmentRepository.updateTransliteration(
+  updateTransliteration(
+    number: string,
+    transliteration: string,
+    notes: string
+  ) {
+    return this.#fragmentRepository.updateTransliteration(
       number,
       transliteration,
       notes
     )
   }
 
-  updateLemmatization(number, lemmatization) {
-    return this.fragmentRepository.updateLemmatization(number, lemmatization)
+  updateLemmatization(number: string, lemmatization: Lemmatization) {
+    return this.#fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
-  updateReferences(number, references) {
-    return this.fragmentRepository.updateReferences(number, references)
+  updateReferences(number: string, references: {}) {
+    return this.#fragmentRepository.updateReferences(number, references)
   }
 
-  findFolio(folio) {
-    return this.imageRepository.find(folio.fileName, true)
+  findFolio(folio: Folio) {
+    return this.#imageRepository.findFolio(folio)
   }
 
-  findImage(fileName) {
-    return this.imageRepository.find(fileName, false)
+  findImage(fileName: string) {
+    return this.#imageRepository.find(fileName)
   }
 
-  folioPager(folio, fragmentNumber) {
-    return this.fragmentRepository.folioPager(folio, fragmentNumber)
+  folioPager(folio: string, fragmentNumber: string) {
+    return this.#fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
-  searchLemma(lemma) {
+  searchLemma(lemma: string) {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
-      : this.wordRepository.searchLemma(lemma)
+      : this.#wordRepository.searchLemma(lemma)
   }
 
-  searchBibliography(query) {
-    return this.bibliographyService.search(query)
+  searchBibliography(query: string) {
+    return this.#bibliographyService.search(query)
   }
 
-  createLemmatization(text) {
+  createLemmatization(text: Text) {
     return Promise.all([this._fetchLemmas(text), this._fetchSuggestions(text)])
       .then(([lemmaData, suggestionsData]) => [
         _.keyBy(lemmaData, 'value'),
@@ -79,24 +98,26 @@ class FragmentService {
       )
   }
 
-  _fetchLemmas(text) {
-    return Promise.all(
+  _fetchLemmas(text: Text) {
+    return Promise.all<$ReadOnlyArray<Lemma>>(
       mapText(
         text,
         line => line.map(token => token.uniqueLemma || []),
         uniqueLemma =>
-          this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
+          this.#wordRepository.find(uniqueLemma).then(word => new Lemma(word))
       )
     )
   }
 
-  _fetchSuggestions(text) {
-    return Promise.mapSeries(
+  _fetchSuggestions(
+    text: Text
+  ): Promise<$ReadOnlyArray<[string, $ReadOnlyArray<Lemma>]>> {
+    return Promise.mapSeries<string, [string, $ReadOnlyArray<Lemma>], any>(
       mapLines(text, line =>
         line.filter(token => token.lemmatizable).map(token => token.value)
       ),
-      value =>
-        this.fragmentRepository
+      (value: string): Promise<[string, $ReadOnlyArray<Lemma>]> =>
+        this.#fragmentRepository
           .findLemmas(value)
           .then(lemmas => [
             value,
@@ -107,18 +128,25 @@ class FragmentService {
     )
   }
 
-  hydrateReferences(references) {
-    const hydrate = reference =>
-      createReference(reference, this.bibliographyService)
-    return Promise.all(references.map(hydrate))
+  hydrateReferences(references: $ReadOnlyArray<{}>) {
+    const hydrate: ({}) => Promise<Reference> = reference =>
+      createReference(reference, this.#bibliographyService)
+    return Promise.all<Reference>(references.map(hydrate))
   }
 }
 
-function mapText(text, mapLine, mapToken) {
+function mapText<T, U>(
+  text: Text,
+  mapLine: ($ReadOnlyArray<Token>) => ?T,
+  mapToken: T => U
+): $ReadOnlyArray<U> {
   return mapLines(text, mapLine).map(mapToken)
 }
 
-function mapLines(text, mapLine) {
+function mapLines<T>(
+  text: Text,
+  mapLine: ($ReadOnlyArray<Token>) => $ReadOnlyArray<?T> | ?T
+): $ReadOnlyArray<T> {
   return _(text.lines)
     .flatMapDeep(({ content }) => mapLine(content))
     .reject(_.isNil)

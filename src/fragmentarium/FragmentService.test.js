@@ -34,7 +34,8 @@ const wordRepository = {
   find: jest.fn()
 }
 const imageRepository = {
-  find: jest.fn()
+  find: jest.fn(),
+  findFolio: jest.fn()
 }
 const bibliographyService = {
   find: jest.fn(),
@@ -69,20 +70,8 @@ const testData = [
     fragmentRepository.updateReferences,
     resultStub
   ],
-  [
-    'findFolio',
-    [folio],
-    imageRepository.find,
-    resultStub,
-    [folio.fileName, true]
-  ],
-  [
-    'findImage',
-    [fileName],
-    imageRepository.find,
-    resultStub,
-    [fileName, false]
-  ],
+  ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
+  ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   [
@@ -97,6 +86,7 @@ testDelegation(fragmentService, testData)
 
 describe.each(['searchLemma'])('%s', method => {
   test('Resolves to empty array on zero length query', async () => {
+    // $FlowFixMe
     await expect(fragmentService[method]('')).resolves.toEqual([])
   })
 })

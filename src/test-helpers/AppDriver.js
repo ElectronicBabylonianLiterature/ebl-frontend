@@ -5,7 +5,7 @@ import App from 'App'
 import Auth from 'auth/Auth'
 import WordRepository from 'dictionary/WordRepository'
 import FragmentRepository from 'fragmentarium/FragmentRepository'
-import ImageRepository from 'fragmentarium/ImageRepository'
+import ApiImageRepository from 'fragmentarium/ImageRepository'
 import FragmentService from 'fragmentarium/FragmentService'
 import WordService from 'dictionary/WordService'
 import TextService from 'corpus/TextService'
@@ -20,7 +20,7 @@ function createApp(api, sessionStore) {
   const auth = new Auth(sessionStore, defaultErrorReporter, auth0Config)
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
-  const imageRepository = new ImageRepository(api)
+  const imageRepository = new ApiImageRepository(api)
   const bibliographyRepository = new BibliographyRepository(api)
   const wordService = new WordService(wordRepository)
   const bibliographyService = new BibliographyService(bibliographyRepository)

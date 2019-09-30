@@ -1,5 +1,8 @@
+// @flow
 import Promise from 'bluebird'
-import ImageRepository from './ImageRepository'
+import ApiImageRepository from './ImageRepository'
+import { Folio } from './fragment'
+import { factory } from 'factory-girl'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 const fileName = 'image.jpg'
@@ -7,13 +10,12 @@ const fileName = 'image.jpg'
 let apiClient
 let imageRepository
 let promise
-let authenticate = true
 
 beforeEach(() => {
   apiClient = {
     fetchBlob: jest.fn()
   }
-  imageRepository = new ImageRepository(apiClient)
+  imageRepository = new ApiImageRepository(apiClient)
 })
 
 describe('find', () => {
@@ -21,13 +23,38 @@ describe('find', () => {
     jest
       .spyOn(apiClient, 'fetchBlob')
       .mockReturnValueOnce(Promise.resolve(image))
-    promise = imageRepository.find(fileName, authenticate)
+    promise = imageRepository.find(fileName)
   })
 
   it('Queries the file', () => {
     expect(apiClient.fetchBlob).toBeCalledWith(
       `/images/${encodeURIComponent(fileName)}`,
-      authenticate
+      false
+    )
+  })
+
+  it('Resolves to blob', async () => {
+    await expect(promise).resolves.toEqual(image)
+  })
+})
+
+describe('findFolio', () => {
+  let folio: Folio
+
+  beforeEach(async () => {
+    folio = await factory.build('folio')
+    jest
+      .spyOn(apiClient, 'fetchBlob')
+      .mockReturnValueOnce(Promise.resolve(image))
+    promise = imageRepository.findFolio(folio)
+  })
+
+  it('Queries the folio', () => {
+    expect(apiClient.fetchBlob).toBeCalledWith(
+      `/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
+        folio.number
+      )}`,
+      true
     )
   })
 
