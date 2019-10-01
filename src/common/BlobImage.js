@@ -1,26 +1,24 @@
-import React, { Component } from 'react'
+// @flow
+import React, { useEffect } from 'react'
 import { Image } from 'react-bootstrap'
-import ExternalLink from 'common/ExternalLink'
+import ExternalLink from './ExternalLink'
 
-class BlobImage extends Component {
-  constructor(props) {
-    super(props)
-    this.image = URL.createObjectURL(props.data)
-  }
+export default function BlobImage({
+  data,
+  hasLink,
+  alt
+}: {
+  data: Blob,
+  hasLink?: boolean,
+  alt?: string
+}) {
+  const objectUrl = URL.createObjectURL(data)
+  useEffect(() => () => URL.revokeObjectURL(objectUrl))
 
-  componentWillUnmount() {
-    URL.revokeObjectURL(this.image)
-  }
-
-  render() {
-    const hasLink = this.props.hasLink
-    const image = <Image src={this.image} alt={this.props.alt} fluid />
-    return hasLink ? (
-      <ExternalLink href={this.image}> {image} </ExternalLink>
-    ) : (
-      image
-    )
-  }
+  const image = <Image src={objectUrl} alt={alt} fluid />
+  return hasLink ? (
+    <ExternalLink href={objectUrl}> {image} </ExternalLink>
+  ) : (
+    image
+  )
 }
-
-export default BlobImage

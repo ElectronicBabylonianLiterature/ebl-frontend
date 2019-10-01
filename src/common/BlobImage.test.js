@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import BlobImage from './BlobImage'
 
 const objectUrl = 'object URL mock'
@@ -10,7 +10,9 @@ function configureImage(hasLink = true) {
   beforeEach(async () => {
     URL.createObjectURL.mockReturnValueOnce(objectUrl)
     data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
-    element = render(<BlobImage data={data} hasLink={hasLink} />)
+    act(() => {
+      element = render(<BlobImage data={data} hasLink={hasLink} />)
+    })
   })
 }
 
