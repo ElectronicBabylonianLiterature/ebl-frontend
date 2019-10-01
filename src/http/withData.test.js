@@ -65,7 +65,6 @@ function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
     expect(InnerComponent).toHaveBeenCalledWith(
       {
         data: expectedData,
-        reload: expect.any(Function),
         prop: expectedPropValue
       },
       {}
@@ -132,19 +131,6 @@ describe('On successful get', () => {
         expect(InnerComponent).not.toHaveBeenCalledWith()
       })
     })
-  })
-
-  describe('Reload', () => {
-    beforeEach(async () => {
-      const reload = InnerComponent.mock.calls[0][0].reload
-      clearMocks()
-      getter.mockReturnValueOnce(Promise.resolve(newData))
-      reload()
-      await waitForElement(() => element.getByText(RegExp(propValue)))
-    })
-
-    expectGetterToBeCalled(propValue)
-    expectWrappedComponentToBeRendered(propValue, newData)
   })
 })
 
