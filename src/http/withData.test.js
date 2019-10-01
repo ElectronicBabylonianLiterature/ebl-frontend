@@ -73,7 +73,7 @@ function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
 }
 
 beforeEach(async () => {
-  const shouldUpdate = (prevProps, props) => prevProps.prop !== props.prop
+  const watch = props => [props.prop]
   filter = jest.fn()
   filter.mockReturnValue(true)
   getter = jest.fn()
@@ -84,7 +84,7 @@ beforeEach(async () => {
     </h1>
   ))
   config = {
-    shouldUpdate,
+    watch,
     filter,
     defaultData
   }

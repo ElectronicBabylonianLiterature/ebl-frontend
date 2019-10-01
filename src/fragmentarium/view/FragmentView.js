@@ -12,7 +12,7 @@ const FragmentWithData = withData(
   ({ data, ...props }) => <CuneiformFragment fragment={data} {...props} />,
   props => props.fragmentService.find(props.number),
   {
-    shouldUpdate: (prevProps, props) => prevProps.number !== props.number
+    watch: props => [props.number]
   }
 )
 

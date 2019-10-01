@@ -46,8 +46,6 @@ export default withData(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
   props => props.fragmentService.folioPager(props.folio, props.fragmentNumber),
   {
-    shouldUpdate: (prevProps, props) =>
-      !_.isEqual(prevProps.folio, props.folio) ||
-      prevProps.fragmentNumber !== props.fragmentNumber
+    watch: props => [props.folio, props.fragmentNumber]
   }
 )

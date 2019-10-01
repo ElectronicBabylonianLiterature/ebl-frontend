@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
-import _ from 'lodash'
-import Promise from 'bluebird'
+import React, { useState, useEffect } from 'react'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ErrorBoundary from 'common/ErrorBoundary'
 
 const defaultConfig = {
-  shouldUpdate: () => false,
+  watch: () => [],
   filter: () => true,
   defaultData: null
 }
@@ -16,50 +14,34 @@ export default function withData(WrappedComponent, getter, config = {}) {
     ...defaultConfig,
     ...config
   }
-  return class extends Component {
-    fetchPromise = Promise.resolve()
+  return function(props) {
+    const [data, setData] = useState(null)
+    const [error, setError] = useState(null)
 
-    state = {
-      data: null,
-      error: null
-    }
+    useEffect(
+      () => {
+        let fetchPromise
+        setError(null)
+        if (fullConfig.filter(props)) {
+          setData(null)
+          fetchPromise = getter(props)
+            .then(setData)
+            .catch(setError)
+        } else {
+          setData(fullConfig.defaultData)
+        }
+        return () => fetchPromise && fetchPromise.cancel()
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      fullConfig.watch(props)
+    )
 
-    fetchData = () => {
-      this.fetchPromise.cancel()
-      if (fullConfig.filter(this.props)) {
-        this.setState({ data: null, error: null })
-        this.fetchPromise = getter(this.props)
-          .then(data => this.setState({ data: data, error: null }))
-          .catch(error => this.setState({ data: null, error: error }))
-      } else {
-        this.setState({ data: fullConfig.defaultData, error: null })
-      }
-    }
-
-    componentDidMount() {
-      this.fetchData()
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-      if (fullConfig.shouldUpdate(prevProps, this.props)) {
-        this.fetchData()
-      }
-    }
-
-    componentWillUnmount() {
-      this.fetchPromise.cancel()
-    }
-
-    render() {
-      return (
-        <ErrorBoundary>
-          <Spinner loading={_.values(this.state).every(_.isNil)} />
-          <ErrorAlert error={this.state.error} />
-          {this.state.data && (
-            <WrappedComponent data={this.state.data} {...this.props} />
-          )}
-        </ErrorBoundary>
-      )
-    }
+    return (
+      <ErrorBoundary>
+        <Spinner loading={!data && !error} />
+        <ErrorAlert error={error} />
+        {data && <WrappedComponent data={data} {...props} />}
+      </ErrorBoundary>
+    )
   }
 }

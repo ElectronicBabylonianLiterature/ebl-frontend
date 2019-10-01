@@ -22,7 +22,7 @@ export default withData(
   WordSearch,
   props => props.wordService.search(props.query),
   {
-    shouldUpdate: (prevProps, props) => prevProps.query !== props.query,
+    watch: props => [props.query],
     filter: props => !_.isEmpty(props.query),
     defaultData: []
   }

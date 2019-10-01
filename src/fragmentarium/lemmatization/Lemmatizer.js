@@ -88,6 +88,6 @@ export default withData(
       .createLemmatization(props.text)
       .then(lemmatization => lemmatization.applySuggestions()),
   {
-    shouldUpdate: (prevProps, props) => !_.isEqual(prevProps.text, props.text)
+    watch: props => [props.text]
   }
 )

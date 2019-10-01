@@ -126,8 +126,6 @@ export default withData(
   ),
   ({ category, index, textService }) => textService.find(category, index),
   {
-    shouldUpdate: (prevProps, props) => {
-      return prevProps.stage !== props.stage || prevProps.name !== props.name
-    }
+    watch: props => [props.stage, props.name]
   }
 )

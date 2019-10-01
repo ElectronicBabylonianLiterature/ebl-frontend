@@ -38,9 +38,7 @@ export default withData(
   BibliographyEditor,
   props => props.bibliographyService.find(props.match.params.id),
   {
-    shouldUpdate: (prevProps, props) =>
-      prevProps.create !== props.create ||
-      prevProps.match.params.id !== props.match.params.id,
+    watch: props => [props.create, props.match.params.id],
     filter: props => !props.create,
     defaultData: template
   }

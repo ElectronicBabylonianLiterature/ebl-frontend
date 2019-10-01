@@ -42,8 +42,7 @@ export default withData(
   props =>
     props.fragmentSearchService.searchTransliteration(props.transliteration),
   {
-    shouldUpdate: (prevProps, props) =>
-      prevProps.transliteration !== props.transliteration,
+    watch: props => [props.transliteration],
     filter: props => !_.isEmpty(props.transliteration),
     defaultData: []
   }
