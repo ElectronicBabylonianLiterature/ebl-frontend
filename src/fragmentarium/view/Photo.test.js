@@ -20,17 +20,17 @@ beforeEach(async () => {
   element = render(
     <PhotoImage fragmentService={fragmentService} number={number} />
   )
-  await waitForElement(() => element.getByAltText(`${number}.jpg`))
+  await waitForElement(() => element.container.querySelector('img'))
 })
 
 it('Queries the API with given parameters', () => {
   expect(fragmentService.findPhoto).toBeCalledWith(number)
 })
 
-it('Has the filename as alt text', () => {
+it('Has alt text', () => {
   expect(element.container.querySelector('img')).toHaveAttribute(
     'alt',
-    `${number}.jpg`
+    `A photo of the fragment ${number}`
   )
 })
 
