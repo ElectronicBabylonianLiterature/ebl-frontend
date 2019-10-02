@@ -9,20 +9,19 @@ import ExternalLink from 'common/ExternalLink'
 
 import './Details.css'
 
-const museums = {
-  'The British Museum': 'https://britishmuseum.org/'
-}
-
 type Props = { fragment: Fragment }
 
 function Collection({ fragment }: Props) {
   return fragment.collection && `(${fragment.collection} Collection)`
 }
 
-function Museum({ fragment }: Props) {
+function MuseumName({ fragment }: Props) {
   const museum = fragment.museum
-  const museumUrl = museums[museum]
-  return <ExternalLink href={museumUrl}>{museum}</ExternalLink>
+  return museum.hasUrl ? (
+    <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
+  ) : (
+    museum.name
+  )
 }
 
 function Joins({ fragment }: Props) {
@@ -78,7 +77,7 @@ function Details({ fragment }: Props) {
   return (
     <ul className="Details">
       <li className="Details__item">
-        <Museum fragment={fragment} />
+        <MuseumName fragment={fragment} />
       </li>
       <li className="Details__item">
         <Collection fragment={fragment} />

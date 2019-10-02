@@ -69,13 +69,17 @@ beforeEach(async () => {
   container = element.container
 })
 
-const properties = ['museum', 'collection', 'cdliNumber', 'accession']
+const properties = ['collection', 'cdliNumber', 'accession']
 
 for (let property of properties) {
   it(`Renders ${property}`, () => {
     expect(container).toHaveTextContent(fragment[property])
   })
 }
+
+it(`Renders museum`, () => {
+  expect(container).toHaveTextContent(fragment.museum.name)
+})
 
 it('Renders all joins', () => {
   for (let item of fragment.joins) {

@@ -21,6 +21,7 @@ import {
   year2017,
   year2018
 } from '../test-helpers/record-fixtures'
+import Museum from './museum'
 
 const config = {
   number: 'K.1',
@@ -55,7 +56,7 @@ const config = {
     ]
   }),
   notes: 'Some notes',
-  museum: 'The museum',
+  museum: Museum.of('The museum'),
   references: [
     {
       id: 'RN1853',

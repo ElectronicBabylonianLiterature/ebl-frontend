@@ -1,6 +1,7 @@
 // @flow
 import { Folio, Fragment, RecordEntry } from 'fragmentarium/fragment'
 import { Text } from 'fragmentarium/text'
+import Museum from 'fragmentarium/museum'
 
 export const fragmentDto = {
   _id: 'Test.Fragment',
@@ -16,7 +17,7 @@ export const fragmentDto = {
   collection: '',
   script: 'NB',
   notes: '',
-  museum: '',
+  museum: 'The British Museum',
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
   record: [
     { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:22:40.201231' },
@@ -189,7 +190,7 @@ export const fragment = new Fragment({
   collection: '',
   script: 'NB',
   notes: '',
-  museum: '',
+  museum: Museum.of('The British Museum'),
   record: [
     new RecordEntry({
       user: 'Laasonen',

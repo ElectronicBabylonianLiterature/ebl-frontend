@@ -3,6 +3,7 @@ import Promise from 'bluebird'
 import queryString from 'query-string'
 import { Fragment, RecordEntry, Folio } from './fragment'
 import { Text } from './text'
+import Museum from './museum'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
@@ -12,6 +13,7 @@ function createFragment(dto) {
   return new Fragment({
     ...dto,
     number: dto._id,
+    museum: Museum.of(dto.museum),
     joins: dto.joins,
     measures: {
       length: dto.length.value || null,

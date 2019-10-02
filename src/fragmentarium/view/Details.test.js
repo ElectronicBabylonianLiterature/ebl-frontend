@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
+import Museum from 'fragmentarium/museum'
 
 let fragment
 let container
@@ -19,16 +20,18 @@ function renderDetails() {
 
 describe('All details', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', { museum: 'The British Museum' })
+    fragment = await factory.build('fragment', {
+      museum: Museum.of('The British Museum')
+    })
     renderDetails()
   })
 
   it('Renders museum', () => {
-    expect(container).toHaveTextContent(`${fragment.museum}`)
+    expect(container).toHaveTextContent(`${fragment.museum.name}`)
   })
 
   it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum)).toHaveAttribute(
+    expect(element.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
       'https://britishmuseum.org/'
     )
@@ -118,12 +121,12 @@ describe('Missing details', () => {
 describe('Unknown museum', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
-      museum: 'The Other Museum'
+      museum: Museum.of('The Other Museum')
     })
     renderDetails()
   })
 
   it('Does not link museum', () => {
-    expect(element.getByText(fragment.museum)).not.toHaveAttribute('href')
+    expect(element.getByText(fragment.museum.name)).not.toHaveAttribute('href')
   })
 })

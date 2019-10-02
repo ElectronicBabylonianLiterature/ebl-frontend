@@ -7,6 +7,7 @@ import { produce, immerable } from 'immer'
 import type { Draft } from 'immer'
 import Reference from 'bibliography/Reference'
 import { Text } from './text'
+import Museum from './museum'
 
 const moment = extendMoment(Moment)
 
@@ -134,7 +135,7 @@ export class Fragment {
   +record: $ReadOnlyArray<RecordEntry>
   +text: Text
   +notes: string
-  +museum: string
+  +museum: Museum
   +references: $ReadOnlyArray<any>
   +uncuratedReferences: ?$ReadOnlyArray<UncuratedReference>
   +atf: string

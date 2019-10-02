@@ -3,6 +3,7 @@ import { Chance } from 'chance'
 import FactoryAdapter from './FactoryAdapter'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/fragment'
 import { Text } from 'fragmentarium/text'
+import Museum from 'fragmentarium/museum'
 
 const chance = new Chance()
 
@@ -110,13 +111,42 @@ factory.define('fragment', Fragment, {
       'sentence'
     )()}`,
   measures: factory.assocAttrs('measures'),
-  collection: 'Kuyunjik',
+  collection: factory.chance('pickone', [
+    'Babylon',
+    'Kuyunjik',
+    'Nippur',
+    '',
+    'Sippar',
+    'Nimrud',
+    'Ur',
+    'Iraq',
+    'Girsu',
+    'Larsa',
+    'Bābili',
+    'Umma',
+    'Kanesh',
+    'uncertain',
+    'Puzriš',
+    'Shuruppak',
+    'Kisurra',
+    'Ešnunna',
+    'Uruk',
+    'Shibaniba',
+    'Kalhu',
+    'Tutub',
+    'Susa',
+    'Kish',
+    'Anšan',
+    'Lagash',
+    'Assur',
+    'Huzirina'
+  ]),
   script: factory.chance('pickone', ['NA', 'NB']),
   folios: async () => await factory.buildMany('folio', 2),
   record: async () => await factory.buildMany('record', 2),
   text: factory.assocAttrs('text'),
   notes: factory.chance('sentence'),
-  museum: 'The British Museum',
+  museum: Museum.of('The British Museum'),
   references: async () => await factory.buildMany('referenceDto', 2)
 })
 

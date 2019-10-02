@@ -1,6 +1,4 @@
 // @flow
-import { isConstructorDeclaration } from 'typescript'
-
 type MuseumConfig = {| +url: string, +copyright: string |}
 const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
   [
