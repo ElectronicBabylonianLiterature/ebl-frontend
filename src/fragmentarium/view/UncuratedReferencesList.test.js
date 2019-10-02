@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { render } from '@testing-library/react'
-import type { UncuratedReference } from '../fragment'
+import type { UncuratedReference } from 'fragmentarium/fragment'
 
 import UncuratedReferencesList from './UncuratedReferencesList'
 

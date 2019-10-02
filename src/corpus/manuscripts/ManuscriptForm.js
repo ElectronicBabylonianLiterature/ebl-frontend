@@ -2,13 +2,13 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { types } from '../text'
-import ReferencesForm from '../../bibliography/ReferencesForm'
-import { periodModifiers, periods } from '../period'
-import { provenances } from '../provenance'
-import type { Manuscript } from '../text'
-// $FlowFixMe
-import produce, { Draft } from 'immer'
+import { types } from 'corpus/text'
+import ReferencesForm from 'bibliography/ReferencesForm'
+import { periodModifiers, periods } from 'corpus/period'
+import { provenances } from 'corpus/provenance'
+import type { Manuscript } from 'corpus/text'
+import { produce } from 'immer'
+import type { Draft } from 'immer'
 
 export default function ManuscriptForm({
   manuscript,

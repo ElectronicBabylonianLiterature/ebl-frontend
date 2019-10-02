@@ -1,7 +1,6 @@
 // @flow
 import _ from 'lodash'
 import Cite from 'citation-js'
-// $FlowFixMe
 import { immerable, produce } from 'immer'
 
 const authorProperties = [

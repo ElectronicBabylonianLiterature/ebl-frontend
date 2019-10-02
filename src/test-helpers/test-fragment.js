@@ -1,6 +1,6 @@
 // @flow
-import { Folio, Fragment, RecordEntry } from '../fragmentarium/fragment'
-import { Text } from '../fragmentarium/text'
+import { Folio, Fragment, RecordEntry } from 'fragmentarium/fragment'
+import { Text } from 'fragmentarium/text'
 
 export const fragmentDto = {
   _id: 'Test.Fragment',

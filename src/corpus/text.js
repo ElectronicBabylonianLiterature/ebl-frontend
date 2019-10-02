@@ -1,11 +1,11 @@
 // @flow
-import Reference from '../bibliography/Reference'
+import Reference from 'bibliography/Reference'
 import type { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
 import type { Provenance } from './provenance'
 import { provenances } from './provenance'
-// $FlowFixMe
-import { Draft, immerable, produce } from 'immer'
+import { immerable, produce } from 'immer'
+import type { Draft } from 'immer'
 import _ from 'lodash'
 
 export type ManuscriptType = {| +name: string, +abbreviation: string |}

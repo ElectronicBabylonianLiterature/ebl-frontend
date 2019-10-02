@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import ListForm from '../common/List'
+import ListForm from 'common/List'
 import ReferenceForm from './ReferenceForm'
 import Reference from './Reference'
 import BibliographyEntry from './BibliographyEntry'

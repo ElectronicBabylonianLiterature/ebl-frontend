@@ -28,7 +28,7 @@ yarn lighthouse <url>
 
 ## Flow
 
-When `jest` is upgraded it might be necessary to update the Flow type definitions. E.g. `yarn flow-typed install jest@24.8.0`
+When dependencies are changed it might be necessary to update the Flow type definitions. E.g. `yarn flow-typed install` or `yarn flow-typed install jest@24.8.0`.
 
 ## Acknowledgements
 

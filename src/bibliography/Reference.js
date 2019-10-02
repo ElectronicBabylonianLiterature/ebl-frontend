@@ -1,14 +1,14 @@
 // @flow
 import _ from 'lodash'
-// $FlowFixMe
-import { Draft, immerable, produce } from 'immer'
+import { immerable, produce } from 'immer'
+import type { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
 import Promise from 'bluebird'
 
 type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 const defaultType = 'DISCUSSION'
 
-export class Reference {
+export default class Reference {
   +type: ReferenceType
   +pages: string
   +notes: string
@@ -114,8 +114,6 @@ export class Reference {
   }
 }
 Reference[immerable] = true
-
-export default Reference
 
 export function createReference(
   data: { [string]: any },

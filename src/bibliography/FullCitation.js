@@ -2,7 +2,7 @@
 import React from 'react'
 import { Parser } from 'html-to-react'
 import ReactMarkdown from 'react-markdown'
-import ExternalLink from '../common/ExternalLink'
+import ExternalLink from 'common/ExternalLink'
 import Reference from './Reference'
 
 import './FullCitation.css'

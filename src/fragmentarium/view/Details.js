@@ -2,10 +2,10 @@
 import React from 'react'
 import _ from 'lodash'
 
-import type { Fragment } from '../fragment'
+import type { Fragment } from 'fragmentarium/fragment'
 import CdliLink from './CdliLink'
-import FragmentLink from '../FragmentLink'
-import ExternalLink from '../../common/ExternalLink'
+import FragmentLink from 'fragmentarium/FragmentLink'
+import ExternalLink from 'common/ExternalLink'
 
 import './Details.css'
 

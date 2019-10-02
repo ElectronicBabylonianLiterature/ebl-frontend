@@ -1,7 +1,7 @@
 // @flow
 import _ from 'lodash'
-// $FlowFixMe
-import produce, { immerable, Draft } from 'immer'
+import { produce, immerable } from 'immer'
+import type { Draft } from 'immer'
 import Lemma from './Lemma'
 
 export type UniqueLemma = $ReadOnlyArray<Lemma>

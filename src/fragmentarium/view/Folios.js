@@ -7,7 +7,10 @@ import _ from 'lodash'
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
-import { createFragmentUrlWithFolio, createFragmentUrl } from '../FragmentLink'
+import {
+  createFragmentUrlWithFolio,
+  createFragmentUrl
+} from 'fragmentarium/FragmentLink'
 
 import './Folios.css'
 

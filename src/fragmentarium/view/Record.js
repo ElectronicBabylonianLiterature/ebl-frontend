@@ -4,7 +4,7 @@ import _ from 'lodash'
 import type { DateRange } from 'moment-range'
 
 import './Record.css'
-import { RecordEntry } from '../fragment'
+import { RecordEntry } from 'fragmentarium/fragment'
 
 type EntryProps = { entry: RecordEntry }
 

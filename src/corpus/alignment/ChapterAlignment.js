@@ -1,10 +1,10 @@
 // @flow
 import React from 'react'
-import type { Chapter, Line, ManuscriptLine } from '../text'
+import type { Chapter, Line, ManuscriptLine } from 'corpus/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-// $FlowFixMe
-import { Draft, produce } from 'immer'
+import { produce } from 'immer'
+import type { Draft } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(

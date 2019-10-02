@@ -2,9 +2,9 @@
 import React from 'react'
 import _ from 'lodash'
 
-import withData from '../../http/withData'
-import FragmentList from '../FragmentList'
-import type { FragmentInfo } from '../fragment'
+import withData from 'http/withData'
+import FragmentList from 'fragmentarium/FragmentList'
+import type { FragmentInfo } from 'fragmentarium/fragment'
 
 import './TransliterationSearch.css'
 

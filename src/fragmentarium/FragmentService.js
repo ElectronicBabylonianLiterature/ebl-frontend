@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 import Lemma from './lemmatization/Lemma'
 import Lemmatization from './lemmatization/Lemmatization'
 import { Folio } from './fragment'
-import { Reference, createReference } from '../bibliography/Reference'
+import Reference, { createReference } from 'bibliography/Reference'
 import { Text } from './text'
 import type { Token } from './text'
 

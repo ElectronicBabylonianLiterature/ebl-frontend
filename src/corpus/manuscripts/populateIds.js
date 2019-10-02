@@ -1,8 +1,8 @@
 // @flow
 import _ from 'lodash'
-import type { Manuscript } from '../text'
-// $FlowFixMe
-import produce, { Draft } from 'immer'
+import type { Manuscript } from 'corpus/text'
+import { produce } from 'immer'
+import type { Draft } from 'immer'
 
 function calculateNextId(manuscripts) {
   const existingIds = manuscripts.map(manuscript => manuscript.id)

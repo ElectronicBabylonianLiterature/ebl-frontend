@@ -1,5 +1,4 @@
 // @flow
-// $FlowFixMe
 import { immerable } from 'immer'
 import Lemmatization, {
   LemmatizationToken

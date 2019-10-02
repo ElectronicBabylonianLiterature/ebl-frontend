@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import type { AtfToken, ReconstructionToken } from '../text'
+import type { AtfToken, ReconstructionToken } from 'corpus/text'
 
 function Word({
   token,

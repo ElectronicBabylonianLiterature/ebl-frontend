@@ -2,7 +2,7 @@
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { testDelegation } from '../test-helpers/utils'
+import { testDelegation } from 'test-helpers/utils'
 import FragmentService from './FragmentService'
 import type { ImageRepository } from './FragmentService'
 import Lemmatization, {

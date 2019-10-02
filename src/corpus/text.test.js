@@ -1,6 +1,7 @@
 // @flow
 import _ from 'lodash'
 import {
+  Text,
   createText,
   createChapter,
   createManuscript,
@@ -10,7 +11,6 @@ import {
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-import { Text } from './text'
 import type { Chapter, Line, Manuscript, ManuscriptLine } from './text'
 
 const manuscriptConfig: $Shape<Manuscript> = {

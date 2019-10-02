@@ -5,9 +5,9 @@ import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-// $FlowFixMe
-import { Draft, produce } from 'immer'
-import type { AtfToken, ReconstructionToken } from '../text'
+import { produce } from 'immer'
+import type { Draft } from 'immer'
+import type { AtfToken, ReconstructionToken } from 'corpus/text'
 
 type Props = {
   +token: AtfToken,

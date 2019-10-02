@@ -3,9 +3,9 @@ import _ from 'lodash'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import type { DateRange } from 'moment-range'
-// $FlowFixMe
-import produce, { immerable, Draft } from 'immer'
-import Reference from '../bibliography/Reference'
+import { produce, immerable } from 'immer'
+import type { Draft } from 'immer'
+import Reference from 'bibliography/Reference'
 import { Text } from './text'
 
 const moment = extendMoment(Moment)

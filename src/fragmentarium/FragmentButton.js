@@ -4,10 +4,10 @@ import type { Node } from 'react'
 import { Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import ErrorAlert from '../common/ErrorAlert'
-import Spinner from '../common/Spinner'
+import ErrorAlert from 'common/ErrorAlert'
+import Spinner from 'common/Spinner'
 import { createFragmentUrl } from './FragmentLink'
-import usePromiseEffect from '../common/usePromiseEffect'
+import usePromiseEffect from 'common/usePromiseEffect'
 import type { FragmentInfo } from './fragment'
 
 interface History {
