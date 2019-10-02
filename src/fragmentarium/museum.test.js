@@ -1,19 +1,28 @@
 // @flow
 import Museum from './museum'
+import { factory } from 'factory-girl'
 
+const bmIdNumber = 'A 1234+43'
 describe.each([
   [
     'The British Museum',
     'https://britishmuseum.org/',
-    'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)'
+    'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+    {
+      url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
+        bmIdNumber
+      )}&partId=1`,
+      label: `The British Museum object ${bmIdNumber}`
+    }
   ],
   [
     'National Museum of Iraq',
     '',
-    'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum'
+    'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+    null
   ],
-  ['Other Museum', '', '']
-])('%s', (name, url, copyright) => {
+  ['Other Museum', '', '', null]
+])('%s', (name, url, copyright, link) => {
   let museum: Museum
 
   beforeEach(() => {
@@ -39,4 +48,15 @@ describe.each([
   test('copyright', () => {
     expect(museum.copyright).toEqual(copyright)
   })
+
+  test('hasFragmentLink', () => {
+    expect(museum.hasFragmentLink).toEqual(link !== null)
+  })
+
+  if (link !== null) {
+    test('fragmentlink', async () => {
+      const fragment = await factory.build('fragment', { bmIdNumber })
+      expect(museum.createLinkFor(fragment)).toEqual(link)
+    })
+  }
 })
