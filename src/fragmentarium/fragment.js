@@ -174,7 +174,7 @@ export class Fragment {
     record: $ReadOnlyArray<RecordEntry>,
     text: Text,
     notes: string,
-    museum: string,
+    museum: Museum,
     references: $ReadOnlyArray<any>,
     uncuratedReferences?: ?$ReadOnlyArray<UncuratedReference>,
     atf: string
@@ -220,6 +220,14 @@ export class Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })
+  }
+
+  get hasLink() {
+    return this.museum.hasFragmentLink(this)
+  }
+
+  getLink() {
+    return this.museum.createLinkFor(this)
   }
 }
 Fragment[immerable] = true

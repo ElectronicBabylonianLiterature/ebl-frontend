@@ -3,76 +3,43 @@ import _ from 'lodash'
 import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
 
-export type FragmentLink = {| +url: string, +label: string |}
-type FragmentLinkFactory = Fragment => FragmentLink
-
-type MuseumConfig = {|
-  +logo?: string,
-  +url?: string,
-  +copyright?: string,
-  +linkFactory?: FragmentLinkFactory
+export type FragmentLink = {|
+  +name: string,
+  +logo: string,
+  +url: string,
+  +label: string
 |}
-const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
-  [
-    'The British Museum',
-    {
-      logo: bmLogo,
-      url: 'https://britishmuseum.org/',
-      copyright:
-        'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
-      linkFactory: fragment => {
-        const bmIdNumber = fragment.bmIdNumber
-        return {
-          url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
-            bmIdNumber
-          )}&partId=1`,
-          label: `The British Museum object ${bmIdNumber}`
-        }
-      }
-    }
-  ],
-  [
-    'National Museum of Iraq',
-    {
-      copyright:
-        'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum'
-    }
-  ]
-])
 
-export type MuseumData = {|
+export type MuseumData = {
   +name: string,
   +url: string,
   +logo: string,
-  +copyright: string,
-  +linkFactory: ?FragmentLinkFactory
-|}
+  +copyright: string
+}
 
 export default class Museum {
   +name: string
   +logo: string
   +url: string
   +copyright: string
-  #linkFactory: ?FragmentLinkFactory
 
   static of(name: string): Museum {
-    const data: MuseumData = {
+    const data = {
       name,
       logo: '',
       url: '',
       copyright: '',
-      linkFactory: null,
+      museumClass: Museum,
       ...museums.get(name)
     }
-    return new Museum(data)
+    return new data.museumClass(data)
   }
 
-  constructor({ name, logo, url, copyright, linkFactory }: MuseumData) {
+  constructor({ name, logo, url, copyright }: MuseumData) {
     this.name = name
     this.logo = logo
     this.url = url
     this.copyright = copyright
-    this.#linkFactory = linkFactory
   }
 
   get hasUrl(): boolean {
@@ -83,11 +50,60 @@ export default class Museum {
     return this.copyright !== ''
   }
 
-  get hasFragmentLink(): boolean {
-    return !_.isNil(this.#linkFactory)
+  hasFragmentLink(fragment: Fragment): boolean {
+    return false
   }
 
   createLinkFor(fragment: Fragment): FragmentLink {
-    return this.#linkFactory(fragment)
+    throw new Error(`${this.name} does not support fragment links.`)
   }
 }
+
+class BritishMuseum extends Museum {
+  hasFragmentLink(fragment) {
+    return fragment.bmIdNumber !== ''
+  }
+
+  createLinkFor(fragment) {
+    if (this.hasFragmentLink(fragment)) {
+      const bmIdNumber = fragment.bmIdNumber
+      return {
+        name: this.name,
+        logo: this.logo,
+        url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
+          bmIdNumber
+        )}&partId=1`,
+        label: `The British Museum object ${bmIdNumber}`
+      }
+    } else {
+      throw new Error(`Fragment ${fragment.number} does not have bmIdNumber.`)
+    }
+  }
+}
+
+type MuseumConfig = {|
+  +logo?: string,
+  +url?: string,
+  +copyright?: string,
+  +museumClass?: Class<Museum>
+|}
+
+const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
+  [
+    'The British Museum',
+    {
+      logo: bmLogo,
+      url: 'https://britishmuseum.org/',
+      copyright:
+        'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
+      museumClass: BritishMuseum
+    }
+  ],
+  [
+    'National Museum of Iraq',
+    {
+      copyright:
+        'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum'
+    }
+  ]
+])

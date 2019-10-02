@@ -5,30 +5,31 @@ import CdliLink from './CdliLink'
 import ExternalLink from 'common/ExternalLink'
 import cdliLogo from './cdli.png'
 import { Fragment } from 'fragmentarium/fragment'
+import type { FragmentLink } from 'fragmentarium/museum'
 
 import './OrganizationLinks.css'
 
-type Props = { +fragment: Fragment }
-
-function MuseumLink({ fragment }: Props) {
-  const museum = fragment.museum
-  const link = museum.createLinkFor(fragment)
+function MuseumLink({ link }: { +link: FragmentLink }) {
   return (
-    <ExternalLink alt={museum.name} href={link.url} aria-label={link.label}>
+    <ExternalLink alt={link.name} href={link.url} aria-label={link.label}>
       <img
         className="OrganizationLinks__image"
-        src={museum.logo}
-        alt={museum.name}
+        src={link.logo}
+        alt={link.name}
       />
     </ExternalLink>
   )
 }
 
-export default function OrganizationLinks({ fragment }: Props) {
+export default function OrganizationLinks({
+  fragment
+}: {
+  +fragment: Fragment
+}) {
   const cdliNumber = fragment.cdliNumber
   return (
     <p className="OrganizationLinks">
-      {fragment.museum.hasFragmentLink && <MuseumLink fragment={fragment} />}
+      {fragment.hasLink && <MuseumLink link={fragment.getLink()} />}
       {cdliNumber && (
         <CdliLink cdliNumber={cdliNumber}>
           <img className="OrganizationLinks__image" src={cdliLogo} alt="cdli" />

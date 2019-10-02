@@ -11,6 +11,8 @@ describe.each([
     'https://britishmuseum.org/',
     'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
     {
+      name: 'The British Museum',
+      logo: bmLogo,
       url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
         bmIdNumber
       )}&partId=1`,
@@ -56,8 +58,14 @@ describe.each([
     expect(museum.copyright).toEqual(copyright)
   })
 
-  test('hasFragmentLink', () => {
-    expect(museum.hasFragmentLink).toEqual(link !== null)
+  test('hasFragmentLink bmIdNumber', async () => {
+    const fragment = await factory.build('fragment', { bmIdNumber })
+    expect(museum.hasFragmentLink(fragment)).toEqual(link !== null)
+  })
+
+  test('hasFragmentLink no bmIdNumber', async () => {
+    const fragment = await factory.build('fragment', { bmIdNumber: '' })
+    expect(museum.hasFragmentLink(fragment)).toEqual(false)
   })
 
   if (link !== null) {
