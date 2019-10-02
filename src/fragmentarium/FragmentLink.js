@@ -9,9 +9,14 @@ export function createFragmentUrl(number) {
 
 export function createFragmentUrlWithFolio(number, folioName, folioNumber) {
   const query = queryString.stringify(
-    { folioName: folioName, folioNumber: folioNumber },
+    { tab: 'folio', folioName: folioName, folioNumber: folioNumber },
     { strict: false }
   )
+  return `${createFragmentUrl(number)}?${query}`
+}
+
+export function createFragmentUrlWithTab(number, tab) {
+  const query = queryString.stringify({ tab }, { strict: false })
   return `${createFragmentUrl(number)}?${query}`
 }
 

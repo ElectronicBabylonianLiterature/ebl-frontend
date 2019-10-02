@@ -143,6 +143,7 @@ function CuneiformFragment({
   fragmentService,
   fragmentSearchService,
   activeFolio,
+  tab,
   onSave,
   saving,
   error
@@ -169,6 +170,7 @@ function CuneiformFragment({
             fragment={fragment}
             fragmentService={fragmentService}
             activeFolio={activeFolio}
+            tab={tab}
           />
         </Col>
       </Row>
@@ -180,7 +182,8 @@ function CuneiformFragmentController({
   fragment,
   fragmentService,
   fragmentSearchService,
-  activeFolio
+  activeFolio,
+  tab
 }) {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
@@ -220,6 +223,7 @@ function CuneiformFragmentController({
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
         activeFolio={activeFolio}
+        tab={tab}
         onSave={handleSave}
         saving={isSaving}
         error={error}

@@ -53,7 +53,7 @@ describe('With folio', () => {
     const encodedFolioNumber = encodeURIComponent(folio.number)
     expect(element.getByLabelText(label)).toHaveAttribute(
       'href',
-      `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}`
+      `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`
     )
   })
 

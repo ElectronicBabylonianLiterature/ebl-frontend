@@ -44,6 +44,7 @@ beforeEach(async () => {
   fragmentService = {
     find: jest.fn(),
     findFolio: jest.fn(),
+    findPhoto: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], []))
   }
@@ -56,6 +57,9 @@ beforeEach(async () => {
   }
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
+  fragmentService.findPhoto.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
@@ -79,7 +83,9 @@ describe('Fragment is loaded', () => {
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(
-      `/${encodeURIComponent(fragmentNumber)}?folioName=${encodeURIComponent(
+      `/${encodeURIComponent(
+        fragmentNumber
+      )}?tab=folio&folioName=${encodeURIComponent(
         selectedFolio.name
       )}&folioNumber=${encodeURIComponent(selectedFolio.number)}`
     )

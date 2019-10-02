@@ -25,6 +25,7 @@ export default function FragmentView({
   const number = decodeURIComponent(match.params.id)
   const folioName = queryString.parse(location.search).folioName
   const folioNumber = queryString.parse(location.search).folioNumber
+  const tab = queryString.parse(location.search).tab
   const activeFolio =
     folioName || folioNumber
       ? new Folio({
@@ -47,6 +48,7 @@ export default function FragmentView({
               fragmentService={fragmentService}
               fragmentSearchService={fragmentSearchService}
               activeFolio={activeFolio}
+              tab={tab}
             />
           ) : (
             'Please log in to browse the Fragmentarium.'

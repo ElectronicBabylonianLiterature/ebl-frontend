@@ -1,23 +1,25 @@
 // @flow
-import React, { Fragment } from 'react'
-import { Tab, Tabs } from 'react-bootstrap'
+import React, { useContext } from 'react'
+import { Tab, Tabs, Badge } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
+import Photo from './Photo'
 import {
   createFragmentUrlWithFolio,
-  createFragmentUrl
+  createFragmentUrlWithTab
 } from 'fragmentarium/FragmentLink'
 
 import './Folios.css'
+import SessionContext from 'auth/SessionContext'
 
 function FolioDetails({ fragmentService, fragmentNumber, folio }) {
   return (
     folio.hasImage && (
-      <Fragment>
+      <>
         <header className="Folios__Pager">
           <FolioPager
             fragmentService={fragmentService}
@@ -30,31 +32,38 @@ function FolioDetails({ fragmentService, fragmentNumber, folio }) {
           folio={folio}
           alt={folio.fileName}
         />
-      </Fragment>
+      </>
     )
   )
 }
 
-function Folios({ fragment, fragmentService, activeFolio, history }) {
-  const cdliKey = -1
+function Folios({ fragment, fragmentService, tab, activeFolio, history }) {
+  const session = useContext(SessionContext)
 
   function onSelect(key) {
-    if (key >= 0) {
+    if (_.isNumber(key)) {
       const folio = fragment.folios[key]
       history.push(
         createFragmentUrlWithFolio(fragment.number, folio.name, folio.number)
       )
     } else {
-      history.push(createFragmentUrl(fragment.number))
+      history.push(createFragmentUrlWithTab(fragment.number, key))
     }
   }
 
-  const activeKey = activeFolio
-    ? fragment.folios.findIndex(folio => _.isEqual(folio, activeFolio))
-    : cdliKey
+  let activeKey = tab || (fragment.cdliNumber ? 'cdli' : 0)
+
+  if (tab === 'folio') {
+    const key = fragment.folios.findIndex(folio =>
+      _.isEqual(folio, activeFolio)
+    )
+    if (key >= 0) {
+      activeKey = key
+    }
+  }
 
   return (
-    <Fragment>
+    <>
       <Tabs id="folio-container" activeKey={activeKey} onSelect={onSelect}>
         {fragment.folios.map((folio, index) => (
           <Tab
@@ -70,8 +79,14 @@ function Folios({ fragment, fragmentService, activeFolio, history }) {
             />
           </Tab>
         ))}
+        {session.hasBetaAccess() && (
+          <Tab eventKey="photo" title="Photo">
+            <Badge variant="warning">Beta</Badge>
+            <Photo fragment={fragment} fragmentService={fragmentService} />
+          </Tab>
+        )}
         {fragment.cdliNumber && (
-          <Tab eventKey={cdliKey} title="CDLI Image">
+          <Tab eventKey="cdli" title="CDLI Image">
             <CdliImage cdliNumber={fragment.cdliNumber} />
           </Tab>
         )}
@@ -79,7 +94,7 @@ function Folios({ fragment, fragmentService, activeFolio, history }) {
       {_.isEmpty(fragment.folios) &&
         _.isEmpty(fragment.cdliNumber) &&
         'No folios'}
-    </Fragment>
+    </>
   )
 }
 

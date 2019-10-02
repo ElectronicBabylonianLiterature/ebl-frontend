@@ -27,6 +27,7 @@ it('Creates URL with folio query', () => {
   ).toEqual({
     url: `/fragmentarium/${doubleEncode(number)}`,
     query: {
+      tab: 'folio',
       folioName: folioName,
       folioNumber: folioNumber
     }

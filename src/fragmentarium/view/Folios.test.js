@@ -14,11 +14,15 @@ let folioPager
 beforeEach(async () => {
   fragmentService = {
     findFolio: jest.fn(),
+    findPhoto: jest.fn(),
     folioPager: jest.fn()
   }
   folioPager = await factory.build('folioPager')
   URL.createObjectURL.mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
+    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
+  )
+  fragmentService.findPhoto.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
@@ -96,6 +100,7 @@ function renderFolios(activeFolio = null) {
         fragment={fragment}
         fragmentService={fragmentService}
         activeFolio={activeFolio}
+        tab={activeFolio && 'folio'}
       />
     </MemoryRouter>
   )
