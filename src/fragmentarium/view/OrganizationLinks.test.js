@@ -3,16 +3,17 @@ import { render } from '@testing-library/react'
 import OrganizationLinks from './OrganizationLinks'
 
 import cdliLogo from './cdli.png'
-import bmLogo from './The_British_Museum.png'
+import { factory } from 'factory-girl'
+import Museum from 'fragmentarium/museum'
 
-const cdliNumber = 'P0000'
-const bmIdNumber = '00000'
+const cdliNumber = 'P 0000+q'
+const bmIdNumber = 'bm 00000+q'
+let fragment
 let element
 
-beforeEach(() => {
-  element = render(
-    <OrganizationLinks cdliNumber={cdliNumber} bmIdNumber={bmIdNumber} />
-  )
+beforeEach(async () => {
+  fragment = await factory.build('fragment', { cdliNumber, bmIdNumber })
+  element = render(<OrganizationLinks fragment={fragment} />)
 })
 
 it('Renders CDLI logo', () => {
@@ -22,22 +23,22 @@ it('Renders CDLI logo', () => {
 it('Links to CDLI text', () => {
   expect(element.getByLabelText(`CDLI text ${cdliNumber}`)).toHaveAttribute(
     'href',
-    `https://cdli.ucla.edu/${cdliNumber}`
+    `https://cdli.ucla.edu/${encodeURIComponent(cdliNumber)}`
   )
 })
 
 it('Renders The British Museum logo', () => {
   expect(element.getByAltText('The British Museum')).toHaveAttribute(
     'src',
-    bmLogo
+    Museum.of('The British Museum').logo
   )
 })
 
-it('Links to The British Museum obhect', () => {
+it('Links to The British Museum object', () => {
   expect(
     element.getByLabelText(`The British Museum object ${bmIdNumber}`)
   ).toHaveAttribute(
     'href',
-    `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${bmIdNumber}&partId=1`
+    Museum.of('The British Museum').createLinkFor(fragment).url
   )
 })

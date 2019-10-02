@@ -1,11 +1,13 @@
 // @flow
 import Museum from './museum'
 import { factory } from 'factory-girl'
+import bmLogo from './The_British_Museum.png'
 
 const bmIdNumber = 'A 1234+43'
 describe.each([
   [
     'The British Museum',
+    bmLogo,
     'https://britishmuseum.org/',
     'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
     {
@@ -18,11 +20,12 @@ describe.each([
   [
     'National Museum of Iraq',
     '',
+    '',
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
     null
   ],
-  ['Other Museum', '', '', null]
-])('%s', (name, url, copyright, link) => {
+  ['Other Museum', '', '', '', null]
+])('%s', (name, logo, url, copyright, link) => {
   let museum: Museum
 
   beforeEach(() => {
@@ -31,6 +34,10 @@ describe.each([
 
   test('name', () => {
     expect(museum.name).toEqual(name)
+  })
+
+  test('logo', () => {
+    expect(museum.logo).toEqual(logo)
   })
 
   test('hasUrl', () => {

@@ -38,10 +38,7 @@ function Info({ fragment }) {
         )}
       </section>
       <Record record={fragment.uniqueRecord} />
-      <OrganizationLinks
-        cdliNumber={fragment.cdliNumber}
-        bmIdNumber={fragment.bmIdNumber}
-      />
+      <OrganizationLinks fragment={fragment} />
     </>
   )
 }

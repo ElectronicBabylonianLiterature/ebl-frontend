@@ -1,11 +1,13 @@
 // @flow
 import _ from 'lodash'
 import { Fragment } from './fragment'
+import bmLogo from './The_British_Museum.png'
 
 export type FragmentLink = {| +url: string, +label: string |}
 type FragmentLinkFactory = Fragment => FragmentLink
 
 type MuseumConfig = {|
+  +logo?: string,
   +url?: string,
   +copyright?: string,
   +linkFactory?: FragmentLinkFactory
@@ -14,6 +16,7 @@ const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
   [
     'The British Museum',
     {
+      logo: bmLogo,
       url: 'https://britishmuseum.org/',
       copyright:
         'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
@@ -40,12 +43,14 @@ const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
 export type MuseumData = {|
   +name: string,
   +url: string,
+  +logo: string,
   +copyright: string,
   +linkFactory: ?FragmentLinkFactory
 |}
 
 export default class Museum {
   +name: string
+  +logo: string
   +url: string
   +copyright: string
   #linkFactory: ?FragmentLinkFactory
@@ -53,6 +58,7 @@ export default class Museum {
   static of(name: string): Museum {
     const data: MuseumData = {
       name,
+      logo: '',
       url: '',
       copyright: '',
       linkFactory: null,
@@ -61,8 +67,9 @@ export default class Museum {
     return new Museum(data)
   }
 
-  constructor({ name, url, copyright, linkFactory }: MuseumData) {
+  constructor({ name, logo, url, copyright, linkFactory }: MuseumData) {
     this.name = name
+    this.logo = logo
     this.url = url
     this.copyright = copyright
     this.#linkFactory = linkFactory
