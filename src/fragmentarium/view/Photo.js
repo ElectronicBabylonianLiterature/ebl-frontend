@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
+import EXIF from 'exif-js'
 import BlobImage from 'common/BlobImage'
 import withData from 'http/withData'
-import EXIF from 'exif-js'
 
 import './Photo.css'
 
-function Photo({ data, number }) {
+function Photo({ data, fragment }) {
   const [artist, setArtist] = useState()
 
   useEffect(() => {
@@ -19,16 +20,24 @@ function Photo({ data, number }) {
       <BlobImage
         hasLink
         data={data}
-        alt={`A photo of the fragment ${number}`}
+        alt={`A photo of the fragment ${fragment.number}`}
       />
-      <p className="Photo__copyright">
-        {artist && <small>Photograph by {artist}</small>}
-      </p>
+      <footer className="Photo__copyright">
+        <small>
+          {artist && (
+            <>
+              Photograph by {artist}
+              <br />
+            </>
+          )}
+          <ReactMarkdown source={fragment.museum.copyright} />
+        </small>
+      </footer>
     </article>
   )
 }
 
 export default withData(
-  ({ data, number }) => <Photo data={data} number={number} />,
-  ({ fragmentService, number }) => fragmentService.findPhoto(number)
+  ({ data, fragment }) => <Photo data={data} fragment={fragment} />,
+  ({ fragmentService, fragment }) => fragmentService.findPhoto(fragment.number)
 )
