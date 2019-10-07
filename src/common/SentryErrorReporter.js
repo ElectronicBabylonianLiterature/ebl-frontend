@@ -9,12 +9,14 @@ class SentryErrorReporter {
   }
 
   captureException(error, errorInfo = {}) {
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
-        scope.setExtra(key, errorInfo[key])
+    if (error.name !== 'ApiError') {
+      Sentry.withScope(scope => {
+        Object.keys(errorInfo).forEach(key => {
+          scope.setExtra(key, errorInfo[key])
+        })
+        Sentry.captureException(error)
       })
-      Sentry.captureException(error)
-    })
+    }
   }
 
   showReportDialog() {

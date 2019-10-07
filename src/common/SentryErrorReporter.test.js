@@ -1,12 +1,16 @@
 import * as Sentry from '@sentry/browser'
 import _ from 'lodash'
 import SentryErrorReporter from './SentryErrorReporter.js'
+import { ApiError } from 'http/ApiClient'
+import Chance from 'chance'
 
-const error = new Error('error')
+const chance = new Chance()
 const sentryErrorReporter = new SentryErrorReporter()
 let scope
+let error
 
 beforeEach(async () => {
+  error = new Error(chance.sentence())
   jest.spyOn(Sentry, 'init')
   jest.spyOn(Sentry, 'withScope')
   jest.spyOn(Sentry, 'configureScope')
@@ -41,6 +45,14 @@ test('Error reporting', () => {
     'Error happened!'
   )
   expect(Sentry.captureException).toHaveBeenCalledWith(error)
+})
+
+test('Ignores ApiError', () => {
+  const apiError = new ApiError('msg', {})
+  expect(apiError.name).toEqual('ApiError')
+  sentryErrorReporter.captureException(apiError)
+  expect(scope.setExtra).not.toHaveBeenCalled()
+  expect(Sentry.captureException).not.toHaveBeenCalledWith(apiError)
 })
 
 test('Error reporting no info', () => {
