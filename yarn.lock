@@ -4594,9 +4594,9 @@ eslint-plugin-react-hooks@^1.6.1:
   integrity sha512-iXTCFcOmlWvw4+TOE8CLWj6yX1GwzT0Y6cUfHHZqWnSk144VmVIRcVGtUAzrLES7C798lmvnt02C7rxaOX1HNA==
 
 eslint-plugin-react-hooks@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.1.1.tgz#b416390b642113f444ee175b667c3222a045a98e"
-  integrity sha512-AYitPYzwHyKpZKpzMH5sCkld68vP8wn29Lq716h4jk1ll9Gp4BBFoPq/iCjBBT35eXFJvOPjgMlvhIXFB0OhXg==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.1.2.tgz#1358d2acb2c5e02b7e90c37e611ac258a488e3a7"
+  integrity sha512-ZR+AyesAUGxJAyTFlF3MbzeVHAcQTFQt1fFVe5o0dzY/HFoj1dgQDMoIkiM+ltN/HhlHBYX4JpJwYonjxsyQMA==
 
 eslint-plugin-react@7.14.3:
   version "7.14.3"
@@ -5173,10 +5173,10 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
   integrity sha1-2uRqnXj74lKSJYzB54CkHZXAN4I=
 
-flow-bin@^0.107.0:
-  version "0.107.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.107.0.tgz#b37bfcce51204d35d58f8eb93b3a76b52291e4cc"
-  integrity sha512-hsmwO5Q0+XUXaO2kIKLpleUNNBSFcsGEQGBOTEC/KR/4Ez695I1fweX/ioSjbU4RWhPZhkIqnpbF9opVAauCHg==
+flow-bin@^0.109.0:
+  version "0.109.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.109.0.tgz#dcdcb7402dd85b58200392d8716ccf14e5a8c24c"
+  integrity sha512-tpcMTpAGIRivYhFV3KJq+zHI2HzcXo8MoGe9pXS4G/UZuey2Faq/e8/gdph2WF0erRlML5hmwfwiq7v9c25c7w==
 
 flow-typed@^2.6.1:
   version "2.6.1"
