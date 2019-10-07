@@ -9,7 +9,7 @@ class SentryErrorReporter {
   }
 
   captureException(error, errorInfo = {}) {
-    if (error.name !== 'ApiError') {
+    if (!['ApiError', 'AbortError'].includes(error.name)) {
       Sentry.withScope(scope => {
         Object.keys(errorInfo).forEach(key => {
           scope.setExtra(key, errorInfo[key])

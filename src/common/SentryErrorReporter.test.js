@@ -49,10 +49,17 @@ test('Error reporting', () => {
 
 test('Ignores ApiError', () => {
   const apiError = new ApiError('msg', {})
-  expect(apiError.name).toEqual('ApiError')
   sentryErrorReporter.captureException(apiError)
   expect(scope.setExtra).not.toHaveBeenCalled()
   expect(Sentry.captureException).not.toHaveBeenCalledWith(apiError)
+})
+
+test('Ignores AbortError', () => {
+  const abortError = new Error('msg')
+  abortError.name = 'AbortError'
+  sentryErrorReporter.captureException(abortError)
+  expect(scope.setExtra).not.toHaveBeenCalled()
+  expect(Sentry.captureException).not.toHaveBeenCalledWith(abortError)
 })
 
 test('Error reporting no info', () => {
