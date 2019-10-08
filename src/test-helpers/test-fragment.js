@@ -171,7 +171,8 @@ export const fragmentDto = {
     { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] }
   ],
   atf:
-    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x'
+    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
+  hasPhoto: true
 }
 
 export const fragment = new Fragment({
@@ -357,5 +358,6 @@ export const fragment = new Fragment({
     }
   ],
   atf:
-    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x'
+    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
+  hasPhoto: true
 })

@@ -147,7 +147,8 @@ factory.define('fragment', Fragment, {
   text: factory.assocAttrs('text'),
   notes: factory.chance('sentence'),
   museum: Museum.of('The British Museum'),
-  references: async () => await factory.buildMany('referenceDto', 2)
+  references: async () => await factory.buildMany('referenceDto', 2),
+  hasPhoto: factory.chance('bool')
 })
 
 factory.define('fragmentInfo', Object, {

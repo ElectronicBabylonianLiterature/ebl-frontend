@@ -72,7 +72,8 @@ const config = {
       pages: [3, 208]
     }
   ],
-  atf: '$ (atf)'
+  atf: '$ (atf)',
+  hasPhoto: true
 }
 
 describe('Fragment', () => {

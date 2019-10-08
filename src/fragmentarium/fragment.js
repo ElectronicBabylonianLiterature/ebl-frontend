@@ -139,6 +139,7 @@ export class Fragment {
   +references: $ReadOnlyArray<any>
   +uncuratedReferences: ?$ReadOnlyArray<UncuratedReference>
   +atf: string
+  +hasPhoto: boolean
 
   constructor({
     number,
@@ -158,7 +159,8 @@ export class Fragment {
     museum,
     references,
     uncuratedReferences,
-    atf
+    atf,
+    hasPhoto
   }: {
     number: string,
     cdliNumber: string,
@@ -177,7 +179,8 @@ export class Fragment {
     museum: Museum,
     references: $ReadOnlyArray<any>,
     uncuratedReferences?: ?$ReadOnlyArray<UncuratedReference>,
-    atf: string
+    atf: string,
+    hasPhoto: boolean
   }) {
     this.number = number
     this.cdliNumber = cdliNumber
@@ -197,6 +200,7 @@ export class Fragment {
     this.references = references
     this.uncuratedReferences = uncuratedReferences
     this.atf = atf
+    this.hasPhoto = hasPhoto
   }
 
   get hasUncuratedReferences(): boolean {
