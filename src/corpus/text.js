@@ -31,7 +31,7 @@ export class Manuscript {
   // $FlowFixMe
   type: ManuscriptType = types.get('Library')
   notes: string = ''
-  references: $ReadOnlyArray<Reference> = Array()
+  references: $ReadOnlyArray<Reference> = []
 
   get siglum() {
     return [
@@ -72,10 +72,10 @@ export const createManuscriptLine: (
 ) => ManuscriptLine = produce(
   (draft: $Shape<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
-    labels: Array(),
+    labels: [],
     number: '',
     atf: '',
-    atfTokens: Array(),
+    atfTokens: [],
     ...draft
   })
 )
@@ -93,7 +93,7 @@ export const createLine: ($Shape<Line>) => Line = produce(
   (draft: $Shape<Line>): Line => ({
     number: '',
     reconstruction: '',
-    manuscripts: Array(),
+    manuscripts: [],
     ...draft
   })
 )
@@ -114,8 +114,8 @@ export const createChapter: ($Shape<Chapter>) => Chapter = produce(
     version: '',
     name: '',
     order: 0,
-    manuscripts: Array(),
-    lines: Array(),
+    manuscripts: [],
+    lines: [],
     ...draft
   })
 )
@@ -126,7 +126,7 @@ export class Text {
   name: string = ''
   numberOfVerses: number = 0
   approximateVerses: boolean = false
-  chapters: $ReadOnlyArray<Chapter> = Array()
+  chapters: $ReadOnlyArray<Chapter> = []
 
   findChapterIndex(stage: string, name: string) {
     return this.chapters.findIndex(
