@@ -31,7 +31,10 @@ beforeEach(async () => {
 describe('Folios', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
-    fragment = await factory.build('fragment', { folios: folios })
+    fragment = await factory.build('fragment', {
+      folios: folios,
+      hasPhoto: true
+    })
     container = renderFolios().container
   })
 
@@ -52,6 +55,10 @@ describe('Folios', () => {
   it(`Renders CDLI image`, () => {
     expect(container).toHaveTextContent('CDLI Image')
   })
+
+  it(`Renders photo`, () => {
+    expect(container).toHaveTextContent('Photo')
+  })
 })
 
 it('Displays selected folio', async () => {
@@ -69,27 +76,43 @@ it('Displays selected folio', async () => {
   ).toHaveAttribute('aria-selected', 'true')
 })
 
-it('Displays CDLI image if no folio specified', async () => {
+it('Displays photo if folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
     { name: 'AKG' }
   ])
-  fragment = await factory.build('fragment', { folios: folios })
+  fragment = await factory.build('fragment', { folios: folios, hasPhoto: true })
+  const element = renderFolios()
+  await waitForElement(() =>
+    element.getByAltText(`A photo of the fragment ${fragment.number}`)
+  )
+})
+
+it('Displays CDLI image if no photo and no folio specified', async () => {
+  folios = await factory.buildMany('folio', 2, {}, [
+    { name: 'WGL' },
+    { name: 'AKG' }
+  ])
+  fragment = await factory.build('fragment', {
+    folios: folios,
+    hasPhoto: false
+  })
   const element = renderFolios()
   await waitForElement(() => element.getByAltText(`${fragment.cdliNumber}.jpg`))
 })
 
-describe('No folios or CDLI image', () => {
+describe('No photo, folios, CDLI image', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       folios: [],
-      cdliNumber: ''
+      cdliNumber: '',
+      hasPhoto: false
     })
     container = renderFolios().container
   })
 
   it(`Renders no folios text`, () => {
-    expect(container).toHaveTextContent('No folios')
+    expect(container).toHaveTextContent('No images')
   })
 })
 
