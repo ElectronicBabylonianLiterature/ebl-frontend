@@ -1,5 +1,4 @@
 // @flow
-import _ from 'lodash'
 import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
 

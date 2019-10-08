@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import _ from 'lodash'
 import classNames from 'classnames'
 
 import withData from 'http/withData'
