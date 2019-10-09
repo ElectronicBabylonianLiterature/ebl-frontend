@@ -54,6 +54,7 @@
     "@testing-library/react": "^9.1.4",
     "chance": "^1.0.16",
     "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-compat": "^3.3.0",
     "eslint-plugin-flowtype": "^4.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react-hooks": "^2.1.1",
@@ -77,6 +78,10 @@
     ">0.2%",
     "not dead",
     "not ie <= 11",
-    "not op_mini all"
+    "not op_mini all",
+    "not safari < 12",
+    "not ios < 12",
+    "not chrome < 66",
+    "not kaios <= 2.5"
   ]
 }
