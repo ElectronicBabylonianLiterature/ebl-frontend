@@ -30,7 +30,7 @@ const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
   MJG: { name: 'Geller', hasImage: true },
   WRM: { name: 'Mayer', hasImage: true },
   CB: { name: 'Bezold', hasImage: true },
-  JS: { name: 'Strassmaier', hasImage: false }
+  JS: { name: 'Strassmaier', hasImage: true }
 }
 
 export class Folio {

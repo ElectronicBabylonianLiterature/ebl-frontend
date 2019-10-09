@@ -1,3 +1,4 @@
+// @flow
 import Chance from 'chance'
 import { Folio } from './fragment'
 
@@ -13,7 +14,7 @@ describe('Folio', () => {
     ['MJG', 'Geller', true],
     ['WRM', 'Mayer', true],
     ['CB', 'Bezold', true],
-    ['JS', 'Strassmaier', false]
+    ['JS', 'Strassmaier', true]
   ])('%s folios', (name, humanized, hasImage) => {
     let number
     let folio
