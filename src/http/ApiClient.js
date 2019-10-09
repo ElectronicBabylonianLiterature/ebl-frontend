@@ -1,5 +1,5 @@
-/* global AbortController */
 import Promise from 'bluebird'
+import cancellableFetch from './cancellableFetch'
 
 function apiUrl(path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -54,55 +54,45 @@ export default class ApiClient {
     })
   }
 
-  cancellableFetch(path, authenticate, options) {
-    return new Promise((resolve, reject, onCancel) => {
+  fetch(path, authenticate, options) {
+    try {
       const headers = this.createHeaders(authenticate, options.headers)
-      const abortController = new AbortController()
-      fetch(apiUrl(path), {
+      return cancellableFetch(apiUrl(path), {
         ...options,
-        headers: headers,
-        signal: abortController.signal
+        headers: headers
       })
         .then(async response => {
           if (response.ok) {
-            resolve(response)
+            return response
           } else {
-            return ApiError.fromResponse(response).then(error => {
-              throw error
-            })
+            throw await ApiError.fromResponse(response)
           }
         })
         .catch(error => {
           this.errorReporter.captureException(error)
-          reject(error)
+          throw error
         })
-
-      onCancel(function() {
-        abortController.abort()
-      })
-    })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 
   fetchJson(path, authenticate) {
-    return this.cancellableFetch(path, authenticate, {}).then(response =>
-      response.json()
-    )
+    return this.fetch(path, authenticate, {}).then(response => response.json())
   }
 
   fetchBlob(path, authenticate) {
-    return this.cancellableFetch(path, authenticate, {}).then(response =>
-      response.blob()
-    )
+    return this.fetch(path, authenticate, {}).then(response => response.blob())
   }
 
   postJson(path, body) {
-    return this.cancellableFetch(path, true, createOptions(body, 'POST')).then(
+    return this.fetch(path, true, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }
 
   putJson(path, body) {
-    return this.cancellableFetch(path, true, createOptions(body, 'PUT')).then(
+    return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson
     )
   }

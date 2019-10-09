@@ -172,36 +172,23 @@ function setUpEmptyResponse() {
 }
 
 function commonTests(action) {
-  test('Can be cancelled', async () => {
-    setUpSuccessResponse()
-    const callback = jest.fn()
-    const promise = action()
-    const waitable = promise.then(() => null)
-    promise
-      .then(callback)
-      .catch(callback)
-      .cancel()
-    await waitable
-    expect(callback).not.toHaveBeenCalled()
-  })
-
   test('Rejects with error if not authorized', async () => {
     auth.getAccessToken.mockImplementationOnce(() => {
       throw error
     })
-    await expect(action()).rejects.toEqual(error)
+    await expect(action()).rejects.toThrow(error)
   })
 
   test('Rejects with error if fetch fails', async () => {
     fetch.mockRejectOnce(error)
-    await expect(action()).rejects.toEqual(error)
+    await expect(action()).rejects.toThrow(error)
     expect(errorReporter.captureException).toBeCalledWith(error)
   })
 
   test('Rejects with status text as error message if response not ok', async () => {
     const expectedError = new ApiError(errorResponse.statusText, {})
     fetch.mockResponseOnce('', errorResponse)
-    await expect(action()).rejects.toEqual(expectedError)
+    await expect(action()).rejects.toThrow(expectedError)
     expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })
 
@@ -209,7 +196,7 @@ function commonTests(action) {
     const jsonError = { title: 'error title', description: 'error description' }
     const expectedError = new ApiError(jsonError.description, jsonError)
     fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
-    await expect(action()).rejects.toEqual(expectedError)
+    await expect(action()).rejects.toThrow(expectedError)
     expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })
 }
