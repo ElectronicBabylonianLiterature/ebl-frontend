@@ -46,7 +46,8 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], []))
+    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
+    fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
   }
   fragmentSearchService = {}
   session = {

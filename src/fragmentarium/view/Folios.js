@@ -4,6 +4,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
+import withData from 'http/withData'
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
 import CdliImage from './CdliImage'
@@ -36,7 +37,14 @@ function FolioDetails({ fragmentService, fragmentNumber, folio }) {
   )
 }
 
-function Folios({ fragment, fragmentService, tab, activeFolio, history }) {
+function Folios({
+  fragment,
+  fragmentService,
+  tab,
+  activeFolio,
+  history,
+  data
+}) {
   function onSelect(key) {
     if (/\d+/.test(key)) {
       const folio = fragment.folios[key]
@@ -49,10 +57,7 @@ function Folios({ fragment, fragmentService, tab, activeFolio, history }) {
   }
 
   let activeKey =
-    tab ||
-    (fragment.hasPhoto && 'photo') ||
-    (fragment.cdliNumber && 'cdli') ||
-    '0'
+    tab || (fragment.hasPhoto && 'photo') || (data.photoUrl && 'cdli') || '0'
 
   if (tab === 'folio') {
     const key = fragment.folios.findIndex(folio =>
@@ -85,9 +90,9 @@ function Folios({ fragment, fragmentService, tab, activeFolio, history }) {
             />
           </Tab>
         ))}
-        {fragment.cdliNumber && (
+        {data.photoUrl && (
           <Tab eventKey="cdli" title="CDLI Image">
-            <CdliImage cdliNumber={fragment.cdliNumber} />
+            <CdliImage src={data.photoUrl} />
           </Tab>
         )}
       </Tabs>
@@ -99,4 +104,8 @@ function Folios({ fragment, fragmentService, tab, activeFolio, history }) {
   )
 }
 
-export default withRouter(Folios)
+export default withRouter(
+  withData(Folios, ({ fragment, fragmentService }) =>
+    fragmentService.fetchCdliInfo(fragment.cdliNumber)
+  )
+)

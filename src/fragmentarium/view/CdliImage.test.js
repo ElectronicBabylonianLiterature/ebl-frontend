@@ -3,32 +3,22 @@ import { render } from '@testing-library/react'
 import CdliImage from './CdliImage'
 
 describe('CDLI number provided', () => {
-  const cdliNumber = 'P000000'
-  const url = `https://cdli.ucla.edu/dl/photo/${cdliNumber}.jpg`
+  const url = `https://cdli.ucla.edu/dl/photo/P000000.jpg`
   let container
 
   beforeEach(() => {
-    container = render(<CdliImage cdliNumber={cdliNumber} />).container
+    container = render(<CdliImage src={url} />).container
   })
 
   it('Displays the image from CDLI', async () => {
     expect(container.querySelector('img')).toHaveAttribute('src', url)
   })
 
-  it('Has the image filename as alt text', async () => {
-    expect(container.querySelector('img')).toHaveAttribute(
-      'alt',
-      `${cdliNumber}.jpg`
-    )
+  it('Has alt text', async () => {
+    expect(container.querySelector('img')).toHaveAttribute('alt', 'CDLI photo')
   })
 
   it('Has a link to the image', () => {
     expect(container.querySelector('a')).toHaveAttribute('href', url)
   })
-})
-
-it('Displays nothing if no CLDI number provided', async () => {
-  const { container } = render(<CdliImage cdliNumber={null} />)
-
-  expect(container.innerHTML).toEqual('')
 })

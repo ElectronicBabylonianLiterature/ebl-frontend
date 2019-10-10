@@ -22,9 +22,10 @@ let expectedFragment
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const references = await factory.buildMany('reference', 2)
-  fragment = (await factory.build('fragment', { atf: '1. ku' })).setReferences(
-    await factory.buildMany('reference', 2)
-  )
+  fragment = (await factory.build('fragment', {
+    atf: '1. ku',
+    hasPhoto: true
+  })).setReferences(await factory.buildMany('reference', 2))
   updatedFragment = await factory.build('fragment', {
     number: fragment.number,
     atf: fragment.atf
@@ -39,7 +40,8 @@ beforeEach(async () => {
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    hydrateReferences: () => Promise.resolve(references)
+    hydrateReferences: () => Promise.resolve(references),
+    fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
   }
   fragmentSearchService = {}
   session = {
@@ -71,6 +73,7 @@ beforeEach(async () => {
     )
   })
   container = element.container
+  await waitForElement(() => element.getAllByText('Photo'))
 })
 
 const properties = ['collection', 'cdliNumber', 'accession']
