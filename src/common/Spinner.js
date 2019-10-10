@@ -1,12 +1,26 @@
+// @flow
 import React from 'react'
+import type { Node } from 'react'
+import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
-export default function Spinner({ loading, children }) {
+type Props = { loading: boolean, children?: Node }
+
+export default function Spinner({ loading, children }: Props) {
   return (
-    (loading || loading === undefined) && (
-      <span>
-        <i className="fa fa-spinner fa-spin" />
-        {children || 'Loading...'}
-      </span>
+    loading && (
+      <>
+        <BootstrapSpinner
+          as="span"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />
+        {children || ' Loading...'}
+      </>
     )
   )
+}
+Spinner.defaultProps = {
+  loading: true
 }
