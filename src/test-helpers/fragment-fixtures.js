@@ -1,9 +1,9 @@
 import { factory } from 'factory-girl'
 import { Chance } from 'chance'
 import FactoryAdapter from './FactoryAdapter'
-import { Fragment, RecordEntry, Folio } from 'fragmentarium/fragment'
-import { Text } from 'fragmentarium/text'
-import Museum from 'fragmentarium/museum'
+import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
+import { Text } from 'fragmentarium/domain/text'
+import Museum from 'fragmentarium/domain/museum'
 
 const chance = new Chance()
 

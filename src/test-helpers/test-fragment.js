@@ -1,7 +1,7 @@
 // @flow
-import { Folio, Fragment, RecordEntry } from 'fragmentarium/fragment'
-import { Text } from 'fragmentarium/text'
-import Museum from 'fragmentarium/museum'
+import { Folio, Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import { Text } from 'fragmentarium/domain/text'
+import Museum from 'fragmentarium/domain/museum'
 
 export const fragmentDto = {
   _id: 'Test.Fragment',
