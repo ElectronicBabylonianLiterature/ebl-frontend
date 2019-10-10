@@ -3,7 +3,7 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import Lemma from './lemmatization/Lemma'
 import Lemmatization from './lemmatization/Lemmatization'
-import { Folio } from './fragment'
+import { Folio, Fragment } from './fragment'
 import Reference, { createReference } from 'bibliography/Reference'
 import { Text } from './text'
 import type { Token } from './text'
@@ -14,6 +14,17 @@ export interface ImageRepository {
   findPhoto(string): Blob;
 }
 
+export interface FragmentRepository {
+  statistics(): Promise<any>;
+  find(string): Promise<Fragment>;
+  updateTransliteration(string, string, string): Promise<Fragment>;
+  updateLemmatization(string, Lemmatization): Promise<Fragment>;
+  updateReferences(string, $ReadOnlyArray<Reference>): Promise<Fragment>;
+  folioPager(Folio, string): Promise<any>;
+  findLemmas(string): Promise<any>;
+  fetchCdliInfo(string): Promise<any>;
+}
+
 class FragmentService {
   #fragmentRepository
   #imageRepository
@@ -21,7 +32,7 @@ class FragmentService {
   #bibliographyService
 
   constructor(
-    fragmentRepository: any,
+    fragmentRepository: FragmentRepository,
     imageRepository: ImageRepository,
     wordRepository: any,
     bibliographyService: any
@@ -62,7 +73,7 @@ class FragmentService {
     return this.#fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
-  updateReferences(number: string, references: {}) {
+  updateReferences(number: string, references: $ReadOnlyArray<Reference>) {
     return this.#fragmentRepository.updateReferences(number, references)
   }
 
@@ -78,7 +89,7 @@ class FragmentService {
     return this.#imageRepository.findPhoto(number)
   }
 
-  folioPager(folio: string, fragmentNumber: string) {
+  folioPager(folio: Folio, fragmentNumber: string) {
     return this.#fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
@@ -90,6 +101,10 @@ class FragmentService {
 
   searchBibliography(query: string) {
     return this.#bibliographyService.search(query)
+  }
+
+  fetchCdliInfo(cdli_number: string) {
+    return this.#fragmentRepository.fetchCdliInfo(cdli_number)
   }
 
   createLemmatization(text: Text) {

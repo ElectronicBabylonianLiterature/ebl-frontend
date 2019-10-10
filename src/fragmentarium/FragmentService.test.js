@@ -4,7 +4,7 @@ import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { testDelegation } from 'test-helpers/utils'
 import FragmentService from './FragmentService'
-import type { ImageRepository } from './FragmentService'
+import type { ImageRepository, FragmentRepository } from './FragmentService'
 import Lemmatization, {
   LemmatizationToken
 } from './lemmatization/Lemmatization'
@@ -15,20 +15,15 @@ import { Text } from './text'
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
-const fragmentRepository = {
+const fragmentRepository: FragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
-  random: jest.fn(),
-  interesting: jest.fn(),
-  searchNumber: jest.fn(),
-  searchTransliteration: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   findLemmas: jest.fn(),
-  fetchLatestTransliterations: jest.fn(),
-  fetchNeedsRevision: jest.fn()
+  fetchCdliInfo: jest.fn()
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -82,6 +77,13 @@ const testData = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
     [resultStub]
+  ],
+  [
+    'fetchCdliInfo',
+    ['P1'],
+    fragmentRepository.fetchCdliInfo,
+    resultStub,
+    ['P1']
   ]
 ]
 

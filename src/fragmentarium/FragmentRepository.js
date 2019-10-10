@@ -4,6 +4,7 @@ import queryString from 'query-string'
 import { Fragment, RecordEntry, Folio } from './fragment'
 import { Text } from './text'
 import Museum from './museum'
+import type { FragmentRepository } from './FragmentService'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
@@ -32,7 +33,8 @@ function createFragmentPath(number, ...subResources) {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 
-class FragmentRepository implements FragmentInfoRepository {
+class ApiFragmentRepository
+  implements FragmentInfoRepository, FragmentRepository {
   +apiClient
 
   constructor(apiClient: {
@@ -46,7 +48,7 @@ class FragmentRepository implements FragmentInfoRepository {
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
-  find(number: string) {
+  find(number: string): Promise<Fragment> {
     return this.apiClient
       .fetchJson(createFragmentPath(number), true)
       .then(createFragment)
@@ -97,14 +99,14 @@ class FragmentRepository implements FragmentInfoRepository {
       .then(createFragment)
   }
 
-  updateLemmatization(number: string, lemmatization: string) {
+  updateLemmatization(number: string, lemmatization: {}) {
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
   }
 
-  updateReferences(number: string, references: string) {
+  updateReferences(number: string, references: {}) {
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
@@ -126,6 +128,13 @@ class FragmentRepository implements FragmentInfoRepository {
       true
     )
   }
+
+  fetchCdliInfo(cdli_number: string) {
+    return this.apiClient.fetchJson(
+      `/cdli/${encodeURIComponent(cdli_number)}`,
+      true
+    )
+  }
 }
 
-export default FragmentRepository
+export default ApiFragmentRepository

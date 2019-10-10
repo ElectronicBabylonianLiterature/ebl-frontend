@@ -11,6 +11,7 @@ const apiClient = {
 const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
+const cdliNumber = 'P 1234'
 const transliterationQuery = 'kur\nkur kur'
 const transliteration = 'transliteration'
 const lemmatization = [[{ value: 'kur', uniqueLemma: [] }]]
@@ -167,6 +168,14 @@ const testData = [
     apiClient.fetchJson,
     resultStub,
     [`/lemmas?word=${encodeURIComponent(word)}`, true],
+    Promise.resolve(resultStub)
+  ],
+  [
+    'fetchCdliInfo',
+    [cdliNumber],
+    apiClient.fetchJson,
+    resultStub,
+    [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
     Promise.resolve(resultStub)
   ]
 ]
