@@ -1,11 +1,11 @@
-// @flow
 /* global AbortController */
+// @flow
 import Promise from 'bluebird'
 
 export default function cancellableFetch(
-  url: string,
+  url: sring,
   options: { [string]: any } = {}
-): Promise<Response> {
+): Promise<any> {
   return new Promise((resolve, reject, onCancel) => {
     const abortController = new AbortController()
     fetch(url, {
