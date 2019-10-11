@@ -1,6 +1,6 @@
 // @flow
 import { Folio } from 'fragmentarium/domain/fragment'
-import type { ImageRepository } from 'fragmentarium/FragmentService'
+import type { ImageRepository } from 'fragmentarium/application/FragmentService'
 
 class ApiImageRepository implements ImageRepository {
   #apiClient
