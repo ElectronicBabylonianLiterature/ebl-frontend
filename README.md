@@ -14,6 +14,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Node
 - Chrome (for Lighthouse)
 
+## Running tests
+
+```
+yarn eslint --ext .js src/
+yarn flow check
+yarn test
+```
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
