@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
-import Image from 'common/Image'
+import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import LatestTransliterations from './LatestTransliterations'
@@ -35,10 +35,7 @@ function Fragmentarium({
                 <Statistics fragmentService={fragmentService} />
               </Col>
               <Col md={6}>
-                <Image
-                  fragmentService={fragmentService}
-                  fileName="Babel_Project_01_cropped.svg"
-                />
+                <ApiImage fileName="Babel_Project_01_cropped.svg" />
               </Col>
             </Row>
             {session.isAllowedToReadFragments() && (

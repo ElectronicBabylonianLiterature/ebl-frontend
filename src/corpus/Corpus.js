@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import _ from 'lodash'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Image from 'common/Image'
+import ApiImage from 'common/ApiImage'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
@@ -70,10 +70,7 @@ function Corpus({ fragmentService, textService }) {
             <TextsWithData textService={textService} />
           </Col>
           <Col md={7}>
-            <Image
-              fragmentService={fragmentService}
-              fileName="LibraryCropped.svg"
-            />
+            <ApiImage fileName="LibraryCropped.svg" />
           </Col>
         </Row>
       </Container>

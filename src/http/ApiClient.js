@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import cancellableFetch from './cancellableFetch'
 
-function apiUrl(path) {
+export function apiUrl(path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
