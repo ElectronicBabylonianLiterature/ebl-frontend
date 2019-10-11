@@ -3,6 +3,7 @@ import { testDelegation } from 'test-helpers/utils'
 import FragmentRepository from './FragmentRepository'
 import { Folio } from 'fragmentarium/domain/fragment'
 import { fragment, fragmentDto } from 'test-helpers/test-fragment'
+import { ApiError } from 'http/ApiClient'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -177,6 +178,14 @@ const testData = [
     resultStub,
     [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
     Promise.resolve(resultStub)
+  ],
+  [
+    'fetchCdliInfo',
+    [cdliNumber],
+    apiClient.fetchJson,
+    { photoUrl: null },
+    [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
+    Promise.reject(new ApiError())
   ]
 ]
 

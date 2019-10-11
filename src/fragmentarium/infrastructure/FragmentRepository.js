@@ -4,11 +4,11 @@ import queryString from 'query-string'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
-import type { FragmentRepository } from 'fragmentarium/FragmentService'
+import type { FragmentRepository } from 'fragmentarium/application/FragmentService'
 import type {
   FragmentInfosPromise,
   FragmentInfoRepository
-} from 'fragmentarium/FragmentSearchService'
+} from 'fragmentarium/application/FragmentSearchService'
 
 function createFragment(dto) {
   return new Fragment({
@@ -130,10 +130,15 @@ class ApiFragmentRepository
   }
 
   fetchCdliInfo(cdli_number: string) {
-    return this.apiClient.fetchJson(
-      `/cdli/${encodeURIComponent(cdli_number)}`,
-      true
-    )
+    return this.apiClient
+      .fetchJson(`/cdli/${encodeURIComponent(cdli_number)}`, true)
+      .catch(error => {
+        if (error.name === 'ApiError') {
+          return { photoUrl: null }
+        } else {
+          throw error
+        }
+      })
   }
 }
 

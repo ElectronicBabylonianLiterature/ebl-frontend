@@ -8,6 +8,10 @@ import Reference, { createReference } from 'bibliography/Reference'
 import { Text } from 'fragmentarium/domain/text'
 import type { Token } from 'fragmentarium/domain/text'
 
+export type CdliInfo = {|
+  photoUrl: ?string
+|}
+
 export interface ImageRepository {
   find(string): Blob;
   findFolio(Folio): Blob;
@@ -22,7 +26,7 @@ export interface FragmentRepository {
   updateReferences(string, $ReadOnlyArray<Reference>): Promise<Fragment>;
   folioPager(Folio, string): Promise<any>;
   findLemmas(string): Promise<any>;
-  fetchCdliInfo(string): Promise<any>;
+  fetchCdliInfo(string): Promise<CdliInfo>;
 }
 
 class FragmentService {
