@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
 import Promise from 'bluebird'
@@ -5,29 +6,16 @@ import { factory } from 'factory-girl'
 import PhotoImage from './Photo'
 
 const number = 'K 1'
+const blob = new Blob([''], { type: 'image/jpeg' })
 const objectUrl = 'object URL mock'
 let fragment
-let fragmentService
 let element
-let data
 
 beforeEach(async () => {
   fragment = await factory.build('fragment', { number })
-  fragmentService = {
-    findPhoto: jest.fn()
-  }
   URL.createObjectURL.mockReturnValueOnce(objectUrl)
-  fragmentService.findPhoto.mockReturnValueOnce(
-    Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
-  )
-  element = render(
-    <PhotoImage fragmentService={fragmentService} fragment={fragment} />
-  )
+  element = render(<PhotoImage photo={blob} fragment={fragment} />)
   await waitForElement(() => element.container.querySelector('img'))
-})
-
-it('Queries the API with given parameters', () => {
-  expect(fragmentService.findPhoto).toBeCalledWith(number)
 })
 
 it('Has alt text', () => {

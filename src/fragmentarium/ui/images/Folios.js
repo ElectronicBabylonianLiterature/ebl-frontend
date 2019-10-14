@@ -3,6 +3,7 @@ import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
+import Promise from 'bluebird'
 
 import withData from 'http/withData'
 import LinkedImage from 'common/LinkedImage'
@@ -21,7 +22,8 @@ function Folios({
   tab,
   activeFolio,
   history,
-  cdliInfo
+  cdliInfo,
+  photo
 }) {
   function onSelect(key) {
     if (/\d+/.test(key)) {
@@ -54,7 +56,7 @@ function Folios({
       <Tabs id="folio-container" activeKey={activeKey} onSelect={onSelect}>
         {fragment.hasPhoto && (
           <Tab eventKey="photo" title="Photo">
-            <Photo fragment={fragment} fragmentService={fragmentService} />
+            <Photo fragment={fragment} photo={photo} />
           </Tab>
         )}
         {fragment.folios.map((folio, index) => (
@@ -100,8 +102,15 @@ function Folios({
 
 export default withRouter(
   withData(
-    ({ data, ...props }) => <Folios {...props} cdliInfo={data} />,
+    ({ data: [cdliInfo, photo], ...props }) => (
+      <Folios {...props} cdliInfo={cdliInfo} photo={photo} />
+    ),
     ({ fragment, fragmentService }) =>
-      fragmentService.fetchCdliInfo(fragment.cdliNumber)
+      Promise.all([
+        fragmentService.fetchCdliInfo(fragment.cdliNumber),
+        fragment.hasPhoto
+          ? fragmentService.findPhoto(fragment.number)
+          : Promise.resolve(null)
+      ])
   )
 )

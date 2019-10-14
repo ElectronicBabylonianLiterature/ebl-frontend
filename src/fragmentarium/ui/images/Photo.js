@@ -1,25 +1,30 @@
+// @flow
 import React, { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import EXIF from 'exif-js'
 import BlobImage from 'common/BlobImage'
-import withData from 'http/withData'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 import './Photo.css'
 
-function Photo({ data, fragment }) {
+type Props = {
+  photo: Blob,
+  fragment: Fragment
+}
+export default function Photo({ photo, fragment }: Props) {
   const [artist, setArtist] = useState()
 
   useEffect(() => {
-    EXIF.getData(data, function() {
+    EXIF.getData(photo, function() {
       setArtist(EXIF.getTag(this, 'Artist'))
     })
-  }, [data])
+  }, [photo])
 
   return (
     <article>
       <BlobImage
         hasLink
-        data={data}
+        data={photo}
         alt={`A photo of the fragment ${fragment.number}`}
       />
       <footer className="Photo__copyright">
@@ -36,8 +41,3 @@ function Photo({ data, fragment }) {
     </article>
   )
 }
-
-export default withData(
-  ({ data, fragment }) => <Photo data={data} fragment={fragment} />,
-  ({ fragmentService, fragment }) => fragmentService.findPhoto(fragment.number)
-)
