@@ -6,36 +6,14 @@ import _ from 'lodash'
 
 import withData from 'http/withData'
 import LinkedImage from 'common/LinkedImage'
-import FolioPager from './FolioPager'
-import FolioImage from './FolioImage'
 import Photo from './Photo'
 import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
+import FolioDetails from './FolioDetails'
 
 import './Folios.css'
-
-function FolioDetails({ fragmentService, fragmentNumber, folio }) {
-  return (
-    folio.hasImage && (
-      <>
-        <header className="Folios__Pager">
-          <FolioPager
-            fragmentService={fragmentService}
-            folio={folio}
-            fragmentNumber={fragmentNumber}
-          />
-        </header>
-        <FolioImage
-          fragmentService={fragmentService}
-          folio={folio}
-          alt={folio.fileName}
-        />
-      </>
-    )
-  )
-}
 
 function Folios({
   fragment,
