@@ -6,7 +6,7 @@ import References from './References'
 import Edition from 'fragmentarium/ui/edition/Edition'
 import Lemmatizer from 'fragmentarium/ui/lemmatization/Lemmatizer'
 import Display from 'fragmentarium/ui/display/Display'
-import Folios from 'fragmentarium/ui/images/Folios'
+import Images from 'fragmentarium/ui/images/Images'
 import Info from 'fragmentarium/ui/info/Info'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
@@ -143,7 +143,7 @@ function CuneiformFragment({
           <ErrorAlert error={error} />
         </Col>
         <Col md={5}>
-          <Folios
+          <Images
             fragment={fragment}
             fragmentService={fragmentService}
             activeFolio={activeFolio}

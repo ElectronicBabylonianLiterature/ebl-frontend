@@ -8,15 +8,13 @@ import Promise from 'bluebird'
 import withData from 'http/withData'
 import LinkedImage from 'common/LinkedImage'
 import Photo from './Photo'
+import FolioDetails from './FolioDetails'
 import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
-import FolioDetails from './FolioDetails'
 
-import './Folios.css'
-
-function Folios({
+function Images({
   fragment,
   fragmentService,
   tab,
@@ -103,7 +101,7 @@ function Folios({
 export default withRouter(
   withData(
     ({ data: [cdliInfo, photo], ...props }) => (
-      <Folios {...props} cdliInfo={cdliInfo} photo={photo} />
+      <Images {...props} cdliInfo={cdliInfo} photo={photo} />
     ),
     ({ fragment, fragmentService }) =>
       Promise.all([

@@ -2,6 +2,8 @@ import React from 'react'
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
 
+import './FolioDetails.css'
+
 export default function FolioDetails({
   fragmentService,
   fragmentNumber,

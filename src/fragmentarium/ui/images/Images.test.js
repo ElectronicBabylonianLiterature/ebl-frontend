@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import Folios from './Folios'
+import Images from './Images'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
@@ -36,14 +36,14 @@ beforeEach(async () => {
   )
 })
 
-describe('Folios', () => {
+describe('Images', () => {
   beforeEach(async () => {
     folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', {
       folios: folios,
       hasPhoto: true
     })
-    const element = renderFolios()
+    const element = renderImages()
     container = element.container
     await waitForElement(() => element.getByText('Photo'))
   })
@@ -87,7 +87,7 @@ it('Displays selected folio', async () => {
   fragment = await factory.build('fragment', { folios: folios })
   const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
-  const element = renderFolios(selected)
+  const element = renderImages(selected)
   await waitForElement(() => element.getByText(selectedTitle))
   expect(
     element.getByText(`${selected.humanizedName} Folio ${selected.number}`)
@@ -100,7 +100,7 @@ it('Displays photo if folio specified', async () => {
     { name: 'AKG' }
   ])
   fragment = await factory.build('fragment', { folios: folios, hasPhoto: true })
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() =>
     element.getByAltText(`A photo of the fragment ${fragment.number}`)
   )
@@ -115,7 +115,7 @@ it('Displays CDLI photo if no photo and no folio specified', async () => {
     folios: folios,
     hasPhoto: false
   })
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() => element.getByAltText('CDLI Photo'))
 })
 
@@ -125,7 +125,7 @@ test('No photo, folios, CDLI photo', async () => {
     cdliNumber: '',
     hasPhoto: false
   })
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() => element.getByText('No images'))
 })
 
@@ -134,7 +134,7 @@ test('Broken CDLI photo', async () => {
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
   )
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() => element.getByText('Photo'))
   expect(element.container).not.toHaveTextContent('CDLI Photo')
 })
@@ -144,7 +144,7 @@ test('Broken CDLI line art', async () => {
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
   )
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() => element.getByText('Photo'))
   expect(element.container).not.toHaveTextContent('CDLI Line Art')
 })
@@ -154,15 +154,15 @@ test('Broken CDLI detail line art', async () => {
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
   )
-  const element = renderFolios()
+  const element = renderImages()
   await waitForElement(() => element.getByText('Photo'))
   expect(element.container).not.toHaveTextContent('CDLI Detail Line Art')
 })
 
-function renderFolios(activeFolio = null) {
+function renderImages(activeFolio = null) {
   return render(
     <MemoryRouter>
-      <Folios
+      <Images
         fragment={fragment}
         fragmentService={fragmentService}
         activeFolio={activeFolio}
