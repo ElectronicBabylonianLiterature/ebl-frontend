@@ -7,9 +7,9 @@ export function createFragmentUrl(number) {
   return `/fragmentarium/${encodeURIComponent(encodeURIComponent(number))}`
 }
 
-export function createFragmentUrlWithFolio(number, folioName, folioNumber) {
+export function createFragmentUrlWithFolio(number, folio) {
   const query = queryString.stringify(
-    { tab: 'folio', folioName: folioName, folioNumber: folioNumber },
+    { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
     { strict: false }
   )
   return `${createFragmentUrl(number)}?${query}`
@@ -22,7 +22,7 @@ export function createFragmentUrlWithTab(number, tab) {
 
 export default function FragmentLink({ number, children, folio, ...props }) {
   const link = folio
-    ? createFragmentUrlWithFolio(number, folio.name, folio.number)
+    ? createFragmentUrlWithFolio(number, folio)
     : createFragmentUrl(number)
   return (
     <Link to={link} {...props}>

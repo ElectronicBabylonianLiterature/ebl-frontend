@@ -14,6 +14,42 @@ import {
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
 
+function isFolioKey(key) {
+  return /\d+/.test(key)
+}
+
+function createFolioTabUrl(fragment, key) {
+  const index = Number.parseInt(key, 10)
+  const folio = fragment.folios[index]
+  return createFragmentUrlWithFolio(fragment.number, folio)
+}
+
+function openTab(history, fragment) {
+  return key =>
+    history.push(
+      isFolioKey(key)
+        ? createFolioTabUrl(fragment, key)
+        : createFragmentUrlWithTab(fragment.number, key)
+    )
+}
+
+function getActiveKey(tab, fragment, activeFolio, cdliInfo) {
+  let activeKey =
+    tab ||
+    (fragment.hasPhoto && 'photo') ||
+    (cdliInfo.photoUrl && 'cdli_photo') ||
+    '0'
+  if (tab === 'folio') {
+    const key = fragment.folios.findIndex(folio =>
+      _.isEqual(folio, activeFolio)
+    )
+    if (key >= 0) {
+      activeKey = String(key)
+    }
+  }
+  return activeKey
+}
+
 function Images({
   fragment,
   fragmentService,
@@ -23,35 +59,15 @@ function Images({
   cdliInfo,
   photo
 }) {
-  function onSelect(key) {
-    if (/\d+/.test(key)) {
-      const folio = fragment.folios[key]
-      history.push(
-        createFragmentUrlWithFolio(fragment.number, folio.name, folio.number)
-      )
-    } else {
-      history.push(createFragmentUrlWithTab(fragment.number, key))
-    }
-  }
-
-  let activeKey =
-    tab ||
-    (fragment.hasPhoto && 'photo') ||
-    (cdliInfo.photoUrl && 'cdli_photo') ||
-    '0'
-
-  if (tab === 'folio') {
-    const key = fragment.folios.findIndex(folio =>
-      _.isEqual(folio, activeFolio)
-    )
-    if (key >= 0) {
-      activeKey = String(key)
-    }
-  }
+  const activeKey = getActiveKey(tab, fragment, activeFolio, cdliInfo)
 
   return (
     <>
-      <Tabs id="folio-container" activeKey={activeKey} onSelect={onSelect}>
+      <Tabs
+        id="folio-container"
+        activeKey={activeKey}
+        onSelect={openTab(history, fragment)}
+      >
         {fragment.hasPhoto && (
           <Tab eventKey="photo" title="Photo">
             <Photo fragment={fragment} photo={photo} />
