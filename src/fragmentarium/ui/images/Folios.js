@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
 import withData from 'http/withData'
+import LinkedImage from 'common/LinkedImage'
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
-import LinkedImage from './LinkedImage'
 import Photo from './Photo'
 import {
   createFragmentUrlWithFolio,
