@@ -7,6 +7,7 @@ import Folios from './Folios'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
+const detailLineArtUrl = 'http://example.com/folio_ld.jpg'
 
 let fragment
 let fragmentService
@@ -31,7 +32,7 @@ beforeEach(async () => {
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
   fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl })
+    Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl })
   )
 })
 
@@ -67,6 +68,10 @@ describe('Folios', () => {
 
   it(`Renders CDLI line art`, () => {
     expect(container).toHaveTextContent('CDLI Line Art')
+  })
+
+  it(`Renders CDLI detail line art`, () => {
+    expect(container).toHaveTextContent('CDLI Detail Line Art')
   })
 
   it(`Renders photo`, () => {
@@ -127,7 +132,7 @@ test('No photo, folios, CDLI photo', async () => {
 test('Broken CDLI photo', async () => {
   fragment = await factory.build('fragment', { hasPhoto: true })
   fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl: null, lineArtUrl })
+    Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
   )
   const element = renderFolios()
   await waitForElement(() => element.getByText('Photo'))
@@ -137,11 +142,21 @@ test('Broken CDLI photo', async () => {
 test('Broken CDLI line art', async () => {
   fragment = await factory.build('fragment', { hasPhoto: true })
   fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl: null })
+    Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
   )
   const element = renderFolios()
   await waitForElement(() => element.getByText('Photo'))
   expect(element.container).not.toHaveTextContent('CDLI Line Art')
+})
+
+test('Broken CDLI detail line art', async () => {
+  fragment = await factory.build('fragment', { hasPhoto: true })
+  fragmentService.fetchCdliInfo.mockReturnValue(
+    Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
+  )
+  const element = renderFolios()
+  await waitForElement(() => element.getByText('Photo'))
+  expect(element.container).not.toHaveTextContent('CDLI Detail Line Art')
 })
 
 function renderFolios(activeFolio = null) {

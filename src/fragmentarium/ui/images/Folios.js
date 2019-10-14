@@ -81,6 +81,14 @@ function Folios({
             <LinkedImage src={cdliInfo.lineArtUrl} alt="CDLI Line Art" />
           </Tab>
         )}
+        {cdliInfo.detailLineArtUrl && (
+          <Tab eventKey="cdli_line_art" title="CDLI Detail Line Art">
+            <LinkedImage
+              src={cdliInfo.detailLineArtUrl}
+              alt="CDLI Detail Line Art"
+            />
+          </Tab>
+        )}
       </Tabs>
       {_.isEmpty(fragment.folios) &&
         !fragment.cdliNumber &&
