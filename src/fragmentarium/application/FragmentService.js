@@ -9,7 +9,9 @@ import { Text } from 'fragmentarium/domain/text'
 import type { Token } from 'fragmentarium/domain/text'
 
 export type CdliInfo = {|
-  photoUrl: ?string
+  photoUrl: ?string,
+  lineArtUrl: ?string,
+  detailLineArtUrl: ?string
 |}
 
 export interface ImageRepository {

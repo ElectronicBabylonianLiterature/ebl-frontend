@@ -134,7 +134,7 @@ class ApiFragmentRepository
       .fetchJson(`/cdli/${encodeURIComponent(cdli_number)}`, true)
       .catch(error => {
         if (error.name === 'ApiError') {
-          return { photoUrl: null }
+          return { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null }
         } else {
           throw error
         }
