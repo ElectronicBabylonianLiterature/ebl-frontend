@@ -11,7 +11,7 @@ type Props = {
 export default function LinkedImage({ src, alt }: Props) {
   return (
     <ExternalLink href={src}>
-      <Image src={src} alt="CDLI photo" fluid />
+      <Image src={src} alt={alt} fluid />
     </ExternalLink>
   )
 }
