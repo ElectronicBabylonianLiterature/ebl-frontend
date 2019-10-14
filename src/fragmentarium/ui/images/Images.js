@@ -33,21 +33,33 @@ function openTab(history, fragment) {
     )
 }
 
-function getActiveKey(tab, fragment, activeFolio, cdliInfo) {
-  let activeKey =
+function getDefaultKey(tab, fragment, cdliInfo) {
+  return (
     tab ||
     (fragment.hasPhoto && 'photo') ||
     (cdliInfo.photoUrl && 'cdli_photo') ||
     '0'
-  if (tab === 'folio') {
-    const key = fragment.folios.findIndex(folio =>
-      _.isEqual(folio, activeFolio)
-    )
-    if (key >= 0) {
-      activeKey = String(key)
-    }
+  )
+}
+
+function getFolioKey(fragment, activeFolio, defaultKey) {
+  const index = fragment.folios.findIndex(folio =>
+    _.isEqual(folio, activeFolio)
+  )
+  if (index >= 0) {
+    return String(index)
+  } else {
+    return defaultKey
   }
-  return activeKey
+}
+
+function getActiveKey(tab, fragment, activeFolio, cdliInfo) {
+  const defaultKey = getDefaultKey(tab, fragment, cdliInfo)
+  if (tab === 'folio') {
+    return getFolioKey(fragment, activeFolio, defaultKey)
+  } else {
+    return defaultKey
+  }
 }
 
 function Images({
