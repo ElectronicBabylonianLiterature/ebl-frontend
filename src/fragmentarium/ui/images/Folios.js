@@ -21,7 +21,7 @@ function Folios({
   tab,
   activeFolio,
   history,
-  data
+  cdliInfo
 }) {
   function onSelect(key) {
     if (/\d+/.test(key)) {
@@ -35,7 +35,10 @@ function Folios({
   }
 
   let activeKey =
-    tab || (fragment.hasPhoto && 'photo') || (data.photoUrl && 'cdli') || '0'
+    tab ||
+    (fragment.hasPhoto && 'photo') ||
+    (cdliInfo.photoUrl && 'cdli_photo') ||
+    '0'
 
   if (tab === 'folio') {
     const key = fragment.folios.findIndex(folio =>
@@ -68,9 +71,14 @@ function Folios({
             />
           </Tab>
         ))}
-        {data.photoUrl && (
-          <Tab eventKey="cdli" title="CDLI Image">
-            <LinkedImage src={data.photoUrl} alt="CDLI Photo" />
+        {cdliInfo.photoUrl && (
+          <Tab eventKey="cdli_photo" title="CDLI Photo">
+            <LinkedImage src={cdliInfo.photoUrl} alt="CDLI Photo" />
+          </Tab>
+        )}
+        {cdliInfo.lineArtUrl && (
+          <Tab eventKey="cdli_line_art" title="CDLI Line Art">
+            <LinkedImage src={cdliInfo.lineArtUrl} alt="CDLI Line Art" />
           </Tab>
         )}
       </Tabs>
@@ -83,7 +91,9 @@ function Folios({
 }
 
 export default withRouter(
-  withData(Folios, ({ fragment, fragmentService }) =>
-    fragmentService.fetchCdliInfo(fragment.cdliNumber)
+  withData(
+    ({ data, ...props }) => <Folios {...props} cdliInfo={data} />,
+    ({ fragment, fragmentService }) =>
+      fragmentService.fetchCdliInfo(fragment.cdliNumber)
   )
 )

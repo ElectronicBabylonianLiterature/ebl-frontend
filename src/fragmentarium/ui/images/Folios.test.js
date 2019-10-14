@@ -6,6 +6,7 @@ import Promise from 'bluebird'
 import Folios from './Folios'
 
 const photoUrl = 'http://example.com/folio.jpg'
+const lineArtUrl = 'http://example.com/folio_l.jpg'
 
 let fragment
 let fragmentService
@@ -29,7 +30,9 @@ beforeEach(async () => {
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
-  fragmentService.fetchCdliInfo.mockReturnValue(Promise.resolve({ photoUrl }))
+  fragmentService.fetchCdliInfo.mockReturnValue(
+    Promise.resolve({ photoUrl, lineArtUrl })
+  )
 })
 
 describe('Folios', () => {
@@ -58,8 +61,12 @@ describe('Folios', () => {
     }
   })
 
-  it(`Renders CDLI image`, () => {
-    expect(container).toHaveTextContent('CDLI Image')
+  it(`Renders CDLI photo`, () => {
+    expect(container).toHaveTextContent('CDLI Photo')
+  })
+
+  it(`Renders CDLI line art`, () => {
+    expect(container).toHaveTextContent('CDLI Line Art')
   })
 
   it(`Renders photo`, () => {
@@ -94,7 +101,7 @@ it('Displays photo if folio specified', async () => {
   )
 })
 
-it('Displays CDLI image if no photo and no folio specified', async () => {
+it('Displays CDLI photo if no photo and no folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
     { name: 'AKG' }
@@ -104,10 +111,10 @@ it('Displays CDLI image if no photo and no folio specified', async () => {
     hasPhoto: false
   })
   const element = renderFolios()
-  await waitForElement(() => element.getByAltText('CDLI photo'))
+  await waitForElement(() => element.getByAltText('CDLI Photo'))
 })
 
-test('No photo, folios, CDLI image', async () => {
+test('No photo, folios, CDLI photo', async () => {
   fragment = await factory.build('fragment', {
     folios: [],
     cdliNumber: '',
@@ -117,14 +124,24 @@ test('No photo, folios, CDLI image', async () => {
   await waitForElement(() => element.getByText('No images'))
 })
 
-test('Broken CDLI image', async () => {
+test('Broken CDLI photo', async () => {
   fragment = await factory.build('fragment', { hasPhoto: true })
   fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl: null })
+    Promise.resolve({ photoUrl: null, lineArtUrl })
   )
   const element = renderFolios()
   await waitForElement(() => element.getByText('Photo'))
-  expect(element.container).not.toHaveTextContent('CDLI Image')
+  expect(element.container).not.toHaveTextContent('CDLI Photo')
+})
+
+test('Broken CDLI line art', async () => {
+  fragment = await factory.build('fragment', { hasPhoto: true })
+  fragmentService.fetchCdliInfo.mockReturnValue(
+    Promise.resolve({ photoUrl, lineArtUrl: null })
+  )
+  const element = renderFolios()
+  await waitForElement(() => element.getByText('Photo'))
+  expect(element.container).not.toHaveTextContent('CDLI Line Art')
 })
 
 function renderFolios(activeFolio = null) {
