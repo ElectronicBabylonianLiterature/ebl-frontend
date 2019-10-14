@@ -7,7 +7,7 @@ import _ from 'lodash'
 import withData from 'http/withData'
 import FolioPager from './FolioPager'
 import FolioImage from './FolioImage'
-import CdliImage from './CdliImage'
+import LinkedImage from './LinkedImage'
 import Photo from './Photo'
 import {
   createFragmentUrlWithFolio,
@@ -92,7 +92,7 @@ function Folios({
         ))}
         {data.photoUrl && (
           <Tab eventKey="cdli" title="CDLI Image">
-            <CdliImage src={data.photoUrl} />
+            <LinkedImage src={data.photoUrl} alt="CDLI Photo" />
           </Tab>
         )}
       </Tabs>

@@ -1,21 +1,23 @@
+// @flow
 import React from 'react'
 import { render } from '@testing-library/react'
-import CdliImage from './CdliImage'
+import LinkedImage from './LinkedImage'
 
 describe('CDLI number provided', () => {
   const url = `https://cdli.ucla.edu/dl/photo/P000000.jpg`
+  const alt = 'CDLI photo'
   let container
 
   beforeEach(() => {
-    container = render(<CdliImage src={url} />).container
+    container = render(<LinkedImage src={url} alt={alt} />).container
   })
 
-  it('Displays the image from CDLI', async () => {
+  it('Displays the image', async () => {
     expect(container.querySelector('img')).toHaveAttribute('src', url)
   })
 
   it('Has alt text', async () => {
-    expect(container.querySelector('img')).toHaveAttribute('alt', 'CDLI photo')
+    expect(container.querySelector('img')).toHaveAttribute('alt', alt)
   })
 
   it('Has a link to the image', () => {
