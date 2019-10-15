@@ -16,8 +16,11 @@ export default function CompactCitation({
           <span className="CompactCitation__container-title">
             {reference.shortContainerTitle}
           </span>{' '}
-          {reference.collectionNumber ? `${reference.collectionNumber}, ` : ''}
-          {reference.pages} ({reference.typeAbbreviation})
+          {reference.collectionNumber && `${reference.collectionNumber}, `}
+          {reference.pages}{' '}
+          {reference.hasLinesCited &&
+            `[l. ${reference.linesCited.join(', ')}] `}
+          ({reference.typeAbbreviation})
         </>
       ) : (
         reference.compactCitation
