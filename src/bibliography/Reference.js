@@ -58,7 +58,7 @@ export default class Reference {
   }
 
   get useContainerCitation(): boolean {
-    const typesRequiringContainerCitation = ['COPY', 'EDITION', 'DISCUSSION']
+    const typesRequiringContainerCitation = ['COPY', 'EDITION']
     const idsRequiringContainerCitation = ['RN2720', 'RN2721']
     return (
       !_.isEmpty(this.shortContainerTitle) &&

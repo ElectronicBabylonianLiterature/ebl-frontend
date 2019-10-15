@@ -76,14 +76,17 @@ function buildReferenceWithContainerTitle(type, cslData = {}) {
     .then(cslData => factory.build('bibliographyEntry', cslData))
     .then(entry => factory.build('reference', { type: type, document: entry }))
 }
+
 test.each([
   [factory.build('reference'), false],
   [buildReferenceWithContainerTitle('PHOTO'), false],
   [buildReferenceWithContainerTitle('COPY'), true],
   [buildReferenceWithContainerTitle('EDITION'), true],
-  [buildReferenceWithContainerTitle('DISCUSSION'), true],
+  [buildReferenceWithContainerTitle('DISCUSSION'), false],
   [buildReferenceWithContainerTitle('PHOTO', { id: 'RN2720' }), true],
-  [buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }), true]
+  [buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }), true],
+  [buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2720' }), true],
+  [buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }), true]
 ])('useContainerCitation %#', async (factoryPromise, expected) => {
   const reference = await factoryPromise
   expect(reference.useContainerCitation).toEqual(expected)
