@@ -91,3 +91,11 @@ test.each([
   const reference = await factoryPromise
   expect(reference.useContainerCitation).toEqual(expected)
 })
+
+test.each([
+  [factory.build('reference', { linesCited: [] }), false],
+  [factory.build('reference', { linesCited: ['1'] }), true]
+])('hasLinesCited %#', async (factoryPromise, expected) => {
+  const reference = await factoryPromise
+  expect(reference.hasLinesCited).toEqual(expected)
+})

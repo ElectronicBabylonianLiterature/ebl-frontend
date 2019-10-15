@@ -12,14 +12,14 @@ export default class Reference {
   +type: ReferenceType
   +pages: string
   +notes: string
-  +linesCited: Array<string>
+  +linesCited: $ReadOnlyArray<string>
   +document: BibliographyEntry
 
   constructor(
     type: ReferenceType = defaultType,
     pages: string = '',
     notes: string = '',
-    linesCited: Array<string> = [],
+    linesCited: ReadOnlyArray<string> = [],
     document_: BibliographyEntry = new BibliographyEntry()
   ) {
     this.type = type
@@ -27,6 +27,10 @@ export default class Reference {
     this.notes = notes
     this.linesCited = linesCited
     this.document = document_
+  }
+
+  get hasLinesCited() {
+    return !_.isEmpty(this.linesCited)
   }
 
   get id() {
@@ -74,7 +78,7 @@ export default class Reference {
       ', ',
       document.year,
       this.pages ? `: ${this.pages} ` : ' ',
-      !_.isEmpty(this.linesCited) ? `[l. ${this.linesCited.join(', ')}] ` : '',
+      this.hasLinesCited ? `[l. ${this.linesCited.join(', ')}] ` : '',
       `(${this.typeAbbreviation})`
     ].join('')
   }
