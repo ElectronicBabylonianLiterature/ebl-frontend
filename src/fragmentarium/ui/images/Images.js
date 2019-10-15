@@ -36,6 +36,14 @@ class TabController {
     this.history = history
   }
 
+  get hasNoImages() {
+    return (
+      !this.fragment.hasPhoto &&
+      this.fragment.folios.every(folio => !folio.hasImage) &&
+      (!this.fragment.cdliNumber || _.values(this.cdliInfo).every(_.isNil))
+    )
+  }
+
   get defaultKey() {
     return _([
       this.fragment.hasPhoto && PHOTO,
@@ -152,10 +160,7 @@ function Images({
         {cdliInfo.detailLineArtUrl &&
           createCdliTab(CDLI_DETAIL_LINE_ART, cdliInfo.detailLineArtUrl)}
       </Tabs>
-      {_.isEmpty(fragment.folios) &&
-        !fragment.cdliNumber &&
-        !fragment.hasPhoto &&
-        'No images'}
+      {controller.hasNoImages && 'No images'}
     </>
   )
 }

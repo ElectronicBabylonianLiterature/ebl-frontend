@@ -125,6 +125,13 @@ test('No photo, folios, CDLI photo', async () => {
     cdliNumber: '',
     hasPhoto: false
   })
+  fragmentService.fetchCdliInfo.mockReturnValue(
+    Promise.resolve({
+      photoUrl: null,
+      lineArtUrl: null,
+      detailLineArtUrl: null
+    })
+  )
   const element = renderImages()
   await waitForElement(() => element.getByText('No images'))
 })
