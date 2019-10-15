@@ -7,7 +7,6 @@ import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import Reference, { createReference } from 'bibliography/Reference'
 import { Text } from 'fragmentarium/domain/text'
 import type { Token } from 'fragmentarium/domain/text'
-import { fragment } from 'test-helpers/test-fragment'
 
 export type CdliInfo = {|
   photoUrl: ?string,
