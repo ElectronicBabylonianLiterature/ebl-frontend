@@ -110,7 +110,7 @@ function Images({
           </Tab>
         )}
         {cdliInfo.detailLineArtUrl && (
-          <Tab eventKey="cdli_line_art" title="CDLI Detail Line Art">
+          <Tab eventKey="cdli_line_art_detail" title="CDLI Detail Line Art">
             <LinkedImage
               src={cdliInfo.detailLineArtUrl}
               alt="CDLI Detail Line Art"
