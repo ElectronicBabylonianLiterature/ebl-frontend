@@ -7,7 +7,11 @@ import CompactCitation from './CompactCitation'
 test('Shows compact citation', async () => {
   const reference = await factory.build('reference')
   const { container } = render(<CompactCitation reference={reference} />)
-  expect(container).toHaveTextContent(reference.compactCitation)
+  expect(container).toHaveTextContent(
+    `${reference.author}, ${reference.year}: ${
+      reference.pages
+    } [l. ${reference.linesCited.join(', ')}] (${reference.typeAbbreviation})`
+  )
 })
 
 test('Shows compact citation with container title', async () => {

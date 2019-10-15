@@ -78,7 +78,7 @@ export default class Reference {
       ', ',
       document.year,
       this.pages ? `: ${this.pages} ` : ' ',
-      this.hasLinesCited ? `[l. ${this.linesCited.join(', ')}] ` : '',
+      this.hasLinesCited ? `\\[l. ${this.linesCited.join(', ')}\\] ` : '',
       `(${this.typeAbbreviation})`
     ].join('')
   }
