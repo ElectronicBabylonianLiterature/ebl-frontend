@@ -13,52 +13,64 @@ import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
-function isFolioKey(key) {
-  return /\d+/.test(key)
-}
+const FOLIO = 'folio'
+const PHOTO = 'photo'
+const CDLI_PHOTO = 'cdli_photo'
+const CDLI_LINE_ART = 'cdli_line_art'
+const CDLI_DETAIL_LINE_ART = 'cdli_detail_line_art'
 
-function createFolioTabUrl(fragment, key) {
-  const index = Number.parseInt(key, 10)
-  const folio = fragment.folios[index]
-  return createFragmentUrlWithFolio(fragment.number, folio)
-}
+class TabController {
+  +fragment: Fragment
+  +cdliInfo: CdliInfo
+  +tab: ?string
+  +activeFolio: ?Folio
+  +history: Any
 
-function openTab(history, fragment) {
-  return key =>
-    history.push(
-      isFolioKey(key)
-        ? createFolioTabUrl(fragment, key)
-        : createFragmentUrlWithTab(fragment.number, key)
-    )
-}
-
-function getDefaultKey(tab, fragment, cdliInfo) {
-  return (
-    tab ||
-    (fragment.hasPhoto && 'photo') ||
-    (cdliInfo.photoUrl && 'cdli_photo') ||
-    '0'
-  )
-}
-
-function getFolioKey(fragment, activeFolio, defaultKey) {
-  const index = fragment.folios.findIndex(folio =>
-    _.isEqual(folio, activeFolio)
-  )
-  if (index >= 0) {
-    return String(index)
-  } else {
-    return defaultKey
+  constructor(fragment, cdliInfo, tab, activeFolio, history) {
+    this.fragment = fragment
+    this.cdliInfo = cdliInfo
+    this.tab = tab
+    this.activeFolio = activeFolio
+    this.history = history
   }
-}
 
-function getActiveKey(tab, fragment, activeFolio, cdliInfo) {
-  const defaultKey = getDefaultKey(tab, fragment, cdliInfo)
-  if (tab === 'folio') {
-    return getFolioKey(fragment, activeFolio, defaultKey)
-  } else {
-    return defaultKey
+  get defaultKey() {
+    return _([
+      this.fragment.hasPhoto && PHOTO,
+      this.cdliInfo.photoUrl && CDLI_PHOTO,
+      this.fragment.folios.map((folio, index) => String(index)),
+      this.cdliInfo.photoUrl && CDLI_LINE_ART,
+      this.cdliInfo.photoUrl && CDLI_DETAIL_LINE_ART
+    ])
+      .compact()
+      .head()
+  }
+
+  get activeKey() {
+    if (this.tab === FOLIO) {
+      const index = this.fragment.folios.findIndex(folio =>
+        _.isEqual(folio, this.activeFolio)
+      )
+      return index >= 0 ? String(index) : '0'
+    } else {
+      return this.tab || this.defaultKey
+    }
+  }
+
+  openTab = key => {
+    const isFolioKey = /\d+/.test(key)
+    const url = isFolioKey
+      ? this.createFolioTabUrl(key)
+      : createFragmentUrlWithTab(this.fragment.number, key)
+    this.history.push(url)
+  }
+
+  createFolioTabUrl(key) {
+    const index = Number.parseInt(key, 10)
+    const folio = this.fragment.folios[index]
+    return createFragmentUrlWithFolio(this.fragment.number, folio)
   }
 }
 
@@ -71,17 +83,23 @@ function Images({
   cdliInfo,
   photo
 }) {
-  const activeKey = getActiveKey(tab, fragment, activeFolio, cdliInfo)
+  const controller = new TabController(
+    fragment,
+    cdliInfo,
+    tab,
+    activeFolio,
+    history
+  )
 
   return (
     <>
       <Tabs
         id="folio-container"
-        activeKey={activeKey}
-        onSelect={openTab(history, fragment)}
+        activeKey={controller.activeKey}
+        onSelect={controller.openTab}
       >
         {fragment.hasPhoto && (
-          <Tab eventKey="photo" title="Photo">
+          <Tab eventKey={PHOTO} title="Photo">
             <Photo fragment={fragment} photo={photo} />
           </Tab>
         )}
@@ -100,17 +118,17 @@ function Images({
           </Tab>
         ))}
         {cdliInfo.photoUrl && (
-          <Tab eventKey="cdli_photo" title="CDLI Photo">
+          <Tab eventKey={CDLI_PHOTO} title="CDLI Photo">
             <LinkedImage src={cdliInfo.photoUrl} alt="CDLI Photo" />
           </Tab>
         )}
         {cdliInfo.lineArtUrl && (
-          <Tab eventKey="cdli_line_art" title="CDLI Line Art">
+          <Tab eventKey={CDLI_LINE_ART} title="CDLI Line Art">
             <LinkedImage src={cdliInfo.lineArtUrl} alt="CDLI Line Art" />
           </Tab>
         )}
         {cdliInfo.detailLineArtUrl && (
-          <Tab eventKey="cdli_line_art_detail" title="CDLI Detail Line Art">
+          <Tab eventKey={CDLI_DETAIL_LINE_ART} title="CDLI Detail Line Art">
             <LinkedImage
               src={cdliInfo.detailLineArtUrl}
               alt="CDLI Detail Line Art"
@@ -133,10 +151,8 @@ export default withRouter(
     ),
     ({ fragment, fragmentService }) =>
       Promise.all([
-        fragmentService.fetchCdliInfo(fragment.cdliNumber),
-        fragment.hasPhoto
-          ? fragmentService.findPhoto(fragment.number)
-          : Promise.resolve(null)
+        fragmentService.fetchCdliInfo(fragment),
+        fragmentService.findPhoto(fragment)
       ])
   )
 )

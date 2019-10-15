@@ -6,7 +6,7 @@ import Museum from 'fragmentarium/domain/museum'
 export const fragmentDto = {
   _id: 'Test.Fragment',
   accession: '',
-  cdliNumber: '',
+  cdliNumber: 'X0000',
   bmIdNumber: '',
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',
@@ -178,7 +178,7 @@ export const fragmentDto = {
 export const fragment = new Fragment({
   number: 'Test.Fragment',
   accession: '',
-  cdliNumber: '',
+  cdliNumber: 'X0000',
   bmIdNumber: '',
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',

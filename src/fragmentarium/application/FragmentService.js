@@ -7,6 +7,7 @@ import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import Reference, { createReference } from 'bibliography/Reference'
 import { Text } from 'fragmentarium/domain/text'
 import type { Token } from 'fragmentarium/domain/text'
+import { fragment } from 'test-helpers/test-fragment'
 
 export type CdliInfo = {|
   photoUrl: ?string,
@@ -91,8 +92,10 @@ class FragmentService {
     return this.#imageRepository.find(fileName)
   }
 
-  findPhoto(number: string) {
-    return this.#imageRepository.findPhoto(number)
+  findPhoto(fragment: Fragment) {
+    return fragment.hasPhoto
+      ? this.#imageRepository.findPhoto(fragment.number)
+      : Promise.resolve(null)
   }
 
   folioPager(folio: Folio, fragmentNumber: string) {
@@ -109,8 +112,14 @@ class FragmentService {
     return this.#bibliographyService.search(query)
   }
 
-  fetchCdliInfo(cdli_number: string) {
-    return this.#fragmentRepository.fetchCdliInfo(cdli_number)
+  fetchCdliInfo(fragment: Fragment) {
+    return fragment.cdliNumber
+      ? this.#fragmentRepository.fetchCdliInfo(fragment.cdliNumber)
+      : Promise.resolve({
+          photoUrl: null,
+          lineArtUrl: null,
+          detailLineArtUrl: null
+        })
   }
 
   createLemmatization(text: Text) {

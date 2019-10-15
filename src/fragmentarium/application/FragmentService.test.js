@@ -3,6 +3,7 @@ import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { testDelegation } from 'test-helpers/utils'
+import { fragment } from 'test-helpers/test-fragment'
 import FragmentService from './FragmentService'
 import type { ImageRepository, FragmentRepository } from './FragmentService'
 import Lemmatization, {
@@ -69,7 +70,13 @@ const testData = [
   ],
   ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
-  ['findPhoto', ['K.1'], imageRepository.findPhoto, resultStub, ['K.1']],
+  [
+    'findPhoto',
+    [fragment],
+    imageRepository.findPhoto,
+    resultStub,
+    [fragment.number]
+  ],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   [
@@ -80,10 +87,10 @@ const testData = [
   ],
   [
     'fetchCdliInfo',
-    ['P1'],
+    [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    ['P1']
+    [fragment.cdliNumber]
   ]
 ]
 
