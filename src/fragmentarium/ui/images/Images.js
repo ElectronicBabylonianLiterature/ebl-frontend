@@ -74,6 +74,50 @@ class TabController {
   }
 }
 
+function createPhotoTab(fragment: Fragment, photo: Blob) {
+  return (
+    <Tab eventKey={PHOTO} title="Photo">
+      <Photo fragment={fragment} photo={photo} />
+    </Tab>
+  )
+}
+
+function createFolioTab(
+  fragmentService: Any,
+  folio: Folio,
+  index: string,
+  fragment: Fragment
+) {
+  return (
+    <Tab
+      key={index}
+      eventKey={String(index)}
+      title={`${folio.humanizedName} Folio ${folio.number}`}
+      disabled={!folio.hasImage}
+    >
+      <FolioDetails
+        fragmentService={fragmentService}
+        fragmentNumber={fragment.number}
+        folio={folio}
+      />
+    </Tab>
+  )
+}
+
+function createCdliTab(eventKey: string, url: string) {
+  const title = {
+    [CDLI_PHOTO]: 'CDLI Photo',
+    [CDLI_LINE_ART]: 'CDLI Line Art',
+    [CDLI_DETAIL_LINE_ART]: 'CDLI Detail Line Art'
+  }[eventKey]
+
+  return (
+    <Tab eventKey={eventKey} title={title}>
+      <LinkedImage src={url} alt={title} />
+    </Tab>
+  )
+}
+
 function Images({
   fragment,
   fragmentService,
@@ -98,43 +142,15 @@ function Images({
         activeKey={controller.activeKey}
         onSelect={controller.openTab}
       >
-        {fragment.hasPhoto && (
-          <Tab eventKey={PHOTO} title="Photo">
-            <Photo fragment={fragment} photo={photo} />
-          </Tab>
+        {fragment.hasPhoto && createPhotoTab(fragment, photo)}
+        {fragment.folios.map((folio, index) =>
+          createFolioTab(fragmentService, folio, index, fragment)
         )}
-        {fragment.folios.map((folio, index) => (
-          <Tab
-            key={index}
-            eventKey={index}
-            title={`${folio.humanizedName} Folio ${folio.number}`}
-            disabled={!folio.hasImage}
-          >
-            <FolioDetails
-              fragmentService={fragmentService}
-              fragmentNumber={fragment.number}
-              folio={folio}
-            />
-          </Tab>
-        ))}
-        {cdliInfo.photoUrl && (
-          <Tab eventKey={CDLI_PHOTO} title="CDLI Photo">
-            <LinkedImage src={cdliInfo.photoUrl} alt="CDLI Photo" />
-          </Tab>
-        )}
-        {cdliInfo.lineArtUrl && (
-          <Tab eventKey={CDLI_LINE_ART} title="CDLI Line Art">
-            <LinkedImage src={cdliInfo.lineArtUrl} alt="CDLI Line Art" />
-          </Tab>
-        )}
-        {cdliInfo.detailLineArtUrl && (
-          <Tab eventKey={CDLI_DETAIL_LINE_ART} title="CDLI Detail Line Art">
-            <LinkedImage
-              src={cdliInfo.detailLineArtUrl}
-              alt="CDLI Detail Line Art"
-            />
-          </Tab>
-        )}
+        {cdliInfo.photoUrl && createCdliTab(CDLI_PHOTO, cdliInfo.photoUrl)}
+        {cdliInfo.lineArtUrl &&
+          createCdliTab(CDLI_LINE_ART, cdliInfo.lineArtUrl)}
+        {cdliInfo.detailLineArtUrl &&
+          createCdliTab(CDLI_DETAIL_LINE_ART, cdliInfo.detailLineArtUrl)}
       </Tabs>
       {_.isEmpty(fragment.folios) &&
         !fragment.cdliNumber &&
