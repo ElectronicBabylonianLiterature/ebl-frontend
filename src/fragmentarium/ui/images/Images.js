@@ -26,9 +26,15 @@ class TabController {
   +cdliInfo: CdliInfo
   +tab: ?string
   +activeFolio: ?Folio
-  +history: Any
+  +history
 
-  constructor(fragment, cdliInfo, tab, activeFolio, history) {
+  constructor(
+    fragment: Fragment,
+    cdliInfo: CdliInfo,
+    tab: ?string,
+    activeFolio: ?Folio,
+    history
+  ) {
     this.fragment = fragment
     this.cdliInfo = cdliInfo
     this.tab = tab
@@ -49,8 +55,8 @@ class TabController {
       this.fragment.hasPhoto && PHOTO,
       this.cdliInfo.photoUrl && CDLI_PHOTO,
       this.fragment.folios.map((folio, index) => String(index)),
-      this.cdliInfo.photoUrl && CDLI_LINE_ART,
-      this.cdliInfo.photoUrl && CDLI_DETAIL_LINE_ART
+      this.cdliInfo.lineArtUrl && CDLI_LINE_ART,
+      this.cdliInfo.detailLineArtUrl && CDLI_DETAIL_LINE_ART
     ])
       .compact()
       .head()
@@ -91,7 +97,7 @@ function createPhotoTab(fragment: Fragment, photo: Blob) {
 }
 
 function createFolioTab(
-  fragmentService: Any,
+  fragmentService,
   folio: Folio,
   index: string,
   fragment: Fragment
