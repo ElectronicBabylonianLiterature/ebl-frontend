@@ -42,8 +42,12 @@ export default class Reference {
     return this.document.id
   }
 
-  get author() {
-    return this.document.author
+  get primaryAuthor() {
+    return this.document.primaryAuthor
+  }
+
+  get authors() {
+    return this.document.authors
   }
 
   get year() {

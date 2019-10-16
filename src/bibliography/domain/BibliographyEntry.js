@@ -15,6 +15,11 @@ const authorProperties = [
   'parse-names'
 ]
 
+function getName(author) {
+  const particle = _.get(author, 'non-dropping-particle', '')
+  const family = _.get(author, 'family', '')
+  return particle ? `${particle} ${family}` : family
+}
 class BibliographyEntry {
   #cslData: { [string]: any }
 
@@ -37,10 +42,12 @@ class BibliographyEntry {
     return _.get(this.#cslData, 'id', '')
   }
 
-  get author() {
-    const particle = _.get(this.#cslData, 'author.0.non-dropping-particle', '')
-    const family = _.get(this.#cslData, 'author.0.family', '')
-    return particle ? `${particle} ${family}` : family
+  get primaryAuthor() {
+    return _.head(this.authors) || ''
+  }
+
+  get authors() {
+    return _.get(this.#cslData, 'author', []).map(getName)
   }
 
   get year() {

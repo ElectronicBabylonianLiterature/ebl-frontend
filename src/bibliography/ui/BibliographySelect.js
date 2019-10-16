@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
 
 function createLabel(entry) {
-  return `${entry.author} ${entry.year} ${entry.title}`
+  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
 }
 
 function createOption(entry) {

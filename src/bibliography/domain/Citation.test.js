@@ -38,7 +38,7 @@ test('CompactCitation', async () => {
   const reference = await factory.build('reference')
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
-    `${reference.author}, ${reference.year}: ${
+    `${reference.authors.join(' & ')}, ${reference.year}: ${
       reference.pages
     } \\[l. ${reference.linesCited.join(', ')}\\] (${
       reference.typeAbbreviation
@@ -53,7 +53,27 @@ test('CompactCitation with empty properties', async () => {
   })
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
-    `${reference.author}, ${reference.year} (${reference.typeAbbreviation})`
+    `${reference.authors.join(' & ')}, ${reference.year} (${
+      reference.typeAbbreviation
+    })`
+  )
+})
+
+test('CompactCitation with more than 3 authors', async () => {
+  const authors = await factory.buildMany('author', 4)
+  const reference = await factory
+    .build('cslData', { author: authors })
+    .then(cslData => factory.build('bibliographyEntry', cslData))
+    .then(entry =>
+      factory.build('reference', { type: 'COPY', document: entry })
+    )
+  const citation = new CompactCitation(reference)
+  expect(citation.getMarkdown()).toEqual(
+    `${authors[0].family} *et al.*, ${reference.year}: ${
+      reference.pages
+    } \\[l. ${reference.linesCited.join(', ')}\\] (${
+      reference.typeAbbreviation
+    })`
   )
 })
 

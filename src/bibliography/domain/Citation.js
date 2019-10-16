@@ -1,5 +1,4 @@
 // @flow
-import BibliographyEntry from './BibliographyEntry'
 import type { ReferenceType } from './Reference'
 import Reference from './Reference'
 
@@ -52,16 +51,22 @@ export class ContainerCitation extends Citation {
 export class CompactCitation extends Citation {
   getMarkdown() {
     const reference = this.reference
-    const document = reference.document || new BibliographyEntry()
     return [
-      document.author,
+      this.getAuthor(),
       ', ',
-      document.year,
+      reference.year,
       reference.pages ? `: ${reference.pages} ` : ' ',
       reference.hasLinesCited
         ? `\\[l. ${reference.linesCited.join(', ')}\\] `
         : '',
       `(${reference.typeAbbreviation})`
     ].join('')
+  }
+
+  getAuthor() {
+    const authors = this.reference.authors
+    return authors.length > 3
+      ? `${this.reference.primaryAuthor} *et al.*`
+      : authors.join(' & ')
   }
 }

@@ -19,7 +19,7 @@ beforeEach(async () => {
 
 test.each([
   ['id', 'id'],
-  ['author', 'author.0.family'],
+  ['primaryAuthor', 'author.0.family'],
   ['title', 'title'],
   ['link', 'URL'],
   ['shortContainerTitle', 'container-title-short']
@@ -37,7 +37,23 @@ test('non-dropping particle', async () => {
     ]
   })
   entry = new BibliographyEntry(cslData)
-  expect(entry.author).toEqual('von Soden')
+  expect(entry.primaryAuthor).toEqual('von Soden')
+})
+
+test('authors', async () => {
+  cslData = await factory.build('cslData', {
+    author: [
+      {
+        'non-dropping-particle': 'von',
+        family: 'Soden'
+      },
+      {
+        family: 'Nodes'
+      }
+    ]
+  })
+  entry = new BibliographyEntry(cslData)
+  expect(entry.authors).toEqual(['von Soden', 'Nodes'])
 })
 
 test('fallback link', async () => {

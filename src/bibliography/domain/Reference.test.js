@@ -20,7 +20,10 @@ describe('Reference', () => {
     reference = await factory.build('reference')
   })
 
-  test.each([['typeAbbreviation', 'type.0']])('%s', async (property, path) =>
+  test.each([
+    ['typeAbbreviation', 'type.0'],
+    ['author', 'document.primaryAuthor']
+  ])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
 })
@@ -68,31 +71,4 @@ test.each([
 ])('hasShortContainerTitle %#', async (factoryPromise, expected) => {
   const reference = await factoryPromise
   expect(reference.hasShortContainerTitle).toEqual(expected)
-})
-
-test.each([
-  [factory.build('reference'), CompactCitation],
-  [buildReferenceWithContainerTitle('PHOTO'), CompactCitation],
-  [buildReferenceWithContainerTitle('COPY'), ContainerCitation],
-  [buildReferenceWithContainerTitle('EDITION'), ContainerCitation],
-  [buildReferenceWithContainerTitle('DISCUSSION'), CompactCitation],
-  [
-    buildReferenceWithContainerTitle('PHOTO', { id: 'RN2720' }),
-    ContainerCitation
-  ],
-  [
-    buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }),
-    ContainerCitation
-  ],
-  [
-    buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2720' }),
-    ContainerCitation
-  ],
-  [
-    buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }),
-    ContainerCitation
-  ]
-])('Citation.for %#', async (factoryPromise, ExpectedType) => {
-  const reference = await factoryPromise
-  expect(Citation.for(reference)).toEqual(new ExpectedType(reference))
 })
