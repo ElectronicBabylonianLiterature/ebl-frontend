@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { testDelegation } from 'test-helpers/utils'
 import BibliographyRepository from './BibliographyRepository'
-import BibliographyEntry from './BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const apiClient = {
   fetchJson: jest.fn(),

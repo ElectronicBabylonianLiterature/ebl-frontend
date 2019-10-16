@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import { changeValueByLabel, clickNth } from 'test-helpers/utils'
 import ReferencesForm from './ReferencesForm'
-import Reference from 'bibliography/Reference'
+import Reference from 'bibliography/domain/Reference'
 
 const defaultReference = new Reference()
 

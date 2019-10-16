@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import CompactCitation from './CompactCitation'
 import FullCitation from './FullCitation'
-import Reference from './Reference'
+import Reference from 'bibliography/domain/Reference'
 
 import './ReferenceList.css'
 

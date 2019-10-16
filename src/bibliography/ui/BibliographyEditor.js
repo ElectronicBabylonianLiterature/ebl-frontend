@@ -2,8 +2,8 @@ import React from 'react'
 
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
-import BibliographyEntryFormController from 'bibliography/BibliographyEntryFormController'
-import { template } from 'bibliography/BibliographyEntry'
+import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFormController'
+import { template } from 'bibliography/domain/BibliographyEntry'
 
 function BibliographyEditor({
   data,

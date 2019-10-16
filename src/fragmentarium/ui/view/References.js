@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
-import ReferencesForm, { defaultReference } from 'bibliography/ReferencesForm'
+import ReferencesForm, {
+  defaultReference
+} from 'bibliography/ui/ReferencesForm'
 
 function References({
   searchBibliography,

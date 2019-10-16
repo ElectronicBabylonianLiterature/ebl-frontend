@@ -2,8 +2,8 @@
 import React from 'react'
 import ListForm from 'common/List'
 import ReferenceForm from './ReferenceForm'
-import Reference from './Reference'
-import BibliographyEntry from './BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export const defaultReference = () => new Reference()
 

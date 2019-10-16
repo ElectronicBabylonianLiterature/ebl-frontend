@@ -1,5 +1,5 @@
 // @flow
-import Reference from 'bibliography/Reference'
+import Reference from 'bibliography/domain/Reference'
 import type { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
 import type { Provenance } from './provenance'

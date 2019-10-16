@@ -7,7 +7,7 @@ import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
-import BibliographyEntry from './BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 import './BibliographyEntryForm.css'
 

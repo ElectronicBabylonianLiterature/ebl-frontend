@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import InlineMarkdown from 'common/InlineMarkdown'
-import Reference from './Reference'
+import Reference from 'bibliography/domain/Reference'
 
 export default function CompactCitation({
   reference

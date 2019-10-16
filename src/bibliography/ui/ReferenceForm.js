@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import ArrayInput from 'common/ArrayInput'
 import HelpTrigger from 'common/HelpTrigger'
-import BibliographySelect from 'bibliography/BibliographySelect'
+import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import NotesHelp from './NotesHelp'
 
 export default function ReferenceForm({ value, onChange, searchBibliography }) {

@@ -11,7 +11,7 @@ import Info from 'fragmentarium/ui/info/Info'
 import SessionContext from 'auth/SessionContext'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
-import { serializeReference } from 'bibliography/Reference'
+import { serializeReference } from 'bibliography/domain/Reference'
 import usePromiseEffect from 'common/usePromiseEffect'
 
 import './CuneiformFragment.css'

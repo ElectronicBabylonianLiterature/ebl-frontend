@@ -1,6 +1,6 @@
 import { factory, DefaultAdapter } from 'factory-girl'
-import Reference from 'bibliography/Reference'
-import BibliographyEntry from 'bibliography/BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 class ReferenceAdapter extends DefaultAdapter {
   build(Model, props) {

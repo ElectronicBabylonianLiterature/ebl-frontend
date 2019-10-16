@@ -5,7 +5,7 @@ import { extendMoment } from 'moment-range'
 import type { DateRange } from 'moment-range'
 import { produce, immerable } from 'immer'
 import type { Draft } from 'immer'
-import Reference from 'bibliography/Reference'
+import Reference from 'bibliography/domain/Reference'
 import { Text } from './text'
 import Museum from './museum'
 

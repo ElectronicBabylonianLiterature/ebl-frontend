@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 import Lemma from 'fragmentarium/domain/Lemma'
 import Lemmatization from 'fragmentarium/domain/Lemmatization'
 import { Folio, Fragment } from 'fragmentarium/domain/fragment'
-import Reference, { createReference } from 'bibliography/Reference'
+import Reference, { createReference } from 'bibliography/domain/Reference'
 import { Text } from 'fragmentarium/domain/text'
 import type { Token } from 'fragmentarium/domain/text'
 
