@@ -4,71 +4,9 @@ import { immerable, produce } from 'immer'
 import type { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
 import Promise from 'bluebird'
+import Citation from './Citation'
 
 export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
-
-export class Citation {
-  static +CONTAINER_CITATION_TYPES: $ReadOnlyArray<ReferenceType> = [
-    'COPY',
-    'EDITION'
-  ]
-  static +CONTAINER_CITATION_IDS: $ReadOnlyArray<string> = ['RN2720', 'RN2721']
-
-  static for(reference: Reference): Citation {
-    const useContainerCitation =
-      reference.hasShortContainerTitle &&
-      (Citation.CONTAINER_CITATION_TYPES.includes(reference.type) ||
-        Citation.CONTAINER_CITATION_IDS.includes(reference.id))
-
-    return useContainerCitation
-      ? new ContainerCitation(reference)
-      : new CompactCitation(reference)
-  }
-
-  +reference: Reference
-
-  constructor(reference: Reference) {
-    this.reference = reference
-  }
-
-  getMarkdown() {
-    return ''
-  }
-}
-
-export class ContainerCitation extends Citation {
-  getMarkdown() {
-    const reference = this.reference
-    return [
-      `*${reference.shortContainerTitle}*`,
-      ' ',
-      reference.collectionNumber ? `${reference.collectionNumber}, ` : '',
-      reference.pages,
-      ' ',
-      reference.hasLinesCited
-        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
-        : '',
-      `(${reference.typeAbbreviation})`
-    ].join('')
-  }
-}
-
-export class CompactCitation extends Citation {
-  getMarkdown() {
-    const reference = this.reference
-    const document = reference.document || new BibliographyEntry()
-    return [
-      document.author,
-      ', ',
-      document.year,
-      reference.pages ? `: ${reference.pages} ` : ' ',
-      reference.hasLinesCited
-        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
-        : '',
-      `(${reference.typeAbbreviation})`
-    ].join('')
-  }
-}
 
 export default class Reference {
   +type: ReferenceType
@@ -127,10 +65,6 @@ export default class Reference {
 
   get typeAbbreviation() {
     return this.type[0]
-  }
-
-  get compactCitation() {
-    return Citation.for(this).getMarkdown()
   }
 
   setType(type: ReferenceType) {

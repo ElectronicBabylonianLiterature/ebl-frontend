@@ -3,12 +3,8 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { buildReferenceWithContainerTitle } from 'test-helpers/bibliography-fixtures'
-import Reference, {
-  createReference,
-  Citation,
-  CompactCitation,
-  ContainerCitation
-} from './Reference'
+import Reference, { createReference } from './Reference'
+import Citation, { CompactCitation, ContainerCitation } from './Citation'
 import BibliographyEntry from './BibliographyEntry'
 
 test.each([
@@ -47,6 +43,17 @@ test('CompactCitation', async () => {
     } \\[l. ${reference.linesCited.join(', ')}\\] (${
       reference.typeAbbreviation
     })`
+  )
+})
+
+test('CompactCitation with empty properties', async () => {
+  const reference = await factory.build('reference', {
+    pages: '',
+    linesCited: []
+  })
+  const citation = new CompactCitation(reference)
+  expect(citation.getMarkdown()).toEqual(
+    `${reference.author}, ${reference.year} (${reference.typeAbbreviation})`
   )
 })
 
