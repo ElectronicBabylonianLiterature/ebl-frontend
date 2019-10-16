@@ -23,7 +23,7 @@ describe('Reference', () => {
 
   test.each([
     ['typeAbbreviation', 'type.0'],
-    ['author', 'document.primaryAuthor']
+    ['primaryAuthor', 'document.primaryAuthor']
   ])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )

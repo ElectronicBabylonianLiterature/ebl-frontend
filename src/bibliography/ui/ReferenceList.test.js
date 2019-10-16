@@ -8,7 +8,7 @@ it('List all references', async () => {
   const references = await factory.buildMany('reference', 2)
   const { container } = render(<ReferenceList references={references} />)
   for (let reference of references) {
-    expect(container).toHaveTextContent(reference.author)
+    expect(container).toHaveTextContent(reference.primaryAuthor)
   }
 })
 

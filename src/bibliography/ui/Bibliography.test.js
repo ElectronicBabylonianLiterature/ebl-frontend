@@ -34,10 +34,10 @@ describe('Searching bibliography', () => {
     const { getByText } = renderDictionary('/bibliography?query=Borger')
 
     await waitForElement(() =>
-      getByText(new RegExp(_.escapeRegExp(entries[0].author)))
+      getByText(new RegExp(_.escapeRegExp(entries[0].primaryAuthor)))
     )
     expect(
-      getByText(new RegExp(_.escapeRegExp(entries[1].author)))
+      getByText(new RegExp(_.escapeRegExp(entries[1].primaryAuthor)))
     ).toBeDefined()
   })
 

@@ -102,7 +102,7 @@ it('Renders all measures', () => {
 
 it('Renders all references', () => {
   for (let reference of fragment.references) {
-    expect(container).toHaveTextContent(reference.author)
+    expect(container).toHaveTextContent(reference.primaryAuthor)
   }
 })
 

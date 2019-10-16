@@ -48,5 +48,5 @@ async function fill() {
 }
 
 function expectedLabel(entry) {
-  return `${entry.author} ${entry.year} ${entry.title}`
+  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
 }
