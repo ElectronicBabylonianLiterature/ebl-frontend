@@ -1,7 +1,15 @@
+// @flow
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import Reference, { createReference, serializeReference } from './Reference'
+import { buildReferenceWithContainerTitle } from 'test-helpers/bibliography-fixtures'
+import Reference, {
+  createReference,
+  serializeReference,
+  Citation,
+  CompactCitation,
+  ContainerCitation
+} from './Reference'
 import BibliographyEntry from './BibliographyEntry'
 
 test('default reference', () => {
@@ -70,32 +78,45 @@ test('toHtml', async () => {
   expect(reference.toHtml()).toEqual(entry.toHtml())
 })
 
-function buildReferenceWithContainerTitle(type, cslData = {}) {
-  return factory
-    .build('cslDataWithContainerTitleShort', cslData)
-    .then(cslData => factory.build('bibliographyEntry', cslData))
-    .then(entry => factory.build('reference', { type: type, document: entry }))
-}
-
-test.each([
-  [factory.build('reference'), false],
-  [buildReferenceWithContainerTitle('PHOTO'), false],
-  [buildReferenceWithContainerTitle('COPY'), true],
-  [buildReferenceWithContainerTitle('EDITION'), true],
-  [buildReferenceWithContainerTitle('DISCUSSION'), false],
-  [buildReferenceWithContainerTitle('PHOTO', { id: 'RN2720' }), true],
-  [buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }), true],
-  [buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2720' }), true],
-  [buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }), true]
-])('useContainerCitation %#', async (factoryPromise, expected) => {
-  const reference = await factoryPromise
-  expect(reference.useContainerCitation).toEqual(expected)
-})
-
 test.each([
   [factory.build('reference', { linesCited: [] }), false],
   [factory.build('reference', { linesCited: ['1'] }), true]
 ])('hasLinesCited %#', async (factoryPromise, expected) => {
   const reference = await factoryPromise
   expect(reference.hasLinesCited).toEqual(expected)
+})
+
+test.each([
+  [factory.build('reference'), false],
+  [buildReferenceWithContainerTitle('PHOTO'), true]
+])('hasShortContainerTitle %#', async (factoryPromise, expected) => {
+  const reference = await factoryPromise
+  expect(reference.hasShortContainerTitle).toEqual(expected)
+})
+
+test.each([
+  [factory.build('reference'), CompactCitation],
+  [buildReferenceWithContainerTitle('PHOTO'), CompactCitation],
+  [buildReferenceWithContainerTitle('COPY'), ContainerCitation],
+  [buildReferenceWithContainerTitle('EDITION'), ContainerCitation],
+  [buildReferenceWithContainerTitle('DISCUSSION'), CompactCitation],
+  [
+    buildReferenceWithContainerTitle('PHOTO', { id: 'RN2720' }),
+    ContainerCitation
+  ],
+  [
+    buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }),
+    ContainerCitation
+  ],
+  [
+    buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2720' }),
+    ContainerCitation
+  ],
+  [
+    buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }),
+    ContainerCitation
+  ]
+])('Citation.for %#', async (factoryPromise, ExpectedType) => {
+  const reference = await factoryPromise
+  expect(Citation.for(reference)).toEqual(new ExpectedType(reference))
 })

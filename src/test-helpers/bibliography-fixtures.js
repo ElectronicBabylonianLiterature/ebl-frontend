@@ -78,3 +78,10 @@ factory.define('reference', Reference, async buildOptions => ({
   document: await factory.build('bibliographyEntry')
 }))
 factory.setAdapter(new ReferenceAdapter(), 'reference')
+
+export function buildReferenceWithContainerTitle(type, cslData = {}) {
+  return factory
+    .build('cslDataWithContainerTitleShort', cslData)
+    .then(cslData => factory.build('bibliographyEntry', cslData))
+    .then(entry => factory.build('reference', { type: type, document: entry }))
+}

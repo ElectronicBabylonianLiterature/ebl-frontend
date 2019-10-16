@@ -5,8 +5,70 @@ import type { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
 import Promise from 'bluebird'
 
-type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
-const defaultType = 'DISCUSSION'
+export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
+
+export class Citation {
+  static +CONTAINER_CITATION_TYPES: $ReadOnlyArray<ReferenceType> = [
+    'COPY',
+    'EDITION'
+  ]
+  static +CONTAINER_CITATION_IDS: $ReadOnlyArray<string> = ['RN2720', 'RN2721']
+
+  static for(reference: Reference): Citation {
+    const useContainerCitation =
+      reference.hasShortContainerTitle &&
+      (Citation.CONTAINER_CITATION_TYPES.includes(reference.type) ||
+        Citation.CONTAINER_CITATION_IDS.includes(reference.id))
+
+    return useContainerCitation
+      ? new ContainerCitation(reference)
+      : new CompactCitation(reference)
+  }
+
+  +reference: Reference
+
+  constructor(reference: Reference) {
+    this.reference = reference
+  }
+
+  getMarkdown() {
+    return ''
+  }
+}
+
+export class ContainerCitation extends Citation {
+  getMarkdown() {
+    const reference = this.reference
+    return [
+      `*${reference.shortContainerTitle}*`,
+      ' ',
+      reference.collectionNumber ? `${reference.collectionNumber}, ` : '',
+      reference.pages,
+      ' ',
+      reference.hasLinesCited
+        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
+        : '',
+      `(${reference.typeAbbreviation})`
+    ].join('')
+  }
+}
+
+export class CompactCitation extends Citation {
+  getMarkdown() {
+    const reference = this.reference
+    const document = reference.document || new BibliographyEntry()
+    return [
+      document.author,
+      ', ',
+      document.year,
+      reference.pages ? `: ${reference.pages} ` : ' ',
+      reference.hasLinesCited
+        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
+        : '',
+      `(${reference.typeAbbreviation})`
+    ].join('')
+  }
+}
 
 export default class Reference {
   +type: ReferenceType
@@ -15,8 +77,10 @@ export default class Reference {
   +linesCited: $ReadOnlyArray<string>
   +document: BibliographyEntry
 
+  static +DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
+
   constructor(
-    type: ReferenceType = defaultType,
+    type: ReferenceType = Reference.DEFAULT_TYPE,
     pages: string = '',
     notes: string = '',
     linesCited: ReadOnlyArray<string> = [],
@@ -27,6 +91,10 @@ export default class Reference {
     this.notes = notes
     this.linesCited = linesCited
     this.document = document_
+  }
+
+  get hasShortContainerTitle() {
+    return !_.isEmpty(this.shortContainerTitle)
   }
 
   get hasLinesCited() {
@@ -61,26 +129,8 @@ export default class Reference {
     return this.type[0]
   }
 
-  get useContainerCitation(): boolean {
-    const typesRequiringContainerCitation = ['COPY', 'EDITION']
-    const idsRequiringContainerCitation = ['RN2720', 'RN2721']
-    return (
-      !_.isEmpty(this.shortContainerTitle) &&
-      (typesRequiringContainerCitation.includes(this.type) ||
-        idsRequiringContainerCitation.includes(this.id))
-    )
-  }
-
   get compactCitation() {
-    const document = this.document || new BibliographyEntry()
-    return [
-      document.author,
-      ', ',
-      document.year,
-      this.pages ? `: ${this.pages} ` : ' ',
-      this.hasLinesCited ? `\\[l. ${this.linesCited.join(', ')}\\] ` : '',
-      `(${this.typeAbbreviation})`
-    ].join('')
+    return Citation.for(this).getMarkdown()
   }
 
   setType(type: ReferenceType) {
@@ -128,7 +178,7 @@ export function createReference(
     .then(
       entry =>
         new Reference(
-          data.type || defaultType,
+          data.type || Reference.DEFAULT_TYPE,
           data.pages || '',
           data.notes || '',
           data.linesCited || [],
