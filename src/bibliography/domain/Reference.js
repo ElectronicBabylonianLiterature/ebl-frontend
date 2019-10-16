@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { immerable, produce } from 'immer'
 import type { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
-import Promise from 'bluebird'
 
 export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 
@@ -105,31 +104,3 @@ export default class Reference {
   }
 }
 Reference[immerable] = true
-
-export function createReference(
-  data: { [string]: any },
-  bibliographyRepository: { find: string => Promise<BibliographyEntry> }
-): Promise<Reference> {
-  return bibliographyRepository
-    .find(data.id)
-    .then(
-      entry =>
-        new Reference(
-          data.type || Reference.DEFAULT_TYPE,
-          data.pages || '',
-          data.notes || '',
-          data.linesCited || [],
-          entry
-        )
-    )
-}
-
-export function serializeReference(reference: Reference) {
-  return {
-    id: reference.id,
-    type: reference.type,
-    pages: reference.pages,
-    notes: reference.notes,
-    linesCited: reference.linesCited
-  }
-}

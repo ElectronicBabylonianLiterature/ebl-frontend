@@ -1,5 +1,6 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference, { serializeReference } from 'bibliography/domain/Reference'
+import Reference from 'bibliography/domain/Reference'
+import serializeReference from 'bibliography/application/serializeReference'
 import {
   createText,
   createChapter,
