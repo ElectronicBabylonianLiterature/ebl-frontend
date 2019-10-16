@@ -4,7 +4,6 @@ import { immerable, produce } from 'immer'
 import type { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
 import Promise from 'bluebird'
-import Citation from './Citation'
 
 export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 

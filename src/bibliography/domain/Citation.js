@@ -1,7 +1,6 @@
 // @flow
-import _ from 'lodash'
 import BibliographyEntry from './BibliographyEntry'
-import type { RefererenceType } from './Reference'
+import type { ReferenceType } from './Reference'
 import Reference from './Reference'
 
 export default class Citation {
