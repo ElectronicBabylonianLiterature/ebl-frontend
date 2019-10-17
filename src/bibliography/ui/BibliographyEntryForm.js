@@ -11,6 +11,22 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 import './BibliographyEntryForm.css'
 
+function BibliographyHelp() {
+  return (
+    <p>
+      You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
+      <ExternalLink href="https://citation.js.org/api/tutorial-input_formats.html">
+        supported input format
+      </ExternalLink>
+      . BibTeX can be generated with{' '}
+      <ExternalLink href="https://truben.no/latex/bibtex/">
+        BibTeX Online Editor
+      </ExternalLink>
+      .
+    </p>
+  )
+}
+
 export default class BibliographyEntryForm extends Component {
   constructor(props) {
     super(props)
@@ -108,17 +124,7 @@ export default class BibliographyEntryForm extends Component {
       <>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId={'editor'}>
-            <p>
-              You can enter a DOI, CSL-JSON, BibTeX, or any{' '}
-              <ExternalLink href="https://citation.js.org/api/tutorial-input_formats.html">
-                supported input format
-              </ExternalLink>
-              . BibTeX can be generated with{' '}
-              <ExternalLink href="https://truben.no/latex/bibtex/">
-                BibTeX Online Editor
-              </ExternalLink>
-              .
-            </p>
+            <BibliographyHelp />
             <InputGroup>
               <Form.Control
                 aria-label="Data"
