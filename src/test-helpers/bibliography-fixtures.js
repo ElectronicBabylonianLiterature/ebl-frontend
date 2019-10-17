@@ -85,3 +85,13 @@ export function buildReferenceWithContainerTitle(type, cslData = {}) {
     .then(cslData => factory.build('bibliographyEntry', cslData))
     .then(entry => factory.build('reference', { type: type, document: entry }))
 }
+
+export async function buildReferenceWithManyAuthors() {
+  const authors = await factory.buildMany('author', 4)
+  return factory
+    .build('cslData', { author: authors })
+    .then(cslData => factory.build('bibliographyEntry', cslData))
+    .then(entry =>
+      factory.build('reference', { type: 'COPY', document: entry })
+    )
+}

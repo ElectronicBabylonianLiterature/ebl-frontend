@@ -2,7 +2,10 @@
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { buildReferenceWithContainerTitle } from 'test-helpers/bibliography-fixtures'
+import {
+  buildReferenceWithContainerTitle,
+  buildReferenceWithManyAuthors
+} from 'test-helpers/bibliography-fixtures'
 import Reference from './Reference'
 import createReference from 'bibliography/application/createReference'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
@@ -62,15 +65,10 @@ test('CompactCitation with empty properties', async () => {
 
 test('CompactCitation with more than 3 authors', async () => {
   const authors = await factory.buildMany('author', 4)
-  const reference = await factory
-    .build('cslData', { author: authors })
-    .then(cslData => factory.build('bibliographyEntry', cslData))
-    .then(entry =>
-      factory.build('reference', { type: 'COPY', document: entry })
-    )
+  const reference = await buildReferenceWithManyAuthors()
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
-    `${authors[0].family} *et al.*, ${reference.year}: ${
+    `${reference.primaryAuthor} *et al.*, ${reference.year}: ${
       reference.pages
     } \\[l. ${reference.linesCited.join(', ')}\\] (${
       reference.typeAbbreviation
@@ -79,16 +77,9 @@ test('CompactCitation with more than 3 authors', async () => {
 })
 
 test('ContainerCitation', async () => {
-  const reference = await factory
-    .build('cslDataWithContainerTitleShort')
-    .then(cslData => factory.build('bibliographyEntry', cslData))
-    .then(entry =>
-      factory.build('reference', {
-        type: 'COPY',
-        document: entry,
-        linesCited: []
-      })
-    )
+  const reference = (await buildReferenceWithContainerTitle(
+    'COPY'
+  )).setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${reference.pages} (${reference.typeAbbreviation})`
@@ -97,18 +88,9 @@ test('ContainerCitation', async () => {
 
 test('ContainerCitation with collection number', async () => {
   const collectionNumber = '76'
-  const reference = await factory
-    .build('cslDataWithContainerTitleShort', {
-      'collection-number': collectionNumber
-    })
-    .then(cslData => factory.build('bibliographyEntry', cslData))
-    .then(entry =>
-      factory.build('reference', {
-        type: 'COPY',
-        document: entry,
-        linesCited: []
-      })
-    )
+  const reference = (await buildReferenceWithContainerTitle('COPY', {
+    'collection-number': collectionNumber
+  })).setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
@@ -118,18 +100,9 @@ test('ContainerCitation with collection number', async () => {
 test('ContainerCitation with lines cites and collection number', async () => {
   const collectionNumber = '76'
   const linesCited = ['2.', '4.']
-  const reference = await factory
-    .build('cslDataWithContainerTitleShort', {
-      'collection-number': collectionNumber
-    })
-    .then(cslData => factory.build('bibliographyEntry', cslData))
-    .then(entry =>
-      factory.build('reference', {
-        type: 'COPY',
-        document: entry,
-        linesCited: linesCited
-      })
-    )
+  const reference = (await buildReferenceWithContainerTitle('COPY', {
+    'collection-number': collectionNumber
+  })).setLinesCited(linesCited)
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${
