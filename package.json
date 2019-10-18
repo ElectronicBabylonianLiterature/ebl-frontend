@@ -9,6 +9,16 @@
       "prettier --write",
       "eslint --fix",
       "git add"
+    ],
+    "src/**/*.ts": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.tsx": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
     ]
   },
   "scripts": {
