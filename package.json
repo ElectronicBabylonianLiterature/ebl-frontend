@@ -70,7 +70,8 @@
     "jest-fetch-mock": "^2.1.0",
     "lighthouse": "^5.1.0",
     "lint-staged": "^9.2.5",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "ts-migration": "quizlet/ts-migration.git"
   },
   "resolutions": {
     "@citation-js/plugin-csl": "0.4.0-rc.4"
