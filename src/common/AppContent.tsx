@@ -24,3 +24,8 @@ export default function AppContent({ crumbs, title, children, actions, wide }) {
     </section>
   )
 }
+AppContent.defaultProps = {
+  title: null,
+  actions: null,
+  wide: false
+}

@@ -4,7 +4,8 @@ import _ from 'lodash'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 
-class BibliographySearch extends Component {
+type Props = { query: string | null | undefined, history, location, match}
+class BibliographySearch extends Component<Props, { query: string }> {
   state = {
     query: this.props.query || ''
   }
@@ -47,4 +48,4 @@ class BibliographySearch extends Component {
   }
 }
 
-export default withRouter(BibliographySearch)
+export default withRouter<Props, any>(BibliographySearch)

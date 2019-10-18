@@ -26,7 +26,7 @@ export default function ManuscriptForm({
     )
   const handleMapChange = (
     property: string,
-    values: ReadOnlyMap<string, any>
+    values: ReadonlyMap<string, any>
   ) => event =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
@@ -149,7 +149,7 @@ export default function ManuscriptForm({
       <ReferencesForm
         value={manuscript.references}
         label="References"
-        onChange={value =>
+        onChange={(value: any) =>
           onChange(
             produce(manuscript, (draft: Draft<Manuscript>) => {
               draft.references = value

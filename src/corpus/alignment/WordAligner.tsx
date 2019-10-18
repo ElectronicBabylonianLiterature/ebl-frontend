@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, SyntheticEvent } from 'react'
 import { Popover, Overlay, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
@@ -10,12 +10,12 @@ import { AtfToken, ReconstructionToken } from 'corpus/text'
 
 interface Props {
   readonly token: AtfToken
-  readonly reconstructionTokens: ReadOnlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
   readonly onChange: (token: AtfToken) => void
 }
 
 class AlignmentForm extends Component<Props> {
-  handleAlignmentChange = (event: SyntheticEvent<HTMLSelectElement>) => {
+  handleAlignmentChange = (event: any) => {
     this.props.onChange(
       produce(this.props.token, (draft: Draft<AtfToken>) => {
         const alignmentIndex = event.target.value
@@ -33,7 +33,7 @@ class AlignmentForm extends Component<Props> {
           <Form.Label>Ideal word</Form.Label>
           <Form.Control
             as="select"
-            value={this.props.token.alignment}
+            value={String(this.props.token.alignment)}
             onChange={this.handleAlignmentChange}
           >
             <option value="">--</option>
@@ -53,7 +53,7 @@ class AlignmentForm extends Component<Props> {
 }
 
 interface State {
-  readonly target?: EventTarget
+  readonly target?: any
   readonly show: boolean
 }
 
@@ -68,7 +68,7 @@ export default class WordAligner extends Component<Props, State> {
     }
   }
 
-  handleClick = (event: SyntheticEvent<>) => {
+  handleClick = (event: SyntheticEvent) => {
     this.setState({
       target: event.target,
       show: !this.state.show

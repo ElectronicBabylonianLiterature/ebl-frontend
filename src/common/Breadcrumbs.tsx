@@ -21,11 +21,11 @@ function SectionCrumb({ section }) {
   )
 }
 
-export default function Breadcrumbs({ crumbs }) {
+export default function Breadcrumbs({ crumbs }: { crumbs: ReadonlyArray<string> }) {
   const initial = ['eBL', ..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
-    <Breadcrumb separator="/">
+    <Breadcrumb>
       {initial.map((section, index) => (
         <SectionCrumb key={index} section={section} />
       ))}

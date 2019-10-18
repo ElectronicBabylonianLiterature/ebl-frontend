@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
 
-class User extends Component {
+class User extends Component<{ auth: any }> {
   logout = () => {
     this.props.auth.logout()
   }

@@ -81,7 +81,7 @@ export function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
   return (
     <ListForm
       noun="manuscript"
-      defaultValue={createManuscriptLine()}
+      defaultValue={createManuscriptLine({})}
       value={lines}
       onChange={onChange}
     >

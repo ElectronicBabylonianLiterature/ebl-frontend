@@ -11,7 +11,7 @@ export type ManuscriptType = {
   readonly name: string
   readonly abbreviation: string
 }
-export const types: ReadOnlyMap<string, ManuscriptType> = new Map([
+export const types: ReadonlyMap<string, ManuscriptType> = new Map([
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
@@ -27,7 +27,7 @@ export class Manuscript {
   periodModifier: PeriodModifier = periodModifiers.get('None')
   period: Period = periods.get('Neo-Assyrian')
   provenance: Provenance = provenances.get('Nineveh')
-  type: ManuscriptType = types.get('Library')
+  type: ManuscriptType = types.get('Library') || { name: 'Library', abbreviation: '' }
   notes: string = ''
   references: ReadonlyArray<Reference> = []
 
@@ -42,7 +42,7 @@ export class Manuscript {
 }
 Manuscript[immerable] = true
 
-export function createManuscript(data: $Shape<Manuscript>): Manuscript {
+export function createManuscript(data: Partial<Manuscript>): Manuscript {
   return produce(new Manuscript(), (draft: Draft<Manuscript>) => {
     _.assign(draft, data)
   })
@@ -66,9 +66,9 @@ export type ManuscriptLine = {
   readonly atfTokens: ReadonlyArray<AtfToken>
 }
 export const createManuscriptLine: (
-  x0: $Shape<ManuscriptLine>
+  x0: Partial<ManuscriptLine>
 ) => ManuscriptLine = produce(
-  (draft: $Shape<ManuscriptLine>): ManuscriptLine => ({
+  (draft: Partial<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
     labels: [],
     number: '',
@@ -87,8 +87,8 @@ export type Line = {
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
-export const createLine: (x0: $Shape<Line>) => Line = produce(
-  (draft: $Shape<Line>): Line => ({
+export const createLine: (x0: Partial<Line>) => Line = produce(
+  (draft: Draft<Line>): Line => ({
     number: '',
     reconstruction: '',
     manuscripts: [],

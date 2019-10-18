@@ -37,7 +37,7 @@ function Text({ text }) {
 }
 
 function Texts({ texts }) {
-  return [
+  return <>{[
     '',
     'I. Narrative Poetry',
     'II. Monologue and dialogue literature',
@@ -53,7 +53,7 @@ function Texts({ texts }) {
           .value()}
       </Container>
     </section>
-  ))
+  ))}</>
 }
 
 const TextsWithData = withData(

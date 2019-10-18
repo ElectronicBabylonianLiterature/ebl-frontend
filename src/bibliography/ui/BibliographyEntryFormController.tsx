@@ -6,8 +6,10 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
 
-export default class BibliographyEntryFormController extends Component {
+export default class BibliographyEntryFormController extends Component<{ entry, onSubmit }, { error: Error | null, saving: boolean}> {
   static contextType = SessionContext
+
+  private updatePromise: Promise<any>
 
   constructor(props) {
     super(props)

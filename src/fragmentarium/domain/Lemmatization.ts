@@ -3,12 +3,12 @@ import { produce, immerable } from 'immer'
 import { Draft } from 'immer'
 import Lemma from './Lemma'
 
-export type UniqueLemma = ReadOnlyArray<Lemma>
+export type UniqueLemma = ReadonlyArray<Lemma>
 
 export class LemmatizationToken {
   readonly value: string
   readonly uniqueLemma: UniqueLemma | null
-  readonly suggestions: ReadOnlyArray<UniqueLemma> | null
+  readonly suggestions: ReadonlyArray<UniqueLemma> | null
   readonly lemmatizable: boolean
   readonly suggested: boolean
 
@@ -16,7 +16,7 @@ export class LemmatizationToken {
     value: string,
     lemmatizable: boolean,
     uniqueLemma: UniqueLemma | null = null,
-    suggestions: ReadOnlyArray<UniqueLemma> | null= null,
+    suggestions: ReadonlyArray<UniqueLemma> | null= null,
     suggested: boolean = false
   ) {
     this.value = value
@@ -68,12 +68,12 @@ export class LemmatizationToken {
 LemmatizationToken[immerable] = true
 
 export default class Lemmatization {
-  readonly lines: ReadOnlyArray<string>
-  readonly tokens: ReadOnlyArray<ReadOnlyArray<LemmatizationToken>>
+  readonly lines: ReadonlyArray<string>
+  readonly tokens: ReadonlyArray<ReadonlyArray<LemmatizationToken>>
 
   constructor(
-    lines: ReadOnlyArray<string>,
-    tokens: ReadOnlyArray<ReadOnlyArray<LemmatizationToken>>
+    lines: ReadonlyArray<string>,
+    tokens: ReadonlyArray<ReadonlyArray<LemmatizationToken>>
   ) {
     this.lines = lines
     this.tokens = tokens
@@ -106,13 +106,13 @@ export default class Lemmatization {
     })
   }
 
-  toDto(): ReadOnlyArray<ReadOnlyArray<{ [string]: mixed }>> {
+  toDto(): ReadonlyArray<ReadonlyArray<{ [string]: mixed }>> {
     return this.tokens.map(row => row.map(token => token.toDto()))
   }
 
   _mapTokens(
     iteratee: (token: LemmatizationToken) => LemmatizationToken
-  ): ReadOnlyArray<ReadOnlyArray<LemmatizationToken>> {
+  ): ReadonlyArray<ReadonlyArray<LemmatizationToken>> {
     return this.tokens.map(row => row.map(iteratee))
   }
 }

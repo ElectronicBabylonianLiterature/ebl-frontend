@@ -25,7 +25,7 @@ export interface FragmentRepository {
   find(number: string): Promise<Fragment>;
   updateTransliteration(number: string, transliteration: string, notes: string): Promise<Fragment>;
   updateLemmatization(number: string, lemmatization: Lemmatization): Promise<Fragment>;
-  updateReferences(number: string, references: ReadOnlyArray<Reference>): Promise<Fragment>;
+  updateReferences(number: string, references: ReadonlyArray<Reference>): Promise<Fragment>;
   folioPager(folio: Folio, fragmentNumber: string): Promise<any>;
   findLemmas(lemma: string): Promise<any>;
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>;
@@ -79,7 +79,7 @@ class FragmentService {
     return this.fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
-  updateReferences(number: string, references: ReadOnlyArray<Reference>) {
+  updateReferences(number: string, references: ReadonlyArray<Reference>) {
     return this.fragmentRepository.updateReferences(number, references)
   }
 
@@ -133,7 +133,7 @@ class FragmentService {
   }
 
   _fetchLemmas(text: Text) {
-    return Promise.all<ReadOnlyArray<Lemma>>(
+    return Promise.all<ReadonlyArray<Lemma>>(
       mapText(
         text,
         line => line.map(token => token.uniqueLemma || []),
@@ -145,12 +145,12 @@ class FragmentService {
 
   _fetchSuggestions(
     text: Text
-  ): Promise<ReadOnlyArray<[string, ReadOnlyArray<Lemma>]>> {
-    return Promise.mapSeries<string, [string, ReadOnlyArray<Lemma>], any>(
+  ): Promise<ReadonlyArray<[string, ReadonlyArray<Lemma>]>> {
+    return Promise.mapSeries<string, [string, ReadonlyArray<Lemma>], any>(
       mapLines(text, line =>
         line.filter(token => token.lemmatizable).map(token => token.value)
       ),
-      (value: string): Promise<[string, ReadOnlyArray<Lemma>]> =>
+      (value: string): Promise<[string, ReadonlyArray<Lemma>]> =>
         this.fragmentRepository
           .findLemmas(value)
           .then(lemmas => [
@@ -162,7 +162,7 @@ class FragmentService {
     )
   }
 
-  hydrateReferences(references: ReadOnlyArray<any>) {
+  hydrateReferences(references: ReadonlyArray<any>) {
     const hydrate: (reference: any) => Promise<Reference> = reference =>
       createReference(reference, this.bibliographyService)
     return Promise.all<Reference>(references.map(hydrate))
@@ -171,16 +171,16 @@ class FragmentService {
 
 function mapText<T, U>(
   text: Text,
-  mapLine: (tokens: ReadOnlyArray<Token>) => T | null,
+  mapLine: (tokens: ReadonlyArray<Token>) => T | null,
   mapToken: (token: T) => U
-): ReadOnlyArray<U> {
+): ReadonlyArray<U> {
   return mapLines(text, mapLine).map(mapToken)
 }
 
 function mapLines<T>(
   text: Text,
-  mapLine: (tokens: ReadOnlyArray<Token>) => ReadOnlyArray<T | null> | T | null
-): ReadOnlyArray<T> {
+  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T | null> | T | null
+): ReadonlyArray<T> {
   return _(text.lines)
     .flatMapDeep(({ content }) => mapLine(content))
     .reject(_.isNil)

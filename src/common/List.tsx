@@ -9,11 +9,11 @@ import { produce } from 'immer'
 function SizeBadge({ collection }) {
   const size = collection.length
   return (
-    size > 0 && (
+    size > 0 ? (
       <Badge variant="light" pill>
         {size}
       </Badge>
-    )
+    ) : null
   )
 }
 
@@ -78,11 +78,11 @@ function CardListView({
   onAdd,
   onDelete
 }) {
-  const fullLabel = label && (
+  const fullLabel = !_.isNil(label) ? (
     <>
       {label} <SizeBadge collection={elements} />
     </>
-  )
+  ) : null
   return (
     <CollapsibleCard label={fullLabel} collapsed={collapsed}>
       <ListGroup as={ordered ? 'ol' : 'ul'} variant="flush">

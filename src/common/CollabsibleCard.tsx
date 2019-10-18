@@ -16,7 +16,9 @@ function CollapseIndicator({ open }) {
   )
 }
 
-export class CollapsibleCard extends Component {
+export class CollapsibleCard extends Component<{label, children, collapsed: boolean}, { open: boolean }> {
+  private readonly collapseId: string
+
   constructor(props) {
     super(props)
     this.state = {

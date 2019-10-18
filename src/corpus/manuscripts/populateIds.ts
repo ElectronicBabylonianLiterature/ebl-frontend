@@ -5,13 +5,13 @@ import { Draft } from 'immer'
 
 function calculateNextId(manuscripts) {
   const existingIds = manuscripts.map(manuscript => manuscript.id)
-  const maxId = _.max(existingIds) || 0
+  const maxId: number = _.max(existingIds) || 0
   return maxId + 1
 }
 
-export default function populateIds(manuscripts: Array<Manuscript>) {
+export default function populateIds(manuscripts: Manuscript[]) {
   const firstId = calculateNextId(manuscripts)
-  return produce(manuscripts, (draft: Draft<Manuscript>) => {
+  return produce(manuscripts, (draft: Draft<Manuscript>[]) => {
     draft
       .filter(manuscript => _.isNil(manuscript.id))
       .forEach((manuscript, index) => {
@@ -19,3 +19,4 @@ export default function populateIds(manuscripts: Array<Manuscript>) {
       })
   })
 }
+  

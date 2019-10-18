@@ -1,11 +1,11 @@
 import Reference, { ReferenceType } from './Reference'
 
 export default class Citation {
-  static readonly CONTAINER_CITATION_TYPES: ReadOnlyArray<ReferenceType> = [
+  static readonly CONTAINER_CITATION_TYPES: ReadonlyArray<ReferenceType> = [
     'COPY',
     'EDITION'
   ]
-  static readonly CONTAINER_CITATION_IDS: ReadOnlyArray<string> = ['RN2720', 'RN2721']
+  static readonly CONTAINER_CITATION_IDS: ReadonlyArray<string> = ['RN2720', 'RN2721']
 
   static for(reference: Reference): Citation {
     const useContainerCitation =

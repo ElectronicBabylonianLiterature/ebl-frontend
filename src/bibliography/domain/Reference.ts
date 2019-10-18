@@ -9,7 +9,7 @@ export default class Reference {
   readonly type: ReferenceType
   readonly pages: string
   readonly notes: string
-  readonly linesCited: ReadOnlyArray<string>
+  readonly linesCited: ReadonlyArray<string>
   readonly document: BibliographyEntry
 
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
@@ -18,8 +18,8 @@ export default class Reference {
     type: ReferenceType = Reference.DEFAULT_TYPE,
     pages: string = '',
     notes: string = '',
-    linesCited: ReadOnlyArray<string> = [],
-    document_: BibliographyEntry = new BibliographyEntry()
+    linesCited: ReadonlyArray<string> = [],
+    document_: BibliographyEntry = new BibliographyEntry({})
   ) {
     this.type = type
     this.pages = pages

@@ -19,6 +19,11 @@ function createSession(authResult) {
 }
 
 class Auth {
+  private readonly config
+  private readonly auth0
+  private readonly sessionStore
+  private readonly errorReporter
+
   constructor(sessionStore, errorReporter, config) {
     this.config = config
     this.auth0 = new auth0.WebAuth({

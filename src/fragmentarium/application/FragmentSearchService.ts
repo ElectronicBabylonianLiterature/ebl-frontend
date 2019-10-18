@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
-export type FragmentInfosPromise = Promise<ReadOnlyArray<FragmentInfo>>
+export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
 
 export interface FragmentInfoRepository {

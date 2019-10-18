@@ -166,18 +166,18 @@ export class Fragment {
     bmIdNumber: string,
     accession: string,
     publication: string,
-    joins: ReadOnlyArray<string>,
+    joins: ReadonlyArray<string>,
     description: string,
     measures: Measures,
     collection: string,
     script: string,
-    folios: ReadOnlyArray<Folio>,
-    record: ReadOnlyArray<RecordEntry>,
+    folios: ReadonlyArray<Folio>,
+    record: ReadonlyArray<RecordEntry>,
     text: Text,
     notes: string,
     museum: Museum,
-    references: ReadOnlyArray<any>,
-    uncuratedReferences?: ReadOnlyArray<UncuratedReference> | null,
+    references: ReadonlyArray<any>,
+    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null,
     atf: string,
     hasPhoto: boolean
   }) {
@@ -206,7 +206,7 @@ export class Fragment {
     return !_.isNil(this.uncuratedReferences)
   }
 
-  get uniqueRecord(): ReadOnlyArray<RecordEntry> {
+  get uniqueRecord(): ReadonlyArray<RecordEntry> {
     const reducer = (filteredRecord, recordEntry) => {
       const keepRecord =
         _.isEmpty(filteredRecord) ||
@@ -219,7 +219,7 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: ReadOnlyArray<Reference>): Fragment {
+  setReferences(references: ReadonlyArray<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })

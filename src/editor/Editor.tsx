@@ -58,5 +58,5 @@ function Editor({ name, value, onChange, disabled, error }) {
     />
   )
 }
-
+Editor.defaultProps = { error: null }
 export default Editor

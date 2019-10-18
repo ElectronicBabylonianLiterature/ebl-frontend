@@ -71,8 +71,8 @@ export default function ChapterAlignment({
   disabled
 }: {
   chapter: Chapter
-  onChange: (x0: Chapter) => void
-  onSave: (x0: void) => void
+  onChange: (x0: Chapter) => any
+  onSave: (x0: any) => any
   disabled: boolean
 }) {
   const handleChange = lineIndex => manuscriptIndex => manuscript =>

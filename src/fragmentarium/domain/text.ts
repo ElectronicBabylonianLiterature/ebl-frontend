@@ -7,7 +7,7 @@ import { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
 interface Word {
   readonly type: 'Word'
   readonly value: string
-  readonly uniqueLemma: ReadOnlyArray<string>
+  readonly uniqueLemma: ReadonlyArray<string>
   readonly normalized: boolean
   readonly language: string
   readonly lemmatizable: boolean
@@ -18,7 +18,7 @@ interface Word {
 interface LoneDeterminative {
   readonly type: 'LoneDeterminative'
   readonly value: string
-  readonly uniqueLemma: ReadOnlyArray<string>
+  readonly uniqueLemma: ReadonlyArray<string>
   readonly normalized: boolean
   readonly language: string
   readonly lemmatizable: boolean
@@ -56,19 +56,19 @@ export type Token =
 export interface Line {
   readonly type: 'ControlLine' | 'EmptyLine' | 'TextLine'
   readonly prefix: string
-  readonly content: ReadOnlyArray<Token>
+  readonly content: ReadonlyArray<Token>
 }
 
 export class Text {
-  readonly lines: ReadOnlyArray<Line>
+  readonly lines: ReadonlyArray<Line>
 
-  constructor({ lines }: { lines: ReadOnlyArray<Line> }) {
+  constructor({ lines }: { lines: ReadonlyArray<Line> }) {
     this.lines = lines
   }
 
   createLemmatization(
     lemmas: { [key: string]: UniqueLemma },
-    suggestions: { [key: string]: ReadOnlyArray<UniqueLemma> }
+    suggestions: { [key: string]: ReadonlyArray<UniqueLemma> }
   ): Lemmatization {
     return new Lemmatization(
       this.lines.map(line => line.prefix),

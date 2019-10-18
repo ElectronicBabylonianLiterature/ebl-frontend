@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, SyntheticEvent, ChangeEvent } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
 import _ from 'lodash'
@@ -27,7 +27,17 @@ function BibliographyHelp() {
   )
 }
 
-export default class BibliographyEntryForm extends Component {
+type State = {
+  citation: string,
+  value: any,
+  cslData: ReadonlyArray<any> | null,
+  loading: boolean,
+  isInvalid: boolean,
+}
+export default class BibliographyEntryForm extends Component<{ value, disabled, onSubmit }, State> {
+  private promise: Promise<any>
+  private doLoad: (value: any) => Promise<any>
+
   constructor(props) {
     super(props)
     this.state = props.value
@@ -68,14 +78,14 @@ export default class BibliographyEntryForm extends Component {
     return !this.isValid || this.props.disabled
   }
 
-  handleChange = ({ target: { value } }) => {
+  handleChange = (event: any) => {
     this.setState({
       ...this.state,
-      value: value,
+      value: event.target.value,
       loading: true,
       isInvalid: false
     })
-    this.promise = this.doLoad(value) || this.promise
+    this.promise = this.doLoad(event.target.value) || this.promise
   }
 
   load = value => {
@@ -114,7 +124,7 @@ export default class BibliographyEntryForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    const entry = new BibliographyEntry(this.state.cslData[0])
+    const entry = new BibliographyEntry(this.state.cslData && this.state.cslData[0])
     this.props.onSubmit(entry)
   }
 

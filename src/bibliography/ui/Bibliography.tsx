@@ -35,7 +35,7 @@ export default function Bibliography({ bibliographyService, location }) {
           {session.isAllowedToReadBibliography() ? (
             <>
               <div className="Bibliography__search">
-                <BibliographySearchForm query={query} />
+                <BibliographySearchForm query={query && String(query)} />
               </div>
               <BibliographySearch
                 query={query}
