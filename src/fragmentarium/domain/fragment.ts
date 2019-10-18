@@ -21,7 +21,7 @@ export interface FragmentInfo {
 }
 
 interface FolioType { readonly name: string, readonly hasImage: boolean }
-const folioTypes = {
+const folioTypes: { readonly [key: string]: FolioType } = {
   WGL: { name: 'Lambert', hasImage: true },
   FWG: { name: 'Geers', hasImage: true },
   EL: { name: 'Leichty', hasImage: true },
