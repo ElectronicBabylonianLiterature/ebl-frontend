@@ -104,14 +104,14 @@ const toLinesDto = lines => ({
 })
 
 export default class TextService {
-  #apiClient
+  private readonly apiClient
 
   constructor(apiClient) {
-    this.#apiClient = apiClient
+    this.apiClient = apiClient
   }
 
   find(category, index) {
-    return this.#apiClient
+    return this.apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
         true
@@ -120,13 +120,13 @@ export default class TextService {
   }
 
   list() {
-    return this.#apiClient
+    return this.apiClient
       .fetchJson('/texts', false)
       .then(texts => texts.map(fromDto))
   }
 
   updateAlignment(category, index, chapterIndex, lines) {
-    return this.#apiClient
+    return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
@@ -137,7 +137,7 @@ export default class TextService {
   }
 
   updateManuscripts(category, index, chapterIndex, manuscripts) {
-    return this.#apiClient
+    return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
@@ -148,7 +148,7 @@ export default class TextService {
   }
 
   updateLines(category, index, chapterIndex, lines) {
-    return this.#apiClient
+    return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
@@ -14,6 +13,7 @@ import {
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { CdliInfo } from 'fragmentarium/application/FragmentService'
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'
@@ -22,17 +22,17 @@ const CDLI_LINE_ART = 'cdli_line_art'
 const CDLI_DETAIL_LINE_ART = 'cdli_detail_line_art'
 
 class TabController {
-  +fragment: Fragment
-  +cdliInfo: CdliInfo
-  +tab: ?string
-  +activeFolio: ?Folio
-  +history
+  readonly fragment: Fragment
+  readonly cdliInfo: CdliInfo
+  readonly tab: string | null
+  readonly activeFolio: Folio | null
+  readonly history
 
   constructor(
     fragment: Fragment,
     cdliInfo: CdliInfo,
-    tab: ?string,
-    activeFolio: ?Folio,
+    tab: string | null,
+    activeFolio: Folio | null,
     history
   ) {
     this.fragment = fragment

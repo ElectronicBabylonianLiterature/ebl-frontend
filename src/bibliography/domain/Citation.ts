@@ -1,13 +1,11 @@
-// @flow
-import type { ReferenceType } from './Reference'
-import Reference from './Reference'
+import Reference, { ReferenceType } from './Reference'
 
 export default class Citation {
-  static +CONTAINER_CITATION_TYPES: $ReadOnlyArray<ReferenceType> = [
+  static readonly CONTAINER_CITATION_TYPES: ReadOnlyArray<ReferenceType> = [
     'COPY',
     'EDITION'
   ]
-  static +CONTAINER_CITATION_IDS: $ReadOnlyArray<string> = ['RN2720', 'RN2721']
+  static readonly CONTAINER_CITATION_IDS: ReadOnlyArray<string> = ['RN2720', 'RN2721']
 
   static for(reference: Reference): Citation {
     const useContainerCitation =
@@ -20,7 +18,7 @@ export default class Citation {
       : new CompactCitation(reference)
   }
 
-  +reference: Reference
+  readonly reference: Reference
 
   constructor(reference: Reference) {
     this.reference = reference

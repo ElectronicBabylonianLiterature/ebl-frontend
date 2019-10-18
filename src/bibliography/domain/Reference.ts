@@ -1,19 +1,18 @@
-// @flow
 import _ from 'lodash'
 import { immerable, produce } from 'immer'
-import type { Draft } from 'immer'
+import { Draft } from 'immer'
 import BibliographyEntry from './BibliographyEntry'
 
 export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
 
 export default class Reference {
-  +type: ReferenceType
-  +pages: string
-  +notes: string
-  +linesCited: $ReadOnlyArray<string>
-  +document: BibliographyEntry
+  readonly type: ReferenceType
+  readonly pages: string
+  readonly notes: string
+  readonly linesCited: ReadOnlyArray<string>
+  readonly document: BibliographyEntry
 
-  static +DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
+  static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
   constructor(
     type: ReferenceType = Reference.DEFAULT_TYPE,

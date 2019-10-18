@@ -97,7 +97,6 @@ testDelegation(fragmentService, testData)
 
 describe.each(['searchLemma'])('%s', method => {
   test('Resolves to empty array on zero length query', async () => {
-    // $FlowFixMe
     await expect(fragmentService[method]('')).resolves.toEqual([])
   })
 })

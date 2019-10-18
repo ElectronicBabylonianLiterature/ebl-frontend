@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react'
 import { Popover, Overlay, Form } from 'react-bootstrap'
 import _ from 'lodash'
@@ -6,20 +5,20 @@ import Word from './Word'
 
 import './WordAligner.css'
 import { produce } from 'immer'
-import type { Draft } from 'immer'
-import type { AtfToken, ReconstructionToken } from 'corpus/text'
+import { Draft } from 'immer'
+import { AtfToken, ReconstructionToken } from 'corpus/text'
 
-type Props = {
-  +token: AtfToken,
-  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
-  +onChange: AtfToken => void
+interface Props {
+  readonly token: AtfToken
+  readonly reconstructionTokens: ReadOnlyArray<ReconstructionToken>
+  readonly onChange: (token: AtfToken) => void
 }
 
 class AlignmentForm extends Component<Props> {
   handleAlignmentChange = (event: SyntheticEvent<HTMLSelectElement>) => {
     this.props.onChange(
       produce(this.props.token, (draft: Draft<AtfToken>) => {
-        const alignmentIndex = (event.target: any).value
+        const alignmentIndex = event.target.value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
@@ -53,13 +52,13 @@ class AlignmentForm extends Component<Props> {
   }
 }
 
-type State = {
-  +target?: EventTarget,
-  +show: boolean
+interface State {
+  readonly target?: EventTarget
+  readonly show: boolean
 }
 
 export default class WordAligner extends Component<Props, State> {
-  +popOverId: string
+  readonly popOverId: string
 
   constructor(props: Props) {
     super(props)

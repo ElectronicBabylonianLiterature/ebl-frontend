@@ -1,11 +1,10 @@
-// @flow
 import Promise from 'bluebird'
 import queryString from 'query-string'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
-import type { FragmentRepository } from 'fragmentarium/application/FragmentService'
-import type {
+import { FragmentRepository } from 'fragmentarium/application/FragmentService'
+import {
   FragmentInfosPromise,
   FragmentInfoRepository
 } from 'fragmentarium/application/FragmentSearchService'
@@ -35,7 +34,7 @@ function createFragmentPath(number, ...subResources) {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository {
-  +apiClient
+  readonly apiClient
 
   constructor(apiClient: {
     fetchJson: (string, boolean) => Promise<any>,

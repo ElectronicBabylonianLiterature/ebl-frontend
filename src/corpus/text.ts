@@ -11,7 +11,7 @@ export type ManuscriptType = {
   readonly name: string
   readonly abbreviation: string
 }
-export const types: $ReadOnlyMap<string, ManuscriptType> = new Map([
+export const types: ReadOnlyMap<string, ManuscriptType> = new Map([
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
@@ -24,13 +24,9 @@ export class Manuscript {
   siglumDisambiguator: string = ''
   museumNumber: string = ''
   accession: string = ''
-  // $FlowFixMe
   periodModifier: PeriodModifier = periodModifiers.get('None')
-  // $FlowFixMe
   period: Period = periods.get('Neo-Assyrian')
-  // $FlowFixMe
   provenance: Provenance = provenances.get('Nineveh')
-  // $FlowFixMe
   type: ManuscriptType = types.get('Library')
   notes: string = ''
   references: ReadonlyArray<Reference> = []

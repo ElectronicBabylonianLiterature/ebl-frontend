@@ -1,23 +1,22 @@
-// @flow
 import _ from 'lodash'
 import { produce, immerable } from 'immer'
-import type { Draft } from 'immer'
+import { Draft } from 'immer'
 import Lemma from './Lemma'
 
-export type UniqueLemma = $ReadOnlyArray<Lemma>
+export type UniqueLemma = ReadOnlyArray<Lemma>
 
 export class LemmatizationToken {
-  +value: string
-  +uniqueLemma: ?UniqueLemma
-  +suggestions: ?$ReadOnlyArray<UniqueLemma>
-  +lemmatizable: boolean
-  +suggested: boolean
+  readonly value: string
+  readonly uniqueLemma: UniqueLemma | null
+  readonly suggestions: ReadOnlyArray<UniqueLemma> | null
+  readonly lemmatizable: boolean
+  readonly suggested: boolean
 
   constructor(
     value: string,
     lemmatizable: boolean,
-    uniqueLemma: ?UniqueLemma = null,
-    suggestions: ?$ReadOnlyArray<UniqueLemma> = null,
+    uniqueLemma: UniqueLemma | null = null,
+    suggestions: ReadOnlyArray<UniqueLemma> | null= null,
     suggested: boolean = false
   ) {
     this.value = value
@@ -55,7 +54,7 @@ export class LemmatizationToken {
     })
   }
 
-  toDto(): { [string]: mixed } {
+  toDto(): any {
     return _.isNil(this.uniqueLemma)
       ? {
           value: this.value
@@ -69,12 +68,12 @@ export class LemmatizationToken {
 LemmatizationToken[immerable] = true
 
 export default class Lemmatization {
-  +lines: $ReadOnlyArray<string>
-  +tokens: $ReadOnlyArray<$ReadOnlyArray<LemmatizationToken>>
+  readonly lines: ReadOnlyArray<string>
+  readonly tokens: ReadOnlyArray<ReadOnlyArray<LemmatizationToken>>
 
   constructor(
-    lines: $ReadOnlyArray<string>,
-    tokens: $ReadOnlyArray<$ReadOnlyArray<LemmatizationToken>>
+    lines: ReadOnlyArray<string>,
+    tokens: ReadOnlyArray<ReadOnlyArray<LemmatizationToken>>
   ) {
     this.lines = lines
     this.tokens = tokens
@@ -107,13 +106,13 @@ export default class Lemmatization {
     })
   }
 
-  toDto(): $ReadOnlyArray<$ReadOnlyArray<{ [string]: mixed }>> {
+  toDto(): ReadOnlyArray<ReadOnlyArray<{ [string]: mixed }>> {
     return this.tokens.map(row => row.map(token => token.toDto()))
   }
 
   _mapTokens(
-    iteratee: LemmatizationToken => LemmatizationToken
-  ): $ReadOnlyArray<$ReadOnlyArray<LemmatizationToken>> {
+    iteratee: (token: LemmatizationToken) => LemmatizationToken
+  ): ReadOnlyArray<ReadOnlyArray<LemmatizationToken>> {
     return this.tokens.map(row => row.map(iteratee))
   }
 }

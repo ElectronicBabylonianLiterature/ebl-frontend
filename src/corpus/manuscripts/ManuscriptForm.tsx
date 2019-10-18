@@ -26,7 +26,7 @@ export default function ManuscriptForm({
     )
   const handleMapChange = (
     property: string,
-    values: $ReadOnlyMap<string, any>
+    values: ReadOnlyMap<string, any>
   ) => event =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {

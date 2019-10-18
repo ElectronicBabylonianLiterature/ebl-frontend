@@ -1,26 +1,25 @@
-// @flow
 import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
 
-export type FragmentLink = {|
-  +name: string,
-  +logo: string,
-  +url: string,
-  +label: string
-|}
+export interface FragmentLink {
+  readonly name: string
+  readonly logo: string
+  readonly url: string
+  readonly label: string
+}
 
-export type MuseumData = {
-  +name: string,
-  +url: string,
-  +logo: string,
-  +copyright: string
+export interface MuseumData {
+  readonly name: string
+  readonly url: string
+  readonly logo: string
+  readonly copyright: string
 }
 
 export default class Museum {
-  +name: string
-  +logo: string
-  +url: string
-  +copyright: string
+  readonly name: string
+  readonly logo: string
+  readonly url: string
+  readonly copyright: string
 
   static of(name: string): Museum {
     const data = {
@@ -80,14 +79,14 @@ class BritishMuseum extends Museum {
   }
 }
 
-type MuseumConfig = {|
-  +logo?: string,
-  +url?: string,
-  +copyright?: string,
-  +museumClass?: Class<Museum>
-|}
+interface MuseumConfig {
+  readonly logo?: string
+  readonly url?: string
+  readonly copyright?: string
+  readonly museumClass?: any
+}
 
-const museums: $ReadOnlyMap<string, MuseumConfig> = new Map([
+const museums: ReadonlyMap<string, MuseumConfig> = new Map([
   [
     'The British Museum',
     {

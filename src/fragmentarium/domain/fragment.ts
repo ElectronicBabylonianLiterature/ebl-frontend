@@ -1,28 +1,27 @@
-// @flow
 import _ from 'lodash'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
-import type { DateRange } from 'moment-range'
+import { DateRange } from 'moment-range'
 import { produce, immerable } from 'immer'
-import type { Draft } from 'immer'
+import { Draft } from 'immer'
 import Reference from 'bibliography/domain/Reference'
 import { Text } from './text'
 import Museum from './museum'
 
 const moment = extendMoment(Moment)
 
-export type FragmentInfo = {|
-  +number: string,
-  +accession: string,
-  +script: string,
-  +description: string,
-  +matchingLines: $ReadOnlyArray<$ReadOnlyArray<string>>,
-  +editor: string,
-  +edition_date: string
-|}
+export interface FragmentInfo {
+  readonly number: string,
+  readonly accession: string,
+  readonly script: string,
+  readonly description: string,
+  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>,
+  readonly editor: string,
+  readonly edition_date: string
+}
 
-type FolioType = {| +name: string, +hasImage: boolean |}
-const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
+interface FolioType { readonly name: string, readonly hasImage: boolean }
+const folioTypes = {
   WGL: { name: 'Lambert', hasImage: true },
   FWG: { name: 'Geers', hasImage: true },
   EL: { name: 'Leichty', hasImage: true },
@@ -34,22 +33,22 @@ const folioTypes: $ReadOnly<{ [string]: FolioType }> = {
 }
 
 export class Folio {
-  +name: string
-  +number: string
-  #type: FolioType
+  readonly name: string
+  readonly number: string
+  private readonly type: FolioType
 
   constructor({ name, number }: { name: string, number: string }) {
     this.name = name
     this.number = number
-    this.#type = folioTypes[name] || { name, hasImage: false }
+    this.type = folioTypes[name] || { name, hasImage: false }
   }
 
   get humanizedName() {
-    return this.#type.name
+    return this.type.name
   }
 
   get hasImage() {
-    return this.#type.hasImage
+    return this.type.hasImage
   }
 
   get fileName() {
@@ -67,9 +66,9 @@ type RecordType =
   | 'Collation'
 
 export class RecordEntry {
-  +user: string
-  +date: string
-  +type: RecordType
+  readonly user: string
+  readonly date: string
+  readonly type: RecordType
 
   constructor({
     user,
@@ -109,37 +108,37 @@ export class RecordEntry {
 }
 RecordEntry[immerable] = true
 
-export type Measures = {|
-  +length: ?number,
-  +width: ?number,
-  +thickness: ?number
-|}
+export interface Measures {
+  readonly length: number | null,
+  readonly width: number | null,
+  readonly thickness: number | null
+}
 
-export type UncuratedReference = {|
-  +document: string,
-  +pages: $ReadOnlyArray<number>
-|}
+export interface UncuratedReference {
+  readonly document: string,
+  readonly pages: ReadonlyArray<number>
+}
 
 export class Fragment {
-  +number: string
-  +cdliNumber: string
-  +bmIdNumber: string
-  +accession: string
-  +publication: string
-  +joins: $ReadOnlyArray<string>
-  +description: string
-  +measures: Measures
-  +collection: string
-  +script: string
-  +folios: $ReadOnlyArray<Folio>
-  +record: $ReadOnlyArray<RecordEntry>
-  +text: Text
-  +notes: string
-  +museum: Museum
-  +references: $ReadOnlyArray<any>
-  +uncuratedReferences: ?$ReadOnlyArray<UncuratedReference>
-  +atf: string
-  +hasPhoto: boolean
+  readonly number: string
+  readonly cdliNumber: string
+  readonly bmIdNumber: string
+  readonly accession: string
+  readonly publication: string
+  readonly joins: ReadonlyArray<string>
+  readonly description: string
+  readonly measures: Measures
+  readonly collection: string
+  readonly script: string
+  readonly folios: ReadonlyArray<Folio>
+  readonly record: ReadonlyArray<RecordEntry>
+  readonly text: Text
+  readonly notes: string
+  readonly museum: Museum
+  readonly references: ReadonlyArray<any>
+  readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
+  readonly atf: string
+  readonly hasPhoto: boolean
 
   constructor({
     number,
@@ -167,18 +166,18 @@ export class Fragment {
     bmIdNumber: string,
     accession: string,
     publication: string,
-    joins: $ReadOnlyArray<string>,
+    joins: ReadOnlyArray<string>,
     description: string,
     measures: Measures,
     collection: string,
     script: string,
-    folios: $ReadOnlyArray<Folio>,
-    record: $ReadOnlyArray<RecordEntry>,
+    folios: ReadOnlyArray<Folio>,
+    record: ReadOnlyArray<RecordEntry>,
     text: Text,
     notes: string,
     museum: Museum,
-    references: $ReadOnlyArray<any>,
-    uncuratedReferences?: ?$ReadOnlyArray<UncuratedReference>,
+    references: ReadOnlyArray<any>,
+    uncuratedReferences?: ReadOnlyArray<UncuratedReference> | null,
     atf: string,
     hasPhoto: boolean
   }) {
@@ -207,7 +206,7 @@ export class Fragment {
     return !_.isNil(this.uncuratedReferences)
   }
 
-  get uniqueRecord(): $ReadOnlyArray<RecordEntry> {
+  get uniqueRecord(): ReadOnlyArray<RecordEntry> {
     const reducer = (filteredRecord, recordEntry) => {
       const keepRecord =
         _.isEmpty(filteredRecord) ||
@@ -220,7 +219,7 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: $ReadOnlyArray<Reference>): Fragment {
+  setReferences(references: ReadOnlyArray<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import _ from 'lodash'
-import SentryErrorReporter from './SentryErrorReporter.js'
+import SentryErrorReporter from './SentryErrorReporter'
 import { ApiError } from 'http/ApiClient'
 import Chance from 'chance'
 

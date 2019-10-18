@@ -1,5 +1,5 @@
 import specialTransliterationCharacters from './specialTransliterationCharacters'
-import escapeRegExp from './escapeRegExp.js'
+import escapeRegExp from './escapeRegExp'
 
 function convertNumbers(number) {
   const numbers = {

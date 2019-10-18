@@ -1,29 +1,20 @@
 import applicationScopes from './applicationScopes.json'
 
 class Session {
-  #accessToken
-  #idToken
-  #expiresAt
-  #scopes
+  readonly accessToken: string
+  readonly idToken: string
+  readonly expiresAt: number
+  private readonly _scopes: Set<string>
 
-  constructor(accessToken, idToken, expiresAt, scopes) {
-    this.#accessToken = accessToken
-    this.#idToken = idToken
-    this.#expiresAt = expiresAt
-    this.#scopes = new Set(scopes)
+  constructor(accessToken: string, idToken: string, expiresAt: number, scopes: ReadonlyArray<string>) {
+    this.accessToken = accessToken
+    this.idToken = idToken
+    this.expiresAt = expiresAt
+    this._scopes = new Set(scopes)
   }
 
-  get accessToken() {
-    return this.#accessToken
-  }
-  get idToken() {
-    return this.#idToken
-  }
-  get expiresAt() {
-    return this.#expiresAt
-  }
   get scopes() {
-    return [...this.#scopes]
+    return Array.from(this._scopes)
   }
 
   isAuthenticated() {
@@ -39,7 +30,7 @@ class Session {
   }
 
   hasScope(scope) {
-    return this.isAuthenticated() && this.#scopes.has(scope)
+    return this.isAuthenticated() && this._scopes.has(scope)
   }
 
   isAllowedToReadWords() {

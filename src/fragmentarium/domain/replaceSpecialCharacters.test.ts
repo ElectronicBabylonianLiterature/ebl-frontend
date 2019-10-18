@@ -1,4 +1,4 @@
-import replaceSpecialCharacters from './replaceSpecialCharacters.js'
+import replaceSpecialCharacters from './replaceSpecialCharacters'
 
 test.each([
   ['c', 'š'],

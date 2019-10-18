@@ -1,4 +1,3 @@
-// @flow
 import _ from 'lodash'
 import Cite from 'citation-js'
 import { immerable, produce } from 'immer'
@@ -21,10 +20,10 @@ function getName(author) {
   return particle ? `${particle} ${family}` : family
 }
 class BibliographyEntry {
-  #cslData: { [string]: any }
+  private readonly cslData
 
-  constructor(cslData: ?{ [string]: any }) {
-    this.#cslData = cslData
+  constructor(cslData) {
+    this.cslData = cslData
       ? produce(cslData, draft => {
           _.keys(draft)
             .filter(key => key.startsWith('_'))
@@ -39,7 +38,7 @@ class BibliographyEntry {
   }
 
   get id() {
-    return _.get(this.#cslData, 'id', '')
+    return _.get(this.cslData, 'id', '')
   }
 
   get primaryAuthor() {
@@ -47,35 +46,35 @@ class BibliographyEntry {
   }
 
   get authors() {
-    return _.get(this.#cslData, 'author', []).map(getName)
+    return _.get(this.cslData, 'author', []).map(getName)
   }
 
   get year() {
-    const start = _.get(this.#cslData, 'issued.date-parts.0.0', '')
-    const end = _.get(this.#cslData, 'issued.date-parts.1.0', '')
+    const start = _.get(this.cslData, 'issued.date-parts.0.0', '')
+    const end = _.get(this.cslData, 'issued.date-parts.1.0', '')
     return end ? `${start}–${end}` : String(start)
   }
 
   get title() {
-    return _.get(this.#cslData, 'title', '')
+    return _.get(this.cslData, 'title', '')
   }
 
   get shortContainerTitle() {
-    return _.get(this.#cslData, 'container-title-short', '')
+    return _.get(this.cslData, 'container-title-short', '')
   }
 
   get collectionNumber() {
-    return _.get(this.#cslData, 'collection-number', '')
+    return _.get(this.cslData, 'collection-number', '')
   }
 
   get link() {
-    const url = _.get(this.#cslData, 'URL', '')
-    const doi = _.get(this.#cslData, 'DOI', '')
+    const url = _.get(this.cslData, 'URL', '')
+    const doi = _.get(this.cslData, 'DOI', '')
     return url || (doi ? `https://doi.org/${doi}` : '')
   }
 
   toHtml() {
-    return new Cite(_.cloneDeep(this.#cslData)).format('bibliography', {
+    return new Cite(_.cloneDeep(this.cslData)).format('bibliography', {
       format: 'html',
       template: 'citation-apa',
       lang: 'de-DE'
@@ -83,7 +82,7 @@ class BibliographyEntry {
   }
 
   toBibtex() {
-    return new Cite(_.cloneDeep(this.#cslData)).get({
+    return new Cite(_.cloneDeep(this.cslData)).get({
       format: 'string',
       type: 'string',
       style: 'bibtex'
@@ -91,7 +90,7 @@ class BibliographyEntry {
   }
 
   toJson() {
-    return this.#cslData
+    return this.cslData
   }
 }
 BibliographyEntry[immerable] = true
