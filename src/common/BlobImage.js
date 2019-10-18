@@ -1,4 +1,3 @@
-// @flow
 import React, { useEffect, useState } from 'react'
 import { Image } from 'react-bootstrap'
 import ExternalLink from './ExternalLink'
@@ -8,8 +7,8 @@ export default function BlobImage({
   hasLink,
   alt
 }: {
-  data: Blob,
-  hasLink?: boolean,
+  data: Blob
+  hasLink?: boolean
   alt?: string
 }) {
   const [objectUrl, setObjectUrl] = useState()

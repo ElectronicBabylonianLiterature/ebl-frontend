@@ -1,10 +1,13 @@
-// @flow
 import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 
 export default function createReference(
-  data: { [string]: any },
-  bibliographyRepository: { find: string => Promise<BibliographyEntry> }
+  data: {
+    [x: string]: any
+  },
+  bibliographyRepository: {
+    find: (x0: string) => Promise<BibliographyEntry>
+  }
 ): Promise<Reference> {
   return bibliographyRepository
     .find(data.id)

@@ -23,9 +23,7 @@ beforeEach(() => {
   act(() => {
     element = render(
       <Router history={history}>
-        <FragmentButton query={query}>
-          {buttonText}
-        </FragmentButton>
+        <FragmentButton query={query}>{buttonText}</FragmentButton>
       </Router>
     )
   })
@@ -48,9 +46,7 @@ describe('On successful request', () => {
 
 describe('On failed request', () => {
   beforeEach(async () => {
-    query.mockReturnValueOnce(
-      Promise.reject(new Error(message))
-    )
+    query.mockReturnValueOnce(Promise.reject(new Error(message)))
     clickNth(element, buttonText, 0)
     await waitForElement(() => element.getByText(message))
   })

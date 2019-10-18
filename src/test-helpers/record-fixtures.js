@@ -1,6 +1,5 @@
-// @flow
 import { produce } from 'immer'
-import type { Draft } from 'immer'
+import { Draft } from 'immer'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 
 const setDate = produce((draft: Draft<RecordEntry>, date: string) => {

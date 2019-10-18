@@ -1,4 +1,3 @@
-// @flow
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'

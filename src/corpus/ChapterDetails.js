@@ -1,8 +1,7 @@
-// @flow
 import React from 'react'
 import { Form, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import type { Chapter } from './text'
+import { Chapter } from './text'
 
 export default function ChapterDetails({ chapter }: { chapter: Chapter }) {
   return (

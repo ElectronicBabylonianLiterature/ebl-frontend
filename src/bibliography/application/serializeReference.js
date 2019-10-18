@@ -1,4 +1,3 @@
-// @flow
 import Reference from 'bibliography/domain/Reference'
 
 export default function serializeReference(reference: Reference) {

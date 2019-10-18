@@ -1,14 +1,15 @@
-// @flow
 import React from 'react'
+
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
-import type { UncuratedReference } from 'fragmentarium/domain/fragment'
+import { UncuratedReference } from 'fragmentarium/domain/fragment'
 import UncuratedReferencesList from './UncuratedReferencesList'
-
 import './UncuratedReferences.css'
 
-type Props = { +uncuratedReferences: $ReadOnlyArray<UncuratedReference> }
+type Props = {
+  readonly uncuratedReferences: ReadonlyArray<UncuratedReference>
+}
 
 function UncuratedReferencesHelp() {
   return (
@@ -39,7 +40,7 @@ function UncuratedReferencesPopOver({ uncuratedReferences }: Props) {
   )
 }
 
-function createText(uncuratedReferences: $ReadOnlyArray<UncuratedReference>) {
+function createText(uncuratedReferences: ReadonlyArray<UncuratedReference>) {
   const count = uncuratedReferences.length
   return count === 1 ? '1 uncurated reference' : `${count} uncurated references`
 }

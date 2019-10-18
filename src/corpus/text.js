@@ -1,14 +1,16 @@
-// @flow
 import Reference from 'bibliography/domain/Reference'
-import type { Period, PeriodModifier } from './period'
+import { Period, PeriodModifier } from './period'
 import { periodModifiers, periods } from './period'
-import type { Provenance } from './provenance'
+import { Provenance } from './provenance'
 import { provenances } from './provenance'
 import { immerable, produce } from 'immer'
-import type { Draft } from 'immer'
+import { Draft } from 'immer'
 import _ from 'lodash'
 
-export type ManuscriptType = {| +name: string, +abbreviation: string |}
+export type ManuscriptType = {
+  readonly name: string
+  readonly abbreviation: string
+}
 export const types: $ReadOnlyMap<string, ManuscriptType> = new Map([
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
@@ -18,7 +20,7 @@ export const types: $ReadOnlyMap<string, ManuscriptType> = new Map([
 ])
 
 export class Manuscript {
-  id: ?number = null
+  id: number | undefined | null = null
   siglumDisambiguator: string = ''
   museumNumber: string = ''
   accession: string = ''
@@ -31,7 +33,7 @@ export class Manuscript {
   // $FlowFixMe
   type: ManuscriptType = types.get('Library')
   notes: string = ''
-  references: $ReadOnlyArray<Reference> = []
+  references: ReadonlyArray<Reference> = []
 
   get siglum() {
     return [
@@ -50,25 +52,25 @@ export function createManuscript(data: $Shape<Manuscript>): Manuscript {
   })
 }
 
-export type AtfToken = {|
-  +type: string,
-  +value: string,
-  +uniqueLemma?: $ReadOnlyArray<string>,
-  +normalized?: boolean,
-  +language?: string,
-  +lemmatizable?: boolean,
-  +erasure?: string,
-  +alignment?: ?number
-|}
-export type ManuscriptLine = {|
-  +manuscriptId: number,
-  +labels: $ReadOnlyArray<string>,
-  +number: string,
-  +atf: string,
-  +atfTokens: $ReadOnlyArray<AtfToken>
-|}
+export type AtfToken = {
+  readonly type: string
+  readonly value: string
+  readonly uniqueLemma?: ReadonlyArray<string>
+  readonly normalized?: boolean
+  readonly language?: string
+  readonly lemmatizable?: boolean
+  readonly erasure?: string
+  readonly alignment?: number | null
+}
+export type ManuscriptLine = {
+  readonly manuscriptId: number
+  readonly labels: ReadonlyArray<string>
+  readonly number: string
+  readonly atf: string
+  readonly atfTokens: ReadonlyArray<AtfToken>
+}
 export const createManuscriptLine: (
-  $Shape<ManuscriptLine>
+  x0: $Shape<ManuscriptLine>
 ) => ManuscriptLine = produce(
   (draft: $Shape<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
@@ -79,17 +81,17 @@ export const createManuscriptLine: (
     ...draft
   })
 )
-export type ReconstructionToken = {|
-  +type: string,
-  +value: string
-|}
-export type Line = {|
-  +number: string,
-  +reconstruction: string,
-  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
-  +manuscripts: $ReadOnlyArray<ManuscriptLine>
-|}
-export const createLine: ($Shape<Line>) => Line = produce(
+export type ReconstructionToken = {
+  readonly type: string
+  readonly value: string
+}
+export type Line = {
+  readonly number: string
+  readonly reconstruction: string
+  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly manuscripts: ReadonlyArray<ManuscriptLine>
+}
+export const createLine: (x0: $Shape<Line>) => Line = produce(
   (draft: $Shape<Line>): Line => ({
     number: '',
     reconstruction: '',
@@ -98,16 +100,16 @@ export const createLine: ($Shape<Line>) => Line = produce(
   })
 )
 
-export type Chapter = {|
-  +classification: string,
-  +stage: string,
-  +version: string,
-  +name: string,
-  +order: number,
-  +manuscripts: $ReadOnlyArray<Manuscript>,
-  +lines: $ReadOnlyArray<Line>
-|}
-export const createChapter: ($Shape<Chapter>) => Chapter = produce(
+export type Chapter = {
+  readonly classification: string
+  readonly stage: string
+  readonly version: string
+  readonly name: string
+  readonly order: number
+  readonly manuscripts: ReadonlyArray<Manuscript>
+  readonly lines: ReadonlyArray<Line>
+}
+export const createChapter: (x0: $Shape<Chapter>) => Chapter = produce(
   (draft: $Shape<Chapter>): Chapter => ({
     classification: 'Ancient',
     stage: 'Neo-Assyrian',
@@ -126,7 +128,7 @@ export class Text {
   name: string = ''
   numberOfVerses: number = 0
   approximateVerses: boolean = false
-  chapters: $ReadOnlyArray<Chapter> = []
+  chapters: ReadonlyArray<Chapter> = []
 
   findChapterIndex(stage: string, name: string) {
     return this.chapters.findIndex(

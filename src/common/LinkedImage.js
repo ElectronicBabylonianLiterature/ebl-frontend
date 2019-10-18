@@ -1,10 +1,10 @@
-// @flow
 import React from 'react'
+
 import { Image } from 'react-bootstrap'
 import ExternalLink from 'common/ExternalLink'
 
 type Props = {
-  src: string,
+  src: string
   alt: string
 }
 

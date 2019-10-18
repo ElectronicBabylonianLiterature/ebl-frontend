@@ -1,4 +1,3 @@
-// @flow
 import Chance from 'chance'
 import { Folio } from './fragment'
 

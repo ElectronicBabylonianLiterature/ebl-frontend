@@ -1,8 +1,7 @@
-// @flow
 import _ from 'lodash'
 import { Folio, Fragment, RecordEntry } from './fragment'
 import { Text } from './text'
-import type { Measures } from './fragment'
+import { Measures } from './fragment'
 import {
   atEleven,
   atTen,

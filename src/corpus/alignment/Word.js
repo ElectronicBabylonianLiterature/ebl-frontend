@@ -1,20 +1,19 @@
-// @flow
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import type { AtfToken, ReconstructionToken } from 'corpus/text'
+import { AtfToken, ReconstructionToken } from 'corpus/text'
 
 function Word({
   token,
   reconstructionTokens,
   onClick
 }: {
-  +token: AtfToken,
-  +reconstructionTokens: $ReadOnlyArray<ReconstructionToken>,
-  +onClick: (SyntheticEvent<>) => void
+  readonly token: AtfToken
+  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly onClick: (x0: SyntheticEvent<>) => void
 }) {
   return token.lemmatizable ? (
     <Button

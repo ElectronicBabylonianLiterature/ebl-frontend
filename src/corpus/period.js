@@ -1,5 +1,7 @@
-// @flow
-export type PeriodModifier = { +name: string, +displayName: string }
+export type PeriodModifier = {
+  readonly name: string
+  readonly displayName: string
+}
 export const periodModifiers: $ReadOnlyMap<string, PeriodModifier> = new Map([
   ['None', { name: 'None', displayName: '-' }],
   ['Early', { name: 'Early', displayName: 'Early' }],
@@ -7,10 +9,10 @@ export const periodModifiers: $ReadOnlyMap<string, PeriodModifier> = new Map([
 ])
 
 export type Period = {
-  +name: string,
-  +abbreviation: string,
-  +description: string,
-  +parent?: string
+  readonly name: string
+  readonly abbreviation: string
+  readonly description: string
+  readonly parent?: string
 }
 export const periods: $ReadOnlyMap<string, Period> = new Map([
   [

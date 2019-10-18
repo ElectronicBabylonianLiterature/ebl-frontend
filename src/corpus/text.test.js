@@ -1,4 +1,3 @@
-// @flow
 import _ from 'lodash'
 import {
   Text,
@@ -11,7 +10,7 @@ import {
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-import type { Chapter, Line, Manuscript, ManuscriptLine } from './text'
+import { Chapter, Line, Manuscript, ManuscriptLine } from './text'
 
 const manuscriptConfig: $Shape<Manuscript> = {
   id: 1,
@@ -99,7 +98,7 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties(config: any, factory: any => any) {
+function testProperties(config: any, factory: (x0: any) => any) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })

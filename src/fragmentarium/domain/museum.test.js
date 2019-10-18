@@ -1,4 +1,3 @@
-// @flow
 import Museum from './museum'
 import { factory } from 'factory-girl'
 import bmLogo from './The_British_Museum.png'

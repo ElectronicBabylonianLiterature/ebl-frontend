@@ -1,15 +1,14 @@
-// @flow
 import React from 'react'
 
 import CdliLink from './CdliLink'
 import ExternalLink from 'common/ExternalLink'
 import cdliLogo from './cdli.png'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import type { FragmentLink } from 'fragmentarium/domain/museum'
+import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './OrganizationLinks.css'
 
-function MuseumLink({ link }: { +link: FragmentLink }) {
+function MuseumLink({ link }: { readonly link: FragmentLink }) {
   return (
     <ExternalLink alt={link.name} href={link.url} aria-label={link.label}>
       <img
@@ -24,7 +23,7 @@ function MuseumLink({ link }: { +link: FragmentLink }) {
 export default function OrganizationLinks({
   fragment
 }: {
-  +fragment: Fragment
+  readonly fragment: Fragment
 }) {
   const cdliNumber = fragment.cdliNumber
   return (

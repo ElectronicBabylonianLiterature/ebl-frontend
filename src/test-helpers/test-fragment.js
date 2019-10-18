@@ -1,4 +1,3 @@
-// @flow
 import { Folio, Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'

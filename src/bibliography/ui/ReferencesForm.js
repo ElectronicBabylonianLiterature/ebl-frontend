@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import ListForm from 'common/List'
 import ReferenceForm from './ReferenceForm'
@@ -14,10 +13,10 @@ export default function ReferencesForm({
   label,
   collapsed
 }: {
-  searchBibliography: string => $ReadOnlyArray<BibliographyEntry>,
-  value: $ReadOnlyArray<Reference>,
-  onChange: ($ReadOnlyArray<Reference>) => void,
-  label: string,
+  searchBibliography: (x0: string) => ReadonlyArray<BibliographyEntry>
+  value: ReadonlyArray<Reference>
+  onChange: (x0: ReadonlyArray<Reference>) => void
+  label: string
   collapsed: boolean
 }) {
   return (

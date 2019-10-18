@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Parser } from 'html-to-react'
 import ReactMarkdown from 'react-markdown'

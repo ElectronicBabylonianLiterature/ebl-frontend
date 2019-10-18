@@ -1,9 +1,12 @@
-// @flow
 import React from 'react'
-import type { Node } from 'react'
+
+import { Node } from 'react'
 import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
-type Props = { loading: boolean, children?: Node }
+type Props = {
+  loading: boolean
+  children?: Node
+}
 
 export default function Spinner({ loading, children }: Props) {
   return (

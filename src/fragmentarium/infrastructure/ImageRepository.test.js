@@ -1,4 +1,3 @@
-// @flow
 import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
 import { Folio } from 'fragmentarium/domain/fragment'

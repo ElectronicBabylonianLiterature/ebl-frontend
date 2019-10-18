@@ -1,6 +1,5 @@
-// @flow
 import React, { useState } from 'react'
-import type { Node } from 'react'
+import { Node } from 'react'
 import { Button } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
@@ -8,10 +7,10 @@ import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
 import { createFragmentUrl } from './FragmentLink'
 import usePromiseEffect from 'common/usePromiseEffect'
-import type { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 interface History {
-  push(string): void;
+  push(string): void
 }
 
 function FragmentButton({
@@ -19,8 +18,8 @@ function FragmentButton({
   history,
   children
 }: {
-  query: () => Promise<FragmentInfo>,
-  history: History,
+  query: () => Promise<FragmentInfo>
+  history: History
   children?: Node
 }) {
   const [error, setError] = useState(null)

@@ -1,4 +1,3 @@
-// @flow
 import usePromiseEffect from './usePromiseEffect'
 import React from 'react'
 import { render } from '@testing-library/react'

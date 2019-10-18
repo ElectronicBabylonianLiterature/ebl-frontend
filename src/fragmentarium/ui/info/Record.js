@@ -1,12 +1,13 @@
-// @flow
 import React from 'react'
-import _ from 'lodash'
-import type { DateRange } from 'moment-range'
 
+import _ from 'lodash'
+import { DateRange } from 'moment-range'
 import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 
-type EntryProps = { entry: RecordEntry }
+type EntryProps = {
+  entry: RecordEntry
+}
 
 function Date({ date, humanFormat, machineFormat }) {
   const humanDate = date.format(humanFormat)
@@ -33,7 +34,7 @@ function BasicEntry({ entry }: EntryProps) {
 }
 
 function HistoricalTransliteration({ entry }: EntryProps) {
-  const range = (entry.moment: DateRange)
+  const range = entry.moment as DateRange
   return (
     <>
       {entry.user} (Transliteration, <Year date={range.start} />–
@@ -50,7 +51,7 @@ function Entry({ entry }: EntryProps) {
   )
 }
 
-function Record({ record }: { record: $ReadOnlyArray<RecordEntry> }) {
+function Record({ record }: { record: ReadonlyArray<RecordEntry> }) {
   return (
     <section>
       <h3>Record</h3>

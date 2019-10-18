@@ -6,7 +6,9 @@ import { factory } from 'factory-girl'
 import { whenClicked, clickNth, changeValueByLabel } from 'test-helpers/utils'
 import Lemma from 'fragmentarium/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
-import Lemmatization, { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
+import Lemmatization, {
+  LemmatizationToken
+} from 'fragmentarium/domain/Lemmatization'
 
 let element
 let fragmentService

@@ -1,10 +1,9 @@
-// @flow
 import React from 'react'
 import _ from 'lodash'
 
 import withData from 'http/withData'
 import FragmentList from 'fragmentarium/ui/FragmentList'
-import type { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 import './TransliterationSearch.css'
 

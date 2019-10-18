@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import _ from 'lodash'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
@@ -41,7 +40,7 @@ function Citation({ reference }: { reference: Reference }) {
 function ReferenceGroup({
   references
 }: {
-  references: $ReadOnlyArray<Reference>
+  references: ReadonlyArray<Reference>
 }) {
   return (
     <ol className="ReferenceList__list">
@@ -60,7 +59,7 @@ function ReferenceGroup({
 export default function ReferenceList({
   references
 }: {
-  references: $ReadOnlyArray<Reference>
+  references: ReadonlyArray<Reference>
 }) {
   return (
     <>

@@ -1,16 +1,16 @@
-// @flow
 import React, { useState, useEffect } from 'react'
+
 import ReactMarkdown from 'react-markdown'
 import EXIF from 'exif-js'
 import BlobImage from 'common/BlobImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
-
 import './Photo.css'
 
 type Props = {
-  photo: Blob,
+  photo: Blob
   fragment: Fragment
 }
+
 export default function Photo({ photo, fragment }: Props) {
   const [artist, setArtist] = useState()
 

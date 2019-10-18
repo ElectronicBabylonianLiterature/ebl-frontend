@@ -1,8 +1,7 @@
-// @flow
 export type Provenance = {
-  +name: string,
-  +abbreviation: string,
-  +parent?: string
+  readonly name: string
+  readonly abbreviation: string
+  readonly parent?: string
 }
 export const provenances: $ReadOnlyMap<string, Provenance> = new Map([
   ['Assyria', { name: 'Assyria', abbreviation: 'Assa' }],

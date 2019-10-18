@@ -1,4 +1,3 @@
-// @flow
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { Text } from './text'

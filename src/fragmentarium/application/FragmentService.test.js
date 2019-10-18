@@ -1,11 +1,10 @@
-// @flow
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { testDelegation } from 'test-helpers/utils'
 import { fragment } from 'test-helpers/test-fragment'
 import FragmentService from './FragmentService'
-import type { ImageRepository, FragmentRepository } from './FragmentService'
+import { ImageRepository, FragmentRepository } from './FragmentService'
 import Lemmatization, {
   LemmatizationToken
 } from 'fragmentarium/domain/Lemmatization'

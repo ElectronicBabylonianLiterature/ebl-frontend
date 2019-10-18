@@ -1,15 +1,15 @@
-// @flow
 import React from 'react'
-import _ from 'lodash'
 
-import type { Fragment } from 'fragmentarium/domain/fragment'
+import _ from 'lodash'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
-
 import './Details.css'
 
-type Props = { fragment: Fragment }
+type Props = {
+  fragment: Fragment
+}
 
 function Collection({ fragment }: Props) {
   return fragment.collection && `(${fragment.collection} Collection)`
