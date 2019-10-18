@@ -17,7 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Running tests
 
 ```
-yarn eslint --ext .ts .tsx src/
+yarn eslint --ext .ts,.tsx src/
 yarn tsc
 yarn test
 ```
