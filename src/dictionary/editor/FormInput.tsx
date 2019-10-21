@@ -6,7 +6,7 @@ import LemmaInput from './LemmaInput'
 import ListInput from './TextListInput'
 import TextInput from './TextInput'
 
-class FormInput extends Component {
+class FormInput extends Component<{value; onChange}> {
   lemmaChanged = lemma => {
     this.props.onChange({
       ...this.props.value,

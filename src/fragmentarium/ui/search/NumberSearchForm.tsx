@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { History } from 'history'
 
-class FragmentSearchForm extends Component {
+type Props = {number: string | null, history: History} & RouteComponentProps
+
+class FragmentSearchForm extends Component<Props> {
   state = {
     number: this.props.number || ''
   }

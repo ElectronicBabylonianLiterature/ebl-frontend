@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry';
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export default function createReference(
   data: {

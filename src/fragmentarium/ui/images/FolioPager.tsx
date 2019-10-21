@@ -3,12 +3,13 @@ import classNames from 'classnames'
 
 import withData from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import { Folio } from 'fragmentarium/domain/fragment'
 
 function FolioPager({ data, folio }) {
   const PagerLink = ({ label, direction }) => (
     <FragmentLink
       number={data[direction].fragmentNumber}
-      folio={{ name: folio.name, number: data[direction].folioNumber }}
+      folio={new Folio({ name: folio.name, number: data[direction].folioNumber })}
       aria-label={label}
     >
       <i

@@ -2,9 +2,9 @@
 import Promise from 'bluebird'
 
 export default function cancellableFetch(
-  url: sring,
+  url: string,
   options: {
-    [x: string]: any
+    [key: string]: any
   } = {}
 ): Promise<any> {
   return new Promise((resolve, reject, onCancel) => {
@@ -15,6 +15,6 @@ export default function cancellableFetch(
     })
       .then(resolve)
       .catch(reject)
-    onCancel(() => abortController.abort())
+    onCancel && onCancel(() => abortController.abort())
   })
 }

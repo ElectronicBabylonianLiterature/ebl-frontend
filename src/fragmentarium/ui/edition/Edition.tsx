@@ -1,31 +1,42 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
 import './Edition.css'
 import TransliterationHeader from 'fragmentarium/ui/view/TransliterationHeader'
+import { Fragment } from 'fragmentarium/domain/fragment';
+
+type Props = {
+  fragment: Fragment,
+  updateTransliteration,
+  fragmentSearchService,
+  disabled: boolean
+}
 
 function Edition({
   fragment,
   fragmentSearchService,
   updateTransliteration,
   disabled
-}) {
+}: Props) {
   return (
-    <Fragment>
+    <>
       <TransliterationHeader fragment={fragment} />
       <TransliteratioForm
         transliteration={fragment.atf}
         notes={fragment.notes}
         updateTransliteration={updateTransliteration}
-        disable={disabled}
+        disabled={disabled}
       />
       <p className="Edition__navigation">
         <PioneersButton fragmentSearchService={fragmentSearchService} />
       </p>
-    </Fragment>
+    </>
   )
+}
+Edition.defaultProps = {
+  disabled: false
 }
 
 export default Edition

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import alphabet from './alphabet'
+import alphabet from './alphabet.json'
 
 function isString(word, anotherWord) {
   let notStrings = [word, anotherWord].filter(word => !_.isString(word))

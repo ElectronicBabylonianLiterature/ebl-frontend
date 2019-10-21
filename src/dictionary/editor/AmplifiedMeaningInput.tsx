@@ -4,7 +4,7 @@ import ArrayWithNotesList from './ArrayWithNotesList'
 import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 
-class AmplifiedMeaningInput extends Component {
+class AmplifiedMeaningInput extends Component<{value; onChange, entry}> {
   onChange = key => value => {
     this.props.onChange({
       ...this.props.value,

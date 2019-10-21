@@ -5,7 +5,7 @@ import Template from './Template'
 import HelpTrigger from 'common/HelpTrigger'
 import TemplateHelp from './TemplateHelp'
 
-class TemplateForm extends Component {
+class TemplateForm extends Component<{onSubmit}, {template: Template, isValid: boolean}> {
   state = {
     template: new Template(''),
     isValid: false

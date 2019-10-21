@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
+import _ from 'lodash'
 
-class WordSearch extends Component {
+type Props = {query: string[] | string | null | undefined, history, location, match} & RouteComponentProps
+type State = {query: string}
+
+class WordSearch extends Component<Props, State> {
   state = {
-    query: this.props.query || ''
+    query: _.isArray(this.props.query)
+      ? this.props.query.join(' ')
+      : this.props.query || ''
   }
 
   onChange = event => {

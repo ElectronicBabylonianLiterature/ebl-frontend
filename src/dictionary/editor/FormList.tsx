@@ -12,7 +12,7 @@ const defaultForm = {
   notes: []
 }
 
-class FormList extends Component {
+class FormList extends Component<{value; fields; onChange}> {
   get defaultValue() {
     const fields = this.props.fields || _.keys(defaultForm)
     return _.pick(defaultForm, fields)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
+import Reference from 'bibliography/domain/Reference';
 import ReferencesForm, {
   defaultReference
 } from 'bibliography/ui/ReferencesForm'
@@ -26,7 +27,20 @@ function References({
   )
 }
 
-export default class ReferencesController extends Component {
+type Props = {
+  references: readonly Reference[]
+  searchBibliography,
+  updateReferences,
+  disabled: boolean
+}
+type State = {
+  references: readonly Reference[]
+}
+export default class ReferencesController extends Component<Props, State> {
+  static defaultProps = {
+    disabled: false
+  }
+
   constructor(props) {
     super(props)
     this.state = {

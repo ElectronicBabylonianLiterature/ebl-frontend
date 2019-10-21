@@ -4,7 +4,7 @@ import _ from 'lodash'
 import './Word.css'
 import InlineMarkdown from 'common/InlineMarkdown'
 
-class Lemma extends Component {
+class Lemma extends Component<{container; value}> {
   render() {
     const container = this.props.container || 'em'
     const attested = this.props.value.attested === false ? '*' : ''
@@ -27,9 +27,9 @@ class Lemma extends Component {
   }
 }
 
-class Notes extends Component {
+class Notes extends Component<{value: ReadonlyArray<string>}> {
   render() {
-    const preNote = _.head(this.props.value)
+    const preNote = _.head(this.props.value) || ''
     const postNote = _.tail(this.props.value).join(' ')
     return (
       <Fragment>
@@ -42,7 +42,7 @@ class Notes extends Component {
         {!_.isEmpty(postNote) && (
           <span className="Notes-note">
             {' '}
-            <InlineMarkdown className="Notes-note" source={postNote} />
+            <InlineMarkdown source={postNote} />
           </span>
         )}
       </Fragment>
@@ -50,7 +50,7 @@ class Notes extends Component {
   }
 }
 
-class Form extends Component {
+class Form extends Component<{value}> {
   render() {
     return _.isString(this.props.value) ? (
       <InlineMarkdown source={this.props.value} />
@@ -62,7 +62,7 @@ class Form extends Component {
   }
 }
 
-class AmplifiedMeanings extends Component {
+class AmplifiedMeanings extends Component<{value}> {
   render() {
     return (
       <ul>
@@ -85,7 +85,7 @@ class AmplifiedMeanings extends Component {
   }
 }
 
-class Derived extends Component {
+class Derived extends Component<{value}> {
   render() {
     return (
       <ul>
@@ -105,7 +105,7 @@ class Derived extends Component {
   }
 }
 
-class Word extends Component {
+class Word extends Component<{value}> {
   get word() {
     return this.props.value
   }

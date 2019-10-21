@@ -3,8 +3,18 @@ import { Col, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import _ from 'lodash'
 import Lemma from 'fragmentarium/domain/Lemma'
+import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 
-class LemmatizationForm extends Component {
+type Props = {token: LemmatizationToken; onChange; fragmentService}
+type State = {
+  isComplex: boolean,
+  selectedOption: Lemma[] | Lemma | null,
+  menuIsOpen: boolean | undefined
+}
+
+class LemmatizationForm extends Component<Props, State> {
+  private readonly checkboxId: string
+
   constructor(props) {
     super(props)
     const isComplex = props.token.uniqueLemma.length > 1
@@ -89,7 +99,7 @@ class LemmatizationForm extends Component {
       <Form.Check
         type="checkbox"
         label="Complex"
-        disabled={this.props.token.uniqueLemma.length > 1}
+        disabled={!!this.props.token.uniqueLemma && this.props.token.uniqueLemma.length > 1}
         checked={this.state.isComplex}
         onChange={() =>
           this.setState({

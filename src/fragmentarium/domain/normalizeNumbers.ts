@@ -1,4 +1,4 @@
-import specialTransliterationCharacters from './specialTransliterationCharacters'
+import specialTransliterationCharacters from './specialTransliterationCharacters.json'
 import escapeRegExp from './escapeRegExp'
 
 function convertNumbers(number) {
@@ -29,7 +29,7 @@ function replacer(match, characters, numbers) {
   return [characters, convertedNumbers].join('')
 }
 
-export default function normalizeNumbers(userInput) {
+export default function normalizeNumbers(userInput: string): string {
   const specialTransliterationCharactersAsString = escapeRegExp(
     specialTransliterationCharacters
   )

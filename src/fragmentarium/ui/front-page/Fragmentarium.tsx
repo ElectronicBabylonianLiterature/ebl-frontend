@@ -17,7 +17,7 @@ function Fragmentarium({
   fragmentSearchService
 }) {
   return (
-    <AppContent crmbs={['Fragmentarium']}>
+    <AppContent crumbs={['Fragmentarium']}>
       <SessionContext.Consumer>
         {session => (
           <Container fluid>

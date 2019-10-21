@@ -4,13 +4,22 @@ import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 import WordLemmatizer from './WordLemmatizer'
 import withData from 'http/withData'
+import Lemmatization from 'fragmentarium/domain/Lemmatization'
 
 import LemmatizationHelp from './LemmatizationHelp'
 
 import './Lemmatizer.css'
 
-class Lemmatizer extends Component {
-  constructor(props) {
+type Props = {
+  data: Lemmatization,
+  fragmentService,
+  updateLemmatization(lemmatization: Lemmatization): any
+  disabled: boolean
+}
+type State = {lemmatization: Lemmatization}
+
+class Lemmatizer extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       lemmatization: _.cloneDeep(props.data)

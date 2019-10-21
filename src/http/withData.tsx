@@ -4,8 +4,8 @@ import ErrorAlert from 'common/ErrorAlert'
 import ErrorBoundary from 'common/ErrorBoundary'
 
 const defaultConfig = {
-  watch: () => [],
-  filter: () => true,
+  watch: props => [],
+  filter: props => true,
   defaultData: null
 }
 

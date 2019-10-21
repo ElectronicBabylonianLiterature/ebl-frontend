@@ -1,7 +1,7 @@
-import _ from 'lodash'
+import _, { Dictionary } from 'lodash'
 import Promise from 'bluebird'
 import Lemma from 'fragmentarium/domain/Lemma'
-import Lemmatization from 'fragmentarium/domain/Lemmatization'
+import Lemmatization, { LemmatizationToken, UniqueLemma } from 'fragmentarium/domain/Lemmatization'
 import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
@@ -9,26 +9,36 @@ import { Text } from 'fragmentarium/domain/text'
 import { Token } from 'fragmentarium/domain/text'
 
 export interface CdliInfo {
-  readonly photoUrl: string | null,
-  lineArtUrl: string | null,
+  readonly photoUrl: string | null
+  lineArtUrl: string | null
   detailLineArtUrl: string | null
 }
 
 export interface ImageRepository {
-  find(fileName: string): Blob;
-  findFolio(folio: Folio): Blob;
-  findPhoto(number: string): Blob;
+  find(fileName: string): Promise<Blob>
+  findFolio(folio: Folio): Promise<Blob>
+  findPhoto(number: string): Promise<Blob>
 }
 
 export interface FragmentRepository {
-  statistics(): Promise<any>;
-  find(number: string): Promise<Fragment>;
-  updateTransliteration(number: string, transliteration: string, notes: string): Promise<Fragment>;
-  updateLemmatization(number: string, lemmatization: Lemmatization): Promise<Fragment>;
-  updateReferences(number: string, references: ReadonlyArray<Reference>): Promise<Fragment>;
-  folioPager(folio: Folio, fragmentNumber: string): Promise<any>;
-  findLemmas(lemma: string): Promise<any>;
-  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>;
+  statistics(): Promise<any>
+  find(number: string): Promise<Fragment>
+  updateTransliteration(
+    number: string,
+    transliteration: string,
+    notes: string
+  ): Promise<Fragment>
+  updateLemmatization(
+    number: string,
+    lemmatization: Lemmatization
+  ): Promise<Fragment>
+  updateReferences(
+    number: string,
+    references: ReadonlyArray<Reference>
+  ): Promise<Fragment>
+  folioPager(folio: Folio, fragmentNumber: string): Promise<any>
+  findLemmas(lemma: string): Promise<any>
+  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
 
 class FragmentService {
@@ -123,7 +133,7 @@ class FragmentService {
 
   createLemmatization(text: Text) {
     return Promise.all([this._fetchLemmas(text), this._fetchSuggestions(text)])
-      .then(([lemmaData, suggestionsData]) => [
+      .then(([lemmaData, suggestionsData]): [Dictionary<Lemma>, Dictionary<ReadonlyArray<UniqueLemma>>] => [
         _.keyBy(lemmaData, 'value'),
         _.fromPairs(suggestionsData)
       ])
@@ -132,25 +142,23 @@ class FragmentService {
       )
   }
 
-  _fetchLemmas(text: Text) {
-    return Promise.all<ReadonlyArray<Lemma>>(
-      mapText(
+  _fetchLemmas(text: Text): Promise<Lemma[]> {
+    return Promise.all(
+      mapText<string, Promise<Lemma>>(
         text,
-        line => line.map(token => token.uniqueLemma || []),
-        uniqueLemma =>
-          this.wordRepository.find(uniqueLemma).then(word => new Lemma(word))
+        line => line.flatMap(token => token.uniqueLemma || []),
+        (uniqueLemma: string): Promise<Lemma> =>
+          this.wordRepository.find(uniqueLemma).then((word: object) => new Lemma(word))
       )
     )
   }
 
   _fetchSuggestions(
     text: Text
-  ): Promise<ReadonlyArray<[string, ReadonlyArray<Lemma>]>> {
-    return Promise.mapSeries<string, [string, ReadonlyArray<Lemma>], any>(
-      mapLines(text, line =>
-        line.filter(token => token.lemmatizable).map(token => token.value)
-      ),
-      (value: string): Promise<[string, ReadonlyArray<Lemma>]> =>
+  ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
+    return Promise.mapSeries(
+      mapLines(text, line => line.filter(token => token.lemmatizable).flatMap(token => token.value)),
+      (value: string): any =>
         this.fragmentRepository
           .findLemmas(value)
           .then(lemmas => [
@@ -171,7 +179,7 @@ class FragmentService {
 
 function mapText<T, U>(
   text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => T | null,
+  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>,
   mapToken: (token: T) => U
 ): ReadonlyArray<U> {
   return mapLines(text, mapLine).map(mapToken)
@@ -179,14 +187,14 @@ function mapText<T, U>(
 
 function mapLines<T>(
   text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T | null> | T | null
+  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>
 ): ReadonlyArray<T> {
   return _(text.lines)
-    .flatMapDeep(({ content }) => mapLine(content))
+    .flatMap(({ content }) => mapLine(content))
     .reject(_.isNil)
     .uniq()
     .sort()
-    .value()
+    .value() as ReadonlyArray<T> // Null values are filtered by isNil
 }
 
 export default FragmentService

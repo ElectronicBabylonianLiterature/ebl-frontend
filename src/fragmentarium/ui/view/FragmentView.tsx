@@ -1,5 +1,6 @@
 import React from 'react'
 import queryString from 'query-string'
+import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
 import CuneiformFragment from './CuneiformFragment'
@@ -27,10 +28,10 @@ export default function FragmentView({
   const folioNumber = queryString.parse(location.search).folioNumber
   const tab = queryString.parse(location.search).tab
   const activeFolio =
-    folioName || folioNumber
+    folioName && folioNumber
       ? new Folio({
-          name: folioName,
-          number: folioNumber
+          name: _.isArray(folioName) ? folioName.join('') : folioName,
+          number: _.isArray(folioNumber) ? folioNumber.join('') : folioNumber
         })
       : null
 

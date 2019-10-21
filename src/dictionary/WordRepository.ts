@@ -1,4 +1,6 @@
 class WordRepository {
+  private readonly apiClient
+
   constructor(apiClient) {
     this.apiClient = apiClient
   }

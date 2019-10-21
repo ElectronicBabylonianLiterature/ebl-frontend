@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import queryString from 'query-string'
+import { Folio } from 'fragmentarium/domain/fragment';
 
 export function createFragmentUrl(number) {
   // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
@@ -20,7 +21,11 @@ export function createFragmentUrlWithTab(number, tab) {
   return `${createFragmentUrl(number)}?${query}`
 }
 
-export default function FragmentLink({ number, children, folio, ...props }) {
+export default function FragmentLink({ number, children, folio, ...props }: {
+  number: string
+  children: ReactNode
+  folio: Folio | null
+}) {
   const link = folio
     ? createFragmentUrlWithFolio(number, folio)
     : createFragmentUrl(number)
@@ -30,3 +35,4 @@ export default function FragmentLink({ number, children, folio, ...props }) {
     </Link>
   )
 }
+FragmentLink.defaultProps = { folio: null }

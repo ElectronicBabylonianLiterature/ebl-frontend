@@ -3,6 +3,7 @@ import Lemmatization, {
   LemmatizationToken
 } from 'fragmentarium/domain/Lemmatization'
 import { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
+import Lemma from './Lemma';
 
 interface Word {
   readonly type: 'Word'
@@ -33,21 +34,24 @@ interface Shift {
   readonly normalized: boolean
   readonly language: string
   readonly lemmatizable?: false
+  readonly uniqueLemma?: null
 }
 
 interface Erasure {
-  readonly type: 'Erasure',
-  readonly value: string,
-  readonly side: string,
+  readonly type: 'Erasure'
+  readonly value: string
+  readonly side: string
   readonly lemmatizable?: false
+  readonly uniqueLemma?: null
 }
 
 export type Token =
-  {
-    readonly type: string,
-    readonly value: string,
-    readonly lemmatizable?: false
-  }
+  | {
+      readonly type: string
+      readonly value: string
+      readonly lemmatizable?: false
+      readonly uniqueLemma?: null
+    }
   | Word
   | LoneDeterminative
   | Shift
@@ -67,7 +71,7 @@ export class Text {
   }
 
   createLemmatization(
-    lemmas: { [key: string]: UniqueLemma },
+    lemmas: { [key: string]: Lemma },
     suggestions: { [key: string]: ReadonlyArray<UniqueLemma> }
   ): Lemmatization {
     return new Lemmatization(

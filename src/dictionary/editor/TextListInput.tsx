@@ -4,7 +4,7 @@ import { FormGroup } from 'react-bootstrap'
 import TextInput from './TextInput'
 import List from 'common/List'
 
-class ListInput extends Component {
+class ListInput extends Component<{value, onChange}> {
   render() {
     return (
       <FormGroup>

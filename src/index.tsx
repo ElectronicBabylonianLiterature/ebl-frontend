@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
-import * as Promise from 'bluebird'
+import Promise from 'bluebird'
 import './index.css'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
@@ -70,4 +70,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister({})
+serviceWorker.unregister()

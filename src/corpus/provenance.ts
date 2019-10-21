@@ -3,7 +3,7 @@ export type Provenance = {
   readonly abbreviation: string
   readonly parent?: string
 }
-export const provenances: ReadOnlyMap<string, Provenance> = new Map([
+export const provenances: ReadonlyMap<string, Provenance> = new Map([
   ['Assyria', { name: 'Assyria', abbreviation: 'Assa' }],
   ['Aššur', { name: 'Aššur', abbreviation: 'Ašš', parent: 'Assyria' }],
   ['Ḫuzirina', { name: 'Ḫuzirina', abbreviation: 'Huz', parent: 'Assyria' }],

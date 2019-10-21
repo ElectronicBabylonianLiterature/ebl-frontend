@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import queryString from 'query-string'
 import { Form, Button, Row, Col, Popover } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
@@ -39,7 +39,14 @@ function TransliterationSearchHelp() {
   )
 }
 
-class TransliterationSearchForm extends Component {
+type State = {
+  transliteration: string
+}
+type Props = {
+  transliteration: string
+} & RouteComponentProps
+
+class TransliterationSearchForm extends Component<Props, State> {
   state = {
     transliteration: this.props.transliteration || ''
   }

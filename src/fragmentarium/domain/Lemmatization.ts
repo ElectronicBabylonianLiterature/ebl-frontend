@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { produce, immerable } from 'immer'
 import { Draft } from 'immer'
 import Lemma from './Lemma'
+import { UniqueLemma } from 'fragmentarium/domain/Lemmatization';
 
 export type UniqueLemma = ReadonlyArray<Lemma>
 
@@ -16,7 +17,7 @@ export class LemmatizationToken {
     value: string,
     lemmatizable: boolean,
     uniqueLemma: UniqueLemma | null = null,
-    suggestions: ReadonlyArray<UniqueLemma> | null= null,
+    suggestions: ReadonlyArray<UniqueLemma> | null = null,
     suggested: boolean = false
   ) {
     this.value = value
@@ -30,10 +31,10 @@ export class LemmatizationToken {
     uniqueLemma: UniqueLemma,
     suggested: boolean = false
   ): LemmatizationToken {
-    return produce(this, (draft: Draft<LemmatizationToken>) => {
+    return produce((draft: Draft<LemmatizationToken>, uniqueLemma) => {
       draft.uniqueLemma = uniqueLemma
       draft.suggested = suggested
-    })
+    })(this, uniqueLemma)
   }
 
   applySuggestion(): LemmatizationToken {
@@ -88,25 +89,24 @@ export default class Lemmatization {
     columnIndex: number,
     uniqueLemma: UniqueLemma
   ): Lemmatization {
-    return produce(this, (draft: Draft<Lemmatization>) => {
-      const token = draft.tokens[rowIndex][columnIndex]
-      draft.tokens[rowIndex][columnIndex] = token.setUniqueLemma(uniqueLemma)
-    })
+    return produce((draft: Draft<Lemmatization>, token) => {
+      draft.tokens[rowIndex][columnIndex] = token
+    })(this, this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma))
   }
 
   applySuggestions(): Lemmatization {
-    return produce(this, (draft: Draft<Lemmatization>) => {
-      draft.tokens = this._mapTokens(token => token.applySuggestion())
-    })
+    return produce((draft: Draft<Lemmatization>, tokens) => {
+      draft.tokens = tokens
+    })(this, this._mapTokens(token => token.applySuggestion()))
   }
 
   clearSuggestionFlags(): Lemmatization {
-    return produce(this, (draft: Draft<Lemmatization>) => {
-      draft.tokens = this._mapTokens(token => token.clearSuggestionFlag())
-    })
+    return produce((draft: Draft<Lemmatization>, tokens) => {
+      draft.tokens = tokens
+    })(this, this._mapTokens(token => token.clearSuggestionFlag()))
   }
 
-  toDto(): ReadonlyArray<ReadonlyArray<{ [string]: mixed }>> {
+  toDto(): ReadonlyArray<ReadonlyArray<{ [key: string]: any }>> {
     return this.tokens.map(row => row.map(token => token.toDto()))
   }
 

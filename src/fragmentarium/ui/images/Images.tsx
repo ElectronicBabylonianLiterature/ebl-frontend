@@ -12,7 +12,7 @@ import {
   createFragmentUrlWithFolio,
   createFragmentUrlWithTab
 } from 'fragmentarium/ui/FragmentLink'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
 
 const FOLIO = 'folio'

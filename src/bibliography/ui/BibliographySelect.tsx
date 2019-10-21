@@ -15,7 +15,10 @@ function createOption(entry) {
     : null
 }
 
-export default class BibliographySelect extends Component<{ value, searchBibliography, onChange }, { selectedOption }> {
+export default class BibliographySelect extends Component<
+  { value; searchBibliography; onChange },
+  { selectedOption }
+> {
   constructor(props) {
     super(props)
     this.state = {

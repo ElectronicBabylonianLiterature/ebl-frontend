@@ -37,23 +37,27 @@ function Text({ text }) {
 }
 
 function Texts({ texts }) {
-  return <>{[
-    '',
-    'I. Narrative Poetry',
-    'II. Monologue and dialogue literature',
-    'III. Literary Hymns and Prayers'
-  ].map((title, category) => (
-    <section key={category}>
-      <h3>{title}</h3>
-      <Container fluid as="ol">
-        {_(texts)
-          .filter(text => text.category === category)
-          .sortBy(text => text.index)
-          .map((text, index) => <Text key={index} text={text} />)
-          .value()}
-      </Container>
-    </section>
-  ))}</>
+  return (
+    <>
+      {[
+        '',
+        'I. Narrative Poetry',
+        'II. Monologue and dialogue literature',
+        'III. Literary Hymns and Prayers'
+      ].map((title, category) => (
+        <section key={category}>
+          <h3>{title}</h3>
+          <Container fluid as="ol">
+            {_(texts)
+              .filter(text => text.category === category)
+              .sortBy(text => text.index)
+              .map((text, index) => <Text key={index} text={text} />)
+              .value()}
+          </Container>
+        </section>
+      ))}
+    </>
+  )
 }
 
 const TextsWithData = withData(

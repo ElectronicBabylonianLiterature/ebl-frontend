@@ -1,14 +1,16 @@
 import React from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { ListGroup, ListGroupProps } from 'react-bootstrap'
 import _ from 'lodash'
 import { UncuratedReference } from 'fragmentarium/domain/fragment'
+import { classNames } from 'classnames';
 
 export default function UncuratedReferencesList({
   uncuratedReferences,
   ...props
 }: {
-  uncuratedReferences: ReadonlyArray<UncuratedReference>
-}) {
+  uncuratedReferences: ReadonlyArray<UncuratedReference>,
+  className: string
+} & ListGroupProps) {
   return (
     <ListGroup as="ul" variant="flush" {...props}>
       {uncuratedReferences.map((reference, index) => (

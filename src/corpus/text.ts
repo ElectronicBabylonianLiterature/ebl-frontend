@@ -24,10 +24,17 @@ export class Manuscript {
   siglumDisambiguator: string = ''
   museumNumber: string = ''
   accession: string = ''
-  periodModifier: PeriodModifier = periodModifiers.get('None')
-  period: Period = periods.get('Neo-Assyrian')
-  provenance: Provenance = provenances.get('Nineveh')
-  type: ManuscriptType = types.get('Library') || { name: 'Library', abbreviation: '' }
+  periodModifier: PeriodModifier = periodModifiers.get('None') || { name: 'None', displayName: '-' }
+  period: Period = periods.get('Neo-Assyrian') || {
+    name: 'Neo-Assyrian',
+    abbreviation: 'NA',
+    description: '(ca. 1000–609 BCE)'
+  }
+  provenance: Provenance = provenances.get('Nineveh') || { name: 'Nineveh', abbreviation: 'Nin', parent: 'Assyria' }
+  type: ManuscriptType = types.get('Library') || {
+    name: 'Library',
+    abbreviation: ''
+  }
   notes: string = ''
   references: ReadonlyArray<Reference> = []
 
@@ -88,7 +95,7 @@ export type Line = {
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
 export const createLine: (x0: Partial<Line>) => Line = produce(
-  (draft: Draft<Line>): Line => ({
+  (draft: any): Line => ({
     number: '',
     reconstruction: '',
     manuscripts: [],
@@ -105,8 +112,8 @@ export type Chapter = {
   readonly manuscripts: ReadonlyArray<Manuscript>
   readonly lines: ReadonlyArray<Line>
 }
-export const createChapter: (x0: $Shape<Chapter>) => Chapter = produce(
-  (draft: $Shape<Chapter>): Chapter => ({
+export const createChapter: (x0: Partial<Chapter>) => Chapter = produce(
+  (draft: any): Chapter => ({
     classification: 'Ancient',
     stage: 'Neo-Assyrian',
     version: '',
@@ -134,7 +141,7 @@ export class Text {
 }
 Text[immerable] = true
 
-export function createText(data: $Shape<Text>): Text {
+export function createText(data: Partial<Text>): Text {
   return produce(new Text(), (draft: Draft<Text>) => {
     _.assign(draft, data)
   })

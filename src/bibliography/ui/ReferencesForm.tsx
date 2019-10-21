@@ -13,9 +13,9 @@ export default function ReferencesForm({
   label,
   collapsed
 }: {
-  searchBibliography: (x0: string) => ReadonlyArray<BibliographyEntry>
+  searchBibliography: (query: string) => ReadonlyArray<BibliographyEntry>
   value: ReadonlyArray<Reference>
-  onChange: (x0: ReadonlyArray<Reference>) => void
+  onChange: (value: ReadonlyArray<Reference>) => void
   label: string
   collapsed: boolean
 }) {
@@ -37,4 +37,8 @@ export default function ReferencesForm({
       )}
     </ListForm>
   )
+}
+ReferencesForm.defaultProps = {
+  label: '',
+  collapsed: false
 }

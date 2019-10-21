@@ -1,6 +1,7 @@
 import _ from 'lodash'
+import { changeValue } from './../../test-helpers/utils';
 
-function extractMeanings(object, levels) {
+function extractMeanings(object, levels: any[]) {
   return _.isEmpty(levels)
     ? [object.meaning]
     : [
@@ -30,11 +31,15 @@ function createMeaning(word) {
 }
 
 export default class Lemma {
-  constructor(word) {
+  readonly value: string
+  readonly lemma: string
+  readonly homonym: string
+  readonly label: string
+
+  constructor(word: {[key: string]: any}) {
     this.value = word._id
     this.lemma = word.lemma.join(' ')
     this.homonym = word.homonym === 'I' ? '' : ` ${word.homonym}`
     this.label = `${this.lemma}${this.homonym}${createMeaning(word)}`
-    Object.freeze(this)
   }
 }

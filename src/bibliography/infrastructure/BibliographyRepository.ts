@@ -7,7 +7,7 @@ function createEntry(cslData) {
 
 export default class BibliographyRepository {
   private readonly apiClient
-  
+
   constructor(apiClient) {
     this.apiClient = apiClient
   }

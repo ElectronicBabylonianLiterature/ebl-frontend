@@ -24,7 +24,7 @@ const characters = {
   "'": 'ʾ'
 }
 
-export default function replaceSpecialCharacters(userInput) {
+export default function replaceSpecialCharacters(userInput: string): string {
   const specialCharacters = escapeRegExp(Object.keys(characters))
   const regExp = new RegExp(specialCharacters, 'g')
   return userInput.replace(regExp, match => characters[match] || match)

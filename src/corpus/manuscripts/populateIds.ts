@@ -19,4 +19,3 @@ export default function populateIds(manuscripts: Manuscript[]) {
       })
   })
 }
-  

@@ -12,7 +12,7 @@ type Props = {
 }
 
 function Collection({ fragment }: Props) {
-  return fragment.collection && `(${fragment.collection} Collection)`
+  return <>{fragment.collection && `(${fragment.collection} Collection)`}</>
 }
 
 function MuseumName({ fragment }: Props) {
@@ -20,7 +20,7 @@ function MuseumName({ fragment }: Props) {
   return museum.hasUrl ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
   ) : (
-    museum.name
+    <>{museum.name}</>
   )
 }
 
@@ -52,7 +52,7 @@ function Measurements({ fragment }: Props) {
     .compact()
     .join(' × ')
 
-  return `${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`
+  return <>`${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`</>
 }
 
 function CdliNumber({ fragment }: Props) {

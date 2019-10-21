@@ -5,7 +5,10 @@ export default class Citation {
     'COPY',
     'EDITION'
   ]
-  static readonly CONTAINER_CITATION_IDS: ReadonlyArray<string> = ['RN2720', 'RN2721']
+  static readonly CONTAINER_CITATION_IDS: ReadonlyArray<string> = [
+    'RN2720',
+    'RN2721'
+  ]
 
   static for(reference: Reference): Citation {
     const useContainerCitation =

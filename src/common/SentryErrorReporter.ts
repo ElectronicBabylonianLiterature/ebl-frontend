@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser'
+import { ErrorReporter } from 'ErrorReporterContext'
 
-class SentryErrorReporter {
+class SentryErrorReporter implements ErrorReporter {
   static init(dsn, environment) {
     Sentry.init({
       dsn,

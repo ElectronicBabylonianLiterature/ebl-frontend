@@ -72,7 +72,6 @@ function IntroText() {
 export default function Introduction() {
   return (
     <AppContent
-      className="App-content"
       title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction"
     >
       <IntroText />

@@ -8,7 +8,7 @@ import Lemma from 'fragmentarium/domain/Lemma'
 
 test('createLemmatization', async () => {
   const words = await factory.buildMany('word', 4)
-  const lemmas = _(words)
+  const lemmas: {[key: string]: Lemma} = _(words)
     .map(word => new Lemma(word))
     .keyBy('value')
     .value()

@@ -1,7 +1,6 @@
 import _ from 'lodash'
-import Moment from 'moment'
-import { extendMoment } from 'moment-range'
-import { DateRange } from 'moment-range'
+import * as Moment from 'moment'
+import { extendMoment, DateRange } from 'moment-range'
 import { produce, immerable } from 'immer'
 import { Draft } from 'immer'
 import Reference from 'bibliography/domain/Reference'
@@ -11,16 +10,20 @@ import Museum from './museum'
 const moment = extendMoment(Moment)
 
 export interface FragmentInfo {
-  readonly number: string,
-  readonly accession: string,
-  readonly script: string,
-  readonly description: string,
-  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>,
-  readonly editor: string,
+  readonly number: string
+  readonly accession: string
+  readonly script: string
+  readonly description: string
+  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
+  readonly editor: string
   readonly edition_date: string
 }
 
-interface FolioType { readonly name: string, readonly hasImage: boolean }
+interface FolioType {
+  readonly name: string
+  readonly hasImage: boolean
+}
+
 const folioTypes: { readonly [key: string]: FolioType } = {
   WGL: { name: 'Lambert', hasImage: true },
   FWG: { name: 'Geers', hasImage: true },
@@ -37,7 +40,7 @@ export class Folio {
   readonly number: string
   private readonly type: FolioType
 
-  constructor({ name, number }: { name: string, number: string }) {
+  constructor({ name, number }: { name: string; number: string }) {
     this.name = name
     this.number = number
     this.type = folioTypes[name] || { name, hasImage: false }
@@ -75,8 +78,8 @@ export class RecordEntry {
     date,
     type
   }: {
-    user: string,
-    date: string,
+    user: string
+    date: string
     type: RecordType
   }) {
     this.user = user
@@ -84,7 +87,7 @@ export class RecordEntry {
     this.type = type
   }
 
-  get moment(): DateRange | Moment {
+  get moment(): DateRange | Moment.Moment {
     return this.isHistorical ? moment.range(this.date) : moment(this.date)
   }
 
@@ -109,13 +112,13 @@ export class RecordEntry {
 RecordEntry[immerable] = true
 
 export interface Measures {
-  readonly length: number | null,
-  readonly width: number | null,
+  readonly length: number | null
+  readonly width: number | null
   readonly thickness: number | null
 }
 
 export interface UncuratedReference {
-  readonly document: string,
+  readonly document: string
   readonly pages: ReadonlyArray<number>
 }
 
@@ -161,24 +164,24 @@ export class Fragment {
     atf,
     hasPhoto
   }: {
-    number: string,
-    cdliNumber: string,
-    bmIdNumber: string,
-    accession: string,
-    publication: string,
-    joins: ReadonlyArray<string>,
-    description: string,
-    measures: Measures,
-    collection: string,
-    script: string,
-    folios: ReadonlyArray<Folio>,
-    record: ReadonlyArray<RecordEntry>,
-    text: Text,
-    notes: string,
-    museum: Museum,
-    references: ReadonlyArray<any>,
-    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null,
-    atf: string,
+    number: string
+    cdliNumber: string
+    bmIdNumber: string
+    accession: string
+    publication: string
+    joins: ReadonlyArray<string>
+    description: string
+    measures: Measures
+    collection: string
+    script: string
+    folios: ReadonlyArray<Folio>
+    record: ReadonlyArray<RecordEntry>
+    text: Text
+    notes: string
+    museum: Museum
+    references: ReadonlyArray<any>
+    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
+    atf: string
     hasPhoto: boolean
   }) {
     this.number = number
@@ -197,7 +200,7 @@ export class Fragment {
     this.notes = notes
     this.museum = museum
     this.references = references
-    this.uncuratedReferences = uncuratedReferences
+    this.uncuratedReferences = uncuratedReferences || null
     this.atf = atf
     this.hasPhoto = hasPhoto
   }
@@ -207,10 +210,9 @@ export class Fragment {
   }
 
   get uniqueRecord(): ReadonlyArray<RecordEntry> {
-    const reducer = (filteredRecord, recordEntry) => {
-      const keepRecord =
-        _.isEmpty(filteredRecord) ||
-        !_.last(filteredRecord).dateEquals(recordEntry)
+    const reducer = (filteredRecord: RecordEntry[], recordEntry: RecordEntry) => {
+      const last = _.last(filteredRecord)
+      const keepRecord = !last || !last.dateEquals(recordEntry)
       if (keepRecord) {
         filteredRecord.push(recordEntry)
       }
@@ -219,7 +221,7 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: ReadonlyArray<Reference>): Fragment {
+  setReferences(references: Reference[]): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })

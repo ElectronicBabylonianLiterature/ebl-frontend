@@ -22,7 +22,7 @@ const specialCharacterKeys = Object.entries(specialCharacters).map(
   ([key, value]) => ({
     name: `insert a special character ${key}`,
     bindKey: value,
-    exec: editor => {
+    exec(editor: any) {
       editor.insert(key)
     }
   })
@@ -50,10 +50,12 @@ function Editor({ name, value, onChange, disabled, error }) {
       editorProps={{
         $blockScrolling: Infinity
       }}
+      // @ts-ignore
       setOptions={{
         showLineNumbers: false,
         newLineMode: 'unix'
       }}
+      // @ts-ignore
       commands={specialCharacterKeys}
     />
   )

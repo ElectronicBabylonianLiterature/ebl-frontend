@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import cancellableFetch from './cancellableFetch'
+import { auth0 } from 'auth0-js';
 
 export function apiUrl(path) {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -19,7 +20,9 @@ function createOptions(body, method) {
   }
 }
 export class ApiError extends Error {
-  constructor(message, data) {
+  readonly data: object
+
+  constructor(message: string, data: object) {
     super(message)
     this.name = this.constructor.name
     this.data = data
@@ -30,7 +33,7 @@ export class ApiError extends Error {
     }
   }
 
-  static async fromResponse(response) {
+  static async fromResponse(response: Response): Promise<ApiError> {
     return response
       .json()
       .then(body => new ApiError(body.description || response.statusText, body))
@@ -39,6 +42,9 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
+  private readonly auth
+  private readonly errorReporter
+
   constructor(auth, errorReporter) {
     this.auth = auth
     this.errorReporter = errorReporter
@@ -81,7 +87,7 @@ export default class ApiClient {
     return this.fetch(path, authenticate, {}).then(response => response.json())
   }
 
-  fetchBlob(path, authenticate) {
+  fetchBlob(path: string, authenticate: boolean): Promise<Blob> {
     return this.fetch(path, authenticate, {}).then(response => response.blob())
   }
 

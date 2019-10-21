@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Node } from 'react'
 import { Button } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import Spinner from 'common/Spinner'
@@ -9,19 +8,16 @@ import { createFragmentUrl } from './FragmentLink'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
-interface History {
-  push(string): void
-}
+type Props = {
+  query: () => Promise<FragmentInfo>
+  children?: React.ReactNode
+} & RouteComponentProps
 
 function FragmentButton({
   query,
   history,
   children
-}: {
-  query: () => Promise<FragmentInfo>
-  history: History
-  children?: Node
-}) {
+}: Props) {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()

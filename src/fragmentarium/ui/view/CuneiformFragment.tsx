@@ -71,7 +71,6 @@ function EditorTabs({
             <ContentSection>
               <Edition
                 fragment={fragment}
-                fragmentService={fragmentService}
                 updateTransliteration={updateTransliteration}
                 fragmentSearchService={fragmentSearchService}
                 disabled={disabled}

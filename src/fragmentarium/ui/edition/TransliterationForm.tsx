@@ -8,20 +8,26 @@ import {
   Col
 } from 'react-bootstrap'
 import _ from 'lodash'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 
 import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
 
-class TransliteratioForm extends Component {
+type Props = {transliteration: string, notes: string, updateTransliteration, disabled: boolean}
+type State = {transliteration: string, notes: string, error: Error | null, disabled: boolean}
+class TransliteratioForm extends Component<Props, State> {
+  private readonly formId: string
+  private updatePromise: Promise<any>
+
   constructor(props) {
     super(props)
     this.formId = _.uniqueId('TransliteratioForm-')
     this.state = {
       transliteration: this.props.transliteration,
       notes: this.props.notes,
-      error: null
+      error: null,
+      disabled: false
     }
     this.updatePromise = Promise.resolve()
   }
@@ -92,7 +98,7 @@ class TransliteratioForm extends Component {
         error={this.state.error}
         showHelp
       />
-      <this.EditorFormGroup property="notes" />
+      <this.EditorFormGroup property="notes" error={null} showHelp={false} />
     </form>
   )
 

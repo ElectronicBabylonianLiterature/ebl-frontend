@@ -1,4 +1,6 @@
 class WordService {
+  private readonly wordRepository
+
   constructor(wordRepository) {
     this.wordRepository = wordRepository
   }

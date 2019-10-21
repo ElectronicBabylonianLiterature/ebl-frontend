@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-class LemmaInput extends Component {
+class LemmaInput extends Component<{value; onChange}> {
   get hasAttested() {
     return _.has(this.props.value, 'attested')
   }

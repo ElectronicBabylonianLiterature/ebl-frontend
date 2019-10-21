@@ -28,13 +28,17 @@ function BibliographyHelp() {
 }
 
 type State = {
-  citation: string,
-  value: any,
-  cslData: ReadonlyArray<any> | null,
-  loading: boolean,
-  isInvalid: boolean,
+  citation: string
+  value: any
+  cslData: ReadonlyArray<any> | null
+  loading: boolean
+  isInvalid: boolean
 }
-export default class BibliographyEntryForm extends Component<{ value, disabled, onSubmit }, State> {
+export default class BibliographyEntryForm extends Component<
+  { value; disabled: boolean; onSubmit },
+  State
+> {
+  static defaultProps: { value: null, disabled: false}
   private promise: Promise<any>
   private doLoad: (value: any) => Promise<any>
 
@@ -95,7 +99,7 @@ export default class BibliographyEntryForm extends Component<{ value, disabled, 
         .then(resolve)
         .catch(reject)
     })
-      .then(cite => {
+      .then((cite: any) => {
         this.setState({
           ...this.state,
           citation: cite.format('bibliography', {
@@ -124,7 +128,9 @@ export default class BibliographyEntryForm extends Component<{ value, disabled, 
 
   handleSubmit = event => {
     event.preventDefault()
-    const entry = new BibliographyEntry(this.state.cslData && this.state.cslData[0])
+    const entry = new BibliographyEntry(
+      this.state.cslData && this.state.cslData[0]
+    )
     this.props.onSubmit(entry)
   }
 

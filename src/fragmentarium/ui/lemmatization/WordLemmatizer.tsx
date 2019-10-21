@@ -5,8 +5,11 @@ import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
 
 import './WordLemmatizer.css'
+import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization';
 
-export default class WordLemmatizer extends Component {
+export default class WordLemmatizer extends Component<{fragmentService, token: LemmatizationToken, onChange}, {show: boolean, target?}> {
+  private readonly popOverId: string
+
   constructor(props) {
     super(props)
     this.popOverId = _.uniqueId('LemmatizationPopOver-')

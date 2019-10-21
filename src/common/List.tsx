@@ -8,13 +8,11 @@ import { produce } from 'immer'
 
 function SizeBadge({ collection }) {
   const size = collection.length
-  return (
-    size > 0 ? (
-      <Badge variant="light" pill>
-        {size}
-      </Badge>
-    ) : null
-  )
+  return size > 0 ? (
+    <Badge variant="light" pill>
+      {size}
+    </Badge>
+  ) : null
 }
 
 function createDefaultValue(defaultValue) {

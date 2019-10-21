@@ -9,8 +9,10 @@ import ErrorAlert from 'common/ErrorAlert'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 
-class WordEditor extends Component {
+class WordEditor extends Component<{match; data; wordService}, {word; error: Error | null; saving: boolean}> {
   static contextType = SessionContext
+
+  private updatePromise: Promise<any>
 
   constructor(props) {
     super(props)

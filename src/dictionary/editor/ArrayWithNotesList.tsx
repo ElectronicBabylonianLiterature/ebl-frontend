@@ -4,7 +4,7 @@ import { FormGroup } from 'react-bootstrap'
 import ArrayWithNotes from './ArrayWithNotes'
 import List from 'common/List'
 
-class ArrayWithNotesList extends Component {
+class ArrayWithNotesList extends Component<{value, onChange, noun, property, separator}> {
   render() {
     return (
       <FormGroup>
