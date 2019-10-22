@@ -1,5 +1,10 @@
 import React from 'react'
-import { fireEvent, render, waitForElement } from '@testing-library/react'
+import {
+  fireEvent,
+  render,
+  waitForElement,
+  RenderResult
+} from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
 import Auth from 'auth/Auth'
@@ -14,6 +19,7 @@ import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepo
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { defaultErrorReporter } from 'ErrorReporterContext'
 import createAuth0Config from 'auth/createAuth0Config'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 function createApp(api, sessionStore) {
   const auth0Config = createAuth0Config()
@@ -27,8 +33,10 @@ function createApp(api, sessionStore) {
   const fragmentService = new FragmentService(
     fragmentRepository,
     imageRepository,
+    wordRepository,
     bibliographyService
   )
+  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const textService = new TextService(api)
 
   return (
@@ -36,6 +44,7 @@ function createApp(api, sessionStore) {
       auth={auth}
       wordService={wordService}
       fragmentService={fragmentService}
+      fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}
       textService={textService}
     />
@@ -43,12 +52,21 @@ function createApp(api, sessionStore) {
 }
 
 export default class AppDriver {
-  initialEntries = []
-  element = null
-  session = null
+  private readonly api
+  private initialEntries: string[] = []
+  private element: RenderResult | null = null
+  private session: Session | null = null
 
   constructor(api) {
     this.api = api
+  }
+
+  getElement() {
+    if (this.element) {
+      return this.element
+    } else {
+      throw new Error('getElement called before render.')
+    }
   }
 
   withPath(path) {
@@ -87,19 +105,22 @@ export default class AppDriver {
   }
 
   async waitForText(text) {
-    await waitForElement(() => this.element.getByText(text))
+    await waitForElement(() => this.getElement().getByText(text))
   }
 
   expectTextContent(text) {
-    expect(this.element.container).toHaveTextContent(text)
+    expect(this.getElement().container).toHaveTextContent(text)
   }
 
   expectNotInContent(text) {
-    expect(this.element.queryByText(text)).toBeNull()
+    expect(this.getElement().queryByText(text)).toBeNull()
   }
 
   expectLink(text, expectedHref) {
-    expect(this.element.getByText(text)).toHaveAttribute('href', expectedHref)
+    expect(this.getElement().getByText(text)).toHaveAttribute(
+      'href',
+      expectedHref
+    )
   }
 
   expectBreadcrumbs(crumbs) {
@@ -107,19 +128,18 @@ export default class AppDriver {
   }
 
   expectInputElement(label, expectedValue) {
-    expect(this.element.getByLabelText(label).value).toEqual(
-      String(expectedValue)
-    )
+    expect(
+      (this.getElement().getByLabelText(label) as HTMLInputElement).value
+    ).toEqual(String(expectedValue))
   }
 
   changeValueByLabel(label, newValue) {
-    const input = this.element.getByLabelText(label)
+    const input = this.getElement().getByLabelText(label)
     fireEvent.change(input, { target: { value: newValue } })
   }
 
   click(text, n = 0) {
-    const clickable = this.element.getAllByText(text)[n]
+    const clickable = this.getElement().getAllByText(text)[n]
     fireEvent.click(clickable)
-    // await wait()
   }
 }

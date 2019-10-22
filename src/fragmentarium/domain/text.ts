@@ -1,66 +1,65 @@
 import { immerable } from 'immer'
 import Lemmatization, {
   LemmatizationToken
-} from 'fragmentarium/domain/Lemmatization'
-import { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
-import Lemma from './Lemma';
+, UniqueLemma } from 'fragmentarium/domain/Lemmatization'
 
-interface Word {
-  readonly type: 'Word'
-  readonly value: string
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable: boolean
-  readonly erasure: string
-  readonly alignment?: number
+import Lemma from './Lemma'
+
+type Word = {
+  readonly type: 'Word';
+  readonly value: string;
+  readonly uniqueLemma: ReadonlyArray<string>;
+  readonly normalized: boolean;
+  readonly language: string;
+  readonly lemmatizable: boolean;
+  readonly erasure: string;
+  readonly alignment?: number;
 }
 
-interface LoneDeterminative {
-  readonly type: 'LoneDeterminative'
-  readonly value: string
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable: boolean
-  readonly partial: [boolean, boolean]
-  readonly erasure: string
-  readonly alignment: number
+type LoneDeterminative = {
+  readonly type: 'LoneDeterminative';
+  readonly value: string;
+  readonly uniqueLemma: ReadonlyArray<string>;
+  readonly normalized: boolean;
+  readonly language: string;
+  readonly lemmatizable: boolean;
+  readonly partial: [boolean, boolean];
+  readonly erasure: string;
+  readonly alignment?: number;
 }
 
-interface Shift {
-  readonly type: 'LanguageShift'
-  readonly value: string
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
+type Shift = {
+  readonly type: 'LanguageShift';
+  readonly value: string;
+  readonly normalized: boolean;
+  readonly language: string;
+  readonly lemmatizable?: false;
+  readonly uniqueLemma?: null;
 }
 
-interface Erasure {
-  readonly type: 'Erasure'
-  readonly value: string
-  readonly side: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
+type Erasure = {
+  readonly type: 'Erasure';
+  readonly value: string;
+  readonly side: string;
+  readonly lemmatizable?: false;
+  readonly uniqueLemma?: null;
 }
 
-export type Token =
-  | {
-      readonly type: string
-      readonly value: string
-      readonly lemmatizable?: false
-      readonly uniqueLemma?: null
-    }
-  | Word
-  | LoneDeterminative
-  | Shift
-  | Erasure
+type PlainToken = {
+  readonly type: string;
+  readonly value: string;
+  readonly lemmatizable?: false;
+  readonly uniqueLemma?: null;
+}
+
+export type Token = PlainToken | Word | LoneDeterminative | Shift | Erasure
+
+export type lineType = 'ControlLine' | 'EmptyLine' | 'TextLine'
 
 export interface Line {
-  readonly type: 'ControlLine' | 'EmptyLine' | 'TextLine'
-  readonly prefix: string
-  readonly content: ReadonlyArray<Token>
+  readonly type: lineType;
+  readonly prefix: string;
+  readonly content: ReadonlyArray<Token>;
 }
 
 export class Text {

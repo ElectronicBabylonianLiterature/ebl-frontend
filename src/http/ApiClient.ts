@@ -1,16 +1,15 @@
 import Promise from 'bluebird'
 import cancellableFetch from './cancellableFetch'
-import { auth0 } from 'auth0-js';
 
-export function apiUrl(path) {
+export function apiUrl(path): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-function deserializeJson(response) {
+function deserializeJson(response): any {
   return [201, 204].includes(response.status) ? null : response.json()
 }
 
-function createOptions(body, method) {
+function createOptions(body, method): RequestInit {
   return {
     body: JSON.stringify(body),
     headers: {
@@ -50,7 +49,7 @@ export default class ApiClient {
     this.errorReporter = errorReporter
   }
 
-  createHeaders(authenticate, headers) {
+  createHeaders(authenticate, headers): Headers {
     const defaultHeaders = authenticate
       ? { Authorization: `Bearer ${this.auth.getAccessToken()}` }
       : {}
@@ -60,7 +59,7 @@ export default class ApiClient {
     })
   }
 
-  fetch(path, authenticate, options) {
+  fetch(path, authenticate, options): Promise<Response> {
     try {
       const headers = this.createHeaders(authenticate, options.headers)
       return cancellableFetch(apiUrl(path), {
@@ -83,7 +82,7 @@ export default class ApiClient {
     }
   }
 
-  fetchJson(path, authenticate) {
+  fetchJson(path, authenticate): Promise<any> {
     return this.fetch(path, authenticate, {}).then(response => response.json())
   }
 
@@ -91,13 +90,13 @@ export default class ApiClient {
     return this.fetch(path, authenticate, {}).then(response => response.blob())
   }
 
-  postJson(path, body) {
+  postJson(path, body): Promise<any> {
     return this.fetch(path, true, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }
 
-  putJson(path, body) {
+  putJson(path, body): Promise<any> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson
     )

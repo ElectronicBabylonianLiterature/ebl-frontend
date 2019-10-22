@@ -7,7 +7,7 @@ class Expectation {
   response = {}
   verify = false
   called = false
-  body = null
+  body: object | null = null
   isBlob = false
 
   constructor(data) {
@@ -16,9 +16,9 @@ class Expectation {
 }
 
 export default class FakeApi {
-  expectations = []
+  private expectations: Expectation[] = []
 
-  client = {
+  readonly client = {
     fetchJson: jest.fn().mockImplementation((path, authenticate) => {
       const expectation = this.expectations.find(
         entry =>
@@ -67,7 +67,7 @@ export default class FakeApi {
     })
   }
 
-  expectTexts(texts) {
+  expectTexts(texts): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -80,7 +80,7 @@ export default class FakeApi {
     return this
   }
 
-  allowText(text) {
+  allowText(text): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -92,7 +92,7 @@ export default class FakeApi {
     return this
   }
 
-  expectText(text) {
+  expectText(text): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -105,7 +105,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateManuscripts(text, chapterIndex, manuscripts) {
+  expectUpdateManuscripts(text, chapterIndex, manuscripts): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -118,7 +118,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateLines(text, chapterIndex, lines) {
+  expectUpdateLines(text, chapterIndex, lines): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -131,7 +131,7 @@ export default class FakeApi {
     return this
   }
 
-  allowStatistics(statistics) {
+  allowStatistics(statistics): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -143,7 +143,7 @@ export default class FakeApi {
     return this
   }
 
-  allowImage(file) {
+  allowImage(file): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -155,7 +155,7 @@ export default class FakeApi {
     return this
   }
 
-  verifyExpectations() {
+  verifyExpectations(): void {
     const methods = {
       GET: expectation =>
         expect(

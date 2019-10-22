@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent, ChangeEvent } from 'react'
+import React, { Component } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import Cite from 'citation-js'
 import _ from 'lodash'
@@ -28,17 +28,17 @@ function BibliographyHelp() {
 }
 
 type State = {
-  citation: string
-  value: any
-  cslData: ReadonlyArray<any> | null
-  loading: boolean
-  isInvalid: boolean
+  citation: string;
+  value: any;
+  cslData: ReadonlyArray<any> | null;
+  loading: boolean;
+  isInvalid: boolean;
 }
 export default class BibliographyEntryForm extends Component<
   { value; disabled: boolean; onSubmit },
   State
 > {
-  static defaultProps: { value: null, disabled: false}
+  static defaultProps: { value: null; disabled: false }
   private promise: Promise<any>
   private doLoad: (value: any) => Promise<any>
 
