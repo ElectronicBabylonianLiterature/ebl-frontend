@@ -131,7 +131,6 @@ exports[`With session 1`] = `
     >
       <nav
         aria-label="breadcrumb"
-        separator="/"
       >
         <ol
           class="breadcrumb"
@@ -442,7 +441,6 @@ exports[`Without session 1`] = `
     >
       <nav
         aria-label="breadcrumb"
-        separator="/"
       >
         <ol
           class="breadcrumb"
