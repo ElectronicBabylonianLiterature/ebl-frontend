@@ -37,7 +37,7 @@ describe.each([
     _.omit(expectedComputedColumns, ['Number']),
     expectedComputedColumns
   ]
-])('%s', (name, columns, expectedColumns) => {
+] as [string, object, object][])('%s', (name, columns, expectedColumns) => {
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', numberOfFragments)
     element = render(
@@ -62,7 +62,7 @@ describe.each([
     test('Displays all properties', () => {
       const expectedRow = _.values(expectedColumns)
         .map(property =>
-          _.isFunction(property) ? property(fragment) : fragment[property]
+          _.isFunction(property) ? (property as Function)(fragment) : fragment[property]
         )
         .join('')
         .replace('\n', ' ')

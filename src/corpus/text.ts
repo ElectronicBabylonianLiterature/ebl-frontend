@@ -94,7 +94,7 @@ export type Line = {
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
-export const createLine: (x0: Partial<Line>) => Line = produce(
+export const createLine: (config: Partial<Line>) => Line = produce(
   (draft: any): Line => ({
     number: '',
     reconstruction: '',

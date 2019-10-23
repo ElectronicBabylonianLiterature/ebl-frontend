@@ -5,6 +5,7 @@ import { render } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
 import TransliterationSearchForm from './TransliterationSearchForm'
+import { transliteration } from './../../../test-helpers/record-fixtures';
 
 it('Adds number to query string on submit', async () => {
   const transliteration = 'ma i-ra\nka li'
@@ -12,7 +13,7 @@ it('Adds number to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const element = render(
     <Router history={history}>
-      <TransliterationSearchForm />
+      <TransliterationSearchForm transliteration={null} />
     </Router>
   )
 
@@ -34,12 +35,12 @@ it('calling render with the same component on the same container does not remoun
       <TransliterationSearchForm transliteration="pak" />
     </Router>
   )
-  expect(getByLabelText('Transliteration').value).toBe('pak')
+  expect((getByLabelText('Transliteration') as HTMLInputElement).value).toBe('pak')
 
   rerender(
     <Router history={history}>
       <TransliterationSearchForm transliteration={undefined} />
     </Router>
   )
-  expect(getByLabelText('Transliteration').value).toBe('')
+  expect((getByLabelText('Transliteration') as HTMLInputElement).value).toBe('')
 })

@@ -126,7 +126,6 @@ function App({
             path="/fragmentarium/search"
             render={({ location }) => (
               <FragmentariumSearch
-                fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
               />

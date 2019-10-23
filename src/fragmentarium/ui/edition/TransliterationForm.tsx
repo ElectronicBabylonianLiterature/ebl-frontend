@@ -17,6 +17,10 @@ import TemplateForm from './TemplateForm'
 type Props = {transliteration: string, notes: string, updateTransliteration, disabled: boolean}
 type State = {transliteration: string, notes: string, error: Error | null, disabled: boolean}
 class TransliteratioForm extends Component<Props, State> {
+  static readonly defaultProps = {
+    disabled: false
+  }
+  
   private readonly formId: string
   private updatePromise: Promise<any>
 

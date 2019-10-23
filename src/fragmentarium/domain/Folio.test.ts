@@ -14,7 +14,7 @@ describe('Folio', () => {
     ['WRM', 'Mayer', true],
     ['CB', 'Bezold', true],
     ['JS', 'Strassmaier', true]
-  ])('%s folios', (name, humanized, hasImage) => {
+  ] as [string, string, boolean][])('%s folios', (name, humanized, hasImage) => {
     let number
     let folio
 

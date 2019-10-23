@@ -17,7 +17,6 @@ beforeEach(() => {
   updateTransliteration.mockReturnValue(Promise.resolve())
   element = render(
     <TransliteratioForm
-      number={number}
       transliteration={transliteration}
       notes={notes}
       updateTransliteration={updateTransliteration}

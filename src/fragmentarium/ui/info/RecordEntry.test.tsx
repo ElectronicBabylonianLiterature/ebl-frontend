@@ -14,8 +14,8 @@ import {
   year2018
 } from 'test-helpers/record-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
-import Moment from 'moment'
-import { extendMoment } from 'moment-range'
+import * as Moment from 'moment'
+import { extendMoment, DateRange } from 'moment-range'
 
 const moment = extendMoment(Moment)
 
@@ -64,7 +64,7 @@ describe('RecordEntry', () => {
       }),
       false
     ]
-  ])('%s dateEquals %s is %p', (first, second, expected) => {
+  ] as [RecordEntry, RecordEntry, boolean][])('%s dateEquals %s is %p', (first, second, expected) => {
     expect(first.dateEquals(second)).toBe(expected)
     expect(second.dateEquals(first)).toBe(expected)
   })
@@ -73,7 +73,7 @@ describe('RecordEntry', () => {
     [transliteration, moment(transliteration.date)],
     [revision, moment(revision.date)],
     [historicalTransliteration, moment.range(historicalTransliteration.date)]
-  ])('%s.moment is %s', (recordEntry, expected) => {
+  ] as [RecordEntry, Moment.Moment | DateRange][])('%s.moment is %s', (recordEntry, expected) => {
     expect(recordEntry.moment).toEqual(expected)
   })
 
@@ -81,7 +81,7 @@ describe('RecordEntry', () => {
     [transliteration, false],
     [revision, false],
     [historicalTransliteration, true]
-  ])('%s.isHistorical is %s', (recordEntry, expected) => {
+  ] as [RecordEntry, boolean][])('%s.isHistorical is %s', (recordEntry, expected) => {
     expect(recordEntry.isHistorical).toEqual(expected)
   })
 })

@@ -11,7 +11,7 @@ it('Adds number to query string on submit', async () => {
   jest.spyOn(history, 'push')
   const element = render(
     <Router history={history}>
-      <NumberSearchForm />
+      <NumberSearchForm number={null} />
     </Router>
   )
 

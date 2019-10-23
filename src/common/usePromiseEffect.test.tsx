@@ -9,7 +9,7 @@ test('Cancels the promise on unmount', async () => {
   const TestComponent = () => {
     const [setPromise, cancelPromise] = usePromiseEffect()
     setPromise(promise)
-    return 'Test'
+    return <>'Test'</>
   }
   const element = render(<TestComponent />)
   element.unmount()
@@ -22,7 +22,7 @@ test('Cancels the promise when cancelPromise is called', async () => {
     const [setPromise, cancelPromise] = usePromiseEffect()
     setPromise(promise)
     cancelPromise()
-    return 'Test'
+    return <>'Test'</>
   }
   const element = render(<TestComponent />)
   expect((await promise.reflect()).isCancelled()).toBe(true)

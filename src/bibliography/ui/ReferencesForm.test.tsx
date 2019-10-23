@@ -11,7 +11,7 @@ import Reference from 'bibliography/domain/Reference'
 const defaultReference = new Reference()
 
 let expectedReference
-let references
+let references: Reference[]
 let element
 let searchEntry
 let searchBibliography
@@ -23,7 +23,7 @@ beforeEach(async () => {
     author: [{ family: 'Borger' }],
     issued: { 'date-parts': [[1957]] }
   })
-  expectedReference = _.head(references).setDocument(searchEntry)
+  expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
   searchBibliography = () => Promise.resolve([searchEntry])
   onChange = jest.fn()
   element = render(

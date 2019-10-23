@@ -12,7 +12,7 @@ import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
 import { Chapter, Line, Manuscript, ManuscriptLine } from './text'
 
-const manuscriptConfig: $Shape<Manuscript> = {
+const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
@@ -69,7 +69,7 @@ const chapterConfig: Chapter = {
   lines: [createLine(lineConfig)]
 }
 
-const textConfig: $Shape<Text> = {
+const textConfig: Partial<Text> = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',

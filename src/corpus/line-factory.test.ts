@@ -4,7 +4,7 @@ import { produce } from 'immer'
 
 describe('createDefaultLineFactory', () => {
   test('no lines', () => {
-    expect(createDefaultLineFactory()()).toEqual(createLine())
+    expect(createDefaultLineFactory()()).toEqual(createLine({}))
   })
 
   describe.each([['', ''], ['13', '14'], ['2', '3'], ['6b', '']])(

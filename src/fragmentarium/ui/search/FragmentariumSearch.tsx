@@ -11,7 +11,6 @@ import './FragmentariumSearch.css'
 function FragmentariumSearch({
   number,
   transliteration,
-  fragmentService,
   fragmentSearchService
 }) {
   const replacedTransliteration =

@@ -20,7 +20,7 @@ let auth
 let errorReporter
 
 beforeEach(() => {
-  fetch.resetMocks()
+  fetchMock.resetMocks()
   auth = { getAccessToken: jest.fn() }
   errorReporter = { captureException: jest.fn() }
   apiClient = new ApiClient(auth, errorReporter)
@@ -129,7 +129,7 @@ describe('fetchBlob', () => {
   test('Resolves to dataURI', async () => {
     setUpSuccessResponse()
 
-    const blob = await fetch().then(response => response.blob())
+    const blob = await fetchMock().then(response => response.blob())
     await expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
   })
 
@@ -163,12 +163,12 @@ describe('fetchBlob', () => {
 
 function setUpSuccessResponse() {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
-  fetch.mockResponse(JSON.stringify(result))
+  fetchMock.mockResponse(JSON.stringify(result))
 }
 
-function setUpEmptyResponse() {
+function setUpEmptyResponse(status: number) {
   auth.getAccessToken.mockReturnValueOnce(accessToken)
-  fetch.mockResponse('', { status: 204 })
+  fetchMock.mockResponse('', { status })
 }
 
 function commonTests(action) {
@@ -180,14 +180,14 @@ function commonTests(action) {
   })
 
   test('Rejects with error if fetch fails', async () => {
-    fetch.mockRejectOnce(error)
+    fetchMock.mockRejectOnce(error)
     await expect(action()).rejects.toThrow(error)
     expect(errorReporter.captureException).toBeCalledWith(error)
   })
 
   test('Rejects with status text as error message if response not ok', async () => {
     const expectedError = new ApiError(errorResponse.statusText, {})
-    fetch.mockResponseOnce('', errorResponse)
+    fetchMock.mockResponseOnce('', errorResponse)
     await expect(action()).rejects.toThrow(expectedError)
     expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })
@@ -195,7 +195,7 @@ function commonTests(action) {
   test('Rejects with description as error message if response not ok and is JSON', async () => {
     const jsonError = { title: 'error title', description: 'error description' }
     const expectedError = new ApiError(jsonError.description, jsonError)
-    fetch.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
+    fetchMock.mockResponseOnce(JSON.stringify(jsonError), errorResponse)
     await expect(action()).rejects.toThrow(expectedError)
     expect(errorReporter.captureException).toBeCalledWith(expectedError)
   })

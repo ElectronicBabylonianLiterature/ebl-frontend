@@ -15,7 +15,6 @@ let container
 let fragmentService
 let fragmentSearchService
 let session
-let onChange
 let updatedFragment
 let expectedFragment
 
@@ -32,7 +31,6 @@ beforeEach(async () => {
   })
   expectedFragment = updatedFragment.setReferences(references)
 
-  onChange = jest.fn()
   fragmentService = {
     updateTransliteration: jest.fn(),
     updateReferences: jest.fn(),
@@ -48,8 +46,8 @@ beforeEach(async () => {
     isAllowedToTransliterateFragments: () => true,
     isAllowedToLemmatizeFragments: () => false,
     hasBetaAccess: () => false
-  }
-  URL.createObjectURL.mockReturnValue('url')
+  };
+  (URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
@@ -66,7 +64,6 @@ beforeEach(async () => {
             fragment={fragment}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
-            onChange={onChange}
           />
         </SessionContext.Provider>
       </MemoryRouter>

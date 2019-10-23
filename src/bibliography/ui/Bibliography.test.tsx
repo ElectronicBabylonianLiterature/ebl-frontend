@@ -7,7 +7,7 @@ import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
 
-const BibliographyWithRouter = withRouter(Bibliography)
+const BibliographyWithRouter = withRouter<any, any>(Bibliography)
 
 let entries
 let bibliographyService
@@ -44,13 +44,13 @@ describe('Searching bibliography', () => {
   it('fills in search form query', () => {
     const { getByLabelText } = renderDictionary('/bibliography?query=Borger')
 
-    expect(getByLabelText('Query').value).toEqual('Borger')
+    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('Borger')
   })
 
   it('displays empty search if no query', () => {
     const { getByLabelText } = renderDictionary('/bibliography')
 
-    expect(getByLabelText('Query').value).toEqual('')
+    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
   })
 })
 

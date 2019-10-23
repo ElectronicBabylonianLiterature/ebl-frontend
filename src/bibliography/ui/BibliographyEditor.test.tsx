@@ -111,7 +111,7 @@ function commonTests(create, waitFor) {
 
   test('Saving is disabled when not allowed to write:bibliography', async () => {
     const { getByText } = await renderWithRouter(false, create, waitFor)
-    expect(getByText('Save').disabled).toBe(true)
+    expect((getByText('Save') as HTMLButtonElement).disabled).toBe(true)
   })
 }
 

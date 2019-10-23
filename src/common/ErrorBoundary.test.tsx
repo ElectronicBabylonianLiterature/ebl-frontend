@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { clickNth } from 'test-helpers/utils'
 import ErrorBoundary from './ErrorBoundary'
-import ErrorReporterContext from 'ErrorReporterContext'
+import ErrorReporterContext, { defaultErrorReporter } from 'ErrorReporterContext'
 
 describe('Children throw an error', () => {
   let element
@@ -47,7 +47,7 @@ describe('Children throw an error', () => {
 it('Displays children if they do not crash', () => {
   const content = 'Did not crash'
   const { container } = render(
-    <ErrorReporterContext.Provider value={null}>
+    <ErrorReporterContext.Provider value={defaultErrorReporter}>
       <ErrorBoundary>{content}</ErrorBoundary>
     </ErrorReporterContext.Provider>
   )

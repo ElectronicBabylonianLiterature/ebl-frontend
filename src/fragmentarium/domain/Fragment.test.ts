@@ -1,7 +1,6 @@
 import _ from 'lodash'
-import { Folio, Fragment, RecordEntry } from './fragment'
+import { Folio, Fragment, RecordEntry, UncuratedReference } from './fragment'
 import { Text } from './text'
-import { Measures } from './fragment'
 import {
   atEleven,
   atTen,
@@ -87,7 +86,7 @@ test.each([
   [[{ document: 'CAD 7', pages: [] }], true],
   [[], true],
   [null, false]
-])('uncurated references: %s', (uncuratedReferences, expected) => {
+] as [UncuratedReference[], boolean][])('uncurated references: %s', (uncuratedReferences, expected) => {
   const fragment = new Fragment({ ...config, uncuratedReferences })
   expect(fragment.hasUncuratedReferences).toEqual(expected)
 })

@@ -40,7 +40,6 @@ test('Calls onChange with empty array on empty value', () => {
 function renderArrayInput(value) {
   return render(
     <ArrayInput
-      id="array"
       value={value}
       separator={separator}
       onChange={onChange}

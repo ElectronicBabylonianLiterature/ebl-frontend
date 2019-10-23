@@ -5,7 +5,7 @@ import Promise from 'bluebird'
 import ErrorReporterContext from 'ErrorReporterContext'
 import Callback from './Callback'
 
-const CallbackWithRouter = withRouter(Callback)
+const CallbackWithRouter = withRouter<any, any>(Callback)
 
 let auth
 let element

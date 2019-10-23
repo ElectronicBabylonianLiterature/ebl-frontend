@@ -14,7 +14,7 @@ let element
 let statistics
 
 async function renderFragmentarium() {
-  const FragmentariumWithRouter = withRouter(Fragmentarium)
+  const FragmentariumWithRouter = withRouter<any, any>(Fragmentarium)
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>

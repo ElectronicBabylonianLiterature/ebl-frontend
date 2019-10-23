@@ -11,12 +11,12 @@ const expectSignal = expect.objectContaining({
 })
 
 beforeEach(() => {
-  fetch.resetMocks()
+  fetchMock.resetMocks()
 })
 
 describe('Successful request', () => {
   beforeEach(() => {
-    fetch.mockResponse(JSON.stringify(result))
+    fetchMock.mockResponse(JSON.stringify(result))
   })
 
   test('Resolves', async () => {
@@ -45,7 +45,7 @@ describe('Successful request', () => {
 })
 
 test('Can be cancelled', async () => {
-  fetch.mockResponse(JSON.stringify(result))
+  fetchMock.mockResponse(JSON.stringify(result))
   const callback = jest.fn()
   const promise = cancellableFetch(url)
   const waitable = promise.then(() => null)
@@ -58,6 +58,6 @@ test('Can be cancelled', async () => {
 })
 
 test('Rejects with error if fetch fails', async () => {
-  fetch.mockRejectOnce(error)
+  fetchMock.mockRejectOnce(error)
   await expect(cancellableFetch(url)).rejects.toThrow(error)
 })

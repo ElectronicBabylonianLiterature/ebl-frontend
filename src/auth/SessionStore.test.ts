@@ -24,7 +24,7 @@ describe('saveSession', () => {
 describe('clearSession', () => {
   beforeEach(() => {
     setItems()
-    sessionStore.clearSession(session)
+    sessionStore.clearSession()
   })
 
   _.forEach(localStorageItems, (value, key) => {

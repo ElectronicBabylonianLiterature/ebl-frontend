@@ -3,6 +3,7 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
 import FragmentLink from './FragmentLink'
+import { Folio } from 'fragmentarium/domain/fragment'
 
 const chance = new Chance()
 const children = 'A link'
@@ -32,10 +33,10 @@ describe('Without folio', () => {
 })
 
 describe('With folio', () => {
-  const folio = {
+  const folio = new Folio({
     name: chance.string(),
     number: chance.string()
-  }
+  })
 
   beforeEach(() => {
     element = render(

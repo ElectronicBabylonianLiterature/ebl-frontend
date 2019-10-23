@@ -31,7 +31,7 @@ test.each([
       ]
     }
   ]
-])('Renders without crashing with props %s %p %p', (value, disabled, error) => {
+] as [string, boolean, object][])('Renders without crashing with props %s %p %p', (value, disabled, error) => {
   const onChange = jest.fn()
   const name = 'transliteration'
   render(

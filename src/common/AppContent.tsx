@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
@@ -35,5 +35,6 @@ AppContent.defaultProps = {
   crumbs: [],
   title: null,
   actions: null,
-  wide: false
+  wide: false,
+  children: null
 }

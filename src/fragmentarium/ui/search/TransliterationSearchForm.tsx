@@ -43,7 +43,7 @@ type State = {
   transliteration: string
 }
 type Props = {
-  transliteration: string
+  transliteration: string | null | undefined
 } & RouteComponentProps
 
 class TransliterationSearchForm extends Component<Props, State> {

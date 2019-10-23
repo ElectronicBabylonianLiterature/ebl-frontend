@@ -22,8 +22,8 @@ beforeEach(async () => {
     folioPager: jest.fn(),
     fetchCdliInfo: jest.fn()
   }
-  folioPager = await factory.build('folioPager')
-  URL.createObjectURL.mockReturnValue('url')
+  folioPager = await factory.build('folioPager');
+  (URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )

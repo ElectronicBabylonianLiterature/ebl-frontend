@@ -19,10 +19,12 @@ function getName(author) {
   const family = _.get(author, 'family', '')
   return particle ? `${particle} ${family}` : family
 }
-class BibliographyEntry {
-  private readonly cslData
 
-  constructor(cslData) {
+type CslData = {readonly [key: string]: any}
+class BibliographyEntry {
+  private readonly cslData: CslData
+
+  constructor(cslData?: CslData | null | undefined) {
     this.cslData = cslData
       ? produce(cslData, draft => {
           _.keys(draft)

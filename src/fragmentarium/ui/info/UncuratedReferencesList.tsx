@@ -8,8 +8,7 @@ export default function UncuratedReferencesList({
   ...props
 }: {
   uncuratedReferences: ReadonlyArray<UncuratedReference>;
-  className: string;
-} & ListGroupProps) {
+} & ListGroupProps & React.HTMLAttributes<HTMLUListElement>) {
   return (
     <ListGroup as="ul" variant="flush" {...props}>
       {uncuratedReferences.map((reference, index) => (

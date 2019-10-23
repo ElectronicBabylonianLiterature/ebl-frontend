@@ -8,28 +8,27 @@ const chance = new Chance()
 const sentryErrorReporter = new SentryErrorReporter()
 let scope
 let error
+let init
+let showReportDialog
 
 beforeEach(async () => {
-  error = new Error(chance.sentence())
-  jest.spyOn(Sentry, 'init')
-  jest.spyOn(Sentry, 'withScope')
-  jest.spyOn(Sentry, 'configureScope')
-  jest.spyOn(Sentry, 'captureException')
-  jest.spyOn(Sentry, 'showReportDialog')
-  Sentry.captureException.mockImplementationOnce(_.noop)
-  Sentry.withScope.mockImplementationOnce(f => f(scope))
-  Sentry.configureScope.mockImplementationOnce(f => f(scope))
   scope = {
     setExtra: jest.fn(),
     setUser: jest.fn(),
     clear: jest.fn()
   }
+  error = new Error(chance.sentence())
+  init = jest.spyOn(Sentry, 'init')
+  showReportDialog = jest.spyOn(Sentry, 'showReportDialog')
+  jest.spyOn(Sentry, 'withScope').mockImplementationOnce(f => f(scope))
+  jest.spyOn(Sentry, 'configureScope').mockImplementationOnce(f => f(scope))
+  jest.spyOn(Sentry, 'captureException').mockImplementationOnce(exception => exception.message)
 })
 
 test('Initialization', () => {
   const dsn = 'http://example.com/sentry'
   const environment = 'test'
-  Sentry.init.mockImplementationOnce(_.noop)
+  init.mockImplementationOnce(_.noop)
   SentryErrorReporter.init(dsn, environment)
   expect(Sentry.init).toHaveBeenCalledWith({
     dsn: dsn,
@@ -69,7 +68,7 @@ test('Error reporting no info', () => {
 })
 
 test('Report dialog', () => {
-  Sentry.showReportDialog.mockImplementationOnce(_.noop)
+  showReportDialog.mockImplementationOnce(_.noop)
   sentryErrorReporter.showReportDialog()
   expect(Sentry.showReportDialog).toHaveBeenCalled()
 })

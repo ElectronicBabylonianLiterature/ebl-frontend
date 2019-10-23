@@ -15,7 +15,7 @@ import { Text } from 'fragmentarium/domain/text'
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
-const fragmentRepository: FragmentRepository = {
+const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
   updateTransliteration: jest.fn(),
@@ -198,8 +198,7 @@ test('createLemmatization', async () => {
     ]
   )
 
-  jest.spyOn(text, 'createLemmatization')
-  text.createLemmatization.mockReturnValue(expected)
+  jest.spyOn(text, 'createLemmatization').mockReturnValue(expected)
 
   const result = await fragmentService.createLemmatization(text)
   expect(result).toEqual(expected)

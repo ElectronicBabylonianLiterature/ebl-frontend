@@ -207,5 +207,8 @@ function CuneiformFragmentController({
     </>
   )
 }
-
+CuneiformFragmentController.defaultProps = {
+  activeFolio: null,
+  tab: null
+}
 export default CuneiformFragmentController

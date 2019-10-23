@@ -26,7 +26,7 @@ describe.each([
     null
   ],
   ['Other Museum', '', '', '', null]
-])('%s', (name, logo, url, copyright, link) => {
+] as [string, string, string, string, object][])('%s', (name, logo, url, copyright, link) => {
   let museum: Museum
 
   beforeEach(() => {

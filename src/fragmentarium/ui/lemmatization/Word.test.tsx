@@ -20,7 +20,7 @@ describe.each([
   [false, false, [], ['Word--with-lemma', 'Word--suggestion']],
   [true, false, ['Word--with-lemma'], ['Word--suggestion']],
   [true, true, ['Word--with-lemma', 'Word--suggestion'], []]
-])('%#', (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
+] as [boolean, boolean, string[], string[]][])('%#', (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
   beforeEach(async () => {
     token = {
       type: 'Word',

@@ -185,7 +185,7 @@ const testData = [
     apiClient.fetchJson,
     { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null },
     [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
-    Promise.reject(new ApiError())
+    Promise.reject(new ApiError('Error', {}))
   ]
 ]
 

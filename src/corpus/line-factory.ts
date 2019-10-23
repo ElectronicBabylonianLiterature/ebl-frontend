@@ -11,7 +11,7 @@ function nextNumber(number) {
   }
 }
 
-export function createDefaultLineFactory(lastLine) {
+export function createDefaultLineFactory(lastLine: any = null) {
   return lastLine
     ? () =>
         createLine({

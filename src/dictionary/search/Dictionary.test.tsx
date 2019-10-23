@@ -6,7 +6,7 @@ import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'
 
-const DictionaryWithRouter = withRouter(Dictionary)
+const DictionaryWithRouter = withRouter<any, any>(Dictionary)
 
 let words
 let wordService
@@ -38,13 +38,13 @@ describe('Searching for word', () => {
   it('fills in search form query', () => {
     const { getByLabelText } = renderDictionary('/dictionary?query=lemma')
 
-    expect(getByLabelText('Query').value).toEqual('lemma')
+    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('lemma')
   })
 
   it('displays empty search if no query', () => {
     const { getByLabelText } = renderDictionary('/dictionary')
 
-    expect(getByLabelText('Query').value).toEqual('')
+    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
   })
 })
 
