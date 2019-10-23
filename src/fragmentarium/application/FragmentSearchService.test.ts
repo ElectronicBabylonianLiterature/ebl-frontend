@@ -30,22 +30,6 @@ const testData = [
     null,
     Promise.resolve([resultStub])
   ],
-  [
-    'random',
-    [],
-    fragmentRepository.random,
-    undefined,
-    null,
-    Promise.resolve([])
-  ],
-  [
-    'interesting',
-    [],
-    fragmentRepository.interesting,
-    undefined,
-    null,
-    Promise.resolve([])
-  ],
   ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
   [
     'searchTransliteration',
