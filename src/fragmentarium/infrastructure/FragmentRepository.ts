@@ -37,8 +37,8 @@ class ApiFragmentRepository
   readonly apiClient
 
   constructor(apiClient: {
-    fetchJson: (string, boolean) => Promise<any>;
-    postJson: (string, any) => Promise<any>;
+    fetchJson: (url: string, authorize: boolean) => Promise<any>;
+    postJson: (url: string, body: any) => Promise<any>;
   }) {
     this.apiClient = apiClient
   }

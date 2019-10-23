@@ -5,7 +5,7 @@ import { ImageRepository } from 'fragmentarium/application/FragmentService'
 class ApiImageRepository implements ImageRepository {
   private readonly apiClient
 
-  constructor(apiClient: { fetchBlob: (string, boolean) => Promise<Blob> }) {
+  constructor(apiClient: { fetchBlob: (url: string, authorize: boolean) => Promise<Blob> }) {
     this.apiClient = apiClient
   }
 
