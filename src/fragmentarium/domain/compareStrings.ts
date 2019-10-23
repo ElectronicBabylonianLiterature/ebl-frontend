@@ -2,7 +2,7 @@ import _ from 'lodash'
 import alphabet from './alphabet.json'
 
 function isString(word, anotherWord) {
-  let notStrings = [word, anotherWord].filter(word => !_.isString(word))
+  const notStrings = [word, anotherWord].filter(word => !_.isString(word))
   if (!_.isEmpty(notStrings)) {
     throw new TypeError(`${notStrings} is not a string`)
   }
@@ -13,7 +13,7 @@ function replaceIgnoredCharacters(word) {
 }
 
 function checkForInvalidCharacters(word, anotherWord) {
-  let invalidCharacters = word
+  const invalidCharacters = word
     .split('')
     .concat(anotherWord.split(''))
     .filter(character => !alphabet.includes(character))
@@ -38,8 +38,8 @@ function hasLowerAlphabetIndex(word, anotherWord, indexOfCharacter) {
 
 export default function compareStrings(word, anotherWord) {
   isString(word, anotherWord)
-  let replacedWord = replaceIgnoredCharacters(word)
-  let anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
+  const replacedWord = replaceIgnoredCharacters(word)
+  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
   for (

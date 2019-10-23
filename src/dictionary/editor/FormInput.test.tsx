@@ -57,7 +57,7 @@ function commonDisplayTests() {
   })
 
   it('Displays all notes', () => {
-    for (let note of value.notes) {
+    for (const note of value.notes) {
       expect(element.getByDisplayValue(note)).toBeVisible()
     }
   })

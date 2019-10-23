@@ -22,9 +22,9 @@ export function createFragmentUrlWithTab(number, tab) {
 }
 
 export default function FragmentLink({ number, children, folio, ...props }: {
-  number: string
-  children: ReactNode
-  folio: Folio | null
+  number: string;
+  children: ReactNode;
+  folio: Folio | null;
 }) {
   const link = folio
     ? createFragmentUrlWithFolio(number, folio)

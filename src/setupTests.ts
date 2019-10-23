@@ -19,9 +19,9 @@ class AbortControllerMock {
 }
 
 interface CustomGlobal extends GlobalWithFetchMock {
-  URL: any
-  AbortController: typeof AbortControllerMock
-  document: Document
+  URL: any;
+  AbortController: typeof AbortControllerMock;
+  document: Document;
 }
 
 const customGlobal: CustomGlobal = global as CustomGlobal

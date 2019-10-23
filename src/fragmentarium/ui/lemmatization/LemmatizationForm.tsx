@@ -7,9 +7,9 @@ import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 
 type Props = {token: LemmatizationToken; onChange; fragmentService}
 type State = {
-  isComplex: boolean,
-  selectedOption: Lemma[] | Lemma | null,
-  menuIsOpen: boolean | undefined
+  isComplex: boolean;
+  selectedOption: Lemma[] | Lemma | null;
+  menuIsOpen: boolean | undefined;
 }
 
 class LemmatizationForm extends Component<Props, State> {

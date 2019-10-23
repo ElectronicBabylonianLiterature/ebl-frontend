@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { produce, immerable } from 'immer'
-import { Draft } from 'immer'
+import { produce, immerable , Draft } from 'immer'
+
 import Lemma from './Lemma'
 import { UniqueLemma } from 'fragmentarium/domain/Lemmatization';
 
@@ -18,7 +18,7 @@ export class LemmatizationToken {
     lemmatizable: boolean,
     uniqueLemma: UniqueLemma | null = null,
     suggestions: ReadonlyArray<UniqueLemma> | null = null,
-    suggested: boolean = false
+    suggested = false
   ) {
     this.value = value
     this.uniqueLemma = uniqueLemma
@@ -29,7 +29,7 @@ export class LemmatizationToken {
 
   setUniqueLemma(
     uniqueLemma: UniqueLemma,
-    suggested: boolean = false
+    suggested = false
   ): LemmatizationToken {
     return produce((draft: Draft<LemmatizationToken>, uniqueLemma) => {
       draft.uniqueLemma = uniqueLemma

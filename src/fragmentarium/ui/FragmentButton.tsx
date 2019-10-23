@@ -9,8 +9,8 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 type Props = {
-  query: () => Promise<FragmentInfo>
-  children?: React.ReactNode
+  query: () => Promise<FragmentInfo>;
+  children?: React.ReactNode;
 } & RouteComponentProps
 
 function FragmentButton({

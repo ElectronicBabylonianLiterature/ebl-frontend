@@ -6,7 +6,7 @@ import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 
 type EntryProps = {
-  entry: RecordEntry
+  entry: RecordEntry;
 }
 
 function Date({ date, humanFormat, machineFormat }) {

@@ -11,10 +11,10 @@ import LemmatizationHelp from './LemmatizationHelp'
 import './Lemmatizer.css'
 
 type Props = {
-  data: Lemmatization,
-  fragmentService,
-  updateLemmatization(lemmatization: Lemmatization): any
-  disabled: boolean
+  data: Lemmatization;
+  fragmentService;
+  updateLemmatization(lemmatization: Lemmatization): any;
+  disabled: boolean;
 }
 type State = {lemmatization: Lemmatization}
 

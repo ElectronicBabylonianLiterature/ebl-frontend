@@ -21,7 +21,7 @@ beforeEach(async () => {
 })
 
 it('Displays all forms', () => {
-  for (let item of value) {
+  for (const item of value) {
     expect(element.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
   }
 })

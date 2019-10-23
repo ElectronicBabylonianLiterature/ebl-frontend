@@ -7,8 +7,8 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import './Photo.css'
 
 type Props = {
-  photo: Blob
-  fragment: Fragment
+  photo: Blob;
+  fragment: Fragment;
 }
 
 export default function Photo({ photo, fragment }: Props) {

@@ -43,13 +43,13 @@ describe('All details', () => {
   })
 
   it(`Renders all joins`, () => {
-    for (let item of fragment.joins) {
+    for (const item of fragment.joins) {
       expect(container).toHaveTextContent(item)
     }
   })
 
   it(`Links all joins`, () => {
-    for (let item of fragment.joins) {
+    for (const item of fragment.joins) {
       expect(element.getByText(item)).toHaveAttribute(
         'href',
         `/fragmentarium/${item}`

@@ -1,5 +1,5 @@
 import React from 'react'
-import queryString from 'query-string'
+import { parse } from 'query-string'
 import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
@@ -24,9 +24,9 @@ export default function FragmentView({
   fragmentSearchService
 }) {
   const number = decodeURIComponent(match.params.id)
-  const folioName = queryString.parse(location.search).folioName
-  const folioNumber = queryString.parse(location.search).folioNumber
-  const tab = queryString.parse(location.search).tab
+  const folioName = parse(location.search).folioName
+  const folioNumber = parse(location.search).folioNumber
+  const tab = parse(location.search).tab
   const activeFolio =
     folioName && folioNumber
       ? new Folio({

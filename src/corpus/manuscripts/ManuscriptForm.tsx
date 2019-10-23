@@ -1,22 +1,22 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { types } from 'corpus/text'
+import { types , Manuscript } from 'corpus/text'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import { periodModifiers, periods } from 'corpus/period'
 import { provenances } from 'corpus/provenance'
-import { Manuscript } from 'corpus/text'
-import { produce } from 'immer'
-import { Draft } from 'immer'
+
+import { produce , Draft } from 'immer'
+
 
 export default function ManuscriptForm({
   manuscript,
   onChange,
   searchBibliography
 }: {
-  manuscript: Manuscript
-  onChange: (x0: Manuscript) => void
-  searchBibliography: any
+  manuscript: Manuscript;
+  onChange: (x0: Manuscript) => void;
+  searchBibliography: any;
 }) {
   const handleChange = (property: string) => event =>
     onChange(

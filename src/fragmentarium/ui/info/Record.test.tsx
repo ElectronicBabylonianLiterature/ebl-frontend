@@ -16,7 +16,7 @@ describe('Record has entries', () => {
   })
 
   it(`Renders all entries`, () => {
-    for (let entry of record) {
+    for (const entry of record) {
       const expectedEntry = `${entry.user} (${
         entry.type
       }, ${entry.moment.format('D/M/YYYY')})`
@@ -25,7 +25,7 @@ describe('Record has entries', () => {
   })
 
   it(`Entries have correct datetTime`, () => {
-    for (let entry of record) {
+    for (const entry of record) {
       expect(
         element.getByText(entry.moment.format('D/M/YYYY'))
       ).toHaveAttribute('datetime', entry.moment.format('YYYY-MM-DD'))
@@ -63,7 +63,7 @@ describe('Historical transliteration', () => {
   })
 
   it(`Entries have correct range `, () => {
-    for (let year of years) {
+    for (const year of years) {
       expect(element.getByText(year)).toHaveAttribute('datetime', year)
     }
   })

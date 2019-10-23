@@ -68,13 +68,13 @@ describe('Not verb', () => {
 
 function commonTests() {
   it('Word POS are selected', () => {
-    for (let pos of value.pos) {
+    for (const pos of value.pos) {
       expect(element.getByText(positionsOfScpeech[pos]).selected).toBe(true)
     }
   })
 
   it('Other POS are not selected', () => {
-    for (let pos of _(positionsOfScpeech)
+    for (const pos of _(positionsOfScpeech)
       .omit(value.pos)
       .values()
       .value()) {

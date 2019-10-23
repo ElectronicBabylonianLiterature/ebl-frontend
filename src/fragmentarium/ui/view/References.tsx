@@ -28,13 +28,13 @@ function References({
 }
 
 type Props = {
-  references: readonly Reference[]
-  searchBibliography,
-  updateReferences,
-  disabled: boolean
+  references: readonly Reference[];
+  searchBibliography;
+  updateReferences;
+  disabled: boolean;
 }
 type State = {
-  references: readonly Reference[]
+  references: readonly Reference[];
 }
 export default class ReferencesController extends Component<Props, State> {
   static defaultProps = {

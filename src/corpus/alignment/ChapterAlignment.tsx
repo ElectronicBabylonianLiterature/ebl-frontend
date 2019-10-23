@@ -2,8 +2,8 @@ import React from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-import { produce } from 'immer'
-import { Draft } from 'immer'
+import { produce , Draft } from 'immer'
+
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
@@ -26,10 +26,10 @@ function Reconstruction(props: { line: Line }) {
 }
 
 function ManuscriptAlignment(props: {
-  chapter: Chapter
-  line: Line
-  manuscriptLine: ManuscriptLine
-  onChange: (x0: ManuscriptLine) => void
+  chapter: Chapter;
+  line: Line;
+  manuscriptLine: ManuscriptLine;
+  onChange: (x0: ManuscriptLine) => void;
 }) {
   const handleChange = index => token => {
     props.onChange(
@@ -70,10 +70,10 @@ export default function ChapterAlignment({
   onSave,
   disabled
 }: {
-  chapter: Chapter
-  onChange: (x0: Chapter) => any
-  onSave: (x0: any) => any
-  disabled: boolean
+  chapter: Chapter;
+  onChange: (x0: Chapter) => any;
+  onSave: (x0: any) => any;
+  disabled: boolean;
 }) {
   const handleChange = lineIndex => manuscriptIndex => manuscript =>
     onChange(

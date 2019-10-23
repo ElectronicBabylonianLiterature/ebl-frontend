@@ -8,7 +8,7 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 
 type Props = {
-  fragment: Fragment
+  fragment: Fragment;
 }
 
 function Collection({ fragment }: Props) {

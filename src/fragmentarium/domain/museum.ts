@@ -2,17 +2,17 @@ import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
 
 export interface FragmentLink {
-  readonly name: string
-  readonly logo: string
-  readonly url: string
-  readonly label: string
+  readonly name: string;
+  readonly logo: string;
+  readonly url: string;
+  readonly label: string;
 }
 
 export interface MuseumData {
-  readonly name: string
-  readonly url: string
-  readonly logo: string
-  readonly copyright: string
+  readonly name: string;
+  readonly url: string;
+  readonly logo: string;
+  readonly copyright: string;
 }
 
 export default class Museum {
@@ -80,10 +80,10 @@ class BritishMuseum extends Museum {
 }
 
 interface MuseumConfig {
-  readonly logo?: string
-  readonly url?: string
-  readonly copyright?: string
-  readonly museumClass?: any
+  readonly logo?: string;
+  readonly url?: string;
+  readonly copyright?: string;
+  readonly museumClass?: any;
 }
 
 const museums: ReadonlyMap<string, MuseumConfig> = new Map([

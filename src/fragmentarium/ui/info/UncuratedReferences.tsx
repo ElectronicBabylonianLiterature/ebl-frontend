@@ -8,7 +8,7 @@ import UncuratedReferencesList from './UncuratedReferencesList'
 import './UncuratedReferences.css'
 
 type Props = {
-  readonly uncuratedReferences: ReadonlyArray<UncuratedReference>
+  readonly uncuratedReferences: ReadonlyArray<UncuratedReference>;
 }
 
 function UncuratedReferencesHelp() {

@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 import ApiImage from './ApiImage'
 
 let element
-let fileName = 'Babel_Project_01_cropped.svg'
+const fileName = 'Babel_Project_01_cropped.svg'
 
 beforeEach(async () => {
   element = render(<ApiImage fileName={fileName} />)

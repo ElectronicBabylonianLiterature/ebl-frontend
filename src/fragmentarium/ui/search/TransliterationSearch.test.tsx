@@ -40,7 +40,7 @@ it('Queries the API with given parameters', () => {
 })
 
 it('Links results', () => {
-  for (let fragment of fragments) {
+  for (const fragment of fragments) {
     expect(element.getByText(fragment.number)).toHaveAttribute(
       'href',
       `/fragmentarium/${fragment.number}`
@@ -49,13 +49,13 @@ it('Links results', () => {
 })
 
 it('Displays script', () => {
-  for (let fragment of fragments) {
+  for (const fragment of fragments) {
     expect(element.getAllByText(fragment.script)).not.toEqual([])
   }
 })
 
 it('Displays matching lines', () => {
-  for (let line of _.flatMapDeep(
+  for (const line of _.flatMapDeep(
     fragments,
     fragment => fragment.matchingLines
   )) {

@@ -7,10 +7,10 @@ import {
   types,
   createLine,
   createManuscriptLine
-} from './text'
+, Chapter, Line, Manuscript, ManuscriptLine } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-import { Chapter, Line, Manuscript, ManuscriptLine } from './text'
+
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,

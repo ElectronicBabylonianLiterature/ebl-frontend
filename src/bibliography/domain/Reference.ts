@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { immerable, produce } from 'immer'
-import { Draft } from 'immer'
+import { immerable, produce , Draft } from 'immer'
+
 import BibliographyEntry from './BibliographyEntry'
 
 export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
@@ -16,8 +16,8 @@ export default class Reference {
 
   constructor(
     type: ReferenceType = Reference.DEFAULT_TYPE,
-    pages: string = '',
-    notes: string = '',
+    pages = '',
+    notes = '',
     linesCited: ReadonlyArray<string> = [],
     document_: BibliographyEntry = new BibliographyEntry({})
   ) {

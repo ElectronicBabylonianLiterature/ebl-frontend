@@ -8,10 +8,10 @@ import TransliterationHeader from 'fragmentarium/ui/view/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment';
 
 type Props = {
-  fragment: Fragment,
-  updateTransliteration,
-  fragmentSearchService,
-  disabled: boolean
+  fragment: Fragment;
+  updateTransliteration;
+  fragmentSearchService;
+  disabled: boolean;
 }
 
 function Edition({

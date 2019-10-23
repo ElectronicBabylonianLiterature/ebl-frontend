@@ -4,7 +4,7 @@ import _ from 'lodash'
 import TextListInput from './TextListInput'
 import ArrayInput from 'common/ArrayInput'
 
-class ArrayWithNotes extends Component<{onChange, value, separator, property, noun}> {
+class ArrayWithNotes extends Component<{onChange; value; separator; property; noun}> {
   update = property => value => {
     this.props.onChange({ ...this.props.value, [property]: value })
   }

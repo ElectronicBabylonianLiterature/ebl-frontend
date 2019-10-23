@@ -49,13 +49,13 @@ describe('Images', () => {
   })
 
   it(`Renders folio numbers entries`, () => {
-    for (let folio of folios) {
+    for (const folio of folios) {
       expect(container).toHaveTextContent(folio.number)
     }
   })
 
   it(`Renders folio numbers entries`, () => {
-    for (let folio of folios) {
+    for (const folio of folios) {
       expect(container).toHaveTextContent(
         `${folio.humanizedName} Folio ${folio.number}`
       )

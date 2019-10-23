@@ -6,12 +6,12 @@ export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
 
 export interface FragmentInfoRepository {
-  random(): FragmentInfosPromise
-  interesting(): FragmentInfosPromise
-  searchNumber(number: string): FragmentInfosPromise
-  searchTransliteration(number: string): FragmentInfosPromise
-  fetchLatestTransliterations(): FragmentInfosPromise
-  fetchNeedsRevision(): FragmentInfosPromise
+  random(): FragmentInfosPromise;
+  interesting(): FragmentInfosPromise;
+  searchNumber(number: string): FragmentInfosPromise;
+  searchTransliteration(number: string): FragmentInfosPromise;
+  fetchLatestTransliterations(): FragmentInfosPromise;
+  fetchNeedsRevision(): FragmentInfosPromise;
 }
 
 export default class FragmentSearchService {

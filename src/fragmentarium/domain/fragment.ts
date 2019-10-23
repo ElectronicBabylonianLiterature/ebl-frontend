@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import * as Moment from 'moment'
 import { extendMoment, DateRange } from 'moment-range'
-import { produce, immerable } from 'immer'
-import { Draft } from 'immer'
+import { produce, immerable , Draft } from 'immer'
+
 import Reference from 'bibliography/domain/Reference'
 import { Text } from './text'
 import Museum from './museum'
@@ -10,18 +10,18 @@ import Museum from './museum'
 const moment = extendMoment(Moment)
 
 export interface FragmentInfo {
-  readonly number: string
-  readonly accession: string
-  readonly script: string
-  readonly description: string
-  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
-  readonly editor: string
-  readonly edition_date: string
+  readonly number: string;
+  readonly accession: string;
+  readonly script: string;
+  readonly description: string;
+  readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>;
+  readonly editor: string;
+  readonly edition_date: string;
 }
 
 interface FolioType {
-  readonly name: string
-  readonly hasImage: boolean
+  readonly name: string;
+  readonly hasImage: boolean;
 }
 
 const folioTypes: { readonly [key: string]: FolioType } = {
@@ -78,9 +78,9 @@ export class RecordEntry {
     date,
     type
   }: {
-    user: string
-    date: string
-    type: RecordType
+    user: string;
+    date: string;
+    type: RecordType;
   }) {
     this.user = user
     this.date = date
@@ -112,14 +112,14 @@ export class RecordEntry {
 RecordEntry[immerable] = true
 
 export interface Measures {
-  readonly length: number | null
-  readonly width: number | null
-  readonly thickness: number | null
+  readonly length: number | null;
+  readonly width: number | null;
+  readonly thickness: number | null;
 }
 
 export interface UncuratedReference {
-  readonly document: string
-  readonly pages: ReadonlyArray<number>
+  readonly document: string;
+  readonly pages: ReadonlyArray<number>;
 }
 
 export class Fragment {
@@ -164,25 +164,25 @@ export class Fragment {
     atf,
     hasPhoto
   }: {
-    number: string
-    cdliNumber: string
-    bmIdNumber: string
-    accession: string
-    publication: string
-    joins: ReadonlyArray<string>
-    description: string
-    measures: Measures
-    collection: string
-    script: string
-    folios: ReadonlyArray<Folio>
-    record: ReadonlyArray<RecordEntry>
-    text: Text
-    notes: string
-    museum: Museum
-    references: ReadonlyArray<any>
-    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
-    atf: string
-    hasPhoto: boolean
+    number: string;
+    cdliNumber: string;
+    bmIdNumber: string;
+    accession: string;
+    publication: string;
+    joins: ReadonlyArray<string>;
+    description: string;
+    measures: Measures;
+    collection: string;
+    script: string;
+    folios: ReadonlyArray<Folio>;
+    record: ReadonlyArray<RecordEntry>;
+    text: Text;
+    notes: string;
+    museum: Museum;
+    references: ReadonlyArray<any>;
+    uncuratedReferences?: ReadonlyArray<UncuratedReference> | null;
+    atf: string;
+    hasPhoto: boolean;
   }) {
     this.number = number
     this.cdliNumber = cdliNumber

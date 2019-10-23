@@ -23,7 +23,7 @@ function MuseumLink({ link }: { readonly link: FragmentLink }) {
 export default function OrganizationLinks({
   fragment
 }: {
-  readonly fragment: Fragment
+  readonly fragment: Fragment;
 }) {
   const cdliNumber = fragment.cdliNumber
   return (

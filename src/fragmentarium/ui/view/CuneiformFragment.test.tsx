@@ -75,7 +75,7 @@ beforeEach(async () => {
 
 const properties = ['collection', 'cdliNumber', 'accession']
 
-for (let property of properties) {
+for (const property of properties) {
   it(`Renders ${property}`, () => {
     expect(container).toHaveTextContent(fragment[property])
   })
@@ -86,31 +86,31 @@ it(`Renders museum`, () => {
 })
 
 it('Renders all joins', () => {
-  for (let item of fragment.joins) {
+  for (const item of fragment.joins) {
     expect(container).toHaveTextContent(item)
   }
 })
 
 it('Renders all measures', () => {
-  for (let property of ['length', 'width', 'thickness']) {
+  for (const property of ['length', 'width', 'thickness']) {
     expect(container).toHaveTextContent(fragment.measures[property])
   }
 })
 
 it('Renders all references', () => {
-  for (let reference of fragment.references) {
+  for (const reference of fragment.references) {
     expect(container).toHaveTextContent(reference.primaryAuthor)
   }
 })
 
 it('Renders all records', () => {
-  for (let uniqueRecord of fragment.uniqueRecord) {
+  for (const uniqueRecord of fragment.uniqueRecord) {
     expect(container).toHaveTextContent(uniqueRecord.user)
   }
 })
 
 it('Renders all folios', () => {
-  for (let folio of fragment.folios) {
+  for (const folio of fragment.folios) {
     expect(container).toHaveTextContent(folio.number)
   }
 })

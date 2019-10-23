@@ -40,7 +40,7 @@ describe('Conjugations/Functions', () => {
   })
 
   it('Displays all keys', () => {
-    for (let item of value) {
+    for (const item of value) {
       expect(element.getAllByDisplayValue(item.key)[0]).toBeVisible()
     }
   })
@@ -66,7 +66,7 @@ describe('Conjugations/Functions', () => {
 
 function commonTests() {
   it('Displays all amplified meanings', () => {
-    for (let item of value) {
+    for (const item of value) {
       expect(element.getByDisplayValue(item.meaning)).toBeVisible()
     }
   })

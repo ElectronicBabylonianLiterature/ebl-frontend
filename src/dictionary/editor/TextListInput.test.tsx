@@ -20,7 +20,7 @@ beforeEach(() => {
 })
 
 it('Displays all elements', () => {
-  for (let item of value) {
+  for (const item of value) {
     expect(element.getByDisplayValue(item)).toBeVisible()
   }
 })
