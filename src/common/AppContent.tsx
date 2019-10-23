@@ -1,4 +1,4 @@
-import React, { Children } from 'react'
+import React from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
