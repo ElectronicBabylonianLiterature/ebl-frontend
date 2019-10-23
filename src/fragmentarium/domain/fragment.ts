@@ -88,7 +88,7 @@ export class RecordEntry {
   }
 
   get moment(): DateRange | Moment.Moment {
-    return this.isHistorical ? moment.range(this.date) : moment(this.date)
+    return this.isHistorical ? moment.range(this.date) : Moment.default(this.date)
   }
 
   get isHistorical(): boolean {

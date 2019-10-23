@@ -70,8 +70,8 @@ describe('RecordEntry', () => {
   })
 
   test.each([
-    [transliteration, moment(transliteration.date)],
-    [revision, moment(revision.date)],
+    [transliteration, moment.default(transliteration.date)],
+    [revision, moment.default(revision.date)],
     [historicalTransliteration, moment.range(historicalTransliteration.date)]
   ] as [RecordEntry, Moment.Moment | DateRange][])('%s.moment is %s', (recordEntry, expected) => {
     expect(recordEntry.moment).toEqual(expected)
