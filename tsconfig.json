@@ -20,8 +20,7 @@
     "jsx": "react",
     "baseUrl": "src",
     "downlevelIteration": true,
-    "noImplicitAny": false,
-    "skipDefaultLibCheck": true
+    "noImplicitAny": false
   },
   "include": [
     "src"
