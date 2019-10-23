@@ -11,6 +11,7 @@
         "prettier",
         "plugin:import/errors",
         "plugin:import/warnings",
+        "plugin:import/typescript",
         "plugin:compat/recommended"
     ],
     "globals": {
@@ -36,7 +37,8 @@
     "settings": {
         "import/resolver": {
           "node": {
-            "moduleDirectory": ["node_modules", "src/"]
+            "moduleDirectory": ["node_modules", "src/"],
+            "paths": ["src"]
           }
         },
         "react": {
