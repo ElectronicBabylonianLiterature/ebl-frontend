@@ -52,7 +52,7 @@ function Measurements({ fragment }: Props) {
     .compact()
     .join(' × ')
 
-  return <>`${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`</>
+  return <>{`${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`}</>
 }
 
 function CdliNumber({ fragment }: Props) {

@@ -21,7 +21,8 @@ function renderDetails() {
 describe('All details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
-      museum: Museum.of('The British Museum')
+      museum: Museum.of('The British Museum'),
+      collection: 'The Collection'
     })
     renderDetails()
   })
