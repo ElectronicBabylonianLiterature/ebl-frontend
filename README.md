@@ -17,8 +17,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Running tests
 
 ```
-yarn eslint --ext .js src/
-yarn flow check
+yarn eslint --ext .ts,.tsx src/
+yarn tsc
 yarn test
 ```
 
@@ -32,11 +32,6 @@ yarn lighthouse <url>
 ## Promises
 
 [bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
-
-
-## Flow
-
-When dependencies are changed it might be necessary to update the Flow type definitions. E.g. `yarn flow-typed install` or `yarn flow-typed install jest@24.8.0`.
 
 ## Acknowledgements
 

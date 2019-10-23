@@ -1,14 +1,17 @@
 {
+    "parser": "@typescript-eslint/parser",
     "env": {
         "browser": true,
         "es6": true,
         "jest": true
     },
     "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
         "prettier",
-        "plugin:flowtype/recommended",
         "plugin:import/errors",
         "plugin:import/warnings",
+        "plugin:import/typescript",
         "plugin:compat/recommended"
     ],
     "globals": {
@@ -23,8 +26,8 @@
         "sourceType": "module"
     },
     "plugins": [
+        "@typescript-eslint",
         "react",
-        "flowtype",
         "react-hooks"
     ],
     "rules": {
@@ -34,8 +37,12 @@
     "settings": {
         "import/resolver": {
           "node": {
-            "moduleDirectory": ["node_modules", "src/"]
+            "moduleDirectory": ["node_modules", "src/"],
+            "paths": ["src"]
           }
+        },
+        "react": {
+            "version": "detect"
         }
       }
 }

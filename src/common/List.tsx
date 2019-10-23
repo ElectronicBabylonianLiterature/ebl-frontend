@@ -1,0 +1,109 @@
+import React from 'react'
+import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
+import _ from 'lodash'
+
+import './List.css'
+import { CollapsibleCard } from './CollabsibleCard'
+import { produce } from 'immer'
+
+function SizeBadge({ collection }) {
+  const size = collection.length
+  return size > 0 ? (
+    <Badge variant="light" pill>
+      {size}
+    </Badge>
+  ) : null
+}
+
+function createDefaultValue(defaultValue) {
+  if (_.isFunction(defaultValue)) {
+    return defaultValue()
+  } else if (_.isObjectLike(defaultValue)) {
+    return _.cloneDeep(defaultValue)
+  } else {
+    return defaultValue
+  }
+}
+
+function listController(ListView) {
+  return ({ value, children, onChange, defaultValue, ...props }) => {
+    const add = () => {
+      const newItem = createDefaultValue(defaultValue)
+      onChange(
+        produce(value, draft => {
+          draft.push(newItem)
+        })
+      )
+    }
+
+    const delete_ = index => () => {
+      onChange(
+        produce(value, draft => {
+          draft.splice(index, 1)
+        })
+      )
+    }
+
+    const update = index => updated => {
+      onChange(
+        produce(value, draft => {
+          draft[index] = updated
+        })
+      )
+    }
+
+    return (
+      <div className="List">
+        <ListView
+          {...props}
+          onDelete={delete_}
+          onAdd={add}
+          elements={value.map((item, index) =>
+            children(item, update(index), index)
+          )}
+        />
+      </div>
+    )
+  }
+}
+
+function CardListView({
+  label,
+  noun,
+  elements,
+  ordered,
+  collapsed,
+  onAdd,
+  onDelete
+}) {
+  const fullLabel = !_.isNil(label) ? (
+    <>
+      {label} <SizeBadge collection={elements} />
+    </>
+  ) : null
+  return (
+    <CollapsibleCard label={fullLabel} collapsed={collapsed}>
+      <ListGroup as={ordered ? 'ol' : 'ul'} variant="flush">
+        {elements.map((element, index) => (
+          <ListGroup.Item as="li" key={index}>
+            {element}
+            <Button
+              onClick={onDelete(index)}
+              size="sm"
+              variant="outline-secondary"
+            >
+              Delete {noun}
+            </Button>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+      <Card.Body>
+        <Button onClick={onAdd} size="sm" variant="outline-secondary">
+          Add {noun}
+        </Button>
+      </Card.Body>
+    </CollapsibleCard>
+  )
+}
+
+export default listController(CardListView)
