@@ -5,6 +5,13 @@ import Reference from 'bibliography/domain/Reference';
 import ReferencesForm, {
   defaultReference
 } from 'bibliography/ui/ReferencesForm'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry';
+
+type Props = {
+  searchBibliography(query: string): readonly BibliographyEntry[]
+  references: readonly Reference[]
+  disabled: boolean
+}
 
 function References({
   searchBibliography,
@@ -12,7 +19,7 @@ function References({
   onChange,
   onSubmit,
   disabled
-}) {
+}: Props & { onChange(references: readonly Reference[]): void; onSubmit(event: React.FormEvent<HTMLFormElement>): void }) {
   return (
     <Form onSubmit={onSubmit} data-testid="references-form">
       <ReferencesForm
@@ -27,21 +34,19 @@ function References({
   )
 }
 
-type Props = {
-  references: readonly Reference[];
-  searchBibliography;
-  updateReferences;
-  disabled: boolean;
-}
 type State = {
   references: readonly Reference[];
 }
-export default class ReferencesController extends Component<Props, State> {
+
+type ControllerProps = {
+  updateReferences(references: readonly Reference[]): any
+} & Props
+export default class ReferencesController extends Component<ControllerProps, State> {
   static defaultProps = {
     disabled: false
   }
 
-  constructor(props) {
+  constructor(props: ControllerProps) {
     super(props)
     this.state = {
       references: _.isEmpty(props.references)
@@ -50,9 +55,9 @@ export default class ReferencesController extends Component<Props, State> {
     }
   }
 
-  handleChange = value => this.setState({ references: value })
+  handleChange = (value: readonly Reference[]) => this.setState({ references: value })
 
-  submit = event => {
+  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     this.props.updateReferences(this.state.references)
   }
