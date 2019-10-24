@@ -18,7 +18,16 @@ function createSession(authResult) {
   )
 }
 
-class Auth {
+export interface AuthenticationService {
+  login(): void
+  handleAuthentication(): Promise<void>
+  logout(): void
+  getSession(): Session
+  isAuthenticated(): boolean
+  getAccessToken(): string
+}
+
+class Auth implements AuthenticationService {
   private readonly config
   private readonly auth0
   private readonly sessionStore
