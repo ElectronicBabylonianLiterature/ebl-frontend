@@ -15,6 +15,7 @@ import serializeReference from 'bibliography/application/serializeReference'
 import usePromiseEffect from 'common/usePromiseEffect'
 
 import './CuneiformFragment.css'
+import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 
 function ContentSection({ children }) {
   return <section className="CuneiformFragment__content">{children}</section>
@@ -154,13 +155,20 @@ function CuneiformFragment({
   )
 }
 
+type ControllerProps = {
+  fragment: Fragment
+  fragmentService
+  fragmentSearchService
+  activeFolio: Folio | null | undefined
+  tab: string | null | undefined
+}
 function CuneiformFragmentController({
   fragment,
   fragmentService,
   fragmentSearchService,
   activeFolio,
   tab
-}) {
+}: ControllerProps) {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)

@@ -7,9 +7,16 @@ import CuneiformFragment from './CuneiformFragment'
 import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
-import { Folio } from 'fragmentarium/domain/fragment'
+import { Folio, Fragment } from 'fragmentarium/domain/fragment'
+import { RouteComponentProps } from 'react-router-dom';
 
-const FragmentWithData = withData(
+type Props = {
+  fragmentService
+  fragmentSearchService,
+  activeFolio: Folio | null | undefined
+  tab: string | null | undefined
+}
+const FragmentWithData = withData<Props, { number: string }, Fragment>(
   ({ data, ...props }) => <CuneiformFragment fragment={data} {...props} />,
   props => props.fragmentService.find(props.number),
   {
@@ -18,12 +25,12 @@ const FragmentWithData = withData(
 )
 
 export default function FragmentView({
-  match,
-  location,
   fragmentService,
-  fragmentSearchService
-}) {
-  const number = decodeURIComponent(match.params.id)
+  fragmentSearchService,
+  match,
+  location
+}: { fragmentService, fragmentSearchService } & RouteComponentProps) {
+  const number = decodeURIComponent(match.params['id'])
   const folioName = parse(location.search).folioName
   const folioNumber = parse(location.search).folioNumber
   const tab = parse(location.search).tab
@@ -49,7 +56,7 @@ export default function FragmentView({
               fragmentService={fragmentService}
               fragmentSearchService={fragmentSearchService}
               activeFolio={activeFolio}
-              tab={tab}
+              tab={_.isArray(tab) ? tab.join('') : tab}
             />
           ) : (
             'Please log in to browse the Fragmentarium.'
