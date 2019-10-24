@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react'
+import Promise from 'bluebird'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ErrorBoundary from 'common/ErrorBoundary'
 
-const defaultConfig = {
-  watch: props => [],
-  filter: props => true,
-  defaultData: null
+type Config<PROPS, DATA> = {
+  watch: (props: PROPS) => any[],
+  filter: (props: PROPS) => boolean,
+  defaultData: DATA | null
 }
 
-export default function withData(WrappedComponent, getter, config = {}) {
-  const fullConfig = {
-    ...defaultConfig,
+export default function withData<PROPS, DATA>(
+  WrappedComponent: React.ComponentType<PROPS> ,
+  getter: (props: PROPS) => Promise<DATA>,
+  config: Partial<Config<PROPS, DATA>> = {}
+) {
+  const fullConfig: Config<PROPS, DATA> = {
+    watch: () => [],
+    filter: () => true,
+    defaultData: null,
     ...config
   }
-  return function(props) {
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null)
+  return function ComponentWithData(props: PROPS) {
+    const [data, setData] = useState<DATA | null>(null)
+    const [error, setError] = useState<Error | null>(null)
 
     useEffect(
       () => {
-        let fetchPromise
+        let fetchPromise: Promise<void>
         setError(null)
         if (fullConfig.filter(props)) {
           setData(null)
