@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import * as Moment from 'moment'
 import { extendMoment, DateRange } from 'moment-range'
-import { produce, immerable, Draft } from 'immer'
+import produce, { Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from './text'

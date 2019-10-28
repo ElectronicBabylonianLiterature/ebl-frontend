@@ -6,7 +6,7 @@ import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import { periodModifiers, periods } from 'corpus/period'
 import { provenances } from 'corpus/provenance'
 
-import { produce, Draft } from 'immer'
+import produce, { Draft } from 'immer'
 
 export default function ManuscriptForm({
   manuscript,

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { produce, immerable, Draft } from 'immer'
+import produce, { Draft, immerable } from 'immer'
 
 import Lemma from './Lemma'
 import { UniqueLemma } from 'fragmentarium/domain/Lemmatization'

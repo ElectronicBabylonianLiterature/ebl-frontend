@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-import { produce, Draft } from 'immer'
+import produce, { Draft } from 'immer'
 
 import { AtfToken, ReconstructionToken } from 'corpus/text'
 

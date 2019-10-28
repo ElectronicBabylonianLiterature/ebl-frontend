@@ -1,4 +1,4 @@
-import { produce, Draft } from 'immer'
+import produce, { Draft } from 'immer'
 
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 

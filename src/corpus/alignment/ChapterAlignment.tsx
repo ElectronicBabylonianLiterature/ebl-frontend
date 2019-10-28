@@ -2,7 +2,7 @@ import React from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-import { produce, Draft } from 'immer'
+import produce, { Draft } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(

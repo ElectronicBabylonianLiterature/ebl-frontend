@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { immerable, produce, Draft } from 'immer'
+import produce, { Draft, immerable } from 'immer'
 
 import BibliographyEntry from './BibliographyEntry'
 
