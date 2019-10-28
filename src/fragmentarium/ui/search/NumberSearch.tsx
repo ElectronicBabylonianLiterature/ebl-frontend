@@ -5,7 +5,7 @@ import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import { FragmentInfo } from 'fragmentarium/domain/fragment';
 
-export default withData<{ number: string }, { fragmentSearchService }, readonly FragmentInfo[]>(
+export default withData<{ number: string | null | undefined }, { fragmentSearchService }, readonly FragmentInfo[]>(
   ({ number, data }) =>
     number ? (
       <FragmentList

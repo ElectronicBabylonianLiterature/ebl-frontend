@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import AppContent from 'common/AppContent'
 import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
@@ -8,11 +8,16 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import './FragmentariumSearch.css'
 
-function FragmentariumSearch({
+type Props = {
+  number: string | null | undefined
+  transliteration: string | null | undefined
+  fragmentSearchService
+}
+const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   transliteration,
   fragmentSearchService
-}) {
+}) => {
   const replacedTransliteration =
     transliteration && replaceTransliteration(transliteration)
   return (

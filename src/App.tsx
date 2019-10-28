@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { parse } from 'query-string'
+import _ from 'lodash'
 
 import Header from './Header'
 import Callback from 'auth/Callback'
@@ -17,6 +18,12 @@ import Bibliography from 'bibliography/ui/Bibliography'
 import Corpus from 'corpus/Corpus'
 import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
+import { Location } from 'history'
+
+function parseStringParam(location: Location, param: string): string | null | undefined {
+  const value = parse(location.search)[param]
+  return _.isArray(value) ? value.join('') : value
+}
 
 function parseTextParams(params) {
   return {
@@ -35,8 +42,8 @@ function parseChapterParams(params) {
 
 function parseFragmentSearchParams(location) {
   return {
-    number: parse(location.search).number,
-    transliteration: parse(location.search).transliteration
+    number: parseStringParam(location, 'number'),
+    transliteration: parseStringParam(location, 'transliteration')
   }
 }
 
