@@ -14,33 +14,36 @@ describe('Folio', () => {
     ['WRM', 'Mayer', true],
     ['CB', 'Bezold', true],
     ['JS', 'Strassmaier', true]
-  ] as [string, string, boolean][])('%s folios', (name, humanized, hasImage) => {
-    let number
-    let folio
+  ] as [string, string, boolean][])(
+    '%s folios',
+    (name, humanized, hasImage) => {
+      let number
+      let folio
 
-    beforeEach(() => {
-      number = chance.string()
-      folio = new Folio({ name, number })
-    })
+      beforeEach(() => {
+        number = chance.string()
+        folio = new Folio({ name, number })
+      })
 
-    test('Name', () => {
-      expect(folio.name).toEqual(name)
-    })
+      test('Name', () => {
+        expect(folio.name).toEqual(name)
+      })
 
-    test('Number', () => {
-      expect(folio.number).toEqual(number)
-    })
+      test('Number', () => {
+        expect(folio.number).toEqual(number)
+      })
 
-    test('Humanized name', () => {
-      expect(folio.humanizedName).toEqual(humanized)
-    })
+      test('Humanized name', () => {
+        expect(folio.humanizedName).toEqual(humanized)
+      })
 
-    test('File name', () => {
-      expect(folio.fileName).toEqual(`${name}_${number}.jpg`)
-    })
+      test('File name', () => {
+        expect(folio.fileName).toEqual(`${name}_${number}.jpg`)
+      })
 
-    test('Has image', () => {
-      expect(folio.hasImage).toEqual(hasImage)
-    })
-  })
+      test('Has image', () => {
+        expect(folio.hasImage).toEqual(hasImage)
+      })
+    }
+  )
 })

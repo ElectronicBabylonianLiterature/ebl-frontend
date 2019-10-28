@@ -71,9 +71,7 @@ function IntroText() {
 
 export default function Introduction() {
   return (
-    <AppContent
-      title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction"
-    >
+    <AppContent title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction">
       <IntroText />
 
       <footer className="Introduction__footer">

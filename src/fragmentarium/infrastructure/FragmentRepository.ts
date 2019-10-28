@@ -37,8 +37,8 @@ class ApiFragmentRepository
   readonly apiClient
 
   constructor(apiClient: {
-    fetchJson: (url: string, authorize: boolean) => Promise<any>;
-    postJson: (url: string, body: any) => Promise<any>;
+    fetchJson: (url: string, authorize: boolean) => Promise<any>
+    postJson: (url: string, body: any) => Promise<any>
   }) {
     this.apiClient = apiClient
   }
@@ -78,10 +78,7 @@ class ApiFragmentRepository
   }
 
   _fetch(params: any): FragmentInfosPromise {
-    return this.apiClient.fetchJson(
-      `/fragments?${stringify(params)}`,
-      true
-    )
+    return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
 
   updateTransliteration(

@@ -31,16 +31,19 @@ test.each([
       ]
     }
   ]
-] as [string, boolean, object][])('Renders without crashing with props %s %p %p', (value, disabled, error) => {
-  const onChange = jest.fn()
-  const name = 'transliteration'
-  render(
-    <Editor
-      name={name}
-      value={value}
-      onChange={onChange}
-      disabled={disabled}
-      error={error}
-    />
-  )
-})
+] as [string, boolean, object][])(
+  'Renders without crashing with props %s %p %p',
+  (value, disabled, error) => {
+    const onChange = jest.fn()
+    const name = 'transliteration'
+    render(
+      <Editor
+        name={name}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        error={error}
+      />
+    )
+  }
+)

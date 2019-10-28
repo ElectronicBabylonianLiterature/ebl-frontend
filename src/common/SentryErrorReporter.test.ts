@@ -22,7 +22,9 @@ beforeEach(async () => {
   showReportDialog = jest.spyOn(Sentry, 'showReportDialog')
   jest.spyOn(Sentry, 'withScope').mockImplementationOnce(f => f(scope))
   jest.spyOn(Sentry, 'configureScope').mockImplementationOnce(f => f(scope))
-  jest.spyOn(Sentry, 'captureException').mockImplementationOnce(exception => exception.message)
+  jest
+    .spyOn(Sentry, 'captureException')
+    .mockImplementationOnce(exception => exception.message)
 })
 
 test('Initialization', () => {

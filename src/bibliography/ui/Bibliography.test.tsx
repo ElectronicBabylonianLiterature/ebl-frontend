@@ -44,7 +44,9 @@ describe('Searching bibliography', () => {
   it('fills in search form query', () => {
     const { getByLabelText } = renderDictionary('/bibliography?query=Borger')
 
-    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('Borger')
+    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual(
+      'Borger'
+    )
   })
 
   it('displays empty search if no query', () => {

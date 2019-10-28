@@ -12,8 +12,8 @@ let element
 beforeEach(async () => {
   fragmentService = {
     findFolio: jest.fn()
-  };
-  (URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
+  }
+  ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   fragmentService.findFolio.mockReturnValueOnce(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )

@@ -9,16 +9,15 @@ import Lemmatization from 'fragmentarium/domain/Lemmatization'
 import LemmatizationHelp from './LemmatizationHelp'
 
 import './Lemmatizer.css'
-import { Text } from 'fragmentarium/domain/text';
-
+import { Text } from 'fragmentarium/domain/text'
 
 type Props = {
-  data: Lemmatization;
-  fragmentService;
-  updateLemmatization(lemmatization: Lemmatization): any;
-  disabled?: boolean;
+  data: Lemmatization
+  fragmentService
+  updateLemmatization(lemmatization: Lemmatization): any
+  disabled?: boolean
 }
-type State = {lemmatization: Lemmatization}
+type State = { lemmatization: Lemmatization }
 
 class Lemmatizer extends Component<Props, State> {
   static readonly defaultProps = {
@@ -95,7 +94,7 @@ class Lemmatizer extends Component<Props, State> {
   }
 }
 
-export default withData<WithoutData<Props>, {text: Text}, Lemmatization>(
+export default withData<WithoutData<Props>, { text: Text }, Lemmatization>(
   Lemmatizer,
   props =>
     props.fragmentService

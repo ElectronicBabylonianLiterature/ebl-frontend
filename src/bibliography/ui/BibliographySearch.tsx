@@ -27,12 +27,12 @@ function BibliographySearch({ data }) {
   )
 }
 
-export default withData<{}, {bibliographyService, query: string}, readonly BibliographyEntry[]>(
-  BibliographySearch,
-  props => props.bibliographyService.search(props.query),
-  {
-    watch: props => [props.query],
-    filter: props => !_.isEmpty(props.query),
-    defaultData: []
-  }
-)
+export default withData<
+  {},
+  { bibliographyService; query: string },
+  readonly BibliographyEntry[]
+>(BibliographySearch, props => props.bibliographyService.search(props.query), {
+  watch: props => [props.query],
+  filter: props => !_.isEmpty(props.query),
+  defaultData: []
+})

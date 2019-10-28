@@ -62,7 +62,9 @@ describe.each([
     test('Displays all properties', () => {
       const expectedRow = _.values(expectedColumns)
         .map(property =>
-          _.isFunction(property) ? (property as Function)(fragment) : fragment[property]
+          _.isFunction(property)
+            ? (property as Function)(fragment)
+            : fragment[property]
         )
         .join('')
         .replace('\n', ' ')

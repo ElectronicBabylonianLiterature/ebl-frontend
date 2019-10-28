@@ -21,7 +21,10 @@ export default function Dictionary({ wordService, location }) {
               <div className="Dictionary-search">
                 <WordSearchForm query={query} />
               </div>
-              <WordSearch query={_.isArray(query) ? query.join('') : query} wordService={wordService} />
+              <WordSearch
+                query={_.isArray(query) ? query.join('') : query}
+                wordService={wordService}
+              />
             </>
           ) : (
             <p>Please log in to browse the Dictionary.</p>

@@ -64,24 +64,33 @@ describe('RecordEntry', () => {
       }),
       false
     ]
-  ] as [RecordEntry, RecordEntry, boolean][])('%s dateEquals %s is %p', (first, second, expected) => {
-    expect(first.dateEquals(second)).toBe(expected)
-    expect(second.dateEquals(first)).toBe(expected)
-  })
+  ] as [RecordEntry, RecordEntry, boolean][])(
+    '%s dateEquals %s is %p',
+    (first, second, expected) => {
+      expect(first.dateEquals(second)).toBe(expected)
+      expect(second.dateEquals(first)).toBe(expected)
+    }
+  )
 
   test.each([
     [transliteration, moment.default(transliteration.date)],
     [revision, moment.default(revision.date)],
     [historicalTransliteration, moment.range(historicalTransliteration.date)]
-  ] as [RecordEntry, Moment.Moment | DateRange][])('%s.moment is %s', (recordEntry, expected) => {
-    expect(recordEntry.moment).toEqual(expected)
-  })
+  ] as [RecordEntry, Moment.Moment | DateRange][])(
+    '%s.moment is %s',
+    (recordEntry, expected) => {
+      expect(recordEntry.moment).toEqual(expected)
+    }
+  )
 
   test.each([
     [transliteration, false],
     [revision, false],
     [historicalTransliteration, true]
-  ] as [RecordEntry, boolean][])('%s.isHistorical is %s', (recordEntry, expected) => {
-    expect(recordEntry.isHistorical).toEqual(expected)
-  })
+  ] as [RecordEntry, boolean][])(
+    '%s.isHistorical is %s',
+    (recordEntry, expected) => {
+      expect(recordEntry.isHistorical).toEqual(expected)
+    }
+  )
 })

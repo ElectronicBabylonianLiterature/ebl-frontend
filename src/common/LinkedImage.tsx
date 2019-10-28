@@ -4,8 +4,8 @@ import { Image } from 'react-bootstrap'
 import ExternalLink from 'common/ExternalLink'
 
 type Props = {
-  src: string;
-  alt: string;
+  src: string
+  alt: string
 }
 
 export default function LinkedImage({ src, alt }: Props) {

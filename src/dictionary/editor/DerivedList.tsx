@@ -4,7 +4,7 @@ import { FormGroup } from 'react-bootstrap'
 import FormList from './FormList'
 import List from 'common/List'
 
-class DerivedList extends Component<{value; onChange}> {
+class DerivedList extends Component<{ value; onChange }> {
   render() {
     return (
       <FormGroup>

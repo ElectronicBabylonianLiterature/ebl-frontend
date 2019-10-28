@@ -115,7 +115,11 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   )
 }
 
-export default withData<{stage: string, name: string; textService, bibliographyService }, { category: string, index: string }, Text>(
+export default withData<
+  { stage: string; name: string; textService; bibliographyService },
+  { category: string; index: string },
+  Text
+>(
   ({ data, stage, name, ...props }) => (
     <ChapterView
       text={data}

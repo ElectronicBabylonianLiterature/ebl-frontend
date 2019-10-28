@@ -8,11 +8,11 @@ import Breadcrumbs from 'common/Breadcrumbs'
 import './AppContent.css'
 
 type Props = {
-  crumbs: readonly string[];
-  title: string;
-  children: React.ReactNode;
-  actions: React.ReactNode;
-  wide: boolean;
+  crumbs: readonly string[]
+  title: string
+  children: React.ReactNode
+  actions: React.ReactNode
+  wide: boolean
 }
 export default function AppContent({ crumbs, title, children, actions, wide }) {
   return (

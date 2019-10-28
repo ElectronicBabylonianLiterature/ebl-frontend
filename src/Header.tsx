@@ -8,8 +8,7 @@ import User from './auth/User'
 
 import './Header.css'
 
-
-function NavItem(props: { href: string, title: string}) {
+function NavItem(props: { href: string; title: string }) {
   return (
     <Nav.Item>
       <LinkContainer to={props.href}>
@@ -19,7 +18,7 @@ function NavItem(props: { href: string, title: string}) {
   )
 }
 
-export default function Header({ auth }: {auth: AuthenticationService}) {
+export default function Header({ auth }: { auth: AuthenticationService }) {
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">

@@ -26,51 +26,54 @@ describe.each([
     null
   ],
   ['Other Museum', '', '', '', null]
-] as [string, string, string, string, object][])('%s', (name, logo, url, copyright, link) => {
-  let museum: Museum
+] as [string, string, string, string, object][])(
+  '%s',
+  (name, logo, url, copyright, link) => {
+    let museum: Museum
 
-  beforeEach(() => {
-    museum = Museum.of(name)
-  })
-
-  test('name', () => {
-    expect(museum.name).toEqual(name)
-  })
-
-  test('logo', () => {
-    expect(museum.logo).toEqual(logo)
-  })
-
-  test('hasUrl', () => {
-    expect(museum.hasUrl).toEqual(url !== '')
-  })
-
-  test('url', () => {
-    expect(museum.url).toEqual(url)
-  })
-
-  test('hasCopyright', () => {
-    expect(museum.hasCopyright).toEqual(copyright !== '')
-  })
-
-  test('copyright', () => {
-    expect(museum.copyright).toEqual(copyright)
-  })
-
-  test('hasFragmentLink bmIdNumber', async () => {
-    const fragment = await factory.build('fragment', { bmIdNumber })
-    expect(museum.hasFragmentLink(fragment)).toEqual(link !== null)
-  })
-
-  test('hasFragmentLink no bmIdNumber', async () => {
-    const fragment = await factory.build('fragment', { bmIdNumber: '' })
-    expect(museum.hasFragmentLink(fragment)).toEqual(false)
-  })
-
-  if (link !== null) {
-    test('fragmentlink', async () => {
-      const fragment = await factory.build('fragment', { bmIdNumber })
-      expect(museum.createLinkFor(fragment)).toEqual(link)
+    beforeEach(() => {
+      museum = Museum.of(name)
     })
+
+    test('name', () => {
+      expect(museum.name).toEqual(name)
+    })
+
+    test('logo', () => {
+      expect(museum.logo).toEqual(logo)
+    })
+
+    test('hasUrl', () => {
+      expect(museum.hasUrl).toEqual(url !== '')
+    })
+
+    test('url', () => {
+      expect(museum.url).toEqual(url)
+    })
+
+    test('hasCopyright', () => {
+      expect(museum.hasCopyright).toEqual(copyright !== '')
+    })
+
+    test('copyright', () => {
+      expect(museum.copyright).toEqual(copyright)
+    })
+
+    test('hasFragmentLink bmIdNumber', async () => {
+      const fragment = await factory.build('fragment', { bmIdNumber })
+      expect(museum.hasFragmentLink(fragment)).toEqual(link !== null)
+    })
+
+    test('hasFragmentLink no bmIdNumber', async () => {
+      const fragment = await factory.build('fragment', { bmIdNumber: '' })
+      expect(museum.hasFragmentLink(fragment)).toEqual(false)
+    })
+
+    if (link !== null) {
+      test('fragmentlink', async () => {
+        const fragment = await factory.build('fragment', { bmIdNumber })
+        expect(museum.createLinkFor(fragment)).toEqual(link)
+      })
+    }
   }
-})
+)

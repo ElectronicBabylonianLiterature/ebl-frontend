@@ -11,7 +11,7 @@ import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 
 type Props = {
   fragmentService
-  fragmentSearchService,
+  fragmentSearchService
   activeFolio: Folio | null | undefined
   tab: string | null | undefined
 }
@@ -28,7 +28,12 @@ export default function FragmentView({
   fragmentSearchService,
   match,
   location
-}: { fragmentService, fragmentSearchService, match, location }) {
+}: {
+  fragmentService
+  fragmentSearchService
+  match
+  location
+}) {
   const number = decodeURIComponent(match.params['id'])
   const folioName = parse(location.search).folioName
   const folioNumber = parse(location.search).folioNumber

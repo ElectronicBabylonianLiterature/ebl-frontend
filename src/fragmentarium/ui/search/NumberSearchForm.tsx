@@ -4,7 +4,10 @@ import { Form, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { History } from 'history'
 
-type Props = {number: string | null | undefined; history: History} & RouteComponentProps
+type Props = {
+  number: string | null | undefined
+  history: History
+} & RouteComponentProps
 
 class FragmentSearchForm extends Component<Props> {
   state = {

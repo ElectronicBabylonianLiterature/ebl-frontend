@@ -11,7 +11,10 @@ import AmplifiedMeaningList from './AmplifiedMeaningList'
 import DerivedFromInput from './DerivedFromInput'
 import PosInput from './PosInput'
 
-class WordForm extends Component<{value; onSubmit; disabled: boolean}, {word}> {
+class WordForm extends Component<
+  { value; onSubmit; disabled: boolean },
+  { word }
+> {
   constructor(props) {
     super(props)
 

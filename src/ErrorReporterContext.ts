@@ -1,10 +1,10 @@
 import React from 'react'
 
 export interface ErrorReporter {
-  captureException(error: Error, errorInfo?: object): void;
-  showReportDialog(): void;
-  setUser(id: string, username: string, eblName: string): void;
-  clearScope(): void;
+  captureException(error: Error, errorInfo?: object): void
+  showReportDialog(): void
+  setUser(id: string, username: string, eblName: string): void
+  clearScope(): void
 }
 
 export const defaultErrorReporter = {

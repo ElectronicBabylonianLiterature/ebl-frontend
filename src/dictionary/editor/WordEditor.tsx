@@ -16,7 +16,10 @@ type Props = {
   data: Word
   wordService
 }
-class WordEditor extends Component<Props, {word; error: Error | null; saving: boolean}> {
+class WordEditor extends Component<
+  Props,
+  { word; error: Error | null; saving: boolean }
+> {
   static contextType = SessionContext
 
   private updatePromise: Promise<any>
@@ -78,6 +81,6 @@ class WordEditor extends Component<Props, {word; error: Error | null; saving: bo
   }
 }
 
-export default withData<WithoutData<Props>,{}, Word>(WordEditor, props =>
+export default withData<WithoutData<Props>, {}, Word>(WordEditor, props =>
   props.wordService.find(props.match.params['id'])
 )

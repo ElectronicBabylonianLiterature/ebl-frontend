@@ -4,7 +4,12 @@ import { FormGroup } from 'react-bootstrap'
 
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
 
-class AmplifiedMeaningList extends Component<{entry: boolean; children; value; onChange}> {
+class AmplifiedMeaningList extends Component<{
+  entry: boolean
+  children
+  value
+  onChange
+}> {
   static defaultProps = {
     entry: false
   }

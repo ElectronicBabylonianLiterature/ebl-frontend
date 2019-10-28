@@ -8,7 +8,7 @@ let element
 
 function configureImage(hasLink = true) {
   beforeEach(async () => {
-    (URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
+    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
     data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
     act(() => {
       element = render(<BlobImage data={data} hasLink={hasLink} />)

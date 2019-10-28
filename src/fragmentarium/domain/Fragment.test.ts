@@ -86,10 +86,13 @@ test.each([
   [[{ document: 'CAD 7', pages: [] }], true],
   [[], true],
   [null, false]
-] as [UncuratedReference[], boolean][])('uncurated references: %s', (uncuratedReferences, expected) => {
-  const fragment = new Fragment({ ...config, uncuratedReferences })
-  expect(fragment.hasUncuratedReferences).toEqual(expected)
-})
+] as [UncuratedReference[], boolean][])(
+  'uncurated references: %s',
+  (uncuratedReferences, expected) => {
+    const fragment = new Fragment({ ...config, uncuratedReferences })
+    expect(fragment.hasUncuratedReferences).toEqual(expected)
+  }
+)
 
 test.each([
   [[atTen, atEleven, atTwelve], [atTen]],

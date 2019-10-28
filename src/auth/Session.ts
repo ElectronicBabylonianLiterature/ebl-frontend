@@ -6,7 +6,12 @@ class Session {
   readonly expiresAt: number
   private readonly _scopes: Set<string>
 
-  constructor(accessToken: string, idToken: string, expiresAt: number, scopes: ReadonlyArray<string>) {
+  constructor(
+    accessToken: string,
+    idToken: string,
+    expiresAt: number,
+    scopes: ReadonlyArray<string>
+  ) {
     this.accessToken = accessToken
     this.idToken = idToken
     this.expiresAt = expiresAt

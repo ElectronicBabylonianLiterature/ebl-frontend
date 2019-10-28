@@ -1,7 +1,6 @@
 import _ from 'lodash'
 import { Manuscript } from 'corpus/text'
-import { produce , Draft } from 'immer'
-
+import { produce, Draft } from 'immer'
 
 function calculateNextId(manuscripts) {
   const existingIds = manuscripts.map(manuscript => manuscript.id)

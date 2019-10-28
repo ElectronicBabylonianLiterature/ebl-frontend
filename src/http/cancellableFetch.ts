@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 export default function cancellableFetch(
   url: string,
   options: {
-    [key: string]: any;
+    [key: string]: any
   } = {}
 ): Promise<any> {
   return new Promise((resolve, reject, onCancel) => {

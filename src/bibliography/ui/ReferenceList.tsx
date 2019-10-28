@@ -40,7 +40,7 @@ function Citation({ reference }: { reference: Reference }) {
 function ReferenceGroup({
   references
 }: {
-  references: ReadonlyArray<Reference>;
+  references: ReadonlyArray<Reference>
 }) {
   return (
     <ol className="ReferenceList__list">
@@ -59,7 +59,7 @@ function ReferenceGroup({
 export default function ReferenceList({
   references
 }: {
-  references: ReadonlyArray<Reference>;
+  references: ReadonlyArray<Reference>
 }) {
   return (
     <>

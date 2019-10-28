@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import { produce, immerable , Draft } from 'immer'
+import { produce, immerable, Draft } from 'immer'
 
 import Lemma from './Lemma'
-import { UniqueLemma } from 'fragmentarium/domain/Lemmatization';
+import { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
 
 export type UniqueLemma = ReadonlyArray<Lemma>
 

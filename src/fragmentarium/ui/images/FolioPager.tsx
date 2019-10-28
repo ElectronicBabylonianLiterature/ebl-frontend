@@ -13,7 +13,9 @@ function FolioPager({ data, folio }: Props) {
   const PagerLink = ({ label, direction }) => (
     <FragmentLink
       number={data[direction].fragmentNumber}
-      folio={new Folio({ name: folio.name, number: data[direction].folioNumber })}
+      folio={
+        new Folio({ name: folio.name, number: data[direction].folioNumber })
+      }
       aria-label={label}
     >
       <i
@@ -46,7 +48,11 @@ function FolioPager({ data, folio }: Props) {
   )
 }
 
-export default withData<WithoutData<Props>, { fragmentNumber: string, fragmentService }, any>(
+export default withData<
+  WithoutData<Props>,
+  { fragmentNumber: string; fragmentService },
+  any
+>(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
   props => props.fragmentService.folioPager(props.folio, props.fragmentNumber),
   {

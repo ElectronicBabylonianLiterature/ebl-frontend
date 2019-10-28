@@ -37,7 +37,7 @@ const FragmentPager: FunctionComponent<Props> = ({ number, children }) => {
       </Fragment>
     )
   } else {
-    return <>children</>
+    return <>{children}</>
   }
 }
 export default FragmentPager

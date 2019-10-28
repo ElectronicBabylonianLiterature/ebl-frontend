@@ -4,14 +4,14 @@ import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-import { produce , Draft } from 'immer'
+import { produce, Draft } from 'immer'
 
 import { AtfToken, ReconstructionToken } from 'corpus/text'
 
 interface Props {
-  readonly token: AtfToken;
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>;
-  readonly onChange: (token: AtfToken) => void;
+  readonly token: AtfToken
+  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly onChange: (token: AtfToken) => void
 }
 
 class AlignmentForm extends Component<Props> {
@@ -53,8 +53,8 @@ class AlignmentForm extends Component<Props> {
 }
 
 interface State {
-  readonly target?: any;
-  readonly show: boolean;
+  readonly target?: any
+  readonly show: boolean
 }
 
 export default class WordAligner extends Component<Props, State> {

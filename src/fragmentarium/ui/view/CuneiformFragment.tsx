@@ -17,7 +17,9 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import './CuneiformFragment.css'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 
-const ContentSection: FunctionComponent = ({ children }) => <section className="CuneiformFragment__content">{children}</section>
+const ContentSection: FunctionComponent = ({ children }) => (
+  <section className="CuneiformFragment__content">{children}</section>
+)
 
 type TabsProps = {
   fragment: Fragment

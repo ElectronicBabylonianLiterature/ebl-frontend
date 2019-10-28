@@ -40,10 +40,10 @@ function TransliterationSearchHelp() {
 }
 
 type State = {
-  transliteration: string;
+  transliteration: string
 }
 type Props = {
-  transliteration: string | null | undefined;
+  transliteration: string | null | undefined
 } & RouteComponentProps
 
 class TransliterationSearchForm extends Component<Props, State> {

@@ -29,7 +29,7 @@ const posOptions = _.map(positionsOfScpeech, (value, key) => ({
   label: value
 }))
 
-class PosInput extends Component<{value; onChange}> {
+class PosInput extends Component<{ value; onChange }> {
   updatePos = event => {
     this.props.onChange({
       pos: _(event.target.options)

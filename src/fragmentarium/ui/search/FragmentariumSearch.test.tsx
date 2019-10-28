@@ -14,8 +14,16 @@ let container
 let element
 let statistics
 
-async function renderFragmentariumSearch({ number, transliteration }: {number?: string | null | undefined; transliteration?: string | null | undefined}) {
-  const FragmentariumSearchWithRouter = withRouter<any, any>(FragmentariumSearch)
+async function renderFragmentariumSearch({
+  number,
+  transliteration
+}: {
+  number?: string | null | undefined
+  transliteration?: string | null | undefined
+}) {
+  const FragmentariumSearchWithRouter = withRouter<any, any>(
+    FragmentariumSearch
+  )
   element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>

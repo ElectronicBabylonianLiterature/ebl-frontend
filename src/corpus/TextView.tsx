@@ -15,7 +15,11 @@ function TextView({ text }) {
   )
 }
 
-export default withData<{},{category: string; index: string; textService}, Text>(
+export default withData<
+  {},
+  { category: string; index: string; textService },
+  Text
+>(
   ({ data }) => <TextView text={data} />,
   ({ category, index, textService }) => textService.find(category, index)
 )

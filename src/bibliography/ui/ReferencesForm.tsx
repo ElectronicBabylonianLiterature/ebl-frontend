@@ -13,11 +13,11 @@ export default function ReferencesForm({
   label,
   collapsed
 }: {
-  searchBibliography: (query: string) => ReadonlyArray<BibliographyEntry>;
-  value: ReadonlyArray<Reference>;
-  onChange: (value: ReadonlyArray<Reference>) => void;
-  label: string;
-  collapsed: boolean;
+  searchBibliography: (query: string) => ReadonlyArray<BibliographyEntry>
+  value: ReadonlyArray<Reference>
+  onChange: (value: ReadonlyArray<Reference>) => void
+  label: string
+  collapsed: boolean
 }) {
   return (
     <ListForm

@@ -7,7 +7,6 @@ import withData from 'http/withData'
 
 import './WordSearch.css'
 
-
 function WordSearch({ data }) {
   return (
     <ul className="WordSearch-results">
@@ -20,7 +19,7 @@ function WordSearch({ data }) {
   )
 }
 
-export default withData<{}, { query: string; wordService}, readonly Word[]> (
+export default withData<{}, { query: string; wordService }, readonly Word[]>(
   WordSearch,
   props => props.wordService.search(props.query),
   {

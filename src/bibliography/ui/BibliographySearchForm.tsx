@@ -20,9 +20,7 @@ class BibliographySearch extends Component<Props, { query: string }> {
 
   submit = event => {
     event.preventDefault()
-    this.props.history.push(
-      `?${stringify({ query: this.state.query })}`
-    )
+    this.props.history.push(`?${stringify({ query: this.state.query })}`)
   }
 
   render() {

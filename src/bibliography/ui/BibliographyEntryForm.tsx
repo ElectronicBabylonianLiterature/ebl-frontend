@@ -28,11 +28,11 @@ function BibliographyHelp() {
 }
 
 type State = {
-  citation: string;
-  value: any;
-  cslData: ReadonlyArray<any> | null;
-  loading: boolean;
-  isInvalid: boolean;
+  citation: string
+  value: any
+  cslData: ReadonlyArray<any> | null
+  loading: boolean
+  isInvalid: boolean
 }
 export default class BibliographyEntryForm extends Component<
   { value; disabled: boolean; onSubmit },

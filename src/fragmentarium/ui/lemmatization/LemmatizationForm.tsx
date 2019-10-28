@@ -5,11 +5,11 @@ import _ from 'lodash'
 import Lemma from 'fragmentarium/domain/Lemma'
 import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 
-type Props = {token: LemmatizationToken; onChange; fragmentService}
+type Props = { token: LemmatizationToken; onChange; fragmentService }
 type State = {
-  isComplex: boolean;
-  selectedOption: Lemma[] | Lemma | null;
-  menuIsOpen: boolean | undefined;
+  isComplex: boolean
+  selectedOption: Lemma[] | Lemma | null
+  menuIsOpen: boolean | undefined
 }
 
 class LemmatizationForm extends Component<Props, State> {
@@ -99,7 +99,10 @@ class LemmatizationForm extends Component<Props, State> {
       <Form.Check
         type="checkbox"
         label="Complex"
-        disabled={!!this.props.token.uniqueLemma && this.props.token.uniqueLemma.length > 1}
+        disabled={
+          !!this.props.token.uniqueLemma &&
+          this.props.token.uniqueLemma.length > 1
+        }
         checked={this.state.isComplex}
         onChange={() =>
           this.setState({

@@ -6,7 +6,7 @@ import Citation from 'bibliography/domain/Citation'
 export default function CompactCitation({
   reference
 }: {
-  reference: Reference;
+  reference: Reference
 }) {
   return <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
 }

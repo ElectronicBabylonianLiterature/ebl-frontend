@@ -2,8 +2,8 @@ import React from 'react'
 import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
 type Props = {
-  loading: boolean;
-  children?: React.ReactNode;
+  loading: boolean
+  children?: React.ReactNode
 }
 
 export default function Spinner({ loading, children }: Props) {

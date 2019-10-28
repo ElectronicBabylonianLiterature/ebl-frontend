@@ -20,7 +20,10 @@ import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 import { Location } from 'history'
 
-function parseStringParam(location: Location, param: string): string | null | undefined {
+function parseStringParam(
+  location: Location,
+  param: string
+): string | null | undefined {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
 }

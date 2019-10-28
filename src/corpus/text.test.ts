@@ -6,11 +6,14 @@ import {
   createManuscript,
   types,
   createLine,
-  createManuscriptLine
-, Chapter, Line, Manuscript, ManuscriptLine } from './text'
+  createManuscriptLine,
+  Chapter,
+  Line,
+  Manuscript,
+  ManuscriptLine
+} from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
-
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,

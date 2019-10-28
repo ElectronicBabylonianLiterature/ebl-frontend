@@ -8,36 +8,36 @@ import createReference from 'bibliography/application/createReference'
 import { Text, Token } from 'fragmentarium/domain/text'
 
 export interface CdliInfo {
-  readonly photoUrl: string | null;
-  lineArtUrl: string | null;
-  detailLineArtUrl: string | null;
+  readonly photoUrl: string | null
+  lineArtUrl: string | null
+  detailLineArtUrl: string | null
 }
 
 export interface ImageRepository {
-  find(fileName: string): Promise<Blob>;
-  findFolio(folio: Folio): Promise<Blob>;
-  findPhoto(number: string): Promise<Blob>;
+  find(fileName: string): Promise<Blob>
+  findFolio(folio: Folio): Promise<Blob>
+  findPhoto(number: string): Promise<Blob>
 }
 
 export interface FragmentRepository {
-  statistics(): Promise<any>;
-  find(number: string): Promise<Fragment>;
+  statistics(): Promise<any>
+  find(number: string): Promise<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
     notes: string
-  ): Promise<Fragment>;
+  ): Promise<Fragment>
   updateLemmatization(
     number: string,
     lemmatization: Lemmatization
-  ): Promise<Fragment>;
+  ): Promise<Fragment>
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
-  ): Promise<Fragment>;
-  folioPager(folio: Folio, fragmentNumber: string): Promise<any>;
-  findLemmas(lemma: string): Promise<any>;
-  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>;
+  ): Promise<Fragment>
+  folioPager(folio: Folio, fragmentNumber: string): Promise<any>
+  findLemmas(lemma: string): Promise<any>
+  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
 
 class FragmentService {

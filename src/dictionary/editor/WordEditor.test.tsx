@@ -75,7 +75,9 @@ describe('Update word', () => {
 describe('User is not allowed to write:words', () => {
   it('The form is disabled', async () => {
     const { container } = await renderWithRouter(false)
-    expect((container.querySelector('fieldset') as HTMLFieldSetElement).disabled).toBe(true)
+    expect(
+      (container.querySelector('fieldset') as HTMLFieldSetElement).disabled
+    ).toBe(true)
   })
 })
 

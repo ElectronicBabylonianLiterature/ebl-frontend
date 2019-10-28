@@ -11,9 +11,9 @@ function Word({
   reconstructionTokens,
   onClick
 }: {
-  readonly token: AtfToken;
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>;
-  readonly onClick: (x0: any) => any;
+  readonly token: AtfToken
+  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly onClick: (x0: any) => any
 }) {
   return token.lemmatizable ? (
     <Button

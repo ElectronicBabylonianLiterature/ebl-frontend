@@ -46,8 +46,8 @@ beforeEach(async () => {
     isAllowedToTransliterateFragments: () => true,
     isAllowedToLemmatizeFragments: () => false,
     hasBetaAccess: () => false
-  };
-  (URL.createObjectURL as jest.Mock).mockReturnValue('url')
+  }
+  ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )

@@ -116,14 +116,18 @@ function commonTests(create, waitFor) {
   })
 }
 
-async function renderWithRouter(isAllowedTo = true, create = false, waitFor: Matcher) {
+async function renderWithRouter(
+  isAllowedTo = true,
+  create = false,
+  waitFor: Matcher
+) {
   const matchedPath = create
-    ? matchPath('/bibliography', {
+    ? (matchPath('/bibliography', {
         path: '/bibliography'
-      }) as match
-    : matchPath('/bibliography/id', {
+      }) as match)
+    : (matchPath('/bibliography/id', {
         path: '/bibliography/:id'
-      }) as match
+      }) as match)
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const element = render(

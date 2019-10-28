@@ -7,9 +7,9 @@ export default function BlobImage({
   hasLink,
   alt
 }: {
-  data: Blob;
-  hasLink?: boolean;
-  alt?: string;
+  data: Blob
+  hasLink?: boolean
+  alt?: string
 }) {
   const [objectUrl, setObjectUrl] = useState()
   useEffect(() => {

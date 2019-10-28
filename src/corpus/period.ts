@@ -1,6 +1,6 @@
 export type PeriodModifier = {
-  readonly name: string;
-  readonly displayName: string;
+  readonly name: string
+  readonly displayName: string
 }
 export const periodModifiers: ReadonlyMap<string, PeriodModifier> = new Map([
   ['None', { name: 'None', displayName: '-' }],
@@ -9,10 +9,10 @@ export const periodModifiers: ReadonlyMap<string, PeriodModifier> = new Map([
 ])
 
 export type Period = {
-  readonly name: string;
-  readonly abbreviation: string;
-  readonly description: string;
-  readonly parent?: string;
+  readonly name: string
+  readonly abbreviation: string
+  readonly description: string
+  readonly parent?: string
 }
 export const periods: ReadonlyMap<string, Period> = new Map([
   [

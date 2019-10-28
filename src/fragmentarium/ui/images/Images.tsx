@@ -133,12 +133,12 @@ function createCdliTab(eventKey: string, url: string) {
 }
 
 type Props = {
-  fragment,
-  fragmentService,
-  tab,
-  activeFolio,
-  history,
-  cdliInfo,
+  fragment
+  fragmentService
+  tab
+  activeFolio
+  history
+  cdliInfo
   photo
 }
 function Images({
@@ -181,7 +181,11 @@ function Images({
 }
 
 export default withRouter<any, any>(
-  withData<{fragment; fragmentService; tab; activeFolio; history}, { }, [CdliInfo, Blob]>(
+  withData<
+    { fragment; fragmentService; tab; activeFolio; history },
+    {},
+    [CdliInfo, Blob]
+  >(
     ({ data: [cdliInfo, photo], ...props }) => (
       <Images {...props} cdliInfo={cdliInfo} photo={photo} />
     ),

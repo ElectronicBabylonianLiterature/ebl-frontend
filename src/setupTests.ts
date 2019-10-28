@@ -6,7 +6,7 @@ import 'test-helpers/bibliography-fixtures'
 import 'test-helpers/fragment-fixtures'
 import 'test-helpers/word-fixtures'
 
-import {GlobalWithFetchMock} from "jest-fetch-mock"
+import { GlobalWithFetchMock } from 'jest-fetch-mock'
 
 const abort = jest.fn()
 const onAbort = jest.fn()
@@ -19,21 +19,20 @@ class AbortControllerMock {
 }
 
 interface CustomGlobal extends GlobalWithFetchMock {
-  URL: any;
-  AbortController: typeof AbortControllerMock;
-  document: Document;
+  URL: any
+  AbortController: typeof AbortControllerMock
+  document: Document
 }
 
 const customGlobal: CustomGlobal = global as CustomGlobal
-customGlobal.fetch = require('jest-fetch-mock');
-customGlobal.fetchMock = customGlobal.fetch;
+customGlobal.fetch = require('jest-fetch-mock')
+customGlobal.fetchMock = customGlobal.fetch
 
 customGlobal.URL = {
   createObjectURL: jest.fn(),
   revokeObjectURL: jest.fn()
 }
 customGlobal.AbortController = AbortControllerMock
-
 
 afterEach(() => {
   abort.mockReset()
@@ -57,5 +56,5 @@ if (customGlobal.document) {
       nodeName: 'BODY',
       ownerDocument: document
     }
-  }) 
+  })
 }

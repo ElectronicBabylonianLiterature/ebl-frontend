@@ -20,52 +20,57 @@ describe.each([
   [false, false, [], ['Word--with-lemma', 'Word--suggestion']],
   [true, false, ['Word--with-lemma'], ['Word--suggestion']],
   [true, true, ['Word--with-lemma', 'Word--suggestion'], []]
-] as [boolean, boolean, string[], string[]][])('%#', (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
-  beforeEach(async () => {
-    token = {
-      type: 'Word',
-      value: 'DIŠ',
-      uniqueLemma: hasLemma ? lemmas : [],
-      language: 'AKKADIAN',
-      normalized: false,
-      lemmatizable: true,
-      suggested: suggested
-    }
-    element = render(<Word token={token} onClick={onClick} />)
-  })
-
-  it('Displays the value', () => {
-    expect(element.container).toHaveTextContent(token.value)
-  })
-
-  if (hasLemma) {
-    it('Displays the lemma', () => {
-      expect(element.container).toHaveTextContent(
-        lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', ')
-      )
-    })
-  }
-
-  it('Clicking calls on click', async () => {
-    clickNth(element, token.value)
-    expect(onClick).toHaveBeenCalled()
-  })
-
-  if (!_.isEmpty(expectedClasses)) {
-    test.each(expectedClasses)('Has class %s', expectedClass => {
-      expect(element.getByText(token.value)).toHaveClass(expectedClass)
-    })
-  }
-
-  if (!_.isEmpty(notExpectedClasses)) {
-    test.each(notExpectedClasses)(
-      'Does not have class %s',
-      notExpectedClass => {
-        expect(element.getByText(token.value)).not.toHaveClass(notExpectedClass)
+] as [boolean, boolean, string[], string[]][])(
+  '%#',
+  (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
+    beforeEach(async () => {
+      token = {
+        type: 'Word',
+        value: 'DIŠ',
+        uniqueLemma: hasLemma ? lemmas : [],
+        language: 'AKKADIAN',
+        normalized: false,
+        lemmatizable: true,
+        suggested: suggested
       }
-    )
+      element = render(<Word token={token} onClick={onClick} />)
+    })
+
+    it('Displays the value', () => {
+      expect(element.container).toHaveTextContent(token.value)
+    })
+
+    if (hasLemma) {
+      it('Displays the lemma', () => {
+        expect(element.container).toHaveTextContent(
+          lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', ')
+        )
+      })
+    }
+
+    it('Clicking calls on click', async () => {
+      clickNth(element, token.value)
+      expect(onClick).toHaveBeenCalled()
+    })
+
+    if (!_.isEmpty(expectedClasses)) {
+      test.each(expectedClasses)('Has class %s', expectedClass => {
+        expect(element.getByText(token.value)).toHaveClass(expectedClass)
+      })
+    }
+
+    if (!_.isEmpty(notExpectedClasses)) {
+      test.each(notExpectedClasses)(
+        'Does not have class %s',
+        notExpectedClass => {
+          expect(element.getByText(token.value)).not.toHaveClass(
+            notExpectedClass
+          )
+        }
+      )
+    }
   }
-})
+)
 
 describe('Not-lemmatizable word', () => {
   beforeEach(async () => {

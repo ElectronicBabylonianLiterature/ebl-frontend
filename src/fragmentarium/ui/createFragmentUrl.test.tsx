@@ -20,9 +20,7 @@ it('Creates double encoded URL', () => {
 it('Creates URL with folio query', async () => {
   const number = chance.string()
   const folio = await factory.build('folio')
-  expect(
-    parseUrl(createFragmentUrlWithFolio(number, folio))
-  ).toEqual({
+  expect(parseUrl(createFragmentUrlWithFolio(number, folio))).toEqual({
     url: `/fragmentarium/${doubleEncode(number)}`,
     query: {
       tab: 'folio',

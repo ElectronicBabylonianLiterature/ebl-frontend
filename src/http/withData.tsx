@@ -11,8 +11,8 @@ type WithDataProps<DATA> = {
 }
 
 type Config<PROPS, DATA> = {
-  watch: (props: PROPS) => any[],
-  filter: (props: PROPS) => boolean,
+  watch: (props: PROPS) => any[]
+  filter: (props: PROPS) => boolean
   defaultData: DATA | null
 }
 

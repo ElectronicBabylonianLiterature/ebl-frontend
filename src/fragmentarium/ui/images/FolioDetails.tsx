@@ -19,10 +19,7 @@ export default function FolioDetails({
             fragmentNumber={fragmentNumber}
           />
         </header>
-        <FolioImage
-          fragmentService={fragmentService}
-          folio={folio}
-        />
+        <FolioImage fragmentService={fragmentService} folio={folio} />
       </>
     )
   )

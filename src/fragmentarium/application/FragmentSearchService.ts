@@ -6,12 +6,12 @@ export type FragmentInfosPromise = Promise<ReadonlyArray<FragmentInfo>>
 export type FragmentInfoPromise = Promise<FragmentInfo>
 
 export interface FragmentInfoRepository {
-  random(): FragmentInfosPromise;
-  interesting(): FragmentInfosPromise;
-  searchNumber(number: string): FragmentInfosPromise;
-  searchTransliteration(number: string): FragmentInfosPromise;
-  fetchLatestTransliterations(): FragmentInfosPromise;
-  fetchNeedsRevision(): FragmentInfosPromise;
+  random(): FragmentInfosPromise
+  interesting(): FragmentInfosPromise
+  searchNumber(number: string): FragmentInfosPromise
+  searchTransliteration(number: string): FragmentInfosPromise
+  fetchLatestTransliterations(): FragmentInfosPromise
+  fetchNeedsRevision(): FragmentInfosPromise
 }
 
 export default class FragmentSearchService {
@@ -22,23 +22,29 @@ export default class FragmentSearchService {
   }
 
   random(): FragmentInfoPromise {
-    return this.fragmentRepository.random().then(_.head).then(info => {
-      if(info) {
-        return info
-      } else {
-        throw new Error('No fragments found.')
-      }
-    })
+    return this.fragmentRepository
+      .random()
+      .then(_.head)
+      .then(info => {
+        if (info) {
+          return info
+        } else {
+          throw new Error('No fragments found.')
+        }
+      })
   }
 
   interesting(): FragmentInfoPromise {
-    return this.fragmentRepository.interesting().then(_.head).then(info => {
-      if(info) {
-        return info
-      } else {
-        throw new Error('No fragments found.')
-      }
-    })
+    return this.fragmentRepository
+      .interesting()
+      .then(_.head)
+      .then(info => {
+        if (info) {
+          return info
+        } else {
+          throw new Error('No fragments found.')
+        }
+      })
   }
 
   searchNumber(number: string): FragmentInfosPromise {

@@ -6,9 +6,10 @@
         "jest": true
     },
     "extends": [
-        "plugin:@typescript-eslint/recommended",
+        "eslint:recommended",
         "plugin:react/recommended",
-        "prettier",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended",
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
@@ -28,7 +29,8 @@
     "plugins": [
         "@typescript-eslint",
         "react",
-        "react-hooks"
+        "react-hooks",
+        "prettier"
     ],
     "rules": {
         "react-hooks/rules-of-hooks": "error",

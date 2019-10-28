@@ -11,8 +11,8 @@ let fragment
 let element
 
 beforeEach(async () => {
-  fragment = await factory.build('fragment', { number });
-  (URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
+  fragment = await factory.build('fragment', { number })
+  ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   element = render(<PhotoImage photo={blob} fragment={fragment} />)
   await waitForElement(() => element.container.querySelector('img'))
 })
