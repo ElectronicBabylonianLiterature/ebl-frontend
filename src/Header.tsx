@@ -3,9 +3,11 @@ import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
+import { AuthenticationService } from 'auth/Auth'
 import User from './auth/User'
 
 import './Header.css'
+
 
 function NavItem(props: { href: string, title: string}) {
   return (
