@@ -82,7 +82,7 @@ describe('User is not allowed to write:words', () => {
 })
 
 async function renderWithRouter(isAllowedTo = true) {
-  const match: match = matchPath('/dictionary/id', {
+  const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
   }) as match
   session.isAllowedToWriteWords.mockReturnValueOnce(isAllowedTo)

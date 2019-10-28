@@ -10,7 +10,6 @@ import FragmentButton from './FragmentButton'
 
 const buttonText = "I'm feeling lucky"
 const message = 'Error'
-const method = 'random'
 
 let history
 let query

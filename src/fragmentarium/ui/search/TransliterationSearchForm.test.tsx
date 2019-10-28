@@ -5,7 +5,6 @@ import { render } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-helpers/utils'
 
 import TransliterationSearchForm from './TransliterationSearchForm'
-import { transliteration } from './../../../test-helpers/record-fixtures'
 
 it('Adds number to query string on submit', async () => {
   const transliteration = 'ma i-ra\nka li'

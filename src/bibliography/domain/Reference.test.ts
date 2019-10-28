@@ -1,10 +1,7 @@
-import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { buildReferenceWithContainerTitle } from 'test-helpers/bibliography-fixtures'
 import Reference from './Reference'
-import serializeReference from 'bibliography/application/serializeReference'
-import Citation, { CompactCitation, ContainerCitation } from './Citation'
 import BibliographyEntry from './BibliographyEntry'
 
 test('default reference', () => {

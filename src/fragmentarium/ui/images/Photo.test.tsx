@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
-import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import PhotoImage from './Photo'
 

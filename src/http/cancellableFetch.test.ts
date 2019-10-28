@@ -4,7 +4,6 @@ const url = 'http://example.com'
 const result = { success: true }
 const error = new Error('fake error message')
 
-const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
 const expectSignal = expect.objectContaining({
   aborted: expect.any(Boolean),
   onabort: expect.any(Function)

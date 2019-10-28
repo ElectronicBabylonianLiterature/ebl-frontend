@@ -1,14 +1,9 @@
-import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 import {
   buildReferenceWithContainerTitle,
   buildReferenceWithManyAuthors
 } from 'test-helpers/bibliography-fixtures'
-import Reference from './Reference'
-import createReference from 'bibliography/application/createReference'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
-import BibliographyEntry from './BibliographyEntry'
 
 test.each([
   [factory.build('reference'), CompactCitation],
@@ -63,7 +58,6 @@ test('CompactCitation with empty properties', async () => {
 })
 
 test('CompactCitation with more than 3 authors', async () => {
-  const authors = await factory.buildMany('author', 4)
   const reference = await buildReferenceWithManyAuthors()
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(

@@ -5,7 +5,6 @@ import { Promise } from 'bluebird'
 
 import TransliteratioForm from './TransliterationForm'
 
-const number = 'K.00000'
 const transliteration = 'line1\nline2'
 const notes = 'notes'
 

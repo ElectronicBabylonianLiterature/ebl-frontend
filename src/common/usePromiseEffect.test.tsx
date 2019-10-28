@@ -7,7 +7,7 @@ import _ from 'lodash'
 test('Cancels the promise on unmount', async () => {
   const promise = new Promise(_.noop)
   const TestComponent = () => {
-    const [setPromise, cancelPromise] = usePromiseEffect()
+    const [setPromise] = usePromiseEffect()
     setPromise(promise)
     return <>'Test'</>
   }
@@ -24,6 +24,6 @@ test('Cancels the promise when cancelPromise is called', async () => {
     cancelPromise()
     return <>'Test'</>
   }
-  const element = render(<TestComponent />)
+  render(<TestComponent />)
   expect((await promise.reflect()).isCancelled()).toBe(true)
 })

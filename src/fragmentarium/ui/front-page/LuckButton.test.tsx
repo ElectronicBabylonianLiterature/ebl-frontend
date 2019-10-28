@@ -6,7 +6,6 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import { whenClicked } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
-import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import LuckyButton from './LuckyButton'
 
 let fragmentSearchService

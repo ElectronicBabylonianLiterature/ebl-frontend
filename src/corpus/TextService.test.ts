@@ -105,59 +105,6 @@ const textDto = {
   ]
 }
 
-const textUpdateDto = {
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 10,
-  approximateVerses: true,
-  chapters: [
-    {
-      classification: 'Ancient',
-      stage: 'Old Babylonian',
-      version: 'A',
-      name: 'The Only Chapter',
-      order: 1,
-      manuscripts: [
-        {
-          id: 1,
-          siglumDisambiguator: '1',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: 'Early',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: 'a note',
-          references: [
-            {
-              id: 'RN1853',
-              linesCited: [],
-              notes: '',
-              pages: '34-54',
-              type: 'DISCUSSION'
-            }
-          ]
-        }
-      ],
-      lines: [
-        {
-          number: '1',
-          reconstruction: 'reconstructed text',
-          manuscripts: [
-            {
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra'
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
 const text = createText({
   category: 1,
   index: 1,
