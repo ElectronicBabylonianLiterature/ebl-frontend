@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FunctionComponent } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -17,17 +17,22 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import './CuneiformFragment.css'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 
-function ContentSection({ children }) {
-  return <section className="CuneiformFragment__content">{children}</section>
-}
+const ContentSection: FunctionComponent = ({ children }) => <section className="CuneiformFragment__content">{children}</section>
 
-function EditorTabs({
+type TabsProps = {
+  fragment: Fragment
+  fragmentService
+  fragmentSearchService
+  onSave
+  disabled?: boolean
+}
+const EditorTabs: FunctionComponent<TabsProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
   onSave,
-  disabled
-}) {
+  disabled = false
+}) => {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
     onSave(
@@ -115,7 +120,17 @@ function EditorTabs({
   )
 }
 
-function CuneiformFragment({
+type CuneiformFragmentProps = {
+  fragment: Fragment
+  fragmentService
+  fragmentSearchService
+  activeFolio: Folio | null
+  tab: string | null
+  onSave
+  saving: boolean
+  error: Error | null
+}
+const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
@@ -124,7 +139,7 @@ function CuneiformFragment({
   onSave,
   saving,
   error
-}) {
+}) => {
   return (
     <Container fluid>
       <Row>
@@ -159,16 +174,16 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService
   fragmentSearchService
-  activeFolio: Folio | null | undefined
-  tab: string | null | undefined
+  activeFolio?: Folio | null
+  tab?: string | null
 }
-function CuneiformFragmentController({
+const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
-  activeFolio,
-  tab
-}: ControllerProps) {
+  activeFolio = null,
+  tab = null
+}) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -215,8 +230,5 @@ function CuneiformFragmentController({
     </>
   )
 }
-CuneiformFragmentController.defaultProps = {
-  activeFolio: null,
-  tab: null
-}
+
 export default CuneiformFragmentController
