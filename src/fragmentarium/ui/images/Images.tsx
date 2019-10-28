@@ -14,7 +14,6 @@ import {
 } from 'fragmentarium/ui/FragmentLink'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
-import { fragment } from 'test-helpers/test-fragment';
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'

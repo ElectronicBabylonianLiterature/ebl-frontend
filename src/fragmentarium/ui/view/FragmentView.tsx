@@ -8,7 +8,6 @@ import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import { Folio, Fragment } from 'fragmentarium/domain/fragment'
-import { RouteComponentProps } from 'react-router-dom';
 
 type Props = {
   fragmentService
