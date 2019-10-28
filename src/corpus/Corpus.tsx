@@ -7,8 +7,9 @@ import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/InlineMarkdown'
+import { Text } from './text'
 
-function Text({ text }) {
+function TextLine({ text }) {
   const title = (
     <>
       {text.index}. <InlineMarkdown source={text.name} />
@@ -51,7 +52,7 @@ function Texts({ texts }) {
             {_(texts)
               .filter(text => text.category === category)
               .sortBy(text => text.index)
-              .map((text, index) => <Text key={index} text={text} />)
+              .map((text, index) => <TextLine key={index} text={text} />)
               .value()}
           </Container>
         </section>
@@ -60,8 +61,8 @@ function Texts({ texts }) {
   )
 }
 
-const TextsWithData = withData(
-  ({ data, ...props }) => <Texts texts={data} {...props} />,
+const TextsWithData = withData<{}, { textService }, readonly Text[]>(
+  ({ data }) => <Texts texts={data} />,
   ({ textService }) => textService.list()
 )
 

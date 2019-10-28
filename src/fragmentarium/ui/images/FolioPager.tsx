@@ -1,11 +1,15 @@
 import React, { Fragment } from 'react'
 import classNames from 'classnames'
 
-import withData from 'http/withData'
+import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Folio } from 'fragmentarium/domain/fragment'
 
-function FolioPager({ data, folio }) {
+type Props = {
+  data
+  folio: Folio
+}
+function FolioPager({ data, folio }: Props) {
   const PagerLink = ({ label, direction }) => (
     <FragmentLink
       number={data[direction].fragmentNumber}
@@ -42,7 +46,7 @@ function FolioPager({ data, folio }) {
   )
 }
 
-export default withData(
+export default withData<WithoutData<Props>, { fragmentNumber: string, fragmentService }, any>(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
   props => props.fragmentService.folioPager(props.folio, props.fragmentNumber),
   {

@@ -3,6 +3,7 @@ import AppContent from 'common/AppContent'
 import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
+import { Text } from './text'
 
 function TextView({ text }) {
   const title = <InlineMarkdown source={text.name} />
@@ -14,7 +15,7 @@ function TextView({ text }) {
   )
 }
 
-export default withData(
+export default withData<{},{category: string; index: string; textService}, Text>(
   ({ data }) => <TextView text={data} />,
   ({ category, index, textService }) => textService.find(category, index)
 )

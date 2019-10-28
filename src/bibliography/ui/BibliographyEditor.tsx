@@ -1,16 +1,24 @@
 import React from 'react'
 
 import AppContent from 'common/AppContent'
-import withData from 'http/withData'
+import withData, { WithoutData } from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFormController'
-import { template } from 'bibliography/domain/BibliographyEntry'
+import BibliographyEntry, { template } from 'bibliography/domain/BibliographyEntry'
+import { History } from 'history'
+import { match } from 'react-router'
 
+type Props = {
+  data: BibliographyEntry
+  bibliographyService,
+  create?: boolean
+  history: History
+}
 function BibliographyEditor({
   data,
   bibliographyService,
-  create = false,
+  create,
   history
-}) {
+}: Props) {
   function createEntry(entry) {
     return bibliographyService
       .create(entry)
@@ -33,12 +41,15 @@ function BibliographyEditor({
     </AppContent>
   )
 }
+BibliographyEditor.defaultProps = {
+  create: false
+}
 
-export default withData(
+export default withData<WithoutData<Props>, {match: match}, BibliographyEntry>(
   BibliographyEditor,
-  props => props.bibliographyService.find(props.match.params.id),
+  props => props.bibliographyService.find(props.match.params['id']),
   {
-    watch: props => [props.create, props.match.params.id],
+    watch: props => [props.create, props.match.params['id']],
     filter: props => !props.create,
     defaultData: template
   }

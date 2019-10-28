@@ -29,7 +29,7 @@ export default function FragmentView({
   fragmentSearchService,
   match,
   location
-}: { fragmentService, fragmentSearchService } & RouteComponentProps) {
+}: { fragmentService, fragmentSearchService, match, location }) {
   const number = decodeURIComponent(match.params['id'])
   const folioName = parse(location.search).folioName
   const folioNumber = parse(location.search).folioNumber

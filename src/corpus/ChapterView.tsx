@@ -8,6 +8,7 @@ import ErrorAlert from 'common/ErrorAlert'
 import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import usePromiseEffect from 'common/usePromiseEffect'
+import { Text } from './text'
 
 function ChapterTitle({ text, chapter }) {
   return (
@@ -114,13 +115,11 @@ function ChapterView({ text, chapterIndex, textService, bibliographyService }) {
   )
 }
 
-export default withData(
+export default withData<{stage: string, name: string; textService, bibliographyService }, { category: string, index: string }, Text>(
   ({ data, stage, name, ...props }) => (
     <ChapterView
       text={data}
       chapterIndex={data.findChapterIndex(stage, name)}
-      stage={stage}
-      name={name}
       {...props}
     />
   ),

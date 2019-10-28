@@ -27,4 +27,4 @@ function Statistics({ data }) {
   )
 }
 
-export default withData(Statistics, props => props.fragmentService.statistics())
+export default withData<{}, { fragmentService }, { readonly [ key: string]: number }>(Statistics, props => props.fragmentService.statistics())

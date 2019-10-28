@@ -2,6 +2,7 @@ import React from 'react'
 import { parse } from 'query-string'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button } from 'react-bootstrap'
+import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
 import BibliographySearchForm from './BibliographySearchForm'
@@ -24,7 +25,8 @@ function CreateButton({ session }) {
 }
 
 export default function Bibliography({ bibliographyService, location }) {
-  const query = parse(location.search).query
+  const rawQuery = parse(location.search).query || ''
+  const query = _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
   return (
     <SessionContext.Consumer>
       {session => (
@@ -35,7 +37,7 @@ export default function Bibliography({ bibliographyService, location }) {
           {session.isAllowedToReadBibliography() ? (
             <>
               <div className="Bibliography__search">
-                <BibliographySearchForm query={query && String(query)} />
+                <BibliographySearchForm query={query} />
               </div>
               <BibliographySearch
                 query={query}

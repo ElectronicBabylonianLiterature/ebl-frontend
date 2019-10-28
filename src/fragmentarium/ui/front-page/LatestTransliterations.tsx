@@ -1,6 +1,7 @@
 import React from 'react'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
+import { FragmentInfo } from 'fragmentarium/domain/fragment';
 
 function LatestTransliterations({ data }) {
   return (
@@ -18,6 +19,6 @@ function LatestTransliterations({ data }) {
   )
 }
 
-export default withData(LatestTransliterations, props =>
+export default withData<{}, {fragmentSearchService}, readonly FragmentInfo[]>(LatestTransliterations, props =>
   props.fragmentSearchService.fetchLatestTransliterations()
 )

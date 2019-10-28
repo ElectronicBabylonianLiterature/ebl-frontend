@@ -6,6 +6,7 @@ import { Parser } from 'html-to-react'
 import withData from 'http/withData'
 
 import './BibliographySearch.css'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 function BibliographySearch({ data }) {
   const parser = new Parser()
@@ -26,7 +27,7 @@ function BibliographySearch({ data }) {
   )
 }
 
-export default withData(
+export default withData<{}, {bibliographyService, query: string}, readonly BibliographyEntry[]>(
   BibliographySearch,
   props => props.bibliographyService.search(props.query),
   {

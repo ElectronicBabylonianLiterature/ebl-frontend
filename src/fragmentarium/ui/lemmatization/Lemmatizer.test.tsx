@@ -58,7 +58,6 @@ beforeEach(async () => {
     <Lemmatizer
       fragmentService={fragmentService}
       updateLemmatization={updateLemmatization}
-      number="K.1"
       text={text}
     />
   )

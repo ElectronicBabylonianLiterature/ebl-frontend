@@ -22,7 +22,6 @@ export default function FolioDetails({
         <FolioImage
           fragmentService={fragmentService}
           folio={folio}
-          alt={folio.fileName}
         />
       </>
     )

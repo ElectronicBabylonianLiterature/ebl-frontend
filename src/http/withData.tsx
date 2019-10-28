@@ -4,6 +4,8 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import ErrorBoundary from 'common/ErrorBoundary'
 
+export type WithoutData<T> = Omit<T, 'data'>
+
 type WithDataProps<DATA> = {
   data: DATA
 }

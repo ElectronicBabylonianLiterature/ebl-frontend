@@ -1,6 +1,6 @@
 import React from 'react'
-import { matchPath, MemoryRouter } from 'react-router'
-import { render, waitForElement } from '@testing-library/react'
+import { matchPath, MemoryRouter, match } from 'react-router'
+import { render, waitForElement, Matcher } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
@@ -8,6 +8,7 @@ import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-helpers/utils'
 import BibliographyEditor from './BibliographyEditor'
 import { template } from 'bibliography/domain/BibliographyEntry'
+import { createMemoryHistory } from 'history'
 
 const errorMessage = 'error'
 const createWaitFor = /family name/
@@ -115,23 +116,24 @@ function commonTests(create, waitFor) {
   })
 }
 
-async function renderWithRouter(isAllowedTo = true, create = false, waitFor) {
-  const match = create
+async function renderWithRouter(isAllowedTo = true, create = false, waitFor: Matcher) {
+  const matchedPath = create
     ? matchPath('/bibliography', {
         path: '/bibliography'
-      })
+      }) as match
     : matchPath('/bibliography/id', {
         path: '/bibliography/:id'
-      })
+      }) as match
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
   const element = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
         <BibliographyEditor
-          match={match}
+          match={matchedPath}
           bibliographyService={bibliographyService}
           create={create}
+          history={createMemoryHistory()}
         />
       </SessionContext.Provider>
     </MemoryRouter>

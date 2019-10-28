@@ -52,7 +52,7 @@ class Auth implements AuthenticationService {
   }
 
   handleAuthentication() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
         if (err) {
           reject(err instanceof Error ? err : new Error(err.error))

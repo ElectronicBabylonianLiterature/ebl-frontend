@@ -6,10 +6,17 @@ import AppContent from 'common/AppContent'
 import WordForm from './WordForm'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
-import withData from 'http/withData'
+import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
+import Word from 'dictionary/Word'
+import { match } from 'react-router'
 
-class WordEditor extends Component<{match; data; wordService}, {word; error: Error | null; saving: boolean}> {
+type Props = {
+  match: match
+  data: Word
+  wordService
+}
+class WordEditor extends Component<Props, {word; error: Error | null; saving: boolean}> {
   static contextType = SessionContext
 
   private updatePromise: Promise<any>
@@ -46,7 +53,7 @@ class WordEditor extends Component<{match; data; wordService}, {word; error: Err
   render() {
     return (
       <AppContent
-        crumbs={['Dictionary', this.props.match.params.id]}
+        crumbs={['Dictionary', this.props.match.params['id']]}
         title={
           <>
             Edit{' '}
@@ -71,6 +78,6 @@ class WordEditor extends Component<{match; data; wordService}, {word; error: Err
   }
 }
 
-export default withData(WordEditor, props =>
-  props.wordService.find(props.match.params.id)
+export default withData<WithoutData<Props>,{}, Word>(WordEditor, props =>
+  props.wordService.find(props.match.params['id'])
 )

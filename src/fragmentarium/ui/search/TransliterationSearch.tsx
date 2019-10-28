@@ -35,7 +35,7 @@ function TransliterationSearchResult({ data }) {
   )
 }
 
-export default withData(
+export default withData<{ transliteration: string }, { fragmentSearchService }, readonly FragmentInfo[]>(
   ({ transliteration, data }) =>
     transliteration ? <TransliterationSearchResult data={data} /> : null,
   props =>

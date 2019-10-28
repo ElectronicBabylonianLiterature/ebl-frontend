@@ -1,5 +1,6 @@
 import React from 'react'
 import { parse } from 'query-string'
+import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
 import WordSearchForm from './WordSearchForm'
@@ -9,7 +10,7 @@ import SessionContext from 'auth/SessionContext'
 import './Dictionary.css'
 
 export default function Dictionary({ wordService, location }) {
-  const query = parse(location.search).query
+  const query = parse(location.search).query || ''
 
   return (
     <AppContent crumbs={['Dictionary']}>
@@ -20,7 +21,7 @@ export default function Dictionary({ wordService, location }) {
               <div className="Dictionary-search">
                 <WordSearchForm query={query} />
               </div>
-              <WordSearch query={query} wordService={wordService} />
+              <WordSearch query={_.isArray(query) ? query.join('') : query} wordService={wordService} />
             </>
           ) : (
             <p>Please log in to browse the Dictionary.</p>

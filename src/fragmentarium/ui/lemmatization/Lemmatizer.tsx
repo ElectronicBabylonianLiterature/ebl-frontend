@@ -3,22 +3,27 @@ import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 import WordLemmatizer from './WordLemmatizer'
-import withData from 'http/withData'
+import withData, { WithoutData } from 'http/withData'
 import Lemmatization from 'fragmentarium/domain/Lemmatization'
 
 import LemmatizationHelp from './LemmatizationHelp'
 
 import './Lemmatizer.css'
+import { Text } from 'fragmentarium/domain/text';
+
 
 type Props = {
   data: Lemmatization;
   fragmentService;
   updateLemmatization(lemmatization: Lemmatization): any;
-  disabled: boolean;
+  disabled?: boolean;
 }
 type State = {lemmatization: Lemmatization}
 
 class Lemmatizer extends Component<Props, State> {
+  static readonly defaultProps = {
+    disabled: false
+  }
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -90,12 +95,12 @@ class Lemmatizer extends Component<Props, State> {
   }
 }
 
-export default withData(
+export default withData<WithoutData<Props>, {text: Text}, Lemmatization>(
   Lemmatizer,
   props =>
     props.fragmentService
       .createLemmatization(props.text)
-      .then(lemmatization => lemmatization.applySuggestions()),
+      .then((lemmatization: Lemmatization) => lemmatization.applySuggestions()),
   {
     watch: props => [props.text]
   }

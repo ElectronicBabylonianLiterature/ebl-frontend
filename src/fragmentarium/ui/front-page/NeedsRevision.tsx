@@ -1,6 +1,7 @@
 import React from 'react'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
+import { FragmentInfo } from 'fragmentarium/domain/fragment';
 
 function NeedsRevision({ data }) {
   return (
@@ -18,6 +19,6 @@ function NeedsRevision({ data }) {
   )
 }
 
-export default withData(NeedsRevision, props =>
+export default withData<{}, {fragmentSearchService}, readonly FragmentInfo[]>(NeedsRevision, props =>
   props.fragmentSearchService.fetchNeedsRevision()
 )

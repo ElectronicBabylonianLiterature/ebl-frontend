@@ -14,6 +14,7 @@ import {
 } from 'fragmentarium/ui/FragmentLink'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
+import { fragment } from 'test-helpers/test-fragment';
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'
@@ -132,6 +133,15 @@ function createCdliTab(eventKey: string, url: string) {
   )
 }
 
+type Props = {
+  fragment,
+  fragmentService,
+  tab,
+  activeFolio,
+  history,
+  cdliInfo,
+  photo
+}
 function Images({
   fragment,
   fragmentService,
@@ -171,8 +181,8 @@ function Images({
   )
 }
 
-export default withRouter(
-  withData(
+export default withRouter<any, any>(
+  withData<{fragment; fragmentService; tab; activeFolio; history}, { }, [CdliInfo, Blob]>(
     ({ data: [cdliInfo, photo], ...props }) => (
       <Images {...props} cdliInfo={cdliInfo} photo={photo} />
     ),

@@ -1,24 +1,26 @@
 import React from 'react'
 import _ from 'lodash'
 
-import Word from './Word'
+import Word from 'dictionary/Word'
+import WordComponent from './Word'
 import withData from 'http/withData'
 
 import './WordSearch.css'
+
 
 function WordSearch({ data }) {
   return (
     <ul className="WordSearch-results">
       {data.map(word => (
         <li key={word._id} className="WordSearch-results__result">
-          <Word value={word} />
+          <WordComponent value={word} />
         </li>
       ))}
     </ul>
   )
 }
 
-export default withData(
+export default withData<{}, { query: string; wordService}, readonly Word[]> (
   WordSearch,
   props => props.wordService.search(props.query),
   {
