@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { History } from 'history'
@@ -20,7 +20,7 @@ class FragmentSearchForm extends Component<Props> {
   submit = event => {
     event.preventDefault()
     this.props.history.push(
-      `/fragmentarium/search/?${queryString.stringify({
+      `/fragmentarium/search/?${stringify({
         number: this.state.number
       })}`
     )

@@ -1,4 +1,4 @@
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 function createEntry(cslData) {
@@ -21,7 +21,7 @@ export default class BibliographyRepository {
   search(author, year, title) {
     const query = { author, year, title }
     return this.apiClient
-      .fetchJson(`/bibliography?${queryString.stringify(query)}`, true)
+      .fetchJson(`/bibliography?${stringify(query)}`, true)
       .then(result => result.map(createEntry))
   }
 

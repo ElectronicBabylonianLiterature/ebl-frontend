@@ -1,5 +1,5 @@
 import React from 'react'
-import queryString from 'query-string'
+import { parse } from 'query-string'
 
 import AppContent from 'common/AppContent'
 import WordSearchForm from './WordSearchForm'
@@ -9,7 +9,7 @@ import SessionContext from 'auth/SessionContext'
 import './Dictionary.css'
 
 export default function Dictionary({ wordService, location }) {
-  const query = queryString.parse(location.search).query
+  const query = parse(location.search).query
 
   return (
     <AppContent crumbs={['Dictionary']}>

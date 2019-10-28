@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import _ from 'lodash'
@@ -23,7 +23,7 @@ class WordSearch extends Component<Props, State> {
   submit = event => {
     event.preventDefault()
     this.props.history.push(
-      `?${queryString.stringify({ query: this.state.query })}`
+      `?${stringify({ query: this.state.query })}`
     )
   }
 

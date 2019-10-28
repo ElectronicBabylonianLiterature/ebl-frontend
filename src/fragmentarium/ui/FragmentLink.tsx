@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import { Folio } from 'fragmentarium/domain/fragment';
 
 export function createFragmentUrl(number) {
@@ -9,7 +9,7 @@ export function createFragmentUrl(number) {
 }
 
 export function createFragmentUrlWithFolio(number, folio) {
-  const query = queryString.stringify(
+  const query = stringify(
     { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
     { strict: false }
   )
@@ -17,7 +17,7 @@ export function createFragmentUrlWithFolio(number, folio) {
 }
 
 export function createFragmentUrlWithTab(number, tab) {
-  const query = queryString.stringify({ tab }, { strict: false })
+  const query = stringify({ tab }, { strict: false })
   return `${createFragmentUrl(number)}?${query}`
 }
 

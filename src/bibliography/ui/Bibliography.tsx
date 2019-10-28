@@ -1,5 +1,5 @@
 import React from 'react'
-import queryString from 'query-string'
+import { parse } from 'query-string'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button } from 'react-bootstrap'
 
@@ -24,7 +24,7 @@ function CreateButton({ session }) {
 }
 
 export default function Bibliography({ bibliographyService, location }) {
-  const query = queryString.parse(location.search).query
+  const query = parse(location.search).query
   return (
     <SessionContext.Consumer>
       {session => (

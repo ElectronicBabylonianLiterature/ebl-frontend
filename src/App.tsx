@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import queryString from 'query-string'
+import { parse } from 'query-string'
 
 import Header from './Header'
 import Callback from 'auth/Callback'
@@ -35,8 +35,8 @@ function parseChapterParams(params) {
 
 function parseFragmentSearchParams(location) {
   return {
-    number: queryString.parse(location.search).number,
-    transliteration: queryString.parse(location.search).transliteration
+    number: parse(location.search).number,
+    transliteration: parse(location.search).transliteration
   }
 }
 

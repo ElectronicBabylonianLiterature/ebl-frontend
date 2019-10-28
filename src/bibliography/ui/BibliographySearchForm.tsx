@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import _ from 'lodash'
 import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
@@ -21,7 +21,7 @@ class BibliographySearch extends Component<Props, { query: string }> {
   submit = event => {
     event.preventDefault()
     this.props.history.push(
-      `?${queryString.stringify({ query: this.state.query })}`
+      `?${stringify({ query: this.state.query })}`
     )
   }
 

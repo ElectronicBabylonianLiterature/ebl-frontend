@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import queryString from 'query-string'
+import { stringify } from 'query-string'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
@@ -79,7 +79,7 @@ class ApiFragmentRepository
 
   _fetch(params: any): FragmentInfosPromise {
     return this.apiClient.fetchJson(
-      `/fragments?${queryString.stringify(params)}`,
+      `/fragments?${stringify(params)}`,
       true
     )
   }
