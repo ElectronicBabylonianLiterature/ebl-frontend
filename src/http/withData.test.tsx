@@ -190,13 +190,13 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   beforeEach(() => {
-    const CrashingComponent = withData(() => {
+    const CrashingComponent = withData<{}, {}, string>(() => {
       throw new Error(errorMessage)
     }, getter)
     getter.mockReturnValueOnce(Promise.resolve(data))
     element = render(
       <ErrorReporterContext.Provider value={errorReportingService}>
-        <CrashingComponent prop={propValue} />
+        <CrashingComponent />
       </ErrorReporterContext.Provider>
     )
   })
