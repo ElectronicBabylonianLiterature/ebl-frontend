@@ -73,13 +73,9 @@ beforeEach(async () => {
   await waitForElement(() => element.getAllByText('Photo'))
 })
 
-const properties = ['collection', 'cdliNumber', 'accession']
-
-for (const property of properties) {
-  it(`Renders ${property}`, () => {
-    expect(container).toHaveTextContent(fragment[property])
-  })
-}
+test.each(['collection', 'cdliNumber', 'accession'])('Renders %s', property => {
+  expect(container).toHaveTextContent(fragment[property])
+})
 
 it(`Renders museum`, () => {
   expect(container).toHaveTextContent(fragment.museum.name)

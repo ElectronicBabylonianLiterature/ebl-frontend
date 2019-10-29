@@ -1,5 +1,5 @@
 import React from 'react'
-import { matchPath, MemoryRouter, match } from 'react-router'
+import { matchPath, MemoryRouter } from 'react-router'
 import { render, waitForElement } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -84,7 +84,7 @@ describe('User is not allowed to write:words', () => {
 async function renderWithRouter(isAllowedTo = true) {
   const match = matchPath('/dictionary/id', {
     path: '/dictionary/:id'
-  }) as match
+  }) as Exclude<ReturnType<typeof matchPath>, null>
   session.isAllowedToWriteWords.mockReturnValueOnce(isAllowedTo)
 
   const element = render(
