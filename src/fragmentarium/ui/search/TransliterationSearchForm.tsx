@@ -23,12 +23,6 @@ function TransliterationSearchHelp() {
             consecutive lines of the search field.
           </li>
           <li>
-            You can use standard combinations and characters without diacritics
-            for special characters (e.g. <code>sz</code> for <code>š</code>,{' '}
-            <code>t,</code> for <code>ṭ</code>, <code>g</code> for{' '}
-            <code>g̃</code> etc.)
-          </li>
-          <li>
             Text with diacritics (e.g. <code>ša₂</code>, <code>á</code>) or
             without them (e.g. <code>sza2</code> or <code>ca2</code>,{' '}
             <code>s,a3</code>, <code>t,a4</code>) can be entered.
