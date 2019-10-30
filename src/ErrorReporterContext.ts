@@ -7,19 +7,22 @@ export interface ErrorReporter {
   clearScope(): void
 }
 
-export const defaultErrorReporter = {
-  captureException(error: Error, errorInfo = {}) {
+export class ConsoleErrorReporter implements ErrorReporter {
+  captureException(error: Error, errorInfo = {}): void {
     console.error('captureException', error, errorInfo)
-  },
-  showReportDialog(error: Error, errorInfo: {}) {
-    console.error('showReportDialog', error, errorInfo)
-  },
-  setUser(id: string, username: string, eblName: string) {
+  }
+
+  showReportDialog(): void {
+    console.error('showReportDialog')
+  }
+
+  setUser(id: string, username: string, eblName: string): void {
     console.error('setUser', id, username, eblName)
-  },
-  clearScope() {
+  }
+
+  clearScope(): void {
     console.error('clearScope')
   }
 }
 
-export default React.createContext(defaultErrorReporter)
+export default React.createContext(new ConsoleErrorReporter())

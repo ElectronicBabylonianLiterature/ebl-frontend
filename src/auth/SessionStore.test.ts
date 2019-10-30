@@ -1,24 +1,23 @@
 import SessionStore from './SessionStore'
-import _ from 'lodash'
 import Session from './Session'
 
 const session = new Session('accessToken', 'idToken', 123, ['scope'])
-const localStorageItems = {
-  access_token: session.accessToken,
-  id_token: session.idToken,
-  expires_at: JSON.stringify(session.expiresAt),
-  scopes: session.scopes.join(' ')
-}
+const localStorageItems: Map<string, string> = new Map([
+  ['access_token', session.accessToken],
+  ['id_token', session.idToken],
+  ['expires_at', JSON.stringify(session.expiresAt)],
+  ['scopes', session.scopes.join(' ')]
+])
 const sessionStore = new SessionStore()
 
 describe('saveSession', () => {
   beforeEach(() => sessionStore.setSession(session))
 
-  _.forEach(localStorageItems, (value, key) => {
+  for (const [key, value] of localStorageItems) {
     it(`Sets ${key} in local storage`, () => {
       expect(localStorage.getItem(key)).toEqual(value)
     })
-  })
+  }
 })
 
 describe('clearSession', () => {
@@ -27,11 +26,11 @@ describe('clearSession', () => {
     sessionStore.clearSession()
   })
 
-  _.forEach(localStorageItems, (value, key) => {
+  for (const [key] of localStorageItems) {
     it(`Removes ${key} from local storage`, () => {
       expect(localStorage.getItem(key)).toBeNull()
     })
-  })
+  }
 })
 
 describe('getSession', () => {
@@ -45,8 +44,8 @@ describe('getSession', () => {
   })
 })
 
-function setItems() {
-  _.forEach(localStorageItems, (value, key) => {
+function setItems(): void {
+  for (const [key, value] of localStorageItems) {
     localStorage.setItem(key, value)
-  })
+  }
 }

@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { render } from '@testing-library/react'
 import { clickNth } from 'test-helpers/utils'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
-  defaultErrorReporter
+  ConsoleErrorReporter
 } from 'ErrorReporterContext'
 
 describe('Children throw an error', () => {
@@ -17,7 +17,7 @@ describe('Children throw an error', () => {
       captureException: jest.fn(),
       showReportDialog: jest.fn()
     }
-    const CrashingComponent = () => {
+    const CrashingComponent: FunctionComponent = () => {
       throw error
     }
     element = render(
@@ -49,7 +49,7 @@ describe('Children throw an error', () => {
 it('Displays children if they do not crash', () => {
   const content = 'Did not crash'
   const { container } = render(
-    <ErrorReporterContext.Provider value={defaultErrorReporter}>
+    <ErrorReporterContext.Provider value={new ConsoleErrorReporter()}>
       <ErrorBoundary>{content}</ErrorBoundary>
     </ErrorReporterContext.Provider>
   )

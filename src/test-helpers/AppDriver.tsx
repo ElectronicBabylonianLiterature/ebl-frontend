@@ -17,13 +17,14 @@ import TextService from 'corpus/TextService'
 import Session from 'auth/Session'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { defaultErrorReporter } from 'ErrorReporterContext'
+import { ConsoleErrorReporter } from 'ErrorReporterContext'
 import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import SessionStore from 'auth/SessionStore'
 
-function createApp(api, sessionStore) {
+function createApp(api, sessionStore): JSX.Element {
   const auth0Config = createAuth0Config()
-  const auth = new Auth(sessionStore, defaultErrorReporter, auth0Config)
+  const auth = new Auth(sessionStore, new ConsoleErrorReporter(), auth0Config)
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
@@ -61,7 +62,7 @@ export default class AppDriver {
     this.api = api
   }
 
-  getElement() {
+  getElement(): RenderResult {
     if (this.element) {
       return this.element
     } else {
@@ -69,12 +70,12 @@ export default class AppDriver {
     }
   }
 
-  withPath(path) {
+  withPath(path): AppDriver {
     this.initialEntries = [path]
     return this
   }
 
-  withSession() {
+  withSession(): AppDriver {
     this.session = new Session(
       'accessToken',
       'idToken',
@@ -84,8 +85,8 @@ export default class AppDriver {
     return this
   }
 
-  render() {
-    const fakeSessionStore = {
+  render(): AppDriver {
+    const fakeSessionStore: SessionStore = {
       setSession: session => {
         this.session = session
       },
@@ -104,41 +105,41 @@ export default class AppDriver {
     return this
   }
 
-  async waitForText(text) {
+  async waitForText(text): Promise<void> {
     await waitForElement(() => this.getElement().getByText(text))
   }
 
-  expectTextContent(text) {
+  expectTextContent(text): void {
     expect(this.getElement().container).toHaveTextContent(text)
   }
 
-  expectNotInContent(text) {
+  expectNotInContent(text): void {
     expect(this.getElement().queryByText(text)).toBeNull()
   }
 
-  expectLink(text, expectedHref) {
+  expectLink(text, expectedHref): void {
     expect(this.getElement().getByText(text)).toHaveAttribute(
       'href',
       expectedHref
     )
   }
 
-  expectBreadcrumbs(crumbs) {
+  expectBreadcrumbs(crumbs): void {
     this.expectTextContent(crumbs.join(''))
   }
 
-  expectInputElement(label, expectedValue) {
+  expectInputElement(label, expectedValue): void {
     expect(
       (this.getElement().getByLabelText(label) as HTMLInputElement).value
     ).toEqual(String(expectedValue))
   }
 
-  changeValueByLabel(label, newValue) {
+  changeValueByLabel(label, newValue): void {
     const input = this.getElement().getByLabelText(label)
     fireEvent.change(input, { target: { value: newValue } })
   }
 
-  click(text, n = 0) {
+  click(text, n = 0): void {
     const clickable = this.getElement().getAllByText(text)[n]
     fireEvent.click(clickable)
   }

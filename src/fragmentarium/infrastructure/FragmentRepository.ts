@@ -125,9 +125,9 @@ class ApiFragmentRepository
     )
   }
 
-  fetchCdliInfo(cdli_number: string) {
+  fetchCdliInfo(cdliNumber: string) {
     return this.apiClient
-      .fetchJson(`/cdli/${encodeURIComponent(cdli_number)}`, true)
+      .fetchJson(`/cdli/${encodeURIComponent(cdliNumber)}`, true)
       .catch(error => {
         if (error.name === 'ApiError') {
           return { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null }

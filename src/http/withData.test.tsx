@@ -3,7 +3,10 @@ import { render, wait, waitForElement } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
-import ErrorReporterContext from 'ErrorReporterContext'
+import ErrorReporterContext, {
+  ErrorReporter,
+  ConsoleErrorReporter
+} from 'ErrorReporterContext'
 
 const data = 'Test data'
 const defaultData = 'Default data'
@@ -19,11 +22,8 @@ let getter
 
 let ComponentWithData
 let InnerComponent
-let errorReportingService
 
-errorReportingService = {
-  captureException: jest.fn()
-}
+const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
 
 async function renderWithData() {
   element = render(
