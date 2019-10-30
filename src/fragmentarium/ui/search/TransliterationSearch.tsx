@@ -24,12 +24,15 @@ function Lines({ fragment }: { fragment: FragmentInfo }) {
 }
 
 function TransliterationSearchResult({ data }) {
+  function makeLine(fragment) {
+    return <Lines fragment={fragment} />
+  }
   return (
     <FragmentList
       fragments={data}
       columns={{
         Script: 'script',
-        'Matching lines': fragment => <Lines fragment={fragment} />
+        'Matching lines': makeLine
       }}
     />
   )

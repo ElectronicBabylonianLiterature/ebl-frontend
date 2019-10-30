@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -26,7 +26,13 @@ function createDefaultValue(defaultValue) {
 }
 
 function listController(ListView) {
-  return ({ value, children, onChange, defaultValue, ...props }) => {
+  return function ListController({
+    value,
+    children,
+    onChange,
+    defaultValue,
+    ...props
+  }) {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
       onChange(

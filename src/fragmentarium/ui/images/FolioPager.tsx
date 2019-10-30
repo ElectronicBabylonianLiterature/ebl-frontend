@@ -37,7 +37,7 @@ function FolioPager({ data, folio }: Props) {
           label={`Previous ${folio.humanizedName}'s Folio`}
         />
       )}{' '}
-      Browse {folio.humanizedName}'s Folios{' '}
+      Browse {folio.humanizedName}&apos;s Folios{' '}
       {data && (
         <PagerLink
           direction="next"

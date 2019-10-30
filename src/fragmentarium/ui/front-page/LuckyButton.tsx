@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import SessionContext from 'auth/SessionContext'
 import FragmentButton from 'fragmentarium/ui/FragmentButton'
+import Session from 'auth/Session'
 
-export default function LuckyButton({ fragmentSearchService }) {
+export default function LuckyButton({ fragmentSearchService }): JSX.Element {
   return (
     <SessionContext.Consumer>
-      {session =>
+      {(session: Session): ReactNode =>
         session.isAllowedToReadFragments() && (
           <FragmentButton query={() => fragmentSearchService.random()}>
-            I'm feeling lucky
+            I&apos;m feeling lucky
           </FragmentButton>
         )
       }

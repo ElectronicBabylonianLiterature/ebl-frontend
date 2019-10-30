@@ -36,4 +36,6 @@ function SpecialCharactersHelp() {
   )
 }
 
-export default () => <HelpTrigger overlay={SpecialCharactersHelp()} />
+export default function SpecialCharactersHelpTrigger() {
+  return <HelpTrigger overlay={SpecialCharactersHelp()} />
+}

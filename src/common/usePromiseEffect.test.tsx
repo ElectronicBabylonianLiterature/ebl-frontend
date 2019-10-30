@@ -1,15 +1,15 @@
 import usePromiseEffect from './usePromiseEffect'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
 test('Cancels the promise on unmount', async () => {
   const promise = new Promise(_.noop)
-  const TestComponent = () => {
+  const TestComponent: FunctionComponent = () => {
     const [setPromise] = usePromiseEffect()
     setPromise(promise)
-    return <>'Test'</>
+    return <>Test</>
   }
   const element = render(<TestComponent />)
   element.unmount()
@@ -18,11 +18,11 @@ test('Cancels the promise on unmount', async () => {
 
 test('Cancels the promise when cancelPromise is called', async () => {
   const promise = new Promise(_.noop)
-  const TestComponent = () => {
+  const TestComponent: FunctionComponent = () => {
     const [setPromise, cancelPromise] = usePromiseEffect()
     setPromise(promise)
     cancelPromise()
-    return <>'Test'</>
+    return <>Test</>
   }
   render(<TestComponent />)
   expect((await promise.reflect()).isCancelled()).toBe(true)

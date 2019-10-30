@@ -28,7 +28,7 @@ export default function TemplateHelp() {
         </p>
         <p>
           If the numbers of the field contain a suffix, then the suffix is added
-          to each number of the list. Thus, <code>1', 2</code> results in:
+          to each number of the list. Thus, <code>1&apos;, 2</code> results in:
         </p>
         <pre>{obverseReverseAndsuffix}</pre>
       </Popover.Content>

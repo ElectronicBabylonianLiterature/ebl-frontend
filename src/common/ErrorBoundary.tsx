@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, ReactNode } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import ErrorReporterContext from 'ErrorReporterContext'
 
@@ -9,15 +9,15 @@ class ErrorBoundary extends Component {
 
   static contextType = ErrorReporterContext
 
-  componentDidCatch(error, info) {
+  componentDidCatch(error, info): void {
     this.setState({ error: error })
     this.context.captureException(error, info)
   }
 
-  render() {
+  render(): ReactNode {
     return this.state.error ? (
       <Alert variant="danger">
-        <h4>Something's gone wrong.</h4>
+        <h4>Something&apos;s gone wrong.</h4>
         <p>
           Our team has been notified, but you can fill out a report by clicking
           the button below.
