@@ -23,7 +23,7 @@
   "private": true,
   "engines": {
     "yarn": "^1.5.1",
-    "node": "^11.13.0"
+    "node": "^12.13.0"
   },
   "dependencies": {
     "@sentry/browser": "^5.4.0",
