@@ -31,9 +31,9 @@ const specialCharacterKeys = Object.entries(specialCharacters).map(
 interface Props {
   readonly name: string
   readonly value: string
-  readonly onChange: any
+  readonly onChange: (value: string, event?: any) => void | undefined
   readonly disabled: boolean
-  readonly error: string | null
+  readonly error: object
 }
 
 class Editor extends Component<Props> {
@@ -86,5 +86,4 @@ class Editor extends Component<Props> {
     )
   }
 }
-//Editor.defaultProps = { error: null }
 export default Editor
