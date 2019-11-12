@@ -63,7 +63,8 @@ class Editor extends Component<Props> {
         minLines={2}
         maxLines={2 * value.split('\n').length + 2}
         mode="plain_text"
-        theme="kuroir"
+        theme="kuroir" /*used theme tokens only to distinguish color. Have no
+          semantical meaning corresponding to common tokens from theme*/
         value={value}
         onChange={onChange}
         showPrintMargin={false}
