@@ -1,4 +1,4 @@
-import 'brace/mode/java'
+import 'brace/mode/plain_text'
 
 // @ts-ignore
 const acequire = window.ace.acequire
@@ -10,10 +10,9 @@ export class AtfHighlightRules extends acequire('ace/mode/text_highlight_rules')
   constructor() {
     super()
     this.$rules = {
-      /*token values are chosen solely based on color and have no meaning
+      /* token values are chosen solely based on color and have no meaning
       This is important when changing the overall theme one could have to
-      change tokens too !
-       */
+      change tokens too! */
       start: [
         {
           token: 'variable.parameter',
@@ -40,7 +39,7 @@ export class AtfHighlightRules extends acequire('ace/mode/text_highlight_rules')
   }
 }
 
-export default class AtfMode extends acequire('ace/mode/java').Mode {
+export default class AtfMode extends acequire('ace/mode/plain_text').Mode {
   HighlightRules
 
   constructor() {
