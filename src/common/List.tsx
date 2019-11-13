@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
