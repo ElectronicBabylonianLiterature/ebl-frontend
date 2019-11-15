@@ -1,6 +1,6 @@
 # Electronic Babylonian Literature frontend
 
-[![Codeship Status for ElectronicBabylonianLiterature/ebl-frontend](https://app.codeship.com/projects/81f1a480-4637-0136-73e8-46e54b124c02/status?branch=master)](https://app.codeship.com/projects/292066)
+[![Build Status](https://travis-ci.com/ElectronicBabylonianLiterature/ebl-frontend.svg?branch=master)](https://travis-ci.com/ElectronicBabylonianLiterature/ebl-frontend)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/test_coverage)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/maintainability)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/maintainability)
 [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4)](https://prettier.io)
