@@ -1,0 +1,34 @@
+language: node_js
+jobs:
+  include:
+  - stage: test
+    before_script:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+      > ./cc-test-reporter
+    - chmod +x ./cc-test-reporter
+    - "./cc-test-reporter before-build"
+    script:
+    - yarn eslint --ext .ts,.tsx src/
+    - yarn tsc
+    - yarn test --coverage --forceExit --detectOpenHandles
+    after_script: "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+  - stage: deploy
+    install: skip
+    script: skip
+    deploy:
+      provider: heroku
+      edge: true
+  - stage: smoke test
+    if: branch = master
+    install: skip
+    script:
+    - wget --no-check-certificate --output-document=/dev/null https://www.ebabylon.org
+  - stage: light house
+    if: branch = master
+    script:
+    - yarn lighthouse https://www.ebabylon.org
+    - yarn lighthouse https://www.ebabylon.org/fragmentarium
+    - yarn lighthouse https://www.ebabylon.org/corpus
+notifications:
+  slack:
+    secure: OeAUNR2mbxvsQ9f6udtUt3+i6TCZsyVj+N0xRGcqMMM2IswDovOA2dhbLgL1zLOCzmPDX6jMSlAuHOGFbirn0oXu30mQNBOfOVUESQ7IYFHNivVt458RuMxei9sKWAm+FbH8+7h5/EpMzfyrYGrlvM9OT5/5RajtW1xw7UAxrGepj0MEOmH+Qu6KqrXvMrfck5iFq9+M9n+ZDahINpWcWsxgqVyGiflfD72MdY3beVLBwSZMpQ8eUuUSGDx1mq0OjRqlpZGujxnESyR4SKIrxPD5wXQS8kgarC6g7N52PSpW7usIuLO0aWH0WPaMnljRsbXRhGg422BpZLPegM7v3tAra3mZdnyhMOwAJyQe65yVzzwT9kWF3mSjtE56cG39sd9hjvWdZk4nxdyR7aO5/PN6WTLlHJJMYHT4cXt/m7sNqrmmMoWjosfEgQmbUDWYZLkNsKIPGr+arvu3ZXgInoDaGpMNynRBcs1UtP+UbflWyEZynYk9aztOgilQaQbQHuDSY2OwJ+pR4byMXPVOt1649aF6ZR+OJ18r8om5ZCwfZzfGAng6wVvPpGpkkvQhIGH13FSfqj/qZSas+Bc3BaBR0GTTWhuukUl0h8k3BxRrveE45OMg60jCktgO/FhXU409B56/tNCXf+LBDHF9E/08mfJYzho9uZpnbzFEGlI=
