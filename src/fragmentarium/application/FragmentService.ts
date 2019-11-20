@@ -36,6 +36,7 @@ export interface FragmentRepository {
     references: ReadonlyArray<Reference>
   ): Promise<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Promise<any>
+  fragmentPager(fragmentNumber: string): Promise<any>
   findLemmas(lemma: string): Promise<any>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
@@ -108,6 +109,10 @@ class FragmentService {
 
   folioPager(folio: Folio, fragmentNumber: string) {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
+  }
+
+  fragmentPager(fragmentNumber: string) {
+    return this.fragmentRepository.fragmentPager(fragmentNumber)
   }
 
   searchLemma(lemma: string) {

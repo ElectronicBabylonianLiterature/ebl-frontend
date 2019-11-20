@@ -1,5 +1,7 @@
 import React, { Fragment, FunctionComponent } from 'react'
 import classNames from 'classnames'
+
+import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 
 const numberRegexp = /^([^\d]*)(\d+)$/
@@ -9,35 +11,51 @@ type LinkProps = {
   label: string
 }
 type Props = {
-  number: string
+  data
 }
-const FragmentPager: FunctionComponent<Props> = ({ number, children }) => {
-  const match = numberRegexp.exec(number)
-  if (match) {
-    const prefix = match[1]
-    const current = Number(match[2] || 0)
-    const PagerLink = ({ offset, label }: LinkProps) => (
-      <FragmentLink number={`${prefix}${current + offset}`} aria-label={label}>
-        <i
-          className={classNames({
-            fas: true,
-            'fa-angle-left': offset < 0,
-            'fa-angle-right': offset >= 0
-          })}
-          aria-hidden
-        />
-      </FragmentLink>
-    )
+const FragmentPager: FunctionComponent<Props> = ({ data }) => {
+  //data_dict = {data[direction].fragmentNumber
+  console.log(data)
+  const PagerLinkNext = ({ nextFragmentNumber }) => (
+    <FragmentLink number={nextFragmentNumber}>
+      <i
+        className={classNames({
+          fas: true,
+          'fa-angle-right': true
+        })}
+        aria-hidden
+      />
+    </FragmentLink>
+  )
+  const PagerLinkPrevious = ({ previousFragmentNumber }) => (
+    <FragmentLink number={previousFragmentNumber}>
+      <i
+        className={classNames({
+          fas: true,
+          'fa-angle-left': true
+        })}
+        aria-hidden
+      />
+    </FragmentLink>
+  )
 
-    return (
-      <Fragment>
-        {current > 1 && <PagerLink offset={-1} label="Previous" />}
-        {children}
-        <PagerLink offset={1} label="Next" />
-      </Fragment>
-    )
-  } else {
-    return <>{children}</>
-  }
+  return (
+    <Fragment>
+      <PagerLinkPrevious
+        previousFragmentNumber={data['next']['fragmentNumber']}
+      />
+      <PagerLinkNext nextFragmentNumber={data['previous']['fragmentNumber']} />
+    </Fragment>
+  )
 }
-export default FragmentPager
+export default withData<
+  WithoutData<Props>,
+  { fragmentNumber: string; fragmentService },
+  any
+>(
+  ({ data, ...props }) => <FragmentPager data={data} {...props} />,
+  props => props.fragmentService.fragmentPager(props.fragmentNumber),
+  {
+    watch: props => [props.fragmentNumber]
+  }
+)

@@ -49,7 +49,12 @@ export default function FragmentView({
   return (
     <AppContent
       crumbs={['Fragmentarium', number]}
-      title={<FragmentPager number={number}> {number} </FragmentPager>}
+      title={
+        <FragmentPager
+          fragmentNumber={number}
+          fragmentService={fragmentService}
+        ></FragmentPager>
+      }
       wide
     >
       <SessionContext.Consumer>

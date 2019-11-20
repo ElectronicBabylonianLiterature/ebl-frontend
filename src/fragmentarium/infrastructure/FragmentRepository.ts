@@ -118,6 +118,13 @@ class ApiFragmentRepository
     )
   }
 
+  fragmentPager(fragmentNumber: string) {
+    return this.apiClient.fetchJson(
+      `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
+      true
+    )
+  }
+
   findLemmas(word: string) {
     return this.apiClient.fetchJson(
       `/lemmas?word=${encodeURIComponent(word)}`,
