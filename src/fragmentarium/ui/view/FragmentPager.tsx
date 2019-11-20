@@ -4,18 +4,14 @@ import classNames from 'classnames'
 import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 
-const numberRegexp = /^([^\d]*)(\d+)$/
-
-type LinkProps = {
-  offset: number
-  label: string
-}
 type Props = {
   data
+  children
 }
-const FragmentPager: FunctionComponent<Props> = ({ data }) => {
+const FragmentPager: FunctionComponent<Props> = ({ data, children }) => {
   //data_dict = {data[direction].fragmentNumber
   console.log(data)
+  console.log(children)
   const PagerLinkNext = ({ nextFragmentNumber }) => (
     <FragmentLink number={nextFragmentNumber}>
       <i
@@ -44,6 +40,7 @@ const FragmentPager: FunctionComponent<Props> = ({ data }) => {
       <PagerLinkPrevious
         previousFragmentNumber={data['next']['fragmentNumber']}
       />
+      {children}
       <PagerLinkNext nextFragmentNumber={data['previous']['fragmentNumber']} />
     </Fragment>
   )
@@ -54,8 +51,9 @@ export default withData<
   any
 >(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
-  props => props.fragmentService.fragmentPager(props.fragmentNumber),
+  props =>
+    props.fragmentService.fragmentPager(props.children, props.fragmentNumber),
   {
-    watch: props => [props.fragmentNumber]
+    watch: props => [props.children, props.fragmentNumber]
   }
 )
