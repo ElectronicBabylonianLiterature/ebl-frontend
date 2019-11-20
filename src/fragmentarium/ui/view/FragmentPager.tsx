@@ -10,7 +10,7 @@ type Props = {
 }
 const FragmentPager: FunctionComponent<Props> = ({ data, children }) => {
   const PagerLinkNext = ({ nextFragmentNumber }) => (
-    <FragmentLink number={nextFragmentNumber}>
+    <FragmentLink number={nextFragmentNumber} aria-label={'Next'}>
       <i
         className={classNames({
           fas: true,
@@ -21,7 +21,7 @@ const FragmentPager: FunctionComponent<Props> = ({ data, children }) => {
     </FragmentLink>
   )
   const PagerLinkPrevious = ({ previousFragmentNumber }) => (
-    <FragmentLink number={previousFragmentNumber}>
+    <FragmentLink number={previousFragmentNumber} aria-label={'Previous'}>
       <i
         className={classNames({
           fas: true,

@@ -41,11 +41,16 @@ function renderFragmentView(
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
+  const fragmentPagerData = {
+    next: { fragmentNumber: 'K.00001' },
+    previous: { fragmentNumber: 'J.99999' }
+  }
   fragmentService = {
     find: jest.fn(),
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
+    fragmentPager: jest.fn(),
     createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
   }
@@ -64,6 +69,10 @@ beforeEach(async () => {
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
+
+  fragmentService.fragmentPager.mockReturnValue(
+    Promise.resolve(fragmentPagerData)
+  )
 })
 
 describe('Fragment is loaded', () => {
