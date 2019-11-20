@@ -7,11 +7,14 @@ const child = 'K.00000'
 let number
 let nextNumber
 let element
+let fragmentService
 
 function renderPager() {
   element = render(
     <MemoryRouter>
-      <FragmentPager number={number}>{child}</FragmentPager>
+      <FragmentPager fragmentNumber={number} fragmentService={fragmentService}>
+        {child}
+      </FragmentPager>
     </MemoryRouter>
   )
 }
@@ -35,7 +38,12 @@ describe('Number is greater than 1', () => {
     nextNumber = 'prefix 124'
     element = render(
       <MemoryRouter>
-        <FragmentPager number={number}>{child}</FragmentPager>
+        <FragmentPager
+          fragmentNumber={number}
+          fragmentService={fragmentService}
+        >
+          {child}
+        </FragmentPager>
       </MemoryRouter>
     )
   })
