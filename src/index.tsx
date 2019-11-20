@@ -23,7 +23,12 @@ import TextService from 'corpus/TextService'
 import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
-SentryErrorReporter.init(process.env.REACT_APP_SENTRY_DSN, process.env.NODE_ENV)
+if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
+  SentryErrorReporter.init(
+    process.env.REACT_APP_SENTRY_DSN,
+    process.env.NODE_ENV
+  )
+}
 
 Promise.config({
   cancellation: true
