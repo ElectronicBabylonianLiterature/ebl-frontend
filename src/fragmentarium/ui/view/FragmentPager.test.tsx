@@ -14,8 +14,8 @@ beforeEach(async () => {
     fragmentPager: jest.fn()
   }
   fragmentPagerData = {
-    next: { fragmentNumber: 'K.00001' },
-    previous: { fragmentNumber: 'J.99999' }
+    next: 'K.00001',
+    previous: 'J.99999'
   }
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
