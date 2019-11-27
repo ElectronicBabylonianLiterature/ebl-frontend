@@ -33,18 +33,14 @@ beforeEach(async () => {
 it('Previous links to the "previous" fragment', () => {
   expect(element.getByLabelText('Previous')).toHaveAttribute(
     'href',
-    `/fragmentarium/${encodeURIComponent(
-      fragmentPagerData['previous']['fragmentNumber']
-    )}`
+    `/fragmentarium/${encodeURIComponent(fragmentPagerData['previous'])}`
   )
 })
 
 it('Next links to the "next" fragment', () => {
   expect(element.getByLabelText('Next')).toHaveAttribute(
     'href',
-    `/fragmentarium/${encodeURIComponent(
-      fragmentPagerData['next']['fragmentNumber']
-    )}`
+    `/fragmentarium/${encodeURIComponent(fragmentPagerData['next'])}`
   )
 })
 
