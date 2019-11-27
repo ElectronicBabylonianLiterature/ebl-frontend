@@ -34,11 +34,9 @@ const FragmentPager: FunctionComponent<Props> = ({ data, children }) => {
 
   return (
     <Fragment>
-      <PagerLinkPrevious
-        previousFragmentNumber={data['previous']['fragmentNumber']}
-      />
+      <PagerLinkPrevious previousFragmentNumber={data['previous']} />
       {children}
-      <PagerLinkNext nextFragmentNumber={data['next']['fragmentNumber']} />
+      <PagerLinkNext nextFragmentNumber={data['next']} />
     </Fragment>
   )
 }
