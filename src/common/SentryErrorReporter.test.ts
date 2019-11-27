@@ -6,6 +6,8 @@ import Chance from 'chance'
 
 const chance = new Chance()
 const sentryErrorReporter = new SentryErrorReporter()
+const dsn = 'http://example.com/sentry'
+const environment = 'test'
 let scope
 let error
 let init
@@ -28,13 +30,12 @@ beforeEach(async () => {
 })
 
 test('Initialization', () => {
-  const dsn = 'http://example.com/sentry'
-  const environment = 'test'
   init.mockImplementationOnce(_.noop)
   SentryErrorReporter.init(dsn, environment)
   expect(Sentry.init).toHaveBeenCalledWith({
     dsn: dsn,
-    environment: environment
+    environment: environment,
+    beforeSend: expect.any(Function)
   })
 })
 
@@ -48,19 +49,30 @@ test('Error reporting', () => {
   expect(Sentry.captureException).toHaveBeenCalledWith(error)
 })
 
-test('Ignores ApiError', () => {
-  const apiError = new ApiError('msg', {})
-  sentryErrorReporter.captureException(apiError)
-  expect(scope.setExtra).not.toHaveBeenCalled()
-  expect(Sentry.captureException).not.toHaveBeenCalledWith(apiError)
-})
+describe('beforeSend', () => {
+  let beforeSend
 
-test('Ignores AbortError', () => {
-  const abortError = new Error('msg')
-  abortError.name = 'AbortError'
-  sentryErrorReporter.captureException(abortError)
-  expect(scope.setExtra).not.toHaveBeenCalled()
-  expect(Sentry.captureException).not.toHaveBeenCalledWith(abortError)
+  beforeEach(() => {
+    init.mockImplementationOnce(_.noop)
+    SentryErrorReporter.init(dsn, environment)
+    beforeSend = init.mock.calls[0][0]['beforeSend']
+  })
+
+  test('Ignores ApiError', () => {
+    const apiError = new ApiError('msg', {})
+    expect(beforeSend({}, { originalException: apiError })).toBeNull()
+  })
+
+  test('Ignores AbortError', () => {
+    const abortError = new Error('msg')
+    abortError.name = 'AbortError'
+    expect(beforeSend({}, { originalException: abortError })).toBeNull()
+  })
+
+  test('Does not ignore other errors', () => {
+    const event = {}
+    expect(beforeSend(event, { originalException: error })).toBe(event)
+  })
 })
 
 test('Error reporting no info', () => {

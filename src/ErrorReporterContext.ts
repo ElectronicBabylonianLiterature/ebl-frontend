@@ -13,15 +13,15 @@ export class ConsoleErrorReporter implements ErrorReporter {
   }
 
   showReportDialog(): void {
-    console.error('showReportDialog')
+    console.log('showReportDialog')
   }
 
   setUser(id: string, username: string, eblName: string): void {
-    console.error('setUser', id, username, eblName)
+    console.log('setUser', id, username, eblName)
   }
 
   clearScope(): void {
-    console.error('clearScope')
+    console.log('clearScope')
   }
 }
 
