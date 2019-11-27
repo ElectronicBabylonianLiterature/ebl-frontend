@@ -22,6 +22,7 @@ const fragmentRepository = {
   updateLemmatization: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
+  fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
   fetchCdliInfo: jest.fn()
 }
