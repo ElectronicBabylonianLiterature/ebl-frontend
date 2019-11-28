@@ -53,9 +53,7 @@ export default function FragmentView({
         <FragmentPager
           fragmentNumber={number}
           fragmentService={fragmentService}
-        >
-          {number}
-        </FragmentPager>
+        ></FragmentPager>
       }
       wide
     >

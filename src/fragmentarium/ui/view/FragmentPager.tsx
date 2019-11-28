@@ -3,48 +3,35 @@ import classNames from 'classnames'
 
 import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import { NextAndPrevFragment } from 'fragmentarium/domain/pager'
 
 type Props = {
-  data
-  children
+  data: NextAndPrevFragment
+  fragmentNumber: string
 }
-const FragmentPager: FunctionComponent<Props> = ({ data, children }) => {
-  const PagerLinkNext = ({ nextFragmentNumber }) => (
+const FragmentPager: FunctionComponent<Props> = ({ data, fragmentNumber }) => {
+  const PagerLink = ({ nextFragmentNumber, direction }) => (
     <FragmentLink number={nextFragmentNumber} aria-label={'Next'}>
       <i
         className={classNames({
           fas: true,
-          'fa-angle-right': true
+          'fa-angle-right': direction === 'next',
+          'fa-angle-left': direction === 'previous'
         })}
         aria-hidden
       />
     </FragmentLink>
   )
-  const PagerLinkPrevious = ({ previousFragmentNumber }) => (
-    <FragmentLink number={previousFragmentNumber} aria-label={'Previous'}>
-      <i
-        className={classNames({
-          fas: true,
-          'fa-angle-left': true
-        })}
-        aria-hidden
-      />
-    </FragmentLink>
-  )
-
   return (
     <Fragment>
-      <PagerLinkPrevious previousFragmentNumber={data['previous']} />
-      {children}
-      <PagerLinkNext nextFragmentNumber={data['next']} />
+      <PagerLink nextFragmentNumber={data['previous']} direction="previous" />
+      {fragmentNumber}
+      <PagerLink nextFragmentNumber={data['next']} direction="next" />
     </Fragment>
   )
 }
-export default withData<
-  WithoutData<Props>,
-  { fragmentNumber: string; fragmentService },
-  any
->(
+
+export default withData<WithoutData<Props>, { fragmentService }, any>(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
   props => props.fragmentService.fragmentPager(props.fragmentNumber),
   {

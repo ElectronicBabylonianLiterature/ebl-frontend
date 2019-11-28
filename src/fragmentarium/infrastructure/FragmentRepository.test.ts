@@ -12,6 +12,7 @@ const apiClient = {
 const fragmentRepository = new FragmentRepository(apiClient)
 
 const fragmentId = 'K 23+1234'
+const fragmentNumber = '1'
 const cdliNumber = 'P 1234'
 const transliterationQuery = 'kur\nkur kur'
 const transliteration = 'transliteration'
@@ -163,6 +164,14 @@ const testData = [
       )}/${encodeURIComponent(folio.number)}`,
       true
     ],
+    Promise.resolve(resultStub)
+  ],
+  [
+    'fragmentPager',
+    [fragmentNumber],
+    apiClient.fetchJson,
+    resultStub,
+    [`/fragments/${encodeURIComponent(fragmentNumber)}/pager`, true],
     Promise.resolve(resultStub)
   ],
   [

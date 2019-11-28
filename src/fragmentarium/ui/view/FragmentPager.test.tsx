@@ -22,9 +22,10 @@ beforeEach(async () => {
   )
   element = render(
     <MemoryRouter>
-      <FragmentPager fragmentNumber={number} fragmentService={fragmentService}>
-        {number}
-      </FragmentPager>
+      <FragmentPager
+        fragmentNumber={number}
+        fragmentService={fragmentService}
+      ></FragmentPager>
     </MemoryRouter>
   )
   await waitForElement(() => element.getByText('K.00000'))
