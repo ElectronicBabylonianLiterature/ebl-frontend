@@ -3,10 +3,10 @@ import classNames from 'classnames'
 
 import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import { NextAndPrevFragment } from 'fragmentarium/domain/pager'
+import { FragmentPagerData } from 'fragmentarium/domain/pager'
 
 type Props = {
-  data: NextAndPrevFragment
+  data: FragmentPagerData
   fragmentNumber: string
 }
 const FragmentPager: FunctionComponent<Props> = ({ data, fragmentNumber }) => {
