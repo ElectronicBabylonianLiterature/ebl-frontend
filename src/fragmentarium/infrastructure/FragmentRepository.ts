@@ -111,9 +111,16 @@ class ApiFragmentRepository
 
   folioPager(folio: Folio, number: string) {
     return this.apiClient.fetchJson(
-      `/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
-        folio.number
-      )}/${encodeURIComponent(number)}`,
+      `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
+        folio.name
+      )}/${encodeURIComponent(folio.number)}`,
+      true
+    )
+  }
+
+  fragmentPager(fragmentNumber: string) {
+    return this.apiClient.fetchJson(
+      `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
       true
     )
   }

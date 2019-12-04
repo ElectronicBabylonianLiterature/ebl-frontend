@@ -22,6 +22,7 @@ const fragmentRepository = {
   updateLemmatization: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
+  fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
   fetchCdliInfo: jest.fn()
 }
@@ -77,6 +78,7 @@ const testData = [
     [fragment.number]
   ],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
+  ['fragmentPager', ['K.1'], fragmentRepository.fragmentPager, resultStub],
   ['searchLemma', ['lemma'], wordRepository.searchLemma, [resultStub]],
   [
     'searchBibliography',

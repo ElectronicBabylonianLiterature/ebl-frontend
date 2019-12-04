@@ -158,11 +158,19 @@ const testData = [
     apiClient.fetchJson,
     resultStub,
     [
-      `/pager/folios/${encodeURIComponent(folio.name)}/${encodeURIComponent(
-        folio.number
-      )}/${encodeURIComponent(fragmentId)}`,
+      `/fragments/${encodeURIComponent(fragmentId)}/pager/${encodeURIComponent(
+        folio.name
+      )}/${encodeURIComponent(folio.number)}`,
       true
     ],
+    Promise.resolve(resultStub)
+  ],
+  [
+    'fragmentPager',
+    [fragmentId],
+    apiClient.fetchJson,
+    resultStub,
+    [`/fragments/${encodeURIComponent(fragmentId)}/pager`, true],
     Promise.resolve(resultStub)
   ],
   [
