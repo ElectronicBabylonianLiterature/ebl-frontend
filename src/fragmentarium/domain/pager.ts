@@ -6,7 +6,7 @@ interface FragmentAndFolio {
   readonly fragmentNumber: string
   readonly folioNumber: string
 }
-export interface NextAndPrevFolio {
+export interface NextAndPreviousFolio {
   readonly previous: FragmentAndFolio
   readonly next: FragmentAndFolio
 }

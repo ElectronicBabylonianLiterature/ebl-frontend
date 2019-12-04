@@ -4,10 +4,10 @@ import classNames from 'classnames'
 import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { Folio } from 'fragmentarium/domain/fragment'
-import { NextAndPrevFolio } from 'fragmentarium/domain/pager'
+import { NextAndPreviousFolio } from 'fragmentarium/domain/pager'
 
 type Props = {
-  data: NextAndPrevFolio
+  data: NextAndPreviousFolio
   folio: Folio
 }
 function FolioPager({ data, folio }: Props) {
