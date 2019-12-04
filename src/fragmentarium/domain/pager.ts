@@ -2,9 +2,9 @@ export interface NextAndPrevFragment {
   readonly previous: string
   readonly next: string
 }
-type FragmentAndFolio = {
-  fragmentNumber: string
-  folioNumber: string
+interface FragmentAndFolio {
+  readonly fragmentNumber: string
+  readonly folioNumber: string
 }
 export interface NextAndPrevFolio {
   readonly previous: FragmentAndFolio
