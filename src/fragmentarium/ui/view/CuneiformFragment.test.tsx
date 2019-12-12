@@ -23,7 +23,8 @@ beforeEach(async () => {
   const references = await factory.buildMany('reference', 2)
   fragment = (await factory.build('fragment', {
     atf: '1. ku',
-    hasPhoto: true
+    hasPhoto: true,
+    collection: 'Sippar'
   })).setReferences(await factory.buildMany('reference', 2))
   updatedFragment = await factory.build('fragment', {
     number: fragment.number,
