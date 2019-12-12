@@ -1684,12 +1684,12 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/moment-range@^3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@types/moment-range/-/moment-range-3.1.2.tgz#19bfcbb7897172a2cb6a8874171e41d023f9a76b"
-  integrity sha512-hLioyQAvIXpJO9iH9FUl5I4Xg2lSt01hGyJL0KT5ZuWWH+0lPfyj9myEuxR8yB/zBRMiqTE7w17VZWRp8kErMA==
+"@types/moment-range@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/moment-range/-/moment-range-4.0.0.tgz#6c43631616dd6203a07157a532918cbe9c2444a9"
+  integrity sha512-tX9W3QrLS5GDBcavF2enp2mJ+AUEv311pzd6NzqDxod879l0bDkz4OhvNZpsRNiE9khwgb6OSfBzDGR0SqChng==
   dependencies:
-    moment "^2.18.1"
+    moment-range "*"
 
 "@types/moment@^2.13.0":
   version "2.13.0"
@@ -8273,14 +8273,14 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment-range@^4.0.1:
+moment-range@*, moment-range@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/moment-range/-/moment-range-4.0.2.tgz#f7c3863df2a1ed7fd1822ba5a7bcf53a78701be9"
   integrity sha512-n8sceWwSTjmz++nFHzeNEUsYtDqjgXgcOBzsHi+BoXQU2FW+eU92LUaK8gqOiSu5PG57Q9sYj1Fz4LRDj4FtKA==
   dependencies:
     es6-symbol "^3.1.0"
 
-moment@*, moment@^2.18.1, moment@^2.22.2:
+moment@*, moment@^2.22.2:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
