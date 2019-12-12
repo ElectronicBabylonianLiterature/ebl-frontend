@@ -1,6 +1,7 @@
 import 'jest-date-mock'
 import '@testing-library/jest-dom/extend-expect'
 import Promise from 'bluebird'
+import _ from 'lodash'
 
 import 'test-helpers/bibliography-fixtures'
 import 'test-helpers/fragment-fixtures'
@@ -49,8 +50,8 @@ if (customGlobal.document) {
   // Fixes "TypeError: document.createRange is not a function" with Popover.
   // See: https://github.com/FezVrasta/popper.js/issues/478
   document.createRange = () => ({
-    setStart: () => {},
-    setEnd: () => {},
+    setStart: _.noop,
+    setEnd: _.noop,
     // @ts-ignore
     commonAncestorContainer: {
       nodeName: 'BODY',
