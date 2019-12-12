@@ -7,13 +7,13 @@ import FragmentList from './FragmentList'
 
 const numberOfFragments = 2
 const expectedStringColumns = {
-  Number: '_id',
+  Number: 'number',
   Accession: 'accession',
   'CDLI Number': 'cdliNumber',
   Description: 'description'
 }
 const expectedComputedColumns = {
-  Number: '_id',
+  Number: 'number',
   Computed: fragment => fragment.description.toUpperCase()
 }
 let fragments
@@ -24,7 +24,7 @@ describe.each([
     'No config',
     null,
     {
-      Number: '_id'
+      Number: 'number'
     }
   ],
   [
