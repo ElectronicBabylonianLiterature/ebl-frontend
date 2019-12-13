@@ -4,6 +4,7 @@ import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { uuid4 } from '@sentry/utils'
+import _ from 'lodash'
 import { Button, Card } from 'react-bootstrap'
 import Promise from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
@@ -77,9 +78,11 @@ const renderEditor = (
                         <Button
                           size="sm"
                           variant={
-                            token.path ===
-                            (props.annotation.data &&
-                              props.annotation.data.path)
+                            _.isEqual(
+                              token.path,
+                              props.annotation.data &&
+                                props.annotation.data.path
+                            )
                               ? 'dark'
                               : 'outline-dark'
                           }
@@ -194,7 +197,7 @@ function FragmentAnnotation({ fragment, image }: Props): React.ReactElement {
       }
     }
     setAnnotation({})
-    setAnnotation([...annotations, newAnnotation])
+    setAnnotations([...annotations, newAnnotation])
   }
 
   return (
