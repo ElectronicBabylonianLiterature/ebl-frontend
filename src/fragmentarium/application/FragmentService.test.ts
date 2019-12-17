@@ -11,6 +11,8 @@ import Lemmatization, {
 import Lemma from 'fragmentarium/domain/Lemma'
 import { Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -231,12 +233,16 @@ test('hydrateReferences', async () => {
   )
 })
 
-async function setUpHydration() {
+async function setUpHydration(): Promise<{
+  entries: readonly BibliographyEntry[]
+  references: readonly {}[]
+  expectedReferences: readonly Reference[]
+}> {
   const entries = await factory.buildMany('bibliographyEntry', 2)
   const references = await factory.buildMany(
     'referenceDto',
     2,
-    entries.map(entry => ({ id: entry.id }))
+    entries.map((entry: BibliographyEntry) => ({ id: entry.id }))
   )
   const expectedReferences = await factory.buildMany(
     'reference',
@@ -247,7 +253,7 @@ async function setUpHydration() {
     }))
   )
   bibliographyService.find.mockImplementation(id =>
-    Promise.resolve(entries.find(entry => entry.id === id))
+    Promise.resolve(entries.find((entry: BibliographyEntry) => entry.id === id))
   )
   return {
     entries,
