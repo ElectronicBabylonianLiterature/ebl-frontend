@@ -4,7 +4,7 @@ import FragmentRepository from './FragmentRepository'
 import { Folio } from 'fragmentarium/domain/fragment'
 import { fragment, fragmentDto } from 'test-helpers/test-fragment'
 import { ApiError } from 'http/ApiClient'
-import { Annotation } from 'fragmentarium/domain/annotation'
+import Annotation from 'fragmentarium/domain/annotation'
 
 const apiClient = {
   fetchJson: jest.fn(),
