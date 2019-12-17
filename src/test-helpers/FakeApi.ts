@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 
 class Expectation {
-  method = 'GET'
+  method: 'POST' | 'GET' = 'GET'
   path = ''
   authenticate = true
   response = {}
@@ -126,6 +126,65 @@ export default class FakeApi {
         response: text,
         verify: true,
         body: lines
+      })
+    )
+    return this
+  }
+
+  expectAnnotations(number: string, annotationDtos: readonly any[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/fragments/${number}/annotations`,
+        body: {
+          fragmentNumber: number,
+          annotations: annotationDtos
+        },
+        authenticate: true,
+        response: { annotations: annotationDtos },
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectUpdateAnnotations(
+    number: string,
+    annotationDtos: readonly any[]
+  ): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'POST',
+        path: `/fragments/${number}/annotations`,
+        authenticate: true,
+        response: { annotations: annotationDtos },
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectFragment(fragmentDto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/fragments/${fragmentDto._id}`,
+        authenticate: true,
+        response: fragmentDto,
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectPhoto(number: string): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/fragments/${number}/photo`,
+        authenticate: true,
+        isBlob: true,
+        verify: true
       })
     )
     return this

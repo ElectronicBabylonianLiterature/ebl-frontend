@@ -4,7 +4,7 @@ import FragmentRepository from './FragmentRepository'
 import { Folio } from 'fragmentarium/domain/fragment'
 import { fragment, fragmentDto } from 'test-helpers/test-fragment'
 import { ApiError } from 'http/ApiClient'
-import Annotation from 'fragmentarium/domain/annotation'
+import { annotations, annotationsDto } from 'test-helpers/test-annotation'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -48,20 +48,6 @@ const fragmentInfoWithLines = {
   // eslint-disable-next-line @typescript-eslint/camelcase
   edition_date: '2019-09-10T13:03:37.575580'
 }
-
-const annotations: readonly Annotation[] = [
-  {
-    geometry: { x: 100.0, y: 45.7, width: 0.02, height: 4, type: 'RECTANGLE' },
-    data: { id: 'abc123', value: 'kur', path: [2, 3, 0] }
-  }
-]
-
-const annotationsDto: readonly any[] = [
-  {
-    geometry: { x: 100.0, y: 45.7, width: 0.02, height: 4 },
-    data: { id: 'abc123', value: 'kur', path: [2, 3, 0] }
-  }
-]
 
 const testData = [
   [

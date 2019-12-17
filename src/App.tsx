@@ -1,5 +1,5 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import React, { ReactNode } from 'react'
+import { Route, Switch, match as Match } from 'react-router-dom'
 import { parse } from 'query-string'
 import _ from 'lodash'
 
@@ -19,6 +19,7 @@ import Corpus from 'corpus/Corpus'
 import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 import { Location } from 'history'
+import AnnotationView from './fragmentarium/ui/image-annotation/AnnotationView'
 
 function parseStringParam(
   location: Location,
@@ -65,7 +66,7 @@ function App({
         <Switch>
           <Route
             path="/bibliography/:id"
-            render={props => (
+            render={(props): ReactNode => (
               <BibliographyEditor
                 bibliographyService={bibliographyService}
                 {...props}
@@ -74,7 +75,7 @@ function App({
           />
           <Route
             path="/bibliography_new"
-            render={props => (
+            render={(props): ReactNode => (
               <BibliographyEditor
                 bibliographyService={bibliographyService}
                 {...props}
@@ -84,7 +85,7 @@ function App({
           />
           <Route
             path="/bibliography"
-            render={props => (
+            render={(props): ReactNode => (
               <Bibliography
                 bibliographyService={bibliographyService}
                 {...props}
@@ -93,19 +94,19 @@ function App({
           />
           <Route
             path="/dictionary/:id"
-            render={props => (
+            render={(props): ReactNode => (
               <WordEditor wordService={wordService} {...props} />
             )}
           />
           <Route
             path="/dictionary"
-            render={props => (
+            render={(props): ReactNode => (
               <Dictionary wordService={wordService} {...props} />
             )}
           />
           <Route
             path="/corpus/:category/:index/:stage/:chapter"
-            render={({ match }) => (
+            render={({ match }): ReactNode => (
               <ChapterView
                 textService={textService}
                 bibliographyService={bibliographyService}
@@ -115,7 +116,7 @@ function App({
           />
           <Route
             path="/corpus/:category/:index"
-            render={({ match }) => (
+            render={({ match }): ReactNode => (
               <TextView
                 textService={textService}
                 {...parseTextParams(match.params)}
@@ -124,7 +125,7 @@ function App({
           />
           <Route
             path="/corpus"
-            render={props => (
+            render={(props): ReactNode => (
               <Corpus
                 textService={textService}
                 fragmentService={fragmentService}
@@ -134,7 +135,7 @@ function App({
           />
           <Route
             path="/fragmentarium/search"
-            render={({ location }) => (
+            render={({ location }): ReactNode => (
               <FragmentariumSearch
                 fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
@@ -142,8 +143,21 @@ function App({
             )}
           />
           <Route
+            path="/fragmentarium/:id/annotate"
+            render={({
+              match
+            }: {
+              match: Match<{ id: string }>
+            }): ReactNode => (
+              <AnnotationView
+                fragmentService={fragmentService}
+                number={decodeURIComponent(match.params.id)}
+              />
+            )}
+          />
+          <Route
             path="/fragmentarium/:id"
-            render={props => (
+            render={(props): ReactNode => (
               <FragmentView
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
@@ -153,7 +167,7 @@ function App({
           />
           <Route
             path="/fragmentarium"
-            render={({ location }) => (
+            render={({ location }): ReactNode => (
               <Fragmentarium
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
@@ -163,7 +177,7 @@ function App({
           />
           <Route
             path="/callback"
-            render={props => <Callback auth={auth} {...props} />}
+            render={(props): ReactNode => <Callback auth={auth} {...props} />}
           />
           <Route component={Introduction} />
         </Switch>

@@ -6,14 +6,9 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { uuid4 } from '@sentry/utils'
 import _ from 'lodash'
 import { Button, Card } from 'react-bootstrap'
-import Promise from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
-
-interface AnnotationToken {
-  value: string
-  path: readonly number[]
-  enabled: boolean
-}
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { createAnnotationTokens, AnnotationToken } from './annotation-token'
 
 type AnnotationProps = {
   annotation: Annotation
@@ -119,58 +114,22 @@ const renderEditor = (
   }
 }
 
-interface Token {
-  type: string
-  value: string
-  parts?: readonly Token[]
-}
-
-function mapToken(
-  token: Token,
-  path: readonly number[]
-): AnnotationToken | AnnotationToken[] {
-  if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return {
-      value: token.value,
-      path: path,
-      enabled: true
-    }
-  } else if (token.parts) {
-    return token.parts.flatMap((part: Token, index: number) =>
-      mapToken(part, [...path, index])
-    )
-  } else {
-    return {
-      value: token.value,
-      path: path,
-      enabled: false
-    }
-  }
-}
-
-function createAnnotationTokens(
-  fragment: Fragment
-): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
-  return fragment.text.lines.map((line, lineNumber) => [
-    {
-      id: String(lineNumber),
-      path: [lineNumber],
-      value: line.prefix || '',
-      enabled: false
-    },
-    ...line.content.flatMap((token, index) =>
-      mapToken(token, [lineNumber, index])
-    )
-  ])
-}
-
 interface Props {
   image: URL
   fragment: Fragment
+  initialAnnotations: readonly Annotation[]
+  fragmentService: FragmentService
 }
-function FragmentAnnotation({ fragment, image }: Props): React.ReactElement {
+function FragmentAnnotation({
+  fragment,
+  image,
+  initialAnnotations,
+  fragmentService
+}: Props): React.ReactElement {
   const [annotation, setAnnotation] = useState<Annotation | {}>({})
-  const [annotations, setAnnotations] = useState<readonly Annotation[]>([])
+  const [annotations, setAnnotations] = useState<readonly Annotation[]>(
+    initialAnnotations
+  )
 
   const tokens = createAnnotationTokens(fragment)
 
@@ -201,27 +160,40 @@ function FragmentAnnotation({ fragment, image }: Props): React.ReactElement {
   }
 
   return (
-    <AnnotationComponent
-      src={image}
-      alt={fragment.number}
-      annotations={annotations}
-      type={RectangleSelector.TYPE}
-      value={annotation}
-      onChange={onChange}
-      onSubmit={onSubmit}
-      renderEditor={renderEditor(tokens)}
-      renderContent={renderContent(onDelete)}
-      allowTouch
-    />
+    <>
+      <AnnotationComponent
+        src={image}
+        alt={fragment.number}
+        annotations={annotations}
+        type={RectangleSelector.TYPE}
+        value={annotation}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        renderEditor={renderEditor(tokens)}
+        renderContent={renderContent(onDelete)}
+        allowTouch
+      />
+      <Button
+        onClick={() =>
+          fragmentService.updateAnnotations(fragment.number, annotations)
+        }
+      >
+        Save
+      </Button>
+    </>
   )
 }
 
 function Annotator({
   image,
-  fragment
+  fragment,
+  annotations,
+  fragmentService
 }: {
   image: Blob
   fragment: Fragment
+  annotations: readonly Annotation[]
+  fragmentService: FragmentService
 }): React.ReactElement {
   const [objectUrl, setObjectUrl] = useState()
   useEffect(() => {
@@ -230,20 +202,44 @@ function Annotator({
     return (): void => URL.revokeObjectURL(url)
   }, [image])
 
-  return <FragmentAnnotation image={objectUrl} fragment={fragment} />
+  return (
+    <FragmentAnnotation
+      image={objectUrl}
+      fragment={fragment}
+      initialAnnotations={annotations}
+      fragmentService={fragmentService}
+    />
+  )
 }
 
-interface PhotoSource {
-  findPhoto(fragment: Fragment): Promise<Blob>
-}
+const WithAnnotations = withData<
+  { fragment: Fragment; image: Blob; fragmentService: FragmentService },
+  {},
+  readonly Annotation[]
+>(
+  ({ data, ...props }) => <Annotator {...props} annotations={data} />,
+  ({ fragment, fragmentService }) =>
+    fragmentService.findAnnotations(fragment.number)
+)
 
-export default withData<
-  { fragment: Fragment },
-  {
-    fragmentService: PhotoSource
-  },
+const WithPhoto = withData<
+  { fragment: Fragment; fragmentService: FragmentService },
+  {},
   Blob
 >(
-  ({ data, ...props }) => <Annotator {...props} image={data} />,
+  ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
   ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
+)
+
+export default withData<
+  {
+    fragmentService: FragmentService
+  },
+  { number: string },
+  Fragment
+>(
+  ({ data, fragmentService, ...props }) => (
+    <WithPhoto fragment={data} fragmentService={fragmentService} {...props} />
+  ),
+  props => props.fragmentService.find(props.number)
 )
