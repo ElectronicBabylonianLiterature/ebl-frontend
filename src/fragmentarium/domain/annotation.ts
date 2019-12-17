@@ -3,6 +3,7 @@ export interface Geometry {
   y: number
   height: number
   width: number
+  type: string
 }
 
 export interface AnnotationData {

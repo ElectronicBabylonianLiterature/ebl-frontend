@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import { stringify } from 'query-string'
+import produce from 'immer'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
@@ -150,10 +151,15 @@ class ApiFragmentRepository
   }
 
   findAnnotations(number: string): Promise<readonly Annotation[]> {
-    return this.apiClient.fetchJson(
-      `${createFragmentPath(number)}/annotations`,
-      true
-    )
+    return this.apiClient
+      .fetchJson(`${createFragmentPath(number)}/annotations`, true)
+      .then(dto =>
+        produce(dto.annotations, annotations => {
+          for (const annotation of annotations) {
+            annotation.geometry.type = 'RECTANGLE'
+          }
+        })
+      )
   }
 
   updateAnnotations(
@@ -164,7 +170,11 @@ class ApiFragmentRepository
       `${createFragmentPath(number)}/annotations`,
       {
         fragmentNumber: number,
-        annotations: annotations
+        annotations: annotations.map(
+          produce(annotation => {
+            delete annotation.geometry.type
+          })
+        )
       }
     )
   }
