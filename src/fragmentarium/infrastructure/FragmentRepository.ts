@@ -3,13 +3,18 @@ import { stringify } from 'query-string'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
-import { FragmentRepository } from 'fragmentarium/application/FragmentService'
+import {
+  FragmentRepository,
+  CdliInfo,
+  AnnotationRepository
+} from 'fragmentarium/application/FragmentService'
+import Annotation from 'fragmentarium/domain/annotation'
 import {
   FragmentInfosPromise,
   FragmentInfoRepository
 } from 'fragmentarium/application/FragmentSearchService'
 
-function createFragment(dto) {
+function createFragment(dto): Fragment {
   return new Fragment({
     ...dto,
     number: dto._id,
@@ -33,7 +38,7 @@ function createFragmentPath(number, ...subResources) {
 }
 
 class ApiFragmentRepository
-  implements FragmentInfoRepository, FragmentRepository {
+  implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
   readonly apiClient
 
   constructor(apiClient: {
@@ -132,16 +137,36 @@ class ApiFragmentRepository
     )
   }
 
-  fetchCdliInfo(cdliNumber: string) {
+  fetchCdliInfo(cdliNumber: string): Promise<CdliInfo> {
     return this.apiClient
       .fetchJson(`/cdli/${encodeURIComponent(cdliNumber)}`, true)
-      .catch(error => {
+      .catch((error: Error) => {
         if (error.name === 'ApiError') {
           return { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null }
         } else {
           throw error
         }
       })
+  }
+
+  findAnnotations(number: string): Promise<readonly Annotation[]> {
+    return this.apiClient.fetchJson(
+      `${createFragmentPath(number)}/annotations`,
+      true
+    )
+  }
+
+  updateAnnotations(
+    number: string,
+    annotations: readonly Annotation[]
+  ): Promise<readonly Annotation[]> {
+    return this.apiClient.postJson(
+      `${createFragmentPath(number)}/annotations`,
+      {
+        fragmentNumber: number,
+        annotations: annotations
+      }
+    )
   }
 }
 

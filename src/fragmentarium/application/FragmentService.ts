@@ -6,6 +6,7 @@ import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
 import { Text, Token } from 'fragmentarium/domain/text'
+import Annotation from 'fragmentarium/domain/annotation'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -41,6 +42,13 @@ export interface FragmentRepository {
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
 
+export interface AnnotationRepository {
+  findAnnotations(number: string): Promise<readonly Annotation[]>
+  updateAnnotations(
+    number: string,
+    annotations: readonly Annotation[]
+  ): Promise<readonly Annotation[]>
+}
 class FragmentService {
   private readonly fragmentRepository
   private readonly imageRepository
@@ -48,7 +56,7 @@ class FragmentService {
   private readonly bibliographyService
 
   constructor(
-    fragmentRepository: FragmentRepository,
+    fragmentRepository: FragmentRepository & AnnotationRepository,
     imageRepository: ImageRepository,
     wordRepository: any,
     bibliographyService: any
@@ -133,6 +141,17 @@ class FragmentService {
           lineArtUrl: null,
           detailLineArtUrl: null
         })
+  }
+
+  findAnnotations(number: string): Promise<readonly Annotation[]> {
+    return this.fragmentRepository.findAnnotations(number)
+  }
+
+  updateAnnotations(
+    number: string,
+    annotations: readonly Annotation[]
+  ): Promise<readonly Annotation[]> {
+    return this.fragmentRepository.updateAnnotations(number, annotations)
   }
 
   createLemmatization(text: Text) {

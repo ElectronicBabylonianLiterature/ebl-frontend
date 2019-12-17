@@ -24,7 +24,9 @@ const fragmentRepository = {
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
   findLemmas: jest.fn(),
-  fetchCdliInfo: jest.fn()
+  fetchCdliInfo: jest.fn(),
+  findAnnotations: jest.fn(),
+  updateAnnotations: jest.fn()
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -92,6 +94,18 @@ const testData = [
     fragmentRepository.fetchCdliInfo,
     resultStub,
     [fragment.cdliNumber]
+  ],
+  [
+    'findAnnotations',
+    [fragment.number],
+    fragmentRepository.findAnnotations,
+    resultStub
+  ],
+  [
+    'updateAnnotations',
+    [fragment.number, resultStub],
+    fragmentRepository.updateAnnotations,
+    resultStub
   ]
 ]
 
