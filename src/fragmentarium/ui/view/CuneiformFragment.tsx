@@ -16,7 +16,6 @@ import usePromiseEffect from 'common/usePromiseEffect'
 
 import './CuneiformFragment.css'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
-import Annotator from '../image-annotation/Annotator'
 
 const ContentSection: FunctionComponent = ({ children }) => (
   <section className="CuneiformFragment__content">{children}</section>
@@ -145,9 +144,6 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
 }) => {
   return (
     <Container fluid>
-      <Row>
-        <Annotator fragment={fragment} fragmentService={fragmentService} />
-      </Row>
       <Row>
         <Col md={2}>
           <Info fragment={fragment} />
