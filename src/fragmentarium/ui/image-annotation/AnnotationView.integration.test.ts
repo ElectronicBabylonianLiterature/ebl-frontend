@@ -38,6 +38,10 @@ describe('Diplay annotate view', () => {
     ])
   })
 
+  test('Snapshot', () => {
+    expect(appDriver.getElement().container).toMatchSnapshot()
+  })
+
   test('Save', () => {
     fakeApi.expectUpdateAnnotations(fragmentNumber, annotationsDto)
     appDriver.click('Save')

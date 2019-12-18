@@ -62,11 +62,11 @@ beforeEach(() => {
 test('With session', async () => {
   appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
-  expect(appDriver.element.container).toMatchSnapshot()
+  expect(appDriver.getElement().container).toMatchSnapshot()
 })
 
 test('Without session', async () => {
   appDriver.render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
-  expect(appDriver.element.container).toMatchSnapshot()
+  expect(appDriver.getElement().container).toMatchSnapshot()
 })

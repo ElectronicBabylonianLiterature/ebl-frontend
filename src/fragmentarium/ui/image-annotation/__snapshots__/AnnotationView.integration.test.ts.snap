@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Diplay annotate view Snapshot 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-2"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                aria-selected="false"
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+                role="tab"
+                tabindex="-1"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                aria-selected="false"
+                class="nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+                role="tab"
+                tabindex="-1"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                aria-selected="false"
+                class="active nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+                role="tab"
+                tabindex="-1"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                aria-selected="false"
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+                role="tab"
+                tabindex="-1"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-2"
+          aria-label="Toggle navigation"
+          class="navbar-toggler"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <section
+    class="App-content App-content--wide"
+  >
+    <header
+      class="App-content__header"
+    >
+      <nav
+        aria-label="breadcrumb"
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/"
+            >
+              eBL
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/fragmentarium"
+            >
+              Fragmentarium
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              href="#"
+              role="button"
+            >
+              Test.Fragment
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="breadcrumb-item active"
+          >
+            <span
+              class="active"
+            >
+              Annotate
+            </span>
+          </li>
+        </ol>
+      </nav>
+      <div
+        class="float-right btn-group"
+        role="group"
+      />
+      <h2>
+        Annotate Test.Fragment
+      </h2>
+    </header>
+    <div
+      class="sc-iwsKbI bNCCdn"
+    >
+      <img
+        alt="Test.Fragment"
+        class="sc-gZMcBi gVmiLs"
+        draggable="false"
+      />
+      <div
+        class="sc-gqjmRU inYJUn"
+      >
+        <div
+          class="sc-bZQynM yvPWU"
+          style="position: absolute; left: 100%; top: 45.7%; height: 4%; width: 0.02%;"
+        />
+      </div>
+      <div
+        class="sc-gqjmRU inYJUn"
+      />
+      <div
+        class="sc-dnqmqq ixSjBM"
+      >
+        Click and Drag to Annotate
+      </div>
+      <div />
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+    >
+      Save
+    </button>
+  </section>
+</div>
+`;
