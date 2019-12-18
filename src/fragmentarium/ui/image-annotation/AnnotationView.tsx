@@ -4,14 +4,15 @@ import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
 import Annotator from './Annotator'
 import Session from 'auth/Session'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 export default function AnnotationView({
   fragmentService,
   number
 }: {
-  fragmentService
-  number
-}) {
+  fragmentService: FragmentService
+  number: string
+}): JSX.Element {
   return (
     <AppContent
       crumbs={['Fragmentarium', number, 'Annotate']}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ReactNode, ReactElement } from 'react'
 import AnnotationComponent from 'react-image-annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
@@ -9,6 +9,8 @@ import { Button, Card } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { createAnnotationTokens, AnnotationToken } from './annotation-token'
+import SessionContext from 'auth/SessionContext'
+import Session from 'auth/Session'
 
 type AnnotationProps = {
   annotation: Annotation
@@ -173,13 +175,18 @@ function FragmentAnnotation({
         renderContent={renderContent(onDelete)}
         allowTouch
       />
-      <Button
-        onClick={() =>
-          fragmentService.updateAnnotations(fragment.number, annotations)
-        }
-      >
-        Save
-      </Button>
+      <SessionContext.Consumer>
+        {(session: Session): ReactElement => (
+          <Button
+            onClick={(): void => {
+              fragmentService.updateAnnotations(fragment.number, annotations)
+            }}
+            disabled={!session.isAllowedToAnnotateFragments()}
+          >
+            Save
+          </Button>
+        )}
+      </SessionContext.Consumer>
     </>
   )
 }
