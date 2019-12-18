@@ -80,7 +80,7 @@ export default class AppDriver {
       'accessToken',
       'idToken',
       Number.MAX_SAFE_INTEGER,
-      ['write:texts', 'read:fragments']
+      ['write:texts', 'read:fragments', 'annotate:fragments']
     )
     return this
   }
