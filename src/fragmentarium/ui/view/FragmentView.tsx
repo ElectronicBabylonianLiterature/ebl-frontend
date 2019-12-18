@@ -8,6 +8,17 @@ import FragmentPager from './FragmentPager'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import { Folio, Fragment } from 'fragmentarium/domain/fragment'
+import { LinkContainer } from 'react-router-bootstrap'
+import { Button } from 'react-bootstrap'
+import { createFragmentUrl } from '../FragmentLink'
+
+function AnnotateButton({ number }: { number: string }): JSX.Element {
+  return (
+    <LinkContainer to={`${createFragmentUrl(number)}/annotate`}>
+      <Button variant="outline-primary">Annotate Fragment Image</Button>
+    </LinkContainer>
+  )
+}
 
 type Props = {
   fragmentService
@@ -55,6 +66,7 @@ export default function FragmentView({
           fragmentService={fragmentService}
         ></FragmentPager>
       }
+      actions={<AnnotateButton number={number} />}
       wide
     >
       <SessionContext.Consumer>
