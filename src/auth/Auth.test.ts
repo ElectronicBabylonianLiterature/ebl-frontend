@@ -12,10 +12,16 @@ const auth0Config = createAuth0Config()
 const expectedScope = [
   'openid',
   'profile',
-  'read:words write:words',
-  'read:fragments transliterate:fragments lemmatize:fragments',
-  'read:bibliography write:bibliography',
-  'read:texts write:texts',
+  'read:words',
+  'write:words',
+  'read:fragments',
+  'transliterate:fragments',
+  'lemmatize:fragments',
+  'annotate:fragments',
+  'read:bibliography',
+  'write:bibliography',
+  'read:texts',
+  'write:texts',
   'access:beta',
   'read:WGL-folios',
   'read:FWG-folios',
@@ -87,7 +93,10 @@ describe('logout', () => {
 })
 
 describe('handleAuthentication', () => {
-  function testParseHash(authResultConfig, scopes) {
+  function testParseHash(
+    authResultConfig: { [key: string]: string | null },
+    scopes: string
+  ): void {
     const authResult = {
       accessToken: 'accessToken',
       idToken: 'idToken',

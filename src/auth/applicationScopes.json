@@ -4,6 +4,7 @@
   "readFragments": "read:fragments",
   "transliterateFragments": "transliterate:fragments",
   "lemmatizeFragments": "lemmatize:fragments",
+  "annotateFragments": "annotate:fragments",
   "readBibliography": "read:bibliography",
   "writeBibliography": "write:bibliography",
   "readTexts": "read:texts",

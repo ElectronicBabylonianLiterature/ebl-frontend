@@ -76,6 +76,7 @@ describe.each([
   ['write:words', 'isAllowedToWriteWords'],
   ['read:fragments', 'isAllowedToReadFragments'],
   ['transliterate:fragments', 'isAllowedToTransliterateFragments'],
+  ['annotate:fragments', 'isAllowedToAnnotateFragments'],
   ['lemmatize:fragments', 'isAllowedToLemmatizeFragments'],
   ['write:bibliography', 'isAllowedToWriteBibliography'],
   ['write:texts', 'isAllowedToWriteTexts'],

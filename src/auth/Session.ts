@@ -18,15 +18,15 @@ class Session {
     this._scopes = new Set(scopes)
   }
 
-  get scopes() {
+  get scopes(): readonly string[] {
     return Array.from(this._scopes)
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return new Date().getTime() < this.expiresAt
   }
 
-  getAccessToken() {
+  getAccessToken(): string {
     if (this.accessToken) {
       return this.accessToken
     } else {
@@ -34,47 +34,51 @@ class Session {
     }
   }
 
-  hasScope(scope) {
+  hasScope(scope): boolean {
     return this.isAuthenticated() && this._scopes.has(scope)
   }
 
-  isAllowedToReadWords() {
+  isAllowedToReadWords(): boolean {
     return this.hasApplicationScope('readWords')
   }
 
-  isAllowedToWriteWords() {
+  isAllowedToWriteWords(): boolean {
     return this.hasApplicationScope('writeWords')
   }
 
-  isAllowedToReadFragments() {
+  isAllowedToReadFragments(): boolean {
     return this.hasApplicationScope('readFragments')
   }
 
-  isAllowedToTransliterateFragments() {
+  isAllowedToTransliterateFragments(): boolean {
     return this.hasApplicationScope('transliterateFragments')
   }
 
-  isAllowedToLemmatizeFragments() {
+  isAllowedToLemmatizeFragments(): boolean {
     return this.hasApplicationScope('lemmatizeFragments')
   }
 
-  isAllowedToReadBibliography() {
+  isAllowedToAnnotateFragments(): boolean {
+    return this.hasApplicationScope('annotateFragments')
+  }
+
+  isAllowedToReadBibliography(): boolean {
     return this.hasApplicationScope('readBibliography')
   }
 
-  isAllowedToWriteBibliography() {
+  isAllowedToWriteBibliography(): boolean {
     return this.hasApplicationScope('writeBibliography')
   }
 
-  isAllowedToWriteTexts() {
+  isAllowedToWriteTexts(): boolean {
     return this.hasApplicationScope('writeTexts')
   }
 
-  hasBetaAccess() {
+  hasBetaAccess(): boolean {
     return this.hasApplicationScope('accessBeta')
   }
 
-  hasApplicationScope(applicationScope) {
+  private hasApplicationScope(applicationScope: string): boolean {
     const scope = applicationScopes[applicationScope]
     return this.hasScope(scope)
   }
