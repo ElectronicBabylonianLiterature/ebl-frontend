@@ -51,6 +51,15 @@ function parseFragmentSearchParams(location) {
   }
 }
 
+function parseFargmentParams(match, location) {
+  return {
+    number: decodeURIComponent(match.params['id']),
+    folioName: parse(location.search).folioName,
+    folioNumber: parse(location.search).folioNumber,
+    tab: parse(location.search).tab
+  }
+}
+
 function App({
   auth,
   wordService,
@@ -157,11 +166,11 @@ function App({
           />
           <Route
             path="/fragmentarium/:id"
-            render={(props): ReactNode => (
+            render={({ match, location }): ReactNode => (
               <FragmentView
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
-                {...props}
+                {...parseFargmentParams(match, location)}
               />
             )}
           />

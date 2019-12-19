@@ -1,5 +1,5 @@
 import React from 'react'
-import { MemoryRouter, Route } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { render, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
@@ -17,21 +17,21 @@ let container
 let element
 
 function renderFragmentView(
-  initialEntry = `/${encodeURIComponent(fragmentNumber)}`
-) {
+  number: string,
+  folioName: string | null,
+  folioNumber: string | null,
+  tab: string | null
+): void {
   element = render(
-    <MemoryRouter initialEntries={[initialEntry]}>
+    <MemoryRouter>
       <SessionContext.Provider value={session}>
-        <Route
-          path="/:id"
-          render={({ match, location }) => (
-            <FragmentView
-              match={match}
-              location={location}
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-            />
-          )}
+        <FragmentView
+          number={number}
+          folioName={folioName}
+          folioNumber={folioNumber}
+          tab={tab}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
         />
       </SessionContext.Provider>
     </MemoryRouter>
@@ -93,11 +93,10 @@ describe('Fragment is loaded', () => {
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(
-      `/${encodeURIComponent(
-        fragmentNumber
-      )}?tab=folio&folioName=${encodeURIComponent(
-        selectedFolio.name
-      )}&folioNumber=${encodeURIComponent(selectedFolio.number)}`
+      fragmentNumber,
+      selectedFolio.name,
+      selectedFolio.number,
+      'folio'
     )
     await waitForElement(() => element.getByText('Display'))
   })
@@ -131,7 +130,7 @@ describe('On error', () => {
   beforeEach(() => {
     session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
-    renderFragmentView()
+    renderFragmentView(fragmentNumber, null, null, null)
   })
 
   it('Shows the error message', async () => {
@@ -145,7 +144,7 @@ describe('On error', () => {
 
 it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadFragments.mockReturnValue(false)
-  renderFragmentView()
+  renderFragmentView(fragmentNumber, null, null, null)
   await waitForElement(() =>
     element.getByText('Please log in to browse the Fragmentarium.')
   )

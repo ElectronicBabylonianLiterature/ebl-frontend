@@ -1,5 +1,4 @@
 import React from 'react'
-import { parse } from 'query-string'
 import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
@@ -37,18 +36,18 @@ const FragmentWithData = withData<Props, { number: string }, Fragment>(
 export default function FragmentView({
   fragmentService,
   fragmentSearchService,
-  match,
-  location
+  number,
+  folioName,
+  folioNumber,
+  tab
 }: {
   fragmentService
   fragmentSearchService
-  match
-  location
+  number
+  folioName?
+  folioNumber?
+  tab?
 }) {
-  const number = decodeURIComponent(match.params['id'])
-  const folioName = parse(location.search).folioName
-  const folioNumber = parse(location.search).folioNumber
-  const tab = parse(location.search).tab
   const activeFolio =
     folioName && folioNumber
       ? new Folio({
