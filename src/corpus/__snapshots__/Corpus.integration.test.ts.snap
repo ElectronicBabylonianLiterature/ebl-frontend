@@ -46,12 +46,9 @@ exports[`With session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/dictionary"
                 href="/dictionary"
-                role="tab"
-                tabindex="-1"
               >
                 Dictionary
               </a>
@@ -60,12 +57,9 @@ exports[`With session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="active nav-link"
                 data-rb-event-key="/corpus"
                 href="/corpus"
-                role="tab"
-                tabindex="-1"
               >
                 Corpus
               </a>
@@ -74,12 +68,9 @@ exports[`With session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/fragmentarium"
                 href="/fragmentarium"
-                role="tab"
-                tabindex="-1"
               >
                 Fragmentarium
               </a>
@@ -88,12 +79,9 @@ exports[`With session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/bibliography"
                 href="/bibliography"
-                role="tab"
-                tabindex="-1"
               >
                 Bibliography
               </a>
@@ -113,7 +101,7 @@ exports[`With session 1`] = `
         <button
           aria-controls="Header-1"
           aria-label="Toggle navigation"
-          class="navbar-toggler"
+          class="navbar-toggler collapsed"
           type="button"
         >
           <span
@@ -356,12 +344,9 @@ exports[`Without session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/dictionary"
                 href="/dictionary"
-                role="tab"
-                tabindex="-1"
               >
                 Dictionary
               </a>
@@ -370,12 +355,9 @@ exports[`Without session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="active nav-link"
                 data-rb-event-key="/corpus"
                 href="/corpus"
-                role="tab"
-                tabindex="-1"
               >
                 Corpus
               </a>
@@ -384,12 +366,9 @@ exports[`Without session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/fragmentarium"
                 href="/fragmentarium"
-                role="tab"
-                tabindex="-1"
               >
                 Fragmentarium
               </a>
@@ -398,12 +377,9 @@ exports[`Without session 1`] = `
               class="nav-item"
             >
               <a
-                aria-selected="false"
                 class="nav-link"
                 data-rb-event-key="/bibliography"
                 href="/bibliography"
-                role="tab"
-                tabindex="-1"
               >
                 Bibliography
               </a>
@@ -423,7 +399,7 @@ exports[`Without session 1`] = `
         <button
           aria-controls="Header-2"
           aria-label="Toggle navigation"
-          class="navbar-toggler"
+          class="navbar-toggler collapsed"
           type="button"
         >
           <span

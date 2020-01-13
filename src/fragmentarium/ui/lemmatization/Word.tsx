@@ -1,11 +1,16 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
+import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 
-function Word({ token, onClick }) {
+interface Props {
+  token: LemmatizationToken
+  onClick: any
+}
+const Word: FunctionComponent<Props> = ({ token, onClick }: Props) => {
   return token.lemmatizable ? (
     <Button
       onClick={onClick}

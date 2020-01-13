@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Popover, Overlay } from 'react-bootstrap'
+import React, { Component, useState, useRef } from 'react'
+import { Popover, Overlay, ButtonToolbar } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
@@ -7,63 +7,58 @@ import Word from './Word'
 import './WordLemmatizer.css'
 import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 
-export default class WordLemmatizer extends Component<
-  { fragmentService; token: LemmatizationToken; onChange },
-  { show: boolean; target? }
-> {
-  private readonly popOverId: string
+interface Props {
+  fragmentService
+  token: LemmatizationToken
+  onChange
+}
 
-  constructor(props) {
-    super(props)
-    this.popOverId = _.uniqueId('LemmatizationPopOver-')
-    this.state = {
-      show: false
-    }
+export default function WordLemmatizer({
+  fragmentService,
+  token,
+  onChange
+}: Props): JSX.Element {
+  const [show, setShow] = useState(false)
+  const target = useRef(null)
+  const popOverId = _.uniqueId('LemmatizationPopOver-')
+
+  const handleClick = (): void => {
+    setShow(!show)
   }
 
-  handleClick = e => {
-    this.setState({
-      target: e.target,
-      show: !this.state.show
-    })
+  const hide = (): void => {
+    setShow(false)
   }
 
-  handleCange = uniqueLemma => {
-    this.props.onChange(uniqueLemma)
-    this.hide()
+  const handleCange = (uniqueLemma): void => {
+    onChange(uniqueLemma)
+    hide()
   }
 
-  hide = () => {
-    this.setState({ show: false })
-  }
-
-  render() {
-    return (
-      <span className="WordLemmatizer">
-        <Word token={this.props.token} onClick={this.handleClick} />
-        <Overlay
-          rootClose
-          onHide={this.hide}
-          show={this.state.show}
-          target={this.state.target}
-          placement="top"
-          container={this}
+  return (
+    <span ref={target} className="WordLemmatizer">
+      <Word token={token} onClick={handleClick} />
+      <Overlay
+        rootClose
+        onHide={hide}
+        show={show}
+        target={target.current as any}
+        placement="top"
+      >
+        <Popover
+          id={popOverId}
+          title="Lemmatize"
+          className="WordLemmatizer__form"
         >
-          <Popover
-            id={this.popOverId}
-            title="Lemmatize"
-            className="WordLemmatizer__form"
-          >
-            <Popover.Content>
-              <LemmatizationForm
-                token={this.props.token}
-                fragmentService={this.props.fragmentService}
-                onChange={this.handleCange}
-              />
-            </Popover.Content>
-          </Popover>
-        </Overlay>
-      </span>
-    )
-  }
+          <Popover.Content>
+            <LemmatizationForm
+              token={token}
+              fragmentService={fragmentService}
+              onChange={handleCange}
+            />
+          </Popover.Content>
+        </Popover>
+      </Overlay>
+    </span>
+  )
 }
