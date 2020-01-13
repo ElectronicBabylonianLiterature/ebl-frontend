@@ -1,4 +1,4 @@
-import 'brace/mode/plain_text'
+import 'ace-builds/src-noconflict/mode-plain_text'
 
 // @ts-ignore
 const acequire = window.ace.acequire

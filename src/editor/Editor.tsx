@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import AceEditor from 'react-ace'
 import _ from 'lodash'
 
-import 'brace/ext/searchbox'
-import 'brace/mode/plain_text'
-import 'brace/theme/kuroir'
+import 'ace-builds/src-noconflict/ext-searchbox'
+import 'ace-builds/src-noconflict/mode-plain_text'
+import 'ace-builds/src-noconflict/theme-kuroir'
 import specialCharacters from './SpecialCharacters.json'
 import AtfMode from './AtfMode'
 
@@ -23,7 +23,7 @@ const specialCharacterKeys = Object.entries(specialCharacters).map(
   ([key, value]) => ({
     name: `insert a special character ${key}`,
     bindKey: value,
-    exec(editor: any) {
+    exec(editor: any): void {
       editor.insert(key)
     }
   })
