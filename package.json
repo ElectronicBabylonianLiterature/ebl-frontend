@@ -52,7 +52,7 @@
     "bluebird": "^3.5.2",
     "citation-js": "^0.4.0",
     "classnames": "^2.2.6",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "exif-js": "^2.3.0",
     "html-to-react": "^1.3.4",
     "immer": "^5.0.1",
@@ -77,19 +77,19 @@
     "@typescript-eslint/eslint-plugin": "^2.5.0",
     "@typescript-eslint/parser": "^2.5.0",
     "chance": "^1.0.16",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-prettier": "^6.9.0",
     "eslint-config-react": "^1.1.7",
     "eslint-config-react-app": "^5.0.2",
     "eslint-plugin-compat": "^3.3.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-react-hooks": "^2.1.1",
     "factory-girl": "^5.0.2",
-    "husky": "^3.0.5",
+    "husky": "^4.0.7",
     "jest-date-mock": "^1.0.2",
     "jest-fetch-mock": "^2.1.0",
     "lighthouse": "^5.1.0",
     "lint-staged": "^9.2.5",
-    "prettier": "1.18.2"
+    "prettier": "1.19.1"
   },
   "resolutions": {
     "@citation-js/plugin-csl": "0.4.0-rc.4"
