@@ -7,33 +7,22 @@ import 'test-helpers/bibliography-fixtures'
 import 'test-helpers/fragment-fixtures'
 import 'test-helpers/word-fixtures'
 
-import { GlobalWithFetchMock } from 'jest-fetch-mock'
+require('jest-fetch-mock').enableMocks()
 
 const abort = jest.fn()
 const onAbort = jest.fn()
-class AbortControllerMock {
-  abort = abort
-  signal = {
-    aborted: false,
-    onabort: onAbort
-  }
-}
 
-interface CustomGlobal extends GlobalWithFetchMock {
+interface CustomGlobal extends NodeJS.Global {
   URL: any
-  AbortController: typeof AbortControllerMock
   document: Document
 }
 
 const customGlobal: CustomGlobal = global as CustomGlobal
-customGlobal.fetch = require('jest-fetch-mock')
-customGlobal.fetchMock = customGlobal.fetch
 
 customGlobal.URL = {
   createObjectURL: jest.fn(),
   revokeObjectURL: jest.fn()
 }
-customGlobal.AbortController = AbortControllerMock
 
 afterEach(() => {
   abort.mockReset()

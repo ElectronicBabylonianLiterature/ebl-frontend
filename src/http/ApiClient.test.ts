@@ -7,10 +7,7 @@ const error = new Error('fake error message')
 const accessToken = 'accessToken'
 
 const errorResponse = { status: 404, statusText: 'NOT_FOUND' }
-const expectSignal = expect.objectContaining({
-  aborted: expect.any(Boolean),
-  onabort: expect.any(Function)
-})
+const expectSignal = expect.any(AbortSignal)
 const requestJson = {
   payload: 1
 }
@@ -129,8 +126,9 @@ describe('fetchBlob', () => {
   test('Resolves to dataURI', async () => {
     setUpSuccessResponse()
 
-    const blob = await fetchMock().then(response => response.blob())
-    await expect(apiClient.fetchBlob(path)).resolves.toEqual(blob)
+    await expect(
+      apiClient.fetchBlob(path).then(blob => blob.text())
+    ).resolves.toEqual(JSON.stringify(result))
   })
 
   test('Makes a request with given parameters', async () => {
