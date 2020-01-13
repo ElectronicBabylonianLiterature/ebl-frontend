@@ -6,6 +6,7 @@ import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'fragmentarium/domain/Lemmatization'
+import { CdliInfo } from 'fragmentarium/application/FragmentService'
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -51,15 +52,21 @@ beforeEach(async () => {
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
     fragmentPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
-    fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
+    createLemmatization: (text: Text): Promise<Lemmatization> =>
+      Promise.resolve(new Lemmatization([], [])),
+    fetchCdliInfo: (): Promise<CdliInfo> =>
+      Promise.resolve({
+        photoUrl: null,
+        lineArtUrl: null,
+        detailLineArtUrl: null
+      })
   }
   fragmentSearchService = {}
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: () => false,
-    isAllowedToLemmatizeFragments: () => false,
-    hasBetaAccess: () => false
+    isAllowedToTransliterateFragments: (): boolean => false,
+    isAllowedToLemmatizeFragments: (): boolean => false,
+    hasBetaAccess: (): boolean => false
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
@@ -87,7 +94,8 @@ describe('Fragment is loaded', () => {
     fragment = (await factory.build('fragment', {
       number: fragmentNumber,
       folios: folios,
-      atf: '1. ku'
+      atf: '1. ku',
+      hasPhoto: true
     })).setReferences(await factory.buildMany('reference', 2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
@@ -109,12 +117,14 @@ describe('Fragment is loaded', () => {
     expect(container).toHaveTextContent(fragmentNumber)
   })
 
-  xit('Shows the fragment', async () => {
-    expect(container).toHaveTextContent(fragment.atf)
-  })
-
   it('Shows pager', () => {
     expect(element.getByLabelText('Next')).toBeVisible()
+  })
+
+  it('Shows annotate button', () => {
+    expect(element.getByText('Annotate Fragment Image')).not.toHaveAttribute(
+      'aria-disabled'
+    )
   })
 
   it('Selects active folio', () => {
@@ -123,6 +133,29 @@ describe('Fragment is loaded', () => {
         `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`
       )
     ).toHaveAttribute('aria-selected', 'true')
+  })
+})
+
+describe('Fragment without an image is loaded', () => {
+  beforeEach(async () => {
+    const fragment = await factory.build('fragment', {
+      number: fragmentNumber,
+      folios: [],
+      atf: '1. ku',
+      hasPhoto: false,
+      references: []
+    })
+    fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
+    session.isAllowedToReadFragments.mockReturnValue(true)
+    renderFragmentView(fragment.number, null, null, null)
+    await waitForElement(() => element.getByText('Display'))
+  })
+
+  it('Annotate button is disabled', () => {
+    expect(element.getByText('Annotate Fragment Image')).toHaveAttribute(
+      'aria-disabled',
+      'true'
+    )
   })
 })
 
@@ -136,16 +169,4 @@ describe('On error', () => {
   it('Shows the error message', async () => {
     await waitForElement(() => element.getByText(message))
   })
-
-  it('Shows the fragment number', async () => {
-    expect(element.container).toHaveTextContent(fragmentNumber)
-  })
-})
-
-it('Displays a message if user is not logged in', async () => {
-  session.isAllowedToReadFragments.mockReturnValue(false)
-  renderFragmentView(fragmentNumber, null, null, null)
-  await waitForElement(() =>
-    element.getByText('Please log in to browse the Fragmentarium.')
-  )
 })

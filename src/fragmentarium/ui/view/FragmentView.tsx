@@ -10,10 +10,18 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { Button } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 
-function AnnotateButton({ number }: { number: string }): JSX.Element {
+function AnnotateButton({
+  number,
+  disabled
+}: {
+  number: string
+  disabled?: boolean
+}): JSX.Element {
   return (
     <LinkContainer to={`${createFragmentUrl(number)}/annotate`}>
-      <Button variant="outline-primary">Annotate Fragment Image</Button>
+      <Button variant="outline-primary" disabled={disabled}>
+        Annotate Fragment Image
+      </Button>
     </LinkContainer>
   )
 }
@@ -54,7 +62,7 @@ function FragmentView({
           fragmentService={fragmentService}
         ></FragmentPager>
       }
-      actions={<AnnotateButton number={number} />}
+      actions={<AnnotateButton number={number} disabled={!fragment.hasPhoto} />}
       wide
     >
       <CuneiformFragment

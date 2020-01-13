@@ -10,8 +10,8 @@ import Annotation from 'fragmentarium/domain/annotation'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
-  lineArtUrl: string | null
-  detailLineArtUrl: string | null
+  readonly lineArtUrl: string | null
+  readonly detailLineArtUrl: string | null
 }
 
 export interface ImageRepository {
