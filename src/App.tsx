@@ -51,7 +51,15 @@ function parseFragmentSearchParams(location) {
   }
 }
 
-function parseFargmentParams(match, location) {
+function parseFargmentParams(
+  match,
+  location
+): {
+  number
+  folioName
+  folioNumber
+  tab
+} {
   return {
     number: decodeURIComponent(match.params['id']),
     folioName: parse(location.search).folioName,
