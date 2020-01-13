@@ -1,12 +1,12 @@
 import Template from './Template'
 
-test.each([['', true], ['5', false]])(
-  'For %s the isEmpty returns %p',
-  (pattern, expected) => {
-    const template = new Template(pattern)
-    expect(template.isEmpty).toEqual(expected)
-  }
-)
+test.each([
+  ['', true],
+  ['5', false]
+])('For %s the isEmpty returns %p', (pattern, expected) => {
+  const template = new Template(pattern)
+  expect(template.isEmpty).toEqual(expected)
+})
 
 test.each([
   ['6,7', true],

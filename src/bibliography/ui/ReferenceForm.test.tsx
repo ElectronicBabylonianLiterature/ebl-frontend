@@ -65,13 +65,11 @@ it('Displays Lines Cited', () => {
   )
 })
 
-test.each([['3.1,2', ['3.1', '2']], ['', []]])(
-  'Calls onChange with updated Lines Cited %s',
-  (newValue, expectedValue) => {
-    whenChangedByLabel(element, 'Lines Cited', newValue)
-      .expect(onChange)
-      .toHaveBeenCalledWith(updatedItem =>
-        reference.setLinesCited(expectedValue)
-      )
-  }
-)
+test.each([
+  ['3.1,2', ['3.1', '2']],
+  ['', []]
+])('Calls onChange with updated Lines Cited %s', (newValue, expectedValue) => {
+  whenChangedByLabel(element, 'Lines Cited', newValue)
+    .expect(onChange)
+    .toHaveBeenCalledWith(updatedItem => reference.setLinesCited(expectedValue))
+})

@@ -30,15 +30,15 @@ beforeEach(async () => {
   )
   await waitForElement(() => element.getByText('K.00000'))
 })
-it.each([['Previous', 'previous'], ['Next', 'next']])(
-  'Test Links to %s Button',
-  (label, expected) => {
-    expect(element.getByLabelText(label)).toHaveAttribute(
-      'href',
-      `/fragmentarium/${encodeURIComponent(fragmentPagerData[expected])}`
-    )
-  }
-)
+it.each([
+  ['Previous', 'previous'],
+  ['Next', 'next']
+])('Test Links to %s Button', (label, expected) => {
+  expect(element.getByLabelText(label)).toHaveAttribute(
+    'href',
+    `/fragmentarium/${encodeURIComponent(fragmentPagerData[expected])}`
+  )
+})
 
 it('Renders children', () => {
   expect(element.container).toHaveTextContent(number)

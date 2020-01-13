@@ -91,12 +91,14 @@ describe('Fragment is loaded', () => {
       { name: 'WGL' },
       { name: 'AKG' }
     ])
-    fragment = (await factory.build('fragment', {
-      number: fragmentNumber,
-      folios: folios,
-      atf: '1. ku',
-      hasPhoto: true
-    })).setReferences(await factory.buildMany('reference', 2))
+    fragment = (
+      await factory.build('fragment', {
+        number: fragmentNumber,
+        folios: folios,
+        atf: '1. ku',
+        hasPhoto: true
+      })
+    ).setReferences(await factory.buildMany('reference', 2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)

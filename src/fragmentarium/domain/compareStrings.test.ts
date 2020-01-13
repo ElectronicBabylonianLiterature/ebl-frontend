@@ -31,7 +31,11 @@ test.each([
   }
 })
 
-test.each([['', 2, '2'], [53, '', '53'], [29, 98, '29,98']])(
+test.each([
+  ['', 2, '2'],
+  [53, '', '53'],
+  [29, 98, '29,98']
+])(
   'throws an error if the %s or %s is not a string',
   (word, anotherWord, number) => {
     function compareInvalidWords() {

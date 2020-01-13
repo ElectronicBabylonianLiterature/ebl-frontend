@@ -96,13 +96,19 @@ export default class Lemmatization {
   applySuggestions(): Lemmatization {
     return produce((draft: Draft<Lemmatization>, tokens) => {
       draft.tokens = tokens
-    })(this, this._mapTokens(token => token.applySuggestion()))
+    })(
+      this,
+      this._mapTokens(token => token.applySuggestion())
+    )
   }
 
   clearSuggestionFlags(): Lemmatization {
     return produce((draft: Draft<Lemmatization>, tokens) => {
       draft.tokens = tokens
-    })(this, this._mapTokens(token => token.clearSuggestionFlag()))
+    })(
+      this,
+      this._mapTokens(token => token.clearSuggestionFlag())
+    )
   }
 
   toDto(): ReadonlyArray<ReadonlyArray<{ [key: string]: any }>> {

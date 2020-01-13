@@ -97,13 +97,25 @@ test.each([
 test.each([
   [[atTen, atEleven, atTwelve], [atTen]],
 
-  [[on21thOctober, on22ndOctober], [on21thOctober, on22ndOctober]],
+  [
+    [on21thOctober, on22ndOctober],
+    [on21thOctober, on22ndOctober]
+  ],
 
-  [[on21thOctober, on21stDecember], [on21thOctober, on21stDecember]],
+  [
+    [on21thOctober, on21stDecember],
+    [on21thOctober, on21stDecember]
+  ],
 
-  [[year2017, year2018], [year2017, year2018]],
+  [
+    [year2017, year2018],
+    [year2017, year2018]
+  ],
 
-  [[userAlice, userBob], [userAlice, userBob]],
+  [
+    [userAlice, userBob],
+    [userAlice, userBob]
+  ],
 
   [
     [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty],
@@ -115,7 +127,10 @@ test.each([
     [historicalTransliteration, transliteration]
   ],
 
-  [[historicalTransliteration, revision], [historicalTransliteration, revision]]
+  [
+    [historicalTransliteration, revision],
+    [historicalTransliteration, revision]
+  ]
 ])('%s is filtered to %s', async (record, expected) => {
   const fragment = new Fragment({ ...config, record: record })
   expect(fragment.uniqueRecord).toEqual(expected)

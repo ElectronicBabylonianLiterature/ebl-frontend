@@ -29,9 +29,9 @@ test('Shows compact citation with et al.', async () => {
 })
 
 test('Shows compact citation with container title', async () => {
-  const reference = (await buildReferenceWithContainerTitle(
-    'COPY'
-  )).setLinesCited([])
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY')
+  ).setLinesCited([])
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
     `${reference.shortContainerTitle} ${reference.pages} (${reference.typeAbbreviation})`
@@ -40,9 +40,11 @@ test('Shows compact citation with container title', async () => {
 
 test('Shows compact citation with container title and collection number', async () => {
   const collectionNumber = '76'
-  const reference = (await buildReferenceWithContainerTitle('COPY', {
-    'collection-number': collectionNumber
-  })).setLinesCited([])
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY', {
+      'collection-number': collectionNumber
+    })
+  ).setLinesCited([])
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
     `${reference.shortContainerTitle} ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
@@ -52,9 +54,11 @@ test('Shows compact citation with container title and collection number', async 
 test('Shows compact citation with container title, lines cites and collection number', async () => {
   const collectionNumber = '76'
   const linesCited = ['2.', '4.']
-  const reference = (await buildReferenceWithContainerTitle('COPY', {
-    'collection-number': collectionNumber
-  })).setLinesCited(linesCited)
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY', {
+      'collection-number': collectionNumber
+    })
+  ).setLinesCited(linesCited)
   const { container } = render(<CompactCitation reference={reference} />)
   expect(container).toHaveTextContent(
     `${reference.shortContainerTitle} ${collectionNumber}, ${

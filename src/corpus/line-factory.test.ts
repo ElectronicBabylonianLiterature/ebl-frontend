@@ -7,7 +7,12 @@ describe('createDefaultLineFactory', () => {
     expect(createDefaultLineFactory()()).toEqual(createLine({}))
   })
 
-  describe.each([['', ''], ['13', '14'], ['2', '3'], ['6b', '']])(
+  describe.each([
+    ['', ''],
+    ['13', '14'],
+    ['2', '3'],
+    ['6b', '']
+  ])(
     'If line number is "%s" then the next number is "%s".',
     (number, expected) => {
       test('line', () => {

@@ -70,9 +70,9 @@ test('CompactCitation with more than 3 authors', async () => {
 })
 
 test('ContainerCitation', async () => {
-  const reference = (await buildReferenceWithContainerTitle(
-    'COPY'
-  )).setLinesCited([])
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY')
+  ).setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${reference.pages} (${reference.typeAbbreviation})`
@@ -81,9 +81,11 @@ test('ContainerCitation', async () => {
 
 test('ContainerCitation with collection number', async () => {
   const collectionNumber = '76'
-  const reference = (await buildReferenceWithContainerTitle('COPY', {
-    'collection-number': collectionNumber
-  })).setLinesCited([])
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY', {
+      'collection-number': collectionNumber
+    })
+  ).setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`
@@ -93,9 +95,11 @@ test('ContainerCitation with collection number', async () => {
 test('ContainerCitation with lines cites and collection number', async () => {
   const collectionNumber = '76'
   const linesCited = ['2.', '4.']
-  const reference = (await buildReferenceWithContainerTitle('COPY', {
-    'collection-number': collectionNumber
-  })).setLinesCited(linesCited)
+  const reference = (
+    await buildReferenceWithContainerTitle('COPY', {
+      'collection-number': collectionNumber
+    })
+  ).setLinesCited(linesCited)
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${
