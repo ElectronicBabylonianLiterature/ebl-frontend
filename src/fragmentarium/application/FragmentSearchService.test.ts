@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import FragmentSearchService from './FragmentSearchService'
 
 const resultStub = {}
@@ -13,7 +13,7 @@ const fragmentRepository = {
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-const testData = [
+const testData: TestData[] = [
   [
     'random',
     [],

@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import FragmentRepository from './FragmentRepository'
 import { Folio } from 'fragmentarium/domain/fragment'
 import { fragment, fragmentDto } from 'test-helpers/test-fragment'
@@ -49,7 +49,7 @@ const fragmentInfoWithLines = {
   edition_date: '2019-09-10T13:03:37.575580'
 }
 
-const testData = [
+const testData: TestData[] = [
   [
     'statistics',
     [],

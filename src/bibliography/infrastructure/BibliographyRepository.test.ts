@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -17,7 +17,7 @@ const resultStub = {
 }
 const entry = new BibliographyEntry(resultStub)
 
-const testData = [
+const testData: TestData[] = [
   [
     'find',
     [id],

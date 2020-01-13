@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import { fragment } from 'test-helpers/test-fragment'
 import FragmentService, { ImageRepository } from './FragmentService'
 
@@ -34,7 +34,7 @@ const wordRepository = {
   searchLemma: jest.fn(),
   find: jest.fn()
 }
-const imageRepository: ImageRepository = {
+const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
   findPhoto: jest.fn()
@@ -49,7 +49,7 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
-const testData = [
+const testData: TestData[] = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
   [
     'updateTransliteration',

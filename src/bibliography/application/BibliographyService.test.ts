@@ -1,4 +1,4 @@
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import BibliographyService from './BibliographyService'
 
 const resultStub = {}
@@ -12,7 +12,7 @@ const bibliographyRepository = {
 
 const bibliographyService = new BibliographyService(bibliographyRepository)
 
-const testData = [
+const testData: TestData[] = [
   ['find', ['RN2020'], bibliographyRepository.find, [resultStub]],
   ['update', [resultStub], bibliographyRepository.update, [resultStub]],
   ['create', [resultStub], bibliographyRepository.create, [resultStub]],

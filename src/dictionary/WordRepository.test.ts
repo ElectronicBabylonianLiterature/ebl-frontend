@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import WordRepository from './WordRepository'
 
 const apiClient = {
@@ -14,7 +14,7 @@ const word = {
 }
 const resultStub = { pos: ['AJ'] }
 
-const testData = [
+const testData: TestData[] = [
   [
     'find',
     [wordId],

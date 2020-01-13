@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-helpers/utils'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import {
@@ -269,7 +269,7 @@ const texts = [
   })
 ]
 
-const testData = [
+const testData: TestData[] = [
   [
     'find',
     [text.category, text.index],

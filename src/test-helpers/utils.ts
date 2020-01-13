@@ -65,7 +65,11 @@ export function submitFormByTestId(element, testId) {
   })
 }
 
-export function testDelegation(object, testData) {
+export type TestData = [string, any[], jest.Mock, any, any?, any?]
+export function testDelegation(
+  object: any,
+  testData: readonly TestData[]
+): void {
   describe.each(testData)(
     '%s',
     (method, params, target, expectedResult, expectedParams, targetResult) => {
