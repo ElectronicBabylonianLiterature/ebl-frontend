@@ -23,12 +23,6 @@ jobs:
     install: skip
     script:
     - wget --no-check-certificate --output-document=/dev/null https://www.ebabylon.org
-  #- stage: lighthouse
-  #  if: branch = master
-  #  script:
-  #  - yarn lighthouse https://www.ebabylon.org
-  #  - yarn lighthouse https://www.ebabylon.org/fragmentarium
-  #  - yarn lighthouse https://www.ebabylon.org/corpus
 notifications:
   slack:
-    secure: OeAUNR2mbxvsQ9f6udtUt3+i6TCZsyVj+N0xRGcqMMM2IswDovOA2dhbLgL1zLOCzmPDX6jMSlAuHOGFbirn0oXu30mQNBOfOVUESQ7IYFHNivVt458RuMxei9sKWAm+FbH8+7h5/EpMzfyrYGrlvM9OT5/5RajtW1xw7UAxrGepj0MEOmH+Qu6KqrXvMrfck5iFq9+M9n+ZDahINpWcWsxgqVyGiflfD72MdY3beVLBwSZMpQ8eUuUSGDx1mq0OjRqlpZGujxnESyR4SKIrxPD5wXQS8kgarC6g7N52PSpW7usIuLO0aWH0WPaMnljRsbXRhGg422BpZLPegM7v3tAra3mZdnyhMOwAJyQe65yVzzwT9kWF3mSjtE56cG39sd9hjvWdZk4nxdyR7aO5/PN6WTLlHJJMYHT4cXt/m7sNqrmmMoWjosfEgQmbUDWYZLkNsKIPGr+arvu3ZXgInoDaGpMNynRBcs1UtP+UbflWyEZynYk9aztOgilQaQbQHuDSY2OwJ+pR4byMXPVOt1649aF6ZR+OJ18r8om5ZCwfZzfGAng6wVvPpGpkkvQhIGH13FSfqj/qZSas+Bc3BaBR0GTTWhuukUl0h8k3BxRrveE45OMg60jCktgO/FhXU409B56/tNCXf+LBDHF9E/08mfJYzho9uZpnbzFEGlI=
+    secure: qTyNCOKFOQtEJQb/4BUn0qR13ePiKgwwXIkbN8H6i/rPDDtZLf6QGDLT4ZYolmM3URodvcRz0qvSAt40WaBYeZSn3buNFw/ijVJE0Q+FrPStpHIvVKNFfbGPChyGaXWdRXfdsTUVmV2VMXFGiaQ7YB5vS/KGAkUsP1ixZKEHrfU6y3xqmRM9JnTBbFVwVU/HxRxqWzUX8HxyFS+beqKWYI4MvlZGPRsSb012V/z/R3U9eqmahaW6wmdl3eVJ2bSytrPbkN90gVnNw+SIdES3XP9+gVQoU6rfwyCCrqmzcXztoiQM3eDIc3vHHoDWnD6ocKh7V6JsNZb4E02a1rmxnpTcmtFv0JD8NJJ0XJ5M9yaLk4XT2cQV+gzi6dNa2aDgS7uYBXjxIAiFzhl76/CuPceGwqa25UtF+iGBuvUCxN2m0MWZgA+7R1aBYlM+rdHBRgCzDCtBji0/Eaw5KRPQFEuDPBIU9VbVnvbyp9/Tt47rjT3gefV0pVjgJLACNxm794cWbA0/bBzFAvba2HRc3FD2sAVeTwoDvynXQNBypm6hK8Sm/80iB14bl7nHvuVKy7W7csultQqDPbS2HBlOnpa8yDFCA40RKjHr/EgXKNrhXYIoe1PUyhBXUB2oiBiMAlJtRNOgpR0JvEbkVTIvNguv/0tpuV0jKsu9ylMOf90=
