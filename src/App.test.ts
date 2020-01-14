@@ -19,5 +19,5 @@ test.each([
   const fakeApi = new FakeApi().allowStatistics(
     await factory.build('statistics')
   )
-  new AppDriver(fakeApi.client).withPath(route).render()
+  await new AppDriver(fakeApi.client).withPath(route).render()
 })

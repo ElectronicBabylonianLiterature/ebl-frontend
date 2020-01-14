@@ -110,8 +110,8 @@ const defaultLineDto = {
   manuscripts: []
 }
 
-let fakeApi
-let appDriver
+let fakeApi: FakeApi
+let appDriver: AppDriver
 
 afterEach(() => {
   fakeApi.verifyExpectations()
@@ -150,7 +150,7 @@ describe('Diplay chapter', () => {
       ['Provenance', 'provenance', 'Borsippa'],
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes']
-    ])('%s', (label, property, newValue) => {
+    ])('%s', async (label, property, newValue) => {
       fakeApi.expectUpdateManuscripts(
         textDto,
         1,
@@ -168,7 +168,7 @@ describe('Diplay chapter', () => {
       appDriver.expectInputElement(label, expectedValue)
       appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
-      appDriver.click('Save manuscripts')
+      await appDriver.click('Save manuscripts')
     })
   })
 })
@@ -189,16 +189,16 @@ describe('Add manuscript', () => {
     ['Provenance', 'provenance', 'Nineveh'],
     ['Type', 'type', 'Library'],
     ['Notes', 'notes', '']
-  ])('%s', (label, property, expectedValue) => {
+  ])('%s', async (label, property, expectedValue) => {
     const manuscript = {
       ...defaultManuscriptDto,
       [property]: expectedValue,
       id: 1
     }
     fakeApi.expectUpdateManuscripts(textDto, 0, { manuscripts: [manuscript] })
-    appDriver.click('Add manuscript')
+    await appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
-    appDriver.click('Save manuscripts')
+    await appDriver.click('Save manuscripts')
   })
 })
 
@@ -208,23 +208,26 @@ describe('Lines', () => {
 
   beforeEach(async () => {
     await setup(chapter, false)
-    appDriver.click('Lines')
+    await appDriver.click('Lines')
   })
 
-  test.each([['Number', 'number', '2']])('%s', (label, property, newValue) => {
-    fakeApi.expectUpdateLines(textDto, 2, {
-      lines: [
-        produce(textDto.chapters[2].lines[0], draft => {
-          draft[property] = newValue
-        })
-      ]
-    })
-    const expectedValue = line[property]
-    appDriver.expectInputElement(label, expectedValue)
-    appDriver.changeValueByLabel(label, newValue)
-    appDriver.expectInputElement(label, newValue)
-    appDriver.click('Save lines')
-  })
+  test.each([['Number', 'number', '2']])(
+    '%s',
+    async (label, property, newValue) => {
+      fakeApi.expectUpdateLines(textDto, 2, {
+        lines: [
+          produce(textDto.chapters[2].lines[0], draft => {
+            draft[property] = newValue
+          })
+        ]
+      })
+      const expectedValue = line[property]
+      appDriver.expectInputElement(label, expectedValue)
+      appDriver.changeValueByLabel(label, newValue)
+      appDriver.expectInputElement(label, newValue)
+      await appDriver.click('Save lines')
+    }
+  )
 })
 
 describe('Add line', () => {
@@ -232,14 +235,14 @@ describe('Add line', () => {
 
   beforeEach(async () => {
     await setup(chapter)
-    appDriver.click('Lines')
+    await appDriver.click('Lines')
   })
 
-  test.each([['Number', 'number']])('%s', (label, property) => {
+  test.each([['Number', 'number']])('%s', async (label, property) => {
     fakeApi.expectUpdateLines(textDto, 1, { lines: [defaultLineDto] })
-    appDriver.click('Add line')
+    await appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
-    appDriver.click('Save lines')
+    await appDriver.click('Save lines')
   })
 })
 
@@ -249,7 +252,7 @@ describe('Chapter not found', () => {
 
   beforeEach(async () => {
     fakeApi = new FakeApi().allowText(textDto)
-    appDriver = new AppDriver(fakeApi.client)
+    appDriver = await new AppDriver(fakeApi.client)
       .withSession()
       .withPath(createChapterPath(chapter.stage, chapterName))
       .render()
@@ -266,7 +269,7 @@ async function setup(chapter, expectText = true) {
   fakeApi = expectText
     ? new FakeApi().expectText(textDto)
     : new FakeApi().allowText(textDto)
-  appDriver = new AppDriver(fakeApi.client)
+  appDriver = await new AppDriver(fakeApi.client)
     .withSession()
     .withPath(createChapterPath(chapter.stage, chapter.name))
     .render()

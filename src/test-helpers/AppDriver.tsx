@@ -3,7 +3,9 @@ import {
   fireEvent,
   render,
   waitForElement,
-  RenderResult
+  RenderResult,
+  act,
+  Matcher
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
@@ -21,6 +23,7 @@ import { ConsoleErrorReporter } from 'ErrorReporterContext'
 import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import SessionStore from 'auth/SessionStore'
+import { Promise } from 'bluebird'
 
 function createApp(api, sessionStore): JSX.Element {
   const auth0Config = createAuth0Config()
@@ -85,7 +88,7 @@ export default class AppDriver {
     return this
   }
 
-  render(): AppDriver {
+  async render(): Promise<AppDriver> {
     const fakeSessionStore: SessionStore = {
       setSession: session => {
         this.session = session
@@ -96,11 +99,13 @@ export default class AppDriver {
       getSession: () => this.session || new Session('', '', 0, [])
     }
 
-    this.element = render(
-      <MemoryRouter initialEntries={this.initialEntries}>
-        {createApp(this.api, fakeSessionStore)}
-      </MemoryRouter>
-    )
+    await act(async () => {
+      this.element = render(
+        <MemoryRouter initialEntries={this.initialEntries}>
+          {createApp(this.api, fakeSessionStore)}
+        </MemoryRouter>
+      )
+    })
 
     return this
   }
@@ -136,11 +141,15 @@ export default class AppDriver {
 
   changeValueByLabel(label, newValue): void {
     const input = this.getElement().getByLabelText(label)
-    fireEvent.change(input, { target: { value: newValue } })
+    act(() => {
+      fireEvent.change(input, { target: { value: newValue } })
+    })
   }
 
-  click(text, n = 0): void {
+  async click(text: Matcher, n = 0): Promise<void> {
     const clickable = this.getElement().getAllByText(text)[n]
-    fireEvent.click(clickable)
+    await act(async () => {
+      fireEvent.click(clickable)
+    })
   }
 }

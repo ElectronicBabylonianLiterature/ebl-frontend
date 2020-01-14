@@ -45,8 +45,8 @@ const textsDto = [
   }
 ]
 
-let fakeApi
-let appDriver
+let fakeApi: FakeApi
+let appDriver: AppDriver
 
 afterEach(() => {
   fakeApi.verifyExpectations()
@@ -60,13 +60,13 @@ beforeEach(() => {
 })
 
 test('With session', async () => {
-  appDriver.withSession().render()
+  await appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getElement().container).toMatchSnapshot()
 })
 
 test('Without session', async () => {
-  appDriver.render()
+  await appDriver.render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getElement().container).toMatchSnapshot()
 })

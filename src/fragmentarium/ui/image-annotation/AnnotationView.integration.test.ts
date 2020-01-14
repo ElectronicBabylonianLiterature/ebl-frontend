@@ -22,7 +22,7 @@ describe('Diplay annotate view', () => {
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber)
       .expectAnnotations(fragmentNumber, annotationsDto)
-    appDriver = new AppDriver(fakeApi.client)
+    appDriver = await new AppDriver(fakeApi.client)
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()
@@ -42,8 +42,8 @@ describe('Diplay annotate view', () => {
     expect(appDriver.getElement().container).toMatchSnapshot()
   })
 
-  test('Save', () => {
+  test('Save', async () => {
     fakeApi.expectUpdateAnnotations(fragmentNumber, annotationsDto)
-    appDriver.click('Save')
+    await appDriver.click('Save')
   })
 })
