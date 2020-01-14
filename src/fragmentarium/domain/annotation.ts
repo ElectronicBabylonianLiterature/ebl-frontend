@@ -1,18 +1,19 @@
 export interface Geometry {
-  x: number
-  y: number
-  height: number
-  width: number
-  type: string
+  readonly x: number
+  readonly y: number
+  readonly height: number
+  readonly width: number
+  readonly type: string
 }
 
 export interface AnnotationData {
-  id?: string
-  value: string
-  path: readonly number[]
+  readonly id?: string
+  readonly value: string
+  readonly path: readonly number[]
 }
 
 export default interface Annotation {
-  geometry: Geometry
-  data: AnnotationData
+  readonly geometry: Geometry
+  readonly data: AnnotationData
+  readonly outdated?: boolean
 }

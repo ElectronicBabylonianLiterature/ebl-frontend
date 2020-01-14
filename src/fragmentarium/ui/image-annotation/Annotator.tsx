@@ -11,6 +11,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { createAnnotationTokens, AnnotationToken } from './annotation-token'
 import SessionContext from 'auth/SessionContext'
 import Session from 'auth/Session'
+import produce from 'immer'
 
 type AnnotationProps = {
   annotation: Annotation
@@ -22,7 +23,9 @@ type RenderContent = (props: AnnotationProps) => React.ReactNode
 const renderContent = (onDelete: OnDelete): RenderContent => ({
   annotation
 }: AnnotationProps): React.ReactNode => {
-  const { geometry, data } = annotation
+  const { geometry, data, outdated } = annotation
+  const cardStyle = outdated ? 'warning' : 'light'
+  const textStyle = outdated ? 'white' : undefined
   if (geometry) {
     return (
       <div
@@ -33,7 +36,7 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
           top: `${geometry.y + geometry.height}%`
         }}
       >
-        <Card>
+        <Card bg={cardStyle} text={textStyle}>
           <Card.Body>{data && data.value}</Card.Body>
           <Card.Footer>
             <Button onClick={(): void => onDelete(annotation)}>Delete</Button>
@@ -128,12 +131,24 @@ function FragmentAnnotation({
   initialAnnotations,
   fragmentService
 }: Props): React.ReactElement {
+  const tokens = createAnnotationTokens(fragment)
   const [annotation, setAnnotation] = useState<Annotation | {}>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
-    initialAnnotations
+    initialAnnotations.map(annotation => {
+      const token = tokens
+        .flat()
+        .find(
+          token =>
+            _.isEqual(token.path, annotation.data.path) &&
+            token.value === annotation.data.value
+        )
+      return token
+        ? annotation
+        : produce(annotation, (draft): void => {
+            draft.outdated = true
+          })
+    })
   )
-
-  const tokens = createAnnotationTokens(fragment)
 
   const onDelete = (annotation: Annotation): void => {
     setAnnotations(
@@ -155,7 +170,8 @@ function FragmentAnnotation({
       data: {
         ...data,
         id: uuid4()
-      }
+      },
+      outdated: false
     }
     setAnnotation({})
     setAnnotations([...annotations, newAnnotation])
@@ -179,7 +195,14 @@ function FragmentAnnotation({
         {(session: Session): ReactElement => (
           <Button
             onClick={(): void => {
-              fragmentService.updateAnnotations(fragment.number, annotations)
+              fragmentService.updateAnnotations(
+                fragment.number,
+                produce(annotations, draft => {
+                  draft.forEach(annotation => {
+                    delete annotation.outdated
+                  })
+                })
+              )
             }}
             disabled={!session.isAllowedToAnnotateFragments()}
           >
