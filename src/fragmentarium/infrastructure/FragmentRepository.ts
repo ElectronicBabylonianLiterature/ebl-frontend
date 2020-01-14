@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import _ from 'lodash'
 import { stringify } from 'query-string'
 import produce from 'immer'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
@@ -154,11 +155,12 @@ class ApiFragmentRepository
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/annotations`, true)
       .then(dto =>
-        produce(dto.annotations, annotations => {
-          for (const annotation of annotations) {
-            annotation.geometry.type = 'RECTANGLE'
-          }
-        })
+        produce(dto.annotations, annotations =>
+          annotations.map(
+            ({ geometry, data }) =>
+              new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
+          )
+        )
       )
   }
 
@@ -171,9 +173,10 @@ class ApiFragmentRepository
       {
         fragmentNumber: number,
         annotations: annotations.map(
-          produce(annotation => {
-            delete annotation.geometry.type
-          })
+          produce(annotation => ({
+            geometry: _.omit(annotation.geometry, 'type'),
+            data: annotation.data
+          }))
         )
       }
     )

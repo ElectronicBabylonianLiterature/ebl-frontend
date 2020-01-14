@@ -165,16 +165,16 @@ function FragmentAnnotation({
 
   const onSubmit = (annotation: Annotation): void => {
     const { geometry, data } = annotation
-    const newAnnotation: Annotation = {
-      geometry: geometry,
-      data: {
-        ...data,
-        id: uuid4()
-      },
-      outdated: false
-    }
+    const newAnnotation = new Annotation(geometry, {
+      ...data,
+      id: uuid4()
+    })
     setAnnotation({})
     setAnnotations([...annotations, newAnnotation])
+  }
+
+  const onSave = (): void => {
+    fragmentService.updateAnnotations(fragment.number, annotations)
   }
 
   return (
@@ -194,16 +194,7 @@ function FragmentAnnotation({
       <SessionContext.Consumer>
         {(session: Session): ReactElement => (
           <Button
-            onClick={(): void => {
-              fragmentService.updateAnnotations(
-                fragment.number,
-                produce(annotations, draft => {
-                  draft.forEach(annotation => {
-                    delete annotation.outdated
-                  })
-                })
-              )
-            }}
+            onClick={onSave}
             disabled={!session.isAllowedToAnnotateFragments()}
           >
             Save

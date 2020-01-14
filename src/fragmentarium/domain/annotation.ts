@@ -1,3 +1,5 @@
+import { immerable } from 'immer'
+
 export interface Geometry {
   readonly x: number
   readonly y: number
@@ -12,8 +14,15 @@ export interface AnnotationData {
   readonly path: readonly number[]
 }
 
-export default interface Annotation {
+export default class Annotation {
+  [immerable] = true
   readonly geometry: Geometry
   readonly data: AnnotationData
-  readonly outdated?: boolean
+  readonly outdated: boolean
+
+  constructor(geometry: Geometry, data: AnnotationData) {
+    this.geometry = geometry
+    this.data = data
+    this.outdated = false
+  }
 }
