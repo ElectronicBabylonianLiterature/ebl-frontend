@@ -1,5 +1,5 @@
-import React, { Component, useState, useRef } from 'react'
-import { Popover, Overlay, ButtonToolbar } from 'react-bootstrap'
+import React, { useState, useRef } from 'react'
+import { Popover, Overlay } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
