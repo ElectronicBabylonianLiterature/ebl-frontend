@@ -1,25 +1,30 @@
 import Promise from 'bluebird'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-export default class BibliographyService {
+export interface BibliographySearch {
+  search(query: string): Promise<readonly BibliographyEntry[]>
+}
+
+export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository
 
   constructor(bibliographyRepository) {
     this.bibliographyRepository = bibliographyRepository
   }
 
-  create(entry) {
+  create(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.bibliographyRepository.create(entry)
   }
 
-  find(id) {
+  find(id: string): Promise<BibliographyEntry> {
     return this.bibliographyRepository.find(id)
   }
 
-  update(entry) {
+  update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.bibliographyRepository.update(entry)
   }
 
-  search(query) {
+  search(query: string): Promise<readonly BibliographyEntry[]> {
     const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
     const match = queryRegex.exec(query)
     return match
