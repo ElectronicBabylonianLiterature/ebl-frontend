@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode, ReactElement } from 'react'
+import React, { useEffect, useState, ReactElement } from 'react'
 import AnnotationComponent from 'react-image-annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
@@ -50,16 +50,19 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
 }
 
 type EditorProps = {
+  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   onChange(annotation: Annotation): void
   onSubmit(): void
 }
-type RenderEditor = (props: AnnotationProps & EditorProps) => React.ReactNode
-const renderEditor = (
-  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-): RenderEditor => (props: AnnotationProps & EditorProps): React.ReactNode => {
-  const { geometry } = props.annotation
-  if (geometry) {
-    return (
+function Editor({
+  annotation,
+  onChange,
+  onSubmit,
+  tokens
+}: AnnotationProps & EditorProps): ReactElement | null {
+  const { geometry } = annotation
+  return (
+    geometry && (
       <div
         style={{
           position: 'absolute',
@@ -74,23 +77,22 @@ const renderEditor = (
                 {line.map(token => (
                   <span key={token.path.join(',')}>
                     {token.enabled ? (
-                      <React.Fragment key={token.path.join(',')}>
+                      <React.Fragment>
                         <Button
                           size="sm"
                           variant={
                             _.isEqual(
                               token.path,
-                              props.annotation.data &&
-                                props.annotation.data.path
+                              annotation.data && annotation.data.path
                             )
                               ? 'dark'
                               : 'outline-dark'
                           }
                           onClick={(): void => {
-                            props.onChange({
-                              ...props.annotation,
+                            onChange({
+                              ...annotation,
                               data: {
-                                ...props.annotation.data,
+                                ...annotation.data,
                                 value: `${token.value}`,
                                 path: token.path
                               }
@@ -109,15 +111,19 @@ const renderEditor = (
             ))}
           </Card.Body>
           <Card.Footer>
-            <Button onClick={props.onSubmit}>Submit</Button>
+            <Button onClick={onSubmit}>Submit</Button>
           </Card.Footer>
         </Card>
       </div>
     )
-  } else {
-    return null
-  }
+  )
 }
+
+const editorWithTokens = (
+  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+) => (props: AnnotationProps & Omit<EditorProps, 'tokens'>): JSX.Element => (
+  <Editor tokens={tokens} {...props} />
+)
 
 interface Props {
   image: URL
@@ -187,7 +193,7 @@ function FragmentAnnotation({
         value={annotation}
         onChange={onChange}
         onSubmit={onSubmit}
-        renderEditor={renderEditor(tokens)}
+        renderEditor={editorWithTokens(tokens)}
         renderContent={renderContent(onDelete)}
         allowTouch
       />
