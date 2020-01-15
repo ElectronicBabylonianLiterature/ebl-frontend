@@ -15,6 +15,7 @@ type Word = {
   readonly lemmatizable: boolean
   readonly erasure: string
   readonly alignment?: number
+  readonly parts?: readonly Token[]
 }
 
 type LoneDeterminative = {
@@ -27,6 +28,7 @@ type LoneDeterminative = {
   readonly partial: [boolean, boolean]
   readonly erasure: string
   readonly alignment?: number
+  readonly parts?: readonly Token[]
 }
 
 type Shift = {
@@ -36,6 +38,7 @@ type Shift = {
   readonly language: string
   readonly lemmatizable?: false
   readonly uniqueLemma?: null
+  readonly parts?: readonly Token[]
 }
 
 type Erasure = {
@@ -44,6 +47,7 @@ type Erasure = {
   readonly side: string
   readonly lemmatizable?: false
   readonly uniqueLemma?: null
+  readonly parts?: readonly Token[]
 }
 
 type PlainToken = {
@@ -51,14 +55,13 @@ type PlainToken = {
   readonly value: string
   readonly lemmatizable?: false
   readonly uniqueLemma?: null
+  readonly parts?: readonly Token[]
 }
 
 export type Token = PlainToken | Word | LoneDeterminative | Shift | Erasure
 
-export type lineType = 'ControlLine' | 'EmptyLine' | 'TextLine'
-
 export interface Line {
-  readonly type: lineType
+  readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
 }

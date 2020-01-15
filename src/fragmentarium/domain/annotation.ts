@@ -14,7 +14,12 @@ export interface AnnotationData {
   readonly path: readonly number[]
 }
 
-export default class Annotation {
+export interface RawAnnotation {
+  readonly geometry?: Geometry
+  readonly data?: AnnotationData
+}
+
+export default class Annotation implements RawAnnotation {
   [immerable] = true
   readonly geometry: Geometry
   readonly data: AnnotationData

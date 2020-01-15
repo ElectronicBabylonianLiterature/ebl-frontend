@@ -1,15 +1,22 @@
+import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { RawAnnotation } from 'fragmentarium/domain/annotation'
+import { Token } from 'fragmentarium/domain/text'
 
-export interface AnnotationToken {
-  value: string
-  path: readonly number[]
-  enabled: boolean
-}
+export class AnnotationToken {
+  readonly value: string
+  readonly path: readonly number[]
+  readonly enabled: boolean
 
-interface Token {
-  type: string
-  value: string
-  parts?: readonly Token[]
+  constructor(value: string, path: readonly number[], enabled: boolean) {
+    this.value = value
+    this.path = path
+    this.enabled = enabled
+  }
+
+  hasMatchingPath(annotation: RawAnnotation): boolean {
+    return _.isEqual(this.path, annotation.data?.path)
+  }
 }
 
 function mapToken(
@@ -17,21 +24,13 @@ function mapToken(
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
   if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return {
-      value: token.value,
-      path: path,
-      enabled: true
-    }
+    return new AnnotationToken(token.value, path, true)
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
       mapToken(part, [...path, index])
     )
   } else {
-    return {
-      value: token.value,
-      path: path,
-      enabled: false
-    }
+    return new AnnotationToken(token.value, path, false)
   }
 }
 
@@ -39,12 +38,7 @@ export function createAnnotationTokens(
   fragment: Fragment
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
   return fragment.text.lines.map((line, lineNumber) => [
-    {
-      id: String(lineNumber),
-      path: [lineNumber],
-      value: line.prefix || '',
-      enabled: false
-    },
+    new AnnotationToken(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
       mapToken(token, [lineNumber, index])
     )

@@ -6,7 +6,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { uuid4 } from '@sentry/utils'
 import _ from 'lodash'
 import { Button, Card } from 'react-bootstrap'
-import Annotation from 'fragmentarium/domain/annotation'
+import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { createAnnotationTokens, AnnotationToken } from './annotation-token'
 import SessionContext from 'auth/SessionContext'
@@ -26,32 +26,29 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
   const { geometry, data, outdated } = annotation
   const cardStyle = outdated ? 'warning' : 'light'
   const textStyle = outdated ? 'white' : undefined
-  if (geometry) {
-    return (
-      <div
-        key={data && data.id}
-        style={{
-          position: 'absolute',
-          left: `${geometry.x}%`,
-          top: `${geometry.y + geometry.height}%`
-        }}
-      >
-        <Card bg={cardStyle} text={textStyle}>
-          <Card.Body>{data && data.value}</Card.Body>
-          <Card.Footer>
-            <Button onClick={(): void => onDelete(annotation)}>Delete</Button>
-          </Card.Footer>
-        </Card>
-      </div>
-    )
-  } else {
-    return null
-  }
+  return (
+    <div
+      key={data.id}
+      style={{
+        position: 'absolute',
+        left: `${geometry.x}%`,
+        top: `${geometry.y + geometry.height}%`
+      }}
+    >
+      <Card bg={cardStyle} text={textStyle}>
+        <Card.Body>{data.value}</Card.Body>
+        <Card.Footer>
+          <Button onClick={(): void => onDelete(annotation)}>Delete</Button>
+        </Card.Footer>
+      </Card>
+    </div>
+  )
 }
 
 type EditorProps = {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-  onChange(annotation: Annotation): void
+  annotation: RawAnnotation
+  onChange(annotation: RawAnnotation): void
   onSubmit(): void
 }
 function Editor({
@@ -59,10 +56,10 @@ function Editor({
   onChange,
   onSubmit,
   tokens
-}: AnnotationProps & EditorProps): ReactElement | null {
+}: EditorProps): ReactElement | null {
   const { geometry } = annotation
-  return (
-    geometry && (
+  if (geometry) {
+    return (
       <div
         style={{
           position: 'absolute',
@@ -77,14 +74,11 @@ function Editor({
                 {line.map(token => (
                   <span key={token.path.join(',')}>
                     {token.enabled ? (
-                      <React.Fragment>
+                      <>
                         <Button
                           size="sm"
                           variant={
-                            _.isEqual(
-                              token.path,
-                              annotation.data && annotation.data.path
-                            )
+                            token.hasMatchingPath(annotation)
                               ? 'dark'
                               : 'outline-dark'
                           }
@@ -101,7 +95,7 @@ function Editor({
                         >
                           {token.value}
                         </Button>{' '}
-                      </React.Fragment>
+                      </>
                     ) : (
                       token.value
                     )}{' '}
@@ -116,7 +110,9 @@ function Editor({
         </Card>
       </div>
     )
-  )
+  } else {
+    return null
+  }
 }
 
 const editorWithTokens = (
@@ -138,7 +134,7 @@ function FragmentAnnotation({
   fragmentService
 }: Props): React.ReactElement {
   const tokens = createAnnotationTokens(fragment)
-  const [annotation, setAnnotation] = useState<Annotation | {}>({})
+  const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
     initialAnnotations.map(annotation => {
       const token = tokens
