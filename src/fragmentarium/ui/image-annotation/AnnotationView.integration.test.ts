@@ -38,6 +38,13 @@ describe('Diplay annotate view', () => {
     ])
   })
 
+  test('Fragment crumb', () => {
+    appDriver.expectBreadcrumb(
+      fragmentDto._id,
+      `/fragmentarium/${fragmentDto._id}`
+    )
+  })
+
   test('Snapshot', () => {
     expect(appDriver.getElement().container).toMatchSnapshot()
   })

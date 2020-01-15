@@ -37,7 +37,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-2"
+          id="Header-3"
         >
           <div
             class="mx-auto navbar-nav"
@@ -99,7 +99,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-2"
+          aria-controls="Header-3"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -142,11 +142,10 @@ exports[`Diplay annotate view Snapshot 1`] = `
             </a>
           </li>
           <li
-            class="breadcrumb-item"
+            class="breadcrumb-item active"
           >
             <a
-              href="#"
-              role="button"
+              href="/fragmentarium/Test.Fragment"
             >
               Test.Fragment
             </a>

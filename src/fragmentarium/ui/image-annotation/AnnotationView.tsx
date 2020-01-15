@@ -6,6 +6,7 @@ import Annotator from './Annotator'
 import Session from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 
 export default function AnnotationView({
   fragmentService,
@@ -18,7 +19,7 @@ export default function AnnotationView({
     <AppContent
       crumbs={[
         new SectionCrumb('Fragmentarium'),
-        new TextCrumb(number),
+        new FragmentCrumb(number),
         new TextCrumb('Annotate')
       ]}
       title={`Annotate ${number}`}

@@ -5,7 +5,8 @@ import {
   waitForElement,
   RenderResult,
   act,
-  Matcher
+  Matcher,
+  within
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
@@ -129,8 +130,14 @@ export default class AppDriver {
     )
   }
 
-  expectBreadcrumbs(crumbs): void {
+  expectBreadcrumbs(crumbs: readonly string[]): void {
     this.expectTextContent(crumbs.join(''))
+  }
+
+  expectBreadcrumb(crumb: string, link: string): void {
+    expect(
+      within(this.getElement().getByLabelText('breadcrumb')).getByText(crumb)
+    ).toHaveAttribute('href', link)
   }
 
   expectInputElement(label, expectedValue): void {
