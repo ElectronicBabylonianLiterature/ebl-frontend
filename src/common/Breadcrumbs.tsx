@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 export interface Crumb {
-  readonly text: string
+  readonly text: React.ReactNode
   readonly link: string | null | undefined
 }
 
@@ -29,9 +29,9 @@ export class SectionCrumb implements Crumb {
 }
 
 export class TextCrumb implements Crumb {
-  readonly text: string
+  readonly text: React.ReactNode
 
-  constructor(text: string) {
+  constructor(text: React.ReactNode) {
     this.text = text
   }
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Breadcrumbs, { SectionCrumb, TextCrumb } from './Breadcrumbs'
 
-let element
+let element: RenderResult
 
 describe('Three crumbs', () => {
   beforeEach(() => {
@@ -79,6 +79,29 @@ describe('One crumb', () => {
 
   test('No link on crumb', async () => {
     expect(element.getByText('The Section')).not.toHaveAttribute('href')
+  })
+
+  commonTests()
+})
+
+describe('Component crumb', () => {
+  beforeEach(() => {
+    element = render(
+      <MemoryRouter>
+        <Breadcrumbs
+          crumbs={[
+            new TextCrumb((<span aria-label="React Crumb">React</span>))
+          ]}
+        />
+      </MemoryRouter>
+    )
+  })
+
+  test('No link on crumb', async () => {
+    expect(element.getByText('React')).toHaveAttribute(
+      'aria-label',
+      'React Crumb'
+    )
   })
 
   commonTests()
