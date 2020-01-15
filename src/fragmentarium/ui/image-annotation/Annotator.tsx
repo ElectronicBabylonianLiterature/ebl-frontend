@@ -12,6 +12,7 @@ import { createAnnotationTokens, AnnotationToken } from './annotation-token'
 import SessionContext from 'auth/SessionContext'
 import Session from 'auth/Session'
 import produce from 'immer'
+import Editor, { EditorProps } from './Editor'
 
 type AnnotationProps = {
   annotation: Annotation
@@ -43,89 +44,6 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
       </Card>
     </div>
   )
-}
-
-type SubmitAnnotationButtonProps = {
-  token: AnnotationToken
-  annotation: RawAnnotation
-  onClick(annotation: RawAnnotation): void
-}
-function SubmitAnnotationButton({
-  token,
-  annotation,
-  onClick
-}: SubmitAnnotationButtonProps): ReactElement {
-  return (
-    <Button
-      size="sm"
-      variant={token.hasMatchingPath(annotation) ? 'dark' : 'outline-dark'}
-      onClick={(): void => {
-        onClick({
-          ...annotation,
-          data: {
-            ...annotation.data,
-            value: `${token.value}`,
-            path: token.path
-          }
-        })
-      }}
-    >
-      {token.value}
-    </Button>
-  )
-}
-
-type EditorProps = {
-  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-  annotation: RawAnnotation
-  onChange(annotation: RawAnnotation): void
-  onSubmit(): void
-}
-function Editor({
-  annotation,
-  onChange,
-  onSubmit,
-  tokens
-}: EditorProps): ReactElement | null {
-  const { geometry } = annotation
-  if (geometry) {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          left: `${geometry.x}%`,
-          top: `${geometry.y + geometry.height}%`
-        }}
-      >
-        <Card>
-          <Card.Body>
-            {tokens.map((line, index) => (
-              <div key={index}>
-                {line.map(token => (
-                  <span key={token.path.join(',')}>
-                    {token.enabled ? (
-                      <SubmitAnnotationButton
-                        token={token}
-                        annotation={annotation}
-                        onClick={onChange}
-                      />
-                    ) : (
-                      token.value
-                    )}{' '}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </Card.Body>
-          <Card.Footer>
-            <Button onClick={onSubmit}>Submit</Button>
-          </Card.Footer>
-        </Card>
-      </div>
-    )
-  } else {
-    return null
-  }
 }
 
 const editorWithTokens = (
