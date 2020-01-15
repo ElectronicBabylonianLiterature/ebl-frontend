@@ -26,9 +26,12 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import SessionStore from 'auth/SessionStore'
 import { Promise } from 'bluebird'
 
-function createApp(api, sessionStore): JSX.Element {
+function createAuth(sessionStore: SessionStore): Auth {
   const auth0Config = createAuth0Config()
-  const auth = new Auth(sessionStore, new ConsoleErrorReporter(), auth0Config)
+  return new Auth(sessionStore, new ConsoleErrorReporter(), auth0Config)
+}
+
+function createApp(api, sessionStore: SessionStore): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
@@ -46,7 +49,7 @@ function createApp(api, sessionStore): JSX.Element {
 
   return (
     <App
-      auth={auth}
+      auth={createAuth(sessionStore)}
       wordService={wordService}
       fragmentService={fragmentService}
       fragmentSearchService={fragmentSearchService}
