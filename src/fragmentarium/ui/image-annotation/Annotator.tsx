@@ -14,16 +14,12 @@ import Session from 'auth/Session'
 import produce from 'immer'
 import Editor, { EditorProps } from './Editor'
 
-type AnnotationProps = {
+type ContentProps = {
   annotation: Annotation
+  onDelete: (annotation: Annotation) => void
 }
 
-type OnDelete = (annotation: Annotation) => void
-type RenderContent = (props: AnnotationProps) => React.ReactNode
-
-const renderContent = (onDelete: OnDelete): RenderContent => ({
-  annotation
-}: AnnotationProps): React.ReactNode => {
+function Content({ annotation, onDelete }: ContentProps): ReactElement {
   const { geometry, data, outdated } = annotation
   const cardStyle = outdated ? 'warning' : 'light'
   const textStyle = outdated ? 'white' : undefined
@@ -45,6 +41,12 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
     </div>
   )
 }
+
+const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
+  annotation
+}: Omit<ContentProps, 'onDelete'>): JSX.Element => (
+  <Content annotation={annotation} onDelete={onDelete} />
+)
 
 const editorWithTokens = (
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -121,7 +123,7 @@ function FragmentAnnotation({
         onChange={onChange}
         onSubmit={onSubmit}
         renderEditor={editorWithTokens(tokens)}
-        renderContent={renderContent(onDelete)}
+        renderContent={contentWithOnDelete(onDelete)}
         allowTouch
       />
       <SessionContext.Consumer>
