@@ -41,30 +41,27 @@ export class TextCrumb implements Crumb {
 }
 
 function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
-  const sectionLink = crumb.link
-  const sectionItem = <Breadcrumb.Item>{crumb.text}</Breadcrumb.Item>
-  return sectionLink ? (
-    <LinkContainer to={sectionLink}>{sectionItem}</LinkContainer>
+  const item = <Breadcrumb.Item>{crumb.text}</Breadcrumb.Item>
+  return crumb.link ? (
+    <LinkContainer to={crumb.link}>{item}</LinkContainer>
   ) : (
-    sectionItem
+    item
   )
 }
 
 export default function Breadcrumbs({
   crumbs
 }: {
-  crumbs: ReadonlyArray<string>
+  crumbs: ReadonlyArray<Crumb>
 }): JSX.Element {
-  const initial = ['eBL', ..._.initial(crumbs)].map(
-    section => new SectionCrumb(section)
-  )
+  const initial = [new SectionCrumb('eBL'), ..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
     <Breadcrumb>
       {initial.map((crumb, index) => (
         <CrumbComponent key={index} crumb={crumb} />
       ))}
-      {last && <Breadcrumb.Item active>{last}</Breadcrumb.Item>}
+      {last && <Breadcrumb.Item active>{last.text}</Breadcrumb.Item>}
     </Breadcrumb>
   )
 }

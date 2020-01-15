@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import Breadcrumbs from 'common/Breadcrumbs'
+import Breadcrumbs, { SectionCrumb } from 'common/Breadcrumbs'
 
 import './AppContent.css'
 
 type Props = {
-  crumbs: readonly string[]
-  title: string
-  children: React.ReactNode
-  actions: React.ReactNode
-  wide: boolean
+  crumbs?: readonly Crumb[]
+  title?: React.ReactNode
+  actions?: React.ReactNode
+  wide?: boolean
 }
-export default function AppContent({ crumbs, title, children, actions, wide }) {
+const AppContent: FunctionComponent<Props> = ({
+  crumbs = [],
+  title,
+  children,
+  actions,
+  wide = false
+}: PropsWithChildren<Props>) => {
   return (
     <section
       className={classNames({
@@ -23,7 +28,7 @@ export default function AppContent({ crumbs, title, children, actions, wide }) {
       })}
     >
       <header className="App-content__header">
-        <Breadcrumbs crumbs={crumbs} />
+        <Breadcrumbs crumbs={crumbs.map(crumb => new SectionCrumb(crumb))} />
         <ButtonGroup className="float-right">{actions}</ButtonGroup>
         <h2>{title || _.last(crumbs)}</h2>
       </header>
@@ -31,10 +36,4 @@ export default function AppContent({ crumbs, title, children, actions, wide }) {
     </section>
   )
 }
-AppContent.defaultProps = {
-  crumbs: [],
-  title: null,
-  actions: null,
-  wide: false,
-  children: null
-}
+export default AppContent

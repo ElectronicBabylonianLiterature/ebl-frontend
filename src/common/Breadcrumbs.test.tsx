@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Breadcrumbs from './Breadcrumbs'
+import Breadcrumbs, { SectionCrumb, TextCrumb } from './Breadcrumbs'
 
 let element
 
@@ -9,7 +9,14 @@ describe('Three crumbs', () => {
   beforeEach(() => {
     element = render(
       <MemoryRouter>
-        <Breadcrumbs crumbs={['Dictionary', 'Sub section', 'Active']} />
+        <Breadcrumbs
+          crumbs={[
+            new SectionCrumb('Dictionary'),
+            new SectionCrumb('Sub section'),
+            new TextCrumb('Text'),
+            new SectionCrumb('Active')
+          ]}
+        />
       </MemoryRouter>
     )
   })
@@ -25,6 +32,10 @@ describe('Three crumbs', () => {
     expect(element.getByText('Sub section')).toHaveAttribute('href', '#')
   })
 
+  test('No link on text crumb', () => {
+    expect(element.getByText('Text')).toHaveAttribute('href', '#')
+  })
+
   test('No link on active crumb', async () => {
     expect(element.getByText('Active')).not.toHaveAttribute('href')
   })
@@ -36,7 +47,9 @@ describe('Two crumbs', () => {
   beforeEach(() => {
     element = render(
       <MemoryRouter>
-        <Breadcrumbs crumbs={['Dictionary', 'Active']} />
+        <Breadcrumbs
+          crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
+        />
       </MemoryRouter>
     )
   })
@@ -59,7 +72,7 @@ describe('One crumb', () => {
   beforeEach(() => {
     element = render(
       <MemoryRouter>
-        <Breadcrumbs crumbs={['The Section']} />
+        <Breadcrumbs crumbs={[new SectionCrumb('The Section')]} />
       </MemoryRouter>
     )
   })
@@ -71,7 +84,7 @@ describe('One crumb', () => {
   commonTests()
 })
 
-function commonTests() {
+function commonTests(): void {
   test('Links to home', async () => {
     expect(element.getByText('eBL')).toHaveAttribute('href', `/`)
   })
