@@ -5,7 +5,7 @@ import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { uuid4 } from '@sentry/utils'
 import _ from 'lodash'
-import { Button, Card } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { createAnnotationTokens, AnnotationToken } from './annotation-token'
@@ -13,34 +13,7 @@ import SessionContext from 'auth/SessionContext'
 import Session from 'auth/Session'
 import produce from 'immer'
 import Editor, { EditorProps } from './Editor'
-
-type ContentProps = {
-  annotation: Annotation
-  onDelete: (annotation: Annotation) => void
-}
-
-function Content({ annotation, onDelete }: ContentProps): ReactElement {
-  const { geometry, data, outdated } = annotation
-  const cardStyle = outdated ? 'warning' : 'light'
-  const textStyle = outdated ? 'white' : undefined
-  return (
-    <div
-      key={data.id}
-      style={{
-        position: 'absolute',
-        left: `${geometry.x}%`,
-        top: `${geometry.y + geometry.height}%`
-      }}
-    >
-      <Card bg={cardStyle} text={textStyle}>
-        <Card.Body>{data.value}</Card.Body>
-        <Card.Footer>
-          <Button onClick={(): void => onDelete(annotation)}>Delete</Button>
-        </Card.Footer>
-      </Card>
-    </div>
-  )
-}
+import Content, { ContentProps } from './Content'
 
 const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
   annotation
