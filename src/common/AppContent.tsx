@@ -3,7 +3,7 @@ import { ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import Breadcrumbs, { SectionCrumb } from 'common/Breadcrumbs'
+import Breadcrumbs, { Crumb } from 'common/Breadcrumbs'
 
 import './AppContent.css'
 
@@ -28,9 +28,9 @@ const AppContent: FunctionComponent<Props> = ({
       })}
     >
       <header className="App-content__header">
-        <Breadcrumbs crumbs={crumbs.map(crumb => new SectionCrumb(crumb))} />
+        <Breadcrumbs crumbs={crumbs} />
         <ButtonGroup className="float-right">{actions}</ButtonGroup>
-        <h2>{title || _.last(crumbs)}</h2>
+        <h2>{title || _.last(crumbs)?.text}</h2>
       </header>
       {children}
     </section>

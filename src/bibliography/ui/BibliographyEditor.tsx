@@ -8,32 +8,41 @@ import BibliographyEntry, {
 } from 'bibliography/domain/BibliographyEntry'
 import { History } from 'history'
 import { match } from 'react-router'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import Promise from 'bluebird'
 
 type Props = {
   data: BibliographyEntry
-  bibliographyService
+  bibliographyService: {
+    create(entry: BibliographyEntry): Promise<BibliographyEntry>
+    find(id: string): Promise<BibliographyEntry>
+    update(entry: BibliographyEntry): Promise<BibliographyEntry>
+  }
   create?: boolean
   history: History
 }
 function BibliographyEditor({
   data,
   bibliographyService,
-  create,
+  create = false,
   history
-}: Props) {
-  function createEntry(entry) {
+}: Props): JSX.Element {
+  function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
       .create(entry)
       .then(() => history.push(`/bibliography/${encodeURIComponent(entry.id)}`))
   }
 
-  function updateEntry(entry) {
+  function updateEntry(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return bibliographyService.update(entry)
   }
 
   return (
     <AppContent
-      crumbs={['Bibliography', create ? 'New entry' : data.id]}
+      crumbs={[
+        new SectionCrumb('Bibliography'),
+        new TextCrumb(create ? 'New entry' : data.id)
+      ]}
       title={create ? 'Create' : `Edit ${data.id}`}
     >
       <BibliographyEntryFormController
@@ -42,9 +51,6 @@ function BibliographyEditor({
       />
     </AppContent>
   )
-}
-BibliographyEditor.defaultProps = {
-  create: false
 }
 
 export default withData<

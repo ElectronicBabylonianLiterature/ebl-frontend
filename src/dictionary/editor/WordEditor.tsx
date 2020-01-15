@@ -9,13 +9,14 @@ import ErrorAlert from 'common/ErrorAlert'
 import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import Word from 'dictionary/Word'
-import { match } from 'react-router'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { RouteComponentProps } from 'react-router-dom'
 
 type Props = {
-  match: match
   data: Word
   wordService
-}
+} & RouteComponentProps<{ id: string }>
+
 class WordEditor extends Component<
   Props,
   { word; error: Error | null; saving: boolean }
@@ -34,15 +35,15 @@ class WordEditor extends Component<
     this.updatePromise = Promise.resolve()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.updatePromise.cancel()
   }
 
-  get disabled() {
+  get disabled(): boolean {
     return this.state.saving || !this.context.isAllowedToWriteWords()
   }
 
-  updateWord = word => {
+  updateWord = (word): void => {
     this.updatePromise.cancel()
     this.setState({ word: this.state.word, error: null, saving: true })
     this.updatePromise = this.props.wordService
@@ -53,10 +54,13 @@ class WordEditor extends Component<
       })
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <AppContent
-        crumbs={['Dictionary', this.props.match.params['id']]}
+        crumbs={[
+          new SectionCrumb('Dictionary'),
+          new TextCrumb(this.props.match.params['id'])
+        ]}
         title={
           <>
             Edit{' '}

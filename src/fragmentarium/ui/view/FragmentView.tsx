@@ -9,6 +9,7 @@ import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 
 function AnnotateButton({
   number,
@@ -55,7 +56,7 @@ function FragmentView({
 
   return (
     <AppContent
-      crumbs={['Fragmentarium', number]}
+      crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb(number)]}
       title={
         <FragmentPager
           fragmentNumber={number}

@@ -1,12 +1,12 @@
-import React from 'react'
-import { matchPath, MemoryRouter } from 'react-router'
-import { render, waitForElement } from '@testing-library/react'
-import { Promise } from 'bluebird'
+import React, { ReactNode } from 'react'
+import { render, waitForElement, RenderResult } from '@testing-library/react'
+import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-helpers/utils'
 import WordEditor from './WordEditor'
+import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 
 const errorMessage = 'error'
 let result
@@ -23,7 +23,7 @@ beforeEach(async () => {
     find: jest.fn(),
     update: jest.fn()
   }
-  wordService.find.mockReturnValueOnce(Promise.resolve(result))
+  wordService.find.mockReturnValueOnce(Bluebird.resolve(result))
 })
 
 describe('Fecth word', () => {
@@ -42,7 +42,7 @@ describe('Fecth word', () => {
 
 describe('Update word', () => {
   it('Posts to API on submit', async () => {
-    wordService.update.mockReturnValueOnce(Promise.resolve())
+    wordService.update.mockReturnValueOnce(Bluebird.resolve())
     const element = await renderWithRouter()
 
     submitForm(element, 'form')
@@ -52,7 +52,7 @@ describe('Update word', () => {
 
   it('Displays error message failure', async () => {
     wordService.update.mockImplementationOnce(() =>
-      Promise.reject(new Error(errorMessage))
+      Bluebird.reject(new Error(errorMessage))
     )
     const element = await renderWithRouter()
 
@@ -62,7 +62,7 @@ describe('Update word', () => {
   })
 
   it('Cancels promise on unmount', async () => {
-    const promise = new Promise(_.noop)
+    const promise = new Bluebird(_.noop)
     jest.spyOn(promise, 'cancel')
     wordService.update.mockReturnValueOnce(promise)
     const element = await renderWithRouter()
@@ -81,16 +81,18 @@ describe('User is not allowed to write:words', () => {
   })
 })
 
-async function renderWithRouter(isAllowedTo = true) {
-  const match = matchPath('/dictionary/id', {
-    path: '/dictionary/:id'
-  }) as Exclude<ReturnType<typeof matchPath>, null>
+async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
   session.isAllowedToWriteWords.mockReturnValueOnce(isAllowedTo)
 
   const element = render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={['/dictionary/id']}>
       <SessionContext.Provider value={session}>
-        <WordEditor match={match} wordService={wordService} />
+        <Route
+          path="/dictionary/:id"
+          render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
+            <WordEditor wordService={wordService} {...props} />
+          )}
+        />
       </SessionContext.Provider>
     </MemoryRouter>
   )

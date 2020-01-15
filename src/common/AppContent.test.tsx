@@ -2,13 +2,17 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import AppContent from './AppContent'
+import { SectionCrumb } from './Breadcrumbs'
 
 let element
 
 test('Title', () => {
   element = render(
     <MemoryRouter>
-      <AppContent crumbs={['Dictionary', 'Active']} title="Title" />
+      <AppContent
+        crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
+        title="Title"
+      />
     </MemoryRouter>
   )
   expect(element.container).toHaveTextContent('eBLDictionaryActiveTitle')
@@ -17,7 +21,9 @@ test('Title', () => {
 test('Section and active', () => {
   element = render(
     <MemoryRouter>
-      <AppContent crumbs={['Dictionary', 'Active']} />
+      <AppContent
+        crumbs={[new SectionCrumb('Dictionary'), new SectionCrumb('Active')]}
+      />
     </MemoryRouter>
   )
   expect(element.container).toHaveTextContent('eBLDictionaryActive')
@@ -26,7 +32,7 @@ test('Section and active', () => {
 test('Section', () => {
   element = render(
     <MemoryRouter>
-      <AppContent crumbs={['The Section']} />
+      <AppContent crumbs={[new SectionCrumb('The Section')]} />
     </MemoryRouter>
   )
   expect(element.container).toHaveTextContent('eBLThe Section')

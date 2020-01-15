@@ -143,11 +143,7 @@ function App({
           <Route
             path="/corpus"
             render={(props): ReactNode => (
-              <Corpus
-                textService={textService}
-                fragmentService={fragmentService}
-                {...props}
-              />
+              <Corpus textService={textService} {...props} />
             )}
           />
           <Route

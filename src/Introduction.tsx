@@ -6,7 +6,7 @@ import eblChart from './ebl_chart.jpg'
 
 import './Introduction.css'
 
-function Auth0Badge() {
+function Auth0Badge(): JSX.Element {
   return (
     <ExternalLink
       className="Auth0Badge"
@@ -22,7 +22,7 @@ function Auth0Badge() {
   )
 }
 
-function IntroText() {
+function IntroText(): JSX.Element {
   return (
     <>
       <p>
@@ -69,7 +69,7 @@ function IntroText() {
   )
 }
 
-export default function Introduction() {
+export default function Introduction(): JSX.Element {
   return (
     <AppContent title="The “Electronic Babylonian Literature” (eBL) Project: A general introduction">
       <IntroText />

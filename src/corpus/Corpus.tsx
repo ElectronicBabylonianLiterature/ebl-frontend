@@ -8,8 +8,10 @@ import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { Text } from './text'
+import { SectionCrumb } from 'common/Breadcrumbs'
+import Promise from 'bluebird'
 
-function TextLine({ text }) {
+function TextLine({ text }: { text: Text }): JSX.Element {
   const title = (
     <>
       {text.index}. <InlineMarkdown source={text.name} />
@@ -37,7 +39,7 @@ function TextLine({ text }) {
   )
 }
 
-function Texts({ texts }) {
+function Texts({ texts }: { texts: readonly Text[] }): JSX.Element {
   return (
     <>
       {[
@@ -61,14 +63,18 @@ function Texts({ texts }) {
   )
 }
 
-const TextsWithData = withData<{}, { textService }, readonly Text[]>(
+interface Props {
+  textService: { list(): Promise<readonly Text[]> }
+}
+
+const TextsWithData = withData<{}, Props, readonly Text[]>(
   ({ data }) => <Texts texts={data} />,
   ({ textService }) => textService.list()
 )
 
-function Corpus({ fragmentService, textService }) {
+function Corpus({ textService }: Props): JSX.Element {
   return (
-    <AppContent crumbs={['Corpus']}>
+    <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
           <Col md={5}>

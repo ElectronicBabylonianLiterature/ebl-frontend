@@ -5,6 +5,7 @@ import SessionContext from 'auth/SessionContext'
 import Annotator from './Annotator'
 import Session from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 
 export default function AnnotationView({
   fragmentService,
@@ -15,7 +16,11 @@ export default function AnnotationView({
 }): JSX.Element {
   return (
     <AppContent
-      crumbs={['Fragmentarium', number, 'Annotate']}
+      crumbs={[
+        new SectionCrumb('Fragmentarium'),
+        new TextCrumb(number),
+        new TextCrumb('Annotate')
+      ]}
       title={`Annotate ${number}`}
       wide
     >

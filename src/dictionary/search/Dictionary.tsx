@@ -8,14 +8,22 @@ import WordSearch from './WordSearch'
 import SessionContext from 'auth/SessionContext'
 
 import './Dictionary.css'
+import { SectionCrumb } from 'common/Breadcrumbs'
+import Session from 'auth/Session'
+import { RouteComponentProps } from 'react-router-dom'
 
-export default function Dictionary({ wordService, location }) {
+export default function Dictionary({
+  wordService,
+  location
+}: {
+  wordService
+} & RouteComponentProps): JSX.Element {
   const query = parse(location.search).query || ''
 
   return (
-    <AppContent crumbs={['Dictionary']}>
+    <AppContent crumbs={[new SectionCrumb('Dictionary')]}>
       <SessionContext.Consumer>
-        {session =>
+        {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
             <>
               <div className="Dictionary-search">

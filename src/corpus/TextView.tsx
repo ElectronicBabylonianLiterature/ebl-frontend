@@ -4,12 +4,14 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
 import { Text } from './text'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import Promise from 'bluebird'
 
-function TextView({ text }) {
+function TextView({ text }: { text: Text }): JSX.Element {
   const title = <InlineMarkdown source={text.name} />
 
   return (
-    <AppContent crumbs={['Corpus', title]}>
+    <AppContent crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}>
       <ChapterNavigation text={text} />
     </AppContent>
   )
@@ -17,7 +19,11 @@ function TextView({ text }) {
 
 export default withData<
   {},
-  { category: string; index: string; textService },
+  {
+    category: string
+    index: string
+    textService: { find(category: string, index: string): Promise<Text> }
+  },
   Text
 >(
   ({ data }) => <TextView text={data} />,

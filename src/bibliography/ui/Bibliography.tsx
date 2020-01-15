@@ -10,8 +10,11 @@ import BibliographySearch from './BibliographySearch'
 import SessionContext from 'auth/SessionContext'
 
 import './Bibliography.css'
+import { SectionCrumb } from 'common/Breadcrumbs'
+import Session from 'auth/Session'
+import { RouteComponentProps } from 'react-router-dom'
 
-function CreateButton({ session }) {
+function CreateButton({ session }: { session: Session }): JSX.Element {
   return (
     <LinkContainer to="/bibliography_new">
       <Button
@@ -24,14 +27,19 @@ function CreateButton({ session }) {
   )
 }
 
-export default function Bibliography({ bibliographyService, location }) {
+export default function Bibliography({
+  bibliographyService,
+  location
+}: {
+  bibliographyService
+} & RouteComponentProps): JSX.Element {
   const rawQuery = parse(location.search).query || ''
   const query = _.isArray(rawQuery) ? rawQuery.join('') : rawQuery
   return (
     <SessionContext.Consumer>
-      {session => (
+      {(session: Session): JSX.Element => (
         <AppContent
-          crumbs={['Bibliography']}
+          crumbs={[new SectionCrumb('Bibliography')]}
           actions={<CreateButton session={session} />}
         >
           {session.isAllowedToReadBibliography() ? (

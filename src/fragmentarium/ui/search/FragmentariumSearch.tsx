@@ -7,6 +7,8 @@ import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import './FragmentariumSearch.css'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import Session from 'auth/Session'
 
 type Props = {
   number: string | null | undefined
@@ -17,13 +19,15 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   transliteration,
   fragmentSearchService
-}) => {
+}: Props) => {
   const replacedTransliteration =
     transliteration && replaceTransliteration(transliteration)
   return (
-    <AppContent crumbs={['Fragmentarium', 'Search']}>
+    <AppContent
+      crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
+    >
       <SessionContext.Consumer>
-        {session =>
+        {(session: Session): JSX.Element =>
           session.isAllowedToReadFragments() ? (
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
