@@ -45,6 +45,36 @@ const renderContent = (onDelete: OnDelete): RenderContent => ({
   )
 }
 
+type SubmitAnnotationButtonProps = {
+  token: AnnotationToken
+  annotation: RawAnnotation
+  onClick(annotation: RawAnnotation): void
+}
+function SubmitAnnotationButton({
+  token,
+  annotation,
+  onClick
+}: SubmitAnnotationButtonProps): ReactElement {
+  return (
+    <Button
+      size="sm"
+      variant={token.hasMatchingPath(annotation) ? 'dark' : 'outline-dark'}
+      onClick={(): void => {
+        onClick({
+          ...annotation,
+          data: {
+            ...annotation.data,
+            value: `${token.value}`,
+            path: token.path
+          }
+        })
+      }}
+    >
+      {token.value}
+    </Button>
+  )
+}
+
 type EditorProps = {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
@@ -74,28 +104,11 @@ function Editor({
                 {line.map(token => (
                   <span key={token.path.join(',')}>
                     {token.enabled ? (
-                      <>
-                        <Button
-                          size="sm"
-                          variant={
-                            token.hasMatchingPath(annotation)
-                              ? 'dark'
-                              : 'outline-dark'
-                          }
-                          onClick={(): void => {
-                            onChange({
-                              ...annotation,
-                              data: {
-                                ...annotation.data,
-                                value: `${token.value}`,
-                                path: token.path
-                              }
-                            })
-                          }}
-                        >
-                          {token.value}
-                        </Button>{' '}
-                      </>
+                      <SubmitAnnotationButton
+                        token={token}
+                        annotation={annotation}
+                        onClick={onChange}
+                      />
                     ) : (
                       token.value
                     )}{' '}
@@ -117,7 +130,7 @@ function Editor({
 
 const editorWithTokens = (
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-) => (props: AnnotationProps & Omit<EditorProps, 'tokens'>): JSX.Element => (
+) => (props: Omit<EditorProps, 'tokens'>): JSX.Element => (
   <Editor tokens={tokens} {...props} />
 )
 
