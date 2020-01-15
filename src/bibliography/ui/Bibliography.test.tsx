@@ -1,6 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, waitForElement } from '@testing-library/react'
+import {
+  render,
+  waitForElement,
+  RenderResult,
+  act
+} from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -9,6 +14,7 @@ import Bibliography from './Bibliography'
 
 const BibliographyWithRouter = withRouter<any, any>(Bibliography)
 
+let element: RenderResult
 let entries
 let bibliographyService
 let session
@@ -20,7 +26,7 @@ beforeEach(async () => {
   }
   session = {
     isAllowedToReadBibliography: jest.fn(),
-    isAllowedToWriteBibliography: () => false
+    isAllowedToWriteBibliography: (): boolean => false
   }
 })
 
@@ -31,7 +37,7 @@ describe('Searching bibliography', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const { getByText } = renderDictionary('/bibliography?query=Borger')
+    const { getByText } = await renderDictionary('/bibliography?query=Borger')
 
     await waitForElement(() =>
       getByText(new RegExp(_.escapeRegExp(entries[0].primaryAuthor)))
@@ -41,37 +47,42 @@ describe('Searching bibliography', () => {
     ).toBeDefined()
   })
 
-  it('fills in search form query', () => {
-    const { getByLabelText } = renderDictionary('/bibliography?query=Borger')
+  it('fills in search form query', async () => {
+    const { getByLabelText } = await renderDictionary(
+      '/bibliography?query=Borger'
+    )
 
     expect((getByLabelText('Query') as HTMLInputElement).value).toEqual(
       'Borger'
     )
   })
 
-  it('displays empty search if no query', () => {
-    const { getByLabelText } = renderDictionary('/bibliography')
+  it('displays empty search if no query', async () => {
+    const { getByLabelText } = await renderDictionary('/bibliography')
 
     expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
   })
 })
 
-it('Displays a message if user is not logged in', () => {
+it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadBibliography.mockReturnValueOnce(false)
 
-  const { container } = renderDictionary('/bibliography')
+  const { container } = await renderDictionary('/bibliography')
 
   expect(container).toHaveTextContent(
     'Please log in to browse the Bibliography.'
   )
 })
 
-function renderDictionary(path) {
-  return render(
-    <MemoryRouter initialEntries={[path]}>
-      <SessionContext.Provider value={session}>
-        <BibliographyWithRouter bibliographyService={bibliographyService} />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
+async function renderDictionary(path: string): Promise<RenderResult> {
+  await act(async () => {
+    element = render(
+      <MemoryRouter initialEntries={[path]}>
+        <SessionContext.Provider value={session}>
+          <BibliographyWithRouter bibliographyService={bibliographyService} />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  })
+  return element
 }
