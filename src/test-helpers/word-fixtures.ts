@@ -93,6 +93,11 @@ factory.define('logogram', Object, {
   notes: wordArray()
 })
 
+factory.define('oraccWord', Object, {
+  lemma: factory.chance('word'),
+  guideWord: factory.chance('word')
+})
+
 factory.define('word', Object, {
   _id: factory.chance('hash'),
   attested: true,
@@ -109,7 +114,9 @@ factory.define('word', Object, {
     factory.assocAttrsMany('derived', 2)
   ],
   derivedFrom: factory.assocAttrs('derived'),
-  source: '**source**'
+  source: '**source**',
+  guideWord: factory.chance('word'),
+  oraccWords: factory.assocAttrsMany('oraccWord', 2)
 })
 
 factory.extend('word', 'verb', {

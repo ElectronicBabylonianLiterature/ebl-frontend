@@ -19,7 +19,7 @@ type Props = {
 
 class WordEditor extends Component<
   Props,
-  { word; error: Error | null; saving: boolean }
+  { word: Word; error: Error | null; saving: boolean }
 > {
   static contextType = SessionContext
 

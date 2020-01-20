@@ -10,10 +10,12 @@ import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import DerivedFromInput from './DerivedFromInput'
 import PosInput from './PosInput'
+import OraccWordsList from './OraccWordsList'
+import Word from 'dictionary/Word'
 
 class WordForm extends Component<
-  { value; onSubmit; disabled: boolean },
-  { word }
+  { value: Word; onSubmit; disabled: boolean },
+  { word: Word }
 > {
   constructor(props) {
     super(props)
@@ -101,6 +103,13 @@ class WordForm extends Component<
     />
   )
 
+  oraccWords = () => (
+    <OraccWordsList
+      value={this.state.word.oraccWords}
+      onChange={this.onChangeValue('oraccWords')}
+    />
+  )
+
   render() {
     return (
       <form className="WordForm" onSubmit={this.submit}>
@@ -125,6 +134,10 @@ class WordForm extends Component<
           <hr />
 
           <this.derivedFrom />
+          <hr />
+
+          <this.textInput property="guideWord" />
+          <this.oraccWords />
 
           <Button type="submit" variant="primary">
             Save
