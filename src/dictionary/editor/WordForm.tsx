@@ -101,15 +101,6 @@ class WordForm extends Component<
     />
   )
 
-  jsonPreview = () => {
-    return (
-      <div>
-        <h3>JSON preview</h3>
-        <pre>{JSON.stringify(this.state.word, null, 2)}</pre>
-      </div>
-    )
-  }
-
   render() {
     return (
       <form className="WordForm" onSubmit={this.submit}>
