@@ -7,6 +7,7 @@ import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
 import { Text, Token } from 'fragmentarium/domain/text'
 import Annotation from 'fragmentarium/domain/annotation'
+import Word from 'dictionary/domain/Word'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -173,7 +174,7 @@ class FragmentService {
         (uniqueLemma: string): Promise<Lemma> =>
           this.wordRepository
             .find(uniqueLemma)
-            .then((word: object) => new Lemma(word))
+            .then((word: Word) => new Lemma(word))
       )
     )
   }

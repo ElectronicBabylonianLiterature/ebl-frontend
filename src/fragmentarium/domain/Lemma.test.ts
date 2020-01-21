@@ -1,16 +1,14 @@
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 import Lemma from './Lemma'
+import Word from 'dictionary/domain/Word'
 
-const meaning = 'a very very long complicated meaning of a word'
-let word
-let lemma
+let word: Word
+let lemma: Lemma
 
 describe('Homonym I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      homonym: 'I',
-      meaning: meaning
+      homonym: 'I'
     })
     lemma = new Lemma(word)
   })
@@ -25,8 +23,7 @@ describe('Homonym I', () => {
 describe('Homonym not I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      homonym: 'II',
-      meaning: meaning
+      homonym: 'II'
     })
     lemma = new Lemma(word)
   })
@@ -38,52 +35,23 @@ describe('Homonym not I', () => {
   commonTests()
 })
 
-test('Empty meaning', async () => {
-  word = await factory.build('word', {
-    meaning: ''
+describe('Empty POS', () => {
+  beforeEach(async () => {
+    word = await factory.build('word', {
+      pos: []
+    })
+    lemma = new Lemma(word)
   })
-  lemma = new Lemma(word)
-  expect(lemma.label).toEqual(
-    `${lemma.lemma}${lemma.homonym}, ${truncateMeaning(
-      word.amplifiedMeanings[0].meaning
-    )}`
-  )
+
+  commonTests()
 })
 
-test('Empty amplified meaning', async () => {
-  word = await factory.build('word', {
-    meaning: '',
-    amplifiedMeanings: [
-      await factory.build('amplifiedMeaning', {
-        meaning: ''
-      })
-    ]
-  })
-  lemma = new Lemma(word)
-  expect(lemma.label).toEqual(
-    `${lemma.lemma}${lemma.homonym}, ${truncateMeaning(
-      word.amplifiedMeanings[0].entries[0].meaning
-    )}`
-  )
-})
-
-test('No meanings', async () => {
-  word = await factory.build('word', {
-    meaning: '',
-    amplifiedMeanings: []
-  })
-  lemma = new Lemma(word)
-  expect(lemma.label).toEqual(`${lemma.lemma}${lemma.homonym}`)
-})
-
-function truncateMeaning(meaning) {
-  return _.truncate(meaning.replace(/\*|\\/g, ''), {
-    separator: ' ',
-    omission: '…'
-  })
+function guideWordAndPos(word: Word): string {
+  const pos = word.pos.length > 0 ? ` (${word.pos.join(', ')})` : ''
+  return `${word.guideWord}${pos}`
 }
 
-function commonTests() {
+function commonTests(): void {
   test('value', () => {
     expect(lemma.value).toEqual(word._id)
   })
@@ -94,7 +62,7 @@ function commonTests() {
 
   test('label', () => {
     expect(lemma.label).toEqual(
-      `${lemma.lemma}${lemma.homonym}, a very very long complicated…`
+      `${lemma.lemma}${lemma.homonym}, ${guideWordAndPos(word)}`
     )
   })
 }
