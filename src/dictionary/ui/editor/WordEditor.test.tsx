@@ -45,7 +45,7 @@ describe('Update word', () => {
     wordService.update.mockReturnValueOnce(Bluebird.resolve())
     const element = await renderWithRouter()
 
-    submitForm(element, 'form')
+    await submitForm(element)
 
     expect(wordService.update).toHaveBeenCalledWith(result)
   })
@@ -56,7 +56,7 @@ describe('Update word', () => {
     )
     const element = await renderWithRouter()
 
-    submitForm(element, 'form')
+    await submitForm(element)
 
     await waitForElement(() => element.getByText(errorMessage))
   })
@@ -66,7 +66,7 @@ describe('Update word', () => {
     jest.spyOn(promise, 'cancel')
     wordService.update.mockReturnValueOnce(promise)
     const element = await renderWithRouter()
-    submitForm(element, 'form')
+    await submitForm(element)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
   })

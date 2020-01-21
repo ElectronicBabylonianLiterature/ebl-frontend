@@ -102,9 +102,9 @@ export function whenChangedByLabel<T>(
   return whenChangedBy(element, label, newValue, changeValueByLabel)
 }
 
-export function submitForm(element: RenderResult, query: string): void {
-  act(() => {
-    const result = element.container.querySelector(query)
+export async function submitForm(element: RenderResult): Promise<void> {
+  await act(async () => {
+    const result = element.container.querySelector('form')
     result && fireEvent.submit(result)
   })
 }

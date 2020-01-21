@@ -16,7 +16,7 @@ it('Adds number to query string on submit', async () => {
   )
 
   changeValueByLabel(element, 'Number', 'K.3')
-  await submitForm(element, 'form')
+  await submitForm(element)
 
   expect(history.push).toBeCalledWith('/fragmentarium/search/?number=K.3')
 })

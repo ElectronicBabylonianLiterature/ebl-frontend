@@ -157,8 +157,8 @@ export default class AppDriver {
     })
   }
 
-  submitForm(): void {
-    submitForm(this.getElement(), 'form')
+  async submitForm(): Promise<void> {
+    await submitForm(this.getElement())
   }
 
   async click(text: Matcher, n = 0): Promise<void> {

@@ -132,15 +132,14 @@ export default class FakeApi {
     return this
   }
 
-  expectAnnotations(number: string, annotationDtos: readonly any[]): FakeApi {
+  expectAnnotations(
+    number: string,
+    annotationDtos: readonly object[]
+  ): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
         path: `/fragments/${number}/annotations`,
-        body: {
-          fragmentNumber: number,
-          annotations: annotationDtos
-        },
         authenticate: true,
         response: { annotations: annotationDtos },
         verify: true
@@ -151,12 +150,16 @@ export default class FakeApi {
 
   expectUpdateAnnotations(
     number: string,
-    annotationDtos: readonly any[]
+    annotationDtos: readonly object[]
   ): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
         path: `/fragments/${number}/annotations`,
+        body: {
+          fragmentNumber: number,
+          annotations: annotationDtos
+        },
         authenticate: true,
         response: { annotations: annotationDtos },
         verify: true
@@ -197,6 +200,33 @@ export default class FakeApi {
         method: 'GET',
         path: `/words?query=${encodeURIComponent(query)}`,
         response: words,
+        authenticate: true,
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectWord(word: Word): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/words/${encodeURIComponent(word._id)}`,
+        response: word,
+        authenticate: true,
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectUpdateWord(word: Word): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'POST',
+        path: `/words/${encodeURIComponent(word._id)}`,
+        body: word,
+        response: word,
         authenticate: true,
         verify: true
       })

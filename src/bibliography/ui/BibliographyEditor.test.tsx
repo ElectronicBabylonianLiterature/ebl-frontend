@@ -51,7 +51,7 @@ describe('Editing', () => {
     bibliographyService.update.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, false, resultId)
 
-    submitForm(element, 'form')
+    await submitForm(element)
 
     expect(bibliographyService.update).toHaveBeenCalledWith(result)
   })
@@ -70,7 +70,7 @@ describe('Creating', () => {
     bibliographyService.create.mockReturnValueOnce(Promise.resolve())
     const element = await renderWithRouter(true, true, createWaitFor)
 
-    submitForm(element, 'form')
+    await submitForm(element)
 
     expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
@@ -94,7 +94,7 @@ function commonTests(create, waitFor) {
     )
     const element = await renderWithRouter(true, create, waitFor)
 
-    await submitForm(element, 'form')
+    await submitForm(element)
 
     await waitForElement(() => element.getByText(errorMessage))
   })
@@ -105,7 +105,7 @@ function commonTests(create, waitFor) {
     bibliographyService.update.mockReturnValueOnce(promise)
     bibliographyService.create.mockReturnValueOnce(promise)
     const element = await renderWithRouter(true, create, waitFor)
-    submitForm(element, 'form')
+    await submitForm(element)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
   })
