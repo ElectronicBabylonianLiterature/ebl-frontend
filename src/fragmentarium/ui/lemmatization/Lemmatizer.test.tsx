@@ -95,12 +95,12 @@ it('Clicking save calls fragmentService', async () => {
     .toHaveBeenCalledWith(expected)
 })
 
-async function lemmatizeWord() {
+async function lemmatizeWord(): Promise<void> {
   await waitForElement(() => element.getByText('kur'))
   clickNth(element, 'kur', 0)
   await waitForElement(() => element.getByLabelText('Lemma'))
   changeValueByLabel(element, 'Lemma', 'a')
-  await waitForElement(() => element.getByText(lemma.label))
-  clickNth(element, lemma.label, 0)
+  await waitForElement(() => element.getByText(lemma.lemma))
+  clickNth(element, lemma.lemma, 0)
   await wait()
 }

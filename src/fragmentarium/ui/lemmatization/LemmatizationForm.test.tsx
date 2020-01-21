@@ -107,14 +107,16 @@ function commonTests(lemmaLabel: Matcher): void {
 
   it('Displays the word label', () => {
     expect(element.container).toHaveTextContent(
-      token.uniqueLemma?.map(lemma => lemma.label).join('') ?? ''
+      token.uniqueLemma
+        ?.map(lemma => lemma.label.replace(/\*/g, ''))
+        .join('') ?? ''
     )
   })
 }
 
-async function lemmatize(lemmaLabel): Promise<void> {
+async function lemmatize(lemmaLabel: Matcher): Promise<void> {
   const searchLemma = new Lemma(searchWord)
   changeValueByLabel(element, lemmaLabel, 'waklu')
-  await waitForElement(() => element.getByText(searchLemma.label))
-  clickNth(element, searchLemma.label, 0)
+  await waitForElement(() => element.getByText(searchLemma.lemma))
+  clickNth(element, searchLemma.lemma, 0)
 }
