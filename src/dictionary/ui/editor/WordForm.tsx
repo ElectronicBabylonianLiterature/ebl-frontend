@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -13,11 +13,13 @@ import PosInput from './PosInput'
 import OraccWordsList from './OraccWordsList'
 import Word from 'dictionary/domain/Word'
 
-class WordForm extends Component<
-  { value: Word; onSubmit; disabled: boolean },
-  { word: Word }
-> {
-  constructor(props) {
+interface Props {
+  value: Word
+  onSubmit: (word: Word) => void
+  disabled: boolean
+}
+class WordForm extends Component<Props, { word: Word }> {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -25,12 +27,12 @@ class WordForm extends Component<
     }
   }
 
-  submit = event => {
+  submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     this.props.onSubmit(this.state.word)
   }
 
-  updateWord = updatedFields => {
+  updateWord = (updatedFields: Partial<Word>): void => {
     this.setState({
       word: {
         ...this.state.word,
@@ -39,11 +41,11 @@ class WordForm extends Component<
     })
   }
 
-  onChangeValue = key => value => {
+  onChangeValue = (key: string) => (value: any): void => {
     this.updateWord({ [key]: value })
   }
 
-  textInput = ({ property }) => (
+  textInput = ({ property }): JSX.Element => (
     <TextInput
       value={this.state.word[property]}
       onChange={this.onChangeValue(property)}
@@ -52,13 +54,15 @@ class WordForm extends Component<
     </TextInput>
   )
 
-  lemma = () => (
+  lemma = (): JSX.Element => (
     <LemmaInput value={this.state.word} onChange={this.updateWord} />
   )
 
-  pos = () => <PosInput value={this.state.word} onChange={this.updateWord} />
+  pos = (): JSX.Element => (
+    <PosInput value={this.state.word} onChange={this.updateWord} />
+  )
 
-  amplifiedMeanings = () => (
+  amplifiedMeanings = (): JSX.Element => (
     <AmplifiedMeaningList
       value={this.state.word.amplifiedMeanings}
       onChange={this.onChangeValue('amplifiedMeanings')}
@@ -67,7 +71,7 @@ class WordForm extends Component<
     </AmplifiedMeaningList>
   )
 
-  forms = () => (
+  forms = (): JSX.Element => (
     <FormList
       value={this.state.word.forms}
       onChange={this.onChangeValue('forms')}
@@ -77,7 +81,7 @@ class WordForm extends Component<
     </FormList>
   )
 
-  logograms = () => (
+  logograms = (): JSX.Element => (
     <ArrayWithNotesList
       value={this.state.word.logograms}
       separator=" "
@@ -87,7 +91,7 @@ class WordForm extends Component<
     />
   )
 
-  derived = () => (
+  derived = (): JSX.Element => (
     <DerivedList
       value={this.state.word.derived}
       onChange={this.onChangeValue('derived')}
@@ -96,21 +100,21 @@ class WordForm extends Component<
     </DerivedList>
   )
 
-  derivedFrom = () => (
+  derivedFrom = (): JSX.Element => (
     <DerivedFromInput
       value={this.state.word.derivedFrom}
       onChange={this.onChangeValue('derivedFrom')}
     />
   )
 
-  oraccWords = () => (
+  oraccWords = (): JSX.Element => (
     <OraccWordsList
       value={this.state.word.oraccWords}
       onChange={this.onChangeValue('oraccWords')}
     />
   )
 
-  render() {
+  render(): JSX.Element {
     return (
       <form className="WordForm" onSubmit={this.submit}>
         <fieldset disabled={this.props.disabled}>

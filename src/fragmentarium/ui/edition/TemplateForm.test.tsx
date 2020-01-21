@@ -9,7 +9,7 @@ let element
 
 async function submit(value) {
   changeValueByLabel(element, 'Template', value)
-  await submitForm(element)
+  await submitForm(element, 'form')
 }
 
 beforeEach(() => {

@@ -7,7 +7,11 @@ import withData from 'http/withData'
 
 import './WordSearch.css'
 
-function WordSearch({ data }) {
+interface Props {
+  data: readonly Word[]
+}
+
+function WordSearch({ data }: Props): JSX.Element {
   return (
     <ul className="WordSearch-results">
       {data.map(word => (

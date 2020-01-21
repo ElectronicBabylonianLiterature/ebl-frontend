@@ -260,11 +260,11 @@ export default class FakeApi {
 
   verifyExpectations(): void {
     const methods = {
-      GET: expectation =>
+      GET: (expectation: Expectation): void =>
         expect(
           expectation.isBlob ? this.client.fetchBlob : this.client.fetchJson
         ).toHaveBeenCalledWith(expectation.path, expectation.authenticate),
-      POST: expectation =>
+      POST: (expectation: Expectation): void =>
         expect(this.client.postJson).toHaveBeenCalledWith(
           expectation.path,
           expectation.body || expect.anything()

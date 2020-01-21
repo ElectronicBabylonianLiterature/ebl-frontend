@@ -23,7 +23,7 @@ class WordEditor extends Component<
 > {
   static contextType = SessionContext
 
-  private updatePromise: Promise<any>
+  private updatePromise: Promise<void>
 
   constructor(props) {
     super(props)
