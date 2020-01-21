@@ -62,7 +62,7 @@ function commonTests(): void {
 
   test('label', () => {
     expect(lemma.label).toEqual(
-      `${lemma.lemma}${lemma.homonym}, ${guideWordAndPos(word)}`
+      `*${lemma.lemma}*${lemma.homonym}, ${guideWordAndPos(word)}`
     )
   })
 }

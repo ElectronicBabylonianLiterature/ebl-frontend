@@ -15,6 +15,6 @@ export default class Lemma {
     this.value = word._id
     this.lemma = word.lemma.join(' ')
     this.homonym = word.homonym === 'I' ? '' : ` ${word.homonym}`
-    this.label = `${this.lemma}${this.homonym}${createGuideWordAndPos(word)}`
+    this.label = `*${this.lemma}*${this.homonym}${createGuideWordAndPos(word)}`
   }
 }

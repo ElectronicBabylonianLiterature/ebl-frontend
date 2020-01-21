@@ -6,6 +6,33 @@ import Lemma from 'fragmentarium/domain/Lemma'
 import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
+import InlineMarkdown from 'common/InlineMarkdown'
+import {
+  ValueType,
+  OptionsType,
+  components,
+  OptionProps,
+  SingleValueProps,
+  MultiValueProps
+} from 'react-select'
+
+const Option = (props: OptionProps<Lemma>): JSX.Element => (
+  <components.Option {...props}>
+    <InlineMarkdown source={props.label} />
+  </components.Option>
+)
+
+const MultiValueLabel = (props: MultiValueProps<Lemma>): JSX.Element => (
+  <components.MultiValueLabel {...props}>
+    <InlineMarkdown source={props.data.label} />
+  </components.MultiValueLabel>
+)
+
+const SingleValue = (props: SingleValueProps<Lemma>): JSX.Element => (
+  <components.SingleValue {...props}>
+    <InlineMarkdown source={props.data.label} />
+  </components.SingleValue>
+)
 
 type Props = {
   token: LemmatizationToken
@@ -14,7 +41,7 @@ type Props = {
 }
 type State = {
   isComplex: boolean
-  selectedOption: readonly Lemma[] | Lemma | null
+  selectedOption: ValueType<Lemma>
   menuIsOpen: boolean | undefined
 }
 
@@ -49,7 +76,7 @@ class LemmatizationForm extends Component<Props, State> {
       .then(callback)
   }
 
-  handleChange = (selectedOption: Lemma[] | Lemma | null): void => {
+  handleChange = (selectedOption: ValueType<Lemma>): void => {
     this.setState({
       ...this.state,
       selectedOption
@@ -76,15 +103,15 @@ class LemmatizationForm extends Component<Props, State> {
   }
 
   Select = ({ label }: { label: string }): JSX.Element => {
-    const defaultOptions = this.state.isComplex
+    const defaultOptions: OptionsType<Lemma> = this.state.isComplex
       ? _(this.props.token.suggestions)
           .flatMap()
           .uniqBy('value')
           .value()
       : _.isArray(this.props.token.suggestions)
-      ? this.props.token.suggestions
+      ? (this.props.token.suggestions
           .filter(suggestion => suggestion.length === 1)
-          .map(_.head)
+          .map(_.head) as Lemma[])
       : []
 
     return (
@@ -101,6 +128,7 @@ class LemmatizationForm extends Component<Props, State> {
         onChange={this.handleChange}
         value={this.state.selectedOption}
         isMulti={this.state.isComplex}
+        components={{ Option, MultiValueLabel, SingleValue }}
       />
     )
   }
