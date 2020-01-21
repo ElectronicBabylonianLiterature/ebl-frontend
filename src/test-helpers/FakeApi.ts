@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import Word from 'dictionary/domain/Word'
 
 class Expectation {
   method: 'POST' | 'GET' = 'GET'
@@ -184,6 +185,19 @@ export default class FakeApi {
         path: `/fragments/${number}/photo`,
         authenticate: true,
         isBlob: true,
+        verify: true
+      })
+    )
+    return this
+  }
+
+  expectSearchWords(query: string, words: readonly Word[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/words?query=${encodeURIComponent(query)}`,
+        response: words,
+        authenticate: true,
         verify: true
       })
     )
