@@ -25,6 +25,7 @@ import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import SessionStore from 'auth/SessionStore'
 import { Promise } from 'bluebird'
+import { submitForm } from 'test-helpers/utils'
 
 function createAuth(sessionStore: SessionStore): Auth {
   const auth0Config = createAuth0Config()
@@ -143,7 +144,7 @@ export default class AppDriver {
     ).toHaveAttribute('href', link)
   }
 
-  expectInputElement(label, expectedValue): void {
+  expectInputElement(label: Matcher, expectedValue): void {
     expect(
       (this.getElement().getByLabelText(label) as HTMLInputElement).value
     ).toEqual(String(expectedValue))
@@ -154,6 +155,10 @@ export default class AppDriver {
     act(() => {
       fireEvent.change(input, { target: { value: newValue } })
     })
+  }
+
+  submitForm(): void {
+    submitForm(this.getElement(), 'form')
   }
 
   async click(text: Matcher, n = 0): Promise<void> {
