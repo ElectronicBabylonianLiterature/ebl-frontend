@@ -11,7 +11,7 @@ import AmplifiedMeaningList from './AmplifiedMeaningList'
 import DerivedFromInput from './DerivedFromInput'
 import PosInput from './PosInput'
 import OraccWordsList from './OraccWordsList'
-import Word from 'dictionary/Word'
+import Word from 'dictionary/domain/Word'
 
 class WordForm extends Component<
   { value: Word; onSubmit; disabled: boolean },

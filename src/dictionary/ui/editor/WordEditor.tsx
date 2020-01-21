@@ -8,7 +8,7 @@ import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import withData, { WithoutData } from 'http/withData'
 import SessionContext from 'auth/SessionContext'
-import Word from 'dictionary/Word'
+import Word from 'dictionary/domain/Word'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { RouteComponentProps } from 'react-router-dom'
 

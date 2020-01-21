@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import Word from 'dictionary/Word'
+import Word from 'dictionary/domain/Word'
 import WordComponent from './Word'
 import withData from 'http/withData'
 

@@ -3,7 +3,7 @@ import { FormGroup } from 'react-bootstrap'
 
 import List from 'common/List'
 import TextInput from './TextInput'
-import { OraccWord } from 'dictionary/Word'
+import { OraccWord } from 'dictionary/domain/Word'
 
 interface Props {
   value: readonly OraccWord[]
