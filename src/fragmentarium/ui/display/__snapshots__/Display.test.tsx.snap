@@ -25,7 +25,133 @@ exports[`Snapshot 1`] = `
     class="Display__lines"
   >
     <li>
-      1. ku
+      <div
+        class="Display__line Display__line--ControlLine"
+      >
+        <span>
+          &
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          cuv
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--TextLine"
+      >
+        <span>
+          function () {
+      return generator.generate.apply(generator, args);
+    }.
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          &
+        </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          g[u/gem[e₂]
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--EmptyLine"
+      >
+        <span />
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--ControlLine"
+      >
+        <span>
+          &
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          tubfuwsis
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--TextLine"
+      >
+        <span>
+          function () {
+      return generator.generate.apply(generator, args);
+    }.
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          &
+        </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          ia
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--TextLine"
+      >
+        <span>
+          function () {
+      return generator.generate.apply(generator, args);
+    }.
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          &
+        </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          ia
+        </span>
+      </div>
+    </li>
+    <li>
+      <div
+        class="Display__line Display__line--TextLine"
+      >
+        <span>
+          function () {
+      return generator.generate.apply(generator, args);
+    }.
+        </span>
+         
+        <span
+          class="Display__token Display__token--Token"
+        >
+          &1
+        </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          x
+        </span>
+      </div>
     </li>
   </ol>
 </div>

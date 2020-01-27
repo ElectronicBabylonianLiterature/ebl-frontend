@@ -2,3 +2,15 @@
   list-style: none;
   padding: 0;
 }
+
+.Display__line.Display__line--ControlLine {
+  color: darkgrey
+}
+
+.Display__token.Display__token--Reading {
+  font-style: italic;
+}
+
+.Display__token.Display__token--Logogram {
+  font-variant: small-caps;
+}

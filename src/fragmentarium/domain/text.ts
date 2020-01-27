@@ -6,7 +6,15 @@ import Lemmatization, {
 
 import Lemma from './Lemma'
 
-type Word = {
+interface PlainToken {
+  readonly type: string
+  readonly value: string
+  readonly lemmatizable?: false
+  readonly uniqueLemma?: null
+  readonly parts?: readonly Token[]
+}
+
+interface Word {
   readonly type: 'Word'
   readonly value: string
   readonly uniqueLemma: ReadonlyArray<string>
@@ -18,7 +26,7 @@ type Word = {
   readonly parts?: readonly Token[]
 }
 
-type LoneDeterminative = {
+interface LoneDeterminative {
   readonly type: 'LoneDeterminative'
   readonly value: string
   readonly uniqueLemma: ReadonlyArray<string>
@@ -31,7 +39,7 @@ type LoneDeterminative = {
   readonly parts?: readonly Token[]
 }
 
-type Shift = {
+interface Shift {
   readonly type: 'LanguageShift'
   readonly value: string
   readonly normalized: boolean
@@ -41,7 +49,7 @@ type Shift = {
   readonly parts?: readonly Token[]
 }
 
-type Erasure = {
+interface Erasure {
   readonly type: 'Erasure'
   readonly value: string
   readonly side: string
@@ -50,15 +58,17 @@ type Erasure = {
   readonly parts?: readonly Token[]
 }
 
-type PlainToken = {
-  readonly type: string
-  readonly value: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
-  readonly parts?: readonly Token[]
+interface Joiner extends PlainToken {
+  type: 'Joiner'
 }
 
-export type Token = PlainToken | Word | LoneDeterminative | Shift | Erasure
+export type Token =
+  | PlainToken
+  | Word
+  | LoneDeterminative
+  | Shift
+  | Erasure
+  | Joiner
 
 export interface Line {
   readonly type: string

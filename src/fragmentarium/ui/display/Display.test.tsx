@@ -4,14 +4,34 @@ import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 import Display from './Display'
+import { Text } from 'fragmentarium/domain/text'
 
 let fragment: Fragment
 let element: RenderResult
 let container: HTMLElement
 
 beforeEach(async () => {
+  const text = new Text({
+    lines: [
+      {
+        type: 'TextLine',
+        prefix: '1.',
+        content: [
+          {
+            type: 'Word',
+            value: 'kur-KUR',
+            parts: [
+              { type: 'Reading', value: 'kur' },
+              { type: 'Joiner', value: '-' },
+              { type: 'Logogram', value: 'KUR' }
+            ]
+          },
+          { type: 'UnknownNumberOfSigns', value: '...' }
+        ]
+      }
+    ]
+  })
   fragment = await factory.build('fragment', {
-    atf: '1. ku',
     publication: 'Guod cigipli epibif odepuwu.',
     description:
       'Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.\nZut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.'
@@ -22,10 +42,6 @@ beforeEach(async () => {
 
 test(`Renders header`, () => {
   expect(container).toHaveTextContent(fragment.publication)
-})
-
-test('Renders transliteration', () => {
-  expect(container).toHaveTextContent(fragment.atf)
 })
 
 test('Snapshot', () => {
