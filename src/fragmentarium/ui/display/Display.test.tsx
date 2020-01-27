@@ -26,13 +26,29 @@ beforeEach(async () => {
               { type: 'Logogram', value: 'KUR' }
             ]
           },
-          { type: 'UnknownNumberOfSigns', value: '...' }
+          {
+            type: 'Word',
+            value: '|KUR.KUR|',
+            parts: [{ type: 'CompoundGrapheme', value: 'kur' }]
+          },
+          { type: 'UnknownNumberOfSigns', value: '...' },
+          { type: 'UnidentifiedSign', value: 'X' },
+          { type: 'UnclearSign', value: 'x' },
+          {
+            type: 'Variant',
+            value: 'kur/KUR',
+            tokens: [
+              { type: 'Reading', value: 'kur' },
+              { type: 'Logogram', value: 'KUR' }
+            ]
+          }
         ]
       }
     ]
   })
   fragment = await factory.build('fragment', {
     publication: 'Guod cigipli epibif odepuwu.',
+    text: text,
     description:
       'Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.\nZut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.'
   })

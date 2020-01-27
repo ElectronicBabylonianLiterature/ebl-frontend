@@ -26,130 +26,74 @@ exports[`Snapshot 1`] = `
   >
     <li>
       <div
-        class="Display__line Display__line--ControlLine"
-      >
-        <span>
-          &
-        </span>
-         
-        <span
-          class="Display__token Display__token--Token"
-        >
-          cuv
-        </span>
-      </div>
-    </li>
-    <li>
-      <div
         class="Display__line Display__line--TextLine"
       >
         <span>
-          function () {
-      return generator.generate.apply(generator, args);
-    }.
-        </span>
-         
-        <span
-          class="Display__token Display__token--Token"
-        >
-          &
+          1.
         </span>
          
         <span
           class="Display__token Display__token--Word"
         >
-          g[u/gem[e₂]
-        </span>
-      </div>
-    </li>
-    <li>
-      <div
-        class="Display__line Display__line--EmptyLine"
-      >
-        <span />
-      </div>
-    </li>
-    <li>
-      <div
-        class="Display__line Display__line--ControlLine"
-      >
-        <span>
-          &
-        </span>
-         
-        <span
-          class="Display__token Display__token--Token"
-        >
-          tubfuwsis
-        </span>
-      </div>
-    </li>
-    <li>
-      <div
-        class="Display__line Display__line--TextLine"
-      >
-        <span>
-          function () {
-      return generator.generate.apply(generator, args);
-    }.
-        </span>
-         
-        <span
-          class="Display__token Display__token--Token"
-        >
-          &
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+          </span>
+          <span
+            class="Display__token Display__token--Joiner"
+          >
+            -
+          </span>
+          <span
+            class="Display__token Display__token--Logogram"
+          >
+            KUR
+          </span>
         </span>
          
         <span
           class="Display__token Display__token--Word"
         >
-          ia
-        </span>
-      </div>
-    </li>
-    <li>
-      <div
-        class="Display__line Display__line--TextLine"
-      >
-        <span>
-          function () {
-      return generator.generate.apply(generator, args);
-    }.
+          <span
+            class="Display__token Display__token--CompoundGrapheme"
+          >
+            kur
+          </span>
         </span>
          
         <span
-          class="Display__token Display__token--Token"
+          class="Display__token Display__token--UnknownNumberOfSigns"
         >
-          &
+          …
         </span>
          
         <span
-          class="Display__token Display__token--Word"
+          class="Display__token Display__token--UnidentifiedSign"
         >
-          ia
-        </span>
-      </div>
-    </li>
-    <li>
-      <div
-        class="Display__line Display__line--TextLine"
-      >
-        <span>
-          function () {
-      return generator.generate.apply(generator, args);
-    }.
+          X
         </span>
          
         <span
-          class="Display__token Display__token--Token"
-        >
-          &1
-        </span>
-         
-        <span
-          class="Display__token Display__token--Word"
+          class="Display__token Display__token--UnclearSign"
         >
           x
+        </span>
+         
+        <span
+          class="Display__token Display__token--Variant"
+        >
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+          </span>
+          /
+          <span
+            class="Display__token Display__token--Logogram"
+          >
+            KUR
+          </span>
         </span>
       </div>
     </li>

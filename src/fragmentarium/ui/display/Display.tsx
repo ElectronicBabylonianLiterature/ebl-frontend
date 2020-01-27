@@ -28,7 +28,23 @@ function DefaultToken({
 const tokens: ReadonlyMap<
   string,
   FunctionComponent<{ token: Token }>
-> = new Map([['UnknownNumberOfSigns', (): JSX.Element => <>…</>]])
+> = new Map([
+  ['UnknownNumberOfSigns', (): JSX.Element => <>…</>],
+  [
+    'Variant',
+    ({ token: { tokens } }: { token: Token }): JSX.Element => (
+      <>
+        {tokens &&
+          tokens.map((token, index) => (
+            <>
+              {index > 0 ? '/' : null}
+              <DisplayToken key={index} token={token} />
+            </>
+          ))}
+      </>
+    )
+  ]
+])
 
 function DisplayToken({ token }: { token: Token }): JSX.Element {
   const TokenComponent = tokens.get(token.type) || DefaultToken

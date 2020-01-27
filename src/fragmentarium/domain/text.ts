@@ -9,26 +9,25 @@ import Lemma from './Lemma'
 interface PlainToken {
   readonly type: string
   readonly value: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
+  readonly lemmatizable?: boolean
+  readonly uniqueLemma?: null | ReadonlyArray<string>
   readonly parts?: readonly Token[]
+  readonly tokens?: readonly Token[]
 }
 
-interface Word {
+interface Word extends PlainToken {
   readonly type: 'Word'
-  readonly value: string
   readonly uniqueLemma: ReadonlyArray<string>
   readonly normalized: boolean
   readonly language: string
   readonly lemmatizable: boolean
   readonly erasure: string
   readonly alignment?: number
-  readonly parts?: readonly Token[]
+  readonly parts: readonly Token[]
 }
 
-interface LoneDeterminative {
+interface LoneDeterminative extends PlainToken {
   readonly type: 'LoneDeterminative'
-  readonly value: string
   readonly uniqueLemma: ReadonlyArray<string>
   readonly normalized: boolean
   readonly language: string
@@ -36,22 +35,18 @@ interface LoneDeterminative {
   readonly partial: [boolean, boolean]
   readonly erasure: string
   readonly alignment?: number
-  readonly parts?: readonly Token[]
+  readonly parts: readonly Token[]
 }
 
-interface Shift {
+interface Shift extends PlainToken {
   readonly type: 'LanguageShift'
-  readonly value: string
   readonly normalized: boolean
   readonly language: string
   readonly lemmatizable?: false
-  readonly uniqueLemma?: null
-  readonly parts?: readonly Token[]
 }
 
-interface Erasure {
+interface Erasure extends PlainToken {
   readonly type: 'Erasure'
-  readonly value: string
   readonly side: string
   readonly lemmatizable?: false
   readonly uniqueLemma?: null
@@ -62,6 +57,23 @@ interface Joiner extends PlainToken {
   type: 'Joiner'
 }
 
+interface UnidentifiedNumberOfSigns extends PlainToken {
+  type: 'UnidentifiedNumberOfSigns'
+}
+
+interface UnidentifiedSign extends PlainToken {
+  type: 'UnidentifiedSign'
+}
+
+interface UnclearSign extends PlainToken {
+  type: 'UnclearSign'
+}
+
+interface Variant extends PlainToken {
+  type: 'Variant'
+  tokens: readonly Token[]
+}
+
 export type Token =
   | PlainToken
   | Word
@@ -69,6 +81,8 @@ export type Token =
   | Shift
   | Erasure
   | Joiner
+  | Variant
+  | UnidentifiedNumberOfSigns
 
 export interface Line {
   readonly type: string
