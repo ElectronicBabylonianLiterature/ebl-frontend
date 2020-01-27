@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <header>
+    <p
+      class="TransliterationHeader__description"
+    >
+      Balbodduh lifuseb wuuk nasu hulwajo ho hiskuk riwa eldat ivu jandara nosrina abike befukiz ravsus.
+    </p>
+    <p
+      class="TransliterationHeader__description"
+    >
+      Zut uzzejum ub mil ika roppar zewize ipifac vut eci avimez cewmikjov kiwso zamli jecja now.
+    </p>
+    <p
+      class="TransliterationHeader__publication"
+    >
+      (Publication: 
+      Guod cigipli epibif odepuwu.
+      )
+    </p>
+  </header>
+  <ol
+    class="Display__lines"
+  >
+    <li>
+      1. ku
+    </li>
+  </ol>
+</div>
+`;
