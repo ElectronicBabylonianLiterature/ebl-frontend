@@ -3,18 +3,18 @@
   padding: 0;
 }
 
-.Display__line.Display__line--ControlLine {
+.Display__line--ControlLine {
   color: darkgrey
 }
 
-.Display__token.Display__token--Reading,
-.Display__token.Display__token--Number,
-.Display__token.Display__token--UnidentifiedSign,
-.Display__token.Display__token--CompoundGrapheme,
-.Display__token.Display__token--Joiner {
+.Display__token--Reading,
+.Display__token--Number,
+.Display__token--UnidentifiedSign,
+.Display__token--CompoundGrapheme,
+.Display__token--Joiner {
   font-style: italic;
 }
 
-.Display__token.Display__token--Logogram {
+.Display__token--Logogram {
   font-variant: small-caps;
 }
