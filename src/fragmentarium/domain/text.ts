@@ -65,12 +65,9 @@ export interface UnknownNumberOfSigns extends NotLemmatizableToken {
   type: 'UnknownNumberOfSigns'
 }
 
-export interface UnidentifiedSign extends NotLemmatizableToken {
-  type: 'UnidentifiedSign'
-}
-
-export interface UnclearSign extends NotLemmatizableToken {
-  type: 'UnclearSign'
+export interface UnknownSign extends NotLemmatizableToken {
+  type: 'UnidentifiedSign' | 'UnclearSign'
+  flags: readonly string[]
 }
 
 export interface Variant extends NotLemmatizableToken {
@@ -78,12 +75,36 @@ export interface Variant extends NotLemmatizableToken {
   tokens: readonly Token[]
 }
 
-export interface Reading extends NotLemmatizableToken {
+export interface Sign extends NotLemmatizableToken {
+  modifiers: readonly string[]
+  flags: readonly string[]
+}
+
+export interface NamedSign extends Sign {
+  name: string
+  subIndex?: number | null
+  sign?: Token | null
+  surrogate?: readonly Token[] | null
+}
+
+export interface Reading extends NamedSign {
   type: 'Reading'
 }
 
-export interface Logogram extends NotLemmatizableToken {
+export interface Logogram extends NamedSign {
   type: 'Logogram'
+}
+
+export interface NumberSign extends NamedSign {
+  type: 'Number'
+}
+export interface Divider extends Sign {
+  type: 'Divider'
+  divider: string
+}
+export interface Grapheme extends Sign {
+  type: 'Grapheme'
+  name: string
 }
 
 export interface CompoundGrapheme extends NotLemmatizableToken {
@@ -98,11 +119,13 @@ export type Token =
   | Erasure
   | Joiner
   | UnknownNumberOfSigns
-  | UnidentifiedSign
-  | UnclearSign
+  | UnknownSign
   | Variant
   | Reading
   | Logogram
+  | NumberSign
+  | Grapheme
+  | Divider
   | CompoundGrapheme
 
 export interface Line {

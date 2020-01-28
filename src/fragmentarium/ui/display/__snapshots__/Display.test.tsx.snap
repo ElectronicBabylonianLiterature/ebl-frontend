@@ -39,6 +39,58 @@ exports[`Snapshot 1`] = `
             class="Display__token Display__token--Reading"
           >
             kur
+            <span
+              class="Display__modifier"
+            >
+              @v
+            </span>
+            <sup
+              class="Display__flag"
+            >
+              #!
+            </sup>
+          </span>
+          <span
+            class="Display__token Display__token--Joiner"
+          >
+            .
+          </span>
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+            <sub
+              class="Display__subIndex"
+            >
+              x
+            </sub>
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+            <span
+              class="Display__bracket"
+            >
+              (
+            </span>
+            <span
+              class="Display__token Display__token--Grapheme"
+            >
+              KUR
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              />
+            </span>
+            <span
+              class="Display__bracket"
+            >
+              )
+            </span>
           </span>
           <span
             class="Display__token Display__token--Joiner"
@@ -49,6 +101,21 @@ exports[`Snapshot 1`] = `
             class="Display__token Display__token--Logogram"
           >
             KUR
+            <sub
+              class="Display__subIndex"
+            >
+              2
+            </sub>
+            <span
+              class="Display__modifier"
+            >
+              @v
+            </span>
+            <sup
+              class="Display__flag"
+            >
+              #!
+            </sup>
           </span>
         </span>
          
@@ -58,7 +125,7 @@ exports[`Snapshot 1`] = `
           <span
             class="Display__token Display__token--CompoundGrapheme"
           >
-            kur
+            |KUR.KUR|
           </span>
         </span>
          
@@ -72,12 +139,18 @@ exports[`Snapshot 1`] = `
           class="Display__token Display__token--UnidentifiedSign"
         >
           X
+          <sup
+            class="Display__flag"
+          />
         </span>
          
         <span
           class="Display__token Display__token--UnclearSign"
         >
           x
+          <sup
+            class="Display__flag"
+          />
         </span>
          
         <span
@@ -87,12 +160,45 @@ exports[`Snapshot 1`] = `
             class="Display__token Display__token--Reading"
           >
             kur
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
           </span>
           /
           <span
             class="Display__token Display__token--Logogram"
           >
             KUR
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+            <span
+              class="Display__bracket"
+            >
+              &lt;(
+            </span>
+            <span
+              class="Display__token Display__token--Reading"
+            >
+              kur
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              />
+            </span>
+            <span
+              class="Display__bracket"
+            >
+              )&gt;
+            </span>
           </span>
         </span>
       </div>

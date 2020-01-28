@@ -7,14 +7,24 @@
   color: darkgrey
 }
 
+.Display__bracket,
+.Display__flag,
+.Display__subIndex {
+  font-style: normal;
+  font-variant: normal;
+}
+
 .Display__token--Reading,
 .Display__token--Number,
 .Display__token--UnidentifiedSign,
 .Display__token--CompoundGrapheme,
-.Display__token--Joiner {
+.Display__token--Joiner
+.Display__token--Divider {
   font-style: italic;
+  font-variant: normal;
 }
 
 .Display__token--Logogram {
+  font-style: normal;
   font-variant: small-caps;
 }

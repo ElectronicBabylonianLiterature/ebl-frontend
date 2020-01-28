@@ -26,9 +26,39 @@ beforeEach(async () => {
             lemmatizable: true,
             erasure: 'NONE',
             parts: [
-              { type: 'Reading', value: 'kur' },
+              {
+                type: 'Reading',
+                value: 'kur@v#!',
+                name: 'kur',
+                subIndex: 1,
+                flags: ['#!'],
+                modifiers: ['@v']
+              },
+              { type: 'Joiner', value: '.' },
+              {
+                type: 'Reading',
+                value: 'kurₓ(KUR)',
+                name: 'kur',
+                subIndex: null,
+                flags: [],
+                modifiers: [],
+                sign: {
+                  type: 'Grapheme',
+                  value: 'KUR',
+                  name: 'KUR',
+                  flags: [],
+                  modifiers: []
+                }
+              },
               { type: 'Joiner', value: '-' },
-              { type: 'Logogram', value: 'KUR' }
+              {
+                type: 'Logogram',
+                value: 'KUR₂@v#!',
+                name: 'KUR',
+                subIndex: 2,
+                flags: ['#!'],
+                modifiers: ['@v']
+              }
             ]
           },
           {
@@ -39,17 +69,41 @@ beforeEach(async () => {
             uniqueLemma: [],
             lemmatizable: true,
             erasure: 'NONE',
-            parts: [{ type: 'CompoundGrapheme', value: 'kur' }]
+            parts: [{ type: 'CompoundGrapheme', value: '|KUR.KUR|' }]
           },
           { type: 'UnknownNumberOfSigns', value: '...' },
-          { type: 'UnidentifiedSign', value: 'X' },
-          { type: 'UnclearSign', value: 'x' },
+          { type: 'UnidentifiedSign', value: 'X', flags: [] },
+          { type: 'UnclearSign', value: 'x', flags: [] },
           {
             type: 'Variant',
             value: 'kur/KUR',
             tokens: [
-              { type: 'Reading', value: 'kur' },
-              { type: 'Logogram', value: 'KUR' }
+              {
+                type: 'Reading',
+                value: 'kur',
+                name: 'kur',
+                subIndex: 1,
+                flags: [],
+                modifiers: []
+              },
+              {
+                type: 'Logogram',
+                value: 'KUR',
+                name: 'KUR',
+                subIndex: 1,
+                flags: [],
+                modifiers: [],
+                surrogate: [
+                  {
+                    type: 'Reading',
+                    value: 'kur',
+                    name: 'kur',
+                    subIndex: 1,
+                    flags: [],
+                    modifiers: []
+                  }
+                ]
+              }
             ]
           }
         ]
