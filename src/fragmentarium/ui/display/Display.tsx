@@ -12,10 +12,9 @@ import {
   Token,
   Variant,
   NamedSign,
-  Grapheme,
-  Divider,
   UnknownSign,
-  Gloss
+  Gloss,
+  Sign
 } from 'fragmentarium/domain/text'
 import classNames from 'classnames'
 
@@ -58,6 +57,19 @@ function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
       <sup className="Display__flag">{sign.flags.join('')}</sup>
     </>
   )
+}
+
+function signComponent(nameProperty: string) {
+  return function SignComponent({ token }: { token: Token }): JSX.Element {
+    const sign = token as Sign
+    return (
+      <>
+        {sign[nameProperty]}
+        <span className="Display__modifier">{sign.modifiers.join('')}</span>
+        <sup className="Display__flag">{sign.flags.join('')}</sup>
+      </>
+    )
+  }
 }
 
 function NamedSignComponent({ token }: { token: Token }): JSX.Element {
@@ -111,36 +123,8 @@ const tokens: ReadonlyMap<
   ['Reading', NamedSignComponent],
   ['Logogram', NamedSignComponent],
   ['Number', NamedSignComponent],
-  [
-    'Divider',
-    ({ token }: { token: Token }): JSX.Element => {
-      const divider = token as Divider
-      return (
-        <>
-          {divider.divider}
-          <span className="Display__modifier">
-            {divider.modifiers.join('')}
-          </span>
-          <sup className="Display__flag">{divider.flags.join('')}</sup>
-        </>
-      )
-    }
-  ],
-  [
-    'Grapheme',
-    ({ token }: { token: Token }): JSX.Element => {
-      const grapheme = token as Grapheme
-      return (
-        <>
-          {grapheme.name}
-          <span className="Display__modifier">
-            {grapheme.modifiers.join('')}
-          </span>
-          <sup className="Display__flag">{grapheme.flags.join('')}</sup>
-        </>
-      )
-    }
-  ],
+  ['Divider', signComponent('divider')],
+  ['Grapheme', signComponent('name')],
   ['UnclearSign', UnknownSignComponent],
   ['UnidentifiedSign', UnknownSignComponent],
   ['Determinative', GlossComponent],
