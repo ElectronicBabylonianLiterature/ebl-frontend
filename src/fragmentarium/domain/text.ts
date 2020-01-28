@@ -12,13 +12,6 @@ export interface BaseToken {
   readonly parts?: readonly Token[]
 }
 
-export interface LemmatizableToken extends BaseToken {
-  readonly lemmatizable: boolean
-  readonly alignable?: boolean
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly alignment?: null | number
-}
-
 export interface NotLemmatizableToken extends BaseToken {
   readonly lemmatizable?: false
   readonly alignable?: false
@@ -30,16 +23,12 @@ export interface ValueToken extends NotLemmatizableToken {
   type: 'Token'
 }
 
-export interface Word extends LemmatizableToken {
-  readonly type: 'Word'
-  readonly language: string
-  readonly normalized: boolean
-  readonly erasure: string
-  readonly parts: readonly Token[]
-}
-
-export interface LoneDeterminative extends LemmatizableToken {
-  readonly type: 'LoneDeterminative'
+export interface Word extends BaseToken {
+  readonly type: 'Word' | 'LoneDeterminative'
+  readonly lemmatizable: boolean
+  readonly alignable?: boolean
+  readonly uniqueLemma: ReadonlyArray<string>
+  readonly alignment?: null | number
   readonly language: string
   readonly normalized: boolean
   readonly erasure: string
@@ -130,7 +119,6 @@ export interface LinguisticGloss extends Gloss {
 export type Token =
   | ValueToken
   | Word
-  | LoneDeterminative
   | Shift
   | Erasure
   | Joiner
