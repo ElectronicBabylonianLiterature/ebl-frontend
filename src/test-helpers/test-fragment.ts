@@ -26,6 +26,7 @@ export const fragmentDto = {
   text: {
     lines: [
       {
+        type: 'TextLine',
         prefix: '10.',
         content: [
           {
@@ -35,7 +36,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -44,7 +46,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'LoneDeterminative',
@@ -53,10 +56,10 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, true],
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
-          { type: 'Token', value: '[...]' },
+          { type: 'UnknownNumberOfSigns', value: '[...]' },
           {
             type: 'Word',
             value: '.GA',
@@ -64,12 +67,13 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
-        ],
-        type: 'TextLine'
+        ]
       },
       {
+        type: 'TextLine',
         prefix: '10.',
         content: [
           {
@@ -79,7 +83,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -88,12 +93,13 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
-        ],
-        type: 'TextLine'
+        ]
       },
       {
+        type: 'TextLine',
         prefix: '10.',
         content: [
           {
@@ -103,7 +109,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           { type: 'Token', value: '|' },
           {
@@ -113,15 +120,16 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
-        ],
-        type: 'TextLine'
+        ]
       },
       {
+        type: 'TextLine',
         prefix: '10.',
         content: [
-          { type: 'Token', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
           {
             type: 'Word',
             value: '+ku',
@@ -129,7 +137,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'LoneDeterminative',
@@ -138,11 +147,11 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, false],
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
-          { type: 'Token', value: '...' },
-          { type: 'Token', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
           {
             type: 'Word',
             value: '.ku',
@@ -150,7 +159,8 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -159,10 +169,10 @@ export const fragmentDto = {
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
-        ],
-        type: 'TextLine'
+        ]
       }
     ]
   },
