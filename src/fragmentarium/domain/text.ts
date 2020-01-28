@@ -6,83 +6,104 @@ import Lemmatization, {
 
 import Lemma from './Lemma'
 
-interface PlainToken {
+export interface BaseToken {
   readonly type: string
   readonly value: string
-  readonly lemmatizable?: boolean
-  readonly uniqueLemma?: null | ReadonlyArray<string>
   readonly parts?: readonly Token[]
-  readonly tokens?: readonly Token[]
 }
 
-interface Word extends PlainToken {
+export interface LemmatizableToken extends BaseToken {
+  readonly lemmatizable: boolean
+  readonly alignable?: boolean
+  readonly uniqueLemma: ReadonlyArray<string>
+  readonly alignment?: null | number
+}
+
+export interface NotLemmatizableToken extends BaseToken {
+  readonly lemmatizable?: false
+  readonly alignable?: false
+  readonly uniqueLemma?: null
+  readonly alignment?: null
+}
+
+export interface ValueToken extends NotLemmatizableToken {
+  type: 'Token'
+}
+
+export interface Word extends LemmatizableToken {
   readonly type: 'Word'
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
   readonly language: string
-  readonly lemmatizable: boolean
+  readonly normalized: boolean
   readonly erasure: string
-  readonly alignment?: number
   readonly parts: readonly Token[]
 }
 
-interface LoneDeterminative extends PlainToken {
+export interface LoneDeterminative extends LemmatizableToken {
   readonly type: 'LoneDeterminative'
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
   readonly language: string
-  readonly lemmatizable: boolean
-  readonly partial: [boolean, boolean]
+  readonly normalized: boolean
   readonly erasure: string
-  readonly alignment?: number
   readonly parts: readonly Token[]
 }
 
-interface Shift extends PlainToken {
+export interface Shift extends NotLemmatizableToken {
   readonly type: 'LanguageShift'
   readonly normalized: boolean
   readonly language: string
-  readonly lemmatizable?: false
 }
 
-interface Erasure extends PlainToken {
+export interface Erasure extends NotLemmatizableToken {
   readonly type: 'Erasure'
   readonly side: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
-  readonly parts?: readonly Token[]
 }
 
-interface Joiner extends PlainToken {
+export interface Joiner extends NotLemmatizableToken {
   type: 'Joiner'
 }
 
-interface UnidentifiedNumberOfSigns extends PlainToken {
-  type: 'UnidentifiedNumberOfSigns'
+export interface UnknownNumberOfSigns extends NotLemmatizableToken {
+  type: 'UnknownNumberOfSigns'
 }
 
-interface UnidentifiedSign extends PlainToken {
+export interface UnidentifiedSign extends NotLemmatizableToken {
   type: 'UnidentifiedSign'
 }
 
-interface UnclearSign extends PlainToken {
+export interface UnclearSign extends NotLemmatizableToken {
   type: 'UnclearSign'
 }
 
-interface Variant extends PlainToken {
+export interface Variant extends NotLemmatizableToken {
   type: 'Variant'
   tokens: readonly Token[]
 }
 
+export interface Reading extends NotLemmatizableToken {
+  type: 'Reading'
+}
+
+export interface Logogram extends NotLemmatizableToken {
+  type: 'Logogram'
+}
+
+export interface CompoundGrapheme extends NotLemmatizableToken {
+  type: 'CompoundGrapheme'
+}
+
 export type Token =
-  | PlainToken
+  | ValueToken
   | Word
   | LoneDeterminative
   | Shift
   | Erasure
   | Joiner
+  | UnknownNumberOfSigns
+  | UnidentifiedSign
+  | UnclearSign
   | Variant
-  | UnidentifiedNumberOfSigns
+  | Reading
+  | Logogram
+  | CompoundGrapheme
 
 export interface Line {
   readonly type: string

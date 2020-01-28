@@ -3,7 +3,7 @@ import { factory } from 'factory-girl'
 import _ from 'lodash'
 import { testDelegation, TestData } from 'test-helpers/utils'
 import { fragment } from 'test-helpers/test-fragment'
-import FragmentService, { ImageRepository } from './FragmentService'
+import FragmentService from './FragmentService'
 
 import Lemmatization, {
   LemmatizationToken
@@ -167,7 +167,8 @@ test('createLemmatization', async () => {
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -176,7 +177,8 @@ test('createLemmatization', async () => {
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       }

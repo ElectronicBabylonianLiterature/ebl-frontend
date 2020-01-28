@@ -20,6 +20,11 @@ beforeEach(async () => {
           {
             type: 'Word',
             value: 'kur-KUR',
+            language: 'AKKADIAN',
+            normalized: false,
+            uniqueLemma: [],
+            lemmatizable: true,
+            erasure: 'NONE',
             parts: [
               { type: 'Reading', value: 'kur' },
               { type: 'Joiner', value: '-' },
@@ -29,6 +34,11 @@ beforeEach(async () => {
           {
             type: 'Word',
             value: '|KUR.KUR|',
+            language: 'AKKADIAN',
+            normalized: false,
+            uniqueLemma: [],
+            lemmatizable: true,
+            erasure: 'NONE',
             parts: [{ type: 'CompoundGrapheme', value: 'kur' }]
           },
           { type: 'UnknownNumberOfSigns', value: '...' },

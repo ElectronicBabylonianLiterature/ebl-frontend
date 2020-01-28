@@ -29,7 +29,8 @@ test('createLemmatization', async () => {
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -38,7 +39,8 @@ test('createLemmatization', async () => {
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       }

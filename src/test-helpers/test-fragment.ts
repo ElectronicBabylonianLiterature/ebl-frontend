@@ -217,7 +217,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -226,7 +227,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'LoneDeterminative',
@@ -235,10 +237,10 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, true],
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
-          { type: 'Token', value: '[...]' },
+          { type: 'UnknownNumberOfSigns', value: '[...]' },
           {
             type: 'Word',
             value: '.GA',
@@ -246,7 +248,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       },
@@ -261,7 +264,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -270,7 +274,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       },
@@ -285,7 +290,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           { type: 'Token', value: '|' },
           {
@@ -295,7 +301,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: true,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       },
@@ -303,7 +310,7 @@ export const fragment = new Fragment({
         type: 'TextLine',
         prefix: '10.',
         content: [
-          { type: 'Token', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
           {
             type: 'Word',
             value: '+ku',
@@ -311,7 +318,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'LoneDeterminative',
@@ -320,11 +328,11 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            partial: [false, false],
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
-          { type: 'Token', value: '...' },
-          { type: 'Token', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
+          { type: 'UnknownNumberOfSigns', value: '...' },
           {
             type: 'Word',
             value: '.ku',
@@ -332,7 +340,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           },
           {
             type: 'Word',
@@ -341,7 +350,8 @@ export const fragment = new Fragment({
             normalized: false,
             language: 'AKKADIAN',
             lemmatizable: false,
-            erasure: 'NONE'
+            erasure: 'NONE',
+            parts: []
           }
         ]
       }

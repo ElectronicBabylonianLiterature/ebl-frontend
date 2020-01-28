@@ -6,7 +6,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { Glossary } from './Glossary'
 
 import './Display.css'
-import { Line, Token } from 'fragmentarium/domain/text'
+import { Line, Token, Variant } from 'fragmentarium/domain/text'
 import classNames from 'classnames'
 
 function DefaultToken({
@@ -25,14 +25,11 @@ function DefaultToken({
   )
 }
 
-const tokens: ReadonlyMap<
-  string,
-  FunctionComponent<{ token: Token }>
-> = new Map([
+const tokens: ReadonlyMap<string, FunctionComponent<{ token: any }>> = new Map([
   ['UnknownNumberOfSigns', (): JSX.Element => <>…</>],
   [
     'Variant',
-    ({ token: { tokens } }: { token: Token }): JSX.Element => (
+    ({ token: { tokens } }: { token: Variant }): JSX.Element => (
       <>
         {tokens &&
           tokens.map((token, index) => (
