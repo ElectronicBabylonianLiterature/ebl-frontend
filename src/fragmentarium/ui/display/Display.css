@@ -18,7 +18,7 @@
 .Display__token--Number,
 .Display__token--UnidentifiedSign,
 .Display__token--CompoundGrapheme,
-.Display__token--Joiner
+.Display__token--Joiner,
 .Display__token--Divider {
   font-style: italic;
   font-variant: normal;
