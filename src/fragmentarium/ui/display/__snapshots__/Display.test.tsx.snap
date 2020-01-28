@@ -201,6 +201,163 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          <span
+            class="Display__token Display__token--Determinative"
+          >
+            <sup>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                d
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                />
+              </span>
+              <span
+                class="Display__token Display__token--Joiner"
+              >
+                -
+              </span>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                kur
+                <sub
+                  class="Display__subIndex"
+                >
+                  2
+                </sub>
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                >
+                  ?
+                </sup>
+              </span>
+            </sup>
+          </span>
+          <span
+            class="Display__token Display__token--Determinative"
+          >
+            <sup>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                d
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                >
+                  !
+                </sup>
+              </span>
+            </sup>
+          </span>
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+          </span>
+          <span
+            class="Display__token Display__token--LinguisticGloss"
+          >
+            <sup>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                kur
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                />
+              </span>
+            </sup>
+          </span>
+        </span>
+         
+        <span
+          class="Display__token Display__token--Word"
+        >
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+          </span>
+          <span
+            class="Display__token Display__token--Joiner"
+          >
+            -
+          </span>
+          <span
+            class="Display__token Display__token--LinguisticGloss"
+          >
+            <sup>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                kur
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                />
+              </span>
+              <span
+                class="Display__token Display__token--Joiner"
+              >
+                -
+              </span>
+              <span
+                class="Display__token Display__token--Reading"
+              >
+                kur
+                <span
+                  class="Display__modifier"
+                />
+                <sup
+                  class="Display__flag"
+                />
+              </span>
+            </sup>
+          </span>
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
+            <span
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+          </span>
+        </span>
       </div>
     </li>
   </ol>

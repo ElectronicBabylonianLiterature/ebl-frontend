@@ -105,6 +105,139 @@ beforeEach(async () => {
                 ]
               }
             ]
+          },
+          {
+            type: 'Word',
+            lemmatizable: true,
+            normalized: false,
+            language: 'AKKADIAN',
+            erasure: 'NONE',
+            uniqueLemma: [],
+            value: '{d-kur₂?}{d!}kur{{kur}}',
+            parts: [
+              {
+                type: 'Determinative',
+                parts: [
+                  {
+                    type: 'Reading',
+                    value: 'd',
+                    modifiers: [],
+                    name: 'd',
+                    flags: [],
+                    subIndex: 1
+                  },
+                  {
+                    type: 'Joiner',
+                    value: '-'
+                  },
+                  {
+                    type: 'Reading',
+                    value: 'kur₂?',
+                    modifiers: [],
+                    name: 'kur',
+                    flags: ['?'],
+                    subIndex: 2
+                  }
+                ],
+                value: '{d-kur₂?}'
+              },
+              {
+                type: 'Determinative',
+                parts: [
+                  {
+                    type: 'Reading',
+                    value: 'd!',
+                    modifiers: [],
+                    name: 'd',
+                    sign: null,
+                    flags: ['!'],
+                    subIndex: 1
+                  }
+                ],
+                value: '{d!}'
+              },
+              {
+                type: 'Reading',
+                value: 'kur',
+                modifiers: [],
+                name: 'kur',
+                sign: null,
+                flags: [],
+                subIndex: 1
+              },
+              {
+                type: 'LinguisticGloss',
+                parts: [
+                  {
+                    type: 'Reading',
+                    value: 'kur',
+                    modifiers: [],
+                    name: 'kur',
+                    sign: null,
+                    flags: [],
+                    subIndex: 1
+                  }
+                ],
+                value: '{{kur}}'
+              }
+            ]
+          },
+          {
+            type: 'Word',
+            lemmatizable: true,
+            normalized: false,
+            language: 'AKKADIAN',
+            erasure: 'NONE',
+            uniqueLemma: [],
+            value: 'kur-{{kur-kur}}kur',
+            parts: [
+              {
+                type: 'Reading',
+                value: 'kur',
+                modifiers: [],
+                name: 'kur',
+                flags: [],
+                subIndex: 1
+              },
+              {
+                type: 'Joiner',
+                value: '-'
+              },
+              {
+                type: 'LinguisticGloss',
+                parts: [
+                  {
+                    type: 'Reading',
+                    value: 'kur',
+                    modifiers: [],
+                    name: 'kur',
+                    flags: [],
+                    subIndex: 1
+                  },
+                  {
+                    type: 'Joiner',
+                    value: '-'
+                  },
+                  {
+                    type: 'Reading',
+                    value: 'kur',
+                    modifiers: [],
+                    name: 'kur',
+                    flags: [],
+                    subIndex: 1
+                  }
+                ],
+                value: '{{kur-kur}}'
+              },
+              {
+                type: 'Reading',
+                value: 'kur',
+                modifiers: [],
+                name: 'kur',
+                flags: [],
+                subIndex: 1
+              }
+            ]
           }
         ]
       }

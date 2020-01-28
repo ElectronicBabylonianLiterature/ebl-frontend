@@ -14,7 +14,8 @@ import {
   NamedSign,
   Grapheme,
   Divider,
-  UnknownSign
+  UnknownSign,
+  Gloss
 } from 'fragmentarium/domain/text'
 import classNames from 'classnames'
 
@@ -31,6 +32,17 @@ function DefaultToken({
           ))
         : value}
     </>
+  )
+}
+
+function GlossComponent({ token }: { token: Token }): JSX.Element {
+  const gloss = token as Gloss
+  return (
+    <sup>
+      {gloss.parts.map((token, index) => (
+        <DisplayToken key={index} token={token} />
+      ))}
+    </sup>
   )
 }
 
@@ -130,7 +142,10 @@ const tokens: ReadonlyMap<
     }
   ],
   ['UnclearSign', UnknownSignComponent],
-  ['UnidentifiedSign', UnknownSignComponent]
+  ['UnidentifiedSign', UnknownSignComponent],
+  ['Determinative', GlossComponent],
+  ['PhoneticGloss', GlossComponent],
+  ['LinguisticGloss', GlossComponent]
 ])
 
 function DisplayToken({ token }: { token: Token }): JSX.Element {

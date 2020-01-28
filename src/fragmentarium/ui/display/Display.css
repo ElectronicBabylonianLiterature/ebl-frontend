@@ -9,9 +9,19 @@
 
 .Display__bracket,
 .Display__flag,
-.Display__subIndex {
+.Display__subIndex,
+.Display__token--Determinative,
+.Display__token--Determinative .Display__token--Reading,
+.Display__token--Determinative .Display__token--Number,
+.Display__token--Determinative .Display__token--UnidentifiedSign,
+.Display__token--Determinative .Display__token--CompoundGrapheme,
+.Display__token--Determinative .Display__token--Joiner {
   font-style: normal;
   font-variant: normal;
+}
+
+.Display__token--Determinative + .Display__token--Determinative > sup:before {
+  content: ".";
 }
 
 .Display__token--Reading,
@@ -19,7 +29,10 @@
 .Display__token--UnidentifiedSign,
 .Display__token--CompoundGrapheme,
 .Display__token--Joiner,
-.Display__token--Divider {
+.Display__token--Divider,
+.Display__token--DocumentOrientedGloss,
+.Display__token--PhoneticGloss,
+.Display__token--LinguisticGloss {
   font-style: italic;
   font-variant: normal;
 }
