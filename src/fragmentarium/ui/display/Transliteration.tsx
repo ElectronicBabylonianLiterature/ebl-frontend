@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import { Line, Token, Text } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 function WordSeparator(): JSX.Element {
   return <span className="Transliteration__wordSeparator"> </span>
+}
+
+function DocumentOrientedGLoss({
+  children
+}: PropsWithChildren<{}>): JSX.Element {
+  return (
+    <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
+  )
 }
 
 function DisplayLine({
@@ -33,12 +41,9 @@ function DisplayLine({
             token.value === ')}'
           ) {
             acc.result.push(
-              <sup
-                key={index}
-                className="Transliteration__DocumentOrientedGloss"
-              >
+              <DocumentOrientedGLoss key={index}>
                 {acc.gloss}
-              </sup>
+              </DocumentOrientedGLoss>
             )
             acc.gloss = null
           } else if (acc.gloss !== null) {
