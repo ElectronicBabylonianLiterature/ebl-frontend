@@ -238,6 +238,33 @@ beforeEach(async () => {
                 subIndex: 1
               }
             ]
+          },
+          {
+            type: 'DocumentOrientedGloss',
+            value: '{('
+          },
+          {
+            type: 'Word',
+            lemmatizable: true,
+            normalized: false,
+            language: 'AKKADIAN',
+            erasure: 'NONE',
+            uniqueLemma: [],
+            value: 'kur',
+            parts: [
+              {
+                type: 'Reading',
+                value: 'kur',
+                modifiers: [],
+                name: 'kur',
+                flags: [],
+                subIndex: 1
+              }
+            ]
+          },
+          {
+            type: 'DocumentOrientedGloss',
+            value: ')}'
           }
         ]
       }

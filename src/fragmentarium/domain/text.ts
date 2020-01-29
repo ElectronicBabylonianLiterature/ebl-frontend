@@ -116,6 +116,10 @@ export interface LinguisticGloss extends Gloss {
   type: 'LinguisticGloss'
 }
 
+export interface DocumentOrientedGloss extends NotLemmatizableToken {
+  type: 'DocumentOrientedGloss'
+}
+
 export type Token =
   | ValueToken
   | Word
@@ -134,6 +138,7 @@ export type Token =
   | Determinative
   | PhoneticGloss
   | LinguisticGloss
+  | DocumentOrientedGloss
 
 export interface Line {
   readonly type: string

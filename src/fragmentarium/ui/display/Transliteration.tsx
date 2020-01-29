@@ -114,10 +114,10 @@ const tokens: ReadonlyMap<
     ({ token }: { token: Token }): JSX.Element => (
       <>
         {(token as Variant).tokens.map((token, index) => (
-          <>
+          <React.Fragment key={index}>
             {index > 0 ? '/' : null}
-            <DisplayToken key={index} token={token} />
-          </>
+            <DisplayToken token={token} />
+          </React.Fragment>
         ))}
       </>
     )
@@ -133,12 +133,18 @@ const tokens: ReadonlyMap<
   ['PhoneticGloss', GlossComponent],
   ['LinguisticGloss', GlossComponent]
 ])
-function DisplayToken({ token }: { token: Token }): JSX.Element {
+function DisplayToken({
+  token,
+  container = 'span'
+}: {
+  token: Token
+  container?: string
+}): JSX.Element {
   const TokenComponent = tokens.get(token.type) || DefaultToken
-  return (
-    <span className={classNames([`Transliteration__${token.type}`])}>
-      <TokenComponent token={token} />
-    </span>
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${token.type}`]) },
+    <TokenComponent token={token} />
   )
 }
 
@@ -152,15 +158,50 @@ function DisplayLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <>
-      <span>{prefix}</span>
-      {content.map((token, index) => (
-        <>
-          {' '}
-          <DisplayToken key={index} token={token} />
-        </>
-      ))}
-    </>
+    [
+      <span key="prefix">{prefix}</span>,
+      ...content.reduce(
+        (
+          acc: { result: React.ReactNode[]; gloss: React.ReactNode[] | null },
+          token: Token,
+          index: number
+        ) => {
+          if (token.type === 'DocumentOrientedGloss' && token.value === '{(') {
+            acc.result.push(
+              <React.Fragment key={`${index}-separator`}> </React.Fragment>
+            )
+            acc.gloss = []
+          } else if (
+            token.type === 'DocumentOrientedGloss' &&
+            token.value === ')}'
+          ) {
+            acc.result.push(
+              <sup
+                key={index}
+                className="Transliteration__DocumentOrientedGloss"
+              >
+                {acc.gloss}
+              </sup>
+            )
+            acc.gloss = null
+          } else if (acc.gloss !== null) {
+            if (acc.gloss.length > 0) {
+              acc.gloss.push(
+                <React.Fragment key={`${index}-separator`}> </React.Fragment>
+              )
+            }
+            acc.gloss.push(<DisplayToken key={index} token={token} />)
+          } else {
+            acc.result.push(
+              <React.Fragment key={`${index}-separator`}> </React.Fragment>
+            )
+            acc.result.push(<DisplayToken key={index} token={token} />)
+          }
+          return acc
+        },
+        { result: [], gloss: null }
+      ).result
+    ]
   )
 }
 export function Transliteration({

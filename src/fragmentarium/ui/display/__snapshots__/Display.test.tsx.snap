@@ -357,6 +357,26 @@ exports[`Snapshot 1`] = `
           />
         </span>
       </span>
+       
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
+        <span
+          class="Transliteration__Word"
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            kur
+            <span
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+      </sup>
     </li>
   </ol>
 </div>
