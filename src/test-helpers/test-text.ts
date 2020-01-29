@@ -2,6 +2,28 @@ import { factory } from 'factory-girl'
 import { Text } from 'fragmentarium/domain/text'
 import Word from 'dictionary/domain/Word'
 
+import { Word as WordToken } from 'fragmentarium/domain/text'
+
+const testWord: WordToken = {
+  type: 'Word',
+  value: 'kur',
+  uniqueLemma: [],
+  language: 'AKKADIAN',
+  normalized: false,
+  lemmatizable: true,
+  erasure: 'NONE',
+  parts: [
+    {
+      type: 'Reading',
+      value: 'kur',
+      name: 'kur',
+      subIndex: 1,
+      modifiers: [],
+      flags: []
+    }
+  ]
+}
+
 export default async function createLemmatizationTestText(): Promise<
   [Text, [Word, Word, Word, Word]]
 > {
@@ -13,24 +35,14 @@ export default async function createLemmatizationTestText(): Promise<
         prefix: '1.',
         content: [
           {
-            type: 'Word',
+            ...testWord,
             value: 'kur',
-            uniqueLemma: [words[0]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true,
-            erasure: 'NONE',
-            parts: []
+            uniqueLemma: [words[0]._id]
           },
           {
-            type: 'Word',
+            ...testWord,
             value: 'nu',
-            uniqueLemma: [words[1]._id],
-            language: 'AKKADIAN',
-            normalized: false,
-            lemmatizable: true,
-            erasure: 'NONE',
-            parts: []
+            uniqueLemma: [words[1]._id]
           }
         ]
       }
