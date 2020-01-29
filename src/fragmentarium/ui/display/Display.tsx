@@ -14,7 +14,8 @@ import {
   NamedSign,
   UnknownSign,
   Gloss,
-  Sign
+  Sign,
+  Text
 } from 'fragmentarium/domain/text'
 import classNames from 'classnames'
 
@@ -168,6 +169,15 @@ function DisplayLine({
   )
 }
 
+function Transliteration({ text: { lines } }: { text: Text }): JSX.Element {
+  return (
+    <ol className="Display__lines">
+      {lines.map((line: Line, index: number) => (
+        <DisplayLine key={index} container="li" line={line} />
+      ))}
+    </ol>
+  )
+}
 interface Props {
   fragment: Fragment
 }
@@ -176,11 +186,7 @@ function Display({ fragment }: Props): JSX.Element {
   return (
     <>
       <TransliterationHeader fragment={fragment} />
-      <ol className="Display__lines">
-        {fragment.text.lines.map((line: Line, index: number) => (
-          <DisplayLine key={index} container="li" line={line} />
-        ))}
-      </ol>
+      <Transliteration text={fragment.text} />
       <SessionContext.Consumer>
         {(session: Session): React.ReactNode =>
           session.hasBetaAccess() && <Glossary fragment={fragment} />
