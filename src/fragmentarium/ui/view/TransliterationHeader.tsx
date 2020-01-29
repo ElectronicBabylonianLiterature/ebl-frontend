@@ -7,7 +7,7 @@ export default function TransliterationHeader({
   fragment
 }: {
   fragment: Fragment
-}) {
+}): JSX.Element {
   return (
     <header>
       {fragment.description.split('\n').map((paragraph, index) => (
