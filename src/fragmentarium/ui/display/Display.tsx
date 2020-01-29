@@ -178,9 +178,7 @@ function Display({ fragment }: Props): JSX.Element {
       <TransliterationHeader fragment={fragment} />
       <ol className="Display__lines">
         {fragment.text.lines.map((line: Line, index: number) => (
-          <li key={index}>
-            <DisplayLine line={line} />
-          </li>
+          <DisplayLine key={index} container="li" line={line} />
         ))}
       </ol>
       <SessionContext.Consumer>

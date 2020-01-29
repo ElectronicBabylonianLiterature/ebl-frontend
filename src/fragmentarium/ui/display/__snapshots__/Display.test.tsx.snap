@@ -24,61 +24,194 @@ exports[`Snapshot 1`] = `
   <ol
     class="Display__lines"
   >
-    <li>
-      <div
-        class="Display__line Display__line--TextLine"
+    <li
+      class="Display__line Display__line--TextLine"
+    >
+      <span>
+        1.
+      </span>
+       
+      <span
+        class="Display__token Display__token--Word"
       >
-        <span>
-          1.
-        </span>
-         
         <span
-          class="Display__token Display__token--Word"
+          class="Display__token Display__token--Reading"
         >
+          kur
           <span
-            class="Display__token Display__token--Reading"
+            class="Display__modifier"
           >
-            kur
-            <span
-              class="Display__modifier"
-            >
-              @v
-            </span>
-            <sup
-              class="Display__flag"
-            >
-              #!
-            </sup>
+            @v
+          </span>
+          <sup
+            class="Display__flag"
+          >
+            #!
+          </sup>
+        </span>
+        <span
+          class="Display__token Display__token--Joiner"
+        >
+          .
+        </span>
+        <span
+          class="Display__token Display__token--Reading"
+        >
+          kur
+          <sub
+            class="Display__subIndex"
+          >
+            x
+          </sub>
+          <span
+            class="Display__modifier"
+          />
+          <sup
+            class="Display__flag"
+          />
+          <span
+            class="Display__bracket"
+          >
+            (
           </span>
           <span
-            class="Display__token Display__token--Joiner"
+            class="Display__token Display__token--Grapheme"
           >
-            .
-          </span>
-          <span
-            class="Display__token Display__token--Reading"
-          >
-            kur
-            <sub
-              class="Display__subIndex"
-            >
-              x
-            </sub>
+            KUR
             <span
               class="Display__modifier"
             />
             <sup
               class="Display__flag"
             />
+          </span>
+          <span
+            class="Display__bracket"
+          >
+            )
+          </span>
+        </span>
+        <span
+          class="Display__token Display__token--Joiner"
+        >
+          -
+        </span>
+        <span
+          class="Display__token Display__token--Logogram"
+        >
+          KUR
+          <sub
+            class="Display__subIndex"
+          >
+            2
+          </sub>
+          <span
+            class="Display__modifier"
+          >
+            @v
+          </span>
+          <sup
+            class="Display__flag"
+          >
+            #!
+          </sup>
+        </span>
+      </span>
+       
+      <span
+        class="Display__token Display__token--Word"
+      >
+        <span
+          class="Display__token Display__token--CompoundGrapheme"
+        >
+          |KUR.KUR|
+        </span>
+      </span>
+       
+      <span
+        class="Display__token Display__token--UnknownNumberOfSigns"
+      >
+        …
+      </span>
+       
+      <span
+        class="Display__token Display__token--UnidentifiedSign"
+      >
+        X
+        <sup
+          class="Display__flag"
+        />
+      </span>
+       
+      <span
+        class="Display__token Display__token--UnclearSign"
+      >
+        x
+        <sup
+          class="Display__flag"
+        />
+      </span>
+       
+      <span
+        class="Display__token Display__token--Variant"
+      >
+        <span
+          class="Display__token Display__token--Reading"
+        >
+          kur
+          <span
+            class="Display__modifier"
+          />
+          <sup
+            class="Display__flag"
+          />
+        </span>
+        /
+        <span
+          class="Display__token Display__token--Logogram"
+        >
+          KUR
+          <span
+            class="Display__modifier"
+          />
+          <sup
+            class="Display__flag"
+          />
+          <span
+            class="Display__bracket"
+          >
+            &lt;(
+          </span>
+          <span
+            class="Display__token Display__token--Reading"
+          >
+            kur
             <span
-              class="Display__bracket"
-            >
-              (
-            </span>
+              class="Display__modifier"
+            />
+            <sup
+              class="Display__flag"
+            />
+          </span>
+          <span
+            class="Display__bracket"
+          >
+            )&gt;
+          </span>
+        </span>
+      </span>
+       
+      <span
+        class="Display__token Display__token--Word"
+      >
+        <span
+          class="Display__token Display__token--Determinative"
+        >
+          <sup>
             <span
-              class="Display__token Display__token--Grapheme"
+              class="Display__token Display__token--Reading"
             >
-              KUR
+              d
               <span
                 class="Display__modifier"
               />
@@ -87,102 +220,102 @@ exports[`Snapshot 1`] = `
               />
             </span>
             <span
-              class="Display__bracket"
+              class="Display__token Display__token--Joiner"
             >
-              )
+              -
             </span>
-          </span>
-          <span
-            class="Display__token Display__token--Joiner"
-          >
-            -
-          </span>
-          <span
-            class="Display__token Display__token--Logogram"
-          >
-            KUR
-            <sub
-              class="Display__subIndex"
-            >
-              2
-            </sub>
             <span
-              class="Display__modifier"
+              class="Display__token Display__token--Reading"
             >
-              @v
+              kur
+              <sub
+                class="Display__subIndex"
+              >
+                2
+              </sub>
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              >
+                ?
+              </sup>
             </span>
-            <sup
-              class="Display__flag"
+          </sup>
+        </span>
+        <span
+          class="Display__token Display__token--Determinative"
+        >
+          <sup>
+            <span
+              class="Display__token Display__token--Reading"
             >
-              #!
-            </sup>
-          </span>
+              d
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              >
+                !
+              </sup>
+            </span>
+          </sup>
         </span>
-         
         <span
-          class="Display__token Display__token--Word"
+          class="Display__token Display__token--Reading"
         >
+          kur
           <span
-            class="Display__token Display__token--CompoundGrapheme"
-          >
-            |KUR.KUR|
-          </span>
-        </span>
-         
-        <span
-          class="Display__token Display__token--UnknownNumberOfSigns"
-        >
-          …
-        </span>
-         
-        <span
-          class="Display__token Display__token--UnidentifiedSign"
-        >
-          X
+            class="Display__modifier"
+          />
           <sup
             class="Display__flag"
           />
         </span>
-         
         <span
-          class="Display__token Display__token--UnclearSign"
+          class="Display__token Display__token--LinguisticGloss"
         >
-          x
+          <sup>
+            <span
+              class="Display__token Display__token--Reading"
+            >
+              kur
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              />
+            </span>
+          </sup>
+        </span>
+      </span>
+       
+      <span
+        class="Display__token Display__token--Word"
+      >
+        <span
+          class="Display__token Display__token--Reading"
+        >
+          kur
+          <span
+            class="Display__modifier"
+          />
           <sup
             class="Display__flag"
           />
         </span>
-         
         <span
-          class="Display__token Display__token--Variant"
+          class="Display__token Display__token--Joiner"
         >
-          <span
-            class="Display__token Display__token--Reading"
-          >
-            kur
-            <span
-              class="Display__modifier"
-            />
-            <sup
-              class="Display__flag"
-            />
-          </span>
-          /
-          <span
-            class="Display__token Display__token--Logogram"
-          >
-            KUR
-            <span
-              class="Display__modifier"
-            />
-            <sup
-              class="Display__flag"
-            />
-            <span
-              class="Display__bracket"
-            >
-              &lt;(
-            </span>
+          -
+        </span>
+        <span
+          class="Display__token Display__token--LinguisticGloss"
+        >
+          <sup>
             <span
               class="Display__token Display__token--Reading"
             >
@@ -195,170 +328,35 @@ exports[`Snapshot 1`] = `
               />
             </span>
             <span
-              class="Display__bracket"
+              class="Display__token Display__token--Joiner"
             >
-              )&gt;
+              -
             </span>
-          </span>
+            <span
+              class="Display__token Display__token--Reading"
+            >
+              kur
+              <span
+                class="Display__modifier"
+              />
+              <sup
+                class="Display__flag"
+              />
+            </span>
+          </sup>
         </span>
-         
         <span
-          class="Display__token Display__token--Word"
+          class="Display__token Display__token--Reading"
         >
+          kur
           <span
-            class="Display__token Display__token--Determinative"
-          >
-            <sup>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                d
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                />
-              </span>
-              <span
-                class="Display__token Display__token--Joiner"
-              >
-                -
-              </span>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                kur
-                <sub
-                  class="Display__subIndex"
-                >
-                  2
-                </sub>
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                >
-                  ?
-                </sup>
-              </span>
-            </sup>
-          </span>
-          <span
-            class="Display__token Display__token--Determinative"
-          >
-            <sup>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                d
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                >
-                  !
-                </sup>
-              </span>
-            </sup>
-          </span>
-          <span
-            class="Display__token Display__token--Reading"
-          >
-            kur
-            <span
-              class="Display__modifier"
-            />
-            <sup
-              class="Display__flag"
-            />
-          </span>
-          <span
-            class="Display__token Display__token--LinguisticGloss"
-          >
-            <sup>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                kur
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                />
-              </span>
-            </sup>
-          </span>
+            class="Display__modifier"
+          />
+          <sup
+            class="Display__flag"
+          />
         </span>
-         
-        <span
-          class="Display__token Display__token--Word"
-        >
-          <span
-            class="Display__token Display__token--Reading"
-          >
-            kur
-            <span
-              class="Display__modifier"
-            />
-            <sup
-              class="Display__flag"
-            />
-          </span>
-          <span
-            class="Display__token Display__token--Joiner"
-          >
-            -
-          </span>
-          <span
-            class="Display__token Display__token--LinguisticGloss"
-          >
-            <sup>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                kur
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                />
-              </span>
-              <span
-                class="Display__token Display__token--Joiner"
-              >
-                -
-              </span>
-              <span
-                class="Display__token Display__token--Reading"
-              >
-                kur
-                <span
-                  class="Display__modifier"
-                />
-                <sup
-                  class="Display__flag"
-                />
-              </span>
-            </sup>
-          </span>
-          <span
-            class="Display__token Display__token--Reading"
-          >
-            kur
-            <span
-              class="Display__modifier"
-            />
-            <sup
-              class="Display__flag"
-            />
-          </span>
-        </span>
-      </div>
+      </span>
     </li>
   </ol>
 </div>
