@@ -30,7 +30,11 @@ exports[`Snapshot 1`] = `
       <span>
         1.
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__Word"
       >
@@ -117,7 +121,11 @@ exports[`Snapshot 1`] = `
           </sup>
         </span>
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__Word"
       >
@@ -127,13 +135,21 @@ exports[`Snapshot 1`] = `
           |KUR.KUR|
         </span>
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__UnknownNumberOfSigns"
       >
         …
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__UnidentifiedSign"
       >
@@ -142,7 +158,11 @@ exports[`Snapshot 1`] = `
           class="Transliteration__flag"
         />
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__UnclearSign"
       >
@@ -151,7 +171,11 @@ exports[`Snapshot 1`] = `
           class="Transliteration__flag"
         />
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__Variant"
       >
@@ -200,7 +224,11 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__Word"
       >
@@ -292,7 +320,11 @@ exports[`Snapshot 1`] = `
           </sup>
         </span>
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <span
         class="Transliteration__Word"
       >
@@ -357,7 +389,11 @@ exports[`Snapshot 1`] = `
           />
         </span>
       </span>
-       
+      <span
+        class="Transliteration__wordSeparator"
+      >
+         
+      </span>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >

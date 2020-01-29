@@ -12,6 +12,10 @@ import {
   Text
 } from 'fragmentarium/domain/text'
 
+function WordSeparator(): JSX.Element {
+  return <span className="Transliteration__wordSeparator"> </span>
+}
+
 function DefaultToken({
   token: { parts, value }
 }: {
@@ -167,9 +171,7 @@ function DisplayLine({
           index: number
         ) => {
           if (token.type === 'DocumentOrientedGloss' && token.value === '{(') {
-            acc.result.push(
-              <React.Fragment key={`${index}-separator`}> </React.Fragment>
-            )
+            acc.result.push(<WordSeparator key={`${index}-separator`} />)
             acc.gloss = []
           } else if (
             token.type === 'DocumentOrientedGloss' &&
@@ -186,15 +188,11 @@ function DisplayLine({
             acc.gloss = null
           } else if (acc.gloss !== null) {
             if (acc.gloss.length > 0) {
-              acc.gloss.push(
-                <React.Fragment key={`${index}-separator`}> </React.Fragment>
-              )
+              acc.gloss.push(<WordSeparator key={`${index}-separator`} />)
             }
             acc.gloss.push(<DisplayToken key={index} token={token} />)
           } else {
-            acc.result.push(
-              <React.Fragment key={`${index}-separator`}> </React.Fragment>
-            )
+            acc.result.push(<WordSeparator key={`${index}-separator`} />)
             acc.result.push(<DisplayToken key={index} token={token} />)
           }
           return acc
