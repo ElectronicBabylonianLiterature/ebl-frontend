@@ -1,43 +1,43 @@
-.Display__lines {
+.Transliteration {
   list-style: none;
   padding: 0;
 }
 
-.Display__line--ControlLine {
+.Transliteration__ControlLine {
   color: darkgrey
 }
 
-.Display__bracket,
-.Display__flag,
-.Display__subIndex,
-.Display__token--Determinative,
-.Display__token--Determinative .Display__token--Reading,
-.Display__token--Determinative .Display__token--Number,
-.Display__token--Determinative .Display__token--UnidentifiedSign,
-.Display__token--Determinative .Display__token--CompoundGrapheme,
-.Display__token--Determinative .Display__token--Joiner {
+.Transliteration__bracket,
+.Transliteration__flag,
+.Transliteration__subIndex,
+.Transliteration__Determinative,
+.Transliteration__Determinative .Transliteration__Reading,
+.Transliteration__Determinative .Transliteration__Number,
+.Transliteration__Determinative .Transliteration__UnidentifiedSign,
+.Transliteration__Determinative .Transliteration__CompoundGrapheme,
+.Transliteration__Determinative .Transliteration__Joiner {
   font-style: normal;
   font-variant: normal;
 }
 
-.Display__token--Determinative + .Display__token--Determinative > sup:before {
+.Transliteration__Determinative + .Transliteration__Determinative > sup:before {
   content: ".";
 }
 
-.Display__token--Reading,
-.Display__token--Number,
-.Display__token--UnidentifiedSign,
-.Display__token--CompoundGrapheme,
-.Display__token--Joiner,
-.Display__token--Divider,
-.Display__token--DocumentOrientedGloss,
-.Display__token--PhoneticGloss,
-.Display__token--LinguisticGloss {
+.Transliteration__Reading,
+.Transliteration__Number,
+.Transliteration__UnidentifiedSign,
+.Transliteration__CompoundGrapheme,
+.Transliteration__Joiner,
+.Transliteration__Divider,
+.Transliteration__DocumentOrientedGloss,
+.Transliteration__PhoneticGloss,
+.Transliteration__LinguisticGloss {
   font-style: italic;
   font-variant: normal;
 }
 
-.Display__token--Logogram {
+.Transliteration__Logogram {
   font-style: normal;
   font-variant: small-caps;
 }

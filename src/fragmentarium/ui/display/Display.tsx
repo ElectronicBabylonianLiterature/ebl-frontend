@@ -55,7 +55,7 @@ function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
   return (
     <>
       {signs[sign.type]}
-      <sup className="Display__flag">{sign.flags.join('')}</sup>
+      <sup className="Transliteration__flag">{sign.flags.join('')}</sup>
     </>
   )
 }
@@ -66,8 +66,10 @@ function signComponent(nameProperty: string) {
     return (
       <>
         {sign[nameProperty]}
-        <span className="Display__modifier">{sign.modifiers.join('')}</span>
-        <sup className="Display__flag">{sign.flags.join('')}</sup>
+        <span className="Transliteration__modifier">
+          {sign.modifiers.join('')}
+        </span>
+        <sup className="Transliteration__flag">{sign.flags.join('')}</sup>
       </>
     )
   }
@@ -79,24 +81,28 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
     <>
       {namedSign.name}
       {namedSign.subIndex !== 1 && (
-        <sub className="Display__subIndex">{namedSign.subIndex || 'x'}</sub>
+        <sub className="Transliteration__subIndex">
+          {namedSign.subIndex || 'x'}
+        </sub>
       )}
-      <span className="Display__modifier">{namedSign.modifiers.join('')}</span>
-      <sup className="Display__flag">{namedSign.flags.join('')}</sup>
+      <span className="Transliteration__modifier">
+        {namedSign.modifiers.join('')}
+      </span>
+      <sup className="Transliteration__flag">{namedSign.flags.join('')}</sup>
       {namedSign.sign && (
         <>
-          <span className="Display__bracket">(</span>
+          <span className="Transliteration__bracket">(</span>
           <DisplayToken token={namedSign.sign} />
-          <span className="Display__bracket">)</span>
+          <span className="Transliteration__bracket">)</span>
         </>
       )}
       {namedSign.surrogate && !_.isEmpty(namedSign.surrogate) && (
         <>
-          <span className="Display__bracket">&lt;(</span>
+          <span className="Transliteration__bracket">&lt;(</span>
           {namedSign.surrogate.map((token, index) => (
             <DisplayToken key={index} token={token} />
           ))}
-          <span className="Display__bracket">)&gt;</span>
+          <span className="Transliteration__bracket">)&gt;</span>
         </>
       )}
     </>
@@ -136,12 +142,7 @@ const tokens: ReadonlyMap<
 function DisplayToken({ token }: { token: Token }): JSX.Element {
   const TokenComponent = tokens.get(token.type) || DefaultToken
   return (
-    <span
-      className={classNames([
-        'Display__token',
-        `Display__token--${token.type}`
-      ])}
-    >
+    <span className={classNames([`Transliteration__${token.type}`])}>
       <TokenComponent token={token} />
     </span>
   )
@@ -156,7 +157,7 @@ function DisplayLine({
 }): JSX.Element {
   return React.createElement(
     container,
-    { className: classNames(['Display__line', `Display__line--${type}`]) },
+    { className: classNames([`Transliteration__${type}`]) },
     <>
       <span>{prefix}</span>
       {content.map((token, index) => (
@@ -171,7 +172,7 @@ function DisplayLine({
 
 function Transliteration({ text: { lines } }: { text: Text }): JSX.Element {
   return (
-    <ol className="Display__lines">
+    <ol className="Transliteration">
       {lines.map((line: Line, index: number) => (
         <DisplayLine key={index} container="li" line={line} />
       ))}
