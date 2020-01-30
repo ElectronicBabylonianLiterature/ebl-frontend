@@ -81,6 +81,8 @@
 .Transliteration__UnidentifiedSign--damaged:before,
 .Transliteration__UnknownSign--damaged:before {
   content: "⸢";
+  font-style: normal;
+  font-variant: normal;
 }
 
 .Transliteration__Reading--damaged:after,
@@ -92,4 +94,6 @@
 .Transliteration__UnidentifiedSign--damaged:after,
 .Transliteration__UnknownSign--damaged:after {
   content: "⸣";
+  font-style: normal;
+  font-variant: normal;
 }
