@@ -10,6 +10,18 @@ import {
   Sign
 } from 'fragmentarium/domain/text'
 
+function Modifiers({
+  modifiers
+}: {
+  modifiers: readonly string[]
+}): JSX.Element {
+  return <span className="Transliteration__modifier">{modifiers.join('')}</span>
+}
+
+function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
+  return <sup className="Transliteration__flag">{flags.join('')}</sup>
+}
+
 function DefaultToken({
   token: { parts, value }
 }: {
@@ -22,6 +34,19 @@ function DefaultToken({
             <DisplayToken key={index} token={token} />
           ))
         : value}
+    </>
+  )
+}
+
+function VariantComponent({ token }: { token: Token }): JSX.Element {
+  return (
+    <>
+      {(token as Variant).tokens.map((token, index) => (
+        <React.Fragment key={index}>
+          {index > 0 ? '/' : null}
+          <DisplayToken token={token} />
+        </React.Fragment>
+      ))}
     </>
   )
 }
@@ -46,7 +71,7 @@ function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
   return (
     <>
       {signs[sign.type]}
-      <sup className="Transliteration__flag">{sign.flags.join('')}</sup>
+      <Flags flags={sign.flags} />
     </>
   )
 }
@@ -57,10 +82,8 @@ function signComponent(nameProperty: string) {
     return (
       <>
         {sign[nameProperty]}
-        <span className="Transliteration__modifier">
-          {sign.modifiers.join('')}
-        </span>
-        <sup className="Transliteration__flag">{sign.flags.join('')}</sup>
+        <Modifiers modifiers={sign.modifiers} />
+        <Flags flags={sign.flags} />
       </>
     )
   }
@@ -76,10 +99,8 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
           {namedSign.subIndex || 'x'}
         </sub>
       )}
-      <span className="Transliteration__modifier">
-        {namedSign.modifiers.join('')}
-      </span>
-      <sup className="Transliteration__flag">{namedSign.flags.join('')}</sup>
+      <Modifiers modifiers={namedSign.modifiers} />
+      <Flags flags={namedSign.flags} />
       {namedSign.sign && (
         <>
           <span className="Transliteration__bracket">(</span>
@@ -107,19 +128,7 @@ const tokens: ReadonlyMap<
   }>
 > = new Map([
   ['UnknownNumberOfSigns', (): JSX.Element => <>…</>],
-  [
-    'Variant',
-    ({ token }: { token: Token }): JSX.Element => (
-      <>
-        {(token as Variant).tokens.map((token, index) => (
-          <React.Fragment key={index}>
-            {index > 0 ? '/' : null}
-            <DisplayToken token={token} />
-          </React.Fragment>
-        ))}
-      </>
-    )
-  ],
+  ['Variant', VariantComponent],
   ['Reading', NamedSignComponent],
   ['Logogram', NamedSignComponent],
   ['Number', NamedSignComponent],
