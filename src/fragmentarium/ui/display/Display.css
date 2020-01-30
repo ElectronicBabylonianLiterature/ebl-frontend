@@ -41,3 +41,25 @@
   font-style: normal;
   font-variant: small-caps;
 }
+
+.Transliteration__Reading--damaged:before,
+.Transliteration__Number--damaged:before,
+.Transliteration__Logogram--damaged:before,
+.Transliteration__Divider--damaged:before,
+.Transliteration__Grapheme--damaged:before,
+.Transliteration__Logogram--damaged:before,
+.Transliteration__UnidentifiedSign--damaged:before,
+.Transliteration__UnknownSign--damaged:before {
+  content: "⸢";
+}
+
+.Transliteration__Reading--damaged:after,
+.Transliteration__Number--damaged:after,
+.Transliteration__Logogram--damaged:after,
+.Transliteration__Divider--damaged:after,
+.Transliteration__Grapheme--damaged:after,
+.Transliteration__Logogram--damaged:after,
+.Transliteration__UnidentifiedSign--damaged:after,
+.Transliteration__UnknownSign--damaged:after {
+  content: "⸣";
+}

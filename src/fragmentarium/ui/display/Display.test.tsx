@@ -31,7 +31,7 @@ beforeEach(async () => {
                 value: 'kur@v#!',
                 name: 'kur',
                 subIndex: 1,
-                flags: ['#!'],
+                flags: ['#', '!'],
                 modifiers: ['@v']
               },
               { type: 'Joiner', value: '.' },
@@ -40,7 +40,7 @@ beforeEach(async () => {
                 value: 'kurₓ(KUR)',
                 name: 'kur',
                 subIndex: null,
-                flags: [],
+                flags: ['#'],
                 modifiers: [],
                 sign: {
                   type: 'Grapheme',
@@ -56,7 +56,7 @@ beforeEach(async () => {
                 value: 'KUR₂@v#!',
                 name: 'KUR',
                 subIndex: 2,
-                flags: ['#!'],
+                flags: ['#', '!'],
                 modifiers: ['@v']
               }
             ]
@@ -72,8 +72,8 @@ beforeEach(async () => {
             parts: [{ type: 'CompoundGrapheme', value: '|KUR.KUR|' }]
           },
           { type: 'UnknownNumberOfSigns', value: '...' },
-          { type: 'UnidentifiedSign', value: 'X', flags: [] },
-          { type: 'UnclearSign', value: 'x', flags: [] },
+          { type: 'UnidentifiedSign', value: 'X', flags: ['#'] },
+          { type: 'UnclearSign', value: 'x', flags: ['#'] },
           {
             type: 'Variant',
             value: 'kur/KUR',

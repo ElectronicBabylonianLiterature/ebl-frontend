@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
@@ -18,8 +18,29 @@ function Modifiers({
   return <span className="Transliteration__modifier">{modifiers.join('')}</span>
 }
 
+function DamagedFlag({
+  sign: { type, flags },
+  children
+}: PropsWithChildren<{
+  sign: { type: string; flags: readonly string[] }
+}>): JSX.Element {
+  return (
+    <span
+      className={classNames({
+        [`Transliteration__${type}--damaged`]: flags.includes('#')
+      })}
+    >
+      {children}
+    </span>
+  )
+}
+
 function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
-  return <sup className="Transliteration__flag">{flags.join('')}</sup>
+  return (
+    <sup className="Transliteration__flag">
+      {flags.filter(flag => flag !== '#').join('')}
+    </sup>
+  )
 }
 
 function DefaultToken({
@@ -69,10 +90,10 @@ function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
     UnidentifiedSign: 'X'
   }
   return (
-    <>
+    <DamagedFlag sign={sign}>
       {signs[sign.type]}
       <Flags flags={sign.flags} />
-    </>
+    </DamagedFlag>
   )
 }
 
@@ -80,11 +101,11 @@ function signComponent(nameProperty: string) {
   return function SignComponent({ token }: { token: Token }): JSX.Element {
     const sign = token as Sign
     return (
-      <>
+      <DamagedFlag sign={sign}>
         {sign[nameProperty]}
         <Modifiers modifiers={sign.modifiers} />
         <Flags flags={sign.flags} />
-      </>
+      </DamagedFlag>
     )
   }
 }
@@ -92,7 +113,7 @@ function signComponent(nameProperty: string) {
 function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   const namedSign = token as NamedSign
   return (
-    <>
+    <DamagedFlag sign={namedSign}>
       {namedSign.name}
       {namedSign.subIndex !== 1 && (
         <sub className="Transliteration__subIndex">
@@ -117,7 +138,7 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
           <span className="Transliteration__bracket">)&gt;</span>
         </>
       )}
-    </>
+    </DamagedFlag>
   )
 }
 
