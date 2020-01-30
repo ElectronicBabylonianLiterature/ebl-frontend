@@ -3,8 +3,22 @@ import classNames from 'classnames'
 import { Line, Token, Text } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
-function WordSeparator(): JSX.Element {
-  return <span className="Transliteration__wordSeparator"> </span>
+function WordSeparator({
+  modifiers = []
+}: {
+  modifiers?: readonly string[]
+}): JSX.Element {
+  const element = 'Transliteration__wordSeparator'
+  return (
+    <span
+      className={classNames([
+        element,
+        modifiers.map(flag => `${element}--${flag}`)
+      ])}
+    >
+      {' '}
+    </span>
+  )
 }
 
 function DocumentOrientedGLoss({
@@ -43,7 +57,12 @@ function DisplayLine({
             token.type === 'DocumentOrientedGloss' &&
             token.value === '{('
           ) {
-            acc.result.push(<WordSeparator key={`${index}-separator`} />)
+            acc.result.push(
+              <WordSeparator
+                key={`${index}-separator`}
+                modifiers={[acc.language]}
+              />
+            )
             acc.gloss = []
           } else if (
             token.type === 'DocumentOrientedGloss' &&
@@ -57,7 +76,12 @@ function DisplayLine({
             acc.gloss = null
           } else if (acc.gloss !== null) {
             if (acc.gloss.length > 0) {
-              acc.gloss.push(<WordSeparator key={`${index}-separator`} />)
+              acc.gloss.push(
+                <WordSeparator
+                  key={`${index}-separator`}
+                  modifiers={[acc.language]}
+                />
+              )
             }
             acc.gloss.push(
               <DisplayToken
@@ -67,7 +91,12 @@ function DisplayLine({
               />
             )
           } else {
-            acc.result.push(<WordSeparator key={`${index}-separator`} />)
+            acc.result.push(
+              <WordSeparator
+                key={`${index}-separator`}
+                modifiers={[acc.language]}
+              />
+            )
             acc.result.push(
               <DisplayToken
                 key={index}

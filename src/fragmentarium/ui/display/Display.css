@@ -20,7 +20,9 @@
   font-variant: normal;
 }
 
+.Transliteration__wordSeparator--SUMERIAN,
 .Transliteration__Word--SUMERIAN,
+.Transliteration__Divider--SUMERIAN,
 .Transliteration__Word--SUMERIAN .Transliteration__Reading,
 .Transliteration__Word--SUMERIAN .Transliteration__Number,
 .Transliteration__Word--SUMERIAN .Transliteration__UnidentifiedSign,
@@ -35,7 +37,9 @@
   letter-spacing: 0.1em;
 }
 
+.Transliteration__wordSeparator--EMESAL,
 .Transliteration__Word--EMESAL,
+.Transliteration__Divider--EMESAL,
 .Transliteration__Word--EMESAL .Transliteration__Reading,
 .Transliteration__Word--EMESAL .Transliteration__Number,
 .Transliteration__Word--EMESAL .Transliteration__UnidentifiedSign,
