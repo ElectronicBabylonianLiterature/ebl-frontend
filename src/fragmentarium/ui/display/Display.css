@@ -20,6 +20,36 @@
   font-variant: normal;
 }
 
+.Transliteration__Word--SUMERIAN,
+.Transliteration__Word--SUMERIAN .Transliteration__Reading,
+.Transliteration__Word--SUMERIAN .Transliteration__Number,
+.Transliteration__Word--SUMERIAN .Transliteration__UnidentifiedSign,
+.Transliteration__Word--SUMERIAN .Transliteration__CompoundGrapheme,
+.Transliteration__Word--SUMERIAN .Transliteration__Joiner,
+.Transliteration__Word--SUMERIAN .Transliteration__Divider,
+.Transliteration__Word--SUMERIAN .Transliteration__DocumentOrientedGloss,
+.Transliteration__Word--SUMERIAN .Transliteration__PhoneticGloss,
+.Transliteration__Word--SUMERIAN .Transliteration__LinguisticGloss {
+  font-style: normal;
+  font-variant: normal;
+  letter-spacing: 0.1em;
+}
+
+.Transliteration__Word--EMESAL,
+.Transliteration__Word--EMESAL .Transliteration__Reading,
+.Transliteration__Word--EMESAL .Transliteration__Number,
+.Transliteration__Word--EMESAL .Transliteration__UnidentifiedSign,
+.Transliteration__Word--EMESAL .Transliteration__CompoundGrapheme,
+.Transliteration__Word--EMESAL .Transliteration__Joiner,
+.Transliteration__Word--EMESAL .Transliteration__Divider,
+.Transliteration__Word--EMESAL .Transliteration__DocumentOrientedGloss,
+.Transliteration__Word--EMESAL .Transliteration__PhoneticGloss,
+.Transliteration__Word--EMESAL .Transliteration__LinguisticGloss {
+  font-style: normal;
+  font-variant: normal;
+  color: pink;
+}
+
 .Transliteration__Determinative + .Transliteration__Determinative > sup:before {
   content: ".";
 }

@@ -36,7 +36,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__Word"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class="Transliteration__Reading"
@@ -143,7 +143,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__Word"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class="Transliteration__CompoundGrapheme"
@@ -157,7 +157,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__UnknownNumberOfSigns"
+        class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
       >
         …
       </span>
@@ -167,7 +167,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__UnidentifiedSign"
+        class="Transliteration__UnidentifiedSign Transliteration__UnidentifiedSign--AKKADIAN"
       >
         <span
           class="Transliteration__UnidentifiedSign--damaged"
@@ -184,7 +184,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__UnclearSign"
+        class="Transliteration__UnclearSign Transliteration__UnclearSign--AKKADIAN"
       >
         <span
           class="Transliteration__UnclearSign--damaged"
@@ -201,7 +201,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__Variant"
+        class="Transliteration__Variant Transliteration__Variant--AKKADIAN"
       >
         <span
           class="Transliteration__Reading"
@@ -266,7 +266,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__Word"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class="Transliteration__Determinative"
@@ -382,7 +382,7 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__Word"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class="Transliteration__Reading"
@@ -470,7 +470,7 @@ exports[`Snapshot 1`] = `
         class="Transliteration__DocumentOrientedGloss"
       >
         <span
-          class="Transliteration__Word"
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
           <span
             class="Transliteration__Reading"

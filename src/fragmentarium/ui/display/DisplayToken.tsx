@@ -164,15 +164,23 @@ const tokens: ReadonlyMap<
 
 export function DisplayToken({
   token,
-  container = 'span'
+  container = 'span',
+  modifiers = []
 }: {
   token: Token
   container?: string
+  modifiers?: readonly string[]
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) || DefaultToken
+  const element = `Transliteration__${token.type}`
   return React.createElement(
     container,
-    { className: classNames([`Transliteration__${token.type}`]) },
+    {
+      className: classNames([
+        element,
+        ...modifiers.map(modifier => `${element}--${modifier}`)
+      ])
+    },
     <TokenComponent token={token} />
   )
 }

@@ -29,11 +29,20 @@ function DisplayLine({
       <span key="prefix">{prefix}</span>,
       ...content.reduce(
         (
-          acc: { result: React.ReactNode[]; gloss: React.ReactNode[] | null },
+          acc: {
+            result: React.ReactNode[]
+            gloss: React.ReactNode[] | null
+            language: string
+          },
           token: Token,
           index: number
         ) => {
-          if (token.type === 'DocumentOrientedGloss' && token.value === '{(') {
+          if (token.type === 'LanguageShift') {
+            acc.language = token.language
+          } else if (
+            token.type === 'DocumentOrientedGloss' &&
+            token.value === '{('
+          ) {
             acc.result.push(<WordSeparator key={`${index}-separator`} />)
             acc.gloss = []
           } else if (
@@ -50,14 +59,26 @@ function DisplayLine({
             if (acc.gloss.length > 0) {
               acc.gloss.push(<WordSeparator key={`${index}-separator`} />)
             }
-            acc.gloss.push(<DisplayToken key={index} token={token} />)
+            acc.gloss.push(
+              <DisplayToken
+                key={index}
+                token={token}
+                modifiers={[acc.language]}
+              />
+            )
           } else {
             acc.result.push(<WordSeparator key={`${index}-separator`} />)
-            acc.result.push(<DisplayToken key={index} token={token} />)
+            acc.result.push(
+              <DisplayToken
+                key={index}
+                token={token}
+                modifiers={[acc.language]}
+              />
+            )
           }
           return acc
         },
-        { result: [], gloss: null }
+        { result: [], gloss: null, language: 'AKKADIAN' }
       ).result
     ]
   )
