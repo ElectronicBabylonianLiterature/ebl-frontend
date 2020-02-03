@@ -101,3 +101,21 @@
   font-style: normal;
   font-variant: normal;
 }
+
+.Transliteration__BrokenAway,
+.Transliteration__PerhapsBrokenAway,
+.Transliteration__AccidentalOmission,
+.Transliteration__IntentionalOmission,
+.Transliteration__Removal {
+  font-style: normal;
+  font-variant: normal;
+}
+
+sup .Transliteration__BrokenAway,
+sup .Transliteration__PerhapsBrokenAway,
+sup .Transliteration__AccidentalOmission,
+sup .Transliteration__IntentionalOmission,
+sup .Transliteration__Removal {
+  font-size: 1rem;
+  vertical-align: text-bottom;
+}
