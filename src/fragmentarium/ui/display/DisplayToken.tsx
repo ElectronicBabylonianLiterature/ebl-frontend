@@ -15,7 +15,11 @@ function Modifiers({
 }: {
   modifiers: readonly string[]
 }): JSX.Element {
-  return <span className="Transliteration__modifier">{modifiers.join('')}</span>
+  return (
+    <sup className="Transliteration__modifier">
+      {modifiers.map(modifier => modifier.slice(1)).join('')}
+    </sup>
+  )
 }
 
 function DamagedFlag({
