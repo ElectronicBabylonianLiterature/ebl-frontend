@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import { Line, Token, Text } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
+import './Display.sass'
+
 function WordSeparator({
   modifiers = []
 }: {

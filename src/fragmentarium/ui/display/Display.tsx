@@ -5,7 +5,6 @@ import Session from 'auth/Session'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Glossary } from './Glossary'
 
-import './Display.css'
 import { Transliteration } from './Transliteration'
 
 interface Props {
