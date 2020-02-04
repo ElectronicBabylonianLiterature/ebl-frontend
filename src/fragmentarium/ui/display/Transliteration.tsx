@@ -1,13 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import {
-  Line,
-  Token,
-  Text,
-  Enclosure,
-  Shift,
-  DocumentOrientedGloss
-} from 'fragmentarium/domain/text'
+import { Line, Token, Text, Enclosure, Shift } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
@@ -42,7 +35,7 @@ function isShift(token: Token): token is Shift {
   return token.type === 'LanguageShift'
 }
 
-function isDocumentOrientedGloss(token: Token): token is DocumentOrientedGloss {
+function isDocumentOrientedGloss(token: Token): token is Enclosure {
   return token.type === 'DocumentOrientedGloss'
 }
 
@@ -140,7 +133,7 @@ function DisplayLine({
         if (isShift(token)) {
           acc.applyLanguage(token)
         } else if (isDocumentOrientedGloss(token)) {
-          token.value === '{(' ? acc.openGloss() : acc.closeGloss()
+          token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
         } else {
           acc.pushToken(token)
         }

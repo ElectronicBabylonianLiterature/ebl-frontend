@@ -101,10 +101,6 @@ export interface Tabulation extends NotLemmatizableToken {
   value: '($___$)'
 }
 
-export interface DocumentOrientedGloss extends NotLemmatizableToken {
-  type: 'DocumentOrientedGloss'
-}
-
 export interface Enclosure extends NotLemmatizableToken {
   type:
     | 'BrokenAway'
@@ -113,6 +109,7 @@ export interface Enclosure extends NotLemmatizableToken {
     | 'IntentionalOmission'
     | 'Removal'
     | 'Erasure'
+    | 'DocumentOrientedGloss'
   side: 'LEFT' | 'CENTER' | 'RIGHT'
 }
 
@@ -130,7 +127,6 @@ export type Token =
   | Divider
   | CompoundGrapheme
   | Gloss
-  | DocumentOrientedGloss
   | Enclosure
   | Tabulation
 

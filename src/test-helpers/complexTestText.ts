@@ -579,7 +579,8 @@ export default new Text({
         },
         {
           type: 'DocumentOrientedGloss',
-          value: '{('
+          value: '{(',
+          side: 'LEFT'
         },
         {
           type: 'Word',
@@ -746,7 +747,8 @@ export default new Text({
         },
         {
           type: 'DocumentOrientedGloss',
-          value: ')}'
+          value: ')}',
+          side: 'RIGHT'
         }
       ],
       prefix: '6.'
@@ -1566,7 +1568,8 @@ export default new Text({
         },
         {
           type: 'DocumentOrientedGloss',
-          value: '{('
+          value: '{(',
+          side: 'LEFT'
         },
         {
           type: 'Word',
@@ -1590,7 +1593,8 @@ export default new Text({
         },
         {
           type: 'DocumentOrientedGloss',
-          value: ')}'
+          value: ')}',
+          side: 'RIGHT'
         },
         {
           type: 'BrokenAway',
