@@ -70,22 +70,11 @@ export interface Sign extends NotLemmatizableToken {
 }
 
 export interface NamedSign extends Sign {
+  type: 'Reading' | 'Logogram' | 'Number'
   name: string
   subIndex?: number | null
   sign?: Token | null
   surrogate?: readonly Token[] | null
-}
-
-export interface Reading extends NamedSign {
-  type: 'Reading'
-}
-
-export interface Logogram extends NamedSign {
-  type: 'Logogram'
-}
-
-export interface NumberSign extends NamedSign {
-  type: 'Number'
 }
 
 export interface Divider extends Sign {
@@ -136,9 +125,7 @@ export type Token =
   | UnknownNumberOfSigns
   | UnknownSign
   | Variant
-  | Reading
-  | Logogram
-  | NumberSign
+  | NamedSign
   | Grapheme
   | Divider
   | CompoundGrapheme
