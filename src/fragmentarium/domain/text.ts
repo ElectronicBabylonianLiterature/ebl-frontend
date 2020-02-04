@@ -118,6 +118,10 @@ export interface LinguisticGloss extends Gloss {
   type: 'LinguisticGloss'
 }
 
+export interface Tabulation extends NotLemmatizableToken {
+  type: 'Tabulation'
+}
+
 export interface DocumentOrientedGloss extends NotLemmatizableToken {
   type: 'DocumentOrientedGloss'
 }

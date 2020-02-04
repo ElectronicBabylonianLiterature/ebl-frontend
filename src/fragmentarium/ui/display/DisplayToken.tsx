@@ -146,6 +146,10 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   )
 }
 
+function TabulationComponent({ token }: { token: Token }): JSX.Element {
+  return <span></span>
+}
+
 const tokens: ReadonlyMap<
   string,
   FunctionComponent<{
@@ -163,7 +167,8 @@ const tokens: ReadonlyMap<
   ['UnidentifiedSign', UnknownSignComponent],
   ['Determinative', GlossComponent],
   ['PhoneticGloss', GlossComponent],
-  ['LinguisticGloss', GlossComponent]
+  ['LinguisticGloss', GlossComponent],
+  ['Tabulation', TabulationComponent]
 ])
 
 export function DisplayToken({
