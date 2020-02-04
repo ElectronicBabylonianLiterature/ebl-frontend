@@ -120,6 +120,7 @@ export interface LinguisticGloss extends Gloss {
 
 export interface Tabulation extends NotLemmatizableToken {
   type: 'Tabulation'
+  value: '($___$)'
 }
 
 export interface DocumentOrientedGloss extends NotLemmatizableToken {
@@ -161,6 +162,7 @@ export type Token =
   | LinguisticGloss
   | DocumentOrientedGloss
   | Enclosure
+  | Tabulation
 
 export interface Line {
   readonly type: string
