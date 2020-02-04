@@ -71,10 +71,6 @@ class LineAccumulator {
   private language = 'AKKADIAN'
   private enclosureOpened = false
 
-  private get index(): number {
-    return this.result.length
-  }
-
   applyLanguage(token: Shift): void {
     this.language = token.language
   }
@@ -86,7 +82,7 @@ class LineAccumulator {
     }
     target.push(
       <DisplayToken
-        key={this.index}
+        key={target.length}
         token={token}
         modifiers={[this.language]}
       />
@@ -103,7 +99,7 @@ class LineAccumulator {
 
   closeGloss(): void {
     this.result.push(
-      <DisplayDocumentOrientedGLoss key={this.index}>
+      <DisplayDocumentOrientedGLoss key={this.result.length}>
         {this.gloss}
       </DisplayDocumentOrientedGLoss>
     )
@@ -115,13 +111,13 @@ class LineAccumulator {
     const noEnclosure = !isCloseEnclosure(token) && !this.enclosureOpened
     return this.gloss
       ? this.gloss.length > 0 && noEnclosure
-      : this.index === 0 || noEnclosure
+      : this.result.length === 0 || noEnclosure
   }
 
   private pushSeparator(target: React.ReactNode[]): void {
     target.push(
       <WordSeparator
-        key={`${this.index}-separator`}
+        key={`${target.length}-separator`}
         modifiers={[this.language]}
       />
     )
