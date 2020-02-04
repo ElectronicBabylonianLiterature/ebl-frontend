@@ -1,6 +1,13 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { Line, Token, Text, Enclosure } from 'fragmentarium/domain/text'
+import {
+  Line,
+  Token,
+  Text,
+  Enclosure,
+  Shift,
+  DocumentOrientedGloss
+} from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
@@ -23,12 +30,20 @@ function WordSeparator({
   )
 }
 
-function DocumentOrientedGLoss({
+function DisplayDocumentOrientedGLoss({
   children
 }: PropsWithChildren<{}>): JSX.Element {
   return (
     <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
   )
+}
+
+function isShift(token: Token): token is Shift {
+  return token.type === 'LanguageShift'
+}
+
+function isDocumentOrientedGloss(token: Token): token is DocumentOrientedGloss {
+  return token.type === 'DocumentOrientedGloss'
 }
 
 function isEnclosure(token: Token): token is Enclosure {
@@ -60,22 +75,16 @@ class LineAccumulator {
     return this.result.length
   }
 
-  private requireSeparator(token: Token): boolean {
-    return (
-      this.index === 0 || (!isCloseEnclosure(token) && !this.enclosureOpened)
-    )
+  applyLanguage(token: Shift): void {
+    this.language = token.language
   }
 
   pushToken(token: Token): void {
+    const target = this.gloss || this.result
     if (this.requireSeparator(token)) {
-      this.result.push(
-        <WordSeparator
-          key={`${this.index}-separator`}
-          modifiers={[this.language]}
-        />
-      )
+      this.pushSeparator(target)
     }
-    this.result.push(
+    target.push(
       <DisplayToken
         key={this.index}
         token={token}
@@ -83,6 +92,39 @@ class LineAccumulator {
       />
     )
     this.enclosureOpened = isOpenEnclosure(token)
+  }
+
+  openGloss(): void {
+    if (!this.enclosureOpened) {
+      this.pushSeparator(this.result)
+    }
+    this.gloss = []
+  }
+
+  closeGloss(): void {
+    this.result.push(
+      <DisplayDocumentOrientedGLoss key={this.index}>
+        {this.gloss}
+      </DisplayDocumentOrientedGLoss>
+    )
+    this.gloss = null
+    this.enclosureOpened = false
+  }
+
+  private requireSeparator(token: Token): boolean {
+    const noEnclosure = !isCloseEnclosure(token) && !this.enclosureOpened
+    return this.gloss
+      ? this.gloss.length > 0 && noEnclosure
+      : this.index === 0 || noEnclosure
+  }
+
+  private pushSeparator(target: React.ReactNode[]): void {
+    target.push(
+      <WordSeparator
+        key={`${this.index}-separator`}
+        modifiers={[this.language]}
+      />
+    )
   }
 }
 
@@ -98,94 +140,16 @@ function DisplayLine({
     { className: classNames([`Transliteration__${type}`]) },
     [
       <span key="prefix">{prefix}</span>,
-      ...content.reduce(
-        (
-          acc: {
-            result: React.ReactNode[]
-            gloss: React.ReactNode[] | null
-            language: string
-            enclosureOpened: boolean
-          },
-          token: Token,
-          index: number
-        ) => {
-          if (token.type === 'LanguageShift') {
-            acc.language = token.language
-          } else if (
-            token.type === 'DocumentOrientedGloss' &&
-            token.value === '{('
-          ) {
-            if (!acc.enclosureOpened) {
-              acc.result.push(
-                <WordSeparator
-                  key={`${index}-separator`}
-                  modifiers={[acc.language]}
-                />
-              )
-            }
-            acc.gloss = []
-          } else if (
-            token.type === 'DocumentOrientedGloss' &&
-            token.value === ')}'
-          ) {
-            acc.result.push(
-              <DocumentOrientedGLoss key={index}>
-                {acc.gloss}
-              </DocumentOrientedGLoss>
-            )
-            acc.gloss = null
-            acc.enclosureOpened = false
-          } else if (acc.gloss !== null) {
-            if (
-              acc.gloss.length > 0 &&
-              !isCloseEnclosure(token) &&
-              !acc.enclosureOpened
-            ) {
-              acc.gloss.push(
-                <WordSeparator
-                  key={`${index}-separator`}
-                  modifiers={[acc.language]}
-                />
-              )
-            }
-            acc.gloss.push(
-              <DisplayToken
-                key={index}
-                token={token}
-                modifiers={[acc.language]}
-              />
-            )
-            acc.enclosureOpened = isOpenEnclosure(token)
-          } else {
-            if (
-              index === 0 ||
-              (!isCloseEnclosure(token) && !acc.enclosureOpened)
-            ) {
-              acc.result.push(
-                <WordSeparator
-                  key={`${index}-separator`}
-                  modifiers={[acc.language]}
-                />
-              )
-            }
-            acc.result.push(
-              <DisplayToken
-                key={index}
-                token={token}
-                modifiers={[acc.language]}
-              />
-            )
-            acc.enclosureOpened = isOpenEnclosure(token)
-          }
-          return acc
-        },
-        {
-          result: [],
-          gloss: null,
-          language: 'AKKADIAN',
-          enclosureOpened: false
+      ...content.reduce((acc: LineAccumulator, token: Token) => {
+        if (isShift(token)) {
+          acc.applyLanguage(token)
+        } else if (isDocumentOrientedGloss(token)) {
+          token.value === '{(' ? acc.openGloss() : acc.closeGloss()
+        } else {
+          acc.pushToken(token)
         }
-      ).result
+        return acc
+      }, new LineAccumulator()).result
     ]
   )
 }
