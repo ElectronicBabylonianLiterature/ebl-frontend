@@ -103,19 +103,8 @@ export interface CompoundGrapheme extends NotLemmatizableToken {
 }
 
 export interface Gloss extends NotLemmatizableToken {
+  type: 'Determinative' | 'PhoneticGloss' | 'LinguisticGloss'
   readonly parts: readonly Token[]
-}
-
-export interface Determinative extends Gloss {
-  type: 'Determinative'
-}
-
-export interface PhoneticGloss extends Gloss {
-  type: 'PhoneticGloss'
-}
-
-export interface LinguisticGloss extends Gloss {
-  type: 'LinguisticGloss'
 }
 
 export interface Tabulation extends NotLemmatizableToken {
@@ -153,9 +142,7 @@ export type Token =
   | Grapheme
   | Divider
   | CompoundGrapheme
-  | Determinative
-  | PhoneticGloss
-  | LinguisticGloss
+  | Gloss
   | DocumentOrientedGloss
   | Enclosure
   | Tabulation
