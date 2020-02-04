@@ -174,11 +174,11 @@ const tokens: ReadonlyMap<
 export function DisplayToken({
   token,
   container = 'span',
-  modifiers = []
+  bemModifiers: modifiers = []
 }: {
   token: Token
   container?: string
-  modifiers?: readonly string[]
+  bemModifiers?: readonly string[]
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) || DefaultToken
   const element = `Transliteration__${token.type}`

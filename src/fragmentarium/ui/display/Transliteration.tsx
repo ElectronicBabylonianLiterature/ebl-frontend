@@ -13,7 +13,7 @@ import { DisplayToken } from './DisplayToken'
 import './Display.sass'
 
 function WordSeparator({
-  modifiers = []
+  modifiers: bemModifiers = []
 }: {
   modifiers?: readonly string[]
 }): JSX.Element {
@@ -22,7 +22,7 @@ function WordSeparator({
     <span
       className={classNames([
         element,
-        modifiers.map(flag => `${element}--${flag}`)
+        bemModifiers.map(flag => `${element}--${flag}`)
       ])}
     >
       {' '}
@@ -84,7 +84,7 @@ class LineAccumulator {
       <DisplayToken
         key={target.length}
         token={token}
-        modifiers={[this.language]}
+        bemModifiers={[this.language]}
       />
     )
     this.enclosureOpened = isOpenEnclosure(token)
