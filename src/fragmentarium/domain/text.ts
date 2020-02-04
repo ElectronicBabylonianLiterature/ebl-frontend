@@ -127,10 +127,6 @@ export interface DocumentOrientedGloss extends NotLemmatizableToken {
   type: 'DocumentOrientedGloss'
 }
 
-export interface DocumentOrientedGloss extends NotLemmatizableToken {
-  type: 'DocumentOrientedGloss'
-}
-
 export interface Enclosure extends NotLemmatizableToken {
   type:
     | 'BrokenAway'
