@@ -87,10 +87,12 @@ export interface Logogram extends NamedSign {
 export interface NumberSign extends NamedSign {
   type: 'Number'
 }
+
 export interface Divider extends Sign {
   type: 'Divider'
   divider: string
 }
+
 export interface Grapheme extends Sign {
   type: 'Grapheme'
   name: string
@@ -120,6 +122,21 @@ export interface DocumentOrientedGloss extends NotLemmatizableToken {
   type: 'DocumentOrientedGloss'
 }
 
+export interface DocumentOrientedGloss extends NotLemmatizableToken {
+  type: 'DocumentOrientedGloss'
+}
+
+export interface Enclosure extends NotLemmatizableToken {
+  type:
+    | 'BrokenAway'
+    | 'PerhapsBrokenAway'
+    | 'AccidentalOmission'
+    | 'IntentionalOmission'
+    | 'Removal'
+    | 'Erasure'
+  side: 'LEFT' | 'CENTER' | 'RIGHT'
+}
+
 export type Token =
   | ValueToken
   | Word
@@ -139,6 +156,7 @@ export type Token =
   | PhoneticGloss
   | LinguisticGloss
   | DocumentOrientedGloss
+  | Enclosure
 
 export interface Line {
   readonly type: string

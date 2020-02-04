@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { Line, Token, Text } from 'fragmentarium/domain/text'
+import { Line, Token, Text, Enclosure } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
@@ -31,6 +31,61 @@ function DocumentOrientedGLoss({
   )
 }
 
+function isEnclosure(token: Token): token is Enclosure {
+  return [
+    'BrokenAway',
+    'PerhapsBrokenAway',
+    'AccidentalOmmission',
+    'IntentionalOmission',
+    'Removal',
+    'Erasure'
+  ].includes(token.type)
+}
+
+function isCloseEnclosure(token: Token): boolean {
+  return isEnclosure(token) && ['CENTER', 'RIGHT'].includes(token.side)
+}
+
+function isOpenEnclosure(token: Token): boolean {
+  return isEnclosure(token) && ['CENTER', 'LEFT'].includes(token.side)
+}
+
+class LineAccumulator {
+  result: React.ReactNode[] = []
+  private gloss: React.ReactNode[] | null = null
+  private language = 'AKKADIAN'
+  private enclosureOpened = false
+
+  private get index(): number {
+    return this.result.length
+  }
+
+  private requireSeparator(token: Token): boolean {
+    return (
+      this.index === 0 || (!isCloseEnclosure(token) && !this.enclosureOpened)
+    )
+  }
+
+  pushToken(token: Token): void {
+    if (this.requireSeparator(token)) {
+      this.result.push(
+        <WordSeparator
+          key={`${this.index}-separator`}
+          modifiers={[this.language]}
+        />
+      )
+    }
+    this.result.push(
+      <DisplayToken
+        key={this.index}
+        token={token}
+        modifiers={[this.language]}
+      />
+    )
+    this.enclosureOpened = isOpenEnclosure(token)
+  }
+}
+
 function DisplayLine({
   line: { type, prefix, content },
   container = 'div'
@@ -49,6 +104,7 @@ function DisplayLine({
             result: React.ReactNode[]
             gloss: React.ReactNode[] | null
             language: string
+            enclosureOpened: boolean
           },
           token: Token,
           index: number
@@ -59,12 +115,14 @@ function DisplayLine({
             token.type === 'DocumentOrientedGloss' &&
             token.value === '{('
           ) {
-            acc.result.push(
-              <WordSeparator
-                key={`${index}-separator`}
-                modifiers={[acc.language]}
-              />
-            )
+            if (!acc.enclosureOpened) {
+              acc.result.push(
+                <WordSeparator
+                  key={`${index}-separator`}
+                  modifiers={[acc.language]}
+                />
+              )
+            }
             acc.gloss = []
           } else if (
             token.type === 'DocumentOrientedGloss' &&
@@ -76,8 +134,13 @@ function DisplayLine({
               </DocumentOrientedGLoss>
             )
             acc.gloss = null
+            acc.enclosureOpened = false
           } else if (acc.gloss !== null) {
-            if (acc.gloss.length > 0) {
+            if (
+              acc.gloss.length > 0 &&
+              !isCloseEnclosure(token) &&
+              !acc.enclosureOpened
+            ) {
               acc.gloss.push(
                 <WordSeparator
                   key={`${index}-separator`}
@@ -92,13 +155,19 @@ function DisplayLine({
                 modifiers={[acc.language]}
               />
             )
+            acc.enclosureOpened = isOpenEnclosure(token)
           } else {
-            acc.result.push(
-              <WordSeparator
-                key={`${index}-separator`}
-                modifiers={[acc.language]}
-              />
-            )
+            if (
+              index === 0 ||
+              (!isCloseEnclosure(token) && !acc.enclosureOpened)
+            ) {
+              acc.result.push(
+                <WordSeparator
+                  key={`${index}-separator`}
+                  modifiers={[acc.language]}
+                />
+              )
+            }
             acc.result.push(
               <DisplayToken
                 key={index}
@@ -106,14 +175,21 @@ function DisplayLine({
                 modifiers={[acc.language]}
               />
             )
+            acc.enclosureOpened = isOpenEnclosure(token)
           }
           return acc
         },
-        { result: [], gloss: null, language: 'AKKADIAN' }
+        {
+          result: [],
+          gloss: null,
+          language: 'AKKADIAN',
+          enclosureOpened: false
+        }
       ).result
     ]
   )
 }
+
 export function Transliteration({
   text: { lines }
 }: {
