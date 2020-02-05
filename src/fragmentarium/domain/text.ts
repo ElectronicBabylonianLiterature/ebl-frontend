@@ -20,7 +20,7 @@ export interface NotLemmatizableToken extends BaseToken {
 }
 
 export interface ValueToken extends NotLemmatizableToken {
-  type: 'Token'
+  readonly type: 'Token'
 }
 
 export interface Word extends BaseToken {
@@ -47,62 +47,62 @@ export interface Erasure extends NotLemmatizableToken {
 }
 
 export interface Joiner extends NotLemmatizableToken {
-  type: 'Joiner'
+  readonly type: 'Joiner'
 }
 
 export interface UnknownNumberOfSigns extends NotLemmatizableToken {
-  type: 'UnknownNumberOfSigns'
+  readonly type: 'UnknownNumberOfSigns'
 }
 
 export interface UnknownSign extends NotLemmatizableToken {
-  type: 'UnidentifiedSign' | 'UnclearSign'
-  flags: readonly string[]
+  readonly type: 'UnidentifiedSign' | 'UnclearSign'
+  readonly flags: readonly string[]
 }
 
 export interface Variant extends NotLemmatizableToken {
-  type: 'Variant'
-  tokens: readonly Token[]
+  readonly type: 'Variant' | 'Variant2'
+  readonly tokens: readonly Token[]
 }
 
 export interface Sign extends NotLemmatizableToken {
-  modifiers: readonly string[]
-  flags: readonly string[]
+  readonly modifiers: readonly string[]
+  readonly flags: readonly string[]
 }
 
 export interface NamedSign extends Sign {
-  type: 'Reading' | 'Logogram' | 'Number'
-  name: string
-  subIndex?: number | null
-  sign?: Token | null
-  surrogate?: readonly Token[] | null
+  readonly type: 'Reading' | 'Logogram' | 'Number'
+  readonly name: string
+  readonly subIndex?: number | null
+  readonly sign?: Token | null
+  readonly surrogate?: readonly Token[] | null
 }
 
 export interface Divider extends Sign {
-  type: 'Divider'
-  divider: string
+  readonly type: 'Divider'
+  readonly divider: string
 }
 
 export interface Grapheme extends Sign {
-  type: 'Grapheme'
-  name: string
+  readonly type: 'Grapheme'
+  readonly name: string
 }
 
 export interface CompoundGrapheme extends NotLemmatizableToken {
-  type: 'CompoundGrapheme'
+  readonly type: 'CompoundGrapheme'
 }
 
 export interface Gloss extends NotLemmatizableToken {
-  type: 'Determinative' | 'PhoneticGloss' | 'LinguisticGloss'
+  readonly type: 'Determinative' | 'PhoneticGloss' | 'LinguisticGloss'
   readonly parts: readonly Token[]
 }
 
 export interface Tabulation extends NotLemmatizableToken {
-  type: 'Tabulation'
-  value: '($___$)'
+  readonly type: 'Tabulation'
+  readonly value: '($___$)'
 }
 
 export interface Enclosure extends NotLemmatizableToken {
-  type:
+  readonly type:
     | 'BrokenAway'
     | 'PerhapsBrokenAway'
     | 'AccidentalOmission'
@@ -110,7 +110,7 @@ export interface Enclosure extends NotLemmatizableToken {
     | 'Removal'
     | 'Erasure'
     | 'DocumentOrientedGloss'
-  side: 'LEFT' | 'CENTER' | 'RIGHT'
+  readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
 }
 
 export type Token =
