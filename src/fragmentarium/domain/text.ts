@@ -6,59 +6,129 @@ import Lemmatization, {
 
 import Lemma from './Lemma'
 
-type Word = {
-  readonly type: 'Word'
-  readonly value: string
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable: boolean
-  readonly erasure: string
-  readonly alignment?: number
-  readonly parts?: readonly Token[]
-}
-
-type LoneDeterminative = {
-  readonly type: 'LoneDeterminative'
-  readonly value: string
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable: boolean
-  readonly partial: [boolean, boolean]
-  readonly erasure: string
-  readonly alignment?: number
-  readonly parts?: readonly Token[]
-}
-
-type Shift = {
-  readonly type: 'LanguageShift'
-  readonly value: string
-  readonly normalized: boolean
-  readonly language: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
-  readonly parts?: readonly Token[]
-}
-
-type Erasure = {
-  readonly type: 'Erasure'
-  readonly value: string
-  readonly side: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
-  readonly parts?: readonly Token[]
-}
-
-type PlainToken = {
+export interface BaseToken {
   readonly type: string
   readonly value: string
-  readonly lemmatizable?: false
-  readonly uniqueLemma?: null
   readonly parts?: readonly Token[]
 }
 
-export type Token = PlainToken | Word | LoneDeterminative | Shift | Erasure
+export interface NotLemmatizableToken extends BaseToken {
+  readonly lemmatizable?: false
+  readonly alignable?: false
+  readonly uniqueLemma?: null
+  readonly alignment?: null
+}
+
+export interface ValueToken extends NotLemmatizableToken {
+  readonly type: 'Token'
+}
+
+export interface Word extends BaseToken {
+  readonly type: 'Word' | 'LoneDeterminative'
+  readonly lemmatizable: boolean
+  readonly alignable?: boolean
+  readonly uniqueLemma: ReadonlyArray<string>
+  readonly alignment?: null | number
+  readonly language: string
+  readonly normalized: boolean
+  readonly erasure: string
+  readonly parts: readonly Token[]
+}
+
+export interface Shift extends NotLemmatizableToken {
+  readonly type: 'LanguageShift'
+  readonly normalized: boolean
+  readonly language: string
+}
+
+export interface Erasure extends NotLemmatizableToken {
+  readonly type: 'Erasure'
+  readonly side: string
+}
+
+export interface Joiner extends NotLemmatizableToken {
+  readonly type: 'Joiner'
+}
+
+export interface UnknownNumberOfSigns extends NotLemmatizableToken {
+  readonly type: 'UnknownNumberOfSigns'
+}
+
+export interface UnknownSign extends NotLemmatizableToken {
+  readonly type: 'UnidentifiedSign' | 'UnclearSign'
+  readonly flags: readonly string[]
+}
+
+export interface Variant extends NotLemmatizableToken {
+  readonly type: 'Variant' | 'Variant2'
+  readonly tokens: readonly Token[]
+}
+
+export interface Sign extends NotLemmatizableToken {
+  readonly modifiers: readonly string[]
+  readonly flags: readonly string[]
+}
+
+export interface NamedSign extends Sign {
+  readonly type: 'Reading' | 'Logogram' | 'Number'
+  readonly name: string
+  readonly subIndex?: number | null
+  readonly sign?: Token | null
+  readonly surrogate?: readonly Token[] | null
+}
+
+export interface Divider extends Sign {
+  readonly type: 'Divider'
+  readonly divider: string
+}
+
+export interface Grapheme extends Sign {
+  readonly type: 'Grapheme'
+  readonly name: string
+}
+
+export interface CompoundGrapheme extends NotLemmatizableToken {
+  readonly type: 'CompoundGrapheme'
+}
+
+export interface Gloss extends NotLemmatizableToken {
+  readonly type: 'Determinative' | 'PhoneticGloss' | 'LinguisticGloss'
+  readonly parts: readonly Token[]
+}
+
+export interface Tabulation extends NotLemmatizableToken {
+  readonly type: 'Tabulation'
+  readonly value: '($___$)'
+}
+
+export interface Enclosure extends NotLemmatizableToken {
+  readonly type:
+    | 'BrokenAway'
+    | 'PerhapsBrokenAway'
+    | 'AccidentalOmission'
+    | 'IntentionalOmission'
+    | 'Removal'
+    | 'Erasure'
+    | 'DocumentOrientedGloss'
+  readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
+}
+
+export type Token =
+  | ValueToken
+  | Word
+  | Shift
+  | Erasure
+  | Joiner
+  | UnknownNumberOfSigns
+  | UnknownSign
+  | Variant
+  | NamedSign
+  | Grapheme
+  | Divider
+  | CompoundGrapheme
+  | Gloss
+  | Enclosure
+  | Tabulation
 
 export interface Line {
   readonly type: string

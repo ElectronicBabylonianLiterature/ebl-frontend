@@ -6,13 +6,13 @@ import Museum from 'fragmentarium/domain/museum'
 
 const chance = new Chance()
 
-function date() {
+function date(): string {
   return factory
     .chance('date')()
     .toISOString()
 }
 
-function dateRange() {
+function dateRange(): string {
   return `${date()}/${date()}`
 }
 

@@ -1,6 +1,158 @@
 import { Folio, Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
-import { Text } from 'fragmentarium/domain/text'
+import { Text, Line } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
+
+const lines: readonly Line[] = [
+  {
+    type: 'TextLine',
+    prefix: '10.',
+    content: [
+      {
+        type: 'Word',
+        value: 'sal/:',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      {
+        type: 'Word',
+        value: 'š[im',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        parts: []
+      },
+      {
+        type: 'LoneDeterminative',
+        value: '{gu}',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      { type: 'UnknownNumberOfSigns', value: '[...]' },
+      {
+        type: 'Word',
+        value: '.GA',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      }
+    ]
+  },
+  {
+    type: 'TextLine',
+    prefix: '10.',
+    content: [
+      {
+        type: 'Word',
+        value: '::/sal',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      {
+        type: 'Word',
+        value: 'ši]m',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        parts: []
+      }
+    ]
+  },
+  {
+    type: 'TextLine',
+    prefix: '10.',
+    content: [
+      {
+        type: 'Word',
+        value: 'šim',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        parts: []
+      },
+      { type: 'Token', value: '|' },
+      {
+        type: 'Word',
+        value: 'šim',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        parts: []
+      }
+    ]
+  },
+  {
+    type: 'TextLine',
+    prefix: '10.',
+    content: [
+      { type: 'UnknownNumberOfSigns', value: '...' },
+      {
+        type: 'Word',
+        value: '+ku',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      {
+        type: 'LoneDeterminative',
+        value: '{KA.G[A}',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      { type: 'UnknownNumberOfSigns', value: '...' },
+      { type: 'UnknownNumberOfSigns', value: '...' },
+      {
+        type: 'Word',
+        value: '.ku',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      },
+      {
+        type: 'Word',
+        value: 'x',
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: false,
+        erasure: 'NONE',
+        parts: []
+      }
+    ]
+  }
+]
 
 export const fragmentDto = {
   _id: 'Test.Fragment',
@@ -23,149 +175,7 @@ export const fragmentDto = {
     { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:23:25.214166' }
   ],
   folios: [{ name: 'FWG', number: 'M134' }],
-  text: {
-    lines: [
-      {
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: 'sal/:',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'š[im',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          },
-          {
-            type: 'LoneDeterminative',
-            value: '{gu}',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            partial: [false, true],
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '[...]' },
-          {
-            type: 'Word',
-            value: '.GA',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          }
-        ],
-        type: 'TextLine'
-      },
-      {
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: '::/sal',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'ši]m',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          }
-        ],
-        type: 'TextLine'
-      },
-      {
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: 'šim',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '|' },
-          {
-            type: 'Word',
-            value: 'šim',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          }
-        ],
-        type: 'TextLine'
-      },
-      {
-        prefix: '10.',
-        content: [
-          { type: 'Token', value: '...' },
-          {
-            type: 'Word',
-            value: '+ku',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'LoneDeterminative',
-            value: '{KA.G[A}',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            partial: [false, false],
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '...' },
-          { type: 'Token', value: '...' },
-          {
-            type: 'Word',
-            value: '.ku',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'x',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          }
-        ],
-        type: 'TextLine'
-      }
-    ]
-  },
+  text: { lines },
   references: [
     { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] }
   ],
@@ -204,149 +214,7 @@ export const fragment = new Fragment({
     })
   ],
   folios: [new Folio({ name: 'FWG', number: 'M134' })],
-  text: new Text({
-    lines: [
-      {
-        type: 'TextLine',
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: 'sal/:',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'š[im',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          },
-          {
-            type: 'LoneDeterminative',
-            value: '{gu}',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            partial: [false, true],
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '[...]' },
-          {
-            type: 'Word',
-            value: '.GA',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          }
-        ]
-      },
-      {
-        type: 'TextLine',
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: '::/sal',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'ši]m',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          }
-        ]
-      },
-      {
-        type: 'TextLine',
-        prefix: '10.',
-        content: [
-          {
-            type: 'Word',
-            value: 'šim',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '|' },
-          {
-            type: 'Word',
-            value: 'šim',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: true,
-            erasure: 'NONE'
-          }
-        ]
-      },
-      {
-        type: 'TextLine',
-        prefix: '10.',
-        content: [
-          { type: 'Token', value: '...' },
-          {
-            type: 'Word',
-            value: '+ku',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'LoneDeterminative',
-            value: '{KA.G[A}',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            partial: [false, false],
-            erasure: 'NONE'
-          },
-          { type: 'Token', value: '...' },
-          { type: 'Token', value: '...' },
-          {
-            type: 'Word',
-            value: '.ku',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          },
-          {
-            type: 'Word',
-            value: 'x',
-            uniqueLemma: [],
-            normalized: false,
-            language: 'AKKADIAN',
-            lemmatizable: false,
-            erasure: 'NONE'
-          }
-        ]
-      }
-    ]
-  }),
+  text: new Text({ lines }),
   references: [
     {
       id: 'RN52',

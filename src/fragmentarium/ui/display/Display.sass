@@ -1,0 +1,98 @@
+
+@mixin normal-font
+  font-style: normal
+  font-variant: normal
+  
+@mixin damaged
+  &--damaged
+    &:before
+      @include normal-font
+      content: "⸢"
+
+    &:after
+      @include normal-font
+      content: "⸣"
+
+@mixin sumerian
+  &--SUMERIAN,
+    @include normal-font
+    letter-spacing: 0.1em
+
+@mixin emesal
+  &--EMESAL,
+    @include normal-font
+    color: pink
+    letter-spacing: 0.1em
+
+.Transliteration
+  list-style: none
+  padding: 0
+
+  &__ControlLine
+    color: darkgrey
+
+  &__Reading,
+  &__Number,
+  &__UnidentifiedSign,
+  &__CompoundGrapheme,
+  &__Joiner,
+  &__Divider,
+  &__DocumentOrientedGloss,
+  &__PhoneticGloss,
+  &__LinguisticGloss
+    font-style: italic
+    font-variant: normal
+
+    .Transliteration__Determinative &,
+    .Transliteration__Word--SUMERIAN &,
+    .Transliteration__Word--EMESAL &
+      @include normal-font
+
+  &__bracket,
+  &__flag,
+  &__subIndex
+    @include normal-font
+
+  &__Determinative
+    @include normal-font
+
+    & + & > sup:before
+      content: "."
+
+  &__wordSeparator,
+  &__Word,
+  &__Divider
+    @include emesal
+    @include sumerian
+
+  &__Logogram
+    font-style: normal
+    font-variant: small-caps
+
+  &__Reading
+  &__Number,
+  &__Logogram,
+  &__Divider,
+  &__Grapheme,
+  &__Logogram,
+  &__UnidentifiedSign,
+  &__UnknownSign
+    @include damaged
+
+  &__BrokenAway,
+  &__PerhapsBrokenAway,
+  &__AccidentalOmission,
+  &__IntentionalOmission,
+  &__Removal
+    @include normal-font
+
+    sup &
+      font-size: 1rem
+      vertical-align: text-bottom
+
+  &__Tabulation
+    display: inline-block
+    width: 1em
+
+    & + .Transliteration__wordSeparator
+      display: none
