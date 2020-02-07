@@ -72,6 +72,7 @@ export interface Sign extends NotLemmatizableToken {
 export interface NamedSign extends Sign {
   readonly type: 'Reading' | 'Logogram' | 'Number'
   readonly name: string
+  readonly nameParts: readonly (ValueToken | Enclosure)[]
   readonly subIndex?: number | null
   readonly sign?: Token | null
   readonly surrogate?: readonly Token[] | null

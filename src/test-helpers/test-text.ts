@@ -17,6 +17,12 @@ const testWord: WordToken = {
       type: 'Reading',
       value: 'kur',
       name: 'kur',
+      nameParts: [
+        {
+          type: 'Token',
+          value: 'kur'
+        }
+      ],
       subIndex: 1,
       modifiers: [],
       flags: []

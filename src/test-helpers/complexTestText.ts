@@ -3,101 +3,127 @@ import { Text } from 'fragmentarium/domain/text'
 export default new Text({
   lines: [
     {
+      prefix: '1.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 2,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur₂',
               sign: null,
-              value: 'kur₂'
+              name: 'kur',
+              subIndex: 2,
+              type: 'Reading'
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'BrokenAway',
               value: '['
             },
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'PerhapsBrokenAway',
               value: '('
             },
             {
-              type: 'Logogram',
               flags: [],
-              surrogate: [],
-              subIndex: 2,
-              name: 'KUR',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'KUR'
+                }
+              ],
               modifiers: [],
+              value: 'KUR₂',
               sign: null,
-              value: 'KUR₂'
+              name: 'KUR',
+              subIndex: 2,
+              type: 'Logogram',
+              surrogate: []
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Variant',
-              value: 'kur/RA',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
-                  type: 'Logogram',
                   flags: [],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'RA',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'RA'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'RA',
                   sign: null,
-                  value: 'RA'
+                  name: 'RA',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'kur/RA'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'PerhapsBrokenAway',
               value: ')'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur₂-[(KUR₂-kur/RA)',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
           type: 'UnknownNumberOfSigns',
           value: '...'
         },
         {
+          side: 'RIGHT',
           type: 'BrokenAway',
-          value: ']',
-          side: 'RIGHT'
+          value: ']'
         }
-      ],
-      prefix: '1.'
+      ]
     },
     {
+      prefix: '2.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               type: 'CompoundGrapheme',
@@ -105,180 +131,198 @@ export default new Text({
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '|KUR.KUR|',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
-        },
-        {
-          type: 'Tabulation',
-          value: '($___$)'
-        },
-        {
-          type: 'Tabulation',
-          value: '($___$)'
-        },
-        {
           type: 'Word',
-          erasure: 'NONE',
+          uniqueLemma: [],
+          erasure: 'NONE'
+        },
+        {
+          type: 'Tabulation',
+          value: '($___$)'
+        },
+        {
+          type: 'Tabulation',
+          value: '($___$)'
+        },
+        {
           parts: [
             {
-              type: 'Variant',
-              value: 'kur/|RA|',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
                   type: 'CompoundGrapheme',
                   value: '|RA|'
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'kur/|RA|'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur/|RA|',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
+          side: 'LEFT',
           type: 'BrokenAway',
-          value: '[',
-          side: 'LEFT'
+          value: '['
         },
         {
           type: 'UnknownNumberOfSigns',
           value: '...'
         },
         {
+          side: 'RIGHT',
           type: 'BrokenAway',
-          value: ']',
-          side: 'RIGHT'
+          value: ']'
         }
-      ],
-      prefix: '2.'
+      ]
     },
     {
+      prefix: '3.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Number',
               flags: ['#', '*'],
-              subIndex: 1,
-              name: '1',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: '1'
+                }
+              ],
               modifiers: ['@v'],
+              value: '1@v#*',
               sign: null,
-              value: '1@v#*'
+              name: '1',
+              subIndex: 1,
+              type: 'Number'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '1@v#*',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
+              flags: ['#', '!'],
               type: 'UnclearSign',
-              value: 'x#!',
-              flags: ['#', '!']
+              value: 'x#!'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'x#!',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
+              flags: ['#', '?'],
               type: 'UnidentifiedSign',
-              value: 'X#?',
-              flags: ['#', '?']
+              value: 'X#?'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'X#?',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Divider',
           flags: ['#', '?'],
           divider: '::',
           modifiers: ['@v', '@44'],
-          value: '::@v@44#?'
+          value: '::@v@44#?',
+          type: 'Divider'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'BrokenAway',
               value: '['
             },
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'PerhapsBrokenAway',
               value: '('
             },
             {
+              flags: [],
               type: 'UnclearSign',
-              value: 'x',
-              flags: []
+              value: 'x'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'PerhapsBrokenAway',
               value: ')'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '[(x)',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
+              flags: [],
               type: 'UnclearSign',
-              value: 'x',
-              flags: []
+              value: 'x'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'BrokenAway',
               value: ']'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'x]',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '3.'
+      ]
     },
     {
+      prefix: '1.',
       type: 'TextLine',
       content: [
         {
@@ -286,141 +330,181 @@ export default new Text({
           value: '($___$)'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: ['#', '!'],
-              subIndex: null,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: ['@v'],
+              value: 'kurₓ@v#!(KUR@v#?)',
               sign: {
-                type: 'Grapheme',
                 flags: ['#', '?'],
-                name: 'KUR',
                 modifiers: ['@v'],
-                value: 'KUR@v#?'
+                value: 'KUR@v#?',
+                name: 'KUR',
+                type: 'Grapheme'
               },
-              value: 'kurₓ@v#!(KUR@v#?)'
+              name: 'kur',
+              subIndex: null,
+              type: 'Reading'
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Logogram',
               flags: ['#', '?'],
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'KUR'
+                }
+              ],
+              modifiers: ['@v'],
+              value: 'KUR₂@v#?<(kur-kur)>',
+              sign: null,
+              name: 'KUR',
+              subIndex: 2,
+              type: 'Logogram',
               surrogate: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
                   type: 'Joiner',
                   value: '-'
                 },
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ],
-              subIndex: 2,
-              name: 'KUR',
-              modifiers: ['@v'],
-              sign: null,
-              value: 'KUR₂@v#?<(kur-kur)>'
+              ]
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kurₓ@v#!(KUR@v#?)-KUR₂@v#?<(kur-kur)>',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '1.'
+      ]
     },
     {
+      prefix: '5.',
       type: 'TextLine',
       content: [
         {
           side: 'LEFT',
-          value: '°',
-          type: 'Erasure'
+          type: 'Erasure',
+          value: '°'
         },
         {
-          type: 'Word',
-          erasure: 'ERASED',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'ERASED'
         },
         {
           side: 'CENTER',
-          value: '\\',
-          type: 'Erasure'
+          type: 'Erasure',
+          value: '\\'
         },
         {
-          type: 'Word',
-          erasure: 'OVER_ERASED',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'OVER_ERASED'
         },
         {
           side: 'RIGHT',
-          value: '°',
-          type: 'Erasure'
+          type: 'Erasure',
+          value: '°'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               type: 'Joiner',
@@ -428,263 +512,361 @@ export default new Text({
             },
             {
               side: 'LEFT',
-              value: '°',
-              type: 'Erasure'
+              type: 'Erasure',
+              value: '°'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               side: 'CENTER',
-              value: '\\',
-              type: 'Erasure'
+              type: 'Erasure',
+              value: '\\'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               side: 'RIGHT',
-              value: '°',
-              type: 'Erasure'
+              type: 'Erasure',
+              value: '°'
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur-°kur\\kur°-kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '5.'
+      ]
     },
     {
+      prefix: '6.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Determinative',
-              value: '{d#-kur₂?}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: ['#'],
-                  subIndex: 1,
-                  name: 'd',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'd'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'd#',
                   sign: null,
-                  value: 'd#'
+                  name: 'd',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
                   type: 'Joiner',
                   value: '-'
                 },
                 {
-                  type: 'Reading',
                   flags: ['?'],
-                  subIndex: 2,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur₂?',
                   sign: null,
-                  value: 'kur₂?'
+                  name: 'kur',
+                  subIndex: 2,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{d#-kur₂?}'
             },
             {
-              type: 'Determinative',
-              value: '{d-RA!}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'd',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'd'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'd',
                   sign: null,
-                  value: 'd'
+                  name: 'd',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
                   type: 'Joiner',
                   value: '-'
                 },
                 {
-                  type: 'Logogram',
                   flags: ['!'],
-                  surrogate: [],
-                  subIndex: 1,
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'RA'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'RA!',
+                  sign: null,
                   name: 'RA',
-                  modifiers: [],
-                  sign: null,
-                  value: 'RA!'
-                }
-              ]
-            },
-            {
-              type: 'Reading',
-              flags: [],
-              subIndex: 1,
-              name: 'kur',
-              modifiers: [],
-              sign: null,
-              value: 'kur'
-            },
-            {
-              type: 'LinguisticGloss',
-              value: '{{kur}}',
-              parts: [
-                {
-                  type: 'Reading',
-                  flags: [],
                   subIndex: 1,
-                  name: 'kur',
-                  modifiers: [],
-                  sign: null,
+                  type: 'Logogram',
+                  surrogate: []
+                }
+              ],
+              type: 'Determinative',
+              value: '{d-RA!}'
+            },
+            {
+              flags: [],
+              nameParts: [
+                {
+                  type: 'Token',
                   value: 'kur'
                 }
-              ]
-            }
-          ],
-          language: 'AKKADIAN',
-          normalized: false,
-          value: '{d#-kur₂?}{d-RA!}kur{{kur}}',
-          lemmatizable: true,
-          uniqueLemma: []
-        },
-        {
-          type: 'DocumentOrientedGloss',
-          value: '{(',
-          side: 'LEFT'
-        },
-        {
-          type: 'Word',
-          erasure: 'NONE',
-          parts: [
-            {
-              type: 'Reading',
-              flags: [],
-              subIndex: 1,
-              name: 'kur',
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
-              type: 'Determinative',
-              value: '{d!}',
               parts: [
                 {
-                  type: 'Reading',
-                  flags: ['!'],
-                  subIndex: 1,
-                  name: 'd',
+                  flags: [],
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'd!'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'LinguisticGloss',
+              value: '{{kur}}'
             }
           ],
           language: 'AKKADIAN',
+          value: '{d#-kur₂?}{d-RA!}kur{{kur}}',
           normalized: false,
-          value: 'kur{d!}',
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          side: 'LEFT',
+          type: 'DocumentOrientedGloss',
+          value: '{('
+        },
+        {
           parts: [
             {
-              type: 'Logogram',
-              flags: ['!'],
-              surrogate: [],
-              subIndex: 2,
-              name: 'KUR',
+              flags: [],
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'KUR₂!'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
+            },
+            {
+              parts: [
+                {
+                  flags: ['!'],
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'd'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'd!',
+                  sign: null,
+                  name: 'd',
+                  subIndex: 1,
+                  type: 'Reading'
+                }
+              ],
+              type: 'Determinative',
+              value: '{d!}'
+            }
+          ],
+          language: 'AKKADIAN',
+          value: 'kur{d!}',
+          normalized: false,
+          lemmatizable: true,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
+        },
+        {
+          parts: [
+            {
+              flags: ['!'],
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'KUR'
+                }
+              ],
+              modifiers: [],
+              value: 'KUR₂!',
+              sign: null,
+              name: 'KUR',
+              subIndex: 2,
+              type: 'Logogram',
+              surrogate: []
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'ra',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'ra'
+                }
+              ],
               modifiers: [],
+              value: 'ra',
               sign: null,
-              value: 'ra'
+              name: 'ra',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'KUR₂!-ra',
-          lemmatizable: true,
-          uniqueLemma: []
-        },
-        {
-          type: 'LanguageShift',
-          value: '%es',
           normalized: false,
-          language: 'EMESAL'
+          lemmatizable: true,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          normalized: false,
+          language: 'EMESAL',
+          type: 'LanguageShift',
+          value: '%es'
+        },
+        {
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
-              modifiers: [],
-              sign: null,
-              value: 'kur'
-            },
-            {
-              type: 'PhoneticGloss',
-              value: '{+k[ur]-RA}',
-              parts: [
-                {
-                  type: 'Reading',
-                  flags: [],
-                  subIndex: 1,
-                  name: 'k[ur',
-                  modifiers: [],
-                  sign: null,
-                  value: 'k[ur'
-                },
+              nameParts: [
                 {
                   type: 'Token',
+                  value: 'kur'
+                }
+              ],
+              modifiers: [],
+              value: 'kur',
+              sign: null,
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
+            },
+            {
+              parts: [
+                {
+                  flags: [],
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'k'
+                    },
+                    {
+                      side: 'LEFT',
+                      type: 'BrokenAway',
+                      value: '['
+                    },
+                    {
+                      type: 'Token',
+                      value: 'ur'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'k[ur',
+                  sign: null,
+                  name: 'k[ur',
+                  subIndex: 1,
+                  type: 'Reading'
+                },
+                {
+                  side: 'RIGHT',
+                  type: 'BrokenAway',
                   value: ']'
                 },
                 {
@@ -692,93 +874,122 @@ export default new Text({
                   value: '-'
                 },
                 {
-                  type: 'Logogram',
                   flags: [],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'RA',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'RA'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'RA',
                   sign: null,
-                  value: 'RA'
+                  name: 'RA',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'PhoneticGloss',
+              value: '{+k[ur]-RA}'
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: 'kur{+k[ur]-RA}',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Determinative',
-              value: '{kur}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{kur}'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 2,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur₂',
               sign: null,
-              value: 'kur₂'
+              name: 'kur',
+              subIndex: 2,
+              type: 'Reading'
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: '{kur}kur₂',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
+          side: 'RIGHT',
           type: 'DocumentOrientedGloss',
-          value: ')}',
-          side: 'RIGHT'
+          value: ')}'
         }
-      ],
-      prefix: '6.'
+      ]
     },
     {
+      prefix: '7.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'BrokenAway',
               value: '['
             },
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'PerhapsBrokenAway',
               value: '('
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'PerhapsBrokenAway',
               value: ')'
             },
             {
@@ -786,69 +997,111 @@ export default new Text({
               value: '-'
             },
             {
-              type: 'Token',
+              side: 'LEFT',
+              type: 'BrokenAway',
               value: '['
             },
             {
-              type: 'LinguisticGloss',
-              value: '{{k]ur-[kur}}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'k]ur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'k'
+                    },
+                    {
+                      side: 'RIGHT',
+                      type: 'BrokenAway',
+                      value: ']'
+                    },
+                    {
+                      type: 'Token',
+                      value: 'ur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'k]ur',
                   sign: null,
-                  value: 'k]ur'
+                  name: 'k]ur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
                   type: 'Joiner',
                   value: '-'
                 },
                 {
-                  type: 'Token',
+                  side: 'LEFT',
+                  type: 'BrokenAway',
                   value: '['
                 },
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'LinguisticGloss',
+              value: '{{k]ur-[kur}}'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'BrokenAway',
               value: ']'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'k'
+                },
+                {
+                  side: 'LEFT',
+                  type: 'BrokenAway',
+                  value: '['
+                },
+                {
+                  type: 'Token',
+                  value: 'ur'
+                }
+              ],
+              modifiers: [],
+              value: 'k[ur',
+              sign: null,
               name: 'k[ur',
-              modifiers: [],
-              sign: null,
-              value: 'k[ur'
+              subIndex: 1,
+              type: 'Reading'
             },
             {
-              type: 'Token',
+              side: 'RIGHT',
+              type: 'BrokenAway',
               value: ']'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '[(kur)-[{{k]ur-[kur}}]k[ur]',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '7.'
+      ]
     },
     {
+      prefix: '8.',
       type: 'TextLine',
       content: [
         {
@@ -860,217 +1113,269 @@ export default new Text({
           value: '($___$)'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur',
-          lemmatizable: true,
-          uniqueLemma: []
-        },
-        {
-          type: 'LanguageShift',
-          value: '%sux',
           normalized: false,
-          language: 'SUMERIAN'
+          lemmatizable: true,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          normalized: false,
+          language: 'SUMERIAN',
+          type: 'LanguageShift',
+          value: '%sux'
+        },
+        {
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
-              type: 'Determinative',
-              value: '{d}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'd'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'd',
+                  sign: null,
                   name: 'd',
-                  modifiers: [],
-                  sign: null,
-                  value: 'd'
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{d}'
             }
           ],
           language: 'SUMERIAN',
-          normalized: false,
           value: 'kur{d}',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Logogram',
               flags: [],
-              surrogate: [],
-              subIndex: 1,
-              name: 'KUR',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'KUR'
+                }
+              ],
               modifiers: [],
+              value: 'KUR',
               sign: null,
-              value: 'KUR'
+              name: 'KUR',
+              subIndex: 1,
+              type: 'Logogram',
+              surrogate: []
             }
           ],
           language: 'SUMERIAN',
-          normalized: false,
           value: 'KUR',
-          lemmatizable: false,
-          uniqueLemma: []
-        },
-        {
-          type: 'LanguageShift',
-          value: '%akk',
           normalized: false,
-          language: 'AKKADIAN'
+          lemmatizable: false,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          normalized: false,
+          language: 'AKKADIAN',
+          type: 'LanguageShift',
+          value: '%akk'
+        },
+        {
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur',
-          lemmatizable: true,
-          uniqueLemma: []
-        },
-        {
-          type: 'LanguageShift',
-          value: '%es',
           normalized: false,
-          language: 'EMESAL'
+          lemmatizable: true,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          normalized: false,
+          language: 'EMESAL',
+          type: 'LanguageShift',
+          value: '%es'
+        },
+        {
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: 'kur',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Logogram',
               flags: [],
-              surrogate: [],
-              subIndex: 1,
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'KUR'
+                }
+              ],
+              modifiers: [],
+              value: 'KUR',
+              sign: null,
               name: 'KUR',
-              modifiers: [],
-              sign: null,
-              value: 'KUR'
+              subIndex: 1,
+              type: 'Logogram',
+              surrogate: []
             },
             {
-              type: 'Determinative',
-              value: '{D}',
               parts: [
                 {
-                  type: 'Logogram',
                   flags: [],
-                  surrogate: [],
-                  subIndex: 1,
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'D'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'D',
+                  sign: null,
                   name: 'D',
-                  modifiers: [],
-                  sign: null,
-                  value: 'D'
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{D}'
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: 'KUR{D}',
-          lemmatizable: false,
-          uniqueLemma: []
-        },
-        {
-          type: 'LanguageShift',
-          value: '%akk',
           normalized: false,
-          language: 'AKKADIAN'
+          lemmatizable: false,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
+          normalized: false,
+          language: 'AKKADIAN',
+          type: 'LanguageShift',
+          value: '%akk'
+        },
+        {
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '8.'
+      ]
     },
     {
+      prefix: '9.',
       type: 'TextLine',
       content: [
         {
-          type: 'LanguageShift',
-          value: '%sux',
           normalized: false,
-          language: 'SUMERIAN'
+          language: 'SUMERIAN',
+          type: 'LanguageShift',
+          value: '%sux'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               type: 'CompoundGrapheme',
@@ -1078,168 +1383,216 @@ export default new Text({
             }
           ],
           language: 'SUMERIAN',
-          normalized: false,
           value: '|KUR₂.KUR|',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Determinative',
-              value: '{kur}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{kur}'
             },
             {
-              type: 'Variant',
-              value: 'ra/RA#',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'ra',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'ra'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'ra',
                   sign: null,
-                  value: 'ra'
+                  name: 'ra',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
-                  type: 'Logogram',
                   flags: ['#'],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'RA',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'RA'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'RA#',
                   sign: null,
-                  value: 'RA#'
+                  name: 'RA',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'ra/RA#'
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 2,
-              name: 'kur',
-              modifiers: [],
-              sign: null,
-              value: 'kur₂'
-            }
-          ],
-          language: 'SUMERIAN',
-          normalized: false,
-          value: '{kur}ra/RA#-kur₂',
-          lemmatizable: false,
-          uniqueLemma: []
-        },
-        {
-          type: 'Word',
-          erasure: 'NONE',
-          parts: [
-            {
-              type: 'PhoneticGloss',
-              value: '{+kur}',
-              parts: [
+              nameParts: [
                 {
-                  type: 'Reading',
-                  flags: [],
-                  subIndex: 1,
-                  name: 'kur',
-                  modifiers: [],
-                  sign: null,
+                  type: 'Token',
                   value: 'kur'
                 }
-              ]
-            },
-            {
-              type: 'Reading',
-              flags: ['!'],
-              subIndex: 1,
-              name: 'kur',
+              ],
               modifiers: [],
+              value: 'kur₂',
               sign: null,
-              value: 'kur!'
+              name: 'kur',
+              subIndex: 2,
+              type: 'Reading'
             }
           ],
           language: 'SUMERIAN',
+          value: '{kur}ra/RA#-kur₂',
           normalized: false,
-          value: '{+kur}kur!',
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Divider',
+          parts: [
+            {
+              parts: [
+                {
+                  flags: [],
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'kur',
+                  sign: null,
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
+                }
+              ],
+              type: 'PhoneticGloss',
+              value: '{+kur}'
+            },
+            {
+              flags: ['!'],
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
+              modifiers: [],
+              value: 'kur!',
+              sign: null,
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
+            }
+          ],
+          language: 'SUMERIAN',
+          value: '{+kur}kur!',
+          normalized: false,
+          lemmatizable: false,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
+        },
+        {
           flags: [],
           divider: ':.',
           modifiers: [],
-          value: ':.'
+          value: ':.',
+          type: 'Divider'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Variant',
-              value: 'kur/KUR#',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
-                  type: 'Logogram',
                   flags: ['#'],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'KUR',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'KUR'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'KUR#',
                   sign: null,
-                  value: 'KUR#'
+                  name: 'KUR',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'kur/KUR#'
             }
           ],
           language: 'SUMERIAN',
-          normalized: false,
           value: 'kur/KUR#',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '9.'
+      ]
     },
     {
+      prefix: '9.',
       type: 'TextLine',
       content: [
         {
-          type: 'LanguageShift',
-          value: '%es',
           normalized: false,
-          language: 'EMESAL'
+          language: 'EMESAL',
+          type: 'LanguageShift',
+          value: '%es'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               type: 'CompoundGrapheme',
@@ -1247,372 +1600,463 @@ export default new Text({
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: '|KUR₂.KUR|',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Determinative',
-              value: '{kur}',
               parts: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 }
-              ]
+              ],
+              type: 'Determinative',
+              value: '{kur}'
             },
             {
-              type: 'Variant',
-              value: 'ra/RA#',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'ra',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'ra'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'ra',
                   sign: null,
-                  value: 'ra'
+                  name: 'ra',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
-                  type: 'Logogram',
                   flags: ['#'],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'RA',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'RA'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'RA#',
                   sign: null,
-                  value: 'RA#'
+                  name: 'RA',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'ra/RA#'
             },
             {
               type: 'Joiner',
               value: '-'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 2,
-              name: 'kur',
-              modifiers: [],
-              sign: null,
-              value: 'kur₂'
-            }
-          ],
-          language: 'EMESAL',
-          normalized: false,
-          value: '{kur}ra/RA#-kur₂',
-          lemmatizable: false,
-          uniqueLemma: []
-        },
-        {
-          type: 'Word',
-          erasure: 'NONE',
-          parts: [
-            {
-              type: 'PhoneticGloss',
-              value: '{+kur}',
-              parts: [
+              nameParts: [
                 {
-                  type: 'Reading',
-                  flags: [],
-                  subIndex: 1,
-                  name: 'kur',
-                  modifiers: [],
-                  sign: null,
+                  type: 'Token',
                   value: 'kur'
                 }
-              ]
-            },
-            {
-              type: 'Reading',
-              flags: ['!'],
-              subIndex: 1,
-              name: 'kur',
+              ],
               modifiers: [],
+              value: 'kur₂',
               sign: null,
-              value: 'kur!'
+              name: 'kur',
+              subIndex: 2,
+              type: 'Reading'
             }
           ],
           language: 'EMESAL',
+          value: '{kur}ra/RA#-kur₂',
           normalized: false,
-          value: '{+kur}kur!',
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Divider',
+          parts: [
+            {
+              parts: [
+                {
+                  flags: [],
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
+                  modifiers: [],
+                  value: 'kur',
+                  sign: null,
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
+                }
+              ],
+              type: 'PhoneticGloss',
+              value: '{+kur}'
+            },
+            {
+              flags: ['!'],
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
+              modifiers: [],
+              value: 'kur!',
+              sign: null,
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
+            }
+          ],
+          language: 'EMESAL',
+          value: '{+kur}kur!',
+          normalized: false,
+          lemmatizable: false,
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
+        },
+        {
           flags: [],
           divider: ':.',
           modifiers: [],
-          value: ':.'
+          value: ':.',
+          type: 'Divider'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Variant',
-              value: 'kur/KUR#',
               tokens: [
                 {
-                  type: 'Reading',
                   flags: [],
-                  subIndex: 1,
-                  name: 'kur',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'kur'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'kur',
                   sign: null,
-                  value: 'kur'
+                  name: 'kur',
+                  subIndex: 1,
+                  type: 'Reading'
                 },
                 {
-                  type: 'Logogram',
                   flags: ['#'],
-                  surrogate: [],
-                  subIndex: 1,
-                  name: 'KUR',
+                  nameParts: [
+                    {
+                      type: 'Token',
+                      value: 'KUR'
+                    }
+                  ],
                   modifiers: [],
+                  value: 'KUR#',
                   sign: null,
-                  value: 'KUR#'
+                  name: 'KUR',
+                  subIndex: 1,
+                  type: 'Logogram',
+                  surrogate: []
                 }
-              ]
+              ],
+              type: 'Variant',
+              value: 'kur/KUR#'
             }
           ],
           language: 'EMESAL',
-          normalized: false,
           value: 'kur/KUR#',
+          normalized: false,
           lemmatizable: false,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '9.'
+      ]
     },
     {
+      prefix: '10.',
       type: 'TextLine',
       content: [
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               side: 'LEFT',
-              value: '<',
-              type: 'AccidentalOmission'
+              type: 'AccidentalOmission',
+              value: '<'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '<kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               side: 'RIGHT',
-              value: '>',
-              type: 'AccidentalOmission'
+              type: 'AccidentalOmission',
+              value: '>'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur>',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               side: 'LEFT',
-              value: '<(',
-              type: 'IntentionalOmission'
+              type: 'IntentionalOmission',
+              value: '<('
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '<(kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               side: 'RIGHT',
-              value: ')>',
-              type: 'IntentionalOmission'
+              type: 'IntentionalOmission',
+              value: ')>'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur)>',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
               side: 'LEFT',
-              value: '<<',
-              type: 'Removal'
+              type: 'Removal',
+              value: '<<'
             },
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: '<<kur',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'kur',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'kur'
+                }
+              ],
               modifiers: [],
+              value: 'kur',
               sign: null,
-              value: 'kur'
+              name: 'kur',
+              subIndex: 1,
+              type: 'Reading'
             },
             {
               side: 'RIGHT',
-              value: '>>',
-              type: 'Removal'
+              type: 'Removal',
+              value: '>>'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'kur>>',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         }
-      ],
-      prefix: '10.'
+      ]
     },
     {
+      prefix: '11.',
       type: 'TextLine',
       content: [
         {
+          side: 'RIGHT',
           type: 'BrokenAway',
-          value: ']',
-          side: 'RIGHT'
+          value: ']'
         },
         {
+          side: 'LEFT',
           type: 'BrokenAway',
-          value: '[',
-          side: 'LEFT'
+          value: '['
         },
         {
+          side: 'LEFT',
           type: 'DocumentOrientedGloss',
-          value: '{(',
-          side: 'LEFT'
+          value: '{('
         },
         {
-          type: 'Word',
-          erasure: 'NONE',
           parts: [
             {
-              type: 'Reading',
               flags: [],
-              subIndex: 1,
-              name: 'ra',
+              nameParts: [
+                {
+                  type: 'Token',
+                  value: 'ra'
+                }
+              ],
               modifiers: [],
+              value: 'ra',
               sign: null,
-              value: 'ra'
+              name: 'ra',
+              subIndex: 1,
+              type: 'Reading'
             }
           ],
           language: 'AKKADIAN',
-          normalized: false,
           value: 'ra',
+          normalized: false,
           lemmatizable: true,
-          uniqueLemma: []
+          type: 'Word',
+          uniqueLemma: [],
+          erasure: 'NONE'
         },
         {
+          side: 'RIGHT',
           type: 'DocumentOrientedGloss',
-          value: ')}',
-          side: 'RIGHT'
+          value: ')}'
         },
         {
+          side: 'RIGHT',
           type: 'BrokenAway',
-          value: ']',
-          side: 'RIGHT'
+          value: ']'
         }
-      ],
-      prefix: '11.'
+      ]
     },
     {
+      prefix: '$',
       type: 'ControlLine',
       content: [
         {
           type: 'Token',
-          value: 'single ruling'
+          value: ' single ruling'
         }
-      ],
-      prefix: '$'
+      ]
     }
   ]
 })

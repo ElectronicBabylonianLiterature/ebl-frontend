@@ -118,7 +118,9 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   const namedSign = token as NamedSign
   return (
     <DamagedFlag sign={namedSign}>
-      {namedSign.name}
+      {namedSign.nameParts.map((token, index) => (
+        <DisplayToken key={index} token={token} />
+      ))}
       {namedSign.subIndex !== 1 && (
         <sub className="Transliteration__subIndex">
           {namedSign.subIndex || 'x'}
