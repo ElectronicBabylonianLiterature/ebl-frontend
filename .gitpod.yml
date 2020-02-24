@@ -9,3 +9,7 @@ ports:
 tasks:
 - before: nvm install && nvm use
   command: yarn
+
+vscode:
+  extensions:
+    - Orta.vscode-jest@3.1.1:e5QDEGVUNAQFNn6OtB9Qmw==
