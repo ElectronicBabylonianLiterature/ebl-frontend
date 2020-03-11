@@ -90,7 +90,7 @@ function GlossComponent({ token }: { token: Token }): JSX.Element {
 function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
   const sign = token as UnknownSign
   const signs = {
-    UnclearSign: 'x',
+    UnclearSign: sign.enclosureType.includes('BROKEN_AWAY') ? 'o' : 'x',
     UnidentifiedSign: 'X'
   }
   return (

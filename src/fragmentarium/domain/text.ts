@@ -6,10 +6,19 @@ import Lemmatization, {
 
 import Lemma from './Lemma'
 
+export type EnclosureType =
+  | 'ACCIDENTAL_OMISSION'
+  | 'INTENTIONAL_OMISSION'
+  | 'BROKEN_AWAY'
+  | 'PERHAPS_BROKEN_AWAY'
+  | 'PERHAPS'
+  | 'DOCUMENT_ORIENTED_GLOSS'
+
 export interface BaseToken {
   readonly type: string
   readonly value: string
   readonly parts?: readonly Token[]
+  readonly enclosureType: readonly string[]
 }
 
 export interface NotLemmatizableToken extends BaseToken {

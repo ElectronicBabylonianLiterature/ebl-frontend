@@ -15,7 +15,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
       {
         type: 'Word',
@@ -25,7 +26,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: true,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
       {
         type: 'LoneDeterminative',
@@ -35,9 +37,10 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
-      { type: 'UnknownNumberOfSigns', value: '[...]' },
+      { type: 'UnknownNumberOfSigns', value: '[...]', enclosureType: [] },
       {
         type: 'Word',
         value: '.GA',
@@ -46,7 +49,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       }
     ]
   },
@@ -62,7 +66,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
       {
         type: 'Word',
@@ -72,7 +77,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: true,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       }
     ]
   },
@@ -88,9 +94,10 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: true,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
-      { type: 'Token', value: '|' },
+      { type: 'Token', value: '|', enclosureType: [] },
       {
         type: 'Word',
         value: 'šim',
@@ -99,7 +106,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: true,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       }
     ]
   },
@@ -107,7 +115,7 @@ const lines: readonly Line[] = [
     type: 'TextLine',
     prefix: '10.',
     content: [
-      { type: 'UnknownNumberOfSigns', value: '...' },
+      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
       {
         type: 'Word',
         value: '+ku',
@@ -116,7 +124,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
       {
         type: 'LoneDeterminative',
@@ -126,10 +135,11 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
-      { type: 'UnknownNumberOfSigns', value: '...' },
-      { type: 'UnknownNumberOfSigns', value: '...' },
+      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
+      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
       {
         type: 'Word',
         value: '.ku',
@@ -138,7 +148,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       },
       {
         type: 'Word',
@@ -148,7 +159,8 @@ const lines: readonly Line[] = [
         language: 'AKKADIAN',
         lemmatizable: false,
         erasure: 'NONE',
-        parts: []
+        parts: [],
+        enclosureType: []
       }
     ]
   }

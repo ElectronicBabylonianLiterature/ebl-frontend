@@ -20,14 +20,17 @@ const testWord: WordToken = {
       nameParts: [
         {
           type: 'Token',
-          value: 'kur'
+          value: 'kur',
+          enclosureType: []
         }
       ],
       subIndex: 1,
       modifiers: [],
-      flags: []
+      flags: [],
+      enclosureType: []
     }
-  ]
+  ],
+  enclosureType: []
 }
 
 export default async function createLemmatizationTestText(): Promise<
