@@ -69,15 +69,17 @@
     font-style: normal
     font-variant: small-caps
 
-  &__Reading
+  &__Reading,
   &__Number,
   &__Logogram,
   &__Divider,
   &__Grapheme,
-  &__Logogram,
   &__UnidentifiedSign,
-  &__UnknownSign
+  &__UnclearSign
     @include damaged
+
+    &--BROKEN_AWAY
+      color: darkgrey
 
   &__BrokenAway,
   &__PerhapsBrokenAway,

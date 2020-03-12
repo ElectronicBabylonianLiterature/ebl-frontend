@@ -7,7 +7,8 @@ import {
   NamedSign,
   UnknownSign,
   Gloss,
-  Sign
+  Sign,
+  EnclosureType
 } from 'fragmentarium/domain/text'
 
 function Modifiers({
@@ -19,6 +20,28 @@ function Modifiers({
     <sup className="Transliteration__modifier">
       {modifiers.map(modifier => modifier.slice(1)).join('')}
     </sup>
+  )
+}
+
+function EnclosureFlags({
+  token,
+  enclosures,
+  children
+}: PropsWithChildren<{
+  token: Token
+  enclosures?: readonly EnclosureType[]
+}>): JSX.Element {
+  const element = `Transliteration__${token.type}`
+  return (
+    <span
+      className={classNames(
+        (enclosures ?? token.enclosureType).map(
+          enclosureType => `${element}--${enclosureType}`
+        )
+      )}
+    >
+      {children}
+    </span>
   )
 }
 
@@ -95,8 +118,10 @@ function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
   }
   return (
     <DamagedFlag sign={sign}>
-      {signs[sign.type]}
-      <Flags flags={sign.flags} />
+      <EnclosureFlags token={sign}>
+        {signs[sign.type]}
+        <Flags flags={sign.flags} />
+      </EnclosureFlags>
     </DamagedFlag>
   )
 }
@@ -106,9 +131,11 @@ function signComponent(nameProperty: string) {
     const sign = token as Sign
     return (
       <DamagedFlag sign={sign}>
-        {sign[nameProperty]}
-        <Modifiers modifiers={sign.modifiers} />
-        <Flags flags={sign.flags} />
+        <EnclosureFlags token={token}>
+          {sign[nameProperty]}
+          <Modifiers modifiers={sign.modifiers} />
+          <Flags flags={sign.flags} />
+        </EnclosureFlags>
       </DamagedFlag>
     )
   }
@@ -116,34 +143,40 @@ function signComponent(nameProperty: string) {
 
 function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   const namedSign = token as NamedSign
+  const partEnclosures: (readonly EnclosureType[])[] = namedSign.nameParts.map(
+    (part: Token): readonly EnclosureType[] => part.enclosureType
+  )
+  const effectiveEnclosures: EnclosureType[] = _.intersection(...partEnclosures)
   return (
     <DamagedFlag sign={namedSign}>
-      {namedSign.nameParts.map((token, index) => (
-        <DisplayToken key={index} token={token} />
-      ))}
-      {namedSign.subIndex !== 1 && (
-        <sub className="Transliteration__subIndex">
-          {namedSign.subIndex || 'x'}
-        </sub>
-      )}
-      <Modifiers modifiers={namedSign.modifiers} />
-      <Flags flags={namedSign.flags} />
-      {namedSign.sign && (
-        <>
-          <span className="Transliteration__bracket">(</span>
-          <DisplayToken token={namedSign.sign} />
-          <span className="Transliteration__bracket">)</span>
-        </>
-      )}
-      {namedSign.surrogate && !_.isEmpty(namedSign.surrogate) && (
-        <>
-          <span className="Transliteration__bracket">&lt;(</span>
-          {namedSign.surrogate.map((token, index) => (
-            <DisplayToken key={index} token={token} />
-          ))}
-          <span className="Transliteration__bracket">)&gt;</span>
-        </>
-      )}
+      <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>
+        {namedSign.nameParts.map((token, index) => (
+          <DisplayToken key={index} token={token} />
+        ))}
+        {namedSign.subIndex !== 1 && (
+          <sub className="Transliteration__subIndex">
+            {namedSign.subIndex || 'x'}
+          </sub>
+        )}
+        <Modifiers modifiers={namedSign.modifiers} />
+        <Flags flags={namedSign.flags} />
+        {namedSign.sign && (
+          <>
+            <span className="Transliteration__bracket">(</span>
+            <DisplayToken token={namedSign.sign} />
+            <span className="Transliteration__bracket">)</span>
+          </>
+        )}
+        {namedSign.surrogate && !_.isEmpty(namedSign.surrogate) && (
+          <>
+            <span className="Transliteration__bracket">&lt;(</span>
+            {namedSign.surrogate.map((token, index) => (
+              <DisplayToken key={index} token={token} />
+            ))}
+            <span className="Transliteration__bracket">)&gt;</span>
+          </>
+        )}
+      </EnclosureFlags>
     </DamagedFlag>
   )
 }

@@ -2316,75 +2316,222 @@ export default new Text({
       prefix: '10.'
     },
     {
-      type: 'TextLine',
       content: [
         {
-          type: 'BrokenAway',
-          side: 'LEFT',
           enclosureType: [],
-          value: '['
+          value: '[',
+          side: 'LEFT',
+          type: 'BrokenAway'
         },
         {
-          type: 'BrokenAway',
+          enclosureType: ['BROKEN_AWAY'],
+          value: ']',
           side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
+          type: 'BrokenAway'
         },
         {
-          type: 'BrokenAway',
-          side: 'LEFT',
           enclosureType: [],
-          value: '['
-        },
-        {
-          type: 'DocumentOrientedGloss',
+          value: '[',
           side: 'LEFT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: '{('
+          type: 'BrokenAway'
         },
         {
-          erasure: 'NONE',
-          normalized: false,
+          enclosureType: ['BROKEN_AWAY'],
+          value: '{(',
+          side: 'LEFT',
+          type: 'DocumentOrientedGloss'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
           parts: [
             {
-              modifiers: [],
+              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
               subIndex: 1,
-              value: 'ra',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-              flags: [],
+              name: 'ra',
               sign: null,
-              type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-                  value: 'ra'
+                  enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+                  value: 'ra',
+                  type: 'Token'
                 }
               ],
-              name: 'ra'
+              flags: [],
+              value: 'ra',
+              type: 'Reading',
+              modifiers: []
             }
           ],
+          language: 'AKKADIAN',
+          erasure: 'NONE',
+          normalized: false,
           value: 'ra',
           uniqueLemma: [],
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-          language: 'AKKADIAN',
           type: 'Word',
           lemmatizable: true
         },
         {
-          type: 'DocumentOrientedGloss',
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+          value: ')}',
           side: 'RIGHT',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-          value: ')}'
+          type: 'DocumentOrientedGloss'
         },
         {
-          type: 'BrokenAway',
-          side: 'RIGHT',
           enclosureType: ['BROKEN_AWAY'],
-          value: ']'
+          value: ']',
+          side: 'RIGHT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: [],
+          parts: [
+            {
+              enclosureType: [],
+              value: '[',
+              side: 'LEFT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              value: 'X',
+              flags: [],
+              type: 'UnidentifiedSign'
+            }
+          ],
+          language: 'AKKADIAN',
+          erasure: 'NONE',
+          normalized: false,
+          value: '[X',
+          uniqueLemma: [],
+          type: 'Word',
+          lemmatizable: false
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          parts: [
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              value: 'x',
+              flags: [],
+              type: 'UnclearSign'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              value: ']',
+              side: 'RIGHT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: [],
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              value: 'x',
+              flags: [],
+              type: 'UnclearSign'
+            }
+          ],
+          language: 'AKKADIAN',
+          erasure: 'NONE',
+          normalized: false,
+          value: 'x]-x',
+          uniqueLemma: [],
+          type: 'Word',
+          lemmatizable: false
+        },
+        {
+          enclosureType: [],
+          value: '[',
+          side: 'LEFT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          divider: '::',
+          flags: [],
+          value: '::',
+          type: 'Divider',
+          modifiers: []
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          parts: [
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              value: '(',
+              side: 'LEFT',
+              type: 'PerhapsBrokenAway'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              subIndex: 1,
+              name: 'kur',
+              sign: null,
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+                  value: 'kur',
+                  type: 'Token'
+                }
+              ],
+              flags: [],
+              value: 'kur',
+              type: 'Reading',
+              modifiers: []
+            },
+            {
+              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              value: ')',
+              side: 'RIGHT',
+              type: 'PerhapsBrokenAway'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              subIndex: 1,
+              name: 'kur',
+              sign: null,
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY'],
+                  value: 'ku',
+                  type: 'Token'
+                },
+                {
+                  enclosureType: ['BROKEN_AWAY'],
+                  value: ']',
+                  side: 'RIGHT',
+                  type: 'BrokenAway'
+                },
+                {
+                  enclosureType: [],
+                  value: 'r',
+                  type: 'Token'
+                }
+              ],
+              flags: [],
+              value: 'ku]r',
+              type: 'Reading',
+              modifiers: []
+            }
+          ],
+          language: 'AKKADIAN',
+          erasure: 'NONE',
+          normalized: false,
+          value: '(kur)-ku]r',
+          uniqueLemma: [],
+          type: 'Word',
+          lemmatizable: true
         }
       ],
-      prefix: '11.'
+      prefix: '11.',
+      type: 'TextLine'
     },
     {
       type: 'EmptyLine',

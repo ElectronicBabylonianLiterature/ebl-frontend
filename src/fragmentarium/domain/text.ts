@@ -18,7 +18,7 @@ export interface BaseToken {
   readonly type: string
   readonly value: string
   readonly parts?: readonly Token[]
-  readonly enclosureType: readonly string[]
+  readonly enclosureType: readonly EnclosureType[]
 }
 
 export interface NotLemmatizableToken extends BaseToken {

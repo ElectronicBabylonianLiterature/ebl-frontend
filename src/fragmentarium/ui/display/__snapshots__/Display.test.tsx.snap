@@ -45,41 +45,45 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              k
+              <span
+                class="Transliteration__Token"
+              >
+                k
+              </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                [
+              </span>
+              <span
+                class="Transliteration__Token"
+              >
+                u
+              </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                ]
+              </span>
+              <span
+                class="Transliteration__Token"
+              >
+                r
+              </span>
+              <sub
+                class="Transliteration__subIndex"
+              >
+                2
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <span
-              class="Transliteration__BrokenAway"
-            >
-              [
-            </span>
-            <span
-              class="Transliteration__Token"
-            >
-              u
-            </span>
-            <span
-              class="Transliteration__BrokenAway"
-            >
-              ]
-            </span>
-            <span
-              class="Transliteration__Token"
-            >
-              r
-            </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              2
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -104,21 +108,25 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
             >
-              KUR
+              <span
+                class="Transliteration__Token"
+              >
+                KUR
+              </span>
+              <sub
+                class="Transliteration__subIndex"
+              >
+                2
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              2
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -136,16 +144,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -156,16 +168,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
               >
-                RA
+                <span
+                  class="Transliteration__Token"
+                >
+                  RA
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -249,16 +265,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -311,20 +331,24 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Number--damaged"
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              1
+              <span
+                class="Transliteration__Token"
+              >
+                1
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              >
+                v
+              </sup>
+              <sup
+                class="Transliteration__flag"
+              >
+                *
+              </sup>
             </span>
-            <sup
-              class="Transliteration__modifier"
-            >
-              v
-            </sup>
-            <sup
-              class="Transliteration__flag"
-            >
-              *
-            </sup>
           </span>
         </span>
       </span>
@@ -342,12 +366,16 @@ exports[`Snapshot 1`] = `
           <span
             class="Transliteration__UnclearSign--damaged"
           >
-            x
-            <sup
-              class="Transliteration__flag"
+            <span
+              class=""
             >
-              !
-            </sup>
+              x
+              <sup
+                class="Transliteration__flag"
+              >
+                !
+              </sup>
+            </span>
           </span>
         </span>
       </span>
@@ -365,12 +393,16 @@ exports[`Snapshot 1`] = `
           <span
             class="Transliteration__UnidentifiedSign--damaged"
           >
-            X
-            <sup
-              class="Transliteration__flag"
+            <span
+              class=""
             >
-              ?
-            </sup>
+              X
+              <sup
+                class="Transliteration__flag"
+              >
+                ?
+              </sup>
+            </span>
           </span>
         </span>
       </span>
@@ -385,17 +417,21 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Divider--damaged"
         >
-          ::
-          <sup
-            class="Transliteration__modifier"
+          <span
+            class=""
           >
-            v44
-          </sup>
-          <sup
-            class="Transliteration__flag"
-          >
-            ?
-          </sup>
+            ::
+            <sup
+              class="Transliteration__modifier"
+            >
+              v44
+            </sup>
+            <sup
+              class="Transliteration__flag"
+            >
+              ?
+            </sup>
+          </span>
         </span>
       </span>
       <span
@@ -422,10 +458,14 @@ exports[`Snapshot 1`] = `
           <span
             class=""
           >
-            o
-            <sup
-              class="Transliteration__flag"
-            />
+            <span
+              class="Transliteration__UnclearSign--BROKEN_AWAY Transliteration__UnclearSign--PERHAPS_BROKEN_AWAY"
+            >
+              o
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
           </span>
         </span>
         <span
@@ -448,10 +488,14 @@ exports[`Snapshot 1`] = `
           <span
             class=""
           >
-            o
-            <sup
-              class="Transliteration__flag"
-            />
+            <span
+              class="Transliteration__UnclearSign--BROKEN_AWAY"
+            >
+              o
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
           </span>
         </span>
         <span
@@ -492,53 +536,61 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Reading--damaged"
           >
             <span
-              class="Transliteration__Token"
-            >
-              kur
-            </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              x
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            >
-              v
-            </sup>
-            <sup
-              class="Transliteration__flag"
-            >
-              !
-            </sup>
-            <span
-              class="Transliteration__bracket"
-            >
-              (
-            </span>
-            <span
-              class="Transliteration__Grapheme"
+              class=""
             >
               <span
-                class="Transliteration__Grapheme--damaged"
+                class="Transliteration__Token"
               >
-                KUR
-                <sup
-                  class="Transliteration__modifier"
-                >
-                  v
-                </sup>
-                <sup
-                  class="Transliteration__flag"
-                >
-                  ?
-                </sup>
+                kur
               </span>
-            </span>
-            <span
-              class="Transliteration__bracket"
-            >
-              )
+              <sub
+                class="Transliteration__subIndex"
+              >
+                x
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              >
+                v
+              </sup>
+              <sup
+                class="Transliteration__flag"
+              >
+                !
+              </sup>
+              <span
+                class="Transliteration__bracket"
+              >
+                (
+              </span>
+              <span
+                class="Transliteration__Grapheme"
+              >
+                <span
+                  class="Transliteration__Grapheme--damaged"
+                >
+                  <span
+                    class=""
+                  >
+                    KUR
+                    <sup
+                      class="Transliteration__modifier"
+                    >
+                      v
+                    </sup>
+                    <sup
+                      class="Transliteration__flag"
+                    >
+                      ?
+                    </sup>
+                  </span>
+                </span>
+              </span>
+              <span
+                class="Transliteration__bracket"
+              >
+                )
+              </span>
             </span>
           </span>
         </span>
@@ -554,77 +606,89 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram--damaged"
           >
             <span
-              class="Transliteration__Token"
-            >
-              KUR
-            </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              2
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            >
-              v
-            </sup>
-            <sup
-              class="Transliteration__flag"
-            >
-              ?
-            </sup>
-            <span
-              class="Transliteration__bracket"
-            >
-              &lt;(
-            </span>
-            <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__Token"
               >
-                <span
-                  class="Transliteration__Token"
-                >
-                  kur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                KUR
               </span>
-            </span>
-            <span
-              class="Transliteration__Joiner"
-            >
-              -
-            </span>
-            <span
-              class="Transliteration__Reading"
-            >
+              <sub
+                class="Transliteration__subIndex"
+              >
+                2
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              >
+                v
+              </sup>
+              <sup
+                class="Transliteration__flag"
+              >
+                ?
+              </sup>
               <span
-                class=""
+                class="Transliteration__bracket"
+              >
+                &lt;(
+              </span>
+              <span
+                class="Transliteration__Reading"
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      kur
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
-            </span>
-            <span
-              class="Transliteration__bracket"
-            >
-              )&gt;
+              <span
+                class="Transliteration__Joiner"
+              >
+                -
+              </span>
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      kur
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </span>
+              <span
+                class="Transliteration__bracket"
+              >
+                )&gt;
+              </span>
             </span>
           </span>
         </span>
@@ -656,16 +720,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -684,16 +752,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -717,16 +789,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -746,16 +822,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -770,16 +850,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -799,16 +883,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -838,16 +926,20 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--damaged"
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  d
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    d
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
             <span
@@ -862,23 +954,27 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sub
+                    class="Transliteration__subIndex"
+                  >
+                    2
+                  </sub>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  >
+                    ?
+                  </sup>
                 </span>
-                <sub
-                  class="Transliteration__subIndex"
-                >
-                  2
-                </sub>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                >
-                  ?
-                </sup>
               </span>
             </span>
           </sup>
@@ -894,16 +990,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  d
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    d
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
             <span
@@ -918,18 +1018,22 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  RA
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    RA
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  >
+                    !
+                  </sup>
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                >
-                  !
-                </sup>
               </span>
             </span>
           </sup>
@@ -941,16 +1045,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -964,16 +1072,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -997,16 +1109,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           <span
@@ -1020,18 +1136,22 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
-                    d
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      d
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    >
+                      !
+                    </sup>
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  >
-                    !
-                  </sup>
                 </span>
               </span>
             </sup>
@@ -1052,23 +1172,27 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
               >
-                KUR
+                <span
+                  class="Transliteration__Token"
+                >
+                  KUR
+                </span>
+                <sub
+                  class="Transliteration__subIndex"
+                >
+                  2
+                </sub>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                >
+                  !
+                </sup>
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              >
-                !
-              </sup>
             </span>
           </span>
           <span
@@ -1083,16 +1207,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
-                ra
+                <span
+                  class="Transliteration__Token"
+                >
+                  ra
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -1111,16 +1239,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           <span
@@ -1134,26 +1266,30 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
-                    k
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      k
+                    </span>
+                    <span
+                      class="Transliteration__BrokenAway"
+                    >
+                      [
+                    </span>
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      ur
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
-                  <span
-                    class="Transliteration__BrokenAway"
-                  >
-                    [
-                  </span>
-                  <span
-                    class="Transliteration__Token"
-                  >
-                    ur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
               </span>
               <span
@@ -1173,16 +1309,20 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
                   >
-                    RA
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      RA
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
               </span>
             </sup>
@@ -1207,16 +1347,20 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
-                    kur
+                    <span
+                      class="Transliteration__Token"
+                    >
+                      kur
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
                 </span>
               </span>
             </sup>
@@ -1228,21 +1372,25 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sub
+                  class="Transliteration__subIndex"
+                >
+                  2
+                </sub>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -1279,16 +1427,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -1322,26 +1474,30 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  k
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    k
+                  </span>
+                  <span
+                    class="Transliteration__BrokenAway"
+                  >
+                    ]
+                  </span>
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    ur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  ]
-                </span>
-                <span
-                  class="Transliteration__Token"
-                >
-                  ur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
             <span
@@ -1361,16 +1517,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__Reading--BROKEN_AWAY"
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -1387,26 +1547,30 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              k
+              <span
+                class="Transliteration__Token"
+              >
+                k
+              </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                [
+              </span>
+              <span
+                class="Transliteration__Token"
+              >
+                ur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <span
-              class="Transliteration__BrokenAway"
-            >
-              [
-            </span>
-            <span
-              class="Transliteration__Token"
-            >
-              ur
-            </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -1457,16 +1621,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1485,16 +1653,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -1508,16 +1680,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  d
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    d
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -1538,16 +1714,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              KUR
+              <span
+                class="Transliteration__Token"
+              >
+                KUR
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1566,16 +1746,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1594,16 +1778,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1622,16 +1810,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              KUR
+              <span
+                class="Transliteration__Token"
+              >
+                KUR
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -1645,16 +1837,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  D
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    D
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -1675,16 +1871,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1728,16 +1928,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -1752,26 +1956,30 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                r
+                <span
+                  class="Transliteration__Token"
+                >
+                  r
+                </span>
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  [
+                </span>
+                <span
+                  class="Transliteration__Token"
+                >
+                  a
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <span
-                class="Transliteration__BrokenAway"
-              >
-                [
-              </span>
-              <span
-                class="Transliteration__Token"
-              >
-                a
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -1782,26 +1990,30 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Logogram--damaged"
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                R
+                <span
+                  class="Transliteration__Token"
+                >
+                  R
+                </span>
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  [
+                </span>
+                <span
+                  class="Transliteration__Token"
+                >
+                  A
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <span
-                class="Transliteration__BrokenAway"
-              >
-                [
-              </span>
-              <span
-                class="Transliteration__Token"
-              >
-                A
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -1822,21 +2034,25 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sub
+                class="Transliteration__subIndex"
+              >
+                2
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              2
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -1859,16 +2075,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -1880,18 +2100,22 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              >
+                !
+              </sup>
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            >
-              !
-            </sup>
           </span>
         </span>
       </span>
@@ -1906,13 +2130,17 @@ exports[`Snapshot 1`] = `
         <span
           class=""
         >
-          :.
-          <sup
-            class="Transliteration__modifier"
-          />
-          <sup
-            class="Transliteration__flag"
-          />
+          <span
+            class=""
+          >
+            :.
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
         </span>
       </span>
       <span
@@ -1933,16 +2161,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -1953,16 +2185,20 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Logogram--damaged"
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                KUR
+                <span
+                  class="Transliteration__Token"
+                >
+                  KUR
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -2007,16 +2243,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -2031,16 +2271,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                ra
+                <span
+                  class="Transliteration__Token"
+                >
+                  ra
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -2051,16 +2295,20 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Logogram--damaged"
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                RA
+                <span
+                  class="Transliteration__Token"
+                >
+                  RA
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -2076,21 +2324,25 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sub
+                class="Transliteration__subIndex"
+              >
+                2
+              </sub>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sub
-              class="Transliteration__subIndex"
-            >
-              2
-            </sub>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -2113,16 +2365,20 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class=""
                 >
-                  kur
+                  <span
+                    class="Transliteration__Token"
+                  >
+                    kur
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </sup>
@@ -2134,18 +2390,22 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class=""
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              >
+                !
+              </sup>
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            >
-              !
-            </sup>
           </span>
         </span>
       </span>
@@ -2160,13 +2420,17 @@ exports[`Snapshot 1`] = `
         <span
           class=""
         >
-          :.
-          <sup
-            class="Transliteration__modifier"
-          />
-          <sup
-            class="Transliteration__flag"
-          />
+          <span
+            class=""
+          >
+            :.
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
         </span>
       </span>
       <span
@@ -2187,16 +2451,20 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                kur
+                <span
+                  class="Transliteration__Token"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
           /
@@ -2207,16 +2475,20 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Logogram--damaged"
             >
               <span
-                class="Transliteration__Token"
+                class=""
               >
-                KUR
+                <span
+                  class="Transliteration__Token"
+                >
+                  KUR
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
             </span>
           </span>
         </span>
@@ -2248,16 +2520,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--ACCIDENTAL_OMISSION"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -2276,16 +2552,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--ACCIDENTAL_OMISSION"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -2314,16 +2594,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--INTENTIONAL_OMISSION"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -2342,16 +2626,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--INTENTIONAL_OMISSION"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -2380,16 +2668,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--REMOVAL"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
       </span>
@@ -2408,16 +2700,20 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Token"
+              class="Transliteration__Reading--REMOVAL"
             >
-              kur
+              <span
+                class="Transliteration__Token"
+              >
+                kur
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
-            <sup
-              class="Transliteration__modifier"
-            />
-            <sup
-              class="Transliteration__flag"
-            />
           </span>
         </span>
         <span
@@ -2471,9 +2767,165 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
+                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              >
+                <span
+                  class="Transliteration__Token"
+                >
+                  ra
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </sup>
+      <span
+        class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+      >
+        ]
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__BrokenAway"
+        >
+          [
+        </span>
+        <span
+          class="Transliteration__UnidentifiedSign"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__UnidentifiedSign--BROKEN_AWAY"
+            >
+              X
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__UnclearSign"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__UnclearSign--BROKEN_AWAY"
+            >
+              o
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+        <span
+          class="Transliteration__BrokenAway"
+        >
+          ]
+        </span>
+        <span
+          class="Transliteration__Joiner"
+        >
+          -
+        </span>
+        <span
+          class="Transliteration__UnclearSign"
+        >
+          <span
+            class=""
+          >
+            <span
+              class=""
+            >
+              x
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
+      >
+        [
+      </span>
+      <span
+        class="Transliteration__Divider Transliteration__Divider--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Divider--BROKEN_AWAY"
+          >
+            ::
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__PerhapsBrokenAway"
+        >
+          (
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
+            >
+              <span
                 class="Transliteration__Token"
               >
-                ra
+                kur
               </span>
               <sup
                 class="Transliteration__modifier"
@@ -2484,11 +2936,49 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
-      </sup>
-      <span
-        class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
-      >
-        ]
+        <span
+          class="Transliteration__PerhapsBrokenAway"
+        >
+          )
+        </span>
+        <span
+          class="Transliteration__Joiner"
+        >
+          -
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Token"
+              >
+                ku
+              </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                ]
+              </span>
+              <span
+                class="Transliteration__Token"
+              >
+                r
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
       </span>
     </li>
     <li
