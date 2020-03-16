@@ -65,6 +65,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         <Tabs
           id={tabsId}
           defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}
+          mountOnEnter={true}
         >
           <Tab eventKey={1} title="Display">
             <ContentSection>
