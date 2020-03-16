@@ -59,7 +59,7 @@ beforeEach(async () => {
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 
-  act(() => {
+  await act(async () => {
     element = render(
       <MemoryRouter>
         <SessionContext.Provider value={session}>
@@ -137,7 +137,7 @@ it('Updates view on References save', async () => {
   fragmentService.updateReferences.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
-  clickNth(element, 'References', 0)
+  clickNth(element, 'References', 1)
   await waitForElement(() => element.getAllByText('Document'))
   submitFormByTestId(element, 'references-form')
 
