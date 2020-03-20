@@ -151,12 +151,7 @@ function RulingDollarLine({
   container?: string
 }): JSX.Element {
   const ruling = content[0].value
-  return (
-    <>
-      <div className={`Transliteration__${type}`}>({ruling})</div>
-      <hr className={`Transliteration__${type} ${number}`} />
-    </>
-  )
+  return <hr className={`Transliteration__${type} ${number}`} />
 }
 
 const lineComponents: ReadonlyMap<
