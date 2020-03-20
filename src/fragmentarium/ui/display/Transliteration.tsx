@@ -175,7 +175,6 @@ export function Transliteration({
     <ol className="Transliteration">
       {lines.map((line: Line, index: number) => {
         const LineComponent = lineComponents.get(line.type) || DisplayLine
-        // @ts-ignore
         return <LineComponent key={index} container="li" line={line} />
       })}
     </ol>
