@@ -144,6 +144,7 @@ export interface Line {
   readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
+  readonly number?: string
 }
 
 export class Text {

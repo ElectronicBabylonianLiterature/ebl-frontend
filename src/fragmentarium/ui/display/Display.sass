@@ -24,6 +24,10 @@
     color: pink
     letter-spacing: 0.1em
 
+
+@mixin third-black-border
+  box-shadow: 0 2px white,0 5px black
+
 .Transliteration
   list-style: none
   padding: 0
@@ -34,7 +38,16 @@
   &__RulingDollarLine
     text-indent: 1em
     color: darkgrey
-    border-bottom: 1px solid black
+
+    &.SINGLE
+      border-bottom: 1px solid black
+
+    &.DOUBLE
+      border-bottom: 4px double black
+
+    &.TRIPLE
+      border-bottom: 7px double black
+      @include third-black-border
 
   &__Reading,
   &__Number,

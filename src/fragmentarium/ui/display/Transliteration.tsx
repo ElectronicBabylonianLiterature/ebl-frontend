@@ -144,16 +144,18 @@ function DisplayLine({
 }
 
 function RulingDollarLine({
-  line: { type, prefix, content },
+  line: { type, prefix, content, number },
   container = 'div'
 }: {
   line: Line
   container?: string
 }): JSX.Element {
+  const ruling = content[0].value
   return (
-    <span className={`Transliteration__${type}`}>
-      <hr /> {content[0].value}
-    </span>
+    <>
+      <div className={`Transliteration__${type}`}>({ruling})</div>
+      <hr className={`Transliteration__${type} ${number}`} />
+    </>
   )
 }
 
