@@ -150,7 +150,6 @@ function RulingDollarLine({
   line: Line
   container?: string
 }): JSX.Element {
-  const ruling = content[0].value
   return <hr className={`Transliteration__${type} ${number}`} />
 }
 
