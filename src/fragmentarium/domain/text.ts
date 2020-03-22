@@ -250,9 +250,9 @@ export interface CompositeAtLine extends Line {
 }
 
 export class Text {
-  readonly lines: ReadonlyArray<Line>
+  readonly lines: ReadonlyArray<LineContainer>
 
-  constructor({ lines }: { lines: ReadonlyArray<Line> }) {
+  constructor({ lines }: { lines: ReadonlyArray<LineContainer> }) {
     this.lines = lines
   }
 

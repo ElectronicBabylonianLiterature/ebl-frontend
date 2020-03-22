@@ -2989,19 +2989,9 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__ControlLine"
     >
-      <span>
-        $
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Token Transliteration__Token--AKKADIAN"
-      >
-         single ruling
-      </span>
+      <hr
+        class="Transliteration__RulingDollarLine SINGLE"
+      />
     </li>
   </ol>
 </div>
