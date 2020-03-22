@@ -14,12 +14,12 @@
       content: "⸣"
 
 @mixin sumerian
-  &--SUMERIAN,
+  &--SUMERIAN
     @include normal-font
     letter-spacing: 0.1em
 
 @mixin emesal
-  &--EMESAL,
+  &--EMESAL
     @include normal-font
     color: pink
     letter-spacing: 0.1em
@@ -33,6 +33,10 @@
   padding: 0
 
   &__ControlLine
+    color: darkgrey
+
+  &__DollarLineAndAtLine
+    text-indent: 1em
     color: darkgrey
 
   &__RulingDollarLine

@@ -140,11 +140,16 @@ export type Token =
   | Enclosure
   | Tabulation
 
+export type LineContainer = Line | RulingDollarLine
+
 export interface Line {
   readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
-  readonly number?: string
+}
+
+export interface RulingDollarLine extends Line {
+  readonly number: string
 }
 
 export class Text {

@@ -1,6 +1,14 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { Line, Token, Text, Enclosure, Shift } from 'fragmentarium/domain/text'
+import {
+  Line,
+  Token,
+  Text,
+  Enclosure,
+  Shift,
+  RulingDollarLine,
+  LineContainer
+} from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
@@ -143,14 +151,27 @@ function DisplayLine({
   )
 }
 
-function RulingDollarLine({
-  line: { type, prefix, content, number },
+function DollarLineAndAtLine({
+  line,
   container = 'div'
 }: {
-  line: Line
+  line: LineContainer
   container?: string
 }): JSX.Element {
-  return <hr className={`Transliteration__${type} ${number}`} />
+  if (line.type === 'RulingDollarLine') {
+    const rulingDollarLine = line as RulingDollarLine
+    return (
+      <hr
+        className={`Transliteration__${line.type} ${rulingDollarLine.number}`}
+      />
+    )
+  } else {
+    return (
+      <div className="Transliteration__DollarLineAndAtLine">
+        ({line.content[0].value.trimStart()})
+      </div>
+    )
+  }
 }
 
 const lineComponents: ReadonlyMap<
@@ -160,10 +181,8 @@ const lineComponents: ReadonlyMap<
     container?: string
   }>
 > = new Map([
-  ['TextLine', DisplayLine],
-  ['ControlLine', DisplayLine],
-  ['EmptyLine', DisplayLine],
-  ['RulingDollarLine', RulingDollarLine]
+  ['$', DollarLineAndAtLine],
+  ['@', DollarLineAndAtLine]
 ])
 
 export function Transliteration({
@@ -174,7 +193,7 @@ export function Transliteration({
   return (
     <ol className="Transliteration">
       {lines.map((line: Line, index: number) => {
-        const LineComponent = lineComponents.get(line.type) || DisplayLine
+        const LineComponent = lineComponents.get(line.prefix) || DisplayLine
         return <LineComponent key={index} container="li" line={line} />
       })}
     </ol>
