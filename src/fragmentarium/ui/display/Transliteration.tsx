@@ -160,16 +160,25 @@ function DollarLineAndAtLine({
 }): JSX.Element {
   if (line.type === 'RulingDollarLine') {
     const rulingDollarLine = line as RulingDollarLine
-    return (
-      <hr
-        className={`Transliteration__${line.type} ${rulingDollarLine.number}`}
-      />
+    return React.createElement(
+      container,
+      { className: classNames([`Transliteration__ControlLine`]) },
+      [
+        <hr
+          key={101}
+          className={`Transliteration__${line.type} ${rulingDollarLine.number}`}
+        />
+      ]
     )
   } else {
-    return (
-      <div className="Transliteration__DollarLineAndAtLine">
-        ({line.content[0].value.trimStart()})
-      </div>
+    return React.createElement(
+      container,
+      { className: classNames([`Transliteration__ControlLine`]) },
+      [
+        <div key={101} className="Transliteration__DollarLineAndAtLine">
+          ({line.content[0].value.trimStart()})
+        </div>
+      ]
     )
   }
 }

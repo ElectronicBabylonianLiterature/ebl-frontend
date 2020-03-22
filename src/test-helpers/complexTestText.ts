@@ -2540,7 +2540,8 @@ export default new Text({
     },
     {
       prefix: '$',
-      type: 'ControlLine',
+      type: 'RulingDollarLine',
+      number: 'SINGLE',
       content: [
         {
           type: 'Token',
