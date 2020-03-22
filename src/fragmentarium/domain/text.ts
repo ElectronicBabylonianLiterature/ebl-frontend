@@ -150,6 +150,7 @@ export interface Line {
 
 export interface RulingDollarLine extends Line {
   readonly number: string
+  readonly status?: string | null
 }
 
 export class Text {
