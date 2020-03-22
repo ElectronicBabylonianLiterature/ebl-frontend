@@ -140,7 +140,21 @@ export type Token =
   | Enclosure
   | Tabulation
 
-export type LineContainer = Line | RulingDollarLine
+export type LineContainer =
+  | Line
+  | LooseDollarLine
+  | ImageDollarLine
+  | RulingDollarLine
+  | SealDollarLine
+  | StateDollarLine
+  | SealAtLine
+  | HeadingAtLine
+  | ColumnAtLine
+  | DiscourseAtLine
+  | SurfaceAtLine
+  | ObjectAtLine
+  | DivisionAtLine
+  | CompositeAtLine
 
 export interface Line {
   readonly type: string
@@ -148,8 +162,91 @@ export interface Line {
   readonly content: ReadonlyArray<Token>
 }
 
+export interface LooseDollarLine extends Line {
+  readonly text: string
+}
+
+export interface ImageDollarLine extends Line {
+  readonly number: string
+  readonly letter?: string | null
+  readonly text: string
+}
+
 export interface RulingDollarLine extends Line {
   readonly number: string
+  readonly status?: string | null
+}
+
+export interface SealDollarLine extends Line {
+  readonly number: number
+}
+
+interface ScopeContainer {
+  readonly type: string
+  readonly content: string
+  readonly text: string
+}
+
+export interface StateDollarLine extends Line {
+  readonly qualification: string
+  readonly extent: string
+  readonly scope: ScopeContainer
+  readonly state: string
+  readonly status: string
+}
+
+interface Label {
+  readonly status: ReadonlyArray<string>
+}
+
+interface ColumnLabel extends Label {
+  readonly column: number
+}
+
+interface SurfaceLabel extends Label {
+  readonly surface: string
+  readonly text: string
+}
+export interface SealAtLine extends Line {
+  readonly number: number
+}
+export interface HeadingAtLine extends Line {
+  readonly number: number
+}
+
+export interface ColumnAtLine extends Line {
+  readonly column_label: ColumnLabel
+}
+
+export interface DiscourseAtLine extends Line {
+  readonly discourse_label: string
+}
+
+export interface ColumnAtLine extends Line {
+  readonly number: string
+  readonly letter?: string | null
+  readonly text: string
+}
+
+export interface SurfaceAtLine extends Line {
+  readonly surface_label: SurfaceLabel
+}
+
+export interface ObjectAtLine extends Line {
+  readonly status: ReadonlyArray<string>
+  readonly object_label: string
+  readonly text: string
+}
+
+export interface DivisionAtLine extends Line {
+  readonly number: string
+  readonly text: string
+}
+
+export interface CompositeAtLine extends Line {
+  readonly composite: string
+  readonly number: string
+  readonly text: string
 }
 
 export class Text {
