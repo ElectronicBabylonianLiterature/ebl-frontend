@@ -6,7 +6,6 @@ import {
   Text,
   Enclosure,
   Shift,
-  RulingDollarLine,
   LineContainer
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
@@ -151,36 +150,15 @@ function DisplayLine({
   )
 }
 
-function DollarLineAndAtLine({
+function DisplayRulingDollarLine({
   line,
   container = 'div'
 }: {
   line: LineContainer
   container?: string
 }): JSX.Element {
-  if (line.type === 'RulingDollarLine') {
-    const rulingDollarLine = line as RulingDollarLine
-    return React.createElement(
-      container,
-      { className: classNames([`Transliteration__ControlLine`]) },
-      [
-        <hr
-          key={101}
-          className={`Transliteration__${line.type} ${rulingDollarLine.number}`}
-        />
-      ]
-    )
-  } else {
-    return React.createElement(
-      container,
-      { className: classNames([`Transliteration__ControlLine`]) },
-      [
-        <div key={101} className="Transliteration__DollarLineAndAtLine">
-          ({line.content[0].value.trimStart()})
-        </div>
-      ]
-    )
-  }
+  const element = `Transliteration__${line.type}`
+  return React.createElement(container, element, <hr className={element}></hr>)
 }
 
 const lineComponents: ReadonlyMap<
@@ -189,10 +167,7 @@ const lineComponents: ReadonlyMap<
     line: Line
     container?: string
   }>
-> = new Map([
-  ['$', DollarLineAndAtLine],
-  ['@', DollarLineAndAtLine]
-])
+> = new Map([['RulingDollarLine', DisplayRulingDollarLine]])
 
 export function Transliteration({
   text: { lines }
@@ -202,7 +177,7 @@ export function Transliteration({
   return (
     <ol className="Transliteration">
       {lines.map((line: Line, index: number) => {
-        const LineComponent = lineComponents.get(line.prefix) || DisplayLine
+        const LineComponent = lineComponents.get(line.type) || DisplayLine
         return <LineComponent key={index} container="li" line={line} />
       })}
     </ol>

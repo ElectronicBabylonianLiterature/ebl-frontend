@@ -25,34 +25,15 @@
     letter-spacing: 0.1em
 
 
-@mixin third-black-border
-  box-shadow: 0 1.3px white,0 2.6px black
-
 .Transliteration
   list-style: none
   padding: 0
 
-  &__DollarLineAndAtLine
-    text-indent: 1em
-    color: darkgrey
-
   &__RulingDollarLine
-    text-indent: 1em
-    margin-top: 1.5px
+    line-height:
     color: darkgrey
-
-    &.SINGLE
-      border-bottom: 1.3px solid black
-      margin-bottom: 6px
-
-    &.DOUBLE
-      border-bottom: 4px double black
-      margin-bottom: 9px
-
-    &.TRIPLE
-      border-bottom: 4px double black
-      margin-bottom: 15px
-      @include third-black-border
+    border-top: solid black
+    border-bottom: solid black
 
   &__Reading,
   &__Number,
