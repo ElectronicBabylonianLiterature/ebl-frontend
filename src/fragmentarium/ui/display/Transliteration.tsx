@@ -6,7 +6,8 @@ import {
   Text,
   Enclosure,
   Shift,
-  LineContainer
+  LineContainer,
+  RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
@@ -154,17 +155,29 @@ function DisplayRulingDollarLine({
   line,
   container = 'div'
 }: {
-  line: LineContainer
+  line: Line
   container?: string
 }): JSX.Element {
-  const element = `Transliteration__${line.type}`
-  return React.createElement(container, element, <hr className={element}></hr>)
+  const rulingDollarLine = line as RulingDollarLine
+  const element = `Transliteration__${rulingDollarLine.type}`
+  const number = capitalizeFirstLetter(
+    rulingDollarLine.display_value.split(' ')[0]
+  )
+  return React.createElement(
+    container,
+    { className: classNames([element]) },
+    <div className={`${element}${number}`}></div>
+  )
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 const lineComponents: ReadonlyMap<
   string,
   FunctionComponent<{
-    line: Line
+    line: LineContainer
     container?: string
   }>
 > = new Map([['RulingDollarLine', DisplayRulingDollarLine]])

@@ -148,7 +148,11 @@ export interface Line {
   readonly content: ReadonlyArray<Token>
 }
 
-export interface RulingDollarLine extends Line {
+export interface ControlLines extends Line {
+  readonly display_value: string
+}
+
+export interface RulingDollarLine extends ControlLines {
   readonly number: string
   readonly status?: string | null
 }
