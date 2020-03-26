@@ -140,15 +140,24 @@ export type Token =
   | Enclosure
   | Tabulation
 
-export type LineContainer = Line | RulingDollarLine
+export type Line = TextLine | RulingDollarLine
 
-export interface Line {
+export interface LineBase {
   readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
 }
+export interface LineNumber {
+  readonly number: number
+  has_prime: false
+  prefix_modifier?: string
+  suffix_modifier?: string
+}
+export interface TextLine extends LineBase {
+  readonly line_number?: LineNumber
+}
 
-export interface ControlLines extends Line {
+export interface ControlLines extends LineBase {
   readonly display_value: string
 }
 
@@ -158,9 +167,9 @@ export interface RulingDollarLine extends ControlLines {
 }
 
 export class Text {
-  readonly lines: ReadonlyArray<LineContainer>
+  readonly lines: ReadonlyArray<Line>
 
-  constructor({ lines }: { lines: ReadonlyArray<LineContainer> }) {
+  constructor({ lines }: { lines: ReadonlyArray<Line> }) {
     this.lines = lines
   }
 
