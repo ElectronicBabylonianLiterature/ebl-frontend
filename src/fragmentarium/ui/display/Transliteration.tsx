@@ -6,7 +6,8 @@ import {
   Text,
   Enclosure,
   Shift,
-  RulingDollarLine
+  RulingDollarLine,
+  ControlLines
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
@@ -150,6 +151,24 @@ function DisplayLine({
   )
 }
 
+function DisplayGenericControlLines({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const controlLine = line as ControlLines
+  const element = `Transliteration__GenericControlLine`
+  return React.createElement(
+    container,
+    { className: classNames([element]) },
+    <div className={`${element} ${line.type}`}>
+      ({controlLine.display_value})
+    </div>
+  )
+}
+
 function DisplayRulingDollarLine({
   line,
   container = 'div'
@@ -159,9 +178,12 @@ function DisplayRulingDollarLine({
 }): JSX.Element {
   const rulingDollarLine = line as RulingDollarLine
   const element = `Transliteration__${rulingDollarLine.type}`
-  const number = capitalizeFirstLetter(
-    rulingDollarLine.display_value.split(' ')[0]
-  )
+  let number = ''
+  if (rulingDollarLine.display_value === undefined) {
+    number = ''
+  } else {
+    number = capitalizeFirstLetter(rulingDollarLine.display_value.split(' ')[0])
+  }
   return React.createElement(
     container,
     { className: classNames([element]) },
@@ -179,7 +201,22 @@ const lineComponents: ReadonlyMap<
     line: Line
     container?: string
   }>
-> = new Map([['RulingDollarLine', DisplayRulingDollarLine]])
+> = new Map([
+  ['TextLine', DisplayLine],
+  ['LooseDollarLine', DisplayGenericControlLines],
+  ['ImageDollarLine', DisplayGenericControlLines],
+  ['RulingDollarLine', DisplayRulingDollarLine],
+  ['SealDollarLine', DisplayGenericControlLines],
+  ['StateDollarLine', DisplayGenericControlLines],
+  ['SealAtLine', DisplayGenericControlLines],
+  ['ColumnAtLine', DisplayGenericControlLines],
+  ['HeadingAtLine', DisplayGenericControlLines],
+  ['DiscourseAtLine', DisplayGenericControlLines],
+  ['SurfaceAtLine', DisplayGenericControlLines],
+  ['ObjectAtLine', DisplayGenericControlLines],
+  ['DivisionAtLine', DisplayGenericControlLines],
+  ['CompositeAtLine', DisplayGenericControlLines]
+])
 
 export function Transliteration({
   text: { lines }
