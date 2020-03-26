@@ -168,11 +168,11 @@ export interface LineNumber {
   suffix_modifier?: string
 }
 export interface TextLine extends LineBase {
-  readonly line_number?: LineNumber
+  readonly lineNumber?: LineNumber
 }
 
 export interface ControlLines extends LineBase {
-  readonly display_value: string
+  readonly displayValue: string
 }
 
 export interface RulingDollarLine extends ControlLines {

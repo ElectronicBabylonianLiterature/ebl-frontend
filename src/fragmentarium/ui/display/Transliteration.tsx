@@ -164,7 +164,7 @@ function DisplayGenericControlLines({
     container,
     { className: classNames([element]) },
     <div className={`${element} ${line.type}`}>
-      ({controlLine.display_value})
+      ({controlLine.displayValue})
     </div>
   )
 }
@@ -179,10 +179,10 @@ function DisplayRulingDollarLine({
   const rulingDollarLine = line as RulingDollarLine
   const element = `Transliteration__${rulingDollarLine.type}`
   let number = ''
-  if (rulingDollarLine.display_value === undefined) {
+  if (rulingDollarLine.displayValue === undefined) {
     number = ''
   } else {
-    number = capitalizeFirstLetter(rulingDollarLine.display_value.split(' ')[0])
+    number = capitalizeFirstLetter(rulingDollarLine.displayValue.split(' ')[0])
   }
   return React.createElement(
     container,

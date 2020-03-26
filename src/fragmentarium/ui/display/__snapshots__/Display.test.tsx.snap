@@ -2990,8 +2990,8 @@ exports[`Snapshot 1`] = `
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLineSingle">
-      </div>
+        class="Transliteration__RulingDollarLineSingle"
+      />
     </li>
   </ol>
 </div>

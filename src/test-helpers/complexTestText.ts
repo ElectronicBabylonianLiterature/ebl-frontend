@@ -2542,6 +2542,7 @@ export default new Text({
       prefix: '$',
       type: 'RulingDollarLine',
       number: 'SINGLE',
+      displayValue: 'single ruling',
       content: [
         {
           type: 'Token',
