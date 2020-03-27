@@ -140,7 +140,7 @@ export type Token =
   | Enclosure
   | Tabulation
 
-export type Line = TextLine | RulingDollarLine | LineBase
+export type Line = RulingDollarLine | LineBase
 
 export interface LineBase {
   readonly type: string
@@ -148,18 +148,11 @@ export interface LineBase {
   readonly content: ReadonlyArray<Token>
 }
 
-export interface TextLine extends LineBase {
-  readonly type: 'TextLine'
-}
-
-export interface ControlLines extends LineBase {
-  readonly displayValue: string
-}
-
-export interface RulingDollarLine extends ControlLines {
+export interface RulingDollarLine extends LineBase {
   readonly type: 'RulingDollarLine'
   readonly number: string
   readonly status?: string | null
+  readonly displayValue: string
 }
 
 export class Text {
