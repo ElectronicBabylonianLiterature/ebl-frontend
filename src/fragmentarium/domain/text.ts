@@ -150,7 +150,7 @@ export interface LineBase {
 
 export interface RulingDollarLine extends LineBase {
   readonly type: 'RulingDollarLine'
-  readonly number: string
+  readonly number: 'SINGLE' | 'DOUBLE' | 'TRIPLE'
   readonly status?: string | null
   readonly displayValue: string
 }
