@@ -32,7 +32,8 @@ const folioTypes: { readonly [key: string]: FolioType } = {
   MJG: { name: 'Geller', hasImage: true },
   WRM: { name: 'Mayer', hasImage: true },
   CB: { name: 'Bezold', hasImage: true },
-  JS: { name: 'Strassmaier', hasImage: true }
+  USK: { name: 'Koch', hasImage: true },
+  ILF: { name: 'Finkel', hasImage: true }
 }
 
 export class Folio {

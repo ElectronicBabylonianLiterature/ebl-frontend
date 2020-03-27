@@ -27,7 +27,9 @@ const expectedScope = [
   'read:FWG-folios',
   'read:EL-folios',
   'read:AKG-folios',
-  'read:MJG-folios'
+  'read:MJG-folios',
+  'read:USK-folios',
+  'read:ILF-folios'
 ].join(' ')
 const now = new Date()
 let sessionStore

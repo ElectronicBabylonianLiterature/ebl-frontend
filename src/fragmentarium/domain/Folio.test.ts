@@ -13,12 +13,13 @@ describe('Folio', () => {
     ['MJG', 'Geller', true],
     ['WRM', 'Mayer', true],
     ['CB', 'Bezold', true],
-    ['JS', 'Strassmaier', true]
+    ['USK', 'Koch', true],
+    ['ILF', 'Finkel', true]
   ] as [string, string, boolean][])(
     '%s folios',
     (name, humanized, hasImage) => {
-      let number
-      let folio
+      let number: string
+      let folio: Folio
 
       beforeEach(() => {
         number = chance.string()
