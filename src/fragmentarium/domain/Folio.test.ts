@@ -13,6 +13,7 @@ describe('Folio', () => {
     ['MJG', 'Geller', true],
     ['WRM', 'Mayer', true],
     ['CB', 'Bezold', true],
+    ['JS', 'Strassmaier', true],
     ['USK', 'Koch', true],
     ['ILF', 'Finkel', true]
   ] as [string, string, boolean][])(
