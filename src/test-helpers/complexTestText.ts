@@ -1,4 +1,4 @@
-import { Text } from 'fragmentarium/domain/text'
+import { Text, TextLine } from 'fragmentarium/domain/text'
 
 export default new Text({
   lines: [

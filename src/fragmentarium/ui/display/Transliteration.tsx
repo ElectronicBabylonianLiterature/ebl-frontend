@@ -159,18 +159,11 @@ function DisplayRulingDollarLine({
 }): JSX.Element {
   const rulingDollarLine = line as RulingDollarLine
   const element = `Transliteration__${rulingDollarLine.type}`
-  const number = capitalizeFirstLetter(
-    rulingDollarLine.display_value.split(' ')[0]
-  )
   return React.createElement(
     container,
-    { className: classNames([element]) },
-    <div className={`${element}${number}`} />
+    null,
+    <div className={`${element} ${rulingDollarLine.number}`} />
   )
-}
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 const lineComponents: ReadonlyMap<

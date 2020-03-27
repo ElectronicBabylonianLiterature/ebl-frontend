@@ -29,24 +29,24 @@
   list-style: none
   padding: 0
 
-  &__RulingDollarLineSingle
-    margin-top: 0.2em
-    margin-bottom: 0.2em
-    border-top: 2px solid black
+  &__ControlLine
+    color: darkgrey
 
-  &__RulingDollarLineDouble
+  &__RulingDollarLine
     margin-top: 0.2em
     margin-bottom: 0.2em
     padding: 1px
-    border-top: 2px solid black
-    border-bottom: 2px solid black
 
-  &__RulingDollarLineTriple
-    margin-top: 0.2em
-    margin-bottom: 0.2em
-    padding: 1px
-    border-top: 2px solid black
-    border-bottom: 6px double black
+    &.SINGLE
+      border-top: 2px solid black
+
+    &.DOUBLE
+      border-top: 2px solid black
+      border-bottom: 2px solid black
+
+    &.TRIPLE
+      border-top: 2px solid black
+      border-bottom: 6px double black
 
 
   &__Reading,
