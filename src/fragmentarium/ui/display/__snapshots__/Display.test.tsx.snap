@@ -48,7 +48,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 k
               </span>
@@ -58,7 +58,7 @@ exports[`Snapshot 1`] = `
                 [
               </span>
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 u
               </span>
@@ -68,7 +68,7 @@ exports[`Snapshot 1`] = `
                 ]
               </span>
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 r
               </span>
@@ -111,7 +111,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 KUR
               </span>
@@ -147,7 +147,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -171,7 +171,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   RA
                 </span>
@@ -268,7 +268,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -334,7 +334,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 1
               </span>
@@ -539,7 +539,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -609,7 +609,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 KUR
               </span>
@@ -643,7 +643,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       kur
                     </span>
@@ -671,7 +671,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       kur
                     </span>
@@ -723,7 +723,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -755,7 +755,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -792,7 +792,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -825,7 +825,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -853,7 +853,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -886,7 +886,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -929,7 +929,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     d
                   </span>
@@ -957,7 +957,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -993,7 +993,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     d
                   </span>
@@ -1021,7 +1021,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     RA
                   </span>
@@ -1048,7 +1048,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1075,7 +1075,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -1112,7 +1112,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -1139,7 +1139,7 @@ exports[`Snapshot 1`] = `
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       d
                     </span>
@@ -1175,7 +1175,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   KUR
                 </span>
@@ -1210,7 +1210,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   ra
                 </span>
@@ -1242,7 +1242,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -1269,7 +1269,7 @@ exports[`Snapshot 1`] = `
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       k
                     </span>
@@ -1279,7 +1279,7 @@ exports[`Snapshot 1`] = `
                       [
                     </span>
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       ur
                     </span>
@@ -1312,7 +1312,7 @@ exports[`Snapshot 1`] = `
                     class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       RA
                     </span>
@@ -1350,7 +1350,7 @@ exports[`Snapshot 1`] = `
                     class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
                   >
                     <span
-                      class="Transliteration__Token"
+                      class="Transliteration__ValueToken"
                     >
                       kur
                     </span>
@@ -1375,7 +1375,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -1430,7 +1430,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1477,7 +1477,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     k
                   </span>
@@ -1487,7 +1487,7 @@ exports[`Snapshot 1`] = `
                     ]
                   </span>
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     ur
                   </span>
@@ -1520,7 +1520,7 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__Reading--BROKEN_AWAY"
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -1550,7 +1550,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 k
               </span>
@@ -1560,7 +1560,7 @@ exports[`Snapshot 1`] = `
                 [
               </span>
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 ur
               </span>
@@ -1624,7 +1624,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1656,7 +1656,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1683,7 +1683,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     d
                   </span>
@@ -1717,7 +1717,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 KUR
               </span>
@@ -1749,7 +1749,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1781,7 +1781,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1813,7 +1813,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 KUR
               </span>
@@ -1840,7 +1840,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     D
                   </span>
@@ -1874,7 +1874,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -1931,7 +1931,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -1959,7 +1959,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   r
                 </span>
@@ -1969,7 +1969,7 @@ exports[`Snapshot 1`] = `
                   [
                 </span>
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   a
                 </span>
@@ -1993,7 +1993,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   R
                 </span>
@@ -2003,7 +2003,7 @@ exports[`Snapshot 1`] = `
                   [
                 </span>
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   A
                 </span>
@@ -2037,7 +2037,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2078,7 +2078,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -2103,7 +2103,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2164,7 +2164,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -2188,7 +2188,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   KUR
                 </span>
@@ -2246,7 +2246,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -2274,7 +2274,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   ra
                 </span>
@@ -2298,7 +2298,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   RA
                 </span>
@@ -2327,7 +2327,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2368,7 +2368,7 @@ exports[`Snapshot 1`] = `
                   class=""
                 >
                   <span
-                    class="Transliteration__Token"
+                    class="Transliteration__ValueToken"
                   >
                     kur
                   </span>
@@ -2393,7 +2393,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2454,7 +2454,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   kur
                 </span>
@@ -2478,7 +2478,7 @@ exports[`Snapshot 1`] = `
                 class=""
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   KUR
                 </span>
@@ -2523,7 +2523,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--ACCIDENTAL_OMISSION"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2555,7 +2555,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--ACCIDENTAL_OMISSION"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2597,7 +2597,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--INTENTIONAL_OMISSION"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2629,7 +2629,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--INTENTIONAL_OMISSION"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2671,7 +2671,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--REMOVAL"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2703,7 +2703,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--REMOVAL"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2770,7 +2770,7 @@ exports[`Snapshot 1`] = `
                 class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
               >
                 <span
-                  class="Transliteration__Token"
+                  class="Transliteration__ValueToken"
                 >
                   ra
                 </span>
@@ -2923,7 +2923,7 @@ exports[`Snapshot 1`] = `
               class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 kur
               </span>
@@ -2956,7 +2956,7 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 ku
               </span>
@@ -2966,7 +2966,7 @@ exports[`Snapshot 1`] = `
                 ]
               </span>
               <span
-                class="Transliteration__Token"
+                class="Transliteration__ValueToken"
               >
                 r
               </span>
@@ -2987,10 +2987,24 @@ exports[`Snapshot 1`] = `
       <span />
     </li>
     <li
-      class="Transliteration__RulingDollarLineSingle"
+      class="Transliteration__RulingDollarLine"
     >
       <hr
-        class="Transliteration__RulingDollarLineSingle__element"
+        class="Transliteration__ruling Transliteration__ruling--single"
+      />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--double"
+      />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--triple"
       />
     </li>
   </ol>

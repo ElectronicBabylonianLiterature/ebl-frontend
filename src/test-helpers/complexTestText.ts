@@ -19,7 +19,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'k'
                 },
@@ -30,7 +30,7 @@ export default new Text({
                   value: '['
                 },
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['BROKEN_AWAY'],
                   value: 'u'
                 },
@@ -41,7 +41,7 @@ export default new Text({
                   value: ']'
                 },
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'r'
                 }
@@ -76,7 +76,7 @@ export default new Text({
               type: 'Logogram',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                   value: 'KUR'
                 }
@@ -101,7 +101,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                       value: 'kur'
                     }
@@ -119,7 +119,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                       value: 'RA'
                     }
@@ -205,7 +205,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -266,7 +266,7 @@ export default new Text({
               type: 'Number',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: '1'
                 }
@@ -417,7 +417,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -444,7 +444,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -466,7 +466,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -480,7 +480,7 @@ export default new Text({
               type: 'Logogram',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'KUR'
                 }
@@ -521,7 +521,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -556,7 +556,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -591,7 +591,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -619,7 +619,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -642,7 +642,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -670,7 +670,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -708,7 +708,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'd'
                     }
@@ -730,7 +730,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -754,7 +754,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'd'
                     }
@@ -777,7 +777,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'RA'
                     }
@@ -798,7 +798,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -818,7 +818,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -857,7 +857,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   value: 'kur'
                 }
@@ -877,7 +877,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                       value: 'd'
                     }
@@ -911,7 +911,7 @@ export default new Text({
               type: 'Logogram',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   value: 'KUR'
                 }
@@ -933,7 +933,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   value: 'ra'
                 }
@@ -969,7 +969,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   value: 'kur'
                 }
@@ -989,7 +989,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                       value: 'k'
                     },
@@ -1000,7 +1000,7 @@ export default new Text({
                       value: '['
                     },
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
                       value: 'ur'
                     }
@@ -1029,7 +1029,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                       value: 'RA'
                     }
@@ -1065,7 +1065,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                       value: 'kur'
                     }
@@ -1086,7 +1086,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   value: 'kur'
                 }
@@ -1139,7 +1139,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                   value: 'kur'
                 }
@@ -1182,7 +1182,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY'],
                       value: 'k'
                     },
@@ -1193,7 +1193,7 @@ export default new Text({
                       value: ']'
                     },
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'ur'
                     }
@@ -1221,7 +1221,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY'],
                       value: 'kur'
                     }
@@ -1248,7 +1248,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'k'
                 },
@@ -1259,7 +1259,7 @@ export default new Text({
                   value: '['
                 },
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['BROKEN_AWAY'],
                   value: 'ur'
                 }
@@ -1310,7 +1310,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1346,7 +1346,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1366,7 +1366,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'd'
                     }
@@ -1400,7 +1400,7 @@ export default new Text({
               type: 'Logogram',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'KUR'
                 }
@@ -1436,7 +1436,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1472,7 +1472,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1502,7 +1502,7 @@ export default new Text({
               type: 'Logogram',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'KUR'
                 }
@@ -1523,7 +1523,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'D'
                     }
@@ -1563,7 +1563,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1625,7 +1625,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -1649,7 +1649,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'r'
                     },
@@ -1660,7 +1660,7 @@ export default new Text({
                       value: '['
                     },
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY'],
                       value: 'a'
                     }
@@ -1678,7 +1678,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'R'
                     },
@@ -1689,7 +1689,7 @@ export default new Text({
                       value: '['
                     },
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: ['BROKEN_AWAY'],
                       value: 'A'
                     }
@@ -1721,7 +1721,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1753,7 +1753,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -1774,7 +1774,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1814,7 +1814,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -1832,7 +1832,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'KUR'
                     }
@@ -1898,7 +1898,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -1922,7 +1922,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'ra'
                     }
@@ -1940,7 +1940,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'RA'
                     }
@@ -1966,7 +1966,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -1998,7 +1998,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -2019,7 +2019,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: [],
                   value: 'kur'
                 }
@@ -2059,7 +2059,7 @@ export default new Text({
                   type: 'Reading',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'kur'
                     }
@@ -2077,7 +2077,7 @@ export default new Text({
                   type: 'Logogram',
                   nameParts: [
                     {
-                      type: 'Token',
+                      type: 'ValueToken',
                       enclosureType: [],
                       value: 'KUR'
                     }
@@ -2122,7 +2122,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['ACCIDENTAL_OMISSION'],
                   value: 'kur'
                 }
@@ -2151,7 +2151,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['ACCIDENTAL_OMISSION'],
                   value: 'kur'
                 }
@@ -2192,7 +2192,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['INTENTIONAL_OMISSION'],
                   value: 'kur'
                 }
@@ -2221,7 +2221,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['INTENTIONAL_OMISSION'],
                   value: 'kur'
                 }
@@ -2262,7 +2262,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['REMOVAL'],
                   value: 'kur'
                 }
@@ -2291,7 +2291,7 @@ export default new Text({
               type: 'Reading',
               nameParts: [
                 {
-                  type: 'Token',
+                  type: 'ValueToken',
                   enclosureType: ['REMOVAL'],
                   value: 'kur'
                 }
@@ -2353,7 +2353,7 @@ export default new Text({
                 {
                   enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
                   value: 'ra',
-                  type: 'Token'
+                  type: 'ValueToken'
                 }
               ],
               flags: [],
@@ -2473,7 +2473,7 @@ export default new Text({
                 {
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                   value: 'kur',
-                  type: 'Token'
+                  type: 'ValueToken'
                 }
               ],
               flags: [],
@@ -2501,7 +2501,7 @@ export default new Text({
                 {
                   enclosureType: ['BROKEN_AWAY'],
                   value: 'ku',
-                  type: 'Token'
+                  type: 'ValueToken'
                 },
                 {
                   enclosureType: ['BROKEN_AWAY'],
@@ -2512,7 +2512,7 @@ export default new Text({
                 {
                   enclosureType: [],
                   value: 'r',
-                  type: 'Token'
+                  type: 'ValueToken'
                 }
               ],
               flags: [],
@@ -2542,10 +2542,37 @@ export default new Text({
       prefix: '$',
       type: 'RulingDollarLine',
       number: 'SINGLE',
+      status: null,
       content: [
         {
-          type: 'Token',
+          type: 'ValueToken',
           value: ' single ruling',
+          enclosureType: []
+        }
+      ]
+    },
+    {
+      prefix: '$',
+      type: 'RulingDollarLine',
+      number: 'DOUBLE',
+      status: null,
+      content: [
+        {
+          type: 'ValueToken',
+          value: ' double ruling',
+          enclosureType: []
+        }
+      ]
+    },
+    {
+      prefix: '$',
+      type: 'RulingDollarLine',
+      number: 'TRIPLE',
+      status: null,
+      content: [
+        {
+          type: 'ValueToken',
+          value: ' triple ruling',
           enclosureType: []
         }
       ]

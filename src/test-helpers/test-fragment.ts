@@ -97,7 +97,7 @@ const lines: readonly Line[] = [
         parts: [],
         enclosureType: []
       },
-      { type: 'Token', value: '|', enclosureType: [] },
+      { type: 'ValueToken', value: '|', enclosureType: [] },
       {
         type: 'Word',
         value: 'šim',
