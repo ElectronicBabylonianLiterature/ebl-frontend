@@ -14,5 +14,7 @@
   "readFwgFolios": "read:FWG-folios",
   "readElFolios": "read:EL-folios",
   "readAkgFolios": "read:AKG-folios",
-  "readMjgFolios": "read:MJG-folios"
+  "readMjgFolios": "read:MJG-folios",
+  "readUskFolios":  "read:USK-folios",
+  "readIlfFolios": "read:ILF-folios"
 }
