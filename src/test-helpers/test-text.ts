@@ -19,7 +19,7 @@ const testWord: WordToken = {
       name: 'kur',
       nameParts: [
         {
-          type: 'Token',
+          type: 'ValueToken',
           value: 'kur',
           enclosureType: []
         }

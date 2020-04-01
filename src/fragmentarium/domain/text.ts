@@ -29,7 +29,7 @@ export interface NotLemmatizableToken extends BaseToken {
 }
 
 export interface ValueToken extends NotLemmatizableToken {
-  readonly type: 'Token'
+  readonly type: 'ValueToken'
 }
 
 export interface Word extends BaseToken {
@@ -140,10 +140,19 @@ export type Token =
   | Enclosure
   | Tabulation
 
-export interface Line {
+export type Line = RulingDollarLine | LineBase
+
+export interface LineBase {
   readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
+}
+
+export interface RulingDollarLine extends LineBase {
+  readonly type: 'RulingDollarLine'
+  readonly number: 'SINGLE' | 'DOUBLE' | 'TRIPLE'
+  readonly status: string | null
+  readonly displayValue: string
 }
 
 export class Text {

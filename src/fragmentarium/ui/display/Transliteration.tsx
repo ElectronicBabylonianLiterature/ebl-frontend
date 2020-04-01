@@ -1,6 +1,13 @@
-import React, { PropsWithChildren } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { Line, Token, Text, Enclosure, Shift } from 'fragmentarium/domain/text'
+import {
+  Line,
+  Token,
+  Text,
+  Enclosure,
+  Shift,
+  RulingDollarLine
+} from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
@@ -143,6 +150,35 @@ function DisplayLine({
   )
 }
 
+function DisplayRulingDollarLine({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const rulingDollarLine = line as RulingDollarLine
+  const element = 'Transliteration__ruling'
+  return React.createElement(
+    container,
+    { className: `Transliteration__${rulingDollarLine.type}` },
+    <hr
+      className={classNames([
+        element,
+        `${element}--${rulingDollarLine.number.toLowerCase()}`
+      ])}
+    />
+  )
+}
+
+const lineComponents: ReadonlyMap<
+  string,
+  FunctionComponent<{
+    line: Line
+    container?: string
+  }>
+> = new Map([['RulingDollarLine', DisplayRulingDollarLine]])
+
 export function Transliteration({
   text: { lines }
 }: {
@@ -150,9 +186,10 @@ export function Transliteration({
 }): JSX.Element {
   return (
     <ol className="Transliteration">
-      {lines.map((line: Line, index: number) => (
-        <DisplayLine key={index} container="li" line={line} />
-      ))}
+      {lines.map((line: Line, index: number) => {
+        const LineComponent = lineComponents.get(line.type) || DisplayLine
+        return <LineComponent key={index} container="li" line={line} />
+      })}
     </ol>
   )
 }
