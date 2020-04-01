@@ -2540,16 +2540,35 @@ export default new Text({
     },
     {
       prefix: '$',
-      type: 'RulingDollarLine',
-      number: 'SINGLE',
-      displayValue: 'single ruling',
+      type: 'SurfaceAtLine',
+      surfaceLabel: {
+        status: '',
+        text: '',
+        surface: 'OBVERSE'
+      },
+      displayValue: 'obverse',
       content: [
         {
           type: 'Token',
-          value: ' single ruling',
+          value: ' obverse',
           enclosureType: []
         }
       ]
+    },
+    {
+      displayValue: '(image 1 = foo)',
+      text: 'foo',
+      content: [
+        {
+          enclosureType: [],
+          value: ' (image 1 = foo)',
+          type: 'ValueToken'
+        }
+      ],
+      letter: null,
+      prefix: '$',
+      number: '1',
+      type: 'ImageDollarLine'
     }
   ]
 })

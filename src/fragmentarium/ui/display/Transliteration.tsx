@@ -160,8 +160,8 @@ function DisplayGenericControlLines({
   const controlLine = line as ControlLines
   const element = `Transliteration__GenericControlLine`
   if (
-    controlLine.type == 'ImageDollarLine' ||
-    controlLine.type == 'LooseDollarLine'
+    controlLine.type === 'ImageDollarLine' ||
+    controlLine.type === 'LooseDollarLine'
   ) {
     return React.createElement(
       container,
