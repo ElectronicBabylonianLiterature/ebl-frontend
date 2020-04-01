@@ -6,7 +6,6 @@ import {
   Text,
   Enclosure,
   Shift,
-  RulingDollarLine,
   ControlLines
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
@@ -162,37 +161,11 @@ function DisplayGenericControlLines({
   const element = `Transliteration__GenericControlLine`
   return React.createElement(
     container,
-    { className: classNames([element]) },
+    null,
     <div className={`${element} ${line.type}`}>
       ({controlLine.displayValue})
     </div>
   )
-}
-
-function DisplayRulingDollarLine({
-  line,
-  container = 'div'
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  const rulingDollarLine = line as RulingDollarLine
-  const element = `Transliteration__${rulingDollarLine.type}`
-  let number = ''
-  if (rulingDollarLine.displayValue === undefined) {
-    number = ''
-  } else {
-    number = capitalizeFirstLetter(rulingDollarLine.displayValue.split(' ')[0])
-  }
-  return React.createElement(
-    container,
-    { className: classNames([element]) },
-    <div className={`${element}${number}`} />
-  )
-}
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 const lineComponents: ReadonlyMap<
@@ -205,7 +178,6 @@ const lineComponents: ReadonlyMap<
   ['TextLine', DisplayLine],
   ['LooseDollarLine', DisplayGenericControlLines],
   ['ImageDollarLine', DisplayGenericControlLines],
-  ['RulingDollarLine', DisplayRulingDollarLine],
   ['SealDollarLine', DisplayGenericControlLines],
   ['StateDollarLine', DisplayGenericControlLines],
   ['SealAtLine', DisplayGenericControlLines],

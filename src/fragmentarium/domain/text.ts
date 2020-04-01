@@ -178,26 +178,26 @@ export interface ControlLines extends LineBase {
 export interface RulingDollarLine extends ControlLines {
   readonly number: string
 }
-export interface LooseDollarLine extends LineBase {
+export interface LooseDollarLine extends ControlLines {
   readonly text: string
 }
 
-export interface ImageDollarLine extends LineBase {
+export interface ImageDollarLine extends ControlLines {
   readonly number: string
   readonly letter?: string | null
   readonly text: string
 }
 
-export interface LooseDollarLine extends LineBase {
+export interface LooseDollarLine extends ControlLines {
   readonly text: string
 }
 
-export interface RulingDollarLine extends LineBase {
+export interface RulingDollarLine extends ControlLines {
   readonly number: string
   readonly status?: string | null
 }
 
-export interface SealDollarLine extends LineBase {
+export interface SealDollarLine extends ControlLines {
   readonly number: number
 }
 
@@ -207,7 +207,7 @@ interface ScopeContainer {
   readonly text: string
 }
 
-export interface StateDollarLine extends LineBase {
+export interface StateDollarLine extends ControlLines {
   readonly qualification: string
   readonly extent: string
   readonly scope: ScopeContainer
@@ -227,43 +227,43 @@ interface SurfaceLabel extends Label {
   readonly surface: string
   readonly text: string
 }
-export interface SealAtLine extends LineBase {
+export interface SealAtLine extends ControlLines {
   readonly number: number
 }
-export interface HeadingAtLine extends LineBase {
+export interface HeadingAtLine extends ControlLines {
   readonly number: number
 }
 
-export interface ColumnAtLine extends LineBase {
+export interface ColumnAtLine extends ControlLines {
   readonly columnLabel: ColumnLabel
 }
 
-export interface DiscourseAtLine extends LineBase {
+export interface DiscourseAtLine extends ControlLines {
   readonly discourseLabel: string
 }
 
-export interface SurfaceAtLine extends LineBase {
+export interface SurfaceAtLine extends ControlLines {
   readonly surfaceLabel: SurfaceLabel
 }
 
-export interface ObjectAtLine extends LineBase {
+export interface ObjectAtLine extends ControlLines {
   readonly status: ReadonlyArray<string>
   readonly objectLabel: string
   readonly text: string
 }
 
-export interface DivisionAtLine extends LineBase {
+export interface DivisionAtLine extends ControlLines {
   readonly number: string
   readonly text: string
 }
 
-export interface CompositeAtLine extends LineBase {
+export interface CompositeAtLine extends ControlLines {
   readonly composite: string
   readonly number: string
   readonly text: string
 }
 
-export interface StateDollarLine extends LineBase {
+export interface StateDollarLine extends ControlLines {
   readonly qualification: string
   readonly extent: string
   readonly scope: ScopeContainer
