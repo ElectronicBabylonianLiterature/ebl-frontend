@@ -194,7 +194,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
@@ -216,7 +216,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -230,7 +230,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -240,7 +240,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -250,7 +250,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -292,7 +292,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
@@ -319,7 +319,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -355,7 +355,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -382,7 +382,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -409,7 +409,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Divider Transliteration__Divider--AKKADIAN"
@@ -437,7 +437,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -477,7 +477,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -514,7 +514,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -524,7 +524,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -703,7 +703,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Erasure Transliteration__Erasure--AKKADIAN"
@@ -777,7 +777,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -910,7 +910,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1094,7 +1094,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <sup
         class="Transliteration__DocumentOrientedGloss"
@@ -1160,7 +1160,7 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
         >
-
+           
         </span>
         <span
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1227,7 +1227,7 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
         >
-
+           
         </span>
         <span
           class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -1331,7 +1331,7 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
         >
-
+           
         </span>
         <span
           class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -1405,7 +1405,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1589,7 +1589,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -1599,7 +1599,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Tabulation Transliteration__Tabulation--AKKADIAN"
@@ -1609,7 +1609,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1641,7 +1641,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -1702,7 +1702,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -1734,7 +1734,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1766,7 +1766,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -1798,7 +1798,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -1859,7 +1859,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -1898,7 +1898,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -1912,7 +1912,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -2059,7 +2059,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -2122,7 +2122,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Divider Transliteration__Divider--SUMERIAN"
@@ -2146,7 +2146,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
@@ -2213,7 +2213,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -2227,7 +2227,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -2349,7 +2349,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -2412,7 +2412,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Divider Transliteration__Divider--EMESAL"
@@ -2436,7 +2436,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--EMESAL"
@@ -2503,7 +2503,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2540,7 +2540,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2577,7 +2577,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2614,7 +2614,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2651,7 +2651,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2688,7 +2688,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2732,7 +2732,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
@@ -2747,7 +2747,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
@@ -2793,7 +2793,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2823,7 +2823,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2874,7 +2874,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
@@ -2903,7 +2903,7 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
-
+         
       </span>
       <span
         class="Transliteration__Word Transliteration__Word--AKKADIAN"
@@ -2986,21 +2986,26 @@ exports[`Snapshot 1`] = `
     >
       <span />
     </li>
-    <li>
-      <div
-        class="Transliteration__GenericControlLine SurfaceAtLine"
-      >
-        (
-        obverse
-        )
-      </div>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--single"
+      />
     </li>
-    <li>
-      <div
-        class="Transliteration__GenericControlLine ImageDollarLine"
-      >
-        (image 1 = foo)
-      </div>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--double"
+      />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--triple"
+      />
     </li>
   </ol>
 </div>

@@ -47,7 +47,7 @@ factory.define('textLine', Object, {
   prefix: async () => `${await factory.chance('natural')}.`,
   content: [
     {
-      type: 'Token',
+      type: 'ValueToken',
       value: factory.chance('pickone', ['[...]', '&', '&1'])
     },
     {
@@ -72,7 +72,7 @@ factory.define('controlLine', Object, {
   prefix: factory.chance('pickone', ['$', '#', '&']),
   content: [
     {
-      type: 'Token',
+      type: 'ValueToken',
       value: factory.chance('word')
     }
   ],
