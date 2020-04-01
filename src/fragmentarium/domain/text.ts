@@ -163,9 +163,9 @@ export interface LineBase {
 }
 export interface LineNumber {
   readonly number: number
-  has_prime: false
-  prefix_modifier?: string
-  suffix_modifier?: string
+  hasPrime: false
+  prefixModifier?: string
+  suffixModifier?: string
 }
 export interface TextLine extends LineBase {
   readonly lineNumber?: LineNumber
@@ -235,20 +235,20 @@ export interface HeadingAtLine extends LineBase {
 }
 
 export interface ColumnAtLine extends LineBase {
-  readonly column_label: ColumnLabel
+  readonly columnLabel: ColumnLabel
 }
 
 export interface DiscourseAtLine extends LineBase {
-  readonly discourse_label: string
+  readonly discourseLabel: string
 }
 
 export interface SurfaceAtLine extends LineBase {
-  readonly surface_label: SurfaceLabel
+  readonly surfaceLabel: SurfaceLabel
 }
 
 export interface ObjectAtLine extends LineBase {
   readonly status: ReadonlyArray<string>
-  readonly object_label: string
+  readonly objectLabel: string
   readonly text: string
 }
 
