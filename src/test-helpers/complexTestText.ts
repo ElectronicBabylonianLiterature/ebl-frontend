@@ -2576,6 +2576,38 @@ export default new Text({
           enclosureType: []
         }
       ]
+    },
+    {
+      prefix: '$',
+      type: 'SurfaceAtLine',
+      surfaceLabel: {
+        status: '',
+        text: '',
+        surface: 'OBVERSE'
+      },
+      displayValue: 'obverse',
+      content: [
+        {
+          type: 'Token',
+          value: ' obverse',
+          enclosureType: []
+        }
+      ]
+    },
+    {
+      displayValue: '(image 1 = foo)',
+      text: 'foo',
+      content: [
+        {
+          enclosureType: [],
+          value: ' (image 1 = foo)',
+          type: 'ValueToken'
+        }
+      ],
+      letter: null,
+      prefix: '$',
+      number: '1',
+      type: 'ImageDollarLine'
     }
   ]
 })

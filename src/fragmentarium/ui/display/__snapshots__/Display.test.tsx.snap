@@ -3007,6 +3007,22 @@ exports[`Snapshot 1`] = `
         class="Transliteration__ruling Transliteration__ruling--triple"
       />
     </li>
+    <li>
+      <div
+        class="Transliteration__GenericControlLine SurfaceAtLine"
+      >
+        (
+        obverse
+        )
+      </div>
+    </li>
+    <li>
+      <div
+        class="Transliteration__GenericControlLine ImageDollarLine"
+      >
+        (image 1 = foo)
+      </div>
+    </li>
   </ol>
 </div>
 `;
