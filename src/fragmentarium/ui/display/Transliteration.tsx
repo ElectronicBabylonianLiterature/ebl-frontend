@@ -149,6 +149,11 @@ function DisplayLine({
     ]
   )
 }
+const rulingToClassName: ReadonlyMap<string, string> = new Map([
+  ['SINGLE', 'Single'],
+  ['DOUBLE', 'Double'],
+  ['TRIPLE', 'Triple']
+])
 
 function DisplayRulingDollarLine({
   line,
@@ -158,11 +163,12 @@ function DisplayRulingDollarLine({
   container?: string
 }): JSX.Element {
   const rulingDollarLine = line as RulingDollarLine
-  const element = `Transliteration__${rulingDollarLine.type}`
+  const rulingNumber = `${rulingToClassName.get(rulingDollarLine.number)}`
+  const element = `Transliteration__${rulingDollarLine.type}${rulingNumber}`
   return React.createElement(
     container,
-    null,
-    <div className={`${element} ${rulingDollarLine.number}`} />
+    { className: `${element}` },
+    <hr className={`${element}__element`} />
   )
 }
 

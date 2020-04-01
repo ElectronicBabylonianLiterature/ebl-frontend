@@ -32,22 +32,32 @@
   &__ControlLine
     color: darkgrey
 
-  &__RulingDollarLine
-    margin-top: 0.2em
-    margin-bottom: 0.2em
-    padding: 1px
+  &__RulingDollarLineSingle
+    margin-bottom: 6px
 
-    &.SINGLE
-      border-top: 2px solid black
+    &__element
+      margin-top: 2.5px
+      margin-bottom: 2.5px
+      border: 1px solid black
 
-    &.DOUBLE
-      border-top: 2px solid black
-      border-bottom: 2px solid black
+  &__RulingDollarLineDouble
+    border-bottom: 2px solid black
+    margin-bottom: 6px
 
-    &.TRIPLE
-      border-top: 2px solid black
-      border-bottom: 6px double black
+    &__element
+      margin-top: 2.5px
+      margin-bottom: 2.5px
+      border: 1px solid black
 
+  &__RulingDollarLineTriple
+    border-top: 2px solid black
+    border-bottom: 2px solid black
+    margin-bottom: 6px
+
+    &__element
+      margin-top: 2.5px
+      margin-bottom: 2.5px
+      border: 1px solid black
 
   &__Reading,
   &__Number,
