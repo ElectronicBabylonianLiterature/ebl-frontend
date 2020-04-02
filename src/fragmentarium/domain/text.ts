@@ -142,6 +142,7 @@ export type Token =
 
 export type Line =
   | TextLine
+  | EmptyLine
   | LooseDollarLine
   | ImageDollarLine
   | RulingDollarLine
@@ -160,6 +161,10 @@ export interface LineBase {
   readonly type: string
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
+}
+
+export interface EmptyLine extends LineBase {
+  readonly type: 'EmptyLine'
 }
 export interface LineNumber {
   readonly number: number

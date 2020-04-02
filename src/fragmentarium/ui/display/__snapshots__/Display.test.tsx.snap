@@ -2668,7 +2668,7 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Reading--REMOVAL"
+              class="Transliteration__Reading--BROKEN_AWAY"
             >
               <span
                 class="Transliteration__ValueToken"
@@ -2700,7 +2700,7 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class="Transliteration__Reading--REMOVAL"
+              class="Transliteration__Reading--BROKEN_AWAY"
             >
               <span
                 class="Transliteration__ValueToken"
