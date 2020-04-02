@@ -168,9 +168,9 @@ export interface EmptyLine extends LineBase {
 }
 export interface LineNumber {
   readonly number: number
-  hasPrime: false
-  prefixModifier?: string
-  suffixModifier?: string
+  readonly hasPrime: false
+  readonly prefixModifier?: string
+  readonly suffixModifier?: string
 }
 export interface TextLine extends LineBase {
   readonly type: 'TextLine'

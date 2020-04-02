@@ -47,7 +47,9 @@ const config = {
   text: new Text({
     lines: [
       {
-        type: 'ControlLine',
+        type: 'LooseDollarLine',
+        text: 'atf',
+        displayValue: '(atf)',
         prefix: '$',
         content: [{ type: 'ValueToken', value: '(atf)', enclosureType: [] }]
       }
