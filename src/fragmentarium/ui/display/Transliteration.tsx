@@ -158,26 +158,20 @@ function DisplayGenericControlLines({
 }): JSX.Element {
   const controlLine = line as ControlLines
   const element = `Transliteration__GenericControlLine`
+  let component = ''
   if (
     controlLine.type === 'ImageDollarLine' ||
     controlLine.type === 'LooseDollarLine'
   ) {
-    return React.createElement(
-      container,
-      null,
-      <div className={`${element} ${controlLine.type}`}>
-        {controlLine.displayValue}
-      </div>
-    )
+    component = controlLine.displayValue
   } else {
-    return React.createElement(
-      container,
-      null,
-      <div className={`${element} ${controlLine.type}`}>
-        ({controlLine.displayValue})
-      </div>
-    )
+    component = `(${controlLine.displayValue})`
   }
+  return React.createElement(
+    container,
+    null,
+    <div className={`${element} ${controlLine.type}`}>{`${component}`}</div>
+  )
 }
 
 const lineComponents: ReadonlyMap<
