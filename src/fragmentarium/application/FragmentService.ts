@@ -5,9 +5,10 @@ import Lemmatization, { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
 import { Folio, Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
-import { Text, Token } from 'fragmentarium/domain/text'
+import { Text } from 'fragmentarium/domain/text'
 import Annotation from 'fragmentarium/domain/annotation'
 import Word from 'dictionary/domain/Word'
+import { Token } from '../domain/token'
 
 export interface CdliInfo {
   readonly photoUrl: string | null

@@ -2,16 +2,14 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import {
   Line,
-  Token,
   Text,
-  Enclosure,
-  Shift,
   ControlLines,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
+import { Enclosure, Shift, Token } from '../../domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = []

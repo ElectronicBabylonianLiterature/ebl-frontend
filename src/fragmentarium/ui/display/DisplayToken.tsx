@@ -2,14 +2,14 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
-  Token,
-  Variant,
-  NamedSign,
-  UnknownSign,
+  EnclosureType,
   Gloss,
+  NamedSign,
   Sign,
-  EnclosureType
-} from 'fragmentarium/domain/text'
+  Token,
+  UnknownSign,
+  Variant
+} from '../../domain/token'
 
 function Modifiers({
   modifiers

@@ -2,7 +2,7 @@ import { factory } from 'factory-girl'
 import { Text } from 'fragmentarium/domain/text'
 import Word from 'dictionary/domain/Word'
 
-import { Word as WordToken } from 'fragmentarium/domain/text'
+import { Word as WordToken } from '../fragmentarium/domain/token'
 
 const testWord: WordToken = {
   type: 'Word',
