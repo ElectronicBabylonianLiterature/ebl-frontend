@@ -7,6 +7,7 @@ import { Word as WordToken } from 'fragmentarium/domain/token'
 const testWord: WordToken = {
   type: 'Word',
   value: 'kur',
+  cleanValue: 'kur',
   uniqueLemma: [],
   language: 'AKKADIAN',
   normalized: false,
@@ -17,10 +18,12 @@ const testWord: WordToken = {
       type: 'Reading',
       value: 'kur',
       name: 'kur',
+      cleanValue: 'kur',
       nameParts: [
         {
           type: 'ValueToken',
           value: 'kur',
+          cleanValue: 'kur',
           enclosureType: []
         }
       ],
@@ -52,12 +55,14 @@ export default async function createLemmatizationTestText(): Promise<
         content: [
           {
             ...testWord,
-            value: 'kur',
+            value: 'k[ur',
+            cleanValue: 'kur',
             uniqueLemma: [words[0]._id]
           },
           {
             ...testWord,
-            value: 'nu',
+            value: 'n]u',
+            cleanValue: 'nu',
             uniqueLemma: [words[1]._id]
           }
         ]

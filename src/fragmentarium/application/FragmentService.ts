@@ -185,7 +185,9 @@ class FragmentService {
   ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
     return Promise.mapSeries(
       mapLines(text, line =>
-        line.filter(token => token.lemmatizable).flatMap(token => token.value)
+        line
+          .filter(token => token.lemmatizable)
+          .flatMap(token => token.cleanValue)
       ),
       (value: string): any =>
         this.fragmentRepository

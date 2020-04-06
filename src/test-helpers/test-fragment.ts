@@ -17,6 +17,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: 'sal/:',
+        cleanValue: 'sal/:',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -28,6 +29,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: 'š[im',
+        cleanValue: 'šim',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -39,6 +41,7 @@ const lines: readonly Line[] = [
       {
         type: 'LoneDeterminative',
         value: '{gu}',
+        cleanValue: '{gu}',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -47,10 +50,16 @@ const lines: readonly Line[] = [
         parts: [],
         enclosureType: []
       },
-      { type: 'UnknownNumberOfSigns', value: '[...]', enclosureType: [] },
+      {
+        type: 'UnknownNumberOfSigns',
+        value: '[...]',
+        cleanValue: '...',
+        enclosureType: []
+      },
       {
         type: 'Word',
         value: '.GA',
+        cleanValue: '.GA',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -75,6 +84,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: '::/sal',
+        cleanValue: '::/sal',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -86,6 +96,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: 'ši]m',
+        cleanValue: 'šim',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -110,6 +121,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: 'šim',
+        cleanValue: 'šim',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -118,10 +130,16 @@ const lines: readonly Line[] = [
         parts: [],
         enclosureType: []
       },
-      { type: 'ValueToken', value: '|', enclosureType: [] },
+      {
+        type: 'ValueToken',
+        value: '|',
+        cleanValue: '|',
+        enclosureType: []
+      },
       {
         type: 'Word',
         value: 'šim',
+        cleanValue: 'šim',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -143,10 +161,16 @@ const lines: readonly Line[] = [
     },
     prefix: '10.',
     content: [
-      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
+      {
+        type: 'UnknownNumberOfSigns',
+        value: '...',
+        cleanValue: '...',
+        enclosureType: []
+      },
       {
         type: 'Word',
         value: '+ku',
+        cleanValue: '+ku',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -158,6 +182,7 @@ const lines: readonly Line[] = [
       {
         type: 'LoneDeterminative',
         value: '{KA.G[A}',
+        cleanValue: '{KA.GA}',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -166,11 +191,22 @@ const lines: readonly Line[] = [
         parts: [],
         enclosureType: []
       },
-      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
-      { type: 'UnknownNumberOfSigns', value: '...', enclosureType: [] },
+      {
+        type: 'UnknownNumberOfSigns',
+        value: '...',
+        cleanValue: '...',
+        enclosureType: []
+      },
+      {
+        type: 'UnknownNumberOfSigns',
+        value: '...',
+        cleanValue: '...',
+        enclosureType: []
+      },
       {
         type: 'Word',
         value: '.ku',
+        cleanValue: '.ku',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',
@@ -182,6 +218,7 @@ const lines: readonly Line[] = [
       {
         type: 'Word',
         value: 'x',
+        cleanValue: 'x',
         uniqueLemma: [],
         normalized: false,
         language: 'AKKADIAN',

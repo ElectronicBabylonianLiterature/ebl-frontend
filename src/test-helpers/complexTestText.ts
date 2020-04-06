@@ -1,2743 +1,2998 @@
-import {
-  EmptyLine,
-  ImageDollarLine,
-  RulingDollarLine,
-  SurfaceAtLine,
-  Text,
-  TextLine
-} from 'fragmentarium/domain/text'
+import { Line, Text } from 'fragmentarium/domain/text'
 
-const text1: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 1,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
+const line1: Line = {
+  prefix: '@',
   content: [
     {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 2,
-          value: 'k[u]r₂',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'k'
-            },
-            {
-              type: 'BrokenAway',
-              side: 'LEFT',
-              enclosureType: [],
-              value: '['
-            },
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY'],
-              value: 'u'
-            },
-            {
-              type: 'BrokenAway',
-              side: 'RIGHT',
-              enclosureType: ['BROKEN_AWAY'],
-              value: ']'
-            },
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'r'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'LEFT',
-          enclosureType: [],
-          value: '['
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'LEFT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: '('
-        },
-        {
-          modifiers: [],
-          subIndex: 2,
-          value: 'KUR₂',
-          surrogate: [],
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          flags: [],
-          sign: null,
-          type: 'Logogram',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              value: 'KUR'
-            }
-          ],
-          name: 'KUR'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: '-'
-        },
-        {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'RA',
-              surrogate: [],
-              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              flags: [],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-                  value: 'RA'
-                }
-              ],
-              name: 'RA'
-            }
-          ],
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: 'kur/RA'
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: ')'
-        }
-      ],
-      value: 'k[u]r₂-[(KUR₂-kur/RA)',
-      uniqueLemma: [],
       enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      type: 'UnknownNumberOfSigns',
-      enclosureType: ['BROKEN_AWAY'],
-      value: '...'
-    },
-    {
-      type: 'BrokenAway',
-      side: 'RIGHT',
-      enclosureType: ['BROKEN_AWAY'],
-      value: ']'
+      cleanValue: 'obverse',
+      value: 'obverse',
+      type: 'ValueToken'
     }
   ],
-  prefix: '1.'
+  type: 'ControlLine'
 }
 
-const text2: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 2,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
+const line2: Line = {
+  prefix: '1.',
   content: [
     {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'CompoundGrapheme',
-          enclosureType: [],
-          value: '|KUR.KUR|'
-        }
-      ],
-      value: '|KUR.KUR|',
-      uniqueLemma: [],
       enclosureType: [],
+      cleanValue: 'kur₂-KUR₂-kur/RA',
+      value: 'kur₂-[(KUR₂-kur/RA)',
       language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      type: 'Tabulation',
-      enclosureType: [],
-      value: '($___$)'
-    },
-    {
-      type: 'Tabulation',
-      enclosureType: [],
-      value: '($___$)'
-    },
-    {
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
       erasure: 'NONE',
-      normalized: false,
       parts: [
         {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              type: 'CompoundGrapheme',
-              enclosureType: [],
-              value: '|RA|'
-            }
-          ],
           enclosureType: [],
-          value: 'kur/|RA|'
-        }
-      ],
-      value: 'kur/|RA|',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      type: 'BrokenAway',
-      side: 'LEFT',
-      enclosureType: [],
-      value: '['
-    },
-    {
-      type: 'UnknownNumberOfSigns',
-      enclosureType: ['BROKEN_AWAY'],
-      value: '...'
-    },
-    {
-      type: 'BrokenAway',
-      side: 'RIGHT',
-      enclosureType: ['BROKEN_AWAY'],
-      value: ']'
-    }
-  ],
-  prefix: '2.'
-}
-
-const text3: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 3,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: ['@v'],
-          subIndex: 1,
-          value: '1@v#*',
-          enclosureType: [],
-          flags: ['#', '*'],
-          sign: null,
-          type: 'Number',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: '1'
-            }
-          ],
-          name: '1'
-        }
-      ],
-      value: '1@v#*',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'UnclearSign',
-          enclosureType: [],
-          value: 'x#!',
-          flags: ['#', '!']
-        }
-      ],
-      value: 'x#!',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'UnidentifiedSign',
-          enclosureType: [],
-          value: 'X#?',
-          flags: ['#', '?']
-        }
-      ],
-      value: 'X#?',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      modifiers: ['@v', '@44'],
-      value: '::@v@44#?',
-      enclosureType: [],
-      flags: ['#', '?'],
-      divider: '::',
-      type: 'Divider'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'BrokenAway',
-          side: 'LEFT',
-          enclosureType: [],
-          value: '['
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'LEFT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: '('
-        },
-        {
-          type: 'UnclearSign',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: 'x',
-          flags: []
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: ')'
-        }
-      ],
-      value: '[(x)',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'UnclearSign',
-          enclosureType: ['BROKEN_AWAY'],
-          value: 'x',
-          flags: []
-        },
-        {
-          type: 'BrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
-        }
-      ],
-      value: 'x]',
-      uniqueLemma: [],
-      enclosureType: ['BROKEN_AWAY'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    }
-  ],
-  prefix: '3.'
-}
-
-const text4: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 4,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      type: 'Tabulation',
-      enclosureType: [],
-      value: '($___$)'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: ['@v'],
-          subIndex: null,
-          value: 'kurₓ@v#!(KUR@v#?)',
-          enclosureType: [],
-          flags: ['#', '!'],
-          sign: {
-            modifiers: ['@v'],
-            value: 'KUR@v#?',
-            enclosureType: [],
-            flags: ['#', '?'],
-            type: 'Grapheme',
-            name: 'KUR'
-          },
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          modifiers: ['@v'],
-          subIndex: 2,
-          value: 'KUR₂@v#?<(kur-kur)>',
-          surrogate: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              type: 'Joiner',
-              enclosureType: [],
-              value: '-'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          flags: ['#', '?'],
-          sign: null,
-          type: 'Logogram',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'KUR'
-            }
-          ],
-          name: 'KUR'
-        }
-      ],
-      value: 'kurₓ@v#!(KUR@v#?)-KUR₂@v#?<(kur-kur)>',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    }
-  ],
-  prefix: '4.'
-}
-
-const text5: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 5,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      side: 'LEFT',
-      enclosureType: [],
-      value: '°',
-      type: 'Erasure'
-    },
-    {
-      erasure: 'ERASED',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      side: 'CENTER',
-      enclosureType: [],
-      value: '\\',
-      type: 'Erasure'
-    },
-    {
-      erasure: 'OVER_ERASED',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      side: 'RIGHT',
-      enclosureType: [],
-      value: '°',
-      type: 'Erasure'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          side: 'LEFT',
-          enclosureType: [],
-          value: '°',
-          type: 'Erasure'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          side: 'CENTER',
-          enclosureType: [],
-          value: '\\',
-          type: 'Erasure'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          side: 'RIGHT',
-          enclosureType: [],
-          value: '°',
-          type: 'Erasure'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur-°kur\\kur°-kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    }
-  ],
-  prefix: '5.'
-}
-
-const text6: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 6,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'd#',
-              enclosureType: [],
-              flags: ['#'],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'd'
-                }
-              ],
-              name: 'd'
-            },
-            {
-              type: 'Joiner',
-              enclosureType: [],
-              value: '-'
-            },
-            {
-              modifiers: [],
-              subIndex: 2,
-              value: 'kur₂?',
-              enclosureType: [],
-              flags: ['?'],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{d#-kur₂?}'
-        },
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'd',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'd'
-                }
-              ],
-              name: 'd'
-            },
-            {
-              type: 'Joiner',
-              enclosureType: [],
-              value: '-'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'RA!',
-              surrogate: [],
-              enclosureType: [],
-              flags: ['!'],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'RA'
-                }
-              ],
-              name: 'RA'
-            }
-          ],
-          enclosureType: [],
-          value: '{d-RA!}'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'LinguisticGloss',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{{kur}}'
-        }
-      ],
-      value: '{d#-kur₂?}{d-RA!}kur{{kur}}',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      type: 'DocumentOrientedGloss',
-      side: 'LEFT',
-      enclosureType: [],
-      value: '{('
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'd!',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              flags: ['!'],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-                  value: 'd'
-                }
-              ],
-              name: 'd'
-            }
-          ],
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          value: '{d!}'
-        }
-      ],
-      value: 'kur{d!}',
-      uniqueLemma: [],
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 2,
-          value: 'KUR₂!',
-          surrogate: [],
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          flags: ['!'],
-          sign: null,
-          type: 'Logogram',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: 'KUR'
-            }
-          ],
-          name: 'KUR'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          value: '-'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'ra',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: 'ra'
-            }
-          ],
-          name: 'ra'
-        }
-      ],
-      value: 'KUR₂!-ra',
-      uniqueLemma: [],
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      normalized: false,
-      value: '%es',
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      language: 'EMESAL',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'PhoneticGloss',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'k[ur',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-                  value: 'k'
-                },
-                {
-                  type: 'BrokenAway',
-                  side: 'LEFT',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-                  value: '['
-                },
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-                  value: 'ur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              type: 'BrokenAway',
-              side: 'RIGHT',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
-              value: ']'
-            },
-            {
-              type: 'Joiner',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: '-'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'RA',
-              surrogate: [],
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              flags: [],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-                  value: 'RA'
-                }
-              ],
-              name: 'RA'
-            }
-          ],
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          value: '{+k[ur]-RA}'
-        }
-      ],
-      value: 'kur{+k[ur]-RA}',
-      uniqueLemma: [],
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          value: '{kur}'
-        },
-        {
-          modifiers: [],
-          subIndex: 2,
+          cleanValue: 'kur₂',
           value: 'kur₂',
-          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
+          name: 'kur',
           nameParts: [
             {
-              type: 'ValueToken',
-              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '{kur}kur₂',
-      uniqueLemma: [],
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      type: 'DocumentOrientedGloss',
-      side: 'RIGHT',
-      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
-      value: ')}'
-    }
-  ],
-  prefix: '6.'
-}
-
-const text7: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 7,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'BrokenAway',
-          side: 'LEFT',
-          enclosureType: [],
-          value: '['
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'LEFT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: '('
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'PerhapsBrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          value: ')'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'LEFT',
-          enclosureType: [],
-          value: '['
-        },
-        {
-          type: 'LinguisticGloss',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'k]ur',
-              enclosureType: ['BROKEN_AWAY'],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY'],
-                  value: 'k'
-                },
-                {
-                  type: 'BrokenAway',
-                  side: 'RIGHT',
-                  enclosureType: ['BROKEN_AWAY'],
-                  value: ']'
-                },
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'ur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              type: 'Joiner',
               enclosureType: [],
-              value: '-'
-            },
-            {
-              type: 'BrokenAway',
-              side: 'LEFT',
-              enclosureType: [],
-              value: '['
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
+              cleanValue: 'kur',
               value: 'kur',
-              enclosureType: ['BROKEN_AWAY'],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY'],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: ['BROKEN_AWAY'],
-          value: '{{k]ur-[kur}}'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'k[ur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'k'
-            },
-            {
-              type: 'BrokenAway',
-              side: 'LEFT',
-              enclosureType: [],
-              value: '['
-            },
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY'],
-              value: 'ur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
-        }
-      ],
-      value: '[(kur)]-[{{k]ur-[kur}}]k[ur]',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    }
-  ],
-  prefix: '7.'
-}
-
-const text8: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 8,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      type: 'Tabulation',
-      enclosureType: [],
-      value: '($___$)'
-    },
-    {
-      type: 'Tabulation',
-      enclosureType: [],
-      value: '($___$)'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      normalized: false,
-      value: '%sux',
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'd',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'd'
-                }
-              ],
-              name: 'd'
-            }
-          ],
-          enclosureType: [],
-          value: '{d}'
-        }
-      ],
-      value: 'kur{d}',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'KUR',
-          surrogate: [],
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Logogram',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'KUR'
-            }
-          ],
-          name: 'KUR'
-        }
-      ],
-      value: 'KUR',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      normalized: false,
-      value: '%akk',
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      normalized: false,
-      value: '%es',
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'KUR',
-          surrogate: [],
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Logogram',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'KUR'
-            }
-          ],
-          name: 'KUR'
-        },
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'D',
-              surrogate: [],
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'D'
-                }
-              ],
-              name: 'D'
-            }
-          ],
-          enclosureType: [],
-          value: '{D}'
-        }
-      ],
-      value: 'KUR{D}',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      normalized: false,
-      value: '%akk',
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: 'kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    }
-  ],
-  prefix: '8.'
-}
-
-const text9: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 10,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      normalized: false,
-      value: '%sux',
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'CompoundGrapheme',
-          enclosureType: [],
-          value: '|KUR₂.KUR|'
-        }
-      ],
-      value: '|KUR₂.KUR|',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{kur}'
-        },
-        {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'r[a',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'r'
-                },
-                {
-                  type: 'BrokenAway',
-                  side: 'LEFT',
-                  enclosureType: [],
-                  value: '['
-                },
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY'],
-                  value: 'a'
-                }
-              ],
-              name: 'ra'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'R[A#',
-              surrogate: [],
-              enclosureType: [],
-              flags: ['#'],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'R'
-                },
-                {
-                  type: 'BrokenAway',
-                  side: 'LEFT',
-                  enclosureType: [],
-                  value: '['
-                },
-                {
-                  type: 'ValueToken',
-                  enclosureType: ['BROKEN_AWAY'],
-                  value: 'A'
-                }
-              ],
-              name: 'RA'
-            }
-          ],
-          enclosureType: [],
-          value: 'r[a/R[A#'
-        },
-        {
-          type: 'BrokenAway',
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          modifiers: [],
-          subIndex: 2,
-          value: 'kur₂',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '{kur}r[a/R[A#]-kur₂',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'PhoneticGloss',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{+kur}'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur!',
-          enclosureType: [],
-          flags: ['!'],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '{+kur}kur!',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      modifiers: [],
-      value: ':.',
-      enclosureType: [],
-      flags: [],
-      divider: ':.',
-      type: 'Divider'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'KUR#',
-              surrogate: [],
-              enclosureType: [],
-              flags: ['#'],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'KUR'
-                }
-              ],
-              name: 'KUR'
-            }
-          ],
-          enclosureType: [],
-          value: 'kur/KUR#'
-        }
-      ],
-      value: 'kur/KUR#',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'SUMERIAN',
-      type: 'Word',
-      lemmatizable: false
-    }
-  ],
-  prefix: '9.'
-}
-
-const text10: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 10,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      normalized: false,
-      value: '%es',
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'LanguageShift'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'CompoundGrapheme',
-          enclosureType: [],
-          value: '|KUR₂.KUR|'
-        }
-      ],
-      value: '|KUR₂.KUR|',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Determinative',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{kur}'
-        },
-        {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'ra',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'ra'
-                }
-              ],
-              name: 'ra'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'RA#',
-              surrogate: [],
-              enclosureType: [],
-              flags: ['#'],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'RA'
-                }
-              ],
-              name: 'RA'
-            }
-          ],
-          enclosureType: [],
-          value: 'ra/RA#'
-        },
-        {
-          type: 'Joiner',
-          enclosureType: [],
-          value: '-'
-        },
-        {
-          modifiers: [],
-          subIndex: 2,
-          value: 'kur₂',
-          enclosureType: [],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '{kur}ra/RA#-kur₂',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'PhoneticGloss',
-          parts: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            }
-          ],
-          enclosureType: [],
-          value: '{+kur}'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur!',
-          enclosureType: [],
-          flags: ['!'],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: [],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '{+kur}kur!',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      modifiers: [],
-      value: ':.',
-      enclosureType: [],
-      flags: [],
-      divider: ':.',
-      type: 'Divider'
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          type: 'Variant',
-          tokens: [
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'kur',
-              enclosureType: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'kur'
-                }
-              ],
-              name: 'kur'
-            },
-            {
-              modifiers: [],
-              subIndex: 1,
-              value: 'KUR#',
-              surrogate: [],
-              enclosureType: [],
-              flags: ['#'],
-              sign: null,
-              type: 'Logogram',
-              nameParts: [
-                {
-                  type: 'ValueToken',
-                  enclosureType: [],
-                  value: 'KUR'
-                }
-              ],
-              name: 'KUR'
-            }
-          ],
-          enclosureType: [],
-          value: 'kur/KUR#'
-        }
-      ],
-      value: 'kur/KUR#',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'EMESAL',
-      type: 'Word',
-      lemmatizable: false
-    }
-  ],
-  prefix: '9.'
-}
-
-const text11: TextLine = {
-  type: 'TextLine',
-  lineNumber: {
-    type: 'LineNumber',
-    number: 11,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          side: 'LEFT',
-          enclosureType: [],
-          value: '<',
-          type: 'AccidentalOmission'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['ACCIDENTAL_OMISSION'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['ACCIDENTAL_OMISSION'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '<kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['ACCIDENTAL_OMISSION'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['ACCIDENTAL_OMISSION'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          side: 'RIGHT',
-          enclosureType: ['ACCIDENTAL_OMISSION'],
-          value: '>',
-          type: 'AccidentalOmission'
-        }
-      ],
-      value: 'kur>',
-      uniqueLemma: [],
-      enclosureType: ['ACCIDENTAL_OMISSION'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          side: 'LEFT',
-          enclosureType: [],
-          value: '<(',
-          type: 'IntentionalOmission'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['INTENTIONAL_OMISSION'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['INTENTIONAL_OMISSION'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '<(kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['INTENTIONAL_OMISSION'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['INTENTIONAL_OMISSION'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          side: 'RIGHT',
-          enclosureType: ['INTENTIONAL_OMISSION'],
-          value: ')>',
-          type: 'IntentionalOmission'
-        }
-      ],
-      value: 'kur)>',
-      uniqueLemma: [],
-      enclosureType: ['INTENTIONAL_OMISSION'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          side: 'LEFT',
-          enclosureType: [],
-          value: '<<',
-          type: 'Removal'
-        },
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['BROKEN_AWAY'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        }
-      ],
-      value: '<<kur',
-      uniqueLemma: [],
-      enclosureType: [],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      erasure: 'NONE',
-      normalized: false,
-      parts: [
-        {
-          modifiers: [],
-          subIndex: 1,
-          value: 'kur',
-          enclosureType: ['BROKEN_AWAY'],
-          flags: [],
-          sign: null,
-          type: 'Reading',
-          nameParts: [
-            {
-              type: 'ValueToken',
-              enclosureType: ['BROKEN_AWAY'],
-              value: 'kur'
-            }
-          ],
-          name: 'kur'
-        },
-        {
-          side: 'RIGHT',
-          enclosureType: ['BROKEN_AWAY'],
-          value: '>>',
-          type: 'Removal'
-        }
-      ],
-      value: 'kur>>',
-      uniqueLemma: [],
-      enclosureType: ['BROKEN_AWAY'],
-      language: 'AKKADIAN',
-      type: 'Word',
-      lemmatizable: true
-    }
-  ],
-  prefix: '10.'
-}
-
-const text12: TextLine = {
-  lineNumber: {
-    type: 'LineNumber',
-    number: 12,
-    hasPrime: false,
-    prefixModifier: null,
-    suffixModifier: null
-  },
-  content: [
-    {
-      enclosureType: [],
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway'
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      value: ']',
-      side: 'RIGHT',
-      type: 'BrokenAway'
-    },
-    {
-      enclosureType: [],
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway'
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      value: '{(',
-      side: 'LEFT',
-      type: 'DocumentOrientedGloss'
-    },
-    {
-      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-      parts: [
-        {
-          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-          subIndex: 1,
-          name: 'ra',
-          sign: null,
-          nameParts: [
-            {
-              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-              value: 'ra',
               type: 'ValueToken'
             }
           ],
+          subIndex: 2,
+          modifiers: [],
           flags: [],
-          value: 'ra',
-          type: 'Reading',
-          modifiers: []
-        }
-      ],
-      language: 'AKKADIAN',
-      erasure: 'NONE',
-      normalized: false,
-      value: 'ra',
-      uniqueLemma: [],
-      type: 'Word',
-      lemmatizable: true
-    },
-    {
-      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
-      value: ')}',
-      side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      value: ']',
-      side: 'RIGHT',
-      type: 'BrokenAway'
-    },
-    {
-      enclosureType: [],
-      parts: [
+          sign: null,
+          type: 'Reading'
+        },
         {
           enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '',
           value: '[',
           side: 'LEFT',
           type: 'BrokenAway'
         },
         {
           enclosureType: ['BROKEN_AWAY'],
-          value: 'X',
-          flags: [],
-          type: 'UnidentifiedSign'
-        }
-      ],
-      language: 'AKKADIAN',
-      erasure: 'NONE',
-      normalized: false,
-      value: '[X',
-      uniqueLemma: [],
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      parts: [
-        {
-          enclosureType: ['BROKEN_AWAY'],
-          value: 'x',
-          flags: [],
-          type: 'UnclearSign'
-        },
-        {
-          enclosureType: ['BROKEN_AWAY'],
-          value: ']',
-          side: 'RIGHT',
-          type: 'BrokenAway'
-        },
-        {
-          enclosureType: [],
-          value: '-',
-          type: 'Joiner'
-        },
-        {
-          enclosureType: [],
-          value: 'x',
-          flags: [],
-          type: 'UnclearSign'
-        }
-      ],
-      language: 'AKKADIAN',
-      erasure: 'NONE',
-      normalized: false,
-      value: 'x]-x',
-      uniqueLemma: [],
-      type: 'Word',
-      lemmatizable: false
-    },
-    {
-      enclosureType: [],
-      value: '[',
-      side: 'LEFT',
-      type: 'BrokenAway'
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      divider: '::',
-      flags: [],
-      value: '::',
-      type: 'Divider',
-      modifiers: []
-    },
-    {
-      enclosureType: ['BROKEN_AWAY'],
-      parts: [
-        {
-          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
           value: '(',
           side: 'LEFT',
           type: 'PerhapsBrokenAway'
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          subIndex: 1,
-          name: 'kur',
-          sign: null,
+          cleanValue: 'KUR₂',
+          value: 'KUR₂',
+          name: 'KUR',
           nameParts: [
             {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          surrogate: [],
+          type: 'Logogram'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: 'kur/RA',
+          value: 'kur/RA',
+          tokens: [
+            {
+              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              cleanValue: 'RA',
+              value: 'RA',
+              name: 'RA',
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+                  cleanValue: 'RA',
+                  value: 'RA',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Variant'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: '',
+          value: ')',
+          side: 'RIGHT',
+          type: 'PerhapsBrokenAway'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '...',
+      value: '...',
+      type: 'UnknownNumberOfSigns'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: ']',
+      side: 'RIGHT',
+      type: 'BrokenAway'
+    }
+  ],
+  lineNumber: {
+    number: 1,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line3: Line = {
+  prefix: '$',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: ' single ruling',
+      value: ' single ruling',
+      type: 'ValueToken'
+    }
+  ],
+  number: 'SINGLE',
+  status: null,
+  type: 'RulingDollarLine'
+}
+
+const line4: Line = {
+  prefix: '2.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '|KUR.KUR|',
+      value: '|KUR.KUR|',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '|KUR.KUR|',
+          value: '|KUR.KUR|',
+          type: 'CompoundGrapheme'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur/|RA|',
+      value: 'kur/|RA|',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur/|RA|',
+          value: 'kur/|RA|',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '|RA|',
+              value: '|RA|',
+              type: 'CompoundGrapheme'
+            }
+          ],
+          type: 'Variant'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '[',
+      side: 'LEFT',
+      type: 'BrokenAway'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '...',
+      value: '...',
+      type: 'UnknownNumberOfSigns'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: ']',
+      side: 'RIGHT',
+      type: 'BrokenAway'
+    }
+  ],
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line5: Line = {
+  prefix: '$',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: ' double ruling',
+      value: ' double ruling',
+      type: 'ValueToken'
+    }
+  ],
+  number: 'DOUBLE',
+  status: null,
+  type: 'RulingDollarLine'
+}
+
+const line6: Line = {
+  prefix: '3.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '1@v',
+      value: '1@v#*',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '1@v',
+          value: '1@v#*',
+          name: '1',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: '1',
+              value: '1',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: ['@v'],
+          flags: ['#', '*'],
+          sign: null,
+          type: 'Number'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'x',
+      value: 'x#!',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'x',
+          value: 'x#!',
+          flags: ['#', '!'],
+          type: 'UnclearSign'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'X',
+      value: 'X#?',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'X',
+          value: 'X#?',
+          flags: ['#', '?'],
+          type: 'UnidentifiedSign'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '::@v@44',
+      value: '::@v@44?#',
+      divider: '::',
+      modifiers: ['@v', '@44'],
+      flags: ['?', '#'],
+      type: 'Divider'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'x',
+      value: '[(x)',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '[',
+          side: 'LEFT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: '(',
+          side: 'LEFT',
+          type: 'PerhapsBrokenAway'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: 'x',
+          value: 'x',
+          flags: [],
+          type: 'UnclearSign'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: '',
+          value: ')',
+          side: 'RIGHT',
+          type: 'PerhapsBrokenAway'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: 'x',
+      value: 'x]',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: 'x',
+          value: 'x',
+          flags: [],
+          type: 'UnclearSign'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: ']',
+          side: 'RIGHT',
+          type: 'BrokenAway'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 3,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line7: Line = {
+  prefix: '4.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kurₓ@v(KUR@v#?)-KUR₂@v<(kur-kur)>',
+      value: 'kurₓ@v#!(KUR@v#?)-KUR₂@v#?<(kur-kur)>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kurₓ@v(KUR@v#?)',
+          value: 'kurₓ@v#!(KUR@v#?)',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
               value: 'kur',
               type: 'ValueToken'
             }
           ],
-          flags: [],
+          subIndex: null,
+          modifiers: ['@v'],
+          flags: ['#', '!'],
+          sign: {
+            enclosureType: [],
+            cleanValue: 'KUR@v',
+            value: 'KUR@v#?',
+            name: 'KUR',
+            modifiers: ['@v'],
+            flags: ['#', '?'],
+            type: 'Grapheme'
+          },
+          type: 'Reading'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'KUR₂@v<(kur-kur)>',
+          value: 'KUR₂@v#?<(kur-kur)>',
+          name: 'KUR',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: ['@v'],
+          flags: ['#', '?'],
+          sign: null,
+          surrogate: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Logogram'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 4,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line8: Line = {
+  prefix: '5.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '°',
+      side: 'LEFT',
+      type: 'Erasure'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'ERASED',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
           value: 'kur',
-          type: 'Reading',
-          modifiers: []
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '\\',
+      side: 'CENTER',
+      type: 'Erasure'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'OVER_ERASED',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '°',
+      side: 'RIGHT',
+      type: 'Erasure'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur-kurkur-kur',
+      value: 'kur-°kur\\kur°-kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '°',
+          side: 'LEFT',
+          type: 'Erasure'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '\\',
+          side: 'CENTER',
+          type: 'Erasure'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '°',
+          side: 'RIGHT',
+          type: 'Erasure'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 5,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line9: Line = {
+  prefix: '$',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: ' triple ruling',
+      value: ' triple ruling',
+      type: 'ValueToken'
+    }
+  ],
+  number: 'TRIPLE',
+  status: null,
+  type: 'RulingDollarLine'
+}
+
+const line10: Line = {
+  prefix: '6.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '{d-kur₂}{d-RA}kur',
+      value: '{d#-kur₂?}{d-RA!}kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{d-kur₂}',
+          value: '{d#-kur₂?}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'd',
+              value: 'd#',
+              name: 'd',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'd',
+                  value: 'd',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['#'],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'kur₂',
+              value: 'kur₂?',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 2,
+              modifiers: [],
+              flags: ['?'],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '{d-RA}',
+          value: '{d-RA!}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'd',
+              value: 'd',
+              name: 'd',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'd',
+                  value: 'd',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'RA',
+              value: 'RA!',
+              name: 'RA',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'RA',
+                  value: 'RA',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['!'],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Determinative'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '{{kur}}',
+      value: '{{kur}}',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{{kur}}',
+          value: '{{kur}}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'LinguisticGloss'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '{(',
+      side: 'LEFT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: 'kur{d}',
+      value: 'k[u]r{d!}',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'kur',
+          value: 'k[u]r',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'k',
+              value: 'k',
+              type: 'ValueToken'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: '',
+              value: '[',
+              side: 'LEFT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
+              cleanValue: 'u',
+              value: 'u',
+              type: 'ValueToken'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
+              cleanValue: '',
+              value: ']',
+              side: 'RIGHT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'r',
+              value: 'r',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '{d}',
+          value: '{d!}',
+          parts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'd',
+              value: 'd!',
+              name: 'd',
+              nameParts: [
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+                  cleanValue: 'd',
+                  value: 'd',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['!'],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: 'KUR₂-ra',
+      value: 'KUR₂!-ra',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'KUR₂',
+          value: 'KUR₂!',
+          name: 'KUR',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: [],
+          flags: ['!'],
+          sign: null,
+          surrogate: [],
+          type: 'Logogram'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'ra',
+          value: 'ra',
+          name: 'ra',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'ra',
+              value: 'ra',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '%es',
+      value: '%es',
+      language: 'EMESAL',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: 'kur{+kur-RA}',
+      value: 'kur{+k[ur]-RA}',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '{+kur-RA}',
+          value: '{+k[ur]-RA}',
+          parts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'kur',
+              value: 'k[ur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+                  cleanValue: 'k',
+                  value: 'k',
+                  type: 'ValueToken'
+                },
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+                  cleanValue: '',
+                  value: '[',
+                  side: 'LEFT',
+                  type: 'BrokenAway'
+                },
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
+                  cleanValue: 'ur',
+                  value: 'ur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
+              cleanValue: '',
+              value: ']',
+              side: 'RIGHT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'RA',
+              value: 'RA',
+              name: 'RA',
+              nameParts: [
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+                  cleanValue: 'RA',
+                  value: 'RA',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'PhoneticGloss'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '{kur}kur₂',
+      value: '{kur}kur₂',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '{kur}',
+          value: '{kur}',
+          parts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'kur₂',
+          value: 'kur₂',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '',
+      value: ')}',
+      side: 'RIGHT',
+      type: 'DocumentOrientedGloss'
+    }
+  ],
+  lineNumber: {
+    number: 6,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line11: Line = {
+  prefix: '1.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: 'kur-{{kur-kur}}kur',
+      value: '[(kur)]-[{{k]ur-[kur}}]k[ur]',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '[',
+          side: 'LEFT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: '(',
+          side: 'LEFT',
+          type: 'PerhapsBrokenAway'
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          cleanValue: '',
           value: ')',
           side: 'RIGHT',
           type: 'PerhapsBrokenAway'
         },
         {
           enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: ']',
+          side: 'RIGHT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
           value: '-',
           type: 'Joiner'
         },
         {
+          enclosureType: [],
+          cleanValue: '',
+          value: '[',
+          side: 'LEFT',
+          type: 'BrokenAway'
+        },
+        {
           enclosureType: ['BROKEN_AWAY'],
-          subIndex: 1,
-          name: 'kur',
-          sign: null,
-          nameParts: [
+          cleanValue: '{{kur-kur}}',
+          value: '{{k]ur-[kur}}',
+          parts: [
             {
               enclosureType: ['BROKEN_AWAY'],
-              value: 'ku',
-              type: 'ValueToken'
+              cleanValue: 'kur',
+              value: 'k]ur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY'],
+                  cleanValue: 'k',
+                  value: 'k',
+                  type: 'ValueToken'
+                },
+                {
+                  enclosureType: ['BROKEN_AWAY'],
+                  cleanValue: '',
+                  value: ']',
+                  side: 'RIGHT',
+                  type: 'BrokenAway'
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'ur',
+                  value: 'ur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '',
+              value: '[',
+              side: 'LEFT',
+              type: 'BrokenAway'
             },
             {
               enclosureType: ['BROKEN_AWAY'],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: ['BROKEN_AWAY'],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'LinguisticGloss'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: ']',
+          side: 'RIGHT',
+          type: 'BrokenAway'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'k[ur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'k',
+              value: 'k',
+              type: 'ValueToken'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '',
+              value: '[',
+              side: 'LEFT',
+              type: 'BrokenAway'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              cleanValue: 'ur',
+              value: 'ur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '',
+          value: ']',
+          side: 'RIGHT',
+          type: 'BrokenAway'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 1,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line12: Line = {
+  prefix: '2.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '($___$)',
+      value: '($___$)',
+      type: 'Tabulation'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '%sux',
+      value: '%sux',
+      language: 'SUMERIAN',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur{d}',
+      value: 'kur{d}',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '{d}',
+          value: '{d}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'd',
+              value: 'd',
+              name: 'd',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'd',
+                  value: 'd',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'KUR',
+      value: 'KUR',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'KUR',
+          value: 'KUR',
+          name: 'KUR',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          surrogate: [],
+          type: 'Logogram'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '%akk',
+      value: '%akk',
+      language: 'AKKADIAN',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '%es',
+      value: '%es',
+      language: 'EMESAL',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'KUR{D}',
+      value: 'KUR{D}',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'KUR',
+          value: 'KUR',
+          name: 'KUR',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          surrogate: [],
+          type: 'Logogram'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '{D}',
+          value: '{D}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'D',
+              value: 'D',
+              name: 'D',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'D',
+                  value: 'D',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Determinative'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '%akk',
+      value: '%akk',
+      language: 'AKKADIAN',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line13: Line = {
+  prefix: '3.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '%sux',
+      value: '%sux',
+      language: 'SUMERIAN',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '|KUR₂.KUR|',
+      value: '|KUR₂.KUR|',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '|KUR₂.KUR|',
+          value: '|KUR₂.KUR|',
+          type: 'CompoundGrapheme'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '{kur}ra/RA-kur₂',
+      value: '{kur}ra/RA#-kur₂',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{kur}',
+          value: '{kur}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'ra/RA',
+          value: 'ra/RA#',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'ra',
+              value: 'ra',
+              name: 'ra',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'RA',
+              value: 'RA#',
+              name: 'RA',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'RA',
+                  value: 'RA',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['#'],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Variant'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur₂',
+          value: 'kur₂',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '{+kur}kur',
+      value: '{+kur}kur!',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{+kur}',
+          value: '{+kur}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'PhoneticGloss'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur!',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: ['!'],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: ':.',
+      value: ':.',
+      divider: ':.',
+      modifiers: [],
+      flags: [],
+      type: 'Divider'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur/KUR',
+      value: 'kur/KUR#',
+      language: 'SUMERIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur/KUR',
+          value: 'kur/KUR#',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'KUR',
+              value: 'KUR#',
+              name: 'KUR',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'KUR',
+                  value: 'KUR',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['#'],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Variant'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 3,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line14: Line = {
+  prefix: '4.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '%es',
+      value: '%es',
+      language: 'EMESAL',
+      normalized: false,
+      type: 'LanguageShift'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '|KUR₂.KUR|',
+      value: '|KUR₂.KUR|',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '|KUR₂.KUR|',
+          value: '|KUR₂.KUR|',
+          type: 'CompoundGrapheme'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '{kur}ra/RA-kur₂',
+      value: '{kur}ra/RA#-kur₂',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{kur}',
+          value: '{kur}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Determinative'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'ra/RA',
+          value: 'ra/RA#',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'ra',
+              value: 'ra',
+              name: 'ra',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'RA',
+              value: 'RA#',
+              name: 'RA',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'RA',
+                  value: 'RA',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['#'],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Variant'
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur₂',
+          value: 'kur₂',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 2,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '{+kur}kur',
+      value: '{+kur}kur!',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '{+kur}',
+          value: '{+kur}',
+          parts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'PhoneticGloss'
+        },
+        {
+          enclosureType: [],
+          cleanValue: 'kur',
+          value: 'kur!',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: ['!'],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: ':.',
+      value: ':.',
+      divider: ':.',
+      modifiers: [],
+      flags: [],
+      type: 'Divider'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur/KUR',
+      value: 'kur/KUR#',
+      language: 'EMESAL',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'kur/KUR',
+          value: 'kur/KUR#',
+          tokens: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'KUR',
+              value: 'KUR#',
+              name: 'KUR',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'KUR',
+                  value: 'KUR',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: ['#'],
+              sign: null,
+              surrogate: [],
+              type: 'Logogram'
+            }
+          ],
+          type: 'Variant'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 4,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line15: Line = {
+  prefix: '5.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: '<kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '<',
+          side: 'LEFT',
+          type: 'AccidentalOmission'
+        },
+        {
+          enclosureType: ['ACCIDENTAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['ACCIDENTAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['ACCIDENTAL_OMISSION'],
+      cleanValue: 'kur',
+      value: 'kur>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['ACCIDENTAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['ACCIDENTAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['ACCIDENTAL_OMISSION'],
+          cleanValue: '',
+          value: '>',
+          side: 'RIGHT',
+          type: 'AccidentalOmission'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: '<(kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '<(',
+          side: 'LEFT',
+          type: 'IntentionalOmission'
+        },
+        {
+          enclosureType: ['INTENTIONAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['INTENTIONAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['INTENTIONAL_OMISSION'],
+      cleanValue: 'kur',
+      value: 'kur)>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['INTENTIONAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['INTENTIONAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['INTENTIONAL_OMISSION'],
+          cleanValue: '',
+          value: ')>',
+          side: 'RIGHT',
+          type: 'IntentionalOmission'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: 'kur',
+      value: '<<kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: '',
+          value: '<<',
+          side: 'LEFT',
+          type: 'Removal'
+        },
+        {
+          enclosureType: ['REMOVAL'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['REMOVAL'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['REMOVAL'],
+      cleanValue: 'kur',
+      value: 'kur>>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['REMOVAL'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['REMOVAL'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['REMOVAL'],
+          cleanValue: '',
+          value: '>>',
+          side: 'RIGHT',
+          type: 'Removal'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    number: 5,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line16: Line = {
+  prefix: '6.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '[',
+      side: 'LEFT',
+      type: 'BrokenAway'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: ']',
+      side: 'RIGHT',
+      type: 'BrokenAway'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '[',
+      side: 'LEFT',
+      type: 'BrokenAway'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: '{(',
+      side: 'LEFT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: 'ra',
+      value: 'ra',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'ra',
+          value: 'ra',
+          name: 'ra',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'ra',
+              value: 'ra',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '',
+      value: ')}',
+      side: 'RIGHT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: ']',
+      side: 'RIGHT',
+      type: 'BrokenAway'
+    }
+  ],
+  lineNumber: {
+    number: 6,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
+  type: 'TextLine'
+}
+
+const line17: Line = {
+  prefix: '7.',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '[',
+      side: 'LEFT',
+      type: 'BrokenAway'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '...',
+      value: '...',
+      type: 'UnknownNumberOfSigns'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      cleanValue: '',
+      value: '{(',
+      side: 'LEFT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: 'he-pi₂',
+      value: 'he-p]i₂',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: ['hepû II'],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'he',
+          value: 'he',
+          name: 'he',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'he',
+              value: 'he',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'pi₂',
+          value: 'p]i₂',
+          name: 'pi',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'p',
+              value: 'p',
+              type: 'ValueToken'
+            },
+            {
+              enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: '',
               value: ']',
               side: 'RIGHT',
               type: 'BrokenAway'
             },
             {
-              enclosureType: [],
-              value: 'r',
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'i',
+              value: 'i',
               type: 'ValueToken'
             }
           ],
+          subIndex: 2,
+          modifiers: [],
           flags: [],
-          value: 'ku]r',
-          type: 'Reading',
-          modifiers: []
+          sign: null,
+          type: 'Reading'
         }
       ],
-      language: 'AKKADIAN',
-      erasure: 'NONE',
-      normalized: false,
-      value: '(kur)-ku]r',
-      uniqueLemma: [],
-      type: 'Word',
-      lemmatizable: true
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '',
+      value: ')}',
+      side: 'RIGHT',
+      type: 'DocumentOrientedGloss'
     }
   ],
-  prefix: '11.',
+  lineNumber: {
+    number: 7,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null,
+    type: 'LineNumber'
+  },
   type: 'TextLine'
 }
 
-const emptyLine: EmptyLine = {
-  type: 'EmptyLine',
-  content: [],
-  prefix: ''
-}
-
-const rulingDollarLine1: RulingDollarLine = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'SINGLE',
-  status: null,
-  displayValue: 'single ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      value: ' single ruling',
-      enclosureType: []
-    }
-  ]
-}
-
-const rulingDollarLine2: RulingDollarLine = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'DOUBLE',
-  status: null,
-  displayValue: 'double ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      value: ' double ruling',
-      enclosureType: []
-    }
-  ]
-}
-
-const rulingDollarLine3: RulingDollarLine = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'TRIPLE',
-  status: null,
-  displayValue: 'triple ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      value: ' triple ruling',
-      enclosureType: []
-    }
-  ]
-}
-
-const surfaceAtLine: SurfaceAtLine = {
-  prefix: '$',
-  type: 'SurfaceAtLine',
-  surfaceLabel: {
-    status: [],
-    text: '',
-    surface: 'OBVERSE'
-  },
-  displayValue: 'obverse',
-  content: [
-    {
-      type: 'ValueToken',
-      value: ' obverse',
-      enclosureType: []
-    }
-  ]
-}
-
-const imageDollarLine: ImageDollarLine = {
-  displayValue: '(image 1 = foo)',
-  text: 'foo',
+const line18: Line = {
+  prefix: "D+3'a-4b.",
   content: [
     {
       enclosureType: [],
-      value: ' (image 1 = foo)',
+      cleanValue: 'x',
+      value: 'x',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'x',
+          value: 'x',
+          flags: [],
+          type: 'UnclearSign'
+        }
+      ],
+      type: 'Word'
+    }
+  ],
+  lineNumber: {
+    start: {
+      number: 3,
+      hasPrime: true,
+      prefixModifier: 'D',
+      suffixModifier: 'a'
+    },
+    end: {
+      number: 4,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: 'b'
+    },
+    type: 'LineNumberRange'
+  },
+  type: 'TextLine'
+}
+
+const line19: Line = {
+  prefix: '$',
+  content: [
+    {
+      enclosureType: [],
+      cleanValue: ' single ruling !?',
+      value: ' single ruling !?',
       type: 'ValueToken'
     }
   ],
-  letter: null,
-  prefix: '$',
-  number: '1',
-  type: 'ImageDollarLine'
+  number: 'SINGLE',
+  status: 'NEEDS_COLLATION',
+  type: 'RulingDollarLine'
 }
 
 export default new Text({
   lines: [
-    text1,
-    text2,
-    text3,
-    text4,
-    text5,
-    text6,
-    text7,
-    text8,
-    text9,
-    text10,
-    text11,
-    text12,
-    emptyLine,
-    rulingDollarLine1,
-    rulingDollarLine2,
-    rulingDollarLine3,
-    surfaceAtLine,
-    imageDollarLine
+    line1,
+    line2,
+    line3,
+    line4,
+    line5,
+    line6,
+    line7,
+    line8,
+    line9,
+    line10,
+    line11,
+    line12,
+    line13,
+    line14,
+    line15,
+    line16,
+    line17,
+    line18,
+    line19
   ]
 })

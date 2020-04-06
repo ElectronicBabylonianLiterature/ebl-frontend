@@ -173,13 +173,13 @@ test('createLemmatization', async () => {
     [
       [
         new LemmatizationToken(
-          'kur',
+          'k[ur',
           true,
           [new Lemma(words[0])],
           [[new Lemma(words[2])]]
         ),
         new LemmatizationToken(
-          'nu',
+          'n]u',
           true,
           [new Lemma(words[1])],
           [[new Lemma(words[3])]]

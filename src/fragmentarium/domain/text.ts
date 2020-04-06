@@ -8,6 +8,7 @@ import Lemma from './Lemma'
 import { Token } from './token'
 
 export type Line =
+  | LineBase
   | TextLine
   | EmptyLine
   | LooseDollarLine
@@ -148,6 +149,27 @@ export interface CompositeAtLine extends DollarAndAtLine {
   readonly text: string
 }
 
+export interface LineNumber {
+  number: number
+  hasPrime: boolean
+  prefixModifier: string | null
+  suffixModifier: string | null
+  type?: 'LineNumber'
+}
+
+export interface LineNumberRange {
+  start: LineNumber
+  end: LineNumber
+  type: 'LineNumberRange'
+}
+
+export interface TextLine extends LineBase {
+  type: 'TextLine'
+  lineNumber: LineNumber | LineNumberRange
+}
+
+export type Line = TextLine | RulingDollarLine | LineBase
+
 export class Text {
   readonly lines: ReadonlyArray<Line>
 
@@ -170,7 +192,7 @@ export class Text {
                   token.value,
                   true,
                   (token.uniqueLemma || []).map(id => lemmas[id]),
-                  suggestions[token.value]
+                  suggestions[token.cleanValue]
                 )
               : new LemmatizationToken(token.value, false)
           )

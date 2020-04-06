@@ -51,7 +51,14 @@ const config = {
         text: 'atf',
         displayValue: '(atf)',
         prefix: '$',
-        content: [{ type: 'ValueToken', value: '(atf)', enclosureType: [] }]
+        content: [
+          {
+            type: 'ValueToken',
+            value: '(atf)',
+            cleanValue: '(atf)',
+            enclosureType: []
+          }
+        ]
       }
     ]
   }),
