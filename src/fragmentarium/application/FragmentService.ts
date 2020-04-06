@@ -8,7 +8,7 @@ import createReference from 'bibliography/application/createReference'
 import { Text } from 'fragmentarium/domain/text'
 import Annotation from 'fragmentarium/domain/annotation'
 import Word from 'dictionary/domain/Word'
-import { Token } from '../domain/token'
+import { Token } from 'fragmentarium/domain/token'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
