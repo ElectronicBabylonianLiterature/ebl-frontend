@@ -9,7 +9,7 @@ import {
   Token,
   UnknownSign,
   Variant
-} from '../../domain/token'
+} from 'fragmentarium/domain/token'
 
 function Modifiers({
   modifiers
