@@ -41,6 +41,13 @@ export default async function createLemmatizationTestText(): Promise<
     lines: [
       {
         type: 'TextLine',
+        lineNumber: {
+          type: 'LineNumber',
+          number: 1,
+          hasPrime: false,
+          prefixModifier: null,
+          suffixModifier: null
+        },
         prefix: '1.',
         content: [
           {

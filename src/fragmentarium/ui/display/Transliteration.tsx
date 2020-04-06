@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import {
   Line,
   Text,
-  ControlLines,
+  DollarAndAtLine,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
@@ -149,14 +149,14 @@ function DisplayLine({
   )
 }
 
-function DisplayGenericControlLines({
+function DisplayDollarAndAtLine({
   line,
   container = 'div'
 }: {
   line: Line
   container?: string
 }): JSX.Element {
-  const controlLine = line as ControlLines
+  const controlLine = line as DollarAndAtLine
   const element = `Transliteration__GenericControlLine`
   let component = ''
   if (
@@ -183,18 +183,18 @@ const lineComponents: ReadonlyMap<
 > = new Map([
   ['TextLine', DisplayLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
-  ['LooseDollarLine', DisplayGenericControlLines],
-  ['ImageDollarLine', DisplayGenericControlLines],
-  ['SealDollarLine', DisplayGenericControlLines],
-  ['StateDollarLine', DisplayGenericControlLines],
-  ['SealAtLine', DisplayGenericControlLines],
-  ['ColumnAtLine', DisplayGenericControlLines],
-  ['HeadingAtLine', DisplayGenericControlLines],
-  ['DiscourseAtLine', DisplayGenericControlLines],
-  ['SurfaceAtLine', DisplayGenericControlLines],
-  ['ObjectAtLine', DisplayGenericControlLines],
-  ['DivisionAtLine', DisplayGenericControlLines],
-  ['CompositeAtLine', DisplayGenericControlLines]
+  ['LooseDollarLine', DisplayDollarAndAtLine],
+  ['ImageDollarLine', DisplayDollarAndAtLine],
+  ['SealDollarLine', DisplayDollarAndAtLine],
+  ['StateDollarLine', DisplayDollarAndAtLine],
+  ['SealAtLine', DisplayDollarAndAtLine],
+  ['ColumnAtLine', DisplayDollarAndAtLine],
+  ['HeadingAtLine', DisplayDollarAndAtLine],
+  ['DiscourseAtLine', DisplayDollarAndAtLine],
+  ['SurfaceAtLine', DisplayDollarAndAtLine],
+  ['ObjectAtLine', DisplayDollarAndAtLine],
+  ['DivisionAtLine', DisplayDollarAndAtLine],
+  ['CompositeAtLine', DisplayDollarAndAtLine]
 ])
 
 function DisplayRulingDollarLine({

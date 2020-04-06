@@ -9,6 +9,13 @@ import {
 
 const text1: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 1,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -166,6 +173,13 @@ const text1: TextLine = {
 
 const text2: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 2,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -258,6 +272,13 @@ const text2: TextLine = {
 
 const text3: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 3,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -398,6 +419,13 @@ const text3: TextLine = {
 
 const text4: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 4,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       type: 'Tabulation',
@@ -504,11 +532,18 @@ const text4: TextLine = {
       lemmatizable: true
     }
   ],
-  prefix: '1.'
+  prefix: '4.'
 }
 
 const text5: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 5,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       side: 'LEFT',
@@ -700,6 +735,13 @@ const text5: TextLine = {
 
 const text6: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 6,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -1123,6 +1165,13 @@ const text6: TextLine = {
 
 const text7: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 7,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -1297,6 +1346,13 @@ const text7: TextLine = {
 
 const text8: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 8,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       type: 'Tabulation',
@@ -1596,6 +1652,13 @@ const text8: TextLine = {
 
 const text9: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 10,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       normalized: false,
@@ -1870,6 +1933,13 @@ const text9: TextLine = {
 
 const text10: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 10,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       normalized: false,
@@ -2116,6 +2186,13 @@ const text10: TextLine = {
 
 const text11: TextLine = {
   type: 'TextLine',
+  lineNumber: {
+    type: 'LineNumber',
+    number: 11,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       erasure: 'NONE',
@@ -2332,6 +2409,13 @@ const text11: TextLine = {
 }
 
 const text12: TextLine = {
+  lineNumber: {
+    type: 'LineNumber',
+    number: 12,
+    hasPrime: false,
+    prefixModifier: null,
+    suffixModifier: null
+  },
   content: [
     {
       enclosureType: [],
