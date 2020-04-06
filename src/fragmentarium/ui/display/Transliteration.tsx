@@ -155,13 +155,13 @@ function DisplayDollarAndAtLineWithParenthesis({
   line: Line
   container?: string
 }): JSX.Element {
-  const controlLine = line as DollarAndAtLine
+  const dollarAndAtLine = line as DollarAndAtLine
   const element = `Transliteration__DollarAndAtLineWithParenthesis`
   return React.createElement(
     container,
-    null,
-    <div className={`${element} ${controlLine.type}`}>
-      (${controlLine.displayValue})
+    { className: `${element}` },
+    <div className={`Transliteration__${dollarAndAtLine.type}`}>
+      {dollarAndAtLine.displayValue}
     </div>
   )
 }
@@ -173,13 +173,13 @@ function DisplayGenericDollarAndAtLine({
   line: Line
   container?: string
 }): JSX.Element {
-  const controlLine = line as DollarAndAtLine
+  const dollarAndAtLine = line as DollarAndAtLine
   const element = `Transliteration__GenericDollarAndAtLine`
   return React.createElement(
     container,
-    null,
-    <div className={`${element} ${controlLine.type}`}>
-      {controlLine.displayValue}
+    { className: `${element}` },
+    <div className={`Transliteration__${dollarAndAtLine.type}`}>
+      ({dollarAndAtLine.displayValue})
     </div>
   )
 }
