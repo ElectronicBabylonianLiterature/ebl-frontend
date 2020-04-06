@@ -9,7 +9,7 @@ import {
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
-import { Enclosure, Shift, Token } from '../../domain/token'
+import { Enclosure, Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = []
