@@ -1,6 +1,7 @@
 export type EnclosureType =
   | 'ACCIDENTAL_OMISSION'
   | 'INTENTIONAL_OMISSION'
+  | 'REMOVAL'
   | 'BROKEN_AWAY'
   | 'PERHAPS_BROKEN_AWAY'
   | 'PERHAPS'
@@ -9,6 +10,7 @@ export type EnclosureType =
 export interface BaseToken {
   readonly type: string
   readonly value: string
+  readonly cleanValue: string
   readonly parts?: readonly Token[]
   readonly enclosureType: readonly EnclosureType[]
 }

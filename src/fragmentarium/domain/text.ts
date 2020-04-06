@@ -31,19 +31,27 @@ export interface LineBase {
   readonly content: ReadonlyArray<Token>
 }
 
+export interface LineNumber {
+  number: number
+  hasPrime: boolean
+  prefixModifier: string | null
+  suffixModifier: string | null
+  type?: 'LineNumber'
+}
+
+export interface LineNumberRange {
+  start: LineNumber
+  end: LineNumber
+  type: 'LineNumberRange'
+}
+
+export interface TextLine extends LineBase {
+  type: 'TextLine'
+  lineNumber: LineNumber | LineNumberRange
+}
+
 export interface EmptyLine extends LineBase {
   readonly type: 'EmptyLine'
-}
-export interface LineNumber {
-  readonly type: 'LineNumber'
-  readonly number: number
-  readonly hasPrime: boolean
-  readonly prefixModifier: string | null
-  readonly suffixModifier: string | null
-}
-export interface TextLine extends LineBase {
-  readonly type: 'TextLine'
-  readonly lineNumber: LineNumber
 }
 
 export interface DollarAndAtLine extends LineBase {
@@ -148,27 +156,6 @@ export interface CompositeAtLine extends DollarAndAtLine {
   readonly number: string
   readonly text: string
 }
-
-export interface LineNumber {
-  number: number
-  hasPrime: boolean
-  prefixModifier: string | null
-  suffixModifier: string | null
-  type?: 'LineNumber'
-}
-
-export interface LineNumberRange {
-  start: LineNumber
-  end: LineNumber
-  type: 'LineNumberRange'
-}
-
-export interface TextLine extends LineBase {
-  type: 'TextLine'
-  lineNumber: LineNumber | LineNumberRange
-}
-
-export type Line = TextLine | RulingDollarLine | LineBase
 
 export class Text {
   readonly lines: ReadonlyArray<Line>
