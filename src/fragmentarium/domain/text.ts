@@ -9,6 +9,7 @@ import Lemma from './Lemma'
 export type EnclosureType =
   | 'ACCIDENTAL_OMISSION'
   | 'INTENTIONAL_OMISSION'
+  | 'REMOVAL'
   | 'BROKEN_AWAY'
   | 'PERHAPS_BROKEN_AWAY'
   | 'PERHAPS'
@@ -17,6 +18,7 @@ export type EnclosureType =
 export interface BaseToken {
   readonly type: string
   readonly value: string
+  readonly cleanValue: string
   readonly parts?: readonly Token[]
   readonly enclosureType: readonly EnclosureType[]
 }
@@ -140,8 +142,6 @@ export type Token =
   | Enclosure
   | Tabulation
 
-export type Line = RulingDollarLine | LineBase
-
 export interface LineBase {
   readonly type: string
   readonly prefix: string
@@ -154,6 +154,27 @@ export interface RulingDollarLine extends LineBase {
   readonly status: string | null
   readonly displayValue: string
 }
+
+export interface LineNumber {
+  number: number
+  hasPrime: boolean
+  prefixModifier: string | null
+  suffixModifier: string | null
+  type?: 'LineNumber'
+}
+
+export interface LineNumberRange {
+  start: LineNumber
+  end: LineNumber
+  type: 'LineNumberRange'
+}
+
+export interface TextLine extends LineBase {
+  type: 'TextLine'
+  lineNumber: LineNumber | LineNumberRange
+}
+
+export type Line = TextLine | RulingDollarLine | LineBase
 
 export class Text {
   readonly lines: ReadonlyArray<Line>
@@ -177,7 +198,7 @@ export class Text {
                   token.value,
                   true,
                   (token.uniqueLemma || []).map(id => lemmas[id]),
-                  suggestions[token.value]
+                  suggestions[token.cleanValue]
                 )
               : new LemmatizationToken(token.value, false)
           )
