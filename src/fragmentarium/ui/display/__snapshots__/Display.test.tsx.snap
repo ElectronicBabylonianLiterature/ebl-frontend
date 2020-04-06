@@ -3009,16 +3009,18 @@ exports[`Snapshot 1`] = `
     </li>
     <li>
       <div
-        class="Transliteration__GenericControlLine SurfaceAtLine"
+        class="Transliteration__GenericDollarAndAtLine SurfaceAtLine"
       >
-        (obverse)
+        obverse
       </div>
     </li>
     <li>
       <div
-        class="Transliteration__GenericControlLine ImageDollarLine"
+        class="Transliteration__DollarAndAtLineWithParenthesis ImageDollarLine"
       >
+        ($
         (image 1 = foo)
+        )
       </div>
     </li>
   </ol>

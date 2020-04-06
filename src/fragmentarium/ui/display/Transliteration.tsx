@@ -148,8 +148,7 @@ function DisplayLine({
     ]
   )
 }
-
-function DisplayDollarAndAtLine({
+function DisplayDollarAndAtLineWithParenthesis({
   line,
   container = 'div'
 }: {
@@ -157,20 +156,31 @@ function DisplayDollarAndAtLine({
   container?: string
 }): JSX.Element {
   const controlLine = line as DollarAndAtLine
-  const element = `Transliteration__GenericControlLine`
-  let component = ''
-  if (
-    controlLine.type === 'ImageDollarLine' ||
-    controlLine.type === 'LooseDollarLine'
-  ) {
-    component = controlLine.displayValue
-  } else {
-    component = `(${controlLine.displayValue})`
-  }
+  const element = `Transliteration__DollarAndAtLineWithParenthesis`
   return React.createElement(
     container,
     null,
-    <div className={`${element} ${controlLine.type}`}>{`${component}`}</div>
+    <div className={`${element} ${controlLine.type}`}>
+      (${controlLine.displayValue})
+    </div>
+  )
+}
+
+function DisplayGenericDollarAndAtLine({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const controlLine = line as DollarAndAtLine
+  const element = `Transliteration__GenericDollarAndAtLine`
+  return React.createElement(
+    container,
+    null,
+    <div className={`${element} ${controlLine.type}`}>
+      {controlLine.displayValue}
+    </div>
   )
 }
 
@@ -183,18 +193,18 @@ const lineComponents: ReadonlyMap<
 > = new Map([
   ['TextLine', DisplayLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
-  ['LooseDollarLine', DisplayDollarAndAtLine],
-  ['ImageDollarLine', DisplayDollarAndAtLine],
-  ['SealDollarLine', DisplayDollarAndAtLine],
-  ['StateDollarLine', DisplayDollarAndAtLine],
-  ['SealAtLine', DisplayDollarAndAtLine],
-  ['ColumnAtLine', DisplayDollarAndAtLine],
-  ['HeadingAtLine', DisplayDollarAndAtLine],
-  ['DiscourseAtLine', DisplayDollarAndAtLine],
-  ['SurfaceAtLine', DisplayDollarAndAtLine],
-  ['ObjectAtLine', DisplayDollarAndAtLine],
-  ['DivisionAtLine', DisplayDollarAndAtLine],
-  ['CompositeAtLine', DisplayDollarAndAtLine]
+  ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['SealDollarLine', DisplayGenericDollarAndAtLine],
+  ['StateDollarLine', DisplayGenericDollarAndAtLine],
+  ['SealAtLine', DisplayGenericDollarAndAtLine],
+  ['ColumnAtLine', DisplayGenericDollarAndAtLine],
+  ['HeadingAtLine', DisplayGenericDollarAndAtLine],
+  ['DiscourseAtLine', DisplayGenericDollarAndAtLine],
+  ['SurfaceAtLine', DisplayGenericDollarAndAtLine],
+  ['ObjectAtLine', DisplayGenericDollarAndAtLine],
+  ['DivisionAtLine', DisplayGenericDollarAndAtLine],
+  ['CompositeAtLine', DisplayGenericDollarAndAtLine]
 ])
 
 function DisplayRulingDollarLine({
