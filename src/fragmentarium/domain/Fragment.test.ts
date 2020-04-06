@@ -49,7 +49,14 @@ const config = {
       {
         type: 'ControlLine',
         prefix: '$',
-        content: [{ type: 'ValueToken', value: '(atf)', enclosureType: [] }]
+        content: [
+          {
+            type: 'ValueToken',
+            value: '(atf)',
+            cleanValue: '(atf)',
+            enclosureType: []
+          }
+        ]
       }
     ]
   }),
