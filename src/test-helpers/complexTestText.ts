@@ -18,24 +18,24 @@ const line2: Line = {
   content: [
     {
       enclosureType: [],
-      cleanValue: 'kur₂-KUR₂-kur/RA',
-      value: 'kur₂-[(KUR₂-kur/RA)',
+      erasure: 'NONE',
+      cleanValue: 'erin₂-ŠA₂-ša₃/GIRI₃',
+      value: 'erin₂-[(ŠA₂-ša₃/GIRI₃)',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: false,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: [],
-          cleanValue: 'kur₂',
-          value: 'kur₂',
-          name: 'kur',
+          cleanValue: 'erin₂',
+          value: 'erin₂',
+          name: 'erin',
           nameParts: [
             {
               enclosureType: [],
-              cleanValue: 'kur',
-              value: 'kur',
+              cleanValue: 'erin',
+              value: 'erin',
               type: 'ValueToken'
             }
           ],
@@ -67,14 +67,14 @@ const line2: Line = {
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          cleanValue: 'KUR₂',
-          value: 'KUR₂',
-          name: 'KUR',
+          cleanValue: 'ŠA₂',
+          value: 'ŠA₂',
+          name: 'ŠA',
           nameParts: [
             {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              cleanValue: 'KUR',
-              value: 'KUR',
+              cleanValue: 'ŠA',
+              value: 'ŠA',
               type: 'ValueToken'
             }
           ],
@@ -93,23 +93,23 @@ const line2: Line = {
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-          cleanValue: 'kur/RA',
-          value: 'kur/RA',
+          cleanValue: 'ša₃/GIRI₃',
+          value: 'ša₃/GIRI₃',
           tokens: [
             {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
+              cleanValue: 'ša₃',
+              value: 'ša₃',
+              name: 'ša',
               nameParts: [
                 {
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-                  cleanValue: 'kur',
-                  value: 'kur',
+                  cleanValue: 'ša',
+                  value: 'ša',
                   type: 'ValueToken'
                 }
               ],
-              subIndex: 1,
+              subIndex: 3,
               modifiers: [],
               flags: [],
               sign: null,
@@ -117,18 +117,18 @@ const line2: Line = {
             },
             {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-              cleanValue: 'RA',
-              value: 'RA',
-              name: 'RA',
+              cleanValue: 'GIRI₃',
+              value: 'GIRI₃',
+              name: 'GIRI',
               nameParts: [
                 {
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
-                  cleanValue: 'RA',
-                  value: 'RA',
+                  cleanValue: 'GIRI',
+                  value: 'GIRI',
                   type: 'ValueToken'
                 }
               ],
-              subIndex: 1,
+              subIndex: 3,
               modifiers: [],
               flags: [],
               sign: null,
@@ -144,6 +144,64 @@ const line2: Line = {
           value: ')',
           side: 'RIGHT',
           type: 'PerhapsBrokenAway'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['BROKEN_AWAY'],
+      erasure: 'NONE',
+      cleanValue: 'sah-SAH',
+      value: 'sah-SAH',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: 'sah',
+          value: 'sah',
+          name: 'sah',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              cleanValue: 'sah',
+              value: 'sah',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner'
+        },
+        {
+          enclosureType: ['BROKEN_AWAY'],
+          cleanValue: 'SAH',
+          value: 'SAH',
+          name: 'SAH',
+          nameParts: [
+            {
+              enclosureType: ['BROKEN_AWAY'],
+              cleanValue: 'SAH',
+              value: 'SAH',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          surrogate: [],
+          type: 'Logogram'
         }
       ],
       type: 'Word'

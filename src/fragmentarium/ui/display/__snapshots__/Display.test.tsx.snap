@@ -67,13 +67,8 @@ exports[`Snapshot 1`] = `
               <span
                 class="Transliteration__ValueToken"
               >
-                kur
+                érin
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
               <sup
                 class="Transliteration__modifier"
               />
@@ -110,13 +105,8 @@ exports[`Snapshot 1`] = `
               <span
                 class="Transliteration__ValueToken"
               >
-                KUR
+                ŠÁ
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
               <sup
                 class="Transliteration__modifier"
               />
@@ -146,7 +136,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  kur
+                  šà
                 </span>
                 <sup
                   class="Transliteration__modifier"
@@ -170,7 +160,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  RA
+                  GÌRI
                 </span>
                 <sup
                   class="Transliteration__modifier"
@@ -186,6 +176,66 @@ exports[`Snapshot 1`] = `
           class="Transliteration__PerhapsBrokenAway"
         >
           )
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading--BROKEN_AWAY"
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                saḫ
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+        <span
+          class="Transliteration__Joiner"
+        >
+          -
+        </span>
+        <span
+          class="Transliteration__Logogram"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Logogram--BROKEN_AWAY"
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                SAH
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
         </span>
       </span>
       <span
@@ -622,13 +672,8 @@ exports[`Snapshot 1`] = `
               <span
                 class="Transliteration__ValueToken"
               >
-                KUR
+                KÚR
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
               <sup
                 class="Transliteration__modifier"
               >
@@ -977,13 +1022,8 @@ exports[`Snapshot 1`] = `
                   <span
                     class="Transliteration__ValueToken"
                   >
-                    kur
+                    kúr
                   </span>
-                  <sub
-                    class="Transliteration__subIndex"
-                  >
-                    2
-                  </sub>
                   <sup
                     class="Transliteration__modifier"
                   />
@@ -1224,13 +1264,8 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  KUR
+                  KÚR
                 </span>
-                <sub
-                  class="Transliteration__subIndex"
-                >
-                  2
-                </sub>
                 <sup
                   class="Transliteration__modifier"
                 />
@@ -1424,13 +1459,8 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  kur
+                  kúr
                 </span>
-                <sub
-                  class="Transliteration__subIndex"
-                >
-                  2
-                </sub>
                 <sup
                   class="Transliteration__modifier"
                 />
@@ -2061,13 +2091,8 @@ exports[`Snapshot 1`] = `
               <span
                 class="Transliteration__ValueToken"
               >
-                kur
+                kúr
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
               <sup
                 class="Transliteration__modifier"
               />
@@ -2351,13 +2376,8 @@ exports[`Snapshot 1`] = `
               <span
                 class="Transliteration__ValueToken"
               >
-                kur
+                kúr
               </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                2
-              </sub>
               <sup
                 class="Transliteration__modifier"
               />
@@ -2857,7 +2877,7 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  he
+                  ḫe
                 </span>
                 <sup
                   class="Transliteration__modifier"
@@ -2895,13 +2915,8 @@ exports[`Snapshot 1`] = `
                 <span
                   class="Transliteration__ValueToken"
                 >
-                  i
+                  í
                 </span>
-                <sub
-                  class="Transliteration__subIndex"
-                >
-                  2
-                </sub>
                 <sup
                   class="Transliteration__modifier"
                 />
