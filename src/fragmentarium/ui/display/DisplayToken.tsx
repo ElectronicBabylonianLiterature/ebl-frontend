@@ -10,11 +10,7 @@ import {
   Sign,
   EnclosureType
 } from 'fragmentarium/domain/text'
-
-const graveAccent = '\u0300'
-const acuteAccent = '\u0301'
-const breve = '\u032E'
-const vowels: readonly string[] = ['a', 'e', 'i', 'u', 'A', 'E', 'I', 'U']
+import addAccents from './addAccents'
 
 function Modifiers({
   modifiers
@@ -152,50 +148,14 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
     (part: Token): readonly EnclosureType[] => part.enclosureType
   )
   const effectiveEnclosures: EnclosureType[] = _.intersection(...partEnclosures)
-  let omitSubindex = namedSign.subIndex === 1
+  const [parts, subIndexConverted] = addAccents(namedSign)
+  const omitSubindex = namedSign.subIndex === 1 || subIndexConverted
   return (
     <DamagedFlag sign={namedSign}>
       <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>
-        {namedSign.nameParts.map((token, index) => {
-          if (token.type === 'ValueToken') {
-            let firstVowel = true
-            const letters: string[] = []
-            for (const letter of token.value.split('')) {
-              if (
-                firstVowel &&
-                namedSign.subIndex === 2 &&
-                vowels.includes(letter)
-              ) {
-                letters.push(`${letter}${acuteAccent}`)
-                firstVowel = false
-                omitSubindex = true
-              } else if (
-                firstVowel &&
-                namedSign.subIndex === 3 &&
-                vowels.includes(letter)
-              ) {
-                letters.push(`${letter}${graveAccent}`)
-                firstVowel = false
-                omitSubindex = true
-              } else if (letter === 'h') {
-                letters.push(`${letter}${breve}`)
-              } else {
-                letters.push(letter)
-              }
-            }
-            return (
-              <DisplayToken
-                key={index}
-                token={{
-                  ...token,
-                  value: letters.join('')
-                }}
-              />
-            )
-          } else {
-            return <DisplayToken key={index} token={token} />
-          }
-        })}
+        {parts.map((token, index) => (
+          <DisplayToken key={index} token={token} />
+        ))}
         {!omitSubindex && (
           <sub className="Transliteration__subIndex">
             {namedSign.subIndex || 'x'}
