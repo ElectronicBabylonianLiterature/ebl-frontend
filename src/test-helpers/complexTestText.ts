@@ -3087,6 +3087,7 @@ const line23: Line = {
 const line24: Line = {
   prefix: '$',
   type: 'SurfaceAtLine',
+  // eslint-disable-next-line
   surface_label: {
     status: [],
     text: '',
