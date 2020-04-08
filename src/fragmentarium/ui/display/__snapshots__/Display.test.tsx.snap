@@ -1166,11 +1166,15 @@ exports[`Snapshot 1`] = `
           </sup>
         </span>
       </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
       >
-         
-      </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+        >
+           
+        </span>
+      </sup>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >
@@ -1252,11 +1256,19 @@ exports[`Snapshot 1`] = `
             </sup>
           </span>
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
         >
            
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
@@ -1314,11 +1326,19 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
         >
            
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__Word Transliteration__Word--EMESAL"
         >
@@ -1422,11 +1442,19 @@ exports[`Snapshot 1`] = `
             </sup>
           </span>
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
         >
            
         </span>
+      </sup>
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
+      >
         <span
           class="Transliteration__Word Transliteration__Word--EMESAL"
         >
@@ -2870,11 +2898,15 @@ exports[`Snapshot 1`] = `
       >
         …
       </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      <sup
+        class="Transliteration__DocumentOrientedGloss"
       >
-         
-      </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+        >
+           
+        </span>
+      </sup>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >

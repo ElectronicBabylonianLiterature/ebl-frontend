@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
 import {
   Line,
@@ -31,14 +31,6 @@ function WordSeparator({
   )
 }
 
-function DisplayDocumentOrientedGLoss({
-  children
-}: PropsWithChildren<{}>): JSX.Element {
-  return (
-    <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
-  )
-}
-
 function isShift(token: Token): token is Shift {
   return token.type === 'LanguageShift'
 }
@@ -57,7 +49,7 @@ function isOpenEnclosure(token: Token): boolean {
 
 class LineAccumulator {
   result: React.ReactNode[] = []
-  private gloss: React.ReactNode[] | null = null
+  private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
 
@@ -66,50 +58,57 @@ class LineAccumulator {
   }
 
   pushToken(token: Token): void {
-    const target = this.gloss || this.result
     if (this.requireSeparator(token)) {
-      this.pushSeparator(target)
+      this.pushSeparator(this.result)
     }
-    target.push(
+    const tokenComponent = (
       <DisplayToken
-        key={target.length}
+        key={this.result.length}
         token={token}
         bemModifiers={[this.language]}
       />
+    )
+
+    this.result.push(
+      this.inGloss && !isEnclosure(token) ? (
+        <sup className="Transliteration__DocumentOrientedGloss">
+          {tokenComponent}
+        </sup>
+      ) : (
+        tokenComponent
+      )
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }
 
   openGloss(): void {
-    if (!this.enclosureOpened) {
-      this.pushSeparator(this.result)
-    }
-    this.gloss = []
+    this.inGloss = true
   }
 
   closeGloss(): void {
-    this.result.push(
-      <DisplayDocumentOrientedGLoss key={this.result.length}>
-        {this.gloss}
-      </DisplayDocumentOrientedGLoss>
-    )
-    this.gloss = null
-    this.enclosureOpened = false
+    this.inGloss = false
   }
 
   private requireSeparator(token: Token): boolean {
     const noEnclosure = !isCloseEnclosure(token) && !this.enclosureOpened
-    return this.gloss
-      ? this.gloss.length > 0 && noEnclosure
-      : this.result.length === 0 || noEnclosure
+    return this.result.length === 0 || noEnclosure
   }
 
   private pushSeparator(target: React.ReactNode[]): void {
-    target.push(
+    const separator = (
       <WordSeparator
         key={`${target.length}-separator`}
         modifiers={[this.language]}
       />
+    )
+    target.push(
+      this.inGloss ? (
+        <sup className="Transliteration__DocumentOrientedGloss">
+          {separator}
+        </sup>
+      ) : (
+        separator
+      )
     )
   }
 }
