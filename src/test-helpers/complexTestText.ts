@@ -3029,7 +3029,7 @@ const line23: Line = {
 const line24: Line = {
   prefix: '$',
   type: 'SurfaceAtLine',
-  surfaceLabel: {
+  surface_label: {
     status: [],
     text: '',
     surface: 'OBVERSE'
