@@ -148,8 +148,8 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
     (part: Token): readonly EnclosureType[] => part.enclosureType
   )
   const effectiveEnclosures: EnclosureType[] = _.intersection(...partEnclosures)
-  const [parts, subIndexConverted] = addAccents(namedSign)
-  const omitSubindex = namedSign.subIndex === 1 || subIndexConverted
+  const [parts, isSubIndexConverted] = addAccents(namedSign)
+  const omitSubindex = namedSign.subIndex === 1 || isSubIndexConverted
   return (
     <DamagedFlag sign={namedSign}>
       <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>

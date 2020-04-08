@@ -1,4 +1,4 @@
-import { NamedSign, Token } from 'fragmentarium/domain/text'
+import { NamedSign, Token, ValueToken } from 'fragmentarium/domain/text'
 
 const graveAccent = '\u0300'
 const acuteAccent = '\u0301'
@@ -24,24 +24,38 @@ function addAcuteAccent(letter: string): string {
 function addBreve(letter: string): string {
   return `${letter}${breve}`
 }
+class Accumulator {
+  isSubIndexConverted = false
+  isFirstWovel = true
+  tokens: Token[] = []
+  private subIndex: number | null | undefined
 
-export default function addAccents(
-  namedSign: NamedSign
-): readonly [readonly Token[], boolean] {
-  let omitSubindex = false
-  let firstVowel = true
+  constructor(subIndex: number | null | undefined) {
+    this.subIndex = subIndex
+  }
 
-  function addAccentsToValue(value: string): string {
+  addToken(token: Token): Accumulator {
+    const newToken: Token = isValueToken(token)
+      ? ({
+          ...token,
+          value: this.addAccentsToValue(token.value)
+        } as ValueToken)
+      : token
+    this.tokens.push(newToken)
+    return this
+  }
+
+  private addAccentsToValue(value: string): string {
     const letters: string[] = []
     for (const letter of value) {
-      if (firstVowel && namedSign.subIndex === 2 && isVowel(letter)) {
+      if (this.isFirstWovel && this.subIndex === 2 && isVowel(letter)) {
         letters.push(addAcuteAccent(letter))
-        firstVowel = false
-        omitSubindex = true
-      } else if (firstVowel && namedSign.subIndex === 3 && isVowel(letter)) {
+        this.isFirstWovel = false
+        this.isSubIndexConverted = true
+      } else if (this.isFirstWovel && this.subIndex === 3 && isVowel(letter)) {
         letters.push(addGraveAccent(letter))
-        firstVowel = false
-        omitSubindex = true
+        this.isFirstWovel = false
+        this.isSubIndexConverted = true
       } else if (letter === 'h') {
         letters.push(addBreve(letter))
       } else {
@@ -50,15 +64,15 @@ export default function addAccents(
     }
     return letters.join('')
   }
+}
 
-  const tokens = namedSign.nameParts.map(token =>
-    isValueToken(token)
-      ? {
-          ...token,
-          value: addAccentsToValue(token.value)
-        }
-      : token
+export default function addAccents(
+  namedSign: NamedSign
+): readonly [readonly Token[], boolean] {
+  const { tokens, isSubIndexConverted } = namedSign.nameParts.reduce(
+    (acc, token) => acc.addToken(token),
+    new Accumulator(namedSign.subIndex)
   )
 
-  return [tokens, omitSubindex]
+  return [tokens, isSubIndexConverted]
 }
