@@ -2,7 +2,7 @@ import { factory } from 'factory-girl'
 import { Text } from 'fragmentarium/domain/text'
 import Word from 'dictionary/domain/Word'
 
-import { Word as WordToken } from 'fragmentarium/domain/text'
+import { Word as WordToken } from 'fragmentarium/domain/token'
 
 const testWord: WordToken = {
   type: 'Word',
@@ -44,6 +44,13 @@ export default async function createLemmatizationTestText(): Promise<
     lines: [
       {
         type: 'TextLine',
+        lineNumber: {
+          type: 'LineNumber',
+          number: 1,
+          hasPrime: false,
+          prefixModifier: null,
+          suffixModifier: null
+        },
         prefix: '1.',
         content: [
           {

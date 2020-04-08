@@ -2,15 +2,14 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import {
   Line,
-  Token,
   Text,
-  Enclosure,
-  Shift,
+  DollarAndAtLine,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
 import './Display.sass'
+import { Enclosure, Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = []
@@ -149,6 +148,58 @@ function DisplayLine({
     ]
   )
 }
+function DisplayDollarAndAtLineWithParenthesis({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const dollarAndAtLine = line as DollarAndAtLine
+  return React.createElement(
+    container,
+    { className: 'Transliteration__DollarAndAtLineWithParenthesis' },
+    dollarAndAtLine.displayValue
+  )
+}
+
+function DisplayDollarAndAtLine({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const dollarAndAtLine = line as DollarAndAtLine
+  return React.createElement(
+    container,
+    { className: 'Transliteration__DollarAndAtLine' },
+    `(${dollarAndAtLine.displayValue})`
+  )
+}
+
+const lineComponents: ReadonlyMap<
+  string,
+  FunctionComponent<{
+    line: Line
+    container?: string
+  }>
+> = new Map([
+  ['TextLine', DisplayLine],
+  ['RulingDollarLine', DisplayRulingDollarLine],
+  ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['SealDollarLine', DisplayDollarAndAtLine],
+  ['StateDollarLine', DisplayDollarAndAtLine],
+  ['SealAtLine', DisplayDollarAndAtLine],
+  ['ColumnAtLine', DisplayDollarAndAtLine],
+  ['HeadingAtLine', DisplayDollarAndAtLine],
+  ['DiscourseAtLine', DisplayDollarAndAtLine],
+  ['SurfaceAtLine', DisplayDollarAndAtLine],
+  ['ObjectAtLine', DisplayDollarAndAtLine],
+  ['DivisionAtLine', DisplayDollarAndAtLine],
+  ['CompositeAtLine', DisplayDollarAndAtLine]
+])
 
 function DisplayRulingDollarLine({
   line,
@@ -170,14 +221,6 @@ function DisplayRulingDollarLine({
     />
   )
 }
-
-const lineComponents: ReadonlyMap<
-  string,
-  FunctionComponent<{
-    line: Line
-    container?: string
-  }>
-> = new Map([['RulingDollarLine', DisplayRulingDollarLine]])
 
 export function Transliteration({
   text: { lines }
