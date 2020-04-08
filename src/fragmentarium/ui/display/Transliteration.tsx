@@ -9,6 +9,7 @@ import {
   RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
+import isEnclosure from './isEnclosure'
 
 import './Display.sass'
 
@@ -44,17 +45,6 @@ function isShift(token: Token): token is Shift {
 
 function isDocumentOrientedGloss(token: Token): token is Enclosure {
   return token.type === 'DocumentOrientedGloss'
-}
-
-function isEnclosure(token: Token): token is Enclosure {
-  return [
-    'BrokenAway',
-    'PerhapsBrokenAway',
-    'AccidentalOmmission',
-    'IntentionalOmission',
-    'Removal',
-    'Erasure'
-  ].includes(token.type)
 }
 
 function isCloseEnclosure(token: Token): boolean {

@@ -11,6 +11,7 @@ import {
   EnclosureType
 } from 'fragmentarium/domain/text'
 import addAccents from './addAccents'
+import isEnclosure from './isEnclosure'
 
 function Modifiers({
   modifiers
@@ -105,13 +106,7 @@ function GlossComponent({ token }: { token: Token }): JSX.Element {
   return (
     <>
       {gloss.parts.map((token, index) =>
-        [
-          'PerhapsBrokenAway',
-          'BrokenAway',
-          'Removal',
-          'IntentionalOmission',
-          'AccidentalOmission'
-        ].includes(token.type) ? (
+        isEnclosure(token) ? (
           <DisplayToken key={index} token={token} />
         ) : (
           <sup>
