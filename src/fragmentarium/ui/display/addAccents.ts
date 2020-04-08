@@ -5,7 +5,7 @@ const acuteAccent = '\u0301'
 const breve = '\u032E'
 const vowels: readonly string[] = ['a', 'e', 'i', 'u', 'A', 'E', 'I', 'U']
 
-function isValueToken(token: Token): boolean {
+function isValueToken(token: Token): token is ValueToken {
   return token.type === 'ValueToken'
 }
 
@@ -35,13 +35,14 @@ class Accumulator {
   }
 
   addToken(token: Token): Accumulator {
-    const newToken: Token = isValueToken(token)
-      ? ({
-          ...token,
-          value: this.addAccentsToValue(token.value)
-        } as ValueToken)
-      : token
-    this.tokens.push(newToken)
+    this.tokens.push(
+      isValueToken(token)
+        ? {
+            ...token,
+            value: this.addAccentsToValue(token.value)
+          }
+        : token
+    )
     return this
   }
 
