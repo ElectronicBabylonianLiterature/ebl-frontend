@@ -103,11 +103,23 @@ function VariantComponent({ token }: { token: Token }): JSX.Element {
 function GlossComponent({ token }: { token: Token }): JSX.Element {
   const gloss = token as Gloss
   return (
-    <sup>
-      {gloss.parts.map((token, index) => (
-        <DisplayToken key={index} token={token} />
-      ))}
-    </sup>
+    <>
+      {gloss.parts.map((token, index) =>
+        [
+          'PerhapsBrokenAway',
+          'BrokenAway',
+          'Removal',
+          'IntentionalOmission',
+          'AccidentalOmission'
+        ].includes(token.type) ? (
+          <DisplayToken key={index} token={token} />
+        ) : (
+          <sup>
+            <DisplayToken key={index} token={token} />
+          </sup>
+        )
+      )}
+    </>
   )
 }
 
@@ -218,7 +230,7 @@ export function DisplayToken({
   container?: string
   bemModifiers?: readonly string[]
 }): JSX.Element {
-  const TokenComponent = tokens.get(token.type) || DefaultToken
+  const TokenComponent = tokens.get(token.type) ?? DefaultToken
   const element = `Transliteration__${token.type}`
   return React.createElement(
     container,

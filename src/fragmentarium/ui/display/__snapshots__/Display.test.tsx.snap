@@ -1005,11 +1005,15 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
             </span>
+          </sup>
+          <sup>
             <span
               class="Transliteration__Joiner"
             >
               -
             </span>
+          </sup>
+          <sup>
             <span
               class="Transliteration__Reading"
             >
@@ -1064,11 +1068,15 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
             </span>
+          </sup>
+          <sup>
             <span
               class="Transliteration__Joiner"
             >
               -
             </span>
+          </sup>
+          <sup>
             <span
               class="Transliteration__Logogram"
             >
@@ -1374,16 +1382,20 @@ exports[`Snapshot 1`] = `
                   </span>
                 </span>
               </span>
-              <span
-                class="Transliteration__BrokenAway"
-              >
-                ]
-              </span>
+            </sup>
+            <span
+              class="Transliteration__BrokenAway"
+            >
+              ]
+            </span>
+            <sup>
               <span
                 class="Transliteration__Joiner"
               >
                 -
               </span>
+            </sup>
+            <sup>
               <span
                 class="Transliteration__Logogram"
               >
@@ -1577,16 +1589,20 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
             </span>
+          </sup>
+          <sup>
             <span
               class="Transliteration__Joiner"
             >
               -
             </span>
-            <span
-              class="Transliteration__BrokenAway"
-            >
-              [
-            </span>
+          </sup>
+          <span
+            class="Transliteration__BrokenAway"
+          >
+            [
+          </span>
+          <sup>
             <span
               class="Transliteration__Reading"
             >
