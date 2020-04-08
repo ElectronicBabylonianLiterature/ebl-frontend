@@ -124,23 +124,23 @@ export interface HeadingAtLine extends DollarAndAtLine {
 
 export interface ColumnAtLine extends DollarAndAtLine {
   readonly type: 'ColumnAtLine'
-  readonly column_label: ColumnLabel // eslint-disable-line camelcase
+  readonly column_label: ColumnLabel
 }
 
 export interface DiscourseAtLine extends DollarAndAtLine {
   readonly type: 'DiscourseAtLine'
-  readonly discourse_label: string // eslint-disable-line camelcase
+  readonly discourse_label: string
 }
 
 export interface SurfaceAtLine extends DollarAndAtLine {
   readonly type: 'SurfaceAtLine'
-  readonly surface_label: SurfaceLabel // eslint-disable-line camelcase
+  readonly surface_label: SurfaceLabel
 }
 
 export interface ObjectAtLine extends DollarAndAtLine {
   readonly type: 'ObjectAtLine'
   readonly status: ReadonlyArray<string>
-  readonly object_label: string // eslint-disable-line camelcase
+  readonly object_label: string
   readonly text: string
 }
 

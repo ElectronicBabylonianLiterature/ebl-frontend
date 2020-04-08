@@ -3087,7 +3087,7 @@ const line23: Line = {
 const line24: Line = {
   prefix: '$',
   type: 'SurfaceAtLine',
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/camelcase
   surface_label: {
     status: [],
     text: '',
