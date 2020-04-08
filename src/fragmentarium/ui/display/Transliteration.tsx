@@ -4,12 +4,11 @@ import {
   Line,
   Token,
   Text,
-  Enclosure,
   Shift,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
-import isEnclosure from './isEnclosure'
+import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
 
 import './Display.sass'
 
@@ -29,14 +28,6 @@ function WordSeparator({
       {' '}
     </span>
   )
-}
-
-function isShift(token: Token): token is Shift {
-  return token.type === 'LanguageShift'
-}
-
-function isDocumentOrientedGloss(token: Token): token is Enclosure {
-  return token.type === 'DocumentOrientedGloss'
 }
 
 function isCloseEnclosure(token: Token): boolean {

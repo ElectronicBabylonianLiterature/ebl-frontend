@@ -11,7 +11,7 @@ import {
   EnclosureType
 } from 'fragmentarium/domain/text'
 import addAccents from './addAccents'
-import isEnclosure from './isEnclosure'
+import { isEnclosure } from './type-guards'
 
 function Modifiers({
   modifiers
