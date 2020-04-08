@@ -2,14 +2,15 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
-  EnclosureType,
-  Gloss,
-  NamedSign,
-  Sign,
   Token,
+  Variant,
+  NamedSign,
   UnknownSign,
-  Variant
-} from 'fragmentarium/domain/token'
+  Gloss,
+  Sign,
+  EnclosureType
+} from 'fragmentarium/domain/text'
+import addAccents from './addAccents'
 
 function Modifiers({
   modifiers
@@ -147,13 +148,15 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
     (part: Token): readonly EnclosureType[] => part.enclosureType
   )
   const effectiveEnclosures: EnclosureType[] = _.intersection(...partEnclosures)
+  const [parts, isSubIndexConverted] = addAccents(namedSign)
+  const omitSubindex = namedSign.subIndex === 1 || isSubIndexConverted
   return (
     <DamagedFlag sign={namedSign}>
       <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>
-        {namedSign.nameParts.map((token, index) => (
+        {parts.map((token, index) => (
           <DisplayToken key={index} token={token} />
         ))}
-        {namedSign.subIndex !== 1 && (
+        {!omitSubindex && (
           <sub className="Transliteration__subIndex">
             {namedSign.subIndex || 'x'}
           </sub>
