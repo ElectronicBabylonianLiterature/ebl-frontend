@@ -1,4 +1,5 @@
-FROM gitpod/workspace-full
+# https://www.gitpod.io/blog/node-js-development/
+FROM node:13
 
 # Install custom tools, runtime, etc. using apt-get
 # For example, the command below would install "bastet" - a command line tetris clone:
