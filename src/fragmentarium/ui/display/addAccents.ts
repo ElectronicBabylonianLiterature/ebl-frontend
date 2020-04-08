@@ -1,4 +1,4 @@
-import { NamedSign, Token, ValueToken } from 'fragmentarium/domain/text'
+import { NamedSign, Token, ValueToken } from 'fragmentarium/domain/token'
 
 const graveAccent = '\u0300'
 const acuteAccent = '\u0301'
