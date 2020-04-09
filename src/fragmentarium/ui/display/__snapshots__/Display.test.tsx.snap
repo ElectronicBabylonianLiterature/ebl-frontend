@@ -3010,11 +3010,47 @@ exports[`Snapshot 1`] = `
       </span>
     </li>
     <li
+      class="Transliteration__EmptyLine"
+    >
+      <span />
+    </li>
+    <li
       class="Transliteration__RulingDollarLine"
     >
       <hr
         class="Transliteration__ruling Transliteration__ruling--single"
       />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--single"
+      />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--double"
+      />
+    </li>
+    <li
+      class="Transliteration__RulingDollarLine"
+    >
+      <hr
+        class="Transliteration__ruling Transliteration__ruling--triple"
+      />
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (obverse)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLineWithParenthesis"
+    >
+      (image 1 = foo)
     </li>
   </ol>
 </div>

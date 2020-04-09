@@ -5,6 +5,13 @@ import Museum from 'fragmentarium/domain/museum'
 const lines: readonly Line[] = [
   {
     type: 'TextLine',
+    lineNumber: {
+      type: 'LineNumber',
+      number: 10,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null
+    },
     prefix: '10.',
     content: [
       {
@@ -65,6 +72,13 @@ const lines: readonly Line[] = [
   },
   {
     type: 'TextLine',
+    lineNumber: {
+      type: 'LineNumber',
+      number: 10,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null
+    },
     prefix: '10.',
     content: [
       {
@@ -95,6 +109,13 @@ const lines: readonly Line[] = [
   },
   {
     type: 'TextLine',
+    lineNumber: {
+      type: 'LineNumber',
+      number: 10,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null
+    },
     prefix: '10.',
     content: [
       {
@@ -131,6 +152,13 @@ const lines: readonly Line[] = [
   },
   {
     type: 'TextLine',
+    lineNumber: {
+      type: 'LineNumber',
+      number: 10,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null
+    },
     prefix: '10.',
     content: [
       {
