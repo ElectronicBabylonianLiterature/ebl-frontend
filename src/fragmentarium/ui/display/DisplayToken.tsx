@@ -201,26 +201,18 @@ function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
         </Wrapper>
         {namedSign.sign && (
           <>
-            <Wrapper>
-              <span className="Transliteration__bracket">(</span>
-            </Wrapper>
+            <span className="Transliteration__bracket">(</span>
             <DisplayToken token={namedSign.sign} Wrapper={Wrapper} />
-            <Wrapper>
-              <span className="Transliteration__bracket">)</span>
-            </Wrapper>
+            <span className="Transliteration__bracket">)</span>
           </>
         )}
         {namedSign.surrogate && !_.isEmpty(namedSign.surrogate) && (
           <>
-            <Wrapper>
-              <span className="Transliteration__bracket">&lt;(</span>
-            </Wrapper>
+            <span className="Transliteration__bracket">&lt;(</span>
             {namedSign.surrogate.map((token, index) => (
               <DisplayToken key={index} token={token} Wrapper={Wrapper} />
             ))}
-            <Wrapper>
-              <span className="Transliteration__bracket">)&gt;</span>
-            </Wrapper>
+            <span className="Transliteration__bracket">)&gt;</span>
           </>
         )}
       </EnclosureFlags>
