@@ -16,3 +16,4 @@ tasks:
 vscode:
   extensions:
     - Orta.vscode-jest@3.1.1:e5QDEGVUNAQFNn6OtB9Qmw==
+    - eamodio.gitlens@10.2.1:ZI2Sl3DHdJu4aG2wW92CQQ==
