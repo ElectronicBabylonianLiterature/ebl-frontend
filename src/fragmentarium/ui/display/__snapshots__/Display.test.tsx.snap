@@ -257,8 +257,8 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__RulingDollarLine--single"
       />
     </li>
     <li
@@ -367,8 +367,11 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--double"
+      <div
+        class="Transliteration__RulingDollarLine--double"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--double"
       />
     </li>
     <li
@@ -960,8 +963,14 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--triple"
+      <div
+        class="Transliteration__RulingDollarLine--triple"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--triple"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--triple"
       />
     </li>
     <li
@@ -2969,29 +2978,38 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__RulingDollarLine--single"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__RulingDollarLine--single"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--double"
+      <div
+        class="Transliteration__RulingDollarLine--double"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--double"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--triple"
+      <div
+        class="Transliteration__RulingDollarLine--triple"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--triple"
+      />
+      <div
+        class="Transliteration__RulingDollarLine--triple"
       />
     </li>
     <li

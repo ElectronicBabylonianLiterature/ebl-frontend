@@ -201,6 +201,12 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine]
 ])
 
+const rulingsToNumber: ReadonlyMap<string, number> = new Map([
+  ['SINGLE', 1],
+  ['DOUBLE', 2],
+  ['TRIPLE', 3]
+])
+
 function DisplayRulingDollarLine({
   line,
   container = 'div'
@@ -208,17 +214,25 @@ function DisplayRulingDollarLine({
   line: Line
   container?: string
 }): JSX.Element {
+  function drawRulings(line: RulingDollarLine): Array<JSX.Element> {
+    const rulingsNumber = rulingsToNumber.get(line.number) as number
+    const items: Array<JSX.Element> = []
+    for (let i = 1; i <= rulingsNumber; i++) {
+      items.push(
+        React.createElement('div', {
+          className: `Transliteration__RulingDollarLine--${line.number.toLowerCase()}`,
+          key: i
+        })
+      )
+    }
+    return items
+  }
   const rulingDollarLine = line as RulingDollarLine
-  const element = 'Transliteration__ruling'
+  const items: Array<JSX.Element> = drawRulings(rulingDollarLine)
   return React.createElement(
     container,
-    { className: `Transliteration__${rulingDollarLine.type}` },
-    <hr
-      className={classNames([
-        element,
-        `${element}--${rulingDollarLine.number.toLowerCase()}`
-      ])}
-    />
+    { className: 'Transliteration__RulingDollarLine' },
+    items
   )
 }
 
