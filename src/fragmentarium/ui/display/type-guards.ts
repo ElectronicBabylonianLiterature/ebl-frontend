@@ -1,4 +1,4 @@
-import { Enclosure, Shift, Token } from 'fragmentarium/domain/text'
+import { Enclosure, Shift, Token } from 'fragmentarium/domain/token'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
