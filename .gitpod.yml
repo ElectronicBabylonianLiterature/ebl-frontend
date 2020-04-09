@@ -9,6 +9,7 @@ ports:
 tasks:
 - before: |
     nvm install
+    nvm alias default node
     nvm use
   command: yarn
 
