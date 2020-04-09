@@ -4,7 +4,7 @@ export function isEnclosure(token: Token): token is Enclosure {
   return [
     'BrokenAway',
     'PerhapsBrokenAway',
-    'AccidentalOmmission',
+    'AccidentalOmission',
     'IntentionalOmission',
     'Removal',
     'Erasure'

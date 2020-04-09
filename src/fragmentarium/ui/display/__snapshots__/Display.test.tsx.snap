@@ -62,20 +62,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                érin
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              érin
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -97,23 +93,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Logogram"
         >
           <span
-            class=""
+            class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
           >
             <span
-              class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                ŠÁ
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              ŠÁ
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -128,23 +120,19 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Reading"
           >
             <span
-              class=""
+              class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
             >
               <span
-                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  šà
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                šà
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -152,23 +140,19 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram"
           >
             <span
-              class=""
+              class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
             >
               <span
-                class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  GÌRI
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                GÌRI
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
         </span>
@@ -190,23 +174,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--BROKEN_AWAY"
           >
             <span
-              class="Transliteration__Reading--BROKEN_AWAY"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                saḫ
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              saḫ
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -218,23 +198,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Logogram"
         >
           <span
-            class=""
+            class="Transliteration__Logogram--BROKEN_AWAY"
           >
             <span
-              class="Transliteration__Logogram--BROKEN_AWAY"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                SAH
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              SAH
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -319,20 +295,16 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  kur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                kur
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -389,27 +361,33 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Number"
         >
           <span
-            class="Transliteration__Number--damaged"
+            class="Transliteration__bracket"
+          >
+            ⸢
+          </span>
+          <span
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                1
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              >
-                v
-              </sup>
-              <sup
-                class="Transliteration__flag"
-              >
-                *
-              </sup>
+              1
             </span>
+            <sup
+              class="Transliteration__modifier"
+            >
+              v
+            </sup>
+            <sup
+              class="Transliteration__flag"
+            >
+              *
+            </sup>
+          </span>
+          <span
+            class="Transliteration__bracket"
+          >
+            ⸣
           </span>
         </span>
       </span>
@@ -425,18 +403,24 @@ exports[`Snapshot 1`] = `
           class="Transliteration__UnclearSign"
         >
           <span
-            class="Transliteration__UnclearSign--damaged"
+            class="Transliteration__bracket"
           >
-            <span
-              class=""
+            ⸢
+          </span>
+          <span
+            class=""
+          >
+            x
+            <sup
+              class="Transliteration__flag"
             >
-              x
-              <sup
-                class="Transliteration__flag"
-              >
-                !
-              </sup>
-            </span>
+              !
+            </sup>
+          </span>
+          <span
+            class="Transliteration__bracket"
+          >
+            ⸣
           </span>
         </span>
       </span>
@@ -452,18 +436,24 @@ exports[`Snapshot 1`] = `
           class="Transliteration__UnidentifiedSign"
         >
           <span
-            class="Transliteration__UnidentifiedSign--damaged"
+            class="Transliteration__bracket"
           >
-            <span
-              class=""
+            ⸢
+          </span>
+          <span
+            class=""
+          >
+            X
+            <sup
+              class="Transliteration__flag"
             >
-              X
-              <sup
-                class="Transliteration__flag"
-              >
-                ?
-              </sup>
-            </span>
+              ?
+            </sup>
+          </span>
+          <span
+            class="Transliteration__bracket"
+          >
+            ⸣
           </span>
         </span>
       </span>
@@ -476,23 +466,29 @@ exports[`Snapshot 1`] = `
         class="Transliteration__Divider Transliteration__Divider--AKKADIAN"
       >
         <span
-          class="Transliteration__Divider--damaged"
+          class="Transliteration__bracket"
         >
-          <span
-            class=""
+          ⸢
+        </span>
+        <span
+          class=""
+        >
+          ::
+          <sup
+            class="Transliteration__modifier"
           >
-            ::
-            <sup
-              class="Transliteration__modifier"
-            >
-              v44
-            </sup>
-            <sup
-              class="Transliteration__flag"
-            >
-              ?
-            </sup>
-          </span>
+            v44
+          </sup>
+          <sup
+            class="Transliteration__flag"
+          >
+            ?
+          </sup>
+        </span>
+        <span
+          class="Transliteration__bracket"
+        >
+          ⸣
         </span>
       </span>
       <span
@@ -517,16 +513,12 @@ exports[`Snapshot 1`] = `
           class="Transliteration__UnclearSign"
         >
           <span
-            class=""
+            class="Transliteration__UnclearSign--BROKEN_AWAY Transliteration__UnclearSign--PERHAPS_BROKEN_AWAY"
           >
-            <span
-              class="Transliteration__UnclearSign--BROKEN_AWAY Transliteration__UnclearSign--PERHAPS_BROKEN_AWAY"
-            >
-              o
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
+            o
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -547,16 +539,12 @@ exports[`Snapshot 1`] = `
           class="Transliteration__UnclearSign"
         >
           <span
-            class=""
+            class="Transliteration__UnclearSign--BROKEN_AWAY"
           >
-            <span
-              class="Transliteration__UnclearSign--BROKEN_AWAY"
-            >
-              o
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
+            o
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -594,65 +582,77 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class="Transliteration__Reading--damaged"
+            class="Transliteration__bracket"
+          >
+            ⸢
+          </span>
+          <span
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
+            >
+              kur
+            </span>
+            <sub
+              class="Transliteration__subIndex"
+            >
+              x
+            </sub>
+            <sup
+              class="Transliteration__modifier"
+            >
+              v
+            </sup>
+            <sup
+              class="Transliteration__flag"
+            >
+              !
+            </sup>
+            <span
+              class="Transliteration__bracket"
+            >
+              (
+            </span>
+            <span
+              class="Transliteration__Grapheme"
             >
               <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sub
-                class="Transliteration__subIndex"
-              >
-                x
-              </sub>
-              <sup
-                class="Transliteration__modifier"
-              >
-                v
-              </sup>
-              <sup
-                class="Transliteration__flag"
-              >
-                !
-              </sup>
-              <span
                 class="Transliteration__bracket"
               >
-                (
+                ⸢
               </span>
               <span
-                class="Transliteration__Grapheme"
+                class=""
               >
-                <span
-                  class="Transliteration__Grapheme--damaged"
+                KUR
+                <sup
+                  class="Transliteration__modifier"
                 >
-                  <span
-                    class=""
-                  >
-                    KUR
-                    <sup
-                      class="Transliteration__modifier"
-                    >
-                      v
-                    </sup>
-                    <sup
-                      class="Transliteration__flag"
-                    >
-                      ?
-                    </sup>
-                  </span>
-                </span>
+                  v
+                </sup>
+                <sup
+                  class="Transliteration__flag"
+                >
+                  ?
+                </sup>
               </span>
               <span
                 class="Transliteration__bracket"
               >
-                )
+                ⸣
               </span>
             </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              )
+            </span>
+          </span>
+          <span
+            class="Transliteration__bracket"
+          >
+            ⸣
           </span>
         </span>
         <span
@@ -664,88 +664,86 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Logogram"
         >
           <span
-            class="Transliteration__Logogram--damaged"
+            class="Transliteration__bracket"
+          >
+            ⸢
+          </span>
+          <span
+            class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
+            >
+              KÚR
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            >
+              v
+            </sup>
+            <sup
+              class="Transliteration__flag"
+            >
+              ?
+            </sup>
+            <span
+              class="Transliteration__bracket"
+            >
+              &lt;(
+            </span>
+            <span
+              class="Transliteration__Reading"
             >
               <span
-                class="Transliteration__ValueToken"
-              >
-                KÚR
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              >
-                v
-              </sup>
-              <sup
-                class="Transliteration__flag"
-              >
-                ?
-              </sup>
-              <span
-                class="Transliteration__bracket"
-              >
-                &lt;(
-              </span>
-              <span
-                class="Transliteration__Reading"
+                class=""
               >
                 <span
-                  class=""
+                  class="Transliteration__ValueToken"
                 >
-                  <span
-                    class=""
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      kur
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
+                  kur
                 </span>
-              </span>
-              <span
-                class="Transliteration__Joiner"
-              >
-                -
-              </span>
-              <span
-                class="Transliteration__Reading"
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class=""
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      kur
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </span>
-              <span
-                class="Transliteration__bracket"
-              >
-                )&gt;
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
+            <span
+              class="Transliteration__Joiner"
+            >
+              -
+            </span>
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  kur
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              )&gt;
+            </span>
+          </span>
+          <span
+            class="Transliteration__bracket"
+          >
+            ⸣
           </span>
         </span>
       </span>
@@ -776,20 +774,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -808,20 +802,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -845,20 +835,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -878,20 +864,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -906,20 +888,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -939,20 +917,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -981,128 +955,148 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Determinative"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
+            <sup>
+              <span
+                class="Transliteration__bracket"
+              >
+                ⸢
+              </span>
+            </sup>
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class="Transliteration__Reading--damaged"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    d
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  d
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
-          <sup>
-            <span
-              class="Transliteration__Joiner"
-            >
+            <sup>
+              <span
+                class="Transliteration__bracket"
+              >
+                ⸣
+              </span>
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Joiner"
+          >
+            <sup>
               -
-            </span>
-          </sup>
-          <sup>
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kúr
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  >
-                    ?
-                  </sup>
-                </span>
+                <sup>
+                  kúr
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                >
+                  ?
+                </sup>
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
         <span
           class="Transliteration__Determinative"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    d
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  d
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
-          <sup>
-            <span
-              class="Transliteration__Joiner"
-            >
+          </span>
+          <span
+            class="Transliteration__Joiner"
+          >
+            <sup>
               -
-            </span>
-          </sup>
-          <sup>
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Logogram"
+          >
             <span
-              class="Transliteration__Logogram"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    RA
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  >
-                    !
-                  </sup>
-                </span>
+                <sup>
+                  RA
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                >
+                  !
+                </sup>
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
         <span
           class="Transliteration__Reading"
@@ -1111,20 +1105,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -1139,31 +1129,36 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__LinguisticGloss"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  kur
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
       </span>
       <sup
@@ -1175,88 +1170,113 @@ exports[`Snapshot 1`] = `
            
         </span>
       </sup>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
-          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__Reading"
         >
+          <span
+            class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                k
+              </sup>
+            </span>
+            <span
+              class="Transliteration__BrokenAway"
+            >
+              [
+            </span>
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                u
+              </sup>
+            </span>
+            <span
+              class="Transliteration__BrokenAway"
+            >
+              ]
+            </span>
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                r
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
+          </span>
+        </span>
+        <span
+          class="Transliteration__Determinative"
+        >
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup>
+                .
+              </sup>
+            </sup>
+          </span>
           <span
             class="Transliteration__Reading"
           >
             <span
-              class=""
+              class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
             >
               <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  k
-                </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  [
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  u
-                </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  ]
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  r
-                </span>
                 <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                  class="Transliteration__DocumentOrientedGloss"
+                >
+                  <sup>
+                    d
+                  </sup>
+                </sup>
               </span>
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                <sup>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  >
+                    !
+                  </sup>
+                </sup>
+              </sup>
             </span>
           </span>
-          <span
-            class="Transliteration__Determinative"
-          >
-            <sup>
-              <span
-                class="Transliteration__Reading"
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      d
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    >
-                      !
-                    </sup>
-                  </span>
-                </span>
-              </span>
-            </sup>
-          </span>
         </span>
-      </sup>
+      </span>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >
@@ -1266,183 +1286,224 @@ exports[`Snapshot 1`] = `
            
         </span>
       </sup>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__Logogram"
+        >
+          <span
+            class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                KÚR
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              >
+                !
+              </sup>
+            </sup>
+          </span>
+        </span>
+        <span
+          class="Transliteration__Joiner"
+        >
+          <sup
+            class="Transliteration__DocumentOrientedGloss"
+          >
+            -
+          </sup>
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                ra
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
+          </span>
+        </span>
+      </span>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >
         <span
-          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
+        >
+           
+        </span>
+      </sup>
+      <span
+        class="Transliteration__Word Transliteration__Word--EMESAL"
+      >
+        <span
+          class="Transliteration__Reading"
         >
           <span
-            class="Transliteration__Logogram"
+            class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                kur
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
+          </span>
+        </span>
+        <span
+          class="Transliteration__PhoneticGloss"
+        >
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup>
+                .
+              </sup>
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
             >
               <span
-                class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  KÚR
-                </span>
                 <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
+                  class="Transliteration__DocumentOrientedGloss"
                 >
-                  !
+                  <sup>
+                    k
+                  </sup>
                 </sup>
               </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                [
+              </span>
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <sup
+                  class="Transliteration__DocumentOrientedGloss"
+                >
+                  <sup>
+                    ur
+                  </sup>
+                </sup>
+              </span>
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                <sup>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </sup>
+              </sup>
             </span>
+          </span>
+          <span
+            class="Transliteration__BrokenAway"
+          >
+            ]
           </span>
           <span
             class="Transliteration__Joiner"
           >
-            -
-          </span>
-          <span
-            class="Transliteration__Reading"
-          >
-            <span
-              class=""
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
             >
-              <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-              >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  ra
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
-            </span>
-          </span>
-        </span>
-      </sup>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
-      >
-        <span
-          class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
-        >
-           
-        </span>
-      </sup>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
-      >
-        <span
-          class="Transliteration__Word Transliteration__Word--EMESAL"
-        >
-          <span
-            class="Transliteration__Reading"
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-              >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  kur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
-            </span>
-          </span>
-          <span
-            class="Transliteration__PhoneticGloss"
-          >
-            <sup>
-              <span
-                class="Transliteration__Reading"
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      k
-                    </span>
-                    <span
-                      class="Transliteration__BrokenAway"
-                    >
-                      [
-                    </span>
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      ur
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </span>
-            </sup>
-            <span
-              class="Transliteration__BrokenAway"
-            >
-              ]
-            </span>
-            <sup>
-              <span
-                class="Transliteration__Joiner"
-              >
+              <sup>
                 -
-              </span>
-            </sup>
-            <sup>
-              <span
-                class="Transliteration__Logogram"
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      RA
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </span>
+              </sup>
             </sup>
           </span>
+          <span
+            class="Transliteration__Logogram"
+          >
+            <span
+              class="Transliteration__Logogram--DOCUMENT_ORIENTED_GLOSS"
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <sup
+                  class="Transliteration__DocumentOrientedGloss"
+                >
+                  <sup>
+                    RA
+                  </sup>
+                </sup>
+              </span>
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                <sup>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </sup>
+              </sup>
+            </span>
+          </span>
         </span>
-      </sup>
+      </span>
       <sup
         class="Transliteration__DocumentOrientedGloss"
       >
@@ -1452,66 +1513,83 @@ exports[`Snapshot 1`] = `
            
         </span>
       </sup>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
+      <span
+        class="Transliteration__Word Transliteration__Word--EMESAL"
       >
         <span
-          class="Transliteration__Word Transliteration__Word--EMESAL"
+          class="Transliteration__Determinative"
         >
           <span
-            class="Transliteration__Determinative"
+            class="Transliteration__glossJoiner"
           >
-            <sup>
-              <span
-                class="Transliteration__Reading"
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-                  >
-                    <span
-                      class="Transliteration__ValueToken"
-                    >
-                      kur
-                    </span>
-                    <sup
-                      class="Transliteration__modifier"
-                    />
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup>
+                .
+              </sup>
             </sup>
           </span>
           <span
             class="Transliteration__Reading"
           >
             <span
-              class=""
+              class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
             >
               <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
+                <sup
+                  class="Transliteration__DocumentOrientedGloss"
                 >
-                  kúr
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                  <sup>
+                    kur
+                  </sup>
+                </sup>
               </span>
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                <sup>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </sup>
+              </sup>
             </span>
           </span>
         </span>
-      </sup>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                kúr
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
+          </span>
+        </span>
+      </span>
     </li>
     <li
       class="Transliteration__TextLine"
@@ -1541,23 +1619,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
           >
             <span
-              class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--PERHAPS_BROKEN_AWAY"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -1583,78 +1657,83 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__LinguisticGloss"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    k
-                  </span>
-                  <span
-                    class="Transliteration__BrokenAway"
-                  >
-                    ]
-                  </span>
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    ur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  k
+                </sup>
               </span>
+              <span
+                class="Transliteration__BrokenAway"
+              >
+                ]
+              </span>
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <sup>
+                  ur
+                </sup>
+              </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
-          <sup>
-            <span
-              class="Transliteration__Joiner"
-            >
+          </span>
+          <span
+            class="Transliteration__Joiner"
+          >
+            <sup>
               -
-            </span>
-          </sup>
+            </sup>
+          </span>
           <span
             class="Transliteration__BrokenAway"
           >
             [
           </span>
-          <sup>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class="Transliteration__Reading--BROKEN_AWAY"
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__Reading--BROKEN_AWAY"
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  kur
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
         <span
           class="Transliteration__BrokenAway"
@@ -1668,30 +1747,26 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                k
-              </span>
-              <span
-                class="Transliteration__BrokenAway"
-              >
-                [
-              </span>
-              <span
-                class="Transliteration__ValueToken"
-              >
-                ur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              k
             </span>
+            <span
+              class="Transliteration__BrokenAway"
+            >
+              [
+            </span>
+            <span
+              class="Transliteration__ValueToken"
+            >
+              ur
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -1742,20 +1817,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -1774,50 +1845,51 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
           class="Transliteration__Determinative"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    d
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  d
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
       </span>
       <span
@@ -1835,19 +1907,133 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
+              class="Transliteration__ValueToken"
+            >
+              KUR
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              kur
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--EMESAL"
+      >
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              kur
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--EMESAL"
+      >
+        <span
+          class="Transliteration__Logogram"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              KUR
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
+          </span>
+        </span>
+        <span
+          class="Transliteration__Determinative"
+        >
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Logogram"
+          >
+            <span
               class=""
             >
               <span
                 class="Transliteration__ValueToken"
               >
-                KUR
+                <sup>
+                  D
+                </sup>
               </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
           </span>
         </span>
@@ -1867,145 +2053,16 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Word Transliteration__Word--EMESAL"
-      >
-        <span
-          class="Transliteration__Reading"
-        >
-          <span
-            class=""
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Word Transliteration__Word--EMESAL"
-      >
-        <span
-          class="Transliteration__Logogram"
-        >
-          <span
-            class=""
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                KUR
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
-          </span>
-        </span>
-        <span
-          class="Transliteration__Determinative"
-        >
-          <sup>
-            <span
-              class="Transliteration__Logogram"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    D
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
-              </span>
-            </span>
-          </sup>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Word Transliteration__Word--AKKADIAN"
-      >
-        <span
-          class="Transliteration__Reading"
-        >
-          <span
-            class=""
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -2041,31 +2098,36 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Determinative"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  kur
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
         <span
           class="Transliteration__Variant"
@@ -2077,20 +2139,16 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  ra
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                ra
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -2098,23 +2156,29 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram"
           >
             <span
-              class="Transliteration__Logogram--damaged"
+              class="Transliteration__bracket"
+            >
+              ⸢
+            </span>
+            <span
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  RA
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                RA
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              ⸣
             </span>
           </span>
         </span>
@@ -2130,101 +2194,10 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kúr
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kúr
             </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Word Transliteration__Word--SUMERIAN"
-      >
-        <span
-          class="Transliteration__PhoneticGloss"
-        >
-          <sup>
-            <span
-              class="Transliteration__Reading"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
-              </span>
-            </span>
-          </sup>
-        </span>
-        <span
-          class="Transliteration__Reading"
-        >
-          <span
-            class=""
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              >
-                !
-              </sup>
-            </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Divider Transliteration__Divider--SUMERIAN"
-      >
-        <span
-          class=""
-        >
-          <span
-            class=""
-          >
-            :.
             <sup
               class="Transliteration__modifier"
             />
@@ -2243,6 +2216,90 @@ exports[`Snapshot 1`] = `
         class="Transliteration__Word Transliteration__Word--SUMERIAN"
       >
         <span
+          class="Transliteration__PhoneticGloss"
+        >
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <sup>
+                  kur
+                </sup>
+              </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
+            </span>
+          </span>
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              kur
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            >
+              !
+            </sup>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Divider Transliteration__Divider--SUMERIAN"
+      >
+        <span
+          class=""
+        >
+          :.
+          <sup
+            class="Transliteration__modifier"
+          />
+          <sup
+            class="Transliteration__flag"
+          />
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--SUMERIAN"
+      >
+        <span
           class="Transliteration__Variant"
         >
           <span
@@ -2252,20 +2309,16 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  kur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                kur
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -2273,23 +2326,29 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram"
           >
             <span
-              class="Transliteration__Logogram--damaged"
+              class="Transliteration__bracket"
+            >
+              ⸢
+            </span>
+            <span
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  KUR
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                KUR
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              ⸣
             </span>
           </span>
         </span>
@@ -2326,31 +2385,36 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Determinative"
         >
-          <sup>
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
             <span
-              class="Transliteration__Reading"
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
+                <sup>
+                  kur
+                </sup>
               </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
             </span>
-          </sup>
+          </span>
         </span>
         <span
           class="Transliteration__Variant"
@@ -2362,20 +2426,16 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  ra
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                ra
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -2383,23 +2443,29 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram"
           >
             <span
-              class="Transliteration__Logogram--damaged"
+              class="Transliteration__bracket"
+            >
+              ⸢
+            </span>
+            <span
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  RA
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                RA
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              ⸣
             </span>
           </span>
         </span>
@@ -2415,101 +2481,10 @@ exports[`Snapshot 1`] = `
             class=""
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kúr
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kúr
             </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Word Transliteration__Word--EMESAL"
-      >
-        <span
-          class="Transliteration__PhoneticGloss"
-        >
-          <sup>
-            <span
-              class="Transliteration__Reading"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class=""
-                >
-                  <span
-                    class="Transliteration__ValueToken"
-                  >
-                    kur
-                  </span>
-                  <sup
-                    class="Transliteration__modifier"
-                  />
-                  <sup
-                    class="Transliteration__flag"
-                  />
-                </span>
-              </span>
-            </span>
-          </sup>
-        </span>
-        <span
-          class="Transliteration__Reading"
-        >
-          <span
-            class=""
-          >
-            <span
-              class=""
-            >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              >
-                !
-              </sup>
-            </span>
-          </span>
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__Divider Transliteration__Divider--EMESAL"
-      >
-        <span
-          class=""
-        >
-          <span
-            class=""
-          >
-            :.
             <sup
               class="Transliteration__modifier"
             />
@@ -2528,6 +2503,90 @@ exports[`Snapshot 1`] = `
         class="Transliteration__Word Transliteration__Word--EMESAL"
       >
         <span
+          class="Transliteration__PhoneticGloss"
+        >
+          <span
+            class="Transliteration__glossJoiner"
+          >
+            <sup>
+              .
+            </sup>
+          </span>
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <sup>
+                  kur
+                </sup>
+              </span>
+              <sup>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </sup>
+            </span>
+          </span>
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              kur
+            </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            >
+              !
+            </sup>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Divider Transliteration__Divider--EMESAL"
+      >
+        <span
+          class=""
+        >
+          :.
+          <sup
+            class="Transliteration__modifier"
+          />
+          <sup
+            class="Transliteration__flag"
+          />
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--EMESAL"
+      >
+        <span
           class="Transliteration__Variant"
         >
           <span
@@ -2537,20 +2596,16 @@ exports[`Snapshot 1`] = `
               class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  kur
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                kur
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
             </span>
           </span>
           /
@@ -2558,23 +2613,29 @@ exports[`Snapshot 1`] = `
             class="Transliteration__Logogram"
           >
             <span
-              class="Transliteration__Logogram--damaged"
+              class="Transliteration__bracket"
+            >
+              ⸢
+            </span>
+            <span
+              class=""
             >
               <span
-                class=""
+                class="Transliteration__ValueToken"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  KUR
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
+                KUR
               </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+            <span
+              class="Transliteration__bracket"
+            >
+              ⸣
             </span>
           </span>
         </span>
@@ -2603,23 +2664,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--ACCIDENTAL_OMISSION"
           >
             <span
-              class="Transliteration__Reading--ACCIDENTAL_OMISSION"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -2635,23 +2692,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--ACCIDENTAL_OMISSION"
           >
             <span
-              class="Transliteration__Reading--ACCIDENTAL_OMISSION"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -2677,23 +2730,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--INTENTIONAL_OMISSION"
           >
             <span
-              class="Transliteration__Reading--INTENTIONAL_OMISSION"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -2709,23 +2758,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--INTENTIONAL_OMISSION"
           >
             <span
-              class="Transliteration__Reading--INTENTIONAL_OMISSION"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -2751,23 +2796,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--REMOVAL"
           >
             <span
-              class="Transliteration__Reading--REMOVAL"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>
@@ -2783,23 +2824,19 @@ exports[`Snapshot 1`] = `
           class="Transliteration__Reading"
         >
           <span
-            class=""
+            class="Transliteration__Reading--REMOVAL"
           >
             <span
-              class="Transliteration__Reading--REMOVAL"
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__ValueToken"
-              >
-                kur
-              </span>
-              <sup
-                class="Transliteration__modifier"
-              />
-              <sup
-                class="Transliteration__flag"
-              />
+              kur
             </span>
+            <sup
+              class="Transliteration__modifier"
+            />
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
         <span
@@ -2840,37 +2877,37 @@ exports[`Snapshot 1`] = `
       >
         [
       </span>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
-          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__Reading"
         >
           <span
-            class="Transliteration__Reading"
+            class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  ra
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
+                ra
+              </sup>
             </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
           </span>
         </span>
-      </sup>
+      </span>
       <span
         class="Transliteration__BrokenAway Transliteration__BrokenAway--AKKADIAN"
       >
@@ -2907,75 +2944,87 @@ exports[`Snapshot 1`] = `
            
         </span>
       </sup>
-      <sup
-        class="Transliteration__DocumentOrientedGloss"
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
-          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          class="Transliteration__Reading"
         >
           <span
-            class="Transliteration__Reading"
+            class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
           >
             <span
-              class=""
+              class="Transliteration__ValueToken"
             >
-              <span
-                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
               >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  ḫe
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
+                ḫe
+              </sup>
             </span>
-          </span>
-          <span
-            class="Transliteration__Joiner"
-          >
-            -
-          </span>
-          <span
-            class="Transliteration__Reading"
-          >
-            <span
-              class=""
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
             >
-              <span
-                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
-              >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  p
-                </span>
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  ]
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  í
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
-            </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
           </span>
         </span>
-      </sup>
+        <span
+          class="Transliteration__Joiner"
+        >
+          <sup
+            class="Transliteration__DocumentOrientedGloss"
+          >
+            -
+          </sup>
+        </span>
+        <span
+          class="Transliteration__Reading"
+        >
+          <span
+            class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                p
+              </sup>
+            </span>
+            <span
+              class="Transliteration__BrokenAway"
+            >
+              ]
+            </span>
+            <span
+              class="Transliteration__ValueToken"
+            >
+              <sup
+                class="Transliteration__DocumentOrientedGloss"
+              >
+                í
+              </sup>
+            </span>
+            <sup
+              class="Transliteration__DocumentOrientedGloss"
+            >
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </sup>
+          </span>
+        </span>
+      </span>
     </li>
     <li
       class="Transliteration__TextLine"
@@ -2997,14 +3046,10 @@ exports[`Snapshot 1`] = `
           <span
             class=""
           >
-            <span
-              class=""
-            >
-              x
-              <sup
-                class="Transliteration__flag"
-              />
-            </span>
+            x
+            <sup
+              class="Transliteration__flag"
+            />
           </span>
         </span>
       </span>

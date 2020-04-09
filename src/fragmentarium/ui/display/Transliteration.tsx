@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import {
   Line,
@@ -6,11 +6,11 @@ import {
   DollarAndAtLine,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
-import { DisplayToken } from './DisplayToken'
+import DisplayToken, { TokenWrapper } from './DisplayToken'
 import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
 
 import './Display.sass'
-import { Enclosure, Shift, Token } from 'fragmentarium/domain/token'
+import { Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = []
@@ -52,21 +52,27 @@ class LineAccumulator {
     if (this.requireSeparator(token)) {
       this.pushSeparator(this.result)
     }
-    const tokenComponent = (
-      <DisplayToken
-        key={this.result.length}
-        token={token}
-        bemModifiers={[this.language]}
-      />
+
+    const glossWrapper: TokenWrapper = ({
+      children
+    }: PropsWithChildren<{}>): JSX.Element => (
+      <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
     )
 
     this.result.push(
       this.inGloss && !isEnclosure(token) ? (
-        <sup className="Transliteration__DocumentOrientedGloss">
-          {tokenComponent}
-        </sup>
+        <DisplayToken
+          key={this.result.length}
+          token={token}
+          bemModifiers={[this.language]}
+          Wrapper={glossWrapper}
+        />
       ) : (
-        tokenComponent
+        <DisplayToken
+          key={this.result.length}
+          token={token}
+          bemModifiers={[this.language]}
+        />
       )
     )
     this.enclosureOpened = isOpenEnclosure(token)

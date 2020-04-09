@@ -2,16 +2,6 @@
 @mixin normal-font
   font-style: normal
   font-variant: normal
-  
-@mixin damaged
-  &--damaged
-    &:before
-      @include normal-font
-      content: "⸢"
-
-    &:after
-      @include normal-font
-      content: "⸣"
 
 @mixin sumerian
   &--SUMERIAN
@@ -73,11 +63,14 @@
   &__subIndex
     @include normal-font
 
+  &__glossJoiner
+    display: none
+
   &__Determinative
     @include normal-font
 
-    & + & > sup:first:before
-      content: "."
+    & + & .Transliteration__glossJoiner
+      display: inline
 
   &__wordSeparator,
   &__Word,
@@ -96,8 +89,6 @@
   &__Grapheme,
   &__UnidentifiedSign,
   &__UnclearSign
-    @include damaged
-
     &--BROKEN_AWAY
       color: darkgrey
 
@@ -107,10 +98,6 @@
   &__IntentionalOmission,
   &__Removal
     @include normal-font
-
-    sup &
-      font-size: 1rem
-      vertical-align: text-bottom
 
   &__Tabulation
     display: inline-block
