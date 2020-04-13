@@ -4,7 +4,10 @@ import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine
+  RulingDollarLine,
+  TextLine,
+  LineNumber,
+  LineNumberRange
 } from 'fragmentarium/domain/text'
 import { DisplayToken } from './DisplayToken'
 
@@ -148,6 +151,58 @@ function DisplayLine({
     ]
   )
 }
+function DisplayLineNumberRange(lineNumber: LineNumberRange): JSX.Element {
+  const primeStart = lineNumber.start.hasPrime ? '′' : ''
+  const primeEnd = lineNumber.end.hasPrime ? '′' : ''
+  const result = `(${lineNumber.start.number}${primeStart}-${lineNumber.end.number}${primeEnd})`
+  return (
+    <span>
+      <sup>{result}</sup>
+    </span>
+  )
+}
+
+function DisplayLineNumber(lineNumber: LineNumber): JSX.Element {
+  const prime = lineNumber.hasPrime ? '′' : ''
+  return (
+    <span>
+      <sup>{`(${lineNumber.number}${prime})`}</sup>
+    </span>
+  )
+}
+const lineNumberTypeToComponent = {
+  LineNumber: DisplayLineNumber,
+  LineNumberRange: DisplayLineNumberRange
+}
+
+function DisplayTextLine({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const textLine = line as TextLine
+  const lineTypeComponent =
+    lineNumberTypeToComponent[textLine.lineNumber.type as string]
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${textLine.type}`]) },
+    [
+      React.createElement(lineTypeComponent, textLine.lineNumber),
+      ...textLine.content.reduce((acc: LineAccumulator, token: Token) => {
+        if (isShift(token)) {
+          acc.applyLanguage(token)
+        } else if (isDocumentOrientedGloss(token)) {
+          token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+        } else {
+          acc.pushToken(token)
+        }
+        return acc
+      }, new LineAccumulator()).result
+    ]
+  )
+}
 function DisplayDollarAndAtLineWithParenthesis({
   line,
   container = 'div'
@@ -185,7 +240,7 @@ const lineComponents: ReadonlyMap<
     container?: string
   }>
 > = new Map([
-  ['TextLine', DisplayLine],
+  ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
   ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
   ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
