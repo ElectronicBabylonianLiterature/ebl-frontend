@@ -214,26 +214,23 @@ function DisplayRulingDollarLine({
   line: Line
   container?: string
 }): JSX.Element {
-  function drawRulings(line: RulingDollarLine): Array<JSX.Element> {
-    const rulingsNumber = rulingsToNumber.get(line.number) as number
-    const items: Array<JSX.Element> = []
-    for (let i = 1; i <= rulingsNumber; i++) {
-      items.push(
-        React.createElement('div', {
-          className: `Transliteration__RulingDollarLine--${line.number.toLowerCase()}`,
-          key: i
-        })
-      )
-    }
-    return items
-  }
-  const rulingDollarLine = line as RulingDollarLine
-  const items: Array<JSX.Element> = drawRulings(rulingDollarLine)
+  const rulingLine = line as RulingDollarLine
+  const rulingType = `Transliteration__ruling--${rulingLine.number.toLowerCase()}`
+  const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return React.createElement(
     container,
     { className: 'Transliteration__RulingDollarLine' },
-    items
+    [...Array(rulingsNumber).keys()].map((value: number) => {
+      return <DisplayEachRuling key={value} rulingType={rulingType} />
+    })
   )
+}
+function DisplayEachRuling({
+  rulingType
+}: {
+  rulingType: string
+}): JSX.Element {
+  return <div className={rulingType} />
 }
 
 export function Transliteration({

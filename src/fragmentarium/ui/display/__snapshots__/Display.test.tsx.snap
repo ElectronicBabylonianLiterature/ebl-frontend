@@ -258,7 +258,7 @@ exports[`Snapshot 1`] = `
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--single"
+        class="Transliteration__ruling--single"
       />
     </li>
     <li
@@ -368,10 +368,10 @@ exports[`Snapshot 1`] = `
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--double"
+        class="Transliteration__ruling--double"
       />
       <div
-        class="Transliteration__RulingDollarLine--double"
+        class="Transliteration__ruling--double"
       />
     </li>
     <li
@@ -964,13 +964,13 @@ exports[`Snapshot 1`] = `
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
     </li>
     <li
@@ -2979,37 +2979,37 @@ exports[`Snapshot 1`] = `
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--single"
+        class="Transliteration__ruling--single"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--single"
+        class="Transliteration__ruling--single"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--double"
+        class="Transliteration__ruling--double"
       />
       <div
-        class="Transliteration__RulingDollarLine--double"
+        class="Transliteration__ruling--double"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
       <div
-        class="Transliteration__RulingDollarLine--triple"
+        class="Transliteration__ruling--triple"
       />
     </li>
     <li
