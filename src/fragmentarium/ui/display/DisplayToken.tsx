@@ -12,50 +12,16 @@ import {
 } from 'fragmentarium/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from './type-guards'
+import { createModifierClasses, Modifiers } from './modifiers'
+import EnclosureFlags from './EnclosureFlags'
+import Flags from './Flags'
+import SubIndex from './SubIndex'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<{}>>
 
 interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
-}
-
-function createModifierClasses(
-  element: string,
-  modifiers: readonly string[]
-): readonly string[] {
-  return modifiers.map(modifier => `Transliteration__${element}--${modifier}`)
-}
-
-function Modifiers({
-  modifiers
-}: {
-  modifiers: readonly string[]
-}): JSX.Element {
-  return (
-    <sup className="Transliteration__modifier">
-      {modifiers.map(modifier => modifier.slice(1)).join('')}
-    </sup>
-  )
-}
-
-function EnclosureFlags({
-  token,
-  enclosures,
-  children
-}: PropsWithChildren<{
-  token: Token
-  enclosures?: readonly EnclosureType[]
-}>): JSX.Element {
-  return (
-    <span
-      className={classNames(
-        createModifierClasses(token.type, enclosures ?? token.enclosureType)
-      )}
-    >
-      {children}
-    </span>
-  )
 }
 
 function DamagedFlag({
@@ -79,37 +45,6 @@ function DamagedFlag({
   ) : (
     <>{children}</>
   )
-}
-
-function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
-  return (
-    <sup className="Transliteration__flag">
-      {flags.filter(flag => flag !== '#').join('')}
-    </sup>
-  )
-}
-
-function SubIndex({ token }: { token: NamedSign }): JSX.Element {
-  const unicodeSubscript: ReadonlyMap<string, string> = new Map([
-    ['0', '₀'],
-    ['1', '₁'],
-    ['2', '₂'],
-    ['3', '₃'],
-    ['4', '₄'],
-    ['5', '₅'],
-    ['6', '₆'],
-    ['7', '₇'],
-    ['8', '₈'],
-    ['9', '₉']
-  ])
-
-  const subIndex =
-    token.subIndex
-      ?.toString()
-      .split('')
-      .map(number => unicodeSubscript.get(number))
-      .join('') ?? 'ₓ'
-  return <span className="Transliteration__subIndex">{subIndex}</span>
 }
 
 function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
