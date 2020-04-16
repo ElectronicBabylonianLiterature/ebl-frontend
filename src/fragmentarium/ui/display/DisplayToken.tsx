@@ -20,6 +20,13 @@ interface TokenProps {
   Wrapper: TokenWrapper
 }
 
+function createModifierClasses(
+  element: string,
+  modifiers: readonly string[]
+): readonly string[] {
+  return modifiers.map(modifier => `Transliteration__${element}--${modifier}`)
+}
+
 function Modifiers({
   modifiers
 }: {
@@ -40,13 +47,10 @@ function EnclosureFlags({
   token: Token
   enclosures?: readonly EnclosureType[]
 }>): JSX.Element {
-  const element = `Transliteration__${token.type}`
   return (
     <span
       className={classNames(
-        (enclosures ?? token.enclosureType).map(
-          enclosureType => `${element}--${enclosureType}`
-        )
+        createModifierClasses(token.type, enclosures ?? token.enclosureType)
       )}
     >
       {children}
@@ -87,7 +91,7 @@ function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
 
 function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
   return (
-    <>
+    <EnclosureFlags token={token}>
       {token.parts ? (
         token.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
@@ -97,7 +101,7 @@ function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
       ) : (
         <Wrapper>{token.value}</Wrapper>
       )}
-    </>
+    </EnclosureFlags>
   )
 }
 
@@ -123,7 +127,12 @@ function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
   return (
     <>
-      <span className="Transliteration__glossJoiner">
+      <span
+        className={classNames([
+          'Transliteration__glossJoiner',
+          ...createModifierClasses('glossJoiner', token.enclosureType)
+        ])}
+      >
         <GlossWrapper>.</GlossWrapper>
       </span>
       {gloss.parts.map((token, index) =>
@@ -262,12 +271,11 @@ export default function DisplayToken({
   Wrapper?: FunctionComponent<PropsWithChildren<{}>>
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
-  const element = `Transliteration__${token.type}`
   return (
     <span
       className={classNames([
-        element,
-        ...modifiers.map(modifier => `${element}--${modifier}`)
+        `Transliteration__${token.type}`,
+        ...createModifierClasses(token.type, modifiers)
       ])}
     >
       <TokenComponent token={token} Wrapper={Wrapper} />
