@@ -136,11 +136,7 @@ exports[`With session 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            <span
-              class="active"
-            >
-              Corpus
-            </span>
+            Corpus
           </li>
         </ol>
       </nav>
@@ -434,11 +430,7 @@ exports[`Without session 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            <span
-              class="active"
-            >
-              Corpus
-            </span>
+            Corpus
           </li>
         </ol>
       </nav>

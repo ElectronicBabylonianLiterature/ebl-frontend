@@ -65,7 +65,7 @@
     "query-string": "^6.2.0",
     "react": "^16.8.0",
     "react-ace": "^8.0.0",
-    "react-bootstrap": "^1.0.0-beta.16",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "^16.4.0",
     "react-image-annotation": "^0.9.10",
     "react-markdown": "^4.0.3",
