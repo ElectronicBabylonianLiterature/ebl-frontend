@@ -2532,13 +2532,13 @@ const line15: Line = {
   content: [
     {
       enclosureType: [],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: '<kur',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: [],
@@ -2571,13 +2571,13 @@ const line15: Line = {
     },
     {
       enclosureType: ['ACCIDENTAL_OMISSION'],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: 'kur>',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: ['ACCIDENTAL_OMISSION'],
@@ -2610,13 +2610,13 @@ const line15: Line = {
     },
     {
       enclosureType: [],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: '<(kur',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: [],
@@ -2649,13 +2649,13 @@ const line15: Line = {
     },
     {
       enclosureType: ['INTENTIONAL_OMISSION'],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: 'kur)>',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: ['INTENTIONAL_OMISSION'],
@@ -2688,13 +2688,13 @@ const line15: Line = {
     },
     {
       enclosureType: [],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: '<<kur',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: [],
@@ -2705,6 +2705,7 @@ const line15: Line = {
         },
         {
           enclosureType: ['REMOVAL'],
+
           cleanValue: 'kur',
           value: 'kur',
           name: 'kur',
@@ -2727,13 +2728,13 @@ const line15: Line = {
     },
     {
       enclosureType: ['REMOVAL'],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: 'kur>>',
       language: 'AKKADIAN',
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
-      erasure: 'NONE',
       parts: [
         {
           enclosureType: ['REMOVAL'],
@@ -2763,6 +2764,393 @@ const line15: Line = {
         }
       ],
       type: 'Word'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '{(',
+      side: 'LEFT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      erasure: 'NONE',
+      cleanValue: 'kur(KUR)',
+      value: '<kur(KUR)',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '',
+          value: '<',
+          side: 'LEFT',
+          type: 'AccidentalOmission'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+          cleanValue: 'kur(KUR)',
+          value: 'kur(KUR)',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: {
+            enclosureType: [],
+            cleanValue: 'KUR',
+            value: 'KUR',
+            name: 'KUR',
+            modifiers: [],
+            flags: [],
+            type: 'Grapheme'
+          },
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
+          cleanValue: '',
+          value: '>',
+          side: 'RIGHT',
+          type: 'AccidentalOmission'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: '<(kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '',
+          value: '<(',
+          side: 'LEFT',
+          type: 'IntentionalOmission'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [
+                'DOCUMENT_ORIENTED_GLOSS',
+                'INTENTIONAL_OMISSION'
+              ],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur)>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [
+                'DOCUMENT_ORIENTED_GLOSS',
+                'INTENTIONAL_OMISSION'
+              ],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
+          cleanValue: '',
+          value: ')>',
+          side: 'RIGHT',
+          type: 'IntentionalOmission'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: '<<kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: '',
+          value: '<<',
+          side: 'LEFT',
+          type: 'Removal'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur>>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        },
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
+          cleanValue: '',
+          value: '>>',
+          side: 'RIGHT',
+          type: 'Removal'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '',
+      value: ')}',
+      side: 'RIGHT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: [],
+      cleanValue: '',
+      value: '{(',
+      side: 'LEFT',
+      type: 'DocumentOrientedGloss'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      erasure: 'NONE',
+      cleanValue: 'KUR<(kur-kur)>',
+      value: 'KUR<(kur-kur)>',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+
+          cleanValue: 'KUR<(kur-kur)>',
+          value: 'KUR<(kur-kur)>',
+          name: 'KUR',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'KUR',
+              value: 'KUR',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          surrogate: [
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            },
+            {
+              enclosureType: [],
+              cleanValue: '-',
+              value: '-',
+              type: 'Joiner'
+            },
+            {
+              enclosureType: [],
+              cleanValue: 'kur',
+              value: 'kur',
+              name: 'kur',
+              nameParts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  type: 'ValueToken'
+                }
+              ],
+              subIndex: 1,
+              modifiers: [],
+              flags: [],
+              sign: null,
+              type: 'Reading'
+            }
+          ],
+          type: 'Logogram'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken'
+            }
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading'
+        }
+      ],
+      type: 'Word'
+    },
+    {
+      enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
+      cleanValue: '',
+      value: ')}',
+      side: 'RIGHT',
+      type: 'DocumentOrientedGloss'
     }
   ],
   lineNumber: {

@@ -2,16 +2,6 @@
 @mixin normal-font
   font-style: normal
   font-variant: normal
-  
-@mixin damaged
-  &--damaged
-    &:before
-      @include normal-font
-      content: "⸢"
-
-    &:after
-      @include normal-font
-      content: "⸣"
 
 @mixin sumerian
   &--SUMERIAN
@@ -21,7 +11,7 @@
 @mixin emesal
   &--EMESAL
     @include normal-font
-    color: pink
+    color: black
     letter-spacing: 0.1em
 
 .Transliteration
@@ -49,16 +39,13 @@
       margin-bottom: 0.2em
       border-top: thin solid black
 
+  &__Number,
+  &__Divider
+    @include normal-font
 
   &__Reading,
-  &__Number,
   &__UnidentifiedSign,
-  &__CompoundGrapheme,
   &__Joiner,
-  &__Divider,
-  &__DocumentOrientedGloss,
-  &__PhoneticGloss,
-  &__LinguisticGloss
     font-style: italic
     font-variant: normal
 
@@ -69,14 +56,18 @@
 
   &__bracket,
   &__flag,
-  &__subIndex
+  &__subIndex,
+  &__modifier
     @include normal-font
+
+  &__glossJoiner
+    display: none
 
   &__Determinative
     @include normal-font
 
-    & + & > sup:before
-      content: "."
+    & + & .Transliteration__glossJoiner
+      display: inline
 
   &__wordSeparator,
   &__Word,
@@ -84,7 +75,9 @@
     @include emesal
     @include sumerian
 
-  &__Logogram
+  &__Logogram,
+  &__CompoundGrapheme,
+  &__Grapheme
     font-style: normal
     font-variant: small-caps
 
@@ -93,10 +86,9 @@
   &__Logogram,
   &__Divider,
   &__Grapheme,
+  &__CompoundGrapheme,
   &__UnidentifiedSign,
   &__UnclearSign
-    @include damaged
-
     &--BROKEN_AWAY
       color: darkgrey
 
@@ -106,10 +98,6 @@
   &__IntentionalOmission,
   &__Removal
     @include normal-font
-
-    sup &
-      font-size: 1rem
-      vertical-align: text-bottom
 
   &__Tabulation
     display: inline-block

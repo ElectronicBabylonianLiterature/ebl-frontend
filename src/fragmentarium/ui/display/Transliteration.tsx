@@ -9,10 +9,11 @@ import {
   LineNumber,
   LineNumberRange
 } from 'fragmentarium/domain/text'
-import { DisplayToken } from './DisplayToken'
+import DisplayToken, { TokenWrapper } from './DisplayToken'
+import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
 
 import './Display.sass'
-import { Enclosure, Shift, Token } from 'fragmentarium/domain/token'
+import { Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = []
@@ -32,33 +33,6 @@ function WordSeparator({
   )
 }
 
-function DisplayDocumentOrientedGLoss({
-  children
-}: PropsWithChildren<{}>): JSX.Element {
-  return (
-    <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
-  )
-}
-
-function isShift(token: Token): token is Shift {
-  return token.type === 'LanguageShift'
-}
-
-function isDocumentOrientedGloss(token: Token): token is Enclosure {
-  return token.type === 'DocumentOrientedGloss'
-}
-
-function isEnclosure(token: Token): token is Enclosure {
-  return [
-    'BrokenAway',
-    'PerhapsBrokenAway',
-    'AccidentalOmmission',
-    'IntentionalOmission',
-    'Removal',
-    'Erasure'
-  ].includes(token.type)
-}
-
 function isCloseEnclosure(token: Token): boolean {
   return isEnclosure(token) && ['CENTER', 'RIGHT'].includes(token.side)
 }
@@ -69,7 +43,7 @@ function isOpenEnclosure(token: Token): boolean {
 
 class LineAccumulator {
   result: React.ReactNode[] = []
-  private gloss: React.ReactNode[] | null = null
+  private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
 
@@ -78,50 +52,63 @@ class LineAccumulator {
   }
 
   pushToken(token: Token): void {
-    const target = this.gloss || this.result
     if (this.requireSeparator(token)) {
-      this.pushSeparator(target)
+      this.pushSeparator(this.result)
     }
-    target.push(
-      <DisplayToken
-        key={target.length}
-        token={token}
-        bemModifiers={[this.language]}
-      />
+
+    const glossWrapper: TokenWrapper = ({
+      children
+    }: PropsWithChildren<{}>): JSX.Element => (
+      <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
+    )
+
+    this.result.push(
+      this.inGloss && !isEnclosure(token) ? (
+        <DisplayToken
+          key={this.result.length}
+          token={token}
+          bemModifiers={[this.language]}
+          Wrapper={glossWrapper}
+        />
+      ) : (
+        <DisplayToken
+          key={this.result.length}
+          token={token}
+          bemModifiers={[this.language]}
+        />
+      )
     )
     this.enclosureOpened = isOpenEnclosure(token)
   }
 
   openGloss(): void {
-    if (!this.enclosureOpened) {
-      this.pushSeparator(this.result)
-    }
-    this.gloss = []
+    this.inGloss = true
   }
 
   closeGloss(): void {
-    this.result.push(
-      <DisplayDocumentOrientedGLoss key={this.result.length}>
-        {this.gloss}
-      </DisplayDocumentOrientedGLoss>
-    )
-    this.gloss = null
-    this.enclosureOpened = false
+    this.inGloss = false
   }
 
   private requireSeparator(token: Token): boolean {
     const noEnclosure = !isCloseEnclosure(token) && !this.enclosureOpened
-    return this.gloss
-      ? this.gloss.length > 0 && noEnclosure
-      : this.result.length === 0 || noEnclosure
+    return this.result.length === 0 || noEnclosure
   }
 
   private pushSeparator(target: React.ReactNode[]): void {
-    target.push(
+    const separator = (
       <WordSeparator
         key={`${target.length}-separator`}
         modifiers={[this.language]}
       />
+    )
+    target.push(
+      this.inGloss ? (
+        <sup className="Transliteration__DocumentOrientedGloss">
+          {separator}
+        </sup>
+      ) : (
+        separator
+      )
     )
   }
 }
