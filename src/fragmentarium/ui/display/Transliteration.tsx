@@ -215,7 +215,7 @@ function DisplayRulingDollarLine({
   container?: string
 }): JSX.Element {
   const rulingLine = line as RulingDollarLine
-  const rulingType = `Transliteration__ruling--${rulingLine.number.toLowerCase()}`
+  const rulingType = `Transliteration__ruling`
   const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return React.createElement(
     container,
