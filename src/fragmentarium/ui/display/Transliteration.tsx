@@ -151,10 +151,10 @@ function DisplayLine({
     ]
   )
 }
-function DisplayLineNumberRange(lineNumber: LineNumberRange): JSX.Element {
-  const primeStart = lineNumber.start.hasPrime ? '′' : ''
-  const primeEnd = lineNumber.end.hasPrime ? '′' : ''
-  const result = `(${lineNumber.start.number}${primeStart}-${lineNumber.end.number}${primeEnd})`
+function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
+  const primeStart = start.hasPrime ? '′' : ''
+  const primeEnd = end.hasPrime ? '′' : ''
+  const result = `(${start.prefixModifier}+${start.number}${primeStart}${start.suffixModifier}-${end.prefixModifier}+${end.number}${primeEnd}${end.suffixModifier})`
   return (
     <span>
       <sup>{result}</sup>
@@ -162,11 +162,11 @@ function DisplayLineNumberRange(lineNumber: LineNumberRange): JSX.Element {
   )
 }
 
-function DisplayLineNumber(lineNumber: LineNumber): JSX.Element {
-  const prime = lineNumber.hasPrime ? '′' : ''
+function DisplayLineNumber({ hasPrime, number }: LineNumber): JSX.Element {
+  const prime = hasPrime ? '′' : ''
   return (
     <span>
-      <sup>{`(${lineNumber.number}${prime})`}</sup>
+      <sup>{`(${number}${prime})`}</sup>
     </span>
   )
 }
