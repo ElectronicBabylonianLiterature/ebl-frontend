@@ -46,7 +46,6 @@
 
   &__Reading,
   &__UnidentifiedSign,
-  &__CompoundGrapheme,
   &__Joiner,
     font-style: italic
     font-variant: normal
@@ -77,7 +76,9 @@
     @include emesal
     @include sumerian
 
-  &__Logogram
+  &__Logogram,
+  &__CompoundGrapheme,
+  &__Grapheme
     font-style: normal
     font-variant: small-caps
 
@@ -86,6 +87,7 @@
   &__Logogram,
   &__Divider,
   &__Grapheme,
+  &__CompoundGrapheme,
   &__UnidentifiedSign,
   &__UnclearSign
     &--BROKEN_AWAY
