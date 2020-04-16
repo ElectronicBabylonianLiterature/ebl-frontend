@@ -733,11 +733,11 @@ exports[`Snapshot 1`] = `
                   kur
                 </span>
               </span>
-              <sub
+              <span
                 class="Transliteration__subIndex"
               >
-                x
-              </sub>
+                ₓ
+              </span>
               <sup
                 class="Transliteration__modifier"
               >

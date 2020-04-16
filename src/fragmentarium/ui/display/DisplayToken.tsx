@@ -59,11 +59,11 @@ function EnclosureFlags({
 }
 
 function DamagedFlag({
-  sign: { type, flags },
+  sign: { flags },
   Wrapper,
   children
 }: PropsWithChildren<{
-  sign: { type: string; flags: readonly string[] }
+  sign: { flags: readonly string[] }
   Wrapper: TokenWrapper
 }>): JSX.Element {
   return flags.includes('#') ? (
@@ -87,6 +87,29 @@ function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
       {flags.filter(flag => flag !== '#').join('')}
     </sup>
   )
+}
+
+function SubIndex({ token }: { token: NamedSign }): JSX.Element {
+  const unicodeSubscript: ReadonlyMap<string, string> = new Map([
+    ['0', '₀'],
+    ['1', '₁'],
+    ['2', '₂'],
+    ['3', '₃'],
+    ['4', '₄'],
+    ['5', '₅'],
+    ['6', '₆'],
+    ['7', '₇'],
+    ['8', '₈'],
+    ['9', '₉']
+  ])
+
+  const subIndex =
+    token.subIndex
+      ?.toString()
+      .split('')
+      .map(number => unicodeSubscript.get(number))
+      .join('') ?? 'ₓ'
+  return <span className="Transliteration__subIndex">{subIndex}</span>
 }
 
 function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
@@ -120,7 +143,7 @@ function VariantComponent({ token, Wrapper }: TokenProps): JSX.Element {
 
 function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const gloss = token as Gloss
-  const GlossWrapper: TokenWrapper = ({ children }) => (
+  const GlossWrapper: TokenWrapper = ({ children }: PropsWithChildren<{}>) => (
     <Wrapper>
       <sup>{children}</sup>
     </Wrapper>
@@ -200,11 +223,7 @@ function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
           )
         )}
         <Wrapper>
-          {!omitSubindex && (
-            <sub className="Transliteration__subIndex">
-              {namedSign.subIndex || 'x'}
-            </sub>
-          )}
+          {!omitSubindex && <SubIndex token={namedSign} />}
           <Modifiers modifiers={namedSign.modifiers} />
           <Flags flags={namedSign.flags} />
         </Wrapper>
