@@ -152,9 +152,13 @@ function DisplayLine({
   )
 }
 function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
-  const primeStart = start.hasPrime ? '′' : ''
-  const primeEnd = end.hasPrime ? '′' : ''
-  const result = `(${start.prefixModifier}+${start.number}${primeStart}${start.suffixModifier}-${end.prefixModifier}+${end.number}${primeEnd}${end.suffixModifier})`
+  const startPrime = start.hasPrime ? '′' : ''
+  const endPrime = end.hasPrime ? '′' : ''
+  const startPrefixMod = start.prefixModifier ? start.prefixModifier + '+' : ''
+  const startSuffixMod = start.suffixModifier ? start.suffixModifier : ''
+  const endPrefixMod = end.prefixModifier ? end.prefixModifier + '+' : ''
+  const endSuffixMod = end.suffixModifier ? end.suffixModifier : ''
+  const result = `(${startPrefixMod}${start.number}${startPrime}${startSuffixMod}-${endPrefixMod}${end.number}${endPrime}${endSuffixMod})`
   return (
     <span>
       <sup>{result}</sup>
@@ -189,7 +193,10 @@ function DisplayTextLine({
     container,
     { className: classNames([`Transliteration__${textLine.type}`]) },
     [
-      React.createElement(lineTypeComponent, textLine.lineNumber),
+      React.createElement(lineTypeComponent, {
+        key: 0,
+        ...textLine.lineNumber
+      }),
       ...textLine.content.reduce((acc: LineAccumulator, token: Token) => {
         if (isShift(token)) {
           acc.applyLanguage(token)
