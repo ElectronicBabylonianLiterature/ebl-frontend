@@ -3,6 +3,7 @@ import { Chance } from 'chance'
 import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
+import complexText from './complexTestText'
 
 const chance = new Chance()
 
@@ -43,57 +44,8 @@ factory.define('folio', Folio, {
   number: factory.chance('string')
 })
 
-factory.define('textLine', Object, {
-  prefix: async () => `${await factory.chance('natural')}.`,
-  content: [
-    {
-      type: 'ValueToken',
-      value: factory.chance('pickone', ['[...]', '&', '&1']),
-      enclosureType: []
-    },
-    {
-      type: 'Word',
-      value: factory.chance('pickone', ['x', 'X', 'ia', 'g[u/gem[e₂]']),
-      uniqueLemma: [],
-      normalized: factory.chance('bool'),
-      language: factory.chance('pickone', ['AKKADIAN', 'SUMERIAN']),
-      lemmatizable: factory.chance('bool'),
-      enclosureType: []
-    }
-  ],
-  type: 'TextLine'
-})
-
-factory.define('emptyLine', Object, {
-  type: 'EmptyLine',
-  prefix: '',
-  content: []
-})
-
-factory.define('controlLine', Object, {
-  prefix: factory.chance('pickone', ['#', '&']),
-  content: [
-    {
-      type: 'ValueToken',
-      value: factory.chance('word'),
-      enclosureType: []
-    }
-  ],
-  type: 'ControlLine'
-})
-
 factory.define('text', Text, {
-  lines: async () => {
-    return [
-      await factory.build('controlLine'),
-      await factory.build('textLine'),
-      await factory.build('emptyLine'),
-      await factory.build('controlLine'),
-      await factory.build('textLine'),
-      await factory.build('textLine'),
-      await factory.build('textLine')
-    ]
-  }
+  lines: factory.chance('pickset', complexText.lines, 5)
 })
 
 factory.define('uncuratedReference', Object, {
