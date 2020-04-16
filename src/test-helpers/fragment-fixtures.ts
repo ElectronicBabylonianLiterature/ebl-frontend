@@ -48,7 +48,8 @@ factory.define('textLine', Object, {
   content: [
     {
       type: 'ValueToken',
-      value: factory.chance('pickone', ['[...]', '&', '&1'])
+      value: factory.chance('pickone', ['[...]', '&', '&1']),
+      enclosureType: []
     },
     {
       type: 'Word',
@@ -56,7 +57,8 @@ factory.define('textLine', Object, {
       uniqueLemma: [],
       normalized: factory.chance('bool'),
       language: factory.chance('pickone', ['AKKADIAN', 'SUMERIAN']),
-      lemmatizable: factory.chance('bool')
+      lemmatizable: factory.chance('bool'),
+      enclosureType: []
     }
   ],
   type: 'TextLine'
@@ -69,11 +71,12 @@ factory.define('emptyLine', Object, {
 })
 
 factory.define('controlLine', Object, {
-  prefix: factory.chance('pickone', ['$', '#', '&']),
+  prefix: factory.chance('pickone', ['#', '&']),
   content: [
     {
       type: 'ValueToken',
-      value: factory.chance('word')
+      value: factory.chance('word'),
+      enclosureType: []
     }
   ],
   type: 'ControlLine'
