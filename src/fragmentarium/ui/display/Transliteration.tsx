@@ -95,19 +95,19 @@ class LineAccumulator {
   }
 
   private pushSeparator(target: React.ReactNode[]): void {
-    const separator = (
-      <WordSeparator
-        key={`${target.length}-separator`}
-        modifiers={[this.language]}
-      />
-    )
     target.push(
       this.inGloss ? (
-        <sup className="Transliteration__DocumentOrientedGloss">
-          {separator}
+        <sup
+          key={`${target.length}-separator`}
+          className="Transliteration__DocumentOrientedGloss"
+        >
+          <WordSeparator modifiers={[this.language]} />
         </sup>
       ) : (
-        separator
+        <WordSeparator
+          key={`${target.length}-separator`}
+          modifiers={[this.language]}
+        />
       )
     )
   }

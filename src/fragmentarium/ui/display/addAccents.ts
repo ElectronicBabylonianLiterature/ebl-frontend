@@ -47,23 +47,34 @@ class Accumulator {
   }
 
   private addAccentsToValue(value: string): string {
-    const letters: string[] = []
-    for (const letter of value) {
-      if (this.isFirstWovel && this.subIndex === 2 && isVowel(letter)) {
-        letters.push(addAcuteAccent(letter))
-        this.isFirstWovel = false
-        this.isSubIndexConverted = true
-      } else if (this.isFirstWovel && this.subIndex === 3 && isVowel(letter)) {
-        letters.push(addGraveAccent(letter))
-        this.isFirstWovel = false
-        this.isSubIndexConverted = true
-      } else if (letter === 'h') {
-        letters.push(addBreve(letter))
-      } else {
-        letters.push(letter)
-      }
+    return value
+      .split('')
+      .map(letter => this.visitLetter(letter))
+      .join('')
+  }
+
+  private visitLetter(letter: string): string {
+    if (this.isFirstWovel && isVowel(letter)) {
+      return this.visitVowel(letter)
+    } else if (letter === 'h') {
+      return addBreve(letter)
+    } else {
+      return letter
     }
-    return letters.join('')
+  }
+
+  private visitVowel(vowel: string): string {
+    if (this.subIndex === 2) {
+      this.isFirstWovel = false
+      this.isSubIndexConverted = true
+      return addAcuteAccent(vowel)
+    } else if (this.subIndex === 3) {
+      this.isFirstWovel = false
+      this.isSubIndexConverted = true
+      return addGraveAccent(vowel)
+    } else {
+      return vowel
+    }
   }
 }
 
