@@ -112,32 +112,6 @@ class LineAccumulator {
     )
   }
 }
-
-function DisplayLine({
-  line: { type, prefix, content },
-  container = 'div'
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${type}`]) },
-    [
-      <span key="prefix">{prefix}</span>,
-      ...content.reduce((acc: LineAccumulator, token: Token) => {
-        if (isShift(token)) {
-          acc.applyLanguage(token)
-        } else if (isDocumentOrientedGloss(token)) {
-          token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-        } else {
-          acc.pushToken(token)
-        }
-        return acc
-      }, new LineAccumulator()).result
-    ]
-  )
-}
 function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
   const startPrime = start.hasPrime ? '′' : ''
   const endPrime = end.hasPrime ? '′' : ''
@@ -184,19 +158,43 @@ function DisplayTextLine({
         key: 0,
         ...textLine.lineNumber
       }),
-      ...textLine.content.reduce((acc: LineAccumulator, token: Token) => {
-        if (isShift(token)) {
-          acc.applyLanguage(token)
-        } else if (isDocumentOrientedGloss(token)) {
-          token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-        } else {
-          acc.pushToken(token)
-        }
-        return acc
-      }, new LineAccumulator()).result
+      ...helperDisplayLineTokens(line.content)
     ]
   )
 }
+function DisplayLine({
+  line,
+  container = 'div'
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${line.type}`]) },
+    [
+      <span key="prefix">{line.prefix}</span>,
+      ...helperDisplayLineTokens(line.content)
+    ]
+  )
+}
+function helperDisplayLineTokens(
+  content: ReadonlyArray<Token>
+): React.ReactNode[] {
+  return [
+    content.reduce((acc: LineAccumulator, token: Token) => {
+      if (isShift(token)) {
+        acc.applyLanguage(token)
+      } else if (isDocumentOrientedGloss(token)) {
+        token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+      } else {
+        acc.pushToken(token)
+      }
+      return acc
+    }, new LineAccumulator()).result
+  ]
+}
+
 function DisplayDollarAndAtLineWithParenthesis({
   line,
   container = 'div'
@@ -234,6 +232,7 @@ const lineComponents: ReadonlyMap<
     container?: string
   }>
 > = new Map([
+  ['ControlLine', DisplayLine],
   ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
   ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
