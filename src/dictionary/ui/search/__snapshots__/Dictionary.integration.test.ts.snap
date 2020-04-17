@@ -136,11 +136,7 @@ exports[`Query 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            <span
-              class="active"
-            >
-              Dictionary
-            </span>
+            Dictionary
           </li>
         </ol>
       </nav>
@@ -441,11 +437,7 @@ exports[`Snapshot 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            <span
-              class="active"
-            >
-              Dictionary
-            </span>
+            Dictionary
           </li>
         </ol>
       </nav>

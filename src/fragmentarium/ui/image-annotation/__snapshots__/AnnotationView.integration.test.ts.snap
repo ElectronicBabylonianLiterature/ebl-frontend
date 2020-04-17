@@ -154,11 +154,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            <span
-              class="active"
-            >
-              Annotate
-            </span>
+            Annotate
           </li>
         </ol>
       </nav>
