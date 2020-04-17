@@ -1,7 +1,9 @@
 import React from 'react'
-import { OverlayTrigger } from 'react-bootstrap'
+import { OverlayTrigger, OverlayTriggerProps } from 'react-bootstrap'
 
-function HelpTrigger(props) {
+function HelpTrigger(
+  props: Omit<OverlayTriggerProps, 'children'>
+): JSX.Element {
   return (
     <OverlayTrigger placement="right" {...props}>
       <i className="fas fa-info-circle" />
