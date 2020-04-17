@@ -20,7 +20,7 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    fetchCdliInfo: jest.fn()
+    fetchCdliInfo: jest.fn(),
   }
   folioPager = await factory.build('folioPager')
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
@@ -41,7 +41,7 @@ describe('Images', () => {
     folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', {
       folios: folios,
-      hasPhoto: true
+      hasPhoto: true,
     })
     const element = renderImages()
     container = element.container
@@ -82,7 +82,7 @@ describe('Images', () => {
 it('Displays selected folio', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', { folios: folios })
   const selected = folios[0]
@@ -97,7 +97,7 @@ it('Displays selected folio', async () => {
 it('Displays photo if folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', { folios: folios, hasPhoto: true })
   const element = renderImages()
@@ -109,11 +109,11 @@ it('Displays photo if folio specified', async () => {
 it('Displays CDLI photo if no photo and no folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', {
     folios: folios,
-    hasPhoto: false
+    hasPhoto: false,
   })
   const element = renderImages()
   await waitForElement(() => element.getByAltText('CDLI Photo'))
@@ -123,13 +123,13 @@ test('No photo, folios, CDLI photo', async () => {
   fragment = await factory.build('fragment', {
     folios: [],
     cdliNumber: '',
-    hasPhoto: false
+    hasPhoto: false,
   })
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({
       photoUrl: null,
       lineArtUrl: null,
-      detailLineArtUrl: null
+      detailLineArtUrl: null,
     })
   )
   const element = renderImages()

@@ -20,7 +20,7 @@ let updateReferences
 beforeEach(async () => {
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] }
+    issued: { 'date-parts': [[1957]] },
   })
   expectedReference = new Reference(
     'COPY',
@@ -45,7 +45,7 @@ describe('Edit references', () => {
 
     expect(updateReferences).toHaveBeenCalledWith([
       ...references,
-      defaultReference
+      defaultReference,
     ])
   })
 
@@ -62,7 +62,7 @@ describe('Edit references', () => {
 
     expect(updateReferences).toHaveBeenCalledWith([
       expectedReference,
-      ..._.tail(references)
+      ..._.tail(references),
     ])
   })
 })

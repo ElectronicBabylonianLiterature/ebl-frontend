@@ -7,10 +7,10 @@ const line1: Line = {
       enclosureType: [],
       cleanValue: 'obverse',
       value: 'obverse',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
-  type: 'ControlLine'
+  type: 'ControlLine',
 }
 
 const line2: Line = {
@@ -36,34 +36,34 @@ const line2: Line = {
               enclosureType: [],
               cleanValue: 'erin',
               value: 'erin',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
           cleanValue: '',
           value: '[',
           side: 'LEFT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: '(',
           side: 'LEFT',
-          type: 'PerhapsBrokenAway'
+          type: 'PerhapsBrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
@@ -75,21 +75,21 @@ const line2: Line = {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
               cleanValue: 'ŠA',
               value: 'ŠA',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
           surrogate: [],
-          type: 'Logogram'
+          type: 'Logogram',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
@@ -106,14 +106,14 @@ const line2: Line = {
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                   cleanValue: 'ša',
                   value: 'ša',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 3,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
@@ -125,28 +125,28 @@ const line2: Line = {
                   enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
                   cleanValue: 'GIRI',
                   value: 'GIRI',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 3,
               modifiers: [],
               flags: [],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Variant'
+          type: 'Variant',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: '',
           value: ')',
           side: 'RIGHT',
-          type: 'PerhapsBrokenAway'
-        }
+          type: 'PerhapsBrokenAway',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -168,20 +168,20 @@ const line2: Line = {
               enclosureType: ['BROKEN_AWAY'],
               cleanValue: 'sah',
               value: 'sah',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
@@ -193,41 +193,41 @@ const line2: Line = {
               enclosureType: ['BROKEN_AWAY'],
               cleanValue: 'SAH',
               value: 'SAH',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
           surrogate: [],
-          type: 'Logogram'
-        }
+          type: 'Logogram',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '...',
       value: '...',
-      type: 'UnknownNumberOfSigns'
+      type: 'UnknownNumberOfSigns',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: ']',
       side: 'RIGHT',
-      type: 'BrokenAway'
-    }
+      type: 'BrokenAway',
+    },
   ],
   lineNumber: {
     number: 1,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line3: Line = {
@@ -237,12 +237,12 @@ const line3: Line = {
       enclosureType: [],
       cleanValue: ' single ruling',
       value: ' single ruling',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
   number: 'SINGLE',
   status: null,
-  type: 'RulingDollarLine'
+  type: 'RulingDollarLine',
 }
 
 const line4: Line = {
@@ -262,22 +262,22 @@ const line4: Line = {
           enclosureType: [],
           cleanValue: '|KUR.KUR|',
           value: '|KUR.KUR|',
-          type: 'CompoundGrapheme'
-        }
+          type: 'CompoundGrapheme',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
-      type: 'Tabulation'
+      type: 'Tabulation',
     },
     {
       enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
-      type: 'Tabulation'
+      type: 'Tabulation',
     },
     {
       enclosureType: [],
@@ -304,56 +304,56 @@ const line4: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '|RA|',
               value: '|RA|',
-              type: 'CompoundGrapheme'
-            }
+              type: 'CompoundGrapheme',
+            },
           ],
-          type: 'Variant'
-        }
+          type: 'Variant',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '[',
       side: 'LEFT',
-      type: 'BrokenAway'
+      type: 'BrokenAway',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '...',
       value: '...',
-      type: 'UnknownNumberOfSigns'
+      type: 'UnknownNumberOfSigns',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: ']',
       side: 'RIGHT',
-      type: 'BrokenAway'
-    }
+      type: 'BrokenAway',
+    },
   ],
   lineNumber: {
     number: 2,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line5: Line = {
@@ -363,12 +363,12 @@ const line5: Line = {
       enclosureType: [],
       cleanValue: ' double ruling',
       value: ' double ruling',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
   number: 'DOUBLE',
   status: null,
-  type: 'RulingDollarLine'
+  type: 'RulingDollarLine',
 }
 
 const line6: Line = {
@@ -394,17 +394,17 @@ const line6: Line = {
               enclosureType: [],
               cleanValue: '1',
               value: '1',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: ['@v'],
           flags: ['#', '*'],
           sign: null,
-          type: 'Number'
-        }
+          type: 'Number',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -421,10 +421,10 @@ const line6: Line = {
           cleanValue: 'x',
           value: 'x#!',
           flags: ['#', '!'],
-          type: 'UnclearSign'
-        }
+          type: 'UnclearSign',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -441,10 +441,10 @@ const line6: Line = {
           cleanValue: 'X',
           value: 'X#?',
           flags: ['#', '?'],
-          type: 'UnidentifiedSign'
-        }
+          type: 'UnidentifiedSign',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -453,7 +453,7 @@ const line6: Line = {
       divider: '::',
       modifiers: ['@v', '@44'],
       flags: ['?', '#'],
-      type: 'Divider'
+      type: 'Divider',
     },
     {
       enclosureType: [],
@@ -470,31 +470,31 @@ const line6: Line = {
           cleanValue: '',
           value: '[',
           side: 'LEFT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: '(',
           side: 'LEFT',
-          type: 'PerhapsBrokenAway'
+          type: 'PerhapsBrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: 'x',
           value: 'x',
           flags: [],
-          type: 'UnclearSign'
+          type: 'UnclearSign',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: '',
           value: ')',
           side: 'RIGHT',
-          type: 'PerhapsBrokenAway'
-        }
+          type: 'PerhapsBrokenAway',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
@@ -511,27 +511,27 @@ const line6: Line = {
           cleanValue: 'x',
           value: 'x',
           flags: [],
-          type: 'UnclearSign'
+          type: 'UnclearSign',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: ']',
           side: 'RIGHT',
-          type: 'BrokenAway'
-        }
+          type: 'BrokenAway',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 3,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line7: Line = {
@@ -541,7 +541,7 @@ const line7: Line = {
       enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
-      type: 'Tabulation'
+      type: 'Tabulation',
     },
     {
       enclosureType: [],
@@ -563,8 +563,8 @@ const line7: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: null,
           modifiers: ['@v'],
@@ -576,15 +576,15 @@ const line7: Line = {
             name: 'KUR',
             modifiers: ['@v'],
             flags: ['#', '?'],
-            type: 'Grapheme'
+            type: 'Grapheme',
           },
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
@@ -596,8 +596,8 @@ const line7: Line = {
               enclosureType: [],
               cleanValue: 'KUR',
               value: 'KUR',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: ['@v'],
@@ -614,20 +614,20 @@ const line7: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: [],
@@ -639,30 +639,30 @@ const line7: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Logogram'
-        }
+          type: 'Logogram',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 4,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line8: Line = {
@@ -673,7 +673,7 @@ const line8: Line = {
       cleanValue: '',
       value: '°',
       side: 'LEFT',
-      type: 'Erasure'
+      type: 'Erasure',
     },
     {
       enclosureType: [],
@@ -695,24 +695,24 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '\\',
       side: 'CENTER',
-      type: 'Erasure'
+      type: 'Erasure',
     },
     {
       enclosureType: [],
@@ -734,24 +734,24 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '°',
       side: 'RIGHT',
-      type: 'Erasure'
+      type: 'Erasure',
     },
     {
       enclosureType: [],
@@ -773,27 +773,27 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
           cleanValue: '',
           value: '°',
           side: 'LEFT',
-          type: 'Erasure'
+          type: 'Erasure',
         },
         {
           enclosureType: [],
@@ -805,21 +805,21 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
           cleanValue: '',
           value: '\\',
           side: 'CENTER',
-          type: 'Erasure'
+          type: 'Erasure',
         },
         {
           enclosureType: [],
@@ -831,27 +831,27 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
           cleanValue: '',
           value: '°',
           side: 'RIGHT',
-          type: 'Erasure'
+          type: 'Erasure',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
@@ -863,27 +863,27 @@ const line8: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 5,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line9: Line = {
@@ -893,12 +893,12 @@ const line9: Line = {
       enclosureType: [],
       cleanValue: ' triple ruling',
       value: ' triple ruling',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
   number: 'TRIPLE',
   status: null,
-  type: 'RulingDollarLine'
+  type: 'RulingDollarLine',
 }
 
 const line10: Line = {
@@ -929,20 +929,20 @@ const line10: Line = {
                   enclosureType: [],
                   cleanValue: 'd',
                   value: 'd',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['#'],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: [],
@@ -954,17 +954,17 @@ const line10: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 2,
               modifiers: [],
               flags: ['?'],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
+          type: 'Determinative',
         },
         {
           enclosureType: [],
@@ -981,20 +981,20 @@ const line10: Line = {
                   enclosureType: [],
                   cleanValue: 'd',
                   value: 'd',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: [],
@@ -1006,18 +1006,18 @@ const line10: Line = {
                   enclosureType: [],
                   cleanValue: 'RA',
                   value: 'RA',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['!'],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Determinative'
+          type: 'Determinative',
         },
         {
           enclosureType: [],
@@ -1029,17 +1029,17 @@ const line10: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1066,27 +1066,27 @@ const line10: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'LinguisticGloss'
-        }
+          type: 'LinguisticGloss',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '{(',
       side: 'LEFT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1108,40 +1108,40 @@ const line10: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'k',
               value: 'k',
-              type: 'ValueToken'
+              type: 'ValueToken',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: '',
               value: '[',
               side: 'LEFT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
               cleanValue: 'u',
               value: 'u',
-              type: 'ValueToken'
+              type: 'ValueToken',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
               cleanValue: '',
               value: ']',
               side: 'RIGHT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'r',
               value: 'r',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1158,20 +1158,20 @@ const line10: Line = {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   cleanValue: 'd',
                   value: 'd',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['!'],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
-        }
+          type: 'Determinative',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1193,21 +1193,21 @@ const line10: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'KUR',
               value: 'KUR',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: ['!'],
           sign: null,
           surrogate: [],
-          type: 'Logogram'
+          type: 'Logogram',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1219,17 +1219,17 @@ const line10: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'ra',
               value: 'ra',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1237,7 +1237,7 @@ const line10: Line = {
       value: '%es',
       language: 'EMESAL',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1259,14 +1259,14 @@ const line10: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1283,40 +1283,40 @@ const line10: Line = {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   cleanValue: 'k',
                   value: 'k',
-                  type: 'ValueToken'
+                  type: 'ValueToken',
                 },
                 {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   cleanValue: '',
                   value: '[',
                   side: 'LEFT',
-                  type: 'BrokenAway'
+                  type: 'BrokenAway',
                 },
                 {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
                   cleanValue: 'ur',
                   value: 'ur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'BROKEN_AWAY'],
               cleanValue: '',
               value: ']',
               side: 'RIGHT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1328,21 +1328,21 @@ const line10: Line = {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   cleanValue: 'RA',
                   value: 'RA',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'PhoneticGloss'
-        }
+          type: 'PhoneticGloss',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1369,17 +1369,17 @@ const line10: Line = {
                   enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
+          type: 'Determinative',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1391,34 +1391,34 @@ const line10: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
       cleanValue: '',
       value: ')}',
       side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
-    }
+      type: 'DocumentOrientedGloss',
+    },
   ],
   lineNumber: {
     number: 6,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line11: Line = {
@@ -1439,14 +1439,14 @@ const line11: Line = {
           cleanValue: '',
           value: '[',
           side: 'LEFT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: '(',
           side: 'LEFT',
-          type: 'PerhapsBrokenAway'
+          type: 'PerhapsBrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
@@ -1458,41 +1458,41 @@ const line11: Line = {
               enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
           cleanValue: '',
           value: ')',
           side: 'RIGHT',
-          type: 'PerhapsBrokenAway'
+          type: 'PerhapsBrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: ']',
           side: 'RIGHT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
           cleanValue: '',
           value: '[',
           side: 'LEFT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
@@ -1509,40 +1509,40 @@ const line11: Line = {
                   enclosureType: ['BROKEN_AWAY'],
                   cleanValue: 'k',
                   value: 'k',
-                  type: 'ValueToken'
+                  type: 'ValueToken',
                 },
                 {
                   enclosureType: ['BROKEN_AWAY'],
                   cleanValue: '',
                   value: ']',
                   side: 'RIGHT',
-                  type: 'BrokenAway'
+                  type: 'BrokenAway',
                 },
                 {
                   enclosureType: [],
                   cleanValue: 'ur',
                   value: 'ur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: [],
               cleanValue: '',
               value: '[',
               side: 'LEFT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['BROKEN_AWAY'],
@@ -1554,24 +1554,24 @@ const line11: Line = {
                   enclosureType: ['BROKEN_AWAY'],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'LinguisticGloss'
+          type: 'LinguisticGloss',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: ']',
           side: 'RIGHT',
-          type: 'BrokenAway'
+          type: 'BrokenAway',
         },
         {
           enclosureType: [],
@@ -1583,47 +1583,47 @@ const line11: Line = {
               enclosureType: [],
               cleanValue: 'k',
               value: 'k',
-              type: 'ValueToken'
+              type: 'ValueToken',
             },
             {
               enclosureType: [],
               cleanValue: '',
               value: '[',
               side: 'LEFT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['BROKEN_AWAY'],
               cleanValue: 'ur',
               value: 'ur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['BROKEN_AWAY'],
           cleanValue: '',
           value: ']',
           side: 'RIGHT',
-          type: 'BrokenAway'
-        }
+          type: 'BrokenAway',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 1,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line12: Line = {
@@ -1633,13 +1633,13 @@ const line12: Line = {
       enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
-      type: 'Tabulation'
+      type: 'Tabulation',
     },
     {
       enclosureType: [],
       cleanValue: '($___$)',
       value: '($___$)',
-      type: 'Tabulation'
+      type: 'Tabulation',
     },
     {
       enclosureType: [],
@@ -1661,17 +1661,17 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1679,7 +1679,7 @@ const line12: Line = {
       value: '%sux',
       language: 'SUMERIAN',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -1701,14 +1701,14 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: [],
@@ -1725,20 +1725,20 @@ const line12: Line = {
                   enclosureType: [],
                   cleanValue: 'd',
                   value: 'd',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
-        }
+          type: 'Determinative',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1760,18 +1760,18 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'KUR',
               value: 'KUR',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
           surrogate: [],
-          type: 'Logogram'
-        }
+          type: 'Logogram',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1779,7 +1779,7 @@ const line12: Line = {
       value: '%akk',
       language: 'AKKADIAN',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -1801,17 +1801,17 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1819,7 +1819,7 @@ const line12: Line = {
       value: '%es',
       language: 'EMESAL',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -1841,17 +1841,17 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1873,15 +1873,15 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'KUR',
               value: 'KUR',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
           surrogate: [],
-          type: 'Logogram'
+          type: 'Logogram',
         },
         {
           enclosureType: [],
@@ -1898,21 +1898,21 @@ const line12: Line = {
                   enclosureType: [],
                   cleanValue: 'D',
                   value: 'D',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Determinative'
-        }
+          type: 'Determinative',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -1920,7 +1920,7 @@ const line12: Line = {
       value: '%akk',
       language: 'AKKADIAN',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -1942,27 +1942,27 @@ const line12: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 2,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line13: Line = {
@@ -1974,7 +1974,7 @@ const line13: Line = {
       value: '%sux',
       language: 'SUMERIAN',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -1990,10 +1990,10 @@ const line13: Line = {
           enclosureType: [],
           cleanValue: '|KUR₂.KUR|',
           value: '|KUR₂.KUR|',
-          type: 'CompoundGrapheme'
-        }
+          type: 'CompoundGrapheme',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2020,17 +2020,17 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
+          type: 'Determinative',
         },
         {
           enclosureType: [],
@@ -2047,14 +2047,14 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'ra',
                   value: 'ra',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
@@ -2066,24 +2066,24 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'RA',
                   value: 'RA',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['#'],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Variant'
+          type: 'Variant',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
@@ -2095,17 +2095,17 @@ const line13: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2132,17 +2132,17 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'PhoneticGloss'
+          type: 'PhoneticGloss',
         },
         {
           enclosureType: [],
@@ -2154,17 +2154,17 @@ const line13: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: ['!'],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2173,7 +2173,7 @@ const line13: Line = {
       divider: ':.',
       modifiers: [],
       flags: [],
-      type: 'Divider'
+      type: 'Divider',
     },
     {
       enclosureType: [],
@@ -2200,14 +2200,14 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
@@ -2219,31 +2219,31 @@ const line13: Line = {
                   enclosureType: [],
                   cleanValue: 'KUR',
                   value: 'KUR',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['#'],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Variant'
-        }
+          type: 'Variant',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 3,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line14: Line = {
@@ -2255,7 +2255,7 @@ const line14: Line = {
       value: '%es',
       language: 'EMESAL',
       normalized: false,
-      type: 'LanguageShift'
+      type: 'LanguageShift',
     },
     {
       enclosureType: [],
@@ -2271,10 +2271,10 @@ const line14: Line = {
           enclosureType: [],
           cleanValue: '|KUR₂.KUR|',
           value: '|KUR₂.KUR|',
-          type: 'CompoundGrapheme'
-        }
+          type: 'CompoundGrapheme',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2301,17 +2301,17 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Determinative'
+          type: 'Determinative',
         },
         {
           enclosureType: [],
@@ -2328,14 +2328,14 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'ra',
                   value: 'ra',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
@@ -2347,24 +2347,24 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'RA',
                   value: 'RA',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['#'],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Variant'
+          type: 'Variant',
         },
         {
           enclosureType: [],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: [],
@@ -2376,17 +2376,17 @@ const line14: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2413,17 +2413,17 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'PhoneticGloss'
+          type: 'PhoneticGloss',
         },
         {
           enclosureType: [],
@@ -2435,17 +2435,17 @@ const line14: Line = {
               enclosureType: [],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: ['!'],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2454,7 +2454,7 @@ const line14: Line = {
       divider: ':.',
       modifiers: [],
       flags: [],
-      type: 'Divider'
+      type: 'Divider',
     },
     {
       enclosureType: [],
@@ -2481,14 +2481,14 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
@@ -2500,31 +2500,31 @@ const line14: Line = {
                   enclosureType: [],
                   cleanValue: 'KUR',
                   value: 'KUR',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: ['#'],
               sign: null,
               surrogate: [],
-              type: 'Logogram'
-            }
+              type: 'Logogram',
+            },
           ],
-          type: 'Variant'
-        }
+          type: 'Variant',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     number: 4,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line15: Line = {
@@ -2545,7 +2545,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<',
           side: 'LEFT',
-          type: 'AccidentalOmission'
+          type: 'AccidentalOmission',
         },
         {
           enclosureType: ['ACCIDENTAL_OMISSION'],
@@ -2557,17 +2557,17 @@ const line15: Line = {
               enclosureType: ['ACCIDENTAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['ACCIDENTAL_OMISSION'],
@@ -2589,24 +2589,24 @@ const line15: Line = {
               enclosureType: ['ACCIDENTAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['ACCIDENTAL_OMISSION'],
           cleanValue: '',
           value: '>',
           side: 'RIGHT',
-          type: 'AccidentalOmission'
-        }
+          type: 'AccidentalOmission',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2623,7 +2623,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<(',
           side: 'LEFT',
-          type: 'IntentionalOmission'
+          type: 'IntentionalOmission',
         },
         {
           enclosureType: ['INTENTIONAL_OMISSION'],
@@ -2635,17 +2635,17 @@ const line15: Line = {
               enclosureType: ['INTENTIONAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['INTENTIONAL_OMISSION'],
@@ -2667,24 +2667,24 @@ const line15: Line = {
               enclosureType: ['INTENTIONAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['INTENTIONAL_OMISSION'],
           cleanValue: '',
           value: ')>',
           side: 'RIGHT',
-          type: 'IntentionalOmission'
-        }
+          type: 'IntentionalOmission',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
@@ -2701,7 +2701,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<<',
           side: 'LEFT',
-          type: 'Removal'
+          type: 'Removal',
         },
         {
           enclosureType: ['REMOVAL'],
@@ -2714,17 +2714,17 @@ const line15: Line = {
               enclosureType: ['REMOVAL'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['REMOVAL'],
@@ -2746,31 +2746,31 @@ const line15: Line = {
               enclosureType: ['REMOVAL'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['REMOVAL'],
           cleanValue: '',
           value: '>>',
           side: 'RIGHT',
-          type: 'Removal'
-        }
+          type: 'Removal',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '{(',
       side: 'LEFT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2787,7 +2787,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<',
           side: 'LEFT',
-          type: 'AccidentalOmission'
+          type: 'AccidentalOmission',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
@@ -2799,8 +2799,8 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
@@ -2812,12 +2812,12 @@ const line15: Line = {
             name: 'KUR',
             modifiers: [],
             flags: [],
-            type: 'Grapheme'
+            type: 'Grapheme',
           },
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
@@ -2839,24 +2839,24 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
           cleanValue: '',
           value: '>',
           side: 'RIGHT',
-          type: 'AccidentalOmission'
-        }
+          type: 'AccidentalOmission',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2873,7 +2873,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<(',
           side: 'LEFT',
-          type: 'IntentionalOmission'
+          type: 'IntentionalOmission',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
@@ -2884,21 +2884,21 @@ const line15: Line = {
             {
               enclosureType: [
                 'DOCUMENT_ORIENTED_GLOSS',
-                'INTENTIONAL_OMISSION'
+                'INTENTIONAL_OMISSION',
               ],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
@@ -2919,28 +2919,28 @@ const line15: Line = {
             {
               enclosureType: [
                 'DOCUMENT_ORIENTED_GLOSS',
-                'INTENTIONAL_OMISSION'
+                'INTENTIONAL_OMISSION',
               ],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
           cleanValue: '',
           value: ')>',
           side: 'RIGHT',
-          type: 'IntentionalOmission'
-        }
+          type: 'IntentionalOmission',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2957,7 +2957,7 @@ const line15: Line = {
           cleanValue: '',
           value: '<<',
           side: 'LEFT',
-          type: 'Removal'
+          type: 'Removal',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
@@ -2969,17 +2969,17 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
@@ -3001,38 +3001,38 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
           cleanValue: '',
           value: '>>',
           side: 'RIGHT',
-          type: 'Removal'
-        }
+          type: 'Removal',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
       cleanValue: '',
       value: ')}',
       side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '{(',
       side: 'LEFT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3055,8 +3055,8 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'KUR',
               value: 'KUR',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
@@ -3073,20 +3073,20 @@ const line15: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
+              type: 'Reading',
             },
             {
               enclosureType: [],
               cleanValue: '-',
               value: '-',
-              type: 'Joiner'
+              type: 'Joiner',
             },
             {
               enclosureType: [],
@@ -3098,20 +3098,20 @@ const line15: Line = {
                   enclosureType: [],
                   cleanValue: 'kur',
                   value: 'kur',
-                  type: 'ValueToken'
-                }
+                  type: 'ValueToken',
+                },
               ],
               subIndex: 1,
               modifiers: [],
               flags: [],
               sign: null,
-              type: 'Reading'
-            }
+              type: 'Reading',
+            },
           ],
-          type: 'Logogram'
-        }
+          type: 'Logogram',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3133,34 +3133,34 @@ const line15: Line = {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'kur',
               value: 'kur',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
       cleanValue: '',
       value: ')}',
       side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
-    }
+      type: 'DocumentOrientedGloss',
+    },
   ],
   lineNumber: {
     number: 5,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line16: Line = {
@@ -3171,28 +3171,28 @@ const line16: Line = {
       cleanValue: '',
       value: '[',
       side: 'LEFT',
-      type: 'BrokenAway'
+      type: 'BrokenAway',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: ']',
       side: 'RIGHT',
-      type: 'BrokenAway'
+      type: 'BrokenAway',
     },
     {
       enclosureType: [],
       cleanValue: '',
       value: '[',
       side: 'LEFT',
-      type: 'BrokenAway'
+      type: 'BrokenAway',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: '{(',
       side: 'LEFT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3214,41 +3214,41 @@ const line16: Line = {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'ra',
               value: 'ra',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
       cleanValue: '',
       value: ')}',
       side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: ']',
       side: 'RIGHT',
-      type: 'BrokenAway'
-    }
+      type: 'BrokenAway',
+    },
   ],
   lineNumber: {
     number: 6,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line17: Line = {
@@ -3259,20 +3259,20 @@ const line17: Line = {
       cleanValue: '',
       value: '[',
       side: 'LEFT',
-      type: 'BrokenAway'
+      type: 'BrokenAway',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '...',
       value: '...',
-      type: 'UnknownNumberOfSigns'
+      type: 'UnknownNumberOfSigns',
     },
     {
       enclosureType: ['BROKEN_AWAY'],
       cleanValue: '',
       value: '{(',
       side: 'LEFT',
-      type: 'DocumentOrientedGloss'
+      type: 'DocumentOrientedGloss',
     },
     {
       enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3294,20 +3294,20 @@ const line17: Line = {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'he',
               value: 'he',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 1,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
+          type: 'Reading',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
           cleanValue: '-',
           value: '-',
-          type: 'Joiner'
+          type: 'Joiner',
         },
         {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3319,47 +3319,47 @@ const line17: Line = {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'p',
               value: 'p',
-              type: 'ValueToken'
+              type: 'ValueToken',
             },
             {
               enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: '',
               value: ']',
               side: 'RIGHT',
-              type: 'BrokenAway'
+              type: 'BrokenAway',
             },
             {
               enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
               cleanValue: 'i',
               value: 'i',
-              type: 'ValueToken'
-            }
+              type: 'ValueToken',
+            },
           ],
           subIndex: 2,
           modifiers: [],
           flags: [],
           sign: null,
-          type: 'Reading'
-        }
+          type: 'Reading',
+        },
       ],
-      type: 'Word'
+      type: 'Word',
     },
     {
       enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
       cleanValue: '',
       value: ')}',
       side: 'RIGHT',
-      type: 'DocumentOrientedGloss'
-    }
+      type: 'DocumentOrientedGloss',
+    },
   ],
   lineNumber: {
     number: 7,
     hasPrime: false,
     prefixModifier: null,
     suffixModifier: null,
-    type: 'LineNumber'
+    type: 'LineNumber',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 
 const line18: Line = {
@@ -3380,33 +3380,33 @@ const line18: Line = {
           cleanValue: 'x',
           value: 'x',
           flags: [],
-          type: 'UnclearSign'
-        }
+          type: 'UnclearSign',
+        },
       ],
-      type: 'Word'
-    }
+      type: 'Word',
+    },
   ],
   lineNumber: {
     start: {
       number: 3,
       hasPrime: true,
       prefixModifier: 'D',
-      suffixModifier: 'a'
+      suffixModifier: 'a',
     },
     end: {
       number: 4,
       hasPrime: false,
       prefixModifier: null,
-      suffixModifier: 'b'
+      suffixModifier: 'b',
     },
-    type: 'LineNumberRange'
+    type: 'LineNumberRange',
   },
-  type: 'TextLine'
+  type: 'TextLine',
 }
 const line19: Line = {
   type: 'EmptyLine',
   content: [],
-  prefix: ''
+  prefix: '',
 }
 const line20: Line = {
   prefix: '$',
@@ -3416,12 +3416,12 @@ const line20: Line = {
       enclosureType: [],
       cleanValue: ' single ruling !?',
       value: ' single ruling !?',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
   number: 'SINGLE',
   status: 'NEEDS_COLLATION',
-  type: 'RulingDollarLine'
+  type: 'RulingDollarLine',
 }
 
 const line21: Line = {
@@ -3435,9 +3435,9 @@ const line21: Line = {
       type: 'ValueToken',
       cleanValue: ' single ruling',
       value: ' single ruling',
-      enclosureType: []
-    }
-  ]
+      enclosureType: [],
+    },
+  ],
 }
 
 const line22: Line = {
@@ -3451,9 +3451,9 @@ const line22: Line = {
       type: 'ValueToken',
       cleanValue: ' double ruling',
       value: ' double ruling',
-      enclosureType: []
-    }
-  ]
+      enclosureType: [],
+    },
+  ],
 }
 
 const line23: Line = {
@@ -3467,9 +3467,9 @@ const line23: Line = {
       type: 'ValueToken',
       cleanValue: ' triple ruling',
       value: ' triple ruling',
-      enclosureType: []
-    }
-  ]
+      enclosureType: [],
+    },
+  ],
 }
 
 const line24: Line = {
@@ -3479,7 +3479,7 @@ const line24: Line = {
   surface_label: {
     status: [],
     text: '',
-    surface: 'OBVERSE'
+    surface: 'OBVERSE',
   },
   displayValue: 'obverse',
   content: [
@@ -3487,9 +3487,9 @@ const line24: Line = {
       type: 'ValueToken',
       cleanValue: ' obverse',
       value: ' obverse',
-      enclosureType: []
-    }
-  ]
+      enclosureType: [],
+    },
+  ],
 }
 
 const line25: Line = {
@@ -3500,13 +3500,13 @@ const line25: Line = {
       enclosureType: [],
       cleanValue: ' (image 1 = foo)',
       value: ' (image 1 = foo)',
-      type: 'ValueToken'
-    }
+      type: 'ValueToken',
+    },
   ],
   letter: null,
   prefix: '$',
   number: '1',
-  type: 'ImageDollarLine'
+  type: 'ImageDollarLine',
 }
 
 export default new Text({
@@ -3535,6 +3535,6 @@ export default new Text({
     line22,
     line23,
     line24,
-    line25
-  ]
+    line25,
+  ],
 })

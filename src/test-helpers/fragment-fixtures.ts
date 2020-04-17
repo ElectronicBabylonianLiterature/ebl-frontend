@@ -8,9 +8,7 @@ import complexText from './complexTestText'
 const chance = new Chance()
 
 function date(): string {
-  return factory
-    .chance('date')()
-    .toISOString()
+  return factory.chance('date')().toISOString()
 }
 
 function dateRange(): string {
@@ -19,38 +17,38 @@ function dateRange(): string {
 
 factory.define('statistics', Object, {
   transliteratedFragments: factory.chance('natural'),
-  lines: factory.chance('natural')
+  lines: factory.chance('natural'),
 })
 
 factory.define('record', RecordEntry, {
   user: factory.chance('last'),
   date: date,
-  type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision'])
+  type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision']),
 })
 
 factory.extend('record', 'historicalRecord', {
   date: dateRange,
-  type: 'HistoricalTransliteration'
+  type: 'HistoricalTransliteration',
 })
 
 factory.define('measures', Object, {
   length: factory.chance('floating', { min: 0, max: 100 }),
   width: factory.chance('floating', { min: 0, max: 100 }),
-  thickness: factory.chance('floating', { min: 0, max: 100 })
+  thickness: factory.chance('floating', { min: 0, max: 100 }),
 })
 
 factory.define('folio', Folio, {
   name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-  number: factory.chance('string')
+  number: factory.chance('string'),
 })
 
 factory.define('text', Text, {
-  lines: factory.chance('pickset', complexText.lines, 5)
+  lines: factory.chance('pickset', complexText.lines, 5),
 })
 
 factory.define('uncuratedReference', Object, {
   document: factory.chance('sentence'),
-  lines: async () => await factory.chance('n', chance.natural, 5)()
+  lines: async () => await factory.chance('n', chance.natural, 5)(),
 })
 
 factory.define('fragment', Fragment, {
@@ -93,7 +91,7 @@ factory.define('fragment', Fragment, {
     'Anšan',
     'Lagash',
     'Assur',
-    'Huzirina'
+    'Huzirina',
   ]),
   script: factory.chance('pickone', ['NA', 'NB']),
   folios: async () => await factory.buildMany('folio', 2),
@@ -102,7 +100,7 @@ factory.define('fragment', Fragment, {
   notes: factory.chance('sentence'),
   museum: Museum.of('The British Museum'),
   references: async () => await factory.buildMany('referenceDto', 2),
-  hasPhoto: factory.chance('bool')
+  hasPhoto: factory.chance('bool'),
 })
 
 factory.define('fragmentInfo', Object, {
@@ -115,15 +113,15 @@ factory.define('fragmentInfo', Object, {
   script: factory.chance('pickone', ['NA', 'NB']),
   matchingLines: [['1. kur']],
   editor: factory.chance('last'),
-  date: date
+  date: date,
 })
 
 factory.define('folioPagerEntry', Object, {
   fragmentNumber: factory.chance('string'),
-  folioNumber: factory.chance('string')
+  folioNumber: factory.chance('string'),
 })
 
 factory.define('folioPager', Object, {
   previous: factory.assocAttrs('folioPagerEntry'),
-  next: factory.assocAttrs('folioPagerEntry')
+  next: factory.assocAttrs('folioPagerEntry'),
 })

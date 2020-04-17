@@ -13,9 +13,9 @@ function createOptions(body, method): RequestInit {
   return {
     body: JSON.stringify(body),
     headers: {
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8',
     },
-    method: method
+    method: method,
   }
 }
 export class ApiError extends Error {
@@ -35,7 +35,9 @@ export class ApiError extends Error {
   static async fromResponse(response: Response): Promise<ApiError> {
     return response
       .json()
-      .then(body => new ApiError(body.description || response.statusText, body))
+      .then(
+        (body) => new ApiError(body.description || response.statusText, body)
+      )
       .catch(() => new ApiError(response.statusText, {}))
   }
 }
@@ -55,7 +57,7 @@ export default class ApiClient {
       : {}
     return new Headers({
       ...defaultHeaders,
-      ...headers
+      ...headers,
     })
   }
 
@@ -64,16 +66,16 @@ export default class ApiClient {
       const headers = this.createHeaders(authenticate, options.headers)
       return cancellableFetch(apiUrl(path), {
         ...options,
-        headers: headers
+        headers: headers,
       })
-        .then(async response => {
+        .then(async (response) => {
           if (response.ok) {
             return response
           } else {
             throw await ApiError.fromResponse(response)
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.errorReporter.captureException(error)
           throw error
         })
@@ -83,11 +85,15 @@ export default class ApiClient {
   }
 
   fetchJson(path, authenticate): Promise<any> {
-    return this.fetch(path, authenticate, {}).then(response => response.json())
+    return this.fetch(path, authenticate, {}).then((response) =>
+      response.json()
+    )
   }
 
   fetchBlob(path: string, authenticate: boolean): Promise<Blob> {
-    return this.fetch(path, authenticate, {}).then(response => response.blob())
+    return this.fetch(path, authenticate, {}).then((response) =>
+      response.blob()
+    )
   }
 
   postJson(path, body): Promise<any> {

@@ -28,7 +28,7 @@ export default class Museum {
       url: '',
       copyright: '',
       museumClass: Museum,
-      ...museums.get(name)
+      ...museums.get(name),
     }
     return new data.museumClass(data)
   }
@@ -71,7 +71,7 @@ class BritishMuseum extends Museum {
         url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
           bmIdNumber
         )}&partId=1`,
-        label: `The British Museum object ${bmIdNumber}`
+        label: `The British Museum object ${bmIdNumber}`,
       }
     } else {
       throw new Error(`Fragment ${fragment.number} does not have bmIdNumber.`)
@@ -94,14 +94,14 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
       url: 'https://britishmuseum.org/',
       copyright:
         'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
-      museumClass: BritishMuseum
-    }
+      museumClass: BritishMuseum,
+    },
   ],
   [
     'National Museum of Iraq',
     {
       copyright:
-        'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum'
-    }
-  ]
+        'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+    },
+  ],
 ])

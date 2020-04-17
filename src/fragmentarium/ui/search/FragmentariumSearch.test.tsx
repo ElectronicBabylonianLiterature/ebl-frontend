@@ -15,7 +15,7 @@ let statistics
 
 async function renderFragmentariumSearch({
   number,
-  transliteration
+  transliteration,
 }: {
   number?: string | null | undefined
   transliteration?: string | null | undefined
@@ -42,15 +42,15 @@ async function renderFragmentariumSearch({
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
-    statistics: jest.fn()
+    statistics: jest.fn(),
   }
   fragmentSearchService = {
     searchNumber: jest.fn(),
-    searchTransliteration: jest.fn()
+    searchTransliteration: jest.fn(),
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: () => false
+    isAllowedToTransliterateFragments: () => false,
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
@@ -90,7 +90,7 @@ describe('Search', () => {
     beforeEach(async () => {
       fragments = await factory.buildMany('fragmentInfo', 2, [
         { matchingLines: [['line 1', 'line 2']] },
-        { matchingLines: [['line 3'], ['line 4']] }
+        { matchingLines: [['line 3'], ['line 4']] },
       ])
       fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)

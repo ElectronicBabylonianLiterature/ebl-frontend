@@ -29,7 +29,7 @@ const expectedScope = [
   'read:AKG-folios',
   'read:MJG-folios',
   'read:USK-folios',
-  'read:ILF-folios'
+  'read:ILF-folios',
 ].join(' ')
 const now = new Date()
 let sessionStore
@@ -43,11 +43,11 @@ beforeEach(() => {
   sessionStore = {
     getSession: jest.fn(),
     clearSession: jest.fn(),
-    setSession: jest.fn()
+    setSession: jest.fn(),
   }
   errorReporter = {
     setUser: jest.fn(),
-    clearScope: jest.fn()
+    clearScope: jest.fn(),
   }
   auth = new Auth(sessionStore, errorReporter, auth0Config)
   auth0mock = auth0.WebAuth.mock.instances[0]
@@ -62,7 +62,7 @@ test('WebAuth is created', () => {
     redirectUri: auth0Config.redirectUri,
     audience: auth0Config.audience,
     responseType: 'token id_token',
-    scope: expectedScope
+    scope: expectedScope,
   })
 })
 
@@ -89,7 +89,7 @@ describe('logout', () => {
   test('Calls WebAuth.logout', () => {
     expect(auth0mock.logout).toBeCalledWith({
       clientID: auth0Config.clientID,
-      returnTo: auth0Config.returnTo
+      returnTo: auth0Config.returnTo,
     })
   })
 })
@@ -106,9 +106,9 @@ describe('handleAuthentication', () => {
       idTokenPayload: {
         'https://ebabylon.org/eblName': 'Tester',
         name: 'test@example.com',
-        sub: 'auth0|1234'
+        sub: 'auth0|1234',
       },
-      ...authResultConfig
+      ...authResultConfig,
     }
 
     const expectedSession = new Session(
@@ -119,7 +119,7 @@ describe('handleAuthentication', () => {
     )
 
     beforeEach(async () => {
-      auth0mock.parseHash.mockImplementationOnce(callback =>
+      auth0mock.parseHash.mockImplementationOnce((callback) =>
         callback(null, authResult)
       )
       await auth.handleAuthentication()
@@ -133,7 +133,7 @@ describe('handleAuthentication', () => {
       const {
         sub,
         [eblNameProperty]: eblName,
-        name
+        name,
       } = authResult.idTokenPayload
       expect(errorReporter.setUser).toBeCalledWith(sub, name, eblName)
     })
@@ -152,10 +152,10 @@ describe('handleAuthentication', () => {
     const error = {
       error: 'invalid_hash',
       errorDescription:
-        'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property'
+        'response_type contains `id_token`, but the parsed hash does not contain an `id_token` property',
     }
     beforeEach(() => {
-      auth0mock.parseHash.mockImplementationOnce(callback =>
+      auth0mock.parseHash.mockImplementationOnce((callback) =>
         callback(error, null)
       )
     })

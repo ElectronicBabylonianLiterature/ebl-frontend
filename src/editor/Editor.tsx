@@ -10,12 +10,12 @@ import AtfMode from './AtfMode'
 
 function createAnnotations(compositeError) {
   return _.get(compositeError, 'data.errors', [])
-    .filter(error => _.has(error, 'lineNumber'))
-    .map(error => ({
+    .filter((error) => _.has(error, 'lineNumber'))
+    .map((error) => ({
       row: error.lineNumber - 1,
       column: 0,
       type: 'error',
-      text: error.description
+      text: error.description,
     }))
 }
 
@@ -25,7 +25,7 @@ const specialCharacterKeys = Object.entries(specialCharacters).map(
     bindKey: value,
     exec(editor: any): void {
       editor.insert(key)
-    }
+    },
   })
 )
 interface Props {
@@ -38,7 +38,7 @@ interface Props {
 
 class Editor extends Component<Props> {
   static defaultProps = {
-    error: null
+    error: null,
   }
   readonly aceEditor = React.createRef<AceEditor>()
 
@@ -74,12 +74,12 @@ class Editor extends Component<Props> {
         readOnly={disabled}
         annotations={annotations}
         editorProps={{
-          $blockScrolling: Infinity
+          $blockScrolling: Infinity,
         }}
         // @ts-ignore
         setOptions={{
           showLineNumbers: false,
-          newLineMode: 'unix'
+          newLineMode: 'unix',
         }}
         // @ts-ignore
         commands={specialCharacterKeys}

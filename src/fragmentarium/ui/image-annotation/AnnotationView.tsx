@@ -10,7 +10,7 @@ import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 
 export default function AnnotationView({
   fragmentService,
-  number
+  number,
 }: {
   fragmentService: FragmentService
   number: string
@@ -20,7 +20,7 @@ export default function AnnotationView({
       crumbs={[
         new SectionCrumb('Fragmentarium'),
         new FragmentCrumb(number),
-        new TextCrumb('Annotate')
+        new TextCrumb('Annotate'),
       ]}
       title={`Annotate ${number}`}
       wide

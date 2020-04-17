@@ -30,7 +30,7 @@ class WordEditor extends Component<
     this.state = {
       word: props.data,
       error: null,
-      saving: false
+      saving: false,
     }
     this.updatePromise = Promise.resolve()
   }
@@ -49,7 +49,7 @@ class WordEditor extends Component<
     this.updatePromise = this.props.wordService
       .update(word)
       .then(() => this.setState({ word: word, error: null, saving: false }))
-      .catch(error => {
+      .catch((error) => {
         this.setState({ word: this.state.word, error: error, saving: false })
       })
   }
@@ -59,7 +59,7 @@ class WordEditor extends Component<
       <AppContent
         crumbs={[
           new SectionCrumb('Dictionary'),
-          new TextCrumb(this.props.match.params['id'])
+          new TextCrumb(this.props.match.params['id']),
         ]}
         title={
           <>
@@ -85,6 +85,6 @@ class WordEditor extends Component<
   }
 }
 
-export default withData<WithoutData<Props>, {}, Word>(WordEditor, props =>
+export default withData<WithoutData<Props>, {}, Word>(WordEditor, (props) =>
   props.wordService.find(props.match.params['id'])
 )

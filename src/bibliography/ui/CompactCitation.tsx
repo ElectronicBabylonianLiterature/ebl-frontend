@@ -4,7 +4,7 @@ import Reference from 'bibliography/domain/Reference'
 import Citation from 'bibliography/domain/Citation'
 
 export default function CompactCitation({
-  reference
+  reference,
 }: {
   reference: Reference
 }) {

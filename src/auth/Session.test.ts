@@ -81,13 +81,13 @@ describe.each([
   ['write:bibliography', 'isAllowedToWriteBibliography'],
   ['write:texts', 'isAllowedToWriteTexts'],
   ['read:bibliography', 'isAllowedToReadBibliography'],
-  ['access:beta', 'hasBetaAccess']
+  ['access:beta', 'hasBetaAccess'],
 ])('%s %s', (scope, method) => {
   beforeEach(() => advanceBy(-1))
 
   it('Method returns true if session has scope', () => {
     const session = new Session('accessToken', 'idToken', now.getTime(), [
-      scope
+      scope,
     ])
     expect(session[method]()).toBe(true)
   })

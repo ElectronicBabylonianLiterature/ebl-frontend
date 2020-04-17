@@ -19,7 +19,7 @@ const Word: FunctionComponent<Props> = ({ token, onClick }: Props) => {
       className={classNames({
         Word: true,
         'Word--with-lemma': !_.isEmpty(token.uniqueLemma),
-        'Word--suggestion': token.suggested
+        'Word--suggestion': token.suggested,
       })}
     >
       {token.value}

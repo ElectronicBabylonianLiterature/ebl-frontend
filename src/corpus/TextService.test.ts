@@ -8,7 +8,7 @@ import {
   createManuscript,
   createLine,
   createManuscriptLine,
-  types
+  types,
 } from './text'
 import TextService from './TextService'
 import { periodModifiers, periods } from './period'
@@ -16,7 +16,7 @@ import { provenances } from './provenance'
 
 const apiClient = {
   fetchJson: jest.fn(),
-  postJson: jest.fn()
+  postJson: jest.fn(),
 }
 const testService = new TextService(apiClient)
 
@@ -51,10 +51,10 @@ const textDto = {
               notes: '',
               pages: '34-54',
               type: 'DISCUSSION',
-              document: { id: 'RN1853' }
-            }
-          ]
-        }
+              document: { id: 'RN1853' },
+            },
+          ],
+        },
       ],
       lines: [
         {
@@ -63,12 +63,12 @@ const textDto = {
           reconstructionTokens: [
             {
               type: 'AkkadianWord',
-              value: 'reconstructed'
+              value: 'reconstructed',
             },
             {
               type: 'AkkadianWord',
-              value: 'text'
-            }
+              value: 'text',
+            },
           ],
           manuscripts: [
             {
@@ -84,7 +84,7 @@ const textDto = {
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
-                  erasure: 'NONE'
+                  erasure: 'NONE',
                 },
                 {
                   type: 'Word',
@@ -94,15 +94,15 @@ const textDto = {
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
-                  alignment: 1
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                  alignment: 1,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }
 
 const text = createText({
@@ -136,9 +136,9 @@ const text = createText({
               '',
               [],
               new BibliographyEntry({ id: 'RN1853' })
-            )
-          ]
-        })
+            ),
+          ],
+        }),
       ],
       lines: [
         createLine({
@@ -147,12 +147,12 @@ const text = createText({
           reconstructionTokens: [
             {
               type: 'AkkadianWord',
-              value: 'reconstructed'
+              value: 'reconstructed',
             },
             {
               type: 'AkkadianWord',
-              value: 'text'
-            }
+              value: 'text',
+            },
           ],
           manuscripts: [
             createManuscriptLine({
@@ -168,7 +168,7 @@ const text = createText({
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
-                  erasure: 'NONE'
+                  erasure: 'NONE',
                 },
                 {
                   type: 'Word',
@@ -178,15 +178,15 @@ const text = createText({
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
-                  alignment: 1
-                }
-              ]
-            })
-          ]
-        })
-      ]
-    })
-  ]
+                  alignment: 1,
+                },
+              ],
+            }),
+          ],
+        }),
+      ],
+    }),
+  ],
 })
 
 const alignmentDto = {
@@ -194,15 +194,15 @@ const alignmentDto = {
     [
       [
         {
-          value: 'kur'
+          value: 'kur',
         },
         {
           value: 'ra',
-          alignment: 1
-        }
-      ]
-    ]
-  ]
+          alignment: 1,
+        },
+      ],
+    ],
+  ],
 }
 
 const manuscriptsDto = {
@@ -223,11 +223,11 @@ const manuscriptsDto = {
           linesCited: [],
           notes: '',
           pages: '34-54',
-          type: 'DISCUSSION'
-        }
-      ]
-    }
-  ]
+          type: 'DISCUSSION',
+        },
+      ],
+    },
+  ],
 }
 
 const linesDto = {
@@ -240,11 +240,11 @@ const linesDto = {
           manuscriptId: 1,
           labels: ['o', 'iii'],
           number: 'a+1',
-          atf: 'kur ra'
-        }
-      ]
-    }
-  ]
+          atf: 'kur ra',
+        },
+      ],
+    },
+  ],
 }
 
 const textsDto = [
@@ -254,8 +254,8 @@ const textsDto = [
     name: 'Palm and Vine',
     numberOfVerses: 10,
     approximateVerses: true,
-    chapters: []
-  }
+    chapters: [],
+  },
 ]
 
 const texts = [
@@ -265,8 +265,8 @@ const texts = [
     name: 'Palm and Vine',
     numberOfVerses: 10,
     approximateVerses: true,
-    chapters: []
-  })
+    chapters: [],
+  }),
 ]
 
 const testData: TestData[] = [
@@ -279,9 +279,9 @@ const testData: TestData[] = [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
         text.index
       )}`,
-      true
+      true,
     ],
-    Promise.resolve(textDto)
+    Promise.resolve(textDto),
   ],
   [
     'list',
@@ -289,7 +289,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     texts,
     ['/texts', false],
-    Promise.resolve(textsDto)
+    Promise.resolve(textsDto),
   ],
   [
     'updateAlignment',
@@ -300,9 +300,9 @@ const testData: TestData[] = [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
         text.index
       )}/chapters/0/alignment`,
-      alignmentDto
+      alignmentDto,
     ],
-    Promise.resolve(textDto)
+    Promise.resolve(textDto),
   ],
   [
     'updateManuscripts',
@@ -313,9 +313,9 @@ const testData: TestData[] = [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
         text.index
       )}/chapters/0/manuscripts`,
-      manuscriptsDto
+      manuscriptsDto,
     ],
-    Promise.resolve(textDto)
+    Promise.resolve(textDto),
   ],
   [
     'updateLines',
@@ -326,10 +326,10 @@ const testData: TestData[] = [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
         text.index
       )}/chapters/0/lines`,
-      linesDto
+      linesDto,
     ],
-    Promise.resolve(textDto)
-  ]
+    Promise.resolve(textDto),
+  ],
 ]
 
 describe('TextService', () => testDelegation(testService, testData))

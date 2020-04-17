@@ -6,7 +6,7 @@ import {
   RenderResult,
   act,
   Matcher,
-  within
+  within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from 'App'
@@ -95,13 +95,13 @@ export default class AppDriver {
 
   async render(): Promise<AppDriver> {
     const fakeSessionStore: SessionStore = {
-      setSession: session => {
+      setSession: (session) => {
         this.session = session
       },
       clearSession: () => {
         this.session = null
       },
-      getSession: () => this.session || new Session('', '', 0, [])
+      getSession: () => this.session || new Session('', '', 0, []),
     }
 
     await act(async () => {

@@ -10,7 +10,7 @@ function CollapseIndicator({ open }) {
       className={classNames({
         fas: true,
         'fa-angle-up': open,
-        'fa-angle-down': !open
+        'fa-angle-down': !open,
       })}
     />
   )
@@ -25,7 +25,7 @@ export class CollapsibleCard extends Component<
   constructor(props) {
     super(props)
     this.state = {
-      open: !this.props.collapsed
+      open: !this.props.collapsed,
     }
     this.collapseId = _.uniqueId('List-collapse-')
   }

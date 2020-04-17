@@ -29,7 +29,7 @@ function CreateButton({ session }: { session: Session }): JSX.Element {
 
 export default function Bibliography({
   bibliographyService,
-  location
+  location,
 }: {
   bibliographyService
 } & RouteComponentProps): JSX.Element {

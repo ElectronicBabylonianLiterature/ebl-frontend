@@ -16,7 +16,7 @@ import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
 
 const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
-  annotation
+  annotation,
 }: Omit<ContentProps, 'onDelete'>): JSX.Element => (
   <Content annotation={annotation} onDelete={onDelete} />
 )
@@ -37,16 +37,16 @@ function FragmentAnnotation({
   fragment,
   image,
   initialAnnotations,
-  fragmentService
+  fragmentService,
 }: Props): React.ReactElement {
   const tokens = createAnnotationTokens(fragment)
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
-    initialAnnotations.map(annotation => {
+    initialAnnotations.map((annotation) => {
       const token = tokens
         .flat()
         .find(
-          token =>
+          (token) =>
             _.isEqual(token.path, annotation.data.path) &&
             token.value === annotation.data.value
         )
@@ -75,7 +75,7 @@ function FragmentAnnotation({
     const { geometry, data } = annotation
     const newAnnotation = new Annotation(geometry, {
       ...data,
-      id: uuid4()
+      id: uuid4(),
     })
     setAnnotation({})
     setAnnotations([...annotations, newAnnotation])
@@ -117,7 +117,7 @@ function Annotator({
   image,
   fragment,
   annotations,
-  fragmentService
+  fragmentService,
 }: {
   image: Blob
   fragment: Fragment
@@ -170,5 +170,5 @@ export default withData<
   ({ data, fragmentService, ...props }) => (
     <WithPhoto fragment={data} fragmentService={fragmentService} {...props} />
   ),
-  props => props.fragmentService.find(props.number)
+  (props) => props.fragmentService.find(props.number)
 )

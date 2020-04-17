@@ -6,7 +6,7 @@ const localStorageItems: Map<string, string> = new Map([
   ['access_token', session.accessToken],
   ['id_token', session.idToken],
   ['expires_at', JSON.stringify(session.expiresAt)],
-  ['scopes', session.scopes.join(' ')]
+  ['scopes', session.scopes.join(' ')],
 ])
 const sessionStore = new SessionStore()
 

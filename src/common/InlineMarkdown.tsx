@@ -2,7 +2,7 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 
 export default function InlineMarkdown({
-  source
+  source,
 }: {
   source: string
 }): JSX.Element {

@@ -10,7 +10,7 @@ class ArrayInput extends Component<{ value; onChange; separator }> {
     this.id = _.uniqueId('ArrayInput-')
   }
 
-  onChange = event => {
+  onChange = (event) => {
     const value = event.target.value
     const array = _.isEmpty(value) ? [] : value.split(this.props.separator)
     this.props.onChange(array)

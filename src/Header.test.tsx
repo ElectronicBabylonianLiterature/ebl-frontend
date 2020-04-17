@@ -8,7 +8,7 @@ let element
 
 beforeEach(() => {
   auth = {
-    isAuthenticated: jest.fn()
+    isAuthenticated: jest.fn(),
   }
 })
 
@@ -42,7 +42,7 @@ function commonTests() {
   test.each([
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
-    ['Bibliography', '/bibliography']
+    ['Bibliography', '/bibliography'],
   ])('%s links to %s', (title, href) => {
     expect(element.getByText(title)).toHaveAttribute('href', href)
   })

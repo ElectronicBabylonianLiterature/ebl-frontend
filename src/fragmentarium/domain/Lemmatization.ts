@@ -57,11 +57,11 @@ export class LemmatizationToken {
   toDto(): any {
     return _.isNil(this.uniqueLemma)
       ? {
-          value: this.value
+          value: this.value,
         }
       : {
           value: this.value,
-          uniqueLemma: (this.uniqueLemma || []).map(lemma => lemma.value)
+          uniqueLemma: (this.uniqueLemma || []).map((lemma) => lemma.value),
         }
   }
 }
@@ -98,7 +98,7 @@ export default class Lemmatization {
       draft.tokens = tokens
     })(
       this,
-      this._mapTokens(token => token.applySuggestion())
+      this._mapTokens((token) => token.applySuggestion())
     )
   }
 
@@ -107,18 +107,18 @@ export default class Lemmatization {
       draft.tokens = tokens
     })(
       this,
-      this._mapTokens(token => token.clearSuggestionFlag())
+      this._mapTokens((token) => token.clearSuggestionFlag())
     )
   }
 
   toDto(): ReadonlyArray<ReadonlyArray<{ [key: string]: any }>> {
-    return this.tokens.map(row => row.map(token => token.toDto()))
+    return this.tokens.map((row) => row.map((token) => token.toDto()))
   }
 
   _mapTokens(
     iteratee: (token: LemmatizationToken) => LemmatizationToken
   ): ReadonlyArray<ReadonlyArray<LemmatizationToken>> {
-    return this.tokens.map(row => row.map(iteratee))
+    return this.tokens.map((row) => row.map(iteratee))
   }
 }
 Lemmatization[immerable] = true

@@ -5,7 +5,7 @@ import ExternalLink from './ExternalLink'
 export default function BlobImage({
   data,
   hasLink,
-  alt
+  alt,
 }: {
   data: Blob
   hasLink?: boolean

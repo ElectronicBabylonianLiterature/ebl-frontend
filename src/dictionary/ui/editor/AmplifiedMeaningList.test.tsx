@@ -49,7 +49,9 @@ describe('Conjugations/Functions', () => {
     _(value)
       .flatMap('entries')
       .map('meaning')
-      .forEach(entry => expect(element.getByDisplayValue(entry)).toBeVisible())
+      .forEach((entry) =>
+        expect(element.getByDisplayValue(entry)).toBeVisible()
+      )
   })
 
   it('New entry has top level fields', async () => {
@@ -57,7 +59,7 @@ describe('Conjugations/Functions', () => {
       .expect(onChange)
       .toHaveBeenCalledWith([
         ...value,
-        { key: '', meaning: '', vowels: [], entries: [] }
+        { key: '', meaning: '', vowels: [], entries: [] },
       ])
   })
 
@@ -78,12 +80,12 @@ function commonTests() {
   it('Calls onChange with updated value on change', () => {
     whenChangedByValue(element, value[0].meaning, 'new')
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => [
+      .toHaveBeenCalledWith((newValue) => [
         {
           ...value[0],
-          meaning: newValue
+          meaning: newValue,
         },
-        ..._.tail(value)
+        ..._.tail(value),
       ])
   })
 }

@@ -13,7 +13,7 @@ let element
 beforeEach(async () => {
   fragments = await factory.buildMany('fragment', 2)
   fragmentSearchService = {
-    searchNumber: jest.fn()
+    searchNumber: jest.fn(),
   }
   fragmentSearchService.searchNumber.mockReturnValueOnce(
     Promise.resolve(fragments)

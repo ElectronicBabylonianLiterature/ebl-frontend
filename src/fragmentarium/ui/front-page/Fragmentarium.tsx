@@ -23,7 +23,7 @@ function Fragmentarium({
   number,
   transliteration,
   fragmentService,
-  fragmentSearchService
+  fragmentSearchService,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>

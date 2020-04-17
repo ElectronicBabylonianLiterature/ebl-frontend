@@ -33,15 +33,15 @@ beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
     statistics: jest.fn(),
-    findImage: jest.fn()
+    findImage: jest.fn(),
   }
   fragmentSearchService = {
     fetchLatestTransliterations: jest.fn(),
-    fetchNeedsRevision: jest.fn()
+    fetchNeedsRevision: jest.fn(),
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: jest.fn()
+    isAllowedToTransliterateFragments: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import {
   buildReferenceWithManyAuthors,
-  buildReferenceWithContainerTitle
+  buildReferenceWithContainerTitle,
 } from 'test-helpers/bibliography-fixtures'
 
 import CompactCitation from './CompactCitation'
@@ -42,7 +42,7 @@ test('Shows compact citation with container title and collection number', async 
   const collectionNumber = '76'
   const reference = (
     await buildReferenceWithContainerTitle('COPY', {
-      'collection-number': collectionNumber
+      'collection-number': collectionNumber,
     })
   ).setLinesCited([])
   const { container } = render(<CompactCitation reference={reference} />)
@@ -56,7 +56,7 @@ test('Shows compact citation with container title, lines cites and collection nu
   const linesCited = ['2.', '4.']
   const reference = (
     await buildReferenceWithContainerTitle('COPY', {
-      'collection-number': collectionNumber
+      'collection-number': collectionNumber,
     })
   ).setLinesCited(linesCited)
   const { container } = render(<CompactCitation reference={reference} />)

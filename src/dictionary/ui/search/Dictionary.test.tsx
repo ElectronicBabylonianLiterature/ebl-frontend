@@ -15,10 +15,10 @@ let session
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
   wordService = {
-    search: jest.fn()
+    search: jest.fn(),
   }
   session = {
-    isAllowedToReadWords: jest.fn()
+    isAllowedToReadWords: jest.fn(),
   }
 })
 

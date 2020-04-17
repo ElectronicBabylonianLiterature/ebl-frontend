@@ -31,7 +31,7 @@ if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
 }
 
 Promise.config({
-  cancellation: true
+  cancellation: true,
 })
 
 const auth0Config = createAuth0Config()

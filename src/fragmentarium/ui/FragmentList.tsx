@@ -15,7 +15,7 @@ function FragmentList({ fragments, columns }) {
         </tr>
       </thead>
       <tbody>
-        {fragments.map(fragment => (
+        {fragments.map((fragment) => (
           <tr key={fragment.number}>
             <td>
               <FragmentLink number={fragment.number}>

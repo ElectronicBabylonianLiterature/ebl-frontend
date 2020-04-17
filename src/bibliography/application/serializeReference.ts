@@ -6,6 +6,6 @@ export default function serializeReference(reference: Reference) {
     type: reference.type,
     pages: reference.pages,
     notes: reference.notes,
-    linesCited: reference.linesCited
+    linesCited: reference.linesCited,
   }
 }

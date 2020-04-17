@@ -13,16 +13,16 @@ let errorReportingService
 
 beforeEach(() => {
   auth = {
-    handleAuthentication: jest.fn()
+    handleAuthentication: jest.fn(),
   }
   errorReportingService = {
-    captureException: jest.fn()
+    captureException: jest.fn(),
   }
 })
 
 const keys = ['access_token', 'id_token', 'error']
 
-keys.forEach(key => {
+keys.forEach((key) => {
   describe(`Hash contains ${key}`, () => {
     beforeEach(() => {
       auth.handleAuthentication.mockReturnValueOnce(Promise.resolve())

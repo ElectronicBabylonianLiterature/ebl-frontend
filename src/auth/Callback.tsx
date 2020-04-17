@@ -8,7 +8,7 @@ const redirectTarget = '/'
 function Callback({ location, history, auth }) {
   return (
     <ErrorReporterContext.Consumer>
-      {errorReporter => {
+      {(errorReporter) => {
         if (/access_token|id_token|error/.test(location.hash)) {
           handleAuthentication(auth, history, errorReporter)
           return <Spinner />
@@ -25,7 +25,7 @@ function handleAuthentication(auth, history, errorReporter) {
   auth
     .handleAuthentication()
     .then(() => history.replace(redirectTarget))
-    .catch(error => {
+    .catch((error) => {
       errorReporter.captureException(error)
       history.replace(redirectTarget)
     })

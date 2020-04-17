@@ -8,13 +8,13 @@ export const wordDto = {
     {
       lemma: [''],
       notes: ['dsdsds'],
-      attested: true
+      attested: true,
     },
     {
       lemma: ["abā'um"],
       notes: ['**BOLD**'],
-      attested: true
-    }
+      attested: true,
+    },
   ],
   meaning: '\\~ "to weed" O/jB',
   amplifiedMeanings: [
@@ -23,8 +23,8 @@ export const wordDto = {
       vowels: [
         {
           value: ['i', 'i'],
-          notes: ['dsdsds']
-        }
+          notes: ['dsdsds'],
+        },
       ],
       key: 'G',
       entries: [
@@ -33,36 +33,36 @@ export const wordDto = {
           vowels: [
             {
               value: [''],
-              notes: []
-            }
-          ]
-        }
-      ]
-    }
+              notes: [],
+            },
+          ],
+        },
+      ],
+    },
   ],
   logograms: [
     {
       logogram: [''],
-      notes: ['dsadas']
-    }
+      notes: ['dsadas'],
+    },
   ],
   derived: [
     [
       {
         lemma: ['wabûtu'],
         homonym: 'I',
-        notes: []
-      }
-    ]
+        notes: [],
+      },
+    ],
   ],
   derivedFrom: {
     lemma: ['sadasd'],
     homonym: '',
-    notes: ['']
+    notes: [''],
   },
   source: 'This is a test word!',
   roots: ["wb'", "'b'"],
   pos: ['V'],
   guideWord: 'weed',
-  oraccWords: []
+  oraccWords: [],
 }

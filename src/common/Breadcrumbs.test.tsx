@@ -14,7 +14,7 @@ describe('Three crumbs', () => {
             new SectionCrumb('Dictionary'),
             new SectionCrumb('Sub section'),
             new TextCrumb('Text'),
-            new SectionCrumb('Active')
+            new SectionCrumb('Active'),
           ]}
         />
       </MemoryRouter>
@@ -89,9 +89,7 @@ describe('Component crumb', () => {
     element = render(
       <MemoryRouter>
         <Breadcrumbs
-          crumbs={[
-            new TextCrumb((<span aria-label="React Crumb">React</span>))
-          ]}
+          crumbs={[new TextCrumb(<span aria-label="React Crumb">React</span>)]}
         />
       </MemoryRouter>
     )

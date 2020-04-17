@@ -21,7 +21,7 @@ function MuseumLink({ link }: { readonly link: FragmentLink }) {
 }
 
 export default function OrganizationLinks({
-  fragment
+  fragment,
 }: {
   readonly fragment: Fragment
 }) {

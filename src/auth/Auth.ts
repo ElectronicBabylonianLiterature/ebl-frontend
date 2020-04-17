@@ -41,7 +41,7 @@ class Auth implements AuthenticationService {
       redirectUri: config.redirectUri,
       audience: config.audience,
       responseType: 'token id_token',
-      scope: scopeString
+      scope: scopeString,
     })
     this.sessionStore = sessionStore
     this.errorReporter = errorReporter
@@ -60,7 +60,7 @@ class Auth implements AuthenticationService {
           const {
             sub,
             [eblNameProperty]: eblName,
-            name
+            name,
           } = authResult.idTokenPayload
           this.errorReporter.setUser(sub, name, eblName)
           const session = createSession(authResult)
@@ -76,7 +76,7 @@ class Auth implements AuthenticationService {
     this.errorReporter.clearScope()
     this.auth0.logout({
       clientID: this.config.clientID,
-      returnTo: this.config.returnTo
+      returnTo: this.config.returnTo,
     })
   }
 

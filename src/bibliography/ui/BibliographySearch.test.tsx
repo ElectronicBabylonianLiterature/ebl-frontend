@@ -25,7 +25,7 @@ function renderWordSearch() {
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
   bibliographyService = {
-    search: jest.fn()
+    search: jest.fn(),
   }
   bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
   renderWordSearch()

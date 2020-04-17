@@ -4,7 +4,7 @@ import ErrorReporterContext from 'ErrorReporterContext'
 
 class ErrorBoundary extends Component {
   state = {
-    error: null
+    error: null,
   }
 
   static contextType = ErrorReporterContext

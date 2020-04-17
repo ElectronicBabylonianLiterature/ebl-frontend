@@ -99,7 +99,8 @@
   },
   "prettier": {
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
   "browserslist": [
     ">0.2%",
@@ -109,6 +110,7 @@
     "not safari < 12",
     "not ios < 12",
     "not chrome < 66",
+    "not and_chr <= 78",
     "not kaios <= 2.5",
     "not and_qq <= 1.2"
   ]

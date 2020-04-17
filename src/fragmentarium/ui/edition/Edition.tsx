@@ -18,7 +18,7 @@ function Edition({
   fragment,
   fragmentSearchService,
   updateTransliteration,
-  disabled
+  disabled,
 }: Props) {
   return (
     <>
@@ -36,7 +36,7 @@ function Edition({
   )
 }
 Edition.defaultProps = {
-  disabled: false
+  disabled: false,
 }
 
 export default Edition

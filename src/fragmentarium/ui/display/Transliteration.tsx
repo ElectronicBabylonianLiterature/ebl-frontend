@@ -4,7 +4,7 @@ import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine
+  RulingDollarLine,
 } from 'fragmentarium/domain/text'
 import DisplayToken, { TokenWrapper } from './DisplayToken'
 import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
@@ -13,7 +13,7 @@ import './Display.sass'
 import { Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
-  modifiers: bemModifiers = []
+  modifiers: bemModifiers = [],
 }: {
   modifiers?: readonly string[]
 }): JSX.Element {
@@ -22,7 +22,7 @@ function WordSeparator({
     <span
       className={classNames([
         element,
-        bemModifiers.map(flag => `${element}--${flag}`)
+        bemModifiers.map((flag) => `${element}--${flag}`),
       ])}
     >
       {' '}
@@ -54,7 +54,7 @@ class LineAccumulator {
     }
 
     const glossWrapper: TokenWrapper = ({
-      children
+      children,
     }: PropsWithChildren<{}>): JSX.Element => (
       <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
     )
@@ -112,7 +112,7 @@ class LineAccumulator {
 
 function DisplayLine({
   line: { type, prefix, content },
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -131,13 +131,13 @@ function DisplayLine({
           acc.pushToken(token)
         }
         return acc
-      }, new LineAccumulator()).result
+      }, new LineAccumulator()).result,
     ]
   )
 }
 function DisplayDollarAndAtLineWithParenthesis({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -152,7 +152,7 @@ function DisplayDollarAndAtLineWithParenthesis({
 
 function DisplayDollarAndAtLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -185,12 +185,12 @@ const lineComponents: ReadonlyMap<
   ['SurfaceAtLine', DisplayDollarAndAtLine],
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
-  ['CompositeAtLine', DisplayDollarAndAtLine]
+  ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
 function DisplayRulingDollarLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -203,14 +203,14 @@ function DisplayRulingDollarLine({
     <hr
       className={classNames([
         element,
-        `${element}--${rulingDollarLine.number.toLowerCase()}`
+        `${element}--${rulingDollarLine.number.toLowerCase()}`,
       ])}
     />
   )
 }
 
 export function Transliteration({
-  text: { lines }
+  text: { lines },
 }: {
   text: Text
 }): JSX.Element {

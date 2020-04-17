@@ -7,28 +7,28 @@ import ListInput from './TextListInput'
 import TextInput from './TextInput'
 
 class FormInput extends Component<{ value; onChange }> {
-  lemmaChanged = lemma => {
+  lemmaChanged = (lemma) => {
     this.props.onChange({
       ...this.props.value,
-      ...lemma
+      ...lemma,
     })
   }
 
-  homonymChanged = homonym => {
+  homonymChanged = (homonym) => {
     this.props.onChange({
       ...this.props.value,
-      homonym: homonym
+      homonym: homonym,
     })
   }
 
-  notesChanged = notes => {
+  notesChanged = (notes) => {
     this.props.onChange({
       ...this.props.value,
-      notes: notes
+      notes: notes,
     })
   }
 
-  hasProperty = property => _.has(this.props.value, property)
+  hasProperty = (property) => _.has(this.props.value, property)
 
   render() {
     return (

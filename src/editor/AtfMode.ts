@@ -16,25 +16,25 @@ export class AtfHighlightRules extends acequire('ace/mode/text_highlight_rules')
       start: [
         {
           token: 'variable.parameter',
-          regex: '^@.*$'
+          regex: '^@.*$',
         },
         {
           token: 'markup.list',
-          regex: '^\\$.*$'
+          regex: '^\\$.*$',
         },
         {
           token: 'comment.line.number-sign',
-          regex: '^#.*$'
+          regex: '^#.*$',
         },
         {
           token: 'string',
-          regex: '[\\[\\]]'
+          regex: '[\\[\\]]',
         },
         {
           token: 'string',
-          regex: '\\.\\.\\.'
-        }
-      ]
+          regex: '\\.\\.\\.',
+        },
+      ],
     }
   }
 }

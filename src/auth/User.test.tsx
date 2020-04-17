@@ -8,7 +8,7 @@ beforeEach(() => {
   auth = {
     login: jest.fn(),
     logout: jest.fn(),
-    isAuthenticated: jest.fn()
+    isAuthenticated: jest.fn(),
   }
 })
 

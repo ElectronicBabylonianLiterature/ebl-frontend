@@ -22,7 +22,7 @@ describe('All details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
-      collection: 'The Collection'
+      collection: 'The Collection',
     })
     renderDetails()
   })
@@ -87,8 +87,8 @@ describe('Missing details', () => {
       accession: '',
       bmIdNumber: '',
       measures: await factory.build('measures', {
-        width: null
-      })
+        width: null,
+      }),
     })
     renderDetails()
   })
@@ -122,7 +122,7 @@ describe('Missing details', () => {
 describe('Unknown museum', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
-      museum: Museum.of('The Other Museum')
+      museum: Museum.of('The Other Museum'),
     })
     renderDetails()
   })

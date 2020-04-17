@@ -22,24 +22,21 @@ const positionsOfScpeech = {
   J: 'interjection',
   MOD: 'modal, negative, or conditional particle',
   PRP: 'preposition',
-  SBJ: 'subjunction'
+  SBJ: 'subjunction',
 }
 const posOptions = _.map(positionsOfScpeech, (value, key) => ({
   value: key,
-  label: value
+  label: value,
 }))
 
 class PosInput extends Component<{ value; onChange }> {
-  updatePos = event => {
+  updatePos = (event) => {
     this.props.onChange({
-      pos: _(event.target.options)
-        .filter('selected')
-        .map('value')
-        .value()
+      pos: _(event.target.options).filter('selected').map('value').value(),
     })
   }
 
-  updateRoots = roots => {
+  updateRoots = (roots) => {
     this.props.onChange({ roots: roots })
   }
 
@@ -54,7 +51,7 @@ class PosInput extends Component<{ value; onChange }> {
             onChange={this.updatePos}
             multiple
           >
-            {posOptions.map(option => (
+            {posOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

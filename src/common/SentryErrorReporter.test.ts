@@ -17,16 +17,16 @@ beforeEach(async () => {
   scope = {
     setExtra: jest.fn(),
     setUser: jest.fn(),
-    clear: jest.fn()
+    clear: jest.fn(),
   }
   error = new Error(chance.sentence())
   init = jest.spyOn(Sentry, 'init')
   showReportDialog = jest.spyOn(Sentry, 'showReportDialog')
-  jest.spyOn(Sentry, 'withScope').mockImplementationOnce(f => f(scope))
-  jest.spyOn(Sentry, 'configureScope').mockImplementationOnce(f => f(scope))
+  jest.spyOn(Sentry, 'withScope').mockImplementationOnce((f) => f(scope))
+  jest.spyOn(Sentry, 'configureScope').mockImplementationOnce((f) => f(scope))
   jest
     .spyOn(Sentry, 'captureException')
-    .mockImplementationOnce(exception => exception.message)
+    .mockImplementationOnce((exception) => exception.message)
 })
 
 test('Initialization', () => {
@@ -35,7 +35,7 @@ test('Initialization', () => {
   expect(Sentry.init).toHaveBeenCalledWith({
     dsn: dsn,
     environment: environment,
-    beforeSend: expect.any(Function)
+    beforeSend: expect.any(Function),
   })
 })
 
@@ -95,7 +95,7 @@ test('Capturing user', () => {
   expect(scope.setUser).toHaveBeenCalledWith({
     id: sub,
     username: username,
-    eblName: eblName
+    eblName: eblName,
   })
 })
 

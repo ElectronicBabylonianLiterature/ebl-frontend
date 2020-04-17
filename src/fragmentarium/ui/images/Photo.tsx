@@ -16,7 +16,7 @@ export default function Photo({ photo, fragment }: Props) {
 
   useEffect(() => {
     // @ts-ignore - https://github.com/exif-js/exif-js/issues/134
-    EXIF.getData(photo, function() {
+    EXIF.getData(photo, function () {
       // @ts-ignore
       setArtist(EXIF.getTag(this, 'Artist'))
     })

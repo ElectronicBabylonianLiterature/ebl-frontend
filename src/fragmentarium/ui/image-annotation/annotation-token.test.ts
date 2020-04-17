@@ -10,14 +10,14 @@ test.each([
         y: 1,
         height: 1,
         width: 1,
-        type: 'RECTANGLE'
+        type: 'RECTANGLE',
       },
       {
         value: 'ruk',
-        path: [2, 0, 1]
+        path: [2, 0, 1],
       }
     ),
-    true
+    true,
   ],
   [
     new AnnotationToken('kur', [2, 0, 1], true),
@@ -27,14 +27,14 @@ test.each([
         y: 1,
         height: 1,
         width: 1,
-        type: 'RECTANGLE'
+        type: 'RECTANGLE',
       },
       {
         value: 'ruk',
-        path: [2, 0, 4]
+        path: [2, 0, 4],
       }
     ),
-    false
+    false,
   ],
   [
     new AnnotationToken('kur', [2, 0, 1], true),
@@ -44,14 +44,14 @@ test.each([
         y: 1,
         height: 1,
         width: 1,
-        type: 'RECTANGLE'
+        type: 'RECTANGLE',
       },
       data: {
         value: 'ruk',
-        path: [2, 0, 1]
-      }
+        path: [2, 0, 1],
+      },
     },
-    true
+    true,
   ],
   [
     new AnnotationToken('kur', [2, 0, 1], true),
@@ -61,16 +61,16 @@ test.each([
         y: 1,
         height: 1,
         width: 1,
-        type: 'RECTANGLE'
+        type: 'RECTANGLE',
       },
       data: {
         value: 'ruk',
-        path: [2, 0, 4]
-      }
+        path: [2, 0, 4],
+      },
     },
-    false
+    false,
   ],
-  [new AnnotationToken('kur', [2, 0, 1], true), {}, false]
+  [new AnnotationToken('kur', [2, 0, 1], true), {}, false],
 ])('hasMatchingPath %#', (token, annotation, expected) => {
   expect(token.hasMatchingPath(annotation)).toEqual(expected)
 })
