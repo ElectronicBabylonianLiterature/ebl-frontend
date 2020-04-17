@@ -11,138 +11,135 @@ import {
   EnclosureType
 } from 'fragmentarium/domain/token'
 import addAccents from './addAccents'
+import { isEnclosure } from './type-guards'
+import { createModifierClasses, Modifiers } from './modifiers'
+import EnclosureFlags from './EnclosureFlags'
+import Flags from './Flags'
+import SubIndex from './SubIndex'
 
-function Modifiers({
-  modifiers
-}: {
-  modifiers: readonly string[]
-}): JSX.Element {
-  return (
-    <sup className="Transliteration__modifier">
-      {modifiers.map(modifier => modifier.slice(1)).join('')}
-    </sup>
-  )
-}
+export type TokenWrapper = FunctionComponent<PropsWithChildren<{}>>
 
-function EnclosureFlags({
-  token,
-  enclosures,
-  children
-}: PropsWithChildren<{
+interface TokenProps {
   token: Token
-  enclosures?: readonly EnclosureType[]
-}>): JSX.Element {
-  const element = `Transliteration__${token.type}`
-  return (
-    <span
-      className={classNames(
-        (enclosures ?? token.enclosureType).map(
-          enclosureType => `${element}--${enclosureType}`
-        )
-      )}
-    >
-      {children}
-    </span>
-  )
+  Wrapper: TokenWrapper
 }
 
 function DamagedFlag({
-  sign: { type, flags },
+  sign: { flags },
+  Wrapper,
   children
 }: PropsWithChildren<{
-  sign: { type: string; flags: readonly string[] }
+  sign: { flags: readonly string[] }
+  Wrapper: TokenWrapper
 }>): JSX.Element {
-  return (
-    <span
-      className={classNames({
-        [`Transliteration__${type}--damaged`]: flags.includes('#')
-      })}
-    >
-      {children}
-    </span>
-  )
-}
-
-function Flags({ flags }: { flags: readonly string[] }): JSX.Element {
-  return (
-    <sup className="Transliteration__flag">
-      {flags.filter(flag => flag !== '#').join('')}
-    </sup>
-  )
-}
-
-function DefaultToken({
-  token: { parts, value }
-}: {
-  token: Token
-}): JSX.Element {
-  return (
+  return flags.includes('#') ? (
     <>
-      {parts
-        ? parts.map((token, index) => (
-            <DisplayToken key={index} token={token} />
-          ))
-        : value}
+      <Wrapper>
+        <span className="Transliteration__bracket">⸢</span>
+      </Wrapper>
+      {children}
+      <Wrapper>
+        <span className="Transliteration__bracket">⸣</span>
+      </Wrapper>
     </>
+  ) : (
+    <>{children}</>
   )
 }
 
-function VariantComponent({ token }: { token: Token }): JSX.Element {
+function DefaultToken({ token, Wrapper }: TokenProps): JSX.Element {
+  return (
+    <EnclosureFlags token={token}>
+      {token.parts ? (
+        token.parts.map((token, index) => (
+          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+        ))
+      ) : isEnclosure(token) ? (
+        token.value
+      ) : (
+        <Wrapper>{token.value}</Wrapper>
+      )}
+    </EnclosureFlags>
+  )
+}
+
+function VariantComponent({ token, Wrapper }: TokenProps): JSX.Element {
   return (
     <>
       {(token as Variant).tokens.map((token, index) => (
         <React.Fragment key={index}>
-          {index > 0 ? '/' : null}
-          <DisplayToken token={token} />
+          {index > 0 ? <Wrapper>/</Wrapper> : null}
+          <DisplayToken token={token} Wrapper={Wrapper} />
         </React.Fragment>
       ))}
     </>
   )
 }
 
-function GlossComponent({ token }: { token: Token }): JSX.Element {
+function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const gloss = token as Gloss
+  const GlossWrapper: TokenWrapper = ({ children }: PropsWithChildren<{}>) => (
+    <Wrapper>
+      <sup>{children}</sup>
+    </Wrapper>
+  )
   return (
-    <sup>
-      {gloss.parts.map((token, index) => (
-        <DisplayToken key={index} token={token} />
-      ))}
-    </sup>
+    <>
+      <span
+        className={classNames([
+          'Transliteration__glossJoiner',
+          ...createModifierClasses('glossJoiner', token.enclosureType)
+        ])}
+      >
+        <GlossWrapper>.</GlossWrapper>
+      </span>
+      {gloss.parts.map((token, index) =>
+        isEnclosure(token) ? (
+          <DisplayToken key={index} token={token} />
+        ) : (
+          <DisplayToken key={index} token={token} Wrapper={GlossWrapper} />
+        )
+      )}
+    </>
   )
 }
 
-function UnknownSignComponent({ token }: { token: Token }): JSX.Element {
+function UnknownSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const sign = token as UnknownSign
   const signs = {
     UnclearSign: sign.enclosureType.includes('BROKEN_AWAY') ? 'o' : 'x',
     UnidentifiedSign: 'X'
   }
   return (
-    <DamagedFlag sign={sign}>
-      <EnclosureFlags token={sign}>
-        {signs[sign.type]}
-        <Flags flags={sign.flags} />
-      </EnclosureFlags>
+    <DamagedFlag sign={sign} Wrapper={Wrapper}>
+      <Wrapper>
+        <EnclosureFlags token={sign}>
+          {signs[sign.type]}
+          <Flags flags={sign.flags} />
+        </EnclosureFlags>
+      </Wrapper>
     </DamagedFlag>
   )
 }
 
 function signComponent(nameProperty: string) {
-  return function SignComponent({ token }: { token: Token }): JSX.Element {
+  return function SignComponent({ token, Wrapper }: TokenProps): JSX.Element {
     const sign = token as Sign
     return (
-      <DamagedFlag sign={sign}>
-        <EnclosureFlags token={token}>
-          {sign[nameProperty]}
-          <Modifiers modifiers={sign.modifiers} />
-          <Flags flags={sign.flags} />
-        </EnclosureFlags>
+      <DamagedFlag sign={sign} Wrapper={Wrapper}>
+        <Wrapper>
+          <EnclosureFlags token={token}>
+            {sign[nameProperty]}
+            <Modifiers modifiers={sign.modifiers} />
+            <Flags flags={sign.flags} />
+          </EnclosureFlags>
+        </Wrapper>
       </DamagedFlag>
     )
   }
 }
 
-function NamedSignComponent({ token }: { token: Token }): JSX.Element {
+function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const namedSign = token as NamedSign
   const partEnclosures: (readonly EnclosureType[])[] = namedSign.nameParts.map(
     (part: Token): readonly EnclosureType[] => part.enclosureType
@@ -151,22 +148,24 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   const [parts, isSubIndexConverted] = addAccents(namedSign)
   const omitSubindex = namedSign.subIndex === 1 || isSubIndexConverted
   return (
-    <DamagedFlag sign={namedSign}>
+    <DamagedFlag sign={namedSign} Wrapper={Wrapper}>
       <EnclosureFlags token={namedSign} enclosures={effectiveEnclosures}>
-        {parts.map((token, index) => (
-          <DisplayToken key={index} token={token} />
-        ))}
-        {!omitSubindex && (
-          <sub className="Transliteration__subIndex">
-            {namedSign.subIndex || 'x'}
-          </sub>
+        {parts.map((token, index) =>
+          isEnclosure(token) ? (
+            <DisplayToken key={index} token={token} />
+          ) : (
+            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          )
         )}
-        <Modifiers modifiers={namedSign.modifiers} />
-        <Flags flags={namedSign.flags} />
+        <Wrapper>
+          {!omitSubindex && <SubIndex token={namedSign} />}
+          <Modifiers modifiers={namedSign.modifiers} />
+          <Flags flags={namedSign.flags} />
+        </Wrapper>
         {namedSign.sign && (
           <>
             <span className="Transliteration__bracket">(</span>
-            <DisplayToken token={namedSign.sign} />
+            <DisplayToken token={namedSign.sign} Wrapper={Wrapper} />
             <span className="Transliteration__bracket">)</span>
           </>
         )}
@@ -174,7 +173,7 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
           <>
             <span className="Transliteration__bracket">&lt;(</span>
             {namedSign.surrogate.map((token, index) => (
-              <DisplayToken key={index} token={token} />
+              <DisplayToken key={index} token={token} Wrapper={Wrapper} />
             ))}
             <span className="Transliteration__bracket">)&gt;</span>
           </>
@@ -184,14 +183,19 @@ function NamedSignComponent({ token }: { token: Token }): JSX.Element {
   )
 }
 
-function TabulationComponent({ token }: { token: Token }): JSX.Element {
-  return <span></span>
+function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  return (
+    <Wrapper>
+      <span></span>
+    </Wrapper>
+  )
 }
 
 const tokens: ReadonlyMap<
   string,
   FunctionComponent<{
     token: Token
+    Wrapper: TokenWrapper
   }>
 > = new Map([
   ['UnknownNumberOfSigns', (): JSX.Element => <>…</>],
@@ -209,25 +213,26 @@ const tokens: ReadonlyMap<
   ['Tabulation', TabulationComponent]
 ])
 
-export function DisplayToken({
+export default function DisplayToken({
   token,
-  container = 'span',
-  bemModifiers: modifiers = []
+  bemModifiers: modifiers = [],
+  Wrapper = ({ children }: PropsWithChildren<{}>): JSX.Element => (
+    <>{children}</>
+  )
 }: {
   token: Token
-  container?: string
   bemModifiers?: readonly string[]
+  Wrapper?: FunctionComponent<PropsWithChildren<{}>>
 }): JSX.Element {
-  const TokenComponent = tokens.get(token.type) || DefaultToken
-  const element = `Transliteration__${token.type}`
-  return React.createElement(
-    container,
-    {
-      className: classNames([
-        element,
-        ...modifiers.map(modifier => `${element}--${modifier}`)
-      ])
-    },
-    <TokenComponent token={token} />
+  const TokenComponent = tokens.get(token.type) ?? DefaultToken
+  return (
+    <span
+      className={classNames([
+        `Transliteration__${token.type}`,
+        ...createModifierClasses(token.type, modifiers)
+      ])}
+    >
+      <TokenComponent token={token} Wrapper={Wrapper} />
+    </span>
   )
 }
