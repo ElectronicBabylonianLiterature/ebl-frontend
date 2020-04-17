@@ -3,7 +3,7 @@ import { OverlayTrigger } from 'react-bootstrap'
 
 function HelpTrigger(props) {
   return (
-    <OverlayTrigger placement="auto" {...props}>
+    <OverlayTrigger placement="right" {...props}>
       <i className="fas fa-info-circle" />
     </OverlayTrigger>
   )
