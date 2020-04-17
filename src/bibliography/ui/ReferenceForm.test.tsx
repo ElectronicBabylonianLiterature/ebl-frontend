@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 
 import {
@@ -35,7 +35,7 @@ beforeEach(async () => {
 
 test(`Changing document calls onChange with updated value`, async () => {
   changeValueByLabel(element, 'Document', 'Borger')
-  await waitForElement(() => element.getByText(/Borger 1957/))
+  await element.findByText(/Borger 1957/)
   clickNth(element, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith(reference.setDocument(entry))

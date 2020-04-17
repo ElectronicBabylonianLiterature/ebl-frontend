@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
@@ -33,9 +33,8 @@ it('Searches for the given parameters', () => {
 })
 
 it('Displays and links results', async () => {
-  await waitForElement(() => element.getByText(fragments[0].number))
   for (const fragment of fragments) {
-    expect(element.getByText(fragment.number)).toHaveAttribute(
+    expect(await element.findByText(fragment.number)).toHaveAttribute(
       'href',
       `/fragmentarium/${fragment.number}`
     )

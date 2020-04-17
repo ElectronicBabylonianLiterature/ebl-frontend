@@ -11,7 +11,7 @@ type Props = {
   fragment: Fragment
 }
 
-export default function Photo({ photo, fragment }: Props) {
+export default function Photo({ photo, fragment }: Props): JSX.Element {
   const [artist, setArtist] = useState()
 
   useEffect(() => {

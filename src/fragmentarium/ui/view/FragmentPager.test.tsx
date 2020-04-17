@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Promise } from 'bluebird'
 import FragmentPager from './FragmentPager'
@@ -28,7 +28,7 @@ beforeEach(async () => {
       ></FragmentPager>
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText('K.00000'))
+  await element.findByText('K.00000')
 })
 it.each([
   ['Previous', 'previous'],

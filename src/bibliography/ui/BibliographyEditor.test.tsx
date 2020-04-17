@@ -1,6 +1,6 @@
 import React from 'react'
 import { matchPath, MemoryRouter, match } from 'react-router'
-import { render, waitForElement, Matcher } from '@testing-library/react'
+import { render, Matcher } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
@@ -84,7 +84,7 @@ function expectTextContentToContainCslJson(container, entry) {
   )
 }
 
-function commonTests(create, waitFor) {
+function commonTests(create, waitFor): void {
   test('Displays error message failed submit', async () => {
     bibliographyService.update.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage))
@@ -96,7 +96,7 @@ function commonTests(create, waitFor) {
 
     await submitForm(element)
 
-    await waitForElement(() => element.getByText(errorMessage))
+    await element.findByText(errorMessage)
   })
 
   test('Cancels promise on unmount', async () => {
@@ -142,6 +142,6 @@ async function renderWithRouter(
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForElement(() => element.getAllByText(waitFor))
+  await element.findAllByText(waitFor)
   return element
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, waitForElement } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import { MemoryRouter, withRouter, Switch, Route } from 'react-router-dom'
 import Promise from 'bluebird'
 import ErrorReporterContext from 'ErrorReporterContext'
@@ -64,22 +64,22 @@ describe('Hash does not contain token', () => {
   itRedirectsToHome()
 })
 
-function itRedirectsToHome() {
+function itRedirectsToHome(): void {
   it('Redirects to home', async () => {
-    await waitForElement(() => element.getByText('Home'))
+    await element.findByText('Home')
   })
 }
 
-function renderCallback(hash) {
+function renderCallback(hash): void {
   element = render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <MemoryRouter initialEntries={[`/callback#${hash}`]}>
         <Switch>
           <Route
             path="/callback"
-            render={() => <CallbackWithRouter auth={auth} />}
+            render={(): JSX.Element => <CallbackWithRouter auth={auth} />}
           />
-          <Route path="/" render={() => <div>Home</div>} />
+          <Route path="/" render={(): JSX.Element => <div>Home</div>} />
         </Switch>
       </MemoryRouter>
     </ErrorReporterContext.Provider>

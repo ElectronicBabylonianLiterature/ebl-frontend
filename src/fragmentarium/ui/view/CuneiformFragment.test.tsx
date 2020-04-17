@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement, act } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
@@ -73,7 +73,7 @@ beforeEach(async () => {
     )
   })
   container = element.container
-  await waitForElement(() => element.getAllByText('Photo'))
+  await element.findAllByText('Photo')
 })
 
 test.each(['collection', 'cdliNumber', 'accession'])(
@@ -133,7 +133,7 @@ it('Updates view on Edition save', async () => {
 
   submitFormByTestId(element, 'transliteration-form')
 
-  await waitForElement(() => element.getAllByText(expectedFragment.cdliNumber))
+  await element.findAllByText(expectedFragment.cdliNumber)
 })
 
 it('Updates view on References save', async () => {
@@ -141,8 +141,8 @@ it('Updates view on References save', async () => {
     Promise.resolve(updatedFragment)
   )
   clickNth(element, 'References', 1)
-  await waitForElement(() => element.getAllByText('Document'))
+  await element.findAllByText('Document')
   submitFormByTestId(element, 'references-form')
 
-  await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
+  await element.findByText(expectedFragment.cdliNumber)
 })

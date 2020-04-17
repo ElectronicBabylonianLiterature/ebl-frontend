@@ -1,11 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import {
-  render,
-  waitForElement,
-  RenderResult,
-  act,
-} from '@testing-library/react'
+import { render, RenderResult, act } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -37,11 +32,12 @@ describe('Searching bibliography', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const { getByText } = await renderDictionary('/bibliography?query=Borger')
-
-    await waitForElement(() =>
-      getByText(new RegExp(_.escapeRegExp(entries[0].primaryAuthor)))
+    const { getByText, findByText } = await renderDictionary(
+      '/bibliography?query=Borger'
     )
+
+    await findByText(new RegExp(_.escapeRegExp(entries[0].primaryAuthor)))
+
     expect(
       getByText(new RegExp(_.escapeRegExp(entries[1].primaryAuthor)))
     ).toBeDefined()

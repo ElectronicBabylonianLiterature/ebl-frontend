@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -108,7 +108,7 @@ describe('Fragment is loaded', () => {
       selectedFolio.number,
       'folio'
     )
-    await waitForElement(() => element.getByText('Display'))
+    await element.findByText('Display')
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -150,7 +150,7 @@ describe('Fragment without an image is loaded', () => {
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(fragment.number, null, null, null)
-    await waitForElement(() => element.getByText('Display'))
+    await element.findByText('Display')
   })
 
   it('Annotate button is disabled', () => {
@@ -169,6 +169,6 @@ describe('On error', () => {
   })
 
   it('Shows the error message', async () => {
-    await waitForElement(() => element.getByText(message))
+    await element.findByText(message)
   })
 })

@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  render,
-  waitForElement,
-  wait,
-  RenderResult,
-  Matcher,
-} from '@testing-library/react'
+import { render, wait, RenderResult, Matcher } from '@testing-library/react'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -117,6 +111,6 @@ function commonTests(lemmaLabel: Matcher): void {
 async function lemmatize(lemmaLabel: Matcher): Promise<void> {
   const searchLemma = new Lemma(searchWord)
   changeValueByLabel(element, lemmaLabel, 'waklu')
-  await waitForElement(() => element.getByText(searchLemma.lemma))
+  await element.findByText(searchLemma.lemma)
   clickNth(element, searchLemma.lemma, 0)
 }

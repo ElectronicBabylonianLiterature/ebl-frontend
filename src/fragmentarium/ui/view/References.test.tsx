@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -88,12 +88,12 @@ function renderReferences() {
 
 async function renderReferencesAndWait() {
   renderReferences()
-  await waitForElement(() => element.getAllByText('Document'))
+  await element.findAllByText('Document')
 }
 
 async function inputReference() {
   changeValueByLabel(element, 'Document', 'Borger')
-  await waitForElement(() => element.getByText(/Borger 1957/))
+  await element.findByText(/Borger 1957/)
   clickNth(element, /Borger 1957/, 0)
   changeValueByLabel(element, 'Type', 'COPY')
   changeValueByLabel(element, 'Pages', '1-2')

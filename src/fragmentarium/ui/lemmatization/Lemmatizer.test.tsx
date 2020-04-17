@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement, wait } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -61,7 +61,7 @@ beforeEach(async () => {
       text={text}
     />
   )
-  await waitForElement(() => element.getByText('1.'))
+  await element.findByText('1.')
 })
 
 it('Displays the line prefixes', () => {
@@ -80,7 +80,7 @@ it('Displays the transliteration', () => {
 
 it('Clicking word shows form', async () => {
   clickNth(element, 'kur', 0)
-  await waitForElement(() => element.getByLabelText('Lemma'))
+  await element.findByLabelText('Lemma')
 })
 
 it('Clicking save calls fragmentService', async () => {
@@ -96,11 +96,11 @@ it('Clicking save calls fragmentService', async () => {
 })
 
 async function lemmatizeWord(): Promise<void> {
-  await waitForElement(() => element.getByText('kur'))
+  await element.findByText('kur')
   clickNth(element, 'kur', 0)
-  await waitForElement(() => element.getByLabelText('Lemma'))
+  await element.findByLabelText('Lemma')
   changeValueByLabel(element, 'Lemma', 'a')
-  await waitForElement(() => element.getByText(lemma.lemma))
+  await element.findByText(lemma.lemma)
   clickNth(element, lemma.lemma, 0)
   await wait()
 }

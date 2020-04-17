@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
@@ -30,7 +30,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(fragments[0].number))
+  await element.findByText(fragments[0].number)
 })
 
 it('Queries the API with given parameters', () => {

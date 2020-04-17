@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -42,14 +42,14 @@ test('Add reference', async () => {
 })
 
 test('Delete reference', async () => {
-  await clickNth(element, 'Delete Reference')
+  clickNth(element, 'Delete Reference')
 
   expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
 
 test('Edit reference', async () => {
   changeValueByLabel(element, 'Document', 'Borger')
-  await waitForElement(() => element.getByText(/Borger 1957/))
+  await element.findByText(/Borger 1957/)
   clickNth(element, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith([

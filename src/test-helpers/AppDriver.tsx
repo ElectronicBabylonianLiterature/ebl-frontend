@@ -2,7 +2,6 @@ import React from 'react'
 import {
   fireEvent,
   render,
-  waitForElement,
   RenderResult,
   act,
   Matcher,
@@ -116,7 +115,7 @@ export default class AppDriver {
   }
 
   async waitForText(text): Promise<void> {
-    await waitForElement(() => this.getElement().getByText(text))
+    await this.getElement().findByText(text)
   }
 
   expectTextContent(text): void {

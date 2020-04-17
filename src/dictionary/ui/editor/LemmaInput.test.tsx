@@ -1,6 +1,6 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
-import { render, fireEvent, wait } from '@testing-library/react'
+import { render, fireEvent, wait, RenderResult } from '@testing-library/react'
 import { changeValueByLabel } from 'test-helpers/utils'
 
 let value
@@ -89,6 +89,6 @@ describe('Value does not have attested property', () => {
   })
 })
 
-function renderLemmaInput() {
+function renderLemmaInput(): RenderResult {
   return render(<LemmaInput value={value} onChange={onChange} />)
 }

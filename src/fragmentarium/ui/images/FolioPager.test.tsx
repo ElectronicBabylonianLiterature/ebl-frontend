@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
@@ -28,7 +28,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(/Browse/))
+  await element.findByText(/Browse/)
 })
 
 it('Previous links to the previous fragment', () => {

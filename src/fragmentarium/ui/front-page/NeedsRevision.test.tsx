@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
@@ -32,7 +32,7 @@ beforeEach(async () => {
     </MemoryRouter>
   )
   container = element.container
-  await waitForElement(() => element.getByText('Needs revision:'))
+  await element.findByText('Needs revision:')
 })
 
 test('Columns', () => {
