@@ -113,11 +113,19 @@ class LineAccumulator {
   }
 }
 
-function DisplayLineNumber(lineNumber: LineNumber): JSX.Element {
+function DisplayLineNumber({
+  lineNumber
+}: {
+  lineNumber: LineNumber
+}): JSX.Element {
   return <sup>{`(${lineNumberToString(lineNumber)})`}</sup>
 }
 
-function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
+function DisplayLineNumberRange({
+  range: { start, end }
+}: {
+  range: LineNumberRange
+}): JSX.Element {
   return (
     <sup>{`(${lineNumberToString(start)}-${lineNumberToString(end)})`}</sup>
   )
