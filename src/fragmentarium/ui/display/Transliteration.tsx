@@ -1,4 +1,9 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode
+} from 'react'
 import classNames from 'classnames'
 import {
   Line,
@@ -122,9 +127,9 @@ function DisplayLineNumber({
 }
 
 function DisplayLineNumberRange({
-  range: { start, end }
+  lineNumber: { start, end }
 }: {
-  range: LineNumberRange
+  lineNumber: LineNumberRange
 }): JSX.Element {
   return (
     <sup>{`(${lineNumberToString(start)}-${lineNumberToString(end)})`}</sup>
@@ -155,18 +160,14 @@ function DisplayTextLine({
   container?: string
 }): JSX.Element {
   const textLine = line as TextLine
-  const lineTypeComponent =
+  const LineNumberComponent =
     lineNumberTypeToComponent[textLine.lineNumber.type as string]
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${textLine.type}`]) },
-    [
-      React.createElement(lineTypeComponent, {
-        key: 0,
-        ...textLine.lineNumber
-      }),
-      ...helperDisplayLineTokens(line.content)
-    ]
+  const Container = container as any
+  return (
+    <Container className={`Transliteration__${line.type}`}>
+      <LineNumberComponent key={0} lineNumber={textLine.lineNumber} />
+      <DisplayLineTokens content={textLine.content} />
+    </Container>
   )
 }
 function DisplayLine({
@@ -176,30 +177,33 @@ function DisplayLine({
   line: Line
   container?: string
 }): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${line.type}`]) },
-    [
+  const Container = container as any
+  return (
+    <Container className={`Transliteration__${line.type}`}>
       <span key="prefix">{line.prefix}</span>,
-      ...helperDisplayLineTokens(line.content)
-    ]
+      <DisplayLineTokens content={line.content} />
+    </Container>
   )
 }
-function helperDisplayLineTokens(
+
+function DisplayLineTokens({
+  content
+}: {
   content: ReadonlyArray<Token>
-): React.ReactNode[] {
-  return [
-    content.reduce((acc: LineAccumulator, token: Token) => {
-      if (isShift(token)) {
-        acc.applyLanguage(token)
-      } else if (isDocumentOrientedGloss(token)) {
-        token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-      } else {
-        acc.pushToken(token)
-      }
-      return acc
-    }, new LineAccumulator()).result
-  ]
+}): any {
+  const tokens = content.reduce((acc: LineAccumulator, token: Token) => {
+    if (isShift(token)) {
+      acc.applyLanguage(token)
+    } else if (isDocumentOrientedGloss(token)) {
+      token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+    } else {
+      acc.pushToken(token)
+    }
+    return acc
+  }, new LineAccumulator()).result
+  return tokens.map((token: ReactNode) => {
+    return token as JSX.Element
+  })
 }
 
 function DisplayDollarAndAtLineWithParenthesis({
