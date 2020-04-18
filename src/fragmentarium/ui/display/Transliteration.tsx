@@ -162,14 +162,14 @@ function DisplayTextLine({
   const textLine = line as TextLine
   const LineNumberComponent =
     lineNumberTypeToComponent[textLine.lineNumber.type as string]
-  const Container = container as any
-  return (
-    <Container className={`Transliteration__${line.type}`}>
-      <LineNumberComponent key={0} lineNumber={textLine.lineNumber} />
-      <DisplayLineTokens content={textLine.content} />
-    </Container>
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${textLine.type}`]) },
+    <LineNumberComponent key={0} lineNumber={textLine.lineNumber} />,
+    <DisplayLineTokens content={textLine.content} />
   )
 }
+
 function DisplayLine({
   line,
   container = 'div'
@@ -177,12 +177,11 @@ function DisplayLine({
   line: Line
   container?: string
 }): JSX.Element {
-  const Container = container as any
-  return (
-    <Container className={`Transliteration__${line.type}`}>
-      <span key="prefix">{line.prefix}</span>,
-      <DisplayLineTokens content={line.content} />
-    </Container>
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${line.type}`]) },
+    <span key="prefix">{line.prefix}</span>,
+    <DisplayLineTokens content={line.content} />
   )
 }
 
