@@ -112,21 +112,28 @@ class LineAccumulator {
     )
   }
 }
-function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
-  const startPrime = start.hasPrime ? '′' : ''
-  const endPrime = end.hasPrime ? '′' : ''
-  const startPrefixMod = start.prefixModifier ? start.prefixModifier + '+' : ''
-  const startSuffixMod = start.suffixModifier ? start.suffixModifier : ''
-  const endPrefixMod = end.prefixModifier ? end.prefixModifier + '+' : ''
-  const endSuffixMod = end.suffixModifier ? end.suffixModifier : ''
-  const result = `(${startPrefixMod}${start.number}${startPrime}${startSuffixMod}-${endPrefixMod}${end.number}${endPrime}${endSuffixMod})`
-  return <sup>{result}</sup>
+
+function DisplayLineNumber(lineNumber: LineNumber): JSX.Element {
+  return <sup>{`(${lineNumberToString(lineNumber)})`}</sup>
 }
 
-function DisplayLineNumber({ hasPrime, number }: LineNumber): JSX.Element {
-  const prime = hasPrime ? '′' : ''
-  return <sup>{`(${number}${prime})`}</sup>
+function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
+  return (
+    <sup>{`(${lineNumberToString(start)}-${lineNumberToString(end)})`}</sup>
+  )
 }
+function lineNumberToString({
+  hasPrime,
+  number,
+  prefixModifier,
+  suffixModifier
+}: LineNumber): string {
+  const prefixMod = prefixModifier ? prefixModifier + '+' : ''
+  const prime = hasPrime ? '′' : ''
+  const suffixMod = suffixModifier ? suffixModifier : ''
+  return `${prefixMod}${number}${prime}${suffixMod}`
+}
+
 const lineNumberTypeToComponent = {
   LineNumber: DisplayLineNumber,
   LineNumberRange: DisplayLineNumberRange
