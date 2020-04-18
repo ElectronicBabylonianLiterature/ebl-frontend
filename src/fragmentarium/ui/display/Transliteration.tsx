@@ -120,20 +120,12 @@ function DisplayLineNumberRange({ start, end }: LineNumberRange): JSX.Element {
   const endPrefixMod = end.prefixModifier ? end.prefixModifier + '+' : ''
   const endSuffixMod = end.suffixModifier ? end.suffixModifier : ''
   const result = `(${startPrefixMod}${start.number}${startPrime}${startSuffixMod}-${endPrefixMod}${end.number}${endPrime}${endSuffixMod})`
-  return (
-    <span>
-      <sup>{result}</sup>
-    </span>
-  )
+  return <sup>{result}</sup>
 }
 
 function DisplayLineNumber({ hasPrime, number }: LineNumber): JSX.Element {
   const prime = hasPrime ? '′' : ''
-  return (
-    <span>
-      <sup>{`(${number}${prime})`}</sup>
-    </span>
-  )
+  return <sup>{`(${number}${prime})`}</sup>
 }
 const lineNumberTypeToComponent = {
   LineNumber: DisplayLineNumber,
