@@ -30,7 +30,6 @@ exports[`Snapshot 1`] = `
       <span>
         @
       </span>
-      ,
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
       >
@@ -4356,7 +4355,6 @@ exports[`Snapshot 1`] = `
       class="Transliteration__EmptyLine"
     >
       <span />
-      ,
     </li>
     <li
       class="Transliteration__RulingDollarLine"
