@@ -9,8 +9,8 @@ import {
   LineNumber,
   LineNumberRange
 } from 'fragmentarium/domain/text'
-import DisplayLineTokens from './LineAccumulator'
 import './Display.sass'
+import DisplayLineTokens from './LineAccumulator'
 
 function formatLineNumber(lineNumber: LineNumber): string {
   return `(${lineNumberToString(lineNumber)})`
@@ -35,17 +35,22 @@ const lineNumberTypeToComponent = {
   LineNumber: formatLineNumber,
   LineNumberRange: formatLineNumberRange
 }
-function DisplayLineNumber({
-  lineNumber
-}: {
-  lineNumber: LineNumber | LineNumberRange
-}): JSX.Element {
+function displayLineNumber(lineNumber: LineNumber | LineNumberRange): string {
   const lineNumberComponent =
     lineNumberTypeToComponent[lineNumber.type as string]
-  return <sup>{lineNumberComponent(lineNumber)}</sup>
+  return lineNumberComponent(lineNumber)
 }
 
-function DisplayTextLine({
+function DisplayLinePrefix({ line }: { line: Line }): JSX.Element {
+  if (line.type == 'TextLine') {
+    const textLine = line as TextLine
+    return <sup>{displayLineNumber(textLine.lineNumber)}</sup>
+  } else {
+    return <span key="prefix">{line.prefix}</span>
+  }
+}
+
+function DisplayLine({
   line,
   line: { type, content },
   container = 'div'
@@ -53,26 +58,10 @@ function DisplayTextLine({
   line: Line
   container?: string
 }): JSX.Element {
-  const textLine = line as TextLine
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <DisplayLineNumber lineNumber={textLine.lineNumber} />,
-    <DisplayLineTokens content={content} />
-  )
-}
-
-function DisplayLine({
-  line: { type, prefix, content },
-  container = 'div'
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${type}`]) },
-    <span key="prefix">{prefix}</span>,
+    <DisplayLinePrefix line={line} />,
     <DisplayLineTokens content={content} />
   )
 }
@@ -120,8 +109,7 @@ const lineComponents: ReadonlyMap<
     container?: string
   }>
 > = new Map([
-  ['ControlLine', DisplayLine],
-  ['TextLine', DisplayTextLine],
+  ['TextLine', DisplayLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
   ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
   ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
