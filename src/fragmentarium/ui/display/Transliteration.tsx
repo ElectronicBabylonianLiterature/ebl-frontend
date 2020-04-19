@@ -12,22 +12,12 @@ import {
 import DisplayLineTokens from './LineAccumulator'
 import './Display.sass'
 
-function DisplayLineNumber({
-  lineNumber
-}: {
-  lineNumber: LineNumber
-}): JSX.Element {
-  return <sup>{`(${lineNumberToString(lineNumber)})`}</sup>
+function formatLineNumber(lineNumber: LineNumber): string {
+  return `(${lineNumberToString(lineNumber)})`
 }
 
-function DisplayLineNumberRange({
-  lineNumber: { start, end }
-}: {
-  lineNumber: LineNumberRange
-}): JSX.Element {
-  return (
-    <sup>{`(${lineNumberToString(start)}-${lineNumberToString(end)})`}</sup>
-  )
+function formatLineNumberRange({ start, end }: LineNumberRange): string {
+  return `(${lineNumberToString(start)}-${lineNumberToString(end)})`
 }
 function lineNumberToString({
   hasPrime,
@@ -42,30 +32,38 @@ function lineNumberToString({
 }
 
 const lineNumberTypeToComponent = {
-  LineNumber: DisplayLineNumber,
-  LineNumberRange: DisplayLineNumberRange
+  LineNumber: formatLineNumber,
+  LineNumberRange: formatLineNumberRange
+}
+function DisplayLineNumber({
+  lineNumber
+}: {
+  lineNumber: LineNumber | LineNumberRange
+}): JSX.Element {
+  const lineNumberComponent =
+    lineNumberTypeToComponent[lineNumber.type as string]
+  return <sup>{lineNumberComponent(lineNumber)}</sup>
 }
 
 function DisplayTextLine({
   line,
+  line: { type, content },
   container = 'div'
 }: {
   line: Line
   container?: string
 }): JSX.Element {
   const textLine = line as TextLine
-  const LineNumberComponent =
-    lineNumberTypeToComponent[textLine.lineNumber.type as string]
   return React.createElement(
     container,
-    { className: classNames([`Transliteration__${textLine.type}`]) },
-    <LineNumberComponent key={0} lineNumber={textLine.lineNumber} />,
-    <DisplayLineTokens content={textLine.content} />
+    { className: classNames([`Transliteration__${type}`]) },
+    <DisplayLineNumber lineNumber={textLine.lineNumber} />,
+    <DisplayLineTokens content={content} />
   )
 }
 
 function DisplayLine({
-  line,
+  line: { type, prefix, content },
   container = 'div'
 }: {
   line: Line
@@ -73,9 +71,9 @@ function DisplayLine({
 }): JSX.Element {
   return React.createElement(
     container,
-    { className: classNames([`Transliteration__${line.type}`]) },
-    <span key="prefix">{line.prefix}</span>,
-    <DisplayLineTokens content={line.content} />
+    { className: classNames([`Transliteration__${type}`]) },
+    <span key="prefix">{prefix}</span>,
+    <DisplayLineTokens content={content} />
   )
 }
 
