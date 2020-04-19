@@ -104,12 +104,8 @@ class LineAccumulator {
   }
 }
 
-export default function DisplayLineTokens({
-  content
-}: {
-  content: ReadonlyArray<Token>
-}): any {
-  const tokens = content.reduce((acc: LineAccumulator, token: Token) => {
+function accumulateTokens(content: ReadonlyArray<Token>): React.ReactNode[] {
+  return content.reduce((acc: LineAccumulator, token: Token) => {
     if (isShift(token)) {
       acc.applyLanguage(token)
     } else if (isDocumentOrientedGloss(token)) {
@@ -119,6 +115,14 @@ export default function DisplayLineTokens({
     }
     return acc
   }, new LineAccumulator()).result
+}
+
+export default function DisplayLineTokens({
+  content
+}: {
+  content: ReadonlyArray<Token>
+}): any {
+  const tokens = accumulateTokens(content)
   return tokens.map((token: ReactNode) => {
     return token as JSX.Element
   })
