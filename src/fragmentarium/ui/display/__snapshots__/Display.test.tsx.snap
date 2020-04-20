@@ -299,8 +299,8 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
@@ -435,8 +435,11 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--double"
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
@@ -1172,8 +1175,14 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--triple"
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
@@ -4378,29 +4387,38 @@ exports[`Snapshot 1`] = `
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--single"
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--double"
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
       class="Transliteration__RulingDollarLine"
     >
-      <hr
-        class="Transliteration__ruling Transliteration__ruling--triple"
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
+      />
+      <div
+        class="Transliteration__ruling"
       />
     </li>
     <li
