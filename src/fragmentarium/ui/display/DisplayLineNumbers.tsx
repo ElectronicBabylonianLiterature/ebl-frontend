@@ -20,15 +20,14 @@ function lineNumberToString({
   return `${prefixMod}${number}${prime}${suffixMod}`
 }
 
-const lineNumberTypeToComponent = {
+const lineNumberTypeToString = {
   LineNumber: formatLineNumber,
   LineNumberRange: formatLineNumberRange
 }
 function chooseLineNumberType(
   lineNumber: LineNumber | LineNumberRange
 ): string {
-  const lineNumberComponent =
-    lineNumberTypeToComponent[lineNumber.type as string]
+  const lineNumberComponent = lineNumberTypeToString[lineNumber.type as string]
   return lineNumberComponent(lineNumber)
 }
 
