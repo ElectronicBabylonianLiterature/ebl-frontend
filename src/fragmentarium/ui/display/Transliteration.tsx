@@ -11,6 +11,7 @@ import {
 } from 'fragmentarium/domain/text'
 import './Display.sass'
 import DisplayLineTokens from './LineAccumulator'
+import _ from 'lodash'
 
 function formatLineNumber(lineNumber: LineNumber): string {
   return `(${lineNumberToString(lineNumber)})`
@@ -138,7 +139,7 @@ function DisplayRulingDollarLine({
   return React.createElement(
     container,
     { className: 'Transliteration__RulingDollarLine' },
-    [...Array(rulingsNumber).keys()].map((value: number) => {
+    _.range(0, rulingsNumber).map((value: number) => {
       return <DisplayEachRuling key={value} rulingType={rulingType} />
     })
   )
