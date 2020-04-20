@@ -11,6 +11,7 @@ import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
 
 import './Display.sass'
 import { Shift, Token } from 'fragmentarium/domain/token'
+import _ from 'lodash'
 
 function WordSeparator({
   modifiers: bemModifiers = []
@@ -207,7 +208,7 @@ function DisplayRulingDollarLine({
   return React.createElement(
     container,
     { className: 'Transliteration__RulingDollarLine' },
-    [...Array(rulingsNumber).keys()].map((value: number) => {
+    _.range(0, rulingsNumber).map((value: number) => {
       return <DisplayEachRuling key={value} rulingType={rulingType} />
     })
   )
