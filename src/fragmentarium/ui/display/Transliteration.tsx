@@ -12,44 +12,7 @@ import {
 import './Display.sass'
 import DisplayLineTokens from './DisplayLineTokens'
 import _ from 'lodash'
-
-function formatLineNumber(lineNumber: LineNumber): string {
-  return `(${lineNumberToString(lineNumber)})`
-}
-
-function formatLineNumberRange({ start, end }: LineNumberRange): string {
-  return `(${lineNumberToString(start)}-${lineNumberToString(end)})`
-}
-function lineNumberToString({
-  hasPrime,
-  number,
-  prefixModifier,
-  suffixModifier
-}: LineNumber): string {
-  const prefixMod = prefixModifier ? prefixModifier + '+' : ''
-  const prime = hasPrime ? '′' : ''
-  const suffixMod = suffixModifier ? suffixModifier : ''
-  return `${prefixMod}${number}${prime}${suffixMod}`
-}
-
-const lineNumberTypeToComponent = {
-  LineNumber: formatLineNumber,
-  LineNumberRange: formatLineNumberRange
-}
-function displayLineNumber(lineNumber: LineNumber | LineNumberRange): string {
-  const lineNumberComponent =
-    lineNumberTypeToComponent[lineNumber.type as string]
-  return lineNumberComponent(lineNumber)
-}
-
-function DisplayLinePrefix({ line }: { line: Line }): JSX.Element {
-  if (line.type === 'TextLine') {
-    const textLine = line as TextLine
-    return <sup>{displayLineNumber(textLine.lineNumber)}</sup>
-  } else {
-    return <span key="prefix">{line.prefix}</span>
-  }
-}
+import DisplayLineNumber from './DisplayLineNumbers'
 
 function DisplayLine({
   line,
@@ -62,7 +25,7 @@ function DisplayLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <DisplayLinePrefix line={line} />,
+    <DisplayLineNumber line={line} />,
     <DisplayLineTokens content={content} />
   )
 }
