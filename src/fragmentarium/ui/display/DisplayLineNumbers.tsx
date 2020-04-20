@@ -2,11 +2,11 @@ import { Line, LineNumber, LineNumberRange, TextLine } from '../../domain/text'
 import React from 'react'
 
 function formatLineNumber(lineNumber: LineNumber): string {
-  return `(${lineNumberToString(lineNumber)})`
+  return `${lineNumberToString(lineNumber)}`
 }
 
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
-  return `(${lineNumberToString(start)}-${lineNumberToString(end)})`
+  return `${lineNumberToString(start)}-${lineNumberToString(end)}`
 }
 function lineNumberToString({
   hasPrime,
@@ -38,7 +38,7 @@ export default function DisplayLineNumber({
 }): JSX.Element {
   if (line.type === 'TextLine') {
     const textLine = line as TextLine
-    return <sup>{chooseLineNumberType(textLine.lineNumber)}</sup>
+    return <sup>({chooseLineNumberType(textLine.lineNumber)})</sup>
   } else {
     return <span key="prefix">{line.prefix}</span>
   }
