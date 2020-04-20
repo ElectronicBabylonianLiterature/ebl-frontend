@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AceEditor from 'react-ace'
+import AceEditor, { IAnnotation } from 'react-ace'
 import _ from 'lodash'
 
 import 'ace-builds/src-noconflict/ext-searchbox'
@@ -8,7 +8,7 @@ import 'ace-builds/src-noconflict/theme-kuroir'
 import specialCharacters from './SpecialCharacters.json'
 import AtfMode from './AtfMode'
 
-function createAnnotations(compositeError) {
+function createAnnotations(compositeError): IAnnotation[] {
   return _.get(compositeError, 'data.errors', [])
     .filter((error) => _.has(error, 'lineNumber'))
     .map((error) => ({
@@ -46,12 +46,13 @@ class Editor extends Component<Props> {
     super(props)
     this.aceEditor = React.createRef()
   }
-  componentDidMount() {
+
+  componentDidMount(): void {
     const customMode = new AtfMode()
-    this.aceEditor.current!.editor.getSession().setMode(customMode)
+    this.aceEditor.current?.editor.getSession().setMode(customMode)
   }
 
-  render() {
+  render(): JSX.Element {
     const { name, value, onChange, disabled, error } = this.props
     const annotations = createAnnotations(error)
     return (
@@ -76,9 +77,9 @@ class Editor extends Component<Props> {
         editorProps={{
           $blockScrolling: Infinity,
         }}
-        // @ts-ignore
         setOptions={{
           showLineNumbers: false,
+          // @ts-ignore
           newLineMode: 'unix',
         }}
         // @ts-ignore

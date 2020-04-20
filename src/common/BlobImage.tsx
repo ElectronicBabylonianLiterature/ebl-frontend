@@ -10,12 +10,12 @@ export default function BlobImage({
   data: Blob
   hasLink?: boolean
   alt?: string
-}) {
-  const [objectUrl, setObjectUrl] = useState()
+}): JSX.Element {
+  const [objectUrl, setObjectUrl] = useState<string>()
   useEffect(() => {
     const url = URL.createObjectURL(data)
     setObjectUrl(url)
-    return () => URL.revokeObjectURL(url)
+    return (): void => URL.revokeObjectURL(url)
   }, [data])
 
   const image = <Image src={objectUrl} alt={alt} fluid />

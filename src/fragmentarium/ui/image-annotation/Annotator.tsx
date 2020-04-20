@@ -28,7 +28,7 @@ const editorWithTokens = (
 )
 
 interface Props {
-  image: URL
+  image: URL | string
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
@@ -123,21 +123,24 @@ function Annotator({
   fragment: Fragment
   annotations: readonly Annotation[]
   fragmentService: FragmentService
-}): React.ReactElement {
-  const [objectUrl, setObjectUrl] = useState()
+}): JSX.Element {
+  const [objectUrl, setObjectUrl] = useState<string>()
   useEffect(() => {
     const url = URL.createObjectURL(image)
     setObjectUrl(url)
     return (): void => URL.revokeObjectURL(url)
   }, [image])
-
   return (
-    <FragmentAnnotation
-      image={objectUrl}
-      fragment={fragment}
-      initialAnnotations={annotations}
-      fragmentService={fragmentService}
-    />
+    <>
+      {objectUrl && (
+        <FragmentAnnotation
+          image={objectUrl}
+          fragment={fragment}
+          initialAnnotations={annotations}
+          fragmentService={fragmentService}
+        />
+      )}
+    </>
   )
 }
 
