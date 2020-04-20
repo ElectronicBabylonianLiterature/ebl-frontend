@@ -104,7 +104,11 @@ class LineAccumulator {
   }
 }
 
-function accumulateTokens(content: ReadonlyArray<Token>): React.ReactNode[] {
+export default function DisplayLineTokens({
+  content
+}: {
+  content: ReadonlyArray<Token>
+}): any {
   return content.reduce((acc: LineAccumulator, token: Token) => {
     if (isShift(token)) {
       acc.applyLanguage(token)
@@ -115,15 +119,4 @@ function accumulateTokens(content: ReadonlyArray<Token>): React.ReactNode[] {
     }
     return acc
   }, new LineAccumulator()).result
-}
-
-export default function DisplayLineTokens({
-  content
-}: {
-  content: ReadonlyArray<Token>
-}): any {
-  const tokens = accumulateTokens(content)
-  return tokens.map((token: ReactNode) => {
-    return token as JSX.Element
-  })
 }

@@ -10,7 +10,7 @@ import {
   LineNumberRange
 } from 'fragmentarium/domain/text'
 import './Display.sass'
-import DisplayLineTokens from './LineAccumulator'
+import DisplayLineTokens from './DisplayLineTokens'
 import _ from 'lodash'
 
 function formatLineNumber(lineNumber: LineNumber): string {
@@ -43,7 +43,7 @@ function displayLineNumber(lineNumber: LineNumber | LineNumberRange): string {
 }
 
 function DisplayLinePrefix({ line }: { line: Line }): JSX.Element {
-  if (line.type == 'TextLine') {
+  if (line.type === 'TextLine') {
     const textLine = line as TextLine
     return <sup>{displayLineNumber(textLine.lineNumber)}</sup>
   } else {
