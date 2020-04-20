@@ -31,11 +31,7 @@ function chooseLineNumberType(
   return lineNumberToString(lineNumber)
 }
 
-export default function DisplayLineNumber({
-  line
-}: {
-  line: Line
-}): JSX.Element {
+export function DisplayPrefix({ line }: { line: Line }): JSX.Element {
   if (line.type === 'TextLine') {
     const textLine = line as TextLine
     return <sup>({chooseLineNumberType(textLine.lineNumber)})</sup>
