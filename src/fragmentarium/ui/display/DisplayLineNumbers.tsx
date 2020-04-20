@@ -27,8 +27,8 @@ const lineNumberTypeToString = {
 function chooseLineNumberType(
   lineNumber: LineNumber | LineNumberRange
 ): string {
-  const lineNumberComponent = lineNumberTypeToString[lineNumber.type as string]
-  return lineNumberComponent(lineNumber)
+  const lineNumberToString = lineNumberTypeToString[lineNumber.type as string]
+  return lineNumberToString(lineNumber)
 }
 
 export default function DisplayLineNumber({
