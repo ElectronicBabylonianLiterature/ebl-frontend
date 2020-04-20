@@ -4,8 +4,7 @@ import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine,
-  TextLine
+  RulingDollarLine
 } from 'fragmentarium/domain/text'
 import './Display.sass'
 import _ from 'lodash'
