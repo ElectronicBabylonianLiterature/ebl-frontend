@@ -1,26 +1,46 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { useAuth0 } from './react-auth0-spa'
-import { AuthenticationService, eblNameProperty } from './Auth'
+import {
+  AuthenticationService,
+  eblNameProperty,
+  useAuthentication,
+} from './Auth'
 
-function User(): JSX.Element {
-  const auth0: AuthenticationService = useAuth0()
-  return auth0.isAuthenticated() ? (
+interface Props {
+  authenticationService: AuthenticationService
+}
+
+function LoginButton({ authenticationService }: Props): JSX.Element {
+  return (
     <Button
       size="sm"
       variant="outline-secondary"
-      onClick={(): void => auth0.logout()}
-    >
-      Logout {auth0.getUser()?.[eblNameProperty] || auth0.getUser()?.name}
-    </Button>
-  ) : (
-    <Button
-      size="sm"
-      variant="outline-secondary"
-      onClick={(): void => auth0.login()}
+      onClick={(): void => authenticationService.login()}
     >
       Login
     </Button>
+  )
+}
+
+function LogoutButton({ authenticationService }: Props): JSX.Element {
+  const user = authenticationService.getUser()
+  return (
+    <Button
+      size="sm"
+      variant="outline-secondary"
+      onClick={(): void => authenticationService.logout()}
+    >
+      Logout {user[eblNameProperty] ?? user.name}
+    </Button>
+  )
+}
+
+function User(): JSX.Element {
+  const authenticationService: AuthenticationService = useAuthentication()
+  return authenticationService.isAuthenticated() ? (
+    <LogoutButton authenticationService={authenticationService} />
+  ) : (
+    <LoginButton authenticationService={authenticationService} />
   )
 }
 

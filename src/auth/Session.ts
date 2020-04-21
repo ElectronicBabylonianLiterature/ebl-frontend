@@ -22,42 +22,55 @@ export interface Session {
   hasBetaAccess(): boolean
 }
 
-class MemorySession implements Session {
-  readonly accessToken: string
-  readonly idToken: string
-  readonly expiresAt: number
-  private readonly _scopes: Set<string>
-
-  constructor(
-    accessToken: string,
-    idToken: string,
-    expiresAt: number,
-    scopes: ReadonlyArray<string>
-  ) {
-    this.accessToken = accessToken
-    this.idToken = idToken
-    this.expiresAt = expiresAt
-    this._scopes = new Set(scopes)
+class GuestSession implements Session {
+  isAllowedToReadWords(): boolean {
+    return false
   }
 
-  get scopes(): readonly string[] {
-    return Array.from(this._scopes)
+  isAllowedToWriteWords(): boolean {
+    return false
   }
 
-  isAuthenticated(): boolean {
-    return new Date().getTime() < this.expiresAt
+  isAllowedToReadFragments(): boolean {
+    return false
   }
 
-  getAccessToken(): string {
-    if (this.accessToken) {
-      return this.accessToken
-    } else {
-      throw new Error('No access token')
-    }
+  isAllowedToTransliterateFragments(): boolean {
+    return false
   }
 
-  hasScope(scope): boolean {
-    return this.isAuthenticated() && this._scopes.has(scope)
+  isAllowedToLemmatizeFragments(): boolean {
+    return false
+  }
+
+  isAllowedToAnnotateFragments(): boolean {
+    return false
+  }
+
+  isAllowedToReadBibliography(): boolean {
+    return false
+  }
+
+  isAllowedToWriteBibliography(): boolean {
+    return false
+  }
+
+  isAllowedToWriteTexts(): boolean {
+    return false
+  }
+
+  hasBetaAccess(): boolean {
+    return false
+  }
+}
+
+export const guestSession = new GuestSession()
+
+export default class MemorySession implements Session {
+  private readonly scopes: ReadonlySet<string>
+
+  constructor(scopes: readonly string[]) {
+    this.scopes = new Set(scopes)
   }
 
   isAllowedToReadWords(): boolean {
@@ -102,8 +115,6 @@ class MemorySession implements Session {
 
   private hasApplicationScope(applicationScope: string): boolean {
     const scope = applicationScopes[applicationScope]
-    return this.hasScope(scope)
+    return this.scopes.has(scope)
   }
 }
-
-export default MemorySession

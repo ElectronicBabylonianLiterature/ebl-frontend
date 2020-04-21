@@ -2,14 +2,14 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
-import { Auth0Context } from './auth/react-auth0-spa'
+import { AuthenticationContext, User } from 'auth/Auth'
 
 let auth
 
 beforeEach(() => {
   auth = {
     isAuthenticated: jest.fn(),
-    getUser: () => ({ name: 'Test User' }),
+    getUser: (): User => ({ name: 'Test User' }),
   }
 })
 
@@ -54,9 +54,9 @@ function renderHeader(loggedIn): void {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(loggedIn)
   render(
     <MemoryRouter>
-      <Auth0Context.Provider value={auth}>
+      <AuthenticationContext.Provider value={auth}>
         <Header />
-      </Auth0Context.Provider>
+      </AuthenticationContext.Provider>
     </MemoryRouter>
   )
 }

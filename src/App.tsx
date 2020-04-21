@@ -19,7 +19,7 @@ import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 import { Location } from 'history'
 import AnnotationView from './fragmentarium/ui/image-annotation/AnnotationView'
-import { useAuth0 } from 'auth/react-auth0-spa'
+import { useAuthentication } from 'auth/Auth'
 
 function parseStringParam(
   location: Location,
@@ -75,9 +75,9 @@ function App({
   bibliographyService,
   textService,
 }): JSX.Element {
-  const auth0 = useAuth0()
+  const authenticationService = useAuthentication()
   return (
-    <SessionContext.Provider value={auth0.getSession()}>
+    <SessionContext.Provider value={authenticationService.getSession()}>
       <Header />
       <ErrorBoundary>
         <Switch>

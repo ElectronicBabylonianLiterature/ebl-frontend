@@ -1,8 +1,8 @@
 import React, { Context } from 'react'
-import MemorySession, { Session } from './Session'
+import { guestSession, Session } from 'auth/Session'
 
 const SessionContext: Context<Session> = React.createContext<Session>(
-  new MemorySession('', '', 0, [])
+  guestSession
 )
 
 export default SessionContext

@@ -16,14 +16,13 @@ import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/TextService'
-import MemorySession, { Session } from 'auth/Session'
+import MemorySession, { Session, guestSession } from 'auth/Session'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Promise } from 'bluebird'
 import { submitForm } from 'test-helpers/utils'
-import { Auth0Context } from 'auth/react-auth0-spa'
-import { eblNameProperty } from 'auth/Auth'
+import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -76,12 +75,12 @@ export default class AppDriver {
   }
 
   withSession(): AppDriver {
-    this.session = new MemorySession(
-      'accessToken',
-      'idToken',
-      Number.MAX_SAFE_INTEGER,
-      ['write:texts', 'read:fragments', 'annotate:fragments', 'read:words']
-    )
+    this.session = new MemorySession([
+      'write:texts',
+      'read:fragments',
+      'annotate:fragments',
+      'read:words',
+    ])
     return this
   }
 
@@ -89,23 +88,22 @@ export default class AppDriver {
     await act(async () => {
       this.element = render(
         <MemoryRouter initialEntries={this.initialEntries}>
-          <Auth0Context.Provider
+          <AuthenticationContext.Provider
             value={{
               login: _.noop,
               logout: _.noop,
-              getSession: () =>
-                this.session ?? new MemorySession('', '', 0, []),
-              isAuthenticated: () => this.session !== null,
-              getAccessToken() {
+              getSession: (): Session => this.session ?? guestSession,
+              isAuthenticated: (): boolean => this.session !== null,
+              getAccessToken(): Promise<string> {
                 throw new Error('Not implemented')
               },
-              getUser() {
+              getUser(): { [eblNameProperty]: string } {
                 return { [eblNameProperty]: 'Test' }
               },
             }}
           >
             {createApp(this.api)}
-          </Auth0Context.Provider>
+          </AuthenticationContext.Provider>
         </MemoryRouter>
       )
     })
@@ -113,7 +111,7 @@ export default class AppDriver {
     return this
   }
 
-  async waitForText(text): Promise<void> {
+  async waitForText(text: Matcher): Promise<void> {
     await this.getElement().findByText(text)
   }
 

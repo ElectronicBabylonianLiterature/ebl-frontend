@@ -1,19 +1,31 @@
 import React from 'react'
 import { render, fireEvent, RenderResult } from '@testing-library/react'
 import User from './User'
-import { AuthenticationService } from './Auth'
-import { Auth0Context } from './react-auth0-spa'
+import {
+  AuthenticationContext,
+  AuthenticationService,
+  User as EblUser,
+} from './Auth'
+import { Session } from 'auth/Session'
 
-let auth
+let auth: AuthenticationService
+let isAuthenticatedMock: jest.Mock<boolean>
 
 beforeEach(() => {
+  isAuthenticatedMock = jest.fn()
   auth = {
     login: jest.fn(),
     logout: jest.fn(),
-    isAuthenticated: jest.fn(),
-    getUser: () => ({
+    isAuthenticated: isAuthenticatedMock,
+    getUser: (): EblUser => ({
       name: 'Test User',
     }),
+    getSession: (): Session => {
+      throw new Error('Not implemented.')
+    },
+    getAccessToken: (): Promise<string> => {
+      throw new Error('Not implemented.')
+    },
   }
 })
 
@@ -30,10 +42,10 @@ it('Calls Auth0 login if user is logged out', () => {
 })
 
 function renderUser(isAuthenticated: boolean): RenderResult {
-  auth.isAuthenticated.mockReturnValueOnce(isAuthenticated)
+  isAuthenticatedMock.mockReturnValueOnce(isAuthenticated)
   return render(
-    <Auth0Context.Provider value={auth}>
+    <AuthenticationContext.Provider value={auth}>
       <User />
-    </Auth0Context.Provider>
+    </AuthenticationContext.Provider>
   )
 }

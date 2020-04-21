@@ -21,8 +21,7 @@ import TextService from 'corpus/TextService'
 import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Auth0Provider } from 'auth/react-auth0-spa'
-import { scopeString } from 'auth/Auth'
-import { Auth0Context } from './auth/react-auth0-spa'
+import { scopeString, useAuthentication } from 'auth/Auth'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -35,11 +34,40 @@ Promise.config({
   cancellation: true,
 })
 
-const auth0Config = createAuth0Config()
-
 const errorReporter = new SentryErrorReporter()
 
-function A0P({ children }: PropsWithChildren<{}>): JSX.Element {
+function InjectedApp(): JSX.Element {
+  const authenticationService = useAuthentication()
+  const apiClient = new ApiClient(authenticationService, errorReporter)
+  const wordRepository = new WordRepository(apiClient)
+  const fragmentRepository = new FragmentRepository(apiClient)
+  const imageRepository = new ApiImageRepository(apiClient)
+  const bibliographyRepository = new BibliographyRepository(apiClient)
+  const bibliographyService = new BibliographyService(bibliographyRepository)
+  const fragmentService = new FragmentService(
+    fragmentRepository,
+    imageRepository,
+    wordRepository,
+    bibliographyService
+  )
+  const fragmentSearchService = new FragmentSearchService(fragmentRepository)
+  const wordService = new WordService(wordRepository)
+  const textService = new TextService(apiClient)
+  return (
+    <App
+      wordService={wordService}
+      fragmentService={fragmentService}
+      fragmentSearchService={fragmentSearchService}
+      bibliographyService={bibliographyService}
+      textService={textService}
+    />
+  )
+}
+
+function InjectedAuth0Provider({
+  children,
+}: PropsWithChildren<{}>): JSX.Element {
+  const auth0Config = createAuth0Config()
   const history = useHistory()
   return (
     <Auth0Provider
@@ -57,38 +85,7 @@ function A0P({ children }: PropsWithChildren<{}>): JSX.Element {
       audience={auth0Config.audience}
       returnTo={auth0Config.returnTo}
     >
-      <Auth0Context.Consumer>
-        {(authenticationService) => {
-          const apiClient = new ApiClient(authenticationService, errorReporter)
-          const wordRepository = new WordRepository(apiClient)
-          const fragmentRepository = new FragmentRepository(apiClient)
-          const imageRepository = new ApiImageRepository(apiClient)
-          const bibliographyRepository = new BibliographyRepository(apiClient)
-          const bibliographyService = new BibliographyService(
-            bibliographyRepository
-          )
-          const fragmentService = new FragmentService(
-            fragmentRepository,
-            imageRepository,
-            wordRepository,
-            bibliographyService
-          )
-          const fragmentSearchService = new FragmentSearchService(
-            fragmentRepository
-          )
-          const wordService = new WordService(wordRepository)
-          const textService = new TextService(apiClient)
-          return (
-            <App
-              wordService={wordService}
-              fragmentService={fragmentService}
-              fragmentSearchService={fragmentSearchService}
-              bibliographyService={bibliographyService}
-              textService={textService}
-            />
-          )
-        }}
-      </Auth0Context.Consumer>
+      {children}
     </Auth0Provider>
   )
 }
@@ -97,7 +94,9 @@ ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
-        <A0P />
+        <InjectedAuth0Provider>
+          <InjectedApp />
+        </InjectedAuth0Provider>
       </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,

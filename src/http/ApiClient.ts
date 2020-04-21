@@ -6,11 +6,11 @@ export function apiUrl(path): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-function deserializeJson(response): any {
+function deserializeJson(response: Response): any {
   return [201, 204].includes(response.status) ? null : response.json()
 }
 
-function createOptions(body, method): RequestInit {
+function createOptions(body: unknown, method: string): RequestInit {
   return {
     body: JSON.stringify(body),
     headers: {
@@ -103,13 +103,13 @@ export default class ApiClient {
     )
   }
 
-  postJson(path, body): Bluebird<any> {
+  postJson(path: string, body: unknown): Bluebird<any> {
     return this.fetch(path, true, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }
 
-  putJson(path, body): Bluebird<any> {
+  putJson(path: string, body: unknown): Bluebird<any> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson
     )
