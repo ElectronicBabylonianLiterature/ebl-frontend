@@ -11,6 +11,7 @@ import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
 
 import './Display.sass'
 import { Shift, Token } from 'fragmentarium/domain/token'
+import _ from 'lodash'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -188,6 +189,12 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
+const rulingsToNumber: ReadonlyMap<string, number> = new Map([
+  ['SINGLE', 1],
+  ['DOUBLE', 2],
+  ['TRIPLE', 3],
+])
+
 function DisplayRulingDollarLine({
   line,
   container = 'div',
@@ -195,18 +202,23 @@ function DisplayRulingDollarLine({
   line: Line
   container?: string
 }): JSX.Element {
-  const rulingDollarLine = line as RulingDollarLine
-  const element = 'Transliteration__ruling'
+  const rulingLine = line as RulingDollarLine
+  const rulingType = `Transliteration__ruling`
+  const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return React.createElement(
     container,
-    { className: `Transliteration__${rulingDollarLine.type}` },
-    <hr
-      className={classNames([
-        element,
-        `${element}--${rulingDollarLine.number.toLowerCase()}`,
-      ])}
-    />
+    { className: 'Transliteration__RulingDollarLine' },
+    _.range(0, rulingsNumber).map((value: number) => {
+      return <DisplayEachRuling key={value} rulingType={rulingType} />
+    })
   )
+}
+function DisplayEachRuling({
+  rulingType,
+}: {
+  rulingType: string
+}): JSX.Element {
+  return <div className={rulingType} />
 }
 
 export function Transliteration({
