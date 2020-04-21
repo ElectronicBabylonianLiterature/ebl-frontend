@@ -18,6 +18,7 @@ afterEach(() => {
 
 describe('Diplay annotate view', () => {
   beforeEach(async () => {
+    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber)
@@ -26,7 +27,7 @@ describe('Diplay annotate view', () => {
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()
-    await appDriver.waitForText(`Save`)
+    await appDriver.waitForText('Save')
   })
 
   test('Breadcrumbs', () => {
