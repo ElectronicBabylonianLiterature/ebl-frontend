@@ -39,7 +39,7 @@ function isOpenEnclosure(token: Token): boolean {
 }
 
 class LineAccumulator {
-  result: React.ReactNode[] = []
+  result: JSX.Element[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false

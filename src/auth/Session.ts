@@ -1,6 +1,28 @@
 import applicationScopes from './applicationScopes.json'
 
-class Session {
+export interface Session {
+  isAllowedToReadWords(): boolean
+
+  isAllowedToWriteWords(): boolean
+
+  isAllowedToReadFragments(): boolean
+
+  isAllowedToTransliterateFragments(): boolean
+
+  isAllowedToLemmatizeFragments(): boolean
+
+  isAllowedToAnnotateFragments(): boolean
+
+  isAllowedToReadBibliography(): boolean
+
+  isAllowedToWriteBibliography(): boolean
+
+  isAllowedToWriteTexts(): boolean
+
+  hasBetaAccess(): boolean
+}
+
+class MemorySession implements Session {
   readonly accessToken: string
   readonly idToken: string
   readonly expiresAt: number
@@ -84,4 +106,4 @@ class Session {
   }
 }
 
-export default Session
+export default MemorySession

@@ -4,7 +4,6 @@ import { parse } from 'query-string'
 import _ from 'lodash'
 
 import Header from './Header'
-import Callback from 'auth/Callback'
 import SessionContext from 'auth/SessionContext'
 import Introduction from './Introduction'
 import Dictionary from 'dictionary/ui/search/Dictionary'
@@ -20,6 +19,7 @@ import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 import { Location } from 'history'
 import AnnotationView from './fragmentarium/ui/image-annotation/AnnotationView'
+import { useAuth0 } from 'auth/react-auth0-spa'
 
 function parseStringParam(
   location: Location,
@@ -69,16 +69,16 @@ function parseFargmentParams(
 }
 
 function App({
-  auth,
   wordService,
   fragmentService,
   fragmentSearchService,
   bibliographyService,
   textService,
-}) {
+}): JSX.Element {
+  const auth0 = useAuth0()
   return (
-    <SessionContext.Provider value={auth.getSession()}>
-      <Header auth={auth} />
+    <SessionContext.Provider value={auth0.getSession()}>
+      <Header />
       <ErrorBoundary>
         <Switch>
           <Route
@@ -187,10 +187,6 @@ function App({
                 {...parseFragmentSearchParams(location)}
               />
             )}
-          />
-          <Route
-            path="/callback"
-            render={(props): ReactNode => <Callback auth={auth} {...props} />}
           />
           <Route component={Introduction} />
         </Switch>

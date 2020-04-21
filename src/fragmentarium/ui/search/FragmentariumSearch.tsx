@@ -8,7 +8,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 
 type Props = {
   number: string | null | undefined

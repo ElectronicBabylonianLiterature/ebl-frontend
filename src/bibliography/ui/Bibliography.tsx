@@ -11,7 +11,7 @@ import SessionContext from 'auth/SessionContext'
 
 import './Bibliography.css'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import { RouteComponentProps } from 'react-router-dom'
 
 function CreateButton({ session }: { session: Session }): JSX.Element {

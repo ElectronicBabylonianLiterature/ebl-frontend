@@ -1,6 +1,8 @@
-import React from 'react'
-import Session from './Session'
+import React, { Context } from 'react'
+import MemorySession, { Session } from './Session'
 
-const SessionContext = React.createContext(new Session('', '', 0, []))
+const SessionContext: Context<Session> = React.createContext<Session>(
+  new MemorySession('', '', 0, [])
+)
 
 export default SessionContext

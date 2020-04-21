@@ -8,30 +8,24 @@ import {
   within,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import _ from 'lodash'
 import App from 'App'
-import Auth from 'auth/Auth'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import TextService from 'corpus/TextService'
-import Session from 'auth/Session'
+import MemorySession, { Session } from 'auth/Session'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import { ConsoleErrorReporter } from 'ErrorReporterContext'
-import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import SessionStore from 'auth/SessionStore'
 import { Promise } from 'bluebird'
 import { submitForm } from 'test-helpers/utils'
+import { Auth0Context } from 'auth/react-auth0-spa'
+import { eblNameProperty } from 'auth/Auth'
 
-function createAuth(sessionStore: SessionStore): Auth {
-  const auth0Config = createAuth0Config()
-  return new Auth(sessionStore, new ConsoleErrorReporter(), auth0Config)
-}
-
-function createApp(api, sessionStore: SessionStore): JSX.Element {
+function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
   const fragmentRepository = new FragmentRepository(api)
   const imageRepository = new ApiImageRepository(api)
@@ -49,7 +43,6 @@ function createApp(api, sessionStore: SessionStore): JSX.Element {
 
   return (
     <App
-      auth={createAuth(sessionStore)}
       wordService={wordService}
       fragmentService={fragmentService}
       fragmentSearchService={fragmentSearchService}
@@ -83,7 +76,7 @@ export default class AppDriver {
   }
 
   withSession(): AppDriver {
-    this.session = new Session(
+    this.session = new MemorySession(
       'accessToken',
       'idToken',
       Number.MAX_SAFE_INTEGER,
@@ -93,20 +86,26 @@ export default class AppDriver {
   }
 
   async render(): Promise<AppDriver> {
-    const fakeSessionStore: SessionStore = {
-      setSession: (session) => {
-        this.session = session
-      },
-      clearSession: () => {
-        this.session = null
-      },
-      getSession: () => this.session || new Session('', '', 0, []),
-    }
-
     await act(async () => {
       this.element = render(
         <MemoryRouter initialEntries={this.initialEntries}>
-          {createApp(this.api, fakeSessionStore)}
+          <Auth0Context.Provider
+            value={{
+              login: _.noop,
+              logout: _.noop,
+              getSession: () =>
+                this.session ?? new MemorySession('', '', 0, []),
+              isAuthenticated: () => this.session !== null,
+              getAccessToken() {
+                throw new Error('Not implemented')
+              },
+              getUser() {
+                return { [eblNameProperty]: 'Test' }
+              },
+            }}
+          >
+            {createApp(this.api)}
+          </Auth0Context.Provider>
         </MemoryRouter>
       )
     })
@@ -118,15 +117,15 @@ export default class AppDriver {
     await this.getElement().findByText(text)
   }
 
-  expectTextContent(text): void {
+  expectTextContent(text: string | RegExp): void {
     expect(this.getElement().container).toHaveTextContent(text)
   }
 
-  expectNotInContent(text): void {
+  expectNotInContent(text: Matcher): void {
     expect(this.getElement().queryByText(text)).toBeNull()
   }
 
-  expectLink(text, expectedHref): void {
+  expectLink(text: Matcher, expectedHref: string): void {
     expect(this.getElement().getByText(text)).toHaveAttribute(
       'href',
       expectedHref
@@ -143,13 +142,13 @@ export default class AppDriver {
     ).toHaveAttribute('href', link)
   }
 
-  expectInputElement(label: Matcher, expectedValue): void {
+  expectInputElement(label: Matcher, expectedValue: unknown): void {
     expect(
       (this.getElement().getByLabelText(label) as HTMLInputElement).value
     ).toEqual(String(expectedValue))
   }
 
-  changeValueByLabel(label, newValue): void {
+  changeValueByLabel(label: Matcher, newValue): void {
     const input = this.getElement().getByLabelText(label)
     act(() => {
       fireEvent.change(input, { target: { value: newValue } })

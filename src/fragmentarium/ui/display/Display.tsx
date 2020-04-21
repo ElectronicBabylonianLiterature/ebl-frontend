@@ -1,7 +1,7 @@
 import React from 'react'
 import TransliterationHeader from 'fragmentarium/ui/view/TransliterationHeader'
 import SessionContext from 'auth/SessionContext'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Glossary } from './Glossary'
 

@@ -9,7 +9,7 @@ import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
 import './Fragmentarium.css'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
 interface Props {

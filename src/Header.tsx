@@ -3,7 +3,6 @@ import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
-import { AuthenticationService } from 'auth/Auth'
 import User from './auth/User'
 
 import './Header.css'
@@ -18,7 +17,7 @@ function NavItem(props: { href: string; title: string }) {
   )
 }
 
-export default function Header({ auth }: { auth: AuthenticationService }) {
+export default function Header(): JSX.Element {
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">
@@ -46,7 +45,7 @@ export default function Header({ auth }: { auth: AuthenticationService }) {
               <NavItem href="/bibliography" title="Bibliography" />
             </Nav>
             <Navbar.Text>
-              <User auth={auth} />
+              <User />
             </Navbar.Text>
           </Navbar.Collapse>
           <Navbar.Toggle aria-controls={id} />

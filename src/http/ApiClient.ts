@@ -1,5 +1,6 @@
-import Promise from 'bluebird'
+import Bluebird from 'bluebird'
 import cancellableFetch from './cancellableFetch'
+import { AuthenticationService } from 'auth/Auth'
 
 export function apiUrl(path): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
@@ -46,14 +47,14 @@ export default class ApiClient {
   private readonly auth
   private readonly errorReporter
 
-  constructor(auth, errorReporter) {
+  constructor(auth: AuthenticationService, errorReporter) {
     this.auth = auth
     this.errorReporter = errorReporter
   }
 
-  createHeaders(authenticate, headers): Headers {
+  async createHeaders(authenticate, headers): Promise<Headers> {
     const defaultHeaders = authenticate
-      ? { Authorization: `Bearer ${this.auth.getAccessToken()}` }
+      ? { Authorization: `Bearer ${await this.auth.getAccessToken()}` }
       : {}
     return new Headers({
       ...defaultHeaders,
@@ -61,48 +62,54 @@ export default class ApiClient {
     })
   }
 
-  fetch(path, authenticate, options): Promise<Response> {
-    try {
-      const headers = this.createHeaders(authenticate, options.headers)
-      return cancellableFetch(apiUrl(path), {
-        ...options,
-        headers: headers,
+  fetch(
+    path: string,
+    authenticate: boolean,
+    options: RequestInit
+  ): Bluebird<Response> {
+    return new Bluebird<Headers>((resolve, reject) => {
+      this.createHeaders(authenticate, options.headers)
+        .then(resolve)
+        .catch(reject)
+    })
+      .then((headers) =>
+        cancellableFetch(apiUrl(path), {
+          ...options,
+          headers: headers,
+        })
+      )
+      .then(async (response) => {
+        if (response.ok) {
+          return response
+        } else {
+          throw await ApiError.fromResponse(response)
+        }
       })
-        .then(async (response) => {
-          if (response.ok) {
-            return response
-          } else {
-            throw await ApiError.fromResponse(response)
-          }
-        })
-        .catch((error) => {
-          this.errorReporter.captureException(error)
-          throw error
-        })
-    } catch (error) {
-      return Promise.reject(error)
-    }
+      .catch((error) => {
+        this.errorReporter.captureException(error)
+        throw error
+      })
   }
 
-  fetchJson(path, authenticate): Promise<any> {
+  fetchJson(path, authenticate): Bluebird<any> {
     return this.fetch(path, authenticate, {}).then((response) =>
       response.json()
     )
   }
 
-  fetchBlob(path: string, authenticate: boolean): Promise<Blob> {
+  fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {
     return this.fetch(path, authenticate, {}).then((response) =>
       response.blob()
     )
   }
 
-  postJson(path, body): Promise<any> {
+  postJson(path, body): Bluebird<any> {
     return this.fetch(path, true, createOptions(body, 'POST')).then(
       deserializeJson
     )
   }
 
-  putJson(path, body): Promise<any> {
+  putJson(path, body): Bluebird<any> {
     return this.fetch(path, true, createOptions(body, 'PUT')).then(
       deserializeJson
     )

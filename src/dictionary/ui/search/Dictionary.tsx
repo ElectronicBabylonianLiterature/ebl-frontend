@@ -9,7 +9,7 @@ import SessionContext from 'auth/SessionContext'
 
 import './Dictionary.css'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import { RouteComponentProps } from 'react-router-dom'
 
 export default function Dictionary({
