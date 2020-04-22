@@ -11,7 +11,7 @@
   },
   "headers": {
     "/**": {
-      "Content-Security-Policy-Report-Only": "default-src 'self'; connect-src 'self' https:; script-src 'self' https://storage.googleapis.com; worker-src 'self' blob:; img-src 'self' data: blob: https://api.ebabylon.org https://cdli.ucla.edu https://cdn.auth0.com; font-src 'self' data: https://stackpath.bootstrapcdn.com https://use.fontawesome.com; style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none'; base-uri 'none'; form-action 'none';",
+      "Content-Security-Policy": "default-src 'self'; connect-src 'self' https:; script-src 'self' https://storage.googleapis.com; worker-src 'self' blob:; img-src 'self' data: blob: https://api.ebabylon.org https://cdli.ucla.edu https://cdn.auth0.com; font-src 'self' data: https://stackpath.bootstrapcdn.com https://use.fontawesome.com; style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://use.fontawesome.com; frame-ancestors 'none'; base-uri 'none'; form-action 'none';",
       "Strict-Transport-Security": "max-age=63072000; includeSubDomains;",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin"
