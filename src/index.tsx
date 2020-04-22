@@ -84,6 +84,7 @@ function InjectedAuth0Provider({
       scope={scopeString}
       audience={auth0Config.audience}
       returnTo={auth0Config.returnTo}
+      useRefreshTokens={true}
     >
       {children}
     </Auth0Provider>
