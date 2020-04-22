@@ -7,7 +7,22 @@ import User from './auth/User'
 
 import './Header.css'
 
-function NavItem(props: { href: string; title: string }) {
+function EblLogo(): JSX.Element {
+  return (
+    <h1 className="Header__title">
+      <span className="Header__title-main">
+        electronic
+        <br />
+        Babylonian
+        <br />
+        Literature
+      </span>
+      <small className="Header__title-abbreviation">eBL</small>
+    </h1>
+  )
+}
+
+function NavItem(props: { href: string; title: string }): JSX.Element {
   return (
     <Nav.Item>
       <LinkContainer to={props.href}>
@@ -25,16 +40,7 @@ export default function Header(): JSX.Element {
         <Container>
           <LinkContainer to="/" title="electronic Babylonian Literature (eBL)">
             <Navbar.Brand>
-              <h1 className="Header__title">
-                <span className="Header__title-main">
-                  electronic
-                  <br />
-                  Babylonian
-                  <br />
-                  Literature
-                </span>
-                <small className="Header__title-abbreviation">eBL</small>
-              </h1>
+              <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Collapse id={id}>
