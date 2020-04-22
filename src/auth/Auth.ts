@@ -25,7 +25,7 @@ export interface AuthenticationService {
   getUser(): User
 }
 
-export const guestAuthenticationService: AuthenticationService = {
+const defaultAuthenticationService: AuthenticationService = {
   login: _.noop,
   logout: _.noop,
   getSession() {
@@ -43,7 +43,7 @@ export const guestAuthenticationService: AuthenticationService = {
 }
 
 export const AuthenticationContext = React.createContext<AuthenticationService>(
-  guestAuthenticationService
+  defaultAuthenticationService
 )
 
 export function useAuthentication(): AuthenticationService {
