@@ -48,8 +48,8 @@ it('setUniqueLemma clears sugegsted', () => {
           [new Lemma(words[0])],
           [[new Lemma(words[0])]],
           true
-        )
-      ]
+        ),
+      ],
     ]
   )
   expect(
@@ -63,20 +63,20 @@ it('Creates correct DTO', () => {
     [
       [
         new LemmatizationToken('kur', true, [new Lemma(words[0])], []),
-        new LemmatizationToken('%sux', false)
-      ]
+        new LemmatizationToken('%sux', false),
+      ],
     ]
   )
   expect(lemmatization.toDto()).toEqual([
     [
       {
         value: 'kur',
-        uniqueLemma: [words[0]._id]
+        uniqueLemma: [words[0]._id],
       },
       {
-        value: '%sux'
-      }
-    ]
+        value: '%sux',
+      },
+    ],
   ])
 })
 
@@ -91,8 +91,8 @@ it('applySuggestions sets suggestions', () => {
           [new Lemma(words[0])],
           [[new Lemma(words[1])]]
         ),
-        new LemmatizationToken('kur', true, [], [[new Lemma(words[1])]])
-      ]
+        new LemmatizationToken('kur', true, [], [[new Lemma(words[1])]]),
+      ],
     ]
   )
   expect(
@@ -117,8 +117,8 @@ it('clearSuggestionFlags clears flags', () => {
           [new Lemma(words[1])],
           [[new Lemma(words[1])]],
           true
-        )
-      ]
+        ),
+      ],
     ]
   )
   expect(

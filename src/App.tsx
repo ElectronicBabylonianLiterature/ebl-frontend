@@ -4,7 +4,6 @@ import { parse } from 'query-string'
 import _ from 'lodash'
 
 import Header from './Header'
-import Callback from 'auth/Callback'
 import SessionContext from 'auth/SessionContext'
 import Introduction from './Introduction'
 import Dictionary from 'dictionary/ui/search/Dictionary'
@@ -20,6 +19,7 @@ import ChapterView from 'corpus/ChapterView'
 import TextView from 'corpus/TextView'
 import { Location } from 'history'
 import AnnotationView from './fragmentarium/ui/image-annotation/AnnotationView'
+import { useAuthentication } from 'auth/Auth'
 
 function parseStringParam(
   location: Location,
@@ -32,7 +32,7 @@ function parseStringParam(
 function parseTextParams(params) {
   return {
     category: decodeURIComponent(params.category),
-    index: decodeURIComponent(params.index)
+    index: decodeURIComponent(params.index),
   }
 }
 
@@ -40,14 +40,14 @@ function parseChapterParams(params) {
   return {
     ...parseTextParams(params),
     stage: decodeURIComponent(params.stage),
-    name: decodeURIComponent(params.chapter)
+    name: decodeURIComponent(params.chapter),
   }
 }
 
 function parseFragmentSearchParams(location) {
   return {
     number: parseStringParam(location, 'number'),
-    transliteration: parseStringParam(location, 'transliteration')
+    transliteration: parseStringParam(location, 'transliteration'),
   }
 }
 
@@ -64,21 +64,21 @@ function parseFargmentParams(
     number: decodeURIComponent(match.params['id']),
     folioName: parse(location.search).folioName,
     folioNumber: parse(location.search).folioNumber,
-    tab: parse(location.search).tab
+    tab: parse(location.search).tab,
   }
 }
 
 function App({
-  auth,
   wordService,
   fragmentService,
   fragmentSearchService,
   bibliographyService,
-  textService
-}) {
+  textService,
+}): JSX.Element {
+  const authenticationService = useAuthentication()
   return (
-    <SessionContext.Provider value={auth.getSession()}>
-      <Header auth={auth} />
+    <SessionContext.Provider value={authenticationService.getSession()}>
+      <Header />
       <ErrorBoundary>
         <Switch>
           <Route
@@ -158,7 +158,7 @@ function App({
           <Route
             path="/fragmentarium/:id/annotate"
             render={({
-              match
+              match,
             }: {
               match: Match<{ id: string }>
             }): ReactNode => (
@@ -187,10 +187,6 @@ function App({
                 {...parseFragmentSearchParams(location)}
               />
             )}
-          />
-          <Route
-            path="/callback"
-            render={(props): ReactNode => <Callback auth={auth} {...props} />}
           />
           <Route component={Introduction} />
         </Switch>

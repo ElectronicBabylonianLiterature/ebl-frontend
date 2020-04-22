@@ -11,7 +11,7 @@ const subscriptNumbers: ReadonlyMap<string, string> = new Map([
   ['6', '₆'],
   ['7', '₇'],
   ['8', '₈'],
-  ['9', '₉']
+  ['9', '₉'],
 ])
 
 function numberToUnicodeSubscript(number: number | null | undefined): string {
@@ -19,7 +19,7 @@ function numberToUnicodeSubscript(number: number | null | undefined): string {
     number
       ?.toString()
       .split('')
-      .map(number => subscriptNumbers.get(number))
+      .map((number) => subscriptNumbers.get(number))
       .join('') ?? 'ₓ'
   )
 }

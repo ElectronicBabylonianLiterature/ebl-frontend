@@ -1,11 +1,11 @@
 import React from 'react'
-import { render, wait, waitForElement } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
 import ErrorReporterContext, {
   ErrorReporter,
-  ConsoleErrorReporter
+  ConsoleErrorReporter,
 } from 'ErrorReporterContext'
 
 const data = 'Test data'
@@ -25,7 +25,11 @@ let InnerComponent
 
 const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
 
-async function renderWithData() {
+interface Props {
+  prop: string
+}
+
+async function renderWithData(): Promise<void> {
   element = render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={propValue} />{' '}
@@ -34,7 +38,7 @@ async function renderWithData() {
   await wait()
 }
 
-async function rerender(prop) {
+async function rerender(prop): Promise<void> {
   element.rerender(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={prop} />{' '}
@@ -43,18 +47,21 @@ async function rerender(prop) {
   await wait()
 }
 
-function clearMocks() {
+function clearMocks(): void {
   InnerComponent.mockClear()
   getter.mockClear()
 }
 
-function expectGetterToBeCalled(expectedProp) {
+function expectGetterToBeCalled(expectedProp: string): void {
   it('Calls getter with props', () => {
     expect(getter).toBeCalledWith({ prop: expectedProp })
   })
 }
 
-function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
+function expectWrappedComponentToBeRendered(
+  expectedPropValue: string,
+  expectedData: string
+): void {
   it('Renders the wrapped component', () => {
     expect(element.container).toHaveTextContent(
       `${expectedPropValue} ${expectedData}`
@@ -65,7 +72,7 @@ function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
     expect(InnerComponent).toHaveBeenCalledWith(
       {
         data: expectedData,
-        prop: expectedPropValue
+        prop: expectedPropValue,
       },
       {}
     )
@@ -73,12 +80,12 @@ function expectWrappedComponentToBeRendered(expectedPropValue, expectedData) {
 }
 
 beforeEach(async () => {
-  const watch = props => [props.prop]
+  const watch = (props: Props): [string] => [props.prop]
   filter = jest.fn()
   filter.mockReturnValue(true)
   getter = jest.fn()
   InnerComponent = jest.fn()
-  InnerComponent.mockImplementation(props => (
+  InnerComponent.mockImplementation((props) => (
     <h1>
       {props.prop} {props.data}
     </h1>
@@ -86,7 +93,7 @@ beforeEach(async () => {
   config = {
     watch,
     filter,
-    defaultData
+    defaultData,
   }
   ComponentWithData = withData(InnerComponent, getter, config)
 })
@@ -95,7 +102,7 @@ describe('On successful get', () => {
   beforeEach(async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
     renderWithData()
-    await waitForElement(() => element.getByText(RegExp(propValue)))
+    await element.findByText(RegExp(propValue))
   })
 
   expectGetterToBeCalled(propValue)
@@ -110,7 +117,7 @@ describe('On successful get', () => {
     describe('Prop updated', () => {
       beforeEach(async () => {
         rerender(newPropValue)
-        await waitForElement(() => element.getByText(RegExp(newPropValue)))
+        await element.findByText(RegExp(newPropValue))
       })
 
       expectGetterToBeCalled(newPropValue)
@@ -138,7 +145,7 @@ describe('On failed request', () => {
   beforeEach(async () => {
     getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     renderWithData()
-    await waitForElement(() => element.getByText(errorMessage))
+    await element.findByText(errorMessage)
   })
 
   it('Does not render wrapped component', () => {
@@ -177,7 +184,7 @@ describe('Filtering', () => {
 
   it('Calls the filter with props', () => {
     expect(filter).toHaveBeenCalledWith({
-      prop: propValue
+      prop: propValue,
     })
   })
 
@@ -202,6 +209,6 @@ describe('Child component crash', () => {
   })
 
   it('Displays error message', async () => {
-    await waitForElement(() => element.getByText("Something's gone wrong."))
+    await element.findByText("Something's gone wrong.")
   })
 })

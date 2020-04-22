@@ -15,7 +15,7 @@ export default function ChapterEditor({
   dirty,
   chapter,
   searchBibliography,
-  onChange
+  onChange,
 }) {
   const session = useContext(SessionContext)
   return (

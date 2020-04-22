@@ -21,5 +21,5 @@ export default function Spinner({ loading, children }: Props) {
   ) : null
 }
 Spinner.defaultProps = {
-  loading: true
+  loading: true,
 }

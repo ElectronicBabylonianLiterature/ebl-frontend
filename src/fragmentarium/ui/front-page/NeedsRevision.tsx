@@ -12,7 +12,7 @@ function NeedsRevision({ data }) {
         columns={{
           Accession: 'accession',
           Editor: 'editor',
-          Description: 'description'
+          Description: 'description',
         }}
       />
     </section>
@@ -21,5 +21,5 @@ function NeedsRevision({ data }) {
 
 export default withData<{}, { fragmentSearchService }, readonly FragmentInfo[]>(
   NeedsRevision,
-  props => props.fragmentSearchService.fetchNeedsRevision()
+  (props) => props.fragmentSearchService.fetchNeedsRevision()
 )

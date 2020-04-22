@@ -94,7 +94,8 @@ exports[`Query 1`] = `
               class="btn btn-outline-secondary btn-sm"
               type="button"
             >
-              Logout
+              Logout 
+              Test
             </button>
           </span>
         </div>
@@ -395,7 +396,8 @@ exports[`Snapshot 1`] = `
               class="btn btn-outline-secondary btn-sm"
               type="button"
             >
-              Logout
+              Logout 
+              Test
             </button>
           </span>
         </div>

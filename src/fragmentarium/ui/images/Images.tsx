@@ -10,7 +10,7 @@ import Photo from './Photo'
 import FolioDetails from './FolioDetails'
 import {
   createFragmentUrlWithFolio,
-  createFragmentUrlWithTab
+  createFragmentUrlWithTab,
 } from 'fragmentarium/ui/FragmentLink'
 import { Fragment, Folio } from 'fragmentarium/domain/fragment'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
@@ -45,7 +45,7 @@ class TabController {
   get hasNoImages() {
     return (
       !this.fragment.hasPhoto &&
-      this.fragment.folios.every(folio => !folio.hasImage) &&
+      this.fragment.folios.every((folio) => !folio.hasImage) &&
       (!this.fragment.cdliNumber || _.values(this.cdliInfo).every(_.isNil))
     )
   }
@@ -56,7 +56,7 @@ class TabController {
       this.cdliInfo.photoUrl && CDLI_PHOTO,
       this.fragment.folios.map((folio, index) => String(index)),
       this.cdliInfo.lineArtUrl && CDLI_LINE_ART,
-      this.cdliInfo.detailLineArtUrl && CDLI_DETAIL_LINE_ART
+      this.cdliInfo.detailLineArtUrl && CDLI_DETAIL_LINE_ART,
     ])
       .compact()
       .head()
@@ -64,7 +64,7 @@ class TabController {
 
   get activeKey() {
     if (this.tab === FOLIO) {
-      const index = this.fragment.folios.findIndex(folio =>
+      const index = this.fragment.folios.findIndex((folio) =>
         _.isEqual(folio, this.activeFolio)
       )
       return index >= 0 ? String(index) : '0'
@@ -73,7 +73,7 @@ class TabController {
     }
   }
 
-  openTab = key => {
+  openTab = (key) => {
     const isFolioKey = /\d+/.test(key)
     const url = isFolioKey
       ? this.createFolioTabUrl(key)
@@ -122,7 +122,7 @@ function createCdliTab(eventKey: string, url: string) {
   const title = {
     [CDLI_PHOTO]: 'CDLI Photo',
     [CDLI_LINE_ART]: 'CDLI Line Art',
-    [CDLI_DETAIL_LINE_ART]: 'CDLI Detail Line Art'
+    [CDLI_DETAIL_LINE_ART]: 'CDLI Detail Line Art',
   }[eventKey]
 
   return (
@@ -148,7 +148,7 @@ function Images({
   activeFolio,
   history,
   cdliInfo,
-  photo
+  photo,
 }) {
   const controller = new TabController(
     fragment,
@@ -192,7 +192,7 @@ export default withRouter<any, any>(
     ({ fragment, fragmentService }) =>
       Promise.all([
         fragmentService.fetchCdliInfo(fragment),
-        fragmentService.findPhoto(fragment)
+        fragmentService.findPhoto(fragment),
       ])
   )
 )

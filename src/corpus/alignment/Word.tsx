@@ -9,7 +9,7 @@ import { AtfToken, ReconstructionToken } from 'corpus/text'
 function Word({
   token,
   reconstructionTokens,
-  onClick
+  onClick,
 }: {
   readonly token: AtfToken
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
@@ -22,7 +22,7 @@ function Word({
       variant="outline-dark"
       className={classNames({
         Word: true,
-        'Word--with-alignment': _.isNumber(token.alignment)
+        'Word--with-alignment': _.isNumber(token.alignment),
       })}
     >
       {token.value}

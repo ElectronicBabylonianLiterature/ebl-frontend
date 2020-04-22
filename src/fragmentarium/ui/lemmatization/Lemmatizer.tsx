@@ -21,20 +21,20 @@ type State = { lemmatization: Lemmatization }
 
 class Lemmatizer extends Component<Props, State> {
   static readonly defaultProps = {
-    disabled: false
+    disabled: false,
   }
   constructor(props: Props) {
     super(props)
     this.state = {
-      lemmatization: _.cloneDeep(props.data)
+      lemmatization: _.cloneDeep(props.data),
     }
   }
 
   get hasNoChanges() {
     return (
       _.isEqual(this.state.lemmatization.tokens, this.props.data.tokens) &&
-      !this.state.lemmatization.tokens.some(row =>
-        row.some(token => token.suggested)
+      !this.state.lemmatization.tokens.some((row) =>
+        row.some((token) => token.suggested)
       )
     )
   }
@@ -70,7 +70,7 @@ class Lemmatizer extends Component<Props, State> {
         rowIndex,
         columnIndex,
         uniqueLemma
-      )
+      ),
     })
   }
 
@@ -96,11 +96,11 @@ class Lemmatizer extends Component<Props, State> {
 
 export default withData<WithoutData<Props>, { text: Text }, Lemmatization>(
   Lemmatizer,
-  props =>
+  (props) =>
     props.fragmentService
       .createLemmatization(props.text)
       .then((lemmatization: Lemmatization) => lemmatization.applySuggestions()),
   {
-    watch: props => [props.text]
+    watch: (props) => [props.text],
   }
 )

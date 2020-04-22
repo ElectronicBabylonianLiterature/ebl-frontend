@@ -14,8 +14,8 @@ test.each([
   '/corpus/1/1/stage/name',
   '/fragmentarium',
   '/fragmentarium/fragment_number',
-  '/callback'
-])('%s renders without crashing', async route => {
+  '/callback',
+])('%s renders without crashing', async (route) => {
   const fakeApi = new FakeApi().allowStatistics(
     await factory.build('statistics')
   )

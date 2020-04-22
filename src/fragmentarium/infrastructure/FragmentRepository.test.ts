@@ -8,7 +8,7 @@ import { annotations, annotationsDto } from 'test-helpers/test-annotation'
 
 const apiClient = {
   fetchJson: jest.fn(),
-  postJson: jest.fn()
+  postJson: jest.fn(),
 }
 const fragmentRepository = new FragmentRepository(apiClient)
 
@@ -24,7 +24,7 @@ const word = 'šim'
 
 const references = [
   { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
-  { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] }
+  { id: 'RN54', type: 'COPY', pages: '', notes: '', linesCited: [] },
 ]
 
 const fragmentInfo = {
@@ -35,7 +35,7 @@ const fragmentInfo = {
   matchingLines: [],
   editor: 'Editor',
   // eslint-disable-next-line @typescript-eslint/camelcase
-  edition_date: '2019-09-10T13:03:37.575580'
+  edition_date: '2019-09-10T13:03:37.575580',
 }
 
 const fragmentInfoWithLines = {
@@ -46,7 +46,7 @@ const fragmentInfoWithLines = {
   matchingLines: [['1. kur']],
   editor: 'Editor',
   // eslint-disable-next-line @typescript-eslint/camelcase
-  edition_date: '2019-09-10T13:03:37.575580'
+  edition_date: '2019-09-10T13:03:37.575580',
 }
 
 const testData: TestData[] = [
@@ -56,7 +56,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     resultStub,
     ['/statistics', false],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'find',
@@ -64,7 +64,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     fragment,
     [`/fragments/${encodeURIComponent(fragmentId)}`, true],
-    Promise.resolve(fragmentDto)
+    Promise.resolve(fragmentDto),
   ],
   [
     'random',
@@ -72,7 +72,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?random=true', true],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfo]),
   ],
   [
     'interesting',
@@ -80,7 +80,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?interesting=true', true],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfo]),
   ],
   [
     'fetchLatestTransliterations',
@@ -88,7 +88,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?latest=true', true],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfo]),
   ],
   [
     'fetchNeedsRevision',
@@ -96,7 +96,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     ['/fragments?needsRevision=true', true],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfo]),
   ],
   [
     'searchNumber',
@@ -104,7 +104,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [fragmentInfo],
     [`/fragments?number=${encodeURIComponent(fragmentId)}`, true],
-    Promise.resolve([fragmentInfo])
+    Promise.resolve([fragmentInfo]),
   ],
   [
     'searchTransliteration',
@@ -113,9 +113,9 @@ const testData: TestData[] = [
     [fragmentInfoWithLines],
     [
       `/fragments?transliteration=${encodeURIComponent(transliterationQuery)}`,
-      true
+      true,
     ],
-    Promise.resolve([fragmentInfoWithLines])
+    Promise.resolve([fragmentInfoWithLines]),
   ],
   [
     'updateTransliteration',
@@ -126,10 +126,10 @@ const testData: TestData[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/transliteration`,
       {
         transliteration,
-        notes
-      }
+        notes,
+      },
     ],
-    Promise.resolve(fragmentDto)
+    Promise.resolve(fragmentDto),
   ],
   [
     'updateLemmatization',
@@ -138,9 +138,9 @@ const testData: TestData[] = [
     fragment,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/lemmatization`,
-      { lemmatization: lemmatization }
+      { lemmatization: lemmatization },
     ],
-    Promise.resolve(fragmentDto)
+    Promise.resolve(fragmentDto),
   ],
   [
     'updateReferences',
@@ -149,9 +149,9 @@ const testData: TestData[] = [
     fragment,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/references`,
-      { references: references }
+      { references: references },
     ],
-    Promise.resolve(fragmentDto)
+    Promise.resolve(fragmentDto),
   ],
   [
     'folioPager',
@@ -162,9 +162,9 @@ const testData: TestData[] = [
       `/fragments/${encodeURIComponent(fragmentId)}/pager/${encodeURIComponent(
         folio.name
       )}/${encodeURIComponent(folio.number)}`,
-      true
+      true,
     ],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'fragmentPager',
@@ -172,7 +172,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     resultStub,
     [`/fragments/${encodeURIComponent(fragmentId)}/pager`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'findLemmas',
@@ -180,7 +180,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     resultStub,
     [`/lemmas?word=${encodeURIComponent(word)}`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'fetchCdliInfo',
@@ -188,7 +188,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     resultStub,
     [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'fetchCdliInfo',
@@ -196,7 +196,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     { photoUrl: null, lineArtUrl: null, detailLineArtUrl: null },
     [`/cdli/${encodeURIComponent(cdliNumber)}`, true],
-    Promise.reject(new ApiError('Error', {}))
+    Promise.reject(new ApiError('Error', {})),
   ],
   [
     'findAnnotations',
@@ -204,7 +204,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     annotations,
     [`/fragments/${encodeURIComponent(fragmentId)}/annotations`, true],
-    Promise.resolve({ annotations: annotationsDto })
+    Promise.resolve({ annotations: annotationsDto }),
   ],
   [
     'updateAnnotations',
@@ -213,10 +213,10 @@ const testData: TestData[] = [
     annotations,
     [
       `/fragments/${encodeURIComponent(fragmentId)}/annotations`,
-      { fragmentNumber: fragmentId, annotations: annotationsDto }
+      { fragmentNumber: fragmentId, annotations: annotationsDto },
     ],
-    Promise.resolve(annotations)
-  ]
+    Promise.resolve(annotations),
+  ],
 ]
 
 describe('FragmentRepository', () =>

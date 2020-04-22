@@ -94,7 +94,8 @@ exports[`With session 1`] = `
               class="btn btn-outline-secondary btn-sm"
               type="button"
             >
-              Logout
+              Logout 
+              Test
             </button>
           </span>
         </div>

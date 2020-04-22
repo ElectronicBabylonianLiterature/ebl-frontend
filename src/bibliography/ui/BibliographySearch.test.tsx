@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import { factory } from 'factory-girl'
@@ -11,7 +11,7 @@ let entries
 let bibliographyService
 let element
 
-function renderWordSearch() {
+function renderWordSearch(): void {
   element = render(
     <MemoryRouter>
       <BibliographySearch
@@ -25,7 +25,7 @@ function renderWordSearch() {
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
   bibliographyService = {
-    search: jest.fn()
+    search: jest.fn(),
   }
   bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
   renderWordSearch()
@@ -40,8 +40,6 @@ function createAuthorRegExp(entry) {
 }
 
 test('Result display', async () => {
-  await waitForElement(() =>
-    element.getAllByText(createAuthorRegExp(entries[0]))
-  )
+  await element.findAllByText(createAuthorRegExp(entries[0]))
   expect(element.getByText(createAuthorRegExp(entries[1]))).toBeDefined()
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, waitForElement } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 
@@ -20,9 +20,7 @@ beforeEach(async () => {
 test(`Changing document calls onChange with updated value.`, async () => {
   element = render(<BibliographyEntryForm onSubmit={onSubmit} />)
   changeValueByLabel(element, 'Data', json)
-  await waitForElement(() =>
-    element.getByText(new RegExp(_.escapeRegExp(`(${entry.year})`)))
-  )
+  await element.findByText(new RegExp(_.escapeRegExp(`(${entry.year})`)))
   clickNth(element, 'Save', 0)
   await wait()
 
@@ -31,9 +29,7 @@ test(`Changing document calls onChange with updated value.`, async () => {
 
 test(`Shows value as CSL-JSON.`, async () => {
   element = render(<BibliographyEntryForm value={entry} onSubmit={onSubmit} />)
-  await waitForElement(() =>
-    element.getByDisplayValue(
-      new RegExp(_.escapeRegExp(json).replace(/\s+/g, '\\s*'))
-    )
+  await element.findByDisplayValue(
+    new RegExp(_.escapeRegExp(json).replace(/\s+/g, '\\s*'))
   )
 })

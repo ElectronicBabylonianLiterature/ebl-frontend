@@ -11,20 +11,20 @@ type Props = {
 
 class FragmentSearchForm extends Component<Props> {
   state = {
-    number: this.props.number || ''
+    number: this.props.number || '',
   }
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({
-      number: event.target.value
+      number: event.target.value,
     })
   }
 
-  submit = event => {
+  submit = (event) => {
     event.preventDefault()
     this.props.history.push(
       `/fragmentarium/search/?${stringify({
-        number: this.state.number
+        number: this.state.number,
       })}`
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
@@ -15,11 +15,11 @@ let statistics
 
 async function renderFragmentariumSearch({
   number,
-  transliteration
+  transliteration,
 }: {
   number?: string | null | undefined
   transliteration?: string | null | undefined
-}) {
+}): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
   )
@@ -36,21 +36,21 @@ async function renderFragmentariumSearch({
     </MemoryRouter>
   )
   container = element.container
-  await waitForElement(() => element.getByText('Current size of the corpus:'))
+  await element.findByText('Current size of the corpus:')
 }
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
-    statistics: jest.fn()
+    statistics: jest.fn(),
   }
   fragmentSearchService = {
     searchNumber: jest.fn(),
-    searchTransliteration: jest.fn()
+    searchTransliteration: jest.fn(),
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: () => false
+    isAllowedToTransliterateFragments: (): boolean => false,
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
@@ -74,7 +74,7 @@ describe('Search', () => {
     })
 
     it('Displays result on successfull query', async () => {
-      await waitForElement(() => element.getByText(fragments[0].number))
+      await element.findByText(fragments[0].number)
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
@@ -90,7 +90,7 @@ describe('Search', () => {
     beforeEach(async () => {
       fragments = await factory.buildMany('fragmentInfo', 2, [
         { matchingLines: [['line 1', 'line 2']] },
-        { matchingLines: [['line 3'], ['line 4']] }
+        { matchingLines: [['line 3'], ['line 4']] },
       ])
       fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
@@ -99,7 +99,7 @@ describe('Search', () => {
     })
 
     it('Displays result on successfull query', async () => {
-      await waitForElement(() => element.getByText(fragments[0].number))
+      await element.findByText(fragments[0].number)
       expect(container).toHaveTextContent(fragments[1].number)
     })
 

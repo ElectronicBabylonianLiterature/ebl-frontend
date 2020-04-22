@@ -9,7 +9,7 @@ export type ContentProps = {
 
 export default function Content({
   annotation,
-  onDelete
+  onDelete,
 }: ContentProps): ReactElement {
   const { geometry, data, outdated } = annotation
   const cardStyle = outdated ? 'warning' : 'light'
@@ -20,7 +20,7 @@ export default function Content({
       style={{
         position: 'absolute',
         left: `${geometry.x}%`,
-        top: `${geometry.y + geometry.height}%`
+        top: `${geometry.y + geometry.height}%`,
       }}
     >
       <Card bg={cardStyle} text={textStyle}>

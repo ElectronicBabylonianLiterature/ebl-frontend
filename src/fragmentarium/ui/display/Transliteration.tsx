@@ -4,7 +4,7 @@ import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine
+  RulingDollarLine,
 } from 'fragmentarium/domain/text'
 import DisplayToken, { TokenWrapper } from './DisplayToken'
 import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
@@ -14,7 +14,7 @@ import { Shift, Token } from 'fragmentarium/domain/token'
 import _ from 'lodash'
 
 function WordSeparator({
-  modifiers: bemModifiers = []
+  modifiers: bemModifiers = [],
 }: {
   modifiers?: readonly string[]
 }): JSX.Element {
@@ -23,7 +23,7 @@ function WordSeparator({
     <span
       className={classNames([
         element,
-        bemModifiers.map(flag => `${element}--${flag}`)
+        bemModifiers.map((flag) => `${element}--${flag}`),
       ])}
     >
       {' '}
@@ -40,7 +40,7 @@ function isOpenEnclosure(token: Token): boolean {
 }
 
 class LineAccumulator {
-  result: React.ReactNode[] = []
+  result: JSX.Element[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
@@ -55,7 +55,7 @@ class LineAccumulator {
     }
 
     const glossWrapper: TokenWrapper = ({
-      children
+      children,
     }: PropsWithChildren<{}>): JSX.Element => (
       <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
     )
@@ -113,7 +113,7 @@ class LineAccumulator {
 
 function DisplayLine({
   line: { type, prefix, content },
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -132,13 +132,13 @@ function DisplayLine({
           acc.pushToken(token)
         }
         return acc
-      }, new LineAccumulator()).result
+      }, new LineAccumulator()).result,
     ]
   )
 }
 function DisplayDollarAndAtLineWithParenthesis({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -153,7 +153,7 @@ function DisplayDollarAndAtLineWithParenthesis({
 
 function DisplayDollarAndAtLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -186,18 +186,18 @@ const lineComponents: ReadonlyMap<
   ['SurfaceAtLine', DisplayDollarAndAtLine],
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
-  ['CompositeAtLine', DisplayDollarAndAtLine]
+  ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
 const rulingsToNumber: ReadonlyMap<string, number> = new Map([
   ['SINGLE', 1],
   ['DOUBLE', 2],
-  ['TRIPLE', 3]
+  ['TRIPLE', 3],
 ])
 
 function DisplayRulingDollarLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -214,7 +214,7 @@ function DisplayRulingDollarLine({
   )
 }
 function DisplayEachRuling({
-  rulingType
+  rulingType,
 }: {
   rulingType: string
 }): JSX.Element {
@@ -222,7 +222,7 @@ function DisplayEachRuling({
 }
 
 export function Transliteration({
-  text: { lines }
+  text: { lines },
 }: {
   text: Text
 }): JSX.Element {

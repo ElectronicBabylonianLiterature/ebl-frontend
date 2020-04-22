@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -44,7 +44,7 @@ beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const fragmentPagerData = {
     next: { fragmentNumber: 'K.00001' },
-    previous: { fragmentNumber: 'J.99999' }
+    previous: { fragmentNumber: 'J.99999' },
   }
   fragmentService = {
     find: jest.fn(),
@@ -58,15 +58,15 @@ beforeEach(async () => {
       Promise.resolve({
         photoUrl: null,
         lineArtUrl: null,
-        detailLineArtUrl: null
-      })
+        detailLineArtUrl: null,
+      }),
   }
   fragmentSearchService = {}
   session = {
     isAllowedToReadFragments: jest.fn(),
     isAllowedToTransliterateFragments: (): boolean => false,
     isAllowedToLemmatizeFragments: (): boolean => false,
-    hasBetaAccess: (): boolean => false
+    hasBetaAccess: (): boolean => false,
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
@@ -89,14 +89,14 @@ describe('Fragment is loaded', () => {
   beforeEach(async () => {
     const folios = await factory.buildMany('folio', 2, {}, [
       { name: 'WGL' },
-      { name: 'AKG' }
+      { name: 'AKG' },
     ])
     fragment = (
       await factory.build('fragment', {
         number: fragmentNumber,
         folios: folios,
         atf: '1. ku',
-        hasPhoto: true
+        hasPhoto: true,
       })
     ).setReferences(await factory.buildMany('reference', 2))
     selectedFolio = fragment.folios[0]
@@ -108,7 +108,7 @@ describe('Fragment is loaded', () => {
       selectedFolio.number,
       'folio'
     )
-    await waitForElement(() => element.getByText('Display'))
+    await element.findByText('Display')
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -145,12 +145,12 @@ describe('Fragment without an image is loaded', () => {
       folios: [],
       atf: '1. ku',
       hasPhoto: false,
-      references: []
+      references: [],
     })
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
     renderFragmentView(fragment.number, null, null, null)
-    await waitForElement(() => element.getByText('Display'))
+    await element.findByText('Display')
   })
 
   it('Annotate button is disabled', () => {
@@ -169,6 +169,6 @@ describe('On error', () => {
   })
 
   it('Shows the error message', async () => {
-    await waitForElement(() => element.getByText(message))
+    await element.findByText(message)
   })
 })

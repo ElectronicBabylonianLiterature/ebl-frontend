@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import FolioImage from './FolioImage'
 import { Folio } from 'fragmentarium/domain/fragment'
@@ -11,7 +11,7 @@ let element
 
 beforeEach(async () => {
   fragmentService = {
-    findFolio: jest.fn()
+    findFolio: jest.fn(),
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   fragmentService.findFolio.mockReturnValueOnce(
@@ -20,7 +20,7 @@ beforeEach(async () => {
   element = render(
     <FolioImage fragmentService={fragmentService} folio={folio} />
   )
-  await waitForElement(() => element.getByAltText(folio.fileName))
+  await element.findByAltText(folio.fileName)
 })
 
 it('Queries the API with given parameters', () => {

@@ -32,7 +32,7 @@ function TransliterationSearchResult({ data }) {
       fragments={data}
       columns={{
         Script: 'script',
-        'Matching lines': makeLine
+        'Matching lines': makeLine,
       }}
     />
   )
@@ -45,11 +45,11 @@ export default withData<
 >(
   ({ transliteration, data }) =>
     transliteration ? <TransliterationSearchResult data={data} /> : null,
-  props =>
+  (props) =>
     props.fragmentSearchService.searchTransliteration(props.transliteration),
   {
-    watch: props => [props.transliteration],
-    filter: props => !_.isEmpty(props.transliteration),
-    defaultData: []
+    watch: (props) => [props.transliteration],
+    filter: (props) => !_.isEmpty(props.transliteration),
+    defaultData: [],
   }
 )

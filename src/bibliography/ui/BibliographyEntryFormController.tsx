@@ -18,7 +18,7 @@ export default class BibliographyEntryFormController extends Component<
     super(props)
     this.state = {
       error: null,
-      saving: false
+      saving: false,
     }
     this.updatePromise = Promise.resolve()
   }
@@ -30,13 +30,13 @@ export default class BibliographyEntryFormController extends Component<
     return this.state.saving || !this.context.isAllowedToWriteBibliography()
   }
 
-  handleSubmit = entry => {
+  handleSubmit = (entry) => {
     this.updatePromise.cancel()
     this.setState({ error: null, saving: true })
     this.updatePromise = this.props
       .onSubmit(entry)
       .then(() => this.setState({ error: null, saving: false }))
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error: error, saving: false })
       })
   }

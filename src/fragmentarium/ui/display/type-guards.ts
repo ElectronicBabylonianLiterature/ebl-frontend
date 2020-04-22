@@ -7,7 +7,7 @@ export function isEnclosure(token: Token): token is Enclosure {
     'AccidentalOmission',
     'IntentionalOmission',
     'Removal',
-    'Erasure'
+    'Erasure',
   ].includes(token.type)
 }
 

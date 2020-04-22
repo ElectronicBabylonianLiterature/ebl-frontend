@@ -9,7 +9,7 @@ import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
 import './Fragmentarium.css'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
 interface Props {
@@ -23,7 +23,7 @@ function Fragmentarium({
   number,
   transliteration,
   fragmentService,
-  fragmentSearchService
+  fragmentSearchService,
 }: Props): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Fragmentarium')]}>
