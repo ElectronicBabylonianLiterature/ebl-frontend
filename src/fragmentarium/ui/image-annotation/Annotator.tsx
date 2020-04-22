@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactElement } from 'react'
+import React, { useState, ReactElement } from 'react'
 import AnnotationComponent from 'react-image-annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
@@ -14,6 +14,7 @@ import { Session } from 'auth/Session'
 import produce from 'immer'
 import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
+import useObjectUrl from 'common/useObjectUrl'
 
 const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
   annotation,
@@ -124,12 +125,7 @@ function Annotator({
   annotations: readonly Annotation[]
   fragmentService: FragmentService
 }): JSX.Element {
-  const [objectUrl, setObjectUrl] = useState<string>()
-  useEffect(() => {
-    const url = URL.createObjectURL(image)
-    setObjectUrl(url)
-    return (): void => URL.revokeObjectURL(url)
-  }, [image])
+  const objectUrl = useObjectUrl(image)
   return (
     <>
       {objectUrl && (

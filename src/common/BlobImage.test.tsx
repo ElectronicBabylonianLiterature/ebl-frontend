@@ -1,12 +1,12 @@
 import React from 'react'
-import { render, act } from '@testing-library/react'
+import { render, act, RenderResult } from '@testing-library/react'
 import BlobImage from './BlobImage'
 
 const objectUrl = 'object URL mock'
-let data
-let element
+let data: Blob
+let element: RenderResult
 
-function configureImage(hasLink = true) {
+function configureImage(hasLink = true): void {
   beforeEach(async () => {
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
     data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
@@ -16,7 +16,7 @@ function configureImage(hasLink = true) {
   })
 }
 
-function testImageDisplayAndUrl() {
+function testImageDisplayAndUrl(): void {
   it('Displays the loaded image', () => {
     expect(element.container.querySelector('img')).toHaveAttribute(
       'src',
