@@ -104,7 +104,7 @@ class LineAccumulator {
   }
 }
 
-export default function DisplayLineTokens({
+export default function LineTokens({
   content
 }: {
   content: ReadonlyArray<Token>

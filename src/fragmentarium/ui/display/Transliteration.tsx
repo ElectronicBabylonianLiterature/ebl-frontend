@@ -8,7 +8,7 @@ import {
 } from 'fragmentarium/domain/text'
 import './Display.sass'
 import _ from 'lodash'
-import DisplayLineTokens from './DisplayLineTokens'
+import LineTokens from './LineTokens'
 import { TextLinePrefix } from './DisplayLineNumbers'
 
 function DisplayLine({
@@ -23,7 +23,7 @@ function DisplayLine({
     container,
     { className: classNames([`Transliteration__${type}`]) },
     <TextLinePrefix line={line} />,
-    <DisplayLineTokens content={content} />
+    <LineTokens content={content} />
   )
 }
 function DisplayDollarAndAtLineWithParenthesis({
