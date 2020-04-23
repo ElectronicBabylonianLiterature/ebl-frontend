@@ -9,7 +9,7 @@ import {
 import './Display.sass'
 import _ from 'lodash'
 import LineTokens from './LineTokens'
-import { TextLinePrefix } from './DisplayLineNumbers'
+import { TextLinePrefix } from './TextLinePrefix'
 
 function DisplayLine({
   line,
