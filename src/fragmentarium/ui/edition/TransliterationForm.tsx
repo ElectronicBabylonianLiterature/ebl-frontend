@@ -5,7 +5,7 @@ import {
   Button,
   Container,
   Row,
-  Col
+  Col,
 } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
@@ -28,7 +28,7 @@ type State = {
 }
 class TransliteratioForm extends Component<Props, State> {
   static readonly defaultProps = {
-    disabled: false
+    disabled: false,
   }
 
   private readonly formId: string
@@ -41,7 +41,7 @@ class TransliteratioForm extends Component<Props, State> {
       transliteration: this.props.transliteration,
       notes: this.props.notes,
       error: null,
-      disabled: false
+      disabled: false,
     }
     this.updatePromise = Promise.resolve()
   }
@@ -57,32 +57,32 @@ class TransliteratioForm extends Component<Props, State> {
     return transliterationChanged || notesChanged
   }
 
-  update = property => value => {
+  update = (property) => (value) => {
     this.setState({
       ...this.state,
-      [property]: value
+      [property]: value,
     })
   }
 
-  onTemplate = template => {
+  onTemplate = (template) => {
     this.setState({
       ...this.state,
-      transliteration: template
+      transliteration: template,
     })
   }
 
-  submit = event => {
+  submit = (event) => {
     event.preventDefault()
     this.setState({
       ...this.state,
-      error: null
+      error: null,
     })
     this.updatePromise = this.props
       .updateTransliteration(this.state.transliteration, this.state.notes)
-      .catch(error =>
+      .catch((error) =>
         this.setState({
           ...this.state,
-          error: error
+          error: error,
         })
       )
   }

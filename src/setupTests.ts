@@ -21,7 +21,7 @@ const customGlobal: CustomGlobal = global as CustomGlobal
 
 customGlobal.URL = {
   createObjectURL: jest.fn(),
-  revokeObjectURL: jest.fn()
+  revokeObjectURL: jest.fn(),
 }
 
 afterEach(() => {
@@ -30,7 +30,7 @@ afterEach(() => {
 })
 
 Promise.config({
-  cancellation: true
+  cancellation: true,
 })
 
 afterEach(() => localStorage.clear())
@@ -44,7 +44,7 @@ if (customGlobal.document) {
     // @ts-ignore
     commonAncestorContainer: {
       nodeName: 'BODY',
-      ownerDocument: document
-    }
+      ownerDocument: document,
+    },
   })
 }

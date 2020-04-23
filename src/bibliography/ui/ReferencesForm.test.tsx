@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -21,7 +21,7 @@ beforeEach(async () => {
   references = await factory.buildMany('reference', 2)
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] }
+    issued: { 'date-parts': [[1957]] },
   })
   expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
   searchBibliography = () => Promise.resolve([searchEntry])
@@ -42,18 +42,18 @@ test('Add reference', async () => {
 })
 
 test('Delete reference', async () => {
-  await clickNth(element, 'Delete Reference')
+  clickNth(element, 'Delete Reference')
 
   expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
 
 test('Edit reference', async () => {
   changeValueByLabel(element, 'Document', 'Borger')
-  await waitForElement(() => element.getByText(/Borger 1957/))
+  await element.findByText(/Borger 1957/)
   clickNth(element, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith([
     expectedReference,
-    ..._.tail(references)
+    ..._.tail(references),
   ])
 })

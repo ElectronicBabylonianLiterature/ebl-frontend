@@ -35,32 +35,34 @@ describe('Conjugation/Function', () => {
 
   it('Displays entries', () => {
     value.entries
-      .map(entry => entry.meaning)
-      .forEach(entry => expect(element.getByDisplayValue(entry)).toBeVisible())
+      .map((entry) => entry.meaning)
+      .forEach((entry) =>
+        expect(element.getByDisplayValue(entry)).toBeVisible()
+      )
   })
 
   it('Calls onChange with updated value on key', () => {
     const newValue = value.key === 'D' ? 'G' : 'D'
     whenChangedByValue(element, value.key, newValue)
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => ({
+      .toHaveBeenCalledWith((newValue) => ({
         ...value,
-        key: newValue
+        key: newValue,
       }))
   })
 
   it('Calls onChange with updated value on entry', async () => {
     whenChangedByValue(element, value.entries[0].meaning, 'new entry')
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => ({
+      .toHaveBeenCalledWith((newValue) => ({
         ...value,
         entries: [
           {
             ...value.entries[0],
-            meaning: newValue
+            meaning: newValue,
           },
-          ..._.tail(value.entries)
-        ]
+          ..._.tail(value.entries),
+        ],
       }))
   })
 
@@ -84,9 +86,9 @@ function commonUpdateTests() {
   it('Calls onChange with updated value on meaning chnage', () => {
     whenChangedByValue(element, value.meaning, 'new meaning')
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => ({
+      .toHaveBeenCalledWith((newValue) => ({
         ...value,
-        meaning: newValue
+        meaning: newValue,
       }))
   })
 
@@ -95,12 +97,12 @@ function commonUpdateTests() {
     const newValue = oldValue === 'e/e' ? 'a/e' : 'e/e'
     whenChangedByValue(element, oldValue, newValue)
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => ({
+      .toHaveBeenCalledWith((newValue) => ({
         ...value,
         vowels: [
           { ...value.vowels[0], value: newValue.split('/') },
-          ..._.tail(value.vowels)
-        ]
+          ..._.tail(value.vowels),
+        ],
       }))
   })
 }

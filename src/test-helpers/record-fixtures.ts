@@ -20,17 +20,17 @@ const setUserAndDate = produce(
 export const historicalTransliteration = new RecordEntry({
   user: 'User',
   date: '1998-01-17T10:50:36.127247/1999-04-17T10:29:39.127247',
-  type: 'HistoricalTransliteration'
+  type: 'HistoricalTransliteration',
 })
 export const revision = new RecordEntry({
   user: 'User',
   date: '1998-01-17T10:50:36.127247',
-  type: 'Revision'
+  type: 'Revision',
 })
 export const transliteration = new RecordEntry({
   user: 'User',
   date: '1998-01-17T10:50:36.127247',
-  type: 'Transliteration'
+  type: 'Transliteration',
 })
 export const atTen = setUserAndDate(
   transliteration,

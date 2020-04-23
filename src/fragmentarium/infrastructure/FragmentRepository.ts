@@ -8,12 +8,12 @@ import Museum from 'fragmentarium/domain/museum'
 import {
   FragmentRepository,
   CdliInfo,
-  AnnotationRepository
+  AnnotationRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation from 'fragmentarium/domain/annotation'
 import {
   FragmentInfosPromise,
-  FragmentInfoRepository
+  FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 
 function createFragment(dto): Fragment {
@@ -25,13 +25,13 @@ function createFragment(dto): Fragment {
     measures: {
       length: dto.length.value || null,
       width: dto.width.value || null,
-      thickness: dto.thickness.value || null
+      thickness: dto.thickness.value || null,
     },
-    folios: dto.folios.map(folioDto => new Folio(folioDto)),
-    record: dto.record.map(recordDto => new RecordEntry(recordDto)),
+    folios: dto.folios.map((folioDto) => new Folio(folioDto)),
+    record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
     text: new Text({ lines: dto.text.lines }),
     references: dto.references,
-    uncuratedReferences: dto.uncuratedReferences
+    uncuratedReferences: dto.uncuratedReferences,
   })
 }
 
@@ -97,7 +97,7 @@ class ApiFragmentRepository
     return this.apiClient
       .postJson(path, {
         transliteration: transliteration,
-        notes: notes
+        notes: notes,
       })
       .then(createFragment)
   }
@@ -154,8 +154,8 @@ class ApiFragmentRepository
   findAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/annotations`, true)
-      .then(dto =>
-        produce(dto.annotations, annotations =>
+      .then((dto) =>
+        produce(dto.annotations, (annotations) =>
           annotations.map(
             ({ geometry, data }) =>
               new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
@@ -173,11 +173,11 @@ class ApiFragmentRepository
       {
         fragmentNumber: number,
         annotations: annotations.map(
-          produce(annotation => ({
+          produce((annotation) => ({
             geometry: _.omit(annotation.geometry, 'type'),
-            data: annotation.data
+            data: annotation.data,
           }))
-        )
+        ),
       }
     )
   }

@@ -1,37 +1,34 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import PhotoImage from './Photo'
 
 const number = 'K 1'
 const blob = new Blob([''], { type: 'image/jpeg' })
 const objectUrl = 'object URL mock'
-let fragment
-let element
 
 beforeEach(async () => {
-  fragment = await factory.build('fragment', { number })
+  const fragment = await factory.build('fragment', { number })
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
-  element = render(<PhotoImage photo={blob} fragment={fragment} />)
-  await waitForElement(() => element.container.querySelector('img'))
+  render(<PhotoImage photo={blob} fragment={fragment} />)
 })
 
-it('Has alt text', () => {
-  expect(element.container.querySelector('img')).toHaveAttribute(
+it('Has alt text', async () => {
+  expect(await screen.findByRole('img')).toHaveAttribute(
     'alt',
     `A photo of the fragment ${number}`
   )
 })
 
-it('Has a link to the image', () => {
-  expect(element.container.querySelector('a')).toHaveAttribute(
+it('Has a link to the image', async () => {
+  expect((await screen.findAllByRole('link'))[0]).toHaveAttribute(
     'href',
     objectUrl
   )
 })
 
-it('Has copyright', () => {
-  expect(element.container).toHaveTextContent(
+it('Has copyright', async () => {
+  expect(await screen.findByText(/Courtesy of/)).toHaveTextContent(
     'Courtesy of the Trustees of The British Museum'
   )
 })

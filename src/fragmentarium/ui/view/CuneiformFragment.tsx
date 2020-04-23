@@ -33,7 +33,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   fragmentService,
   fragmentSearchService,
   onSave,
-  disabled = false
+  disabled = false,
 }) => {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
@@ -44,24 +44,25 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         notes
       )
     )
-  const updateLemmatization = lemmatization =>
+  const updateLemmatization = (lemmatization) =>
     onSave(
       fragmentService.updateLemmatization(
         fragment.number,
         lemmatization.toDto()
       )
     )
-  const updateReferences = references =>
+  const updateReferences = (references) =>
     onSave(
       fragmentService.updateReferences(
         fragment.number,
         references.map(serializeReference)
       )
     )
-  const searchBibliography = query => fragmentService.searchBibliography(query)
+  const searchBibliography = (query) =>
+    fragmentService.searchBibliography(query)
   return (
     <SessionContext.Consumer>
-      {session => (
+      {(session) => (
         <Tabs
           id={tabsId}
           defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}
@@ -141,7 +142,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   tab,
   onSave,
   saving,
-  error
+  error,
 }) => {
   return (
     <Container fluid>
@@ -185,32 +186,32 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragmentService,
   fragmentSearchService,
   activeFolio = null,
-  tab = null
+  tab = null,
 }) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
   const [setPromise, cancelPromise] = usePromiseEffect()
 
-  const handleSave = promise => {
+  const handleSave = (promise) => {
     cancelPromise()
     setError(null)
     setIsSaving(true)
 
     const updatePromise = promise
-      .then(updatedFragment =>
+      .then((updatedFragment) =>
         fragmentService
           .hydrateReferences(updatedFragment.references)
-          .then(hydratedReferences =>
+          .then((hydratedReferences) =>
             updatedFragment.setReferences(hydratedReferences)
           )
       )
-      .then(hydaratedFragment => {
+      .then((hydaratedFragment) => {
         setFragment(hydaratedFragment)
         setIsSaving(false)
       })
     setPromise(
-      updatePromise.catch(error => {
+      updatePromise.catch((error) => {
         setError(error)
         setIsSaving(false)
       })

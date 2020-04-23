@@ -15,17 +15,17 @@ describe.each([
       url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
         bmIdNumber
       )}&partId=1`,
-      label: `The British Museum object ${bmIdNumber}`
-    }
+      label: `The British Museum object ${bmIdNumber}`,
+    },
   ],
   [
     'National Museum of Iraq',
     '',
     '',
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
-    null
+    null,
   ],
-  ['Other Museum', '', '', '', null]
+  ['Other Museum', '', '', '', null],
 ] as [string, string, string, string, object][])(
   '%s',
   (name, logo, url, copyright, link) => {

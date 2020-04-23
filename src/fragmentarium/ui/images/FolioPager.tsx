@@ -23,7 +23,7 @@ function FolioPager({ data, folio }: Props) {
         className={classNames({
           fas: true,
           'fa-angle-left': direction === 'previous',
-          'fa-angle-right': direction === 'next'
+          'fa-angle-right': direction === 'next',
         })}
         aria-hidden
       />
@@ -55,8 +55,9 @@ export default withData<
   any
 >(
   ({ data, ...props }) => <FolioPager data={data} {...props} />,
-  props => props.fragmentService.folioPager(props.folio, props.fragmentNumber),
+  (props) =>
+    props.fragmentService.folioPager(props.folio, props.fragmentNumber),
   {
-    watch: props => [props.folio, props.fragmentNumber]
+    watch: (props) => [props.folio, props.fragmentNumber],
   }
 )

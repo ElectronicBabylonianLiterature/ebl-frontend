@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement, wait } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -7,7 +7,7 @@ import { whenClicked, clickNth, changeValueByLabel } from 'test-helpers/utils'
 import Lemma from 'fragmentarium/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, {
-  LemmatizationToken
+  LemmatizationToken,
 } from 'fragmentarium/domain/Lemmatization'
 
 let element
@@ -25,7 +25,7 @@ beforeEach(async () => {
   updateLemmatization = jest.fn()
   fragmentService = {
     searchLemma: jest.fn(),
-    createLemmatization: jest.fn()
+    createLemmatization: jest.fn(),
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
   text = {
@@ -40,13 +40,13 @@ beforeEach(async () => {
             uniqueLemma: [oldWord._id],
             language: 'AKKADIAN',
             normalized: false,
-            lemmatizable: true
-          }
-        ]
-      }
-    ]
+            lemmatizable: true,
+          },
+        ],
+      },
+    ],
   }
-  fragmentService.createLemmatization.mockImplementation(text =>
+  fragmentService.createLemmatization.mockImplementation((text) =>
     Promise.resolve(
       new Lemmatization(
         ['1.'],
@@ -61,26 +61,26 @@ beforeEach(async () => {
       text={text}
     />
   )
-  await waitForElement(() => element.getByText('1.'))
+  await element.findByText('1.')
 })
 
 it('Displays the line prefixes', () => {
-  text.lines.forEach(row =>
+  text.lines.forEach((row) =>
     expect(element.container).toHaveTextContent(row.prefix)
   )
 })
 
 it('Displays the transliteration', () => {
-  text.lines.forEach(row =>
+  text.lines.forEach((row) =>
     expect(element.container).toHaveTextContent(
-      row.content.map(token => token.value).join(' ')
+      row.content.map((token) => token.value).join(' ')
     )
   )
 })
 
 it('Clicking word shows form', async () => {
   clickNth(element, 'kur', 0)
-  await waitForElement(() => element.getByLabelText('Lemma'))
+  await element.findByLabelText('Lemma')
 })
 
 it('Clicking save calls fragmentService', async () => {
@@ -96,11 +96,11 @@ it('Clicking save calls fragmentService', async () => {
 })
 
 async function lemmatizeWord(): Promise<void> {
-  await waitForElement(() => element.getByText('kur'))
+  await element.findByText('kur')
   clickNth(element, 'kur', 0)
-  await waitForElement(() => element.getByLabelText('Lemma'))
+  await element.findByLabelText('Lemma')
   changeValueByLabel(element, 'Lemma', 'a')
-  await waitForElement(() => element.getByText(lemma.lemma))
+  await element.findByText(lemma.lemma)
   clickNth(element, lemma.lemma, 0)
   await wait()
 }

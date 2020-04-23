@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { clickNth } from 'test-helpers/utils'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
-  ConsoleErrorReporter
+  ConsoleErrorReporter,
 } from 'ErrorReporterContext'
 
 describe('Children throw an error', () => {
@@ -15,7 +15,7 @@ describe('Children throw an error', () => {
     error = new Error('Error happened!')
     errorReportingService = {
       captureException: jest.fn(),
-      showReportDialog: jest.fn()
+      showReportDialog: jest.fn(),
     }
     const CrashingComponent: FunctionComponent = () => {
       throw error
@@ -35,7 +35,7 @@ describe('Children throw an error', () => {
 
   it('Sends report to Sentry', () => {
     expect(errorReportingService.captureException).toHaveBeenCalledWith(error, {
-      componentStack: expect.any(String)
+      componentStack: expect.any(String),
     })
   })
 

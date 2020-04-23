@@ -8,15 +8,15 @@ import { produce } from 'immer'
 import { ManuscriptLines } from './ManuscriptLines'
 
 function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
-  const handleChangeValue = property => propertyValue =>
+  const handleChangeValue = (property) => (propertyValue) =>
     onChange(
-      produce(value, draft => {
+      produce(value, (draft) => {
         draft[property] = propertyValue
       })
     )
-  const handleChange = property => event =>
+  const handleChange = (property) => (event) =>
     onChange(
-      produce(value, draft => {
+      produce(value, (draft) => {
         draft[property] = event.target.value
       })
     )
@@ -51,9 +51,9 @@ function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
 }
 
 export default function ChapterLines({ chapter, onChange, onSave, disabled }) {
-  const handleChange = lines =>
+  const handleChange = (lines) =>
     onChange(
-      produce(chapter, draft => {
+      produce(chapter, (draft) => {
         draft.lines = lines
       })
     )

@@ -22,7 +22,7 @@ export default class FakeApi {
   readonly client = {
     fetchJson: jest.fn().mockImplementation((path, authenticate) => {
       const expectation = this.expectations.find(
-        entry =>
+        (entry) =>
           entry.method === 'GET' &&
           entry.path === path &&
           entry.authenticate === authenticate &&
@@ -39,9 +39,10 @@ export default class FakeApi {
           )
     }),
 
-    postJson: jest.fn().mockImplementation(path => {
+    postJson: jest.fn().mockImplementation((path) => {
       const expectation = this.expectations.find(
-        entry => entry.method === 'POST' && entry.path === path && !entry.isBlob
+        (entry) =>
+          entry.method === 'POST' && entry.path === path && !entry.isBlob
       )
       return expectation
         ? Promise.resolve(expectation.response)
@@ -50,7 +51,7 @@ export default class FakeApi {
 
     fetchBlob: jest.fn().mockImplementation((path, authenticate) => {
       const expectation = this.expectations.find(
-        entry =>
+        (entry) =>
           entry.method === 'GET' &&
           entry.path === path &&
           entry.authenticate === authenticate &&
@@ -65,7 +66,7 @@ export default class FakeApi {
               } fetchBlob: ${path}`
             )
           )
-    })
+    }),
   }
 
   expectTexts(texts): FakeApi {
@@ -75,7 +76,7 @@ export default class FakeApi {
         path: `/texts`,
         authenticate: false,
         response: texts,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -87,7 +88,7 @@ export default class FakeApi {
         method: 'GET',
         path: `/texts/${text.category}/${text.index}`,
         authenticate: true,
-        response: text
+        response: text,
       })
     )
     return this
@@ -100,7 +101,7 @@ export default class FakeApi {
         path: `/texts/${text.category}/${text.index}`,
         authenticate: true,
         response: text,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -113,7 +114,7 @@ export default class FakeApi {
         path: `/texts/${text.category}/${text.index}/chapters/${chapterIndex}/manuscripts`,
         response: text,
         verify: true,
-        body: manuscripts
+        body: manuscripts,
       })
     )
     return this
@@ -126,7 +127,7 @@ export default class FakeApi {
         path: `/texts/${text.category}/${text.index}/chapters/${chapterIndex}/lines`,
         response: text,
         verify: true,
-        body: lines
+        body: lines,
       })
     )
     return this
@@ -142,7 +143,7 @@ export default class FakeApi {
         path: `/fragments/${number}/annotations`,
         authenticate: true,
         response: { annotations: annotationDtos },
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -158,11 +159,11 @@ export default class FakeApi {
         path: `/fragments/${number}/annotations`,
         body: {
           fragmentNumber: number,
-          annotations: annotationDtos
+          annotations: annotationDtos,
         },
         authenticate: true,
         response: { annotations: annotationDtos },
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -175,7 +176,7 @@ export default class FakeApi {
         path: `/fragments/${fragmentDto._id}`,
         authenticate: true,
         response: fragmentDto,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -188,7 +189,7 @@ export default class FakeApi {
         path: `/fragments/${number}/photo`,
         authenticate: true,
         isBlob: true,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -201,7 +202,7 @@ export default class FakeApi {
         path: `/words?query=${encodeURIComponent(query)}`,
         response: words,
         authenticate: true,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -214,7 +215,7 @@ export default class FakeApi {
         path: `/words/${encodeURIComponent(word._id)}`,
         response: word,
         authenticate: true,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -228,7 +229,7 @@ export default class FakeApi {
         body: word,
         response: word,
         authenticate: true,
-        verify: true
+        verify: true,
       })
     )
     return this
@@ -240,7 +241,7 @@ export default class FakeApi {
         method: 'GET',
         path: `/statistics`,
         authenticate: false,
-        response: statistics
+        response: statistics,
       })
     )
     return this
@@ -252,7 +253,7 @@ export default class FakeApi {
         method: 'GET',
         path: `/images/${file}`,
         authenticate: false,
-        isBlob: true
+        isBlob: true,
       })
     )
     return this
@@ -268,10 +269,10 @@ export default class FakeApi {
         expect(this.client.postJson).toHaveBeenCalledWith(
           expectation.path,
           expectation.body || expect.anything()
-        )
+        ),
     }
     this.expectations
-      .filter(expectation => expectation.verify)
-      .forEach(expectation => methods[expectation.method](expectation))
+      .filter((expectation) => expectation.verify)
+      .forEach((expectation) => methods[expectation.method](expectation))
   }
 }

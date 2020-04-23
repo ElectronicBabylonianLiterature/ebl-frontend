@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { render, waitForElement, RenderResult } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
@@ -17,11 +17,11 @@ beforeEach(async () => {
   result = await factory.build('verb')
   session = {
     isAllowedToReadWords: _.stubTrue(),
-    isAllowedToWriteWords: jest.fn()
+    isAllowedToWriteWords: jest.fn(),
   }
   wordService = {
     find: jest.fn(),
-    update: jest.fn()
+    update: jest.fn(),
   }
   wordService.find.mockReturnValueOnce(Bluebird.resolve(result))
 })
@@ -58,7 +58,7 @@ describe('Update word', () => {
 
     await submitForm(element)
 
-    await waitForElement(() => element.getByText(errorMessage))
+    await element.findByText(errorMessage)
   })
 
   it('Cancels promise on unmount', async () => {
@@ -96,6 +96,6 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(result.lemma.join(' ')))
+  await element.findByText(result.lemma.join(' '))
   return element
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -15,10 +15,10 @@ let session
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
   wordService = {
-    search: jest.fn()
+    search: jest.fn(),
   }
   session = {
-    isAllowedToReadWords: jest.fn()
+    isAllowedToReadWords: jest.fn(),
   }
 })
 
@@ -29,9 +29,11 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const { getByText } = renderDictionary('/dictionary?query=lemma')
+    const { getByText, findByText } = renderDictionary(
+      '/dictionary?query=lemma'
+    )
 
-    await waitForElement(() => getByText(words[0].meaning))
+    await findByText(words[0].meaning)
     expect(getByText(words[1].meaning)).toBeDefined()
   })
 

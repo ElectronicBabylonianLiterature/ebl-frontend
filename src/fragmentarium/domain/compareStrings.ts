@@ -2,7 +2,7 @@ import _ from 'lodash'
 import alphabet from './alphabet.json'
 
 function isString(word, anotherWord) {
-  const notStrings = [word, anotherWord].filter(word => !_.isString(word))
+  const notStrings = [word, anotherWord].filter((word) => !_.isString(word))
   if (!_.isEmpty(notStrings)) {
     throw new TypeError(`${notStrings} is not a string`)
   }
@@ -16,7 +16,7 @@ function checkForInvalidCharacters(word, anotherWord) {
   const invalidCharacters = word
     .split('')
     .concat(anotherWord.split(''))
-    .filter(character => !alphabet.includes(character))
+    .filter((character) => !alphabet.includes(character))
   if (!_.isEmpty(invalidCharacters)) {
     throw new Error(`Invalid character(s) ${invalidCharacters} in the input`)
   }

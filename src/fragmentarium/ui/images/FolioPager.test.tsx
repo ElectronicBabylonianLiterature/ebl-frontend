@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
@@ -13,7 +13,7 @@ let pagerData
 
 beforeEach(async () => {
   fragmentService = {
-    folioPager: jest.fn()
+    folioPager: jest.fn(),
   }
   pagerData = await factory.build('folioPager')
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
@@ -28,7 +28,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(/Browse/))
+  await element.findByText(/Browse/)
 })
 
 it('Previous links to the previous fragment', () => {

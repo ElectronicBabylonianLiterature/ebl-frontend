@@ -16,13 +16,13 @@ class SentryErrorReporter implements ErrorReporter {
       environment,
       beforeSend(event, hint) {
         return hint && isIgnored(hint.originalException) ? null : event
-      }
+      },
     })
   }
 
   captureException(error: Error, errorInfo = {}): void {
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
+    Sentry.withScope((scope) => {
+      Object.keys(errorInfo).forEach((key) => {
         scope.setExtra(key, errorInfo[key])
       })
       Sentry.captureException(error)
@@ -34,13 +34,13 @@ class SentryErrorReporter implements ErrorReporter {
   }
 
   setUser(id, username, eblName): void {
-    Sentry.configureScope(scope => {
+    Sentry.configureScope((scope) => {
       scope.setUser({ id, username, eblName })
     })
   }
 
   clearScope(): void {
-    Sentry.configureScope(scope => {
+    Sentry.configureScope((scope) => {
       scope.clear()
     })
   }

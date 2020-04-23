@@ -6,7 +6,7 @@ import produce, { Draft } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
-    candidate => candidate.id === manuscriptLine.manuscriptId
+    (candidate) => candidate.id === manuscriptLine.manuscriptId
   )
   if (manuscript) {
     return manuscript.siglum
@@ -30,7 +30,7 @@ function ManuscriptAlignment(props: {
   manuscriptLine: ManuscriptLine
   onChange: (x0: ManuscriptLine) => void
 }) {
-  const handleChange = index => token => {
+  const handleChange = (index) => (token) => {
     props.onChange(
       produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
         draft.atfTokens[index] = token
@@ -67,14 +67,14 @@ export default function ChapterAlignment({
   chapter,
   onChange,
   onSave,
-  disabled
+  disabled,
 }: {
   chapter: Chapter
   onChange: (x0: Chapter) => any
   onSave: (x0: any) => any
   disabled: boolean
 }) {
-  const handleChange = lineIndex => manuscriptIndex => manuscript =>
+  const handleChange = (lineIndex) => (manuscriptIndex) => (manuscript) =>
     onChange(
       produce(chapter, (draft: Draft<Chapter>) => {
         draft.lines[lineIndex].manuscripts[manuscriptIndex] = manuscript

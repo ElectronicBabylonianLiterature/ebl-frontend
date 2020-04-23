@@ -1,27 +1,47 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Button } from 'react-bootstrap'
-import { AuthenticationService } from './Auth'
+import {
+  AuthenticationService,
+  eblNameProperty,
+  useAuthentication,
+} from './Auth'
 
-class User extends Component<{ auth: AuthenticationService }> {
-  logout = () => {
-    this.props.auth.logout()
-  }
+interface Props {
+  authenticationService: AuthenticationService
+}
 
-  login = () => {
-    this.props.auth.login()
-  }
+function LoginButton({ authenticationService }: Props): JSX.Element {
+  return (
+    <Button
+      size="sm"
+      variant="outline-secondary"
+      onClick={(): void => authenticationService.login()}
+    >
+      Login
+    </Button>
+  )
+}
 
-  render() {
-    return this.props.auth.isAuthenticated() ? (
-      <Button size="sm" variant="outline-secondary" onClick={this.logout}>
-        Logout
-      </Button>
-    ) : (
-      <Button size="sm" variant="outline-secondary" onClick={this.login}>
-        Login
-      </Button>
-    )
-  }
+function LogoutButton({ authenticationService }: Props): JSX.Element {
+  const user = authenticationService.getUser()
+  return (
+    <Button
+      size="sm"
+      variant="outline-secondary"
+      onClick={(): void => authenticationService.logout()}
+    >
+      Logout {user[eblNameProperty] ?? user.name}
+    </Button>
+  )
+}
+
+function User(): JSX.Element {
+  const authenticationService: AuthenticationService = useAuthentication()
+  return authenticationService.isAuthenticated() ? (
+    <LogoutButton authenticationService={authenticationService} />
+  ) : (
+    <LoginButton authenticationService={authenticationService} />
+  )
 }
 
 export default User

@@ -13,7 +13,7 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 
 function AnnotateButton({
   number,
-  disabled
+  disabled,
 }: {
   number: string
   disabled?: boolean
@@ -44,13 +44,13 @@ function FragmentView({
   number,
   folioName,
   folioNumber,
-  tab
+  tab,
 }: Props): JSX.Element {
   const activeFolio =
     folioName && folioNumber
       ? new Folio({
           name: _.isArray(folioName) ? folioName.join('') : folioName,
-          number: _.isArray(folioNumber) ? folioNumber.join('') : folioNumber
+          number: _.isArray(folioNumber) ? folioNumber.join('') : folioNumber,
         })
       : null
 
@@ -83,9 +83,9 @@ const FragmentWithData = withData<
   Fragment
 >(
   ({ data, ...props }) => <FragmentView fragment={data} {...props} />,
-  props => props.fragmentService.find(props.number),
+  (props) => props.fragmentService.find(props.number),
   {
-    watch: props => [props.number]
+    watch: (props) => [props.number],
   }
 )
 export default FragmentWithData

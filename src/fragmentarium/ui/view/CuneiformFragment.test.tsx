@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement, act } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
@@ -25,12 +25,12 @@ beforeEach(async () => {
     await factory.build('fragment', {
       atf: '1. ku',
       hasPhoto: true,
-      collection: 'Sippar'
+      collection: 'Sippar',
     })
   ).setReferences(await factory.buildMany('reference', 2))
   updatedFragment = await factory.build('fragment', {
     number: fragment.number,
-    atf: fragment.atf
+    atf: fragment.atf,
   })
   expectedFragment = updatedFragment.setReferences(references)
 
@@ -40,15 +40,15 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
+    createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
     hydrateReferences: () => Promise.resolve(references),
-    fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
+    fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
   }
   fragmentSearchService = {}
   session = {
     isAllowedToTransliterateFragments: () => true,
     isAllowedToLemmatizeFragments: () => false,
-    hasBetaAccess: () => false
+    hasBetaAccess: () => false,
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
@@ -73,12 +73,15 @@ beforeEach(async () => {
     )
   })
   container = element.container
-  await waitForElement(() => element.getAllByText('Photo'))
+  await element.findAllByText('Photo')
 })
 
-test.each(['collection', 'cdliNumber', 'accession'])('Renders %s', property => {
-  expect(container).toHaveTextContent(fragment[property])
-})
+test.each(['collection', 'cdliNumber', 'accession'])(
+  'Renders %s',
+  (property) => {
+    expect(container).toHaveTextContent(fragment[property])
+  }
+)
 
 it(`Renders museum`, () => {
   expect(container).toHaveTextContent(fragment.museum.name)
@@ -130,7 +133,7 @@ it('Updates view on Edition save', async () => {
 
   submitFormByTestId(element, 'transliteration-form')
 
-  await waitForElement(() => element.getAllByText(expectedFragment.cdliNumber))
+  await element.findAllByText(expectedFragment.cdliNumber)
 })
 
 it('Updates view on References save', async () => {
@@ -138,8 +141,8 @@ it('Updates view on References save', async () => {
     Promise.resolve(updatedFragment)
   )
   clickNth(element, 'References', 1)
-  await waitForElement(() => element.getAllByText('Document'))
+  await element.findAllByText('Document')
   submitFormByTestId(element, 'references-form')
 
-  await waitForElement(() => element.getByText(expectedFragment.cdliNumber))
+  await element.findByText(expectedFragment.cdliNumber)
 })

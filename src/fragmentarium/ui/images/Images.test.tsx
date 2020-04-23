@@ -1,9 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router'
-import { render, waitForElement } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Images from './Images'
+import { Folio } from 'fragmentarium/domain/fragment'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
@@ -20,7 +21,7 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    fetchCdliInfo: jest.fn()
+    fetchCdliInfo: jest.fn(),
   }
   folioPager = await factory.build('folioPager')
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
@@ -41,11 +42,11 @@ describe('Images', () => {
     folios = await factory.buildMany('folio', 3)
     fragment = await factory.build('fragment', {
       folios: folios,
-      hasPhoto: true
+      hasPhoto: true,
     })
     const element = renderImages()
     container = element.container
-    await waitForElement(() => element.getByText('Photo'))
+    await element.findByText('Photo')
   })
 
   it(`Renders folio numbers entries`, () => {
@@ -82,58 +83,56 @@ describe('Images', () => {
 it('Displays selected folio', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', { folios: folios })
   const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
   const element = renderImages(selected)
-  await waitForElement(() => element.getByText(selectedTitle))
-  expect(
-    element.getByText(`${selected.humanizedName} Folio ${selected.number}`)
-  ).toHaveAttribute('aria-selected', 'true')
+  expect(await element.findByText(selectedTitle)).toHaveAttribute(
+    'aria-selected',
+    'true'
+  )
 })
 
 it('Displays photo if folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', { folios: folios, hasPhoto: true })
   const element = renderImages()
-  await waitForElement(() =>
-    element.getByAltText(`A photo of the fragment ${fragment.number}`)
-  )
+  await element.findByAltText(`A photo of the fragment ${fragment.number}`)
 })
 
 it('Displays CDLI photo if no photo and no folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
-    { name: 'AKG' }
+    { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', {
     folios: folios,
-    hasPhoto: false
+    hasPhoto: false,
   })
   const element = renderImages()
-  await waitForElement(() => element.getByAltText('CDLI Photo'))
+  await element.findByAltText('CDLI Photo')
 })
 
 test('No photo, folios, CDLI photo', async () => {
   fragment = await factory.build('fragment', {
     folios: [],
     cdliNumber: '',
-    hasPhoto: false
+    hasPhoto: false,
   })
   fragmentService.fetchCdliInfo.mockReturnValue(
     Promise.resolve({
       photoUrl: null,
       lineArtUrl: null,
-      detailLineArtUrl: null
+      detailLineArtUrl: null,
     })
   )
   const element = renderImages()
-  await waitForElement(() => element.getByText('No images'))
+  await element.findByText('No images')
 })
 
 test('Broken CDLI photo', async () => {
@@ -142,7 +141,7 @@ test('Broken CDLI photo', async () => {
     Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
   )
   const element = renderImages()
-  await waitForElement(() => element.getByText('Photo'))
+  await element.findByText('Photo')
   expect(element.container).not.toHaveTextContent('CDLI Photo')
 })
 
@@ -152,7 +151,7 @@ test('Broken CDLI line art', async () => {
     Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
   )
   const element = renderImages()
-  await waitForElement(() => element.getByText('Photo'))
+  await element.findByText('Photo')
   expect(element.container).not.toHaveTextContent('CDLI Line Art')
 })
 
@@ -162,11 +161,11 @@ test('Broken CDLI detail line art', async () => {
     Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
   )
   const element = renderImages()
-  await waitForElement(() => element.getByText('Photo'))
+  await element.findByText('Photo')
   expect(element.container).not.toHaveTextContent('CDLI Detail Line Art')
 })
 
-function renderImages(activeFolio = null) {
+function renderImages(activeFolio: Folio | null = null): RenderResult {
   return render(
     <MemoryRouter>
       <Images

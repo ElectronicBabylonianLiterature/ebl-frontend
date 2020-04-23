@@ -25,7 +25,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
     watch: () => [],
     filter: () => true,
     defaultData: null,
-    ...config
+    ...config,
   }
   return function ComponentWithData(props: PROPS & GETTER_PROPS) {
     const [data, setData] = useState<DATA | null>(null)
@@ -37,9 +37,7 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
         setError(null)
         if (fullConfig.filter(props)) {
           setData(null)
-          fetchPromise = getter(props)
-            .then(setData)
-            .catch(setError)
+          fetchPromise = getter(props).then(setData).catch(setError)
         } else {
           setData(fullConfig.defaultData)
         }

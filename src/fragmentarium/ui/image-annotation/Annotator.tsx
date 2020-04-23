@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactElement } from 'react'
+import React, { useState, ReactElement } from 'react'
 import AnnotationComponent from 'react-image-annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
@@ -10,13 +10,14 @@ import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { createAnnotationTokens, AnnotationToken } from './annotation-token'
 import SessionContext from 'auth/SessionContext'
-import Session from 'auth/Session'
+import { Session } from 'auth/Session'
 import produce from 'immer'
 import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
+import useObjectUrl from 'common/useObjectUrl'
 
 const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
-  annotation
+  annotation,
 }: Omit<ContentProps, 'onDelete'>): JSX.Element => (
   <Content annotation={annotation} onDelete={onDelete} />
 )
@@ -28,7 +29,7 @@ const editorWithTokens = (
 )
 
 interface Props {
-  image: URL
+  image: URL | string
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
@@ -37,16 +38,16 @@ function FragmentAnnotation({
   fragment,
   image,
   initialAnnotations,
-  fragmentService
+  fragmentService,
 }: Props): React.ReactElement {
   const tokens = createAnnotationTokens(fragment)
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
-    initialAnnotations.map(annotation => {
+    initialAnnotations.map((annotation) => {
       const token = tokens
         .flat()
         .find(
-          token =>
+          (token) =>
             _.isEqual(token.path, annotation.data.path) &&
             token.value === annotation.data.value
         )
@@ -75,7 +76,7 @@ function FragmentAnnotation({
     const { geometry, data } = annotation
     const newAnnotation = new Annotation(geometry, {
       ...data,
-      id: uuid4()
+      id: uuid4(),
     })
     setAnnotation({})
     setAnnotations([...annotations, newAnnotation])
@@ -117,27 +118,25 @@ function Annotator({
   image,
   fragment,
   annotations,
-  fragmentService
+  fragmentService,
 }: {
   image: Blob
   fragment: Fragment
   annotations: readonly Annotation[]
   fragmentService: FragmentService
-}): React.ReactElement {
-  const [objectUrl, setObjectUrl] = useState()
-  useEffect(() => {
-    const url = URL.createObjectURL(image)
-    setObjectUrl(url)
-    return (): void => URL.revokeObjectURL(url)
-  }, [image])
-
+}): JSX.Element {
+  const objectUrl = useObjectUrl(image)
   return (
-    <FragmentAnnotation
-      image={objectUrl}
-      fragment={fragment}
-      initialAnnotations={annotations}
-      fragmentService={fragmentService}
-    />
+    <>
+      {objectUrl && (
+        <FragmentAnnotation
+          image={objectUrl}
+          fragment={fragment}
+          initialAnnotations={annotations}
+          fragmentService={fragmentService}
+        />
+      )}
+    </>
   )
 }
 
@@ -170,5 +169,5 @@ export default withData<
   ({ data, fragmentService, ...props }) => (
     <WithPhoto fragment={data} fragmentService={fragmentService} {...props} />
   ),
-  props => props.fragmentService.find(props.number)
+  (props) => props.fragmentService.find(props.number)
 )

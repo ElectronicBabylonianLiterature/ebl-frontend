@@ -1,7 +1,7 @@
 import { immerable } from 'immer'
 import Lemmatization, {
   LemmatizationToken,
-  UniqueLemma
+  UniqueLemma,
 } from 'fragmentarium/domain/Lemmatization'
 
 import Lemma from './Lemma'
@@ -169,16 +169,16 @@ export class Text {
     suggestions: { [key: string]: ReadonlyArray<UniqueLemma> }
   ): Lemmatization {
     return new Lemmatization(
-      this.lines.map(line => line.prefix),
+      this.lines.map((line) => line.prefix),
       this.lines
-        .map(line => line.content)
-        .map(tokens =>
-          tokens.map(token =>
+        .map((line) => line.content)
+        .map((tokens) =>
+          tokens.map((token) =>
             token.lemmatizable
               ? new LemmatizationToken(
                   token.value,
                   true,
-                  (token.uniqueLemma || []).map(id => lemmas[id]),
+                  (token.uniqueLemma || []).map((id) => lemmas[id]),
                   suggestions[token.cleanValue]
                 )
               : new LemmatizationToken(token.value, false)

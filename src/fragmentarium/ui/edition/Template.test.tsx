@@ -2,7 +2,7 @@ import Template from './Template'
 
 test.each([
   ['', true],
-  ['5', false]
+  ['5', false],
 ])('For %s the isEmpty returns %p', (pattern, expected) => {
   const template = new Template(pattern)
   expect(template.isEmpty).toEqual(expected)
@@ -13,7 +13,7 @@ test.each([
   ['3', true],
   ["1', 1#", true],
   ['-6,7', false],
-  ['invalid', false]
+  ['invalid', false],
 ])('For %s the isValid returns %p', (pattern, expected) => {
   const template = new Template(pattern)
   expect(template.isValid).toEqual(expected)
@@ -24,7 +24,7 @@ test.each([
     '3',
     `1. [...]  [...]
 2. [...]  [...]
-3. [...]  [...]`
+3. [...]  [...]`,
   ],
   [
     '2, 3',
@@ -35,7 +35,7 @@ test.each([
 @reverse
 1. [...]  [...]
 2. [...]  [...]
-3. [...]  [...]`
+3. [...]  [...]`,
   ],
   [
     "1', 1#",
@@ -43,8 +43,8 @@ test.each([
 1'. [...]  [...]
 
 @reverse
-1#. [...]  [...]`
-  ]
+1#. [...]  [...]`,
+  ],
 ])('Pattern %s generates %s', (pattern, expected) => {
   const template = new Template(pattern)
   expect(template.generate()).toEqual(expected)

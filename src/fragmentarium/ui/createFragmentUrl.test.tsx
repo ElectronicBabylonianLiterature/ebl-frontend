@@ -25,7 +25,7 @@ it('Creates URL with folio query', async () => {
     query: {
       tab: 'folio',
       folioName: folio.name,
-      folioNumber: folio.number
-    }
+      folioNumber: folio.number,
+    },
   })
 })

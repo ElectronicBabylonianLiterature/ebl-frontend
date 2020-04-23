@@ -1,14 +1,15 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
+import { AuthenticationContext, User } from 'auth/Auth'
 
 let auth
-let element
 
 beforeEach(() => {
   auth = {
-    isAuthenticated: jest.fn()
+    isAuthenticated: jest.fn(),
+    getUser: (): User => ({ name: 'Test User' }),
   }
 })
 
@@ -18,7 +19,7 @@ describe('Logged out', () => {
   commonTests()
 
   test('Login button', () => {
-    expect(element.getByText('Login')).toBeVisible()
+    expect(screen.getByText('Login')).toBeVisible()
   })
 })
 
@@ -28,31 +29,34 @@ describe('Logged in', () => {
   commonTests()
 
   test('Logout button', () => {
-    expect(element.getByText('Logout')).toBeVisible()
+    expect(screen.getByText('Logout Test User')).toBeVisible()
   })
 })
 
-function commonTests() {
+function commonTests(): void {
   test('Logo links to home', () => {
     expect(
-      element.getByTitle('electronic Babylonian Literature (eBL)')
+      screen.getByTitle('electronic Babylonian Literature (eBL)')
     ).toHaveAttribute('href', '/')
   })
 
   test.each([
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
-    ['Bibliography', '/bibliography']
+    ['Bibliography', '/bibliography'],
+    ['Corpus', '/corpus'],
   ])('%s links to %s', (title, href) => {
-    expect(element.getByText(title)).toHaveAttribute('href', href)
+    expect(screen.getByText(title)).toHaveAttribute('href', href)
   })
 }
 
-function renderHeader(loggedIn) {
+function renderHeader(loggedIn): void {
   jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(loggedIn)
-  element = render(
+  render(
     <MemoryRouter>
-      <Header auth={auth} />
+      <AuthenticationContext.Provider value={auth}>
+        <Header />
+      </AuthenticationContext.Provider>
     </MemoryRouter>
   )
 }

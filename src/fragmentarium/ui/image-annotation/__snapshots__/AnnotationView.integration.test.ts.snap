@@ -94,7 +94,8 @@ exports[`Diplay annotate view Snapshot 1`] = `
               class="btn btn-outline-secondary btn-sm"
               type="button"
             >
-              Logout
+              Logout 
+              Test
             </button>
           </span>
         </div>
@@ -173,6 +174,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
         alt="Test.Fragment"
         class="sc-gZMcBi gVmiLs"
         draggable="false"
+        src="mock url"
       />
       <div
         class="sc-gqjmRU inYJUn"

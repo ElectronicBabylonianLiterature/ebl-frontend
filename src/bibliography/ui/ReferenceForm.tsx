@@ -11,9 +11,10 @@ export default function ReferenceForm({ value, onChange, searchBibliography }) {
   const id = _.uniqueId('ReferenceForm-')
   const documentLabelId = _.uniqueId('ReferenceForm-Document-')
 
-  const handleChange = setter => newValue => onChange(value[setter](newValue))
+  const handleChange = (setter) => (newValue) =>
+    onChange(value[setter](newValue))
 
-  const handleEvent = setter => ({ target }) =>
+  const handleEvent = (setter) => ({ target }) =>
     handleChange(setter)(target.value)
 
   return (
