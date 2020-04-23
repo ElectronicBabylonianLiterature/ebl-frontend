@@ -1,5 +1,6 @@
 import { Line, LineNumber, LineNumberRange, TextLine } from '../../domain/text'
 import React from 'react'
+import { isTextLine } from './type-guards'
 
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
   return `${formatLineNumber(start)}-${formatLineNumber(end)}`
@@ -27,9 +28,8 @@ function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
 }
 
 export function TextLinePrefix({ line }: { line: Line }): JSX.Element {
-  if (line.type === 'TextLine') {
-    const textLine = line as TextLine
-    return <sup>({lineNumberToString(textLine.lineNumber)})</sup>
+  if (isTextLine(line)) {
+    return <sup>({lineNumberToString(line.lineNumber)})</sup>
   } else {
     return <span>{line.prefix}</span>
   }
