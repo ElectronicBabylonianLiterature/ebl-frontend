@@ -16,12 +16,12 @@ function formatLineNumber({
   return `${prefixMod}${number}${prime}${suffixMod}`
 }
 
-const lineNumberTypeToString = {
+const lineNumberTypeToFunction = {
   LineNumber: formatLineNumber,
   LineNumberRange: formatLineNumberRange
 }
 function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
-  const lineNumberToString = lineNumberTypeToString[lineNumber.type as string]
+  const lineNumberToString = lineNumberTypeToFunction[lineNumber.type as string]
   return lineNumberToString(lineNumber)
 }
 
