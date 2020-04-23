@@ -16,7 +16,7 @@ import { BibliographySearch } from 'bibliography/application/BibliographyService
 
 function ChapterTitle({
   text,
-  chapter,
+  chapter
 }: {
   text: Text
   chapter: Chapter
@@ -38,7 +38,7 @@ function ChapterView({
   text,
   chapterIndex,
   textService,
-  bibliographyService,
+  bibliographyService
 }: Props): JSX.Element {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isDirty, setIsDirty] = useState(false)
@@ -66,7 +66,11 @@ function ChapterView({
   const update = (updater: () => Promise<Text>): void => {
     cancelUpdatePromise()
     setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
+    setUpdatePromise(
+      updater()
+        .then(setStateUpdated)
+        .catch(setStateError)
+    )
   }
 
   const updateAlignment = (): void => {
@@ -157,6 +161,6 @@ export default withData<
   ),
   ({ category, index, textService }) => textService.find(category, index),
   {
-    watch: (props) => [props.stage, props.name],
+    watch: props => [props.stage, props.name]
   }
 )

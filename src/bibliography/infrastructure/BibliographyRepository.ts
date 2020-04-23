@@ -22,7 +22,7 @@ export default class BibliographyRepository {
     const query = { author, year, title }
     return this.apiClient
       .fetchJson(`/bibliography?${stringify(query)}`, true)
-      .then((result) => result.map(createEntry))
+      .then(result => result.map(createEntry))
   }
 
   update(entry) {

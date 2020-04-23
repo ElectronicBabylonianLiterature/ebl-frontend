@@ -9,7 +9,7 @@ const textsDto = [
     name: 'First Category 2',
     numberOfVerses: 99,
     approximateVerses: false,
-    chapters: [],
+    chapters: []
   },
   {
     category: 2,
@@ -17,7 +17,7 @@ const textsDto = [
     name: 'Second Category',
     numberOfVerses: 2,
     approximateVerses: false,
-    chapters: [],
+    chapters: []
   },
   {
     category: 3,
@@ -25,7 +25,7 @@ const textsDto = [
     name: 'Third Category',
     numberOfVerses: 45,
     approximateVerses: true,
-    chapters: [],
+    chapters: []
   },
   {
     category: 1,
@@ -33,7 +33,7 @@ const textsDto = [
     name: 'First Category 1',
     numberOfVerses: 99,
     approximateVerses: false,
-    chapters: [],
+    chapters: []
   },
   {
     category: 4,
@@ -41,8 +41,8 @@ const textsDto = [
     name: 'Hidden Text',
     numberOfVerses: 1,
     approximateVerses: false,
-    chapters: [],
-  },
+    chapters: []
+  }
 ]
 
 let fakeApi: FakeApi

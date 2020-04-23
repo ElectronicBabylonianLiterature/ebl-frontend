@@ -25,12 +25,12 @@ export default class Auth0AuthenticationService
   }
   login(): void {
     this.auth0Client.loginWithRedirect({
-      appState: { targetUrl: window.location.pathname },
+      appState: { targetUrl: window.location.pathname }
     })
   }
   logout(): void {
     this.auth0Client.logout({
-      returnTo: this.returnTo,
+      returnTo: this.returnTo
     })
   }
   getSession(): Session {

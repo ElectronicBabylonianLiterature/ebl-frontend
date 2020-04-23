@@ -5,7 +5,7 @@ const resultStub = {}
 const wordRepository = {
   find: jest.fn(),
   search: jest.fn(),
-  update: jest.fn(),
+  update: jest.fn()
 }
 
 const wordService = new WordService(wordRepository)
@@ -13,7 +13,7 @@ const wordService = new WordService(wordRepository)
 const testData: TestData[] = [
   ['find', ['id'], wordRepository.find, resultStub],
   ['search', ['aklu'], wordRepository.search, resultStub],
-  ['update', [{ _id: 'id' }], wordRepository.update, resultStub],
+  ['update', [{ _id: 'id' }], wordRepository.update, resultStub]
 ]
 
 testDelegation(wordService, testData)

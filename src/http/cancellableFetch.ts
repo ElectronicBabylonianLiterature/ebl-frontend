@@ -9,7 +9,7 @@ export default function cancellableFetch(
     const abortController = new AbortController()
     fetch(url, {
       ...options,
-      signal: abortController.signal,
+      signal: abortController.signal
     })
       .then(resolve)
       .catch(reject)

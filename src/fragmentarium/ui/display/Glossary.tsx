@@ -20,19 +20,19 @@ export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
         </small>
       </h4>
       {_(fragment.text.lines)
-        .flatMap((line) =>
+        .flatMap(line =>
           line.content
-            .filter((token) => token.lemmatizable)
+            .filter(token => token.lemmatizable)
             .map(
               (token): GlossaryToken => ({
                 number: line.prefix,
                 value: token.value,
-                uniqueLemma: token.uniqueLemma ?? [],
+                uniqueLemma: token.uniqueLemma ?? []
               })
             )
         )
-        .reject((token) => _.isEmpty(token.uniqueLemma))
-        .groupBy((token) => token.uniqueLemma)
+        .reject(token => _.isEmpty(token.uniqueLemma))
+        .groupBy(token => token.uniqueLemma)
         .toPairs()
         .map(([lemma, tokensByLemma]): [
           readonly string[],
@@ -49,12 +49,12 @@ export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
             ))}
             {': '}
             {_(tokensByLemma)
-              .groupBy((token) => token.value)
+              .groupBy(token => token.value)
               .map(
                 (tokensByValue, value) =>
                   value +
                   ' (' +
-                  tokensByValue.map((token) => token.number).join(', ') +
+                  tokensByValue.map(token => token.number).join(', ') +
                   ')'
               )
               .join(', ')}

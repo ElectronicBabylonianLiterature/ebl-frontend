@@ -25,7 +25,7 @@ export default class FragmentSearchService {
     return this.fragmentRepository
       .random()
       .then(_.head)
-      .then((info) => {
+      .then(info => {
         if (info) {
           return info
         } else {
@@ -38,7 +38,7 @@ export default class FragmentSearchService {
     return this.fragmentRepository
       .interesting()
       .then(_.head)
-      .then((info) => {
+      .then(info => {
         if (info) {
           return info
         } else {

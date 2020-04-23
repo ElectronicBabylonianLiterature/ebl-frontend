@@ -64,14 +64,14 @@ export default class WordAligner extends Component<Props, State> {
     super(props)
     this.popOverId = _.uniqueId('AlignmentPopOver-')
     this.state = {
-      show: false,
+      show: false
     }
   }
 
   handleClick = (event: SyntheticEvent) => {
     this.setState({
       target: event.target,
-      show: !this.state.show,
+      show: !this.state.show
     })
   }
 

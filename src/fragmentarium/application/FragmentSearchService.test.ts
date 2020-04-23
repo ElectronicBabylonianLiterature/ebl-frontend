@@ -9,7 +9,7 @@ const fragmentRepository = {
   searchNumber: jest.fn(),
   searchTransliteration: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
-  fetchNeedsRevision: jest.fn(),
+  fetchNeedsRevision: jest.fn()
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
@@ -20,7 +20,7 @@ const testData: TestData[] = [
     fragmentRepository.random,
     resultStub,
     null,
-    Promise.resolve([resultStub]),
+    Promise.resolve([resultStub])
   ],
   [
     'interesting',
@@ -28,22 +28,22 @@ const testData: TestData[] = [
     fragmentRepository.interesting,
     resultStub,
     null,
-    Promise.resolve([resultStub]),
+    Promise.resolve([resultStub])
   ],
   ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
   [
     'searchTransliteration',
     ['kur'],
     fragmentRepository.searchTransliteration,
-    resultStub,
+    resultStub
   ],
   [
     'fetchLatestTransliterations',
     [],
     fragmentRepository.fetchLatestTransliterations,
-    resultStub,
+    resultStub
   ],
-  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub],
+  ['fetchNeedsRevision', [], fragmentRepository.fetchNeedsRevision, resultStub]
 ]
 
 testDelegation(fragmentSearchService, testData)

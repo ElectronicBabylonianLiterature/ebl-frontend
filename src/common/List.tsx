@@ -36,23 +36,23 @@ function listController(ListView) {
     const add = () => {
       const newItem = createDefaultValue(defaultValue)
       onChange(
-        produce(value, (draft) => {
+        produce(value, draft => {
           draft.push(newItem)
         })
       )
     }
 
-    const delete_ = (index) => () => {
+    const delete_ = index => () => {
       onChange(
-        produce(value, (draft) => {
+        produce(value, draft => {
           draft.splice(index, 1)
         })
       )
     }
 
-    const update = (index) => (updated) => {
+    const update = index => updated => {
       onChange(
-        produce(value, (draft) => {
+        produce(value, draft => {
           draft[index] = updated
         })
       )
@@ -80,7 +80,7 @@ function CardListView({
   ordered,
   collapsed,
   onAdd,
-  onDelete,
+  onDelete
 }) {
   const fullLabel = !_.isNil(label) ? (
     <>

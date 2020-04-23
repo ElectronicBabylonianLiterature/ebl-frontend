@@ -17,11 +17,11 @@ let session
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
   bibliographyService = {
-    search: jest.fn(),
+    search: jest.fn()
   }
   session = {
     isAllowedToReadBibliography: jest.fn(),
-    isAllowedToWriteBibliography: (): boolean => false,
+    isAllowedToWriteBibliography: (): boolean => false
   }
 })
 

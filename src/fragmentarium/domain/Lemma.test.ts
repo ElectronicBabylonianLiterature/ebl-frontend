@@ -8,7 +8,7 @@ let lemma: Lemma
 describe('Homonym I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      homonym: 'I',
+      homonym: 'I'
     })
     lemma = new Lemma(word)
   })
@@ -23,7 +23,7 @@ describe('Homonym I', () => {
 describe('Homonym not I', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      homonym: 'II',
+      homonym: 'II'
     })
     lemma = new Lemma(word)
   })
@@ -38,7 +38,7 @@ describe('Homonym not I', () => {
 describe('Empty POS', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      pos: [],
+      pos: []
     })
     lemma = new Lemma(word)
   })

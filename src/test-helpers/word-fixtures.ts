@@ -17,7 +17,7 @@ const nonVerbPos = [
   'J',
   'MOD',
   'PRP',
-  'SBJ',
+  'SBJ'
 ]
 
 function pickOne(values) {
@@ -39,17 +39,17 @@ function wordArray() {
 factory.define('form', Object, {
   attested: false,
   lemma: wordArray(),
-  notes: wordArray(),
+  notes: wordArray()
 })
 
 factory.define('vowels', Object, {
   value: [vowel(), vowel()],
-  notes: wordArray(),
+  notes: wordArray()
 })
 
 factory.define('entry', Object, {
   meaning: factory.chance('sentence'),
-  vowels: factory.assocAttrsMany('vowels', 2),
+  vowels: factory.assocAttrsMany('vowels', 2)
 })
 
 factory.extend('entry', 'amplifiedMeaning', {
@@ -72,16 +72,16 @@ factory.extend('entry', 'amplifiedMeaning', {
     'A.',
     'B.',
     'C.',
-    'D.',
+    'D.'
   ]),
   meaning: factory.chance('sentence'),
-  entries: factory.assocAttrsMany('entry', 2),
+  entries: factory.assocAttrsMany('entry', 2)
 })
 
 factory.define('derived', Object, {
   lemma: wordArray(),
   homonym: homonym(),
-  notes: wordArray(),
+  notes: wordArray()
 })
 
 factory.define('logogram', Object, {
@@ -90,12 +90,12 @@ factory.define('logogram', Object, {
     ['alpha', 'bravo', 'charlie', 'delta', 'echo'],
     2
   ),
-  notes: wordArray(),
+  notes: wordArray()
 })
 
 factory.define('oraccWord', Object, {
   lemma: factory.chance('word'),
-  guideWord: factory.chance('word'),
+  guideWord: factory.chance('word')
 })
 
 factory.define('word', Object, {
@@ -111,15 +111,15 @@ factory.define('word', Object, {
   logograms: factory.assocAttrsMany('logogram', 2),
   derived: [
     factory.assocAttrsMany('derived', 2),
-    factory.assocAttrsMany('derived', 2),
+    factory.assocAttrsMany('derived', 2)
   ],
   derivedFrom: factory.assocAttrs('derived'),
   source: '**source**',
   guideWord: factory.chance('word'),
-  oraccWords: factory.assocAttrsMany('oraccWord', 2),
+  oraccWords: factory.assocAttrsMany('oraccWord', 2)
 })
 
 factory.extend('word', 'verb', {
   pos: ['V'],
-  roots: ['rrr', 'ttt'],
+  roots: ['rrr', 'ttt']
 })

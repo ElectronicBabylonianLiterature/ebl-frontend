@@ -10,7 +10,7 @@ describe.each([
   ['write:bibliography', 'isAllowedToWriteBibliography'],
   ['write:texts', 'isAllowedToWriteTexts'],
   ['read:bibliography', 'isAllowedToReadBibliography'],
-  ['access:beta', 'hasBetaAccess'],
+  ['access:beta', 'hasBetaAccess']
 ])('%s %s', (scope, method) => {
   test('Returns true if session has scope', () => {
     const session = new MemorySession([scope])

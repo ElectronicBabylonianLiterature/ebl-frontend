@@ -13,13 +13,13 @@ let lemmas
 
 beforeEach(async () => {
   onClick = jest.fn()
-  lemmas = (await factory.buildMany('word', 2)).map((word) => new Lemma(word))
+  lemmas = (await factory.buildMany('word', 2)).map(word => new Lemma(word))
 })
 
 describe.each([
   [false, false, [], ['Word--with-lemma', 'Word--suggestion']],
   [true, false, ['Word--with-lemma'], ['Word--suggestion']],
-  [true, true, ['Word--with-lemma', 'Word--suggestion'], []],
+  [true, true, ['Word--with-lemma', 'Word--suggestion'], []]
 ] as [boolean, boolean, string[], string[]][])(
   '%#',
   (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
@@ -31,7 +31,7 @@ describe.each([
         language: 'AKKADIAN',
         normalized: false,
         lemmatizable: true,
-        suggested: suggested,
+        suggested: suggested
       }
       element = render(<Word token={token} onClick={onClick} />)
     })
@@ -43,7 +43,7 @@ describe.each([
     if (hasLemma) {
       it('Displays the lemma', () => {
         expect(element.container).toHaveTextContent(
-          lemmas.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', ')
+          lemmas.map(lemma => `${lemma.lemma}${lemma.homonym}`).join(', ')
         )
       })
     }
@@ -54,7 +54,7 @@ describe.each([
     })
 
     if (!_.isEmpty(expectedClasses)) {
-      test.each(expectedClasses)('Has class %s', (expectedClass) => {
+      test.each(expectedClasses)('Has class %s', expectedClass => {
         expect(element.getByText(token.value)).toHaveClass(expectedClass)
       })
     }
@@ -62,7 +62,7 @@ describe.each([
     if (!_.isEmpty(notExpectedClasses)) {
       test.each(notExpectedClasses)(
         'Does not have class %s',
-        (notExpectedClass) => {
+        notExpectedClass => {
           expect(element.getByText(token.value)).not.toHaveClass(
             notExpectedClass
           )
@@ -79,7 +79,7 @@ describe('Not-lemmatizable word', () => {
       uniqueLemma: [],
       language: 'AKKADIAN',
       normalized: true,
-      lemmatizable: false,
+      lemmatizable: false
     }
     element = render(<Word token={token} onClick={onClick} />)
   })

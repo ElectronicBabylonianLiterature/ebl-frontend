@@ -12,7 +12,7 @@ function BibliographySearch({ data }) {
   const parser = new Parser()
   return (
     <ol className="BibliographySearch">
-      {data.map((entry) => (
+      {data.map(entry => (
         <li key={entry.id} className="BibliographySearch__entry">
           <Link
             to={`/bibliography/${encodeURIComponent(entry.id)}`}
@@ -31,12 +31,8 @@ export default withData<
   {},
   { bibliographyService; query: string },
   readonly BibliographyEntry[]
->(
-  BibliographySearch,
-  (props) => props.bibliographyService.search(props.query),
-  {
-    watch: (props) => [props.query],
-    filter: (props) => !_.isEmpty(props.query),
-    defaultData: [],
-  }
-)
+>(BibliographySearch, props => props.bibliographyService.search(props.query), {
+  watch: props => [props.query],
+  filter: props => !_.isEmpty(props.query),
+  defaultData: []
+})

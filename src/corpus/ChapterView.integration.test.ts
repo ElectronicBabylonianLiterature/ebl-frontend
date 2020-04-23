@@ -18,7 +18,7 @@ const textDto = {
       name: 'III',
       order: 3,
       manuscripts: [],
-      lines: [],
+      lines: []
     },
     {
       classification: 'Ancient',
@@ -37,10 +37,10 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'some notes',
-          references: [],
-        },
+          references: []
+        }
       ],
-      lines: [],
+      lines: []
     },
     {
       classification: 'Ancient',
@@ -59,7 +59,7 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: '',
-          references: [],
+          references: []
         },
         {
           id: 2,
@@ -71,8 +71,8 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: '',
-          references: [],
-        },
+          references: []
+        }
       ],
       lines: [
         {
@@ -83,13 +83,13 @@ const textDto = {
               manuscriptId: 1,
               labels: ['iii'],
               number: 'a+1',
-              atf: 'kur',
-            },
-          ],
-        },
-      ],
-    },
-  ],
+              atf: 'kur'
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 const defaultManuscriptDto = {
   id: null,
@@ -101,13 +101,13 @@ const defaultManuscriptDto = {
   provenance: 'Nineveh',
   type: 'Library',
   notes: '',
-  references: [],
+  references: []
 }
 
 const defaultLineDto = {
   number: '',
   reconstruction: '',
-  manuscripts: [],
+  manuscripts: []
 }
 
 let fakeApi: FakeApi
@@ -133,7 +133,7 @@ describe('Diplay chapter', () => {
     ['Classification', 'classification'],
     ['Stage', 'stage'],
     ['Version', 'version'],
-    ['Name', 'name'],
+    ['Name', 'name']
   ])('%s', (label, property) => {
     appDriver.expectInputElement(label, chapter[property])
   })
@@ -149,18 +149,18 @@ describe('Diplay chapter', () => {
       ['Period', 'period', 'Hellenistic'],
       ['Provenance', 'provenance', 'Borsippa'],
       ['Type', 'type', 'Commentary'],
-      ['Notes', 'notes', 'more notes'],
+      ['Notes', 'notes', 'more notes']
     ])('%s', async (label, property, newValue) => {
       fakeApi.expectUpdateManuscripts(
         textDto,
         1,
-        produce(textDto.chapters[1].manuscripts, (draft) => ({
+        produce(textDto.chapters[1].manuscripts, draft => ({
           manuscripts: [
             {
               ...draft[0],
-              [property]: newValue,
-            },
-          ],
+              [property]: newValue
+            }
+          ]
         }))
       )
       const value = manuscript[property]
@@ -188,12 +188,12 @@ describe('Add manuscript', () => {
     ['Period', 'period', 'Neo-Assyrian'],
     ['Provenance', 'provenance', 'Nineveh'],
     ['Type', 'type', 'Library'],
-    ['Notes', 'notes', ''],
+    ['Notes', 'notes', '']
   ])('%s', async (label, property, expectedValue) => {
     const manuscript = {
       ...defaultManuscriptDto,
       [property]: expectedValue,
-      id: 1,
+      id: 1
     }
     fakeApi.expectUpdateManuscripts(textDto, 0, { manuscripts: [manuscript] })
     await appDriver.click('Add manuscript')
@@ -216,10 +216,10 @@ describe('Lines', () => {
     async (label, property, newValue) => {
       fakeApi.expectUpdateLines(textDto, 2, {
         lines: [
-          produce(textDto.chapters[2].lines[0], (draft) => {
+          produce(textDto.chapters[2].lines[0], draft => {
             draft[property] = newValue
-          }),
-        ],
+          })
+        ]
       })
       const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)

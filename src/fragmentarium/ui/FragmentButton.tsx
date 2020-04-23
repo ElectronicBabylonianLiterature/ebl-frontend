@@ -18,19 +18,23 @@ function FragmentButton({ query, history, children }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [setPromise, cancelPromise] = usePromiseEffect()
 
-  const onError = (error) => {
+  const onError = error => {
     setIsLoading(false)
     setError(error)
   }
 
-  const navigateToFragment = (fragmentInfo) =>
+  const navigateToFragment = fragmentInfo =>
     history.push(createFragmentUrl(fragmentInfo.number))
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     cancelPromise()
     setIsLoading(true)
     setError(null)
-    setPromise(query().then(navigateToFragment).catch(onError))
+    setPromise(
+      query()
+        .then(navigateToFragment)
+        .catch(onError)
+    )
   }
 
   return (

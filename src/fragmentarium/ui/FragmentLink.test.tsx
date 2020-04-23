@@ -35,7 +35,7 @@ describe('Without folio', () => {
 describe('With folio', () => {
   const folio = new Folio({
     name: chance.string(),
-    number: chance.string(),
+    number: chance.string()
   })
 
   beforeEach(() => {

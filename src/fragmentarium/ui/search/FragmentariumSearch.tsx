@@ -18,7 +18,7 @@ type Props = {
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   transliteration,
-  fragmentSearchService,
+  fragmentSearchService
 }: Props) => {
   const replacedTransliteration =
     transliteration && replaceTransliteration(transliteration)

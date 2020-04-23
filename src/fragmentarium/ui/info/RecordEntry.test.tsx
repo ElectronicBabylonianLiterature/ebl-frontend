@@ -11,7 +11,7 @@ import {
   userAlice,
   userBob,
   year2017,
-  year2018,
+  year2018
 } from 'test-helpers/record-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 import * as Moment from 'moment'
@@ -33,37 +33,37 @@ describe('RecordEntry', () => {
       new RecordEntry({
         user: 'User1',
         date: '1998-01-17T11:50:36.127247/1999-04-17T10:29:39.127247',
-        type: 'HistoricalTransliteration',
+        type: 'HistoricalTransliteration'
       }),
-      false,
+      false
     ],
     [
       historicalTransliteration,
       new RecordEntry({
         user: 'User1',
         date: '1998-01-17T10:50:36.127247/1999-04-17T12:29:39.127247',
-        type: 'HistoricalTransliteration',
+        type: 'HistoricalTransliteration'
       }),
-      false,
+      false
     ],
     [
       historicalTransliteration,
       new RecordEntry({
         user: 'User1',
         date: '1998-01-18T10:50:36.127247/1999-04-17T10:29:39.127247',
-        type: 'HistoricalTransliteration',
+        type: 'HistoricalTransliteration'
       }),
-      false,
+      false
     ],
     [
       historicalTransliteration,
       new RecordEntry({
         user: 'User1',
         date: '1998-01-17T10:50:36.127247/1999-05-17T10:29:39.127247',
-        type: 'HistoricalTransliteration',
+        type: 'HistoricalTransliteration'
       }),
-      false,
-    ],
+      false
+    ]
   ] as [RecordEntry, RecordEntry, boolean][])(
     '%s dateEquals %s is %p',
     (first, second, expected) => {
@@ -75,7 +75,7 @@ describe('RecordEntry', () => {
   test.each([
     [transliteration, moment.default(transliteration.date)],
     [revision, moment.default(revision.date)],
-    [historicalTransliteration, moment.range(historicalTransliteration.date)],
+    [historicalTransliteration, moment.range(historicalTransliteration.date)]
   ] as [RecordEntry, Moment.Moment | DateRange][])(
     '%s.moment is %s',
     (recordEntry, expected) => {
@@ -86,7 +86,7 @@ describe('RecordEntry', () => {
   test.each([
     [transliteration, false],
     [revision, false],
-    [historicalTransliteration, true],
+    [historicalTransliteration, true]
   ] as [RecordEntry, boolean][])(
     '%s.isHistorical is %s',
     (recordEntry, expected) => {

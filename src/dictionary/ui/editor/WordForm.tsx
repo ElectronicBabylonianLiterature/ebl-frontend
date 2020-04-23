@@ -23,7 +23,7 @@ class WordForm extends Component<Props, { word: Word }> {
     super(props)
 
     this.state = {
-      word: this.props.value,
+      word: this.props.value
     }
   }
 
@@ -36,8 +36,8 @@ class WordForm extends Component<Props, { word: Word }> {
     this.setState({
       word: {
         ...this.state.word,
-        ...updatedFields,
-      },
+        ...updatedFields
+      }
     })
   }
 

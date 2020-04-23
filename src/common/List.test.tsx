@@ -52,7 +52,7 @@ function commonTests() {
     expect(element.getByText(label)).toBeVisible()
   })
 
-  describe.each(items)('Item %#', (item) => {
+  describe.each(items)('Item %#', item => {
     const index = items.indexOf(item)
 
     it(`Displays the item`, () => {
@@ -70,7 +70,7 @@ function commonTests() {
     it(`Calls onChange with updated value on item change`, () => {
       whenChangedByValue(element, item, 'new')
         .expect(onChange)
-        .toHaveBeenCalledWith((updatedItem) =>
+        .toHaveBeenCalledWith(updatedItem =>
           items.map((item, itemIndex) =>
             itemIndex === index ? updatedItem : item
           )
@@ -85,7 +85,7 @@ function renderList() {
       <FormControl
         type="text"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={event => onChange(event.target.value)}
       />
     )
   }

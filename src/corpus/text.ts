@@ -16,7 +16,7 @@ export const types: ReadonlyMap<string, ManuscriptType> = new Map([
   ['School', { name: 'School', abbreviation: 'Sch' }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
   ['Commentary', { name: 'Commentary', abbreviation: 'Com' }],
-  ['Quotation', { name: 'Quotation', abbreviation: 'Quo' }],
+  ['Quotation', { name: 'Quotation', abbreviation: 'Quo' }]
 ])
 
 export class Manuscript {
@@ -26,21 +26,21 @@ export class Manuscript {
   accession = ''
   periodModifier: PeriodModifier = periodModifiers.get('None') || {
     name: 'None',
-    displayName: '-',
+    displayName: '-'
   }
   period: Period = periods.get('Neo-Assyrian') || {
     name: 'Neo-Assyrian',
     abbreviation: 'NA',
-    description: '(ca. 1000–609 BCE)',
+    description: '(ca. 1000–609 BCE)'
   }
   provenance: Provenance = provenances.get('Nineveh') || {
     name: 'Nineveh',
     abbreviation: 'Nin',
-    parent: 'Assyria',
+    parent: 'Assyria'
   }
   type: ManuscriptType = types.get('Library') || {
     name: 'Library',
-    abbreviation: '',
+    abbreviation: ''
   }
   notes = ''
   references: ReadonlyArray<Reference> = []
@@ -50,7 +50,7 @@ export class Manuscript {
       _.get(this, 'provenance.abbreviation', ''),
       _.get(this, 'period.abbreviation', ''),
       _.get(this, 'type.abbreviation', ''),
-      this.siglumDisambiguator,
+      this.siglumDisambiguator
     ].join('')
   }
 }
@@ -88,7 +88,7 @@ export const createManuscriptLine: (
     number: '',
     atf: '',
     atfTokens: [],
-    ...draft,
+    ...draft
   })
 )
 export type ReconstructionToken = {
@@ -106,7 +106,7 @@ export const createLine: (config: Partial<Line>) => Line = produce(
     number: '',
     reconstruction: '',
     manuscripts: [],
-    ...draft,
+    ...draft
   })
 )
 
@@ -128,7 +128,7 @@ export const createChapter: (x0: Partial<Chapter>) => Chapter = produce(
     order: 0,
     manuscripts: [],
     lines: [],
-    ...draft,
+    ...draft
   })
 )
 
@@ -142,7 +142,7 @@ export class Text {
 
   findChapterIndex(stage: string, name: string) {
     return this.chapters.findIndex(
-      (chapter) => chapter.stage === stage && chapter.name === name
+      chapter => chapter.stage === stage && chapter.name === name
     )
   }
 }

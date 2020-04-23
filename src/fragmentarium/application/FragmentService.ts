@@ -76,8 +76,8 @@ class FragmentService {
   find(number: string) {
     return this.fragmentRepository
       .find(number)
-      .then((fragment) =>
-        this.hydrateReferences(fragment.references).then((hydrated) =>
+      .then(fragment =>
+        this.hydrateReferences(fragment.references).then(hydrated =>
           fragment.setReferences(hydrated)
         )
       )
@@ -141,7 +141,7 @@ class FragmentService {
       : Promise.resolve({
           photoUrl: null,
           lineArtUrl: null,
-          detailLineArtUrl: null,
+          detailLineArtUrl: null
         })
   }
 
@@ -171,7 +171,7 @@ class FragmentService {
     return Promise.all(
       mapText<string, Promise<Lemma>>(
         text,
-        (line) => line.flatMap((token) => token.uniqueLemma || []),
+        line => line.flatMap(token => token.uniqueLemma || []),
         (uniqueLemma: string): Promise<Lemma> =>
           this.wordRepository
             .find(uniqueLemma)
@@ -184,25 +184,25 @@ class FragmentService {
     text: Text
   ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
     return Promise.mapSeries(
-      mapLines(text, (line) =>
+      mapLines(text, line =>
         line
-          .filter((token) => token.lemmatizable)
-          .flatMap((token) => token.cleanValue)
+          .filter(token => token.lemmatizable)
+          .flatMap(token => token.cleanValue)
       ),
       (value: string): any =>
         this.fragmentRepository
           .findLemmas(value)
-          .then((lemmas) => [
+          .then(lemmas => [
             value,
-            lemmas.map((complexLemma) =>
-              complexLemma.map((word) => new Lemma(word))
-            ),
+            lemmas.map(complexLemma =>
+              complexLemma.map(word => new Lemma(word))
+            )
           ])
     )
   }
 
   hydrateReferences(references: ReadonlyArray<any>) {
-    const hydrate: (reference: any) => Promise<Reference> = (reference) =>
+    const hydrate: (reference: any) => Promise<Reference> = reference =>
       createReference(reference, this.bibliographyService)
     return Promise.all<Reference>(references.map(hydrate))
   }

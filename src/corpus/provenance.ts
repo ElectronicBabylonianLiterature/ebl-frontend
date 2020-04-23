@@ -29,7 +29,7 @@ export const provenances: ReadonlyMap<string, Provenance> = new Map([
   ['Alalakh', { name: 'Alalakh', abbreviation: 'Ala', parent: 'Periphery' }],
   [
     'Tell el-Amarna',
-    { name: 'Tell el-Amarna', abbreviation: 'Ama', parent: 'Periphery' },
+    { name: 'Tell el-Amarna', abbreviation: 'Ama', parent: 'Periphery' }
   ],
   ['Emar', { name: 'Emar', abbreviation: 'Emr', parent: 'Periphery' }],
   ['Ḫattuša', { name: 'Ḫattuša', abbreviation: 'Hat', parent: 'Periphery' }],
@@ -37,5 +37,5 @@ export const provenances: ReadonlyMap<string, Provenance> = new Map([
   ['Megiddo', { name: 'Megiddo', abbreviation: 'Meg', parent: 'Periphery' }],
   ['Susa', { name: 'Susa', abbreviation: 'Sus', parent: 'Periphery' }],
   ['Ugarit', { name: 'Ugarit', abbreviation: 'Uga', parent: 'Periphery' }],
-  ['Uncertain', { name: 'Uncertain', abbreviation: 'Unc' }],
+  ['Uncertain', { name: 'Uncertain', abbreviation: 'Unc' }]
 ])

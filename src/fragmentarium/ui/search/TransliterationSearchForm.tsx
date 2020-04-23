@@ -42,20 +42,20 @@ type Props = {
 
 class TransliterationSearchForm extends Component<Props, State> {
   state = {
-    transliteration: this.props.transliteration || '',
+    transliteration: this.props.transliteration || ''
   }
 
-  onChange = (event) => {
+  onChange = event => {
     this.setState({
-      transliteration: event.target.value,
+      transliteration: event.target.value
     })
   }
 
-  submit = (event) => {
+  submit = event => {
     event.preventDefault()
     this.props.history.push(
       `/fragmentarium/search/?${stringify({
-        transliteration: this.state.transliteration,
+        transliteration: this.state.transliteration
       })}`
     )
   }
@@ -63,7 +63,7 @@ class TransliterationSearchForm extends Component<Props, State> {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.transliteration !== prevProps.transliteration) {
       this.setState({
-        transliteration: this.props.transliteration || '',
+        transliteration: this.props.transliteration || ''
       })
     }
   }

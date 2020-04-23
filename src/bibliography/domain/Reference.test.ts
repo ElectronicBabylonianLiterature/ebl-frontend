@@ -19,7 +19,7 @@ describe('Reference', () => {
 
   test.each([
     ['typeAbbreviation', 'type.0'],
-    ['primaryAuthor', 'document.primaryAuthor'],
+    ['primaryAuthor', 'document.primaryAuthor']
   ])('%s', async (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
@@ -33,7 +33,7 @@ test('toHtml', async () => {
 
 test.each([
   [factory.build('reference', { linesCited: [] }), false],
-  [factory.build('reference', { linesCited: ['1'] }), true],
+  [factory.build('reference', { linesCited: ['1'] }), true]
 ])('hasLinesCited %#', async (factoryPromise, expected) => {
   const reference = await factoryPromise
   expect(reference.hasLinesCited).toEqual(expected)
@@ -41,7 +41,7 @@ test.each([
 
 test.each([
   [factory.build('reference'), false],
-  [buildReferenceWithContainerTitle('PHOTO'), true],
+  [buildReferenceWithContainerTitle('PHOTO'), true]
 ])('hasShortContainerTitle %#', async (factoryPromise, expected) => {
   const reference = await factoryPromise
   expect(reference.hasShortContainerTitle).toEqual(expected)

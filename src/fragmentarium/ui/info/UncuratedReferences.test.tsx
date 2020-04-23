@@ -9,7 +9,7 @@ let element
 test.each([
   [0, '0 uncurated references'],
   [1, '1 uncurated reference'],
-  [2, '2 uncurated references'],
+  [2, '2 uncurated references']
 ])('%i references', async (numberOfReferences, expectedText) => {
   references =
     numberOfReferences > 0

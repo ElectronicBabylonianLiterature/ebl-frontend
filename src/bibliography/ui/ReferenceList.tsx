@@ -11,7 +11,7 @@ const typeOrder = {
   COPY: 1,
   PHOTO: 2,
   EDITION: 3,
-  DISCUSSION: 4,
+  DISCUSSION: 4
 }
 
 function Citation({ reference }: { reference: Reference }) {
@@ -38,14 +38,14 @@ function Citation({ reference }: { reference: Reference }) {
 }
 
 function ReferenceGroup({
-  references,
+  references
 }: {
   references: ReadonlyArray<Reference>
 }) {
   return (
     <ol className="ReferenceList__list">
       {_.chain(references)
-        .sortBy((reference) => `${reference.primaryAuthor} # ${reference.year}`)
+        .sortBy(reference => `${reference.primaryAuthor} # ${reference.year}`)
         .map((reference, index) => (
           <li key={index}>
             <Citation reference={reference} />
@@ -57,14 +57,14 @@ function ReferenceGroup({
 }
 
 export default function ReferenceList({
-  references,
+  references
 }: {
   references: ReadonlyArray<Reference>
 }) {
   return (
     <>
       {_.chain(references)
-        .groupBy((reference) => reference.type)
+        .groupBy(reference => reference.type)
         .toPairs()
         .sortBy(([type, group]) => _.get(typeOrder, type, 5))
         .map(([type, group]) => (

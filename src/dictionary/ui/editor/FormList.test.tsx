@@ -39,20 +39,20 @@ it('New entry has given fields', async () => {
         lemma: [],
         attested: true,
         homonym: '',
-        notes: [],
-      },
+        notes: []
+      }
     ])
 })
 
 it('Calls onChange with updated value on change', () => {
   whenChangedByValue(element, value[0].lemma.join(' '), 'new')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [
+    .toHaveBeenCalledWith(newValue => [
       {
         ...value[0],
-        lemma: [newValue],
+        lemma: [newValue]
       },
-      ..._.tail(value),
+      ..._.tail(value)
     ])
 })
 

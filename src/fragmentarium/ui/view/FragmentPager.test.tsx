@@ -11,11 +11,11 @@ let fragmentPagerData
 
 beforeEach(async () => {
   fragmentService = {
-    fragmentPager: jest.fn(),
+    fragmentPager: jest.fn()
   }
   fragmentPagerData = {
     next: 'K.00001',
-    previous: 'J.99999',
+    previous: 'J.99999'
   }
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
@@ -32,7 +32,7 @@ beforeEach(async () => {
 })
 it.each([
   ['Previous', 'previous'],
-  ['Next', 'next'],
+  ['Next', 'next']
 ])('Test Links to %s Button', (label, expected) => {
   expect(element.getByLabelText(label)).toHaveAttribute(
     'href',

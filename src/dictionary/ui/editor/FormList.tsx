@@ -9,7 +9,7 @@ const defaultForm = {
   lemma: [],
   attested: true,
   homonym: '',
-  notes: [],
+  notes: []
 }
 
 class FormList extends Component<{ value; fields; onChange }> {

@@ -4,7 +4,7 @@ import AppContent from 'common/AppContent'
 import withData, { WithoutData } from 'http/withData'
 import BibliographyEntryFormController from 'bibliography/ui/BibliographyEntryFormController'
 import BibliographyEntry, {
-  template,
+  template
 } from 'bibliography/domain/BibliographyEntry'
 import { History } from 'history'
 import { match } from 'react-router'
@@ -25,7 +25,7 @@ function BibliographyEditor({
   data,
   bibliographyService,
   create = false,
-  history,
+  history
 }: Props): JSX.Element {
   function createEntry(entry: BibliographyEntry): Promise<void> {
     return bibliographyService
@@ -41,7 +41,7 @@ function BibliographyEditor({
     <AppContent
       crumbs={[
         new SectionCrumb('Bibliography'),
-        new TextCrumb(create ? 'New entry' : data.id),
+        new TextCrumb(create ? 'New entry' : data.id)
       ]}
       title={create ? 'Create' : `Edit ${data.id}`}
     >
@@ -59,10 +59,10 @@ export default withData<
   BibliographyEntry
 >(
   BibliographyEditor,
-  (props) => props.bibliographyService.find(props.match.params['id']),
+  props => props.bibliographyService.find(props.match.params['id']),
   {
-    watch: (props) => [props.create, props.match.params['id']],
-    filter: (props) => !props.create,
-    defaultData: template,
+    watch: props => [props.create, props.match.params['id']],
+    filter: props => !props.create,
+    defaultData: template
   }
 )

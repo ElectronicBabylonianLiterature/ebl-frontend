@@ -5,7 +5,7 @@ import {
   RenderResult,
   act,
   Matcher,
-  within,
+  within
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -79,7 +79,7 @@ export default class AppDriver {
       'write:texts',
       'read:fragments',
       'annotate:fragments',
-      'read:words',
+      'read:words'
     ])
     return this
   }
@@ -99,7 +99,7 @@ export default class AppDriver {
               },
               getUser(): { [eblNameProperty]: string } {
                 return { [eblNameProperty]: 'Test' }
-              },
+              }
             }}
           >
             {createApp(this.api)}

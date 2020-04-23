@@ -9,7 +9,7 @@ let auth
 beforeEach(() => {
   auth = {
     isAuthenticated: jest.fn(),
-    getUser: (): User => ({ name: 'Test User' }),
+    getUser: (): User => ({ name: 'Test User' })
   }
 })
 
@@ -44,7 +44,7 @@ function commonTests(): void {
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
     ['Bibliography', '/bibliography'],
-    ['Corpus', '/corpus'],
+    ['Corpus', '/corpus']
   ])('%s links to %s', (title, href) => {
     expect(screen.getByText(title)).toHaveAttribute('href', href)
   })

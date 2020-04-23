@@ -17,25 +17,25 @@ describe('Successful request', () => {
 
   test('Resolves', async () => {
     expect(
-      cancellableFetch(url).then((response) => response.json())
+      cancellableFetch(url).then(response => response.json())
     ).resolves.toEqual(result)
   })
 
   test('Makes a request with given options', async () => {
     const options = {
-      headers: new Headers({ Authorization: `Bearer token` }),
+      headers: new Headers({ Authorization: `Bearer token` })
     }
     await cancellableFetch(url, options)
     expect(fetch).toBeCalledWith(url, {
       ...options,
-      signal: expectSignal,
+      signal: expectSignal
     })
   })
 
   test('Makes a request without extra options', async () => {
     await cancellableFetch(url)
     expect(fetch).toBeCalledWith(url, {
-      signal: expectSignal,
+      signal: expectSignal
     })
   })
 })
@@ -45,7 +45,10 @@ test('Can be cancelled', async () => {
   const callback = jest.fn()
   const promise = cancellableFetch(url)
   const waitable = promise.then(() => null)
-  promise.then(callback).catch(callback).cancel()
+  promise
+    .then(callback)
+    .catch(callback)
+    .cancel()
   await waitable
   expect(callback).not.toHaveBeenCalled()
 })

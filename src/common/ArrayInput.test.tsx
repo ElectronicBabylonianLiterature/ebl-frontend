@@ -27,14 +27,14 @@ test('Calls onChange with updated value on change', () => {
   element = renderArrayInput(value)
   whenChangedByValue(element, value.join(separator), 'new value')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => newValue.split(separator))
+    .toHaveBeenCalledWith(newValue => newValue.split(separator))
 })
 
 test('Calls onChange with empty array on empty value', () => {
   element = renderArrayInput(value)
   whenChangedByValue(element, value.join(separator), '')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [])
+    .toHaveBeenCalledWith(newValue => [])
 })
 
 function renderArrayInput(value) {

@@ -15,7 +15,7 @@ beforeEach(() => {
 beforeEach(() => {
   value = [
     { lemma: 'foo', guideWord: 'bar' },
-    { lemma: 'baz', guideWord: '' },
+    { lemma: 'baz', guideWord: '' }
   ]
   element = render(<OraccWordsList value={value} onChange={onChange} />)
 })
@@ -36,8 +36,8 @@ it('Adds emtpy item when Add is clicked', async () => {
 it('Calls onChange with updated value on change', () => {
   whenChangedByValue(element, value[0].lemma, 'new')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [
+    .toHaveBeenCalledWith(newValue => [
       { ...value[0], lemma: 'new' },
-      ..._.tail(value),
+      ..._.tail(value)
     ])
 })

@@ -7,7 +7,7 @@ import './FolioDetails.css'
 export default function FolioDetails({
   fragmentService,
   fragmentNumber,
-  folio,
+  folio
 }) {
   return (
     folio.hasImage && (

@@ -14,7 +14,7 @@ export class SectionCrumb implements Crumb {
     ['Bibliography', '/bibliography'],
     ['Corpus', '/corpus'],
     ['Dictionary', '/dictionary'],
-    ['Fragmentarium', '/fragmentarium'],
+    ['Fragmentarium', '/fragmentarium']
   ])
 
   readonly text: string
@@ -50,7 +50,7 @@ function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
 }
 
 export default function Breadcrumbs({
-  crumbs,
+  crumbs
 }: {
   crumbs: ReadonlyArray<Crumb>
 }): JSX.Element {

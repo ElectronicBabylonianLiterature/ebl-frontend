@@ -15,10 +15,10 @@ test.each([
         {
           type: 'SyntaxError',
           description: 'Invalid line',
-          lineNumber: 2,
-        },
-      ],
-    },
+          lineNumber: 2
+        }
+      ]
+    }
   ],
   [
     'value',
@@ -26,11 +26,11 @@ test.each([
     {
       errors: [
         {
-          type: 'OtherError',
-        },
-      ],
-    },
-  ],
+          type: 'OtherError'
+        }
+      ]
+    }
+  ]
 ] as [string, boolean, object][])(
   'Renders without crashing with props %s %p %p',
   (value, disabled, error) => {

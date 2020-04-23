@@ -6,11 +6,7 @@ import {
   DollarAndAtLine,
   RulingDollarLine
 } from 'fragmentarium/domain/text'
-import DisplayToken, { TokenWrapper } from './DisplayToken'
-import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
-
 import './Display.sass'
-import { Shift, Token } from 'fragmentarium/domain/token'
 import _ from 'lodash'
 import LineTokens from './LineTokens'
 import { TextLinePrefix } from './TextLinePrefix'
@@ -18,7 +14,7 @@ import { TextLinePrefix } from './TextLinePrefix'
 function DisplayLine({
   line,
   line: { type, content },
-  container = 'div',
+  container = 'div'
 }: {
   line: Line
   container?: string

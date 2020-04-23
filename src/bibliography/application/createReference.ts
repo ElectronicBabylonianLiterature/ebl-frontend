@@ -13,7 +13,7 @@ export default function createReference(
   return bibliographyRepository
     .find(data.id)
     .then(
-      (entry) =>
+      entry =>
         new Reference(
           data.type || Reference.DEFAULT_TYPE,
           data.pages || '',

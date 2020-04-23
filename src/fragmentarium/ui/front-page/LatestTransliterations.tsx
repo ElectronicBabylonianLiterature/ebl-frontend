@@ -12,7 +12,7 @@ function LatestTransliterations({ data }) {
         columns={{
           Accession: 'accession',
           Script: 'script',
-          Description: 'description',
+          Description: 'description'
         }}
       />
     </section>
@@ -21,5 +21,5 @@ function LatestTransliterations({ data }) {
 
 export default withData<{}, { fragmentSearchService }, readonly FragmentInfo[]>(
   LatestTransliterations,
-  (props) => props.fragmentSearchService.fetchLatestTransliterations()
+  props => props.fragmentSearchService.fetchLatestTransliterations()
 )

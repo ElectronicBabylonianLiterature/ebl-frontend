@@ -8,17 +8,17 @@ type Props = { query: string | null | undefined } & RouteComponentProps
 
 class BibliographySearch extends Component<Props, { query: string }> {
   state = {
-    query: this.props.query || '',
+    query: this.props.query || ''
   }
   id = _.uniqueId('BibliographySearch-')
 
-  onChange = (event) => {
+  onChange = event => {
     this.setState({
-      query: event.target.value,
+      query: event.target.value
     })
   }
 
-  submit = (event) => {
+  submit = event => {
     event.preventDefault()
     this.props.history.push(`?${stringify({ query: this.state.query })}`)
   }

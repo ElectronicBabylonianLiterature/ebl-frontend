@@ -31,7 +31,7 @@ if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
 }
 
 Promise.config({
-  cancellation: true,
+  cancellation: true
 })
 
 const errorReporter = new SentryErrorReporter()
@@ -65,7 +65,7 @@ function InjectedApp(): JSX.Element {
 }
 
 function InjectedAuth0Provider({
-  children,
+  children
 }: PropsWithChildren<{}>): JSX.Element {
   const auth0Config = createAuth0Config()
   const history = useHistory()

@@ -11,7 +11,7 @@ const expectedColumns = {
   number: 'Number',
   accession: 'Accession',
   script: 'Script',
-  description: 'Description',
+  description: 'Description'
 }
 let fragmentSearchService
 let container
@@ -21,7 +21,7 @@ let fragments
 beforeEach(async () => {
   fragments = await factory.buildMany('fragment', numberOfFragments)
   fragmentSearchService = {
-    fetchLatestTransliterations: jest.fn(),
+    fetchLatestTransliterations: jest.fn()
   }
   fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
     Promise.resolve(fragments)
@@ -40,9 +40,9 @@ test('Columns', () => {
   expect(container).toHaveTextContent(expectedHeader)
 })
 
-test.each(_.range(numberOfFragments))('Fragment %i', (index) => {
+test.each(_.range(numberOfFragments))('Fragment %i', index => {
   const expectedRow = _.keys(expectedColumns)
-    .map((property) => fragments[index][property])
+    .map(property => fragments[index][property])
     .join('')
     .replace('\n', ' ')
   expect(container).toHaveTextContent(expectedRow)

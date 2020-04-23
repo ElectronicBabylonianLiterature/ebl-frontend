@@ -11,19 +11,19 @@ class TemplateForm extends Component<
 > {
   state = {
     template: new Template(''),
-    isValid: false,
+    isValid: false
   }
 
-  onChange = (event) => {
+  onChange = event => {
     const template = new Template(event.target.value)
 
     this.setState({
       template: template,
-      isValid: template.isValid,
+      isValid: template.isValid
     })
   }
 
-  submit = (event) => {
+  submit = event => {
     event.preventDefault()
     if (this.state.isValid) {
       const generatedTemplate = this.state.template.generate()

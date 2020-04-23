@@ -12,13 +12,13 @@ function convertNumbers(number) {
     '6': '₆',
     '7': '₇',
     '8': '₈',
-    '9': '₉',
+    '9': '₉'
   }
 
   const numberAsArray = number.split('')
 
   return numberAsArray
-    .map((number) => {
+    .map(number => {
       return numbers[number]
     })
     .join('')

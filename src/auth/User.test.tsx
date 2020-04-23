@@ -4,7 +4,7 @@ import User from './User'
 import {
   AuthenticationContext,
   AuthenticationService,
-  User as EblUser,
+  User as EblUser
 } from './Auth'
 import { Session } from 'auth/Session'
 
@@ -18,14 +18,14 @@ beforeEach(() => {
     logout: jest.fn(),
     isAuthenticated: isAuthenticatedMock,
     getUser: (): EblUser => ({
-      name: 'Test User',
+      name: 'Test User'
     }),
     getSession: (): Session => {
       throw new Error('Not implemented.')
     },
     getAccessToken: (): Promise<string> => {
       throw new Error('Not implemented.')
-    },
+    }
   }
 })
 

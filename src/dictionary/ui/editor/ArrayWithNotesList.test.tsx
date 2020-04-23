@@ -21,18 +21,18 @@ beforeEach(() => {
   value = [
     {
       [property]: ['LOG1', 'LOG2'],
-      notes: ['note1'],
+      notes: ['note1']
     },
     {
       [property]: [],
-      notes: ['note2'],
-    },
+      notes: ['note2']
+    }
   ]
   element = renderArrayWithNotesList()
 })
 
 it('Displays all items', () => {
-  _.map(value, (entry) => entry[property].join(separator)).forEach((item) =>
+  _.map(value, entry => entry[property].join(separator)).forEach(item =>
     expect(element.getByDisplayValue(item)).toBeVisible()
   )
 })
@@ -50,12 +50,12 @@ it('Adds new entry when Add is clicked', async () => {
 it('Calls onChange on change', () => {
   whenChangedByValue(element, value[0][property].join(separator), 'NEW LOG')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [
+    .toHaveBeenCalledWith(newValue => [
       {
         ...value[0],
-        [property]: newValue.split(separator),
+        [property]: newValue.split(separator)
       },
-      ..._.tail(value),
+      ..._.tail(value)
     ])
 })
 

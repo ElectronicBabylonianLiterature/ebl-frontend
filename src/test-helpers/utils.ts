@@ -3,7 +3,7 @@ import {
   wait,
   act,
   RenderResult,
-  Matcher,
+  Matcher
 } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
@@ -20,8 +20,8 @@ type MatcherFactory<T> = (func: Function) => (args: any) => T
 function when<T>(createMatcher: MatcherFactory<T>): WhenResult<T> {
   return {
     expect: (onChange: Function): ExpectResult<T> => ({
-      toHaveBeenCalledWith: createMatcher(onChange),
-    }),
+      toHaveBeenCalledWith: createMatcher(onChange)
+    })
   }
 }
 
@@ -68,7 +68,7 @@ export function whenClicked(
   text: Matcher,
   n = 0
 ): WhenResult<Promise<void>> {
-  return when((onChange) => async (...expectedChange): Promise<void> => {
+  return when(onChange => async (...expectedChange): Promise<void> => {
     clickNth(element, text, n)
     await wait(() => expect(onChange).toHaveBeenCalledWith(...expectedChange))
   })
@@ -80,7 +80,7 @@ function whenChangedBy<T>(
   newValue: T,
   changer: Changer<T>
 ): WhenResult<void> {
-  return when((onChange) => (expectedChangeFactory): void => {
+  return when(onChange => (expectedChangeFactory): void => {
     changer(element, selector, newValue)
     expect(onChange).toHaveBeenCalledWith(expectedChangeFactory(newValue))
   })

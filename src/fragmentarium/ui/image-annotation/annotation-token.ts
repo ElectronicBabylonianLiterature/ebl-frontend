@@ -41,6 +41,6 @@ export function createAnnotationTokens(
     new AnnotationToken(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
       mapToken(token, [lineNumber, index])
-    ),
+    )
   ])
 }

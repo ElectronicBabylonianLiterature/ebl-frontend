@@ -16,7 +16,7 @@ beforeEach(() => {
   onChange = jest.fn()
   value = {
     [property]: ['LOG1', 'LOG2'],
-    notes: ['note1'],
+    notes: ['note1']
   }
   element = renderArrayWithNotes()
 })
@@ -28,7 +28,7 @@ it('Displays all array items', () => {
 })
 
 it('Displays all notes', () => {
-  value.notes.forEach((note) =>
+  value.notes.forEach(note =>
     expect(element.getByDisplayValue(note)).toBeVisible()
   )
 })
@@ -40,9 +40,9 @@ it('Displays label', () => {
 it('Calls onChange with updated property on change', () => {
   whenChangedByValue(element, value[property].join(separator), 'NEW LOG')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => ({
+    .toHaveBeenCalledWith(newValue => ({
       ...value,
-      [property]: newValue.split(separator),
+      [property]: newValue.split(separator)
     }))
 })
 
@@ -51,7 +51,7 @@ it('Calls onChange with updated notes on change', async () => {
     .expect(onChange)
     .toHaveBeenCalledWith({
       ...value,
-      notes: [...value.notes, ''],
+      notes: [...value.notes, '']
     })
 })
 

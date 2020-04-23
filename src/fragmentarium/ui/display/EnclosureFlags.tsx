@@ -6,7 +6,7 @@ import { createModifierClasses } from './modifiers'
 export default function EnclosureFlags({
   token,
   enclosures,
-  children,
+  children
 }: PropsWithChildren<{
   token: Token
   enclosures?: readonly EnclosureType[]

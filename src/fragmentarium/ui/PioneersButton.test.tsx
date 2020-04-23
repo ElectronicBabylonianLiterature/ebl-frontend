@@ -15,10 +15,10 @@ let history
 
 beforeEach(async () => {
   fragmentSearchService = {
-    interesting: jest.fn(),
+    interesting: jest.fn()
   }
   session = {
-    isAllowedToTransliterateFragments: jest.fn(),
+    isAllowedToTransliterateFragments: jest.fn()
   }
   history = createMemoryHistory()
   jest.spyOn(history, 'push')

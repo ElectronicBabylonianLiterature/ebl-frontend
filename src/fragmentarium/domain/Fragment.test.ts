@@ -17,7 +17,7 @@ import {
   userAlice,
   userBob,
   year2017,
-  year2018,
+  year2018
 } from 'test-helpers/record-fixtures'
 import Museum from './museum'
 
@@ -32,7 +32,7 @@ const config = {
   measures: {
     length: 3,
     width: 5,
-    thickness: 3.6,
+    thickness: 3.6
   },
   collection: 'The collection',
   script: 'NA',
@@ -41,8 +41,8 @@ const config = {
     new RecordEntry({
       user: 'Smith',
       date: '2018-11-21T10:27:36.127247',
-      type: 'Transliteration',
-    }),
+      type: 'Transliteration'
+    })
   ],
   text: new Text({
     lines: [
@@ -56,11 +56,11 @@ const config = {
             type: 'ValueToken',
             value: '(atf)',
             cleanValue: '(atf)',
-            enclosureType: [],
-          },
-        ],
-      },
-    ],
+            enclosureType: []
+          }
+        ]
+      }
+    ]
   }),
   notes: 'Some notes',
   museum: Museum.of('The museum'),
@@ -70,17 +70,17 @@ const config = {
       linesCited: [],
       notes: '',
       pages: '34-54',
-      type: 'DISCUSSION',
-    },
+      type: 'DISCUSSION'
+    }
   ],
   uncuratedReferences: [
     {
       document: 'CAD 7',
-      pages: [3, 208],
-    },
+      pages: [3, 208]
+    }
   ],
   atf: '$ (atf)',
-  hasPhoto: true,
+  hasPhoto: true
 }
 
 describe('Fragment', () => {
@@ -94,7 +94,7 @@ describe('Fragment', () => {
 test.each([
   [[{ document: 'CAD 7', pages: [] }], true],
   [[], true],
-  [null, false],
+  [null, false]
 ] as [UncuratedReference[], boolean][])(
   'uncurated references: %s',
   (uncuratedReferences, expected) => {
@@ -108,38 +108,38 @@ test.each([
 
   [
     [on21thOctober, on22ndOctober],
-    [on21thOctober, on22ndOctober],
+    [on21thOctober, on22ndOctober]
   ],
 
   [
     [on21thOctober, on21stDecember],
-    [on21thOctober, on21stDecember],
+    [on21thOctober, on21stDecember]
   ],
 
   [
     [year2017, year2018],
-    [year2017, year2018],
+    [year2017, year2018]
   ],
 
   [
     [userAlice, userBob],
-    [userAlice, userBob],
+    [userAlice, userBob]
   ],
 
   [
     [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty],
-    [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty],
+    [transliterationAtTen, revisionAtEleven, transliterationAtElevenThirty]
   ],
 
   [
     [historicalTransliteration, transliteration],
-    [historicalTransliteration, transliteration],
+    [historicalTransliteration, transliteration]
   ],
 
   [
     [historicalTransliteration, revision],
-    [historicalTransliteration, revision],
-  ],
+    [historicalTransliteration, revision]
+  ]
 ])('%s is filtered to %s', async (record, expected) => {
   const fragment = new Fragment({ ...config, record: record })
   expect(fragment.uniqueRecord).toEqual(expected)

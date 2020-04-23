@@ -39,7 +39,7 @@ const defaultAuthenticationService: AuthenticationService = {
   },
   getUser() {
     throw new Error('Not authenticated')
-  },
+  }
 }
 
 export const AuthenticationContext = React.createContext<AuthenticationService>(

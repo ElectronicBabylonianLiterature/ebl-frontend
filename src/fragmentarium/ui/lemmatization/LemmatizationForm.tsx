@@ -13,7 +13,7 @@ import {
   components,
   OptionProps,
   SingleValueProps,
-  MultiValueProps,
+  MultiValueProps
 } from 'react-select'
 
 const Option = (props: OptionProps<Lemma>): JSX.Element => (
@@ -61,7 +61,7 @@ class LemmatizationForm extends Component<Props, State> {
       selectedOption: isComplex
         ? props.token.uniqueLemma
         : singleLemmaToOption(),
-      menuIsOpen: (props.token.suggestions?.length ?? 0) > 0 || undefined,
+      menuIsOpen: (props.token.suggestions?.length ?? 0) > 0 || undefined
     }
     this.checkboxId = _.uniqueId('LemmatizationForm-Complex-')
   }
@@ -72,14 +72,14 @@ class LemmatizationForm extends Component<Props, State> {
   ): void => {
     this.props.fragmentService
       .searchLemma(inputValue)
-      .then((words) => words.map((word) => new Lemma(word)))
+      .then(words => words.map(word => new Lemma(word)))
       .then(callback)
   }
 
   handleChange = (selectedOption: ValueType<Lemma>): void => {
     this.setState({
       ...this.state,
-      selectedOption,
+      selectedOption
     })
     this.props.onChange(
       _.isNil(selectedOption)
@@ -97,17 +97,20 @@ class LemmatizationForm extends Component<Props, State> {
     if (action === 'menu-close') {
       this.setState({
         ...this.state,
-        menuIsOpen: undefined,
+        menuIsOpen: undefined
       })
     }
   }
 
   Select = ({ label }: { label: string }): JSX.Element => {
     const defaultOptions: OptionsType<Lemma> = this.state.isComplex
-      ? _(this.props.token.suggestions).flatMap().uniqBy('value').value()
+      ? _(this.props.token.suggestions)
+          .flatMap()
+          .uniqBy('value')
+          .value()
       : _.isArray(this.props.token.suggestions)
       ? (this.props.token.suggestions
-          .filter((suggestion) => suggestion.length === 1)
+          .filter(suggestion => suggestion.length === 1)
           .map(_.head) as Lemma[])
       : []
 
@@ -143,7 +146,7 @@ class LemmatizationForm extends Component<Props, State> {
         onChange={(): void =>
           this.setState({
             ...this.state,
-            isComplex: !this.state.isComplex,
+            isComplex: !this.state.isComplex
           })
         }
       />

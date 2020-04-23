@@ -11,7 +11,7 @@ let promise
 
 beforeEach(() => {
   apiClient = {
-    fetchBlob: jest.fn(),
+    fetchBlob: jest.fn()
   }
   imageRepository = new ApiImageRepository(apiClient)
 })

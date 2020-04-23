@@ -25,12 +25,12 @@ beforeEach(async () => {
     await factory.build('fragment', {
       atf: '1. ku',
       hasPhoto: true,
-      collection: 'Sippar',
+      collection: 'Sippar'
     })
   ).setReferences(await factory.buildMany('reference', 2))
   updatedFragment = await factory.build('fragment', {
     number: fragment.number,
-    atf: fragment.atf,
+    atf: fragment.atf
   })
   expectedFragment = updatedFragment.setReferences(references)
 
@@ -40,15 +40,15 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
+    createLemmatization: text => Promise.resolve(new Lemmatization([], [])),
     hydrateReferences: () => Promise.resolve(references),
-    fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
+    fetchCdliInfo: () => Promise.resolve({ photoUrl: null })
   }
   fragmentSearchService = {}
   session = {
     isAllowedToTransliterateFragments: () => true,
     isAllowedToLemmatizeFragments: () => false,
-    hasBetaAccess: () => false,
+    hasBetaAccess: () => false
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
@@ -76,12 +76,9 @@ beforeEach(async () => {
   await element.findAllByText('Photo')
 })
 
-test.each(['collection', 'cdliNumber', 'accession'])(
-  'Renders %s',
-  (property) => {
-    expect(container).toHaveTextContent(fragment[property])
-  }
-)
+test.each(['collection', 'cdliNumber', 'accession'])('Renders %s', property => {
+  expect(container).toHaveTextContent(fragment[property])
+})
 
 it(`Renders museum`, () => {
   expect(container).toHaveTextContent(fragment.museum.name)

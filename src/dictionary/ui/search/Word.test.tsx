@@ -72,7 +72,7 @@ describe('broken word display', () => {
   beforeEach(async () => {
     word = await factory.build('word', {
       forms: ['broken-form'],
-      derived: [['broken-derived']],
+      derived: [['broken-derived']]
     })
     textContent = render(
       <MemoryRouter>

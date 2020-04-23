@@ -11,7 +11,7 @@ describe('createDefaultLineFactory', () => {
     ['', ''],
     ['13', '14'],
     ['2', '3'],
-    ['6b', ''],
+    ['6b', '']
   ])(
     'If line number is "%s" then the next number is "%s".',
     (number, expected) => {
@@ -19,12 +19,12 @@ describe('createDefaultLineFactory', () => {
         expect(
           createDefaultLineFactory(
             createLine({
-              number: number,
+              number: number
             })
           )()
         ).toEqual(
           createLine({
-            number: expected,
+            number: expected
           })
         )
       })
@@ -35,18 +35,18 @@ describe('createDefaultLineFactory', () => {
             createLine({
               manuscripts: [
                 createManuscriptLine({
-                  number: number,
-                }),
-              ],
+                  number: number
+                })
+              ]
             })
           )()
         ).toEqual(
           createLine({
             manuscripts: [
               createManuscriptLine({
-                number: expected,
-              }),
-            ],
+                number: expected
+              })
+            ]
           })
         )
       })
@@ -57,26 +57,26 @@ describe('createDefaultLineFactory', () => {
     const manuscripts = [
       createManuscriptLine({
         manuscriptId: 2,
-        labels: ['ii'],
+        labels: ['ii']
       }),
       createManuscriptLine({
         manuscriptId: 1,
-        atf: 'kur',
-      }),
+        atf: 'kur'
+      })
     ]
     expect(
       createDefaultLineFactory(
         createLine({
-          manuscripts: manuscripts,
+          manuscripts: manuscripts
         })
       )()
     ).toEqual(
       createLine({
-        manuscripts: produce(manuscripts, (draft) => {
-          draft.forEach((manuscript) => {
+        manuscripts: produce(manuscripts, draft => {
+          draft.forEach(manuscript => {
             manuscript.atf = ''
           })
-        }),
+        })
       })
     )
   })

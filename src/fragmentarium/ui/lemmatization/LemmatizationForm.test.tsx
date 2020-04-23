@@ -20,11 +20,11 @@ let token: LemmatizationToken
 beforeEach(async () => {
   searchWord = await factory.build('word', {
     _id: 'waklu I',
-    meaning: 'a very very long complicated meaning of a word',
+    meaning: 'a very very long complicated meaning of a word'
   })
   onChange = jest.fn()
   fragmentService = {
-    searchLemma: jest.fn(),
+    searchLemma: jest.fn()
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([searchWord]))
 })
@@ -86,7 +86,7 @@ describe('Complex lemma', () => {
     await wait(() =>
       expect(onChange).toHaveBeenCalledWith([
         ...token.uniqueLemma,
-        new Lemma(searchWord),
+        new Lemma(searchWord)
       ])
     )
   })
@@ -102,7 +102,7 @@ function commonTests(lemmaLabel: Matcher): void {
   it('Displays the word label', () => {
     expect(element.container).toHaveTextContent(
       token.uniqueLemma
-        ?.map((lemma) => lemma.label.replace(/\*/g, ''))
+        ?.map(lemma => lemma.label.replace(/\*/g, ''))
         .join('') ?? ''
     )
   })

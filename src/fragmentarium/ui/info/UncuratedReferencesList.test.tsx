@@ -7,7 +7,7 @@ import UncuratedReferencesList from './UncuratedReferencesList'
 it('List all references', async () => {
   const references: UncuratedReference[] = [
     { document: 'Title One', pages: [] },
-    { document: 'Title Two', pages: [2, 3] },
+    { document: 'Title Two', pages: [2, 3] }
   ]
   const { container } = render(
     <UncuratedReferencesList uncuratedReferences={references} />

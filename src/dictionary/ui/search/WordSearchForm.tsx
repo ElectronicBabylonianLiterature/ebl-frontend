@@ -16,16 +16,16 @@ class WordSearch extends Component<Props, State> {
   state = {
     query: _.isArray(this.props.query)
       ? this.props.query.join(' ')
-      : this.props.query || '',
+      : this.props.query || ''
   }
 
-  onChange = (event) => {
+  onChange = event => {
     this.setState({
-      query: event.target.value,
+      query: event.target.value
     })
   }
 
-  submit = (event) => {
+  submit = event => {
     event.preventDefault()
     this.props.history.push(`?${stringify({ query: this.state.query })}`)
   }

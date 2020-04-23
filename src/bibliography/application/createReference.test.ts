@@ -5,7 +5,7 @@ import createReference from './createReference'
 test('createReference', async () => {
   const entry = await factory.build('bibliographyEntry')
   const bibliographyRepository = {
-    find: jest.fn(),
+    find: jest.fn()
   }
   bibliographyRepository.find.mockReturnValueOnce(Promise.resolve(entry))
   const dto = await factory.build('referenceDto')

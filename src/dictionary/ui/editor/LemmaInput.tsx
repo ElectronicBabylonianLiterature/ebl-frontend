@@ -17,17 +17,17 @@ class LemmaInput extends Component<{ value; onChange }> {
     )
   }
 
-  lemmaChanged = (event) => {
+  lemmaChanged = event => {
     this.props.onChange({
       ...this.props.value,
-      lemma: event.target.value.split(' '),
+      lemma: event.target.value.split(' ')
     })
   }
 
-  attestedChanged = (event) => {
+  attestedChanged = event => {
     this.props.onChange({
       ...this.props.value,
-      attested: event.target.checked,
+      attested: event.target.checked
     })
   }
 

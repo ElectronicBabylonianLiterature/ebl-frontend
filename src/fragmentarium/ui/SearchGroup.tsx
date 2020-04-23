@@ -14,7 +14,7 @@ type Props = {
 const SearchGroup: FunctionComponent<Props> = ({
   number,
   transliteration,
-  fragmentSearchService,
+  fragmentSearchService
 }) => (
   <>
     <NumberSearchForm number={number} />

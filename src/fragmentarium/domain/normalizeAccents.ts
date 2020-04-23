@@ -16,10 +16,10 @@ const accentExpression = new RegExp(
 )
 
 export default function normalizeAccents(userInput: string): string {
-  return userInput.replace(accentExpression, (match) => {
+  return userInput.replace(accentExpression, match => {
     const subindex = match
       .split('')
-      .map((character) =>
+      .map(character =>
         charactersWithAccents.hasOwnProperty(character)
           ? charactersWithAccents[character].index
           : null
@@ -27,7 +27,7 @@ export default function normalizeAccents(userInput: string): string {
 
     const characterWithoutAccent = match
       .split('')
-      .map((character) =>
+      .map(character =>
         charactersWithAccents.hasOwnProperty(character)
           ? charactersWithAccents[character].letter
           : character

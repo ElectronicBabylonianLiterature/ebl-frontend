@@ -21,12 +21,12 @@ beforeEach(async () => {
   result = await factory.build('bibliographyEntry', { id: resultId })
   session = {
     isAllowedToReadBibliography: _.stubTrue(),
-    isAllowedToWriteBibliography: jest.fn(),
+    isAllowedToWriteBibliography: jest.fn()
   }
   bibliographyService = {
     find: jest.fn(),
     update: jest.fn(),
-    create: jest.fn(),
+    create: jest.fn()
   }
 })
 
@@ -123,10 +123,10 @@ async function renderWithRouter(
 ) {
   const matchedPath = create
     ? (matchPath('/bibliography', {
-        path: '/bibliography',
+        path: '/bibliography'
       }) as match)
     : (matchPath('/bibliography/id', {
-        path: '/bibliography/:id',
+        path: '/bibliography/:id'
       }) as match)
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 

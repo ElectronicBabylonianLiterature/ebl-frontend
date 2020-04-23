@@ -17,14 +17,14 @@ export default withData<
         columns={{
           Accession: 'Accession',
           'CDLI Number': 'cdliNumber',
-          Description: 'description',
+          Description: 'description'
         }}
       />
     ) : null,
-  (props) => props.fragmentSearchService.searchNumber(props.number),
+  props => props.fragmentSearchService.searchNumber(props.number),
   {
-    watch: (props) => [props.number],
-    filter: (props) => !_.isEmpty(props.number),
-    defaultData: [],
+    watch: props => [props.number],
+    filter: props => !_.isEmpty(props.number),
+    defaultData: []
   }
 )

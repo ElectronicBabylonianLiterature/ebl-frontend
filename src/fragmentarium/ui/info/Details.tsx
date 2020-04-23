@@ -32,7 +32,7 @@ function Joins({ fragment }: Props) {
         '-'
       ) : (
         <ul className="Details-joins">
-          {fragment.joins.map((join) => (
+          {fragment.joins.map(join => (
             <li className="Details-joins__join" key={join}>
               <FragmentLink number={join}>{join}</FragmentLink>
             </li>
@@ -47,7 +47,7 @@ function Measurements({ fragment }: Props) {
   const measurements = _([
     fragment.measures.length,
     fragment.measures.width,
-    fragment.measures.thickness,
+    fragment.measures.thickness
   ])
     .compact()
     .join(' × ')

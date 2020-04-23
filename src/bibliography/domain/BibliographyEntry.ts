@@ -11,7 +11,7 @@ const authorProperties = [
   'comma-suffix',
   'static-ordering',
   'literal',
-  'parse-names',
+  'parse-names'
 ]
 
 function getName(author) {
@@ -26,9 +26,9 @@ class BibliographyEntry {
 
   constructor(cslData?: CslData | null | undefined) {
     this.cslData = cslData
-      ? produce(cslData, (draft) => {
+      ? produce(cslData, draft => {
           _.keys(draft)
-            .filter((key) => key.startsWith('_'))
+            .filter(key => key.startsWith('_'))
             .forEach(_.partial(_.unset, draft))
           if (draft.author) {
             draft.author = draft.author.map(
@@ -79,7 +79,7 @@ class BibliographyEntry {
     return new Cite(_.cloneDeep(this.cslData)).format('bibliography', {
       format: 'html',
       template: 'citation-apa',
-      lang: 'de-DE',
+      lang: 'de-DE'
     })
   }
 
@@ -87,7 +87,7 @@ class BibliographyEntry {
     return new Cite(_.cloneDeep(this.cslData)).get({
       format: 'string',
       type: 'string',
-      style: 'bibtex',
+      style: 'bibtex'
     })
   }
 
@@ -104,7 +104,7 @@ export const template = new BibliographyEntry({
   type: '<type>',
   DOI: '<doi>',
   issued: {
-    'date-parts': [['<year>']],
+    'date-parts': [['<year>']]
   },
   volume: '<volume>',
   page: '<page(s)>',
@@ -113,7 +113,7 @@ export const template = new BibliographyEntry({
   author: [
     {
       given: '<given name>',
-      family: '<family name>',
-    },
-  ],
+      family: '<family name>'
+    }
+  ]
 })

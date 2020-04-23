@@ -12,7 +12,7 @@ interface Props {
 
 export default function OraccWordsList({
   value,
-  onChange,
+  onChange
 }: Props): JSX.Element {
   return (
     <FormGroup>

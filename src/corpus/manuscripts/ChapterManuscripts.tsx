@@ -11,11 +11,11 @@ export default function ChapterManuscripts({
   onChange,
   onSave,
   searchBibliography,
-  disabled,
+  disabled
 }) {
-  const handeManuscriptsChange = (manuscripts) =>
+  const handeManuscriptsChange = manuscripts =>
     onChange(
-      produce(chapter, (draft) => {
+      produce(chapter, draft => {
         draft.manuscripts = populateIds(manuscripts)
       })
     )

@@ -39,7 +39,7 @@ class Accumulator {
       isValueToken(token)
         ? {
             ...token,
-            value: this.addAccentsToValue(token.value),
+            value: this.addAccentsToValue(token.value)
           }
         : token
     )
@@ -49,7 +49,7 @@ class Accumulator {
   private addAccentsToValue(value: string): string {
     return value
       .split('')
-      .map((letter) => this.visitLetter(letter))
+      .map(letter => this.visitLetter(letter))
       .join('')
   }
 

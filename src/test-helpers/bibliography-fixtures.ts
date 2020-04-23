@@ -33,7 +33,7 @@ function integer(min, max) {
 
 factory.define('author', Object, {
   given: factory.chance('first'),
-  family: factory.chance('last'),
+  family: factory.chance('last')
 })
 
 factory.define('cslData', Object, {
@@ -43,7 +43,7 @@ factory.define('cslData', Object, {
   issued: () => {
     const date = factory.chance('date')()
     return {
-      'date-parts': [[date.getFullYear(), date.getMonth(), date.getDate()]],
+      'date-parts': [[date.getFullYear(), date.getMonth(), date.getDate()]]
     }
   },
   volume: () => String(integer(1, 99)()),
@@ -51,17 +51,17 @@ factory.define('cslData', Object, {
   issue: integer(1, 99),
   'container-title': factory.chance('sentence'),
   author: factory.assocAttrsMany('author', 2),
-  URL: factory.chance('url'),
+  URL: factory.chance('url')
 })
 
 factory.extend('cslData', 'cslDataWithContainerTitleShort', {
-  'container-title-short': factory.chance('sentence'),
+  'container-title-short': factory.chance('sentence')
 })
 
 factory.define(
   'bibliographyEntry',
   BibliographyEntry,
-  async (buildOptions) => buildOptions.cslData || factory.build('cslData')
+  async buildOptions => buildOptions.cslData || factory.build('cslData')
 )
 
 factory.define('referenceDto', Object, {
@@ -70,30 +70,28 @@ factory.define('referenceDto', Object, {
   pages: async () =>
     `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
   notes: factory.chance('sentence'),
-  linesCited: factory.chance('pickset', ['1.', '2.', "3'.", "4'.2."], 2),
+  linesCited: factory.chance('pickset', ['1.', '2.', "3'.", "4'.2."], 2)
 })
 
-factory.define('reference', Reference, async (buildOptions) => ({
+factory.define('reference', Reference, async buildOptions => ({
   ...(await factory.build('referenceDto')),
-  document: await factory.build('bibliographyEntry'),
+  document: await factory.build('bibliographyEntry')
 }))
 factory.setAdapter(new ReferenceAdapter(), 'reference')
 
 export function buildReferenceWithContainerTitle(type, cslData = {}) {
   return factory
     .build('cslDataWithContainerTitleShort', cslData)
-    .then((cslData) => factory.build('bibliographyEntry', cslData))
-    .then((entry) =>
-      factory.build('reference', { type: type, document: entry })
-    )
+    .then(cslData => factory.build('bibliographyEntry', cslData))
+    .then(entry => factory.build('reference', { type: type, document: entry }))
 }
 
 export async function buildReferenceWithManyAuthors() {
   const authors = await factory.buildMany('author', 4)
   return factory
     .build('cslData', { author: authors })
-    .then((cslData) => factory.build('bibliographyEntry', cslData))
-    .then((entry) =>
+    .then(cslData => factory.build('bibliographyEntry', cslData))
+    .then(entry =>
       factory.build('reference', { type: 'COPY', document: entry })
     )
 }

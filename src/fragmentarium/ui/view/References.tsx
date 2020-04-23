@@ -3,7 +3,7 @@ import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import Reference from 'bibliography/domain/Reference'
 import ReferencesForm, {
-  defaultReference,
+  defaultReference
 } from 'bibliography/ui/ReferencesForm'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
@@ -18,7 +18,7 @@ function References({
   references,
   onChange,
   onSubmit,
-  disabled,
+  disabled
 }: Props & {
   onChange(references: readonly Reference[]): void
   onSubmit(event: React.FormEvent<HTMLFormElement>): void
@@ -49,7 +49,7 @@ export default class ReferencesController extends Component<
   State
 > {
   static defaultProps = {
-    disabled: false,
+    disabled: false
   }
 
   constructor(props: ControllerProps) {
@@ -57,7 +57,7 @@ export default class ReferencesController extends Component<
     this.state = {
       references: _.isEmpty(props.references)
         ? [defaultReference()]
-        : props.references,
+        : props.references
     }
   }
 

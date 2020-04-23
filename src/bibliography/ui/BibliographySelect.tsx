@@ -10,7 +10,7 @@ function createOption(entry) {
     ? {
         value: entry.id,
         label: createLabel(entry),
-        entry: entry,
+        entry: entry
       }
     : null
 }
@@ -22,14 +22,14 @@ export default class BibliographySelect extends Component<
   constructor(props) {
     super(props)
     this.state = {
-      selectedOption: createOption(props.value),
+      selectedOption: createOption(props.value)
     }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.value !== prevProps.value) {
       this.setState({
-        selectedOption: createOption(this.props.value),
+        selectedOption: createOption(this.props.value)
       })
     }
   }
@@ -37,13 +37,13 @@ export default class BibliographySelect extends Component<
   loadOptions = (inputValue, callback) => {
     this.props
       .searchBibliography(inputValue)
-      .then((entries) => entries.map(createOption))
+      .then(entries => entries.map(createOption))
       .then(callback)
   }
 
-  handleChange = (selectedOption) => {
+  handleChange = selectedOption => {
     this.setState({
-      selectedOption,
+      selectedOption
     })
     this.props.onChange(selectedOption.entry)
   }

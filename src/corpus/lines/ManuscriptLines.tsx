@@ -8,15 +8,15 @@ import ArrayInput from 'common/ArrayInput'
 import Editor from 'editor/Editor'
 
 function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
-  const handleChange = (property) => (event) =>
+  const handleChange = property => event =>
     onChange(
-      produce(value, (draft) => {
+      produce(value, draft => {
         draft[property] = event.target.value
       })
     )
-  const handleIdChange = (event) =>
+  const handleIdChange = event =>
     onChange(
-      produce(value, (draft) => {
+      produce(value, draft => {
         draft.manuscriptId = Number(event.target.value)
       })
     )
@@ -32,7 +32,7 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
           <option value="0" disabled>
             --
           </option>
-          {manuscripts.map((manuscript) => (
+          {manuscripts.map(manuscript => (
             <option key={manuscript.id} value={manuscript.id}>
               {manuscript.siglum}
             </option>
@@ -43,9 +43,9 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
         <ArrayInput
           value={value.labels}
           separator={' '}
-          onChange={(labels) =>
+          onChange={labels =>
             onChange(
-              produce(value, (draft) => {
+              produce(value, draft => {
                 draft.labels = labels
               })
             )
@@ -63,9 +63,9 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
         <Editor
           name={_.uniqueId('Text-')}
           value={value.atf}
-          onChange={(atf) =>
+          onChange={atf =>
             onChange(
-              produce(value, (draft) => {
+              produce(value, draft => {
                 draft.atf = atf
               })
             )

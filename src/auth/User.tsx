@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import {
   AuthenticationService,
   eblNameProperty,
-  useAuthentication,
+  useAuthentication
 } from './Auth'
 
 interface Props {

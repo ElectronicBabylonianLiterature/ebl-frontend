@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 import {
   whenChangedByLabel,
   changeValueByLabel,
-  clickNth,
+  clickNth
 } from 'test-helpers/utils'
 import ReferenceForm from './ReferenceForm'
 
@@ -19,7 +19,7 @@ beforeEach(async () => {
   reference = await factory.build('reference')
   entry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] },
+    issued: { 'date-parts': [[1957]] }
   })
   onChange = jest.fn()
   searchBibliography = jest.fn()
@@ -46,7 +46,7 @@ describe.each([
   ['Pages', 'pages', 'setPages', ''],
   ['Type', 'type', 'setType', 'EDITION'],
   ['Notes', 'notes', 'setNotes', 'new notes'],
-  ['Notes', 'notes', 'setNotes', ''],
+  ['Notes', 'notes', 'setNotes', '']
 ])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
     expect(element.getByLabelText(label).value).toEqual(reference[property])
@@ -55,7 +55,7 @@ describe.each([
   it(`Calls onChange with updated value`, () => {
     whenChangedByLabel(element, label, newValue)
       .expect(onChange)
-      .toHaveBeenCalledWith((updatedItem) => reference[setter](updatedItem))
+      .toHaveBeenCalledWith(updatedItem => reference[setter](updatedItem))
   })
 })
 
@@ -67,11 +67,9 @@ it('Displays Lines Cited', () => {
 
 test.each([
   ['3.1,2', ['3.1', '2']],
-  ['', []],
+  ['', []]
 ])('Calls onChange with updated Lines Cited %s', (newValue, expectedValue) => {
   whenChangedByLabel(element, 'Lines Cited', newValue)
     .expect(onChange)
-    .toHaveBeenCalledWith((updatedItem) =>
-      reference.setLinesCited(expectedValue)
-    )
+    .toHaveBeenCalledWith(updatedItem => reference.setLinesCited(expectedValue))
 })

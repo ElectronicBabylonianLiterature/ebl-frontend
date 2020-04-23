@@ -7,7 +7,7 @@ import { whenClicked, clickNth, changeValueByLabel } from 'test-helpers/utils'
 import Lemma from 'fragmentarium/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, {
-  LemmatizationToken,
+  LemmatizationToken
 } from 'fragmentarium/domain/Lemmatization'
 
 let element
@@ -25,7 +25,7 @@ beforeEach(async () => {
   updateLemmatization = jest.fn()
   fragmentService = {
     searchLemma: jest.fn(),
-    createLemmatization: jest.fn(),
+    createLemmatization: jest.fn()
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
   text = {
@@ -40,13 +40,13 @@ beforeEach(async () => {
             uniqueLemma: [oldWord._id],
             language: 'AKKADIAN',
             normalized: false,
-            lemmatizable: true,
-          },
-        ],
-      },
-    ],
+            lemmatizable: true
+          }
+        ]
+      }
+    ]
   }
-  fragmentService.createLemmatization.mockImplementation((text) =>
+  fragmentService.createLemmatization.mockImplementation(text =>
     Promise.resolve(
       new Lemmatization(
         ['1.'],
@@ -65,15 +65,15 @@ beforeEach(async () => {
 })
 
 it('Displays the line prefixes', () => {
-  text.lines.forEach((row) =>
+  text.lines.forEach(row =>
     expect(element.container).toHaveTextContent(row.prefix)
   )
 })
 
 it('Displays the transliteration', () => {
-  text.lines.forEach((row) =>
+  text.lines.forEach(row =>
     expect(element.container).toHaveTextContent(
-      row.content.map((token) => token.value).join(' ')
+      row.content.map(token => token.value).join(' ')
     )
   )
 })

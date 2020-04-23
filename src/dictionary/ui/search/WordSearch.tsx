@@ -14,7 +14,7 @@ interface Props {
 function WordSearch({ data }: Props): JSX.Element {
   return (
     <ul className="WordSearch-results">
-      {data.map((word) => (
+      {data.map(word => (
         <li key={word._id} className="WordSearch-results__result">
           <WordComponent value={word} />
         </li>
@@ -25,10 +25,10 @@ function WordSearch({ data }: Props): JSX.Element {
 
 export default withData<{}, { query: string; wordService }, readonly Word[]>(
   WordSearch,
-  (props) => props.wordService.search(props.query),
+  props => props.wordService.search(props.query),
   {
-    watch: (props) => [props.query],
-    filter: (props) => !_.isEmpty(props.query),
-    defaultData: [],
+    watch: props => [props.query],
+    filter: props => !_.isEmpty(props.query),
+    defaultData: []
   }
 )

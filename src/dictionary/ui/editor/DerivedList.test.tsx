@@ -23,7 +23,7 @@ beforeEach(async () => {
 it('Displays all forms', () => {
   _(value)
     .flatten()
-    .forEach((item) =>
+    .forEach(item =>
       expect(element.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
     )
 })
@@ -42,14 +42,14 @@ it('Calls onChange with updated value on change', () => {
   const newValue = value[0][0].homonym === 'IV' ? 'V' : 'IV'
   whenChangedByValue(element, value[0][0].homonym, newValue)
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [
+    .toHaveBeenCalledWith(newValue => [
       [
         {
           ...value[0][0],
-          homonym: newValue,
-        },
+          homonym: newValue
+        }
       ],
-      ..._.tail(value),
+      ..._.tail(value)
     ])
 })
 

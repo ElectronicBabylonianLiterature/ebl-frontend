@@ -1,7 +1,7 @@
 import React, { useState, useEffect, PropsWithChildren } from 'react'
 import createAuth0Client, {
   Auth0Client,
-  Auth0ClientOptions,
+  Auth0ClientOptions
 } from '@auth0/auth0-spa-js'
 import decode from 'jwt-decode'
 import MemorySession, { Session } from 'auth/Session'

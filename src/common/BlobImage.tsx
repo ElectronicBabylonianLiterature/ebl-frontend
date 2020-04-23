@@ -6,7 +6,7 @@ import useObjectUrl from './useObjectUrl'
 export default function BlobImage({
   data,
   hasLink,
-  alt,
+  alt
 }: {
   data: Blob
   hasLink?: boolean

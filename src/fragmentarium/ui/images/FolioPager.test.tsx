@@ -13,7 +13,7 @@ let pagerData
 
 beforeEach(async () => {
   fragmentService = {
-    folioPager: jest.fn(),
+    folioPager: jest.fn()
   }
   pagerData = await factory.build('folioPager')
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))

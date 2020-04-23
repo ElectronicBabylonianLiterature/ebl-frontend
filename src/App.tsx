@@ -32,7 +32,7 @@ function parseStringParam(
 function parseTextParams(params) {
   return {
     category: decodeURIComponent(params.category),
-    index: decodeURIComponent(params.index),
+    index: decodeURIComponent(params.index)
   }
 }
 
@@ -40,14 +40,14 @@ function parseChapterParams(params) {
   return {
     ...parseTextParams(params),
     stage: decodeURIComponent(params.stage),
-    name: decodeURIComponent(params.chapter),
+    name: decodeURIComponent(params.chapter)
   }
 }
 
 function parseFragmentSearchParams(location) {
   return {
     number: parseStringParam(location, 'number'),
-    transliteration: parseStringParam(location, 'transliteration'),
+    transliteration: parseStringParam(location, 'transliteration')
   }
 }
 
@@ -64,7 +64,7 @@ function parseFargmentParams(
     number: decodeURIComponent(match.params['id']),
     folioName: parse(location.search).folioName,
     folioNumber: parse(location.search).folioNumber,
-    tab: parse(location.search).tab,
+    tab: parse(location.search).tab
   }
 }
 
@@ -73,7 +73,7 @@ function App({
   fragmentService,
   fragmentSearchService,
   bibliographyService,
-  textService,
+  textService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -158,7 +158,7 @@ function App({
           <Route
             path="/fragmentarium/:id/annotate"
             render={({
-              match,
+              match
             }: {
               match: Match<{ id: string }>
             }): ReactNode => (

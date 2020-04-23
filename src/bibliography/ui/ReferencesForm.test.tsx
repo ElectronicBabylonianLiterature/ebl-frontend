@@ -21,7 +21,7 @@ beforeEach(async () => {
   references = await factory.buildMany('reference', 2)
   searchEntry = await factory.build('bibliographyEntry', {
     author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] },
+    issued: { 'date-parts': [[1957]] }
   })
   expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
   searchBibliography = () => Promise.resolve([searchEntry])
@@ -54,6 +54,6 @@ test('Edit reference', async () => {
 
   expect(onChange).toHaveBeenCalledWith([
     expectedReference,
-    ..._.tail(references),
+    ..._.tail(references)
   ])
 })

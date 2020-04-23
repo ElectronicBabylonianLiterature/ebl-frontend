@@ -44,7 +44,7 @@ beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const fragmentPagerData = {
     next: { fragmentNumber: 'K.00001' },
-    previous: { fragmentNumber: 'J.99999' },
+    previous: { fragmentNumber: 'J.99999' }
   }
   fragmentService = {
     find: jest.fn(),
@@ -58,15 +58,15 @@ beforeEach(async () => {
       Promise.resolve({
         photoUrl: null,
         lineArtUrl: null,
-        detailLineArtUrl: null,
-      }),
+        detailLineArtUrl: null
+      })
   }
   fragmentSearchService = {}
   session = {
     isAllowedToReadFragments: jest.fn(),
     isAllowedToTransliterateFragments: (): boolean => false,
     isAllowedToLemmatizeFragments: (): boolean => false,
-    hasBetaAccess: (): boolean => false,
+    hasBetaAccess: (): boolean => false
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
@@ -89,14 +89,14 @@ describe('Fragment is loaded', () => {
   beforeEach(async () => {
     const folios = await factory.buildMany('folio', 2, {}, [
       { name: 'WGL' },
-      { name: 'AKG' },
+      { name: 'AKG' }
     ])
     fragment = (
       await factory.build('fragment', {
         number: fragmentNumber,
         folios: folios,
         atf: '1. ku',
-        hasPhoto: true,
+        hasPhoto: true
       })
     ).setReferences(await factory.buildMany('reference', 2))
     selectedFolio = fragment.folios[0]
@@ -145,7 +145,7 @@ describe('Fragment without an image is loaded', () => {
       folios: [],
       atf: '1. ku',
       hasPhoto: false,
-      references: [],
+      references: []
     })
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)

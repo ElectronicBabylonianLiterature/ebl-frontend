@@ -17,11 +17,11 @@ beforeEach(async () => {
   result = await factory.build('verb')
   session = {
     isAllowedToReadWords: _.stubTrue(),
-    isAllowedToWriteWords: jest.fn(),
+    isAllowedToWriteWords: jest.fn()
   }
   wordService = {
     find: jest.fn(),
-    update: jest.fn(),
+    update: jest.fn()
   }
   wordService.find.mockReturnValueOnce(Bluebird.resolve(result))
 })

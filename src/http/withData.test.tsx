@@ -5,7 +5,7 @@ import _ from 'lodash'
 import withData from './withData'
 import ErrorReporterContext, {
   ErrorReporter,
-  ConsoleErrorReporter,
+  ConsoleErrorReporter
 } from 'ErrorReporterContext'
 
 const data = 'Test data'
@@ -72,7 +72,7 @@ function expectWrappedComponentToBeRendered(
     expect(InnerComponent).toHaveBeenCalledWith(
       {
         data: expectedData,
-        prop: expectedPropValue,
+        prop: expectedPropValue
       },
       {}
     )
@@ -85,7 +85,7 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   getter = jest.fn()
   InnerComponent = jest.fn()
-  InnerComponent.mockImplementation((props) => (
+  InnerComponent.mockImplementation(props => (
     <h1>
       {props.prop} {props.data}
     </h1>
@@ -93,7 +93,7 @@ beforeEach(async () => {
   config = {
     watch,
     filter,
-    defaultData,
+    defaultData
   }
   ComponentWithData = withData(InnerComponent, getter, config)
 })
@@ -184,7 +184,7 @@ describe('Filtering', () => {
 
   it('Calls the filter with props', () => {
     expect(filter).toHaveBeenCalledWith({
-      prop: propValue,
+      prop: propValue
     })
   })
 

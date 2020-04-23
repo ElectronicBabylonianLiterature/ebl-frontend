@@ -8,7 +8,7 @@ import {
   UnknownSign,
   Gloss,
   Sign,
-  EnclosureType,
+  EnclosureType
 } from 'fragmentarium/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from './type-guards'
@@ -27,7 +27,7 @@ interface TokenProps {
 function DamagedFlag({
   sign: { flags },
   Wrapper,
-  children,
+  children
 }: PropsWithChildren<{
   sign: { flags: readonly string[] }
   Wrapper: TokenWrapper
@@ -88,7 +88,7 @@ function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
       <span
         className={classNames([
           'Transliteration__glossJoiner',
-          ...createModifierClasses('glossJoiner', token.enclosureType),
+          ...createModifierClasses('glossJoiner', token.enclosureType)
         ])}
       >
         <GlossWrapper>.</GlossWrapper>
@@ -108,7 +108,7 @@ function UnknownSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const sign = token as UnknownSign
   const signs = {
     UnclearSign: sign.enclosureType.includes('BROKEN_AWAY') ? 'o' : 'x',
-    UnidentifiedSign: 'X',
+    UnidentifiedSign: 'X'
   }
   return (
     <DamagedFlag sign={sign} Wrapper={Wrapper}>
@@ -210,7 +210,7 @@ const tokens: ReadonlyMap<
   ['Determinative', GlossComponent],
   ['PhoneticGloss', GlossComponent],
   ['LinguisticGloss', GlossComponent],
-  ['Tabulation', TabulationComponent],
+  ['Tabulation', TabulationComponent]
 ])
 
 export default function DisplayToken({
@@ -218,7 +218,7 @@ export default function DisplayToken({
   bemModifiers: modifiers = [],
   Wrapper = ({ children }: PropsWithChildren<{}>): JSX.Element => (
     <>{children}</>
-  ),
+  )
 }: {
   token: Token
   bemModifiers?: readonly string[]
@@ -229,7 +229,7 @@ export default function DisplayToken({
     <span
       className={classNames([
         `Transliteration__${token.type}`,
-        ...createModifierClasses(token.type, modifiers),
+        ...createModifierClasses(token.type, modifiers)
       ])}
     >
       <TokenComponent token={token} Wrapper={Wrapper} />

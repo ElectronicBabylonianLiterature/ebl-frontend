@@ -16,7 +16,7 @@ const FragmentPager: FunctionComponent<Props> = ({ data, fragmentNumber }) => {
         className={classNames({
           fas: true,
           'fa-angle-right': direction === 'Next',
-          'fa-angle-left': direction === 'Previous',
+          'fa-angle-left': direction === 'Previous'
         })}
         aria-hidden
       />
@@ -33,8 +33,8 @@ const FragmentPager: FunctionComponent<Props> = ({ data, fragmentNumber }) => {
 
 export default withData<WithoutData<Props>, { fragmentService }, any>(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
-  (props) => props.fragmentService.fragmentPager(props.fragmentNumber),
+  props => props.fragmentService.fragmentPager(props.fragmentNumber),
   {
-    watch: (props) => [props.fragmentNumber],
+    watch: props => [props.fragmentNumber]
   }
 )

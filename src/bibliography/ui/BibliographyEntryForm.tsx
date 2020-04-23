@@ -50,19 +50,19 @@ export default class BibliographyEntryForm extends Component<
           cslData: [props.value.toJson()],
           value: JSON.stringify(props.value.toJson(), null, 2),
           loading: false,
-          isInvalid: false,
+          isInvalid: false
         }
       : {
           citation: '',
           cslData: null,
           value: '',
           loading: false,
-          isInvalid: false,
+          isInvalid: false
         }
     this.promise = Promise.resolve()
     this.doLoad = _.debounce(this.load, 500, {
       leading: false,
-      trailing: true,
+      trailing: true
     })
   }
 
@@ -87,15 +87,17 @@ export default class BibliographyEntryForm extends Component<
       ...this.state,
       value: event.target.value,
       loading: true,
-      isInvalid: false,
+      isInvalid: false
     })
     this.promise = this.doLoad(event.target.value) || this.promise
   }
 
-  load = (value) => {
+  load = value => {
     this.promise.cancel()
     return new Promise((resolve, reject) => {
-      Cite.async(value).then(resolve).catch(reject)
+      Cite.async(value)
+        .then(resolve)
+        .catch(reject)
     })
       .then((cite: any) => {
         this.setState({
@@ -103,14 +105,14 @@ export default class BibliographyEntryForm extends Component<
           citation: cite.format('bibliography', {
             format: 'html',
             template: 'citation-apa',
-            lang: 'de-DE',
+            lang: 'de-DE'
           }),
           cslData: cite.get({
             format: 'real',
             type: 'json',
-            style: 'csl',
+            style: 'csl'
           }),
-          loading: false,
+          loading: false
         })
       })
       .catch(() => {
@@ -119,12 +121,12 @@ export default class BibliographyEntryForm extends Component<
           citation: '',
           cslData: null,
           loading: false,
-          isInvalid: true,
+          isInvalid: true
         })
       })
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault()
     const entry = new BibliographyEntry(
       this.state.cslData && this.state.cslData[0]

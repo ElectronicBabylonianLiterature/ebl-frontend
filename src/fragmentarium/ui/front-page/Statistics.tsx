@@ -5,9 +5,7 @@ import withData from 'http/withData'
 import './Statistics.css'
 
 function Statistics({ data }) {
-  const localizedStatistics = _.mapValues(data, (value) =>
-    value.toLocaleString()
-  )
+  const localizedStatistics = _.mapValues(data, value => value.toLocaleString())
 
   return (
     <section className="Statistics">
@@ -33,4 +31,4 @@ export default withData<
   {},
   { fragmentService },
   { readonly [key: string]: number }
->(Statistics, (props) => props.fragmentService.statistics())
+>(Statistics, props => props.fragmentService.statistics())

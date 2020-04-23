@@ -18,13 +18,13 @@ const AppContent: FunctionComponent<Props> = ({
   title,
   children,
   actions,
-  wide = false,
+  wide = false
 }: PropsWithChildren<Props>) => {
   return (
     <section
       className={classNames({
         'App-content': true,
-        'App-content--wide': wide,
+        'App-content--wide': wide
       })}
     >
       <header className="App-content__header">

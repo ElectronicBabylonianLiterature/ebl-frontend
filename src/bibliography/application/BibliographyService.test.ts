@@ -7,7 +7,7 @@ const bibliographyRepository = {
   find: jest.fn(),
   search: jest.fn(),
   update: jest.fn(),
-  create: jest.fn(),
+  create: jest.fn()
 }
 
 const bibliographyService = new BibliographyService(bibliographyRepository)
@@ -21,15 +21,15 @@ const testData: TestData[] = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
     [resultStub],
-    ['Alba Cecilia', '1998', 'The Qualifications'],
+    ['Alba Cecilia', '1998', 'The Qualifications']
   ],
   [
     'search',
     ['Alba Cecilia'],
     bibliographyRepository.search,
     [resultStub],
-    ['Alba Cecilia', '', ''],
-  ],
+    ['Alba Cecilia', '', '']
+  ]
 ]
 
 testDelegation(bibliographyService, testData)

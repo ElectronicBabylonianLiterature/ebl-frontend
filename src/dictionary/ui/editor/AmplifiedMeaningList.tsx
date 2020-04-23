@@ -11,7 +11,7 @@ class AmplifiedMeaningList extends Component<{
   onChange
 }> {
   static defaultProps = {
-    entry: false,
+    entry: false
   }
   get noun() {
     return this.props.entry ? 'entry' : 'amplified meaning'

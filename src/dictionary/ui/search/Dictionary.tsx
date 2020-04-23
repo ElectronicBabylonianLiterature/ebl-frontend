@@ -14,7 +14,7 @@ import { RouteComponentProps } from 'react-router-dom'
 
 export default function Dictionary({
   wordService,
-  location,
+  location
 }: {
   wordService
 } & RouteComponentProps): JSX.Element {

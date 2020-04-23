@@ -4,7 +4,7 @@ import './TransliterationHeader.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 export default function TransliterationHeader({
-  fragment,
+  fragment
 }: {
   fragment: Fragment
 }): JSX.Element {

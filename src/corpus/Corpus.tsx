@@ -46,14 +46,14 @@ function Texts({ texts }: { texts: readonly Text[] }): JSX.Element {
         '',
         'I. Narrative Poetry',
         'II. Monologue and dialogue literature',
-        'III. Literary Hymns and Prayers',
+        'III. Literary Hymns and Prayers'
       ].map((title, category) => (
         <section key={category}>
           <h3>{title}</h3>
           <Container fluid as="ol">
             {_(texts)
-              .filter((text) => text.category === category)
-              .sortBy((text) => text.index)
+              .filter(text => text.category === category)
+              .sortBy(text => text.index)
               .map((text, index) => <TextLine key={index} text={text} />)
               .value()}
           </Container>

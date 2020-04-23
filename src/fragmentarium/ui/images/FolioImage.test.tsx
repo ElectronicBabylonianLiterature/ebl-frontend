@@ -11,7 +11,7 @@ let element
 
 beforeEach(async () => {
   fragmentService = {
-    findFolio: jest.fn(),
+    findFolio: jest.fn()
   }
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   fragmentService.findFolio.mockReturnValueOnce(

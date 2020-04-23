@@ -27,7 +27,7 @@ const positionsOfScpeech = {
   J: 'interjection',
   MOD: 'modal, negative, or conditional particle',
   PRP: 'preposition',
-  SBJ: 'subjunction',
+  SBJ: 'subjunction'
 }
 
 beforeEach(() => {
@@ -41,7 +41,7 @@ describe('Verb', () => {
   })
 
   it('Displays all roots', () => {
-    value.roots.forEach((root) =>
+    value.roots.forEach(root =>
       expect(element.getByDisplayValue(root)).toBeVisible()
     )
   })
@@ -49,8 +49,8 @@ describe('Verb', () => {
   it('Calls onChange with updated value on root change', () => {
     whenChangedByValue(element, value.roots[0], 'rtr')
       .expect(onChange)
-      .toHaveBeenCalledWith((newValue) => ({
-        roots: [newValue, ..._.tail(value.roots)],
+      .toHaveBeenCalledWith(newValue => ({
+        roots: [newValue, ..._.tail(value.roots)]
       }))
   })
 
@@ -74,7 +74,10 @@ function commonTests() {
   })
 
   it('Other POS are not selected', () => {
-    for (const pos of _(positionsOfScpeech).omit(value.pos).values().value()) {
+    for (const pos of _(positionsOfScpeech)
+      .omit(value.pos)
+      .values()
+      .value()) {
       expect(element.getByText(pos).selected).toBe(false)
     }
   })
@@ -82,8 +85,8 @@ function commonTests() {
   it('Calls onChange with updated value on pos change', () => {
     whenChangedByLabel(element, 'Position of speech', 'AJ')
       .expect(onChange)
-      .toHaveBeenCalledWith((newValue) => ({
-        pos: [newValue],
+      .toHaveBeenCalledWith(newValue => ({
+        pos: [newValue]
       }))
   })
 }

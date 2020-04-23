@@ -4,18 +4,18 @@ function parseSide(side: string) {
   const match = /(\d+)([^\d]*)/.exec(side) || ['0', '']
   return {
     rows: Number(match[1]),
-    suffix: match[2],
+    suffix: match[2]
   }
 }
 function createTemplate({
   rows,
-  suffix = '',
+  suffix = ''
 }: {
   rows: number
   suffix: string
 }) {
   return _.range(1, rows + 1)
-    .map((row) => `${row}${suffix}. [...]  [...]`)
+    .map(row => `${row}${suffix}. [...]  [...]`)
     .join('\n')
 }
 

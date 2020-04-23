@@ -10,7 +10,7 @@ type SubmitAnnotationButtonProps = {
 function SubmitAnnotationButton({
   token,
   annotation,
-  onClick,
+  onClick
 }: SubmitAnnotationButtonProps): ReactElement {
   return (
     <Button
@@ -22,8 +22,8 @@ function SubmitAnnotationButton({
           data: {
             ...annotation.data,
             value: `${token.value}`,
-            path: token.path,
-          },
+            path: token.path
+          }
         })
       }}
     >
@@ -41,7 +41,7 @@ export default function Editor({
   annotation,
   onChange,
   onSubmit,
-  tokens,
+  tokens
 }: EditorProps): ReactElement | null {
   const { geometry } = annotation
   if (geometry) {
@@ -50,14 +50,14 @@ export default function Editor({
         style={{
           position: 'absolute',
           left: `${geometry.x}%`,
-          top: `${geometry.y + geometry.height}%`,
+          top: `${geometry.y + geometry.height}%`
         }}
       >
         <Card>
           <Card.Body>
             {tokens.map((line, index) => (
               <div key={index}>
-                {line.map((token) => (
+                {line.map(token => (
                   <span key={token.path.join(',')}>
                     {token.enabled ? (
                       <SubmitAnnotationButton
