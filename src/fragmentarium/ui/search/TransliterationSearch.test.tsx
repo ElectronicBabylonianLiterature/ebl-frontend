@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { factory } from 'factory-girl'
@@ -13,11 +13,11 @@ let element
 
 beforeEach(async () => {
   fragmentSearchService = {
-    searchTransliteration: jest.fn()
+    searchTransliteration: jest.fn(),
   }
   fragments = await factory.buildMany('fragmentInfo', 2, [
     { matchingLines: [['line 1', 'line 2']] },
-    { matchingLines: [['line 3'], ['line 4']] }
+    { matchingLines: [['line 3'], ['line 4']] },
   ])
   fragmentSearchService.searchTransliteration.mockReturnValueOnce(
     Promise.resolve(fragments)
@@ -30,7 +30,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText(fragments[0].number))
+  await element.findByText(fragments[0].number)
 })
 
 it('Queries the API with given parameters', () => {
@@ -57,7 +57,7 @@ it('Displays script', () => {
 it('Displays matching lines', () => {
   for (const line of _.flatMapDeep(
     fragments,
-    fragment => fragment.matchingLines
+    (fragment) => fragment.matchingLines
   )) {
     expect(element.getAllByText(line)).not.toEqual([])
   }

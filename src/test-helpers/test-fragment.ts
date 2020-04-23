@@ -10,7 +10,7 @@ const lines: readonly Line[] = [
       number: 10,
       hasPrime: false,
       prefixModifier: null,
-      suffixModifier: null
+      suffixModifier: null,
     },
     prefix: '10.',
     content: [
@@ -24,7 +24,7 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -36,7 +36,7 @@ const lines: readonly Line[] = [
         lemmatizable: true,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'LoneDeterminative',
@@ -48,13 +48,13 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'UnknownNumberOfSigns',
         value: '[...]',
         cleanValue: '...',
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -66,9 +66,9 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
-      }
-    ]
+        enclosureType: [],
+      },
+    ],
   },
   {
     type: 'TextLine',
@@ -77,7 +77,7 @@ const lines: readonly Line[] = [
       number: 10,
       hasPrime: false,
       prefixModifier: null,
-      suffixModifier: null
+      suffixModifier: null,
     },
     prefix: '10.',
     content: [
@@ -91,7 +91,7 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -103,9 +103,9 @@ const lines: readonly Line[] = [
         lemmatizable: true,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
-      }
-    ]
+        enclosureType: [],
+      },
+    ],
   },
   {
     type: 'TextLine',
@@ -114,7 +114,7 @@ const lines: readonly Line[] = [
       number: 10,
       hasPrime: false,
       prefixModifier: null,
-      suffixModifier: null
+      suffixModifier: null,
     },
     prefix: '10.',
     content: [
@@ -128,13 +128,13 @@ const lines: readonly Line[] = [
         lemmatizable: true,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'ValueToken',
         value: '|',
         cleanValue: '|',
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -146,9 +146,9 @@ const lines: readonly Line[] = [
         lemmatizable: true,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
-      }
-    ]
+        enclosureType: [],
+      },
+    ],
   },
   {
     type: 'TextLine',
@@ -157,7 +157,7 @@ const lines: readonly Line[] = [
       number: 10,
       hasPrime: false,
       prefixModifier: null,
-      suffixModifier: null
+      suffixModifier: null,
     },
     prefix: '10.',
     content: [
@@ -165,7 +165,7 @@ const lines: readonly Line[] = [
         type: 'UnknownNumberOfSigns',
         value: '...',
         cleanValue: '...',
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -177,7 +177,7 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'LoneDeterminative',
@@ -189,19 +189,19 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'UnknownNumberOfSigns',
         value: '...',
         cleanValue: '...',
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'UnknownNumberOfSigns',
         value: '...',
         cleanValue: '...',
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -213,7 +213,7 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
+        enclosureType: [],
       },
       {
         type: 'Word',
@@ -225,10 +225,10 @@ const lines: readonly Line[] = [
         lemmatizable: false,
         erasure: 'NONE',
         parts: [],
-        enclosureType: []
-      }
-    ]
-  }
+        enclosureType: [],
+      },
+    ],
+  },
 ]
 
 export const fragmentDto = {
@@ -249,16 +249,16 @@ export const fragmentDto = {
   signs: 'SAL/P₂ ŠIM GU GA\nP₅/SAL ŠIM\nŠIM ŠIM\nKU KA GA KU X',
   record: [
     { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:22:40.201231' },
-    { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:23:25.214166' }
+    { user: 'Laasonen', type: 'Revision', date: '2019-02-01T14:23:25.214166' },
   ],
   folios: [{ name: 'FWG', number: 'M134' }],
   text: { lines },
   references: [
-    { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] }
+    { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
   ],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
-  hasPhoto: true
+  hasPhoto: true,
 }
 
 export const fragment = new Fragment({
@@ -272,7 +272,7 @@ export const fragment = new Fragment({
   measures: {
     length: 3.14,
     width: 0.30282212,
-    thickness: null
+    thickness: null,
   },
   collection: '',
   script: 'NB',
@@ -282,13 +282,13 @@ export const fragment = new Fragment({
     new RecordEntry({
       user: 'Laasonen',
       date: '2019-02-01T14:22:40.201231',
-      type: 'Revision'
+      type: 'Revision',
     }),
     new RecordEntry({
       user: 'Laasonen',
       date: '2019-02-01T14:23:25.214166',
-      type: 'Revision'
-    })
+      type: 'Revision',
+    }),
   ],
   folios: [new Folio({ name: 'FWG', number: 'M134' })],
   text: new Text({ lines }),
@@ -298,10 +298,10 @@ export const fragment = new Fragment({
       type: 'DISCUSSION',
       pages: '',
       notes: '',
-      linesCited: []
-    }
+      linesCited: [],
+    },
   ],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
-  hasPhoto: true
+  hasPhoto: true,
 })

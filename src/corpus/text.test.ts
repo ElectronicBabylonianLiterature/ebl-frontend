@@ -10,7 +10,7 @@ import {
   Chapter,
   Line,
   Manuscript,
-  ManuscriptLine
+  ManuscriptLine,
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
@@ -25,7 +25,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   provenance: provenances.values().next().value,
   type: types.values().next().value,
   notes: 'some notes',
-  references: []
+  references: [],
 }
 
 const manuscrpitLineConfig: ManuscriptLine = {
@@ -41,9 +41,9 @@ const manuscrpitLineConfig: ManuscriptLine = {
       normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
-      erasure: 'NONE'
-    }
-  ]
+      erasure: 'NONE',
+    },
+  ],
 }
 
 const lineConfig: Line = {
@@ -52,14 +52,14 @@ const lineConfig: Line = {
   reconstructionTokens: [
     {
       type: 'AkkadianWord',
-      value: 'reconstructed'
+      value: 'reconstructed',
     },
     {
       type: 'AkkadianWord',
-      value: 'text'
-    }
+      value: 'text',
+    },
   ],
-  manuscripts: [createManuscriptLine(manuscrpitLineConfig)]
+  manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
 const chapterConfig: Chapter = {
@@ -69,7 +69,7 @@ const chapterConfig: Chapter = {
   name: 'III',
   order: -1,
   manuscripts: [createManuscript(manuscriptConfig)],
-  lines: [createLine(lineConfig)]
+  lines: [createLine(lineConfig)],
 }
 
 const textConfig: Partial<Text> = {
@@ -78,7 +78,7 @@ const textConfig: Partial<Text> = {
   name: 'Palm and Vine',
   numberOfVerses: 930,
   approximateVerses: true,
-  chapters: [createChapter(chapterConfig)]
+  chapters: [createChapter(chapterConfig)],
 }
 
 describe('Text', () => {

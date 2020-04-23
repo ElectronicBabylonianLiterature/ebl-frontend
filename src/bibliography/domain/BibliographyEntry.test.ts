@@ -11,7 +11,7 @@ beforeEach(async () => {
   cslData = await factory.build('cslData', {
     author: [{ family: 'Family', extra: 'Extra' }],
     _underscored: 'should be omitted',
-    'container-title-short': 'short title'
+    'container-title-short': 'short title',
   })
   entry = new BibliographyEntry(cslData)
   cite = new Cite(cslData)
@@ -22,7 +22,7 @@ test.each([
   ['primaryAuthor', 'author.0.family'],
   ['title', 'title'],
   ['link', 'URL'],
-  ['shortContainerTitle', 'container-title-short']
+  ['shortContainerTitle', 'container-title-short'],
 ])('%s', async (property, path) =>
   expect(entry[property]).toEqual(_.get(cslData, path))
 )
@@ -32,9 +32,9 @@ test('non-dropping particle', async () => {
     author: [
       {
         'non-dropping-particle': 'von',
-        family: 'Soden'
-      }
-    ]
+        family: 'Soden',
+      },
+    ],
   })
   entry = new BibliographyEntry(cslData)
   expect(entry.primaryAuthor).toEqual('von Soden')
@@ -45,12 +45,12 @@ test('authors', async () => {
     author: [
       {
         'non-dropping-particle': 'von',
-        family: 'Soden'
+        family: 'Soden',
       },
       {
-        family: 'Nodes'
-      }
-    ]
+        family: 'Nodes',
+      },
+    ],
   })
   entry = new BibliographyEntry(cslData)
   expect(entry.authors).toEqual(['von Soden', 'Nodes'])
@@ -69,8 +69,8 @@ test('year', async () => {
 test('year range', async () => {
   cslData = await factory.build('cslData', {
     issued: {
-      'date-parts': [[1800], [2900]]
-    }
+      'date-parts': [[1800], [2900]],
+    },
   })
   entry = new BibliographyEntry(cslData)
   expect(entry.year).toEqual('1800–2900')
@@ -81,7 +81,7 @@ test('toHtml', () => {
     cite.format('bibliography', {
       format: 'html',
       template: 'citation-apa',
-      lang: 'de-DE'
+      lang: 'de-DE',
     })
   )
 })
@@ -91,7 +91,7 @@ test('toBibtex', () => {
     cite.get({
       format: 'string',
       type: 'string',
-      style: 'bibtex'
+      style: 'bibtex',
     })
   )
 })
@@ -99,7 +99,7 @@ test('toBibtex', () => {
 test('toJson', async () => {
   const expectedCslData = await factory.build('cslData', {
     ..._.omit(cslData, '_underscored'),
-    author: [{ family: 'Family' }]
+    author: [{ family: 'Family' }],
   })
   expect(entry.toJson()).toEqual(expectedCslData)
 })

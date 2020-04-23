@@ -1,7 +1,7 @@
 import { factory } from 'factory-girl'
 import {
   buildReferenceWithContainerTitle,
-  buildReferenceWithManyAuthors
+  buildReferenceWithManyAuthors,
 } from 'test-helpers/bibliography-fixtures'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
 
@@ -13,20 +13,20 @@ test.each([
   [buildReferenceWithContainerTitle('DISCUSSION'), CompactCitation],
   [
     buildReferenceWithContainerTitle('PHOTO', { id: 'RN2720' }),
-    ContainerCitation
+    ContainerCitation,
   ],
   [
     buildReferenceWithContainerTitle('PHOTO', { id: 'RN2721' }),
-    ContainerCitation
+    ContainerCitation,
   ],
   [
     buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2720' }),
-    ContainerCitation
+    ContainerCitation,
   ],
   [
     buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }),
-    ContainerCitation
-  ]
+    ContainerCitation,
+  ],
 ])('Citation.for %#', async (factoryPromise, ExpectedType) => {
   const reference = await factoryPromise
   expect(Citation.for(reference)).toEqual(new ExpectedType(reference))
@@ -47,7 +47,7 @@ test('CompactCitation', async () => {
 test('CompactCitation with empty properties', async () => {
   const reference = await factory.build('reference', {
     pages: '',
-    linesCited: []
+    linesCited: [],
   })
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
@@ -83,7 +83,7 @@ test('ContainerCitation with collection number', async () => {
   const collectionNumber = '76'
   const reference = (
     await buildReferenceWithContainerTitle('COPY', {
-      'collection-number': collectionNumber
+      'collection-number': collectionNumber,
     })
   ).setLinesCited([])
   const citation = new ContainerCitation(reference)
@@ -97,7 +97,7 @@ test('ContainerCitation with lines cites and collection number', async () => {
   const linesCited = ['2.', '4.']
   const reference = (
     await buildReferenceWithContainerTitle('COPY', {
-      'collection-number': collectionNumber
+      'collection-number': collectionNumber,
     })
   ).setLinesCited(linesCited)
   const citation = new ContainerCitation(reference)

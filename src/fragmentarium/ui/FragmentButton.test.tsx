@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, waitForElement, act } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
@@ -47,7 +47,7 @@ describe('On failed request', () => {
   beforeEach(async () => {
     query.mockReturnValueOnce(Promise.reject(new Error(message)))
     clickNth(element, buttonText, 0)
-    await waitForElement(() => element.getByText(message))
+    await element.findByText(message)
   })
 
   it('Does not redirect', async () => {

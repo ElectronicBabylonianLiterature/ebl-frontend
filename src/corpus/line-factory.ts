@@ -16,13 +16,13 @@ export function createDefaultLineFactory(lastLine: any = null) {
     ? () =>
         createLine({
           number: nextNumber(lastLine.number),
-          manuscripts: lastLine.manuscripts.map(manuscript =>
+          manuscripts: lastLine.manuscripts.map((manuscript) =>
             createManuscriptLine({
               manuscriptId: manuscript.manuscriptId,
               labels: manuscript.labels,
-              number: nextNumber(manuscript.number)
+              number: nextNumber(manuscript.number),
             })
-          )
+          ),
         })
     : () => createLine({})
 }

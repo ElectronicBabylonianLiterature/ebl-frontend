@@ -5,7 +5,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const apiClient = {
   fetchJson: jest.fn(),
-  postJson: jest.fn()
+  postJson: jest.fn(),
 }
 const wordRepository = new BibliographyRepository(apiClient)
 const author = 'Bor Ger'
@@ -13,7 +13,7 @@ const year = '1998'
 const title = 'The Qualifications'
 const id = 'RN 2020'
 const resultStub = {
-  id: id
+  id: id,
 }
 const entry = new BibliographyEntry(resultStub)
 
@@ -24,7 +24,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, true],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'search',
@@ -35,9 +35,9 @@ const testData: TestData[] = [
       `/bibliography?author=${encodeURIComponent(
         author
       )}&title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}`,
-      true
+      true,
     ],
-    Promise.resolve([resultStub])
+    Promise.resolve([resultStub]),
   ],
   [
     'update',
@@ -45,7 +45,7 @@ const testData: TestData[] = [
     apiClient.postJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, resultStub],
-    Promise.resolve(resultStub)
+    Promise.resolve(resultStub),
   ],
   [
     'create',
@@ -53,8 +53,8 @@ const testData: TestData[] = [
     apiClient.postJson,
     entry,
     ['/bibliography', resultStub],
-    Promise.resolve(resultStub)
-  ]
+    Promise.resolve(resultStub),
+  ],
 ]
 
 describe('BibliographyRepository', () =>

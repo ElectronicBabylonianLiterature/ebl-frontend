@@ -3,11 +3,11 @@ import Reference, { ReferenceType } from './Reference'
 export default class Citation {
   static readonly CONTAINER_CITATION_TYPES: ReadonlyArray<ReferenceType> = [
     'COPY',
-    'EDITION'
+    'EDITION',
   ]
   static readonly CONTAINER_CITATION_IDS: ReadonlyArray<string> = [
     'RN2720',
-    'RN2721'
+    'RN2721',
   ]
 
   static for(reference: Reference): Citation {
@@ -44,7 +44,7 @@ export class ContainerCitation extends Citation {
       reference.hasLinesCited
         ? `\\[l. ${reference.linesCited.join(', ')}\\] `
         : '',
-      `(${reference.typeAbbreviation})`
+      `(${reference.typeAbbreviation})`,
     ].join('')
   }
 }
@@ -60,7 +60,7 @@ export class CompactCitation extends Citation {
       reference.hasLinesCited
         ? `\\[l. ${reference.linesCited.join(', ')}\\] `
         : '',
-      `(${reference.typeAbbreviation})`
+      `(${reference.typeAbbreviation})`,
     ].join('')
   }
 

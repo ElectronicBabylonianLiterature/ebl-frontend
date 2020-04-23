@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Image } from 'react-bootstrap'
 import ExternalLink from './ExternalLink'
+import useObjectUrl from './useObjectUrl'
 
 export default function BlobImage({
   data,
   hasLink,
-  alt
+  alt,
 }: {
   data: Blob
   hasLink?: boolean
   alt?: string
-}) {
-  const [objectUrl, setObjectUrl] = useState()
-  useEffect(() => {
-    const url = URL.createObjectURL(data)
-    setObjectUrl(url)
-    return () => URL.revokeObjectURL(url)
-  }, [data])
+}): JSX.Element {
+  const objectUrl = useObjectUrl(data)
 
   const image = <Image src={objectUrl} alt={alt} fluid />
   return hasLink ? (

@@ -34,7 +34,7 @@ const folioTypes: { readonly [key: string]: FolioType } = {
   CB: { name: 'Bezold', hasImage: true },
   JS: { name: 'Strassmaier', hasImage: true },
   USK: { name: 'Koch', hasImage: true },
-  ILF: { name: 'Finkel', hasImage: true }
+  ILF: { name: 'Finkel', hasImage: true },
 }
 
 export class Folio {
@@ -78,7 +78,7 @@ export class RecordEntry {
   constructor({
     user,
     date,
-    type
+    type,
   }: {
     user: string
     date: string
@@ -166,7 +166,7 @@ export class Fragment {
     references,
     uncuratedReferences,
     atf,
-    hasPhoto
+    hasPhoto,
   }: {
     number: string
     cdliNumber: string

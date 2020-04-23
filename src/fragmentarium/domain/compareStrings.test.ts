@@ -21,7 +21,7 @@ test.each([
   ['', '', 0],
   ['KUR.KUR', 'KUR-KUR?', 0],
   ['Amar-Suen', 'Amar-Suen?', 0],
-  ['[Uruk]', '[Uruk]?', 0]
+  ['[Uruk]', '[Uruk]?', 0],
 ])('compares %s and %s', (word, anotherWord, expected) => {
   const comparedWords = compareStrings(word, anotherWord)
   expect(comparedWords).toBe(expected)
@@ -34,7 +34,7 @@ test.each([
 test.each([
   ['', 2, '2'],
   [53, '', '53'],
-  [29, 98, '29,98']
+  [29, 98, '29,98'],
 ])(
   'throws an error if the %s or %s is not a string',
   (word, anotherWord, number) => {
@@ -56,7 +56,7 @@ test.each([
   ['  ', '', ' , '],
   ['bälu!', 'bitu', 'ä,!'],
   ['ḫarru', 'bjtu', 'ḫ,j'],
-  ['belü!', 'byt(u)', 'ü,!,(,)']
+  ['belü!', 'byt(u)', 'ü,!,(,)'],
 ])(
   'throws an error on word(s) with invalid character(s) %s or %s',
   (word, anotherWord, invalidCharacters) => {

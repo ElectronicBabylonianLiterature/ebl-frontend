@@ -11,7 +11,7 @@ export default function ReferencesForm({
   value,
   onChange,
   label,
-  collapsed
+  collapsed,
 }: {
   searchBibliography: (query: string) => ReadonlyArray<BibliographyEntry>
   value: ReadonlyArray<Reference>
@@ -40,5 +40,5 @@ export default function ReferencesForm({
 }
 ReferencesForm.defaultProps = {
   label: '',
-  collapsed: false
+  collapsed: false,
 }

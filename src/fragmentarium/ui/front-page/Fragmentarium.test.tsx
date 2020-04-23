@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
@@ -26,22 +26,22 @@ async function renderFragmentarium() {
     </MemoryRouter>
   )
   container = element.container
-  await waitForElement(() => element.getByText('Current size of the corpus:'))
+  await element.findByText('Current size of the corpus:')
 }
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
   fragmentService = {
     statistics: jest.fn(),
-    findImage: jest.fn()
+    findImage: jest.fn(),
   }
   fragmentSearchService = {
     fetchLatestTransliterations: jest.fn(),
-    fetchNeedsRevision: jest.fn()
+    fetchNeedsRevision: jest.fn(),
   }
   session = {
     isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: jest.fn()
+    isAllowedToTransliterateFragments: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   fragmentService.findImage.mockReturnValueOnce(Promise.resolve(statistics))

@@ -11,13 +11,13 @@ import produce, { Draft } from 'immer'
 export default function ManuscriptForm({
   manuscript,
   onChange,
-  searchBibliography
+  searchBibliography,
 }: {
   manuscript: Manuscript
   onChange: (x0: Manuscript) => void
   searchBibliography: any
 }) {
-  const handleChange = (property: string) => event =>
+  const handleChange = (property: string) => (event) =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = event.target.value
@@ -26,7 +26,7 @@ export default function ManuscriptForm({
   const handleMapChange = (
     property: string,
     values: ReadonlyMap<string, any>
-  ) => event =>
+  ) => (event) =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = values.get(event.target.value)
@@ -75,7 +75,7 @@ export default function ManuscriptForm({
             value={manuscript.provenance.name}
             onChange={handleMapChange('provenance', provenances)}
           >
-            {[...provenances.values()].map(provenance =>
+            {[...provenances.values()].map((provenance) =>
               _.isNil(provenance.parent) ? (
                 <option key={provenance.name} value={provenance.name}>
                   {provenance.name}
@@ -97,7 +97,7 @@ export default function ManuscriptForm({
               value={manuscript.periodModifier.name}
               onChange={handleMapChange('periodModifier', periodModifiers)}
             >
-              {[...periodModifiers.values()].map(modifier => (
+              {[...periodModifiers.values()].map((modifier) => (
                 <option key={modifier.name} value={modifier.name}>
                   {modifier.displayName}
                 </option>
@@ -109,7 +109,7 @@ export default function ManuscriptForm({
               value={manuscript.period.name}
               onChange={handleMapChange('period', periods)}
             >
-              {[...periods.values()].map(period =>
+              {[...periods.values()].map((period) =>
                 _.isNil(period.parent) ? (
                   <option key={period.name} value={period.name}>
                     {period.name} {period.description}
@@ -130,7 +130,7 @@ export default function ManuscriptForm({
             value={manuscript.type.name}
             onChange={handleMapChange('type', types)}
           >
-            {[...types.values()].map(type => (
+            {[...types.values()].map((type) => (
               <option key={type.name} value={type.name}>
                 {type.name}
               </option>

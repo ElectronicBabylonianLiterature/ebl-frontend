@@ -29,7 +29,7 @@ describe('Value is a derived form', () => {
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
-      homonym: newHomonym
+      homonym: newHomonym,
     })
   })
 
@@ -70,7 +70,7 @@ function commonChangeTests() {
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
-      lemma: newLemma.split(' ')
+      lemma: newLemma.split(' '),
     })
   })
 
@@ -79,7 +79,7 @@ function commonChangeTests() {
       .expect(onChange)
       .toHaveBeenCalledWith({
         ...value,
-        notes: value.notes.concat('')
+        notes: value.notes.concat(''),
       })
   })
 }

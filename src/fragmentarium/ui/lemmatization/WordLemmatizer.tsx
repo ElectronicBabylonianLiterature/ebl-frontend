@@ -16,7 +16,7 @@ interface Props {
 export default function WordLemmatizer({
   fragmentService,
   token,
-  onChange
+  onChange,
 }: Props): JSX.Element {
   const [show, setShow] = useState(false)
   const target = useRef(null)

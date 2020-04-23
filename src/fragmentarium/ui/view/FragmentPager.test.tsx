@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Promise } from 'bluebird'
 import FragmentPager from './FragmentPager'
@@ -11,11 +11,11 @@ let fragmentPagerData
 
 beforeEach(async () => {
   fragmentService = {
-    fragmentPager: jest.fn()
+    fragmentPager: jest.fn(),
   }
   fragmentPagerData = {
     next: 'K.00001',
-    previous: 'J.99999'
+    previous: 'J.99999',
   }
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
@@ -28,11 +28,11 @@ beforeEach(async () => {
       ></FragmentPager>
     </MemoryRouter>
   )
-  await waitForElement(() => element.getByText('K.00000'))
+  await element.findByText('K.00000')
 })
 it.each([
   ['Previous', 'previous'],
-  ['Next', 'next']
+  ['Next', 'next'],
 ])('Test Links to %s Button', (label, expected) => {
   expect(element.getByLabelText(label)).toHaveAttribute(
     'href',

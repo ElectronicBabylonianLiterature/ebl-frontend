@@ -1,6 +1,8 @@
-import React from 'react'
-import Session from './Session'
+import React, { Context } from 'react'
+import { guestSession, Session } from 'auth/Session'
 
-const SessionContext = React.createContext(new Session('', '', 0, []))
+const SessionContext: Context<Session> = React.createContext<Session>(
+  guestSession
+)
 
 export default SessionContext

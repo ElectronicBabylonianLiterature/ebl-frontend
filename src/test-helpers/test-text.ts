@@ -24,16 +24,16 @@ const testWord: WordToken = {
           type: 'ValueToken',
           value: 'kur',
           cleanValue: 'kur',
-          enclosureType: []
-        }
+          enclosureType: [],
+        },
       ],
       subIndex: 1,
       modifiers: [],
       flags: [],
-      enclosureType: []
-    }
+      enclosureType: [],
+    },
   ],
-  enclosureType: []
+  enclosureType: [],
 }
 
 export default async function createLemmatizationTestText(): Promise<
@@ -49,7 +49,7 @@ export default async function createLemmatizationTestText(): Promise<
           number: 1,
           hasPrime: false,
           prefixModifier: null,
-          suffixModifier: null
+          suffixModifier: null,
         },
         prefix: '1.',
         content: [
@@ -57,17 +57,17 @@ export default async function createLemmatizationTestText(): Promise<
             ...testWord,
             value: 'k[ur',
             cleanValue: 'kur',
-            uniqueLemma: [words[0]._id]
+            uniqueLemma: [words[0]._id],
           },
           {
             ...testWord,
             value: 'n]u',
             cleanValue: 'nu',
-            uniqueLemma: [words[1]._id]
-          }
-        ]
-      }
-    ]
+            uniqueLemma: [words[1]._id],
+          },
+        ],
+      },
+    ],
   })
   return [text, words]
 }

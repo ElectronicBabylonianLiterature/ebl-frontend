@@ -4,7 +4,7 @@ import { fragmentDto } from 'test-helpers/test-fragment'
 import { annotationsDto } from 'test-helpers/test-annotation'
 import produce from 'immer'
 
-const fragmentWithoutReferences = produce(fragmentDto, draft => {
+const fragmentWithoutReferences = produce(fragmentDto, (draft) => {
   draft.references = []
 })
 const fragmentNumber = fragmentWithoutReferences._id
@@ -18,6 +18,7 @@ afterEach(() => {
 
 describe('Diplay annotate view', () => {
   beforeEach(async () => {
+    ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber)
@@ -26,7 +27,7 @@ describe('Diplay annotate view', () => {
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()
-    await appDriver.waitForText(`Save`)
+    await appDriver.waitForText('Save')
   })
 
   test('Breadcrumbs', () => {
@@ -34,7 +35,7 @@ describe('Diplay annotate view', () => {
       'eBL',
       'Fragmentarium',
       fragmentDto._id,
-      'Annotate'
+      'Annotate',
     ])
   })
 

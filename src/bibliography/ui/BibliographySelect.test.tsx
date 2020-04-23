@@ -1,10 +1,11 @@
 import React from 'react'
-import { render, waitForElement, wait } from '@testing-library/react'
+import { render, wait } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import BibliographySelect from './BibliographySelect'
 import { changeValueByLabel, clickNth } from 'test-helpers/utils'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 let entry
 let searchEntry
@@ -40,13 +41,13 @@ it('Calls onChange when selecting an entry', async () => {
   await wait(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })
 
-async function fill() {
+async function fill(): Promise<void> {
   const label = expectedLabel(searchEntry)
   changeValueByLabel(element, 'Entry', 'Borger')
-  await waitForElement(() => element.getByText(label))
+  await element.findByText(label)
   clickNth(element, label, 0)
 }
 
-function expectedLabel(entry) {
+function expectedLabel(entry: BibliographyEntry): string {
   return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
 }

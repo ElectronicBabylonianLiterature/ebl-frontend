@@ -1,6 +1,6 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
-import { render, fireEvent, wait } from '@testing-library/react'
+import { render, fireEvent, wait, RenderResult } from '@testing-library/react'
 import { changeValueByLabel } from 'test-helpers/utils'
 
 let value
@@ -15,7 +15,7 @@ describe('Value has attested property', () => {
   beforeEach(() => {
     value = {
       lemma: ['part1', 'part2'],
-      attested: true
+      attested: true,
     }
     element = renderLemmaInput()
   })
@@ -35,7 +35,7 @@ describe('Value has attested property', () => {
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
-        attested: value.attested
+        attested: value.attested,
       })
     })
 
@@ -47,7 +47,7 @@ describe('Value has attested property', () => {
 
       await expect(onChange).toHaveBeenCalledWith({
         lemma: value.lemma,
-        attested: !value.attested
+        attested: !value.attested,
       })
     })
   })
@@ -56,7 +56,7 @@ describe('Value has attested property', () => {
 describe('Value does not have attested property', () => {
   beforeEach(() => {
     value = {
-      lemma: ['part1', 'part2']
+      lemma: ['part1', 'part2'],
     }
     element = renderLemmaInput()
   })
@@ -73,7 +73,7 @@ describe('Value does not have attested property', () => {
     beforeEach(() => {
       value = {
         lemma: ['part1', 'part2'],
-        attested: false
+        attested: false,
       }
       element = renderLemmaInput()
     })
@@ -83,12 +83,12 @@ describe('Value does not have attested property', () => {
       changeValueByLabel(element, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
-        lemma: newLemma.split(' ')
+        lemma: newLemma.split(' '),
       })
     })
   })
 })
 
-function renderLemmaInput() {
+function renderLemmaInput(): RenderResult {
   return render(<LemmaInput value={value} onChange={onChange} />)
 }

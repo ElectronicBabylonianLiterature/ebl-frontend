@@ -6,7 +6,7 @@ import { fragment } from 'test-helpers/test-fragment'
 import FragmentService from './FragmentService'
 
 import Lemmatization, {
-  LemmatizationToken
+  LemmatizationToken,
 } from 'fragmentarium/domain/Lemmatization'
 import Lemma from 'fragmentarium/domain/Lemma'
 import { Folio } from 'fragmentarium/domain/fragment'
@@ -28,20 +28,20 @@ const fragmentRepository = {
   findLemmas: jest.fn(),
   fetchCdliInfo: jest.fn(),
   findAnnotations: jest.fn(),
-  updateAnnotations: jest.fn()
+  updateAnnotations: jest.fn(),
 }
 const wordRepository = {
   searchLemma: jest.fn(),
-  find: jest.fn()
+  find: jest.fn(),
 }
 const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
-  findPhoto: jest.fn()
+  findPhoto: jest.fn(),
 }
 const bibliographyService = {
   find: jest.fn(),
-  search: jest.fn()
+  search: jest.fn(),
 }
 const fragmentService = new FragmentService(
   fragmentRepository,
@@ -55,22 +55,22 @@ const testData: TestData[] = [
     'updateTransliteration',
     ['K.1', '1. kur', 'notes'],
     fragmentRepository.updateTransliteration,
-    resultStub
+    resultStub,
   ],
   [
     'updateLemmatization',
     ['K.1', [[{ value: 'kur', uniqueLemma: [] }]]],
     fragmentRepository.updateLemmatization,
-    resultStub
+    resultStub,
   ],
   [
     'updateReferences',
     [
       'K.1',
-      [[{ id: 'id', type: 'EDITION', notes: '', pages: '', linesCited: [] }]]
+      [[{ id: 'id', type: 'EDITION', notes: '', pages: '', linesCited: [] }]],
     ],
     fragmentRepository.updateReferences,
-    resultStub
+    resultStub,
   ],
   ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
@@ -79,7 +79,7 @@ const testData: TestData[] = [
     [fragment],
     imageRepository.findPhoto,
     resultStub,
-    [fragment.number]
+    [fragment.number],
   ],
   ['folioPager', [folio, 'K.1'], fragmentRepository.folioPager, resultStub],
   ['fragmentPager', ['K.1'], fragmentRepository.fragmentPager, resultStub],
@@ -88,32 +88,32 @@ const testData: TestData[] = [
     'searchBibliography',
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyService.search,
-    [resultStub]
+    [resultStub],
   ],
   [
     'fetchCdliInfo',
     [fragment],
     fragmentRepository.fetchCdliInfo,
     resultStub,
-    [fragment.cdliNumber]
+    [fragment.cdliNumber],
   ],
   [
     'findAnnotations',
     [fragment.number],
     fragmentRepository.findAnnotations,
-    resultStub
+    resultStub,
   ],
   [
     'updateAnnotations',
     [fragment.number, resultStub],
     fragmentRepository.updateAnnotations,
-    resultStub
-  ]
+    resultStub,
+  ],
 ]
 
 testDelegation(fragmentService, testData)
 
-describe.each(['searchLemma'])('%s', method => {
+describe.each(['searchLemma'])('%s', (method) => {
   test('Resolves to empty array on zero length query', async () => {
     await expect(fragmentService[method]('')).resolves.toEqual([])
   })
@@ -128,12 +128,12 @@ describe('find', () => {
     const { entries, references, expectedReferences } = await setUpHydration()
     const fragment = await factory.build('fragment', {
       number: number,
-      references: references
+      references: references,
     })
 
     fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
-    bibliographyService.find.mockImplementation(id =>
-      Promise.resolve(entries.find(entry => entry.id === id))
+    bibliographyService.find.mockImplementation((id) =>
+      Promise.resolve(entries.find((entry) => entry.id === id))
     )
 
     expectedFragment = fragment.setReferences(expectedReferences)
@@ -152,21 +152,21 @@ test('createLemmatization', async () => {
   const wordMap = _.keyBy(words, '_id')
   const suggestions = {
     kur: words[2],
-    nu: words[3]
+    nu: words[3],
   }
-  wordRepository.find.mockImplementation(id =>
+  wordRepository.find.mockImplementation((id) =>
     wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error())
   )
-  fragmentRepository.findLemmas.mockImplementation(word =>
+  fragmentRepository.findLemmas.mockImplementation((word) =>
     Promise.resolve(suggestions[word] ? [[suggestions[word]]] : [])
   )
 
   const expectedLemmas = _([words[0], words[1]])
-    .map(word => new Lemma(word))
+    .map((word) => new Lemma(word))
     .keyBy('value')
     .value()
-  const expectedSuggestions = _.mapValues(suggestions, word => [
-    [new Lemma(word)]
+  const expectedSuggestions = _.mapValues(suggestions, (word) => [
+    [new Lemma(word)],
   ])
   const expected = new Lemmatization(
     ['1.'],
@@ -183,8 +183,8 @@ test('createLemmatization', async () => {
           true,
           [new Lemma(words[1])],
           [[new Lemma(words[3])]]
-        )
-      ]
+        ),
+      ],
     ]
   )
 
@@ -221,15 +221,15 @@ async function setUpHydration(): Promise<{
     2,
     references.map((dto, index) => ({
       ...dto,
-      document: entries[index]
+      document: entries[index],
     }))
   )
-  bibliographyService.find.mockImplementation(id =>
+  bibliographyService.find.mockImplementation((id) =>
     Promise.resolve(entries.find((entry: BibliographyEntry) => entry.id === id))
   )
   return {
     entries,
     references,
-    expectedReferences
+    expectedReferences,
   }
 }

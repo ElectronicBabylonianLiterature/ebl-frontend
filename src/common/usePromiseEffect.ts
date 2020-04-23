@@ -11,6 +11,6 @@ export default function usePromiseEffect<T = any>(): [
     (promise: Promise<T>): void => {
       promiseRef.current = promise
     },
-    (): void => promiseRef.current?.cancel()
+    (): void => promiseRef.current?.cancel(),
   ]
 }

@@ -27,7 +27,7 @@ describe('Derived from set', () => {
   })
 
   it('Displays all notes', () => {
-    value.notes.forEach(note =>
+    value.notes.forEach((note) =>
       expect(element.getByDisplayValue(note)).toBeVisible()
     )
   })
@@ -46,9 +46,9 @@ describe('Derived from set', () => {
     const newValue = value.homonym === 'II' ? 'V' : 'II'
     whenChangedByValue(element, value.homonym, newValue)
       .expect(onChange)
-      .toHaveBeenCalledWith(newValue => ({
+      .toHaveBeenCalledWith((newValue) => ({
         ...value,
-        homonym: newValue
+        homonym: newValue,
       }))
   })
 })
@@ -73,7 +73,7 @@ describe('No derived from set', () => {
       .toHaveBeenCalledWith({
         lemma: [],
         homonym: '',
-        notes: []
+        notes: [],
       })
   })
 })
