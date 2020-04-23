@@ -21,8 +21,9 @@ const lineNumberTypeToFunction = {
   LineNumberRange: formatLineNumberRange
 }
 function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
-  const lineNumberToString = lineNumberTypeToFunction[lineNumber.type as string]
-  return lineNumberToString(lineNumber)
+  const createFormattedLineNumbers =
+    lineNumberTypeToFunction[lineNumber.type as string]
+  return createFormattedLineNumbers(lineNumber)
 }
 
 export function DisplayPrefix({ line }: { line: Line }): JSX.Element {
