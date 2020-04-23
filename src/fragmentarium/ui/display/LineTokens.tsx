@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react'
+import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import DisplayToken, { TokenWrapper } from './DisplayToken'
 import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
