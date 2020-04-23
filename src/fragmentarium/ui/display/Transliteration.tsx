@@ -9,7 +9,7 @@ import {
 import './Display.sass'
 import _ from 'lodash'
 import DisplayLineTokens from './DisplayLineTokens'
-import { DisplayPrefix } from './DisplayLineNumbers'
+import { TextLinePrefix } from './DisplayLineNumbers'
 
 function DisplayLine({
   line,
@@ -22,7 +22,7 @@ function DisplayLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <DisplayPrefix line={line} />,
+    <TextLinePrefix line={line} />,
     <DisplayLineTokens content={content} />
   )
 }

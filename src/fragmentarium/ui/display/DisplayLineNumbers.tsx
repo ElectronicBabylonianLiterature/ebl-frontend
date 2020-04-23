@@ -26,7 +26,7 @@ function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
   return createFormattedLineNumbers(lineNumber)
 }
 
-export function DisplayPrefix({ line }: { line: Line }): JSX.Element {
+export function TextLinePrefix({ line }: { line: Line }): JSX.Element {
   if (line.type === 'TextLine') {
     const textLine = line as TextLine
     return <sup>({lineNumberToString(textLine.lineNumber)})</sup>
