@@ -191,7 +191,11 @@ export default withRouter<any, any>(
     ),
     ({ fragment, fragmentService }) =>
       Promise.all([
-        fragmentService.fetchCdliInfo(fragment),
+        fragmentService.fetchCdliInfo(fragment).catch(() => ({
+          photoUrl: null,
+          lineArtUrl: null,
+          detailLineArtUrl: null,
+        })),
         fragmentService.findPhoto(fragment),
       ])
   )
