@@ -1,14 +1,10 @@
 import { Line, LineNumber, LineNumberRange, TextLine } from '../../domain/text'
 import React from 'react'
 
-function formatLineNumber(lineNumber: LineNumber): string {
-  return `${lineNumberToString(lineNumber)}`
-}
-
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
-  return `${lineNumberToString(start)}-${lineNumberToString(end)}`
+  return `${formatLineNumber(start)}-${formatLineNumber(end)}`
 }
-function lineNumberToString({
+function formatLineNumber({
   hasPrime,
   number,
   prefixModifier,
@@ -24,9 +20,7 @@ const lineNumberTypeToString = {
   LineNumber: formatLineNumber,
   LineNumberRange: formatLineNumberRange
 }
-function chooseLineNumberType(
-  lineNumber: LineNumber | LineNumberRange
-): string {
+function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
   const lineNumberToString = lineNumberTypeToString[lineNumber.type as string]
   return lineNumberToString(lineNumber)
 }
@@ -34,8 +28,8 @@ function chooseLineNumberType(
 export function DisplayPrefix({ line }: { line: Line }): JSX.Element {
   if (line.type === 'TextLine') {
     const textLine = line as TextLine
-    return <sup>({chooseLineNumberType(textLine.lineNumber)})</sup>
+    return <sup>({lineNumberToString(textLine.lineNumber)})</sup>
   } else {
-    return <span key="prefix">{line.prefix}</span>
+    return <span>{line.prefix}</span>
   }
 }
