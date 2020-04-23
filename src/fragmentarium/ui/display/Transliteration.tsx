@@ -1,10 +1,10 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react'
+import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
 import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine
+  RulingDollarLine,
 } from 'fragmentarium/domain/text'
 import './Display.sass'
 import _ from 'lodash'
@@ -14,7 +14,7 @@ import { TextLinePrefix } from './TextLinePrefix'
 function DisplayLine({
   line,
   line: { type, content },
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
