@@ -1,4 +1,4 @@
-import { Line, LineNumber, LineNumberRange, TextLine } from '../../domain/text'
+import { Line, LineNumber, LineNumberRange } from '../../domain/text'
 import React from 'react'
 import { isTextLine } from './type-guards'
 
@@ -9,7 +9,7 @@ function formatLineNumber({
   hasPrime,
   number,
   prefixModifier,
-  suffixModifier
+  suffixModifier,
 }: LineNumber): string {
   const prefixMod = prefixModifier ? prefixModifier + '+' : ''
   const prime = hasPrime ? '′' : ''
@@ -19,7 +19,7 @@ function formatLineNumber({
 
 const lineNumberTypeToFunction = {
   LineNumber: formatLineNumber,
-  LineNumberRange: formatLineNumberRange
+  LineNumberRange: formatLineNumberRange,
 }
 function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
   const createFormattedLineNumbers =

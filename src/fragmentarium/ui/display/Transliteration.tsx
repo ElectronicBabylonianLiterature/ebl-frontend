@@ -4,7 +4,7 @@ import {
   Line,
   Text,
   DollarAndAtLine,
-  RulingDollarLine
+  RulingDollarLine,
 } from 'fragmentarium/domain/text'
 import './Display.sass'
 import _ from 'lodash'
@@ -14,7 +14,7 @@ import { TextLinePrefix } from './TextLinePrefix'
 function DisplayLine({
   line,
   line: { type, content },
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -28,7 +28,7 @@ function DisplayLine({
 }
 function DisplayDollarAndAtLineWithParenthesis({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -43,7 +43,7 @@ function DisplayDollarAndAtLineWithParenthesis({
 
 function DisplayDollarAndAtLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -76,18 +76,18 @@ const lineComponents: ReadonlyMap<
   ['SurfaceAtLine', DisplayDollarAndAtLine],
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
-  ['CompositeAtLine', DisplayDollarAndAtLine]
+  ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
 const rulingsToNumber: ReadonlyMap<string, number> = new Map([
   ['SINGLE', 1],
   ['DOUBLE', 2],
-  ['TRIPLE', 3]
+  ['TRIPLE', 3],
 ])
 
 function DisplayRulingDollarLine({
   line,
-  container = 'div'
+  container = 'div',
 }: {
   line: Line
   container?: string
@@ -104,7 +104,7 @@ function DisplayRulingDollarLine({
   )
 }
 function DisplayEachRuling({
-  rulingType
+  rulingType,
 }: {
   rulingType: string
 }): JSX.Element {
@@ -112,7 +112,7 @@ function DisplayEachRuling({
 }
 
 export function Transliteration({
-  text: { lines }
+  text: { lines },
 }: {
   text: Text
 }): JSX.Element {

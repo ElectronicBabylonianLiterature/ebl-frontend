@@ -7,7 +7,7 @@ import './Display.sass'
 import { Shift, Token } from 'fragmentarium/domain/token'
 
 function WordSeparator({
-  modifiers: bemModifiers = []
+  modifiers: bemModifiers = [],
 }: {
   modifiers?: readonly string[]
 }): JSX.Element {
@@ -16,7 +16,7 @@ function WordSeparator({
     <span
       className={classNames([
         element,
-        bemModifiers.map(flag => `${element}--${flag}`)
+        bemModifiers.map((flag) => `${element}--${flag}`),
       ])}
     >
       {' '}
@@ -48,7 +48,7 @@ class LineAccumulator {
     }
 
     const glossWrapper: TokenWrapper = ({
-      children
+      children,
     }: PropsWithChildren<{}>): JSX.Element => (
       <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
     )
@@ -105,7 +105,7 @@ class LineAccumulator {
 }
 
 export default function LineTokens({
-  content
+  content,
 }: {
   content: ReadonlyArray<Token>
 }): JSX.Element {
