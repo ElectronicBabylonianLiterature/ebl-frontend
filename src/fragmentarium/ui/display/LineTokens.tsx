@@ -108,15 +108,21 @@ export default function LineTokens({
   content
 }: {
   content: ReadonlyArray<Token>
-}): any {
-  return content.reduce((acc: LineAccumulator, token: Token) => {
-    if (isShift(token)) {
-      acc.applyLanguage(token)
-    } else if (isDocumentOrientedGloss(token)) {
-      token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-    } else {
-      acc.pushToken(token)
-    }
-    return acc
-  }, new LineAccumulator()).result
+}): JSX.Element {
+  return (
+    <>
+      {
+        content.reduce((acc: LineAccumulator, token: Token) => {
+          if (isShift(token)) {
+            acc.applyLanguage(token)
+          } else if (isDocumentOrientedGloss(token)) {
+            token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+          } else {
+            acc.pushToken(token)
+          }
+          return acc
+        }, new LineAccumulator()).result
+      }
+    </>
+  )
 }
