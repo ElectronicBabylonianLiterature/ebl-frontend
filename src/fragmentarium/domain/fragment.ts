@@ -5,7 +5,7 @@ import produce, { Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from './text'
-import Museum from './museum'
+import Museum, { FragmentLink } from './museum'
 
 const moment = extendMoment(Moment)
 
@@ -49,15 +49,15 @@ export class Folio {
     this.type = folioTypes[name] || { name, hasImage: false }
   }
 
-  get humanizedName() {
+  get humanizedName(): string {
     return this.type.name
   }
 
-  get hasImage() {
+  get hasImage(): boolean {
     return this.type.hasImage
   }
 
-  get fileName() {
+  get fileName(): string {
     return `${this.name}_${this.number}.jpg`
   }
 }
@@ -101,7 +101,10 @@ export class RecordEntry {
   }
 
   dateEquals(other: RecordEntry): boolean {
-    const onSameDate = (first, second) => {
+    const onSameDate = (
+      first: Moment.Moment,
+      second: Moment.Moment
+    ): boolean => {
       const sameYear = first.year() === second.year()
       const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
       return sameYear && sameDayOfYear
@@ -111,7 +114,7 @@ export class RecordEntry {
 
     return differentUser || differentType || this.isHistorical
       ? false
-      : onSameDate(this.moment, other.moment)
+      : onSameDate(this.moment as Moment.Moment, other.moment as Moment.Moment)
   }
 }
 RecordEntry[immerable] = true
@@ -218,7 +221,7 @@ export class Fragment {
     const reducer = (
       filteredRecord: RecordEntry[],
       recordEntry: RecordEntry
-    ) => {
+    ): RecordEntry[] => {
       const last = _.last(filteredRecord)
       const keepRecord = !last || !last.dateEquals(recordEntry)
       if (keepRecord) {
@@ -235,11 +238,11 @@ export class Fragment {
     })
   }
 
-  get hasLink() {
+  get hasLink(): boolean {
     return this.museum.hasFragmentLink(this)
   }
 
-  getLink() {
+  getLink(): FragmentLink {
     return this.museum.createLinkFor(this)
   }
 }
