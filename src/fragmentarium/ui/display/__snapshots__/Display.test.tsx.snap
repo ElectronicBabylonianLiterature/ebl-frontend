@@ -4431,6 +4431,195 @@ exports[`Snapshot 1`] = `
     >
       (image 1 = foo)
     </li>
+    <li
+      class="Transliteration__TextLine"
+    >
+      <sup>
+        (
+        9
+        )
+      </sup>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-bs"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-bs"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-cm"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-cm"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-qt"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-qt"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-zz"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-zz"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+    </li>
   </ol>
 </div>
 `;

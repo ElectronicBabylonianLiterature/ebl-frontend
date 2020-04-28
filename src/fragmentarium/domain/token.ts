@@ -12,6 +12,7 @@ export interface BaseToken {
   readonly value: string
   readonly cleanValue: string
   readonly parts?: readonly Token[]
+  readonly erasure?: string
   readonly enclosureType: readonly EnclosureType[]
 }
 
@@ -117,6 +118,12 @@ export interface Enclosure extends NotLemmatizableToken {
   readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
 }
 
+export type Protocol = '!qt' | '!bs' | '!cm' | '!zz'
+export interface CommentaryProtocol extends NotLemmatizableToken {
+  readonly type: 'CommentaryProtocol'
+  readonly value: Protocol
+}
+
 export type Token =
   | ValueToken
   | Word
@@ -133,3 +140,4 @@ export type Token =
   | Gloss
   | Enclosure
   | Tabulation
+  | CommentaryProtocol
