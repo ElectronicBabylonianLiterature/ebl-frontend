@@ -146,14 +146,14 @@ export interface ObjectAtLine extends DollarAndAtLine {
 
 export interface DivisionAtLine extends DollarAndAtLine {
   readonly type: 'DivisionAtLine'
-  readonly number: string
+  readonly number: number | null
   readonly text: string
 }
 
 export interface CompositeAtLine extends DollarAndAtLine {
   readonly type: 'CompositeAtLine'
   readonly composite: string
-  readonly number: string
+  readonly number: number | null
   readonly text: string
 }
 

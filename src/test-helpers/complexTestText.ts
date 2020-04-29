@@ -1,19 +1,8 @@
 import { Line, Text } from 'fragmentarium/domain/text'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
 import * as dollar from 'test-helpers/lines/dollar'
-
-const line1: Line = {
-  prefix: '@',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: 'obverse',
-      value: 'obverse',
-      type: 'ValueToken',
-    },
-  ],
-  type: 'ControlLine',
-}
+import * as at from 'test-helpers/lines/at'
+import * as composite from 'test-helpers/lines/composite'
 
 const line2: Line = {
   prefix: '1.',
@@ -3366,29 +3355,18 @@ const line19: Line = {
   prefix: '',
 }
 
-const line24: Line = {
-  prefix: '@',
-  type: 'SurfaceAtLine',
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  surface_label: {
-    status: [],
-    text: '',
-    surface: 'OBVERSE',
-  },
-  displayValue: 'obverse',
-  content: [
-    {
-      type: 'ValueToken',
-      cleanValue: ' obverse',
-      value: ' obverse',
-      enclosureType: [],
-    },
-  ],
-}
-
 export default new Text({
   lines: [
-    line1,
+    at.surface,
+    at.object,
+    at.heading,
+    at.division,
+    at.discourse,
+    at.seal,
+    composite.composite,
+    composite.division,
+    composite.end,
+    composite.locator,
     line2,
     dollar.singleRuling,
     line4,
@@ -3407,7 +3385,6 @@ export default new Text({
     line17,
     line18,
     line19,
-    line24,
     commentaryProtocols,
     dollar.state,
     dollar.image,

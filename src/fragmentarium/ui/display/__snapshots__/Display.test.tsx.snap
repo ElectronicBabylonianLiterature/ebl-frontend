@@ -25,25 +25,54 @@ exports[`Snapshot 1`] = `
     class="Transliteration"
   >
     <li
-      class="Transliteration__ControlLine"
+      class="Transliteration__DollarAndAtLine"
     >
-      <span>
-        @
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-          obverse
-        </span>
-      </span>
+      (obverse?!)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (object Stone wig)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (h1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (m=division paragraph 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (colophon)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (seal 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (composite)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (div part 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (end part)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (m=locator o 1)
     </li>
     <li
       class="Transliteration__TextLine"
@@ -4383,11 +4412,6 @@ exports[`Snapshot 1`] = `
       class="Transliteration__EmptyLine"
     >
       <span />
-    </li>
-    <li
-      class="Transliteration__DollarAndAtLine"
-    >
-      (obverse)
     </li>
     <li
       class="Transliteration__TextLine"
