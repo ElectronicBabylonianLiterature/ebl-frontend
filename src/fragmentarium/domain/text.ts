@@ -94,8 +94,8 @@ interface ScopeContainer {
 
 export interface StateDollarLine extends DollarAndAtLine {
   readonly type: 'StateDollarLine'
-  readonly qualification: string
-  readonly extent: string
+  readonly qualification: string | null
+  readonly extent: string | null
   readonly scope: ScopeContainer
   readonly state: string
   readonly status: string

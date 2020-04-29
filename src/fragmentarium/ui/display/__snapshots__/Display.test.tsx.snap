@@ -4385,51 +4385,9 @@ exports[`Snapshot 1`] = `
       <span />
     </li>
     <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
       class="Transliteration__DollarAndAtLine"
     >
       (obverse)
-    </li>
-    <li
-      class="Transliteration__DollarAndAtLineWithParenthesis"
-    >
-      (image 1 = foo)
     </li>
     <li
       class="Transliteration__TextLine"
@@ -4619,6 +4577,26 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
       </span>
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (line continues !?)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLineWithParenthesis"
+    >
+      (image 1 = foo)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLineWithParenthesis"
+    >
+      (anything goes)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (seal 1)
     </li>
   </ol>
 </div>

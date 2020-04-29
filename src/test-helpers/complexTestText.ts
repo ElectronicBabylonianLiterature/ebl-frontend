@@ -1,5 +1,6 @@
 import { Line, Text } from 'fragmentarium/domain/text'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
+import * as dollar from 'test-helpers/lines/dollar'
 
 const line1: Line = {
   prefix: '@',
@@ -231,21 +232,6 @@ const line2: Line = {
   type: 'TextLine',
 }
 
-const line3: Line = {
-  prefix: '$',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: ' single ruling',
-      value: ' single ruling',
-      type: 'ValueToken',
-    },
-  ],
-  number: 'SINGLE',
-  status: null,
-  type: 'RulingDollarLine',
-}
-
 const line4: Line = {
   prefix: '2.',
   content: [
@@ -355,21 +341,6 @@ const line4: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
-
-const line5: Line = {
-  prefix: '$',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: ' double ruling',
-      value: ' double ruling',
-      type: 'ValueToken',
-    },
-  ],
-  number: 'DOUBLE',
-  status: null,
-  type: 'RulingDollarLine',
 }
 
 const line6: Line = {
@@ -885,21 +856,6 @@ const line8: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
-
-const line9: Line = {
-  prefix: '$',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: ' triple ruling',
-      value: ' triple ruling',
-      type: 'ValueToken',
-    },
-  ],
-  number: 'TRIPLE',
-  status: null,
-  type: 'RulingDollarLine',
 }
 
 const line10: Line = {
@@ -3409,72 +3365,9 @@ const line19: Line = {
   content: [],
   prefix: '',
 }
-const line20: Line = {
-  prefix: '$',
-  displayValue: 'single ruling !?',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: ' single ruling !?',
-      value: ' single ruling !?',
-      type: 'ValueToken',
-    },
-  ],
-  number: 'SINGLE',
-  status: 'NEEDS_COLLATION',
-  type: 'RulingDollarLine',
-}
-
-const line21: Line = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'SINGLE',
-  status: null,
-  displayValue: 'single ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      cleanValue: ' single ruling',
-      value: ' single ruling',
-      enclosureType: [],
-    },
-  ],
-}
-
-const line22: Line = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'DOUBLE',
-  status: null,
-  displayValue: 'double ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      cleanValue: ' double ruling',
-      value: ' double ruling',
-      enclosureType: [],
-    },
-  ],
-}
-
-const line23: Line = {
-  prefix: '$',
-  type: 'RulingDollarLine',
-  number: 'TRIPLE',
-  status: null,
-  displayValue: 'triple ruling',
-  content: [
-    {
-      type: 'ValueToken',
-      cleanValue: ' triple ruling',
-      value: ' triple ruling',
-      enclosureType: [],
-    },
-  ],
-}
 
 const line24: Line = {
-  prefix: '$',
+  prefix: '@',
   type: 'SurfaceAtLine',
   // eslint-disable-next-line @typescript-eslint/camelcase
   surface_label: {
@@ -3493,34 +3386,17 @@ const line24: Line = {
   ],
 }
 
-const line25: Line = {
-  displayValue: '(image 1 = foo)',
-  text: 'foo',
-  content: [
-    {
-      enclosureType: [],
-      cleanValue: ' (image 1 = foo)',
-      value: ' (image 1 = foo)',
-      type: 'ValueToken',
-    },
-  ],
-  letter: null,
-  prefix: '$',
-  number: '1',
-  type: 'ImageDollarLine',
-}
-
 export default new Text({
   lines: [
     line1,
     line2,
-    line3,
+    dollar.singleRuling,
     line4,
-    line5,
+    dollar.doubleRuling,
     line6,
     line7,
     line8,
-    line9,
+    dollar.tripleRuling,
     line10,
     line11,
     line12,
@@ -3531,12 +3407,11 @@ export default new Text({
     line17,
     line18,
     line19,
-    line20,
-    line21,
-    line22,
-    line23,
     line24,
-    line25,
     commentaryProtocols,
+    dollar.state,
+    dollar.image,
+    dollar.loose,
+    dollar.seal,
   ],
 })
