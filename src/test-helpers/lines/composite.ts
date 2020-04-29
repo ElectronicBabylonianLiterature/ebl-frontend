@@ -1,4 +1,4 @@
-import { CompositeAtLine } from 'fragmentarium/domain/text'
+import { CompositeAtLine } from 'fragmentarium/domain/line'
 
 export const composite: CompositeAtLine = {
   prefix: '@',

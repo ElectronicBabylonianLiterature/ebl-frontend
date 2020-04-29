@@ -4,7 +4,7 @@ import {
   RulingDollarLine,
   SealDollarLine,
   StateDollarLine,
-} from 'fragmentarium/domain/text'
+} from 'fragmentarium/domain/line'
 
 export const singleRuling: RulingDollarLine = {
   prefix: '$',

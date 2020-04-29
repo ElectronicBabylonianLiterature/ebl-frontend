@@ -1,4 +1,4 @@
-import { Line } from 'fragmentarium/domain/text'
+import { Line } from 'fragmentarium/domain/line'
 
 export const commentaryProtocols: Line = {
   prefix: '9.',
