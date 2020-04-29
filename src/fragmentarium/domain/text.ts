@@ -96,9 +96,9 @@ export interface StateDollarLine extends DollarAndAtLine {
   readonly type: 'StateDollarLine'
   readonly qualification: string | null
   readonly extent: string | null
-  readonly scope: ScopeContainer
-  readonly state: string
-  readonly status: string
+  readonly scope: ScopeContainer | null
+  readonly state: string | null
+  readonly status: string | null
 }
 
 interface Label {
