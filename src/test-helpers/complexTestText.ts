@@ -1,8 +1,9 @@
 import { Line, Text } from 'fragmentarium/domain/text'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
-import * as dollar from 'test-helpers/lines/dollar'
 import * as at from 'test-helpers/lines/at'
 import * as composite from 'test-helpers/lines/composite'
+import * as dollar from 'test-helpers/lines/dollar'
+import empty from 'test-helpers/lines/empty'
 
 const line2: Line = {
   prefix: '1.',
@@ -3349,11 +3350,6 @@ const line18: Line = {
   },
   type: 'TextLine',
 }
-const line19: Line = {
-  type: 'EmptyLine',
-  content: [],
-  prefix: '',
-}
 
 export default new Text({
   lines: [
@@ -3384,7 +3380,7 @@ export default new Text({
     line16,
     line17,
     line18,
-    line19,
+    empty,
     commentaryProtocols,
     dollar.state,
     dollar.image,
