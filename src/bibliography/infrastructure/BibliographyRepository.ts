@@ -18,8 +18,7 @@ export default class BibliographyRepository {
       .then(createEntry)
   }
 
-  search(author, year, title) {
-    const query = { author, year, title }
+  search(query) {
     return this.apiClient
       .fetchJson(`/bibliography?${stringify(query)}`, true)
       .then((result) => result.map(createEntry))

@@ -21,14 +21,14 @@ const testData: TestData[] = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
     [resultStub],
-    ['Alba Cecilia', '1998', 'The Qualifications'],
+    [['Alba Cecilia', '1998', 'The Qualifications']],
   ],
   [
     'search',
     ['Alba Cecilia'],
     bibliographyRepository.search,
     [resultStub],
-    ['Alba Cecilia', '', ''],
+    [['Alba Cecilia', '', '']],
   ],
 ]
 

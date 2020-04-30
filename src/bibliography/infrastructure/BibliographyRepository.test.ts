@@ -28,13 +28,13 @@ const testData: TestData[] = [
   ],
   [
     'search',
-    [author, year, title],
+    [[author, year, title]],
     apiClient.fetchJson,
     [entry],
     [
-      `/bibliography?author=${encodeURIComponent(
-        author
-      )}&title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}`,
+      `/bibliography?0=${encodeURIComponent(author)}&1=${encodeURIComponent(
+        year
+      )}&2=${encodeURIComponent(title)}`,
       true,
     ],
     Promise.resolve([resultStub]),

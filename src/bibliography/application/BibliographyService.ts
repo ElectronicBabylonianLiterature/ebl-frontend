@@ -25,14 +25,14 @@ export default class BibliographyService implements BibliographySearch {
   }
 
   search(query: string): Promise<readonly BibliographyEntry[]> {
-    const queryRegex = /^([^\d]+)(?: (\d{4})(?: (.*))?)?$/
+    const queryRegex = /^([^\d]+)(?: (\d{1,4})(?: (.*))?)?$/
     const match = queryRegex.exec(query)
     return match
-      ? this.bibliographyRepository.search(
+      ? this.bibliographyRepository.search([
           match[1],
           match[2] || '',
-          match[3] || ''
-        )
+          match[3] || '',
+        ])
       : Promise.resolve([])
   }
 }
