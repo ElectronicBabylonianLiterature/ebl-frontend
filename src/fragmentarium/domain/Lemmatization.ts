@@ -5,7 +5,13 @@ import Lemma from './Lemma'
 
 export type UniqueLemma = ReadonlyArray<Lemma>
 
+export interface LemmatizationTokenDto {
+  value: string
+  uniqueLemma?: string[]
+}
+
 export class LemmatizationToken {
+  [immerable] = true
   readonly value: string
   readonly uniqueLemma: UniqueLemma | null
   readonly suggestions: ReadonlyArray<UniqueLemma> | null
@@ -54,7 +60,7 @@ export class LemmatizationToken {
     })
   }
 
-  toDto(): any {
+  toDto(): LemmatizationTokenDto {
     return _.isNil(this.uniqueLemma)
       ? {
           value: this.value,
@@ -65,9 +71,9 @@ export class LemmatizationToken {
         }
   }
 }
-LemmatizationToken[immerable] = true
 
 export default class Lemmatization {
+  [immerable] = true
   readonly lines: ReadonlyArray<string>
   readonly tokens: ReadonlyArray<ReadonlyArray<LemmatizationToken>>
 
@@ -111,7 +117,7 @@ export default class Lemmatization {
     )
   }
 
-  toDto(): ReadonlyArray<ReadonlyArray<{ [key: string]: any }>> {
+  toDto(): ReadonlyArray<ReadonlyArray<LemmatizationTokenDto>> {
     return this.tokens.map((row) => row.map((token) => token.toDto()))
   }
 
@@ -121,4 +127,3 @@ export default class Lemmatization {
     return this.tokens.map((row) => row.map(iteratee))
   }
 }
-Lemmatization[immerable] = true

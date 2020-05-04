@@ -14,6 +14,17 @@
     color: black
     letter-spacing: 0.1em
 
+@mixin commentary-protocols
+  &--commentary-protocol-
+    &bs
+      color: blue
+    &qt
+      color: red
+    &cm
+      color: black
+    &zz
+      color: black
+
 .Transliteration
   list-style: none
   padding: 0
@@ -36,7 +47,9 @@
 
   &__Reading,
   &__UnidentifiedSign,
-  &__Joiner,
+  &__Joiner
+    @include commentary-protocols
+    
     font-style: italic
     font-variant: normal
 
@@ -50,8 +63,11 @@
   &__subIndex,
   &__modifier
     @include normal-font
+    @include commentary-protocols
 
   &__glossJoiner
+    @include commentary-protocols
+
     display: none
 
   &__Determinative
@@ -65,6 +81,7 @@
   &__Divider
     @include emesal
     @include sumerian
+    @include commentary-protocols
 
   &__Logogram,
   &__CompoundGrapheme,
@@ -82,6 +99,8 @@
   &__UnclearSign,
   &__Joiner,
   &__glossJoiner
+    @include commentary-protocols
+
     &--BROKEN_AWAY
       color: darkgrey
 
@@ -91,6 +110,10 @@
   &__IntentionalOmission,
   &__Removal
     @include normal-font
+    @include commentary-protocols
+
+  &__UnknownNumberOfSigns
+    @include commentary-protocols
 
   &__Tabulation
     display: inline-block

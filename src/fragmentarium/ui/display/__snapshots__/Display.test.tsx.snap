@@ -25,25 +25,54 @@ exports[`Snapshot 1`] = `
     class="Transliteration"
   >
     <li
-      class="Transliteration__ControlLine"
+      class="Transliteration__DollarAndAtLine"
     >
-      <span>
-        @
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-          obverse
-        </span>
-      </span>
+      (obverse?!)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (object Stone wig)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (h1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (m=division paragraph 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (colophon)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (seal 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (composite)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (div part 1)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (end part)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (m=locator o 1)
     </li>
     <li
       class="Transliteration__TextLine"
@@ -4385,51 +4414,213 @@ exports[`Snapshot 1`] = `
       <span />
     </li>
     <li
-      class="Transliteration__RulingDollarLine"
+      class="Transliteration__TextLine"
     >
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
-    </li>
-    <li
-      class="Transliteration__RulingDollarLine"
-    >
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
-      <div
-        class="Transliteration__ruling"
-      />
+      <sup>
+        (
+        9
+        )
+      </sup>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-bs"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-bs"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-cm"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-cm"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-qt"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-qt"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN Transliteration__wordSeparator--commentary-protocol-zz"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-zz"
+      >
+        <span
+          class=""
+        >
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
+        </span>
+      </span>
     </li>
     <li
       class="Transliteration__DollarAndAtLine"
     >
-      (obverse)
+      (line continues !?)
     </li>
     <li
       class="Transliteration__DollarAndAtLineWithParenthesis"
     >
       (image 1 = foo)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLineWithParenthesis"
+    >
+      (anything goes)
+    </li>
+    <li
+      class="Transliteration__DollarAndAtLine"
+    >
+      (seal 1)
     </li>
   </ol>
 </div>

@@ -1,10 +1,20 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import DisplayToken, { TokenWrapper } from './DisplayToken'
-import { isEnclosure, isShift, isDocumentOrientedGloss } from './type-guards'
+import DisplayToken from './DisplayToken'
+import {
+  isEnclosure,
+  isShift,
+  isDocumentOrientedGloss,
+  isCommentaryProtocol,
+} from './type-guards'
 
 import './Display.sass'
-import { Shift, Token } from 'fragmentarium/domain/token'
+import {
+  Shift,
+  Token,
+  CommentaryProtocol,
+  Protocol,
+} from 'fragmentarium/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = [],
@@ -32,14 +42,31 @@ function isOpenEnclosure(token: Token): boolean {
   return isEnclosure(token) && ['CENTER', 'LEFT'].includes(token.side)
 }
 
+function GlossWrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  return (
+    <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
+  )
+}
+
 class LineAccumulator {
   result: React.ReactNode[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
+  private protocol: Protocol | null = null
+
+  get bemModifiers(): readonly string[] {
+    return this.protocol === null
+      ? [this.language]
+      : [this.language, this.protocol.replace('!', 'commentary-protocol-')]
+  }
 
   applyLanguage(token: Shift): void {
     this.language = token.language
+  }
+
+  applyCommentaryProtocol(token: CommentaryProtocol): void {
+    this.protocol = token.value
   }
 
   pushToken(token: Token): void {
@@ -47,25 +74,19 @@ class LineAccumulator {
       this.pushSeparator(this.result)
     }
 
-    const glossWrapper: TokenWrapper = ({
-      children,
-    }: PropsWithChildren<{}>): JSX.Element => (
-      <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
-    )
-
     this.result.push(
       this.inGloss && !isEnclosure(token) ? (
         <DisplayToken
           key={this.result.length}
           token={token}
-          bemModifiers={[this.language]}
-          Wrapper={glossWrapper}
+          bemModifiers={this.bemModifiers}
+          Wrapper={GlossWrapper}
         />
       ) : (
         <DisplayToken
           key={this.result.length}
           token={token}
-          bemModifiers={[this.language]}
+          bemModifiers={this.bemModifiers}
         />
       )
     )
@@ -88,16 +109,13 @@ class LineAccumulator {
   private pushSeparator(target: React.ReactNode[]): void {
     target.push(
       this.inGloss ? (
-        <sup
-          key={`${target.length}-separator`}
-          className="Transliteration__DocumentOrientedGloss"
-        >
-          <WordSeparator modifiers={[this.language]} />
-        </sup>
+        <GlossWrapper key={`${target.length}-separator`}>
+          <WordSeparator modifiers={this.bemModifiers} />
+        </GlossWrapper>
       ) : (
         <WordSeparator
           key={`${target.length}-separator`}
-          modifiers={[this.language]}
+          modifiers={this.bemModifiers}
         />
       )
     )
@@ -115,6 +133,8 @@ export default function LineTokens({
         content.reduce((acc: LineAccumulator, token: Token) => {
           if (isShift(token)) {
             acc.applyLanguage(token)
+          } else if (isCommentaryProtocol(token)) {
+            acc.applyCommentaryProtocol(token)
           } else if (isDocumentOrientedGloss(token)) {
             token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
           } else {

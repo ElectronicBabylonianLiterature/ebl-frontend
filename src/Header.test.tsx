@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
 import { AuthenticationContext, User } from 'auth/Auth'
@@ -14,7 +14,7 @@ beforeEach(() => {
 })
 
 describe('Logged out', () => {
-  beforeEach(() => renderHeader(false))
+  beforeEach(async () => await renderHeader(false))
 
   commonTests()
 
@@ -24,11 +24,11 @@ describe('Logged out', () => {
 })
 
 describe('Logged in', () => {
-  beforeEach(() => renderHeader(true))
+  beforeEach(async () => await renderHeader(true))
 
   commonTests()
 
-  test('Logout button', () => {
+  test('Logout button', async () => {
     expect(screen.getByText('Logout Test User')).toBeVisible()
   })
 })
@@ -50,13 +50,15 @@ function commonTests(): void {
   })
 }
 
-function renderHeader(loggedIn): void {
-  jest.spyOn(auth, 'isAuthenticated').mockReturnValueOnce(loggedIn)
-  render(
-    <MemoryRouter>
-      <AuthenticationContext.Provider value={auth}>
-        <Header />
-      </AuthenticationContext.Provider>
-    </MemoryRouter>
-  )
+async function renderHeader(loggedIn: boolean): Promise<void> {
+  auth.isAuthenticated.mockReturnValue(loggedIn)
+  await act(async () => {
+    render(
+      <MemoryRouter>
+        <AuthenticationContext.Provider value={auth}>
+          <Header />
+        </AuthenticationContext.Provider>
+      </MemoryRouter>
+    )
+  })
 }

@@ -1,4 +1,5 @@
-import { Line, LineNumber, LineNumberRange } from '../../domain/text'
+import { Line } from '../../domain/line'
+import { LineNumber, LineNumberRange } from '../../domain/line-number'
 import React from 'react'
 import { isTextLine } from './type-guards'
 

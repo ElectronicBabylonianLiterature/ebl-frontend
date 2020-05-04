@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
+import { Text } from 'fragmentarium/domain/text'
 import {
   Line,
-  Text,
   DollarAndAtLine,
   RulingDollarLine,
-} from 'fragmentarium/domain/text'
+} from 'fragmentarium/domain/line'
 import './Display.sass'
 import _ from 'lodash'
 import LineTokens from './LineTokens'
