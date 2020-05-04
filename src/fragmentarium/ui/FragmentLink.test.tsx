@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
 import FragmentLink from './FragmentLink'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 
 const chance = new Chance()
 const children = 'A link'

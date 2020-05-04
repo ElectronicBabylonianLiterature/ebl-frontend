@@ -1,6 +1,7 @@
 import { factory } from 'factory-girl'
 import { Chance } from 'chance'
-import { Fragment, RecordEntry, Folio } from 'fragmentarium/domain/fragment'
+import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'

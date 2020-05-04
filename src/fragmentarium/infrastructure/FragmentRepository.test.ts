@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-helpers/utils'
 import FragmentRepository from './FragmentRepository'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import { fragment, fragmentDto } from 'test-helpers/test-fragment'
 import { ApiError } from 'http/ApiClient'
 import { annotations, annotationsDto } from 'test-helpers/test-annotation'

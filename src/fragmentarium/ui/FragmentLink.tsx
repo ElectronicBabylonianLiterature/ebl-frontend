@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { stringify } from 'query-string'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 
 export function createFragmentUrl(number) {
   // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505

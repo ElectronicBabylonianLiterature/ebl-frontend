@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import { ImageRepository } from 'fragmentarium/application/FragmentService'
 
 class ApiImageRepository implements ImageRepository {

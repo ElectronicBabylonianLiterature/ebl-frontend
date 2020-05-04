@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import { factory } from 'factory-girl'
 
 const image = new Blob([''], { type: 'image/jpeg' })

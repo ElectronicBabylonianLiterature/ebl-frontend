@@ -4,7 +4,7 @@ import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Images from './Images'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'

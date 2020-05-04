@@ -15,7 +15,8 @@ import serializeReference from 'bibliography/application/serializeReference'
 import usePromiseEffect from 'common/usePromiseEffect'
 
 import './CuneiformFragment.css'
-import { Fragment, Folio } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 
 const ContentSection: FunctionComponent = ({ children }) => (
   <section className="CuneiformFragment__content">{children}</section>

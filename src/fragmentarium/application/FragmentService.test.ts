@@ -9,7 +9,7 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'fragmentarium/domain/Lemmatization'
 import Lemma from 'fragmentarium/domain/Lemma'
-import { Folio } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import createLemmatizationTestText from 'test-helpers/test-text'
