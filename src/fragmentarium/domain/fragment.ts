@@ -36,6 +36,7 @@ const folioTypes: { readonly [key: string]: FolioType } = {
   USK: { name: 'Koch', hasImage: true },
   ILF: { name: 'Finkel', hasImage: true },
   RB: { name: 'Borger', hasImage: true },
+  SP: { name: 'Parpola', hasImage: true },
 }
 
 export class Folio {

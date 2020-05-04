@@ -17,6 +17,7 @@ describe('Folio', () => {
     ['USK', 'Koch', true],
     ['ILF', 'Finkel', true],
     ['RB', 'Borger', true],
+    ['SP', 'Parpola', true],
   ] as [string, string, boolean][])(
     '%s folios',
     (name, humanized, hasImage) => {
