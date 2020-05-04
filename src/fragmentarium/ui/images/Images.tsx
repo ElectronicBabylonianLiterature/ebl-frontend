@@ -43,7 +43,7 @@ class TabController {
     this.history = history
   }
 
-  get hasNoImages() {
+  get hasNoImages(): boolean {
     return (
       !this.fragment.hasPhoto &&
       this.fragment.folios.every((folio) => !folio.hasImage) &&

@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react'
+import React, { useState, FunctionComponent, PropsWithChildren } from 'react'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -18,7 +18,9 @@ import './CuneiformFragment.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 
-const ContentSection: FunctionComponent = ({ children }) => (
+const ContentSection: FunctionComponent = ({
+  children,
+}: PropsWithChildren<{}>) => (
   <section className="CuneiformFragment__content">{children}</section>
 )
 

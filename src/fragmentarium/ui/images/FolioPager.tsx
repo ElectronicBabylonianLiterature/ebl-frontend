@@ -10,8 +10,14 @@ type Props = {
   data: FolioPagerData
   folio: Folio
 }
-function FolioPager({ data, folio }: Props) {
-  const PagerLink = ({ label, direction }) => (
+function FolioPager({ data, folio }: Props): JSX.Element {
+  const PagerLink = ({
+    label,
+    direction,
+  }: {
+    label: string
+    direction: 'previous' | 'next'
+  }): JSX.Element => (
     <FragmentLink
       number={data[direction].fragmentNumber}
       folio={
