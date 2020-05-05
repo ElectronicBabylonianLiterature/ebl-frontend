@@ -32,7 +32,7 @@ class BibliographySearch extends Component<Props, { query: string }> {
               aria-label="Query"
               type="text"
               value={this.state.query}
-              placeholder="Author Year Title"
+              placeholder="Author Year Title / Container-Title-Short Collection-Number"
               onChange={this.onChange}
             />
           </Col>
