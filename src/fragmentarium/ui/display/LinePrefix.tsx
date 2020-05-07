@@ -4,7 +4,7 @@ import React from 'react'
 import { isTextLine } from './type-guards'
 
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
-  return `${formatLineNumber(start)}-${formatLineNumber(end)}`
+  return `${formatLineNumber(start)}–${formatLineNumber(end)}`
 }
 
 function formatLineNumber({
