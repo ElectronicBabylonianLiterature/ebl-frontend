@@ -725,6 +725,97 @@ exports[`Snapshot 1`] = `
       </span>
     </li>
     <li
+      class="Transliteration__NoteLine"
+    >
+      <span>
+        #note: 
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          this is a note 
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          @i{italic text}
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+           
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          @akk{kur}
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+           
+        </span>
+      </span>
+      <span
+        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+      >
+         
+      </span>
+      <span
+        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+      >
+        <span
+          class=""
+        >
+          @sux{kur}
+        </span>
+      </span>
+    </li>
+    <li
       class="Transliteration__TextLine"
     >
       <sup>

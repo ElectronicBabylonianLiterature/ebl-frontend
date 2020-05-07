@@ -1,5 +1,6 @@
 import { Token } from './token'
 import { LineNumber, LineNumberRange } from './line-number'
+
 export type Line =
   | LineBase
   | TextLine
@@ -17,6 +18,8 @@ export type Line =
   | ObjectAtLine
   | DivisionAtLine
   | CompositeAtLine
+  | NoteLine
+
 export interface LineBase {
   readonly type: string
   readonly prefix: string
@@ -114,4 +117,23 @@ export interface CompositeAtLine extends DollarAndAtLine {
   readonly composite: string
   readonly number: number | null
   readonly text: string
+}
+
+export interface TextPart {
+  readonly type: 'StringPart' | 'EmphasisPart'
+  readonly text: string
+}
+
+export interface LanguagePart {
+  readonly type: 'LanguagePart'
+  readonly language: 'AKKADIAN' | 'SUMERIAN' | 'EMESAL'
+  readonly tokens: readonly Token[]
+}
+
+export type NoteLinePart = TextPart | LanguagePart
+
+export interface NoteLine extends LineBase {
+  readonly type: 'NoteLine'
+  readonly prefix: '#note: '
+  readonly parts: readonly NoteLinePart[]
 }
