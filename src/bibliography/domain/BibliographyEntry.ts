@@ -14,7 +14,7 @@ const authorProperties = [
   'parse-names',
 ]
 
-function getName(author) {
+function getName(author: unknown): string {
   const particle = _.get(author, 'non-dropping-particle', '')
   const family = _.get(author, 'family', '')
   return particle ? `${particle} ${family}` : family
@@ -39,43 +39,43 @@ class BibliographyEntry {
       : {}
   }
 
-  get id() {
+  get id(): string {
     return _.get(this.cslData, 'id', '')
   }
 
-  get primaryAuthor() {
+  get primaryAuthor(): string {
     return _.head(this.authors) || ''
   }
 
-  get authors() {
+  get authors(): string[] {
     return _.get(this.cslData, 'author', []).map(getName)
   }
 
-  get year() {
+  get year(): string {
     const start = _.get(this.cslData, 'issued.date-parts.0.0', '')
     const end = _.get(this.cslData, 'issued.date-parts.1.0', '')
     return end ? `${start}–${end}` : String(start)
   }
 
-  get title() {
+  get title(): string {
     return _.get(this.cslData, 'title', '')
   }
 
-  get shortContainerTitle() {
+  get shortContainerTitle(): string {
     return _.get(this.cslData, 'container-title-short', '')
   }
 
-  get collectionNumber() {
+  get collectionNumber(): string {
     return _.get(this.cslData, 'collection-number', '')
   }
 
-  get link() {
+  get link(): string {
     const url = _.get(this.cslData, 'URL', '')
     const doi = _.get(this.cslData, 'DOI', '')
     return url || (doi ? `https://doi.org/${doi}` : '')
   }
 
-  toHtml() {
+  toHtml(): string {
     return new Cite(_.cloneDeep(this.cslData)).format('bibliography', {
       format: 'html',
       template: 'citation-apa',
@@ -83,7 +83,7 @@ class BibliographyEntry {
     })
   }
 
-  toBibtex() {
+  toBibtex(): string {
     return new Cite(_.cloneDeep(this.cslData)).get({
       format: 'string',
       type: 'string',
@@ -91,7 +91,7 @@ class BibliographyEntry {
     })
   }
 
-  toJson() {
+  toJson(): CslData {
     return this.cslData
   }
 }
