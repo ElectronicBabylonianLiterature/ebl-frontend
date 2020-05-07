@@ -3,8 +3,8 @@ import {
   Enclosure,
   Shift,
   Token,
-} from 'fragmentarium/domain/token'
-import { Line, TextLine } from 'fragmentarium/domain/line'
+} from 'transliteration/domain/token'
+import { Line, TextLine } from 'transliteration/domain/line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [

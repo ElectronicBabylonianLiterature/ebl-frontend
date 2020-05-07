@@ -1,4 +1,4 @@
-import { Line } from 'fragmentarium/domain/line'
+import { Line } from 'transliteration/domain/line'
 
 export const commentaryProtocols: Line = {
   prefix: '9.',

@@ -5,7 +5,7 @@ import Lemmatization, {
 } from 'fragmentarium/domain/Lemmatization'
 
 import Lemma from './Lemma'
-import { Line } from './line'
+import { Line } from 'transliteration/domain/line'
 
 export class Text {
   readonly lines: ReadonlyArray<Line>

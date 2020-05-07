@@ -7,14 +7,12 @@ import {
   isDocumentOrientedGloss,
   isCommentaryProtocol,
 } from './type-guards'
-
-import './Display.sass'
 import {
   Shift,
   Token,
   CommentaryProtocol,
   Protocol,
-} from 'fragmentarium/domain/token'
+} from 'transliteration/domain/token'
 
 function WordSeparator({
   modifiers: bemModifiers = [],

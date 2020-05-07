@@ -1,5 +1,5 @@
-import { Line } from 'fragmentarium/domain/line'
-import { LineNumber, LineNumberRange } from 'fragmentarium/domain/line-number'
+import { Line } from 'transliteration/domain/line'
+import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import React from 'react'
 import { isTextLine } from './type-guards'
 

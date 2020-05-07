@@ -1,4 +1,4 @@
-import { NoteLine } from 'fragmentarium/domain/line'
+import { NoteLine } from 'transliteration/domain/line'
 
 const note: NoteLine = {
   prefix: '#note: ',

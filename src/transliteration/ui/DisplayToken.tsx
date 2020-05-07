@@ -9,7 +9,7 @@ import {
   Gloss,
   Sign,
   EnclosureType,
-} from 'fragmentarium/domain/token'
+} from 'transliteration/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from './type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NamedSign } from 'fragmentarium/domain/token'
+import { NamedSign } from 'transliteration/domain/token'
 
 const subscriptNumbers: ReadonlyMap<string, string> = new Map([
   ['0', '₀'],

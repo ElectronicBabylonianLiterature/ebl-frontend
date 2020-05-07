@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
-import { Token } from 'fragmentarium/domain/token'
+import { Token } from 'transliteration/domain/token'
 
 export class AnnotationToken {
   readonly value: string

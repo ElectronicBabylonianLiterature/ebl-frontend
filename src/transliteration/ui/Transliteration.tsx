@@ -1,12 +1,11 @@
 import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
-import { Text } from 'fragmentarium/domain/text'
 import {
   Line,
   DollarAndAtLine,
   RulingDollarLine,
-} from 'fragmentarium/domain/line'
-import './Display.sass'
+} from 'transliteration/domain/line'
+import './Transliteration.sass'
 import _ from 'lodash'
 import LineTokens from './LineTokens'
 import { LinePrefix } from './LinePrefix'
@@ -109,9 +108,9 @@ function DisplayRulingDollarLine({
 }
 
 export function Transliteration({
-  text: { lines },
+  lines,
 }: {
-  text: Text
+  lines: readonly Line[]
 }): JSX.Element {
   return (
     <ol className="Transliteration">
