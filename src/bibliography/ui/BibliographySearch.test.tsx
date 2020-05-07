@@ -4,8 +4,8 @@ import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import { factory } from 'factory-girl'
-import _ from 'lodash'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import createAuthorRegExp from 'test-helpers/createAuthorRexExp'
 
 const query = 'Börger'
 let entries: BibliographyEntry[]
@@ -35,10 +35,6 @@ beforeEach(async () => {
 test('Fetch results from service', () => {
   expect(bibliographyService.search).toBeCalledWith(query)
 })
-
-function createAuthorRegExp(entry: BibliographyEntry): RegExp {
-  return new RegExp(_.escapeRegExp(entry.primaryAuthor.replace("'", '’')))
-}
 
 test('Result display', async () => {
   await element.findAllByText(createAuthorRegExp(entries[0]))

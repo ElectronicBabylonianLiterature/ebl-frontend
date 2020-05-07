@@ -1,13 +1,13 @@
 import React from 'react'
-import _ from 'lodash'
 import { render, RenderResult, act } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
+import createAuthorRegExp from 'test-helpers/createAuthorRexExp'
 
-const BibliographyWithRouter = withRouter<any, any>(Bibliography)
+const BibliographyWithRouter = withRouter(Bibliography)
 
 let element: RenderResult
 let entries
@@ -36,11 +36,9 @@ describe('Searching bibliography', () => {
       '/bibliography?query=Borger'
     )
 
-    await findByText(new RegExp(_.escapeRegExp(entries[0].primaryAuthor)))
+    await findByText(createAuthorRegExp(entries[0]))
 
-    expect(
-      getByText(new RegExp(_.escapeRegExp(entries[1].primaryAuthor)))
-    ).toBeDefined()
+    expect(getByText(createAuthorRegExp(entries[1]))).toBeDefined()
   })
 
   it('fills in search form query', async () => {
