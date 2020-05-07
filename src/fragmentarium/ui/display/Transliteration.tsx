@@ -9,7 +9,7 @@ import {
 import './Display.sass'
 import _ from 'lodash'
 import LineTokens from './LineTokens'
-import { TextLinePrefix } from './TextLinePrefix'
+import { LinePrefix } from './LinePrefix'
 
 function DisplayLine({
   line,
@@ -22,10 +22,11 @@ function DisplayLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <TextLinePrefix line={line} />,
+    <LinePrefix line={line} />,
     <LineTokens content={content} />
   )
 }
+
 function DisplayDollarAndAtLineWithParenthesis({
   line,
   container = 'div',
@@ -79,6 +80,10 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
+function Ruling(): JSX.Element {
+  return <div className="Transliteration__ruling" />
+}
+
 const rulingsToNumber: ReadonlyMap<string, number> = new Map([
   ['SINGLE', 1],
   ['DOUBLE', 2],
@@ -93,22 +98,14 @@ function DisplayRulingDollarLine({
   container?: string
 }): JSX.Element {
   const rulingLine = line as RulingDollarLine
-  const rulingType = `Transliteration__ruling`
   const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return React.createElement(
     container,
     { className: 'Transliteration__RulingDollarLine' },
-    _.range(0, rulingsNumber).map((value: number) => {
-      return <DisplayEachRuling key={value} rulingType={rulingType} />
+    _.range(0, rulingsNumber).map((number: number) => {
+      return <Ruling key={number} />
     })
   )
-}
-function DisplayEachRuling({
-  rulingType,
-}: {
-  rulingType: string
-}): JSX.Element {
-  return <div className={rulingType} />
 }
 
 export function Transliteration({
