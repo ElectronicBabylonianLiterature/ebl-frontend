@@ -30,7 +30,7 @@
   "private": true,
   "engines": {
     "yarn": "^1.5.1",
-    "node": "^13.0.1"
+    "node": "^14.2.0"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.7.0",
