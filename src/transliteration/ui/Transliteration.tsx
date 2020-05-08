@@ -81,7 +81,20 @@ function DisplayNoteLine({
     { className: classNames([`Transliteration__${noteLine.type}`]) },
     noteLine.parts.map((part: NoteLinePart, index: number) =>
       isLanguagePart(part) ? (
-        <LineTokens key={index} content={part.tokens} />
+        <LineTokens
+          key={index}
+          content={[
+            {
+              enclosureType: [],
+              cleanValue: '',
+              value: '',
+              language: part.language,
+              normalized: false,
+              type: 'LanguageShift',
+            },
+            ...part.tokens,
+          ]}
+        />
       ) : (
         <DispalyTextPart key={index} part={part} />
       )
