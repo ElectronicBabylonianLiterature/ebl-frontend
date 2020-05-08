@@ -728,7 +728,13 @@ exports[`Snapshot 1`] = `
       class="Transliteration__NoteLine"
     >
       <span>
-        #note: 
+        this is a note 
+      </span>
+      <em>
+        italic text
+      </em>
+      <span>
+         
       </span>
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -736,27 +742,38 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class=""
         >
-          this is a note 
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
         </span>
       </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
+      <span>
          
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-          @i{italic text}
-        </span>
       </span>
       <span
         class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -764,54 +781,34 @@ exports[`Snapshot 1`] = `
          
       </span>
       <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
+        class="Transliteration__Word Transliteration__Word--AKKADIAN"
       >
         <span
           class=""
         >
-           
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-          @akk{kur}
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-           
-        </span>
-      </span>
-      <span
-        class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-      >
-         
-      </span>
-      <span
-        class="Transliteration__ValueToken Transliteration__ValueToken--AKKADIAN"
-      >
-        <span
-          class=""
-        >
-          @sux{kur}
+          <span
+            class="Transliteration__Reading"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__ValueToken"
+              >
+                <span
+                  class=""
+                >
+                  kur
+                </span>
+              </span>
+              <sup
+                class="Transliteration__modifier"
+              />
+              <sup
+                class="Transliteration__flag"
+              />
+            </span>
+          </span>
         </span>
       </span>
     </li>

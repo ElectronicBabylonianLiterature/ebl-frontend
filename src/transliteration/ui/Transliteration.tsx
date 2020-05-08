@@ -1,14 +1,18 @@
-import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
-import {
-  Line,
-  DollarAndAtLine,
-  RulingDollarLine,
-} from 'transliteration/domain/line'
-import './Transliteration.sass'
 import _ from 'lodash'
-import LineTokens from './LineTokens'
+import React, { FunctionComponent } from 'react'
+import {
+  DollarAndAtLine,
+  Line,
+  NoteLine,
+  NoteLinePart,
+  RulingDollarLine,
+  TextPart,
+} from 'transliteration/domain/line'
 import { LinePrefix } from './LinePrefix'
+import LineTokens from './LineTokens'
+import './Transliteration.sass'
+import { isLanguagePart } from './type-guards'
 
 function DisplayLine({
   line,
@@ -56,6 +60,35 @@ function DisplayDollarAndAtLine({
   )
 }
 
+function DispalyTextPart({
+  part: { type, text },
+}: {
+  part: TextPart
+}): JSX.Element {
+  return type === 'EmphasisPart' ? <em>{text}</em> : <span>{text}</span>
+}
+
+function DisplayNoteLine({
+  line,
+  container = 'div',
+}: {
+  line: Line
+  container?: string
+}): JSX.Element {
+  const noteLine = line as NoteLine
+  return React.createElement(
+    container,
+    { className: classNames([`Transliteration__${noteLine.type}`]) },
+    noteLine.parts.map((part: NoteLinePart, index: number) =>
+      isLanguagePart(part) ? (
+        <LineTokens key={index} content={part.tokens} />
+      ) : (
+        <DispalyTextPart key={index} part={part} />
+      )
+    )
+  )
+}
+
 const lineComponents: ReadonlyMap<
   string,
   FunctionComponent<{
@@ -77,6 +110,7 @@ const lineComponents: ReadonlyMap<
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
+  ['NoteLine', DisplayNoteLine],
 ])
 
 function Ruling(): JSX.Element {

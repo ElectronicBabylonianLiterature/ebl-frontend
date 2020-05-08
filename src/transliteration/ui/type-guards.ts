@@ -1,10 +1,15 @@
 import {
+  LanguagePart,
+  Line,
+  NoteLinePart,
+  TextLine,
+} from 'transliteration/domain/line'
+import {
   CommentaryProtocol,
   Enclosure,
   Shift,
   Token,
 } from 'transliteration/domain/token'
-import { Line, TextLine } from 'transliteration/domain/line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -33,4 +38,8 @@ export function isCommentaryProtocol(
 
 export function isTextLine(line: Line): line is TextLine {
   return line.type === 'TextLine'
+}
+
+export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
+  return part.type === 'LanguagePart'
 }
