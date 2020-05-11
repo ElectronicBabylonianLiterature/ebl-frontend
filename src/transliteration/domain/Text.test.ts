@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import Lemmatization, {
   LemmatizationToken,
-} from 'fragmentarium/domain/Lemmatization'
-import Lemma from 'fragmentarium/domain/Lemma'
+} from 'transliteration/domain/Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
 import createLemmatizationTestText from 'test-helpers/test-text'
 
 test('createLemmatization', async () => {

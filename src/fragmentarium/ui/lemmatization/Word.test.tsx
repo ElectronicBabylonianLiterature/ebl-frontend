@@ -3,7 +3,7 @@ import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { clickNth } from 'test-helpers/utils'
 import Word from './Word'
-import Lemma from 'fragmentarium/domain/Lemma'
+import Lemma from 'transliteration/domain/Lemma'
 import _ from 'lodash'
 
 let element

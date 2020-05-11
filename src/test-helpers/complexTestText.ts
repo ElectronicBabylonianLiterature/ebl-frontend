@@ -1,4 +1,4 @@
-import { Text } from 'fragmentarium/domain/text'
+import { Text } from 'transliteration/domain/text'
 import { Line } from 'transliteration/domain/line'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
 import * as at from 'test-helpers/lines/at'

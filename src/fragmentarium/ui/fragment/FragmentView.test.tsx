@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
-import Lemmatization from 'fragmentarium/domain/Lemmatization'
+import Lemmatization from 'transliteration/domain/Lemmatization'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
 
 const message = 'message'

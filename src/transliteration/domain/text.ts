@@ -2,7 +2,7 @@ import { immerable } from 'immer'
 import Lemmatization, {
   LemmatizationToken,
   UniqueLemma,
-} from 'fragmentarium/domain/Lemmatization'
+} from 'transliteration/domain/Lemmatization'
 
 import Lemma from './Lemma'
 import { Line } from 'transliteration/domain/line'

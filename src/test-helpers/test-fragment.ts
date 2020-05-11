@@ -1,6 +1,6 @@
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Text } from 'fragmentarium/domain/text'
+import { Text } from 'transliteration/domain/text'
 import { Line } from 'transliteration/domain/line'
 import Museum from 'fragmentarium/domain/museum'
 

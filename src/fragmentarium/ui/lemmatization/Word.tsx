@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 interface Props {
   token: LemmatizationToken

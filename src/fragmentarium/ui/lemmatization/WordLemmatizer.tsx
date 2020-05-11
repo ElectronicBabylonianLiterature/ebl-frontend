@@ -5,7 +5,7 @@ import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
 
 import './WordLemmatizer.css'
-import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 interface Props {
   fragmentService

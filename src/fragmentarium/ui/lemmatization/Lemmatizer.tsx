@@ -4,12 +4,12 @@ import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 import WordLemmatizer from './WordLemmatizer'
 import withData, { WithoutData } from 'http/withData'
-import Lemmatization from 'fragmentarium/domain/Lemmatization'
+import Lemmatization from 'transliteration/domain/Lemmatization'
 
 import LemmatizationHelp from './LemmatizationHelp'
 
 import './Lemmatizer.css'
-import { Text } from 'fragmentarium/domain/text'
+import { Text } from 'transliteration/domain/text'
 
 type Props = {
   data: Lemmatization

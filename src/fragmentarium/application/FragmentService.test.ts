@@ -7,8 +7,8 @@ import FragmentService from './FragmentService'
 
 import Lemmatization, {
   LemmatizationToken,
-} from 'fragmentarium/domain/Lemmatization'
-import Lemma from 'fragmentarium/domain/Lemma'
+} from 'transliteration/domain/Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
 import Folio from 'fragmentarium/domain/Folio'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
