@@ -1,7 +1,7 @@
 import { Line } from 'transliteration/domain/line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import React from 'react'
-import { isTextLine } from './type-guards'
+import { isTextLine } from '../domain/type-guards'
 
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
   return `${formatLineNumber(start)}–${formatLineNumber(end)}`

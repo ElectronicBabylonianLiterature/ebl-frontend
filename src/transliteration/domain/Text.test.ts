@@ -4,6 +4,14 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import createLemmatizationTestText from 'test-helpers/test-text'
+import note from 'test-helpers/lines/note'
+import { singleRuling } from 'test-helpers/lines/dollar'
+import { Text } from 'transliteration/domain/text'
+
+test('notes', async () => {
+  const text = new Text({ lines: [singleRuling, note] })
+  expect(text.notes).toEqual([note])
+})
 
 test('createLemmatization', async () => {
   const [text, words] = await createLemmatizationTestText()
@@ -16,7 +24,7 @@ test('createLemmatization', async () => {
     nu: [[new Lemma(words[3])]],
   }
   const expected = new Lemmatization(
-    ['1.'],
+    ['1.', '#note: '],
     [
       [
         new LemmatizationToken(
@@ -31,6 +39,14 @@ test('createLemmatization', async () => {
           [new Lemma(words[1])],
           [[new Lemma(words[3])]]
         ),
+      ],
+      [
+        new LemmatizationToken('this is a note ', false),
+        new LemmatizationToken('@i{italic text}', false),
+        new LemmatizationToken(' ', false),
+        new LemmatizationToken('@akk{kur}', false),
+        new LemmatizationToken(' ', false),
+        new LemmatizationToken('@sux{kur}', false),
       ],
     ]
   )

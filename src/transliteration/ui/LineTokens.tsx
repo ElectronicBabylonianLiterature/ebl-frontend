@@ -6,7 +6,7 @@ import {
   isShift,
   isDocumentOrientedGloss,
   isCommentaryProtocol,
-} from './type-guards'
+} from '../domain/type-guards'
 import {
   Shift,
   Token,

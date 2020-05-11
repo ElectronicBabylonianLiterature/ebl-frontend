@@ -3,20 +3,24 @@ import Lemmatization, {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
-
+import { Line, NoteLine } from 'transliteration/domain/line'
 import Lemma from './Lemma'
-import { Line } from 'transliteration/domain/line'
+import { isNoteLine } from './type-guards'
 
 export class Text {
-  readonly lines: ReadonlyArray<Line>
+  readonly lines: readonly Line[]
 
-  constructor({ lines }: { lines: ReadonlyArray<Line> }) {
+  constructor({ lines }: { lines: readonly Line[] }) {
     this.lines = lines
+  }
+
+  get notes(): readonly NoteLine[] {
+    return this.lines.filter(isNoteLine)
   }
 
   createLemmatization(
     lemmas: { [key: string]: Lemma },
-    suggestions: { [key: string]: ReadonlyArray<UniqueLemma> }
+    suggestions: { [key: string]: readonly UniqueLemma[] }
   ): Lemmatization {
     return new Lemmatization(
       this.lines.map((line) => line.prefix),

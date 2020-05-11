@@ -3,6 +3,7 @@ import {
   Line,
   NoteLinePart,
   TextLine,
+  NoteLine,
 } from 'transliteration/domain/line'
 import {
   CommentaryProtocol,
@@ -42,4 +43,8 @@ export function isTextLine(line: Line): line is TextLine {
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
   return part.type === 'LanguagePart'
+}
+
+export function isNoteLine(line: Line): line is NoteLine {
+  return line.type === 'NoteLine'
 }

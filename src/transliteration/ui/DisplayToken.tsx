@@ -11,7 +11,7 @@ import {
   EnclosureType,
 } from 'transliteration/domain/token'
 import addAccents from './addAccents'
-import { isEnclosure } from './type-guards'
+import { isEnclosure } from '../domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'

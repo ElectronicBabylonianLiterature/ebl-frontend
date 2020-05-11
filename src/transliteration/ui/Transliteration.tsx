@@ -12,7 +12,7 @@ import {
 import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
 import './Transliteration.sass'
-import { isLanguagePart } from './type-guards'
+import { isLanguagePart } from '../domain/type-guards'
 
 function DisplayLine({
   line,
