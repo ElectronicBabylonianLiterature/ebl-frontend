@@ -8,14 +8,18 @@ import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
 
 export class Text {
-  readonly lines: readonly Line[]
+  private readonly allLines: readonly Line[]
 
   constructor({ lines }: { lines: readonly Line[] }) {
-    this.lines = lines
+    this.allLines = lines
+  }
+
+  get lines(): readonly Line[] {
+    return this.allLines.filter((line) => !isNoteLine(line))
   }
 
   get notes(): readonly NoteLine[] {
-    return this.lines.filter(isNoteLine)
+    return this.allLines.filter(isNoteLine)
   }
 
   createLemmatization(
@@ -23,8 +27,8 @@ export class Text {
     suggestions: { [key: string]: readonly UniqueLemma[] }
   ): Lemmatization {
     return new Lemmatization(
-      this.lines.map((line) => line.prefix),
-      this.lines
+      this.allLines.map((line) => line.prefix),
+      this.allLines
         .map((line) => line.content)
         .map((tokens) =>
           tokens.map((token) =>

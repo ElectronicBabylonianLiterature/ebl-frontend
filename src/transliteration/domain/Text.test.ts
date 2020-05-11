@@ -8,9 +8,14 @@ import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { Text } from 'transliteration/domain/text'
 
-test('notes', async () => {
-  const text = new Text({ lines: [singleRuling, note] })
+const text = new Text({ lines: [singleRuling, note] })
+
+test('notes', () => {
   expect(text.notes).toEqual([note])
+})
+
+test('lines', () => {
+  expect(text.lines).toEqual([singleRuling])
 })
 
 test('createLemmatization', async () => {

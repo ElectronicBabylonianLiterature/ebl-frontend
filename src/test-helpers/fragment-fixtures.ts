@@ -43,10 +43,6 @@ factory.define('folio', Folio, {
   number: factory.chance('string'),
 })
 
-factory.define('text', Text, {
-  lines: factory.chance('pickset', complexText.lines, 5),
-})
-
 factory.define('uncuratedReference', Object, {
   document: factory.chance('sentence'),
   lines: async () => await factory.chance('n', chance.natural, 5)(),
@@ -97,7 +93,7 @@ factory.define('fragment', Fragment, {
   script: factory.chance('pickone', ['NA', 'NB']),
   folios: async () => await factory.buildMany('folio', 2),
   record: async () => await factory.buildMany('record', 2),
-  text: factory.assocAttrs('text'),
+  text: complexText,
   notes: factory.chance('sentence'),
   museum: Museum.of('The British Museum'),
   references: async () => await factory.buildMany('referenceDto', 2),

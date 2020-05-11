@@ -7,6 +7,7 @@ import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
+import { act } from 'react-dom/test-utils'
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -17,27 +18,29 @@ let session
 let container
 let element
 
-function renderFragmentView(
+async function renderFragmentView(
   number: string,
   folioName: string | null,
   folioNumber: string | null,
   tab: string | null
-): void {
-  element = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <FragmentView
-          number={number}
-          folioName={folioName}
-          folioNumber={folioNumber}
-          tab={tab}
-          fragmentService={fragmentService}
-          fragmentSearchService={fragmentSearchService}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
-  container = element.container
+): Promise<void> {
+  await act(async () => {
+    element = render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <FragmentView
+            number={number}
+            folioName={folioName}
+            folioNumber={folioNumber}
+            tab={tab}
+            fragmentService={fragmentService}
+            fragmentSearchService={fragmentSearchService}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+    container = element.container
+  })
 }
 
 beforeEach(async () => {
@@ -102,7 +105,7 @@ describe('Fragment is loaded', () => {
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
-    renderFragmentView(
+    await renderFragmentView(
       fragmentNumber,
       selectedFolio.name,
       selectedFolio.number,
@@ -149,7 +152,7 @@ describe('Fragment without an image is loaded', () => {
     })
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
-    renderFragmentView(fragment.number, null, null, null)
+    await renderFragmentView(fragment.number, null, null, null)
     await element.findByText('Display')
   })
 
@@ -162,10 +165,10 @@ describe('Fragment without an image is loaded', () => {
 })
 
 describe('On error', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
-    renderFragmentView(fragmentNumber, null, null, null)
+    await renderFragmentView(fragmentNumber, null, null, null)
   })
 
   it('Shows the error message', async () => {

@@ -9,10 +9,11 @@ import {
   RulingDollarLine,
   TextPart,
 } from 'transliteration/domain/line'
+import { Text } from 'transliteration/domain/text'
+import { isLanguagePart } from '../domain/type-guards'
 import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
 import './Transliteration.sass'
-import { isLanguagePart } from '../domain/type-guards'
 
 function DisplayLine({
   line,
@@ -72,14 +73,13 @@ function DisplayNoteLine({
   line,
   container = 'div',
 }: {
-  line: Line
+  line: NoteLine
   container?: string
 }): JSX.Element {
-  const noteLine = line as NoteLine
   return React.createElement(
     container,
-    { className: classNames([`Transliteration__${noteLine.type}`]) },
-    noteLine.parts.map((part: NoteLinePart, index: number) =>
+    { className: classNames([`Transliteration__${line.type}`]) },
+    line.parts.map((part: NoteLinePart, index: number) =>
       isLanguagePart(part) ? (
         <LineTokens
           key={index}
@@ -123,7 +123,6 @@ const lineComponents: ReadonlyMap<
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
-  ['NoteLine', DisplayNoteLine],
 ])
 
 function Ruling(): JSX.Element {
@@ -154,17 +153,20 @@ function DisplayRulingDollarLine({
   )
 }
 
-export function Transliteration({
-  lines,
-}: {
-  lines: readonly Line[]
-}): JSX.Element {
+export function Transliteration({ text }: { text: Text }): JSX.Element {
   return (
-    <ol className="Transliteration">
-      {lines.map((line: Line, index: number) => {
-        const LineComponent = lineComponents.get(line.type) || DisplayLine
-        return <LineComponent key={index} container="li" line={line} />
-      })}
-    </ol>
+    <>
+      <ol className="Transliteration">
+        {text.lines.map((line: Line, index: number) => {
+          const LineComponent = lineComponents.get(line.type) || DisplayLine
+          return <LineComponent key={index} container="li" line={line} />
+        })}
+      </ol>
+      <ol className="Transliteration">
+        {text.notes.map((line: NoteLine, index: number) => (
+          <DisplayNoteLine key={index} container="li" line={line} />
+        ))}
+      </ol>
+    </>
   )
 }
