@@ -170,7 +170,7 @@ export function Transliteration({ text }: { text: Text }): JSX.Element {
         {Array.from(text.notes).flatMap(([number, lines]) =>
           lines.map((line, index) => (
             <li key={`${number}-${index}`}>
-              <a href={`#line-${number}`}>{index+1}</a>{' '}
+              <a href={`#line-${number}`}>{index + 1}</a>{' '}
               <DisplayNoteLine container="span" line={line} />
             </li>
           ))
