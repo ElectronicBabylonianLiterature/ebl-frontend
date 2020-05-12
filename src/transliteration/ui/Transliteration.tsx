@@ -165,9 +165,23 @@ function noteNumber(
 }
 
 export function Transliteration({ text }: { text: Text }): JSX.Element {
+  const firstLineNotes = text.notes.get(0)
   return (
     <>
       <ol className="Transliteration">
+        {firstLineNotes && (
+          <li>
+            {firstLineNotes.map((note, index) => {
+              return (
+                <>
+                  <a key={index} href={`#note-${index + 1}`}>
+                    {index + 1}
+                  </a>{' '}
+                </>
+              )
+            })}
+          </li>
+        )}
         {text.lines.map((line: Line, index: number) => {
           const LineComponent = lineComponents.get(line.type) || DisplayLine
           return (
