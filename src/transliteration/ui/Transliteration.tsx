@@ -159,17 +159,20 @@ export function Transliteration({ text }: { text: Text }): JSX.Element {
       <ol className="Transliteration">
         {text.lines.map((line: Line, index: number) => {
           const LineComponent = lineComponents.get(line.type) || DisplayLine
-          return <LineComponent key={index} container="li" line={line} />
+          return (
+            <li key={index} id={`line-${index + 1}`}>
+              <LineComponent container="span" line={line} />
+            </li>
+          )
         })}
       </ol>
       <ol className="Transliteration">
         {Array.from(text.notes).flatMap(([number, lines]) =>
           lines.map((line, index) => (
-            <DisplayNoteLine
-              key={`${number}-${index}`}
-              container="li"
-              line={line}
-            />
+            <li key={`${number}-${index}`}>
+              <a href={`#line-${number}`}>{index+1}</a>{' '}
+              <DisplayNoteLine container="span" line={line} />
+            </li>
           ))
         )}
       </ol>
