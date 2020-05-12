@@ -153,6 +153,17 @@ function DisplayRulingDollarLine({
   )
 }
 
+function noteNumber(
+  notes: ReadonlyMap<number, readonly NoteLine[]>,
+  lineIndex: number,
+  noteIndex: number
+): number {
+  const numberOfNotesOnPreviousLines = _.sum(
+    _.range(0, lineIndex).map((index) => notes.get(index)?.length ?? 0)
+  )
+  return 1 + noteIndex + numberOfNotesOnPreviousLines
+}
+
 export function Transliteration({ text }: { text: Text }): JSX.Element {
   return (
     <>
@@ -161,19 +172,32 @@ export function Transliteration({ text }: { text: Text }): JSX.Element {
           const LineComponent = lineComponents.get(line.type) || DisplayLine
           return (
             <li key={index} id={`line-${index + 1}`}>
-              <LineComponent container="span" line={line} />
+              <LineComponent container="span" line={line} />{' '}
+              {text.notes.get(index + 1)?.map((line, noteIndex) => {
+                const number = noteNumber(text.notes, index + 1, noteIndex)
+                return (
+                  <>
+                    <a key={noteIndex} href={`#note-${number}`}>
+                      {number}
+                    </a>{' '}
+                  </>
+                )
+              })}
             </li>
           )
         })}
       </ol>
       <ol className="Transliteration">
-        {Array.from(text.notes).flatMap(([number, lines]) =>
-          lines.map((line, index) => (
-            <li key={`${number}-${index}`}>
-              <a href={`#line-${number}`}>{index + 1}</a>{' '}
-              <DisplayNoteLine container="span" line={line} />
-            </li>
-          ))
+        {Array.from(text.notes).flatMap(([lineNumber, lines]) =>
+          lines.map((line, index) => {
+            const number = noteNumber(text.notes, lineNumber, index)
+            return (
+              <li key={`${lineNumber}-${index}`} id={`note-${number}`}>
+                <a href={`#line-${lineNumber}`}>{number}</a>{' '}
+                <DisplayNoteLine container="span" line={line} />
+              </li>
+            )
+          })
         )}
       </ol>
     </>
