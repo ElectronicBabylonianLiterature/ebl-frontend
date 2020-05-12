@@ -169,8 +169,8 @@ export function Transliteration({ text }: { text: Text }): JSX.Element {
   return (
     <>
       <ol className="Transliteration">
-        {firstLineNotes && (
-          <li>
+        {firstLineNotes && firstLineNotes.length > 0 && (
+          <li id="line-0">
             {firstLineNotes.map((note, index) => {
               return (
                 <>
