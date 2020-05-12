@@ -18,8 +18,18 @@ export class Text {
     return this.allLines.filter((line) => !isNoteLine(line))
   }
 
-  get notes(): readonly NoteLine[] {
-    return this.allLines.filter(isNoteLine)
+  get notes(): ReadonlyMap<number, readonly NoteLine[]> {
+    const notes: Map<number, NoteLine[]> = new Map([[0, []]])
+    let lineNumber = 0
+    for (const line of this.allLines) {
+      if (isNoteLine(line)) {
+        notes.get(lineNumber)?.push(line)
+      } else {
+        lineNumber++
+        notes.set(lineNumber, [])
+      }
+    }
+    return notes
   }
 
   createLemmatization(
