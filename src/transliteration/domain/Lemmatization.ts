@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import produce, { Draft, immerable } from 'immer'
+import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Lemma from './Lemma'
 
@@ -94,36 +94,30 @@ export default class Lemmatization {
     columnIndex: number,
     uniqueLemma: UniqueLemma
   ): Lemmatization {
-    return produce((draft: Draft<Lemmatization>, token) => {
-      draft.tokens[rowIndex][columnIndex] = token
-    })(this, this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma))
+    return produce(this, (draft: Draft<Lemmatization>) => {
+      draft.tokens[rowIndex][columnIndex] = castDraft(
+        this.tokens[rowIndex][columnIndex].setUniqueLemma(uniqueLemma)
+      )
+    })
   }
 
   applySuggestions(): Lemmatization {
-    return produce((draft: Draft<Lemmatization>, tokens) => {
-      draft.tokens = tokens
-    })(
-      this,
-      this._mapTokens((token) => token.applySuggestion())
-    )
+    return this.mapTokens((token) => token.applySuggestion())
   }
 
   clearSuggestionFlags(): Lemmatization {
-    return produce((draft: Draft<Lemmatization>, tokens) => {
-      draft.tokens = tokens
-    })(
-      this,
-      this._mapTokens((token) => token.clearSuggestionFlag())
-    )
+    return this.mapTokens((token) => token.clearSuggestionFlag())
   }
 
   toDto(): ReadonlyArray<ReadonlyArray<LemmatizationTokenDto>> {
     return this.tokens.map((row) => row.map((token) => token.toDto()))
   }
 
-  _mapTokens(
+  private mapTokens(
     iteratee: (token: LemmatizationToken) => LemmatizationToken
-  ): ReadonlyArray<ReadonlyArray<LemmatizationToken>> {
-    return this.tokens.map((row) => row.map(iteratee))
+  ): Lemmatization {
+    return produce(this, (draft: Draft<Lemmatization>) => {
+      draft.tokens = castDraft(this.tokens.map((row) => row.map(iteratee)))
+    })
   }
 }
