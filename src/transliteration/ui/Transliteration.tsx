@@ -4,16 +4,13 @@ import React, { FunctionComponent } from 'react'
 import {
   DollarAndAtLine,
   Line,
-  NoteLine,
-  NoteLinePart,
   RulingDollarLine,
-  TextPart,
 } from 'transliteration/domain/line'
-import { Text } from 'transliteration/domain/text'
-import { isLanguagePart } from '../domain/type-guards'
+import { Text, noteNumber } from 'transliteration/domain/text'
 import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
 import './Transliteration.sass'
+import { TransliterationNotes } from './TransliterationNotes'
 
 function DisplayLine({
   line,
@@ -58,47 +55,6 @@ function DisplayDollarAndAtLine({
     container,
     { className: 'Transliteration__DollarAndAtLine' },
     `(${dollarAndAtLine.displayValue})`
-  )
-}
-
-function DispalyTextPart({
-  part: { type, text },
-}: {
-  part: TextPart
-}): JSX.Element {
-  return type === 'EmphasisPart' ? <em>{text}</em> : <span>{text}</span>
-}
-
-function DisplayNoteLine({
-  line,
-  container = 'div',
-}: {
-  line: NoteLine
-  container?: string
-}): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${line.type}`]) },
-    line.parts.map((part: NoteLinePart, index: number) =>
-      isLanguagePart(part) ? (
-        <LineTokens
-          key={index}
-          content={[
-            {
-              enclosureType: [],
-              cleanValue: '',
-              value: '',
-              language: part.language,
-              normalized: false,
-              type: 'LanguageShift',
-            },
-            ...part.tokens,
-          ]}
-        />
-      ) : (
-        <DispalyTextPart key={index} part={part} />
-      )
-    )
   )
 }
 
@@ -153,22 +109,11 @@ function DisplayRulingDollarLine({
   )
 }
 
-function noteNumber(
-  notes: ReadonlyMap<number, readonly NoteLine[]>,
-  lineIndex: number,
-  noteIndex: number
-): number {
-  const numberOfNotesOnPreviousLines = _.sum(
-    _.range(0, lineIndex).map((index) => notes.get(index)?.length ?? 0)
-  )
-  return 1 + noteIndex + numberOfNotesOnPreviousLines
-}
-
 export function Transliteration({ text }: { text: Text }): JSX.Element {
   const firstLineNotes = text.notes.get(0)
   return (
-    <>
-      <ol className="Transliteration">
+    <section className="Transliteration">
+      <ol>
         {firstLineNotes && firstLineNotes.length > 0 && (
           <li id="line-0">
             {firstLineNotes.map((note, index) => {
@@ -201,19 +146,7 @@ export function Transliteration({ text }: { text: Text }): JSX.Element {
           )
         })}
       </ol>
-      <ol className="Transliteration">
-        {Array.from(text.notes).flatMap(([lineNumber, lines]) =>
-          lines.map((line, index) => {
-            const number = noteNumber(text.notes, lineNumber, index)
-            return (
-              <li key={`${lineNumber}-${index}`} id={`note-${number}`}>
-                <a href={`#line-${lineNumber}`}>{number}</a>{' '}
-                <DisplayNoteLine container="span" line={line} />
-              </li>
-            )
-          })
-        )}
-      </ol>
-    </>
+      <TransliterationNotes notes={text.notes} />
+    </section>
   )
 }
