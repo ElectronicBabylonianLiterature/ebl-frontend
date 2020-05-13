@@ -1,6 +1,6 @@
 import React from 'react'
 import TransliterationNotes from './TransliterationNotes'
-import { render, screen, within, RenderResult } from '@testing-library/react'
+import { render, within, RenderResult } from '@testing-library/react'
 import noteLine from 'test-helpers/lines/note'
 
 let element: RenderResult
