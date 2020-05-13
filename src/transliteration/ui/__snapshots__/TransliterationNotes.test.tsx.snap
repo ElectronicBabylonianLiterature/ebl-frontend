@@ -1,0 +1,307 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <ol
+    class="Transliteration__notes"
+  >
+    <li
+      id="note-1"
+    >
+      <a
+        class="Transliteration__NoteLink"
+        href="#line-0"
+      >
+        1
+      </a>
+       
+      <span
+        class="Transliteration__NoteLine"
+      >
+        <span>
+          this is a note 
+        </span>
+        <em>
+          italic text
+        </em>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--SUMERIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </li>
+    <li
+      id="note-2"
+    >
+      <a
+        class="Transliteration__NoteLink"
+        href="#line-2"
+      >
+        2
+      </a>
+       
+      <span
+        class="Transliteration__NoteLine"
+      >
+        <span>
+          this is a note 
+        </span>
+        <em>
+          italic text
+        </em>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--SUMERIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </li>
+    <li
+      id="note-3"
+    >
+      <a
+        class="Transliteration__NoteLink"
+        href="#line-2"
+      >
+        3
+      </a>
+       
+      <span
+        class="Transliteration__NoteLine"
+      >
+        <span>
+          this is a note 
+        </span>
+        <em>
+          italic text
+        </em>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--AKKADIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+        <span>
+           
+        </span>
+        <span
+          class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
+        >
+           
+        </span>
+        <span
+          class="Transliteration__Word Transliteration__Word--SUMERIAN"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+    </li>
+  </ol>
+</div>
+`;
