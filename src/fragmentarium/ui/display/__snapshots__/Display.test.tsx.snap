@@ -24,7 +24,9 @@ exports[`Snapshot 1`] = `
   <section
     class="Transliteration"
   >
-    <ol>
+    <ol
+      class="Transliteration__lines"
+    >
       <li
         id="line-1"
       >
@@ -815,6 +817,7 @@ exports[`Snapshot 1`] = `
          
          
         <a
+          class="Transliteration__NoteLink"
           href="#note-1"
         >
           1
@@ -4828,11 +4831,14 @@ exports[`Snapshot 1`] = `
          
       </li>
     </ol>
-    <ol>
+    <ol
+      class="Transliteration__notes"
+    >
       <li
         id="note-1"
       >
         <a
+          class="Transliteration__NoteLink"
           href="#line-15"
         >
           1
