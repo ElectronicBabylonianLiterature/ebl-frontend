@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -7,21 +7,20 @@ import _ from 'lodash'
 import { changeValueByLabel, clickNth, submitForm } from 'test-helpers/utils'
 import References from './References'
 import Reference from 'bibliography/domain/Reference'
+import { buildBorger1957 } from 'test-helpers/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const defaultReference = new Reference()
 
-let expectedReference
-let references
-let element
-let searchEntry
+let expectedReference: Reference
+let references: Reference[]
+let element: RenderResult
+let searchEntry: BibliographyEntry
 let searchBibliography
 let updateReferences
 
 beforeEach(async () => {
-  searchEntry = await factory.build('bibliographyEntry', {
-    author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] },
-  })
+  searchEntry = await buildBorger1957()
   expectedReference = new Reference(
     'COPY',
     '1-2',
@@ -29,7 +28,8 @@ beforeEach(async () => {
     ['1', '2'],
     searchEntry
   )
-  searchBibliography = () => Promise.resolve([searchEntry])
+  searchBibliography = (): Promise<BibliographyEntry[]> =>
+    Promise.resolve([searchEntry])
   updateReferences = jest.fn()
 })
 
@@ -76,7 +76,7 @@ it('Creates a default reference if none present', async () => {
   expect(updateReferences).toHaveBeenCalledWith([defaultReference])
 })
 
-function renderReferences() {
+function renderReferences(): void {
   element = render(
     <References
       references={references}
@@ -86,12 +86,12 @@ function renderReferences() {
   )
 }
 
-async function renderReferencesAndWait() {
+async function renderReferencesAndWait(): Promise<void> {
   renderReferences()
   await element.findAllByText('Document')
 }
 
-async function inputReference() {
+async function inputReference(): Promise<void> {
   changeValueByLabel(element, 'Document', 'Borger')
   await element.findByText(/Borger 1957/)
   clickNth(element, /Borger 1957/, 0)

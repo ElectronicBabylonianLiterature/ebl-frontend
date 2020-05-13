@@ -8,6 +8,7 @@ import {
   clickNth,
 } from 'test-helpers/utils'
 import ReferenceForm from './ReferenceForm'
+import { buildBorger1957 } from 'test-helpers/bibliography-fixtures'
 
 let reference
 let element
@@ -17,10 +18,7 @@ let entry
 
 beforeEach(async () => {
   reference = await factory.build('reference')
-  entry = await factory.build('bibliographyEntry', {
-    author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] },
-  })
+  entry = await buildBorger1957()
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([entry]))
