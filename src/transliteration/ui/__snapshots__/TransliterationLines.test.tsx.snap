@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div>
+  <ol
+    class="Transliteration__lines"
+  >
+    <li
+      id="line-1"
+    >
+      <span
+        class="Transliteration__RulingDollarLine"
+      >
+        <div
+          class="Transliteration__ruling"
+        />
+      </span>
+       
+       
+      <a
+        class="Transliteration__NoteLink"
+        href="#note-1"
+      >
+        1
+      </a>
+       
+      <a
+        class="Transliteration__NoteLink"
+        href="#note-2"
+      >
+        2
+      </a>
+       
+    </li>
+    <li
+      id="line-2"
+    >
+      <span
+        class="Transliteration__RulingDollarLine"
+      >
+        <div
+          class="Transliteration__ruling"
+        />
+      </span>
+       
+       
+    </li>
+    <li
+      id="line-3"
+    >
+      <span
+        class="Transliteration__RulingDollarLine"
+      >
+        <div
+          class="Transliteration__ruling"
+        />
+      </span>
+       
+       
+      <a
+        class="Transliteration__NoteLink"
+        href="#note-3"
+      >
+        3
+      </a>
+       
+    </li>
+  </ol>
+</div>
+`;
