@@ -5,12 +5,11 @@ import {
   DollarAndAtLine,
   Line,
   RulingDollarLine,
-  NoteLine,
 } from 'transliteration/domain/line'
-import { Text, noteNumber, Notes } from 'transliteration/domain/text'
+import { Text, Notes } from 'transliteration/domain/text'
 import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
-import './Transliteration.sass'
+import { NoteLinks, createLineId } from './note-links'
 
 function DisplayLine({
   line,
@@ -109,39 +108,12 @@ function DisplayRulingDollarLine({
   )
 }
 
-function NoteLink({ number }: { number: number }): JSX.Element {
-  const href = `#note-${number}`
-  return (
-    <>
-      <a href={href}>{number}</a>{' '}
-    </>
-  )
-}
-
-function NoteLinks({
-  notes,
-  lineNumber,
-}: {
-  notes: Notes
-  lineNumber: number
-}): JSX.Element {
-  return (
-    <>
-      {' '}
-      {notes.get(lineNumber)?.map((note, noteIndex) => {
-        const number = noteNumber(notes, lineNumber, noteIndex)
-        return <NoteLink key={noteIndex} number={number} />
-      })}
-    </>
-  )
-}
-
 function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
   const hasNotes = !_.isEmpty(notes.get(0))
   return (
     <>
       {hasNotes && (
-        <li id="line-0">
+        <li id={createLineId(0)}>
           <NoteLinks notes={notes} lineNumber={0} />
         </li>
       )}
@@ -161,7 +133,7 @@ function TransliterationLine({
   const LineComponent = lineComponents.get(line.type) || DisplayLine
   const lineNumber = index + 1
   return (
-    <li id={`line-${lineNumber}`}>
+    <li id={createLineId(lineNumber)}>
       <LineComponent container="span" line={line} />{' '}
       <NoteLinks notes={notes} lineNumber={lineNumber} />
     </li>
@@ -174,7 +146,7 @@ export default function TransliterationLines({
   text: Text
 }): JSX.Element {
   return (
-    <ol>
+    <ol className="Transliteration__lines">
       <FirstLineNotes notes={text.notes} />
       {text.lines.map((line: Line, index: number) => (
         <TransliterationLine

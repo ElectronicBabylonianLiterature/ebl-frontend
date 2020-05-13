@@ -4,6 +4,7 @@ import { NoteLine, TextPart, NoteLinePart } from 'transliteration/domain/line'
 import { noteNumber } from 'transliteration/domain/text'
 import { isLanguagePart } from 'transliteration/domain/type-guards'
 import LineTokens from './LineTokens'
+import { LinkToLine } from './note-links'
 
 function DispalyTextPart({
   part: { type, text },
@@ -52,13 +53,13 @@ export default function TransliterationNotes({
   notes: ReadonlyMap<number, readonly NoteLine[]>
 }): JSX.Element {
   return (
-    <ol>
+    <ol className="Transliteration__notes">
       {Array.from(notes).flatMap(([lineNumber, lines]) =>
         lines.map((line, index) => {
           const number = noteNumber(notes, lineNumber, index)
           return (
             <li key={`${lineNumber}-${index}`} id={`note-${number}`}>
-              <a href={`#line-${lineNumber}`}>{number}</a>{' '}
+              <LinkToLine lineNumber={lineNumber} number={number} />
               <DisplayNoteLine container="span" line={line} />
             </li>
           )
