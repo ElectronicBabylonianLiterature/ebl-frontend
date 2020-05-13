@@ -6,7 +6,7 @@ import { isLanguagePart } from 'transliteration/domain/type-guards'
 import LineTokens from './LineTokens'
 import { LinkToLine } from './note-links'
 
-function DispalyTextPart({
+function DisplayTextPart({
   part: { type, text },
 }: {
   part: TextPart
@@ -41,7 +41,7 @@ function DisplayNoteLine({
           ]}
         />
       ) : (
-        <DispalyTextPart key={index} part={part} />
+        <DisplayTextPart key={index} part={part} />
       )
     )
   )
