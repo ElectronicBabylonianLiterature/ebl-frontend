@@ -13,7 +13,7 @@ function DispalyTextPart({
   return type === 'EmphasisPart' ? <em>{text}</em> : <span>{text}</span>
 }
 
-export function DisplayNoteLine({
+function DisplayNoteLine({
   line,
   container = 'div',
 }: {
@@ -46,7 +46,7 @@ export function DisplayNoteLine({
   )
 }
 
-export function TransliterationNotes({
+export default function TransliterationNotes({
   notes,
 }: {
   notes: ReadonlyMap<number, readonly NoteLine[]>
