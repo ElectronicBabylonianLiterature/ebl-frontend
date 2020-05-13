@@ -2,7 +2,6 @@ import { factory } from 'factory-girl'
 import { Chance } from 'chance'
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 
@@ -14,6 +13,12 @@ function date(): string {
 
 function dateRange(): string {
   return `${date()}/${date()}`
+}
+
+async function description(): Promise<string> {
+  return `${await factory.chance('sentence')()}\n${await factory.chance(
+    'sentence'
+  )()}`
 }
 
 factory.define('statistics', Object, {
@@ -55,10 +60,7 @@ factory.define('fragment', Fragment, {
   accession: factory.chance('word'),
   publication: factory.chance('sentence', { words: 4 }),
   joins: async () => [await factory.chance('word')()],
-  description: async () =>
-    `${await factory.chance('sentence')()}\n${await factory.chance(
-      'sentence'
-    )()}`,
+  description: description,
   measures: factory.assocAttrs('measures'),
   collection: factory.chance('pickone', [
     'Babylon',
@@ -103,10 +105,7 @@ factory.define('fragment', Fragment, {
 factory.define('fragmentInfo', Object, {
   number: factory.chance('word'),
   accession: factory.chance('word'),
-  description: async () =>
-    `${await factory.chance('sentence')()}\n${await factory.chance(
-      'sentence'
-    )()}`,
+  description: description,
   script: factory.chance('pickone', ['NA', 'NB']),
   matchingLines: [['1. kur']],
   editor: factory.chance('last'),
