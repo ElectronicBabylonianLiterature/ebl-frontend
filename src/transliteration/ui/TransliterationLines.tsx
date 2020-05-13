@@ -136,7 +136,7 @@ function NoteLinks({
   )
 }
 
-function FirtsLineNotes({ notes }: { notes: Notes }): JSX.Element {
+function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
   const hasNotes = !_.isEmpty(notes.get(0))
   return (
     <>
@@ -175,7 +175,7 @@ export default function TransliterationLines({
 }): JSX.Element {
   return (
     <ol>
-      <FirtsLineNotes notes={text.notes} />
+      <FirstLineNotes notes={text.notes} />
       {text.lines.map((line: Line, index: number) => (
         <TransliterationLine
           key={index}

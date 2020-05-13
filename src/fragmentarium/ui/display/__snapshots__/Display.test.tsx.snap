@@ -34,6 +34,7 @@ exports[`Snapshot 1`] = `
           (obverse?!)
         </span>
          
+         
       </li>
       <li
         id="line-2"
@@ -43,6 +44,7 @@ exports[`Snapshot 1`] = `
         >
           (object Stone wig)
         </span>
+         
          
       </li>
       <li
@@ -54,6 +56,7 @@ exports[`Snapshot 1`] = `
           (h1)
         </span>
          
+         
       </li>
       <li
         id="line-4"
@@ -63,6 +66,7 @@ exports[`Snapshot 1`] = `
         >
           (m=division paragraph 1)
         </span>
+         
          
       </li>
       <li
@@ -74,6 +78,7 @@ exports[`Snapshot 1`] = `
           (colophon)
         </span>
          
+         
       </li>
       <li
         id="line-6"
@@ -83,6 +88,7 @@ exports[`Snapshot 1`] = `
         >
           (seal 1)
         </span>
+         
          
       </li>
       <li
@@ -94,6 +100,7 @@ exports[`Snapshot 1`] = `
           (composite)
         </span>
          
+         
       </li>
       <li
         id="line-8"
@@ -103,6 +110,7 @@ exports[`Snapshot 1`] = `
         >
           (div part 1)
         </span>
+         
          
       </li>
       <li
@@ -114,6 +122,7 @@ exports[`Snapshot 1`] = `
           (end part)
         </span>
          
+         
       </li>
       <li
         id="line-10"
@@ -123,6 +132,7 @@ exports[`Snapshot 1`] = `
         >
           (m=locator o 1)
         </span>
+         
          
       </li>
       <li
@@ -380,6 +390,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-12"
@@ -391,6 +402,7 @@ exports[`Snapshot 1`] = `
             class="Transliteration__ruling"
           />
         </span>
+         
          
       </li>
       <li
@@ -526,6 +538,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-14"
@@ -540,6 +553,7 @@ exports[`Snapshot 1`] = `
             class="Transliteration__ruling"
           />
         </span>
+         
          
       </li>
       <li
@@ -799,6 +813,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
         <a
           href="#note-1"
         >
@@ -1033,6 +1048,7 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+         
          
       </li>
       <li
@@ -1292,6 +1308,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-18"
@@ -1309,6 +1326,7 @@ exports[`Snapshot 1`] = `
             class="Transliteration__ruling"
           />
         </span>
+         
          
       </li>
       <li
@@ -2098,6 +2116,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-20"
@@ -2365,6 +2384,7 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+         
          
       </li>
       <li
@@ -2728,6 +2748,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-22"
@@ -3078,6 +3099,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-23"
@@ -3427,6 +3449,7 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+         
          
       </li>
       <li
@@ -4264,6 +4287,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-25"
@@ -4362,6 +4386,7 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
+         
          
       </li>
       <li
@@ -4510,6 +4535,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-27"
@@ -4549,6 +4575,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-28"
@@ -4558,6 +4585,7 @@ exports[`Snapshot 1`] = `
         >
           <span />
         </span>
+         
          
       </li>
       <li
@@ -4753,6 +4781,7 @@ exports[`Snapshot 1`] = `
           </span>
         </span>
          
+         
       </li>
       <li
         id="line-30"
@@ -4762,6 +4791,7 @@ exports[`Snapshot 1`] = `
         >
           (line continues !?)
         </span>
+         
          
       </li>
       <li
@@ -4773,6 +4803,7 @@ exports[`Snapshot 1`] = `
           (image 1 = foo)
         </span>
          
+         
       </li>
       <li
         id="line-32"
@@ -4783,6 +4814,7 @@ exports[`Snapshot 1`] = `
           (anything goes)
         </span>
          
+         
       </li>
       <li
         id="line-33"
@@ -4792,6 +4824,7 @@ exports[`Snapshot 1`] = `
         >
           (seal 1)
         </span>
+         
          
       </li>
     </ol>
