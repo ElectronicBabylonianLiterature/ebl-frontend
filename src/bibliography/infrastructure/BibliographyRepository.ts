@@ -20,7 +20,7 @@ export default class BibliographyRepository {
 
   search(query) {
     return this.apiClient
-      .fetchJson(`/bibliography?${stringify(query)}`, true)
+      .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, true)
       .then((result) => result.map(createEntry))
   }
 
