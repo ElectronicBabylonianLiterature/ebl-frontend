@@ -25,5 +25,5 @@ const testData: TestData[] = [
   ],
   ['search', ['Alba Cecilia'], bibliographyRepository.search, [resultStub]],
 ]
-describe('BibliographyRepository', () =>
+describe('BibliographyService', () =>
   testDelegation(bibliographyService, testData))
