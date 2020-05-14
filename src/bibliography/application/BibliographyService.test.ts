@@ -21,7 +21,6 @@ const testData: TestData[] = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
     [resultStub],
-    ,
   ],
   ['search', ['Alba Cecilia'], bibliographyRepository.search, [resultStub]],
 ]
