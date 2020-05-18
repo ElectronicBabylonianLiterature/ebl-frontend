@@ -1,4 +1,3 @@
-import { stringify } from 'query-string'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 function createEntry(cslData) {
