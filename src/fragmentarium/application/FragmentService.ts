@@ -1,4 +1,5 @@
 import _, { Dictionary } from 'lodash'
+import produce, { Draft } from 'immer'
 import Promise from 'bluebird'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -12,6 +13,10 @@ import { Text } from 'transliteration/domain/text'
 import Annotation from 'fragmentarium/domain/annotation'
 import Word from 'dictionary/domain/Word'
 import { Token } from 'transliteration/domain/token'
+import {
+  isNoteLine,
+  isBibliographyPart,
+} from 'transliteration/domain/type-guards'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -76,34 +81,38 @@ class FragmentService {
     return this.fragmentRepository.statistics()
   }
 
-  find(number: string) {
+  async find(number: string): Promise<Fragment> {
     return this.fragmentRepository
       .find(number)
-      .then((fragment) =>
-        this.hydrateReferences(fragment.references).then((hydrated) =>
-          fragment.setReferences(hydrated)
-        )
-      )
+      .then((fragment: Fragment) => this.hydrateFragment(fragment))
   }
 
-  updateTransliteration(
+  async updateTransliteration(
     number: string,
     transliteration: string,
     notes: string
-  ) {
-    return this.fragmentRepository.updateTransliteration(
-      number,
-      transliteration,
-      notes
-    )
+  ): Promise<Fragment> {
+    return this.fragmentRepository
+      .updateTransliteration(number, transliteration, notes)
+      .then((fragment: Fragment) => this.hydrateFragment(fragment))
   }
 
-  updateLemmatization(number: string, lemmatization: Lemmatization) {
-    return this.fragmentRepository.updateLemmatization(number, lemmatization)
+  async updateLemmatization(
+    number: string,
+    lemmatization: Lemmatization
+  ): Promise<Fragment> {
+    return this.fragmentRepository
+      .updateLemmatization(number, lemmatization)
+      .then((fragment: Fragment) => this.hydrateFragment(fragment))
   }
 
-  updateReferences(number: string, references: ReadonlyArray<Reference>) {
-    return this.fragmentRepository.updateReferences(number, references)
+  async updateReferences(
+    number: string,
+    references: ReadonlyArray<Reference>
+  ): Promise<Fragment> {
+    return this.fragmentRepository
+      .updateReferences(number, references)
+      .then((fragment: Fragment) => this.hydrateFragment(fragment))
   }
 
   findFolio(folio: Folio) {
@@ -159,8 +168,8 @@ class FragmentService {
     return this.fragmentRepository.updateAnnotations(number, annotations)
   }
 
-  createLemmatization(text: Text) {
-    return Promise.all([this._fetchLemmas(text), this._fetchSuggestions(text)])
+  async createLemmatization(text: Text): Promise<Lemmatization> {
+    return Promise.all([this.fetchLemmas(text), this.fetchSuggestions(text)])
       .then(([lemmaData, suggestionsData]): [
         Dictionary<Lemma>,
         Dictionary<ReadonlyArray<UniqueLemma>>
@@ -170,7 +179,7 @@ class FragmentService {
       )
   }
 
-  _fetchLemmas(text: Text): Promise<Lemma[]> {
+  private fetchLemmas(text: Text): Promise<Lemma[]> {
     return Promise.all(
       mapText<string, Promise<Lemma>>(
         text,
@@ -183,7 +192,7 @@ class FragmentService {
     )
   }
 
-  _fetchSuggestions(
+  private fetchSuggestions(
     text: Text
   ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
     return Promise.mapSeries(
@@ -192,7 +201,7 @@ class FragmentService {
           .filter((token) => token.lemmatizable)
           .flatMap((token) => token.cleanValue)
       ),
-      (value: string): any =>
+      (value: string): [string, ReadonlyArray<UniqueLemma>] =>
         this.fragmentRepository
           .findLemmas(value)
           .then((lemmas) => [
@@ -204,7 +213,31 @@ class FragmentService {
     )
   }
 
-  hydrateReferences(references: ReadonlyArray<any>) {
+  private async hydrateFragment(fragment: Fragment): Promise<Fragment> {
+    return await this.hydrateReferences(fragment.references)
+      .then((hydrated) => fragment.setReferences(hydrated))
+      .then(
+        produce(async (draft: Draft<Fragment>) => {
+          await Promise.all(
+            draft.text.allLines
+              .filter(isNoteLine)
+              .flatMap((line: any) => line.parts)
+              .filter(isBibliographyPart)
+              .map(async (part: any) => {
+                part.reference = await createReference(
+                  part.reference,
+                  this.bibliographyService
+                ).catch((error) => {
+                  console.error(error)
+                  return part.reference
+                })
+              })
+          )
+        })
+      )
+  }
+
+  hydrateReferences(references: ReadonlyArray<any>): Promise<Reference[]> {
     const hydrate: (reference: any) => Promise<Reference> = (reference) =>
       createReference(reference, this.bibliographyService)
     return Promise.all<Reference>(references.map(hydrate))

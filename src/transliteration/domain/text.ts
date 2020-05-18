@@ -21,7 +21,7 @@ export function noteNumber(
   return 1 + noteIndex + numberOfNotesOnPreviousLines
 }
 export class Text {
-  private readonly allLines: readonly Line[]
+  readonly allLines: readonly Line[]
 
   constructor({ lines }: { lines: readonly Line[] }) {
     this.allLines = lines

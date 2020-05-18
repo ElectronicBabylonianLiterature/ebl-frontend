@@ -4931,7 +4931,9 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-          <span>
+          <span
+            class="badge badge-danger"
+          >
             @bib{
             RN1
             @

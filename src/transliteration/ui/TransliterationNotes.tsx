@@ -15,6 +15,9 @@ import {
 import LineTokens from './LineTokens'
 import { LinkToLine } from './note-links'
 import { Shift } from 'transliteration/domain/token'
+import Reference from 'bibliography/domain/Reference'
+import Citation from 'bibliography/ui/Citation'
+import { Badge } from 'react-bootstrap'
 
 function DisplayTextPart({
   part: { type, text },
@@ -37,14 +40,16 @@ function DisplayLaguagePart({ part }: { part: LanguagePart }): JSX.Element {
 }
 
 function DisplayBibliographyPart({
-  part,
+  part: { reference },
 }: {
   part: BibliographyPart
 }): JSX.Element {
-  return (
-    <span>
-      @bib&#123;{part.reference.id}@{part.reference.pages}&#125;
-    </span>
+  return reference instanceof Reference ? (
+    <Citation reference={reference} />
+  ) : (
+    <Badge variant="danger">
+      @bib&#123;{reference.id}@{reference.pages}&#125;
+    </Badge>
   )
 }
 

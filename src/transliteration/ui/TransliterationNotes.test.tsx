@@ -1,16 +1,16 @@
+import { render, RenderResult, within } from '@testing-library/react'
 import React from 'react'
+import { hydratedNote, note } from 'test-helpers/lines/note'
 import TransliterationNotes from './TransliterationNotes'
-import { render, within, RenderResult } from '@testing-library/react'
-import noteLine from 'test-helpers/lines/note'
 
 let element: RenderResult
 let lines: HTMLElement[]
 
 beforeEach(() => {
   const notes = new Map([
-    [0, [noteLine]],
+    [0, [note]],
     [1, []],
-    [2, [noteLine, noteLine]],
+    [2, [note, hydratedNote]],
   ])
   element = render(<TransliterationNotes notes={notes} />)
   lines = element.getAllByRole('listitem')
