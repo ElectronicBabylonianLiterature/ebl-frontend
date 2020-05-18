@@ -1,4 +1,5 @@
 import {
+  BibliographyPart,
   LanguagePart,
   Line,
   NoteLinePart,
@@ -43,6 +44,12 @@ export function isTextLine(line: Line): line is TextLine {
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
   return part.type === 'LanguagePart'
+}
+
+export function isBibliographyPart(
+  part: NoteLinePart
+): part is BibliographyPart {
+  return part.type === 'BibliographyPart'
 }
 
 export function isNoteLine(line: Line): line is NoteLine {

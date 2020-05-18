@@ -45,6 +45,13 @@ const note: NoteLine = {
       value: '@sux{kur}',
       type: 'ValueToken',
     },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: '@bib{RN1@5}',
+      value: '@bib{RN1@5}',
+      type: 'ValueToken',
+    },
   ],
   parts: [
     {
@@ -142,6 +149,16 @@ const note: NoteLine = {
         },
       ],
       type: 'LanguagePart',
+    },
+    {
+      reference: {
+        id: 'RN1',
+        type: 'DISCUSSION',
+        pages: '5',
+        notes: '',
+        linesCited: [],
+      },
+      type: 'BibliographyPart',
     },
   ],
   type: 'NoteLine',

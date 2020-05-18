@@ -1,10 +1,20 @@
 import React from 'react'
 import classNames from 'classnames'
-import { NoteLine, TextPart, NoteLinePart } from 'transliteration/domain/line'
+import {
+  NoteLine,
+  TextPart,
+  NoteLinePart,
+  LanguagePart,
+  BibliographyPart,
+} from 'transliteration/domain/line'
 import { noteNumber } from 'transliteration/domain/text'
-import { isLanguagePart } from 'transliteration/domain/type-guards'
+import {
+  isLanguagePart,
+  isBibliographyPart,
+} from 'transliteration/domain/type-guards'
 import LineTokens from './LineTokens'
 import { LinkToLine } from './note-links'
+import { Shift } from 'transliteration/domain/token'
 
 function DisplayTextPart({
   part: { type, text },
@@ -12,6 +22,30 @@ function DisplayTextPart({
   part: TextPart
 }): JSX.Element {
   return type === 'EmphasisPart' ? <em>{text}</em> : <span>{text}</span>
+}
+
+function DisplayLaguagePart({ part }: { part: LanguagePart }): JSX.Element {
+  const initialShift: Shift = {
+    enclosureType: [],
+    cleanValue: '',
+    value: '',
+    language: part.language,
+    normalized: false,
+    type: 'LanguageShift',
+  }
+  return <LineTokens content={[initialShift, ...part.tokens]} />
+}
+
+function DisplayBibliographyPart({
+  part,
+}: {
+  part: BibliographyPart
+}): JSX.Element {
+  return (
+    <span>
+      @bib&#123;{part.reference.id}@{part.reference.pages}&#125;
+    </span>
+  )
 }
 
 function DisplayNoteLine({
@@ -24,26 +58,15 @@ function DisplayNoteLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${line.type}`]) },
-    line.parts.map((part: NoteLinePart, index: number) =>
-      isLanguagePart(part) ? (
-        <LineTokens
-          key={index}
-          content={[
-            {
-              enclosureType: [],
-              cleanValue: '',
-              value: '',
-              language: part.language,
-              normalized: false,
-              type: 'LanguageShift',
-            },
-            ...part.tokens,
-          ]}
-        />
-      ) : (
-        <DisplayTextPart key={index} part={part} />
-      )
-    )
+    line.parts.map((part: NoteLinePart, index: number) => {
+      if (isLanguagePart(part)) {
+        return <DisplayLaguagePart key={index} part={part} />
+      } else if (isBibliographyPart(part)) {
+        return <DisplayBibliographyPart key={index} part={part} />
+      } else {
+        return <DisplayTextPart key={index} part={part} />
+      }
+    })
   )
 }
 

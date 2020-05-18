@@ -1,5 +1,6 @@
 import { Token } from './token'
 import { LineNumber, LineNumberRange } from './line-number'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export type Line =
   | LineBase
@@ -130,7 +131,20 @@ export interface LanguagePart {
   readonly tokens: readonly Token[]
 }
 
-export type NoteLinePart = TextPart | LanguagePart
+export interface Reference {
+  readonly id: string
+  readonly type: 'DISCUSSION'
+  readonly pages: string
+  readonly notes: ''
+  readonly linesCited: []
+}
+
+export interface BibliographyPart {
+  readonly type: 'BibliographyPart'
+  readonly reference: Reference
+}
+
+export type NoteLinePart = TextPart | LanguagePart | BibliographyPart
 
 export interface NoteLine extends LineBase {
   readonly type: 'NoteLine'

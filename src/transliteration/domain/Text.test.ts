@@ -58,6 +58,7 @@ test('createLemmatization', async () => {
         new LemmatizationToken('@akk{kur}', false),
         new LemmatizationToken(' ', false),
         new LemmatizationToken('@sux{kur}', false),
+        new LemmatizationToken('@bib{RN1@5}', false),
       ],
     ]
   )
