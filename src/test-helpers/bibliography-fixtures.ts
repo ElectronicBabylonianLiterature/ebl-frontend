@@ -61,8 +61,15 @@ factory.extend('cslData', 'cslDataWithContainerTitleShort', {
 factory.define(
   'bibliographyEntry',
   BibliographyEntry,
-  async (buildOptions) => buildOptions.cslData || factory.build('cslData')
+  async (buildOptions) => buildOptions.cslData ?? factory.build('cslData')
 )
+
+export async function buildBorger1957(): Promise<BibliographyEntry> {
+  return await factory.build('bibliographyEntry', {
+    author: [{ family: 'Borger' }],
+    issued: { 'date-parts': [[1957]] },
+  })
+}
 
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
@@ -79,7 +86,10 @@ factory.define('reference', Reference, async (buildOptions) => ({
 }))
 factory.setAdapter(new ReferenceAdapter(), 'reference')
 
-export function buildReferenceWithContainerTitle(type, cslData = {}) {
+export async function buildReferenceWithContainerTitle(
+  type: string,
+  cslData = {}
+): Promise<Reference> {
   return factory
     .build('cslDataWithContainerTitleShort', cslData)
     .then((cslData) => factory.build('bibliographyEntry', cslData))
@@ -88,7 +98,7 @@ export function buildReferenceWithContainerTitle(type, cslData = {}) {
     )
 }
 
-export async function buildReferenceWithManyAuthors() {
+export async function buildReferenceWithManyAuthors(): Promise<Reference> {
   const authors = await factory.buildMany('author', 4)
   return factory
     .build('cslData', { author: authors })

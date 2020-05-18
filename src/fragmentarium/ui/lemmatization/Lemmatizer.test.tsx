@@ -4,11 +4,11 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import { whenClicked, clickNth, changeValueByLabel } from 'test-helpers/utils'
-import Lemma from 'fragmentarium/domain/Lemma'
+import Lemma from 'transliteration/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, {
   LemmatizationToken,
-} from 'fragmentarium/domain/Lemmatization'
+} from 'transliteration/domain/Lemmatization'
 
 let element
 let fragmentService

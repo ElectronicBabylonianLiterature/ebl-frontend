@@ -4,7 +4,7 @@ import TransliteratioForm from './TransliterationForm'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 
 import './Edition.css'
-import TransliterationHeader from 'fragmentarium/ui/view/TransliterationHeader'
+import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 type Props = {

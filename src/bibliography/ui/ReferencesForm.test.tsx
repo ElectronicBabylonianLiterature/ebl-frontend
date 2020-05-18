@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
@@ -7,24 +7,24 @@ import _ from 'lodash'
 import { changeValueByLabel, clickNth } from 'test-helpers/utils'
 import ReferencesForm from './ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { buildBorger1957 } from 'test-helpers/bibliography-fixtures'
 
 const defaultReference = new Reference()
 
-let expectedReference
+let expectedReference: Reference
 let references: Reference[]
-let element
-let searchEntry
+let element: RenderResult
+let searchEntry: BibliographyEntry
 let searchBibliography
 let onChange
 
 beforeEach(async () => {
   references = await factory.buildMany('reference', 2)
-  searchEntry = await factory.build('bibliographyEntry', {
-    author: [{ family: 'Borger' }],
-    issued: { 'date-parts': [[1957]] },
-  })
+  searchEntry = await buildBorger1957()
   expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
-  searchBibliography = () => Promise.resolve([searchEntry])
+  searchBibliography = (): Promise<BibliographyEntry[]> =>
+    Promise.resolve([searchEntry])
   onChange = jest.fn()
   element = render(
     <ReferencesForm

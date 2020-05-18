@@ -5,7 +5,7 @@ import {
   HeadingAtLine,
   DiscourseAtLine,
   SealAtLine,
-} from 'fragmentarium/domain/line'
+} from 'transliteration/domain/line'
 
 export const surface: SurfaceAtLine = {
   prefix: '@',

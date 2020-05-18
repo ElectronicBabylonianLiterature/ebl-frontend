@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import classNames from 'classnames'
-import { Token, EnclosureType } from 'fragmentarium/domain/token'
+import { Token, EnclosureType } from 'transliteration/domain/token'
 import { createModifierClasses } from './modifiers'
 
 export default function EnclosureFlags({

@@ -1,15 +1,15 @@
-import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
-import { Text } from 'fragmentarium/domain/text'
-import {
-  Line,
-  DollarAndAtLine,
-  RulingDollarLine,
-} from 'fragmentarium/domain/line'
-import './Display.sass'
 import _ from 'lodash'
+import React, { FunctionComponent } from 'react'
+import {
+  DollarAndAtLine,
+  Line,
+  RulingDollarLine,
+} from 'transliteration/domain/line'
+import { Text, Notes } from 'transliteration/domain/text'
+import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
-import { TextLinePrefix } from './TextLinePrefix'
+import { NoteLinks, createLineId } from './note-links'
 
 function DisplayLine({
   line,
@@ -22,10 +22,11 @@ function DisplayLine({
   return React.createElement(
     container,
     { className: classNames([`Transliteration__${type}`]) },
-    <TextLinePrefix line={line} />,
+    <LinePrefix line={line} />,
     <LineTokens content={content} />
   )
 }
+
 function DisplayDollarAndAtLineWithParenthesis({
   line,
   container = 'div',
@@ -79,6 +80,10 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
+function Ruling(): JSX.Element {
+  return <div className="Transliteration__ruling" />
+}
+
 const rulingsToNumber: ReadonlyMap<string, number> = new Map([
   ['SINGLE', 1],
   ['DOUBLE', 2],
@@ -93,35 +98,64 @@ function DisplayRulingDollarLine({
   container?: string
 }): JSX.Element {
   const rulingLine = line as RulingDollarLine
-  const rulingType = `Transliteration__ruling`
   const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return React.createElement(
     container,
     { className: 'Transliteration__RulingDollarLine' },
-    _.range(0, rulingsNumber).map((value: number) => {
-      return <DisplayEachRuling key={value} rulingType={rulingType} />
+    _.range(0, rulingsNumber).map((number: number) => {
+      return <Ruling key={number} />
     })
   )
 }
-function DisplayEachRuling({
-  rulingType,
-}: {
-  rulingType: string
-}): JSX.Element {
-  return <div className={rulingType} />
+
+function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
+  const hasNotes = !_.isEmpty(notes.get(0))
+  return (
+    <>
+      {hasNotes && (
+        <li id={createLineId(0)}>
+          <NoteLinks notes={notes} lineNumber={0} />
+        </li>
+      )}
+    </>
+  )
 }
 
-export function Transliteration({
-  text: { lines },
+function TransliterationLine({
+  line,
+  notes,
+  index,
+}: {
+  line: Line
+  notes: Notes
+  index: number
+}): JSX.Element {
+  const LineComponent = lineComponents.get(line.type) || DisplayLine
+  const lineNumber = index + 1
+  return (
+    <li id={createLineId(lineNumber)}>
+      <LineComponent container="span" line={line} />{' '}
+      <NoteLinks notes={notes} lineNumber={lineNumber} />
+    </li>
+  )
+}
+
+export default function TransliterationLines({
+  text,
 }: {
   text: Text
 }): JSX.Element {
   return (
-    <ol className="Transliteration">
-      {lines.map((line: Line, index: number) => {
-        const LineComponent = lineComponents.get(line.type) || DisplayLine
-        return <LineComponent key={index} container="li" line={line} />
-      })}
+    <ol className="Transliteration__lines">
+      <FirstLineNotes notes={text.notes} />
+      {text.lines.map((line: Line, index: number) => (
+        <TransliterationLine
+          key={index}
+          line={line}
+          notes={text.notes}
+          index={index}
+        />
+      ))}
     </ol>
   )
 }

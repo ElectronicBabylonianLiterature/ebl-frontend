@@ -5,31 +5,24 @@ import Word from 'dictionary/domain/Word'
 let word: Word
 let lemma: Lemma
 
-describe('Homonym I', () => {
+describe.each([
+  ['I', ''],
+  ['II', ' II'],
+])('Word with homonym %s', (homonym, expected) => {
   beforeEach(async () => {
     word = await factory.build('word', {
-      homonym: 'I',
+      homonym: homonym,
     })
     lemma = new Lemma(word)
   })
 
   test('homonym', () => {
-    expect(lemma.homonym).toEqual('')
+    expect(lemma.homonym).toEqual(expected)
   })
 
-  commonTests()
-})
-
-describe('Homonym not I', () => {
-  beforeEach(async () => {
-    word = await factory.build('word', {
-      homonym: 'II',
-    })
-    lemma = new Lemma(word)
-  })
-
-  test('homonym', () => {
-    expect(lemma.homonym).toEqual(` ${word.homonym}`)
+  test('label', () => {
+    const pos = word.pos.join(', ')
+    expect(lemma.label).toEqual(`${expectedLabel()} (${pos})`)
   })
 
   commonTests()
@@ -43,12 +36,15 @@ describe('Empty POS', () => {
     lemma = new Lemma(word)
   })
 
+  test('label', () => {
+    expect(lemma.label).toEqual(expectedLabel())
+  })
+
   commonTests()
 })
 
-function guideWordAndPos(word: Word): string {
-  const pos = word.pos.length > 0 ? ` (${word.pos.join(', ')})` : ''
-  return `${word.guideWord}${pos}`
+function expectedLabel(): string {
+  return `*${lemma.lemma}*${lemma.homonym}, ${word.guideWord}`
 }
 
 function commonTests(): void {
@@ -58,11 +54,5 @@ function commonTests(): void {
 
   test('lemma', () => {
     expect(lemma.lemma).toEqual(word.lemma.join(' '))
-  })
-
-  test('label', () => {
-    expect(lemma.label).toEqual(
-      `*${lemma.lemma}*${lemma.homonym}, ${guideWordAndPos(word)}`
-    )
   })
 }

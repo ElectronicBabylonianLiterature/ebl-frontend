@@ -4,9 +4,9 @@ import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
-import Lemma from 'fragmentarium/domain/Lemma'
+import Lemma from 'transliteration/domain/Lemma'
 import { changeValueByLabel, clickNth } from 'test-helpers/utils'
-import { LemmatizationToken } from 'fragmentarium/domain/Lemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Word from 'dictionary/domain/Word'
 
 let searchWord: Word

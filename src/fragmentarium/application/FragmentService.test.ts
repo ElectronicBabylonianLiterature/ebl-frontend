@@ -1,18 +1,15 @@
-import Promise from 'bluebird'
-import { factory } from 'factory-girl'
-import _ from 'lodash'
-import { testDelegation, TestData } from 'test-helpers/utils'
-import { fragment } from 'test-helpers/test-fragment'
-import FragmentService from './FragmentService'
-
-import Lemmatization, {
-  LemmatizationToken,
-} from 'fragmentarium/domain/Lemmatization'
-import Lemma from 'fragmentarium/domain/Lemma'
-import Folio from 'fragmentarium/domain/Folio'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
+import Promise from 'bluebird'
+import { factory } from 'factory-girl'
+import Folio from 'fragmentarium/domain/Folio'
+import _ from 'lodash'
+import { fragment } from 'test-helpers/test-fragment'
 import createLemmatizationTestText from 'test-helpers/test-text'
+import { TestData, testDelegation } from 'test-helpers/utils'
+import Lemma from 'transliteration/domain/Lemma'
+import Lemmatization from 'transliteration/domain/Lemmatization'
+import FragmentService from './FragmentService'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -168,30 +165,12 @@ test('createLemmatization', async () => {
   const expectedSuggestions = _.mapValues(suggestions, (word) => [
     [new Lemma(word)],
   ])
-  const expected = new Lemmatization(
-    ['1.'],
-    [
-      [
-        new LemmatizationToken(
-          'k[ur',
-          true,
-          [new Lemma(words[0])],
-          [[new Lemma(words[2])]]
-        ),
-        new LemmatizationToken(
-          'n]u',
-          true,
-          [new Lemma(words[1])],
-          [[new Lemma(words[3])]]
-        ),
-      ],
-    ]
-  )
+  const lemmatization = new Lemmatization([], [])
 
-  jest.spyOn(text, 'createLemmatization').mockReturnValue(expected)
+  jest.spyOn(text, 'createLemmatization').mockReturnValue(lemmatization)
 
   const result = await fragmentService.createLemmatization(text)
-  expect(result).toEqual(expected)
+  expect(result).toEqual(lemmatization)
   expect(text.createLemmatization).toHaveBeenCalledWith(
     expectedLemmas,
     expectedSuggestions

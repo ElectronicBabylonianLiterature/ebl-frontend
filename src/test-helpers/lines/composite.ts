@@ -1,4 +1,4 @@
-import { CompositeAtLine } from 'fragmentarium/domain/line'
+import { CompositeAtLine } from 'transliteration/domain/line'
 
 export const composite: CompositeAtLine = {
   prefix: '@',

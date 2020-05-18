@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 
 import AppContent from 'common/AppContent'
 import CuneiformFragment from './CuneiformFragment'
@@ -38,6 +37,18 @@ type Props = {
   tab?: string | null | undefined
 }
 
+function createActiveFolio(
+  name: string | null | undefined,
+  number: string | null | undefined
+): Folio | null {
+  return name && number
+    ? new Folio({
+        name,
+        number,
+      })
+    : null
+}
+
 function FragmentView({
   fragment,
   fragmentService,
@@ -47,13 +58,7 @@ function FragmentView({
   folioNumber,
   tab,
 }: Props): JSX.Element {
-  const activeFolio =
-    folioName && folioNumber
-      ? new Folio({
-          name: _.isArray(folioName) ? folioName.join('') : folioName,
-          number: _.isArray(folioNumber) ? folioNumber.join('') : folioNumber,
-        })
-      : null
+  const activeFolio = createActiveFolio(folioName, folioNumber)
 
   return (
     <AppContent
@@ -72,7 +77,7 @@ function FragmentView({
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
         activeFolio={activeFolio}
-        tab={_.isArray(tab) ? tab.join('') : tab}
+        tab={tab}
       />
     </AppContent>
   )

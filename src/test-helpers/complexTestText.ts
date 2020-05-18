@@ -1,10 +1,11 @@
-import { Text } from 'fragmentarium/domain/text'
-import { Line } from 'fragmentarium/domain/line'
+import { Text } from 'transliteration/domain/text'
+import { Line } from 'transliteration/domain/line'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
 import * as at from 'test-helpers/lines/at'
 import * as composite from 'test-helpers/lines/composite'
 import * as dollar from 'test-helpers/lines/dollar'
 import empty from 'test-helpers/lines/empty'
+import note from 'test-helpers/lines/note'
 
 const line2: Line = {
   prefix: '1.',
@@ -3369,6 +3370,7 @@ export default new Text({
     line4,
     dollar.doubleRuling,
     line6,
+    note,
     line7,
     line8,
     dollar.tripleRuling,

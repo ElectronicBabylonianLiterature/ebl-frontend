@@ -4,7 +4,7 @@ import { extendMoment, DateRange } from 'moment-range'
 import produce, { Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
-import { Text } from './text'
+import { Text } from '../../transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 

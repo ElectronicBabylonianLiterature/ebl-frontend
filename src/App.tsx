@@ -8,7 +8,7 @@ import SessionContext from 'auth/SessionContext'
 import Introduction from './Introduction'
 import Dictionary from 'dictionary/ui/search/Dictionary'
 import WordEditor from 'dictionary/ui/editor/WordEditor'
-import FragmentView from 'fragmentarium/ui/view/FragmentView'
+import FragmentView from 'fragmentarium/ui/fragment/FragmentView'
 import Fragmentarium from 'fragmentarium/ui/front-page/Fragmentarium'
 import ErrorBoundary from 'common/ErrorBoundary'
 import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
@@ -29,14 +29,21 @@ function parseStringParam(
   return _.isArray(value) ? value.join('') : value
 }
 
-function parseTextParams(params) {
+interface TextParams {
+  category: string
+  index: string
+}
+
+function parseTextParams(params): TextParams {
   return {
     category: decodeURIComponent(params.category),
     index: decodeURIComponent(params.index),
   }
 }
 
-function parseChapterParams(params) {
+function parseChapterParams(
+  params
+): TextParams & { stage: string; name: string } {
   return {
     ...parseTextParams(params),
     stage: decodeURIComponent(params.stage),
@@ -44,7 +51,12 @@ function parseChapterParams(params) {
   }
 }
 
-function parseFragmentSearchParams(location) {
+function parseFragmentSearchParams(
+  location: Location
+): {
+  number: string | null | undefined
+  transliteration: string | null | undefined
+} {
   return {
     number: parseStringParam(location, 'number'),
     transliteration: parseStringParam(location, 'transliteration'),
@@ -52,19 +64,19 @@ function parseFragmentSearchParams(location) {
 }
 
 function parseFargmentParams(
-  match,
-  location
+  match: Match,
+  location: Location
 ): {
-  number
-  folioName
-  folioNumber
-  tab
+  number: string
+  folioName: string | undefined | null
+  folioNumber: string | undefined | null
+  tab: string | undefined | null
 } {
   return {
     number: decodeURIComponent(match.params['id']),
-    folioName: parse(location.search).folioName,
-    folioNumber: parse(location.search).folioNumber,
-    tab: parse(location.search).tab,
+    folioName: parseStringParam(location, 'folioName'),
+    folioNumber: parseStringParam(location, 'folioNumber'),
+    tab: parseStringParam(location, 'tab'),
   }
 }
 

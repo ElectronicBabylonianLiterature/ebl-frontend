@@ -1,4 +1,4 @@
-import { EmptyLine } from 'fragmentarium/domain/line'
+import { EmptyLine } from 'transliteration/domain/line'
 
 const empty: EmptyLine = {
   type: 'EmptyLine',

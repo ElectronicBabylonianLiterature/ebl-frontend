@@ -1,8 +1,9 @@
 import { factory } from 'factory-girl'
-import { Text } from 'fragmentarium/domain/text'
+import { Text } from 'transliteration/domain/text'
 import Word from 'dictionary/domain/Word'
 
-import { Word as WordToken } from 'fragmentarium/domain/token'
+import { Word as WordToken } from 'transliteration/domain/token'
+import note from 'test-helpers/lines/note'
 
 const testWord: WordToken = {
   type: 'Word',
@@ -67,6 +68,7 @@ export default async function createLemmatizationTestText(): Promise<
           },
         ],
       },
+      note,
     ],
   })
   return [text, words]

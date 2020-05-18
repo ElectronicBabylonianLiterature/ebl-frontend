@@ -1,15 +1,17 @@
 import _, { Dictionary } from 'lodash'
 import Promise from 'bluebird'
-import Lemma from 'fragmentarium/domain/Lemma'
-import Lemmatization, { UniqueLemma } from 'fragmentarium/domain/Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
+import Lemmatization, {
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
-import { Text } from 'fragmentarium/domain/text'
+import { Text } from 'transliteration/domain/text'
 import Annotation from 'fragmentarium/domain/annotation'
 import Word from 'dictionary/domain/Word'
-import { Token } from 'fragmentarium/domain/token'
+import { Token } from 'transliteration/domain/token'
 
 export interface CdliInfo {
   readonly photoUrl: string | null

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Fragment, RecordEntry, UncuratedReference } from './fragment'
 import Folio from './Folio'
-import { Text } from './text'
+import { Text } from '../../transliteration/domain/text'
 import {
   atEleven,
   atTen,

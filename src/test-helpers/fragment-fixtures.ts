@@ -2,7 +2,6 @@ import { factory } from 'factory-girl'
 import { Chance } from 'chance'
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Text } from 'fragmentarium/domain/text'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 
@@ -14,6 +13,12 @@ function date(): string {
 
 function dateRange(): string {
   return `${date()}/${date()}`
+}
+
+async function description(): Promise<string> {
+  return `${await factory.chance('sentence')()}\n${await factory.chance(
+    'sentence'
+  )()}`
 }
 
 factory.define('statistics', Object, {
@@ -43,10 +48,6 @@ factory.define('folio', Folio, {
   number: factory.chance('string'),
 })
 
-factory.define('text', Text, {
-  lines: factory.chance('pickset', complexText.lines, 5),
-})
-
 factory.define('uncuratedReference', Object, {
   document: factory.chance('sentence'),
   lines: async () => await factory.chance('n', chance.natural, 5)(),
@@ -59,10 +60,7 @@ factory.define('fragment', Fragment, {
   accession: factory.chance('word'),
   publication: factory.chance('sentence', { words: 4 }),
   joins: async () => [await factory.chance('word')()],
-  description: async () =>
-    `${await factory.chance('sentence')()}\n${await factory.chance(
-      'sentence'
-    )()}`,
+  description: description,
   measures: factory.assocAttrs('measures'),
   collection: factory.chance('pickone', [
     'Babylon',
@@ -97,7 +95,7 @@ factory.define('fragment', Fragment, {
   script: factory.chance('pickone', ['NA', 'NB']),
   folios: async () => await factory.buildMany('folio', 2),
   record: async () => await factory.buildMany('record', 2),
-  text: factory.assocAttrs('text'),
+  text: complexText,
   notes: factory.chance('sentence'),
   museum: Museum.of('The British Museum'),
   references: async () => await factory.buildMany('referenceDto', 2),
@@ -107,10 +105,7 @@ factory.define('fragment', Fragment, {
 factory.define('fragmentInfo', Object, {
   number: factory.chance('word'),
   accession: factory.chance('word'),
-  description: async () =>
-    `${await factory.chance('sentence')()}\n${await factory.chance(
-      'sentence'
-    )()}`,
+  description: description,
   script: factory.chance('pickone', ['NA', 'NB']),
   matchingLines: [['1. kur']],
   editor: factory.chance('last'),

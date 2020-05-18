@@ -7,7 +7,7 @@ import { Promise } from 'bluebird'
 import { submitFormByTestId, clickNth } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
-import Lemmatization from 'fragmentarium/domain/Lemmatization'
+import Lemmatization from 'transliteration/domain/Lemmatization'
 
 let fragment
 let element

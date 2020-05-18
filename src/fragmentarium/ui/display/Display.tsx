@@ -1,11 +1,10 @@
 import React from 'react'
-import TransliterationHeader from 'fragmentarium/ui/view/TransliterationHeader'
+import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHeader'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { Glossary } from './Glossary'
-
-import { Transliteration } from './Transliteration'
+import { Transliteration } from 'transliteration/ui/Transliteration'
 
 interface Props {
   fragment: Fragment

@@ -26,8 +26,10 @@
       color: black
 
 .Transliteration
-  list-style: none
-  padding: 0
+  &__lines,
+  &__notes
+    list-style: none
+    padding: 0
 
   &__ControlLine
     color: darkgrey
@@ -121,3 +123,10 @@
 
     & + .Transliteration__wordSeparator
       display: none
+
+  &__NoteLink
+    border: medium black solid
+    color: black
+    font-size: 0.8em
+    padding: 0.1em
+    vertical-align: super
