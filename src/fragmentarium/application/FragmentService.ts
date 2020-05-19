@@ -236,7 +236,7 @@ function mapLines<T>(
     .reject(_.isNil)
     .uniq()
     .sort()
-    .value() as ReadonlyArray<T> // Null values are filtered by isNil
+    .value()
 }
 
 export default FragmentService
