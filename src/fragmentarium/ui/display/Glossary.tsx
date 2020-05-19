@@ -34,27 +34,65 @@ export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
         ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
         .sortBy(([lemma, tokensByLemma]) => lemma[0])
         .map(([lemma, tokensByLemma]) => (
-          <div key={lemma.join(' ')}>
-            {lemma.map((l, index) => (
-              <span key={index}>
-                {' '}
-                <Link to={`/dictionary/${l}`}>{l}</Link>
-              </span>
-            ))}
-            {': '}
-            {_(tokensByLemma)
-              .groupBy((token) => token.value)
-              .map(
-                (tokensByValue, value) =>
-                  value +
-                  ' (' +
-                  tokensByValue.map((token) => token.number).join(', ') +
-                  ')'
-              )
-              .join(', ')}
-          </div>
+          <GlossaryEntry
+            key={lemma.join(' ')}
+            lemma={lemma}
+            tokens={tokensByLemma}
+          />
         ))
         .value()}
     </section>
+  )
+}
+
+function GlossaryEntry({
+  lemma,
+  tokens,
+}: {
+  lemma: readonly string[]
+  tokens: readonly GlossaryToken[]
+}): JSX.Element {
+  return (
+    <div>
+      <GlossaryLemma lemma={lemma} />
+      {': '}
+      {_(tokens)
+        .groupBy((token) => token.value)
+        .toPairs()
+        .map(([value, tokensByValue], index) => (
+          <React.Fragment key={value}>
+            {index > 0 && ', '}
+            <GlossaryWord value={value} tokens={tokensByValue} />
+          </React.Fragment>
+        ))
+        .value()}
+    </div>
+  )
+}
+
+function GlossaryLemma({ lemma }: { lemma: readonly string[] }): JSX.Element {
+  return (
+    <>
+      {lemma.map((l, index) => (
+        <span key={index}>
+          {' '}
+          <Link to={`/dictionary/${l}`}>{l}</Link>
+        </span>
+      ))}
+    </>
+  )
+}
+
+function GlossaryWord({
+  value,
+  tokens,
+}: {
+  value: string
+  tokens: readonly GlossaryToken[]
+}): JSX.Element {
+  return (
+    <>
+      {value} ({tokens.map((token) => token.number).join(', ')})
+    </>
   )
 }
