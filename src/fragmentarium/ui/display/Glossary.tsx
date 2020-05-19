@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import { Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
@@ -13,12 +12,7 @@ interface GlossaryToken {
 export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
   return (
     <section>
-      <h4>
-        Glossary{' '}
-        <small>
-          <Badge variant="warning">Beta</Badge>
-        </small>
-      </h4>
+      <h4>Glossary</h4>
       {_(fragment.text.lines)
         .flatMap((line) =>
           line.content
