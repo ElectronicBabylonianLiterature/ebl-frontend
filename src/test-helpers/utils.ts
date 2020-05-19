@@ -1,6 +1,6 @@
 import {
   fireEvent,
-  wait,
+  waitFor,
   act,
   RenderResult,
   Matcher,
@@ -31,9 +31,13 @@ export function changeValue<T>(input: Element, newValue: T): void {
   })
 }
 
-export function clickNth(element: RenderResult, text: Matcher, n = 0): void {
+export async function clickNth(
+  element: RenderResult,
+  text: Matcher,
+  n = 0
+): Promise<void> {
   const clickable = element.getAllByText(text)[n]
-  act(() => {
+  await act(async () => {
     fireEvent.click(clickable)
   })
 }
@@ -69,8 +73,10 @@ export function whenClicked(
   n = 0
 ): WhenResult<Promise<void>> {
   return when((onChange) => async (...expectedChange): Promise<void> => {
-    clickNth(element, text, n)
-    await wait(() => expect(onChange).toHaveBeenCalledWith(...expectedChange))
+    await clickNth(element, text, n)
+    await waitFor(() =>
+      expect(onChange).toHaveBeenCalledWith(...expectedChange)
+    )
   })
 }
 

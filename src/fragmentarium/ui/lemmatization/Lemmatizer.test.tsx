@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -79,7 +79,7 @@ it('Displays the transliteration', () => {
 })
 
 it('Clicking word shows form', async () => {
-  clickNth(element, 'kur', 0)
+  await clickNth(element, 'kur', 0)
   await element.findByLabelText('Lemma')
 })
 
@@ -97,10 +97,9 @@ it('Clicking save calls fragmentService', async () => {
 
 async function lemmatizeWord(): Promise<void> {
   await element.findByText('kur')
-  clickNth(element, 'kur', 0)
+  await clickNth(element, 'kur', 0)
   await element.findByLabelText('Lemma')
   changeValueByLabel(element, 'Lemma', 'a')
   await element.findByText(lemma.lemma)
-  clickNth(element, lemma.lemma, 0)
-  await wait()
+  await clickNth(element, lemma.lemma, 0)
 }

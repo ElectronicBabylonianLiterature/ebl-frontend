@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait, RenderResult, Matcher } from '@testing-library/react'
+import { render, waitFor, RenderResult, Matcher } from '@testing-library/react'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -50,7 +50,7 @@ describe('Single lemma', () => {
 
   it('Calls onChange when selecting word', async () => {
     await lemmatize('Lemma')
-    await wait(() =>
+    await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith([new Lemma(searchWord)])
     )
   })
@@ -83,7 +83,7 @@ describe('Complex lemma', () => {
 
   it('Calls onChange when selecting word', async () => {
     await lemmatize('Lemmata')
-    await wait(() =>
+    await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith([
         ...token.uniqueLemma,
         new Lemma(searchWord),

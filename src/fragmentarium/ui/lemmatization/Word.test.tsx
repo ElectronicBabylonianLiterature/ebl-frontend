@@ -49,7 +49,7 @@ describe.each([
     }
 
     it('Clicking calls on click', async () => {
-      clickNth(element, token.value)
+      await clickNth(element, token.value)
       expect(onClick).toHaveBeenCalled()
     })
 
@@ -89,7 +89,7 @@ describe('Not-lemmatizable word', () => {
   })
 
   it('Clicking does not call on click', async () => {
-    clickNth(element, token.value)
+    await clickNth(element, token.value)
     expect(onClick).not.toHaveBeenCalled()
   })
 

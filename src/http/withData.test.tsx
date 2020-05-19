@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
@@ -30,21 +30,23 @@ interface Props {
 }
 
 async function renderWithData(): Promise<void> {
-  element = render(
-    <ErrorReporterContext.Provider value={errorReportingService}>
-      <ComponentWithData prop={propValue} />{' '}
-    </ErrorReporterContext.Provider>
-  )
-  await wait()
+  await act(async () => {
+    element = render(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <ComponentWithData prop={propValue} />{' '}
+      </ErrorReporterContext.Provider>
+    )
+  })
 }
 
 async function rerender(prop): Promise<void> {
-  element.rerender(
-    <ErrorReporterContext.Provider value={errorReportingService}>
-      <ComponentWithData prop={prop} />{' '}
-    </ErrorReporterContext.Provider>
-  )
-  await wait()
+  await act(async () => {
+    element.rerender(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <ComponentWithData prop={prop} />{' '}
+      </ErrorReporterContext.Provider>
+    )
+  })
 }
 
 function clearMocks(): void {
@@ -101,7 +103,7 @@ beforeEach(async () => {
 describe('On successful get', () => {
   beforeEach(async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
-    renderWithData()
+    await renderWithData()
     await element.findByText(RegExp(propValue))
   })
 
@@ -116,7 +118,7 @@ describe('On successful get', () => {
 
     describe('Prop updated', () => {
       beforeEach(async () => {
-        rerender(newPropValue)
+        await rerender(newPropValue)
         await element.findByText(RegExp(newPropValue))
       })
 
@@ -126,8 +128,7 @@ describe('On successful get', () => {
 
     describe('Prop did not update', () => {
       beforeEach(async () => {
-        rerender(propValue)
-        await wait()
+        await rerender(propValue)
       })
 
       it('Does not query the API', () => {
@@ -144,7 +145,7 @@ describe('On successful get', () => {
 describe('On failed request', () => {
   beforeEach(async () => {
     getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    renderWithData()
+    await renderWithData()
     await element.findByText(errorMessage)
   })
 

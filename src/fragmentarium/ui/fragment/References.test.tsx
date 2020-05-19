@@ -40,7 +40,7 @@ describe('Edit references', () => {
   })
 
   test('Add reference', async () => {
-    clickNth(element, 'Add Reference')
+    await clickNth(element, 'Add Reference')
     await submitForm(element)
 
     expect(updateReferences).toHaveBeenCalledWith([
@@ -50,7 +50,7 @@ describe('Edit references', () => {
   })
 
   test('Delete reference', async () => {
-    clickNth(element, 'Delete Reference')
+    await clickNth(element, 'Delete Reference')
     await submitForm(element)
 
     expect(updateReferences).toHaveBeenCalledWith(_.tail(references))
@@ -94,7 +94,7 @@ async function renderReferencesAndWait(): Promise<void> {
 async function inputReference(): Promise<void> {
   changeValueByLabel(element, 'Document', 'Borger')
   await element.findByText(/Borger 1957/)
-  clickNth(element, /Borger 1957/, 0)
+  await clickNth(element, /Borger 1957/, 0)
   changeValueByLabel(element, 'Type', 'COPY')
   changeValueByLabel(element, 'Pages', '1-2')
   changeValueByLabel(element, 'Notes', 'notes')

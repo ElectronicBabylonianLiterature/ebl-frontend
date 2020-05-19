@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 
@@ -21,8 +21,7 @@ test(`Changing document calls onChange with updated value.`, async () => {
   element = render(<BibliographyEntryForm onSubmit={onSubmit} />)
   changeValueByLabel(element, 'Data', json)
   await element.findByText(new RegExp(_.escapeRegExp(`(${entry.year})`)))
-  clickNth(element, 'Save', 0)
-  await wait()
+  await clickNth(element, 'Save', 0)
 
   expect(onSubmit).toHaveBeenCalledWith(entry)
 })

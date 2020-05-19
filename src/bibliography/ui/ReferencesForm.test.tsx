@@ -36,13 +36,13 @@ beforeEach(async () => {
 })
 
 test('Add reference', async () => {
-  clickNth(element, 'Add Reference')
+  await clickNth(element, 'Add Reference')
 
   expect(onChange).toHaveBeenCalledWith([...references, defaultReference])
 })
 
 test('Delete reference', async () => {
-  clickNth(element, 'Delete Reference')
+  await clickNth(element, 'Delete Reference')
 
   expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
@@ -50,7 +50,7 @@ test('Delete reference', async () => {
 test('Edit reference', async () => {
   changeValueByLabel(element, 'Document', 'Borger')
   await element.findByText(/Borger 1957/)
-  clickNth(element, /Borger 1957/, 0)
+  await clickNth(element, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith([
     expectedReference,

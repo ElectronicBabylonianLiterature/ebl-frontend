@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, wait } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -38,14 +38,14 @@ it('Displays the entry label', () => {
 
 it('Calls onChange when selecting an entry', async () => {
   await fill()
-  await wait(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
+  await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })
 
 async function fill(): Promise<void> {
   const label = expectedLabel(searchEntry)
   changeValueByLabel(element, 'Entry', 'Borger')
   await element.findByText(label)
-  clickNth(element, label, 0)
+  await clickNth(element, label, 0)
 }
 
 function expectedLabel(entry: BibliographyEntry): string {
