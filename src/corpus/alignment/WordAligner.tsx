@@ -98,7 +98,6 @@ export default class WordAligner extends Component<Props, State> {
           show={this.state.show}
           target={this.state.target}
           placement="top"
-          container={this}
         >
           <Popover
             id={this.popOverId}
