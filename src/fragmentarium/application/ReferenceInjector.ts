@@ -41,7 +41,7 @@ export default class ReferenceInjector {
       )
     })
   }
-  
+
   private async createReferences(
     referenceDtos: readonly any[]
   ): Promise<Reference[]> {
