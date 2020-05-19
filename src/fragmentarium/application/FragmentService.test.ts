@@ -1,5 +1,3 @@
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import Folio from 'fragmentarium/domain/Folio'
@@ -13,6 +11,7 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import setUpReferences from 'test-helpers/setUpReferences'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -105,7 +104,9 @@ describe('methods returning hydrated fragment', () => {
   let result: Fragment
 
   beforeEach(async () => {
-    const { entries, references, expectedReferences } = await setUpHydration()
+    const { entries, references, expectedReferences } = await setUpReferences(
+      bibliographyService
+    )
     fragment = await factory.build('fragment', {
       number: number,
       references: references,
@@ -236,39 +237,3 @@ test('createLemmatization', async () => {
     expectedSuggestions
   )
 })
-
-test('hydrateReferences', async () => {
-  const { references, expectedReferences } = await setUpHydration()
-  await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(
-    expectedReferences
-  )
-})
-
-async function setUpHydration(): Promise<{
-  entries: readonly BibliographyEntry[]
-  references: readonly {}[]
-  expectedReferences: Reference[]
-}> {
-  const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany(
-    'referenceDto',
-    2,
-    entries.map((entry: BibliographyEntry) => ({ id: entry.id }))
-  )
-  const expectedReferences = await factory.buildMany(
-    'reference',
-    2,
-    references.map((dto, index) => ({
-      ...dto,
-      document: entries[index],
-    }))
-  )
-  bibliographyService.find.mockImplementation((id) =>
-    Promise.resolve(entries.find((entry: BibliographyEntry) => entry.id === id))
-  )
-  return {
-    entries,
-    references,
-    expectedReferences,
-  }
-}

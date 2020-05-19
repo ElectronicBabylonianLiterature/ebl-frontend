@@ -1,22 +1,17 @@
-import _, { Dictionary } from 'lodash'
-import produce, { Draft } from 'immer'
+import Reference from 'bibliography/domain/Reference'
 import Promise from 'bluebird'
+import Word from 'dictionary/domain/Word'
+import Annotation from 'fragmentarium/domain/annotation'
+import Folio from 'fragmentarium/domain/Folio'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import _, { Dictionary } from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
-import { Fragment } from 'fragmentarium/domain/fragment'
-import Folio from 'fragmentarium/domain/Folio'
-import Reference from 'bibliography/domain/Reference'
-import createReference from 'bibliography/application/createReference'
 import { Text } from 'transliteration/domain/text'
-import Annotation from 'fragmentarium/domain/annotation'
-import Word from 'dictionary/domain/Word'
 import { Token } from 'transliteration/domain/token'
-import {
-  isNoteLine,
-  isBibliographyPart,
-} from 'transliteration/domain/type-guards'
+import ReferenceInjector from './ReferenceInjector'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -64,6 +59,7 @@ class FragmentService {
   private readonly imageRepository
   private readonly wordRepository
   private readonly bibliographyService
+  private readonly referenceInjector: ReferenceInjector
 
   constructor(
     fragmentRepository: FragmentRepository & AnnotationRepository,
@@ -75,6 +71,7 @@ class FragmentService {
     this.imageRepository = imageRepository
     this.wordRepository = wordRepository
     this.bibliographyService = bibliographyService
+    this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
   statistics() {
@@ -84,7 +81,9 @@ class FragmentService {
   async find(number: string): Promise<Fragment> {
     return this.fragmentRepository
       .find(number)
-      .then((fragment: Fragment) => this.hydrateFragment(fragment))
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
   }
 
   async updateTransliteration(
@@ -94,7 +93,9 @@ class FragmentService {
   ): Promise<Fragment> {
     return this.fragmentRepository
       .updateTransliteration(number, transliteration, notes)
-      .then((fragment: Fragment) => this.hydrateFragment(fragment))
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
   }
 
   async updateLemmatization(
@@ -103,7 +104,9 @@ class FragmentService {
   ): Promise<Fragment> {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
-      .then((fragment: Fragment) => this.hydrateFragment(fragment))
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
   }
 
   async updateReferences(
@@ -112,7 +115,9 @@ class FragmentService {
   ): Promise<Fragment> {
     return this.fragmentRepository
       .updateReferences(number, references)
-      .then((fragment: Fragment) => this.hydrateFragment(fragment))
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
   }
 
   findFolio(folio: Folio) {
@@ -211,36 +216,6 @@ class FragmentService {
             ),
           ])
     )
-  }
-
-  private async hydrateFragment(fragment: Fragment): Promise<Fragment> {
-    return await this.hydrateReferences(fragment.references)
-      .then((hydrated) => fragment.setReferences(hydrated))
-      .then(
-        produce(async (draft: Draft<Fragment>) => {
-          await Promise.all(
-            draft.text.allLines
-              .filter(isNoteLine)
-              .flatMap((line: any) => line.parts)
-              .filter(isBibliographyPart)
-              .map(async (part: any) => {
-                part.reference = await createReference(
-                  part.reference,
-                  this.bibliographyService
-                ).catch((error) => {
-                  console.error(error)
-                  return part.reference
-                })
-              })
-          )
-        })
-      )
-  }
-
-  hydrateReferences(references: ReadonlyArray<any>): Promise<Reference[]> {
-    const hydrate: (reference: any) => Promise<Reference> = (reference) =>
-      createReference(reference, this.bibliographyService)
-    return Promise.all<Reference>(references.map(hydrate))
   }
 }
 
