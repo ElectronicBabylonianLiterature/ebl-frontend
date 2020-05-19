@@ -2,10 +2,14 @@ import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { isWord } from 'transliteration/domain/type-guards'
+import { Word } from 'transliteration/domain/token'
+import DisplayToken from 'transliteration/ui/DisplayToken'
 
 interface GlossaryToken {
   readonly number: string
   readonly value: string
+  readonly word: Word
   readonly uniqueLemma: readonly string[]
 }
 
@@ -16,11 +20,13 @@ export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
       {_(fragment.text.lines)
         .flatMap((line) =>
           line.content
-            .filter((token) => token.lemmatizable)
+            .filter(isWord)
+            .filter((token: Word) => token.lemmatizable)
             .map(
               (token): GlossaryToken => ({
                 number: line.prefix,
                 value: token.value,
+                word: token,
                 uniqueLemma: token.uniqueLemma ?? [],
               })
             )
@@ -62,7 +68,7 @@ function GlossaryEntry({
         .map(([value, tokensByValue], index) => (
           <React.Fragment key={value}>
             {index > 0 && ', '}
-            <GlossaryWord value={value} tokens={tokensByValue} />
+            <GlossaryWord tokens={tokensByValue} />
           </React.Fragment>
         ))
         .value()}
@@ -84,15 +90,17 @@ function GlossaryLemma({ lemma }: { lemma: readonly string[] }): JSX.Element {
 }
 
 function GlossaryWord({
-  value,
   tokens,
 }: {
-  value: string
   tokens: readonly GlossaryToken[]
 }): JSX.Element {
+  const word = _.head(tokens)?.word
   return (
     <>
-      {value} ({tokens.map((token) => token.number).join(', ')})
+      <span className="Transliteration">
+        {word && <DisplayToken token={word} />}
+      </span>{' '}
+      ({tokens.map((token) => token.number).join(', ')})
     </>
   )
 }

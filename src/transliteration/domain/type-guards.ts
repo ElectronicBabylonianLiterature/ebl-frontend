@@ -11,6 +11,7 @@ import {
   Enclosure,
   Shift,
   Token,
+  Word,
 } from 'transliteration/domain/token'
 
 export function isEnclosure(token: Token): token is Enclosure {
@@ -36,6 +37,10 @@ export function isCommentaryProtocol(
   token: Token
 ): token is CommentaryProtocol {
   return token.type === 'CommentaryProtocol'
+}
+
+export function isWord(token: Token): token is Word {
+  return token.type === 'Word'
 }
 
 export function isTextLine(line: Line): line is TextLine {
