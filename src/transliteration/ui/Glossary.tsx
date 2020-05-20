@@ -1,10 +1,12 @@
 import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
-import { isWord } from 'transliteration/domain/type-guards'
+import { isWord, isTextLine } from 'transliteration/domain/type-guards'
 import { Word } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 import { Text } from 'transliteration/domain/text'
+import { TextLine } from 'transliteration/domain/line'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 interface GlossaryToken {
   readonly number: string
@@ -18,13 +20,14 @@ export function Glossary({ text }: { text: Text }): JSX.Element {
     <section>
       <h4>Glossary</h4>
       {_(text.lines)
-        .flatMap((line) =>
+        .filter(isTextLine)
+        .flatMap((line: TextLine) =>
           line.content
             .filter(isWord)
             .filter((token: Word) => token.lemmatizable)
             .map(
               (token): GlossaryToken => ({
-                number: line.prefix,
+                number: lineNumberToString(line.lineNumber),
                 value: token.value,
                 word: token,
                 uniqueLemma: token.uniqueLemma ?? [],
