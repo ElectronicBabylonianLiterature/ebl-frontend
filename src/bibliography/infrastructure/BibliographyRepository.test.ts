@@ -8,9 +8,7 @@ const apiClient = {
   postJson: jest.fn(),
 }
 const wordRepository = new BibliographyRepository(apiClient)
-const author = 'Bor Ger'
-const year = '1998'
-const title = 'The Qualifications'
+const query = 'Bor Ger 1998 The Qualifications'
 const id = 'RN 2020'
 const resultStub = {
   id: id,
@@ -28,15 +26,10 @@ const testData: TestData[] = [
   ],
   [
     'search',
-    [author, year, title],
+    [query],
     apiClient.fetchJson,
     [entry],
-    [
-      `/bibliography?author=${encodeURIComponent(
-        author
-      )}&title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}`,
-      true,
-    ],
+    [`/bibliography?query=${encodeURIComponent(query)}`, true],
     Promise.resolve([resultStub]),
   ],
   [

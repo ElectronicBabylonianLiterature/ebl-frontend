@@ -21,19 +21,8 @@ const testData: TestData[] = [
     ['Alba Cecilia 1998 The Qualifications'],
     bibliographyRepository.search,
     [resultStub],
-    ['Alba Cecilia', '1998', 'The Qualifications'],
   ],
-  [
-    'search',
-    ['Alba Cecilia'],
-    bibliographyRepository.search,
-    [resultStub],
-    ['Alba Cecilia', '', ''],
-  ],
+  ['search', ['Alba Cecilia'], bibliographyRepository.search, [resultStub]],
 ]
-
-testDelegation(bibliographyService, testData)
-
-test('Search with empty query', async () => {
-  await expect(bibliographyService.search('')).resolves.toEqual([])
-})
+describe('BibliographyService', () =>
+  testDelegation(bibliographyService, testData))
