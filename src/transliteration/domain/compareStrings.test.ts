@@ -32,20 +32,6 @@ test.each([
 })
 
 test.each([
-  ['', 2, '2'],
-  [53, '', '53'],
-  [29, 98, '29,98'],
-])(
-  'throws an error if the %s or %s is not a string',
-  (word, anotherWord, number) => {
-    function compareInvalidWords(): void {
-      compareStrings(word, anotherWord)
-    }
-    expect(compareInvalidWords).toThrowError(`${number} is not a string`)
-  }
-)
-
-test.each([
   ['', 'abalu*', '*'],
   ['a&maru', 'bitu', '&'],
   ['belu\\EN', 'bitu', '\\'],

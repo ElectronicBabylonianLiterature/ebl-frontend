@@ -1,13 +1,6 @@
 import _ from 'lodash'
 import alphabet from './alphabet.json'
 
-function isString(word: unknown, anotherWord: unknown): void {
-  const notStrings = [word, anotherWord].filter((word) => !_.isString(word))
-  if (!_.isEmpty(notStrings)) {
-    throw new TypeError(`${notStrings} is not a string`)
-  }
-}
-
 function replaceIgnoredCharacters(word: string): string {
   return word.replace(/\]|\?|\[|-|\]|\./g, '')
 }
@@ -45,12 +38,11 @@ function hasLowerAlphabetIndex(
 }
 
 export default function compareStrings(
-  word: unknown,
-  anotherWord: unknown
+  word: string,
+  anotherWord: string
 ): number {
-  isString(word, anotherWord)
-  const replacedWord = replaceIgnoredCharacters(word as string)
-  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord as string)
+  const replacedWord = replaceIgnoredCharacters(word)
+  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
   for (
