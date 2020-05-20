@@ -14,26 +14,12 @@ function checkForInvalidCharacters(...words: string[]): void {
   }
 }
 
-function hasHigherAlphabetIndex(
+function compareAlphabetAtIndex(
   word: string,
   anotherWord: string,
-  indexOfCharacter: number
-): boolean {
-  return (
-    alphabet.indexOf(word[indexOfCharacter]) >
-    alphabet.indexOf(anotherWord[indexOfCharacter])
-  )
-}
-
-function hasLowerAlphabetIndex(
-  word: string,
-  anotherWord: string,
-  indexOfCharacter: number
-): boolean {
-  return (
-    alphabet.indexOf(word[indexOfCharacter]) <
-    alphabet.indexOf(anotherWord[indexOfCharacter])
-  )
+  index: number
+): number {
+  return alphabet.indexOf(word[index]) - alphabet.indexOf(anotherWord[index])
 }
 
 export default function compareStrings(
@@ -49,18 +35,13 @@ export default function compareStrings(
     indexOfCharacter < replacedWord.length;
     indexOfCharacter++
   ) {
-    if (
-      hasHigherAlphabetIndex(
-        replacedWord,
-        anotherWordReplaced,
-        indexOfCharacter
-      )
-    ) {
-      return 1
-    } else if (
-      hasLowerAlphabetIndex(replacedWord, anotherWordReplaced, indexOfCharacter)
-    ) {
-      return -1
+    const alphabetResult = compareAlphabetAtIndex(
+      replacedWord,
+      anotherWordReplaced,
+      indexOfCharacter
+    )
+    if (alphabetResult !== 0) {
+      return Math.sign(alphabetResult)
     }
   }
   return Math.sign(replacedWord.length - anotherWordReplaced.length)
