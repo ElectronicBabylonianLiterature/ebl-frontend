@@ -30,19 +30,16 @@ export default function compareStrings(
   const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
-  for (
-    let indexOfCharacter = 0;
-    indexOfCharacter < replacedWord.length;
-    indexOfCharacter++
-  ) {
-    const alphabetResult = compareAlphabetAtIndex(
-      replacedWord,
-      anotherWordReplaced,
-      indexOfCharacter
-    )
-    if (alphabetResult !== 0) {
-      return Math.sign(alphabetResult)
-    }
-  }
-  return Math.sign(replacedWord.length - anotherWordReplaced.length)
+  const indices = _.range(
+    Math.min(replacedWord.length, anotherWordReplaced.length)
+  )
+  return (
+    _(indices)
+      .map((index) =>
+        compareAlphabetAtIndex(replacedWord, anotherWordReplaced, index)
+      )
+      .filter((result) => result !== 0)
+      .map(Math.sign)
+      .head() ?? Math.sign(replacedWord.length - anotherWordReplaced.length)
+  )
 }
