@@ -38,7 +38,7 @@ test.each([
 ])(
   'throws an error if the %s or %s is not a string',
   (word, anotherWord, number) => {
-    function compareInvalidWords() {
+    function compareInvalidWords(): void {
       compareStrings(word, anotherWord)
     }
     expect(compareInvalidWords).toThrowError(`${number} is not a string`)
@@ -60,7 +60,7 @@ test.each([
 ])(
   'throws an error on word(s) with invalid character(s) %s or %s',
   (word, anotherWord, invalidCharacters) => {
-    function compareInvalidWords() {
+    function compareInvalidWords(): void {
       compareStrings(word, anotherWord)
     }
     expect(compareInvalidWords).toThrowError(

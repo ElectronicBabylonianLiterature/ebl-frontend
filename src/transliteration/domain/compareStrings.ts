@@ -1,18 +1,18 @@
 import _ from 'lodash'
 import alphabet from './alphabet.json'
 
-function isString(word, anotherWord) {
+function isString(word: unknown, anotherWord: unknown): void {
   const notStrings = [word, anotherWord].filter((word) => !_.isString(word))
   if (!_.isEmpty(notStrings)) {
     throw new TypeError(`${notStrings} is not a string`)
   }
 }
 
-function replaceIgnoredCharacters(word) {
+function replaceIgnoredCharacters(word: string): string {
   return word.replace(/\]|\?|\[|-|\]|\./g, '')
 }
 
-function checkForInvalidCharacters(word, anotherWord) {
+function checkForInvalidCharacters(word: string, anotherWord: string): void {
   const invalidCharacters = word
     .split('')
     .concat(anotherWord.split(''))
@@ -22,24 +22,35 @@ function checkForInvalidCharacters(word, anotherWord) {
   }
 }
 
-function hasHigherAlphabetIndex(word, anotherWord, indexOfCharacter) {
+function hasHigherAlphabetIndex(
+  word: string,
+  anotherWord: string,
+  indexOfCharacter: number
+): boolean {
   return (
     alphabet.indexOf(word[indexOfCharacter]) >
     alphabet.indexOf(anotherWord[indexOfCharacter])
   )
 }
 
-function hasLowerAlphabetIndex(word, anotherWord, indexOfCharacter) {
+function hasLowerAlphabetIndex(
+  word: string,
+  anotherWord: string,
+  indexOfCharacter: number
+): boolean {
   return (
     alphabet.indexOf(word[indexOfCharacter]) <
     alphabet.indexOf(anotherWord[indexOfCharacter])
   )
 }
 
-export default function compareStrings(word, anotherWord) {
+export default function compareStrings(
+  word: unknown,
+  anotherWord: unknown
+): number {
   isString(word, anotherWord)
-  const replacedWord = replaceIgnoredCharacters(word)
-  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
+  const replacedWord = replaceIgnoredCharacters(word as string)
+  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord as string)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
   for (
