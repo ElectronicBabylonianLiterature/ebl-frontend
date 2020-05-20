@@ -5,10 +5,9 @@ function replaceIgnoredCharacters(word: string): string {
   return word.replace(/\]|\?|\[|-|\]|\./g, '')
 }
 
-function checkForInvalidCharacters(word: string, anotherWord: string): void {
-  const invalidCharacters = word
-    .split('')
-    .concat(anotherWord.split(''))
+function checkForInvalidCharacters(...words: string[]): void {
+  const invalidCharacters = words
+    .flatMap((word) => word.split(''))
     .filter((character) => !alphabet.includes(character))
   if (!_.isEmpty(invalidCharacters)) {
     throw new Error(`Invalid character(s) ${invalidCharacters} in the input`)
