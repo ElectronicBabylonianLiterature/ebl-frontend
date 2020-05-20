@@ -15,41 +15,46 @@ interface GlossaryToken {
   readonly uniqueLemma: readonly string[]
 }
 
+function getGlossary(
+  text: Text
+): [readonly string[], readonly GlossaryToken[]][] {
+  return _(text.lines)
+    .filter(isTextLine)
+    .flatMap((line: TextLine) =>
+      line.content
+        .filter(isWord)
+        .filter((token: Word) => token.lemmatizable)
+        .map(
+          (token): GlossaryToken => ({
+            number: lineNumberToString(line.lineNumber),
+            value: token.value,
+            word: token,
+            uniqueLemma: token.uniqueLemma ?? [],
+          })
+        )
+    )
+    .reject((token) => _.isEmpty(token.uniqueLemma))
+    .groupBy((token) => token.uniqueLemma)
+    .toPairs()
+    .map(([lemma, tokensByLemma]): [
+      readonly string[],
+      readonly GlossaryToken[]
+    ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
+    .sortBy(([lemma, tokensByLemma]) => lemma[0])
+    .value()
+}
+
 export function Glossary({ text }: { text: Text }): JSX.Element {
   return (
     <section>
       <h4>Glossary</h4>
-      {_(text.lines)
-        .filter(isTextLine)
-        .flatMap((line: TextLine) =>
-          line.content
-            .filter(isWord)
-            .filter((token: Word) => token.lemmatizable)
-            .map(
-              (token): GlossaryToken => ({
-                number: lineNumberToString(line.lineNumber),
-                value: token.value,
-                word: token,
-                uniqueLemma: token.uniqueLemma ?? [],
-              })
-            )
-        )
-        .reject((token) => _.isEmpty(token.uniqueLemma))
-        .groupBy((token) => token.uniqueLemma)
-        .toPairs()
-        .map(([lemma, tokensByLemma]): [
-          readonly string[],
-          readonly GlossaryToken[]
-        ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
-        .sortBy(([lemma, tokensByLemma]) => lemma[0])
-        .map(([lemma, tokensByLemma]) => (
-          <GlossaryEntry
-            key={lemma.join(' ')}
-            lemma={lemma}
-            tokens={tokensByLemma}
-          />
-        ))
-        .value()}
+      {getGlossary(text).map(([lemma, tokensByLemma]) => (
+        <GlossaryEntry
+          key={lemma.join(' ')}
+          lemma={lemma}
+          tokens={tokensByLemma}
+        />
+      ))}
     </section>
   )
 }
