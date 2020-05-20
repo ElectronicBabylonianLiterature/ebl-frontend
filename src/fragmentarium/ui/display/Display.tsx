@@ -17,7 +17,7 @@ function Display({ fragment }: Props): JSX.Element {
       <Transliteration text={fragment.text} />
       <SessionContext.Consumer>
         {(session: Session): React.ReactNode =>
-          session.hasBetaAccess() && <Glossary fragment={fragment} />
+          session.hasBetaAccess() && <Glossary text={fragment.text} />
         }
       </SessionContext.Consumer>
     </>

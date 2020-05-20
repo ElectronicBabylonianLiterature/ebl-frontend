@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import { isWord } from 'transliteration/domain/type-guards'
 import { Word } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
+import { Text } from 'transliteration/domain/text'
 
 interface GlossaryToken {
   readonly number: string
@@ -13,11 +13,11 @@ interface GlossaryToken {
   readonly uniqueLemma: readonly string[]
 }
 
-export function Glossary({ fragment }: { fragment: Fragment }): JSX.Element {
+export function Glossary({ text }: { text: Text }): JSX.Element {
   return (
     <section>
       <h4>Glossary</h4>
-      {_(fragment.text.lines)
+      {_(text.lines)
         .flatMap((line) =>
           line.content
             .filter(isWord)
