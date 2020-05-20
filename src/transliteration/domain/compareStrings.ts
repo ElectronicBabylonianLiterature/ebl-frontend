@@ -14,12 +14,8 @@ function checkForInvalidCharacters(...words: string[]): void {
   }
 }
 
-function compareAlphabetAtIndex(
-  word: string,
-  anotherWord: string,
-  index: number
-): number {
-  return alphabet.indexOf(word[index]) - alphabet.indexOf(anotherWord[index])
+function compareAlphabet(word: string, anotherWord: string): number {
+  return alphabet.indexOf(word) - alphabet.indexOf(anotherWord)
 }
 
 export default function compareStrings(
@@ -30,14 +26,10 @@ export default function compareStrings(
   const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
-  const indices = _.range(
-    Math.min(replacedWord.length, anotherWordReplaced.length)
-  )
   return (
-    _(indices)
-      .map((index) =>
-        compareAlphabetAtIndex(replacedWord, anotherWordReplaced, index)
-      )
+    _(replacedWord)
+      .split('')
+      .zipWith(anotherWordReplaced.split(''), compareAlphabet)
       .filter((result) => result !== 0)
       .map(Math.sign)
       .head() ?? Math.sign(replacedWord.length - anotherWordReplaced.length)
