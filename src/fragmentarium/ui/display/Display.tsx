@@ -3,7 +3,7 @@ import TransliterationHeader from 'fragmentarium/ui/fragment/TransliterationHead
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { Glossary } from './Glossary'
+import { Glossary } from 'transliteration/ui/Glossary'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 
 interface Props {
