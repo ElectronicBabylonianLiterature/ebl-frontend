@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import alphabet from './alphabet.json'
 
-function replaceIgnoredCharacters(word: string): string {
+function removeIgnoredCharacters(word: string): string {
   return word.replace(/\]|\?|\[|-|\]|\./g, '')
 }
 
@@ -18,12 +18,12 @@ function compareAlphabet(word: string, anotherWord: string): number {
   return alphabet.indexOf(word) - alphabet.indexOf(anotherWord)
 }
 
-export default function compareStrings(
+export default function compareAkkadianStrings(
   word: string,
   anotherWord: string
 ): number {
-  const replacedWord = replaceIgnoredCharacters(word)
-  const anotherWordReplaced = replaceIgnoredCharacters(anotherWord)
+  const replacedWord = removeIgnoredCharacters(word)
+  const anotherWordReplaced = removeIgnoredCharacters(anotherWord)
   checkForInvalidCharacters(replacedWord, anotherWordReplaced)
 
   return (

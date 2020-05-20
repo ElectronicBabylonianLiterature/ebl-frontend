@@ -1,4 +1,4 @@
-import compareStrings from './compareStrings'
+import compareAkkadianStrings from './compareAkkadianStrings'
 
 test.each([
   ['Abullu', 'abullu', -1],
@@ -23,9 +23,9 @@ test.each([
   ['Amar-Suen', 'Amar-Suen?', 0],
   ['[Uruk]', '[Uruk]?', 0],
 ])('compares %s and %s', (word, anotherWord, expected) => {
-  const comparedWords = compareStrings(word, anotherWord)
+  const comparedWords = compareAkkadianStrings(word, anotherWord)
   expect(comparedWords).toBe(expected)
-  const comparedWordsReversed = compareStrings(anotherWord, word)
+  const comparedWordsReversed = compareAkkadianStrings(anotherWord, word)
   if (expected !== 0) {
     expect(comparedWordsReversed).toBe(-expected)
   }
@@ -47,7 +47,7 @@ test.each([
   'throws an error on word(s) with invalid character(s) %s or %s',
   (word, anotherWord, invalidCharacters) => {
     function compareInvalidWords(): void {
-      compareStrings(word, anotherWord)
+      compareAkkadianStrings(word, anotherWord)
     }
     expect(compareInvalidWords).toThrowError(
       `Invalid character(s) ${invalidCharacters} in the input`
