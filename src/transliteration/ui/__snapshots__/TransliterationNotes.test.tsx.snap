@@ -102,7 +102,9 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
-        <span>
+        <span
+          class="badge badge-danger"
+        >
           @bib{
           RN1
           @
@@ -208,7 +210,9 @@ exports[`Snapshot 1`] = `
             </span>
           </span>
         </span>
-        <span>
+        <span
+          class="badge badge-danger"
+        >
           @bib{
           RN1
           @
@@ -230,96 +234,19 @@ exports[`Snapshot 1`] = `
       <span
         class="Transliteration__NoteLine"
       >
-        <span>
-          this is a note 
-        </span>
-        <em>
-          italic text
-        </em>
-        <span>
-           
-        </span>
         <span
-          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          class="badge badge-danger"
         >
-           
-        </span>
-        <span
-          class="Transliteration__Word Transliteration__Word--AKKADIAN"
-        >
-          <span
-            class=""
-          >
-            <span
-              class="Transliteration__Reading"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  <span
-                    class=""
-                  >
-                    kur
-                  </span>
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
-            </span>
-          </span>
-        </span>
-        <span>
-           
-        </span>
-        <span
-          class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
-        >
-           
-        </span>
-        <span
-          class="Transliteration__Word Transliteration__Word--SUMERIAN"
-        >
-          <span
-            class=""
-          >
-            <span
-              class="Transliteration__Reading"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  <span
-                    class=""
-                  >
-                    kur
-                  </span>
-                </span>
-                <sup
-                  class="Transliteration__modifier"
-                />
-                <sup
-                  class="Transliteration__flag"
-                />
-              </span>
-            </span>
-          </span>
-        </span>
-        <span>
           @bib{
           RN1
           @
           5
           }
+        </span>
+        <span
+          class="ReferenceList__citation"
+        >
+          Bob, 2020: 3 (D)
         </span>
       </span>
     </li>

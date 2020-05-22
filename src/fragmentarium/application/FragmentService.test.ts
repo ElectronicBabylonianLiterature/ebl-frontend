@@ -1,5 +1,3 @@
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import Folio from 'fragmentarium/domain/Folio'
@@ -8,8 +6,12 @@ import { fragment } from 'test-helpers/test-fragment'
 import createLemmatizationTestText from 'test-helpers/test-text'
 import { TestData, testDelegation } from 'test-helpers/utils'
 import Lemma from 'transliteration/domain/Lemma'
-import Lemmatization from 'transliteration/domain/Lemmatization'
+import Lemmatization, {
+  LemmatizationToken,
+} from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import setUpReferences from 'test-helpers/setUpReferences'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -48,27 +50,6 @@ const fragmentService = new FragmentService(
 )
 const testData: TestData[] = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
-  [
-    'updateTransliteration',
-    ['K.1', '1. kur', 'notes'],
-    fragmentRepository.updateTransliteration,
-    resultStub,
-  ],
-  [
-    'updateLemmatization',
-    ['K.1', [[{ value: 'kur', uniqueLemma: [] }]]],
-    fragmentRepository.updateLemmatization,
-    resultStub,
-  ],
-  [
-    'updateReferences',
-    [
-      'K.1',
-      [[{ id: 'id', type: 'EDITION', notes: '', pages: '', linesCited: [] }]],
-    ],
-    fragmentRepository.updateReferences,
-    resultStub,
-  ],
   ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
   [
@@ -116,32 +97,112 @@ describe.each(['searchLemma'])('%s', (method) => {
   })
 })
 
-describe('find', () => {
+describe('methods returning hydrated fragment', () => {
   const number = 'K.1'
-  let expectedFragment
-  let result
+  let fragment: Fragment
+  let expectedFragment: Fragment
+  let result: Fragment
 
   beforeEach(async () => {
-    const { entries, references, expectedReferences } = await setUpHydration()
-    const fragment = await factory.build('fragment', {
+    const { entries, references, expectedReferences } = await setUpReferences(
+      bibliographyService
+    )
+    fragment = await factory.build('fragment', {
       number: number,
       references: references,
     })
 
-    fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
-    bibliographyService.find.mockImplementation((id) =>
-      Promise.resolve(entries.find((entry) => entry.id === id))
-    )
+    bibliographyService.find.mockImplementation((id) => {
+      const entry = entries.find((entry) => entry.id === id)
+      return entry
+        ? Promise.resolve(entry)
+        : Promise.reject(new Error(`${id} not found.`))
+    })
 
     expectedFragment = fragment.setReferences(expectedReferences)
-
-    result = await fragmentService.find(fragment.number)
   })
 
-  test('Returns hydrated fragment', () =>
-    expect(result).toEqual(expectedFragment))
-  test('Finds correct fragment', () =>
-    expect(fragmentRepository.find).toHaveBeenCalledWith(number))
+  describe('find', () => {
+    beforeEach(async () => {
+      fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.find(fragment.number)
+    })
+
+    test('Returns hydrated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.find).toHaveBeenCalledWith(number))
+  })
+
+  describe('update transliteration', () => {
+    const transliteration = '1. kur'
+    const notes = 'notes'
+
+    beforeEach(async () => {
+      fragmentRepository.updateTransliteration.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateTransliteration(
+        fragment.number,
+        transliteration,
+        notes
+      )
+    })
+
+    test('Returns hydrated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
+        fragment.number,
+        transliteration,
+        notes
+      ))
+  })
+
+  describe('update lemmatization', () => {
+    const lemmatization: Lemmatization = new Lemmatization(
+      ['1.'],
+      [[new LemmatizationToken('kur', true, [])]]
+    )
+
+    beforeEach(async () => {
+      fragmentRepository.updateLemmatization.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateLemmatization(
+        fragment.number,
+        lemmatization
+      )
+    })
+
+    test('Returns hydrated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateLemmatization).toHaveBeenCalledWith(
+        fragment.number,
+        lemmatization
+      ))
+  })
+
+  describe('update references', () => {
+    beforeEach(async () => {
+      fragmentRepository.updateReferences.mockReturnValue(
+        Promise.resolve(fragment)
+      )
+      result = await fragmentService.updateReferences(
+        fragment.number,
+        fragment.references
+      )
+    })
+
+    test('Returns hydrated fragment', () =>
+      expect(result).toEqual(expectedFragment))
+    test('Finds correct fragment', () =>
+      expect(fragmentRepository.updateReferences).toHaveBeenCalledWith(
+        fragment.number,
+        fragment.references
+      ))
+  })
 })
 
 test('createLemmatization', async () => {
@@ -176,39 +237,3 @@ test('createLemmatization', async () => {
     expectedSuggestions
   )
 })
-
-test('hydrateReferences', async () => {
-  const { references, expectedReferences } = await setUpHydration()
-  await expect(fragmentService.hydrateReferences(references)).resolves.toEqual(
-    expectedReferences
-  )
-})
-
-async function setUpHydration(): Promise<{
-  entries: readonly BibliographyEntry[]
-  references: readonly {}[]
-  expectedReferences: readonly Reference[]
-}> {
-  const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany(
-    'referenceDto',
-    2,
-    entries.map((entry: BibliographyEntry) => ({ id: entry.id }))
-  )
-  const expectedReferences = await factory.buildMany(
-    'reference',
-    2,
-    references.map((dto, index) => ({
-      ...dto,
-      document: entries[index],
-    }))
-  )
-  bibliographyService.find.mockImplementation((id) =>
-    Promise.resolve(entries.find((entry: BibliographyEntry) => entry.id === id))
-  )
-  return {
-    entries,
-    references,
-    expectedReferences,
-  }
-}

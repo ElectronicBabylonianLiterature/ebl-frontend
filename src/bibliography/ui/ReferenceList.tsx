@@ -1,11 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import { Popover, OverlayTrigger } from 'react-bootstrap'
-import CompactCitation from './CompactCitation'
-import FullCitation from './FullCitation'
 import Reference from 'bibliography/domain/Reference'
 
 import './ReferenceList.css'
+import Citation from './Citation'
 
 const typeOrder = {
   COPY: 1,
@@ -14,34 +12,11 @@ const typeOrder = {
   DISCUSSION: 4,
 }
 
-function Citation({ reference }: { reference: Reference }) {
-  const popover = (
-    <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
-      <Popover.Content>
-        <FullCitation reference={reference} />
-      </Popover.Content>
-    </Popover>
-  )
-
-  return (
-    <OverlayTrigger
-      rootClose
-      overlay={popover}
-      trigger={['click']}
-      placement="right"
-    >
-      <span className="ReferenceList__citation">
-        <CompactCitation reference={reference} />
-      </span>
-    </OverlayTrigger>
-  )
-}
-
 function ReferenceGroup({
   references,
 }: {
   references: ReadonlyArray<Reference>
-}) {
+}): JSX.Element {
   return (
     <ol className="ReferenceList__list">
       {_.chain(references)
@@ -60,7 +35,7 @@ export default function ReferenceList({
   references,
 }: {
   references: ReadonlyArray<Reference>
-}) {
+}): JSX.Element {
   return (
     <>
       {_.chain(references)

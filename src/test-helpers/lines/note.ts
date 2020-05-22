@@ -1,6 +1,8 @@
 import { NoteLine } from 'transliteration/domain/line'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-const note: NoteLine = {
+export const note: NoteLine = {
   prefix: '#note: ',
   content: [
     {
@@ -158,6 +160,62 @@ const note: NoteLine = {
         notes: '',
         linesCited: [],
       },
+      type: 'BibliographyPart',
+    },
+  ],
+  type: 'NoteLine',
+}
+
+export const hydratedNote: NoteLine = {
+  prefix: '#note: ',
+  content: [
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: '@bib{RN1@5}',
+      value: '@bib{RN1@5}',
+      type: 'ValueToken',
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: '@bib{RN2@3}',
+      value: '@bib{RN3@3}',
+      type: 'ValueToken',
+    },
+  ],
+  parts: [
+    {
+      reference: {
+        id: 'RN1',
+        type: 'DISCUSSION',
+        pages: '5',
+        notes: '',
+        linesCited: [],
+      },
+      type: 'BibliographyPart',
+    },
+    {
+      reference: new Reference(
+        'DISCUSSION',
+        '3',
+        '',
+        [],
+        new BibliographyEntry({
+          id: 'RN2',
+          title: 'Title',
+          type: 'article-journal',
+          issued: {
+            'date-parts': [[2020, 5, 18]],
+          },
+          volume: '12',
+          page: '1-9',
+          issue: 7,
+          'container-title': 'Container',
+          author: [{ given: 'Alice', family: 'Bob' }],
+          URL: 'http://example.com',
+        })
+      ),
       type: 'BibliographyPart',
     },
   ],
