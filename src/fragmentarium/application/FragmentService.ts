@@ -78,7 +78,7 @@ class FragmentService {
     return this.fragmentRepository.statistics()
   }
 
-  async find(number: string): Promise<Fragment> {
+  find(number: string): Promise<Fragment> {
     return this.fragmentRepository
       .find(number)
       .then((fragment: Fragment) =>
@@ -86,7 +86,7 @@ class FragmentService {
       )
   }
 
-  async updateTransliteration(
+  updateTransliteration(
     number: string,
     transliteration: string,
     notes: string
@@ -98,7 +98,7 @@ class FragmentService {
       )
   }
 
-  async updateLemmatization(
+  updateLemmatization(
     number: string,
     lemmatization: Lemmatization
   ): Promise<Fragment> {
@@ -109,7 +109,7 @@ class FragmentService {
       )
   }
 
-  async updateReferences(
+  updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
   ): Promise<Fragment> {
