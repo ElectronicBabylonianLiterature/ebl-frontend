@@ -23,8 +23,8 @@ beforeEach(() => {
   )
 })
 
-test('Submitting the from calls updateTransliteration', () => {
-  submitFormByTestId(element, 'transliteration-form')
+test('Submitting the from calls updateTransliteration', async () => {
+  await submitFormByTestId(element, 'transliteration-form')
   expect(updateTransliteration).toHaveBeenCalledWith(transliteration, notes)
 })
 

@@ -42,7 +42,7 @@ xit('Renders notes field', () => {
   expect(element.getByLabelText('Notes')).toEqual(fragment.notes)
 })
 
-it('Calls updateTransliteration on save', () => {
-  submitFormByTestId(element, 'transliteration-form')
+it('Calls updateTransliteration on save', async () => {
+  await submitFormByTestId(element, 'transliteration-form')
   expect(updateTransliteration).toHaveBeenCalled()
 })

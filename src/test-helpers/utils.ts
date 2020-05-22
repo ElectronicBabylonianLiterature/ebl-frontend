@@ -115,11 +115,11 @@ export async function submitForm(element: RenderResult): Promise<void> {
   })
 }
 
-export function submitFormByTestId(
+export async function submitFormByTestId(
   element: RenderResult,
   testId: Matcher
-): void {
-  act(() => {
+): Promise<void> {
+  await act(async () => {
     fireEvent.submit(element.getByTestId(testId))
   })
 }

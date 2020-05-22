@@ -16,7 +16,6 @@ let fragmentService
 let fragmentSearchService
 let session
 let updatedFragment
-let expectedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
@@ -28,11 +27,12 @@ beforeEach(async () => {
       collection: 'Sippar',
     })
   ).setReferences(await factory.buildMany('reference', 2))
-  updatedFragment = await factory.build('fragment', {
-    number: fragment.number,
-    atf: fragment.atf,
-  })
-  expectedFragment = updatedFragment.setReferences(references)
+  updatedFragment = (
+    await factory.build('fragment', {
+      number: fragment.number,
+      atf: fragment.atf,
+    })
+  ).setReferences(references)
 
   fragmentService = {
     updateTransliteration: jest.fn(),
@@ -41,7 +41,6 @@ beforeEach(async () => {
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
-    hydrateReferences: () => Promise.resolve(references),
     fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
   }
   fragmentSearchService = {}
@@ -131,9 +130,9 @@ it('Updates view on Edition save', async () => {
     Promise.resolve(updatedFragment)
   )
 
-  submitFormByTestId(element, 'transliteration-form')
+  await submitFormByTestId(element, 'transliteration-form')
 
-  await element.findAllByText(expectedFragment.cdliNumber)
+  await element.findAllByText(updatedFragment.cdliNumber)
 })
 
 it('Updates view on References save', async () => {
@@ -142,7 +141,7 @@ it('Updates view on References save', async () => {
   )
   await clickNth(element, 'References', 1)
   await element.findAllByText('Document')
-  submitFormByTestId(element, 'references-form')
+  await submitFormByTestId(element, 'references-form')
 
-  await element.findByText(expectedFragment.cdliNumber)
+  await element.findByText(updatedFragment.cdliNumber)
 })

@@ -201,18 +201,10 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
     setError(null)
     setIsSaving(true)
 
-    const updatePromise = promise
-      .then((updatedFragment) =>
-        fragmentService
-          .hydrateReferences(updatedFragment.references)
-          .then((hydratedReferences) =>
-            updatedFragment.setReferences(hydratedReferences)
-          )
-      )
-      .then((hydaratedFragment) => {
-        setFragment(hydaratedFragment)
-        setIsSaving(false)
-      })
+    const updatePromise = promise.then((updatedFragment) => {
+      setFragment(updatedFragment)
+      setIsSaving(false)
+    })
     setPromise(
       updatePromise.catch((error) => {
         setError(error)
