@@ -30,15 +30,14 @@ export default class ReferenceInjector {
             .filter(isNoteLine)
             .flatMap((line: any) => line.parts)
             .filter(isBibliographyPart)
-            .map(
-              async (part: any) =>
-                await createReference(part.reference, this.bibliographyService)
-                  .then((reference): void => {
-                    part.reference = reference
-                  })
-                  .catch((error): void => {
-                    console.error(error)
-                  })
+            .map((part: any) =>
+              createReference(part.reference, this.bibliographyService)
+                .then((reference): void => {
+                  part.reference = reference
+                })
+                .catch((error): void => {
+                  console.error(error)
+                })
             )
         )
       })
