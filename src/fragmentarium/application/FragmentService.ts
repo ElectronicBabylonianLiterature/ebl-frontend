@@ -173,7 +173,7 @@ class FragmentService {
     return this.fragmentRepository.updateAnnotations(number, annotations)
   }
 
-  async createLemmatization(text: Text): Promise<Lemmatization> {
+  createLemmatization(text: Text): Promise<Lemmatization> {
     return Promise.all([this.fetchLemmas(text), this.fetchSuggestions(text)])
       .then(([lemmaData, suggestionsData]): [
         Dictionary<Lemma>,
