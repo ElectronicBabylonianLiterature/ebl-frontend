@@ -23,7 +23,7 @@ export default class ReferenceInjector {
   }
 
   private injectReferencesToNotes(fragment: Fragment): Promise<Fragment> {
-    return Promise.resolve(
+    return new Promise((resolve, reject) => {
       produce(fragment, async (draft: Draft<Fragment>) => {
         await Promise.all(
           draft.text.allLines
@@ -41,7 +41,9 @@ export default class ReferenceInjector {
             )
         )
       })
-    )
+        .then(resolve)
+        .catch(reject)
+    })
   }
 
   private createReferences(
