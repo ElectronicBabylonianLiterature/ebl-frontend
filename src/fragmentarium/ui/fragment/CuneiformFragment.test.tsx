@@ -8,18 +8,23 @@ import { submitFormByTestId, clickNth } from 'test-helpers/utils'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'transliteration/domain/Lemmatization'
+import WordService from 'dictionary/application/WordService'
+
+jest.mock('dictionary/application/WordService')
 
 let fragment
 let element
 let container
 let fragmentService
 let fragmentSearchService
+let wordService
 let session
 let updatedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const references = await factory.buildMany('reference', 2)
+  wordService = new WordService(null)
   fragment = (
     await factory.build('fragment', {
       atf: '1. ku',
@@ -66,6 +71,7 @@ beforeEach(async () => {
             fragment={fragment}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
           />
         </SessionContext.Provider>
       </MemoryRouter>

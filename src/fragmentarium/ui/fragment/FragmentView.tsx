@@ -10,6 +10,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { Button } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import WordService from 'dictionary/application/WordService'
 
 function AnnotateButton({
   number,
@@ -31,6 +32,7 @@ type Props = {
   fragment: Fragment
   fragmentService
   fragmentSearchService
+  wordService: WordService
   number: string
   folioName?: string | null | undefined
   folioNumber?: string | null | undefined
@@ -53,6 +55,7 @@ function FragmentView({
   fragment,
   fragmentService,
   fragmentSearchService,
+  wordService,
   number,
   folioName,
   folioNumber,
@@ -76,6 +79,7 @@ function FragmentView({
         fragment={fragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        wordService={wordService}
         activeFolio={activeFolio}
         tab={tab}
       />

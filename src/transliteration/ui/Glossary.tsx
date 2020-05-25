@@ -2,17 +2,23 @@ import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { isWord, isTextLine } from 'transliteration/domain/type-guards'
-import { Word } from 'transliteration/domain/token'
+import { Word as TransliterationWord } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/line'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import DictionaryWord from 'dictionary/domain/Word'
+import withData from 'http/withData'
+import { Promise } from 'bluebird'
+import WordService from 'dictionary/application/WordService'
+import produce, { castDraft } from 'immer'
 
 interface GlossaryToken {
   readonly number: string
   readonly value: string
-  readonly word: Word
+  readonly word: TransliterationWord
   readonly uniqueLemma: readonly string[]
+  readonly words?: readonly DictionaryWord[]
 }
 
 function getGlossary(
@@ -23,7 +29,7 @@ function getGlossary(
     .flatMap((line: TextLine) =>
       line.content
         .filter(isWord)
-        .filter((token: Word) => token.lemmatizable)
+        .filter((token: TransliterationWord) => token.lemmatizable)
         .map(
           (token): GlossaryToken => ({
             number: lineNumberToString(line.lineNumber),
@@ -44,11 +50,15 @@ function getGlossary(
     .value()
 }
 
-export function Glossary({ text }: { text: Text }): JSX.Element {
+function Glossary({
+  data,
+}: {
+  data: [readonly string[], readonly GlossaryToken[]][]
+}): JSX.Element {
   return (
     <section>
       <h4>Glossary</h4>
-      {getGlossary(text).map(([lemma, tokensByLemma]) => (
+      {data.map(([lemma, tokensByLemma]) => (
         <GlossaryEntry
           key={lemma.join(' ')}
           lemma={lemma}
@@ -69,6 +79,7 @@ function GlossaryEntry({
   return (
     <div>
       <GlossaryLemma lemma={lemma} />
+      <GlossaryGuideword words={tokens[0].words ?? []} />
       {': '}
       {_(tokens)
         .groupBy((token) => token.value)
@@ -97,6 +108,23 @@ function GlossaryLemma({ lemma }: { lemma: readonly string[] }): JSX.Element {
   )
 }
 
+function GlossaryGuideword({
+  words,
+}: {
+  words: readonly DictionaryWord[]
+}): JSX.Element {
+  return (
+    <>
+      {!_.isEmpty(words) && ', '}
+      {words.map((word, index) => (
+        <span key={index}>
+          {index > 0 && ' '}“{word.guideWord}”
+        </span>
+      ))}
+    </>
+  )
+}
+
 function GlossaryWord({
   tokens,
 }: {
@@ -112,3 +140,31 @@ function GlossaryWord({
     </>
   )
 }
+
+function isDictionaryWord(word: DictionaryWord | null): word is DictionaryWord {
+  return word !== null
+}
+
+export default withData<
+  {},
+  { text: Text; wordService: WordService },
+  [readonly string[], readonly GlossaryToken[]][]
+>(Glossary, ({ text, wordService: dictionary }) => {
+  const glossary = getGlossary(text)
+  return new Promise((resolve, reject) => {
+    produce(glossary, async (draft) => {
+      for (const [, tokens] of draft) {
+        for (const token of tokens) {
+          const words = await Promise.all(
+            token.uniqueLemma.map(
+              async (lemma) => await dictionary.find(lemma).catch(() => null)
+            )
+          )
+          token.words = castDraft(words.filter(isDictionaryWord))
+        }
+      }
+    })
+      .then(resolve)
+      .catch(reject)
+  })
+})

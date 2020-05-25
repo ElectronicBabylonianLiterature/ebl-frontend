@@ -17,6 +17,7 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import './CuneiformFragment.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
+import WordService from 'dictionary/application/WordService'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -28,6 +29,7 @@ type TabsProps = {
   fragment: Fragment
   fragmentService
   fragmentSearchService
+  wordService: WordService
   onSave
   disabled?: boolean
 }
@@ -35,6 +37,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  wordService,
   onSave,
   disabled = false,
 }) => {
@@ -73,7 +76,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
         >
           <Tab eventKey={1} title="Display">
             <ContentSection>
-              <Display fragment={fragment} />{' '}
+              <Display fragment={fragment} wordService={wordService} />{' '}
             </ContentSection>
           </Tab>
           <Tab
@@ -131,6 +134,7 @@ type CuneiformFragmentProps = {
   fragment: Fragment
   fragmentService
   fragmentSearchService
+  wordService: WordService
   activeFolio: Folio | null
   tab: string | null
   onSave
@@ -141,6 +145,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  wordService,
   activeFolio,
   tab,
   onSave,
@@ -158,6 +163,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
             fragment={fragment}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
             onSave={onSave}
             disabled={saving}
           />
@@ -181,6 +187,7 @@ type ControllerProps = {
   fragment: Fragment
   fragmentService
   fragmentSearchService
+  wordService: WordService
   activeFolio?: Folio | null
   tab?: string | null
 }
@@ -188,6 +195,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   fragment,
   fragmentService,
   fragmentSearchService,
+  wordService,
   activeFolio = null,
   tab = null,
 }) => {
@@ -220,6 +228,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
         fragment={currentFragment}
         fragmentService={fragmentService}
         fragmentSearchService={fragmentSearchService}
+        wordService={wordService}
         activeFolio={activeFolio}
         tab={tab}
         onSave={handleSave}
