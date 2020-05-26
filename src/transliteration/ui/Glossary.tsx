@@ -8,6 +8,7 @@ import withData from 'http/withData'
 import { Promise } from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import produce, { castDraft } from 'immer'
+import './Glossary.sass'
 
 function Glossary({
   data,
@@ -37,7 +38,7 @@ function GlossaryEntry({
 }): JSX.Element {
   return (
     <div>
-      <GlossaryLemma lemma={lemma} />
+      <GlossaryLemma lemma={tokens[0].words ?? []} />
       <GlossaryGuideword words={tokens[0].words ?? []} />
       {': '}
       {_(tokens)
@@ -54,13 +55,22 @@ function GlossaryEntry({
   )
 }
 
-function GlossaryLemma({ lemma }: { lemma: readonly string[] }): JSX.Element {
+function GlossaryLemma({
+  lemma,
+}: {
+  lemma: readonly DictionaryWord[]
+}): JSX.Element {
   return (
     <>
-      {lemma.map((l, index) => (
+      {lemma.map((lemmaPart, index) => (
         <span key={index}>
-          {' '}
-          <Link to={`/dictionary/${l}`}>{l}</Link>
+          {index > 0 && ' '}
+          <Link to={`/dictionary/${lemmaPart._id}`}>
+            <span className="Glossary__lemma">{lemmaPart.lemma.join(' ')}</span>
+            {lemmaPart.homonym !== 'I' && (
+              <span className="Glossary__homonym"> {lemmaPart.homonym}</span>
+            )}
+          </Link>
         </span>
       ))}
     </>
