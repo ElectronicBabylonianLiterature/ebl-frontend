@@ -9,6 +9,7 @@ import { Promise } from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import produce, { castDraft } from 'immer'
 import './Glossary.sass'
+import compareWord from 'transliteration/domain/compareWord'
 
 function Glossary({
   data,
@@ -18,9 +19,20 @@ function Glossary({
   return (
     <section>
       <h4>Glossary</h4>
-      {data.map(([lemma, tokensByLemma]) => (
-        <GlossaryEntry key={lemma} tokens={tokensByLemma} />
-      ))}
+      {[...data]
+        .sort(
+          (
+            [, [{ dictionaryWord: firstWord }]],
+            [, [{ dictionaryWord: secondWord }]]
+          ) =>
+            compareWord(
+              firstWord as DictionaryWord,
+              secondWord as DictionaryWord
+            )
+        )
+        .map(([lemma, tokensByLemma]) => (
+          <GlossaryEntry key={lemma} tokens={tokensByLemma} />
+        ))}
     </section>
   )
 }
