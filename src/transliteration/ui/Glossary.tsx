@@ -1,54 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
-import { isWord, isTextLine } from 'transliteration/domain/type-guards'
-import { Word as TransliterationWord } from 'transliteration/domain/token'
 import DisplayToken from 'transliteration/ui/DisplayToken'
-import { Text } from 'transliteration/domain/text'
-import { TextLine } from 'transliteration/domain/line'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { Text, GlossaryToken } from 'transliteration/domain/text'
 import DictionaryWord from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { Promise } from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import produce, { castDraft } from 'immer'
-
-interface GlossaryToken {
-  readonly number: string
-  readonly value: string
-  readonly word: TransliterationWord
-  readonly uniqueLemma: readonly string[]
-  readonly words?: readonly DictionaryWord[]
-}
-
-function getGlossary(
-  text: Text
-): [readonly string[], readonly GlossaryToken[]][] {
-  return _(text.lines)
-    .filter(isTextLine)
-    .flatMap((line: TextLine) =>
-      line.content
-        .filter(isWord)
-        .filter((token: TransliterationWord) => token.lemmatizable)
-        .map(
-          (token): GlossaryToken => ({
-            number: lineNumberToString(line.lineNumber),
-            value: token.value,
-            word: token,
-            uniqueLemma: token.uniqueLemma ?? [],
-          })
-        )
-    )
-    .reject((token) => _.isEmpty(token.uniqueLemma))
-    .groupBy((token) => token.uniqueLemma)
-    .toPairs()
-    .map(([lemma, tokensByLemma]): [
-      readonly string[],
-      readonly GlossaryToken[]
-    ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
-    .sortBy(([lemma, tokensByLemma]) => lemma[0])
-    .value()
-}
 
 function Glossary({
   data,
@@ -150,9 +109,8 @@ export default withData<
   { text: Text; wordService: WordService },
   [readonly string[], readonly GlossaryToken[]][]
 >(Glossary, ({ text, wordService: dictionary }) => {
-  const glossary = getGlossary(text)
   return new Promise((resolve, reject) => {
-    produce(glossary, async (draft) => {
+    produce(text.glossary, async (draft) => {
       for (const [, tokens] of draft) {
         for (const token of tokens) {
           const words = await Promise.all(

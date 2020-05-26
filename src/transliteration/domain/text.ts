@@ -1,10 +1,14 @@
 import { immerable } from 'immer'
 import _ from 'lodash'
+import DictionaryWord from 'dictionary/domain/Word'
 import Lemmatization, {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
-import { Line, NoteLine } from 'transliteration/domain/line'
+import { Line, NoteLine, TextLine } from 'transliteration/domain/line'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { Word as TransliterationWord } from 'transliteration/domain/token'
+import { isTextLine, isWord } from 'transliteration/domain/type-guards'
 import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
 
@@ -20,6 +24,15 @@ export function noteNumber(
   )
   return 1 + noteIndex + numberOfNotesOnPreviousLines
 }
+
+export interface GlossaryToken {
+  readonly number: string
+  readonly value: string
+  readonly word: TransliterationWord
+  readonly uniqueLemma: readonly string[]
+  readonly words?: readonly DictionaryWord[]
+}
+
 export class Text {
   readonly allLines: readonly Line[]
 
@@ -43,6 +56,33 @@ export class Text {
       }
     }
     return notes
+  }
+
+  get glossary(): [readonly string[], readonly GlossaryToken[]][] {
+    return _(this.lines)
+      .filter(isTextLine)
+      .flatMap((line: TextLine) =>
+        line.content
+          .filter(isWord)
+          .filter((token: TransliterationWord) => token.lemmatizable)
+          .map(
+            (token): GlossaryToken => ({
+              number: lineNumberToString(line.lineNumber),
+              value: token.value,
+              word: token,
+              uniqueLemma: token.uniqueLemma ?? [],
+            })
+          )
+      )
+      .reject((token) => _.isEmpty(token.uniqueLemma))
+      .groupBy((token) => token.uniqueLemma)
+      .toPairs()
+      .map(([lemma, tokensByLemma]): [
+        readonly string[],
+        readonly GlossaryToken[]
+      ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
+      .sortBy(([lemma, tokensByLemma]) => lemma[0])
+      .value()
   }
 
   createLemmatization(
