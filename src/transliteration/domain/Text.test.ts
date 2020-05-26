@@ -7,6 +7,7 @@ import createLemmatizationTestText from 'test-helpers/test-text'
 import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { Text } from 'transliteration/domain/text'
+import { TextLine } from './line'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
@@ -64,4 +65,141 @@ test('createLemmatization', async () => {
   )
 
   expect(text.createLemmatization(lemmas, suggestions)).toEqual(expected)
+})
+
+test('glossary', () => {
+  const firstLine: TextLine = {
+    prefix: '1.',
+    content: [
+      {
+        enclosureType: [],
+        erasure: 'NONE',
+        cleanValue: 'kur',
+        value: 'kur',
+        language: 'AKKADIAN',
+        normalized: false,
+        lemmatizable: true,
+        uniqueLemma: ['hepû I', 'hepû II'],
+        parts: [
+          {
+            enclosureType: [],
+            erasure: 'NONE',
+            cleanValue: 'kur',
+            value: 'kur',
+            name: 'kur',
+            nameParts: [
+              {
+                enclosureType: [],
+                erasure: 'NONE',
+                cleanValue: 'kur',
+                value: 'kur',
+                type: 'ValueToken',
+              },
+            ],
+            subIndex: 1,
+            modifiers: [],
+            flags: [],
+            sign: null,
+            type: 'Reading',
+          },
+        ],
+        type: 'Word',
+      },
+      {
+        enclosureType: [],
+        erasure: 'NONE',
+        cleanValue: '...',
+        value: '...',
+        type: 'UnknownNumberOfSigns',
+      },
+    ],
+    lineNumber: {
+      number: 1,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null,
+      type: 'LineNumber',
+    },
+    type: 'TextLine',
+  }
+  const secondLine: TextLine = {
+    prefix: '2.',
+    content: [
+      {
+        enclosureType: [],
+        erasure: 'NONE',
+        cleanValue: 'kur',
+        value: 'kur',
+        language: 'AKKADIAN',
+        normalized: false,
+        lemmatizable: true,
+        uniqueLemma: ['hepû I'],
+        parts: [
+          {
+            enclosureType: [],
+            erasure: 'NONE',
+            cleanValue: 'kur',
+            value: 'kur',
+            name: 'kur',
+            nameParts: [
+              {
+                enclosureType: [],
+                erasure: 'NONE',
+                cleanValue: 'kur',
+                value: 'kur',
+                type: 'ValueToken',
+              },
+            ],
+            subIndex: 1,
+            modifiers: [],
+            flags: [],
+            sign: null,
+            type: 'Reading',
+          },
+        ],
+        type: 'Word',
+      },
+    ],
+    lineNumber: {
+      number: 2,
+      hasPrime: false,
+      prefixModifier: null,
+      suffixModifier: null,
+      type: 'LineNumber',
+    },
+    type: 'TextLine',
+  }
+  const expected = [
+    [
+      'hepû I',
+      [
+        {
+          number: '1',
+          value: 'kur',
+          word: firstLine.content[0],
+          uniqueLemma: 'hepû I',
+        },
+        {
+          number: '2',
+          value: 'kur',
+          word: secondLine.content[0],
+          uniqueLemma: 'hepû I',
+        },
+      ],
+    ],
+    [
+      'hepû II',
+      [
+        {
+          number: '1',
+          value: 'kur',
+          word: firstLine.content[0],
+          uniqueLemma: 'hepû II',
+        },
+      ],
+    ],
+  ]
+  expect(new Text({ lines: [firstLine, secondLine] }).glossary).toEqual(
+    expected
+  )
 })

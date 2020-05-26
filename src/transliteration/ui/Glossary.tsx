@@ -13,13 +13,13 @@ import './Glossary.sass'
 function Glossary({
   data,
 }: {
-  data: [readonly string[], readonly GlossaryToken[]][]
+  data: [string, readonly GlossaryToken[]][]
 }): JSX.Element {
   return (
     <section>
       <h4>Glossary</h4>
       {data.map(([lemma, tokensByLemma]) => (
-        <GlossaryEntry key={lemma.join(' ')} tokens={tokensByLemma} />
+        <GlossaryEntry key={lemma} tokens={tokensByLemma} />
       ))}
     </section>
   )
@@ -32,8 +32,9 @@ function GlossaryEntry({
 }): JSX.Element {
   return (
     <div>
-      <GlossaryLemma lemma={tokens[0].words ?? []} />
-      <GlossaryGuideword words={tokens[0].words ?? []} />
+      <GlossaryLemma word={tokens[0].dictionaryWord as DictionaryWord} />
+      {', '}
+      <GlossaryGuideword word={tokens[0].dictionaryWord as DictionaryWord} />
       {': '}
       {_(tokens)
         .groupBy((token) => token.value)
@@ -49,43 +50,19 @@ function GlossaryEntry({
   )
 }
 
-function GlossaryLemma({
-  lemma,
-}: {
-  lemma: readonly DictionaryWord[]
-}): JSX.Element {
+function GlossaryLemma({ word }: { word: DictionaryWord }): JSX.Element {
   return (
-    <>
-      {lemma.map((lemmaPart, index) => (
-        <span key={index}>
-          {index > 0 && ' '}
-          <Link to={`/dictionary/${lemmaPart._id}`}>
-            <span className="Glossary__lemma">{lemmaPart.lemma.join(' ')}</span>
-            {lemmaPart.homonym !== 'I' && (
-              <span className="Glossary__homonym"> {lemmaPart.homonym}</span>
-            )}
-          </Link>
-        </span>
-      ))}
-    </>
+    <Link to={`/dictionary/${word._id}`}>
+      <span className="Glossary__lemma">{word.lemma.join(' ')}</span>
+      {word.homonym !== 'I' && (
+        <span className="Glossary__homonym"> {word.homonym}</span>
+      )}
+    </Link>
   )
 }
 
-function GlossaryGuideword({
-  words,
-}: {
-  words: readonly DictionaryWord[]
-}): JSX.Element {
-  return (
-    <>
-      {!_.isEmpty(words) && ', '}
-      {words.map((word, index) => (
-        <span key={index}>
-          {index > 0 && ' '}“{word.guideWord}”
-        </span>
-      ))}
-    </>
-  )
+function GlossaryGuideword({ word }: { word: DictionaryWord }): JSX.Element {
+  return <>“{word.guideWord}”</>
 }
 
 function GlossaryWord({
@@ -111,18 +88,18 @@ function isDictionaryWord(word: DictionaryWord | null): word is DictionaryWord {
 export default withData<
   {},
   { text: Text; wordService: WordService },
-  [readonly string[], readonly GlossaryToken[]][]
+  [string, readonly GlossaryToken[]][]
 >(Glossary, ({ text, wordService: dictionary }) => {
   return new Promise((resolve, reject) => {
     produce(text.glossary, async (draft) => {
       for (const [, tokens] of draft) {
         for (const token of tokens) {
-          const words = await Promise.all(
-            token.uniqueLemma.map(
-              async (lemma) => await dictionary.find(lemma).catch(() => null)
-            )
-          )
-          token.words = castDraft(words.filter(isDictionaryWord))
+          const word = await dictionary
+            .find(token.uniqueLemma)
+            .catch(() => null)
+          if (isDictionaryWord(word)) {
+            token.dictionaryWord = castDraft(word)
+          }
         }
       }
     })

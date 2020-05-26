@@ -29,8 +29,8 @@ export interface GlossaryToken {
   readonly number: string
   readonly value: string
   readonly word: TransliterationWord
-  readonly uniqueLemma: readonly string[]
-  readonly words?: readonly DictionaryWord[]
+  readonly uniqueLemma: string
+  readonly dictionaryWord?: DictionaryWord
 }
 
 export class Text {
@@ -58,30 +58,26 @@ export class Text {
     return notes
   }
 
-  get glossary(): [readonly string[], readonly GlossaryToken[]][] {
+  get glossary(): [string, readonly GlossaryToken[]][] {
     return _(this.lines)
       .filter(isTextLine)
       .flatMap((line: TextLine) =>
         line.content
           .filter(isWord)
           .filter((token: TransliterationWord) => token.lemmatizable)
-          .map(
-            (token): GlossaryToken => ({
-              number: lineNumberToString(line.lineNumber),
-              value: token.value,
-              word: token,
-              uniqueLemma: token.uniqueLemma ?? [],
-            })
+          .flatMap(
+            (token): GlossaryToken[] =>
+              token.uniqueLemma?.map((lemma) => ({
+                number: lineNumberToString(line.lineNumber),
+                value: token.value,
+                word: token,
+                uniqueLemma: lemma,
+              })) ?? []
           )
       )
-      .reject((token) => _.isEmpty(token.uniqueLemma))
       .groupBy((token) => token.uniqueLemma)
       .toPairs()
-      .map(([lemma, tokensByLemma]): [
-        readonly string[],
-        readonly GlossaryToken[]
-      ] => [tokensByLemma[0].uniqueLemma, tokensByLemma])
-      .sortBy(([lemma, tokensByLemma]) => lemma[0])
+      .sortBy(([lemma, tokensByLemma]) => lemma)
       .value()
   }
 
