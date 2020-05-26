@@ -22,6 +22,7 @@ test.each([
   ['KUR.KUR', 'KUR-KUR?', 0],
   ['Amar-Suen', 'Amar-Suen?', 0],
   ['[Uruk]', '[Uruk]?', 0],
+  ['šaniš', 'šan iš', -1],
 ])('compares %s and %s', (word, anotherWord, expected) => {
   const comparedWords = compareAkkadianStrings(word, anotherWord)
   expect(comparedWords).toBe(expected)
@@ -39,7 +40,6 @@ test.each([
   ['EN=belu', 'amtu', '='],
   ['Amar|Suen', 'Hammurabi', '|'],
   ['matate;', 'amtu', ';'],
-  ['  ', '', ' , '],
   ['bälu!', 'bitu', 'ä,!'],
   ['ḫarru', 'bjtu', 'ḫ,j'],
   ['belü!', 'byt(u)', 'ü,!,(,)'],
