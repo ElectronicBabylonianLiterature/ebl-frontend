@@ -19,21 +19,15 @@ function Glossary({
     <section>
       <h4>Glossary</h4>
       {data.map(([lemma, tokensByLemma]) => (
-        <GlossaryEntry
-          key={lemma.join(' ')}
-          lemma={lemma}
-          tokens={tokensByLemma}
-        />
+        <GlossaryEntry key={lemma.join(' ')} tokens={tokensByLemma} />
       ))}
     </section>
   )
 }
 
 function GlossaryEntry({
-  lemma,
   tokens,
 }: {
-  lemma: readonly string[]
   tokens: readonly GlossaryToken[]
 }): JSX.Element {
   return (
