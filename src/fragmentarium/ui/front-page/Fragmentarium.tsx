@@ -14,6 +14,8 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 
 interface Props {
   number: string | null | undefined
+  id: string | null | undefined
+  page: string | null | undefined
   transliteration: string | null | undefined
   fragmentService
   fragmentSearchService
@@ -21,6 +23,8 @@ interface Props {
 
 function Fragmentarium({
   number,
+  id,
+  page,
   transliteration,
   fragmentService,
   fragmentSearchService,
@@ -35,6 +39,8 @@ function Fragmentarium({
                 {session.isAllowedToReadFragments() ? (
                   <SearchGroup
                     number={number}
+                    id={id}
+                    page={page}
                     transliteration={transliteration}
                     fragmentSearchService={fragmentSearchService}
                   />

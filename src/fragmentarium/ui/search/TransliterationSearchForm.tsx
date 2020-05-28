@@ -38,6 +38,7 @@ type State = {
 }
 type Props = {
   transliteration: string | null | undefined
+  handleChanges(searchForm: string, searchQuery: string): void
 } & RouteComponentProps
 
 class TransliterationSearchForm extends Component<Props, State> {
@@ -49,29 +50,13 @@ class TransliterationSearchForm extends Component<Props, State> {
     this.setState({
       transliteration: event.target.value,
     })
-  }
-
-  submit = (event) => {
-    event.preventDefault()
-    this.props.history.push(
-      `/fragmentarium/search/?${stringify({
-        transliteration: this.state.transliteration,
-      })}`
-    )
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.transliteration !== prevProps.transliteration) {
-      this.setState({
-        transliteration: this.props.transliteration || '',
-      })
-    }
+    this.props.handleChanges('transliteration', event.target.value || '')
   }
 
   render() {
     const rows = this.state.transliteration.split('\n').length
     return (
-      <Form onSubmit={this.submit}>
+      <Form>
         <Form.Group as={Row} controlId="transliteration">
           <Col
             sm={2}
@@ -80,7 +65,7 @@ class TransliterationSearchForm extends Component<Props, State> {
           >
             <HelpTrigger overlay={TransliterationSearchHelp()} />
           </Col>
-          <Col sm={7}>
+          <Col sm={8}>
             <Form.Control
               as="textarea"
               value={this.state.transliteration}
@@ -89,11 +74,6 @@ class TransliterationSearchForm extends Component<Props, State> {
               aria-label="Transliteration"
               onChange={this.onChange}
             />
-          </Col>
-          <Col sm={3}>
-            <Button type="submit" variant="primary">
-              Search
-            </Button>
           </Col>
         </Form.Group>
       </Form>

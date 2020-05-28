@@ -7,6 +7,7 @@ import { History } from 'history'
 type Props = {
   number: string | null | undefined
   history: History
+  handleChanges(searchForm: string, searchQuery: string): void
 } & RouteComponentProps
 
 class FragmentSearchForm extends Component<Props> {
@@ -18,23 +19,15 @@ class FragmentSearchForm extends Component<Props> {
     this.setState({
       number: event.target.value,
     })
-  }
-
-  submit = (event) => {
-    event.preventDefault()
-    this.props.history.push(
-      `/fragmentarium/search/?${stringify({
-        number: this.state.number,
-      })}`
-    )
+    this.props.handleChanges('number', event.target.value || '')
   }
 
   render() {
     return (
-      <Form onSubmit={this.submit}>
+      <Form>
         <Form.Group as={Row} controlId="number">
           <Col sm={2} />
-          <Col sm={7}>
+          <Col sm={8}>
             <Form.Control
               type="text"
               value={this.state.number}
@@ -42,11 +35,6 @@ class FragmentSearchForm extends Component<Props> {
               aria-label="Number"
               onChange={this.onChange}
             />
-          </Col>
-          <Col sm={3}>
-            <Button type="submit" variant="primary">
-              Search
-            </Button>
           </Col>
         </Form.Group>
       </Form>

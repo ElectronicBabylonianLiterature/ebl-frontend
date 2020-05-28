@@ -50,6 +50,9 @@ export default class FragmentSearchService {
   searchNumber(number: string): FragmentInfosPromise {
     return this.fragmentRepository.searchNumber(number)
   }
+  searchReference(id: string, page: string): FragmentInfosPromise {
+    return this.fragmentRepository.searchReference(id, page)
+  }
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {
     return this.fragmentRepository.searchTransliteration(transliteration)

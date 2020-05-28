@@ -9,14 +9,20 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
+import BibliographySearch from '../../../bibliography/ui/BibliographySearchForm'
+import FragmentsSearch from './FragmentsSearch'
 
 type Props = {
   number: string | null | undefined
+  id: string | null | undefined
+  page: string | null | undefined
   transliteration: string | null | undefined
   fragmentSearchService
 }
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
+  id,
+  page,
   transliteration,
   fragmentSearchService,
 }: Props) => {
@@ -33,12 +39,19 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
               <header className="Fragmentarium-search__header">
                 <SearchGroup
                   number={number}
+                  id={id}
+                  page={page}
                   transliteration={replacedTransliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
               <NumberSearch
                 number={number}
+                fragmentSearchService={fragmentSearchService}
+              />
+              <FragmentsSearch
+                id={id}
+                page={page}
                 fragmentSearchService={fragmentSearchService}
               />
               <TransliterationSearch
