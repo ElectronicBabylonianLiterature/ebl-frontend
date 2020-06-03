@@ -23,6 +23,7 @@ export const surface: SurfaceAtLine = {
     status: ['UNCERTAIN', 'CORRECTION'],
     surface: 'OBVERSE',
     text: '',
+    abbreviation: 'o',
   },
   displayValue: 'obverse?!',
   type: 'SurfaceAtLine',
@@ -39,10 +40,12 @@ export const object: ObjectAtLine = {
       type: 'ValueToken',
     },
   ],
-  status: [],
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  object_label: 'OBJECT',
-  text: 'Stone wig',
+  label: {
+    status: [],
+    object: 'OBJECT',
+    text: 'stone wig',
+    abbreviation: 'stone wig',
+  },
   displayValue: 'object Stone wig',
   type: 'ObjectAtLine',
 }

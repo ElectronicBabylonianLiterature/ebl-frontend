@@ -74,6 +74,7 @@ export interface StateDollarLine extends DollarAndAtLine {
 }
 interface Label {
   readonly status: ReadonlyArray<string>
+  readonly abbreviation: string
 }
 interface ColumnLabel extends Label {
   readonly column: number
@@ -82,6 +83,11 @@ interface SurfaceLabel extends Label {
   readonly surface: string
   readonly text: string
 }
+interface ObjectLabel extends Label {
+  readonly object: string
+  readonly text: string
+}
+
 export interface SealAtLine extends DollarAndAtLine {
   readonly type: 'SealAtLine'
   readonly number: number
@@ -104,9 +110,7 @@ export interface SurfaceAtLine extends DollarAndAtLine {
 }
 export interface ObjectAtLine extends DollarAndAtLine {
   readonly type: 'ObjectAtLine'
-  readonly status: ReadonlyArray<string>
-  readonly object_label: string
-  readonly text: string
+  readonly label: ObjectLabel
 }
 export interface DivisionAtLine extends DollarAndAtLine {
   readonly type: 'DivisionAtLine'
