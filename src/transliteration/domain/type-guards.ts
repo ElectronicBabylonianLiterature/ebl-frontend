@@ -5,6 +5,9 @@ import {
   NoteLinePart,
   TextLine,
   NoteLine,
+  ObjectAtLine,
+  SurfaceAtLine,
+  ColumnAtLine,
 } from 'transliteration/domain/line'
 import {
   CommentaryProtocol,
@@ -59,4 +62,16 @@ export function isBibliographyPart(
 
 export function isNoteLine(line: Line): line is NoteLine {
   return line.type === 'NoteLine'
+}
+
+export function isObjectAtLine(line: Line): line is ObjectAtLine {
+  return line.type === 'ObjectAtLine'
+}
+
+export function isSurfaceAtLine(line: Line): line is SurfaceAtLine {
+  return line.type === 'SurfaceAtLine'
+}
+
+export function isColumnAtLine(line: Line): line is ColumnAtLine {
+  return line.type === 'ColumnAtLine'
 }

@@ -10,6 +10,7 @@ import WordService from 'dictionary/application/WordService'
 import produce, { castDraft } from 'immer'
 import './Glossary.sass'
 import compareWord from 'transliteration/domain/compareWord'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 function Glossary({
   data,
@@ -88,7 +89,18 @@ function GlossaryWord({
       <span className="Transliteration">
         {word && <DisplayToken token={word} />}
       </span>{' '}
-      ({tokens.map((token) => token.number).join(', ')})
+      (
+      {tokens
+        .map(({ label }) =>
+          _.compact([
+            label.object?.abbreviation,
+            label.surface?.abbreviation,
+            label.column?.abbreviation,
+            label.line && lineNumberToString(label.line),
+          ]).join(' ')
+        )
+        .join(', ')}
+      )
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { immerable } from 'immer'
+import produce, { immerable, Draft, castDraft } from 'immer'
 import _ from 'lodash'
 import DictionaryWord from 'dictionary/domain/Word'
 import Lemmatization, {
@@ -6,11 +6,18 @@ import Lemmatization, {
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
 import { Line, NoteLine, TextLine } from 'transliteration/domain/line'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { Word as TransliterationWord } from 'transliteration/domain/token'
-import { isTextLine, isWord } from 'transliteration/domain/type-guards'
+import {
+  isTextLine,
+  isWord,
+  isObjectAtLine,
+  isSurfaceAtLine,
+  isColumnAtLine,
+} from 'transliteration/domain/type-guards'
 import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
+import { LineNumber, LineNumberRange } from './line-number'
+import { ObjectLabel, SurfaceLabel, ColumnLabel } from './labels'
 
 export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 
@@ -26,12 +33,58 @@ export function noteNumber(
 }
 
 export interface GlossaryToken {
-  readonly number: string
+  readonly label: Label
   readonly value: string
   readonly word: TransliterationWord
   readonly uniqueLemma: string
   readonly dictionaryWord?: DictionaryWord
 }
+
+export class Label {
+  readonly [immerable] = true
+  readonly object: ObjectLabel | null = null
+  readonly surface: SurfaceLabel | null = null
+  readonly column: ColumnLabel | null = null
+  readonly line: LineNumber | LineNumberRange | null = null
+
+  constructor(
+    object: ObjectLabel | null = null,
+    surface: SurfaceLabel | null = null,
+    column: ColumnLabel | null = null,
+    line: LineNumber | LineNumberRange | null = null
+  ) {
+    this.object = object
+    this.surface = surface
+    this.column = column
+    this.line = line
+  }
+
+  setObject(object: ObjectLabel): Label {
+    return produce(this, (draft: Draft<Label>) => {
+      draft.object = castDraft(object)
+    })
+  }
+
+  setSurface(surface: SurfaceLabel): Label {
+    return produce(this, (draft: Draft<Label>) => {
+      draft.surface = castDraft(surface)
+    })
+  }
+
+  setColumn(column: ColumnLabel): Label {
+    return produce(this, (draft: Draft<Label>) => {
+      draft.column = castDraft(column)
+    })
+  }
+
+  setLineNumber(line: LineNumber | LineNumberRange): Label {
+    return produce(this, (draft: Draft<Label>) => {
+      draft.line = castDraft(line)
+    })
+  }
+}
+
+type LabeledLine = readonly [Label, TextLine]
 
 export class Text {
   readonly allLines: readonly Line[]
@@ -59,16 +112,40 @@ export class Text {
   }
 
   get glossary(): [string, readonly GlossaryToken[]][] {
-    return _(this.lines)
-      .filter(isTextLine)
-      .flatMap((line: TextLine) =>
+    const [, labeledLines] = _.reduce(
+      this.lines,
+      (
+        [current, lines]: [Label, LabeledLine[]],
+        line: Line
+      ): [Label, LabeledLine[]] => {
+        if (isTextLine(line)) {
+          console.log(current)
+          return [
+            current,
+            [...lines, [current.setLineNumber(line.lineNumber), line]],
+          ]
+        } else if (isObjectAtLine(line)) {
+          return [current.setObject(line.label), lines]
+        } else if (isSurfaceAtLine(line)) {
+          return [current.setSurface(line.surface_label), lines]
+        } else if (isColumnAtLine(line)) {
+          return [current.setColumn(line.column_label), lines]
+        } else {
+          return [current, lines]
+        }
+      },
+      [new Label(), []]
+    )
+
+    return _(labeledLines)
+      .flatMap(([label, line]) =>
         line.content
           .filter(isWord)
           .filter((token: TransliterationWord) => token.lemmatizable)
           .flatMap(
             (token): GlossaryToken[] =>
               token.uniqueLemma?.map((lemma) => ({
-                number: lineNumberToString(line.lineNumber),
+                label: label,
                 value: token.value,
                 word: token,
                 uniqueLemma: lemma,

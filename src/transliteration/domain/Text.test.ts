@@ -6,7 +6,8 @@ import Lemma from 'transliteration/domain/Lemma'
 import createLemmatizationTestText from 'test-helpers/test-text'
 import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
-import { Text } from 'transliteration/domain/text'
+import { column, object, surface } from 'test-helpers/lines/at'
+import { Text, Label } from 'transliteration/domain/text'
 import { TextLine } from './line'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
@@ -174,13 +175,18 @@ test('glossary', () => {
       'hepû I',
       [
         {
-          number: '1',
+          label: new Label().setLineNumber(firstLine.lineNumber),
           value: 'kur',
           word: firstLine.content[0],
           uniqueLemma: 'hepû I',
         },
         {
-          number: '2',
+          label: new Label(
+            object.label,
+            surface.surface_label,
+            column.column_label,
+            secondLine.lineNumber
+          ),
           value: 'kur',
           word: secondLine.content[0],
           uniqueLemma: 'hepû I',
@@ -191,7 +197,7 @@ test('glossary', () => {
       'hepû II',
       [
         {
-          number: '1',
+          label: new Label().setLineNumber(firstLine.lineNumber),
           value: 'kur',
           word: firstLine.content[0],
           uniqueLemma: 'hepû II',
@@ -199,7 +205,8 @@ test('glossary', () => {
       ],
     ],
   ]
-  expect(new Text({ lines: [firstLine, secondLine] }).glossary).toEqual(
-    expected
-  )
+  expect(
+    new Text({ lines: [firstLine, object, surface, column, secondLine] })
+      .glossary
+  ).toEqual(expected)
 })
