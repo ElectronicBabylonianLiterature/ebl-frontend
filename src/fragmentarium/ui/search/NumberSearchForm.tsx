@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import { stringify } from 'query-string'
-import { Form, Button, Row, Col } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { History } from 'history'
+import { Col, Form, Row } from 'react-bootstrap'
 
 type Props = {
   number: string | null | undefined
-  history: History
   handleChanges(searchForm: string, searchQuery: string): void
-} & RouteComponentProps
+}
 
 class FragmentSearchForm extends Component<Props> {
   state = {
@@ -42,4 +38,4 @@ class FragmentSearchForm extends Component<Props> {
   }
 }
 
-export default withRouter(FragmentSearchForm)
+export default FragmentSearchForm

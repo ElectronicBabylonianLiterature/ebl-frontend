@@ -9,8 +9,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import BibliographySearch from '../../../bibliography/ui/BibliographySearchForm'
-import FragmentsSearch from './FragmentsSearch'
+import FragmentsSearch from './ReferenceSearch'
 
 type Props = {
   number: string | null | undefined

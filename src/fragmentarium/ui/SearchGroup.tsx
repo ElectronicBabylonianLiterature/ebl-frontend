@@ -6,9 +6,9 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import './SearchGroup.css'
 import _ from 'lodash'
-import { Button, Col } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
-import FragmentsSearchForm from './search/FragmentsSearchForm'
+import ReferenceSearchForm from './search/ReferenceSearchForm'
 
 type Props = {
   number: string | null | undefined
@@ -63,12 +63,11 @@ class SearchGroup extends Component<Props, State> {
   render() {
     return (
       <>
-        ?
         <NumberSearchForm
           number={this.props.number}
           handleChanges={this.handleChanges.bind(this)}
         />
-        <FragmentsSearchForm
+        <ReferenceSearchForm
           id={this.props.id}
           page={this.props.pages}
           handleChanges={this.handleChanges.bind(this)}

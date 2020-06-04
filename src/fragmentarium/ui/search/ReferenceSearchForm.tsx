@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Col, Form } from 'react-bootstrap'
 
 type Props = {
   id: string | null | undefined
   page: string | null | undefined
   handleChanges(searchForm: string, searchQuery: string): void
-} & RouteComponentProps
+}
 
-class FragmentsSearchForm extends Component<Props> {
+class ReferenceSearchForm extends Component<Props> {
   state = {
     id: this.props.id || '',
     pages: this.props.page || '',
@@ -59,4 +58,4 @@ class FragmentsSearchForm extends Component<Props> {
   }
 }
 
-export default withRouter(FragmentsSearchForm)
+export default ReferenceSearchForm

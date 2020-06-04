@@ -7,6 +7,7 @@ const fragmentRepository = {
   random: jest.fn(),
   interesting: jest.fn(),
   searchNumber: jest.fn(),
+  searchReference: jest.fn(),
   searchTransliteration: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),

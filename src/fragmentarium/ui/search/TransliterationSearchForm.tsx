@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { stringify } from 'query-string'
-import { Form, Button, Row, Col, Popover } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Col, Form, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
@@ -39,7 +37,7 @@ type State = {
 type Props = {
   transliteration: string | null | undefined
   handleChanges(searchForm: string, searchQuery: string): void
-} & RouteComponentProps
+}
 
 class TransliterationSearchForm extends Component<Props, State> {
   state = {
@@ -51,6 +49,14 @@ class TransliterationSearchForm extends Component<Props, State> {
       transliteration: event.target.value,
     })
     this.props.handleChanges('transliteration', event.target.value || '')
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.transliteration !== prevProps.transliteration) {
+      this.setState({
+        transliteration: this.props.transliteration || '',
+      })
+    }
   }
 
   render() {
@@ -81,4 +87,4 @@ class TransliterationSearchForm extends Component<Props, State> {
   }
 }
 
-export default withRouter(TransliterationSearchForm)
+export default TransliterationSearchForm
