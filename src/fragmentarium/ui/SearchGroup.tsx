@@ -13,21 +13,21 @@ import FragmentsSearchForm from './search/FragmentsSearchForm'
 type Props = {
   number: string | null | undefined
   id: string | null | undefined
-  page: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
   fragmentSearchService
 } & RouteComponentProps
 type State = {
   number: string | null | undefined
   id: string | null | undefined
-  page: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
 }
 class SearchGroup extends Component<Props, State> {
   state = {
     number: this.props.number || '',
     id: this.props.number || '',
-    page: this.props.number || '',
+    pages: this.props.number || '',
     transliteration: this.props.number || '',
   }
 
@@ -42,7 +42,7 @@ class SearchGroup extends Component<Props, State> {
     this.props.history.push(
       `/fragmentarium/search/?${stringify({
         id: this.state.id,
-        page: this.state.page,
+        pages: this.state.pages,
       })}`
     )
   }
@@ -57,7 +57,7 @@ class SearchGroup extends Component<Props, State> {
         />
         <FragmentsSearchForm
           id={this.props.id}
-          page={this.props.page}
+          page={this.props.pages}
           handleChanges={this.handleChanges.bind(this)}
         />
         <TransliterationSearchForm

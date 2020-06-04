@@ -8,13 +8,13 @@ import { FragmentInfo } from 'fragmentarium/domain/fragment'
 export default withData<
   {
     id: string | null | undefined
-    page: string | null | undefined
+    pages: string | null | undefined
   },
   { fragmentSearchService },
   readonly FragmentInfo[]
 >(
-  ({ id, page, data }) =>
-    id || page ? (
+  ({ id, pages, data }) =>
+    id || pages ? (
       <FragmentList
         fragments={data}
         columns={{
@@ -24,10 +24,10 @@ export default withData<
         }}
       />
     ) : null,
-  (props) => props.fragmentSearchService.searchReference(props.page),
+  (props) => props.fragmentSearchService.searchReference(props.id, props.pages),
   {
-    watch: (props) => [props.page],
-    filter: (props) => !_.isEmpty(props.page),
+    watch: (props) => [props.pages],
+    filter: (props) => !_.isEmpty(props.pages),
     defaultData: [],
   }
 )

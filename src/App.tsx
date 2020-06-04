@@ -56,13 +56,13 @@ function parseFragmentSearchParams(
 ): {
   number: string | null | undefined
   id: string | null | undefined
-  page: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
 } {
   return {
     number: parseStringParam(location, 'number'),
     id: parseStringParam(location, 'id'),
-    page: parseStringParam(location, 'page'),
+    pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),
   }
 }

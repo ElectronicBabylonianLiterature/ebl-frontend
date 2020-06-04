@@ -15,14 +15,14 @@ import FragmentsSearch from './FragmentsSearch'
 type Props = {
   number: string | null | undefined
   id: string | null | undefined
-  page: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
   fragmentSearchService
 }
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   id,
-  page,
+  pages,
   transliteration,
   fragmentSearchService,
 }: Props) => {
@@ -40,7 +40,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 <SearchGroup
                   number={number}
                   id={id}
-                  page={page}
+                  pages={pages}
                   transliteration={replacedTransliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
@@ -51,7 +51,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
               />
               <FragmentsSearch
                 id={id}
-                page={page}
+                pages={pages}
                 fragmentSearchService={fragmentSearchService}
               />
               <TransliterationSearch

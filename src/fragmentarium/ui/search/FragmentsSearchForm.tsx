@@ -11,7 +11,7 @@ type Props = {
 class FragmentsSearchForm extends Component<Props> {
   state = {
     id: this.props.id || '',
-    page: this.props.page || '',
+    pages: this.props.page || '',
   }
 
   onChangeId = (event) => {
@@ -23,9 +23,9 @@ class FragmentsSearchForm extends Component<Props> {
 
   onChangePage = (event) => {
     this.setState({
-      page: event.target.value,
+      pages: event.target.value,
     })
-    this.props.handleChanges('page', event.target.value || '')
+    this.props.handleChanges('pages', event.target.value || '')
   }
 
   render() {
@@ -45,8 +45,8 @@ class FragmentsSearchForm extends Component<Props> {
           <Col>
             <Form.Control
               type="text"
-              value={this.state.page}
-              placeholder="Search Page/Number"
+              value={this.state.pages}
+              placeholder="Search Pages/Number"
               aria-label="FragmentPage"
               onChange={this.onChangePage}
             />
