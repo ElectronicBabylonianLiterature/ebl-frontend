@@ -1,17 +1,14 @@
 import React from 'react'
-import _ from 'lodash'
-import { Link } from 'react-router-dom'
-import DisplayToken from 'transliteration/ui/DisplayToken'
 import { Text, GlossaryToken } from 'transliteration/domain/text'
-import { Label, Status } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import withData from 'http/withData'
-import { Promise } from 'bluebird'
+import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import produce, { castDraft } from 'immer'
-import './Glossary.sass'
 import compareWord from 'transliteration/domain/compareWord'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import GlossaryEntry from './GlossaryEntry'
+
+import './Glossary.sass'
 
 function Glossary({
   data,
@@ -36,102 +33,6 @@ function Glossary({
           <GlossaryEntry key={lemma} tokens={tokensByLemma} />
         ))}
     </section>
-  )
-}
-
-function GlossaryEntry({
-  tokens,
-}: {
-  tokens: readonly GlossaryToken[]
-}): JSX.Element {
-  return (
-    <div>
-      <GlossaryLemma word={tokens[0].dictionaryWord as DictionaryWord} />
-      {', '}
-      <GlossaryGuideword word={tokens[0].dictionaryWord as DictionaryWord} />
-      {': '}
-      {_(tokens)
-        .groupBy((token) => token.value)
-        .toPairs()
-        .map(([value, tokensByValue], index) => (
-          <React.Fragment key={value}>
-            {index > 0 && ', '}
-            <GlossaryWord tokens={tokensByValue} />
-          </React.Fragment>
-        ))
-        .value()}
-    </div>
-  )
-}
-
-function GlossaryLemma({ word }: { word: DictionaryWord }): JSX.Element {
-  return (
-    <Link to={`/dictionary/${word._id}`}>
-      <span className="Glossary__lemma">{word.lemma.join(' ')}</span>
-      {word.homonym !== 'I' && (
-        <span className="Glossary__homonym"> {word.homonym}</span>
-      )}
-    </Link>
-  )
-}
-
-function GlossaryGuideword({ word }: { word: DictionaryWord }): JSX.Element {
-  return <>“{word.guideWord}”</>
-}
-
-function GlossaryWord({
-  tokens,
-}: {
-  tokens: readonly GlossaryToken[]
-}): JSX.Element {
-  const word = _.head(tokens)?.word
-  return (
-    <>
-      <span className="Transliteration">
-        {word && <DisplayToken token={word} />}
-      </span>{' '}
-      (
-      {_(tokens)
-        .map('label')
-        .uniq()
-        .map((label, index) => (
-          <>
-            {index > 0 && ', '}
-            {_.compact([label.object, label.surface, label.column])
-              .map((singleLabel, index) => (
-                <>
-                  {index > 0 && ' '}
-                  <GlossaryLabel label={singleLabel} />
-                </>
-              ))
-              .concat(
-                label.line ? <> {lineNumberToString(label.line)}</> : <></>
-              )}
-          </>
-        ))
-        .value()}
-      )
-    </>
-  )
-}
-
-const statuses = new Map<Status, string>([
-  ['PRIME', "'"],
-  ['UNCERTAIN', '?'],
-  ['CORRECTION', '!'],
-  ['COLLATION', '*'],
-])
-
-function GlossaryLabel({
-  label: { abbreviation, status },
-}: {
-  label: Label
-}): JSX.Element {
-  return (
-    <>
-      {abbreviation}
-      {status && <sup>{status.map((x: Status) => statuses.get(x))}</sup>}
-    </>
   )
 }
 
