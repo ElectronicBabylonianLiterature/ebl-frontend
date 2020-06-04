@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 import { Text, GlossaryToken } from 'transliteration/domain/text'
+import { Label, Status } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import withData from 'http/withData'
 import { Promise } from 'bluebird'
@@ -90,17 +91,46 @@ function GlossaryWord({
         {word && <DisplayToken token={word} />}
       </span>{' '}
       (
-      {tokens
-        .map(({ label }) =>
-          _.compact([
-            label.object?.abbreviation,
-            label.surface?.abbreviation,
-            label.column?.abbreviation,
-            label.line && lineNumberToString(label.line),
-          ]).join(' ')
-        )
-        .join(', ')}
+      {_(tokens)
+        .map('label')
+        .uniq()
+        .map((label, index) => (
+          <>
+            {index > 0 && ', '}
+            {_.compact([label.object, label.surface, label.column])
+              .map((singleLabel, index) => (
+                <>
+                  {index > 0 && ' '}
+                  <GlossaryLabel label={singleLabel} />
+                </>
+              ))
+              .concat(
+                label.line ? <> {lineNumberToString(label.line)}</> : <></>
+              )}
+          </>
+        ))
+        .value()}
       )
+    </>
+  )
+}
+
+const statuses = new Map<Status, string>([
+  ['PRIME', "'"],
+  ['UNCERTAIN', '?'],
+  ['CORRECTION', '!'],
+  ['COLLATION', '*'],
+])
+
+function GlossaryLabel({
+  label: { abbreviation, status },
+}: {
+  label: Label
+}): JSX.Element {
+  return (
+    <>
+      {abbreviation}
+      {status && <sup>{status.map((x: Status) => statuses.get(x))}</sup>}
     </>
   )
 }

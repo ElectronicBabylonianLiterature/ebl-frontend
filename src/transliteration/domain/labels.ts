@@ -1,5 +1,7 @@
-interface Label {
-  readonly status: readonly string[]
+export type Status = 'PRIME' | 'UNCERTAIN' | 'CORRECTION' | 'COLLATION'
+
+export interface Label {
+  readonly status: readonly Status[]
   readonly abbreviation: string
 }
 
