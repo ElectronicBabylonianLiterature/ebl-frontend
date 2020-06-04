@@ -10,6 +10,19 @@ import GlossaryEntry from './GlossaryEntry'
 
 import './Glossary.sass'
 
+function compareGlossaryEntries(
+  [, [{ dictionaryWord: firstWord }]]: [string, readonly GlossaryToken[]],
+  [, [{ dictionaryWord: secondWord }]]: [string, readonly GlossaryToken[]]
+): number {
+  if (firstWord && secondWord) {
+    return compareWord(firstWord, secondWord)
+  } else {
+    throw new Error(
+      'Either of the glossary entries is missing the dictionary word.'
+    )
+  }
+}
+
 function Glossary({
   data,
 }: {
@@ -18,20 +31,9 @@ function Glossary({
   return (
     <section>
       <h4>Glossary</h4>
-      {[...data]
-        .sort(
-          (
-            [, [{ dictionaryWord: firstWord }]],
-            [, [{ dictionaryWord: secondWord }]]
-          ) =>
-            compareWord(
-              firstWord as DictionaryWord,
-              secondWord as DictionaryWord
-            )
-        )
-        .map(([lemma, tokensByLemma]) => (
-          <GlossaryEntry key={lemma} tokens={tokensByLemma} />
-        ))}
+      {[...data].sort(compareGlossaryEntries).map(([lemma, tokensByLemma]) => (
+        <GlossaryEntry key={lemma} tokens={tokensByLemma} />
+      ))}
     </section>
   )
 }
