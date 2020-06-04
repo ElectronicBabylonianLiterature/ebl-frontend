@@ -26,8 +26,8 @@ export default withData<
     ) : null,
   (props) => props.fragmentSearchService.searchReference(props.id, props.pages),
   {
-    watch: (props) => [props.pages],
-    filter: (props) => !_.isEmpty(props.pages),
+    watch: (props) => [props.id, props.pages],
+    filter: (props) => !_.isEmpty(props.id),
     defaultData: [],
   }
 )

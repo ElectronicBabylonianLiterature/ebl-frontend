@@ -1,4 +1,4 @@
-import React, { Component, FunctionComponent } from 'react'
+import React, { Component } from 'react'
 import NumberSearchForm from 'fragmentarium/ui/search/NumberSearchForm'
 import TransliterationSearchForm from 'fragmentarium/ui/search/TransliterationSearchForm'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
@@ -37,13 +37,26 @@ class SearchGroup extends Component<Props, State> {
     this.setState(updatedState)
   }
 
+  deleteEmptyProperties(state: State) {
+    const cleanedState = _.cloneDeep(state)
+    helperDelete('number')
+    helperDelete('id')
+    helperDelete('transliteration')
+
+    function helperDelete(value: string) {
+      if (!cleanedState[value]) {
+        delete cleanedState[value]
+      }
+    }
+    return cleanedState
+  }
+
   search = (event) => {
     event.preventDefault()
     this.props.history.push(
-      `/fragmentarium/search/?${stringify({
-        id: this.state.id,
-        pages: this.state.pages,
-      })}`
+      `/fragmentarium/search/?${stringify(
+        this.deleteEmptyProperties(this.state)
+      )}`
     )
   }
 
