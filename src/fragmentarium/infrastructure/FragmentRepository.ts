@@ -80,7 +80,7 @@ class ApiFragmentRepository
   searchNumber(number: string): FragmentInfosPromise {
     return this._fetch({ number })
   }
-  searchReference(id: string, pages: string) {
+  searchReference(id: string, pages: string): FragmentInfosPromise {
     return this._fetch({ id, pages })
   }
 

@@ -18,6 +18,7 @@ export interface FragmentInfo {
   readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
   readonly editor: string
   readonly edition_date: string
+  readonly references: ReadonlyArray<any>
 }
 
 const historicalTransliteration = 'HistoricalTransliteration'

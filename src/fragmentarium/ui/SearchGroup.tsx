@@ -6,7 +6,7 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import './SearchGroup.css'
 import _ from 'lodash'
-import { Button } from 'react-bootstrap'
+import { Button, Col, Form } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
 
@@ -69,7 +69,7 @@ class SearchGroup extends Component<Props, State> {
         />
         <ReferenceSearchForm
           id={this.props.id}
-          page={this.props.pages}
+          pages={this.props.pages}
           handleChanges={this.handleChanges.bind(this)}
         />
         <TransliterationSearchForm
@@ -77,12 +77,17 @@ class SearchGroup extends Component<Props, State> {
           handleChanges={this.handleChanges.bind(this)}
         />
         <div className="SearchGroup__button-bar">
-          <Button onClick={this.search} type="submit" variant="primary">
+          <Button
+            className="w-25 m-2"
+            onClick={this.search}
+            type="submit"
+            variant="primary"
+          >
             Search
-          </Button>{' '}
+          </Button>
           <LuckyButton
             fragmentSearchService={this.props.fragmentSearchService}
-          />{' '}
+          />
           <PioneersButton
             fragmentSearchService={this.props.fragmentSearchService}
           />

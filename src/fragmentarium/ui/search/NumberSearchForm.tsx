@@ -23,7 +23,7 @@ class FragmentSearchForm extends Component<Props> {
       <Form>
         <Form.Group as={Row} controlId="number">
           <Col sm={2} />
-          <Col sm={8}>
+          <Col sm={10}>
             <Form.Control
               type="text"
               value={this.state.number}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { Col, Form } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
 
 type Props = {
   id: string | null | undefined
-  page: string | null | undefined
+  pages: string | null | undefined
   handleChanges(searchForm: string, searchQuery: string): void
 }
 
 class ReferenceSearchForm extends Component<Props> {
   state = {
     id: this.props.id || '',
-    pages: this.props.page || '',
+    pages: this.props.pages || '',
   }
 
   onChangeId = (event) => {
@@ -30,29 +30,28 @@ class ReferenceSearchForm extends Component<Props> {
   render() {
     return (
       <Form>
-        <Form.Row>
+        <Form.Group as={Row} controlId="reference">
           <Col sm={2} />
-          <Col>
+          <Col sm={5}>
             <Form.Control
               type="text"
               value={this.state.id}
-              placeholder="Search ID"
+              placeholder="Search Reference"
               aria-label="FragmentId"
               onChange={this.onChangeId}
             />
           </Col>
-          <Col>
+          <Col sm={5}>
             <Form.Control
               type="text"
               value={this.state.pages}
-              placeholder="Search Pages/Number"
+              placeholder="Search Reference Pages"
               aria-label="FragmentPage"
               onChange={this.onChangePage}
             />
           </Col>
           <Col sm={2} />
-        </Form.Row>
-        <Col sm={2} />
+        </Form.Group>
       </Form>
     )
   }

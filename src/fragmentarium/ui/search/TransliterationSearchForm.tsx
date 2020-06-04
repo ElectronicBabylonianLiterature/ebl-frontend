@@ -71,7 +71,7 @@ class TransliterationSearchForm extends Component<Props, State> {
           >
             <HelpTrigger overlay={TransliterationSearchHelp()} />
           </Col>
-          <Col sm={8}>
+          <Col sm={10}>
             <Form.Control
               as="textarea"
               value={this.state.transliteration}
