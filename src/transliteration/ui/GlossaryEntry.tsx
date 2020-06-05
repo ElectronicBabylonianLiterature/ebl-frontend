@@ -63,19 +63,21 @@ function GlossaryWord({
         .map('label')
         .uniq()
         .map((label, index) => (
-          <>
+          <React.Fragment key={index}>
             {index > 0 && ', '}
             {_.compact([label.object, label.surface, label.column])
               .map((singleLabel, index) => (
-                <>
+                <React.Fragment key={index}>
                   {index > 0 && ' '}
                   <GlossaryLabel label={singleLabel} />
-                </>
+                </React.Fragment>
               ))
               .concat(
-                label.line ? <> {lineNumberToString(label.line)}</> : <></>
+                <React.Fragment key="line number">
+                  {label.line && ` ${lineNumberToString(label.line)}`}
+                </React.Fragment>
               )}
-          </>
+          </React.Fragment>
         ))
         .value()}
       )

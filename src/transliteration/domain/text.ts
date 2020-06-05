@@ -119,7 +119,6 @@ export class Text {
         line: Line
       ): [Label, LabeledLine[]] => {
         if (isTextLine(line)) {
-          console.log(current)
           return [
             current,
             [...lines, [current.setLineNumber(line.lineNumber), line]],

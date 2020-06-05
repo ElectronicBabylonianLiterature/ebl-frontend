@@ -7,9 +7,10 @@ import createLemmatizationTestText from 'test-helpers/test-text'
 import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { column, object, surface } from 'test-helpers/lines/at'
-import { Text, Label, GlossaryToken } from 'transliteration/domain/text'
+import { Text, Label } from 'transliteration/domain/text'
 import { lemmatized } from 'test-helpers/lines/text'
 import { Word } from './token'
+import createGlossaryToken from 'test-helpers/createGlossaryToken'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
@@ -68,19 +69,6 @@ test('createLemmatization', async () => {
 
   expect(text.createLemmatization(lemmas, suggestions)).toEqual(expected)
 })
-
-function createGlossaryToken(
-  label: Label,
-  word: Word,
-  lemmaIndex = 0
-): GlossaryToken {
-  return {
-    label: label,
-    value: word.value,
-    word: word,
-    uniqueLemma: word.uniqueLemma[lemmaIndex],
-  }
-}
 
 test('glossary', () => {
   const [firstLine, secondLine] = lemmatized
