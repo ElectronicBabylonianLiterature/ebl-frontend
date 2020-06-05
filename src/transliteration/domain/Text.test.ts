@@ -8,7 +8,7 @@ import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { column, object, surface } from 'test-helpers/lines/at'
 import { Text, Label } from 'transliteration/domain/text'
-import { TextLine } from './line'
+import { lemmatized } from 'test-helpers/lines/text'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
@@ -69,107 +69,7 @@ test('createLemmatization', async () => {
 })
 
 test('glossary', () => {
-  const firstLine: TextLine = {
-    prefix: '1.',
-    content: [
-      {
-        enclosureType: [],
-        erasure: 'NONE',
-        cleanValue: 'kur',
-        value: 'kur',
-        language: 'AKKADIAN',
-        normalized: false,
-        lemmatizable: true,
-        uniqueLemma: ['hepû I', 'hepû II'],
-        parts: [
-          {
-            enclosureType: [],
-            erasure: 'NONE',
-            cleanValue: 'kur',
-            value: 'kur',
-            name: 'kur',
-            nameParts: [
-              {
-                enclosureType: [],
-                erasure: 'NONE',
-                cleanValue: 'kur',
-                value: 'kur',
-                type: 'ValueToken',
-              },
-            ],
-            subIndex: 1,
-            modifiers: [],
-            flags: [],
-            sign: null,
-            type: 'Reading',
-          },
-        ],
-        type: 'Word',
-      },
-      {
-        enclosureType: [],
-        erasure: 'NONE',
-        cleanValue: '...',
-        value: '...',
-        type: 'UnknownNumberOfSigns',
-      },
-    ],
-    lineNumber: {
-      number: 1,
-      hasPrime: false,
-      prefixModifier: null,
-      suffixModifier: null,
-      type: 'LineNumber',
-    },
-    type: 'TextLine',
-  }
-  const secondLine: TextLine = {
-    prefix: '2.',
-    content: [
-      {
-        enclosureType: [],
-        erasure: 'NONE',
-        cleanValue: 'kur',
-        value: 'kur',
-        language: 'AKKADIAN',
-        normalized: false,
-        lemmatizable: true,
-        uniqueLemma: ['hepû I'],
-        parts: [
-          {
-            enclosureType: [],
-            erasure: 'NONE',
-            cleanValue: 'kur',
-            value: 'kur',
-            name: 'kur',
-            nameParts: [
-              {
-                enclosureType: [],
-                erasure: 'NONE',
-                cleanValue: 'kur',
-                value: 'kur',
-                type: 'ValueToken',
-              },
-            ],
-            subIndex: 1,
-            modifiers: [],
-            flags: [],
-            sign: null,
-            type: 'Reading',
-          },
-        ],
-        type: 'Word',
-      },
-    ],
-    lineNumber: {
-      number: 2,
-      hasPrime: false,
-      prefixModifier: null,
-      suffixModifier: null,
-      type: 'LineNumber',
-    },
-    type: 'TextLine',
-  }
+  const [firstLine, secondLine] = lemmatized
   const expected = [
     [
       'hepû I',
