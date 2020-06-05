@@ -7,8 +7,9 @@ import createLemmatizationTestText from 'test-helpers/test-text'
 import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { column, object, surface } from 'test-helpers/lines/at'
-import { Text, Label } from 'transliteration/domain/text'
+import { Text, Label, GlossaryToken } from 'transliteration/domain/text'
 import { lemmatized } from 'test-helpers/lines/text'
+import { Word } from './token'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
@@ -68,40 +69,48 @@ test('createLemmatization', async () => {
   expect(text.createLemmatization(lemmas, suggestions)).toEqual(expected)
 })
 
+function createGlossaryToken(
+  label: Label,
+  word: Word,
+  lemmaIndex = 0
+): GlossaryToken {
+  return {
+    label: label,
+    value: word.value,
+    word: word,
+    uniqueLemma: word.uniqueLemma[lemmaIndex],
+  }
+}
+
 test('glossary', () => {
   const [firstLine, secondLine] = lemmatized
   const expected = [
     [
       'hepû I',
       [
-        {
-          label: new Label().setLineNumber(firstLine.lineNumber),
-          value: 'kur',
-          word: firstLine.content[0],
-          uniqueLemma: 'hepû I',
-        },
-        {
-          label: new Label(
+        createGlossaryToken(
+          new Label().setLineNumber(firstLine.lineNumber),
+          firstLine.content[0] as Word
+        ),
+        createGlossaryToken(
+          new Label(
             object.label,
             surface.surface_label,
             column.column_label,
             secondLine.lineNumber
           ),
-          value: 'kur',
-          word: secondLine.content[0],
-          uniqueLemma: 'hepû I',
-        },
+          secondLine.content[0] as Word
+        ),
       ],
     ],
     [
       'hepû II',
       [
-        {
-          label: new Label().setLineNumber(firstLine.lineNumber),
-          value: 'kur',
-          word: firstLine.content[0],
-          uniqueLemma: 'hepû II',
-        },
+        createGlossaryToken(
+          new Label().setLineNumber(firstLine.lineNumber),
+          firstLine.content[0] as Word,
+          1
+        ),
       ],
     ],
   ]
