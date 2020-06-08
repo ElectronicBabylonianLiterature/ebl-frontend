@@ -31,6 +31,7 @@ export default function Download({
   return (
     <DropdownButton
       as={ButtonGroup}
+      aria-label="Download"
       title={<i className="fas fa-file-download"></i>}
       id={_.uniqueId('fragment-download-')}
       variant="outline-primary"
@@ -42,6 +43,7 @@ export default function Download({
         Downlad as Word Document
       </Dropdown.Item>
       <Dropdown.Item
+        data-testid="download-atf"
         eventKey="3"
         href={atf}
         download={`${fragment.number}.atf`}
@@ -49,6 +51,7 @@ export default function Download({
         Downlad as ATF
       </Dropdown.Item>
       <Dropdown.Item
+        data-testid="download-json"
         eventKey="4"
         href={json}
         download={`${fragment.number}.json`}
