@@ -49,7 +49,6 @@ class ReferenceSearchForm extends Component<Props> {
               onChange={this.onChangePage}
             />
           </Col>
-          <Col sm={2} />
         </Form.Group>
       </Form>
     )

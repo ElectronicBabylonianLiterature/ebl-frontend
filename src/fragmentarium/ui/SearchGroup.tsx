@@ -10,20 +10,17 @@ import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
 
-type Props = {
-  number: string | null | undefined
-  id: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
-  fragmentSearchService
-} & RouteComponentProps
-
 type State = {
   number: string | null | undefined
   id: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
 }
+
+type Props = State & {
+  fragmentSearchService
+} & RouteComponentProps
+
 class SearchGroup extends Component<Props, State> {
   state = {
     number: this.props.number || '',
