@@ -6,7 +6,7 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import './SearchGroup.css'
 import _ from 'lodash'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
 
@@ -28,7 +28,7 @@ class SearchGroup extends Component<Props, State> {
     number: this.props.number || '',
     id: this.props.number || '',
     pages: this.props.number || '',
-    transliteration: this.props.number || '',
+    transliteration: this.props.number || 'asdasd',
   }
 
   handleChanges(searchForm: string, searchQuery: string) {
@@ -40,7 +40,10 @@ class SearchGroup extends Component<Props, State> {
   deleteEmptyProperties(state: State) {
     const cleanedState = _.cloneDeep(state)
     helperDelete('number')
-    helperDelete('id')
+    if (!cleanedState['id']) {
+      helperDelete('id')
+      helperDelete('pages')
+    }
     helperDelete('transliteration')
 
     function helperDelete(value: string) {
@@ -77,12 +80,7 @@ class SearchGroup extends Component<Props, State> {
           handleChanges={this.handleChanges.bind(this)}
         />
         <div className="SearchGroup__button-bar">
-          <Button
-            className="w-25 m-2"
-            onClick={this.search}
-            type="submit"
-            variant="primary"
-          >
+          <Button className="w-25 m-2" onClick={this.search} variant="primary">
             Search
           </Button>
           <LuckyButton
