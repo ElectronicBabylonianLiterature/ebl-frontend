@@ -22,8 +22,7 @@ class FragmentSearchForm extends Component<Props> {
     return (
       <Form>
         <Form.Group as={Row} controlId="number">
-          <Col sm={2} />
-          <Col sm={10}>
+          <Col sm={{ span: 10, offset: 2 }}>
             <Form.Control
               type="text"
               value={this.state.number}

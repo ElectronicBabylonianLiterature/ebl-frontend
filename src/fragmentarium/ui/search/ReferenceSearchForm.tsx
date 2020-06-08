@@ -31,8 +31,7 @@ class ReferenceSearchForm extends Component<Props> {
     return (
       <Form>
         <Form.Group as={Row} controlId="reference">
-          <Col sm={2} />
-          <Col sm={5}>
+          <Col sm={{ span: 5, offset: 2 }}>
             <Form.Control
               type="text"
               value={this.state.id}

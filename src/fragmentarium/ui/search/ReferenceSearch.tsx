@@ -35,8 +35,8 @@ function ReferenceSearchResult({ data }) {
     <FragmentList
       fragments={data}
       columns={{
-        'References.Id': (data) => makeReferences(data, 'id'),
-        'References.Pages': (data) => makeReferences(data, 'pages'),
+        'References-Id': (data) => makeReferences(data, 'id'),
+        'References-Pages': (data) => makeReferences(data, 'pages'),
         Description: 'description',
       }}
     />
