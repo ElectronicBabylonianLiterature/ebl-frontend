@@ -4,12 +4,13 @@ import _ from 'lodash'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import Reference from '../../../bibliography/domain/Reference'
 
 function References({
   references,
   referencesKey,
 }: {
-  references: ReadonlyArray<any>
+  references: ReadonlyArray<Reference>
   referencesKey: string
 }) {
   return (
@@ -22,7 +23,7 @@ function References({
 }
 
 function ReferenceSearchResult({ data }) {
-  function makeReferences(fragment, key) {
+  function makeReferences(fragment: FragmentInfo, key: string) {
     return (
       <References
         references={fragment.references}

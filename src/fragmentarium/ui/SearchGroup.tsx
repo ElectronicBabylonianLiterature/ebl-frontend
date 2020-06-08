@@ -17,6 +17,7 @@ type Props = {
   transliteration: string | null | undefined
   fragmentSearchService
 } & RouteComponentProps
+
 type State = {
   number: string | null | undefined
   id: string | null | undefined
@@ -28,7 +29,7 @@ class SearchGroup extends Component<Props, State> {
     number: this.props.number || '',
     id: this.props.number || '',
     pages: this.props.number || '',
-    transliteration: this.props.number || 'asdasd',
+    transliteration: this.props.number || '',
   }
 
   handleChanges(searchForm: string, searchQuery: string) {
