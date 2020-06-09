@@ -146,9 +146,9 @@ export default class AppDriver {
     ).toEqual(String(expectedValue))
   }
 
-  changeValueByLabel(label: Matcher, newValue): void {
+  async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {
     const input = this.getElement().getByLabelText(label)
-    act(() => {
+    await act(async () => {
       fireEvent.change(input, { target: { value: newValue } })
     })
   }

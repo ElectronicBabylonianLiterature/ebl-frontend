@@ -5,6 +5,7 @@ import {
   HeadingAtLine,
   DiscourseAtLine,
   SealAtLine,
+  ColumnAtLine,
 } from 'transliteration/domain/line'
 
 export const surface: SurfaceAtLine = {
@@ -23,6 +24,7 @@ export const surface: SurfaceAtLine = {
     status: ['UNCERTAIN', 'CORRECTION'],
     surface: 'OBVERSE',
     text: '',
+    abbreviation: 'o',
   },
   displayValue: 'obverse?!',
   type: 'SurfaceAtLine',
@@ -39,12 +41,35 @@ export const object: ObjectAtLine = {
       type: 'ValueToken',
     },
   ],
-  status: [],
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  object_label: 'OBJECT',
-  text: 'Stone wig',
+  label: {
+    status: [],
+    object: 'OBJECT',
+    text: 'stone wig',
+    abbreviation: 'stone wig',
+  },
   displayValue: 'object Stone wig',
   type: 'ObjectAtLine',
+}
+
+export const column: ColumnAtLine = {
+  prefix: '@',
+  content: [
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'column 3?',
+      value: 'column 3?',
+      type: 'ValueToken',
+    },
+  ],
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  column_label: {
+    status: ['UNCERTAIN'],
+    abbreviation: 'iii',
+    column: 3,
+  },
+  displayValue: 'column 3?',
+  type: 'ColumnAtLine',
 }
 
 export const heading: HeadingAtLine = {

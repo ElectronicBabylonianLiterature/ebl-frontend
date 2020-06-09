@@ -26,8 +26,8 @@ test('Snapshot', () => {
 
 test('Query', async () => {
   fakeApi.expectSearchWords(query, words)
-  appDriver.changeValueByLabel('Query', query)
-  appDriver.submitForm()
+  await appDriver.changeValueByLabel('Query', query)
+  await appDriver.submitForm()
   await appDriver.waitForText(words[0].lemma.join(' '))
   expect(appDriver.getElement().container).toMatchSnapshot()
 })

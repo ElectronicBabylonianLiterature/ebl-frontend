@@ -8,12 +8,16 @@ import FragmentView from './FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
 import { act } from 'react-dom/test-utils'
+import WordService from 'dictionary/application/WordService'
+
+jest.mock('dictionary/application/WordService')
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
 
 let fragmentService
 let fragmentSearchService
+let wordService
 let session
 let container
 let element
@@ -35,6 +39,7 @@ async function renderFragmentView(
             tab={tab}
             fragmentService={fragmentService}
             fragmentSearchService={fragmentSearchService}
+            wordService={wordService}
           />
         </SessionContext.Provider>
       </MemoryRouter>
@@ -49,6 +54,7 @@ beforeEach(async () => {
     next: { fragmentNumber: 'K.00001' },
     previous: { fragmentNumber: 'J.99999' },
   }
+  wordService = new WordService(null)
   fragmentService = {
     find: jest.fn(),
     findFolio: jest.fn(),
