@@ -151,8 +151,8 @@ exports[`Edit 1`] = `
         </ol>
       </nav>
       <div
-        class="float-right btn-group"
-        role="group"
+        class="float-right btn-toolbar"
+        role="toolbar"
       />
       <h2>
         Edit
@@ -1876,8 +1876,8 @@ exports[`Snapshot 1`] = `
         </ol>
       </nav>
       <div
-        class="float-right btn-group"
-        role="group"
+        class="float-right btn-toolbar"
+        role="toolbar"
       />
       <h2>
         Edit
