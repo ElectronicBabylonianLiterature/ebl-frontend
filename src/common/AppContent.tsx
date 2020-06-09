@@ -1,5 +1,5 @@
 import React, { FunctionComponent, PropsWithChildren } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
+import { ButtonToolbar } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
 
@@ -29,7 +29,7 @@ const AppContent: FunctionComponent<Props> = ({
     >
       <header className="App-content__header">
         <Breadcrumbs crumbs={crumbs} />
-        <ButtonGroup className="float-right">{actions}</ButtonGroup>
+        <ButtonToolbar className="float-right">{actions}</ButtonToolbar>
         <h2>{title || _.last(crumbs)?.text}</h2>
       </header>
       {children}

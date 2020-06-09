@@ -7,9 +7,10 @@ import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Button } from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import Download from './Download'
 import WordService from 'dictionary/application/WordService'
 
 function AnnotateButton({
@@ -72,7 +73,12 @@ function FragmentView({
           fragmentService={fragmentService}
         ></FragmentPager>
       }
-      actions={<AnnotateButton number={number} disabled={!fragment.hasPhoto} />}
+      actions={
+        <ButtonGroup>
+          <Download fragment={fragment} />
+          <AnnotateButton number={number} disabled={!fragment.hasPhoto} />
+        </ButtonGroup>
+      }
       wide
     >
       <CuneiformFragment
