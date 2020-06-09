@@ -1,6 +1,7 @@
 import { Token } from './token'
 import { LineNumber, LineNumberRange } from './line-number'
 import Reference from 'bibliography/domain/Reference'
+import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
 
 export type Line =
   | LineBase
@@ -72,16 +73,6 @@ export interface StateDollarLine extends DollarAndAtLine {
   readonly state: string | null
   readonly status: string | null
 }
-interface Label {
-  readonly status: ReadonlyArray<string>
-}
-interface ColumnLabel extends Label {
-  readonly column: number
-}
-interface SurfaceLabel extends Label {
-  readonly surface: string
-  readonly text: string
-}
 export interface SealAtLine extends DollarAndAtLine {
   readonly type: 'SealAtLine'
   readonly number: number
@@ -104,9 +95,7 @@ export interface SurfaceAtLine extends DollarAndAtLine {
 }
 export interface ObjectAtLine extends DollarAndAtLine {
   readonly type: 'ObjectAtLine'
-  readonly status: ReadonlyArray<string>
-  readonly object_label: string
-  readonly text: string
+  readonly label: ObjectLabel
 }
 export interface DivisionAtLine extends DollarAndAtLine {
   readonly type: 'DivisionAtLine'

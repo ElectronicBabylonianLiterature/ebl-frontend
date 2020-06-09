@@ -5,12 +5,16 @@ import {
   NoteLinePart,
   TextLine,
   NoteLine,
+  ObjectAtLine,
+  SurfaceAtLine,
+  ColumnAtLine,
 } from 'transliteration/domain/line'
 import {
   CommentaryProtocol,
   Enclosure,
   Shift,
   Token,
+  Word,
 } from 'transliteration/domain/token'
 
 export function isEnclosure(token: Token): token is Enclosure {
@@ -38,6 +42,10 @@ export function isCommentaryProtocol(
   return token.type === 'CommentaryProtocol'
 }
 
+export function isWord(token: Token): token is Word {
+  return token.type === 'Word'
+}
+
 export function isTextLine(line: Line): line is TextLine {
   return line.type === 'TextLine'
 }
@@ -54,4 +62,16 @@ export function isBibliographyPart(
 
 export function isNoteLine(line: Line): line is NoteLine {
   return line.type === 'NoteLine'
+}
+
+export function isObjectAtLine(line: Line): line is ObjectAtLine {
+  return line.type === 'ObjectAtLine'
+}
+
+export function isSurfaceAtLine(line: Line): line is SurfaceAtLine {
+  return line.type === 'SurfaceAtLine'
+}
+
+export function isColumnAtLine(line: Line): line is ColumnAtLine {
+  return line.type === 'ColumnAtLine'
 }

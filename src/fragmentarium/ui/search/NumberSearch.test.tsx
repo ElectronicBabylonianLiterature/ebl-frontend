@@ -4,6 +4,7 @@ import { render } from '@testing-library/react'
 import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
 import { factory } from 'factory-girl'
+import { act } from 'react-dom/test-utils'
 
 const number = 'K.003292'
 let fragments
@@ -18,14 +19,16 @@ beforeEach(async () => {
   fragmentSearchService.searchNumber.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
-  element = render(
-    <MemoryRouter>
-      <NumberSearch
-        number={number}
-        fragmentSearchService={fragmentSearchService}
-      />
-    </MemoryRouter>
-  )
+  await act(async () => {
+    element = render(
+      <MemoryRouter>
+        <NumberSearch
+          number={number}
+          fragmentSearchService={fragmentSearchService}
+        />
+      </MemoryRouter>
+    )
+  })
 })
 
 it('Searches for the given parameters', () => {
