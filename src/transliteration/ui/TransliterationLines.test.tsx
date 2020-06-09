@@ -39,7 +39,7 @@ describe.each([
 ])('%#', (text, noteOnFirstLine, lineCases: [number, number[]][]) => {
   beforeEach(() => {
     element = render(<TransliterationLines text={text} />)
-    lines = element.getAllByRole('listitem')
+    lines = element.getAllByRole('row')
   })
 
   test('Snapshot', () => {

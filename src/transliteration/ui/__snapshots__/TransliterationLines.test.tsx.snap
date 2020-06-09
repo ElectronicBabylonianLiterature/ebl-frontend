@@ -2,110 +2,122 @@
 
 exports[`0 Snapshot 1`] = `
 <div>
-  <ol
+  <table
     class="Transliteration__lines"
   >
-    <li
+    <tr
       id="line-1"
     >
-      <span
+      <td />
+      <td
         class="Transliteration__RulingDollarLine"
       >
         <div
           class="Transliteration__ruling"
         />
-      </span>
-       
-       
-      <a
-        class="Transliteration__NoteLink"
-        href="#note-1"
-      >
-        1
-      </a>
-       
-      <a
-        class="Transliteration__NoteLink"
-        href="#note-2"
-      >
-        2
-      </a>
-       
-    </li>
-    <li
+      </td>
+      <td>
+         
+        <a
+          class="Transliteration__NoteLink"
+          href="#note-1"
+        >
+          1
+        </a>
+         
+        <a
+          class="Transliteration__NoteLink"
+          href="#note-2"
+        >
+          2
+        </a>
+         
+      </td>
+    </tr>
+    <tr
       id="line-2"
     >
-      <span
+      <td />
+      <td
         class="Transliteration__RulingDollarLine"
       >
         <div
           class="Transliteration__ruling"
         />
-      </span>
-       
-       
-    </li>
-    <li
+      </td>
+      <td>
+         
+      </td>
+    </tr>
+    <tr
       id="line-3"
     >
-      <span
+      <td />
+      <td
         class="Transliteration__RulingDollarLine"
       >
         <div
           class="Transliteration__ruling"
         />
-      </span>
-       
-       
-      <a
-        class="Transliteration__NoteLink"
-        href="#note-3"
-      >
-        3
-      </a>
-       
-    </li>
-  </ol>
+      </td>
+      <td>
+         
+        <a
+          class="Transliteration__NoteLink"
+          href="#note-3"
+        >
+          3
+        </a>
+         
+      </td>
+    </tr>
+  </table>
 </div>
 `;
 
 exports[`1 Snapshot 1`] = `
 <div>
-  <ol
+  <table
     class="Transliteration__lines"
   >
-    <li
+    <tr
       id="line-0"
     >
-       
-      <a
-        class="Transliteration__NoteLink"
-        href="#note-1"
-      >
-        1
-      </a>
-       
-      <a
-        class="Transliteration__NoteLink"
-        href="#note-2"
-      >
-        2
-      </a>
-       
-    </li>
-    <li
+      <td />
+      <td />
+      <td>
+         
+        <a
+          class="Transliteration__NoteLink"
+          href="#note-1"
+        >
+          1
+        </a>
+         
+        <a
+          class="Transliteration__NoteLink"
+          href="#note-2"
+        >
+          2
+        </a>
+         
+      </td>
+    </tr>
+    <tr
       id="line-1"
     >
-      <span
+      <td />
+      <td
         class="Transliteration__RulingDollarLine"
       >
         <div
           class="Transliteration__ruling"
         />
-      </span>
-       
-       
-    </li>
-  </ol>
+      </td>
+      <td>
+         
+      </td>
+    </tr>
+  </table>
 </div>
 `;

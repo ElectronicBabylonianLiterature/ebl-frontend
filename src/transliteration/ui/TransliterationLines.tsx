@@ -14,46 +14,47 @@ import { NoteLinks, createLineId } from './note-links'
 function DisplayLine({
   line,
   line: { type, content },
-  container = 'div',
 }: {
   line: Line
   container?: string
 }): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${type}`]) },
-    <LinePrefix line={line} />,
-    <LineTokens content={content} />
+  return (
+    <>
+      <td className={classNames([`Transliteration__${type}`])}>
+        <LinePrefix line={line} />
+      </td>
+      <td className={classNames([`Transliteration__${type}`])}>
+        <LineTokens content={content} />
+      </td>
+    </>
   )
 }
 
 function DisplayDollarAndAtLineWithParenthesis({
   line,
-  container = 'div',
 }: {
   line: Line
-  container?: string
 }): JSX.Element {
   const dollarAndAtLine = line as DollarAndAtLine
-  return React.createElement(
-    container,
-    { className: 'Transliteration__DollarAndAtLineWithParenthesis' },
-    dollarAndAtLine.displayValue
+  return (
+    <>
+      <td></td>
+      <td className="Transliteration__DollarAndAtLineWithParenthesis">
+        {dollarAndAtLine.displayValue}
+      </td>
+    </>
   )
 }
 
-function DisplayDollarAndAtLine({
-  line,
-  container = 'div',
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
+function DisplayDollarAndAtLine({ line }: { line: Line }): JSX.Element {
   const dollarAndAtLine = line as DollarAndAtLine
-  return React.createElement(
-    container,
-    { className: 'Transliteration__DollarAndAtLine' },
-    `(${dollarAndAtLine.displayValue})`
+  return (
+    <>
+      <td></td>
+      <td className="Transliteration__DollarAndAtLine">
+        (${dollarAndAtLine.displayValue})
+      </td>
+    </>
   )
 }
 
@@ -61,7 +62,6 @@ const lineComponents: ReadonlyMap<
   string,
   FunctionComponent<{
     line: Line
-    container?: string
   }>
 > = new Map([
   ['TextLine', DisplayLine],
@@ -90,21 +90,18 @@ const rulingsToNumber: ReadonlyMap<string, number> = new Map([
   ['TRIPLE', 3],
 ])
 
-function DisplayRulingDollarLine({
-  line,
-  container = 'div',
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
+function DisplayRulingDollarLine({ line }: { line: Line }): JSX.Element {
   const rulingLine = line as RulingDollarLine
   const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
-  return React.createElement(
-    container,
-    { className: 'Transliteration__RulingDollarLine' },
-    _.range(0, rulingsNumber).map((number: number) => {
-      return <Ruling key={number} />
-    })
+  return (
+    <>
+      <td></td>
+      <td className="Transliteration__RulingDollarLine">
+        {_.range(0, rulingsNumber).map((number: number) => {
+          return <Ruling key={number} />
+        })}
+      </td>
+    </>
   )
 }
 
@@ -113,9 +110,13 @@ function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
   return (
     <>
       {hasNotes && (
-        <li id={createLineId(0)}>
-          <NoteLinks notes={notes} lineNumber={0} />
-        </li>
+        <tr id={createLineId(0)}>
+          <td></td>
+          <td></td>
+          <td>
+            <NoteLinks notes={notes} lineNumber={0} />
+          </td>
+        </tr>
       )}
     </>
   )
@@ -133,10 +134,12 @@ function TransliterationLine({
   const LineComponent = lineComponents.get(line.type) || DisplayLine
   const lineNumber = index + 1
   return (
-    <li id={createLineId(lineNumber)}>
-      <LineComponent container="span" line={line} />{' '}
-      <NoteLinks notes={notes} lineNumber={lineNumber} />
-    </li>
+    <tr id={createLineId(lineNumber)}>
+      <LineComponent line={line} />
+      <td>
+        <NoteLinks notes={notes} lineNumber={lineNumber} />
+      </td>
+    </tr>
   )
 }
 
@@ -146,7 +149,7 @@ export default function TransliterationLines({
   text: Text
 }): JSX.Element {
   return (
-    <ol className="Transliteration__lines">
+    <table className="Transliteration__lines">
       <FirstLineNotes notes={text.notes} />
       {text.lines.map((line: Line, index: number) => (
         <TransliterationLine
@@ -156,6 +159,6 @@ export default function TransliterationLines({
           index={index}
         />
       ))}
-    </ol>
+    </table>
   )
 }
