@@ -1,11 +1,15 @@
 import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
-import { DollarAndAtLine, Line } from 'transliteration/domain/line'
+import { Line } from 'transliteration/domain/line'
 import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from './note-links'
 import DisplayRulingDollarLine from './rulings'
 import DisplayTextLine from './text-line'
+import {
+  DisplayDollarAndAtLineWithParenthesis,
+  DisplayDollarAndAtLine,
+} from './dollar-and-at-lines'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -17,34 +21,6 @@ function DisplayControlLine({
       <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
       <td className={classNames([`Transliteration__${type}`])}>
         {content.map(({ value }) => value).join('')}
-      </td>
-    </>
-  )
-}
-
-function DisplayDollarAndAtLineWithParenthesis({
-  line,
-}: {
-  line: Line
-}): JSX.Element {
-  const dollarAndAtLine = line as DollarAndAtLine
-  return (
-    <>
-      <td></td>
-      <td className="Transliteration__DollarAndAtLineWithParenthesis">
-        {dollarAndAtLine.displayValue}
-      </td>
-    </>
-  )
-}
-
-function DisplayDollarAndAtLine({ line }: { line: Line }): JSX.Element {
-  const dollarAndAtLine = line as DollarAndAtLine
-  return (
-    <>
-      <td></td>
-      <td className="Transliteration__DollarAndAtLine">
-        (${dollarAndAtLine.displayValue})
       </td>
     </>
   )
