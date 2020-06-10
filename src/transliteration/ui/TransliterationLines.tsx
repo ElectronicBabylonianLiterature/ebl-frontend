@@ -1,16 +1,12 @@
 import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
-import {
-  DollarAndAtLine,
-  Line,
-  RulingDollarLine,
-  TextLine,
-} from 'transliteration/domain/line'
+import { DollarAndAtLine, Line, TextLine } from 'transliteration/domain/line'
 import { Text, Notes } from 'transliteration/domain/text'
 import { LinePrefix } from './LinePrefix'
 import LineTokens from './LineTokens'
 import { NoteLinks, createLineId } from './note-links'
+import DisplayRulingDollarLine from './rulings'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -94,31 +90,6 @@ const lineComponents: ReadonlyMap<
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
-
-function Ruling(): JSX.Element {
-  return <div className="Transliteration__ruling" />
-}
-
-const rulingsToNumber: ReadonlyMap<string, number> = new Map([
-  ['SINGLE', 1],
-  ['DOUBLE', 2],
-  ['TRIPLE', 3],
-])
-
-function DisplayRulingDollarLine({ line }: { line: Line }): JSX.Element {
-  const rulingLine = line as RulingDollarLine
-  const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
-  return (
-    <>
-      <td></td>
-      <td className="Transliteration__RulingDollarLine">
-        {_.range(0, rulingsNumber).map((number: number) => {
-          return <Ruling key={number} />
-        })}
-      </td>
-    </>
-  )
-}
 
 function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
   const hasNotes = !_.isEmpty(notes.get(0))
