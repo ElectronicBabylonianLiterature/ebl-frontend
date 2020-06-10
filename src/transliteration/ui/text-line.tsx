@@ -15,9 +15,7 @@ export default function DisplayTextLine({
       <td className={classNames([`Transliteration__${type}`])}>
         <LineNumber line={line as TextLine} />
       </td>
-      <td className={classNames([`Transliteration__${type}`])}>
-        <LineTokens content={content} />
-      </td>
+      <LineTokens content={content} />
     </>
   )
 }

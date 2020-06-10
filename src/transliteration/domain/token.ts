@@ -124,6 +124,11 @@ export interface CommentaryProtocol extends NotLemmatizableToken {
   readonly value: Protocol
 }
 
+export interface Column extends NotLemmatizableToken {
+  type: 'Column'
+  number: number | null
+}
+
 export type Token =
   | ValueToken
   | Word
@@ -141,3 +146,4 @@ export type Token =
   | Enclosure
   | Tabulation
   | CommentaryProtocol
+  | Column

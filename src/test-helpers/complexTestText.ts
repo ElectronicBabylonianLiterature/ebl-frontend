@@ -6,6 +6,7 @@ import * as composite from 'test-helpers/lines/composite'
 import * as dollar from 'test-helpers/lines/dollar'
 import empty from 'test-helpers/lines/empty'
 import note from 'test-helpers/lines/note'
+import { columns, columnsWithSpan } from './lines/text'
 
 const line2: Line = {
   prefix: '1.',
@@ -3383,6 +3384,8 @@ export default new Text({
     line16,
     line17,
     line18,
+    columns,
+    columnsWithSpan,
     empty,
     commentaryProtocols,
     dollar.state,
