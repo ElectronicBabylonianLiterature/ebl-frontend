@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { LinePrefix } from './LinePrefix'
+import { LineNumber } from './LineNumber'
 import LineTokens from './LineTokens'
 import { Line, TextLine } from 'transliteration/domain/line'
 
@@ -13,7 +13,7 @@ export default function DisplayTextLine({
   return (
     <>
       <td className={classNames([`Transliteration__${type}`])}>
-        <LinePrefix line={line as TextLine} />
+        <LineNumber line={line as TextLine} />
       </td>
       <td className={classNames([`Transliteration__${type}`])}>
         <LineTokens content={content} />
