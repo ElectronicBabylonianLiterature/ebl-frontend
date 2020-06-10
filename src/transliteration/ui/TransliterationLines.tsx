@@ -1,12 +1,11 @@
 import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
-import { DollarAndAtLine, Line, TextLine } from 'transliteration/domain/line'
+import { DollarAndAtLine, Line } from 'transliteration/domain/line'
 import { Text, Notes } from 'transliteration/domain/text'
-import { LinePrefix } from './LinePrefix'
-import LineTokens from './LineTokens'
 import { NoteLinks, createLineId } from './note-links'
 import DisplayRulingDollarLine from './rulings'
+import DisplayTextLine from './text-line'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -18,24 +17,6 @@ function DisplayControlLine({
       <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
       <td className={classNames([`Transliteration__${type}`])}>
         {content.map(({ value }) => value).join('')}
-      </td>
-    </>
-  )
-}
-
-function DisplayTextLine({
-  line,
-  line: { type, content },
-}: {
-  line: Line
-}): JSX.Element {
-  return (
-    <>
-      <td className={classNames([`Transliteration__${type}`])}>
-        <LinePrefix line={line as TextLine} />
-      </td>
-      <td className={classNames([`Transliteration__${type}`])}>
-        <LineTokens content={content} />
       </td>
     </>
   )
