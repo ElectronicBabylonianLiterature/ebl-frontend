@@ -4701,9 +4701,7 @@ exports[`Snapshot 1`] = `
       >
         <td
           class="Transliteration__EmptyLine"
-        >
-          <span />
-        </td>
+        />
         <td
           class="Transliteration__EmptyLine"
         />
