@@ -27,10 +27,27 @@ export interface LineBase {
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
 }
-export interface TextLine extends LineBase {
-  type: 'TextLine'
-  lineNumber: LineNumber | LineNumberRange
+export interface TextLineDto extends LineBase {
+  readonly type: 'TextLine'
+  readonly lineNumber: LineNumber | LineNumberRange
 }
+
+export class TextLine implements TextLineDto {
+  readonly prefix: string
+  readonly content: ReadonlyArray<Token>
+  readonly lineNumber: LineNumber | LineNumberRange
+
+  constructor(data: TextLineDto) {
+    this.prefix = data.prefix
+    this.content = data.content
+    this.lineNumber = data.lineNumber
+  }
+
+  get type(): 'TextLine' {
+    return 'TextLine'
+  }
+}
+
 export interface EmptyLine extends LineBase {
   readonly type: 'EmptyLine'
 }

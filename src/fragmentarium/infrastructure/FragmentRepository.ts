@@ -16,6 +16,11 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
+import { Line, TextLine, TextLineDto } from 'transliteration/domain/line'
+
+function isTextLineDto(line: Line): line is TextLineDto {
+  return line.type === 'TextLine'
+}
 
 function createFragment(dto): Fragment {
   return new Fragment({
@@ -30,13 +35,17 @@ function createFragment(dto): Fragment {
     },
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
-    text: new Text({ lines: dto.text.lines }),
+    text: new Text({
+      lines: dto.text.lines.map((lineDto) => {
+        return isTextLineDto(lineDto) ? new TextLine(lineDto) : lineDto
+      }),
+    }),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
   })
 }
 
-function createFragmentPath(number, ...subResources) {
+function createFragmentPath(number: string, ...subResources: string[]): string {
   return ['/fragments', encodeURIComponent(number), ...subResources].join('/')
 }
 

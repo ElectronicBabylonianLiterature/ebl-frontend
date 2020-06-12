@@ -1,10 +1,10 @@
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
-import { Line } from 'transliteration/domain/line'
+import { TextLineDto, TextLine } from 'transliteration/domain/line'
 import Museum from 'fragmentarium/domain/museum'
 
-const lines: readonly Line[] = [
+const lines: readonly TextLineDto[] = [
   {
     type: 'TextLine',
     lineNumber: {
@@ -293,7 +293,7 @@ export const fragment = new Fragment({
     }),
   ],
   folios: [new Folio({ name: 'FWG', number: 'M134' })],
-  text: new Text({ lines }),
+  text: new Text({ lines: lines.map((lineDto) => new TextLine(lineDto)) }),
   references: [
     {
       id: 'RN52',

@@ -1,7 +1,7 @@
 import { TextLine } from 'transliteration/domain/line'
 
 export const lemmatized: TextLine[] = [
-  {
+  new TextLine({
     prefix: 'l1.',
     content: [
       {
@@ -54,8 +54,8 @@ export const lemmatized: TextLine[] = [
       type: 'LineNumber',
     },
     type: 'TextLine',
-  },
-  {
+  }),
+  new TextLine({
     prefix: 'l2.',
     content: [
       {
@@ -101,10 +101,10 @@ export const lemmatized: TextLine[] = [
       type: 'LineNumber',
     },
     type: 'TextLine',
-  },
+  }),
 ]
 
-export const columns: TextLine = {
+export const columns: TextLine = new TextLine({
   prefix: 'c1.',
   content: [
     {
@@ -234,9 +234,9 @@ export const columns: TextLine = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-export const columnsWithSpan: TextLine = {
+export const columnsWithSpan: TextLine = new TextLine({
   prefix: 'c2.',
   content: [
     {
@@ -332,4 +332,4 @@ export const columnsWithSpan: TextLine = {
     suffixModifier: null,
     type: 'LineNumber',
   },
-}
+})

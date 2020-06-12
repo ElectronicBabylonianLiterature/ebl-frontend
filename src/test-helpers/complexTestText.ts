@@ -1,5 +1,5 @@
 import { Text } from 'transliteration/domain/text'
-import { Line } from 'transliteration/domain/line'
+import { Line, TextLine } from 'transliteration/domain/line'
 import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
 import * as at from 'test-helpers/lines/at'
 import * as composite from 'test-helpers/lines/composite'
@@ -8,7 +8,7 @@ import empty from 'test-helpers/lines/empty'
 import note from 'test-helpers/lines/note'
 import { columns, columnsWithSpan } from './lines/text'
 
-const line2: Line = {
+const line2: Line = new TextLine({
   prefix: '1.',
   content: [
     {
@@ -223,9 +223,9 @@ const line2: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line4: Line = {
+const line4: Line = new TextLine({
   prefix: '2.',
   content: [
     {
@@ -334,9 +334,9 @@ const line4: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line6: Line = {
+const line6: Line = new TextLine({
   prefix: '3.',
   content: [
     {
@@ -497,9 +497,9 @@ const line6: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line7: Line = {
+const line7: Line = new TextLine({
   prefix: '4.',
   content: [
     {
@@ -628,9 +628,9 @@ const line7: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line8: Line = {
+const line8: Line = new TextLine({
   prefix: '5.',
   content: [
     {
@@ -849,9 +849,9 @@ const line8: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line10: Line = {
+const line10: Line = new TextLine({
   prefix: '6.',
   content: [
     {
@@ -1369,9 +1369,9 @@ const line10: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line11: Line = {
+const line11: Line = new TextLine({
   prefix: '1.',
   content: [
     {
@@ -1574,9 +1574,9 @@ const line11: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line12: Line = {
+const line12: Line = new TextLine({
   prefix: '2.',
   content: [
     {
@@ -1913,9 +1913,9 @@ const line12: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line13: Line = {
+const line13: Line = new TextLine({
   prefix: '3.',
   content: [
     {
@@ -2194,9 +2194,9 @@ const line13: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line14: Line = {
+const line14: Line = new TextLine({
   prefix: '4.',
   content: [
     {
@@ -2475,9 +2475,9 @@ const line14: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line15: Line = {
+const line15: Line = new TextLine({
   prefix: '5.',
   content: [
     {
@@ -3111,9 +3111,9 @@ const line15: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line16: Line = {
+const line16: Line = new TextLine({
   prefix: '6.',
   content: [
     {
@@ -3199,9 +3199,9 @@ const line16: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line17: Line = {
+const line17: Line = new TextLine({
   prefix: '7.',
   content: [
     {
@@ -3310,9 +3310,9 @@ const line17: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
 
-const line18: Line = {
+const line18: Line = new TextLine({
   prefix: "D+3'a-4b.",
   content: [
     {
@@ -3352,7 +3352,7 @@ const line18: Line = {
     type: 'LineNumberRange',
   },
   type: 'TextLine',
-}
+})
 
 export default new Text({
   lines: [
