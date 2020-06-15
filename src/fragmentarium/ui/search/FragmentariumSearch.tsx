@@ -16,6 +16,8 @@ type Props = {
   id: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
+  bibliographyService
+  fragmentService
   fragmentSearchService
 }
 const FragmentariumSearch: FunctionComponent<Props> = ({
@@ -23,6 +25,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   id,
   pages,
   transliteration,
+  fragmentService,
+  bibliographyService,
   fragmentSearchService,
 }: Props) => {
   const replacedTransliteration =
@@ -40,6 +44,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   number={number}
                   id={id}
                   pages={pages}
+                  bibliographyService={bibliographyService}
+                  fragmentService={fragmentService}
                   transliteration={replacedTransliteration}
                   fragmentSearchService={fragmentSearchService}
                 />

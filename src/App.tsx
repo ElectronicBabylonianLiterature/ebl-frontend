@@ -166,6 +166,8 @@ function App({
             path="/fragmentarium/search"
             render={({ location }): ReactNode => (
               <FragmentariumSearch
+                fragmentService={fragmentService}
+                bibliographyService={bibliographyService}
                 fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
               />
@@ -200,6 +202,7 @@ function App({
               <Fragmentarium
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
+                bibliographyService={bibliographyService}
                 {...parseFragmentSearchParams(location)}
               />
             )}

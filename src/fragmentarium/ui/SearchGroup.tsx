@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
+import ReferenceForm from '../../bibliography/ui/ReferenceForm'
 
 type State = {
   number: string | null | undefined
@@ -18,7 +19,9 @@ type State = {
 }
 
 type Props = State & {
+  fragmentService
   fragmentSearchService
+  bibliographyService
 } & RouteComponentProps
 
 class SearchGroup extends Component<Props, State> {
@@ -65,6 +68,8 @@ class SearchGroup extends Component<Props, State> {
   }
 
   render() {
+    const searchBibliography = (query) =>
+      this.props.fragmentService.searchBibliography(query)
     return (
       <>
         <NumberSearchForm
@@ -74,6 +79,7 @@ class SearchGroup extends Component<Props, State> {
         <ReferenceSearchForm
           handleChanges={this.handleChanges.bind(this)}
           getUserInput={this.getUserInput.bind(this)}
+          searchBibliography={searchBibliography}
         />
         <TransliterationSearchForm
           handleChanges={this.handleChanges.bind(this)}

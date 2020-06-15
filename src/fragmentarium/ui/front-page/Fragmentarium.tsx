@@ -17,6 +17,7 @@ interface Props {
   id: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
+  bibliographyService
   fragmentService
   fragmentSearchService
 }
@@ -26,6 +27,7 @@ function Fragmentarium({
   id,
   pages,
   transliteration,
+  bibliographyService,
   fragmentService,
   fragmentSearchService,
 }: Props): JSX.Element {
@@ -42,7 +44,9 @@ function Fragmentarium({
                     id={id}
                     pages={pages}
                     transliteration={transliteration}
+                    fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
+                    bibliographyService={bibliographyService}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>
