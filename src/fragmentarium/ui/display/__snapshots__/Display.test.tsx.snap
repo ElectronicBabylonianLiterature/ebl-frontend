@@ -4944,5 +4944,123 @@ exports[`Snapshot 1`] = `
       </li>
     </ol>
   </section>
+  <section>
+    <h4>
+      Glossary
+    </h4>
+    <div>
+      <a
+        href="/dictionary/test I"
+      >
+        <span
+          class="Glossary__lemma"
+        >
+          test
+        </span>
+      </a>
+      , 
+      “
+      weed
+      ”
+      : 
+      <span
+        class="Transliteration"
+      >
+        <span
+          class="Transliteration__Word"
+        >
+          <span
+            class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    ḫe
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+            <span
+              class="Transliteration__Joiner"
+            >
+              <span
+                class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
+              >
+                -
+              </span>
+            </span>
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    p
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  <span
+                    class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    ]
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    í
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+       
+      (
+      stone wig
+      <sup />
+       
+      o
+      <sup>
+        ?
+        !
+      </sup>
+       7
+      )
+    </div>
+  </section>
 </div>
 `;
