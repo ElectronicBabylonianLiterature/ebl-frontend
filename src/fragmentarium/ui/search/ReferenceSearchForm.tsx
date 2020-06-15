@@ -2,28 +2,16 @@ import React, { Component } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 
 type Props = {
-  id: string | null | undefined
-  pages: string | null | undefined
   handleChanges(searchForm: string, searchQuery: string): void
+  getUserInput(key: string): string
 }
 
 class ReferenceSearchForm extends Component<Props> {
-  state = {
-    id: this.props.id || '',
-    pages: this.props.pages || '',
-  }
-
   onChangeId = (event) => {
-    this.setState({
-      id: event.target.value,
-    })
     this.props.handleChanges('id', event.target.value || '')
   }
 
   onChangePage = (event) => {
-    this.setState({
-      pages: event.target.value,
-    })
     this.props.handleChanges('pages', event.target.value || '')
   }
 
@@ -34,7 +22,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={{ span: 5, offset: 2 }}>
             <Form.Control
               type="text"
-              value={this.state.id}
+              value={this.props.getUserInput('id')}
               placeholder="Search Reference"
               aria-label="FragmentId"
               onChange={this.onChangeId}
@@ -43,7 +31,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={5}>
             <Form.Control
               type="text"
-              value={this.state.pages}
+              value={this.props.getUserInput('pages')}
               placeholder="Search Reference Pages"
               aria-label="FragmentPage"
               onChange={this.onChangePage}

@@ -24,15 +24,18 @@ type Props = State & {
 class SearchGroup extends Component<Props, State> {
   state = {
     number: this.props.number || '',
-    id: this.props.number || '',
-    pages: this.props.number || '',
-    transliteration: this.props.number || '',
+    id: this.props.id || '',
+    pages: this.props.pages || '',
+    transliteration: this.props.transliteration || '',
   }
 
-  handleChanges(searchForm: string, searchQuery: string) {
+  handleChanges(searchForm: string, searchQuery: string): void {
     const updatedState = _.cloneDeep(this.state)
     updatedState[searchForm] = searchQuery
     this.setState(updatedState)
+  }
+  getUserInput(key: string): string {
+    return this.state[key]
   }
 
   deleteEmptyProperties(state: State) {
@@ -65,17 +68,16 @@ class SearchGroup extends Component<Props, State> {
     return (
       <>
         <NumberSearchForm
-          number={this.props.number}
           handleChanges={this.handleChanges.bind(this)}
+          getUserInput={this.getUserInput.bind(this)}
         />
         <ReferenceSearchForm
-          id={this.props.id}
-          pages={this.props.pages}
           handleChanges={this.handleChanges.bind(this)}
+          getUserInput={this.getUserInput.bind(this)}
         />
         <TransliterationSearchForm
-          transliteration={this.props.transliteration}
           handleChanges={this.handleChanges.bind(this)}
+          getUserInput={this.getUserInput.bind(this)}
         />
         <div className="SearchGroup__button-bar">
           <Button className="w-25 m-2" onClick={this.search} variant="primary">

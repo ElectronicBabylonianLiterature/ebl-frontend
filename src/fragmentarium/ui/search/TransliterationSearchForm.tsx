@@ -35,32 +35,17 @@ type State = {
   transliteration: string
 }
 type Props = {
-  transliteration: string | null | undefined
   handleChanges(searchForm: string, searchQuery: string): void
+  getUserInput(key: string): string
 }
 
 class TransliterationSearchForm extends Component<Props, State> {
-  state = {
-    transliteration: this.props.transliteration || '',
-  }
-
   onChange = (event) => {
-    this.setState({
-      transliteration: event.target.value,
-    })
     this.props.handleChanges('transliteration', event.target.value || '')
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.transliteration !== prevProps.transliteration) {
-      this.setState({
-        transliteration: this.props.transliteration || '',
-      })
-    }
-  }
-
   render() {
-    const rows = this.state.transliteration.split('\n').length
+    const rows = this.props.getUserInput('transliteration').split('\n').length
     return (
       <Form>
         <Form.Group as={Row} controlId="transliteration">
@@ -74,7 +59,7 @@ class TransliterationSearchForm extends Component<Props, State> {
           <Col sm={10}>
             <Form.Control
               as="textarea"
-              value={this.state.transliteration}
+              value={this.props.getUserInput('transliteration')}
               rows={Math.max(2, rows)}
               placeholder="Search transliterations"
               aria-label="Transliteration"
