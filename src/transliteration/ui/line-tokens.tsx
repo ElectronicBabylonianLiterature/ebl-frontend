@@ -68,6 +68,10 @@ class LineAccumulator {
     ))
   }
 
+  get flatResult(): React.ReactNode[] {
+    return this.columns.flatMap((column) => column.content)
+  }
+
   get bemModifiers(): readonly string[] {
     return this.protocol === null
       ? [this.language]
@@ -141,11 +145,13 @@ class LineAccumulator {
   }
 
   private get index(): number {
-    return _.last(this.columns)?.content.length ?? 0
+    return _(this.columns)
+      .map((column) => column.content.length)
+      .sum()
   }
 }
 
-export default function LineTokens({
+export function LineTokens({
   content,
 }: {
   content: ReadonlyArray<Token>
@@ -160,11 +166,40 @@ export default function LineTokens({
             acc.applyCommentaryProtocol(token)
           } else if (isDocumentOrientedGloss(token)) {
             token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
-          } else if (isColumn(token)) {
-            acc.addColumn(token.number)
           } else {
             acc.pushToken(token)
           }
+          return acc
+        }, new LineAccumulator()).flatResult
+      }
+    </>
+  )
+}
+
+export function LineColumns({
+  columns,
+}: {
+  columns: readonly { span: number | null; content: readonly Token[] }[]
+}): JSX.Element {
+  return (
+    <>
+      {
+        columns.reduce((acc: LineAccumulator, column) => {
+          acc.addColumn(column.span)
+          column.content.reduce((acc: LineAccumulator, token: Token) => {
+            if (isShift(token)) {
+              acc.applyLanguage(token)
+            } else if (isCommentaryProtocol(token)) {
+              acc.applyCommentaryProtocol(token)
+            } else if (isDocumentOrientedGloss(token)) {
+              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+            } else if (isColumn(token)) {
+              throw new Error('Unexpected column token.')
+            } else {
+              acc.pushToken(token)
+            }
+            return acc
+          }, acc)
           return acc
         }, new LineAccumulator()).result
       }

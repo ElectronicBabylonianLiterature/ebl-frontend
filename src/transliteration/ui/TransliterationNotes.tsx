@@ -12,7 +12,7 @@ import {
   isLanguagePart,
   isBibliographyPart,
 } from 'transliteration/domain/type-guards'
-import LineTokens from './LineTokens'
+import { LineTokens } from './line-tokens'
 import { LinkToLine } from './note-links'
 import { Shift } from 'transliteration/domain/token'
 import Reference from 'bibliography/domain/Reference'

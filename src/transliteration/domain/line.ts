@@ -1,7 +1,10 @@
+import _ from 'lodash'
 import { Token } from './token'
 import { LineNumber, LineNumberRange } from './line-number'
 import Reference from 'bibliography/domain/Reference'
 import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
+import { isColumn } from './type-guards'
+import { produce, Draft, castDraft } from 'immer'
 
 export type Line =
   | LineBase
@@ -32,7 +35,13 @@ export interface TextLineDto extends LineBase {
   readonly lineNumber: LineNumber | LineNumberRange
 }
 
+export interface TextLineColumn {
+  span: number | null
+  content: readonly Token[]
+}
+
 export class TextLine implements TextLineDto {
+  readonly type = 'TextLine'
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
   readonly lineNumber: LineNumber | LineNumberRange
@@ -43,8 +52,27 @@ export class TextLine implements TextLineDto {
     this.lineNumber = data.lineNumber
   }
 
-  get type(): 'TextLine' {
-    return 'TextLine'
+  get columns(): readonly TextLineColumn[] {
+    const defaultSpan = 1
+    return _.reduce<Token, TextLineColumn[]>(
+      this.content,
+      produce((draft: Draft<TextLineColumn[]>, current: Token) => {
+        if (isColumn(current)) {
+          draft.push({
+            span: current.number ?? defaultSpan,
+            content: [],
+          })
+        } else if (_.isEmpty(draft)) {
+          draft.push({
+            span: null,
+            content: [castDraft(current)],
+          })
+        } else {
+          _.last(draft)?.content.push(castDraft(current))
+        }
+      }),
+      []
+    )
   }
 }
 

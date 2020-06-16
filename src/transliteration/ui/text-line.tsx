@@ -1,21 +1,17 @@
 import React from 'react'
 import classNames from 'classnames'
 import { LineNumber } from './LineNumber'
-import LineTokens from './LineTokens'
+import { LineColumns } from './line-tokens'
 import { Line, TextLine } from 'transliteration/domain/line'
 
-export default function DisplayTextLine({
-  line,
-  line: { type, content },
-}: {
-  line: Line
-}): JSX.Element {
+export default function DisplayTextLine({ line }: { line: Line }): JSX.Element {
+  const textLine = line as TextLine
   return (
     <>
-      <td className={classNames([`Transliteration__${type}`])}>
-        <LineNumber line={line as TextLine} />
+      <td className={classNames([`Transliteration__${textLine.type}`])}>
+        <LineNumber line={textLine} />
       </td>
-      <LineTokens content={content} />
+      <LineColumns columns={textLine.columns} />
     </>
   )
 }

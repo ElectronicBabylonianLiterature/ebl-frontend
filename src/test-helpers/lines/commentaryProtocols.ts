@@ -1,6 +1,6 @@
-import { Line } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/line'
 
-export const commentaryProtocols: Line = {
+export const commentaryProtocols = new TextLine({
   prefix: '9.',
   content: [
     {
@@ -210,4 +210,4 @@ export const commentaryProtocols: Line = {
     type: 'LineNumber',
   },
   type: 'TextLine',
-}
+})
