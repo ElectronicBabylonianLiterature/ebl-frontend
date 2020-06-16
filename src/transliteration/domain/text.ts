@@ -93,6 +93,14 @@ export class Text {
     this.allLines = lines
   }
 
+  get numberOfColumns(): number {
+    return (
+      _(this.allLines)
+        .map((line) => (isTextLine(line) ? line.numberOfColumns : 1))
+        .max() ?? 1
+    )
+  }
+
   get lines(): readonly Line[] {
     return this.allLines.filter((line) => !isNoteLine(line))
   }
