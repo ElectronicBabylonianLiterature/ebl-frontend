@@ -1,4 +1,4 @@
-import { columns } from 'test-helpers/lines/text'
+import { columns, columnsWithSpan, lemmatized } from 'test-helpers/lines/text'
 
 test('columns', () => {
   expect(columns.columns).toEqual([
@@ -120,4 +120,12 @@ test('columns', () => {
       ],
     },
   ])
+})
+
+test.each([
+  [lemmatized[0], 1],
+  [columns, 3],
+  [columnsWithSpan, 3],
+])('numberOfColumns', (line, expected) => {
+  expect(line.numberOfColumns).toEqual(expected)
 })

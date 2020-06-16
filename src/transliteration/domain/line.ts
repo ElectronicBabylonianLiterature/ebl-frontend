@@ -40,6 +40,8 @@ export interface TextLineColumn {
   content: readonly Token[]
 }
 
+const defaultSpan = 1
+
 export class TextLine implements TextLineDto {
   readonly type = 'TextLine'
   readonly prefix: string
@@ -53,7 +55,6 @@ export class TextLine implements TextLineDto {
   }
 
   get columns(): readonly TextLineColumn[] {
-    const defaultSpan = 1
     return _.reduce<Token, TextLineColumn[]>(
       this.content,
       produce((draft: Draft<TextLineColumn[]>, current: Token) => {
@@ -73,6 +74,12 @@ export class TextLine implements TextLineDto {
       }),
       []
     )
+  }
+
+  get numberOfColumns(): number {
+    return _(this.columns)
+      .map((column) => column.span ?? defaultSpan)
+      .sum()
   }
 }
 
