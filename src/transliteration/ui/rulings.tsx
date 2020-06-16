@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
-import { Line, RulingDollarLine } from 'transliteration/domain/line'
+import { RulingDollarLine } from 'transliteration/domain/line'
+import { LineProps } from './LineProps'
 
 function Ruling(): JSX.Element {
   return <div className="Transliteration__ruling" />
@@ -14,15 +15,14 @@ const rulingsToNumber: ReadonlyMap<string, number> = new Map([
 
 export default function DisplayRulingDollarLine({
   line,
-}: {
-  line: Line
-}): JSX.Element {
+  columns,
+}: LineProps): JSX.Element {
   const rulingLine = line as RulingDollarLine
   const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
   return (
     <>
       <td></td>
-      <td className="Transliteration__RulingDollarLine">
+      <td colSpan={columns} className="Transliteration__RulingDollarLine">
         {_.range(0, rulingsNumber).map((number: number) => {
           return <Ruling key={number} />
         })}

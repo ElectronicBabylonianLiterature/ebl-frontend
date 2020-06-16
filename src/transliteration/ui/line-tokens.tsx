@@ -49,7 +49,7 @@ function GlossWrapper({ children }: PropsWithChildren<{}>): JSX.Element {
 }
 
 interface ColumnData {
-  span: number
+  span: number | null
   content: React.ReactNode[]
 }
 
@@ -60,9 +60,9 @@ class LineAccumulator {
   private enclosureOpened = false
   private protocol: Protocol | null = null
 
-  get result(): React.ReactNode[] {
+  getColumns(maxColumns: number): React.ReactNode[] {
     return this.columns.map((column: ColumnData, index: number) => (
-      <td key={index} colSpan={column.span}>
+      <td key={index} colSpan={column.span ?? maxColumns}>
         {column.content}
       </td>
     ))
@@ -114,7 +114,7 @@ class LineAccumulator {
   }
 
   addColumn(span: number | null): void {
-    this.columns.push({ span: span ?? 1, content: [] })
+    this.columns.push({ span: span, content: [] })
   }
 
   openGloss(): void {
@@ -178,13 +178,15 @@ export function LineTokens({
 
 export function LineColumns({
   columns,
+  maxColumns,
 }: {
   columns: readonly { span: number | null; content: readonly Token[] }[]
+  maxColumns: number
 }): JSX.Element {
   return (
     <>
-      {
-        columns.reduce((acc: LineAccumulator, column) => {
+      {columns
+        .reduce((acc: LineAccumulator, column) => {
           acc.addColumn(column.span)
           column.content.reduce((acc: LineAccumulator, token: Token) => {
             if (isShift(token)) {
@@ -201,8 +203,8 @@ export function LineColumns({
             return acc
           }, acc)
           return acc
-        }, new LineAccumulator()).result
-      }
+        }, new LineAccumulator())
+        .getColumns(maxColumns)}
     </>
   )
 }

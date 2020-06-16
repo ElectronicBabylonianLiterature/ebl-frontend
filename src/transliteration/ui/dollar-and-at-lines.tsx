@@ -1,28 +1,34 @@
 import React from 'react'
-import { DollarAndAtLine, Line } from 'transliteration/domain/line'
+import { DollarAndAtLine } from 'transliteration/domain/line'
+import { LineProps } from './LineProps'
 
 export function DisplayDollarAndAtLineWithParenthesis({
   line,
-}: {
-  line: Line
-}): JSX.Element {
+  columns,
+}: LineProps): JSX.Element {
   const dollarAndAtLine = line as DollarAndAtLine
   return (
     <>
       <td></td>
-      <td className="Transliteration__DollarAndAtLineWithParenthesis">
+      <td
+        colSpan={columns}
+        className="Transliteration__DollarAndAtLineWithParenthesis"
+      >
         {dollarAndAtLine.displayValue}
       </td>
     </>
   )
 }
 
-export function DisplayDollarAndAtLine({ line }: { line: Line }): JSX.Element {
+export function DisplayDollarAndAtLine({
+  line,
+  columns,
+}: LineProps): JSX.Element {
   const dollarAndAtLine = line as DollarAndAtLine
   return (
     <>
       <td></td>
-      <td className="Transliteration__DollarAndAtLine">
+      <td colSpan={columns} className="Transliteration__DollarAndAtLine">
         (${dollarAndAtLine.displayValue})
       </td>
     </>

@@ -10,16 +10,19 @@ import {
   DisplayDollarAndAtLineWithParenthesis,
   DisplayDollarAndAtLine,
 } from './dollar-and-at-lines'
+import { LineProps } from './LineProps'
 
 function DisplayControlLine({
   line: { type, prefix, content },
-}: {
-  line: Line
-}): JSX.Element {
+  columns,
+}: LineProps): JSX.Element {
   return (
     <>
       <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
-      <td className={classNames([`Transliteration__${type}`])}>
+      <td
+        colSpan={columns}
+        className={classNames([`Transliteration__${type}`])}
+      >
         {content.map(({ value }) => value).join('')}
       </td>
     </>
@@ -28,9 +31,7 @@ function DisplayControlLine({
 
 const lineComponents: ReadonlyMap<
   string,
-  FunctionComponent<{
-    line: Line
-  }>
+  FunctionComponent<LineProps>
 > = new Map([
   ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
@@ -48,14 +49,20 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
-function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
+function FirstLineNotes({
+  notes,
+  columns,
+}: {
+  notes: Notes
+  columns: number
+}): JSX.Element {
   const hasNotes = !_.isEmpty(notes.get(0))
   return (
     <>
       {hasNotes && (
         <tr id={createLineId(0)}>
           <td></td>
-          <td></td>
+          <td colSpan={columns}></td>
           <td>
             <NoteLinks notes={notes} lineNumber={0} />
           </td>
@@ -69,16 +76,18 @@ function TransliterationLine({
   line,
   notes,
   index,
+  columns,
 }: {
   line: Line
   notes: Notes
   index: number
+  columns: number
 }): JSX.Element {
   const LineComponent = lineComponents.get(line.type) || DisplayControlLine
   const lineNumber = index + 1
   return (
     <tr id={createLineId(lineNumber)}>
-      <LineComponent line={line} />
+      <LineComponent line={line} columns={columns} />
       <td>
         <NoteLinks notes={notes} lineNumber={lineNumber} />
       </td>
@@ -93,13 +102,14 @@ export default function TransliterationLines({
 }): JSX.Element {
   return (
     <table className="Transliteration__lines">
-      <FirstLineNotes notes={text.notes} />
+      <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
       {text.lines.map((line: Line, index: number) => (
         <TransliterationLine
           key={index}
           line={line}
           notes={text.notes}
           index={index}
+          columns={text.numberOfColumns}
         />
       ))}
     </table>
