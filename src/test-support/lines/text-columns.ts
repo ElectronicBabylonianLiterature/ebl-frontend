@@ -140,8 +140,98 @@ export const columns: TextLine = new TextLine({
   type: 'TextLine',
 })
 
-export const columnsWithSpan: TextLine = new TextLine({
+export const implicitFirstColumn: TextLine = new TextLine({
   prefix: 'c2.',
+  content: [
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: [],
+          erasure: 'NONE',
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              erasure: 'NONE',
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+      ],
+      type: 'Word',
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: '&',
+      value: '&',
+      type: 'Column',
+      number: null,
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: [],
+          erasure: 'NONE',
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              erasure: 'NONE',
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+      ],
+      type: 'Word',
+    },
+  ],
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: 'c',
+    suffixModifier: null,
+    type: 'LineNumber',
+  },
+  type: 'TextLine',
+})
+
+export const columnsWithSpan: TextLine = new TextLine({
+  prefix: 'c3.',
   content: [
     {
       enclosureType: [],
@@ -230,7 +320,7 @@ export const columnsWithSpan: TextLine = new TextLine({
   ],
   type: 'TextLine',
   lineNumber: {
-    number: 2,
+    number: 3,
     hasPrime: false,
     prefixModifier: 'c',
     suffixModifier: null,

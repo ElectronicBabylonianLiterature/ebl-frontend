@@ -33,7 +33,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           obverse?!
@@ -49,7 +49,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           object Stone wig
@@ -65,7 +65,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           h1
@@ -81,7 +81,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           m=division paragraph 1
@@ -97,7 +97,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           colophon
@@ -113,7 +113,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           seal 1
@@ -129,7 +129,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           composite
@@ -145,7 +145,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           div part 1
@@ -161,7 +161,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           end part
@@ -177,7 +177,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           m=locator o 1
@@ -200,7 +200,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -455,7 +455,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__RulingDollarLine"
-          colspan="3"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
@@ -478,7 +478,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -611,7 +611,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__RulingDollarLine"
-          colspan="3"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
@@ -637,7 +637,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -908,7 +908,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1143,7 +1143,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1400,7 +1400,7 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__RulingDollarLine"
-          colspan="3"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
@@ -1429,7 +1429,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -2223,7 +2223,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -2497,7 +2497,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -2865,7 +2865,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
@@ -3221,7 +3221,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
@@ -3577,7 +3577,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4419,7 +4419,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4524,7 +4524,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4677,7 +4677,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4721,6 +4721,9 @@ exports[`Snapshot 1`] = `
             )
           </sup>
         </td>
+        <td
+          colspan="1"
+        />
         <td
           colspan="1"
         >
@@ -4858,7 +4861,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="2"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4945,18 +4948,114 @@ exports[`Snapshot 1`] = `
         id="line-30"
       >
         <td
-          class="Transliteration__EmptyLine"
-        />
+          class="Transliteration__TextLine"
+        >
+          <sup>
+            (
+            c+3
+            )
+          </sup>
+        </td>
         <td
-          class="Transliteration__EmptyLine"
-          colspan="3"
-        />
+          colspan="2"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
         <td>
            
         </td>
       </tr>
       <tr
         id="line-31"
+      >
+        <td
+          class="Transliteration__EmptyLine"
+        />
+        <td
+          class="Transliteration__EmptyLine"
+          colspan="4"
+        />
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-32"
       >
         <td
           class="Transliteration__TextLine"
@@ -4968,7 +5067,7 @@ exports[`Snapshot 1`] = `
           </sup>
         </td>
         <td
-          colspan="3"
+          colspan="4"
         >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5156,30 +5255,16 @@ exports[`Snapshot 1`] = `
         </td>
       </tr>
       <tr
-        id="line-32"
-      >
-        <td />
-        <td
-          class="Transliteration__DollarAndAtLine"
-          colspan="3"
-        >
-          ($
-          line continues !?
-          )
-        </td>
-        <td>
-           
-        </td>
-      </tr>
-      <tr
         id="line-33"
       >
         <td />
         <td
-          class="Transliteration__DollarAndAtLineWithParenthesis"
-          colspan="3"
+          class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (image 1 = foo)
+          ($
+          line continues !?
+          )
         </td>
         <td>
            
@@ -5191,9 +5276,9 @@ exports[`Snapshot 1`] = `
         <td />
         <td
           class="Transliteration__DollarAndAtLineWithParenthesis"
-          colspan="3"
+          colspan="4"
         >
-          (anything goes)
+          (image 1 = foo)
         </td>
         <td>
            
@@ -5204,8 +5289,22 @@ exports[`Snapshot 1`] = `
       >
         <td />
         <td
+          class="Transliteration__DollarAndAtLineWithParenthesis"
+          colspan="4"
+        >
+          (anything goes)
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-36"
+      >
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
-          colspan="3"
+          colspan="4"
         >
           ($
           seal 1

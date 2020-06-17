@@ -59,6 +59,12 @@ export class TextLine implements TextLineDto {
       this.content,
       produce((draft: Draft<TextLineColumn[]>, current: Token) => {
         if (isColumn(current)) {
+          if (_.isEmpty(draft) && current.number === null) {
+            draft.push({
+              span: defaultSpan,
+              content: [],
+            })
+          }
           draft.push({
             span: current.number ?? defaultSpan,
             content: [],

@@ -1,10 +1,18 @@
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import { columns, columnsWithSpan } from 'test-support/lines/text-columns'
+import {
+  columns,
+  columnsWithSpan,
+  implicitFirstColumn,
+} from 'test-support/lines/text-columns'
 
 test.each([
   [
     columns,
     [
+      {
+        span: 1,
+        content: [],
+      },
       {
         span: 1,
         content: [columns.content[1]],
@@ -16,6 +24,19 @@ test.each([
       {
         span: 1,
         content: [columns.content[5]],
+      },
+    ],
+  ],
+  [
+    implicitFirstColumn,
+    [
+      {
+        span: null,
+        content: [columns.content[1]],
+      },
+      {
+        span: 1,
+        content: [columns.content[3]],
       },
     ],
   ],
@@ -47,7 +68,8 @@ test.each([
 
 test.each([
   [lemmatized[0], 1],
-  [columns, 3],
+  [columns, 4],
+  [implicitFirstColumn, 2],
   [columnsWithSpan, 3],
 ])('numberOfColumns', (line, expected) => {
   expect(line.numberOfColumns).toEqual(expected)
