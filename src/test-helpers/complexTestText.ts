@@ -1,12 +1,12 @@
 import { Text } from 'transliteration/domain/text'
 import { Line, TextLine } from 'transliteration/domain/line'
-import { commentaryProtocols } from 'test-helpers/lines/commentaryProtocols'
+import { commentaryProtocols } from 'test-helpers/lines/text-commentary-protocols'
 import * as at from 'test-helpers/lines/at'
 import * as composite from 'test-helpers/lines/composite'
 import * as dollar from 'test-helpers/lines/dollar'
 import empty from 'test-helpers/lines/empty'
 import note from 'test-helpers/lines/note'
-import { columns, columnsWithSpan } from './lines/text'
+import { columns, columnsWithSpan } from './lines/text-columns'
 
 const line2: Line = new TextLine({
   prefix: '1.',

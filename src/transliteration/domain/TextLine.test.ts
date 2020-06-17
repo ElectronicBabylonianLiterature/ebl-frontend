@@ -1,4 +1,5 @@
-import { columns, columnsWithSpan, lemmatized } from 'test-helpers/lines/text'
+import { lemmatized } from 'test-helpers/lines/text-lemmatization'
+import { columns, columnsWithSpan } from 'test-helpers/lines/text-columns'
 
 test('columns', () => {
   expect(columns.columns).toEqual([

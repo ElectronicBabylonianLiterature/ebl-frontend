@@ -8,10 +8,10 @@ import note from 'test-helpers/lines/note'
 import { singleRuling } from 'test-helpers/lines/dollar'
 import { column, object, surface } from 'test-helpers/lines/at'
 import { Text, Label } from 'transliteration/domain/text'
-import { lemmatized } from 'test-helpers/lines/text'
+import { lemmatized } from 'test-helpers/lines/text-lemmatization'
 import { Word } from './token'
 import createGlossaryToken from 'test-helpers/createGlossaryToken'
-import { columnsWithSpan } from './../../test-helpers/lines/text'
+import { columnsWithSpan } from '../../test-helpers/lines/text-columns'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
