@@ -2,10 +2,10 @@ import React from 'react'
 import { act, render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import complexText from 'test-helpers/complexTestText'
+import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
 import Display from './Display'
-import { wordDto } from 'test-helpers/test-word'
+import { wordDto } from 'test-support/test-word'
 import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('dictionary/application/WordService')

@@ -3,9 +3,9 @@ import '@testing-library/jest-dom/extend-expect'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import 'test-helpers/bibliography-fixtures'
-import 'test-helpers/fragment-fixtures'
-import 'test-helpers/word-fixtures'
+import 'test-support/bibliography-fixtures'
+import 'test-support/fragment-fixtures'
+import 'test-support/word-fixtures'
 
 require('jest-fetch-mock').enableMocks()
 

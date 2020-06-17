@@ -4,7 +4,7 @@ import { render, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 
-import { submitFormByTestId, clickNth } from 'test-helpers/utils'
+import { submitFormByTestId, clickNth } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'transliteration/domain/Lemmatization'

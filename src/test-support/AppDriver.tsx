@@ -21,7 +21,7 @@ import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepo
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Promise } from 'bluebird'
-import { submitForm } from 'test-helpers/utils'
+import { submitForm } from 'test-support/utils'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 
 function createApp(api): JSX.Element {

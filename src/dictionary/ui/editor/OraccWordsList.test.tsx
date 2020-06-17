@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { render } from '@testing-library/react'
-import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
+import { whenClicked, whenChangedByValue } from 'test-support/utils'
 import OraccWordsList from './OraccWordsList'
 
 let value

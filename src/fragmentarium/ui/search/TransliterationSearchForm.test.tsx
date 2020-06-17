@@ -2,7 +2,7 @@ import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render } from '@testing-library/react'
-import { changeValueByLabel, submitForm } from 'test-helpers/utils'
+import { changeValueByLabel, submitForm } from 'test-support/utils'
 
 import TransliterationSearchForm from './TransliterationSearchForm'
 

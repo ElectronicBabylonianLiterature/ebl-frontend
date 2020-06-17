@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import AppDriver from 'test-helpers/AppDriver'
-import FakeApi from 'test-helpers/FakeApi'
+import AppDriver from 'test-support/AppDriver'
+import FakeApi from 'test-support/FakeApi'
 
 const textsDto = [
   {

@@ -1,6 +1,6 @@
 import { factory } from 'factory-girl'
 import ReferenceInjector from './ReferenceInjector'
-import setUpReferences from 'test-helpers/setUpReferences'
+import setUpReferences from 'test-support/setUpReferences'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'

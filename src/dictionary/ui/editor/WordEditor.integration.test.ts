@@ -1,6 +1,6 @@
-import FakeApi from 'test-helpers/FakeApi'
-import AppDriver from 'test-helpers/AppDriver'
-import { wordDto } from 'test-helpers/test-word'
+import FakeApi from 'test-support/FakeApi'
+import AppDriver from 'test-support/AppDriver'
+import { wordDto } from 'test-support/test-word'
 
 const word = wordDto
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import { column, object, surface } from 'test-helpers/lines/at'
-import { lemmatized } from 'test-helpers/lines/text-lemmatization'
+import { column, object, surface } from 'test-support/lines/at'
+import { lemmatized } from 'test-support/lines/text-lemmatization'
 import { render, RenderResult } from '@testing-library/react'
 import Glossary from './Glossary'
 import WordService from 'dictionary/application/WordService'

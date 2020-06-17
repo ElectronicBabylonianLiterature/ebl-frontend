@@ -1,7 +1,7 @@
-import AppDriver from 'test-helpers/AppDriver'
-import FakeApi from 'test-helpers/FakeApi'
-import { fragmentDto } from 'test-helpers/test-fragment'
-import { annotationsDto } from 'test-helpers/test-annotation'
+import AppDriver from 'test-support/AppDriver'
+import FakeApi from 'test-support/FakeApi'
+import { fragmentDto } from 'test-support/test-fragment'
+import { annotationsDto } from 'test-support/test-annotation'
 import produce from 'immer'
 
 const fragmentWithoutReferences = produce(fragmentDto, (draft) => {

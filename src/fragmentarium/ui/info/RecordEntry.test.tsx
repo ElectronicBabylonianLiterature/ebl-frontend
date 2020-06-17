@@ -12,7 +12,7 @@ import {
   userBob,
   year2017,
   year2018,
-} from 'test-helpers/record-fixtures'
+} from 'test-support/record-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 import * as Moment from 'moment'
 import { extendMoment, DateRange } from 'moment-range'

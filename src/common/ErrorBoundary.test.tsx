@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { render } from '@testing-library/react'
-import { clickNth } from 'test-helpers/utils'
+import { clickNth } from 'test-support/utils'
 import ErrorBoundary from './ErrorBoundary'
 import ErrorReporterContext, {
   ConsoleErrorReporter,

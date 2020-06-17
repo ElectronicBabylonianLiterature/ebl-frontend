@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 import { render, within, RenderResult } from '@testing-library/react'
-import noteLine from 'test-helpers/lines/note'
-import { singleRuling } from 'test-helpers/lines/dollar'
+import noteLine from 'test-support/lines/note'
+import { singleRuling } from 'test-support/lines/dollar'
 import TransliterationLines from './TransliterationLines'
 import { Text } from 'transliteration/domain/text'
 

@@ -5,7 +5,7 @@ import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'
-import { changeValueByLabel, clickNth } from 'test-helpers/utils'
+import { changeValueByLabel, clickNth } from 'test-support/utils'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Word from 'dictionary/domain/Word'
 

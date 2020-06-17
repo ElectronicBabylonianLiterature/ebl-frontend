@@ -19,7 +19,7 @@ import {
   userBob,
   year2017,
   year2018,
-} from 'test-helpers/record-fixtures'
+} from 'test-support/record-fixtures'
 import Museum from './museum'
 
 const config = {

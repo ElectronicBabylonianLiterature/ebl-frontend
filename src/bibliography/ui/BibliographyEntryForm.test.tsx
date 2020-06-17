@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 
-import { changeValueByLabel, clickNth } from 'test-helpers/utils'
+import { changeValueByLabel, clickNth } from 'test-support/utils'
 import BibliographyEntryForm from './BibliographyEntryForm'
 
 let json

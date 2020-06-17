@@ -3,15 +3,15 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
-import createLemmatizationTestText from 'test-helpers/test-text'
-import note from 'test-helpers/lines/note'
-import { singleRuling } from 'test-helpers/lines/dollar'
-import { column, object, surface } from 'test-helpers/lines/at'
+import createLemmatizationTestText from 'test-support/test-text'
+import note from 'test-support/lines/note'
+import { singleRuling } from 'test-support/lines/dollar'
+import { column, object, surface } from 'test-support/lines/at'
 import { Text, Label } from 'transliteration/domain/text'
-import { lemmatized } from 'test-helpers/lines/text-lemmatization'
+import { lemmatized } from 'test-support/lines/text-lemmatization'
 import { Word } from './token'
-import createGlossaryToken from 'test-helpers/createGlossaryToken'
-import { columnsWithSpan } from '../../test-helpers/lines/text-columns'
+import createGlossaryToken from 'test-support/createGlossaryToken'
+import { columnsWithSpan } from '../../test-support/lines/text-columns'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 

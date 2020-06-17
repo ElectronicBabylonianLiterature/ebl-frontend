@@ -6,9 +6,9 @@ import {
   whenChangedByLabel,
   changeValueByLabel,
   clickNth,
-} from 'test-helpers/utils'
+} from 'test-support/utils'
 import ReferenceForm from './ReferenceForm'
-import { buildBorger1957 } from 'test-helpers/bibliography-fixtures'
+import { buildBorger1957 } from 'test-support/bibliography-fixtures'
 
 let reference
 let element

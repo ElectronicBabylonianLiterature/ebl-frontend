@@ -4,11 +4,11 @@ import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
-import { changeValueByLabel, clickNth } from 'test-helpers/utils'
+import { changeValueByLabel, clickNth } from 'test-support/utils'
 import ReferencesForm from './ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { buildBorger1957 } from 'test-helpers/bibliography-fixtures'
+import { buildBorger1957 } from 'test-support/bibliography-fixtures'
 
 const defaultReference = new Reference()
 

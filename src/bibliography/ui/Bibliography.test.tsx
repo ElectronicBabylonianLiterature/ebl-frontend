@@ -5,7 +5,7 @@ import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
-import createAuthorRegExp from 'test-helpers/createAuthorRexExp'
+import createAuthorRegExp from 'test-support/createAuthorRexExp'
 
 const BibliographyWithRouter = withRouter(Bibliography)
 

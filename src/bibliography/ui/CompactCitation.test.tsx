@@ -4,7 +4,7 @@ import { factory } from 'factory-girl'
 import {
   buildReferenceWithManyAuthors,
   buildReferenceWithContainerTitle,
-} from 'test-helpers/bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 
 import CompactCitation from './CompactCitation'
 

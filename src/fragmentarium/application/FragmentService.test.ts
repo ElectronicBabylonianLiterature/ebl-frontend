@@ -2,16 +2,16 @@ import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import Folio from 'fragmentarium/domain/Folio'
 import _ from 'lodash'
-import { fragment } from 'test-helpers/test-fragment'
-import createLemmatizationTestText from 'test-helpers/test-text'
-import { TestData, testDelegation } from 'test-helpers/utils'
+import { fragment } from 'test-support/test-fragment'
+import createLemmatizationTestText from 'test-support/test-text'
+import { TestData, testDelegation } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import setUpReferences from 'test-helpers/setUpReferences'
+import setUpReferences from 'test-support/setUpReferences'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })

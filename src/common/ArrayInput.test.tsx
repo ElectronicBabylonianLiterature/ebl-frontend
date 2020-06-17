@@ -1,7 +1,7 @@
 import React from 'react'
 import ArrayInput from './ArrayInput'
 import { render } from '@testing-library/react'
-import { whenChangedByValue } from 'test-helpers/utils'
+import { whenChangedByValue } from 'test-support/utils'
 
 const label = 'Array'
 const value = ['array', 'input']

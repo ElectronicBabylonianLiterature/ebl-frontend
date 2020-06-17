@@ -5,7 +5,7 @@ import { render, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import _ from 'lodash'
-import { whenClicked, clickNth } from 'test-helpers/utils'
+import { whenClicked, clickNth } from 'test-support/utils'
 import FragmentButton from './FragmentButton'
 
 const buttonText = "I'm feeling lucky"
