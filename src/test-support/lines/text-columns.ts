@@ -6,6 +6,14 @@ export const columns: TextLine = new TextLine({
     {
       enclosureType: [],
       erasure: 'NONE',
+      cleanValue: '&',
+      value: '&',
+      type: 'Column',
+      number: null,
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
       cleanValue: 'kur',
       value: 'kur',
       language: 'AKKADIAN',

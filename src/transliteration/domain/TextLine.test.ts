@@ -1,126 +1,48 @@
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import { columns, columnsWithSpan } from 'test-support/lines/text-columns'
 
-test('columns', () => {
-  expect(columns.columns).toEqual([
-    {
-      span: null,
-      content: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true,
-          uniqueLemma: [],
-          parts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              type: 'Reading',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-            },
-          ],
-          type: 'Word',
-        },
-      ],
-    },
-    {
-      span: 1,
-      content: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true,
-          uniqueLemma: [],
-          parts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
-          ],
-          type: 'Word',
-        },
-      ],
-    },
-    {
-      span: 1,
-      content: [
-        {
-          enclosureType: [],
-          erasure: 'NONE',
-          cleanValue: 'kur',
-          value: 'kur',
-          language: 'AKKADIAN',
-          normalized: false,
-          lemmatizable: true,
-          uniqueLemma: [],
-          parts: [
-            {
-              enclosureType: [],
-              erasure: 'NONE',
-              cleanValue: 'kur',
-              value: 'kur',
-              name: 'kur',
-              nameParts: [
-                {
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  cleanValue: 'kur',
-                  value: 'kur',
-                  type: 'ValueToken',
-                },
-              ],
-              subIndex: 1,
-              modifiers: [],
-              flags: [],
-              sign: null,
-              type: 'Reading',
-            },
-          ],
-          type: 'Word',
-        },
-      ],
-    },
-  ])
+test.each([
+  [
+    columns,
+    [
+      {
+        span: 1,
+        content: [columns.content[1]],
+      },
+      {
+        span: 1,
+        content: [columns.content[3]],
+      },
+      {
+        span: 1,
+        content: [columns.content[5]],
+      },
+    ],
+  ],
+  [
+    columnsWithSpan,
+    [
+      {
+        span: 2,
+        content: [columns.content[1]],
+      },
+      {
+        span: 1,
+        content: [columns.content[3]],
+      },
+    ],
+  ],
+  [
+    lemmatized[0],
+    [
+      {
+        span: null,
+        content: lemmatized[0].content,
+      },
+    ],
+  ],
+])('columns', (line, expected) => {
+  expect(line.columns).toEqual(expected)
 })
 
 test.each([
