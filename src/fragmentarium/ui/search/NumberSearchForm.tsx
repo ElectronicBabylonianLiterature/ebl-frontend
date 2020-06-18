@@ -6,7 +6,7 @@ type Props = {
   getUserInput(key: string): string
 }
 
-class FragmentSearchForm extends Component<Props> {
+class NumberSearchForm extends Component<Props> {
   onChange = (event) => {
     this.props.handleChanges('number', event.target.value || '')
   }
@@ -30,4 +30,4 @@ class FragmentSearchForm extends Component<Props> {
   }
 }
 
-export default FragmentSearchForm
+export default NumberSearchForm

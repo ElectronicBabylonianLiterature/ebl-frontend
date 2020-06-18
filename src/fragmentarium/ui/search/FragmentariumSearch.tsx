@@ -10,23 +10,18 @@ import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import FragmentsSearch from './ReferenceSearch'
+import { FragmentariumSearchParams } from '../../domain/fragmentariumSearch'
+import ReferenceSearch from './ReferenceSearch'
 
-type Props = {
-  number: string | null | undefined
-  id: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
-  bibliographyService
-  fragmentService
-  fragmentSearchService
-}
+type Props = FragmentariumSearchParams
+
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   id,
+  title,
   pages,
   transliteration,
   fragmentService,
-  bibliographyService,
   fragmentSearchService,
 }: Props) => {
   const replacedTransliteration =
@@ -43,8 +38,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 <SearchGroup
                   number={number}
                   id={id}
+                  title={title}
                   pages={pages}
-                  bibliographyService={bibliographyService}
                   fragmentService={fragmentService}
                   transliteration={replacedTransliteration}
                   fragmentSearchService={fragmentSearchService}
@@ -54,7 +49,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 number={number}
                 fragmentSearchService={fragmentSearchService}
               />
-              <FragmentsSearch
+              <ReferenceSearch
                 id={id}
                 pages={pages}
                 fragmentSearchService={fragmentSearchService}

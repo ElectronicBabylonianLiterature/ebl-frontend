@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Ref } from 'react'
 import NumberSearchForm from 'fragmentarium/ui/search/NumberSearchForm'
 import TransliterationSearchForm from 'fragmentarium/ui/search/TransliterationSearchForm'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
@@ -9,24 +9,19 @@ import _ from 'lodash'
 import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
-import ReferenceForm from '../../bibliography/ui/ReferenceForm'
+import {
+  FragmentariumSearchParams,
+  SearchGroupParams,
+} from '../domain/fragmentariumSearch'
 
-type State = {
-  number: string | null | undefined
-  id: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
-}
+type State = SearchGroupParams
 
-type Props = State & {
-  fragmentService
-  fragmentSearchService
-  bibliographyService
-} & RouteComponentProps
+type Props = FragmentariumSearchParams & RouteComponentProps
 
 class SearchGroup extends Component<Props, State> {
   state = {
     number: this.props.number || '',
+    title: this.props.title || '',
     id: this.props.id || '',
     pages: this.props.pages || '',
     transliteration: this.props.transliteration || '',
@@ -43,6 +38,7 @@ class SearchGroup extends Component<Props, State> {
 
   deleteEmptyProperties(state: State) {
     const cleanedState = _.cloneDeep(state)
+    helperDelete('title')
     helperDelete('number')
     if (!cleanedState['id']) {
       helperDelete('id')
@@ -68,8 +64,6 @@ class SearchGroup extends Component<Props, State> {
   }
 
   render() {
-    const searchBibliography = (query) =>
-      this.props.fragmentService.searchBibliography(query)
     return (
       <>
         <NumberSearchForm
@@ -79,7 +73,7 @@ class SearchGroup extends Component<Props, State> {
         <ReferenceSearchForm
           handleChanges={this.handleChanges.bind(this)}
           getUserInput={this.getUserInput.bind(this)}
-          searchBibliography={searchBibliography}
+          fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
           handleChanges={this.handleChanges.bind(this)}

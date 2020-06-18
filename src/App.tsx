@@ -56,12 +56,14 @@ function parseFragmentSearchParams(
 ): {
   number: string | null | undefined
   id: string | null | undefined
+  title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
 } {
   return {
     number: parseStringParam(location, 'number'),
     id: parseStringParam(location, 'id'),
+    title: parseStringParam(location, 'title'),
     pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),
   }
@@ -167,7 +169,6 @@ function App({
             render={({ location }): ReactNode => (
               <FragmentariumSearch
                 fragmentService={fragmentService}
-                bibliographyService={bibliographyService}
                 fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
               />
@@ -202,7 +203,6 @@ function App({
               <Fragmentarium
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
-                bibliographyService={bibliographyService}
                 {...parseFragmentSearchParams(location)}
               />
             )}

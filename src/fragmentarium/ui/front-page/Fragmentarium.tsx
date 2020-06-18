@@ -12,22 +12,16 @@ import './Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
-interface Props {
-  number: string | null | undefined
-  id: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
-  bibliographyService
-  fragmentService
-  fragmentSearchService
-}
+import { FragmentariumSearchParams } from '../../domain/fragmentariumSearch'
+
+type Props = FragmentariumSearchParams
 
 function Fragmentarium({
   number,
+  title,
   id,
   pages,
   transliteration,
-  bibliographyService,
   fragmentService,
   fragmentSearchService,
 }: Props): JSX.Element {
@@ -42,11 +36,11 @@ function Fragmentarium({
                   <SearchGroup
                     number={number}
                     id={id}
+                    title={title}
                     pages={pages}
                     transliteration={transliteration}
                     fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
-                    bibliographyService={bibliographyService}
                   />
                 ) : (
                   <p> Please log in to browse the Fragmentarium. </p>
