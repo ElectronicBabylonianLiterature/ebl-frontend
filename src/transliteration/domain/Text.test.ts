@@ -11,7 +11,7 @@ import { Text, Label } from 'transliteration/domain/text'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import { Word } from './token'
 import createGlossaryToken from 'test-support/createGlossaryToken'
-import { columnsWithSpan } from '../../test-support/lines/text-columns'
+import { firstColumnSpan } from '../../test-support/lines/text-columns'
 
 const text = new Text({ lines: [note, singleRuling, note, note, singleRuling] })
 
@@ -31,7 +31,7 @@ test('lines', () => {
 
 test.each([
   [text, 1],
-  [new Text({ lines: [columnsWithSpan, ...lemmatized, singleRuling] }), 3],
+  [new Text({ lines: [firstColumnSpan, ...lemmatized, singleRuling] }), 3],
 ])('numberOfColumns', (text, expected) => {
   expect(text.numberOfColumns).toEqual(expected)
 })

@@ -71,7 +71,7 @@ export class TextLine implements TextLineDto {
           })
         } else if (_.isEmpty(draft)) {
           draft.push({
-            span: null,
+            span: this.hasColumns ? 1 : null,
             content: [castDraft(current)],
           })
         } else {
@@ -86,6 +86,10 @@ export class TextLine implements TextLineDto {
     return _(this.columns)
       .map((column) => column.span ?? defaultSpan)
       .sum()
+  }
+
+  get hasColumns(): boolean {
+    return this.content.some(isColumn)
   }
 }
 

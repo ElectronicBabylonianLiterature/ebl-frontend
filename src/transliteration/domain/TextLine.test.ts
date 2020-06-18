@@ -1,13 +1,24 @@
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import {
-  columns,
-  columnsWithSpan,
+  emptyFirstColumn,
+  firstColumnSpan,
   implicitFirstColumn,
+  span,
 } from 'test-support/lines/text-columns'
 
 test.each([
+  [lemmatized[0], false],
+  [emptyFirstColumn, true],
+  [firstColumnSpan, true],
+  [implicitFirstColumn, true],
+  [span, true],
+])('hasColumns', (line, expected) => {
+  expect(line.hasColumns).toEqual(expected)
+})
+
+test.each([
   [
-    columns,
+    emptyFirstColumn,
     [
       {
         span: 1,
@@ -15,15 +26,15 @@ test.each([
       },
       {
         span: 1,
-        content: [columns.content[1]],
+        content: [emptyFirstColumn.content[1]],
       },
       {
         span: 1,
-        content: [columns.content[3]],
+        content: [emptyFirstColumn.content[3]],
       },
       {
         span: 1,
-        content: [columns.content[5]],
+        content: [emptyFirstColumn.content[5]],
       },
     ],
   ],
@@ -31,25 +42,38 @@ test.each([
     implicitFirstColumn,
     [
       {
-        span: null,
-        content: [columns.content[1]],
+        span: 1,
+        content: [implicitFirstColumn.content[0]],
       },
       {
         span: 1,
-        content: [columns.content[3]],
+        content: [implicitFirstColumn.content[2]],
       },
     ],
   ],
   [
-    columnsWithSpan,
+    firstColumnSpan,
     [
       {
         span: 2,
-        content: [columns.content[1]],
+        content: [firstColumnSpan.content[1]],
       },
       {
         span: 1,
-        content: [columns.content[3]],
+        content: [firstColumnSpan.content[3]],
+      },
+    ],
+  ],
+  [
+    span,
+    [
+      {
+        span: 1,
+        content: [span.content[0]],
+      },
+      {
+        span: 2,
+        content: [span.content[2]],
       },
     ],
   ],
@@ -68,9 +92,10 @@ test.each([
 
 test.each([
   [lemmatized[0], 1],
-  [columns, 4],
+  [emptyFirstColumn, 4],
   [implicitFirstColumn, 2],
-  [columnsWithSpan, 3],
+  [firstColumnSpan, 3],
+  [span, 3],
 ])('numberOfColumns', (line, expected) => {
   expect(line.numberOfColumns).toEqual(expected)
 })

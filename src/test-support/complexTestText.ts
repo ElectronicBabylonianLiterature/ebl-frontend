@@ -2,15 +2,11 @@ import { Text } from 'transliteration/domain/text'
 import { Line, TextLine } from 'transliteration/domain/line'
 import { commentaryProtocols } from 'test-support/lines/text-commentary-protocols'
 import * as at from 'test-support/lines/at'
+import * as columns from 'test-support/lines/text-columns'
 import * as composite from 'test-support/lines/composite'
 import * as dollar from 'test-support/lines/dollar'
 import empty from 'test-support/lines/empty'
 import note from 'test-support/lines/note'
-import {
-  columns,
-  columnsWithSpan,
-  implicitFirstColumn,
-} from './lines/text-columns'
 
 const line2: Line = new TextLine({
   prefix: '1.',
@@ -3388,9 +3384,9 @@ export default new Text({
     line16,
     line17,
     line18,
-    columns,
-    implicitFirstColumn,
-    columnsWithSpan,
+    columns.emptyFirstColumn,
+    columns.implicitFirstColumn,
+    columns.firstColumnSpan,
     empty,
     commentaryProtocols,
     dollar.state,

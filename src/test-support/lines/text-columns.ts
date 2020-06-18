@@ -1,6 +1,6 @@
 import { TextLine } from 'transliteration/domain/line'
 
-export const columns: TextLine = new TextLine({
+export const emptyFirstColumn: TextLine = new TextLine({
   prefix: 'c1.',
   content: [
     {
@@ -230,7 +230,7 @@ export const implicitFirstColumn: TextLine = new TextLine({
   type: 'TextLine',
 })
 
-export const columnsWithSpan: TextLine = new TextLine({
+export const firstColumnSpan: TextLine = new TextLine({
   prefix: 'c3.',
   content: [
     {
@@ -281,6 +281,96 @@ export const columnsWithSpan: TextLine = new TextLine({
       cleanValue: '&',
       value: '&',
       number: null,
+      type: 'Column',
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: [],
+          erasure: 'NONE',
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              erasure: 'NONE',
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+      ],
+      type: 'Word',
+    },
+  ],
+  type: 'TextLine',
+  lineNumber: {
+    number: 3,
+    hasPrime: false,
+    prefixModifier: 'c',
+    suffixModifier: null,
+    type: 'LineNumber',
+  },
+})
+
+export const span: TextLine = new TextLine({
+  prefix: 'c4.',
+  content: [
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: 'kur',
+      value: 'kur',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: true,
+      uniqueLemma: [],
+      parts: [
+        {
+          enclosureType: [],
+          erasure: 'NONE',
+          cleanValue: 'kur',
+          value: 'kur',
+          name: 'kur',
+          nameParts: [
+            {
+              enclosureType: [],
+              erasure: 'NONE',
+              cleanValue: 'kur',
+              value: 'kur',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+      ],
+      type: 'Word',
+    },
+    {
+      enclosureType: [],
+      erasure: 'NONE',
+      cleanValue: '&2',
+      value: '&2',
+      number: 2,
       type: 'Column',
     },
     {
