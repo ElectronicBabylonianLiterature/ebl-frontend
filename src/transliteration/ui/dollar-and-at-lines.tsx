@@ -29,7 +29,7 @@ export function DisplayDollarAndAtLine({
     <>
       <td></td>
       <td colSpan={columns} className="Transliteration__DollarAndAtLine">
-        (${dollarAndAtLine.displayValue})
+        ({dollarAndAtLine.displayValue})
       </td>
     </>
   )

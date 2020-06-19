@@ -35,7 +35,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           obverse?!
           )
         </td>
@@ -51,7 +51,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           object Stone wig
           )
         </td>
@@ -67,7 +67,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           h1
           )
         </td>
@@ -83,7 +83,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           m=division paragraph 1
           )
         </td>
@@ -99,7 +99,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           colophon
           )
         </td>
@@ -115,7 +115,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           seal 1
           )
         </td>
@@ -131,7 +131,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           composite
           )
         </td>
@@ -147,7 +147,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           div part 1
           )
         </td>
@@ -163,7 +163,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           end part
           )
         </td>
@@ -179,7 +179,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           m=locator o 1
           )
         </td>
@@ -5262,7 +5262,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           line continues !?
           )
         </td>
@@ -5306,7 +5306,7 @@ exports[`Snapshot 1`] = `
           class="Transliteration__DollarAndAtLine"
           colspan="4"
         >
-          ($
+          (
           seal 1
           )
         </td>
