@@ -345,6 +345,86 @@ exports[`Edit 1`] = `
               >
                 subjunction
               </option>
+              <option
+                value="AN"
+              >
+                Agricultural (locus) Name
+              </option>
+              <option
+                value="CN"
+              >
+                Celestial Name
+              </option>
+              <option
+                value="DN"
+              >
+                Divine Name
+              </option>
+              <option
+                value="EN"
+              >
+                Ethnos Name
+              </option>
+              <option
+                value="FN"
+              >
+                Field Name
+              </option>
+              <option
+                value="GN"
+              >
+                Geographical Name (lands and other geographical entities without their own tag)
+              </option>
+              <option
+                value="LN"
+              >
+                Line Name (ancestral clan)
+              </option>
+              <option
+                value="MN"
+              >
+                Month Name
+              </option>
+              <option
+                value="ON"
+              >
+                Object Name
+              </option>
+              <option
+                value="PN"
+              >
+                Personal Name
+              </option>
+              <option
+                value="QN"
+              >
+                Quarter Name (city area)
+              </option>
+              <option
+                value="RN"
+              >
+                Royal Name
+              </option>
+              <option
+                value="SN"
+              >
+                Settlement Name
+              </option>
+              <option
+                value="TN"
+              >
+                Temple Name
+              </option>
+              <option
+                value="WN"
+              >
+                Watercourse Name
+              </option>
+              <option
+                value="YN"
+              >
+                Year Name
+              </option>
             </select>
           </div>
           <div
@@ -2069,6 +2149,86 @@ exports[`Snapshot 1`] = `
                 value="SBJ"
               >
                 subjunction
+              </option>
+              <option
+                value="AN"
+              >
+                Agricultural (locus) Name
+              </option>
+              <option
+                value="CN"
+              >
+                Celestial Name
+              </option>
+              <option
+                value="DN"
+              >
+                Divine Name
+              </option>
+              <option
+                value="EN"
+              >
+                Ethnos Name
+              </option>
+              <option
+                value="FN"
+              >
+                Field Name
+              </option>
+              <option
+                value="GN"
+              >
+                Geographical Name (lands and other geographical entities without their own tag)
+              </option>
+              <option
+                value="LN"
+              >
+                Line Name (ancestral clan)
+              </option>
+              <option
+                value="MN"
+              >
+                Month Name
+              </option>
+              <option
+                value="ON"
+              >
+                Object Name
+              </option>
+              <option
+                value="PN"
+              >
+                Personal Name
+              </option>
+              <option
+                value="QN"
+              >
+                Quarter Name (city area)
+              </option>
+              <option
+                value="RN"
+              >
+                Royal Name
+              </option>
+              <option
+                value="SN"
+              >
+                Settlement Name
+              </option>
+              <option
+                value="TN"
+              >
+                Temple Name
+              </option>
+              <option
+                value="WN"
+              >
+                Watercourse Name
+              </option>
+              <option
+                value="YN"
+              >
+                Year Name
               </option>
             </select>
           </div>

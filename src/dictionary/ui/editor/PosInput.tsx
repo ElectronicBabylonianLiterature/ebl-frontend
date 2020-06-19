@@ -4,12 +4,14 @@ import _ from 'lodash'
 
 import TextListInput from './TextListInput'
 
-const positionsOfScpeech = {
+const verb = 'V'
+
+const positionsOfScpeech: { [key: string]: string } = {
   AJ: 'adjective',
   AV: 'adverb',
   N: 'noun',
   NU: 'number',
-  V: 'verb',
+  [verb]: 'verb',
   DP: 'demonstrative pronoun',
   IP: 'independent/anaphoric pronoun',
   PP: 'possessive pronoun',
@@ -24,23 +26,47 @@ const positionsOfScpeech = {
   PRP: 'preposition',
   SBJ: 'subjunction',
 }
-const posOptions = _.map(positionsOfScpeech, (value, key) => ({
-  value: key,
-  label: value,
-}))
+
+const properNouns: { [key: string]: string } = {
+  AN: 'Agricultural (locus) Name',
+  CN: 'Celestial Name',
+  DN: 'Divine Name',
+  EN: 'Ethnos Name',
+  FN: 'Field Name',
+  GN:
+    'Geographical Name (lands and other geographical entities without their own tag)',
+  LN: 'Line Name (ancestral clan)',
+  MN: 'Month Name',
+  ON: 'Object Name',
+  PN: 'Personal Name',
+  QN: 'Quarter Name (city area)',
+  RN: 'Royal Name',
+  SN: 'Settlement Name',
+  TN: 'Temple Name',
+  WN: 'Watercourse Name',
+  YN: 'Year Name',
+}
+
+const posOptions = _.map(
+  { ...positionsOfScpeech, ...properNouns },
+  (value, key) => ({
+    value: key,
+    label: value,
+  })
+)
 
 class PosInput extends Component<{ value; onChange }> {
-  updatePos = (event) => {
+  updatePos = (event): void => {
     this.props.onChange({
       pos: _(event.target.options).filter('selected').map('value').value(),
     })
   }
 
-  updateRoots = (roots) => {
+  updateRoots = (roots): void => {
     this.props.onChange({ roots: roots })
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <FormGroup>
         <FormGroup controlId={_.uniqueId('PosInput-')}>
@@ -58,7 +84,7 @@ class PosInput extends Component<{ value; onChange }> {
             ))}
           </FormControl>
         </FormGroup>
-        {this.props.value.pos.includes('V') && (
+        {this.props.value.pos.includes(verb) && (
           <TextListInput
             value={this.props.value.roots || []}
             onChange={this.updateRoots}
