@@ -1,8 +1,24 @@
 import _ from 'lodash'
 import alphabet from './alphabet.json'
 
+const ignoredCharacters: readonly string[] = [
+  'ʾ',
+  "'",
+  ']',
+  '?',
+  '[',
+  '-',
+  ']',
+  '.',
+]
+
+const ignoredRegExp = new RegExp(
+  _(ignoredCharacters).map(_.escapeRegExp).join('|'),
+  'g'
+)
+
 function removeIgnoredCharacters(word: string): string {
-  return word.replace(/\]|\?|\[|-|\]|\./g, '')
+  return word.replace(ignoredRegExp, '')
 }
 
 function checkForInvalidCharacters(...words: string[]): void {
