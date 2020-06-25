@@ -73,6 +73,7 @@ class WordEditor extends Component<
         }
       >
         <ReactMarkdown source={this.state.word.source} />
+        <p>Origin: {this.state.word.origin}</p>
         <Spinner loading={this.state.saving}>Saving...</Spinner>
         <WordForm
           value={this.state.word}
