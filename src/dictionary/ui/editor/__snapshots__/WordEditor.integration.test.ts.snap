@@ -167,6 +167,9 @@ exports[`Edit 1`] = `
     <p>
       This is a test word!
     </p>
+    <p>
+      Origin: 
+    </p>
     <form
       class="WordForm"
     >
@@ -1971,6 +1974,9 @@ exports[`Snapshot 1`] = `
     </header>
     <p>
       This is a test word!
+    </p>
+    <p>
+      Origin: 
     </p>
     <form
       class="WordForm"
