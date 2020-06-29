@@ -9,7 +9,6 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import FragmentsSearch from './ReferenceSearch'
 import { FragmentariumSearchParams } from '../../domain/fragmentariumSearch'
 import ReferenceSearch from './ReferenceSearch'
 

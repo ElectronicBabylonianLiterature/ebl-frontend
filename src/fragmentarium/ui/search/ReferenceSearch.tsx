@@ -3,40 +3,32 @@ import _ from 'lodash'
 
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
-import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import Reference from '../../../bibliography/domain/Reference'
-
-function References({
-  references,
-  referencesKey,
-}: {
-  references: ReadonlyArray<Reference>
-  referencesKey: string
-}) {
-  return (
-    <ul className="list-unstyled">
-      {references.map((reference, index) => (
-        <ul key={index}>{reference[referencesKey]}</ul>
-      ))}
-    </ul>
-  )
-}
+import ReferenceList from '../../../bibliography/ui/ReferenceList'
+import BibliographyEntry from '../../../bibliography/domain/BibliographyEntry'
+import { FragmentInfo } from '../../domain/fragment'
 
 function ReferenceSearchResult({ data }) {
-  function makeReferences(fragment: FragmentInfo, key: string) {
-    return (
-      <References
-        references={fragment.references}
-        referencesKey={key}
-      ></References>
-    )
+  function makeReferences(data) {
+    const references: Reference[] = []
+    for (const i of data.references) {
+      const ref = new Reference(
+        i.type || Reference.DEFAULT_TYPE,
+        i.pages || '',
+        i.notes || '',
+        i.linesCited || [],
+        new BibliographyEntry(i.document.cslData)
+      )
+      references.push(ref)
+    }
+    data.references = references
+    return <ReferenceList references={data.references} />
   }
   return (
     <FragmentList
       fragments={data}
       columns={{
-        'References-Id': (data) => makeReferences(data, 'id'),
-        'References-Pages': (data) => makeReferences(data, 'pages'),
+        References: (data) => makeReferences(data),
         Description: 'description',
       }}
     />

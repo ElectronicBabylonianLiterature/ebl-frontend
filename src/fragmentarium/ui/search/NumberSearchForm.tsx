@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 
 type Props = {
-  handleChanges(searchForm: string, searchQuery: string): void
-  getUserInput(key: string): string
+  onChange(searchForm: string, searchQuery: string): void
+  getState(key: string): string
 }
 
 class NumberSearchForm extends Component<Props> {
   onChange = (event) => {
-    this.props.handleChanges('number', event.target.value || '')
+    this.props.onChange('number', event.target.value || '')
   }
 
   render() {
@@ -18,7 +18,7 @@ class NumberSearchForm extends Component<Props> {
           <Col sm={{ span: 10, offset: 2 }}>
             <Form.Control
               type="text"
-              value={this.props.getUserInput('number')}
+              value={this.props.getState('number')}
               placeholder="Search museum, accession, or CDLI number"
               aria-label="Number"
               onChange={this.onChange}

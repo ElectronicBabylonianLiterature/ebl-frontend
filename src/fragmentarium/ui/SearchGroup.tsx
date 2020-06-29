@@ -1,4 +1,4 @@
-import React, { Component, Ref } from 'react'
+import React, { Component } from 'react'
 import NumberSearchForm from 'fragmentarium/ui/search/NumberSearchForm'
 import TransliterationSearchForm from 'fragmentarium/ui/search/TransliterationSearchForm'
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
@@ -27,12 +27,12 @@ class SearchGroup extends Component<Props, State> {
     transliteration: this.props.transliteration || '',
   }
 
-  handleChanges(searchForm: string, searchQuery: string): void {
+  onChange(searchForm: string, searchQuery: string): void {
     const updatedState = _.cloneDeep(this.state)
     updatedState[searchForm] = searchQuery
     this.setState(updatedState)
   }
-  getUserInput(key: string): string {
+  getState(key: string): string {
     return this.state[key]
   }
 
@@ -67,17 +67,17 @@ class SearchGroup extends Component<Props, State> {
     return (
       <>
         <NumberSearchForm
-          handleChanges={this.handleChanges.bind(this)}
-          getUserInput={this.getUserInput.bind(this)}
+          onChange={this.onChange.bind(this)}
+          getState={this.getState.bind(this)}
         />
         <ReferenceSearchForm
-          handleChanges={this.handleChanges.bind(this)}
-          getUserInput={this.getUserInput.bind(this)}
+          onChange={this.onChange.bind(this)}
+          getState={this.getState.bind(this)}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
-          handleChanges={this.handleChanges.bind(this)}
-          getUserInput={this.getUserInput.bind(this)}
+          onChange={this.onChange.bind(this)}
+          getState={this.getState.bind(this)}
         />
         <div className="SearchGroup__button-bar">
           <Button className="w-25 m-2" onClick={this.search} variant="primary">
