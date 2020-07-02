@@ -29,7 +29,13 @@ export default function WordLemmatizer({
   const LemmaToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
     function toggle(props, ref) {
       return (
-        <Button ref={ref} size="sm" variant="outline-dark" {...props}>
+        <Button
+          ref={ref}
+          size="sm"
+          variant="outline-dark"
+          active={show}
+          {...props}
+        >
           <Word token={token} />
         </Button>
       )
