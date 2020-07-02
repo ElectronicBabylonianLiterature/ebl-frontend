@@ -5,7 +5,6 @@ import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import './SearchGroup.css'
-import _ from 'lodash'
 import { Button } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from './search/ReferenceSearchForm'
@@ -19,65 +18,43 @@ type State = SearchGroupParams
 type Props = FragmentariumSearchParams & RouteComponentProps
 
 class SearchGroup extends Component<Props, State> {
-  state = {
-    number: this.props.number || '',
-    title: this.props.title || '',
-    id: this.props.id || '',
-    pages: this.props.pages || '',
-    transliteration: this.props.transliteration || '',
+  constructor(props) {
+    super(props)
+    this.state = {
+      number: this.props.number || '',
+      title: this.props.title || '',
+      id: this.props.id || '',
+      pages: this.props.pages || '',
+      transliteration: this.props.transliteration || '',
+    }
+    this.onChange = this.onChange.bind(this)
+    this.getState = this.getState.bind(this)
   }
 
   onChange(searchForm: string, searchQuery: string): void {
-    const updatedState = _.cloneDeep(this.state)
-    updatedState[searchForm] = searchQuery
-    this.setState(updatedState)
+    this.setState({ [searchForm]: searchQuery } as Pick<State, keyof State>)
   }
   getState(key: string): string {
     return this.state[key]
   }
 
-  deleteEmptyProperties(state: State) {
-    const cleanedState = _.cloneDeep(state)
-    helperDelete('title')
-    helperDelete('number')
-    if (!cleanedState['id']) {
-      helperDelete('id')
-      helperDelete('pages')
-    }
-    helperDelete('transliteration')
-
-    function helperDelete(value: string) {
-      if (!cleanedState[value]) {
-        delete cleanedState[value]
-      }
-    }
-    return cleanedState
-  }
-
   search = (event) => {
     event.preventDefault()
-    this.props.history.push(
-      `/fragmentarium/search/?${stringify(
-        this.deleteEmptyProperties(this.state)
-      )}`
-    )
+    this.props.history.push(`/fragmentarium/search/?${stringify(this.state)}`)
   }
 
   render() {
     return (
       <>
-        <NumberSearchForm
-          onChange={this.onChange.bind(this)}
-          getState={this.getState.bind(this)}
-        />
+        <NumberSearchForm onChange={this.onChange} getState={this.getState} />
         <ReferenceSearchForm
-          onChange={this.onChange.bind(this)}
-          getState={this.getState.bind(this)}
+          onChange={this.onChange}
+          getState={this.getState}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
-          onChange={this.onChange.bind(this)}
-          getState={this.getState.bind(this)}
+          onChange={this.onChange}
+          getState={this.getState}
         />
         <div className="SearchGroup__button-bar">
           <Button className="w-25 m-2" onClick={this.search} variant="primary">
