@@ -18,7 +18,7 @@ export default function Download({
     )
     setJson(jsonUrl)
     const atfUrl = URL.createObjectURL(
-      new Blob([fragment.atf], {
+      new Blob([fragment.atfHeading, '\n', fragment.atf], {
         type: 'text/plain',
       })
     )
