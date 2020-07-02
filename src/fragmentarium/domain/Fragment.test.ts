@@ -145,3 +145,16 @@ test.each([
   const fragment = new Fragment({ ...config, record: record })
   expect(fragment.uniqueRecord).toEqual(expected)
 })
+
+test.each([
+  ['P201033', 'P201033'],
+  ['', 'X000001'],
+])('ATF headind, cdli number: %s', (cdliNumber, expected) => {
+  const fragment = new Fragment({ ...config, cdliNumber })
+  expect(fragment.atfHeading).toEqual(`&${expected} = ${config.number}
+#project: eblo
+#atf: lang akk-x-stdbab
+#atf: use unicode
+#atf: use math
+#atf: use legacy`)
+})

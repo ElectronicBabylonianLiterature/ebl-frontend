@@ -88,6 +88,7 @@ export interface UncuratedReference {
 }
 
 export class Fragment {
+  readonly [immerable] = true
   readonly number: string
   readonly cdliNumber: string
   readonly bmIdNumber: string
@@ -202,5 +203,14 @@ export class Fragment {
   getLink(): FragmentLink {
     return this.museum.createLinkFor(this)
   }
+
+  get atfHeading(): string {
+    const cdliNumber = this.cdliNumber || 'X000001'
+    return `&${cdliNumber} = ${this.number}
+#project: eblo
+#atf: lang akk-x-stdbab
+#atf: use unicode
+#atf: use math
+#atf: use legacy`
+  }
 }
-Fragment[immerable] = true
