@@ -17,7 +17,7 @@ function ReferenceSearchResult({ data }) {
         i.pages || '',
         i.notes || '',
         i.linesCited || [],
-        new BibliographyEntry(i.document.cslData)
+        new BibliographyEntry(i.document)
       )
       references.push(ref)
     }
