@@ -6,7 +6,6 @@ import { factory } from 'factory-girl'
 
 import { changeValueByLabel } from '../../../test-support/utils'
 import ReferenceSearchForm from './ReferenceSearchForm'
-import BibliographyEntry from '../../../bibliography/domain/BibliographyEntry'
 
 let element
 let entry
