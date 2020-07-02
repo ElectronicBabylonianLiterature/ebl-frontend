@@ -1,70 +1,39 @@
 import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
-import {
-  DollarAndAtLine,
-  Line,
-  RulingDollarLine,
-} from 'transliteration/domain/line'
+import { Line } from 'transliteration/domain/line'
 import { Text, Notes } from 'transliteration/domain/text'
-import { LinePrefix } from './LinePrefix'
-import LineTokens from './LineTokens'
 import { NoteLinks, createLineId } from './note-links'
+import DisplayRulingDollarLine from './rulings'
+import DisplayTextLine from './text-line'
+import {
+  DisplayDollarAndAtLineWithParenthesis,
+  DisplayDollarAndAtLine,
+} from './dollar-and-at-lines'
+import { LineProps } from './LineProps'
 
-function DisplayLine({
-  line,
-  line: { type, content },
-  container = 'div',
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  return React.createElement(
-    container,
-    { className: classNames([`Transliteration__${type}`]) },
-    <LinePrefix line={line} />,
-    <LineTokens content={content} />
-  )
-}
-
-function DisplayDollarAndAtLineWithParenthesis({
-  line,
-  container = 'div',
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  const dollarAndAtLine = line as DollarAndAtLine
-  return React.createElement(
-    container,
-    { className: 'Transliteration__DollarAndAtLineWithParenthesis' },
-    dollarAndAtLine.displayValue
-  )
-}
-
-function DisplayDollarAndAtLine({
-  line,
-  container = 'div',
-}: {
-  line: Line
-  container?: string
-}): JSX.Element {
-  const dollarAndAtLine = line as DollarAndAtLine
-  return React.createElement(
-    container,
-    { className: 'Transliteration__DollarAndAtLine' },
-    `(${dollarAndAtLine.displayValue})`
+function DisplayControlLine({
+  line: { type, prefix, content },
+  columns,
+}: LineProps): JSX.Element {
+  return (
+    <>
+      <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
+      <td
+        colSpan={columns}
+        className={classNames([`Transliteration__${type}`])}
+      >
+        {content.map(({ value }) => value).join('')}
+      </td>
+    </>
   )
 }
 
 const lineComponents: ReadonlyMap<
   string,
-  FunctionComponent<{
-    line: Line
-    container?: string
-  }>
+  FunctionComponent<LineProps>
 > = new Map([
-  ['TextLine', DisplayLine],
+  ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
   ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
   ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
@@ -80,42 +49,24 @@ const lineComponents: ReadonlyMap<
   ['CompositeAtLine', DisplayDollarAndAtLine],
 ])
 
-function Ruling(): JSX.Element {
-  return <div className="Transliteration__ruling" />
-}
-
-const rulingsToNumber: ReadonlyMap<string, number> = new Map([
-  ['SINGLE', 1],
-  ['DOUBLE', 2],
-  ['TRIPLE', 3],
-])
-
-function DisplayRulingDollarLine({
-  line,
-  container = 'div',
+function FirstLineNotes({
+  notes,
+  columns,
 }: {
-  line: Line
-  container?: string
+  notes: Notes
+  columns: number
 }): JSX.Element {
-  const rulingLine = line as RulingDollarLine
-  const rulingsNumber = rulingsToNumber.get(rulingLine.number) as number
-  return React.createElement(
-    container,
-    { className: 'Transliteration__RulingDollarLine' },
-    _.range(0, rulingsNumber).map((number: number) => {
-      return <Ruling key={number} />
-    })
-  )
-}
-
-function FirstLineNotes({ notes }: { notes: Notes }): JSX.Element {
   const hasNotes = !_.isEmpty(notes.get(0))
   return (
     <>
       {hasNotes && (
-        <li id={createLineId(0)}>
-          <NoteLinks notes={notes} lineNumber={0} />
-        </li>
+        <tr id={createLineId(0)}>
+          <td></td>
+          <td colSpan={columns}></td>
+          <td>
+            <NoteLinks notes={notes} lineNumber={0} />
+          </td>
+        </tr>
       )}
     </>
   )
@@ -125,18 +76,22 @@ function TransliterationLine({
   line,
   notes,
   index,
+  columns,
 }: {
   line: Line
   notes: Notes
   index: number
+  columns: number
 }): JSX.Element {
-  const LineComponent = lineComponents.get(line.type) || DisplayLine
+  const LineComponent = lineComponents.get(line.type) || DisplayControlLine
   const lineNumber = index + 1
   return (
-    <li id={createLineId(lineNumber)}>
-      <LineComponent container="span" line={line} />{' '}
-      <NoteLinks notes={notes} lineNumber={lineNumber} />
-    </li>
+    <tr id={createLineId(lineNumber)}>
+      <LineComponent line={line} columns={columns} />
+      <td>
+        <NoteLinks notes={notes} lineNumber={lineNumber} />
+      </td>
+    </tr>
   )
 }
 
@@ -146,16 +101,17 @@ export default function TransliterationLines({
   text: Text
 }): JSX.Element {
   return (
-    <ol className="Transliteration__lines">
-      <FirstLineNotes notes={text.notes} />
+    <table className="Transliteration__lines">
+      <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
       {text.lines.map((line: Line, index: number) => (
         <TransliterationLine
           key={index}
           line={line}
           notes={text.notes}
           index={index}
+          columns={text.numberOfColumns}
         />
       ))}
-    </ol>
+    </table>
   )
 }

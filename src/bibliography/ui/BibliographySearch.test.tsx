@@ -5,7 +5,7 @@ import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import { factory } from 'factory-girl'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import createAuthorRegExp from 'test-helpers/createAuthorRexExp'
+import createAuthorRegExp from 'test-support/createAuthorRexExp'
 
 const query = 'Börger'
 let entries: BibliographyEntry[]

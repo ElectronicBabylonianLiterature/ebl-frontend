@@ -1,4 +1,4 @@
-import { testDelegation, TestData } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-support/utils'
 import WordService from './WordService'
 
 const resultStub = {}

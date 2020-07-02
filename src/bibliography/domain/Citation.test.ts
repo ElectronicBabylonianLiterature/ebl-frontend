@@ -2,7 +2,7 @@ import { factory } from 'factory-girl'
 import {
   buildReferenceWithContainerTitle,
   buildReferenceWithManyAuthors,
-} from 'test-helpers/bibliography-fixtures'
+} from 'test-support/bibliography-fixtures'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
 
 test.each([

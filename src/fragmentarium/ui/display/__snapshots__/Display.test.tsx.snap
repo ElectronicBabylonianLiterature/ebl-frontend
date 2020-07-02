@@ -24,123 +24,173 @@ exports[`Snapshot 1`] = `
   <section
     class="Transliteration"
   >
-    <ol
+    <table
       class="Transliteration__lines"
     >
-      <li
+      <tr
         id="line-1"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (obverse?!)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          obverse?!
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-2"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (object Stone wig)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          object Stone wig
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-3"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (h1)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          h1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-4"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (m=division paragraph 1)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          m=division paragraph 1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-5"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (colophon)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          colophon
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-6"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (seal 1)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          seal 1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-7"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (composite)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          composite
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-8"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (div part 1)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          div part 1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-9"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (end part)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          end part
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-10"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (m=locator o 1)
-        </span>
-         
-         
-      </li>
-      <li
+          (
+          m=locator o 1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-11"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -148,6 +198,10 @@ exports[`Snapshot 1`] = `
             1
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -390,27 +444,31 @@ exports[`Snapshot 1`] = `
               ]
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-12"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__RulingDollarLine"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
           />
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-13"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -418,6 +476,10 @@ exports[`Snapshot 1`] = `
             2
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -538,15 +600,18 @@ exports[`Snapshot 1`] = `
               ]
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-14"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__RulingDollarLine"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
@@ -554,14 +619,15 @@ exports[`Snapshot 1`] = `
           <div
             class="Transliteration__ruling"
           />
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-15"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -569,6 +635,10 @@ exports[`Snapshot 1`] = `
             3
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -813,21 +883,22 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-        <a
-          class="Transliteration__NoteLink"
-          href="#note-1"
-        >
-          1
-        </a>
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+          <a
+            class="Transliteration__NoteLink"
+            href="#note-1"
+          >
+            1
+          </a>
+           
+        </td>
+      </tr>
+      <tr
         id="line-16"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -835,6 +906,10 @@ exports[`Snapshot 1`] = `
             4
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -1050,14 +1125,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-17"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -1065,6 +1141,10 @@ exports[`Snapshot 1`] = `
             5
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -1309,15 +1389,18 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-18"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__RulingDollarLine"
+          colspan="4"
         >
           <div
             class="Transliteration__ruling"
@@ -1328,14 +1411,15 @@ exports[`Snapshot 1`] = `
           <div
             class="Transliteration__ruling"
           />
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-19"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -1343,6 +1427,10 @@ exports[`Snapshot 1`] = `
             6
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -2117,14 +2205,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-20"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -2132,6 +2221,10 @@ exports[`Snapshot 1`] = `
             1
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -2386,14 +2479,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-21"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -2401,6 +2495,10 @@ exports[`Snapshot 1`] = `
             2
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -2749,14 +2847,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-22"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -2764,6 +2863,10 @@ exports[`Snapshot 1`] = `
             3
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--SUMERIAN"
           >
@@ -3100,14 +3203,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-23"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -3115,6 +3219,10 @@ exports[`Snapshot 1`] = `
             4
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--EMESAL"
           >
@@ -3451,14 +3559,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-24"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -3466,6 +3575,10 @@ exports[`Snapshot 1`] = `
             5
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -4288,14 +4401,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-25"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -4303,6 +4417,10 @@ exports[`Snapshot 1`] = `
             6
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -4388,14 +4506,15 @@ exports[`Snapshot 1`] = `
               ]
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-26"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -4403,6 +4522,10 @@ exports[`Snapshot 1`] = `
             7
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -4536,14 +4659,15 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-27"
       >
-        <span
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -4551,6 +4675,10 @@ exports[`Snapshot 1`] = `
             D+3′a–4b
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -4576,25 +4704,360 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-28"
       >
-        <span
-          class="Transliteration__EmptyLine"
+        <td
+          class="Transliteration__TextLine"
         >
-          <span />
-        </span>
-         
-         
-      </li>
-      <li
+          <sup>
+            (
+            c+1
+            )
+          </sup>
+        </td>
+        <td
+          colspan="1"
+        />
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-29"
       >
-        <span
+        <td
+          class="Transliteration__TextLine"
+        >
+          <sup>
+            (
+            c+2
+            )
+          </sup>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-30"
+      >
+        <td
+          class="Transliteration__TextLine"
+        >
+          <sup>
+            (
+            c+3
+            )
+          </sup>
+        </td>
+        <td
+          colspan="2"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td
+          colspan="1"
+        >
+          <span
+            class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+          >
+             
+          </span>
+          <span
+            class="Transliteration__Word Transliteration__Word--AKKADIAN"
+          >
+            <span
+              class=""
+            >
+              <span
+                class="Transliteration__Reading"
+              >
+                <span
+                  class=""
+                >
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__modifier"
+                  />
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                </span>
+              </span>
+            </span>
+          </span>
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-31"
+      >
+        <td
+          class="Transliteration__EmptyLine"
+        />
+        <td
+          class="Transliteration__EmptyLine"
+          colspan="4"
+        />
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-32"
+      >
+        <td
           class="Transliteration__TextLine"
         >
           <sup>
@@ -4602,6 +5065,10 @@ exports[`Snapshot 1`] = `
             9
             )
           </sup>
+        </td>
+        <td
+          colspan="4"
+        >
           <span
             class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
           >
@@ -4782,55 +5249,72 @@ exports[`Snapshot 1`] = `
               </span>
             </span>
           </span>
-        </span>
-         
-         
-      </li>
-      <li
-        id="line-30"
-      >
-        <span
-          class="Transliteration__DollarAndAtLine"
-        >
-          (line continues !?)
-        </span>
-         
-         
-      </li>
-      <li
-        id="line-31"
-      >
-        <span
-          class="Transliteration__DollarAndAtLineWithParenthesis"
-        >
-          (image 1 = foo)
-        </span>
-         
-         
-      </li>
-      <li
-        id="line-32"
-      >
-        <span
-          class="Transliteration__DollarAndAtLineWithParenthesis"
-        >
-          (anything goes)
-        </span>
-         
-         
-      </li>
-      <li
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
         id="line-33"
       >
-        <span
+        <td />
+        <td
           class="Transliteration__DollarAndAtLine"
+          colspan="4"
         >
-          (seal 1)
-        </span>
-         
-         
-      </li>
-    </ol>
+          (
+          line continues !?
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-34"
+      >
+        <td />
+        <td
+          class="Transliteration__DollarAndAtLineWithParenthesis"
+          colspan="4"
+        >
+          (image 1 = foo)
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-35"
+      >
+        <td />
+        <td
+          class="Transliteration__DollarAndAtLineWithParenthesis"
+          colspan="4"
+        >
+          (anything goes)
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+      <tr
+        id="line-36"
+      >
+        <td />
+        <td
+          class="Transliteration__DollarAndAtLine"
+          colspan="4"
+        >
+          (
+          seal 1
+          )
+        </td>
+        <td>
+           
+        </td>
+      </tr>
+    </table>
     <ol
       class="Transliteration__notes"
     >
@@ -4943,6 +5427,124 @@ exports[`Snapshot 1`] = `
         </span>
       </li>
     </ol>
+  </section>
+  <section>
+    <h4>
+      Glossary
+    </h4>
+    <div>
+      <a
+        href="/dictionary/test I"
+      >
+        <span
+          class="Glossary__lemma"
+        >
+          test
+        </span>
+      </a>
+      , 
+      “
+      weed
+      ”
+      : 
+      <span
+        class="Transliteration"
+      >
+        <span
+          class="Transliteration__Word"
+        >
+          <span
+            class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class="Transliteration__Reading--BROKEN_AWAY Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    ḫe
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+            <span
+              class="Transliteration__Joiner"
+            >
+              <span
+                class="Transliteration__Joiner--BROKEN_AWAY Transliteration__Joiner--DOCUMENT_ORIENTED_GLOSS"
+              >
+                -
+              </span>
+            </span>
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class="Transliteration__Reading--DOCUMENT_ORIENTED_GLOSS"
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    p
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  <span
+                    class="Transliteration__BrokenAway--BROKEN_AWAY Transliteration__BrokenAway--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    ]
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--DOCUMENT_ORIENTED_GLOSS"
+                  >
+                    í
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+       (
+      stone wig
+      <sup />
+       
+      o
+      <sup>
+        ?
+        !
+      </sup>
+       
+      7
+      )
+    </div>
   </section>
 </div>
 `;

@@ -1,4 +1,4 @@
-import compareStrings from './compareStrings'
+import compareAkkadianStrings from './compareAkkadianStrings'
 
 test.each([
   ['Abullu', 'abullu', -1],
@@ -22,46 +22,33 @@ test.each([
   ['KUR.KUR', 'KUR-KUR?', 0],
   ['Amar-Suen', 'Amar-Suen?', 0],
   ['[Uruk]', '[Uruk]?', 0],
+  ['šaniš', 'šan iš', -1],
+  ['abu', "ab'u", 0],
+  ['abʾu', 'abu', 0],
 ])('compares %s and %s', (word, anotherWord, expected) => {
-  const comparedWords = compareStrings(word, anotherWord)
+  const comparedWords = compareAkkadianStrings(word, anotherWord)
   expect(comparedWords).toBe(expected)
-  const comparedWordsReversed = compareStrings(anotherWord, word)
+  const comparedWordsReversed = compareAkkadianStrings(anotherWord, word)
   if (expected !== 0) {
     expect(comparedWordsReversed).toBe(-expected)
   }
 })
 
 test.each([
-  ['', 2, '2'],
-  [53, '', '53'],
-  [29, 98, '29,98'],
-])(
-  'throws an error if the %s or %s is not a string',
-  (word, anotherWord, number) => {
-    function compareInvalidWords() {
-      compareStrings(word, anotherWord)
-    }
-    expect(compareInvalidWords).toThrowError(`${number} is not a string`)
-  }
-)
-
-test.each([
   ['', 'abalu*', '*'],
   ['a&maru', 'bitu', '&'],
   ['belu\\EN', 'bitu', '\\'],
-  ["'belu'", 'bitu', "','"],
   ['EN=belu', 'amtu', '='],
   ['Amar|Suen', 'Hammurabi', '|'],
   ['matate;', 'amtu', ';'],
-  ['  ', '', ' , '],
   ['bälu!', 'bitu', 'ä,!'],
   ['ḫarru', 'bjtu', 'ḫ,j'],
   ['belü!', 'byt(u)', 'ü,!,(,)'],
 ])(
   'throws an error on word(s) with invalid character(s) %s or %s',
   (word, anotherWord, invalidCharacters) => {
-    function compareInvalidWords() {
-      compareStrings(word, anotherWord)
+    function compareInvalidWords(): void {
+      compareAkkadianStrings(word, anotherWord)
     }
     expect(compareInvalidWords).toThrowError(
       `Invalid character(s) ${invalidCharacters} in the input`

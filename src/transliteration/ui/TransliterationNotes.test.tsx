@@ -1,6 +1,6 @@
 import { render, RenderResult, within } from '@testing-library/react'
 import React from 'react'
-import { hydratedNote, note } from 'test-helpers/lines/note'
+import { hydratedNote, note } from 'test-support/lines/note'
 import TransliterationNotes from './TransliterationNotes'
 
 let element: RenderResult

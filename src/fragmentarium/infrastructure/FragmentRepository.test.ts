@@ -1,10 +1,10 @@
 import Promise from 'bluebird'
-import { testDelegation, TestData } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-support/utils'
 import FragmentRepository from './FragmentRepository'
 import Folio from 'fragmentarium/domain/Folio'
-import { fragment, fragmentDto } from 'test-helpers/test-fragment'
+import { fragment, fragmentDto } from 'test-support/test-fragment'
 import { ApiError } from 'http/ApiClient'
-import { annotations, annotationsDto } from 'test-helpers/test-annotation'
+import { annotations, annotationsDto } from 'test-support/test-annotation'
 
 const apiClient = {
   fetchJson: jest.fn(),

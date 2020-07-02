@@ -1,7 +1,4 @@
-import { Line } from 'transliteration/domain/line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
-import React from 'react'
-import { isTextLine } from '../domain/type-guards'
 
 function formatLineNumberRange({ start, end }: LineNumberRange): string {
   return `${formatLineNumber(start)}–${formatLineNumber(end)}`
@@ -24,16 +21,10 @@ const lineNumberTypeToFunction = {
   LineNumberRange: formatLineNumberRange,
 }
 
-function lineNumberToString(lineNumber: LineNumber | LineNumberRange): string {
+export default function lineNumberToString(
+  lineNumber: LineNumber | LineNumberRange
+): string {
   const createFormattedLineNumbers =
     lineNumberTypeToFunction[lineNumber.type as string]
   return createFormattedLineNumbers(lineNumber)
-}
-
-export function LinePrefix({ line }: { line: Line }): JSX.Element {
-  return isTextLine(line) ? (
-    <sup>({lineNumberToString(line.lineNumber)})</sup>
-  ) : (
-    <span>{line.prefix}</span>
-  )
 }

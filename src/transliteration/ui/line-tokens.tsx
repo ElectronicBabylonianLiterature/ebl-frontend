@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react'
+import _ from 'lodash'
 import classNames from 'classnames'
 import DisplayToken from './DisplayToken'
 import {
@@ -6,7 +7,8 @@ import {
   isShift,
   isDocumentOrientedGloss,
   isCommentaryProtocol,
-} from '../domain/type-guards'
+  isColumn,
+} from 'transliteration/domain/type-guards'
 import {
   Shift,
   Token,
@@ -46,12 +48,29 @@ function GlossWrapper({ children }: PropsWithChildren<{}>): JSX.Element {
   )
 }
 
+interface ColumnData {
+  span: number | null
+  content: React.ReactNode[]
+}
+
 class LineAccumulator {
-  result: React.ReactNode[] = []
+  private columns: ColumnData[] = []
   private inGloss = false
   private language = 'AKKADIAN'
   private enclosureOpened = false
   private protocol: Protocol | null = null
+
+  getColumns(maxColumns: number): React.ReactNode[] {
+    return this.columns.map((column: ColumnData, index: number) => (
+      <td key={index} colSpan={column.span ?? maxColumns}>
+        {column.content}
+      </td>
+    ))
+  }
+
+  get flatResult(): React.ReactNode[] {
+    return this.columns.flatMap((column) => column.content)
+  }
 
   get bemModifiers(): readonly string[] {
     return this.protocol === null
@@ -68,27 +87,34 @@ class LineAccumulator {
   }
 
   pushToken(token: Token): void {
-    if (this.requireSeparator(token)) {
-      this.pushSeparator(this.result)
+    if (_.isEmpty(this.columns)) {
+      this.addColumn(1)
     }
-
-    this.result.push(
+    if (this.requireSeparator(token)) {
+      this.pushSeparator()
+    }
+    const component =
       this.inGloss && !isEnclosure(token) ? (
         <DisplayToken
-          key={this.result.length}
+          key={this.index}
           token={token}
           bemModifiers={this.bemModifiers}
           Wrapper={GlossWrapper}
         />
       ) : (
         <DisplayToken
-          key={this.result.length}
+          key={this.index}
           token={token}
           bemModifiers={this.bemModifiers}
         />
       )
-    )
+
+    _.last(this.columns)?.content.push(component)
     this.enclosureOpened = isOpenEnclosure(token)
+  }
+
+  addColumn(span: number | null): void {
+    this.columns.push({ span: span, content: [] })
   }
 
   openGloss(): void {
@@ -100,27 +126,32 @@ class LineAccumulator {
   }
 
   private requireSeparator(token: Token): boolean {
-    const noEnclosure = !isCloseEnclosure(token) && !this.enclosureOpened
-    return this.result.length === 0 || noEnclosure
+    return !isCloseEnclosure(token) && !this.enclosureOpened
   }
 
-  private pushSeparator(target: React.ReactNode[]): void {
-    target.push(
+  private pushSeparator(): void {
+    _.last(this.columns)?.content.push(
       this.inGloss ? (
-        <GlossWrapper key={`${target.length}-separator`}>
+        <GlossWrapper key={`${this.index}-separator`}>
           <WordSeparator modifiers={this.bemModifiers} />
         </GlossWrapper>
       ) : (
         <WordSeparator
-          key={`${target.length}-separator`}
+          key={`${this.index}-separator`}
           modifiers={this.bemModifiers}
         />
       )
     )
   }
+
+  private get index(): number {
+    return _(this.columns)
+      .map((column) => column.content.length)
+      .sum()
+  }
 }
 
-export default function LineTokens({
+export function LineTokens({
   content,
 }: {
   content: ReadonlyArray<Token>
@@ -139,8 +170,41 @@ export default function LineTokens({
             acc.pushToken(token)
           }
           return acc
-        }, new LineAccumulator()).result
+        }, new LineAccumulator()).flatResult
       }
+    </>
+  )
+}
+
+export function LineColumns({
+  columns,
+  maxColumns,
+}: {
+  columns: readonly { span: number | null; content: readonly Token[] }[]
+  maxColumns: number
+}): JSX.Element {
+  return (
+    <>
+      {columns
+        .reduce((acc: LineAccumulator, column) => {
+          acc.addColumn(column.span)
+          column.content.reduce((acc: LineAccumulator, token: Token) => {
+            if (isShift(token)) {
+              acc.applyLanguage(token)
+            } else if (isCommentaryProtocol(token)) {
+              acc.applyCommentaryProtocol(token)
+            } else if (isDocumentOrientedGloss(token)) {
+              token.side === 'LEFT' ? acc.openGloss() : acc.closeGloss()
+            } else if (isColumn(token)) {
+              throw new Error('Unexpected column token.')
+            } else {
+              acc.pushToken(token)
+            }
+            return acc
+          }, acc)
+          return acc
+        }, new LineAccumulator())
+        .getColumns(maxColumns)}
     </>
   )
 }

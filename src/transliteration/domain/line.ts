@@ -1,6 +1,10 @@
+import _ from 'lodash'
 import { Token } from './token'
 import { LineNumber, LineNumberRange } from './line-number'
 import Reference from 'bibliography/domain/Reference'
+import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
+import { isColumn } from './type-guards'
+import { produce, Draft, castDraft } from 'immer'
 
 export type Line =
   | LineBase
@@ -26,10 +30,69 @@ export interface LineBase {
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
 }
-export interface TextLine extends LineBase {
-  type: 'TextLine'
-  lineNumber: LineNumber | LineNumberRange
+export interface TextLineDto extends LineBase {
+  readonly type: 'TextLine'
+  readonly lineNumber: LineNumber | LineNumberRange
 }
+
+export interface TextLineColumn {
+  span: number | null
+  content: readonly Token[]
+}
+
+const defaultSpan = 1
+
+export class TextLine implements TextLineDto {
+  readonly type = 'TextLine'
+  readonly prefix: string
+  readonly content: ReadonlyArray<Token>
+  readonly lineNumber: LineNumber | LineNumberRange
+
+  constructor(data: TextLineDto) {
+    this.prefix = data.prefix
+    this.content = data.content
+    this.lineNumber = data.lineNumber
+  }
+
+  get columns(): readonly TextLineColumn[] {
+    return _.reduce<Token, TextLineColumn[]>(
+      this.content,
+      produce((draft: Draft<TextLineColumn[]>, current: Token) => {
+        if (isColumn(current)) {
+          if (_.isEmpty(draft) && current.number === null) {
+            draft.push({
+              span: defaultSpan,
+              content: [],
+            })
+          }
+          draft.push({
+            span: current.number ?? defaultSpan,
+            content: [],
+          })
+        } else if (_.isEmpty(draft)) {
+          draft.push({
+            span: this.hasColumns ? 1 : null,
+            content: [castDraft(current)],
+          })
+        } else {
+          _.last(draft)?.content.push(castDraft(current))
+        }
+      }),
+      []
+    )
+  }
+
+  get numberOfColumns(): number {
+    return _(this.columns)
+      .map((column) => column.span ?? defaultSpan)
+      .sum()
+  }
+
+  get hasColumns(): boolean {
+    return this.content.some(isColumn)
+  }
+}
+
 export interface EmptyLine extends LineBase {
   readonly type: 'EmptyLine'
 }
@@ -72,16 +135,6 @@ export interface StateDollarLine extends DollarAndAtLine {
   readonly state: string | null
   readonly status: string | null
 }
-interface Label {
-  readonly status: ReadonlyArray<string>
-}
-interface ColumnLabel extends Label {
-  readonly column: number
-}
-interface SurfaceLabel extends Label {
-  readonly surface: string
-  readonly text: string
-}
 export interface SealAtLine extends DollarAndAtLine {
   readonly type: 'SealAtLine'
   readonly number: number
@@ -104,9 +157,7 @@ export interface SurfaceAtLine extends DollarAndAtLine {
 }
 export interface ObjectAtLine extends DollarAndAtLine {
   readonly type: 'ObjectAtLine'
-  readonly status: ReadonlyArray<string>
-  readonly object_label: string
-  readonly text: string
+  readonly label: ObjectLabel
 }
 export interface DivisionAtLine extends DollarAndAtLine {
   readonly type: 'DivisionAtLine'

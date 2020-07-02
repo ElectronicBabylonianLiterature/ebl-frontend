@@ -3,7 +3,7 @@ import _ from 'lodash'
 import FormList from './FormList'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { whenClicked, whenChangedByValue } from 'test-helpers/utils'
+import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'List'
 

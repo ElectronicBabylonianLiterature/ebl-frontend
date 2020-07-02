@@ -1,6 +1,6 @@
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { buildReferenceWithContainerTitle } from 'test-helpers/bibliography-fixtures'
+import { buildReferenceWithContainerTitle } from 'test-support/bibliography-fixtures'
 import Reference from './Reference'
 import BibliographyEntry from './BibliographyEntry'
 

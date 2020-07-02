@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { testDelegation, TestData } from 'test-helpers/utils'
+import { testDelegation, TestData } from 'test-support/utils'
 import FragmentSearchService from './FragmentSearchService'
 
 const resultStub = {}

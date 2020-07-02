@@ -193,6 +193,7 @@ function App({
               <FragmentView
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
+                wordService={wordService}
                 {...parseFargmentParams(match, location)}
               />
             )}

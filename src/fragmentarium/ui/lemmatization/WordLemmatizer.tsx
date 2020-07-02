@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react'
-import { Popover, Overlay } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
@@ -19,46 +19,54 @@ export default function WordLemmatizer({
   onChange,
 }: Props): JSX.Element {
   const [show, setShow] = useState(false)
-  const target = useRef(null)
-  const popOverId = _.uniqueId('LemmatizationPopOver-')
-
-  const handleClick = (): void => {
-    setShow(!show)
-  }
-
-  const hide = (): void => {
-    setShow(false)
-  }
+  const toggleId = _.uniqueId('LemmatizationToggle-')
 
   const handleCange = (uniqueLemma): void => {
     onChange(uniqueLemma)
-    hide()
+    setShow(false)
   }
 
-  return (
-    <span ref={target} className="WordLemmatizer">
-      <Word token={token} onClick={handleClick} />
-      <Overlay
-        rootClose
-        onHide={hide}
-        show={show}
-        target={target.current as any}
-        placement="top"
-      >
-        <Popover
-          id={popOverId}
-          title="Lemmatize"
-          className="WordLemmatizer__form"
+  const LemmaToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
+    function toggle(props, ref) {
+      return (
+        <Button
+          ref={ref}
+          size="sm"
+          variant="outline-dark"
+          active={show}
+          {...props}
         >
-          <Popover.Content>
-            <LemmatizationForm
-              token={token}
-              fragmentService={fragmentService}
-              onChange={handleCange}
-            />
-          </Popover.Content>
-        </Popover>
-      </Overlay>
-    </span>
+          <Word token={token} />
+        </Button>
+      )
+    }
+  )
+
+  const LemmaMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
+    props,
+    ref
+  ) {
+    return (
+      <div ref={ref} {...props}>
+        <LemmatizationForm
+          token={token}
+          fragmentService={fragmentService}
+          onChange={handleCange}
+        />
+      </div>
+    )
+  })
+
+  return token.lemmatizable ? (
+    <Dropdown as="span" onToggle={setShow} show={show}>
+      <Dropdown.Toggle
+        as={LemmaToggle}
+        id={toggleId}
+        bsPrefix="WordLemmatizer__toggle"
+      />
+      <Dropdown.Menu as={LemmaMenu} />
+    </Dropdown>
+  ) : (
+    <span className="Word">{token.value}</span>
   )
 }

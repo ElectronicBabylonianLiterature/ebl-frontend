@@ -1,5 +1,5 @@
-import AppDriver from 'test-helpers/AppDriver'
-import FakeApi from 'test-helpers/FakeApi'
+import AppDriver from 'test-support/AppDriver'
+import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 
 const category = 1
@@ -166,7 +166,7 @@ describe('Diplay chapter', () => {
       const value = manuscript[property]
       const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
-      appDriver.changeValueByLabel(label, newValue)
+      await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
       await appDriver.click('Save manuscripts')
     })
@@ -223,7 +223,7 @@ describe('Lines', () => {
       })
       const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)
-      appDriver.changeValueByLabel(label, newValue)
+      await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
       await appDriver.click('Save lines')
     }

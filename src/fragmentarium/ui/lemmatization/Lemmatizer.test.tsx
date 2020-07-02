@@ -3,7 +3,7 @@ import { render, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
-import { whenClicked, clickNth, changeValueByLabel } from 'test-helpers/utils'
+import { whenClicked, clickNth, changeValueByLabel } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, {

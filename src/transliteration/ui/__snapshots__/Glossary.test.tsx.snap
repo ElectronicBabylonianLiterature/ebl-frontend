@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Glossary snapshot 1`] = `
+<div>
+  <section>
+    <h4>
+      Glossary
+    </h4>
+    <div>
+      <a
+        href="/dictionary/hepû I"
+      >
+        <span
+          class="Glossary__lemma"
+        >
+          hepû
+        </span>
+      </a>
+      , 
+      “
+      GW for hepû I
+      ”
+      : 
+      <span
+        class="Transliteration"
+      >
+        <span
+          class="Transliteration__Word"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+       (
+      l+1
+      , 
+      stone wig
+      <sup />
+       
+      o
+      <sup>
+        ?
+        !
+      </sup>
+       
+      iii
+      <sup>
+        ?
+      </sup>
+       
+      l+2
+      )
+    </div>
+    <div>
+      <a
+        href="/dictionary/hepû II"
+      >
+        <span
+          class="Glossary__lemma"
+        >
+          hepû
+        </span>
+        <span
+          class="Glossary__homonym"
+        >
+           
+          II
+        </span>
+      </a>
+      , 
+      “
+      GW for hepû II
+      ”
+      : 
+      <span
+        class="Transliteration"
+      >
+        <span
+          class="Transliteration__Word"
+        >
+          <span
+            class=""
+          >
+            <span
+              class="Transliteration__Reading"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <sup
+                  class="Transliteration__modifier"
+                />
+                <sup
+                  class="Transliteration__flag"
+                />
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+       (
+      l+1
+      )
+    </div>
+  </section>
+</div>
+`;

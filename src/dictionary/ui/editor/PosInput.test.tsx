@@ -3,7 +3,7 @@ import PosInput from './PosInput'
 import { render } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
-import { whenChangedByValue, whenChangedByLabel } from 'test-helpers/utils'
+import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
 
 let value
 let element

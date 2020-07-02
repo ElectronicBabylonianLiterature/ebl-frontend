@@ -4,7 +4,7 @@ import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
-import { submitForm } from 'test-helpers/utils'
+import { submitForm } from 'test-support/utils'
 import WordEditor from './WordEditor'
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 

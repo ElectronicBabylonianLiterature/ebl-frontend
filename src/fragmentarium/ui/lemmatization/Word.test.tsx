@@ -1,18 +1,15 @@
 import React from 'react'
 import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import { clickNth } from 'test-helpers/utils'
 import Word from './Word'
 import Lemma from 'transliteration/domain/Lemma'
 import _ from 'lodash'
 
 let element
 let token
-let onClick
 let lemmas
 
 beforeEach(async () => {
-  onClick = jest.fn()
   lemmas = (await factory.buildMany('word', 2)).map((word) => new Lemma(word))
 })
 
@@ -33,7 +30,7 @@ describe.each([
         lemmatizable: true,
         suggested: suggested,
       }
-      element = render(<Word token={token} onClick={onClick} />)
+      element = render(<Word token={token} />)
     })
 
     it('Displays the value', () => {
@@ -47,11 +44,6 @@ describe.each([
         )
       })
     }
-
-    it('Clicking calls on click', async () => {
-      await clickNth(element, token.value)
-      expect(onClick).toHaveBeenCalled()
-    })
 
     if (!_.isEmpty(expectedClasses)) {
       test.each(expectedClasses)('Has class %s', (expectedClass) => {
@@ -71,29 +63,3 @@ describe.each([
     }
   }
 )
-
-describe('Not-lemmatizable word', () => {
-  beforeEach(async () => {
-    token = {
-      value: 'DIŠ',
-      uniqueLemma: [],
-      language: 'AKKADIAN',
-      normalized: true,
-      lemmatizable: false,
-    }
-    element = render(<Word token={token} onClick={onClick} />)
-  })
-
-  it('Displays the value', () => {
-    expect(element.container).toHaveTextContent(token.value)
-  })
-
-  it('Clicking does not call on click', async () => {
-    await clickNth(element, token.value)
-    expect(onClick).not.toHaveBeenCalled()
-  })
-
-  it('Does not have withLemma class', () => {
-    expect(element.getByText(token.value)).not.toHaveClass('Word--with-lemma')
-  })
-})
