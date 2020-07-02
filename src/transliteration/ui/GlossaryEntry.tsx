@@ -57,24 +57,20 @@ function GlossaryWord({
     <>
       <span className="Transliteration">
         {word && <DisplayToken token={word} />}
-      </span>{' '}
-      (
+      </span>
       {_(tokens)
         .map('label')
         .uniq()
         .map((label, index) => (
           <React.Fragment key={index}>
-            {index > 0 && ', '}
+            {index > 0 ? ', ' : ' ('}
             {_.compact([label.object, label.surface, label.column])
               .map((singleLabel, index) => (
-                <React.Fragment key={index}>
-                  {index > 0 && ' '}
-                  <GlossaryLabel label={singleLabel} />
-                </React.Fragment>
+                <GlossaryLabel key={index} label={singleLabel} />
               ))
               .concat(
                 <React.Fragment key="line number">
-                  {label.line && ` ${lineNumberToString(label.line)}`}
+                  {label.line && lineNumberToString(label.line)}
                 </React.Fragment>
               )}
           </React.Fragment>
@@ -100,7 +96,7 @@ function GlossaryLabel({
   return (
     <>
       {abbreviation}
-      {status && <sup>{status.map((x: Status) => statuses.get(x))}</sup>}
+      {status && <sup>{status.map((x: Status) => statuses.get(x))}</sup>}{' '}
     </>
   )
 }

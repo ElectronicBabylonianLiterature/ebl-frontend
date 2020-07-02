@@ -56,9 +56,8 @@ exports[`Glossary snapshot 1`] = `
           </span>
         </span>
       </span>
-       
-      (
-       l+1
+       (
+      l+1
       , 
       stone wig
       <sup />
@@ -73,7 +72,8 @@ exports[`Glossary snapshot 1`] = `
       <sup>
         ?
       </sup>
-       l+2
+       
+      l+2
       )
     </div>
     <div>
@@ -132,9 +132,8 @@ exports[`Glossary snapshot 1`] = `
           </span>
         </span>
       </span>
-       
-      (
-       l+1
+       (
+      l+1
       )
     </div>
   </section>
