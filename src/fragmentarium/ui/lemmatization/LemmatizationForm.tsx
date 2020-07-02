@@ -153,7 +153,7 @@ class LemmatizationForm extends Component<Props, State> {
   render(): JSX.Element {
     const label = this.state.isComplex ? 'Lemmata' : 'Lemma'
     return (
-      <Form>
+      <Form className="WordLemmatizer__form">
         <Form.Row>
           <Col md={9}>
             <this.Select label={label} />

@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties } from 'react'
+import React, { useState } from 'react'
 import { Button, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import LemmatizationForm from './LemmatizationForm'
@@ -30,48 +30,41 @@ export default function WordLemmatizer({
     hide()
   }
 
-  interface LemmaToggleProps {
-    onClick(): unknown
-  }
-  const LemmaToggle = React.forwardRef<HTMLButtonElement & Button, any>(
-    function toggle({ onClick }: LemmaToggleProps, ref) {
-      return <Word ref={ref} token={token} onClick={onClick} active={show} />
-    }
-  )
-
-  interface LemmaMenuProps {
-    style?: CSSProperties
-    className?: string | undefined
-    'aria-labelledby'?: string | undefined
-  }
-  const LemmaMenu = React.forwardRef<HTMLDivElement, LemmaMenuProps>(
-    function menu(
-      { style, className, 'aria-labelledby': labeledBy }: LemmaMenuProps,
-      ref
-    ) {
+  const LemmaToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
+    function toggle(props, ref) {
       return (
-        <div
-          ref={ref}
-          style={style}
-          className={className}
-          aria-labelledby={labeledBy}
-        >
-          <div className="WordLemmatizer__form">
-            <LemmatizationForm
-              token={token}
-              fragmentService={fragmentService}
-              onChange={handleCange}
-            />
-          </div>
-        </div>
+        <Button ref={ref} size="sm" variant="outline-dark" {...props}>
+          <Word token={token} />
+        </Button>
       )
     }
   )
 
-  return (
+  const LemmaMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
+    props,
+    ref
+  ) {
+    return (
+      <div ref={ref} {...props}>
+        <LemmatizationForm
+          token={token}
+          fragmentService={fragmentService}
+          onChange={handleCange}
+        />
+      </div>
+    )
+  })
+
+  return token.lemmatizable ? (
     <Dropdown as="span" onToggle={setShow} show={show}>
-      <Dropdown.Toggle as={LemmaToggle} id={toggleId} />
+      <Dropdown.Toggle
+        as={LemmaToggle}
+        id={toggleId}
+        bsPrefix="WordLemmatizer__toggle"
+      />
       <Dropdown.Menu as={LemmaMenu} />
     </Dropdown>
+  ) : (
+    <span className="Word">{token.value}</span>
   )
 }
