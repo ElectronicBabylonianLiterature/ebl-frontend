@@ -1,8 +1,6 @@
-.WordLemmatizer {
-  position: relative;
-}
-
 .WordLemmatizer__form {
   max-width: none;
   min-width: 32em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react'
+import React, { Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import _ from 'lodash'
@@ -8,11 +8,16 @@ import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 interface Props {
   token: LemmatizationToken
-  onClick: any
+  active?: boolean
+  onClick(): unknown
 }
-const Word: FunctionComponent<Props> = ({ token, onClick }: Props) => {
+const Word = React.forwardRef<HTMLButtonElement & Button, Props>(function word(
+  { token, onClick, active }: Props,
+  ref
+) {
   return token.lemmatizable ? (
     <Button
+      ref={ref}
       onClick={onClick}
       size="sm"
       variant="outline-dark"
@@ -21,10 +26,11 @@ const Word: FunctionComponent<Props> = ({ token, onClick }: Props) => {
         'Word--with-lemma': !_.isEmpty(token.uniqueLemma),
         'Word--suggestion': token.suggested,
       })}
+      active={active}
     >
       {token.value}
       {_.isArray(token.uniqueLemma) && (
-        <span className="Word__lemmatization">
+        <span ref={ref} className="Word__lemmatization">
           {token.uniqueLemma.map((lemma, index) => (
             <Fragment key={index}>
               {index > 0 && ', '}
@@ -38,6 +44,6 @@ const Word: FunctionComponent<Props> = ({ token, onClick }: Props) => {
   ) : (
     <span className="Word">{token.value}</span>
   )
-}
+})
 
 export default Word
