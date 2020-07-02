@@ -21,13 +21,9 @@ export default function WordLemmatizer({
   const [show, setShow] = useState(false)
   const toggleId = _.uniqueId('LemmatizationToggle-')
 
-  const hide = (): void => {
-    setShow(false)
-  }
-
   const handleCange = (uniqueLemma): void => {
     onChange(uniqueLemma)
-    hide()
+    setShow(false)
   }
 
   const LemmaToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
