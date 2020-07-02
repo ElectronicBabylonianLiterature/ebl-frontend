@@ -35,7 +35,7 @@ class SearchGroup extends Component<Props, State> {
     this.setState({ [searchForm]: searchQuery } as Pick<State, keyof State>)
   }
   getState(key: string): string {
-    return this.state[key]
+    return this.state[key] ? this.state[key] : ''
   }
 
   search = (event) => {
