@@ -1,57 +1,22 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
+import { MemoryRouter, Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-support/utils'
 
 import TransliterationSearchForm from './TransliterationSearchForm'
 
-const handleChanges = jest.fn()
-const getState = jest.fn(() => 'pak')
-const getStateEmpty = jest.fn(() => '')
-
-it('Adds number to query string on submit', async () => {
+it('Calls onChange on User Input', async () => {
   const transliteration = 'ma i-ra\nka li'
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+  const onChange = jest.fn()
+  const getState = jest.fn(() => '')
   const element = render(
-    <Router history={history}>
-      <TransliterationSearchForm
-        onChange={handleChanges}
-        getState={getStateEmpty}
-      />
-    </Router>
+    <MemoryRouter>
+      <TransliterationSearchForm onChange={onChange} getState={getState} />
+    </MemoryRouter>
   )
 
   changeValueByLabel(element, 'Transliteration', transliteration)
-  await submitForm(element)
 
-  expect(history.push).toBeCalledWith(
-    `/fragmentarium/search/?transliteration=${encodeURIComponent(
-      transliteration
-    )}`
-  )
-})
-
-it('calling render with the same component on the same container does not remount', () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
-  const { getByLabelText, rerender } = render(
-    <Router history={history}>
-      <TransliterationSearchForm onChange={handleChanges} getState={getState} />
-    </Router>
-  )
-  expect((getByLabelText('Transliteration') as HTMLInputElement).value).toBe(
-    'pak'
-  )
-
-  rerender(
-    <Router history={history}>
-      <TransliterationSearchForm
-        onChange={handleChanges}
-        getState={getStateEmpty}
-      />
-    </Router>
-  )
-  expect((getByLabelText('Transliteration') as HTMLInputElement).value).toBe('')
+  expect(onChange).toBeCalledWith('transliteration', transliteration)
 })

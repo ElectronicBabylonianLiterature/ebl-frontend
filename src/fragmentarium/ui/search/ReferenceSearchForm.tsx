@@ -19,7 +19,7 @@ class ReferenceSearchForm extends Component<Props> {
         <Form.Group as={Row} controlId="reference">
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
-              aria-label="FragmentId"
+              aria-label="BibliographyTitle"
               value={this.props.getState('title')}
               onChange={this.props.onChange}
               searchBibliography={(query) =>
@@ -30,7 +30,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={5}>
             <Form.Control
               type="text"
-              aria-label="FragmentPage"
+              aria-label="Pages"
               value={this.props.getState('pages')}
               onChange={this.onChangePage}
             />
