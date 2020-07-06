@@ -4,14 +4,13 @@ import TransliterationSearchForm from 'fragmentarium/ui/search/TransliterationSe
 import LuckyButton from 'fragmentarium/ui/front-page/LuckyButton'
 import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import './SearchGroup.css'
-import { Button } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col } from 'react-bootstrap'
 import { stringify } from 'query-string'
-import ReferenceSearchForm from './search/ReferenceSearchForm'
+import ReferenceSearchForm from 'fragmentarium/ui/search/ReferenceSearchForm'
 import {
   FragmentariumSearchParams,
   SearchGroupParams,
-} from '../domain/fragmentariumSearch'
+} from 'fragmentarium/ui/fragmentariumSearch'
 
 type State = SearchGroupParams
 
@@ -56,17 +55,23 @@ class SearchGroup extends Component<Props, State> {
           onChange={this.onChange}
           getState={this.getState}
         />
-        <div className="SearchGroup__button-bar">
-          <Button className="w-25 m-2" onClick={this.search} variant="primary">
-            Search
-          </Button>
-          <LuckyButton
-            fragmentSearchService={this.props.fragmentSearchService}
-          />
-          <PioneersButton
-            fragmentSearchService={this.props.fragmentSearchService}
-          />
-        </div>
+        <ButtonToolbar>
+          <Col sm={{ offset: 2 }}>
+            <Button
+              className="w-25 m-1"
+              onClick={this.search}
+              variant="primary"
+            >
+              Search
+            </Button>
+            <LuckyButton
+              fragmentSearchService={this.props.fragmentSearchService}
+            />
+            <PioneersButton
+              fragmentSearchService={this.props.fragmentSearchService}
+            />
+          </Col>
+        </ButtonToolbar>
       </>
     )
   }

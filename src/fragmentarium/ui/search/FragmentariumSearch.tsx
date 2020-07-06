@@ -9,7 +9,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import './FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import { FragmentariumSearchParams } from '../../domain/fragmentariumSearch'
+import { FragmentariumSearchParams } from 'fragmentarium/ui/fragmentariumSearch'
 import ReferenceSearch from './ReferenceSearch'
 
 type Props = FragmentariumSearchParams

@@ -12,7 +12,7 @@ import './Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
-import { FragmentariumSearchParams } from '../../domain/fragmentariumSearch'
+import { FragmentariumSearchParams } from '../fragmentariumSearch'
 
 type Props = FragmentariumSearchParams
 
