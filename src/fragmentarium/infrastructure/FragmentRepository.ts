@@ -1,8 +1,12 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import produce from 'immer'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import produce, { castDraft } from 'immer'
+import {
+  Fragment,
+  FragmentInfo,
+  RecordEntry,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
@@ -17,6 +21,9 @@ import {
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 import { Line, TextLine, TextLineDto } from 'transliteration/domain/line'
+import Reference from '../../bibliography/domain/Reference'
+import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
+import { Draft } from 'immer/dist/types/types-external'
 
 function isTextLineDto(line: Line): line is TextLineDto {
   return line.type === 'TextLine'
@@ -89,8 +96,31 @@ class ApiFragmentRepository
   searchNumber(number: string): FragmentInfosPromise {
     return this._fetch({ number })
   }
+
   searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages })
+    return this._fetch({ id, pages }).then((fragInfos) => {
+      const newFragInfo: any = produce(
+        fragInfos,
+        (draft: Draft<FragmentInfo>) => {
+          for (let fragInfo = 0; fragInfo < fragInfos.length; fragInfo++) {
+            const references: Reference[] = []
+            for (const ref of fragInfos[fragInfo].references) {
+              references.push(
+                new Reference(
+                  ref.type || Reference.DEFAULT_TYPE,
+                  ref.pages || '',
+                  ref.notes || '',
+                  ref.linesCited || [],
+                  new BibliographyEntry(ref.document)
+                )
+              )
+            }
+            draft[fragInfo].references = castDraft(references)
+          }
+        }
+      )
+      return newFragInfo as FragmentInfo[]
+    })
   }
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {
