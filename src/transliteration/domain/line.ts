@@ -109,10 +109,6 @@ export interface ImageDollarLine extends DollarAndAtLine {
   readonly letter: string | null
   readonly text: string
 }
-export interface LooseDollarLine extends DollarAndAtLine {
-  readonly type: 'LooseDollarLine'
-  readonly text: string
-}
 export interface RulingDollarLine extends DollarAndAtLine {
   readonly type: 'RulingDollarLine'
   readonly number: 'SINGLE' | 'DOUBLE' | 'TRIPLE'
