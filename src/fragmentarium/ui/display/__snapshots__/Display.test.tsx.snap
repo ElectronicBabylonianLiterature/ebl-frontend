@@ -5314,6 +5314,24 @@ exports[`Snapshot 1`] = `
            
         </td>
       </tr>
+      <tr
+        id="line-37"
+      >
+        <td
+          class="Transliteration__ControlLine"
+        >
+          #
+        </td>
+        <td
+          class="Transliteration__ControlLine"
+          colspan="4"
+        >
+           a comment
+        </td>
+        <td>
+           
+        </td>
+      </tr>
     </table>
     <ol
       class="Transliteration__notes"

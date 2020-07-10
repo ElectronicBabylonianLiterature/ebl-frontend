@@ -16,10 +16,22 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
-import { Line, TextLine, TextLineDto } from 'transliteration/domain/line'
+import { TextLine, TextLineDto, LineDto } from 'transliteration/domain/line'
+import { ControlLine } from 'transliteration/domain/line'
 
-function isTextLineDto(line: Line): line is TextLineDto {
-  return line.type === 'TextLine'
+function createText(text): Text {
+  return new Text({
+    lines: text.lines.map((lineDto: LineDto) => {
+      switch (lineDto.type) {
+        case 'TextLine':
+          return new TextLine(lineDto as TextLineDto)
+        case 'ControlLine':
+          return new ControlLine(lineDto)
+        default:
+          return lineDto
+      }
+    }),
+  })
 }
 
 function createFragment(dto): Fragment {
@@ -35,11 +47,7 @@ function createFragment(dto): Fragment {
     },
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
-    text: new Text({
-      lines: dto.text.lines.map((lineDto) => {
-        return isTextLineDto(lineDto) ? new TextLine(lineDto) : lineDto
-      }),
-    }),
+    text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
   })

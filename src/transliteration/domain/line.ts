@@ -8,7 +8,27 @@ import { produce, Draft, castDraft } from 'immer'
 
 export type Line =
   | LineBase
+  | ControlLine
   | TextLine
+  | EmptyLine
+  | LooseDollarLine
+  | ImageDollarLine
+  | RulingDollarLine
+  | SealDollarLine
+  | StateDollarLine
+  | SealAtLine
+  | HeadingAtLine
+  | ColumnAtLine
+  | DiscourseAtLine
+  | SurfaceAtLine
+  | ObjectAtLine
+  | DivisionAtLine
+  | CompositeAtLine
+  | NoteLine
+
+export type LineDto =
+  | LineBase
+  | TextLineDto
   | EmptyLine
   | LooseDollarLine
   | ImageDollarLine
@@ -30,6 +50,18 @@ export interface LineBase {
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
 }
+
+export class ControlLine {
+  readonly type = 'ControlLine'
+  readonly prefix: string
+  readonly content: ReadonlyArray<Token>
+
+  constructor(data: LineBase) {
+    this.prefix = data.prefix
+    this.content = data.content
+  }
+}
+
 export interface TextLineDto extends LineBase {
   readonly type: 'TextLine'
   readonly lineNumber: LineNumber | LineNumberRange
