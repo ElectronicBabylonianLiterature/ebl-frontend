@@ -2,7 +2,7 @@ import { NoteLine } from 'transliteration/domain/line'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-export const note: NoteLine = {
+export const note: NoteLine = new NoteLine({
   prefix: '#note: ',
   content: [
     {
@@ -164,9 +164,9 @@ export const note: NoteLine = {
     },
   ],
   type: 'NoteLine',
-}
+})
 
-export const hydratedNote: NoteLine = {
+export const hydratedNote: NoteLine = new NoteLine({
   prefix: '#note: ',
   content: [
     {
@@ -220,6 +220,6 @@ export const hydratedNote: NoteLine = {
     },
   ],
   type: 'NoteLine',
-}
+})
 
 export default note

@@ -4,7 +4,7 @@ import { LineNumber, LineNumberRange } from './line-number'
 import Reference from 'bibliography/domain/Reference'
 import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
 import { isColumn } from './type-guards'
-import { produce, Draft, castDraft } from 'immer'
+import { produce, Draft, castDraft, immerable } from 'immer'
 
 export type Line =
   | LineBase
@@ -42,7 +42,7 @@ export type LineDto =
   | ObjectAtLine
   | DivisionAtLine
   | CompositeAtLine
-  | NoteLine
+  | NoteLineDto
 
 export interface LineBase {
   readonly type: string
@@ -51,6 +51,7 @@ export interface LineBase {
 }
 
 export class ControlLine {
+  readonly [immerable] = true
   readonly type = 'ControlLine'
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
@@ -74,6 +75,7 @@ export interface TextLineColumn {
 const defaultSpan = 1
 
 export class TextLine implements TextLineDto {
+  readonly [immerable] = true
   readonly type = 'TextLine'
   readonly prefix: string
   readonly content: ReadonlyArray<Token>
@@ -125,6 +127,7 @@ export class TextLine implements TextLineDto {
 }
 
 export class EmptyLine implements LineBase {
+  readonly [immerable] = true
   readonly type = 'EmptyLine'
   readonly prefix = ''
   readonly content: ReadonlyArray<Token> = []
@@ -227,8 +230,21 @@ export interface BibliographyPart {
 
 export type NoteLinePart = TextPart | LanguagePart | BibliographyPart
 
-export interface NoteLine extends LineBase {
+export interface NoteLineDto extends LineBase {
   readonly type: 'NoteLine'
   readonly prefix: '#note: '
   readonly parts: readonly NoteLinePart[]
+}
+
+export class NoteLine implements LineBase {
+  readonly [immerable] = true
+  readonly type = 'NoteLine'
+  readonly prefix = '#note: '
+  readonly parts: readonly NoteLinePart[]
+  readonly content: ReadonlyArray<Token>
+
+  constructor(data: NoteLineDto) {
+    this.parts = data.parts
+    this.content = data.content
+  }
 }

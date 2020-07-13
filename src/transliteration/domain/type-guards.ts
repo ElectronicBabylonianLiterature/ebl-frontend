@@ -66,7 +66,7 @@ export function isBibliographyPart(
 }
 
 export function isNoteLine(line: Line): line is NoteLine {
-  return line.type === 'NoteLine'
+  return line instanceof NoteLine
 }
 
 export function isObjectAtLine(line: Line): line is ObjectAtLine {

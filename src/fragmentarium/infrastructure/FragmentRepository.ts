@@ -21,6 +21,8 @@ import {
   TextLine,
   TextLineDto,
   LineDto,
+  NoteLine,
+  NoteLineDto,
 } from 'transliteration/domain/line'
 import { ControlLine } from 'transliteration/domain/line'
 
@@ -34,6 +36,8 @@ function createText(text): Text {
           return new ControlLine(lineDto)
         case 'EmptyLine':
           return new EmptyLine()
+        case 'NoteLine':
+          return new NoteLine(lineDto as NoteLineDto)
         default:
           return lineDto
       }
