@@ -17,18 +17,13 @@ import {
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
+import { TextLine } from 'transliteration/domain/text-line'
 import {
   LooseDollarLine,
   ImageDollarLine,
   RulingDollarLine,
   SealDollarLine,
   StateDollarLine,
-  LooseDollarLineDto,
-  ImageDollarLineDto,
-  RulingDollarLineDto,
-  SealDollarLineDto,
-  StateDollarLineDto,
 } from 'transliteration/domain/dollar-lines'
 import {
   SealAtLine,
@@ -39,59 +34,39 @@ import {
   ObjectAtLine,
   DivisionAtLine,
   CompositeAtLine,
-  SealAtLineDto,
-  HeadingAtLineDto,
-  ColumnAtLineDto,
-  DiscourseAtLineDto,
-  SurfaceAtLineDto,
-  ObjectAtLineDto,
-  DivisionAtLineDto,
-  CompositeAtLineDto,
 } from 'transliteration/domain/at-lines'
-import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 import { ControlLine } from 'transliteration/domain/line'
+
+const lineClases = {
+  TextLine: TextLine,
+  ControlLine: ControlLine,
+  EmptyLine: EmptyLine,
+  NoteLine: NoteLine,
+  LooseDollarLine: LooseDollarLine,
+  ImageDollarLine: ImageDollarLine,
+  RulingDollarLine: RulingDollarLine,
+  SealDollarLine: SealDollarLine,
+  StateDollarLine: StateDollarLine,
+  SealAtLine: SealAtLine,
+  HeadingAtLine: HeadingAtLine,
+  ColumnAtLine: ColumnAtLine,
+  DiscourseAtLine: DiscourseAtLine,
+  SurfaceAtLine: SurfaceAtLine,
+  ObjectAtLine: ObjectAtLine,
+  DivisionAtLine: DivisionAtLine,
+  CompositeAtLine: CompositeAtLine,
+}
 
 function createText(text): Text {
   return new Text({
     lines: text.lines.map((lineDto) => {
-      switch (lineDto.type) {
-        case 'TextLine':
-          return new TextLine(lineDto as TextLineDto)
-        case 'ControlLine':
-          return new ControlLine(lineDto)
-        case 'EmptyLine':
-          return new EmptyLine()
-        case 'NoteLine':
-          return new NoteLine(lineDto as NoteLineDto)
-        case 'LooseDollarLine':
-          return new LooseDollarLine(lineDto as LooseDollarLineDto)
-        case 'ImageDollarLine':
-          return new ImageDollarLine(lineDto as ImageDollarLineDto)
-        case 'RulingDollarLine':
-          return new RulingDollarLine(lineDto as RulingDollarLineDto)
-        case 'SealDollarLine':
-          return new SealDollarLine(lineDto as SealDollarLineDto)
-        case 'StateDollarLine':
-          return new StateDollarLine(lineDto as StateDollarLineDto)
-        case 'SealAtLine':
-          return new SealAtLine(lineDto as SealAtLineDto)
-        case 'HeadingAtLine':
-          return new HeadingAtLine(lineDto as HeadingAtLineDto)
-        case 'ColumnAtLine':
-          return new ColumnAtLine(lineDto as ColumnAtLineDto)
-        case 'DiscourseAtLine':
-          return new DiscourseAtLine(lineDto as DiscourseAtLineDto)
-        case 'SurfaceAtLine':
-          return new SurfaceAtLine(lineDto as SurfaceAtLineDto)
-        case 'ObjectAtLine':
-          return new ObjectAtLine(lineDto as ObjectAtLineDto)
-        case 'DivisionAtLine':
-          return new DivisionAtLine(lineDto as DivisionAtLineDto)
-        case 'CompositeAtLine':
-          return new CompositeAtLine(lineDto as CompositeAtLineDto)
-        default:
-          console.error(`Unknown line type "${lineDto.type}.`)
-          return new ControlLine(lineDto)
+      const LineClass = lineClases[lineDto.type]
+      if (LineClass) {
+        return new LineClass(lineDto)
+      } else {
+        console.error(`Unknown line type "${lineDto.type}.`)
+        return new ControlLine(lineDto)
       }
     }),
   })
