@@ -1,6 +1,6 @@
-import { Line } from 'transliteration/domain/line'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 export interface LineProps {
-  line: Line
+  line: AbstractLine
   columns: number
 }

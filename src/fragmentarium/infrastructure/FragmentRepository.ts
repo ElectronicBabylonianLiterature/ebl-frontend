@@ -91,7 +91,8 @@ function createText(text): Text {
         case 'CompositeAtLine':
           return new CompositeAtLine(lineDto as CompositeAtLineDto)
         default:
-          return lineDto
+          console.error(`Unknown line type "${lineDto.type}.`)
+          return new ControlLine(lineDto)
       }
     }),
   })

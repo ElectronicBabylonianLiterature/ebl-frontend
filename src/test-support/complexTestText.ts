@@ -1,5 +1,5 @@
 import { Text } from 'transliteration/domain/text'
-import { Line, TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/line'
 import { commentaryProtocols } from 'test-support/lines/text-commentary-protocols'
 import * as at from 'test-support/lines/at'
 import * as columns from 'test-support/lines/text-columns'
@@ -9,7 +9,7 @@ import * as dollar from 'test-support/lines/dollar'
 import empty from 'test-support/lines/empty'
 import note from 'test-support/lines/note'
 
-const line2: Line = new TextLine({
+const line2 = new TextLine({
   prefix: '1.',
   content: [
     {
@@ -226,7 +226,7 @@ const line2: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line4: Line = new TextLine({
+const line4 = new TextLine({
   prefix: '2.',
   content: [
     {
@@ -337,7 +337,7 @@ const line4: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line6: Line = new TextLine({
+const line6 = new TextLine({
   prefix: '3.',
   content: [
     {
@@ -500,7 +500,7 @@ const line6: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line7: Line = new TextLine({
+const line7 = new TextLine({
   prefix: '4.',
   content: [
     {
@@ -631,7 +631,7 @@ const line7: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line8: Line = new TextLine({
+const line8 = new TextLine({
   prefix: '5.',
   content: [
     {
@@ -852,7 +852,7 @@ const line8: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line10: Line = new TextLine({
+const line10 = new TextLine({
   prefix: '6.',
   content: [
     {
@@ -1372,7 +1372,7 @@ const line10: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line11: Line = new TextLine({
+const line11 = new TextLine({
   prefix: '1.',
   content: [
     {
@@ -1577,7 +1577,7 @@ const line11: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line12: Line = new TextLine({
+const line12 = new TextLine({
   prefix: '2.',
   content: [
     {
@@ -1916,7 +1916,7 @@ const line12: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line13: Line = new TextLine({
+const line13 = new TextLine({
   prefix: '3.',
   content: [
     {
@@ -2197,7 +2197,7 @@ const line13: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line14: Line = new TextLine({
+const line14 = new TextLine({
   prefix: '4.',
   content: [
     {
@@ -2478,7 +2478,7 @@ const line14: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line15: Line = new TextLine({
+const line15 = new TextLine({
   prefix: '5.',
   content: [
     {
@@ -3114,7 +3114,7 @@ const line15: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line16: Line = new TextLine({
+const line16 = new TextLine({
   prefix: '6.',
   content: [
     {
@@ -3202,7 +3202,7 @@ const line16: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line17: Line = new TextLine({
+const line17 = new TextLine({
   prefix: '7.',
   content: [
     {
@@ -3313,7 +3313,7 @@ const line17: Line = new TextLine({
   type: 'TextLine',
 })
 
-const line18: Line = new TextLine({
+const line18 = new TextLine({
   prefix: "D+3'a-4b.",
   content: [
     {

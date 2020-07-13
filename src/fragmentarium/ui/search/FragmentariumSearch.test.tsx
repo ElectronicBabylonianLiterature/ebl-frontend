@@ -6,7 +6,6 @@ import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 
-let fragmentService
 let fragmentSearchService
 let session
 let container
@@ -29,21 +28,15 @@ async function renderFragmentariumSearch({
         <FragmentariumSearchWithRouter
           number={number}
           transliteration={transliteration}
-          fragmentService={fragmentService}
           fragmentSearchService={fragmentSearchService}
         />
       </SessionContext.Provider>
     </MemoryRouter>
   )
   container = element.container
-  await element.findByText('Current size of the corpus:')
 }
 
 beforeEach(async () => {
-  statistics = await factory.build('statistics')
-  fragmentService = {
-    statistics: jest.fn(),
-  }
   fragmentSearchService = {
     searchNumber: jest.fn(),
     searchTransliteration: jest.fn(),
@@ -52,7 +45,6 @@ beforeEach(async () => {
     isAllowedToReadFragments: jest.fn(),
     isAllowedToTransliterateFragments: (): boolean => false,
   }
-  fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
 })
 
 describe('Search', () => {

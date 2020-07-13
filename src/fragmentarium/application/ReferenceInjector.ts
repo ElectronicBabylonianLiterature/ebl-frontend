@@ -1,13 +1,15 @@
-import produce, { Draft } from 'immer'
+import produce, { Draft, castDraft } from 'immer'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
 import createReference from 'bibliography/application/createReference'
-import {
-  isNoteLine,
-  isBibliographyPart,
-} from 'transliteration/domain/type-guards'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import {
+  BibliographyPart,
+  NoteLine,
+  NoteLinePart,
+} from 'transliteration/domain/line'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 export default class ReferenceInjector {
   private readonly bibliographyService: BibliographyService
@@ -23,17 +25,27 @@ export default class ReferenceInjector {
   }
 
   private injectReferencesToNotes(fragment: Fragment): Promise<Fragment> {
+    function isNoteLine(line: Draft<AbstractLine>): line is Draft<NoteLine> {
+      return line.type === 'NoteLine'
+    }
+
+    function isBibliographyPart(
+      part: Draft<NoteLinePart>
+    ): part is Draft<BibliographyPart> {
+      return part.type === 'BibliographyPart'
+    }
+
     return new Promise((resolve, reject) => {
       produce(fragment, async (draft: Draft<Fragment>) => {
         await Promise.all(
           draft.text.allLines
             .filter(isNoteLine)
-            .flatMap((line: any) => line.parts)
+            .flatMap((line: Draft<NoteLine>) => line.parts)
             .filter(isBibliographyPart)
-            .map((part: any) =>
+            .map((part: Draft<BibliographyPart>) =>
               createReference(part.reference, this.bibliographyService)
                 .then((reference): void => {
-                  part.reference = reference
+                  part.reference = castDraft(reference)
                 })
                 .catch((error): void => {
                   console.error(error)

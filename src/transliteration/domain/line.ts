@@ -4,30 +4,16 @@ import { LineNumber, LineNumberRange } from './line-number'
 import Reference from 'bibliography/domain/Reference'
 import { ColumnLabel, SurfaceLabel, ObjectLabel } from './labels'
 import { isColumn } from './type-guards'
-import { produce, Draft, castDraft, immerable } from 'immer'
-
-export type Line =
-  | LineBase
-  | ControlLine
-  | TextLine
-  | EmptyLine
-  | LooseDollarLine
-  | ImageDollarLine
-  | RulingDollarLine
-  | SealDollarLine
-  | StateDollarLine
-  | SealAtLine
-  | HeadingAtLine
-  | ColumnAtLine
-  | DiscourseAtLine
-  | SurfaceAtLine
-  | ObjectAtLine
-  | DivisionAtLine
-  | CompositeAtLine
-  | NoteLine
+import { produce, Draft, castDraft } from 'immer'
+import {
+  AbstractLine,
+  LineBaseDto,
+  DollarAndAtLineDto,
+  Ruling,
+} from './abstract-line'
 
 export type LineDto =
-  | LineBase
+  | LineBaseDto
   | TextLineDto
   | LooseDollarLineDto
   | ImageDollarLineDto
@@ -44,25 +30,15 @@ export type LineDto =
   | CompositeAtLineDto
   | NoteLineDto
 
-export interface LineBase {
-  readonly type: string
-  readonly prefix: string
-  readonly content: ReadonlyArray<Token>
-}
-
-export class ControlLine {
-  readonly [immerable] = true
+export class ControlLine extends AbstractLine {
   readonly type = 'ControlLine'
-  readonly prefix: string
-  readonly content: ReadonlyArray<Token>
 
-  constructor(data: LineBase) {
-    this.prefix = data.prefix
-    this.content = data.content
+  constructor(data: LineBaseDto) {
+    super(data.prefix, data.content)
   }
 }
 
-export interface TextLineDto extends LineBase {
+export interface TextLineDto extends LineBaseDto {
   readonly type: 'TextLine'
   readonly lineNumber: LineNumber | LineNumberRange
 }
@@ -74,16 +50,12 @@ export interface TextLineColumn {
 
 const defaultSpan = 1
 
-export class TextLine implements TextLineDto {
-  readonly [immerable] = true
+export class TextLine extends AbstractLine {
   readonly type = 'TextLine'
-  readonly prefix: string
-  readonly content: ReadonlyArray<Token>
   readonly lineNumber: LineNumber | LineNumberRange
 
   constructor(data: TextLineDto) {
-    this.prefix = data.prefix
-    this.content = data.content
+    super(data.prefix, data.content)
     this.lineNumber = data.lineNumber
   }
 
@@ -126,32 +98,24 @@ export class TextLine implements TextLineDto {
   }
 }
 
-export class EmptyLine implements LineBase {
-  readonly [immerable] = true
+export class EmptyLine extends AbstractLine {
   readonly type = 'EmptyLine'
-  readonly prefix = ''
-  readonly content: ReadonlyArray<Token> = []
+
+  constructor() {
+    super('', [])
+  }
 }
 
-export interface DollarAndAtLine extends LineBase {
-  readonly displayValue: string
-}
-
-abstract class DollarLine implements DollarAndAtLine {
-  readonly [immerable] = true
-  readonly prefix = '$'
-  readonly content: ReadonlyArray<Token>
+export abstract class DollarLine extends AbstractLine {
   readonly displayValue: string
 
-  constructor(data: DollarAndAtLine) {
-    this.content = data.content
+  constructor(data: DollarAndAtLineDto) {
+    super('$', data.content)
     this.displayValue = data.displayValue
   }
-
-  abstract get type(): string
 }
 
-export interface LooseDollarLineDto extends DollarAndAtLine {
+export interface LooseDollarLineDto extends DollarAndAtLineDto {
   readonly type: 'LooseDollarLine'
   readonly text: string
 }
@@ -166,7 +130,7 @@ export class LooseDollarLine extends DollarLine {
   }
 }
 
-export interface ImageDollarLineDto extends DollarAndAtLine {
+export interface ImageDollarLineDto extends DollarAndAtLineDto {
   readonly type: 'ImageDollarLine'
   readonly number: string
   readonly letter: string | null
@@ -187,9 +151,7 @@ export class ImageDollarLine extends DollarLine {
   }
 }
 
-type Ruling = 'SINGLE' | 'DOUBLE' | 'TRIPLE'
-
-export interface RulingDollarLineDto extends DollarAndAtLine {
+export interface RulingDollarLineDto extends DollarAndAtLineDto {
   readonly type: 'RulingDollarLine'
   readonly number: Ruling
   readonly status: string | null
@@ -207,7 +169,7 @@ export class RulingDollarLine extends DollarLine {
   }
 }
 
-export interface SealDollarLineDto extends DollarAndAtLine {
+export interface SealDollarLineDto extends DollarAndAtLineDto {
   readonly type: 'SealDollarLine'
   readonly number: number
 }
@@ -227,7 +189,7 @@ interface ScopeContainer {
   readonly content: string
   readonly text: string
 }
-export interface StateDollarLineDto extends DollarAndAtLine {
+export interface StateDollarLineDto extends DollarAndAtLineDto {
   readonly type: 'StateDollarLine'
   readonly qualification: string | null
   readonly extent: string | null
@@ -254,20 +216,16 @@ export class StateDollarLine extends DollarLine {
   }
 }
 
-abstract class AtLine implements DollarAndAtLine {
-  readonly [immerable] = true
-  readonly prefix = '@'
-  readonly content: ReadonlyArray<Token>
+export abstract class AtLine extends AbstractLine {
   readonly displayValue: string
 
-  constructor(data: DollarAndAtLine) {
-    this.content = data.content
+  constructor(data: DollarAndAtLineDto) {
+    super('@', data.content)
     this.displayValue = data.displayValue
   }
-
-  abstract get type(): string
 }
-export interface SealAtLineDto extends DollarAndAtLine {
+
+export interface SealAtLineDto extends DollarAndAtLineDto {
   readonly type: 'SealAtLine'
   readonly number: number
 }
@@ -282,7 +240,7 @@ export class SealAtLine extends AtLine {
   }
 }
 
-export interface HeadingAtLineDto extends DollarAndAtLine {
+export interface HeadingAtLineDto extends DollarAndAtLineDto {
   readonly type: 'HeadingAtLine'
   readonly number: number
 }
@@ -297,7 +255,7 @@ export class HeadingAtLine extends AtLine {
   }
 }
 
-export interface ColumnAtLineDto extends DollarAndAtLine {
+export interface ColumnAtLineDto extends DollarAndAtLineDto {
   readonly type: 'ColumnAtLine'
   readonly column_label: ColumnLabel
 }
@@ -312,7 +270,7 @@ export class ColumnAtLine extends AtLine {
   }
 }
 
-export interface DiscourseAtLineDto extends DollarAndAtLine {
+export interface DiscourseAtLineDto extends DollarAndAtLineDto {
   readonly type: 'DiscourseAtLine'
   readonly discourse_label: string
 }
@@ -327,7 +285,7 @@ export class DiscourseAtLine extends AtLine {
   }
 }
 
-export interface SurfaceAtLineDto extends DollarAndAtLine {
+export interface SurfaceAtLineDto extends DollarAndAtLineDto {
   readonly type: 'SurfaceAtLine'
   readonly surface_label: SurfaceLabel
 }
@@ -342,7 +300,7 @@ export class SurfaceAtLine extends AtLine {
   }
 }
 
-export interface ObjectAtLineDto extends DollarAndAtLine {
+export interface ObjectAtLineDto extends DollarAndAtLineDto {
   readonly type: 'ObjectAtLine'
   readonly label: ObjectLabel
 }
@@ -357,7 +315,7 @@ export class ObjectAtLine extends AtLine {
   }
 }
 
-export interface DivisionAtLineDto extends DollarAndAtLine {
+export interface DivisionAtLineDto extends DollarAndAtLineDto {
   readonly type: 'DivisionAtLine'
   readonly number: number | null
   readonly text: string
@@ -375,7 +333,7 @@ export class DivisionAtLine extends AtLine {
   }
 }
 
-export interface CompositeAtLineDto extends DollarAndAtLine {
+export interface CompositeAtLineDto extends DollarAndAtLineDto {
   readonly type: 'CompositeAtLine'
   readonly composite: string
   readonly number: number | null
@@ -422,21 +380,18 @@ export interface BibliographyPart {
 
 export type NoteLinePart = TextPart | LanguagePart | BibliographyPart
 
-export interface NoteLineDto extends LineBase {
+export interface NoteLineDto extends LineBaseDto {
   readonly type: 'NoteLine'
   readonly prefix: '#note: '
   readonly parts: readonly NoteLinePart[]
 }
 
-export class NoteLine implements LineBase {
-  readonly [immerable] = true
+export class NoteLine extends AbstractLine {
   readonly type = 'NoteLine'
-  readonly prefix = '#note: '
   readonly parts: readonly NoteLinePart[]
-  readonly content: ReadonlyArray<Token>
 
   constructor(data: NoteLineDto) {
+    super('#note: ', data.content)
     this.parts = data.parts
-    this.content = data.content
   }
 }
