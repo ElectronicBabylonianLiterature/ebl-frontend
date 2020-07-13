@@ -4,6 +4,7 @@ import Word from 'dictionary/domain/Word'
 
 import { Word as WordToken } from 'transliteration/domain/token'
 import note from 'test-support/lines/note'
+import { TextLine } from 'transliteration/domain/line'
 
 const testWord: WordToken = {
   type: 'Word',
@@ -43,7 +44,7 @@ export default async function createLemmatizationTestText(): Promise<
   const words = await factory.buildMany('word', 4)
   const text = new Text({
     lines: [
-      {
+      new TextLine({
         type: 'TextLine',
         lineNumber: {
           type: 'LineNumber',
@@ -67,7 +68,7 @@ export default async function createLemmatizationTestText(): Promise<
             uniqueLemma: [words[1]._id],
           },
         ],
-      },
+      }),
       note,
     ],
   })

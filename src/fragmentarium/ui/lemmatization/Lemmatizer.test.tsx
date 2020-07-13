@@ -9,6 +9,8 @@ import Lemmatizer from './Lemmatizer'
 import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
+import { Text } from 'transliteration/domain/text'
+import { TextLine } from 'transliteration/domain/line'
 
 let element
 let fragmentService
@@ -28,24 +30,55 @@ beforeEach(async () => {
     createLemmatization: jest.fn(),
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
-  text = {
+  text = new Text({
     lines: [
-      {
+      new TextLine({
         type: 'TextLine',
         prefix: '1.',
+        lineNumber: {
+          number: 1,
+          hasPrime: false,
+          prefixModifier: null,
+          suffixModifier: null,
+          type: 'LineNumber',
+        },
         content: [
           {
-            type: 'Word',
-            value: 'kur',
             uniqueLemma: [oldWord._id],
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
+            enclosureType: [],
+            erasure: 'NONE',
+            cleanValue: 'kur',
+            value: 'kur',
+            parts: [
+              {
+                enclosureType: [],
+                cleanValue: 'kur',
+                value: 'kur',
+                name: 'kur',
+                nameParts: [
+                  {
+                    enclosureType: [],
+                    cleanValue: 'kur',
+                    value: 'kur',
+                    type: 'ValueToken',
+                  },
+                ],
+                subIndex: 1,
+                modifiers: [],
+                flags: [],
+                sign: null,
+                type: 'Reading',
+              },
+            ],
+            type: 'Word',
           },
         ],
-      },
+      }),
     ],
-  }
+  })
   fragmentService.createLemmatization.mockImplementation((text) =>
     Promise.resolve(
       new Lemmatization(

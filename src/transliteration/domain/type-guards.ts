@@ -52,7 +52,7 @@ export function isColumn(token: Token): token is Column {
 }
 
 export function isTextLine(line: Line): line is TextLine {
-  return line.type === 'TextLine'
+  return line instanceof TextLine
 }
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
