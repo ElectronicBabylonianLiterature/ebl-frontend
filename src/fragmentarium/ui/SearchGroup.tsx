@@ -45,15 +45,19 @@ class SearchGroup extends Component<Props, State> {
   render() {
     return (
       <>
-        <NumberSearchForm onChange={this.onChange} getState={this.getState} />
+        <NumberSearchForm
+          onChange={this.onChange}
+          value={this.getState('number')}
+        />
         <ReferenceSearchForm
           onChange={this.onChange}
-          getState={this.getState}
+          value_title={this.getState('title')}
+          value_pages={this.getState('pages')}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
           onChange={this.onChange}
-          getState={this.getState}
+          value={this.getState('transliteration')}
         />
         <ButtonToolbar>
           <Col sm={{ offset: 2 }}>

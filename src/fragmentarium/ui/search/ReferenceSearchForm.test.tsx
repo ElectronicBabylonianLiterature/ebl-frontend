@@ -29,7 +29,8 @@ beforeEach(async () => {
     <MemoryRouter>
       <ReferenceSearchForm
         onChange={onChange}
-        getState={getState}
+        value_title={entry.title}
+        value_pages={''}
         fragmentService={fragmentService}
       />
     </MemoryRouter>

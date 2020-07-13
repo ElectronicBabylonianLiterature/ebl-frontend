@@ -36,7 +36,7 @@ type State = {
 }
 type Props = {
   onChange(searchForm: string, searchQuery: string): void
-  getState(key: string): string
+  value: string
 }
 
 class TransliterationSearchForm extends Component<Props, State> {
@@ -45,7 +45,7 @@ class TransliterationSearchForm extends Component<Props, State> {
   }
 
   render() {
-    const rows = this.props.getState('transliteration').split('\n').length
+    const rows = this.props.value.split('\n').length
     return (
       <Form>
         <Form.Group as={Row} controlId="transliteration">
@@ -59,7 +59,7 @@ class TransliterationSearchForm extends Component<Props, State> {
           <Col sm={10}>
             <Form.Control
               as="textarea"
-              value={this.props.getState('transliteration')}
+              value={this.props.value}
               rows={Math.max(2, rows)}
               placeholder="Search transliterations"
               aria-label="Transliteration"

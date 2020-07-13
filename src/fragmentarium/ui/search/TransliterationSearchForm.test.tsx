@@ -8,10 +8,9 @@ import TransliterationSearchForm from './TransliterationSearchForm'
 it('Calls onChange on User Input', async () => {
   const transliteration = 'ma i-ra\nka li'
   const onChange = jest.fn()
-  const getState = jest.fn(() => '')
   const element = render(
     <MemoryRouter>
-      <TransliterationSearchForm onChange={onChange} getState={getState} />
+      <TransliterationSearchForm onChange={onChange} value={''} />
     </MemoryRouter>
   )
 

@@ -5,7 +5,8 @@ import BibliographySelect from './BibliographySelect'
 type Props = {
   fragmentService
   onChange(searchForm: string, searchQuery: string): void
-  getState(key: string): string
+  value_title: string
+  value_pages: string
 }
 
 class ReferenceSearchForm extends Component<Props> {
@@ -20,7 +21,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
               aria-label="BibliographyTitle"
-              value={this.props.getState('title')}
+              value={this.props.value_title}
               onChange={this.props.onChange}
               searchBibliography={(query) =>
                 this.props.fragmentService.searchBibliography(query)
@@ -31,7 +32,7 @@ class ReferenceSearchForm extends Component<Props> {
             <Form.Control
               type="text"
               aria-label="Pages"
-              value={this.props.getState('pages')}
+              value={this.props.value_pages}
               onChange={this.onChangePage}
             />
           </Col>
