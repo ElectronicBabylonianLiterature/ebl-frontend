@@ -29,7 +29,6 @@ export type Line =
 export type LineDto =
   | LineBase
   | TextLineDto
-  | EmptyLine
   | LooseDollarLine
   | ImageDollarLine
   | RulingDollarLine
@@ -125,9 +124,12 @@ export class TextLine implements TextLineDto {
   }
 }
 
-export interface EmptyLine extends LineBase {
-  readonly type: 'EmptyLine'
+export class EmptyLine implements LineBase {
+  readonly type = 'EmptyLine'
+  readonly prefix = ''
+  readonly content: ReadonlyArray<Token> = []
 }
+
 export interface DollarAndAtLine extends LineBase {
   readonly displayValue: string
 }

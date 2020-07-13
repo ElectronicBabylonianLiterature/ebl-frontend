@@ -16,7 +16,12 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
-import { TextLine, TextLineDto, LineDto } from 'transliteration/domain/line'
+import {
+  EmptyLine,
+  TextLine,
+  TextLineDto,
+  LineDto,
+} from 'transliteration/domain/line'
 import { ControlLine } from 'transliteration/domain/line'
 
 function createText(text): Text {
@@ -27,6 +32,8 @@ function createText(text): Text {
           return new TextLine(lineDto as TextLineDto)
         case 'ControlLine':
           return new ControlLine(lineDto)
+        case 'EmptyLine':
+          return new EmptyLine()
         default:
           return lineDto
       }
