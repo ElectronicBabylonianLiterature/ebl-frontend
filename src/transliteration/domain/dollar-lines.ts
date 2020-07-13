@@ -1,5 +1,11 @@
 import { AbstractLine, DollarAndAtLineDto, Ruling } from './abstract-line'
 
+function addParenthesisToDisplayValue(
+  data: DollarAndAtLineDto
+): DollarAndAtLineDto {
+  return { ...data, displayValue: `(${data.displayValue})` }
+}
+
 export abstract class DollarLine extends AbstractLine {
   readonly displayValue: string
 
@@ -57,7 +63,7 @@ export class RulingDollarLine extends DollarLine {
   readonly status: string | null
 
   constructor(data: RulingDollarLineDto) {
-    super(data)
+    super(addParenthesisToDisplayValue(data))
     this.number = data.number
     this.status = data.status
   }
@@ -73,7 +79,7 @@ export class SealDollarLine extends DollarLine {
   readonly number: number
 
   constructor(data: SealDollarLineDto) {
-    super(data)
+    super(addParenthesisToDisplayValue(data))
     this.number = data.number
   }
 }
@@ -100,7 +106,7 @@ export class StateDollarLine extends DollarLine {
   readonly status: string | null
 
   constructor(data: StateDollarLineDto) {
-    super(data)
+    super(addParenthesisToDisplayValue(data))
     this.qualification = data.qualification
     this.extent = data.extent
     this.scope = data.scope

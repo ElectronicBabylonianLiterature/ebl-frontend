@@ -6,7 +6,7 @@ export abstract class AtLine extends AbstractLine {
 
   constructor(data: DollarAndAtLineDto) {
     super('@', data.content)
-    this.displayValue = data.displayValue
+    this.displayValue = `(${data.displayValue})`
   }
 }
 

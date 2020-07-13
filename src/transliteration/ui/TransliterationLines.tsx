@@ -5,10 +5,7 @@ import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from './note-links'
 import DisplayRulingDollarLine from './rulings'
 import DisplayTextLine from './text-line'
-import {
-  DisplayDollarAndAtLineWithParenthesis,
-  DisplayDollarAndAtLine,
-} from './dollar-and-at-lines'
+import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 
@@ -35,8 +32,8 @@ const lineComponents: ReadonlyMap<
 > = new Map([
   ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
-  ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
-  ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['LooseDollarLine', DisplayDollarAndAtLine],
+  ['ImageDollarLine', DisplayDollarAndAtLine],
   ['SealDollarLine', DisplayDollarAndAtLine],
   ['StateDollarLine', DisplayDollarAndAtLine],
   ['SealAtLine', DisplayDollarAndAtLine],
