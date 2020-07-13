@@ -29,11 +29,11 @@ export type Line =
 export type LineDto =
   | LineBase
   | TextLineDto
-  | LooseDollarLine
-  | ImageDollarLine
-  | RulingDollarLine
-  | SealDollarLine
-  | StateDollarLine
+  | LooseDollarLineDto
+  | ImageDollarLineDto
+  | RulingDollarLineDto
+  | SealDollarLineDto
+  | StateDollarLineDto
   | SealAtLine
   | HeadingAtLine
   | ColumnAtLine
@@ -136,31 +136,98 @@ export class EmptyLine implements LineBase {
 export interface DollarAndAtLine extends LineBase {
   readonly displayValue: string
 }
-export interface LooseDollarLine extends DollarAndAtLine {
+
+abstract class DollarLine implements DollarAndAtLine {
+  readonly [immerable] = true
+  readonly prefix = '$'
+  readonly content: ReadonlyArray<Token>
+  readonly displayValue: string
+
+  constructor(data: DollarAndAtLine) {
+    this.content = data.content
+    this.displayValue = data.displayValue
+  }
+
+  abstract get type(): string
+}
+
+export interface LooseDollarLineDto extends DollarAndAtLine {
   readonly type: 'LooseDollarLine'
   readonly text: string
 }
-export interface ImageDollarLine extends DollarAndAtLine {
+
+export class LooseDollarLine extends DollarLine {
+  readonly type = 'LooseDollarLine'
+  readonly text: string
+
+  constructor(data: LooseDollarLineDto) {
+    super(data)
+    this.text = data.text
+  }
+}
+
+export interface ImageDollarLineDto extends DollarAndAtLine {
   readonly type: 'ImageDollarLine'
   readonly number: string
   readonly letter: string | null
   readonly text: string
 }
-export interface RulingDollarLine extends DollarAndAtLine {
+
+export class ImageDollarLine extends DollarLine {
+  readonly type = 'ImageDollarLine'
+  readonly number: string
+  readonly letter: string | null
+  readonly text: string
+
+  constructor(data: ImageDollarLineDto) {
+    super(data)
+    this.number = data.number
+    this.letter = data.letter
+    this.text = data.text
+  }
+}
+
+type Ruling = 'SINGLE' | 'DOUBLE' | 'TRIPLE'
+
+export interface RulingDollarLineDto extends DollarAndAtLine {
   readonly type: 'RulingDollarLine'
-  readonly number: 'SINGLE' | 'DOUBLE' | 'TRIPLE'
+  readonly number: Ruling
   readonly status: string | null
 }
-export interface SealDollarLine extends DollarAndAtLine {
+
+export class RulingDollarLine extends DollarLine {
+  readonly type = 'RulingDollarLine'
+  readonly number: Ruling
+  readonly status: string | null
+
+  constructor(data: RulingDollarLineDto) {
+    super(data)
+    this.number = data.number
+    this.status = data.status
+  }
+}
+
+export interface SealDollarLineDto extends DollarAndAtLine {
   readonly type: 'SealDollarLine'
   readonly number: number
 }
+
+export class SealDollarLine extends DollarLine {
+  readonly type = 'SealDollarLine'
+  readonly number: number
+
+  constructor(data: SealDollarLineDto) {
+    super(data)
+    this.number = data.number
+  }
+}
+
 interface ScopeContainer {
   readonly type: string
   readonly content: string
   readonly text: string
 }
-export interface StateDollarLine extends DollarAndAtLine {
+export interface StateDollarLineDto extends DollarAndAtLine {
   readonly type: 'StateDollarLine'
   readonly qualification: string | null
   readonly extent: string | null
@@ -168,6 +235,25 @@ export interface StateDollarLine extends DollarAndAtLine {
   readonly state: string | null
   readonly status: string | null
 }
+
+export class StateDollarLine extends DollarLine {
+  readonly type = 'SealDollarLine'
+  readonly qualification: string | null
+  readonly extent: string | null
+  readonly scope: ScopeContainer | null
+  readonly state: string | null
+  readonly status: string | null
+
+  constructor(data: StateDollarLineDto) {
+    super(data)
+    this.qualification = data.qualification
+    this.extent = data.extent
+    this.scope = data.scope
+    this.state = data.state
+    this.status = data.status
+  }
+}
+
 export interface SealAtLine extends DollarAndAtLine {
   readonly type: 'SealAtLine'
   readonly number: number

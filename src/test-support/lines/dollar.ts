@@ -6,7 +6,7 @@ import {
   StateDollarLine,
 } from 'transliteration/domain/line'
 
-export const singleRuling: RulingDollarLine = {
+export const singleRuling: RulingDollarLine = new RulingDollarLine({
   prefix: '$',
   content: [
     {
@@ -21,9 +21,9 @@ export const singleRuling: RulingDollarLine = {
   status: null,
   displayValue: 'single ruling',
   type: 'RulingDollarLine',
-}
+})
 
-export const doubleRuling: RulingDollarLine = {
+export const doubleRuling: RulingDollarLine = new RulingDollarLine({
   prefix: '$',
   content: [
     {
@@ -38,9 +38,9 @@ export const doubleRuling: RulingDollarLine = {
   status: null,
   displayValue: 'double ruling',
   type: 'RulingDollarLine',
-}
+})
 
-export const tripleRuling: RulingDollarLine = {
+export const tripleRuling: RulingDollarLine = new RulingDollarLine({
   prefix: '$',
   content: [
     {
@@ -55,9 +55,9 @@ export const tripleRuling: RulingDollarLine = {
   status: null,
   displayValue: 'triple ruling',
   type: 'RulingDollarLine',
-}
+})
 
-export const state: StateDollarLine = {
+export const state: StateDollarLine = new StateDollarLine({
   prefix: '$',
   content: [
     {
@@ -79,9 +79,9 @@ export const state: StateDollarLine = {
   status: 'NEEDS_COLLATION',
   displayValue: 'line continues !?',
   type: 'StateDollarLine',
-}
+})
 
-export const image: ImageDollarLine = {
+export const image: ImageDollarLine = new ImageDollarLine({
   prefix: '$',
   content: [
     {
@@ -97,9 +97,9 @@ export const image: ImageDollarLine = {
   text: 'foo',
   displayValue: '(image 1 = foo)',
   type: 'ImageDollarLine',
-}
+})
 
-export const loose: LooseDollarLine = {
+export const loose: LooseDollarLine = new LooseDollarLine({
   prefix: '$',
   content: [
     {
@@ -113,9 +113,9 @@ export const loose: LooseDollarLine = {
   text: 'anything goes',
   displayValue: '(anything goes)',
   type: 'LooseDollarLine',
-}
+})
 
-export const seal: SealDollarLine = {
+export const seal: SealDollarLine = new SealDollarLine({
   prefix: '$',
   content: [
     {
@@ -129,4 +129,4 @@ export const seal: SealDollarLine = {
   number: 1,
   displayValue: 'seal 1',
   type: 'SealDollarLine',
-}
+})

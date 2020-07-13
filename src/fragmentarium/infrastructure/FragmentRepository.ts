@@ -23,6 +23,16 @@ import {
   LineDto,
   NoteLine,
   NoteLineDto,
+  LooseDollarLine,
+  ImageDollarLine,
+  RulingDollarLine,
+  SealDollarLine,
+  StateDollarLine,
+  LooseDollarLineDto,
+  ImageDollarLineDto,
+  RulingDollarLineDto,
+  SealDollarLineDto,
+  StateDollarLineDto,
 } from 'transliteration/domain/line'
 import { ControlLine } from 'transliteration/domain/line'
 
@@ -38,6 +48,16 @@ function createText(text): Text {
           return new EmptyLine()
         case 'NoteLine':
           return new NoteLine(lineDto as NoteLineDto)
+        case 'LooseDollarLine':
+          return new LooseDollarLine(lineDto as LooseDollarLineDto)
+        case 'ImageDollarLine':
+          return new ImageDollarLine(lineDto as ImageDollarLineDto)
+        case 'RulingDollarLine':
+          return new RulingDollarLine(lineDto as RulingDollarLineDto)
+        case 'SealDollarLine':
+          return new SealDollarLine(lineDto as SealDollarLineDto)
+        case 'StateDollarLine':
+          return new StateDollarLine(lineDto as StateDollarLineDto)
         default:
           return lineDto
       }
