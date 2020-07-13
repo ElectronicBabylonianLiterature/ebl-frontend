@@ -1,4 +1,4 @@
-import { NoteLine } from 'transliteration/domain/line'
+import { NoteLine } from 'transliteration/domain/note-line'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 

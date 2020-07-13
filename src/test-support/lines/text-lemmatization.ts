@@ -1,4 +1,4 @@
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 export const lemmatized: TextLine[] = [
   new TextLine({

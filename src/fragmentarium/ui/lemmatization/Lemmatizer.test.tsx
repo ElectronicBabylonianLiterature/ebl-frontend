@@ -10,7 +10,7 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 let element
 let fragmentService

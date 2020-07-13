@@ -6,7 +6,7 @@ import {
   DiscourseAtLine,
   SealAtLine,
   ColumnAtLine,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/at-lines'
 
 export const surface: SurfaceAtLine = new SurfaceAtLine({
   prefix: '@',

@@ -8,7 +8,7 @@ import {
   BibliographyPart,
   NoteLine,
   NoteLinePart,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/note-line'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 export default class ReferenceInjector {

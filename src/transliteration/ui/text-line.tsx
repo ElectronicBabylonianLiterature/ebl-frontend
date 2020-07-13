@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { LineNumber } from './LineNumber'
 import { LineColumns } from './line-tokens'
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
 
 export default function DisplayTextLine({

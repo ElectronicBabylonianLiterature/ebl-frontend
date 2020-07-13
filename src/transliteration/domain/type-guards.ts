@@ -1,13 +1,15 @@
+import { TextLine } from 'transliteration/domain/text-line'
+import {
+  ObjectAtLine,
+  SurfaceAtLine,
+  ColumnAtLine,
+} from 'transliteration/domain/at-lines'
 import {
   BibliographyPart,
   LanguagePart,
   NoteLinePart,
-  TextLine,
   NoteLine,
-  ObjectAtLine,
-  SurfaceAtLine,
-  ColumnAtLine,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/note-line'
 import {
   CommentaryProtocol,
   Enclosure,

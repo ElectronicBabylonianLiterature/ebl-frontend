@@ -4,7 +4,7 @@ import Word from 'dictionary/domain/Word'
 
 import { Word as WordToken } from 'transliteration/domain/token'
 import note from 'test-support/lines/note'
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 const testWord: WordToken = {
   type: 'Word',

@@ -1,5 +1,5 @@
 import { Text } from 'transliteration/domain/text'
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 import { commentaryProtocols } from 'test-support/lines/text-commentary-protocols'
 import * as at from 'test-support/lines/at'
 import * as columns from 'test-support/lines/text-columns'

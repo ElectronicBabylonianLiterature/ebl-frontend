@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React from 'react'
-import { RulingDollarLine } from 'transliteration/domain/line'
+import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { LineProps } from './LineProps'
 
 function Ruling(): JSX.Element {

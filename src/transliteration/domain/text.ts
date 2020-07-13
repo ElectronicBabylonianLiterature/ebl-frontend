@@ -5,7 +5,8 @@ import Lemmatization, {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
-import { NoteLine, TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 import { Word as TransliterationWord } from 'transliteration/domain/token'
 import {
   isTextLine,

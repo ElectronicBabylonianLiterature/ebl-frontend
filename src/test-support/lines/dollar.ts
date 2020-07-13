@@ -4,7 +4,7 @@ import {
   RulingDollarLine,
   SealDollarLine,
   StateDollarLine,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/dollar-lines'
 
 export const singleRuling: RulingDollarLine = new RulingDollarLine({
   prefix: '$',

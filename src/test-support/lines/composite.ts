@@ -1,4 +1,4 @@
-import { CompositeAtLine } from 'transliteration/domain/line'
+import { CompositeAtLine } from 'transliteration/domain/at-lines'
 
 export const composite: CompositeAtLine = new CompositeAtLine({
   prefix: '@',

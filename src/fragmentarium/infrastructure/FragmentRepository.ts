@@ -16,13 +16,9 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
+import { EmptyLine } from 'transliteration/domain/line'
+import { TextLine, TextLineDto } from 'transliteration/domain/text-line'
 import {
-  EmptyLine,
-  TextLine,
-  TextLineDto,
-  LineDto,
-  NoteLine,
-  NoteLineDto,
   LooseDollarLine,
   ImageDollarLine,
   RulingDollarLine,
@@ -33,6 +29,8 @@ import {
   RulingDollarLineDto,
   SealDollarLineDto,
   StateDollarLineDto,
+} from 'transliteration/domain/dollar-lines'
+import {
   SealAtLine,
   HeadingAtLine,
   ColumnAtLine,
@@ -49,12 +47,13 @@ import {
   ObjectAtLineDto,
   DivisionAtLineDto,
   CompositeAtLineDto,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/at-lines'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ControlLine } from 'transliteration/domain/line'
 
 function createText(text): Text {
   return new Text({
-    lines: text.lines.map((lineDto: LineDto) => {
+    lines: text.lines.map((lineDto) => {
       switch (lineDto.type) {
         case 'TextLine':
           return new TextLine(lineDto as TextLineDto)

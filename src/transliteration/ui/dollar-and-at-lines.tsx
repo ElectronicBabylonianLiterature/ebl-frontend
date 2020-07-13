@@ -1,5 +1,6 @@
 import React from 'react'
-import { AtLine, DollarLine } from 'transliteration/domain/line'
+import { DollarLine } from 'transliteration/domain/dollar-lines'
+import { AtLine } from 'transliteration/domain/at-lines'
 import { LineProps } from './LineProps'
 
 export function DisplayDollarAndAtLineWithParenthesis({
