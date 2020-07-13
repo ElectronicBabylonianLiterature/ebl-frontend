@@ -7,10 +7,9 @@ import NumberSearchForm from './NumberSearchForm'
 
 it('Calls onChange on User Input', async () => {
   const onChange = jest.fn()
-  const getState = jest.fn()
   const element = render(
     <MemoryRouter>
-      <NumberSearchForm onChange={onChange} getState={getState} />
+      <NumberSearchForm onChange={onChange} value={''} />
     </MemoryRouter>
   )
 
