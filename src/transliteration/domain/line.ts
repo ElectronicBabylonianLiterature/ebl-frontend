@@ -34,14 +34,14 @@ export type LineDto =
   | RulingDollarLineDto
   | SealDollarLineDto
   | StateDollarLineDto
-  | SealAtLine
-  | HeadingAtLine
-  | ColumnAtLine
-  | DiscourseAtLine
-  | SurfaceAtLine
-  | ObjectAtLine
-  | DivisionAtLine
-  | CompositeAtLine
+  | SealAtLineDto
+  | HeadingAtLineDto
+  | ColumnAtLineDto
+  | DiscourseAtLineDto
+  | SurfaceAtLineDto
+  | ObjectAtLineDto
+  | DivisionAtLineDto
+  | CompositeAtLineDto
   | NoteLineDto
 
 export interface LineBase {
@@ -254,40 +254,146 @@ export class StateDollarLine extends DollarLine {
   }
 }
 
-export interface SealAtLine extends DollarAndAtLine {
+abstract class AtLine implements DollarAndAtLine {
+  readonly [immerable] = true
+  readonly prefix = '@'
+  readonly content: ReadonlyArray<Token>
+  readonly displayValue: string
+
+  constructor(data: DollarAndAtLine) {
+    this.content = data.content
+    this.displayValue = data.displayValue
+  }
+
+  abstract get type(): string
+}
+export interface SealAtLineDto extends DollarAndAtLine {
   readonly type: 'SealAtLine'
   readonly number: number
 }
-export interface HeadingAtLine extends DollarAndAtLine {
+
+export class SealAtLine extends AtLine {
+  readonly type = 'SealAtLine'
+  readonly number: number
+
+  constructor(data: SealAtLineDto) {
+    super(data)
+    this.number = data.number
+  }
+}
+
+export interface HeadingAtLineDto extends DollarAndAtLine {
   readonly type: 'HeadingAtLine'
   readonly number: number
 }
-export interface ColumnAtLine extends DollarAndAtLine {
+
+export class HeadingAtLine extends AtLine {
+  readonly type = 'HeadingAtLine'
+  readonly number: number
+
+  constructor(data: HeadingAtLineDto) {
+    super(data)
+    this.number = data.number
+  }
+}
+
+export interface ColumnAtLineDto extends DollarAndAtLine {
   readonly type: 'ColumnAtLine'
   readonly column_label: ColumnLabel
 }
-export interface DiscourseAtLine extends DollarAndAtLine {
+
+export class ColumnAtLine extends AtLine {
+  readonly type = 'ColumnAtLine'
+  readonly label: ColumnLabel
+
+  constructor(data: ColumnAtLineDto) {
+    super(data)
+    this.label = data.column_label
+  }
+}
+
+export interface DiscourseAtLineDto extends DollarAndAtLine {
   readonly type: 'DiscourseAtLine'
   readonly discourse_label: string
 }
-export interface SurfaceAtLine extends DollarAndAtLine {
+
+export class DiscourseAtLine extends AtLine {
+  readonly type = 'DiscourseAtLine'
+  readonly label: string
+
+  constructor(data: DiscourseAtLineDto) {
+    super(data)
+    this.label = data.discourse_label
+  }
+}
+
+export interface SurfaceAtLineDto extends DollarAndAtLine {
   readonly type: 'SurfaceAtLine'
   readonly surface_label: SurfaceLabel
 }
-export interface ObjectAtLine extends DollarAndAtLine {
+
+export class SurfaceAtLine extends AtLine {
+  readonly type = 'SurfaceAtLine'
+  readonly label: SurfaceLabel
+
+  constructor(data: SurfaceAtLineDto) {
+    super(data)
+    this.label = data.surface_label
+  }
+}
+
+export interface ObjectAtLineDto extends DollarAndAtLine {
   readonly type: 'ObjectAtLine'
   readonly label: ObjectLabel
 }
-export interface DivisionAtLine extends DollarAndAtLine {
+
+export class ObjectAtLine extends AtLine {
+  readonly type = 'ObjectAtLine'
+  readonly label: ObjectLabel
+
+  constructor(data: ObjectAtLineDto) {
+    super(data)
+    this.label = data.label
+  }
+}
+
+export interface DivisionAtLineDto extends DollarAndAtLine {
   readonly type: 'DivisionAtLine'
   readonly number: number | null
   readonly text: string
 }
-export interface CompositeAtLine extends DollarAndAtLine {
+
+export class DivisionAtLine extends AtLine {
+  readonly type = 'DivisionAtLine'
+  readonly number: number | null
+  readonly text: string
+
+  constructor(data: DivisionAtLineDto) {
+    super(data)
+    this.number = data.number
+    this.text = data.text
+  }
+}
+
+export interface CompositeAtLineDto extends DollarAndAtLine {
   readonly type: 'CompositeAtLine'
   readonly composite: string
   readonly number: number | null
   readonly text: string
+}
+
+export class CompositeAtLine extends AtLine {
+  readonly type = 'CompositeAtLine'
+  readonly composite: string
+  readonly number: number | null
+  readonly text: string
+
+  constructor(data: CompositeAtLineDto) {
+    super(data)
+    this.composite = data.composite
+    this.number = data.number
+    this.text = data.text
+  }
 }
 
 export interface TextPart {

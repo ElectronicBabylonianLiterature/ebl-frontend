@@ -8,7 +8,7 @@ import {
   ColumnAtLine,
 } from 'transliteration/domain/line'
 
-export const surface: SurfaceAtLine = {
+export const surface: SurfaceAtLine = new SurfaceAtLine({
   prefix: '@',
   content: [
     {
@@ -28,9 +28,9 @@ export const surface: SurfaceAtLine = {
   },
   displayValue: 'obverse?!',
   type: 'SurfaceAtLine',
-}
+})
 
-export const object: ObjectAtLine = {
+export const object: ObjectAtLine = new ObjectAtLine({
   prefix: '@',
   content: [
     {
@@ -49,9 +49,9 @@ export const object: ObjectAtLine = {
   },
   displayValue: 'object Stone wig',
   type: 'ObjectAtLine',
-}
+})
 
-export const column: ColumnAtLine = {
+export const column: ColumnAtLine = new ColumnAtLine({
   prefix: '@',
   content: [
     {
@@ -70,9 +70,9 @@ export const column: ColumnAtLine = {
   },
   displayValue: 'column 3?',
   type: 'ColumnAtLine',
-}
+})
 
-export const heading: HeadingAtLine = {
+export const heading: HeadingAtLine = new HeadingAtLine({
   prefix: '@',
   content: [
     {
@@ -86,9 +86,9 @@ export const heading: HeadingAtLine = {
   number: 1,
   displayValue: 'h1',
   type: 'HeadingAtLine',
-}
+})
 
-export const division: DivisionAtLine = {
+export const division: DivisionAtLine = new DivisionAtLine({
   prefix: '@',
   content: [
     {
@@ -103,9 +103,9 @@ export const division: DivisionAtLine = {
   number: 1,
   displayValue: 'm=division paragraph 1',
   type: 'DivisionAtLine',
-}
+})
 
-export const discourse: DiscourseAtLine = {
+export const discourse: DiscourseAtLine = new DiscourseAtLine({
   prefix: '@',
   content: [
     {
@@ -120,9 +120,9 @@ export const discourse: DiscourseAtLine = {
   discourse_label: 'COLOPHON',
   displayValue: 'colophon',
   type: 'DiscourseAtLine',
-}
+})
 
-export const seal: SealAtLine = {
+export const seal: SealAtLine = new SealAtLine({
   prefix: '@',
   content: [
     {
@@ -136,4 +136,4 @@ export const seal: SealAtLine = {
   number: 1,
   displayValue: 'seal 1',
   type: 'SealAtLine',
-}
+})

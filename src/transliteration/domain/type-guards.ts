@@ -70,13 +70,13 @@ export function isNoteLine(line: Line): line is NoteLine {
 }
 
 export function isObjectAtLine(line: Line): line is ObjectAtLine {
-  return line.type === 'ObjectAtLine'
+  return line instanceof ObjectAtLine
 }
 
 export function isSurfaceAtLine(line: Line): line is SurfaceAtLine {
-  return line.type === 'SurfaceAtLine'
+  return line instanceof SurfaceAtLine
 }
 
 export function isColumnAtLine(line: Line): line is ColumnAtLine {
-  return line.type === 'ColumnAtLine'
+  return line instanceof ColumnAtLine
 }

@@ -134,9 +134,9 @@ export class Text {
         } else if (isObjectAtLine(line)) {
           return [current.setObject(line.label), lines]
         } else if (isSurfaceAtLine(line)) {
-          return [current.setSurface(line.surface_label), lines]
+          return [current.setSurface(line.label), lines]
         } else if (isColumnAtLine(line)) {
-          return [current.setColumn(line.column_label), lines]
+          return [current.setColumn(line.label), lines]
         } else {
           return [current, lines]
         }

@@ -33,6 +33,22 @@ import {
   RulingDollarLineDto,
   SealDollarLineDto,
   StateDollarLineDto,
+  SealAtLine,
+  HeadingAtLine,
+  ColumnAtLine,
+  DiscourseAtLine,
+  SurfaceAtLine,
+  ObjectAtLine,
+  DivisionAtLine,
+  CompositeAtLine,
+  SealAtLineDto,
+  HeadingAtLineDto,
+  ColumnAtLineDto,
+  DiscourseAtLineDto,
+  SurfaceAtLineDto,
+  ObjectAtLineDto,
+  DivisionAtLineDto,
+  CompositeAtLineDto,
 } from 'transliteration/domain/line'
 import { ControlLine } from 'transliteration/domain/line'
 
@@ -58,6 +74,22 @@ function createText(text): Text {
           return new SealDollarLine(lineDto as SealDollarLineDto)
         case 'StateDollarLine':
           return new StateDollarLine(lineDto as StateDollarLineDto)
+        case 'SealAtLine':
+          return new SealAtLine(lineDto as SealAtLineDto)
+        case 'HeadingAtLine':
+          return new HeadingAtLine(lineDto as HeadingAtLineDto)
+        case 'ColumnAtLine':
+          return new ColumnAtLine(lineDto as ColumnAtLineDto)
+        case 'DiscourseAtLine':
+          return new DiscourseAtLine(lineDto as DiscourseAtLineDto)
+        case 'SurfaceAtLine':
+          return new SurfaceAtLine(lineDto as SurfaceAtLineDto)
+        case 'ObjectAtLine':
+          return new ObjectAtLine(lineDto as ObjectAtLineDto)
+        case 'DivisionAtLine':
+          return new DivisionAtLine(lineDto as DivisionAtLineDto)
+        case 'CompositeAtLine':
+          return new CompositeAtLine(lineDto as CompositeAtLineDto)
         default:
           return lineDto
       }
