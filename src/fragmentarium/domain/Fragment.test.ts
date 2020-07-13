@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Fragment, RecordEntry, UncuratedReference } from './fragment'
 import Folio from './Folio'
-import { Text } from '../../transliteration/domain/text'
+import { Text } from 'transliteration/domain/text'
 import {
   atEleven,
   atTen,
@@ -21,6 +21,7 @@ import {
   year2018,
 } from 'test-support/record-fixtures'
 import Museum from './museum'
+import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 
 const config = {
   number: 'K.1',
@@ -47,7 +48,7 @@ const config = {
   ],
   text: new Text({
     lines: [
-      {
+      new LooseDollarLine({
         type: 'LooseDollarLine',
         text: 'atf',
         displayValue: '(atf)',
@@ -60,7 +61,7 @@ const config = {
             enclosureType: [],
           },
         ],
-      },
+      }),
     ],
   }),
   notes: 'Some notes',
