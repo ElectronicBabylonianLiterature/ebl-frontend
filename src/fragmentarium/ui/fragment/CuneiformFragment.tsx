@@ -212,6 +212,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
     const updatePromise = promise.then((updatedFragment) => {
       setFragment(updatedFragment)
       setIsSaving(false)
+      return updatedFragment
     })
     setPromise(
       updatePromise.catch((error) => {

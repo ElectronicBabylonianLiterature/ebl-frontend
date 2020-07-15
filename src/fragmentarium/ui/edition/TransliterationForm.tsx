@@ -13,11 +13,15 @@ import Promise from 'bluebird'
 import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 type Props = {
   transliteration: string
   notes: string
-  updateTransliteration
+  updateTransliteration: (
+    transliteration: string,
+    notes: string
+  ) => Promise<Fragment>
   disabled: boolean
 }
 type State = {
@@ -46,32 +50,32 @@ class TransliteratioForm extends Component<Props, State> {
     this.updatePromise = Promise.resolve()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.updatePromise.cancel()
   }
 
-  get hasChanges() {
+  get hasChanges(): boolean {
     const transliterationChanged =
       this.state.transliteration !== this.props.transliteration
     const notesChanged = this.state.notes !== this.props.notes
     return transliterationChanged || notesChanged
   }
 
-  update = (property) => (value) => {
+  update = (property: string) => (value: string): void => {
     this.setState({
       ...this.state,
       [property]: value,
     })
   }
 
-  onTemplate = (template) => {
+  onTemplate = (template: string): void => {
     this.setState({
       ...this.state,
       transliteration: template,
     })
   }
 
-  submit = (event) => {
+  submit = (event): void => {
     event.preventDefault()
     this.setState({
       ...this.state,
@@ -79,6 +83,13 @@ class TransliteratioForm extends Component<Props, State> {
     })
     this.updatePromise = this.props
       .updateTransliteration(this.state.transliteration, this.state.notes)
+      .then((fragment) =>
+        this.setState({
+          ...this.state,
+          transliteration: fragment.atf,
+          notes: fragment.notes,
+        })
+      )
       .catch((error) =>
         this.setState({
           ...this.state,
@@ -87,7 +98,15 @@ class TransliteratioForm extends Component<Props, State> {
       )
   }
 
-  EditorFormGroup = ({ property, error, showHelp }) => (
+  EditorFormGroup = ({
+    property,
+    error = null,
+    showHelp = false,
+  }: {
+    property: string
+    error?: Error | null
+    showHelp?: boolean
+  }): JSX.Element => (
     <FormGroup controlId={`${this.formId}-${property}`}>
       <FormLabel>{_.startCase(property)}</FormLabel>{' '}
       {showHelp && <SpecialCharactersHelp />}
@@ -101,7 +120,7 @@ class TransliteratioForm extends Component<Props, State> {
     </FormGroup>
   )
 
-  Form = () => (
+  Form = (): JSX.Element => (
     <form
       onSubmit={this.submit}
       id={this.formId}
@@ -112,11 +131,11 @@ class TransliteratioForm extends Component<Props, State> {
         error={this.state.error}
         showHelp
       />
-      <this.EditorFormGroup property="notes" error={null} showHelp={false} />
+      <this.EditorFormGroup property="notes" />
     </form>
   )
 
-  SubmitButton = () => (
+  SubmitButton = (): JSX.Element => (
     <Button
       type="submit"
       variant="primary"
@@ -127,7 +146,7 @@ class TransliteratioForm extends Component<Props, State> {
     </Button>
   )
 
-  render() {
+  render(): JSX.Element {
     return (
       <Container fluid>
         <Row>
