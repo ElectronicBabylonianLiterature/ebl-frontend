@@ -7,8 +7,8 @@ type Props = {
   onChangeId(value: string): void
   onChangeTitle(value: string): void
   onChangePages(value: string): void
-  value_title: string | null | undefined
-  value_pages: string | null | undefined
+  valueTitle: string | null | undefined
+  valuePages: string | null | undefined
 }
 
 class ReferenceSearchForm extends Component<Props> {
@@ -27,7 +27,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
               aria-labelledby={'BibliographyTitle'}
-              value={this.props.value_title || ''}
+              value={this.props.valueTitle || ''}
               onChange={this.onChange}
               searchBibliography={(query) =>
                 this.props.fragmentService.searchBibliography(query)
@@ -38,7 +38,7 @@ class ReferenceSearchForm extends Component<Props> {
             <Form.Control
               type="text"
               aria-label="Pages"
-              value={this.props.value_pages || ''}
+              value={this.props.valuePages || ''}
               onChange={this.onChangePages}
             />
           </Col>

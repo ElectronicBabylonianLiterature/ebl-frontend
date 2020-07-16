@@ -12,7 +12,6 @@ class NumberSearchForm extends Component<Props> {
   }
 
   render() {
-    const value = this.props.value || ''
     return (
       <Form>
         <Form.Group as={Row} controlId="number">

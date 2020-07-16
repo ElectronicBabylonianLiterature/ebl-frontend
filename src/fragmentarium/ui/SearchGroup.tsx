@@ -33,10 +33,6 @@ class SearchGroup extends Component<Props, State> {
     this.onChangeId = this.onChangeId.bind(this)
   }
 
-  onChange(searchForm: string, searchQuery: string): void {
-    this.setState({ [searchForm]: searchQuery } as Pick<State, keyof State>)
-  }
-
   onChangeNumber(value: string): void {
     this.setState({ number: value })
   }
@@ -65,19 +61,19 @@ class SearchGroup extends Component<Props, State> {
       <>
         <NumberSearchForm
           onChangeNumber={this.onChangeNumber}
-          value={this.props.number}
+          value={this.state.number}
         />
         <ReferenceSearchForm
           onChangeId={this.onChangeId}
           onChangeTitle={this.onChangeTitle}
           onChangePages={this.onChangePages}
-          value_title={this.props.title}
-          value_pages={this.props.pages}
+          valueTitle={this.state.title}
+          valuePages={this.state.pages}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
           onChangeTransliteration={this.onChangeTransliteration}
-          value={this.props.transliteration}
+          value={this.state.transliteration}
         />
         <ButtonToolbar>
           <Col sm={{ offset: 2 }}>
