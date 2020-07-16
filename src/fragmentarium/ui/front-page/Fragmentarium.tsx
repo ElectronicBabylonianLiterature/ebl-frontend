@@ -16,6 +16,8 @@ interface Props {
   number: string | null | undefined
   id: string | null | undefined
   title: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
   fragmentService
@@ -25,6 +27,8 @@ interface Props {
 function Fragmentarium({
   number,
   title,
+  primaryAuthor,
+  year,
   id,
   pages,
   transliteration,
@@ -42,6 +46,8 @@ function Fragmentarium({
                   <SearchGroup
                     number={number}
                     id={id}
+                    primaryAuthor={primaryAuthor}
+                    year={year}
                     title={title}
                     pages={pages}
                     transliteration={transliteration}

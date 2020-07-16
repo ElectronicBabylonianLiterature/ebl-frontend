@@ -4,30 +4,13 @@ import BibliographySelect from '../../../bibliography/ui/BibliographySelect'
 
 type Props = {
   fragmentService
-  onChangeId(value: string): void
-  onChangeTitle(value: string): void
   onChangePages(value: any): void
-  onChangeValue(value: any): void
-  valueTitle: string | null | undefined
+  onChangeBibliographyReference(value: any): void
+  valueBibReference: any
   valuePages: string | null | undefined
 }
-interface State {
-  value: any
-}
-class ReferenceSearchForm extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: undefined,
-    }
-  }
-  onChange = (event) => {
-    this.props.onChangeTitle(event.cslData.title || '')
-    this.props.onChangeId(event.cslData.id)
-    this.props.onChangeValue(event.cslData)
-    this.setState({ value: event.cslData })
-  }
 
+class ReferenceSearchForm extends Component<Props> {
   render() {
     return (
       <Form>
@@ -35,8 +18,8 @@ class ReferenceSearchForm extends Component<Props, State> {
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
               aria-labelledby={'BibliographyTitle'}
-              value={this.props.valueTitle}
-              onChange={this.onChange}
+              value={this.props.valueBibReference}
+              onChange={this.props.onChangeBibliographyReference}
               searchBibliography={(query) =>
                 this.props.fragmentService.searchBibliography(query)
               }

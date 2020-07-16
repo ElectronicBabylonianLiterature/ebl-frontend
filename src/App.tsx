@@ -56,6 +56,8 @@ function parseFragmentSearchParams(
 ): {
   number: string | null | undefined
   id: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
   title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
@@ -63,6 +65,8 @@ function parseFragmentSearchParams(
   return {
     number: parseStringParam(location, 'number'),
     id: parseStringParam(location, 'id'),
+    primaryAuthor: parseStringParam(location, 'primaryAuthor'),
+    year: parseStringParam(location, 'year'),
     title: parseStringParam(location, 'title'),
     pages: parseStringParam(location, 'pages'),
     transliteration: parseStringParam(location, 'transliteration'),

@@ -15,6 +15,8 @@ interface Props {
   number: string | null | undefined
   id: string | null | undefined
   title: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
   fragmentService
@@ -25,6 +27,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
   id,
   title,
+  primaryAuthor,
+  year,
   pages,
   transliteration,
   fragmentService,
@@ -44,6 +48,8 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 <SearchGroup
                   number={number}
                   id={id}
+                  primaryAuthor={primaryAuthor}
+                  year={year}
                   title={title}
                   pages={pages}
                   fragmentService={fragmentService}

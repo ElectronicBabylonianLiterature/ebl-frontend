@@ -10,9 +10,7 @@ import ReferenceSearchForm from 'fragmentarium/ui/search/ReferenceSearchForm'
 
 interface State {
   number: string | null | undefined
-  id: string | null | undefined
-  title: string | null | undefined
-  value: any
+  referenceEntry: any
   pages: string | null | undefined
   transliteration: string | null | undefined
 }
@@ -20,6 +18,8 @@ interface State {
 type Props = {
   number: string | null | undefined
   id: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
   title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
@@ -33,40 +33,52 @@ class SearchGroup extends Component<Props, State> {
     super(props)
     this.state = {
       number: this.props.number || '',
-      title: this.props.title || '',
-      value: undefined,
-      id: this.props.id || '',
+      referenceEntry: {
+        id: this.props.id || '',
+        title: this.props.title || '',
+        primaryAuthor: this.props.primaryAuthor || '',
+        year: this.props.year || '',
+      },
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
     }
-    this.onChangeTitle = this.onChangeTitle.bind(this)
-    this.onChangePages = this.onChangePages.bind(this)
-    this.onChangeId = this.onChangeId.bind(this)
-    this.onChangeValue = this.onChangeValue.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.onChangeBibliographyReference = this.onChangeBibliographyReference.bind(
+      this
+    )
   }
 
   onChange = (event) => {
     const { name, value } = event.target
     this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
-  onChangePages(value: string): void {
-    this.setState({ pages: value })
+  onChangeBibliographyReference = (event) => {
+    const newState = { ...this.state }
+    newState.referenceEntry.title = event.cslData.title || ''
+    newState.referenceEntry.id = event.cslData.id || ''
+    newState.referenceEntry.primaryAuthor = event.cslData.author[0].family || ''
+    newState.referenceEntry.year =
+      event.cslData.issued['date-parts'][0][0] || ''
+    this.setState(({ newState } as unknown) as State)
   }
 
-  onChangeTitle(value: string): void {
-    this.setState({ title: value })
+  flattenState(state: State) {
+    const flattenedState = {
+      number: state.number,
+      id: state.referenceEntry.id,
+      title: state.referenceEntry.title,
+      primaryAuthor: state.referenceEntry.primaryAuthor,
+      year: state.referenceEntry.year,
+      pages: state.pages,
+      transliteration: state.transliteration,
+    }
+    return flattenedState
   }
-  onChangeId(value: string): void {
-    this.setState({ id: value })
-  }
-
-  onChangeValue(value: any): void {
-    this.setState({ value: value })
-  }
-
   search = (event) => {
     event.preventDefault()
-    this.props.history.push(`/fragmentarium/search/?${stringify(this.state)}`)
+    this.props.history.push(
+      `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
+    )
   }
 
   render() {
@@ -74,11 +86,9 @@ class SearchGroup extends Component<Props, State> {
       <>
         <NumberSearchForm onChange={this.onChange} value={this.state.number} />
         <ReferenceSearchForm
-          onChangeId={this.onChangeId}
-          onChangeTitle={this.onChangeTitle}
           onChangePages={this.onChange}
-          onChangeValue={this.onChangeValue}
-          valueTitle={this.state.value}
+          onChangeBibliographyReference={this.onChangeBibliographyReference}
+          valueBibReference={this.state.referenceEntry}
           valuePages={this.state.pages}
           fragmentService={this.props.fragmentService}
         />
