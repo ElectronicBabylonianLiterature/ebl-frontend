@@ -26,27 +26,19 @@ class SearchGroup extends Component<Props, State> {
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
     }
-    this.onChangeNumber = this.onChangeNumber.bind(this)
-    this.onChangeTransliteration = this.onChangeTransliteration.bind(this)
-    this.onChangeTitle = this.onChangeTitle.bind(this)
-    this.onChangePages = this.onChangePages.bind(this)
-    this.onChangeId = this.onChangeId.bind(this)
   }
 
-  onChangeNumber(value: string): void {
-    this.setState({ number: value })
+  onChange = (event) => {
+    const { name, value } = event.target
+    this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
-  onChangeTransliteration(value: string): void {
-    this.setState({ transliteration: value })
-  }
-
   onChangePages(value: string): void {
     this.setState({ pages: value })
   }
+
   onChangeTitle(value: string): void {
     this.setState({ title: value })
   }
-
   onChangeId(value: string): void {
     this.setState({ id: value })
   }
@@ -59,10 +51,7 @@ class SearchGroup extends Component<Props, State> {
   render() {
     return (
       <>
-        <NumberSearchForm
-          onChangeNumber={this.onChangeNumber}
-          value={this.state.number}
-        />
+        <NumberSearchForm onChange={this.onChange} value={this.state.number} />
         <ReferenceSearchForm
           onChangeId={this.onChangeId}
           onChangeTitle={this.onChangeTitle}
@@ -72,7 +61,7 @@ class SearchGroup extends Component<Props, State> {
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
-          onChangeTransliteration={this.onChangeTransliteration}
+          onChange={this.onChange}
           value={this.state.transliteration}
         />
         <ButtonToolbar>

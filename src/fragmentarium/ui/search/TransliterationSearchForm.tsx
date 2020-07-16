@@ -32,15 +32,11 @@ function TransliterationSearchHelp() {
 }
 
 type Props = {
-  onChangeTransliteration(value: string): void
+  onChange(value: any): void
   value: string | null | undefined
 }
 
 class TransliterationSearchForm extends Component<Props> {
-  onChange = (event) => {
-    this.props.onChangeTransliteration(event.target.value || '')
-  }
-
   render() {
     let rows = 0
     if (this.props.value) {
@@ -63,7 +59,8 @@ class TransliterationSearchForm extends Component<Props> {
               rows={Math.max(2, rows)}
               placeholder="Search transliterations"
               aria-label="Transliteration"
-              onChange={this.onChange}
+              name="transliteration"
+              onChange={this.props.onChange}
             />
           </Col>
         </Form.Group>
