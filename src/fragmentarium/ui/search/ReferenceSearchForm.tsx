@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
-import BibliographySelect from './BibliographySelect'
+import BibliographySelect from '../../../bibliography/ui/BibliographySelect'
 
 type Props = {
   fragmentService
-  onChange(searchForm: string, searchQuery: string): void
-  value_title: string
-  value_pages: string
+  onChangeId(value: string): void
+  onChangeTitle(value: string): void
+  onChangePages(value: string): void
+  value_title: string | null | undefined
+  value_pages: string | null | undefined
 }
 
 class ReferenceSearchForm extends Component<Props> {
-  onChangePage = (event) => {
-    this.props.onChange('pages', event.target.value || '')
+  onChangePages = (event) => {
+    this.props.onChangePages(event.target.value || '')
+  }
+
+  onChange = (event) => {
+    console.log(event)
   }
 
   render() {
@@ -20,9 +26,9 @@ class ReferenceSearchForm extends Component<Props> {
         <Form.Group as={Row} controlId="reference">
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
-              aria-label="BibliographyTitle"
-              value={this.props.value_title}
-              onChange={this.props.onChange}
+              aria-labelledby={'BibliographyTitle'}
+              value={this.props.value_title || ''}
+              onChange={this.onChange}
               searchBibliography={(query) =>
                 this.props.fragmentService.searchBibliography(query)
               }
@@ -32,8 +38,8 @@ class ReferenceSearchForm extends Component<Props> {
             <Form.Control
               type="text"
               aria-label="Pages"
-              value={this.props.value_pages}
-              onChange={this.onChangePage}
+              value={this.props.value_pages || ''}
+              onChange={this.onChangePages}
             />
           </Col>
         </Form.Group>

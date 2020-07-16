@@ -26,15 +26,33 @@ class SearchGroup extends Component<Props, State> {
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
     }
-    this.onChange = this.onChange.bind(this)
-    this.getState = this.getState.bind(this)
+    this.onChangeNumber = this.onChangeNumber.bind(this)
+    this.onChangeTransliteration = this.onChangeTransliteration.bind(this)
+    this.onChangeTitle = this.onChangeTitle.bind(this)
+    this.onChangePages = this.onChangePages.bind(this)
+    this.onChangeId = this.onChangeId.bind(this)
   }
 
   onChange(searchForm: string, searchQuery: string): void {
     this.setState({ [searchForm]: searchQuery } as Pick<State, keyof State>)
   }
-  getState(key: string): string {
-    return this.state[key] ? this.state[key] : ''
+
+  onChangeNumber(value: string): void {
+    this.setState({ number: value })
+  }
+  onChangeTransliteration(value: string): void {
+    this.setState({ transliteration: value })
+  }
+
+  onChangePages(value: string): void {
+    this.setState({ pages: value })
+  }
+  onChangeTitle(value: string): void {
+    this.setState({ title: value })
+  }
+
+  onChangeId(value: string): void {
+    this.setState({ id: value })
   }
 
   search = (event) => {
@@ -46,18 +64,20 @@ class SearchGroup extends Component<Props, State> {
     return (
       <>
         <NumberSearchForm
-          onChange={this.onChange}
-          value={this.getState('number')}
+          onChangeNumber={this.onChangeNumber}
+          value={this.props.number}
         />
         <ReferenceSearchForm
-          onChange={this.onChange}
-          value_title={this.getState('title')}
-          value_pages={this.getState('pages')}
+          onChangeId={this.onChangeId}
+          onChangeTitle={this.onChangeTitle}
+          onChangePages={this.onChangePages}
+          value_title={this.props.title}
+          value_pages={this.props.pages}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
-          onChange={this.onChange}
-          value={this.getState('transliteration')}
+          onChangeTransliteration={this.onChangeTransliteration}
+          value={this.props.transliteration}
         />
         <ButtonToolbar>
           <Col sm={{ offset: 2 }}>

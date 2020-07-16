@@ -31,21 +31,21 @@ function TransliterationSearchHelp() {
   )
 }
 
-type State = {
-  transliteration: string
-}
 type Props = {
-  onChange(searchForm: string, searchQuery: string): void
-  value: string
+  onChangeTransliteration(value: string): void
+  value: string | null | undefined
 }
 
-class TransliterationSearchForm extends Component<Props, State> {
+class TransliterationSearchForm extends Component<Props> {
   onChange = (event) => {
-    this.props.onChange('transliteration', event.target.value || '')
+    this.props.onChangeTransliteration(event.target.value || '')
   }
 
   render() {
-    const rows = this.props.value.split('\n').length
+    let rows = 0
+    if (this.props.value) {
+      rows = this.props.value.split('\n').length
+    }
     return (
       <Form>
         <Form.Group as={Row} controlId="transliteration">
@@ -59,7 +59,7 @@ class TransliterationSearchForm extends Component<Props, State> {
           <Col sm={10}>
             <Form.Control
               as="textarea"
-              value={this.props.value}
+              value={this.props.value || ''}
               rows={Math.max(2, rows)}
               placeholder="Search transliterations"
               aria-label="Transliteration"
