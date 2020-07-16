@@ -7,14 +7,20 @@ import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Button, ButtonToolbar, Col } from 'react-bootstrap'
 import { stringify } from 'query-string'
 import ReferenceSearchForm from 'fragmentarium/ui/search/ReferenceSearchForm'
-import {
-  FragmentariumSearchParams,
-  SearchGroupParams,
-} from 'fragmentarium/ui/fragmentariumSearch'
 
-type State = SearchGroupParams
+interface State {
+  number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  pages: string | null | undefined
+  transliteration: string | null | undefined
+}
 
-type Props = FragmentariumSearchParams & RouteComponentProps
+type Props = State & {
+  fragmentService
+  fragmentSearchService
+  history: History
+} & RouteComponentProps
 
 class SearchGroup extends Component<Props, State> {
   constructor(props) {

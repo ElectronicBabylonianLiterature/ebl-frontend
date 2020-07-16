@@ -6,13 +6,20 @@ import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
-import './FragmentariumSearch.css'
+import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import { FragmentariumSearchParams } from 'fragmentarium/ui/fragmentariumSearch'
-import ReferenceSearch from './ReferenceSearch'
+import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 
-type Props = FragmentariumSearchParams
+interface Props {
+  number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  pages: string | null | undefined
+  transliteration: string | null | undefined
+  fragmentService
+  fragmentSearchService
+}
 
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,

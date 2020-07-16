@@ -8,13 +8,19 @@ import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
-import './Fragmentarium.css'
+import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
-import { FragmentariumSearchParams } from '../fragmentariumSearch'
-
-type Props = FragmentariumSearchParams
+interface Props {
+  number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  pages: string | null | undefined
+  transliteration: string | null | undefined
+  fragmentService
+  fragmentSearchService
+}
 
 function Fragmentarium({
   number,
