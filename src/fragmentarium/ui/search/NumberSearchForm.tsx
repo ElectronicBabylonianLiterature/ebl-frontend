@@ -18,7 +18,7 @@ class NumberSearchForm extends Component<Props> {
           <Col sm={{ span: 10, offset: 2 }}>
             <Form.Control
               type="text"
-              value={value}
+              value={this.props.value || ''}
               placeholder="Search museum, accession, or CDLI number"
               aria-label="Number"
               onChange={this.onChange}
