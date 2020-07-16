@@ -45,8 +45,6 @@ export default class BibliographySelect extends Component<
     this.setState({
       selectedOption: selectedOption.label,
     })
-    this.props.onChange('title', selectedOption.label)
-    this.props.onChange('id', selectedOption.entry.cslData.id)
   }
 
   render() {

@@ -12,11 +12,17 @@ interface State {
   number: string | null | undefined
   id: string | null | undefined
   title: string | null | undefined
+  value: any
   pages: string | null | undefined
   transliteration: string | null | undefined
 }
 
-type Props = State & {
+type Props = {
+  number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  pages: string | null | undefined
+  transliteration: string | null | undefined
   fragmentService
   fragmentSearchService
   history: History
@@ -28,10 +34,15 @@ class SearchGroup extends Component<Props, State> {
     this.state = {
       number: this.props.number || '',
       title: this.props.title || '',
+      value: undefined,
       id: this.props.id || '',
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
     }
+    this.onChangeTitle = this.onChangeTitle.bind(this)
+    this.onChangePages = this.onChangePages.bind(this)
+    this.onChangeId = this.onChangeId.bind(this)
+    this.onChangeValue = this.onChangeValue.bind(this)
   }
 
   onChange = (event) => {
@@ -49,6 +60,10 @@ class SearchGroup extends Component<Props, State> {
     this.setState({ id: value })
   }
 
+  onChangeValue(value: any): void {
+    this.setState({ value: value })
+  }
+
   search = (event) => {
     event.preventDefault()
     this.props.history.push(`/fragmentarium/search/?${stringify(this.state)}`)
@@ -61,8 +76,9 @@ class SearchGroup extends Component<Props, State> {
         <ReferenceSearchForm
           onChangeId={this.onChangeId}
           onChangeTitle={this.onChangeTitle}
-          onChangePages={this.onChangePages}
-          valueTitle={this.state.title}
+          onChangePages={this.onChange}
+          onChangeValue={this.onChangeValue}
+          valueTitle={this.state.value}
           valuePages={this.state.pages}
           fragmentService={this.props.fragmentService}
         />

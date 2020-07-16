@@ -6,18 +6,26 @@ type Props = {
   fragmentService
   onChangeId(value: string): void
   onChangeTitle(value: string): void
-  onChangePages(value: string): void
+  onChangePages(value: any): void
+  onChangeValue(value: any): void
   valueTitle: string | null | undefined
   valuePages: string | null | undefined
 }
-
-class ReferenceSearchForm extends Component<Props> {
-  onChangePages = (event) => {
-    this.props.onChangePages(event.target.value || '')
+interface State {
+  value: any
+}
+class ReferenceSearchForm extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: undefined,
+    }
   }
-
   onChange = (event) => {
-    console.log(event)
+    this.props.onChangeTitle(event.cslData.title || '')
+    this.props.onChangeId(event.cslData.id)
+    this.props.onChangeValue(event.cslData)
+    this.setState({ value: event.cslData })
   }
 
   render() {
@@ -27,7 +35,7 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={{ span: 5, offset: 2 }}>
             <BibliographySelect
               aria-labelledby={'BibliographyTitle'}
-              value={this.props.valueTitle || ''}
+              value={this.props.valueTitle}
               onChange={this.onChange}
               searchBibliography={(query) =>
                 this.props.fragmentService.searchBibliography(query)
@@ -37,9 +45,10 @@ class ReferenceSearchForm extends Component<Props> {
           <Col sm={5}>
             <Form.Control
               type="text"
+              name="pages"
               aria-label="Pages"
               value={this.props.valuePages || ''}
-              onChange={this.onChangePages}
+              onChange={this.props.onChangePages}
             />
           </Col>
         </Form.Group>
