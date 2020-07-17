@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
@@ -10,7 +10,6 @@ let fragmentSearchService
 let session
 let container
 let element
-let statistics
 
 async function renderFragmentariumSearch({
   number,
@@ -22,17 +21,19 @@ async function renderFragmentariumSearch({
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
   )
-  element = render(
-    <MemoryRouter>
-      <SessionContext.Provider value={session}>
-        <FragmentariumSearchWithRouter
-          number={number}
-          transliteration={transliteration}
-          fragmentSearchService={fragmentSearchService}
-        />
-      </SessionContext.Provider>
-    </MemoryRouter>
-  )
+  await act(async () => {
+    element = render(
+      <MemoryRouter>
+        <SessionContext.Provider value={session}>
+          <FragmentariumSearchWithRouter
+            number={number}
+            transliteration={transliteration}
+            fragmentSearchService={fragmentSearchService}
+          />
+        </SessionContext.Provider>
+      </MemoryRouter>
+    )
+  })
   container = element.container
 }
 
@@ -62,7 +63,7 @@ describe('Search', () => {
       fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
-      renderFragmentariumSearch({ number })
+      await renderFragmentariumSearch({ number })
     })
 
     it('Displays result on successfull query', async () => {
@@ -87,7 +88,7 @@ describe('Search', () => {
       fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
-      renderFragmentariumSearch({ transliteration })
+      await renderFragmentariumSearch({ transliteration })
     })
 
     it('Displays result on successfull query', async () => {

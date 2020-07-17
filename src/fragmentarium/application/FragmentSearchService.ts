@@ -9,6 +9,7 @@ export interface FragmentInfoRepository {
   random(): FragmentInfosPromise
   interesting(): FragmentInfosPromise
   searchNumber(number: string): FragmentInfosPromise
+  searchReference(id: string, page: string): FragmentInfosPromise
   searchTransliteration(number: string): FragmentInfosPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
@@ -49,6 +50,9 @@ export default class FragmentSearchService {
 
   searchNumber(number: string): FragmentInfosPromise {
     return this.fragmentRepository.searchNumber(number)
+  }
+  searchReference(id: string, pages: string): FragmentInfosPromise {
+    return this.fragmentRepository.searchReference(id, pages)
   }
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {

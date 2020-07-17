@@ -1,8 +1,12 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import produce from 'immer'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import produce, { castDraft } from 'immer'
+import {
+  Fragment,
+  FragmentInfo,
+  RecordEntry,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
@@ -16,6 +20,9 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { Draft } from 'immer/dist/types/types-external'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
 import {
@@ -134,6 +141,27 @@ class ApiFragmentRepository
 
   searchNumber(number: string): FragmentInfosPromise {
     return this._fetch({ number })
+  }
+
+  searchReference(id: string, pages: string): FragmentInfosPromise {
+    return this._fetch({ id, pages }).then(
+      produce((draft: Draft<FragmentInfo[]>) => {
+        for (const fragInfo of draft) {
+          fragInfo.references = castDraft(
+            fragInfo.references.map(
+              (ref) =>
+                new Reference(
+                  ref.type || Reference.DEFAULT_TYPE,
+                  ref.pages || '',
+                  ref.notes || '',
+                  ref.linesCited || [],
+                  new BibliographyEntry(ref.document)
+                )
+            )
+          )
+        }
+      })
+    )
   }
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {

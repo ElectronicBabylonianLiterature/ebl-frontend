@@ -35,7 +35,7 @@ function FragmentButton({ query, history, children }: Props) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleClick}>
+      <Button className="m-1" variant="primary" onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Button>
       <ErrorAlert error={error} />

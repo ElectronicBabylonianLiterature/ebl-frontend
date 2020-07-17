@@ -1,22 +1,19 @@
 import React from 'react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { MemoryRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
-import { changeValueByLabel, submitForm } from 'test-support/utils'
+import { changeValueByLabel } from 'test-support/utils'
 
 import NumberSearchForm from './NumberSearchForm'
 
-it('Adds number to query string on submit', async () => {
-  const history = createMemoryHistory()
-  jest.spyOn(history, 'push')
+it('Calls onChange on User Input', async () => {
+  const onChange = jest.fn()
   const element = render(
-    <Router history={history}>
-      <NumberSearchForm number={null} />
-    </Router>
+    <MemoryRouter>
+      <NumberSearchForm onChange={onChange} value={''} />
+    </MemoryRouter>
   )
 
   changeValueByLabel(element, 'Number', 'K.3')
-  await submitForm(element)
 
-  expect(history.push).toBeCalledWith('/fragmentarium/search/?number=K.3')
+  expect(onChange).toBeCalledWith('K.3')
 })

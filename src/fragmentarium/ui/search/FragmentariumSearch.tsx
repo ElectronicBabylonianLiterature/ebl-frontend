@@ -6,18 +6,32 @@ import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
-import './FragmentariumSearch.css'
+import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
+import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 
-type Props = {
+interface Props {
   number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
+  fragmentService
   fragmentSearchService
 }
+
 const FragmentariumSearch: FunctionComponent<Props> = ({
   number,
+  id,
+  title,
+  primaryAuthor,
+  year,
+  pages,
   transliteration,
+  fragmentService,
   fragmentSearchService,
 }: Props) => {
   const replacedTransliteration =
@@ -33,12 +47,23 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
               <header className="Fragmentarium-search__header">
                 <SearchGroup
                   number={number}
+                  id={id}
+                  primaryAuthor={primaryAuthor}
+                  year={year}
+                  title={title}
+                  pages={pages}
+                  fragmentService={fragmentService}
                   transliteration={replacedTransliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
               <NumberSearch
                 number={number}
+                fragmentSearchService={fragmentSearchService}
+              />
+              <ReferenceSearch
+                id={id}
+                pages={pages}
                 fragmentSearchService={fragmentSearchService}
               />
               <TransliterationSearch

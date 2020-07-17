@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { stringify } from 'query-string'
-import { Form, Button, Row, Col, Popover } from 'react-bootstrap'
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Col, Form, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
@@ -33,72 +31,39 @@ function TransliterationSearchHelp() {
   )
 }
 
-type State = {
-  transliteration: string
-}
 type Props = {
-  transliteration: string | null | undefined
-} & RouteComponentProps
-
-class TransliterationSearchForm extends Component<Props, State> {
-  state = {
-    transliteration: this.props.transliteration || '',
-  }
-
-  onChange = (event) => {
-    this.setState({
-      transliteration: event.target.value,
-    })
-  }
-
-  submit = (event) => {
-    event.preventDefault()
-    this.props.history.push(
-      `/fragmentarium/search/?${stringify({
-        transliteration: this.state.transliteration,
-      })}`
-    )
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.transliteration !== prevProps.transliteration) {
-      this.setState({
-        transliteration: this.props.transliteration || '',
-      })
-    }
-  }
-
-  render() {
-    const rows = this.state.transliteration.split('\n').length
-    return (
-      <Form onSubmit={this.submit}>
-        <Form.Group as={Row} controlId="transliteration">
-          <Col
-            sm={2}
-            as={Form.Label}
-            className="TransliterationSearchForm__label"
-          >
-            <HelpTrigger overlay={TransliterationSearchHelp()} />
-          </Col>
-          <Col sm={7}>
-            <Form.Control
-              as="textarea"
-              value={this.state.transliteration}
-              rows={Math.max(2, rows)}
-              placeholder="Search transliterations"
-              aria-label="Transliteration"
-              onChange={this.onChange}
-            />
-          </Col>
-          <Col sm={3}>
-            <Button type="submit" variant="primary">
-              Search
-            </Button>
-          </Col>
-        </Form.Group>
-      </Form>
-    )
-  }
+  onChange(value: string): void
+  value: string | null | undefined
 }
 
-export default withRouter(TransliterationSearchForm)
+function TransliterationSearchForm(props: Props): JSX.Element {
+  const rows = props.value?.split('\n').length ?? 0
+  return (
+    <Form>
+      <Form.Group as={Row} controlId="transliteration">
+        <Col
+          sm={2}
+          as={Form.Label}
+          className="TransliterationSearchForm__label"
+        >
+          <HelpTrigger overlay={TransliterationSearchHelp()} />
+        </Col>
+        <Col sm={10}>
+          <Form.Control
+            as="textarea"
+            value={props.value || ''}
+            rows={Math.max(2, rows)}
+            placeholder="Search transliterations"
+            aria-label="Transliteration"
+            name="transliteration"
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+              props.onChange(event.target.value)
+            }
+          />
+        </Col>
+      </Form.Group>
+    </Form>
+  )
+}
+
+export default TransliterationSearchForm

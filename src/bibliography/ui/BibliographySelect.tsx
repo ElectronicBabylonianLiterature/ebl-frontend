@@ -9,7 +9,7 @@ function createOption(entry) {
   return entry && entry.id
     ? {
         value: entry.id,
-        label: createLabel(entry),
+        label: entry.label ? entry.label : createLabel(entry),
         entry: entry,
       }
     : null

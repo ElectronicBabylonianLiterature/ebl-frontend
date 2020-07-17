@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import './FragmentList.css'
 
 function FragmentList({ fragments, columns }) {
   return (
@@ -10,7 +11,9 @@ function FragmentList({ fragments, columns }) {
         <tr>
           <th>Number</th>
           {_.keys(columns).map((heading, index) => (
-            <th key={index}>{heading}</th>
+            <th className={`FragmentList__${heading}`} key={index}>
+              {heading}
+            </th>
           ))}
         </tr>
       </thead>

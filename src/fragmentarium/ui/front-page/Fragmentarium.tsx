@@ -8,12 +8,17 @@ import SearchGroup from 'fragmentarium/ui/SearchGroup'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 
-import './Fragmentarium.css'
+import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
 
 interface Props {
   number: string | null | undefined
+  id: string | null | undefined
+  title: string | null | undefined
+  primaryAuthor: string | null | undefined
+  year: string | null | undefined
+  pages: string | null | undefined
   transliteration: string | null | undefined
   fragmentService
   fragmentSearchService
@@ -21,6 +26,11 @@ interface Props {
 
 function Fragmentarium({
   number,
+  title,
+  primaryAuthor,
+  year,
+  id,
+  pages,
   transliteration,
   fragmentService,
   fragmentSearchService,
@@ -35,7 +45,13 @@ function Fragmentarium({
                 {session.isAllowedToReadFragments() ? (
                   <SearchGroup
                     number={number}
+                    id={id}
+                    primaryAuthor={primaryAuthor}
+                    year={year}
+                    title={title}
+                    pages={pages}
                     transliteration={transliteration}
+                    fragmentService={fragmentService}
                     fragmentSearchService={fragmentSearchService}
                   />
                 ) : (
