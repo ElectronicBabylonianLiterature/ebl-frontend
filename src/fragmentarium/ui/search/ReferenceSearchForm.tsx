@@ -28,6 +28,7 @@ function ReferenceSearchForm(props: Props): JSX.Element {
           <Form.Control
             type="text"
             name="pages"
+            placeholder="Page"
             aria-label="Pages"
             value={props.valuePages || ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
