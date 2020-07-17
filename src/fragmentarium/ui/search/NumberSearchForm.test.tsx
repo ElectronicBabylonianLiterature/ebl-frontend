@@ -15,5 +15,5 @@ it('Calls onChange on User Input', async () => {
 
   changeValueByLabel(element, 'Number', 'K.3')
 
-  expect(onChange).toBeCalledWith('number', 'K.3')
+  expect(onChange).toBeCalledWith('K.3')
 })

@@ -16,5 +16,5 @@ it('Calls onChange on User Input', async () => {
 
   changeValueByLabel(element, 'Transliteration', transliteration)
 
-  expect(onChange).toBeCalledWith('transliteration', transliteration)
+  expect(onChange).toBeCalledWith(transliteration)
 })

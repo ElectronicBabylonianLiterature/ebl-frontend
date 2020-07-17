@@ -32,41 +32,38 @@ function TransliterationSearchHelp() {
 }
 
 type Props = {
-  onChange(value: any): void
+  onChange(value: string): void
   value: string | null | undefined
 }
 
-class TransliterationSearchForm extends Component<Props> {
-  render() {
-    let rows = 0
-    if (this.props.value) {
-      rows = this.props.value.split('\n').length
-    }
-    return (
-      <Form>
-        <Form.Group as={Row} controlId="transliteration">
-          <Col
-            sm={2}
-            as={Form.Label}
-            className="TransliterationSearchForm__label"
-          >
-            <HelpTrigger overlay={TransliterationSearchHelp()} />
-          </Col>
-          <Col sm={10}>
-            <Form.Control
-              as="textarea"
-              value={this.props.value || ''}
-              rows={Math.max(2, rows)}
-              placeholder="Search transliterations"
-              aria-label="Transliteration"
-              name="transliteration"
-              onChange={this.props.onChange}
-            />
-          </Col>
-        </Form.Group>
-      </Form>
-    )
-  }
+function TransliterationSearchForm(props: Props): JSX.Element {
+  const rows = props.value?.split('\n').length ?? 0
+  return (
+    <Form>
+      <Form.Group as={Row} controlId="transliteration">
+        <Col
+          sm={2}
+          as={Form.Label}
+          className="TransliterationSearchForm__label"
+        >
+          <HelpTrigger overlay={TransliterationSearchHelp()} />
+        </Col>
+        <Col sm={10}>
+          <Form.Control
+            as="textarea"
+            value={props.value || ''}
+            rows={Math.max(2, rows)}
+            placeholder="Search transliterations"
+            aria-label="Transliteration"
+            name="transliteration"
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+              props.onChange(event.target.value)
+            }
+          />
+        </Col>
+      </Form.Group>
+    </Form>
+  )
 }
 
 export default TransliterationSearchForm
