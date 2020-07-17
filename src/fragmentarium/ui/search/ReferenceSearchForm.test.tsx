@@ -4,18 +4,20 @@ import { render } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
-import { changeValueByLabel } from '../../../test-support/utils'
+import { changeValueByLabel } from 'test-support/utils'
 import ReferenceSearchForm from './ReferenceSearchForm'
 
 let element
 let entry
-let onChange
-let getState
+let onChangePages
+let onChangeBibliographyReference
 let searchEntry
 let fragmentService
 let search
+
 beforeEach(async () => {
-  onChange = jest.fn()
+  onChangePages = jest.fn()
+  onChangeBibliographyReference = jest.fn()
 
   entry = await factory.build('bibliographyEntry')
   searchEntry = await factory.build('bibliographyEntry')
@@ -24,13 +26,13 @@ beforeEach(async () => {
   fragmentService = {
     searchBibliography: search,
   }
-  getState = jest.fn(() => entry.title)
   element = render(
     <MemoryRouter>
       <ReferenceSearchForm
-        onChange={onChange}
-        value_title={entry.title}
-        value_pages={''}
+        onChangePages={onChangePages}
+        onChangeBibliographyReference={onChangeBibliographyReference}
+        valueBibReference={entry}
+        valuePages={''}
         fragmentService={fragmentService}
       />
     </MemoryRouter>
@@ -39,7 +41,7 @@ beforeEach(async () => {
 
 it('Calls onChange on User Input', async () => {
   changeValueByLabel(element, 'Pages', '254')
-  expect(onChange).toBeCalledWith('pages', '254')
+  expect(onChangePages).toBeCalledWith('254')
 })
 
 it('Displays the entry label', () => {
