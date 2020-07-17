@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Col, Form, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 
-function TransliterationSearchHelp() {
+function TransliterationSearchHelp(): JSX.Element {
   return (
     <Popover
       id={_.uniqueId('TransliterationSearchHelp-')}

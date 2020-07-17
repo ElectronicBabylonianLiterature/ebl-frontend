@@ -42,16 +42,12 @@ class SearchGroup extends Component<Props, State> {
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
     }
-    this.onChange = this.onChange.bind(this)
-    this.onChangeBibliographyReference = this.onChangeBibliographyReference.bind(
-      this
-    )
   }
 
-  onChange = (event) => {
-    const { name, value } = event.target
+  onChange = (name: string) => (value): void => {
     this.setState((prevState) => ({ ...prevState, [name]: value }))
   }
+
   onChangeBibliographyReference = (event) => {
     const newState = { ...this.state }
     newState.referenceEntry.title = event.cslData.title || ''
@@ -59,7 +55,7 @@ class SearchGroup extends Component<Props, State> {
     newState.referenceEntry.primaryAuthor = event.cslData.author[0].family || ''
     newState.referenceEntry.year =
       event.cslData.issued['date-parts'][0][0] || ''
-    this.setState(({ newState } as unknown) as State)
+    this.setState(newState)
   }
 
   flattenState(state: State) {
@@ -81,19 +77,22 @@ class SearchGroup extends Component<Props, State> {
     )
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <>
-        <NumberSearchForm onChange={this.onChange} value={this.state.number} />
+        <NumberSearchForm
+          onChange={this.onChange('number')}
+          value={this.state.number}
+        />
         <ReferenceSearchForm
-          onChangePages={this.onChange}
+          onChangePages={this.onChange('pages')}
           onChangeBibliographyReference={this.onChangeBibliographyReference}
           valueBibReference={this.state.referenceEntry}
           valuePages={this.state.pages}
           fragmentService={this.props.fragmentService}
         />
         <TransliterationSearchForm
-          onChange={this.onChange}
+          onChange={this.onChange('transliteration')}
           value={this.state.transliteration}
         />
         <ButtonToolbar>
