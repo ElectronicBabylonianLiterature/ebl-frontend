@@ -20,13 +20,63 @@ import {
   FragmentInfosPromise,
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
-import { Line, TextLine, TextLineDto } from 'transliteration/domain/line'
-import Reference from '../../bibliography/domain/Reference'
-import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { Draft } from 'immer/dist/types/types-external'
+import { EmptyLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
+import {
+  LooseDollarLine,
+  ImageDollarLine,
+  RulingDollarLine,
+  SealDollarLine,
+  StateDollarLine,
+} from 'transliteration/domain/dollar-lines'
+import {
+  SealAtLine,
+  HeadingAtLine,
+  ColumnAtLine,
+  DiscourseAtLine,
+  SurfaceAtLine,
+  ObjectAtLine,
+  DivisionAtLine,
+  CompositeAtLine,
+} from 'transliteration/domain/at-lines'
+import { NoteLine } from 'transliteration/domain/note-line'
+import { ControlLine } from 'transliteration/domain/line'
 
-function isTextLineDto(line: Line): line is TextLineDto {
-  return line.type === 'TextLine'
+const lineClases = {
+  TextLine: TextLine,
+  ControlLine: ControlLine,
+  EmptyLine: EmptyLine,
+  NoteLine: NoteLine,
+  LooseDollarLine: LooseDollarLine,
+  ImageDollarLine: ImageDollarLine,
+  RulingDollarLine: RulingDollarLine,
+  SealDollarLine: SealDollarLine,
+  StateDollarLine: StateDollarLine,
+  SealAtLine: SealAtLine,
+  HeadingAtLine: HeadingAtLine,
+  ColumnAtLine: ColumnAtLine,
+  DiscourseAtLine: DiscourseAtLine,
+  SurfaceAtLine: SurfaceAtLine,
+  ObjectAtLine: ObjectAtLine,
+  DivisionAtLine: DivisionAtLine,
+  CompositeAtLine: CompositeAtLine,
+}
+
+function createText(text): Text {
+  return new Text({
+    lines: text.lines.map((lineDto) => {
+      const LineClass = lineClases[lineDto.type]
+      if (LineClass) {
+        return new LineClass(lineDto)
+      } else {
+        console.error(`Unknown line type "${lineDto.type}.`)
+        return new ControlLine(lineDto)
+      }
+    }),
+  })
 }
 
 function createFragment(dto): Fragment {
@@ -42,11 +92,7 @@ function createFragment(dto): Fragment {
     },
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
-    text: new Text({
-      lines: dto.text.lines.map((lineDto) => {
-        return isTextLineDto(lineDto) ? new TextLine(lineDto) : lineDto
-      }),
-    }),
+    text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
   })

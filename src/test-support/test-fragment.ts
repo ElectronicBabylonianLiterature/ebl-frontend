@@ -1,7 +1,7 @@
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
-import { TextLineDto, TextLine } from 'transliteration/domain/line'
+import { TextLineDto, TextLine } from 'transliteration/domain/text-line'
 import Museum from 'fragmentarium/domain/museum'
 
 const lines: readonly TextLineDto[] = [

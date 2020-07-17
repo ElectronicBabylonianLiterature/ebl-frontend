@@ -5,7 +5,8 @@ import Lemmatization, {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
-import { Line, NoteLine, TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 import { Word as TransliterationWord } from 'transliteration/domain/token'
 import {
   isTextLine,
@@ -18,6 +19,7 @@ import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
 import { LineNumber, LineNumberRange } from './line-number'
 import { ObjectLabel, SurfaceLabel, ColumnLabel } from './labels'
+import { AbstractLine } from './abstract-line'
 
 export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 
@@ -87,9 +89,9 @@ export class Label {
 type LabeledLine = readonly [Label, TextLine]
 
 export class Text {
-  readonly allLines: readonly Line[]
+  readonly allLines: readonly AbstractLine[]
 
-  constructor({ lines }: { lines: readonly Line[] }) {
+  constructor({ lines }: { lines: readonly AbstractLine[] }) {
     this.allLines = lines
   }
 
@@ -101,7 +103,7 @@ export class Text {
     )
   }
 
-  get lines(): readonly Line[] {
+  get lines(): readonly AbstractLine[] {
     return this.allLines.filter((line) => !isNoteLine(line))
   }
 
@@ -124,7 +126,7 @@ export class Text {
       this.lines,
       (
         [current, lines]: [Label, LabeledLine[]],
-        line: Line
+        line: AbstractLine
       ): [Label, LabeledLine[]] => {
         if (isTextLine(line)) {
           return [
@@ -134,9 +136,9 @@ export class Text {
         } else if (isObjectAtLine(line)) {
           return [current.setObject(line.label), lines]
         } else if (isSurfaceAtLine(line)) {
-          return [current.setSurface(line.surface_label), lines]
+          return [current.setSurface(line.label), lines]
         } else if (isColumnAtLine(line)) {
-          return [current.setColumn(line.column_label), lines]
+          return [current.setColumn(line.label), lines]
         } else {
           return [current, lines]
         }

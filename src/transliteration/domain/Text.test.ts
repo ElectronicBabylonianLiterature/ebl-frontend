@@ -91,8 +91,8 @@ test('glossary', () => {
         createGlossaryToken(
           new Label(
             object.label,
-            surface.surface_label,
-            column.column_label,
+            surface.label,
+            column.label,
             secondLine.lineNumber
           ),
           secondLine.content[0] as Word

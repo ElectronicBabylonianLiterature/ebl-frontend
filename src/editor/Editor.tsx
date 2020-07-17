@@ -33,7 +33,7 @@ interface Props {
   readonly value: string
   readonly onChange: (value: string, event?: any) => void | undefined
   readonly disabled: boolean
-  readonly error: object
+  readonly error: object | null
 }
 
 class Editor extends Component<Props> {

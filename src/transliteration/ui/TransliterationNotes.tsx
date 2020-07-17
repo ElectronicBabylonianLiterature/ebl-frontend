@@ -6,7 +6,7 @@ import {
   NoteLinePart,
   LanguagePart,
   BibliographyPart,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/note-line'
 import { noteNumber } from 'transliteration/domain/text'
 import {
   isLanguagePart,

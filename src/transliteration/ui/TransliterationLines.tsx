@@ -1,16 +1,13 @@
 import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
-import { Line } from 'transliteration/domain/line'
 import { Text, Notes } from 'transliteration/domain/text'
 import { NoteLinks, createLineId } from './note-links'
 import DisplayRulingDollarLine from './rulings'
 import DisplayTextLine from './text-line'
-import {
-  DisplayDollarAndAtLineWithParenthesis,
-  DisplayDollarAndAtLine,
-} from './dollar-and-at-lines'
+import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -35,8 +32,8 @@ const lineComponents: ReadonlyMap<
 > = new Map([
   ['TextLine', DisplayTextLine],
   ['RulingDollarLine', DisplayRulingDollarLine],
-  ['LooseDollarLine', DisplayDollarAndAtLineWithParenthesis],
-  ['ImageDollarLine', DisplayDollarAndAtLineWithParenthesis],
+  ['LooseDollarLine', DisplayDollarAndAtLine],
+  ['ImageDollarLine', DisplayDollarAndAtLine],
   ['SealDollarLine', DisplayDollarAndAtLine],
   ['StateDollarLine', DisplayDollarAndAtLine],
   ['SealAtLine', DisplayDollarAndAtLine],
@@ -78,7 +75,7 @@ function TransliterationLine({
   index,
   columns,
 }: {
-  line: Line
+  line: AbstractLine
   notes: Notes
   index: number
   columns: number
@@ -103,7 +100,7 @@ export default function TransliterationLines({
   return (
     <table className="Transliteration__lines">
       <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
-      {text.lines.map((line: Line, index: number) => (
+      {text.lines.map((line: AbstractLine, index: number) => (
         <TransliterationLine
           key={index}
           line={line}

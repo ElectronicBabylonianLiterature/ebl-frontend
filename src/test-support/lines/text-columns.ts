@@ -1,4 +1,4 @@
-import { TextLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 export const emptyFirstColumn: TextLine = new TextLine({
   prefix: 'c1.',

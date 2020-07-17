@@ -1,14 +1,15 @@
+import { TextLine } from 'transliteration/domain/text-line'
 import {
-  BibliographyPart,
-  LanguagePart,
-  Line,
-  NoteLinePart,
-  TextLine,
-  NoteLine,
   ObjectAtLine,
   SurfaceAtLine,
   ColumnAtLine,
-} from 'transliteration/domain/line'
+} from 'transliteration/domain/at-lines'
+import {
+  BibliographyPart,
+  LanguagePart,
+  NoteLinePart,
+  NoteLine,
+} from 'transliteration/domain/note-line'
 import {
   CommentaryProtocol,
   Enclosure,
@@ -17,6 +18,7 @@ import {
   Word,
   Column,
 } from 'transliteration/domain/token'
+import { AbstractLine } from './abstract-line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -51,8 +53,8 @@ export function isColumn(token: Token): token is Column {
   return token.type === 'Column'
 }
 
-export function isTextLine(line: Line): line is TextLine {
-  return line.type === 'TextLine'
+export function isTextLine(line: AbstractLine): line is TextLine {
+  return line instanceof TextLine
 }
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
@@ -65,18 +67,18 @@ export function isBibliographyPart(
   return part.type === 'BibliographyPart'
 }
 
-export function isNoteLine(line: Line): line is NoteLine {
-  return line.type === 'NoteLine'
+export function isNoteLine(line: AbstractLine): line is NoteLine {
+  return line instanceof NoteLine
 }
 
-export function isObjectAtLine(line: Line): line is ObjectAtLine {
-  return line.type === 'ObjectAtLine'
+export function isObjectAtLine(line: AbstractLine): line is ObjectAtLine {
+  return line instanceof ObjectAtLine
 }
 
-export function isSurfaceAtLine(line: Line): line is SurfaceAtLine {
-  return line.type === 'SurfaceAtLine'
+export function isSurfaceAtLine(line: AbstractLine): line is SurfaceAtLine {
+  return line instanceof SurfaceAtLine
 }
 
-export function isColumnAtLine(line: Line): line is ColumnAtLine {
-  return line.type === 'ColumnAtLine'
+export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
+  return line instanceof ColumnAtLine
 }

@@ -1,9 +1,5 @@
 import { EmptyLine } from 'transliteration/domain/line'
 
-const empty: EmptyLine = {
-  type: 'EmptyLine',
-  content: [],
-  prefix: '',
-}
+const empty: EmptyLine = new EmptyLine()
 
 export default empty

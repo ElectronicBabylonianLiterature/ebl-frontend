@@ -1,6 +1,6 @@
-import { CompositeAtLine } from 'transliteration/domain/line'
+import { CompositeAtLine } from 'transliteration/domain/at-lines'
 
-export const composite: CompositeAtLine = {
+export const composite: CompositeAtLine = new CompositeAtLine({
   prefix: '@',
   content: [
     {
@@ -16,9 +16,9 @@ export const composite: CompositeAtLine = {
   number: null,
   displayValue: 'composite',
   type: 'CompositeAtLine',
-}
+})
 
-export const division: CompositeAtLine = {
+export const division: CompositeAtLine = new CompositeAtLine({
   prefix: '@',
   content: [
     {
@@ -34,9 +34,9 @@ export const division: CompositeAtLine = {
   number: 1,
   displayValue: 'div part 1',
   type: 'CompositeAtLine',
-}
+})
 
-export const end: CompositeAtLine = {
+export const end: CompositeAtLine = new CompositeAtLine({
   prefix: '@',
   content: [
     {
@@ -52,9 +52,9 @@ export const end: CompositeAtLine = {
   number: null,
   displayValue: 'end part',
   type: 'CompositeAtLine',
-}
+})
 
-export const locator: CompositeAtLine = {
+export const locator: CompositeAtLine = new CompositeAtLine({
   prefix: '@',
   content: [
     {
@@ -70,4 +70,4 @@ export const locator: CompositeAtLine = {
   number: 1,
   displayValue: 'm=locator o 1',
   type: 'CompositeAtLine',
-}
+})
