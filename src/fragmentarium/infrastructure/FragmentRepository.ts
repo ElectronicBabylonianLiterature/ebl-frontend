@@ -144,14 +144,12 @@ class ApiFragmentRepository
   }
 
   searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages }).then((fragInfos) => {
-      const newFragInfo: any = produce(
-        fragInfos,
-        (draft: Draft<FragmentInfo>) => {
-          for (let fragInfo = 0; fragInfo < fragInfos.length; fragInfo++) {
-            const references: Reference[] = []
-            for (const ref of fragInfos[fragInfo].references) {
-              references.push(
+    return this._fetch({ id, pages }).then(
+      produce((draft: Draft<FragmentInfo[]>) => {
+        for (const fragInfo of draft) {
+          fragInfo.references = castDraft(
+            fragInfo.references.map(
+              (ref) =>
                 new Reference(
                   ref.type || Reference.DEFAULT_TYPE,
                   ref.pages || '',
@@ -159,14 +157,11 @@ class ApiFragmentRepository
                   ref.linesCited || [],
                   new BibliographyEntry(ref.document)
                 )
-              )
-            }
-            draft[fragInfo].references = castDraft(references)
-          }
+            )
+          )
         }
-      )
-      return newFragInfo as FragmentInfo[]
-    })
+      })
+    )
   }
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {
