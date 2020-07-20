@@ -50,18 +50,9 @@ test('createLemmatization', async () => {
     ['1.', '#note: '],
     [
       [
-        new LemmatizationToken(
-          'k[ur',
-          true,
-          [new Lemma(words[0])],
-          [[new Lemma(words[2])]]
-        ),
-        new LemmatizationToken(
-          'n]u',
-          true,
-          [new Lemma(words[1])],
-          [[new Lemma(words[3])]]
-        ),
+        new LemmatizationToken('k[ur', true, [], suggestions.kur),
+        new LemmatizationToken('n]u', true, [], suggestions.nu),
+        new LemmatizationToken('bu', true, [new Lemma(words[0])], []),
       ],
       [
         new LemmatizationToken('this is a note ', false),

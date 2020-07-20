@@ -219,7 +219,7 @@ test('createLemmatization', async () => {
     Promise.resolve(suggestions[word] ? [[suggestions[word]]] : [])
   )
 
-  const expectedLemmas = _([words[0], words[1]])
+  const expectedLemmas = _([words[0]])
     .map((word) => new Lemma(word))
     .keyBy('value')
     .value()

@@ -203,7 +203,7 @@ class FragmentService {
     return Promise.mapSeries(
       mapLines(text, (line) =>
         line
-          .filter((token) => token.lemmatizable)
+          .filter((token) => token.lemmatizable && _.isEmpty(token.uniqueLemma))
           .flatMap((token) => token.cleanValue)
       ),
       (value: string): [string, ReadonlyArray<UniqueLemma>] =>
