@@ -8,6 +8,7 @@ type Props = {
   onChangeBibliographyReference(value: any): void
   valueBibReference: any
   valuePages: string | null | undefined
+  isValid: boolean
 }
 
 function ReferenceSearchForm(props: Props): JSX.Element {
@@ -34,7 +35,11 @@ function ReferenceSearchForm(props: Props): JSX.Element {
             onChange={(event: React.ChangeEvent<HTMLInputElement>): void =>
               props.onChangePages(event.target.value)
             }
+            isInvalid={!props.isValid}
           />
+          <Form.Control.Feedback type="invalid">
+            &quotPage&quot should be numeric.
+          </Form.Control.Feedback>
         </Col>
       </Form.Group>
     </Form>

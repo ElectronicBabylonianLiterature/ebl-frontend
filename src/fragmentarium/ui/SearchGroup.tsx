@@ -13,6 +13,7 @@ interface State {
   referenceEntry: any
   pages: string | null | undefined
   transliteration: string | null | undefined
+  isValid: boolean
 }
 
 type Props = {
@@ -41,11 +42,17 @@ class SearchGroup extends Component<Props, State> {
       },
       pages: this.props.pages || '',
       transliteration: this.props.transliteration || '',
+      isValid: this.isValid(this.props.pages || ''),
     }
   }
 
   onChange = (name: string) => (value): void => {
     this.setState((prevState) => ({ ...prevState, [name]: value }))
+  }
+
+  onChangePages = (value: string): void => {
+    this.setState({ pages: value })
+    this.setState({ isValid: this.isValid(value) })
   }
 
   onChangeBibliographyReference = (event) => {
@@ -56,6 +63,9 @@ class SearchGroup extends Component<Props, State> {
     newState.referenceEntry.year =
       event.cslData.issued['date-parts'][0][0] || ''
     this.setState(newState)
+  }
+  isValid(pages: string | null | undefined): boolean {
+    return !!(Number(pages) || !pages)
   }
 
   flattenState(state: State) {
@@ -85,11 +95,12 @@ class SearchGroup extends Component<Props, State> {
           value={this.state.number}
         />
         <ReferenceSearchForm
-          onChangePages={this.onChange('pages')}
+          onChangePages={this.onChangePages}
           onChangeBibliographyReference={this.onChangeBibliographyReference}
           valueBibReference={this.state.referenceEntry}
           valuePages={this.state.pages}
           fragmentService={this.props.fragmentService}
+          isValid={this.state.isValid}
         />
         <TransliterationSearchForm
           onChange={this.onChange('transliteration')}
@@ -101,6 +112,7 @@ class SearchGroup extends Component<Props, State> {
               className="w-25 m-1"
               onClick={this.search}
               variant="primary"
+              disabled={!this.state.isValid}
             >
               Search
             </Button>
