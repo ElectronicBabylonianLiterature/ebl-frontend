@@ -29,6 +29,7 @@ beforeEach(async () => {
   element = render(
     <MemoryRouter>
       <ReferenceSearchForm
+        isValid={true}
         onChangePages={onChangePages}
         onChangeBibliographyReference={onChangeBibliographyReference}
         valueBibReference={entry}
