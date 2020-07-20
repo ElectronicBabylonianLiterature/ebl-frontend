@@ -38,7 +38,7 @@ function ReferenceSearchForm(props: Props): JSX.Element {
             isInvalid={!props.isValid}
           />
           <Form.Control.Feedback type="invalid">
-            &quotPage&quot should be numeric.
+            &quot;Page&quot; should be numeric.
           </Form.Control.Feedback>
         </Col>
       </Form.Group>
