@@ -11,7 +11,7 @@ type WithDataProps<DATA> = {
 }
 
 type Config<PROPS, DATA> = {
-  watch: (props: PROPS) => any[]
+  watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
   defaultData: DATA | null
 }
@@ -20,14 +20,14 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
   WrappedComponent: React.ComponentType<PROPS & WithDataProps<DATA>>,
   getter: (props: PROPS & GETTER_PROPS) => Promise<DATA>,
   config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {}
-) {
+): React.ComponentType<PROPS & GETTER_PROPS> {
   const fullConfig: Config<PROPS & GETTER_PROPS, DATA> = {
     watch: () => [],
     filter: () => true,
     defaultData: null,
     ...config,
   }
-  return function ComponentWithData(props: PROPS & GETTER_PROPS) {
+  return function ComponentWithData(props: PROPS & GETTER_PROPS): JSX.Element {
     const [data, setData] = useState<DATA | null>(null)
     const [error, setError] = useState<Error | null>(null)
 
@@ -41,7 +41,9 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
         } else {
           setData(fullConfig.defaultData)
         }
-        return () => fetchPromise && fetchPromise.cancel()
+        return (): void => {
+          fetchPromise && fetchPromise.cancel()
+        }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       fullConfig.watch(props)
