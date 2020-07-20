@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { History } from 'history'
 import _ from 'lodash'
 import Promise from 'bluebird'
 
@@ -27,14 +28,14 @@ class TabController {
   readonly cdliInfo: CdliInfo
   readonly tab: string | null
   readonly activeFolio: Folio | null
-  readonly history
+  readonly history: History
 
   constructor(
     fragment: Fragment,
     cdliInfo: CdliInfo,
     tab: string | null,
     activeFolio: Folio | null,
-    history
+    history: History
   ) {
     this.fragment = fragment
     this.cdliInfo = cdliInfo
@@ -51,19 +52,21 @@ class TabController {
     )
   }
 
-  get defaultKey() {
-    return _([
-      this.fragment.hasPhoto && PHOTO,
-      this.cdliInfo.photoUrl && CDLI_PHOTO,
-      this.fragment.folios.map((folio, index) => String(index)),
-      this.cdliInfo.lineArtUrl && CDLI_LINE_ART,
-      this.cdliInfo.detailLineArtUrl && CDLI_DETAIL_LINE_ART,
-    ])
-      .compact()
-      .head()
+  get defaultKey(): string | null {
+    return (
+      _([
+        this.fragment.hasPhoto && PHOTO,
+        this.cdliInfo.photoUrl && CDLI_PHOTO,
+        ...this.fragment.folios.map((folio, index) => String(index)),
+        this.cdliInfo.lineArtUrl && CDLI_LINE_ART,
+        this.cdliInfo.detailLineArtUrl && CDLI_DETAIL_LINE_ART,
+      ])
+        .compact()
+        .head() ?? null
+    )
   }
 
-  get activeKey() {
+  get activeKey(): string | null {
     if (this.tab === FOLIO) {
       const index = this.fragment.folios.findIndex((folio) =>
         _.isEqual(folio, this.activeFolio)
@@ -74,7 +77,7 @@ class TabController {
     }
   }
 
-  openTab = (key) => {
+  openTab = (key: string): void => {
     const isFolioKey = /\d+/.test(key)
     const url = isFolioKey
       ? this.createFolioTabUrl(key)
@@ -82,14 +85,14 @@ class TabController {
     this.history.push(url)
   }
 
-  createFolioTabUrl(key) {
+  createFolioTabUrl(key: string): string {
     const index = Number.parseInt(key, 10)
     const folio = this.fragment.folios[index]
     return createFragmentUrlWithFolio(this.fragment.number, folio)
   }
 }
 
-function createPhotoTab(fragment: Fragment, photo: Blob) {
+function createPhotoTab(fragment: Fragment, photo: Blob): JSX.Element {
   return (
     <Tab eventKey={PHOTO} title="Photo">
       <Photo fragment={fragment} photo={photo} />
@@ -102,11 +105,11 @@ function createFolioTab(
   folio: Folio,
   index: string,
   fragment: Fragment
-) {
+): JSX.Element {
   return (
     <Tab
       key={index}
-      eventKey={String(index)}
+      eventKey={index}
       title={`${folio.humanizedName} Folio ${folio.number}`}
       disabled={!folio.hasImage}
     >
@@ -119,7 +122,7 @@ function createFolioTab(
   )
 }
 
-function createCdliTab(eventKey: string, url: string) {
+function createCdliTab(eventKey: string, url: string): JSX.Element {
   const title = {
     [CDLI_PHOTO]: 'CDLI Photo',
     [CDLI_LINE_ART]: 'CDLI Line Art',
@@ -133,14 +136,9 @@ function createCdliTab(eventKey: string, url: string) {
   )
 }
 
-type Props = {
-  fragment
-  fragmentService
-  tab
-  activeFolio
-  history
-  cdliInfo
-  photo
+interface ImagesProps extends Props {
+  cdliInfo: CdliInfo
+  photo: Blob
 }
 function Images({
   fragment,
@@ -150,7 +148,7 @@ function Images({
   history,
   cdliInfo,
   photo,
-}) {
+}: ImagesProps & RouteComponentProps): JSX.Element {
   const controller = new TabController(
     fragment,
     cdliInfo,
@@ -168,7 +166,7 @@ function Images({
       >
         {fragment.hasPhoto && createPhotoTab(fragment, photo)}
         {fragment.folios.map((folio, index) =>
-          createFolioTab(fragmentService, folio, index, fragment)
+          createFolioTab(fragmentService, folio, String(index), fragment)
         )}
         {cdliInfo.photoUrl && createCdliTab(CDLI_PHOTO, cdliInfo.photoUrl)}
         {cdliInfo.lineArtUrl &&
@@ -181,12 +179,18 @@ function Images({
   )
 }
 
-export default withRouter<any, any>(
-  withData<
-    { fragment; fragmentService; tab; activeFolio; history },
-    {},
-    [CdliInfo, Blob]
-  >(
+interface Props {
+  fragment: Fragment
+  fragmentService
+  tab: string | null
+  activeFolio: Folio | null
+}
+
+export default withRouter<
+  Props & RouteComponentProps,
+  React.ComponentType<Props & RouteComponentProps>
+>(
+  withData<Props & RouteComponentProps, {}, [CdliInfo, Blob]>(
     ({ data: [cdliInfo, photo], ...props }) => (
       <Images {...props} cdliInfo={cdliInfo} photo={photo} />
     ),
