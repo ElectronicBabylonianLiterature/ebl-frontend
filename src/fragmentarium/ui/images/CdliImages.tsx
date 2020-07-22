@@ -34,7 +34,7 @@ interface CdliImagesProps {
 function CdliImages({ cdliInfo }: CdliImagesProps): JSX.Element {
   return (
     <>
-      <Tabs id={_.uniqueId('cdli-images-container-')}>
+      <Tabs id={_.uniqueId('cdli-images-container-')} variant="pills">
         {cdliTab(CDLI_PHOTO, cdliInfo.photoUrl)}
         {cdliTab(CDLI_LINE_ART, cdliInfo.lineArtUrl)}
         {cdliTab(CDLI_DETAIL_LINE_ART, cdliInfo.detailLineArtUrl)}
