@@ -1,20 +1,21 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router'
-import { render, RenderResult } from '@testing-library/react'
+import { act, render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Images from './Images'
 import Folio from 'fragmentarium/domain/Folio'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 const photoUrl = 'http://example.com/folio.jpg'
 const lineArtUrl = 'http://example.com/folio_l.jpg'
 const detailLineArtUrl = 'http://example.com/folio_ld.jpg'
 
-let fragment
+let fragment: Fragment
 let fragmentService
-let container
-let folios
+let folios: Folio[]
 let folioPager
+let element: RenderResult
 
 beforeEach(async () => {
   fragmentService = {
@@ -44,39 +45,23 @@ describe('Images', () => {
       folios: folios,
       hasPhoto: true,
     })
-    const element = renderImages()
-    container = element.container
-    await element.findByText('Photo')
+    await renderImages()
   })
 
-  it(`Renders folio numbers entries`, () => {
+  it(`Renders folio tabs`, () => {
     for (const folio of folios) {
-      expect(container).toHaveTextContent(folio.number)
+      expect(
+        element.getByText(`${folio.humanizedName} Folio ${folio.number}`)
+      ).toBeVisible()
     }
   })
 
-  it(`Renders folio numbers entries`, () => {
-    for (const folio of folios) {
-      expect(container).toHaveTextContent(
-        `${folio.humanizedName} Folio ${folio.number}`
-      )
-    }
+  it(`Renders CDLI tab`, () => {
+    expect(element.getByText('CDLI')).toBeVisible()
   })
 
-  it(`Renders CDLI photo`, () => {
-    expect(container).toHaveTextContent('CDLI Photo')
-  })
-
-  it(`Renders CDLI line art`, () => {
-    expect(container).toHaveTextContent('CDLI Line Art')
-  })
-
-  it(`Renders CDLI detail line art`, () => {
-    expect(container).toHaveTextContent('CDLI Detail Line Art')
-  })
-
-  it(`Renders photo`, () => {
-    expect(container).toHaveTextContent('Photo')
+  it(`Renders photo tab`, () => {
+    expect(element.getAllByText('Photo')[0]).toBeVisible()
   })
 })
 
@@ -88,21 +73,23 @@ it('Displays selected folio', async () => {
   fragment = await factory.build('fragment', { folios: folios })
   const selected = folios[0]
   const selectedTitle = `${selected.humanizedName} Folio ${selected.number}`
-  const element = renderImages(selected)
-  expect(await element.findByText(selectedTitle)).toHaveAttribute(
+  await renderImages(selected)
+  expect(element.getByText(selectedTitle)).toHaveAttribute(
     'aria-selected',
     'true'
   )
 })
 
-it('Displays photo if folio specified', async () => {
+it('Displays photo if no folio specified', async () => {
   folios = await factory.buildMany('folio', 2, {}, [
     { name: 'WGL' },
     { name: 'AKG' },
   ])
   fragment = await factory.build('fragment', { folios: folios, hasPhoto: true })
-  const element = renderImages()
-  await element.findByAltText(`A photo of the fragment ${fragment.number}`)
+  await renderImages()
+  expect(
+    element.getByAltText(`A photo of the fragment ${fragment.number}`)
+  ).toBeVisible()
 })
 
 it('Displays CDLI photo if no photo and no folio specified', async () => {
@@ -114,8 +101,8 @@ it('Displays CDLI photo if no photo and no folio specified', async () => {
     folios: folios,
     hasPhoto: false,
   })
-  const element = renderImages()
-  await element.findByAltText('CDLI Photo')
+  await renderImages()
+  expect(element.getByAltText('CDLI Photo')).toBeVisible()
 })
 
 test('No photo, folios, CDLI photo', async () => {
@@ -131,49 +118,21 @@ test('No photo, folios, CDLI photo', async () => {
       detailLineArtUrl: null,
     })
   )
-  const element = renderImages()
-  await element.findByText('No images')
+  await renderImages()
+  expect(element.getByText('No images')).toBeVisible()
 })
 
-test('Broken CDLI photo', async () => {
-  fragment = await factory.build('fragment', { hasPhoto: true })
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
-  )
-  const element = renderImages()
-  await element.findByText('Photo')
-  expect(element.container).not.toHaveTextContent('CDLI Photo')
-})
-
-test('Broken CDLI line art', async () => {
-  fragment = await factory.build('fragment', { hasPhoto: true })
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
-  )
-  const element = renderImages()
-  await element.findByText('Photo')
-  expect(element.container).not.toHaveTextContent('CDLI Line Art')
-})
-
-test('Broken CDLI detail line art', async () => {
-  fragment = await factory.build('fragment', { hasPhoto: true })
-  fragmentService.fetchCdliInfo.mockReturnValue(
-    Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
-  )
-  const element = renderImages()
-  await element.findByText('Photo')
-  expect(element.container).not.toHaveTextContent('CDLI Detail Line Art')
-})
-
-function renderImages(activeFolio: Folio | null = null): RenderResult {
-  return render(
-    <MemoryRouter>
-      <Images
-        fragment={fragment}
-        fragmentService={fragmentService}
-        activeFolio={activeFolio}
-        tab={activeFolio && 'folio'}
-      />
-    </MemoryRouter>
-  )
+async function renderImages(activeFolio: Folio | null = null): Promise<void> {
+  await act(async () => {
+    element = render(
+      <MemoryRouter>
+        <Images
+          fragment={fragment}
+          fragmentService={fragmentService}
+          activeFolio={activeFolio}
+          tab={activeFolio && 'folio'}
+        />
+      </MemoryRouter>
+    )
+  })
 }

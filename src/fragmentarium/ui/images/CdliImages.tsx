@@ -11,16 +11,18 @@ const CDLI_PHOTO = 'cdli_photo'
 const CDLI_LINE_ART = 'cdli_line_art'
 const CDLI_DETAIL_LINE_ART = 'cdli_detail_line_art'
 
+const titles: ReadonlyMap<string, string> = new Map([
+  [CDLI_PHOTO, 'Photo'],
+  [CDLI_LINE_ART, 'Line Art'],
+  [CDLI_DETAIL_LINE_ART, 'Detail Line Art'],
+])
+
 function cdliTab(eventKey: string, url: string | null): JSX.Element | null {
-  const title = {
-    [CDLI_PHOTO]: 'Photo',
-    [CDLI_LINE_ART]: 'Line Art',
-    [CDLI_DETAIL_LINE_ART]: 'Detail Line Art',
-  }[eventKey]
+  const title = titles.get(eventKey)
 
   return _.isNil(url) ? null : (
     <Tab eventKey={eventKey} title={title}>
-      <LinkedImage src={url} alt={title} />
+      <LinkedImage src={url} alt={`CDLI ${title}`} />
     </Tab>
   )
 }
