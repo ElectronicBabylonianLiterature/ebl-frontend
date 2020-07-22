@@ -7,6 +7,8 @@ import LinkedImage from 'common/LinkedImage'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { CdliInfo } from 'fragmentarium/application/FragmentService'
 
+import './CdliImages.css'
+
 const CDLI_PHOTO = 'cdli_photo'
 const CDLI_LINE_ART = 'cdli_line_art'
 const CDLI_DETAIL_LINE_ART = 'cdli_detail_line_art'
@@ -21,7 +23,7 @@ function cdliTab(eventKey: string, url: string | null): JSX.Element | null {
   const title = titles.get(eventKey)
 
   return _.isNil(url) ? null : (
-    <Tab eventKey={eventKey} title={title}>
+    <Tab eventKey={eventKey} title={title} tabClassName="Images__cdli-tab">
       <LinkedImage src={url} alt={`CDLI ${title}`} />
     </Tab>
   )
