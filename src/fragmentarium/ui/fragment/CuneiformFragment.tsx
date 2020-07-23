@@ -71,16 +71,18 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
       {(session) => (
         <Tabs
           id={tabsId}
-          defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}
+          defaultActiveKey={
+            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
+          }
           mountOnEnter={true}
         >
-          <Tab eventKey={1} title="Display">
+          <Tab eventKey="display" title="Display">
             <ContentSection>
               <Display fragment={fragment} wordService={wordService} />{' '}
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={2}
+            eventKey="edition"
             title="Edition"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
@@ -94,7 +96,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={3}
+            eventKey="lemmatization"
             title="Lemmatization"
             disabled={
               _.isEmpty(fragment.text.lines) ||
@@ -111,7 +113,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={4}
+            eventKey="refrences"
             title="References"
             disabled={!session.isAllowedToTransliterateFragments()}
           >

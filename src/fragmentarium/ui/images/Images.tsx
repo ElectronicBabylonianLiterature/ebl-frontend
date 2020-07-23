@@ -14,6 +14,7 @@ import {
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import CdliImages from './CdliImages'
+import { SelectCallback } from 'react-bootstrap/helpers'
 
 const FOLIO = 'folio'
 const PHOTO = 'photo'
@@ -59,12 +60,14 @@ class TabController {
     }
   }
 
-  openTab = (key: string): void => {
-    const isFolioKey = /\d+/.test(key)
-    const url = isFolioKey
-      ? this.createFolioTabUrl(key)
-      : createFragmentUrlWithTab(this.fragment.number, key)
-    this.history.push(url)
+  openTab: SelectCallback = (eventKey: string | null): void => {
+    if (eventKey !== null) {
+      const isFolioKey = /\d+/.test(eventKey)
+      const url = isFolioKey
+        ? this.createFolioTabUrl(eventKey)
+        : createFragmentUrlWithTab(this.fragment.number, eventKey)
+      this.history.push(url)
+    }
   }
 
   private createFolioTabUrl(key: string): string {
