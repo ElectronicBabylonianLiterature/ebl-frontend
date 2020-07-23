@@ -108,6 +108,7 @@
     "not safari < 12",
     "not ios < 14",
     "not chrome < 66",
+    "not opera 68",
     "not and_chr <= 78",
     "not kaios <= 2.5",
     "not and_qq <= 1.2"
