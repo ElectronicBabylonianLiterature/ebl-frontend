@@ -51,7 +51,7 @@ interface Props {
   fragmentService
 }
 
-export default withData<{}, Props, CdliInfo>(
+export default withData<unknown, Props, CdliInfo>(
   ({ data }) => <CdliImages cdliInfo={data} />,
   ({ fragment, fragmentService }) =>
     fragmentService.fetchCdliInfo(fragment).catch(() => ({

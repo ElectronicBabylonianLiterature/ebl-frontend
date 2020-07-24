@@ -1,17 +1,19 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 
+type Dto = Record<string, unknown>
+
 class Expectation {
   method: 'POST' | 'GET' = 'GET'
   path = ''
   authenticate = true
-  response = {}
+  response: Dto | readonly Dto[] = {}
   verify = false
   called = false
-  body: object | null = null
+  body: Dto | null = null
   isBlob = false
 
-  constructor(data) {
+  constructor(data: Partial<Expectation>) {
     Object.assign(this, data)
   }
 }
@@ -69,7 +71,7 @@ export default class FakeApi {
     }),
   }
 
-  expectTexts(texts): FakeApi {
+  expectTexts(texts: Dto[]): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -82,7 +84,7 @@ export default class FakeApi {
     return this
   }
 
-  allowText(text): FakeApi {
+  allowText(text: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -94,7 +96,7 @@ export default class FakeApi {
     return this
   }
 
-  expectText(text): FakeApi {
+  expectText(text: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -107,7 +109,11 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateManuscripts(text, chapterIndex, manuscripts): FakeApi {
+  expectUpdateManuscripts(
+    text: Dto,
+    chapterIndex: number,
+    manuscripts: Dto
+  ): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -120,7 +126,7 @@ export default class FakeApi {
     return this
   }
 
-  expectUpdateLines(text, chapterIndex, lines): FakeApi {
+  expectUpdateLines(text: Dto, chapterIndex: number, lines: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
@@ -133,10 +139,7 @@ export default class FakeApi {
     return this
   }
 
-  expectAnnotations(
-    number: string,
-    annotationDtos: readonly object[]
-  ): FakeApi {
+  expectAnnotations(number: string, annotationDtos: readonly Dto[]): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -151,7 +154,7 @@ export default class FakeApi {
 
   expectUpdateAnnotations(
     number: string,
-    annotationDtos: readonly object[]
+    annotationDtos: readonly Dto[]
   ): FakeApi {
     this.expectations.push(
       new Expectation({
@@ -169,7 +172,7 @@ export default class FakeApi {
     return this
   }
 
-  expectFragment(fragmentDto): FakeApi {
+  expectFragment(fragmentDto: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -235,7 +238,7 @@ export default class FakeApi {
     return this
   }
 
-  allowStatistics(statistics): FakeApi {
+  allowStatistics(statistics: Dto): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
@@ -247,7 +250,7 @@ export default class FakeApi {
     return this
   }
 
-  allowImage(file): FakeApi {
+  allowImage(file: string): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',

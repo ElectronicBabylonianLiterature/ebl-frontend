@@ -67,7 +67,7 @@ interface Props {
   textService: { list(): Promise<readonly Text[]> }
 }
 
-const TextsWithData = withData<{}, Props, readonly Text[]>(
+const TextsWithData = withData<unknown, Props, readonly Text[]>(
   ({ data }) => <Texts texts={data} />,
   ({ textService }) => textService.list()
 )

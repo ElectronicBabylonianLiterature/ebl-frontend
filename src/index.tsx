@@ -66,7 +66,7 @@ function InjectedApp(): JSX.Element {
 
 function InjectedAuth0Provider({
   children,
-}: PropsWithChildren<{}>): JSX.Element {
+}: PropsWithChildren<unknown>): JSX.Element {
   const auth0Config = createAuth0Config()
   const history = useHistory()
   return (

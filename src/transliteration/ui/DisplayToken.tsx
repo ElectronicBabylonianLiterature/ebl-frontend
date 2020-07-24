@@ -11,13 +11,13 @@ import {
   EnclosureType,
 } from 'transliteration/domain/token'
 import addAccents from './addAccents'
-import { isEnclosure } from '../domain/type-guards'
+import { isEnclosure } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from './SubIndex'
 
-export type TokenWrapper = FunctionComponent<PropsWithChildren<{}>>
+export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
 interface TokenProps {
   token: Token
@@ -78,7 +78,9 @@ function VariantComponent({ token, Wrapper }: TokenProps): JSX.Element {
 
 function GlossComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const gloss = token as Gloss
-  const GlossWrapper: TokenWrapper = ({ children }: PropsWithChildren<{}>) => (
+  const GlossWrapper: TokenWrapper = ({
+    children,
+  }: PropsWithChildren<unknown>) => (
     <Wrapper>
       <sup>{children}</sup>
     </Wrapper>
@@ -216,13 +218,13 @@ const tokens: ReadonlyMap<
 export default function DisplayToken({
   token,
   bemModifiers: modifiers = [],
-  Wrapper = ({ children }: PropsWithChildren<{}>): JSX.Element => (
+  Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
 }: {
   token: Token
   bemModifiers?: readonly string[]
-  Wrapper?: FunctionComponent<PropsWithChildren<{}>>
+  Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
   return (

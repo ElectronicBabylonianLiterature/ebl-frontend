@@ -31,7 +31,7 @@ test.each([
       ],
     },
   ],
-] as [string, boolean, object][])(
+] as [string, boolean, Record<string, unknown>][])(
   'Renders without crashing with props %s %p %p',
   (value, disabled, error) => {
     const onChange = jest.fn()

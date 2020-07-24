@@ -1,23 +1,24 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import _ from 'lodash'
-import FragmentList from './FragmentList'
+import FragmentList, { Columns } from './FragmentList'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 const numberOfFragments = 2
-const expectedStringColumns = {
+const expectedStringColumns: Columns = {
   Number: 'number',
   Accession: 'accession',
   'CDLI Number': 'cdliNumber',
   Description: 'description',
 }
-const expectedComputedColumns = {
+const expectedComputedColumns: Columns = {
   Number: 'number',
-  Computed: (fragment) => fragment.description.toUpperCase(),
+  Computed: (fragment: FragmentInfo) => fragment.description.toUpperCase(),
 }
-let fragments
-let element
+let fragments: FragmentInfo[]
+let element: RenderResult
 
 describe.each([
   [
@@ -28,7 +29,7 @@ describe.each([
     },
   ],
   [
-    'With strig columns',
+    'With string columns',
     _.omit(expectedStringColumns, ['Number']),
     expectedStringColumns,
   ],
@@ -37,7 +38,7 @@ describe.each([
     _.omit(expectedComputedColumns, ['Number']),
     expectedComputedColumns,
   ],
-] as [string, object, object][])('%s', (name, columns, expectedColumns) => {
+] as [string, Columns, Columns][])('%s', (name, columns, expectedColumns) => {
   beforeEach(async () => {
     fragments = await factory.buildMany('fragment', numberOfFragments)
     element = render(
@@ -53,7 +54,7 @@ describe.each([
   })
 
   describe.each(_.range(numberOfFragments))('Fragment %i', (index) => {
-    let fragment
+    let fragment: FragmentInfo
 
     beforeEach(() => {
       fragment = fragments[index]
@@ -63,8 +64,8 @@ describe.each([
       const expectedRow = _.values(expectedColumns)
         .map((property) =>
           _.isFunction(property)
-            ? (property as Function)(fragment)
-            : fragment[property]
+            ? property(fragment)
+            : fragment[property as string]
         )
         .join('')
         .replace('\n', ' ')

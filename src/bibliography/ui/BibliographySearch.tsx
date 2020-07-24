@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { Parser } from 'html-to-react'
+import Promise from 'bluebird'
 
 import withData from 'http/withData'
 
 import './BibliographySearch.css'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-function BibliographySearch({ data }) {
+function BibliographySearch({ data }: { data: readonly BibliographyEntry[] }) {
   const parser = new Parser()
   return (
     <ol className="BibliographySearch">
@@ -28,8 +29,11 @@ function BibliographySearch({ data }) {
 }
 
 export default withData<
-  {},
-  { bibliographyService; query: string },
+  unknown,
+  {
+    bibliographyService: { search(query: string): Promise<BibliographyEntry[]> }
+    query: string
+  },
   readonly BibliographyEntry[]
 >(
   BibliographySearch,

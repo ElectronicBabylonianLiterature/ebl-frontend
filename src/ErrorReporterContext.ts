@@ -1,7 +1,7 @@
 import React from 'react'
 
 export interface ErrorReporter {
-  captureException(error: Error, errorInfo?: object): void
+  captureException(error: Error, errorInfo?: unknown): void
   showReportDialog(): void
   setUser(id: string, username: string, eblName: string): void
   clearScope(): void

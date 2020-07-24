@@ -142,7 +142,7 @@ function Annotator({
 
 const WithAnnotations = withData<
   { fragment: Fragment; image: Blob; fragmentService: FragmentService },
-  {},
+  unknown,
   readonly Annotation[]
 >(
   ({ data, ...props }) => <Annotator {...props} annotations={data} />,
@@ -152,7 +152,7 @@ const WithAnnotations = withData<
 
 const WithPhoto = withData<
   { fragment: Fragment; fragmentService: FragmentService },
-  {},
+  unknown,
   Blob
 >(
   ({ data, ...props }) => <WithAnnotations {...props} image={data} />,

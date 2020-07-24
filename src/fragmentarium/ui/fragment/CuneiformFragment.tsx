@@ -21,7 +21,7 @@ import WordService from 'dictionary/application/WordService'
 
 const ContentSection: FunctionComponent = ({
   children,
-}: PropsWithChildren<{}>) => (
+}: PropsWithChildren<unknown>) => (
   <section className="CuneiformFragment__content">{children}</section>
 )
 
@@ -40,7 +40,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   wordService,
   onSave,
   disabled = false,
-}) => {
+}: TabsProps) => {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
     onSave(
@@ -153,7 +153,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   onSave,
   saving,
   error,
-}) => {
+}: CuneiformFragmentProps) => {
   return (
     <Container fluid>
       <Row>
@@ -200,7 +200,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   wordService,
   activeFolio = null,
   tab = null,
-}) => {
+}: ControllerProps) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)

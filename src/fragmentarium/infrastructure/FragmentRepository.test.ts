@@ -34,7 +34,6 @@ const fragmentInfo = {
   description: 'a fragment',
   matchingLines: [],
   editor: 'Editor',
-  // eslint-disable-next-line @typescript-eslint/camelcase
   edition_date: '2019-09-10T13:03:37.575580',
 }
 
@@ -45,7 +44,6 @@ const fragmentInfoWithLines = {
   description: 'a fragment',
   matchingLines: [['1. kur']],
   editor: 'Editor',
-  // eslint-disable-next-line @typescript-eslint/camelcase
   edition_date: '2019-09-10T13:03:37.575580',
 }
 

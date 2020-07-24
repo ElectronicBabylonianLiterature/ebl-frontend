@@ -4,11 +4,10 @@ import withData from 'http/withData'
 
 import './Statistics.css'
 
-function Statistics({ data }) {
+function Statistics({ data }: { data: { readonly [key: string]: number } }) {
   const localizedStatistics = _.mapValues(data, (value) =>
     value.toLocaleString()
   )
-
   return (
     <section className="Statistics">
       <h3 className="SubsectionHeading--indented">
@@ -30,7 +29,7 @@ function Statistics({ data }) {
 }
 
 export default withData<
-  {},
+  unknown,
   { fragmentService },
   { readonly [key: string]: number }
 >(Statistics, (props) => props.fragmentService.statistics())

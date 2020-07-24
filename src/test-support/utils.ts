@@ -12,14 +12,14 @@ interface ExpectResult<T> {
   toHaveBeenCalledWith(args: any): T
 }
 interface WhenResult<T> {
-  expect(func: Function): ExpectResult<T>
+  expect(func: jest.Mock): ExpectResult<T>
 }
 
-type MatcherFactory<T> = (func: Function) => (args: any) => T
+type MatcherFactory<T> = (func: jest.Mock) => (args: any) => T
 
 function when<T>(createMatcher: MatcherFactory<T>): WhenResult<T> {
   return {
-    expect: (onChange: Function): ExpectResult<T> => ({
+    expect: (onChange: jest.Mock): ExpectResult<T> => ({
       toHaveBeenCalledWith: createMatcher(onChange),
     }),
   }

@@ -43,7 +43,7 @@ function isDictionaryWord(word: DictionaryWord | null): word is DictionaryWord {
 }
 
 export default withData<
-  {},
+  unknown,
   { text: Text; wordService: WordService },
   [string, readonly GlossaryToken[]][]
 >(Glossary, ({ text, wordService: dictionary }) => {

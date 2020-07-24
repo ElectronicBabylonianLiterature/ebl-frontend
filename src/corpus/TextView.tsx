@@ -18,7 +18,7 @@ function TextView({ text }: { text: Text }): JSX.Element {
 }
 
 export default withData<
-  {},
+  unknown,
   {
     category: string
     index: string

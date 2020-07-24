@@ -42,7 +42,7 @@ function isOpenEnclosure(token: Token): boolean {
   return isEnclosure(token) && ['CENTER', 'LEFT'].includes(token.side)
 }
 
-function GlossWrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+function GlossWrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
   return (
     <sup className="Transliteration__DocumentOrientedGloss">{children}</sup>
   )
