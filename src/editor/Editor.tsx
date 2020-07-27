@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import AceEditor, { IAnnotation } from 'react-ace'
+import AceEditor, { IAnnotation, ICommand } from 'react-ace'
+import { Ace } from 'ace-builds'
 import _ from 'lodash'
 
 import 'ace-builds/src-noconflict/ext-searchbox'
@@ -19,19 +20,20 @@ function createAnnotations(compositeError): IAnnotation[] {
     }))
 }
 
-const specialCharacterKeys = Object.entries(specialCharacters).map(
+const specialCharacterKeys: ICommand[] = Object.entries(specialCharacters).map(
   ([key, value]) => ({
     name: `insert a special character ${key}`,
     bindKey: value,
-    exec(editor: any): void {
+    exec(editor: Ace.Editor): void {
       editor.insert(key)
     },
   })
 )
+
 interface Props {
   readonly name: string
   readonly value: string
-  readonly onChange: (value: string, event?: any) => void | undefined
+  readonly onChange: (value: string, event?: unknown) => void | undefined
   readonly disabled: boolean
   readonly error: Error | Record<string, unknown> | null
 }
@@ -48,7 +50,7 @@ class Editor extends Component<Props> {
   }
 
   componentDidMount(): void {
-    const customMode = new AtfMode()
+    const customMode = (new AtfMode() as unknown) as Ace.SyntaxMode
     this.aceEditor.current?.editor.getSession().setMode(customMode)
   }
 
@@ -64,8 +66,7 @@ class Editor extends Component<Props> {
         minLines={2}
         maxLines={2 * value.split('\n').length + 2}
         mode="plain_text"
-        theme="kuroir" /*used theme tokens only to distinguish color. Have no
-          semantical meaning corresponding to common tokens from theme*/
+        theme="kuroir" // AtfMode is designed to be used with kuroir theme
         value={value}
         onChange={onChange}
         showPrintMargin={false}
@@ -79,10 +80,9 @@ class Editor extends Component<Props> {
         }}
         setOptions={{
           showLineNumbers: false,
-          // @ts-ignore
+          // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
           newLineMode: 'unix',
         }}
-        // @ts-ignore
         commands={specialCharacterKeys}
       />
     )

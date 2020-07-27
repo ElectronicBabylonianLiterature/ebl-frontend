@@ -61,7 +61,7 @@
     "node-sass": "^4.13.1",
     "query-string": "^6.2.0",
     "react": "^16.8.0",
-    "react-ace": "^8.0.0",
+    "react-ace": "^9.1.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.4.0",
     "react-image-annotation": "^0.9.10",
