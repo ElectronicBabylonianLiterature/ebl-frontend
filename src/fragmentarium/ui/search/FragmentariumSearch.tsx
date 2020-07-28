@@ -3,7 +3,7 @@ import AppContent from 'common/AppContent'
 import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchGroup'
+import SearchGroup from 'fragmentarium/ui/SearchForms'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
