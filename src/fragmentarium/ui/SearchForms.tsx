@@ -85,6 +85,21 @@ class SearchForms extends Component<Props, State> {
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
     )
   }
+  ReferenceSearchHelp(): JSX.Element {
+    return (
+      <Popover
+        id={_.uniqueId('ReferenceSearchHelp-')}
+        title="Search References"
+      >
+        <Popover.Content>
+          Search for Author and Year <br />
+          (e.g. <code>George 20</code> or <code>George 2003</code>) or
+          Abbreviation (and Number) <br />
+          (e.g. <code>BWL</code> or <code>CT 13</code>)
+        </Popover.Content>
+      </Popover>
+    )
+  }
   TransliterationSearchHelp(): JSX.Element {
     return (
       <Popover
@@ -133,7 +148,14 @@ class SearchForms extends Component<Props, State> {
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="reference">
-            <Col sm={{ span: 5, offset: 2 }}>
+            <Col
+              sm={2}
+              as={Form.Label}
+              className="TransliterationSearchForm__label"
+            >
+              <HelpTrigger overlay={this.ReferenceSearchHelp()} />
+            </Col>
+            <Col>
               <BibliographySelect
                 aria-labelledby={'BibliographyTitle'}
                 value={this.state.referenceEntry}
