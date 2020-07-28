@@ -1,12 +1,19 @@
 import React from 'react'
-import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, waitFor } from '@testing-library/react'
+import { withRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
-import { changeValueByLabel, clickNth } from 'test-support/utils'
+import {
+  changeValueByLabel,
+  changeValueByValue,
+  clickNth,
+  whenClicked,
+} from 'test-support/utils'
 import SearchForms from './SearchForms'
 import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
+import { createMemoryHistory } from 'history'
 
 let bibliographyEntry
 let number
@@ -21,11 +28,17 @@ let fragmentSearchService
 let session
 let container
 let element
+let history
+
+let entry
+let searchEntry
 
 async function renderSearchForms() {
+  history = createMemoryHistory()
+  jest.spyOn(history, 'push')
   const SearchFormsWithRouter = withRouter<any, any>(SearchForms)
   element = render(
-    <MemoryRouter>
+    <Router history={history}>
       <SessionContext.Provider value={session}>
         <SearchFormsWithRouter
           number={number}
@@ -39,7 +52,7 @@ async function renderSearchForms() {
           fragmentSearchService={fragmentSearchService}
         />
       </SessionContext.Provider>
-    </MemoryRouter>
+    </Router>
   )
   container = element.container
   await element.getByLabelText('Number')
@@ -69,31 +82,34 @@ beforeEach(async () => {
 
 describe('Displays User Input', () => {
   beforeEach(async () => {
+    entry = await factory.build('bibliographyEntry')
+    searchEntry = await factory.build('bibliographyEntry')
     await renderSearchForms()
   })
-  it("Displays User Input in NumbersSearchForm'", async () => {
-    const number = 'RN0'
+  it('Displys User Input in NumbersSearchForm', async () => {
+    const userInput = 'RN0'
 
-    changeValueByLabel(element, 'Number', number)
-    expect(await element.getByLabelText('Number')).toHaveTextContent(number)
+    changeValueByLabel(element, 'Number', userInput)
+    await expect(await element.getByLabelText('Number')).toHaveTextContent(
+      userInput
+    )
   })
   it('Displays User Input in TranslierationSearchForm', async () => {
-    const transliteration = 'ma i-ra\nka li'
+    const userInput = 'ma i-ra\nka li'
 
-    changeValueByLabel(element, 'Transliteration', transliteration)
+    changeValueByLabel(element, 'Transliteration', userInput)
     expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
-      transliteration.replace('\n', ' ')
+      userInput.replace('\n', ' ')
     )
   })
-  it("Displays User Input in ReferenceSearchForm'", async () => {
-    pages = bibliographyEntry.cslData.page
-
-    changeValueByLabel(element, 'Entry', expectedLabel(bibliographyEntry))
-    changeValueByLabel(element, 'Pages', pages)
-    expect(element.container).toHaveTextContent(
-      expectedLabel(bibliographyEntry)
-    )
-    expect(await element.getByLabelText('Pages')).toHaveTextContent(pages)
+  it('Displays User Input in BibliographySelect', async () => {
+    const label = expectedLabel(searchEntry)
+    changeValueByValue(element, 'BibliographySelect', 'Borger')
+    await element.findByText(label)
+    await clickNth(element, label, 0)
+    expect(
+      await element.getByLabelText('BibliographySelect')
+    ).toHaveTextContent(label)
   })
 })
 
@@ -101,10 +117,18 @@ function expectedLabel(entry: BibliographyEntry): string {
   return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
 }
 
-describe('Search', () => {
+describe('Click Search', () => {
   beforeEach(async () => {
-    const random = await factory.build('fragment')
-    fragmentSearchService.random.mockReturnValueOnce(Promise.resolve([random]))
     await renderSearchForms()
+  })
+  it('Search Transliteration', async () => {
+    const transliteration = 'ma i-ra'
+
+    changeValueByLabel(element, 'Transliteration', transliteration)
+    await whenClicked(element, 'Search')
+      .expect(history.push)
+      .toHaveBeenCalledWith(
+        '/fragmentarium/search/?id=&number=&pages=&primaryAuthor=&title=&transliteration=ma%20i-ra&year='
+      )
   })
 })

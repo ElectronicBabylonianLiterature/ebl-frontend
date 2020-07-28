@@ -69,7 +69,7 @@ class SearchForms extends Component<Props, State> {
   }
 
   flattenState(state: State) {
-    const flattenedState = {
+    return {
       number: state.number,
       id: state.referenceEntry.id,
       title: state.referenceEntry.title,
@@ -78,7 +78,6 @@ class SearchForms extends Component<Props, State> {
       pages: state.pages,
       transliteration: state.transliteration,
     }
-    return flattenedState
   }
   search = (event) => {
     event.preventDefault()
