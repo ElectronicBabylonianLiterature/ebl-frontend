@@ -6,6 +6,8 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
+import { Button, Popover, PopoverContent } from 'react-bootstrap'
+import HelpTrigger from '../../../common/HelpTrigger'
 
 type Props = {
   fragment: Fragment
@@ -72,6 +74,24 @@ function CdliNumber({ fragment }: Props) {
 function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
+function Genre({ fragment }: Props) {
+  const edit = () => {
+    return (
+      <Popover id={_.uniqueId('Edit-')} title="Search transliterations">
+        <Popover.Content>edit</Popover.Content>
+      </Popover>
+    )
+  }
+  const popup = () => {
+    return <HelpTrigger overlay={edit} />
+  }
+  return (
+    <div>
+      Genre:
+      <Button className="float-right">onClick={popup}</Button>
+    </div>
+  )
+}
 
 function Details({ fragment }: Props) {
   return (
@@ -93,6 +113,9 @@ function Details({ fragment }: Props) {
       </li>
       <li className="Details__item">
         <Accession fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <Genre fragment={fragment} />
       </li>
     </ul>
   )
