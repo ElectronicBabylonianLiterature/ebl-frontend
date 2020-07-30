@@ -6,6 +6,7 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import {
+  changeValue,
   changeValueByLabel,
   changeValueByValue,
   clickNth,
@@ -65,6 +66,9 @@ beforeEach(async () => {
   fragmentService = {
     searchBibliography: jest.fn(),
   }
+  fragmentService.searchBibliography.mockReturnValue(
+    Promise.resolve([searchEntry])
+  )
   fragmentSearchService = {
     random: jest.fn(),
     interesting: jest.fn(),
@@ -80,38 +84,40 @@ beforeEach(async () => {
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
 })
 
-describe('Displays User Input', () => {
-  beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry')
-    searchEntry = await factory.build('bibliographyEntry')
-    await renderSearchForms()
-  })
-  it('Displys User Input in NumbersSearchForm', async () => {
-    const userInput = 'RN0'
-
-    changeValueByLabel(element, 'Number', userInput)
-    await expect(await element.getByLabelText('Number')).toHaveTextContent(
-      userInput
-    )
-  })
-  it('Displays User Input in TranslierationSearchForm', async () => {
-    const userInput = 'ma i-ra\nka li'
-
-    changeValueByLabel(element, 'Transliteration', userInput)
-    expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
-      userInput.replace('\n', ' ')
-    )
-  })
-  it('Displays User Input in BibliographySelect', async () => {
-    const label = expectedLabel(searchEntry)
-    changeValueByValue(element, 'BibliographySelect', 'Borger')
-    await element.findByText(label)
-    await clickNth(element, label, 0)
-    expect(
-      await element.getByLabelText('BibliographySelect')
-    ).toHaveTextContent(label)
-  })
+beforeEach(async () => {
+  entry = await factory.build('bibliographyEntry')
+  searchEntry = await factory.build('bibliographyEntry')
+  await renderSearchForms()
 })
+
+it('Displys User Input in NumbersSearchForm', async () => {
+  const userInput = 'RN0'
+
+  changeValueByLabel(element, 'Number', userInput)
+  await expect(await element.getByLabelText('Number')).toHaveValue(userInput)
+})
+
+it('Displays User Input in TranslierationSearchForm', async () => {
+  const userInput = 'ma i-ra\nka li'
+
+  changeValueByLabel(element, 'Transliteration', userInput)
+  expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
+    userInput.replace('\n', ' ')
+  )
+})
+
+it('Displays User Input in BibliographySelect', async () => {
+  const label = expectedLabel(searchEntry)
+  await fill()
+  await clickNth(element, label, 0)
+  expect(await element.getByLabelText('BibliographySelect')).toHaveValue(label)
+})
+
+async function fill(): Promise<void> {
+  const label = expectedLabel(searchEntry)
+  changeValueByLabel(element, 'BibliographySelect', 'Borger')
+  await clickNth(element, label, 0)
+}
 
 function expectedLabel(entry: BibliographyEntry): string {
   return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
