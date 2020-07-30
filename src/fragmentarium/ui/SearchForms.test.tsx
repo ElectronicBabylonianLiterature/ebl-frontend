@@ -1,4 +1,3 @@
-/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Router } from 'react-router-dom'

@@ -1,13 +1,10 @@
-/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import BibliographySelect from './BibliographySelect'
-import { changeValueByLabel, clickNth } from 'test-support/utils'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { expectedLabel, fill } from '../../test-support/test-bibliographySelect'
+import { expectedLabel, fill } from 'test-support/test-bibliographySelect'
 
 let entry
 let searchEntry
