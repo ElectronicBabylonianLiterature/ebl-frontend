@@ -4,7 +4,10 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import BibliographySelect from './BibliographySelect'
-import { expectedLabel, fill } from 'test-support/test-bibliographySelect'
+import {
+  expectedLabel,
+  fillBibliographySelect,
+} from 'test-support/test-bibliographySelect'
 
 let entry
 let searchEntry
