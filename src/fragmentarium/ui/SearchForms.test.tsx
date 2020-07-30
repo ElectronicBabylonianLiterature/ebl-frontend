@@ -6,10 +6,10 @@ import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
-import { changeValueByLabel, clickNth, whenClicked } from 'test-support/utils'
+import { changeValueByLabel, whenClicked } from 'test-support/utils'
 import SearchForms from './SearchForms'
-import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
+import { fill, expectedLabel } from 'test-support/test-bibliographySelect'
 
 let number
 let id
@@ -94,21 +94,10 @@ describe('User Input', () => {
   })
 
   it('Displays User Input in BibliographySelect', async () => {
-    await fill()
+    await fill(searchEntry, 'BibliographySelect', element, 'Borger')
     expect(element.container).toHaveTextContent(expectedLabel(searchEntry))
   })
 })
-
-async function fill(): Promise<void> {
-  const label = expectedLabel(searchEntry)
-  changeValueByLabel(element, 'BibliographySelect', 'Borger')
-  await element.findByText(label)
-  await clickNth(element, label, 0)
-}
-
-function expectedLabel(entry: BibliographyEntry): string {
-  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
-}
 
 describe('Click Search', () => {
   it('Search Transliteration', async () => {

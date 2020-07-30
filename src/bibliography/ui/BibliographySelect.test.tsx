@@ -1,3 +1,4 @@
+/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
@@ -6,6 +7,7 @@ import { factory } from 'factory-girl'
 import BibliographySelect from './BibliographySelect'
 import { changeValueByLabel, clickNth } from 'test-support/utils'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { expectedLabel, fill } from '../../test-support/test-bibliographySelect'
 
 let entry
 let searchEntry
@@ -37,17 +39,6 @@ it('Displays the entry label', () => {
 })
 
 it('Calls onChange when selecting an entry', async () => {
-  await fill()
+  await fill(searchEntry, 'Entry', element, 'Borger')
   await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })
-
-async function fill(): Promise<void> {
-  const label = expectedLabel(searchEntry)
-  changeValueByLabel(element, 'Entry', 'Borger')
-  await element.findByText(label)
-  await clickNth(element, label, 0)
-}
-
-function expectedLabel(entry: BibliographyEntry): string {
-  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
-}
