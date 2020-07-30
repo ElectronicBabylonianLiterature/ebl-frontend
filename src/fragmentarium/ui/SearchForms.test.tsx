@@ -1,3 +1,4 @@
+/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Router } from 'react-router-dom'
@@ -5,18 +6,11 @@ import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
-import {
-  changeValue,
-  changeValueByLabel,
-  changeValueByValue,
-  clickNth,
-  whenClicked,
-} from 'test-support/utils'
+import { changeValueByLabel, clickNth, whenClicked } from 'test-support/utils'
 import SearchForms from './SearchForms'
 import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
 
-let bibliographyEntry
 let number
 let id
 let title
@@ -62,7 +56,8 @@ async function renderSearchForms() {
 }
 
 beforeEach(async () => {
-  bibliographyEntry = await factory.build('bibliographyEntry')
+  entry = await factory.build('bibliographyEntry')
+  searchEntry = await factory.build('bibliographyEntry')
   fragmentService = {
     searchBibliography: jest.fn(),
   }
@@ -77,45 +72,37 @@ beforeEach(async () => {
     isAllowedToReadFragments: jest.fn(),
     isAllowedToTransliterateFragments: jest.fn(),
   }
-  fragmentService.searchBibliography.mockReturnValueOnce(
-    Promise.resolve(bibliographyEntry)
-  )
   session.isAllowedToReadFragments.mockReturnValue(true)
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
-})
-
-beforeEach(async () => {
-  entry = await factory.build('bibliographyEntry')
-  searchEntry = await factory.build('bibliographyEntry')
   await renderSearchForms()
 })
+describe('User Input', () => {
+  it('Displys User Input in NumbersSearchForm', async () => {
+    const userInput = 'RN0'
 
-it('Displys User Input in NumbersSearchForm', async () => {
-  const userInput = 'RN0'
+    changeValueByLabel(element, 'Number', userInput)
+    await expect(await element.getByLabelText('Number')).toHaveValue(userInput)
+  })
 
-  changeValueByLabel(element, 'Number', userInput)
-  await expect(await element.getByLabelText('Number')).toHaveValue(userInput)
-})
+  it('Displays User Input in TranslierationSearchForm', async () => {
+    const userInput = 'ma i-ra\nka li'
 
-it('Displays User Input in TranslierationSearchForm', async () => {
-  const userInput = 'ma i-ra\nka li'
+    changeValueByLabel(element, 'Transliteration', userInput)
+    expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
+      userInput.replace('\n', ' ')
+    )
+  })
 
-  changeValueByLabel(element, 'Transliteration', userInput)
-  expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
-    userInput.replace('\n', ' ')
-  )
-})
-
-it('Displays User Input in BibliographySelect', async () => {
-  const label = expectedLabel(searchEntry)
-  await fill()
-  await clickNth(element, label, 0)
-  expect(await element.getByLabelText('BibliographySelect')).toHaveValue(label)
+  it('Displays User Input in BibliographySelect', async () => {
+    await fill()
+    expect(element.container).toHaveTextContent(expectedLabel(searchEntry))
+  })
 })
 
 async function fill(): Promise<void> {
   const label = expectedLabel(searchEntry)
   changeValueByLabel(element, 'BibliographySelect', 'Borger')
+  await element.findByText(label)
   await clickNth(element, label, 0)
 }
 
@@ -124,9 +111,6 @@ function expectedLabel(entry: BibliographyEntry): string {
 }
 
 describe('Click Search', () => {
-  beforeEach(async () => {
-    await renderSearchForms()
-  })
   it('Search Transliteration', async () => {
     const transliteration = 'ma i-ra'
 
