@@ -36,6 +36,6 @@ it('Displays the entry label', () => {
 })
 
 it('Calls onChange when selecting an entry', async () => {
-  await fill(searchEntry, 'Entry', element, 'Borger')
+  await fillBibliographySelect(searchEntry, 'Entry', element, 'Borger')
   await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })

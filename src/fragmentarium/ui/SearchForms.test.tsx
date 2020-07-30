@@ -8,7 +8,10 @@ import SessionContext from 'auth/SessionContext'
 import { changeValueByLabel, whenClicked } from 'test-support/utils'
 import SearchForms from './SearchForms'
 import { createMemoryHistory } from 'history'
-import { fill, expectedLabel } from 'test-support/test-bibliographySelect'
+import {
+  fillBibliographySelect,
+  expectedLabel,
+} from 'test-support/test-bibliographySelect'
 
 let number
 let id
@@ -93,7 +96,12 @@ describe('User Input', () => {
   })
 
   it('Displays User Input in BibliographySelect', async () => {
-    await fill(searchEntry, 'BibliographySelect', element, 'Borger')
+    await fillBibliographySelect(
+      searchEntry,
+      'BibliographySelect',
+      element,
+      'Borger'
+    )
     expect(element.container).toHaveTextContent(expectedLabel(searchEntry))
   })
 })

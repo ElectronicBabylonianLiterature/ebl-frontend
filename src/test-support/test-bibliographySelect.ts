@@ -2,7 +2,7 @@ import { changeValueByLabel, clickNth } from './utils'
 import BibliographyEntry from '../bibliography/domain/BibliographyEntry'
 import { RenderResult } from '@testing-library/react'
 
-export async function fill(
+export async function fillBibliographySelect(
   entry: BibliographyEntry,
   BibliographySelectLabel: string,
   element: RenderResult,
