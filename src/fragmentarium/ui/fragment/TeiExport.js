@@ -30,8 +30,8 @@ function getHeader(title, collection, museum, sourcedesc, publication) {
     '</p><p>' +
     collection +
     ' Collection</p></publicationStmt>'
-  const source_desc = '<sourceDesc><p>' + sourcedesc + '</p>'
-  if (publication) sourcedesc += '<p>' + publication + '</p>'
+  var source_desc = '<sourceDesc><p>' + sourcedesc + '</p>'
+  if (publication) source_desc += '<p>Publication: ' + publication + '</p>'
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
   return res + start + title_stmt + pub_stmt + source_desc + end
@@ -67,11 +67,28 @@ function getBody(fragment) {
 function getContent(line) {
   var res = ''
   for (var j = 0; j < line.content.length; j++) {
-    var word = line.content[j].value
+    var word = escapeXMLChars(line.content[j].cleanValue)
     res += word
     if (j !== line.content.length - 1) res += ' '
   }
   return res
+}
+
+function escapeXMLChars(word) {
+  return word.replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<':
+        return '&lt;'
+      case '>':
+        return '&gt;'
+      case '&':
+        return '&amp;'
+      case "'":
+        return '&apos;'
+      case '"':
+        return '&quot;'
+    }
+  })
 }
 
 function prettifyXml(sourceXml) {
