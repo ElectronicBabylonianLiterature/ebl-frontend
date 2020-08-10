@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import * as TeiExport from './TeiExport.js'
 
 export default function Download({
   fragment,
@@ -10,12 +11,24 @@ export default function Download({
 }): JSX.Element {
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
+  const [txml, setTei] = useState<string>()
   useEffect(() => {
+    const teiUrl = URL.createObjectURL(
+      new Blob([TeiExport.teiExport(fragment)], {
+        type: 'text/plain',
+      })
+    )
+    setTei(teiUrl)
+    return (): void => {
+      URL.revokeObjectURL(teiUrl)
+    }
+
     const jsonUrl = URL.createObjectURL(
       new Blob([JSON.stringify(fragment, null, 2)], {
         type: 'application/json',
       })
     )
+
     setJson(jsonUrl)
     const atfUrl = URL.createObjectURL(
       new Blob([fragment.atfHeading, '\n', fragment.atf], {
@@ -37,10 +50,10 @@ export default function Download({
       variant="outline-primary"
     >
       <Dropdown.Item eventKey="1" disabled>
-        Downlad as PDF
+        Download as PDF
       </Dropdown.Item>
       <Dropdown.Item eventKey="2" disabled>
-        Downlad as Word Document
+        Download as Word Document
       </Dropdown.Item>
       <Dropdown.Item
         data-testid="download-atf"
@@ -48,7 +61,7 @@ export default function Download({
         href={atf}
         download={`${fragment.number}.atf`}
       >
-        Downlad as ATF
+        Download as ATF
       </Dropdown.Item>
       <Dropdown.Item
         data-testid="download-json"
@@ -56,10 +69,14 @@ export default function Download({
         href={json}
         download={`${fragment.number}.json`}
       >
-        Downlad as JSON File
+        Download as JSON File
       </Dropdown.Item>
-      <Dropdown.Item eventKey="5" disabled>
-        Downlad as TEI XML File
+      <Dropdown.Item
+        eventKey="5"
+        href={txml}
+        // download={`${fragment.number}.xml`}
+      >
+        Download as TEI XML File
       </Dropdown.Item>
     </DropdownButton>
   )
