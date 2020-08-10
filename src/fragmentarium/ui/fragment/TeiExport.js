@@ -64,58 +64,6 @@ function getBody(fragment) {
   return res
 }
 
-// function getBody(fragment){
-
-// var res = '';
-// for(var i=0; i<fragment.text.allLines.length;i++){
-// 	var line = fragment.text.allLines[i];
-
-// 	switch(line.type) {
-// 		case 'TextLine':
-// 			res += '<p n="'+line.lineNumber.number+'">';
-// 			res += getContent(line);
-// 		break;
-
-// 		case 'NoteLine':
-// 			res += '<p>';
-// 			res += getContent(line);
-// 		break;
-
-// 		case 'SurfaceAtLine':
-// 			res+='<p>';
-// 			res+=line.displayValue;
-// 		break;
-
-// 		case 'RulingDollarLine':
-// 			res+= '<p>';
-// 			res+=line.displayValue;
-// 		break;
-
-// 		case 'SealDollarLine':
-// 			res+= '<p>';
-// 			res+=line.displayValue;
-// 		break;
-
-// 		case 'ColumnAtLine':
-// 			res+= '<p>';
-// 			res+=line.displayValue;
-// 		break;
-
-// 		case 'EmptyLine':
-// 			res+=" ";
-// 		break;
-
-// 	default:
-// 	   res+= '<p>';
-// 	}
-
-//  if(line.type!== 'EmptyLine')res+='</p>';
-// }
-
-// return res;
-
-// }
-
 function getContent(line) {
   var res = ''
   for (var j = 0; j < line.content.length; j++) {
