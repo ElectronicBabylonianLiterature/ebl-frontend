@@ -4,12 +4,12 @@ import { RenderResult } from '@testing-library/react'
 
 export async function fillBibliographySelect(
   entry: BibliographyEntry,
-  BibliographySelectLabel: string,
+  bibliographySelectLabel: string,
   element: RenderResult,
   value: string
 ): Promise<void> {
   const label = expectedLabel(entry)
-  changeValueByLabel(element, BibliographySelectLabel, value)
+  changeValueByLabel(element, bibliographySelectLabel, value)
   await element.findByText(label)
   await clickNth(element, label, 0)
 }

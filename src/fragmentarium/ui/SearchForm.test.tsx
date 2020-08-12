@@ -1,34 +1,33 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Router } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import { changeValueByLabel, whenClicked } from 'test-support/utils'
-import SearchForms from './SearchForms'
+import SearchForms from './SearchForm'
 import { createMemoryHistory } from 'history'
 import {
   fillBibliographySelect,
   expectedLabel,
 } from 'test-support/test-bibliographySelect'
+import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
 
-let number
-let id
-let title
-let primaryAuthor
-let year
-let pages
-let transliteration
-let fragmentService
-let fragmentSearchService
-let session
-let container
-let element
-let history
-
-let entry
-let searchEntry
+let number: string
+let id: string
+let title: string
+let primaryAuthor: string
+let year: string
+let pages: string
+let transliteration: string
+let fragmentService: any
+let fragmentSearchService: any
+let session: any
+let element: RenderResult
+let history: any
+let entry: BibliographyEntry
+let searchEntry: BibliographyEntry
 
 async function renderSearchForms() {
   history = createMemoryHistory()
@@ -51,10 +50,6 @@ async function renderSearchForms() {
       </SessionContext.Provider>
     </Router>
   )
-  container = element.container
-  await element.getByLabelText('Number')
-  await element.getByLabelText('Pages')
-  await element.getByLabelText('Transliteration')
 }
 
 beforeEach(async () => {
@@ -98,7 +93,7 @@ describe('User Input', () => {
   it('Displays User Input in BibliographySelect', async () => {
     await fillBibliographySelect(
       searchEntry,
-      'BibliographySelect',
+      'BibliographySelectSearchForm__label',
       element,
       'Borger'
     )

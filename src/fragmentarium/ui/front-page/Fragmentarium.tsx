@@ -4,7 +4,7 @@ import AppContent from 'common/AppContent'
 import Statistics from './Statistics'
 import ApiImage from 'common/ApiImage'
 import SessionContext from 'auth/SessionContext'
-import SearchGroup from 'fragmentarium/ui/SearchForms'
+import SearchGroup from 'fragmentarium/ui/SearchForm'
 import LatestTransliterations from './LatestTransliterations'
 import NeedsRevision from './NeedsRevision'
 

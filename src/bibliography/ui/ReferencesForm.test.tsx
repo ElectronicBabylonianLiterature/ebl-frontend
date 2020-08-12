@@ -48,7 +48,7 @@ test('Delete reference', async () => {
 })
 
 test('Edit reference', async () => {
-  changeValueByLabel(element, 'Document', 'Borger')
+  changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
   await element.findByText(/Borger 1957/)
   await clickNth(element, /Borger 1957/, 0)
 

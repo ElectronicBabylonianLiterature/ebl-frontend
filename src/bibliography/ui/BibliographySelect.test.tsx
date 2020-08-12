@@ -23,9 +23,8 @@ beforeEach(async () => {
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
   element = render(
     <>
-      <label id="label">Entry</label>
       <BibliographySelect
-        aria-labelledby="label"
+        aria-label="label"
         searchBibliography={searchBibliography}
         value={entry}
         onChange={onChange}
@@ -39,6 +38,6 @@ it('Displays the entry label', () => {
 })
 
 it('Calls onChange when selecting an entry', async () => {
-  await fillBibliographySelect(searchEntry, 'Entry', element, 'Borger')
+  await fillBibliographySelect(searchEntry, 'label', element, 'Borger')
   await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })

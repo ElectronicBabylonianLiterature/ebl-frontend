@@ -7,6 +7,7 @@ import { stringify } from 'query-string'
 import BibliographySelect from '../../bibliography/ui/BibliographySelect'
 import HelpTrigger from '../../common/HelpTrigger'
 import _ from 'lodash'
+import produce from 'immer'
 
 interface State {
   number: string | null | undefined
@@ -29,7 +30,7 @@ type Props = {
   history: History
 } & RouteComponentProps
 
-class SearchForms extends Component<Props, State> {
+class SearchForm extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -51,20 +52,21 @@ class SearchForms extends Component<Props, State> {
   }
 
   onChangePages = (value: string): void => {
-    this.setState({ pages: value })
-    this.setState({ isValid: this.isValid(value) })
+    this.setState({ pages: value, isValid: this.isValid(value) })
   }
   isValid(pages: string | null | undefined): boolean {
     return !!(Number(pages) || !pages)
   }
 
   onChangeBibliographyReference = (event) => {
-    const newState = { ...this.state }
-    newState.referenceEntry.title = event.cslData.title || ''
-    newState.referenceEntry.id = event.cslData.id || ''
-    newState.referenceEntry.primaryAuthor = event.cslData.author[0].family || ''
-    newState.referenceEntry.year =
-      event.cslData.issued['date-parts'][0][0] || ''
+    const newState = produce(this.state, (draftState) => {
+      draftState.referenceEntry.title = event.cslData.title || ''
+      draftState.referenceEntry.id = event.cslData.id || ''
+      draftState.referenceEntry.primaryAuthor =
+        event.cslData.author[0].family || ''
+      draftState.referenceEntry.year =
+        event.cslData.issued['date-parts'][0][0] || ''
+    })
     this.setState(newState)
   }
 
@@ -157,7 +159,7 @@ class SearchForms extends Component<Props, State> {
             </Col>
             <Col>
               <BibliographySelect
-                aria-labelledby={'BibliographyTitle'}
+                aria-label={'BibliographySelectSearchForm__label'}
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}
                 searchBibliography={(query) =>
@@ -208,7 +210,7 @@ class SearchForms extends Component<Props, State> {
         <ButtonToolbar>
           <Col sm={{ offset: 2 }}>
             <Button
-              className="w-25 m-1"
+              className="ml-4 mr-1"
               onClick={this.search}
               variant="primary"
               disabled={!this.state.isValid}
@@ -227,4 +229,4 @@ class SearchForms extends Component<Props, State> {
     )
   }
 }
-export default withRouter(SearchForms)
+export default withRouter(SearchForm)
