@@ -210,7 +210,7 @@ class SearchForm extends Component<Props, State> {
         <ButtonToolbar>
           <Col sm={{ offset: 2 }}>
             <Button
-              className="ml-4 mr-1"
+              className="w-25 m-1"
               onClick={this.search}
               variant="primary"
               disabled={!this.state.isValid}
