@@ -4,8 +4,10 @@ import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
 import BibliographySelect from './BibliographySelect'
-import { changeValueByLabel, clickNth } from 'test-support/utils'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import {
+  expectedLabel,
+  fillBibliographySelect,
+} from 'test-support/test-bibliographySelect'
 
 let entry
 let searchEntry
@@ -21,9 +23,8 @@ beforeEach(async () => {
   searchBibliography.mockReturnValue(Promise.resolve([searchEntry]))
   element = render(
     <>
-      <label id="label">Entry</label>
       <BibliographySelect
-        aria-labelledby="label"
+        aria-label="label"
         searchBibliography={searchBibliography}
         value={entry}
         onChange={onChange}
@@ -37,17 +38,6 @@ it('Displays the entry label', () => {
 })
 
 it('Calls onChange when selecting an entry', async () => {
-  await fill()
+  await fillBibliographySelect(searchEntry, 'label', element, 'Borger')
   await waitFor(() => expect(onChange).toHaveBeenCalledWith(searchEntry))
 })
-
-async function fill(): Promise<void> {
-  const label = expectedLabel(searchEntry)
-  changeValueByLabel(element, 'Entry', 'Borger')
-  await element.findByText(label)
-  await clickNth(element, label, 0)
-}
-
-function expectedLabel(entry: BibliographyEntry): string {
-  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
-}
