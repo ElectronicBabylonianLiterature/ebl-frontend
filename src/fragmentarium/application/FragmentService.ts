@@ -8,6 +8,7 @@ import _, { Dictionary } from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   UniqueLemma,
+  LemmatizationDto,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import { Token } from 'transliteration/domain/token'
@@ -35,7 +36,7 @@ export interface FragmentRepository {
   ): Promise<Fragment>
   updateLemmatization(
     number: string,
-    lemmatization: Lemmatization
+    lemmatization: LemmatizationDto
   ): Promise<Fragment>
   updateReferences(
     number: string,
@@ -100,7 +101,7 @@ class FragmentService {
 
   updateLemmatization(
     number: string,
-    lemmatization: Lemmatization
+    lemmatization: LemmatizationDto
   ): Promise<Fragment> {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
@@ -203,7 +204,7 @@ class FragmentService {
     return Promise.mapSeries(
       mapLines(text, (line) =>
         line
-          .filter((token) => token.lemmatizable)
+          .filter((token) => token.lemmatizable && _.isEmpty(token.uniqueLemma))
           .flatMap((token) => token.cleanValue)
       ),
       (value: string): [string, ReadonlyArray<UniqueLemma>] =>

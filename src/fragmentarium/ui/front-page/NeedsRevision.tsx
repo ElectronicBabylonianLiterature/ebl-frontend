@@ -2,8 +2,9 @@ import React from 'react'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import Promise from 'bluebird'
 
-function NeedsRevision({ data }) {
+function NeedsRevision({ data }: { data: readonly FragmentInfo[] }) {
   return (
     <section>
       <h3 className="SubsectionHeading--indented">Needs revision:</h3>
@@ -19,7 +20,12 @@ function NeedsRevision({ data }) {
   )
 }
 
-export default withData<{}, { fragmentSearchService }, readonly FragmentInfo[]>(
-  NeedsRevision,
-  (props) => props.fragmentSearchService.fetchNeedsRevision()
-)
+export default withData<
+  unknown,
+  {
+    fragmentSearchService: {
+      fetchNeedsRevision: () => Promise<readonly FragmentInfo[]>
+    }
+  },
+  readonly FragmentInfo[]
+>(NeedsRevision, (props) => props.fragmentSearchService.fetchNeedsRevision())

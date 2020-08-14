@@ -10,6 +10,10 @@ export interface LemmatizationTokenDto {
   uniqueLemma?: string[]
 }
 
+export type LemmatizationDto = ReadonlyArray<
+  ReadonlyArray<LemmatizationTokenDto>
+>
+
 export class LemmatizationToken {
   [immerable] = true
   readonly value: string

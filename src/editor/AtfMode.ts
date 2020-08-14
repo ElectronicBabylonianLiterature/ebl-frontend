@@ -10,9 +10,8 @@ export class AtfHighlightRules extends acequire('ace/mode/text_highlight_rules')
   constructor() {
     super()
     this.$rules = {
-      /* token values are chosen solely based on color and have no meaning
-      This is important when changing the overall theme one could have to
-      change tokens too! */
+      /* Token values are chosen based on color in the theme kuroir and not the semantics.
+         If a different theme is used, the rules may have to be updated. */
       start: [
         {
           token: 'variable.parameter',

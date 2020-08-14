@@ -3,8 +3,20 @@ import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import './FragmentList.css'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
-function FragmentList({ fragments, columns }) {
+export type Columns = Record<
+  string,
+  string | ((fragmentInfo: FragmentInfo) => React.ReactNode)
+>
+
+function FragmentList({
+  fragments,
+  columns,
+}: {
+  fragments: readonly FragmentInfo[]
+  columns: Columns
+}): JSX.Element {
   return (
     <Table responsive>
       <thead>

@@ -1,16 +1,23 @@
 import Bluebird from 'bluebird'
 import cancellableFetch from './cancellableFetch'
 import { AuthenticationService } from 'auth/Auth'
+import { ErrorReporter } from 'ErrorReporterContext'
 
-export function apiUrl(path): string {
+type Options = Omit<RequestInit, 'headers'> & {
+  headers?: Record<string, string>
+}
+
+type ErrorCapturer = Pick<ErrorReporter, 'captureException'>
+
+export function apiUrl(path: string): string {
   return `${process.env.REACT_APP_DICTIONARY_API_URL}${path}`
 }
 
-function deserializeJson(response: Response): any {
+function deserializeJson(response: Response): unknown {
   return [201, 204].includes(response.status) ? null : response.json()
 }
 
-function createOptions(body: unknown, method: string): RequestInit {
+function createOptions(body: unknown, method: string): Options {
   return {
     body: JSON.stringify(body),
     headers: {
@@ -20,9 +27,9 @@ function createOptions(body: unknown, method: string): RequestInit {
   }
 }
 export class ApiError extends Error {
-  readonly data: object
+  readonly data: unknown
 
-  constructor(message: string, data: object) {
+  constructor(message: string, data: unknown) {
     super(message)
     this.name = this.constructor.name
     this.data = data
@@ -44,16 +51,19 @@ export class ApiError extends Error {
 }
 
 export default class ApiClient {
-  private readonly auth
-  private readonly errorReporter
+  private readonly auth: AuthenticationService
+  private readonly errorReporter: ErrorCapturer
 
-  constructor(auth: AuthenticationService, errorReporter) {
+  constructor(auth: AuthenticationService, errorReporter: ErrorCapturer) {
     this.auth = auth
     this.errorReporter = errorReporter
   }
 
-  async createHeaders(authenticate, headers): Promise<Headers> {
-    const defaultHeaders = authenticate
+  async createHeaders(
+    authenticate: boolean,
+    headers: Record<string, string>
+  ): Promise<Headers> {
+    const defaultHeaders: Record<string, string> = authenticate
       ? { Authorization: `Bearer ${await this.auth.getAccessToken()}` }
       : {}
     return new Headers({
@@ -65,10 +75,10 @@ export default class ApiClient {
   fetch(
     path: string,
     authenticate: boolean,
-    options: RequestInit
+    options: Options
   ): Bluebird<Response> {
     return new Bluebird<Headers>((resolve, reject) => {
-      this.createHeaders(authenticate, options.headers)
+      this.createHeaders(authenticate, options.headers ?? {})
         .then(resolve)
         .catch(reject)
     })
@@ -91,7 +101,7 @@ export default class ApiClient {
       })
   }
 
-  fetchJson(path, authenticate): Bluebird<any> {
+  fetchJson(path: string, authenticate: boolean): Bluebird<any> {
     return this.fetch(path, authenticate, {}).then((response) =>
       response.json()
     )

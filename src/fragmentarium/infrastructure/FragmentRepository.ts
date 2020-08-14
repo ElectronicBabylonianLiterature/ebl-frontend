@@ -44,6 +44,8 @@ import {
 } from 'transliteration/domain/at-lines'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ControlLine } from 'transliteration/domain/line'
+import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
+import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 
 const lineClases = {
   TextLine: TextLine,
@@ -108,7 +110,7 @@ class ApiFragmentRepository
 
   constructor(apiClient: {
     fetchJson: (url: string, authorize: boolean) => Promise<any>
-    postJson: (url: string, body: any) => Promise<any>
+    postJson: (url: string, body: Record<string, unknown>) => Promise<any>
   }) {
     this.apiClient = apiClient
   }
@@ -168,7 +170,7 @@ class ApiFragmentRepository
     return this._fetch({ transliteration })
   }
 
-  _fetch(params: any): FragmentInfosPromise {
+  _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
 
@@ -176,7 +178,7 @@ class ApiFragmentRepository
     number: string,
     transliteration: string,
     notes: string
-  ) {
+  ): Promise<Fragment> {
     const path = createFragmentPath(number, 'transliteration')
     return this.apiClient
       .postJson(path, {
@@ -186,21 +188,24 @@ class ApiFragmentRepository
       .then(createFragment)
   }
 
-  updateLemmatization(number: string, lemmatization: {}) {
+  updateLemmatization(
+    number: string,
+    lemmatization: LemmatizationDto
+  ): Promise<Fragment> {
     const path = createFragmentPath(number, 'lemmatization')
     return this.apiClient
       .postJson(path, { lemmatization: lemmatization })
       .then(createFragment)
   }
 
-  updateReferences(number: string, references: {}) {
+  updateReferences(number: string, references: Reference[]): Promise<Fragment> {
     const path = createFragmentPath(number, 'references')
     return this.apiClient
       .postJson(path, { references: references })
       .then(createFragment)
   }
 
-  folioPager(folio: Folio, number: string) {
+  folioPager(folio: Folio, number: string): Promise<FolioPagerData> {
     return this.apiClient.fetchJson(
       `/fragments/${encodeURIComponent(number)}/pager/${encodeURIComponent(
         folio.name
@@ -209,7 +214,7 @@ class ApiFragmentRepository
     )
   }
 
-  fragmentPager(fragmentNumber: string) {
+  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
     return this.apiClient.fetchJson(
       `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
       true

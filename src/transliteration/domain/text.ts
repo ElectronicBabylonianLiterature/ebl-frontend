@@ -182,7 +182,7 @@ export class Text {
                   token.value,
                   true,
                   (token.uniqueLemma || []).map((id) => lemmas[id]),
-                  suggestions[token.cleanValue]
+                  suggestions[token.cleanValue] ?? []
                 )
               : new LemmatizationToken(token.value, false)
           )

@@ -15,9 +15,8 @@ export default function Photo({ photo, fragment }: Props): JSX.Element {
   const [artist, setArtist] = useState()
 
   useEffect(() => {
-    // @ts-ignore - https://github.com/exif-js/exif-js/issues/134
-    EXIF.getData(photo, function () {
-      // @ts-ignore
+    // Cast to never is needed due https://github.com/exif-js/exif-js/issues/134
+    EXIF.getData(photo as never, function (this: unknown) {
       setArtist(EXIF.getTag(this, 'Artist'))
     })
   }, [photo])

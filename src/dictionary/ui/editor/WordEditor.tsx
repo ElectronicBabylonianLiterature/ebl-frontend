@@ -86,6 +86,7 @@ class WordEditor extends Component<
   }
 }
 
-export default withData<WithoutData<Props>, {}, Word>(WordEditor, (props) =>
-  props.wordService.find(props.match.params['id'])
+export default withData<WithoutData<Props>, unknown, Word>(
+  WordEditor,
+  (props) => props.wordService.find(props.match.params['id'])
 )

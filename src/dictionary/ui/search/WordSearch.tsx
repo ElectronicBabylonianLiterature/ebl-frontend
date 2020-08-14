@@ -23,12 +23,12 @@ function WordSearch({ data }: Props): JSX.Element {
   )
 }
 
-export default withData<{}, { query: string; wordService }, readonly Word[]>(
-  WordSearch,
-  (props) => props.wordService.search(props.query),
-  {
-    watch: (props) => [props.query],
-    filter: (props) => !_.isEmpty(props.query),
-    defaultData: [],
-  }
-)
+export default withData<
+  unknown,
+  { query: string; wordService },
+  readonly Word[]
+>(WordSearch, (props) => props.wordService.search(props.query), {
+  watch: (props) => [props.query],
+  filter: (props) => !_.isEmpty(props.query),
+  defaultData: [],
+})

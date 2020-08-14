@@ -6,7 +6,7 @@ export default async function setUpReferences(bibliographyService: {
   find: jest.Mock
 }): Promise<{
   entries: readonly BibliographyEntry[]
-  references: readonly {}[]
+  references: readonly Record<string, unknown>[]
   expectedReferences: Reference[]
 }> {
   const entries = await factory.buildMany('bibliographyEntry', 2)
@@ -18,7 +18,7 @@ export default async function setUpReferences(bibliographyService: {
   const expectedReferences = await factory.buildMany(
     'reference',
     2,
-    references.map((dto: object, index: number) => ({
+    references.map((dto: Record<string, unknown>, index: number) => ({
       ...dto,
       document: entries[index],
     }))

@@ -26,7 +26,7 @@ describe.each([
     null,
   ],
   ['Other Museum', '', '', '', null],
-] as [string, string, string, string, object][])(
+] as [string, string, string, string, Record<string, unknown> | null][])(
   '%s',
   (name, logo, url, copyright, link) => {
     let museum: Museum

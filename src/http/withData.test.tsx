@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, waitFor } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData from './withData'
@@ -198,7 +198,7 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   beforeEach(() => {
-    const CrashingComponent = withData<{}, {}, string>(() => {
+    const CrashingComponent = withData<unknown, unknown, string>(() => {
       throw new Error(errorMessage)
     }, getter)
     getter.mockReturnValueOnce(Promise.resolve(data))

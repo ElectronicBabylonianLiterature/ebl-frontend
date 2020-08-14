@@ -2,8 +2,9 @@ import React from 'react'
 import FragmentList from 'fragmentarium/ui/FragmentList'
 import withData from 'http/withData'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import Promise from 'bluebird'
 
-function LatestTransliterations({ data }) {
+function LatestTransliterations({ data }: { data: readonly FragmentInfo[] }) {
   return (
     <section>
       <h3 className="SubsectionHeading--indented">Latest additions:</h3>
@@ -19,7 +20,14 @@ function LatestTransliterations({ data }) {
   )
 }
 
-export default withData<{}, { fragmentSearchService }, readonly FragmentInfo[]>(
-  LatestTransliterations,
-  (props) => props.fragmentSearchService.fetchLatestTransliterations()
+export default withData<
+  unknown,
+  {
+    fragmentSearchService: {
+      fetchLatestTransliterations: () => Promise<readonly FragmentInfo[]>
+    }
+  },
+  readonly FragmentInfo[]
+>(LatestTransliterations, (props) =>
+  props.fragmentSearchService.fetchLatestTransliterations()
 )

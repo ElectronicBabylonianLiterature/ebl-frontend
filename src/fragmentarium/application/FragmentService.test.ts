@@ -171,7 +171,7 @@ describe('methods returning hydrated fragment', () => {
       )
       result = await fragmentService.updateLemmatization(
         fragment.number,
-        lemmatization
+        lemmatization.toDto()
       )
     })
 
@@ -180,7 +180,7 @@ describe('methods returning hydrated fragment', () => {
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateLemmatization).toHaveBeenCalledWith(
         fragment.number,
-        lemmatization
+        lemmatization.toDto()
       ))
   })
 
@@ -219,7 +219,7 @@ test('createLemmatization', async () => {
     Promise.resolve(suggestions[word] ? [[suggestions[word]]] : [])
   )
 
-  const expectedLemmas = _([words[0], words[1]])
+  const expectedLemmas = _([words[0]])
     .map((word) => new Lemma(word))
     .keyBy('value')
     .value()

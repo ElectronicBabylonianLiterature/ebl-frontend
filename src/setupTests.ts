@@ -7,7 +7,9 @@ import 'test-support/bibliography-fixtures'
 import 'test-support/fragment-fixtures'
 import 'test-support/word-fixtures'
 
-require('jest-fetch-mock').enableMocks()
+import fetchMock from 'jest-fetch-mock'
+
+fetchMock.enableMocks()
 
 const abort = jest.fn()
 const onAbort = jest.fn()

@@ -21,7 +21,7 @@ import WordService from 'dictionary/application/WordService'
 
 const ContentSection: FunctionComponent = ({
   children,
-}: PropsWithChildren<{}>) => (
+}: PropsWithChildren<unknown>) => (
   <section className="CuneiformFragment__content">{children}</section>
 )
 
@@ -40,7 +40,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
   wordService,
   onSave,
   disabled = false,
-}) => {
+}: TabsProps) => {
   const tabsId = _.uniqueId('fragment-container-')
   const updateTransliteration = (transliteration, notes) =>
     onSave(
@@ -71,16 +71,18 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
       {(session) => (
         <Tabs
           id={tabsId}
-          defaultActiveKey={session.isAllowedToTransliterateFragments() ? 2 : 1}
+          defaultActiveKey={
+            session.isAllowedToTransliterateFragments() ? 'edition' : 'display'
+          }
           mountOnEnter={true}
         >
-          <Tab eventKey={1} title="Display">
+          <Tab eventKey="display" title="Display">
             <ContentSection>
               <Display fragment={fragment} wordService={wordService} />{' '}
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={2}
+            eventKey="edition"
             title="Edition"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
@@ -94,7 +96,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={3}
+            eventKey="lemmatization"
             title="Lemmatization"
             disabled={
               _.isEmpty(fragment.text.lines) ||
@@ -111,7 +113,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
             </ContentSection>
           </Tab>
           <Tab
-            eventKey={4}
+            eventKey="refrences"
             title="References"
             disabled={!session.isAllowedToTransliterateFragments()}
           >
@@ -151,7 +153,7 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
   onSave,
   saving,
   error,
-}) => {
+}: CuneiformFragmentProps) => {
   return (
     <Container fluid>
       <Row>
@@ -198,7 +200,7 @@ const CuneiformFragmentController: FunctionComponent<ControllerProps> = ({
   wordService,
   activeFolio = null,
   tab = null,
-}) => {
+}: ControllerProps) => {
   const [currentFragment, setFragment] = useState(fragment)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState(null)
