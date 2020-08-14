@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -6,7 +6,16 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
-import { Button, Col, Form, Popover, PopoverContent } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Form,
+  Overlay,
+  OverlayTrigger,
+  Popover,
+  PopoverContent,
+  Tooltip,
+} from 'react-bootstrap'
 import HelpTrigger from '../../../common/HelpTrigger'
 import classNames from 'classnames'
 import { provenances } from '../../../corpus/provenance'
@@ -78,21 +87,26 @@ function Accession({ fragment }: Props) {
 }
 function Genre({ fragment }: Props) {
   const handleChange = (event) => console.log('asd')
-
+  const popover = (
+    <Popover id="popover-basic">
+      <Popover.Content>
+        <Form.Row>
+          <Form.Group as={Col} controlId={'select-genre'}>
+            <Form.Control as="select" value={'asd'} onChange={handleChange} />
+          </Form.Group>
+        </Form.Row>
+      </Popover.Content>
+    </Popover>
+  )
   return (
     <div>
       Genre:
-      <Button className={classNames(['float-right', 'far fa-edit'])}></Button>
-      <Form.Row>
-        <Form.Group as={Col} controlId={_.uniqueId('manuscript-')}>
-          <Form.Label>Provenance</Form.Label>
-          <Form.Control
-            as="select"
-            value={'asd'}
-            onChange={handleChange}
-          ></Form.Control>
-        </Form.Group>
-      </Form.Row>
+      <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+        <Button
+          variant="light"
+          className={classNames(['float-right', 'far fa-edit'])}
+        />
+      </OverlayTrigger>
     </div>
   )
 }
