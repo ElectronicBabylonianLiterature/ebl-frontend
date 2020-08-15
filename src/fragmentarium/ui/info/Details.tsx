@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -6,19 +6,9 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
-import {
-  Button,
-  Col,
-  Form,
-  Overlay,
-  OverlayTrigger,
-  Popover,
-  PopoverContent,
-  Tooltip,
-} from 'react-bootstrap'
-import HelpTrigger from '../../../common/HelpTrigger'
+import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
-import { provenances } from '../../../corpus/provenance'
+import { test } from './genres'
 
 type Props = {
   fragment: Fragment
@@ -86,6 +76,9 @@ function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
 function Genre({ fragment }: Props) {
+  console.log('start')
+  const x = test()
+  console.log(x)
   const handleChange = (event) => console.log('asd')
   const popover = (
     <Popover id="popover-basic">
