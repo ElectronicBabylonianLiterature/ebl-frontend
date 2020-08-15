@@ -8,7 +8,7 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
-import { test } from './genres'
+import { genres, parseGenreTrees } from './genres'
 
 type Props = {
   fragment: Fragment
@@ -76,16 +76,18 @@ function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
 function Genre({ fragment }: Props) {
-  console.log('start')
-  const x = test()
-  console.log(x)
   const handleChange = (event) => console.log('asd')
   const popover = (
     <Popover id="popover-basic">
       <Popover.Content>
         <Form.Row>
           <Form.Group as={Col} controlId={'select-genre'}>
-            <Form.Control as="select" value={'asd'} onChange={handleChange} />
+            <Form.Control as="select" />
+            {parseGenreTrees(genres).map((genre) => (
+              <option key={genre[0]} value={genre[0]}>
+                {genre[0]}
+              </option>
+            ))}
           </Form.Group>
         </Form.Row>
       </Popover.Content>

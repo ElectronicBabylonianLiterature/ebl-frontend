@@ -52,8 +52,16 @@ export function flattenTree(genres: Tree) {
   }
   return flattenedTree
 }
+export function parseGenreTrees(genres: Tree[]) {
+  let parsedGenresTrees: string[][] = []
+  for (const tree of genres) {
+    const flattenedTree = flattenTree(tree)
+    parsedGenresTrees = parsedGenresTrees.concat(flattenedTree)
+  }
+  return parsedGenresTrees
+}
 
-export const genres: ReadonlyArray<Tree> = [
+export const genres: Array<Tree> = [
   {
     value: 'ARCHIVAL',
     nodes: [
