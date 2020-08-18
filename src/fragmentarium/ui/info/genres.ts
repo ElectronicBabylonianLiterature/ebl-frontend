@@ -43,7 +43,7 @@ export function flattenTree(genres: Tree) {
     stack.forEach((stackElement, i) => {
       const slicedTree = stack.slice(0, i)
       if (
-        i != 0 &&
+        i !== 0 &&
         flattenedTree.every((element) => !_.isEqual(element, slicedTree))
       ) {
         flattenedTree.push(slicedTree)

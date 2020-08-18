@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -76,18 +76,29 @@ function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
 function Genre({ fragment }: Props) {
-  const handleChange = (event) => console.log('asd')
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  const handleChange = (event) => {
+    setSelectedGenres([event.target.value])
+  }
   const popover = (
-    <Popover id="popover-basic">
+    <Popover id="popover-basic" className="mw-100">
       <Popover.Content>
         <Form.Row>
-          <Form.Group as={Col} controlId={'select-genre'}>
-            <Form.Control as="select" />
-            {parseGenreTrees(genres).map((genre) => (
-              <option key={genre[0]} value={genre[0]}>
-                {genre[0]}
-              </option>
-            ))}
+          <Form.Group as={Col} controlId={'select-genres'}>
+            <Form.Control as="select" onChange={handleChange}>
+              {parseGenreTrees(genres).map((genre) => {
+                let space = ''
+                new Array(genre.length - 1).forEach(
+                  () => (space = space.concat('\u00a0\u00a0\u00a0'))
+                )
+                return (
+                  <option key={genre.join('->')} value={genre.join('->')}>
+                    {space}
+                    {genre[genre.length - 1]}
+                  </option>
+                )
+              })}
+            </Form.Control>
           </Form.Group>
         </Form.Row>
       </Popover.Content>
@@ -102,6 +113,9 @@ function Genre({ fragment }: Props) {
           className={classNames(['float-right', 'far fa-edit'])}
         />
       </OverlayTrigger>
+      {selectedGenres.map((element) => (
+        <div key={element}>{element}</div>
+      ))}
     </div>
   )
 }
