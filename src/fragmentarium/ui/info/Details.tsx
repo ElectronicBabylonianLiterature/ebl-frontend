@@ -77,22 +77,27 @@ function Accession({ fragment }: Props) {
 }
 function Genre({ fragment }: Props) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  const [showOverlay, setShowOverlay] = useState(false)
   const handleChange = (event) => {
-    setSelectedGenres([event.target.value])
+    setSelectedGenres((currentState) => [...currentState, event.target.value])
+    setShowOverlay(false)
   }
   const popover = (
-    <Popover id="popover-basic" className="mw-100">
+    <Popover id="popover-basic">
       <Popover.Content>
         <Form.Row>
           <Form.Group as={Col} controlId={'select-genres'}>
             <Form.Control as="select" onChange={handleChange}>
               {parseGenreTrees(genres).map((genre) => {
                 let space = ''
-                new Array(genre.length - 1).forEach(
-                  () => (space = space.concat('\u00a0\u00a0\u00a0'))
-                )
+                for (let i = 0; i < genre.length - 1; i++) {
+                  space = space.concat('\u00a0\u00a0\u00a0\u00a0')
+                }
                 return (
-                  <option key={genre.join('->')} value={genre.join('->')}>
+                  <option
+                    key={genre.join('-')}
+                    value={genre.join(' \uD83E\uDC02 ')}
+                  >
                     {space}
                     {genre[genre.length - 1]}
                   </option>
@@ -106,16 +111,35 @@ function Genre({ fragment }: Props) {
   )
   return (
     <div>
-      Genre:
-      <OverlayTrigger trigger="click" placement="right" overlay={popover}>
+      Genres:
+      <OverlayTrigger
+        trigger="click"
+        placement="right"
+        overlay={popover}
+        show={showOverlay}
+      >
         <Button
           variant="light"
-          className={classNames(['float-right', 'far fa-edit'])}
+          className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
+          onClick={() => setShowOverlay(!showOverlay)}
         />
       </OverlayTrigger>
-      {selectedGenres.map((element) => (
-        <div key={element}>{element}</div>
-      ))}
+      <ul className={classNames(['list-group', 'mt-2'])}>
+        {selectedGenres.map((element) => (
+          <li className="list-group-item" key={element}>
+            {element}
+            <Button
+              variant="light"
+              className={classNames([
+                'float-right',
+                'fas fa-trash',
+                'align-top',
+              ])}
+              onClick={() => setShowOverlay(!showOverlay)}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
