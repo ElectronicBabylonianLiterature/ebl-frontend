@@ -5,6 +5,7 @@ import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 
+let fragmentService
 let fragment
 let container
 let element
@@ -12,7 +13,7 @@ let element
 function renderDetails() {
   element = render(
     <MemoryRouter>
-      <Details fragment={fragment} />
+      <Details fragment={fragment} fragmentService={fragmentService} />
     </MemoryRouter>
   )
   container = element.container

@@ -174,6 +174,15 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
 
+  updateGenre(number: string, genre: string[][]): Promise<Fragment> {
+    const path = createFragmentPath(number, 'genre')
+    return this.apiClient
+      .postJson(path, {
+        genre: genre,
+      })
+      .then(createFragment)
+  }
+
   updateTransliteration(
     number: string,
     transliteration: string,

@@ -5,10 +5,10 @@ import Record from 'fragmentarium/ui/info/Record'
 import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 
-export default function Info({ fragment }) {
+export default function Info(fragment, fragmentService) {
   return (
     <>
-      <Details fragment={fragment} />
+      <Details fragment={fragment} fragmentService={fragmentService} />
       <section>
         <h3>References</h3>
         <ReferenceList references={fragment.references} />

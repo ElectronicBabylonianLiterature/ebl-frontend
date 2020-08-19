@@ -75,12 +75,13 @@ function CdliNumber({ fragment }: Props) {
 function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
-function Genre({ fragment }: Props) {
+function Genre({ fragment, fragmentService }) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
   const [showOverlay, setShowOverlay] = useState(false)
   const handleChange = (event) => {
     setSelectedGenres((currentState) => [...currentState, event.target.value])
     setShowOverlay(false)
+    fragmentService.updateGenre(fragment.number, selectedGenres)
   }
   const popover = (
     <Popover id="popover-basic">
@@ -144,7 +145,7 @@ function Genre({ fragment }: Props) {
   )
 }
 
-function Details({ fragment }: Props) {
+function Details({ fragment, fragmentService }) {
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -166,7 +167,7 @@ function Details({ fragment }: Props) {
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
-        <Genre fragment={fragment} />
+        <Genre fragment={fragment} fragmentService={fragmentService} />
       </li>
     </ul>
   )

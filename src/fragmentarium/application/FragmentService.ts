@@ -29,6 +29,7 @@ export interface ImageRepository {
 export interface FragmentRepository {
   statistics(): Promise<any>
   find(number: string): Promise<Fragment>
+  updateGenre(number: string, genre: string[][]): Promise<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
@@ -85,6 +86,11 @@ class FragmentService {
       .then((fragment: Fragment) =>
         this.referenceInjector.injectReferences(fragment)
       )
+  }
+  updateGenre(number: string, genre: string[][]): Promise<Fragment> {
+    return this.fragmentRepository
+      .updateGenre(number, genre)
+      .then((fragment: Fragment) => fragment)
   }
 
   updateTransliteration(
