@@ -14,11 +14,16 @@ type Props = {
   fragment: Fragment
 }
 
+type DetailsProps = {
+  fragment: Fragment
+  fragmentService
+}
+
 function Collection({ fragment }: Props) {
   return <>{fragment.collection && `(${fragment.collection} Collection)`}</>
 }
 
-function MuseumName({ fragment }: Props) {
+function MuseumName(fragment) {
   const museum = fragment.museum
   return museum.hasUrl ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
@@ -75,7 +80,7 @@ function CdliNumber({ fragment }: Props) {
 function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
-function Genre({ fragment, fragmentService }) {
+function Genre({ fragment, fragmentService }: DetailsProps) {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
   const [showOverlay, setShowOverlay] = useState(false)
   const handleChange = (event) => {
@@ -145,7 +150,7 @@ function Genre({ fragment, fragmentService }) {
   )
 }
 
-function Details({ fragment, fragmentService }) {
+function Details({ fragment, fragmentService }: DetailsProps) {
   return (
     <ul className="Details">
       <li className="Details__item">
