@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -9,6 +9,7 @@ import './Details.css'
 import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
+import FragmentService from '../../application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -80,77 +81,110 @@ function CdliNumber({ fragment }: Props) {
 function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
-function Genre({ fragment, fragmentService }: DetailsProps) {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
-  const [showOverlay, setShowOverlay] = useState(false)
-  const handleChange = (event) => {
-    setSelectedGenres((currentState) => [...currentState, event.target.value])
-    setShowOverlay(false)
-    fragmentService.updateGenre(fragment.number, selectedGenres)
+type State = {
+  selectedGenres: any
+  isOverlayDisplayed: boolean
+}
+class Genre extends Component<DetailsProps, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedGenres: this.props.fragment.genre,
+      isOverlayDisplayed: false,
+    }
   }
-  const popover = (
-    <Popover id="popover-basic">
-      <Popover.Content>
-        <Form.Row>
-          <Form.Group as={Col} controlId={'select-genres'}>
-            <Form.Control as="select" onChange={handleChange}>
-              {parseGenreTrees(genres).map((genre) => {
-                let space = ''
-                for (let i = 0; i < genre.length - 1; i++) {
-                  space = space.concat('\u00a0\u00a0\u00a0\u00a0')
-                }
-                return (
-                  <option
-                    key={genre.join('-')}
-                    value={genre.join(' \uD83E\uDC02 ')}
-                  >
-                    {space}
-                    {genre[genre.length - 1]}
-                  </option>
-                )
-              })}
-            </Form.Control>
-          </Form.Group>
-        </Form.Row>
-      </Popover.Content>
-    </Popover>
-  )
-  return (
-    <div>
-      Genres:
-      <OverlayTrigger
-        trigger="click"
-        placement="right"
-        overlay={popover}
-        show={showOverlay}
-      >
-        <Button
-          variant="light"
-          className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-          onClick={() => setShowOverlay(!showOverlay)}
-        />
-      </OverlayTrigger>
-      <ul className={classNames(['list-group', 'mt-2'])}>
-        {selectedGenres.map((element) => (
-          <li className="list-group-item" key={element}>
-            {element}
-            <Button
-              variant="light"
-              className={classNames([
-                'float-right',
-                'fas fa-trash',
-                'align-top',
-              ])}
-              onClick={() => setShowOverlay(!showOverlay)}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  handleChange = (event) => {
+    this.setState({
+      selectedGenres: event.target.value,
+      isOverlayDisplayed: false,
+    })
+  }
+
+  switchIsOverlayDisplayed() {
+    this.setState({ isOverlayDisplayed: !this.state.isOverlayDisplayed })
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<DetailsProps>,
+    prevState: Readonly<State>,
+    snapshot?: any
+  ) {
+    if (
+      JSON.stringify(prevState.selectedGenres) !==
+      JSON.stringify(this.state.selectedGenres)
+    ) {
+      this.props.fragmentService.updateGenre(
+        this.props.fragment.number,
+        this.state.selectedGenres
+      )
+    }
+  }
+
+  render(): JSX.Element {
+    const popover = (
+      <Popover id="popover-basic">
+        <Popover.Content>
+          <Form.Row>
+            <Form.Group as={Col} controlId={'select-genres'}>
+              <Form.Control as="select" onChange={this.handleChange}>
+                {parseGenreTrees(genres).map((genre) => {
+                  let space = ''
+                  for (let i = 0; i < genre.length - 1; i++) {
+                    space = space.concat('\u00a0\u00a0\u00a0\u00a0')
+                  }
+                  return (
+                    <option
+                      key={genre.join('-')}
+                      value={genre.join(' \uD83E\uDC02 ')}
+                    >
+                      {space}
+                      {genre[genre.length - 1]}
+                    </option>
+                  )
+                })}
+              </Form.Control>
+            </Form.Group>
+          </Form.Row>
+        </Popover.Content>
+      </Popover>
+    )
+    return (
+      <div>
+        Genres:
+        <OverlayTrigger
+          trigger="click"
+          placement="right"
+          overlay={popover}
+          show={this.state.isOverlayDisplayed}
+        >
+          <Button
+            variant="light"
+            className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
+            onClick={() => this.switchIsOverlayDisplayed()}
+          />
+        </OverlayTrigger>
+        <ul className={classNames(['list-group', 'mt-2'])}>
+          {this.state.selectedGenres.map((element) => (
+            <li className="list-group-item" key={element}>
+              {element}
+              <Button
+                variant="light"
+                className={classNames([
+                  'float-right',
+                  'fas fa-trash',
+                  'align-top',
+                ])}
+                onClick={() => this.switchIsOverlayDisplayed()}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 }
 
-function Details({ fragment, fragmentService }: DetailsProps) {
+function Details({ fragment, fragmentService }: DetailsProps): JSX.Element {
   return (
     <ul className="Details">
       <li className="Details__item">
