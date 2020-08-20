@@ -23,7 +23,7 @@ function Collection({ fragment }: Props) {
   return <>{fragment.collection && `(${fragment.collection} Collection)`}</>
 }
 
-function MuseumName(fragment) {
+function MuseumName({ fragment }: Props) {
   const museum = fragment.museum
   return museum.hasUrl ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
