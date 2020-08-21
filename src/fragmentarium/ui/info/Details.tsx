@@ -94,14 +94,22 @@ class Genre extends Component<DetailsProps, State> {
     }
   }
   handleChange = (event) => {
+    const newSelectedGenres = this.state.selectedGenres.slice()
+    newSelectedGenres.push(event.target.value.split(','))
     this.setState({
-      selectedGenres: event.target.value,
+      selectedGenres: newSelectedGenres,
       isOverlayDisplayed: false,
     })
   }
 
   switchIsOverlayDisplayed() {
     this.setState({ isOverlayDisplayed: !this.state.isOverlayDisplayed })
+  }
+  deleteSelectedGenre(genreToDelete) {
+    const newSelectedGenre = this.state.selectedGenres.filter(
+      (elem) => JSON.stringify(elem) !== JSON.stringify(genreToDelete)
+    )
+    this.setState({ selectedGenres: newSelectedGenre })
   }
 
   componentDidUpdate(
@@ -133,10 +141,7 @@ class Genre extends Component<DetailsProps, State> {
                     space = space.concat('\u00a0\u00a0\u00a0\u00a0')
                   }
                   return (
-                    <option
-                      key={genre.join('-')}
-                      value={genre.join(' \uD83E\uDC02 ')}
-                    >
+                    <option key={genre.join('-')} value={genre}>
                       {space}
                       {genre[genre.length - 1]}
                     </option>
@@ -166,7 +171,7 @@ class Genre extends Component<DetailsProps, State> {
         <ul className={classNames(['list-group', 'mt-2'])}>
           {this.state.selectedGenres.map((element) => (
             <li className="list-group-item" key={element.join('-')}>
-              {element}
+              {element.join(' \uD83E\uDC02 ')}
               <Button
                 variant="light"
                 className={classNames([
@@ -174,7 +179,7 @@ class Genre extends Component<DetailsProps, State> {
                   'fas fa-trash',
                   'align-top',
                 ])}
-                onClick={() => this.switchIsOverlayDisplayed()}
+                onClick={() => this.deleteSelectedGenre(element)}
               />
             </li>
           ))}
