@@ -109,7 +109,7 @@ export class Fragment {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
   readonly atf: string
   readonly hasPhoto: boolean
-  readonly genre: ReadonlyArray<ReadonlyArray<string>> | ReadonlyArray<string>
+  readonly genre: ReadonlyArray<ReadonlyArray<string>>
 
   constructor({
     number,
@@ -152,7 +152,7 @@ export class Fragment {
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
-    genre: ReadonlyArray<ReadonlyArray<string>> | ReadonlyArray<string>
+    genre: ReadonlyArray<ReadonlyArray<string>>
   }) {
     this.number = number
     this.cdliNumber = cdliNumber

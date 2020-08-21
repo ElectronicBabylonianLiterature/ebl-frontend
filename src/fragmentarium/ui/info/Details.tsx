@@ -82,14 +82,14 @@ function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
 type State = {
-  selectedGenres: any
+  selectedGenres: string[][]
   isOverlayDisplayed: boolean
 }
 class Genre extends Component<DetailsProps, State> {
   constructor(props) {
     super(props)
     this.state = {
-      selectedGenres: this.props.fragment.genre,
+      selectedGenres: this.props.fragment.genre.map((elem) => elem.slice()),
       isOverlayDisplayed: false,
     }
   }
@@ -165,7 +165,7 @@ class Genre extends Component<DetailsProps, State> {
         </OverlayTrigger>
         <ul className={classNames(['list-group', 'mt-2'])}>
           {this.state.selectedGenres.map((element) => (
-            <li className="list-group-item" key={element}>
+            <li className="list-group-item" key={element.join('-')}>
               {element}
               <Button
                 variant="light"
