@@ -261,6 +261,7 @@ export const fragmentDto = {
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
+  genre: [['ARCHIVE', 'Administrative', 'Lists']],
 }
 
 export const fragment = new Fragment({
