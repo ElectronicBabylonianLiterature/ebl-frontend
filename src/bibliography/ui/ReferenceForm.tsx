@@ -20,9 +20,9 @@ export default function ReferenceForm({ value, onChange, searchBibliography }) {
   return (
     <>
       <Form.Group controlId={`${id}-Entry`}>
-        <label id={documentLabelId}>Document</label>
+        <label>Document</label>
         <BibliographySelect
-          aria-labelledby={documentLabelId}
+          aria-label={documentLabelId}
           value={value.document}
           searchBibliography={searchBibliography}
           onChange={handleChange('setDocument')}

@@ -92,7 +92,7 @@ async function renderReferencesAndWait(): Promise<void> {
 }
 
 async function inputReference(): Promise<void> {
-  changeValueByLabel(element, 'Document', 'Borger')
+  changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
   await element.findByText(/Borger 1957/)
   await clickNth(element, /Borger 1957/, 0)
   changeValueByLabel(element, 'Type', 'COPY')
