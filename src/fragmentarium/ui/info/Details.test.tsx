@@ -1,9 +1,11 @@
+/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, fireEvent, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
+import { clickNth, clickWithLabel } from '../../../test-support/utils'
 
 let fragmentService
 let fragment
@@ -76,6 +78,21 @@ describe('All details', () => {
 
   it('Renders accession', () => {
     expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
+  })
+  it('Select genre', async () => {
+    await clickWithLabel(element, 'select-genre')
+
+    await fireEvent.change(element.getByLabelText('select-genre__label'), {
+      target: { value: 'ARCHIVAL-Administrative__option' },
+    })
+
+    expect(
+      await element.getByLabelText('ARCHIVAL-Administrative__label')
+    ).toHaveTextContent('ARCHIVAL \uD83E\uDC02 Administrative')
+
+    await clickWithLabel(element, 'ARCHIVAL-Administrative__delete')
+
+    expect(element.getByLabelText('ARCHIVAL-Administrative__label')).toBeNull()
   })
 })
 

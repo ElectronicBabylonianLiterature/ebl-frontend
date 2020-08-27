@@ -87,33 +87,6 @@ export const genres: Array<Tree> = [
           },
         ],
       },
-    ],
-  },
-  {
-    value: 'ARCHIVAL',
-    nodes: [
-      {
-        value: 'Administrative',
-        nodes: [
-          {
-            value: 'Lists',
-            nodes: [{ value: 'One Entry' }, { value: 'Multientry' }],
-          },
-          { value: 'Memos' },
-          {
-            value: 'Inventories',
-            nodes: [{ value: 'Balanced Accounts' }, { value: 'Basket Labels' }],
-          },
-          {
-            value: 'Receipts',
-            nodes: [{ value: 'Income' }],
-          },
-          {
-            value: 'Expenditure',
-            nodes: [{ value: 'Messenger Text' }],
-          },
-        ],
-      },
       {
         value: 'Legal',
         nodes: [

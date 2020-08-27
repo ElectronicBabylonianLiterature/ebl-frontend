@@ -134,14 +134,23 @@ class Genre extends Component<DetailsProps, State> {
         <Popover.Content>
           <Form.Row>
             <Form.Group as={Col} controlId={'select-genres'}>
-              <Form.Control as="select" onChange={this.handleChange}>
+              <Form.Control
+                as="select"
+                onChange={this.handleChange}
+                aria-label="select-genre__label"
+              >
                 {parseGenreTrees(genres).map((genre) => {
                   let space = ''
                   for (let i = 0; i < genre.length - 1; i++) {
                     space = space.concat('\u00a0\u00a0\u00a0\u00a0')
                   }
+                  const genreToString = genre.join('-').replace(' ', '_')
                   return (
-                    <option key={genre.join('-')} value={genre}>
+                    <option
+                      key={genreToString}
+                      value={genre}
+                      aria-label={`${genreToString}__option`}
+                    >
                       {space}
                       {genre[genre.length - 1]}
                     </option>
@@ -166,23 +175,32 @@ class Genre extends Component<DetailsProps, State> {
             variant="light"
             className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
             onClick={() => this.switchIsOverlayDisplayed()}
+            aria-label="select-genre"
           />
         </OverlayTrigger>
         <ul className={classNames(['list-group', 'mt-2'])}>
-          {this.state.selectedGenres.map((element) => (
-            <li className="list-group-item" key={element.join('-')}>
-              {element.join(' \uD83E\uDC02 ')}
-              <Button
-                variant="light"
-                className={classNames([
-                  'float-right',
-                  'fas fa-trash',
-                  'align-top',
-                ])}
-                onClick={() => this.deleteSelectedGenre(element)}
-              />
-            </li>
-          ))}
+          {this.state.selectedGenres.map((element) => {
+            const genreToString = element.join('-').replace(' ', '_')
+            return (
+              <li
+                className="list-group-item"
+                key={element.join('-')}
+                aria-label={`${genreToString}__label`}
+              >
+                {element.join(' \uD83E\uDC02 ')}
+                <Button
+                  variant="light"
+                  className={classNames([
+                    'float-right',
+                    'fas fa-trash',
+                    'align-top',
+                  ])}
+                  aria-label={`${genreToString}_delete`}
+                  onClick={() => this.deleteSelectedGenre(element)}
+                />
+              </li>
+            )
+          })}
         </ul>
       </div>
     )
