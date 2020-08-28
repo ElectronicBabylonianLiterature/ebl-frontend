@@ -41,15 +41,6 @@ export async function clickNth(
     fireEvent.click(clickable)
   })
 }
-export async function clickWithLabel(
-  element: RenderResult,
-  label: Matcher
-): Promise<void> {
-  const clickable = element.getByLabelText(label)
-  await act(async () => {
-    fireEvent.click(clickable)
-  })
-}
 
 type Changer<T> = (
   element: RenderResult,

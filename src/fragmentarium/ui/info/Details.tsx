@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component } from 'react'
 
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -9,7 +9,6 @@ import './Details.css'
 import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
-import FragmentService from '../../application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -95,7 +94,7 @@ class Genre extends Component<DetailsProps, State> {
   }
   handleChange = (event) => {
     const newSelectedGenres = this.state.selectedGenres.slice()
-    newSelectedGenres.push(event.target.value.split(','))
+    newSelectedGenres.push(event.target.value.split('-'))
     this.setState({
       selectedGenres: newSelectedGenres,
       isOverlayDisplayed: false,
@@ -129,27 +128,22 @@ class Genre extends Component<DetailsProps, State> {
   }
 
   render(): JSX.Element {
+    const genreToString = (genre) => genre.join('-').replace(' ', '_')
     const popover = (
       <Popover id="popover-basic">
         <Popover.Content>
           <Form.Row>
             <Form.Group as={Col} controlId={'select-genres'}>
-              <Form.Control
-                as="select"
-                onChange={this.handleChange}
-                aria-label="select-genre__label"
-              >
+              <Form.Control as="select" onChange={this.handleChange}>
                 {parseGenreTrees(genres).map((genre) => {
                   let space = ''
                   for (let i = 0; i < genre.length - 1; i++) {
                     space = space.concat('\u00a0\u00a0\u00a0\u00a0')
                   }
-                  const genreToString = genre.join('-').replace(' ', '_')
                   return (
                     <option
-                      key={genreToString}
-                      value={genre}
-                      aria-label={`${genreToString}__option`}
+                      key={genreToString(genre)}
+                      value={genreToString(genre)}
                     >
                       {space}
                       {genre[genre.length - 1]}
@@ -175,19 +169,17 @@ class Genre extends Component<DetailsProps, State> {
             variant="light"
             className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
             onClick={() => this.switchIsOverlayDisplayed()}
-            aria-label="select-genre"
           />
         </OverlayTrigger>
         <ul className={classNames(['list-group', 'mt-2'])}>
-          {this.state.selectedGenres.map((element) => {
-            const genreToString = element.join('-').replace(' ', '_')
+          {this.state.selectedGenres.map((genre) => {
             return (
               <li
                 className="list-group-item"
-                key={element.join('-')}
-                aria-label={`${genreToString}__label`}
+                key={genreToString(genre)}
+                aria-label={genreToString(genre)}
               >
-                {element.join(' \uD83E\uDC02 ')}
+                {genre.join(' \uD83E\uDC02 ')}
                 <Button
                   variant="light"
                   className={classNames([
@@ -195,8 +187,7 @@ class Genre extends Component<DetailsProps, State> {
                     'fas fa-trash',
                     'align-top',
                   ])}
-                  aria-label={`${genreToString}_delete`}
-                  onClick={() => this.deleteSelectedGenre(element)}
+                  onClick={() => this.deleteSelectedGenre(genre)}
                 />
               </li>
             )

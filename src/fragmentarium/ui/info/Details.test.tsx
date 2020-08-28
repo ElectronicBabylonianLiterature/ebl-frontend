@@ -1,14 +1,14 @@
-/**  * @jest-environment jsdom-sixteen  */
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, fireEvent, act } from '@testing-library/react'
+import { render, fireEvent, act, waitFor } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
-import { clickNth, clickWithLabel } from '../../../test-support/utils'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 let fragmentService
-let fragment
+let fragment: Fragment
+let fragmentWithUpdatedGenre: Fragment
 let container
 let element
 
@@ -79,20 +79,38 @@ describe('All details', () => {
   it('Renders accession', () => {
     expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
   })
-  it('Select genre', async () => {
-    await clickWithLabel(element, 'select-genre')
-
-    await fireEvent.change(element.getByLabelText('select-genre__label'), {
-      target: { value: 'ARCHIVAL-Administrative__option' },
+})
+describe('Genre selection', () => {
+  beforeEach(async () => {
+    fragmentService = {
+      updateGenre: () => fragmentWithUpdatedGenre,
+    }
+    fragmentWithUpdatedGenre = await factory.build('fragment', {
+      genre: [['ARCHIVE', 'Administrative']],
     })
+    fragment = await factory.build('fragment', {
+      museum: Museum.of('The British Museum'),
+      collection: 'The Collection',
+      genre: [],
+    })
+    renderDetails()
+  })
+  it('Select genre & delete selected genre', async () => {
+    fireEvent.click(element.getByRole('button'))
+
+    await element.findByRole('combobox')
+    await element.findByText('Administrative')
+
+    fireEvent.change(element.getByRole('combobox'), {
+      target: { value: 'ARCHIVAL-Administrative' },
+    })
+    await element.findByText('ARCHIVAL \uD83E\uDC02 Administrative')
+
+    fireEvent.click(element.getAllByRole('button')[1])
 
     expect(
-      await element.getByLabelText('ARCHIVAL-Administrative__label')
-    ).toHaveTextContent('ARCHIVAL \uD83E\uDC02 Administrative')
-
-    await clickWithLabel(element, 'ARCHIVAL-Administrative__delete')
-
-    expect(element.getByLabelText('ARCHIVAL-Administrative__label')).toBeNull()
+      element.queryByLabelText('ARCHIVAL-Administrative')
+    ).not.toBeInTheDocument()
   })
 })
 

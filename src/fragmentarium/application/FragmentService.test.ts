@@ -21,6 +21,7 @@ const fragmentRepository = {
   find: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
+  updateGenre: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),

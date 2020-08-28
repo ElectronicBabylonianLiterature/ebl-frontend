@@ -83,6 +83,7 @@ const config = {
   ],
   atf: '$ (atf)',
   hasPhoto: true,
+  genre: [],
 }
 
 describe('Fragment', () => {
