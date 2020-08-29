@@ -12,7 +12,7 @@ import {
   fillBibliographySelect,
   expectedLabel,
 } from 'test-support/test-bibliographySelect'
-import BibliographyEntry from '../../bibliography/domain/BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 let number: string
 let id: string
@@ -21,11 +21,17 @@ let primaryAuthor: string
 let year: string
 let pages: string
 let transliteration: string
-let fragmentService: any
-let fragmentSearchService: any
-let session: any
+let fragmentService: {
+  searchBibliography: jest.Mock
+}
+let fragmentSearchService: {
+  random: jest.Mock
+  interesting: jest.Mock
+}
+
+let session
 let element: RenderResult
-let history: any
+let history
 let entry: BibliographyEntry
 let searchEntry: BibliographyEntry
 

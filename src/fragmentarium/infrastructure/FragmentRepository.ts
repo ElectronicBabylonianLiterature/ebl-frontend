@@ -97,6 +97,7 @@ function createFragment(dto): Fragment {
     text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
+    genres: dto.genre,
   })
 }
 

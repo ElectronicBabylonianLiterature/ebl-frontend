@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, fireEvent, act, waitFor } from '@testing-library/react'
+import { render, fireEvent, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
@@ -9,8 +9,8 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 let fragmentService
 let fragment: Fragment
 let fragmentWithUpdatedGenre: Fragment
-let container
-let element
+let container: HTMLElement
+let element: RenderResult
 
 function renderDetails() {
   element = render(
@@ -83,8 +83,9 @@ describe('All details', () => {
 describe('Genre selection', () => {
   beforeEach(async () => {
     fragmentService = {
-      updateGenre: () => fragmentWithUpdatedGenre,
+      updateGenre: jest.fn(),
     }
+    fragmentService.updateGenre.mockReturnValue(fragmentWithUpdatedGenre)
     fragmentWithUpdatedGenre = await factory.build('fragment', {
       genre: [['ARCHIVE', 'Administrative']],
     })

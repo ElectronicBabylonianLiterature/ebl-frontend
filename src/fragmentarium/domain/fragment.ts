@@ -195,7 +195,7 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: Reference[]): Fragment {
+  setReferences(references: Array<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })

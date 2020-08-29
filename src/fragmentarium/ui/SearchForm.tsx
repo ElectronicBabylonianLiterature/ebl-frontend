@@ -11,7 +11,12 @@ import produce from 'immer'
 
 interface State {
   number: string | null | undefined
-  referenceEntry: any
+  referenceEntry: {
+    id: string
+    title: string
+    primaryAuthor: string
+    year: string
+  }
   pages: string | null | undefined
   transliteration: string | null | undefined
   isValid: boolean

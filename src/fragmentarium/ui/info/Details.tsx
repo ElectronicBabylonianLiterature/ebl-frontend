@@ -9,6 +9,7 @@ import './Details.css'
 import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -16,7 +17,7 @@ type Props = {
 
 type DetailsProps = {
   fragment: Fragment
-  fragmentService
+  fragmentService: FragmentService
 }
 
 function Collection({ fragment }: Props) {
@@ -113,8 +114,7 @@ class Genre extends Component<DetailsProps, State> {
 
   componentDidUpdate(
     prevProps: Readonly<DetailsProps>,
-    prevState: Readonly<State>,
-    snapshot?: any
+    prevState: Readonly<State>
   ) {
     if (
       JSON.stringify(prevState.selectedGenres) !==
