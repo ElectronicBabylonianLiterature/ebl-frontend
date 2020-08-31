@@ -6,10 +6,11 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
-import { Button, Col, Form, OverlayTrigger, Popover } from 'react-bootstrap'
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import Select from 'react-select'
 
 type Props = {
   fragment: Fragment
@@ -95,7 +96,7 @@ class Genre extends Component<DetailsProps, State> {
   }
   handleChange = (event) => {
     const newSelectedGenres = this.state.selectedGenres.slice()
-    newSelectedGenres.push(event.target.value.split('-'))
+    newSelectedGenres.push(event.value)
     this.setState({
       selectedGenres: newSelectedGenres,
       isOverlayDisplayed: false,
@@ -120,39 +121,44 @@ class Genre extends Component<DetailsProps, State> {
       JSON.stringify(prevState.selectedGenres) !==
       JSON.stringify(this.state.selectedGenres)
     ) {
-      this.props.fragmentService.updateGenre(
-        this.props.fragment.number,
-        this.state.selectedGenres
-      )
+      this.props.fragmentService
+        .updateGenre(this.props.fragment.number, this.state.selectedGenres)
+        .then((fragment) => {
+          this.setState({
+            selectedGenres: fragment.genre.map((elem) => elem.slice()),
+          })
+        })
     }
   }
 
   render(): JSX.Element {
     const genreToString = (genre) => genre.join('-').replace(' ', '_')
+
+    const options = parseGenreTrees(genres).map((genre: string[]) => {
+      let paddingLeft = ''
+      for (let i = 0; i < genre.length - 1; i++) {
+        paddingLeft = paddingLeft.concat('\u00a0\u00a0\u00a0\u00a0')
+      }
+      return {
+        value: genre,
+        label: genre.join(' -> '),
+      }
+    })
+
     const popover = (
-      <Popover id="popover-basic">
+      <Popover
+        style={{ maxWidth: '600px' }}
+        id="popover-select-genre"
+        className={'w-100'}
+      >
         <Popover.Content>
-          <Form.Row>
-            <Form.Group as={Col} controlId={'select-genres'}>
-              <Form.Control as="select" onChange={this.handleChange}>
-                {parseGenreTrees(genres).map((genre) => {
-                  let space = ''
-                  for (let i = 0; i < genre.length - 1; i++) {
-                    space = space.concat('\u00a0\u00a0\u00a0\u00a0')
-                  }
-                  return (
-                    <option
-                      key={genreToString(genre)}
-                      value={genreToString(genre)}
-                    >
-                      {space}
-                      {genre[genre.length - 1]}
-                    </option>
-                  )
-                })}
-              </Form.Control>
-            </Form.Group>
-          </Form.Row>
+          <Select
+            aria-label="select genre"
+            options={options}
+            onChange={(event) => this.handleChange(event)}
+            isSearchable={true}
+            data-testid="select-genre"
+          />
         </Popover.Content>
       </Popover>
     )
@@ -174,11 +180,7 @@ class Genre extends Component<DetailsProps, State> {
         <ul className={classNames(['list-group', 'mt-2'])}>
           {this.state.selectedGenres.map((genre) => {
             return (
-              <li
-                className="list-group-item"
-                key={genreToString(genre)}
-                aria-label={genreToString(genre)}
-              >
+              <li className="list-group-item" key={genreToString(genre)}>
                 {genre.join(' \uD83E\uDC02 ')}
                 <Button
                   variant="light"

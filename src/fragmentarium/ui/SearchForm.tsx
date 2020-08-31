@@ -164,7 +164,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col>
               <BibliographySelect
-                aria-label={'BibliographySelectSearchForm__label'}
+                aria-label="Select bibliography reference"
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}
                 searchBibliography={(query) =>

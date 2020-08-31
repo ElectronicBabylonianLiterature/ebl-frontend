@@ -5,11 +5,14 @@ import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { fillBibliographySelect } from 'test-support/test-bibliographySelect'
+import { changeValueByLabel, clickNth } from 'test-support/utils'
+import exp from 'constants'
 
 let fragmentService
 let fragment: Fragment
 let fragmentWithUpdatedGenre: Fragment
-let container: HTMLElement
+let container
 let element: RenderResult
 
 function renderDetails() {
@@ -99,18 +102,17 @@ describe('Genre selection', () => {
   it('Select genre & delete selected genre', async () => {
     fireEvent.click(element.getByRole('button'))
 
-    await element.findByRole('combobox')
-    await element.findByText('Administrative')
+    const entry = 'ARCHIVAL -> Legal'
+    changeValueByLabel(element, 'select genre', 'ARCHIVAL -> Legal')
+    await element.findAllByText('ARCHIVAL -> Legal')[0]
+    await clickNth(element, 'ARCHIVAL -> Legal', 0)
 
-    fireEvent.change(element.getByRole('combobox'), {
-      target: { value: 'ARCHIVAL-Administrative' },
-    })
-    await element.findByText('ARCHIVAL \uD83E\uDC02 Administrative')
+    await element.findByText('ARCHIVAL \uD83E\uDC02 Legal')
 
     fireEvent.click(element.getAllByRole('button')[1])
 
     expect(
-      element.queryByLabelText('ARCHIVAL-Administrative')
+      element.queryByLabelText('ARCHIVAL \uD83E\uDC02 Legal')
     ).not.toBeInTheDocument()
   })
 })

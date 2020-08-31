@@ -99,7 +99,7 @@ describe('User Input', () => {
   it('Displays User Input in BibliographySelect', async () => {
     await fillBibliographySelect(
       searchEntry,
-      'BibliographySelectSearchForm__label',
+      'Select bibliography reference',
       element,
       'Borger'
     )
