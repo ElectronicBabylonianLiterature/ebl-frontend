@@ -7,7 +7,7 @@ export function teiExport(fragment) {
     fragment.description,
     fragment.publication
   )
-  const body = getBody2(fragment)
+  const body = getBody(fragment)
   const end = getEnd()
 
   res += header
@@ -39,7 +39,7 @@ function getEnd() {
   return '</body></text></TEI>'
 }
 
-function getBody2(fragment) {
+function getBody(fragment) {
   return fragment.text.allLines.filter(isNotEmpty).map(getParagraph).join('')
 }
 
