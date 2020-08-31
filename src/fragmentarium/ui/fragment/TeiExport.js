@@ -1,12 +1,6 @@
 export function teiExport(fragment) {
   var res = ''
-  const header = getHeader(
-    fragment.number,
-    fragment.collection,
-    fragment.museum.name,
-    fragment.description,
-    fragment.publication
-  )
+  const header = getHeader(fragment)
   const body = getBody(fragment)
   const end = getEnd()
 
@@ -14,33 +8,70 @@ export function teiExport(fragment) {
   res += body
   res += end
 
+  console.log(fragment)
+
   return prettifyXml(res)
 }
 
-function getHeader(title, collection, museum, sourcedesc, publication) {
+function getHeader(fragment) {
   var res = ''
   const start =
     '<?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><teiHeader><fileDesc>'
-  const title_stmt = '<titleStmt><title>' + title + '</title></titleStmt>'
+  const title_stmt =
+    '<titleStmt><title>' + fragment.number + '</title></titleStmt>'
   const pub_stmt =
     '<publicationStmt><p>' +
-    museum +
+    fragment.museum.name +
     '</p><p>' +
-    collection +
+    fragment.collection +
     ' Collection</p></publicationStmt>'
-  var source_desc = '<sourceDesc><p>' + sourcedesc + '</p>'
-  if (publication) source_desc += '<p>Publication: ' + publication + '</p>'
+
+  var source_desc = '<sourceDesc><p>' + fragment.description + '</p>'
+
+  if (fragment.publication)
+    source_desc += '<p>Publication: ' + fragment.publication + '</p>'
+  // if (fragment.references.length>0)  source_desc += getBibiliography(fragment);
+
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
   return res + start + title_stmt + pub_stmt + source_desc + end
 }
+
+// function getBibiliography(fragment){
+// var res = '<biblFull>'
+
+// Object.values(fragment.references).forEach(val => {
+//  res+=addSingleReference(val);
+// })
+
+// res+= '</biblFull>'
+// return res
+// }
+
+// function addSingleReference(ref){
+// var res = '<titleStmt>';
+// res += '<title>'+ ref.document.cslData.title + '</title>';
+
+// var short_author = ref.document.cslData['container-title-short']
+// var author = ref.document.cslData.author
+
+// if(author || short_author) {
+//   res += '<author>'
+//     if(short_author)res += short_author
+//     else res += author[0].given + " "+author[0].family
+//   res += '</author>'
+// }
+
+// res += '</titleStmt>'
+// return res
+// }
 
 function getEnd() {
   return '</body></text></TEI>'
 }
 
 function getBody(fragment) {
-  return fragment.text.allLines.filter(isNotEmpty).map(getParagraph).join('')
+  return fragment.text.allLines.filter(isNotEmpty()).map(getParagraph).join('')
 }
 
 function isNotEmpty() {
@@ -52,18 +83,20 @@ function getParagraph(line) {
 
   if (line.type === 'TextLine') {
     res += '<p n="' + line.lineNumber.number + '">'
-    res += getContent(line)
+    // res += line.prefix  // line numbers needed in text?
+    res += getLineContent(line)
     res += '</p>'
   } else {
     res += '<p>'
-    res += getContent(line)
+    res += line.prefix
+    res += getLineContent(line)
     res += '</p>'
   }
 
   return res
 }
 
-function getContent(line) {
+function getLineContent(line) {
   var res = ''
   for (var j = 0; j < line.content.length; j++) {
     var word = escapeXMLChars(line.content[j].value)
