@@ -15,30 +15,29 @@ export default function Download({
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
-        type: 'text/plain',
+        type: 'text/plain;charset=UTF-8',
       })
     )
     setTei(teiUrl)
-    return (): void => {
-      URL.revokeObjectURL(teiUrl)
-    }
 
     const jsonUrl = URL.createObjectURL(
       new Blob([JSON.stringify(fragment, null, 2)], {
         type: 'application/json',
       })
     )
-
     setJson(jsonUrl)
+
     const atfUrl = URL.createObjectURL(
       new Blob([fragment.atfHeading, '\n', fragment.atf], {
         type: 'text/plain',
       })
     )
     setAtf(atfUrl)
+
     return (): void => {
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(atfUrl)
+      URL.revokeObjectURL(teiUrl)
     }
   }, [fragment])
   return (
@@ -74,7 +73,7 @@ export default function Download({
       <Dropdown.Item
         eventKey="5"
         href={txml}
-        // download={`${fragment.number}.xml`}
+        download={`${fragment.number}.xml`}
       >
         Download as TEI XML File
       </Dropdown.Item>

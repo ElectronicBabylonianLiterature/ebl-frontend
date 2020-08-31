@@ -7,14 +7,12 @@ export function teiExport(fragment) {
     fragment.description,
     fragment.publication
   )
-  const body = getBody(fragment)
+  const body = getBody2(fragment)
   const end = getEnd()
 
   res += header
   res += body
   res += end
-
-  console.log(fragment)
 
   return prettifyXml(res)
 }
@@ -41,24 +39,25 @@ function getEnd() {
   return '</body></text></TEI>'
 }
 
-function getBody(fragment) {
-  var res = ''
-  for (var i = 0; i < fragment.text.allLines.length; i++) {
-    var line = fragment.text.allLines[i]
+function getBody2(fragment) {
+  return fragment.text.allLines.filter(isNotEmpty).map(getParagraph).join('')
+}
 
-    if (!line.displayValue) {
-      if (line.type === 'TextLine') {
-        res += '<p n="' + line.lineNumber.number + '">'
-        res += getContent(line)
-        res += '</p>'
-      } else {
-        //emptyLine => do nothing
-      }
-    } else {
-      res += '<p>'
-      res += getContent(line)
-      res += '</p>'
-    }
+function isNotEmpty() {
+  return (line) => line.type !== 'EmptyLine'
+}
+
+function getParagraph(line) {
+  var res = ''
+
+  if (line.type === 'TextLine') {
+    res += '<p n="' + line.lineNumber.number + '">'
+    res += getContent(line)
+    res += '</p>'
+  } else {
+    res += '<p>'
+    res += getContent(line)
+    res += '</p>'
   }
 
   return res
@@ -67,7 +66,7 @@ function getBody(fragment) {
 function getContent(line) {
   var res = ''
   for (var j = 0; j < line.content.length; j++) {
-    var word = escapeXMLChars(line.content[j].cleanValue)
+    var word = escapeXMLChars(line.content[j].value)
     res += word
     if (j !== line.content.length - 1) res += ' '
   }
@@ -87,31 +86,20 @@ function escapeXMLChars(word) {
         return '&apos;'
       case '"':
         return '&quot;'
+      default:
+        return ''
     }
   })
 }
 
-function prettifyXml(sourceXml) {
-  var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml')
-  var xsltDoc = new DOMParser().parseFromString(
-    [
-      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-      '  <xsl:strip-space elements="*"/>',
-      '  <xsl:template match="para[content-style][not(text())]">',
-      '    <xsl:value-of select="normalize-space(.)"/>',
-      '  </xsl:template>',
-      '  <xsl:template match="node()|@*">',
-      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-      '  </xsl:template>',
-      '  <xsl:output indent="yes"/>',
-      '</xsl:stylesheet>',
-    ].join('\n'),
-    'application/xml'
-  )
-
-  var xsltProcessor = new XSLTProcessor()
-  xsltProcessor.importStylesheet(xsltDoc)
-  var resultDoc = xsltProcessor.transformToDocument(xmlDoc)
-  var resultXml = new XMLSerializer().serializeToString(resultDoc)
-  return resultXml
+function prettifyXml(xml) {
+  var formatted = '',
+    indent = ''
+  const tab = '\t'
+  xml.split(/>\s*</).forEach(function (node) {
+    if (node.match(/^\/\w/)) indent = indent.substring(tab.length)
+    formatted += indent + '<' + node + '>\r\n'
+    if (node.match(/^<?\w[^>]*[^/]$/)) indent += tab
+  })
+  return formatted.substring(1, formatted.length - 3)
 }
