@@ -4,7 +4,7 @@ import Details from 'fragmentarium/ui/info/Details'
 import Record from 'fragmentarium/ui/info/Record'
 import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 interface Props {
   fragment: Fragment
@@ -26,7 +26,9 @@ export default function Info({
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
-            uncuratedReferences={fragment.uncuratedReferences}
+            uncuratedReferences={
+              fragment.uncuratedReferences as UncuratedReference[]
+            }
           />
         )}
       </section>
