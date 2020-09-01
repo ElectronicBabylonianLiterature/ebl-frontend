@@ -6,7 +6,7 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
+import { Button, OverlayTrigger, Popover, Tooltip } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -85,6 +85,7 @@ function Accession({ fragment }: Props) {
 type State = {
   selectedGenres: string[][]
   isOverlayDisplayed: boolean
+  isAlreadySelected: boolean
 }
 class Genre extends Component<DetailsProps, State> {
   constructor(props) {
@@ -92,15 +93,29 @@ class Genre extends Component<DetailsProps, State> {
     this.state = {
       selectedGenres: this.props.fragment.genre.map((elem) => elem.slice()),
       isOverlayDisplayed: false,
+      isAlreadySelected: false,
     }
   }
   handleChange = (event) => {
     const newSelectedGenres = this.state.selectedGenres.slice()
     newSelectedGenres.push(event.value)
-    this.setState({
-      selectedGenres: newSelectedGenres,
-      isOverlayDisplayed: false,
-    })
+    if (!this.isGenreAlreadySelected(event.value)) {
+      this.setState({
+        selectedGenres: newSelectedGenres,
+        isOverlayDisplayed: false,
+      })
+    } else {
+      this.setState({ isAlreadySelected: true }, () => {
+        setTimeout(() => {
+          this.setState({ isAlreadySelected: false })
+        }, 3000)
+      })
+    }
+  }
+  isGenreAlreadySelected = (genre: string[]): boolean => {
+    return !!this.state.selectedGenres.some(
+      (element) => JSON.stringify(element) == JSON.stringify(genre)
+    )
   }
 
   switchIsOverlayDisplayed() {
@@ -151,15 +166,25 @@ class Genre extends Component<DetailsProps, State> {
         id="popover-select-genre"
         className={'w-100'}
       >
-        <Popover.Content>
-          <Select
-            aria-label="select genre"
-            options={options}
-            onChange={(event) => this.handleChange(event)}
-            isSearchable={true}
-            data-testid="select-genre"
-          />
-        </Popover.Content>
+        <OverlayTrigger
+          placement="top"
+          show={this.state.isAlreadySelected}
+          overlay={
+            <Tooltip id="already selected">
+              <strong>This option is already selected</strong>
+            </Tooltip>
+          }
+        >
+          <Popover.Content>
+            <Select
+              aria-label="select genre"
+              options={options}
+              onChange={(event) => this.handleChange(event)}
+              isSearchable={true}
+              data-testid="select-genre"
+            />
+          </Popover.Content>
+        </OverlayTrigger>
       </Popover>
     )
     return (
