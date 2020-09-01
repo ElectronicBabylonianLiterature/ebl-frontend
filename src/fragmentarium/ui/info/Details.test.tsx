@@ -34,7 +34,9 @@ describe('All details', () => {
     renderDetails()
   })
 
-  it('Renders museum', () => screen.getByText(`${fragment.museum.name}`))
+  it('Renders museum', () => {
+    screen.getByText(`${fragment.museum.name}`)
+  })
 
   it('Links to museum home', () =>
     expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
@@ -42,8 +44,9 @@ describe('All details', () => {
       'https://britishmuseum.org/'
     ))
 
-  it('Renders colection', () =>
-    screen.getByText(`(${fragment.collection} Collection)`))
+  it('Renders colection', () => {
+    screen.getByText(`(${fragment.collection} Collection)`)
+  })
 
   it(`Renders all joins`, () => {
     for (const item of fragment.joins) {
@@ -84,8 +87,9 @@ describe('All details', () => {
       `https://cdli.ucla.edu/${fragment.cdliNumber}`
     ))
 
-  it('Renders accession', () =>
-    screen.getByText(`Accession: ${fragment.accession}`))
+  it('Renders accession', () => {
+    screen.getByText(`Accession: ${fragment.accession}`)
+  })
   it('Select genre & delete selected genre', async () => {
     userEvent.click(screen.getByRole('button'))
     act(() => {
@@ -97,7 +101,7 @@ describe('All details', () => {
     await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
     expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Legal']])
-    await screen.findByText('ARCHIVAL \uD83E\uDC02 Legal')
+    screen.findByText('ARCHIVAL \uD83E\uDC02 Legal')
 
     userEvent.click(screen.getAllByRole('button')[1])
 
@@ -128,16 +132,23 @@ describe('Missing details', () => {
   it('Does not render colection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
-  it(`Renders dash for joins`, () => screen.getByText('Joins: -'))
+  it(`Renders dash for joins`, () => {
+    screen.getByText('Joins: -')
+  })
 
-  it('Does not renders missing measures', () =>
+  it('Does not renders missing measures', () => {
     screen.getByText(
       `${fragment.measures.length} × ${fragment.measures.thickness} cm`
-    ))
+    )
+  })
 
-  it('Renders dash for CDLI number', () => screen.getByText('CDLI: -'))
+  it('Renders dash for CDLI number', () => {
+    screen.getByText('CDLI: -')
+  })
 
-  it('Renders dash for accession', () => screen.getByText('Accession: -'))
+  it('Renders dash for accession', () => {
+    screen.getByText('Accession: -')
+  })
 })
 
 describe('Unknown museum', () => {

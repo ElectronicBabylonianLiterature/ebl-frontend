@@ -31,6 +31,7 @@ test.each([
       ['ARCHIVAL', 'Administrative', 'Lists'],
       ['ARCHIVAL', 'Administrative', 'Lists', 'One Entry'],
       ['ARCHIVAL', 'Administrative', 'Lists', 'Multientry'],
+      ['ARCHIVAL', 'Legal'],
       ['ARCHIVAL', 'Legal', 'Court'],
     ],
   ],
