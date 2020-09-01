@@ -145,7 +145,7 @@ class Genre extends Component<DetailsProps, State> {
     const options = parseGenreTrees(genres).map((genre: string[]) => {
       return {
         value: genre,
-        label: genre.join(' -> '),
+        label: genre.join(' ➝ '),
       }
     })
 
@@ -194,7 +194,7 @@ class Genre extends Component<DetailsProps, State> {
           {this.state.selectedGenres.map((genre) => {
             return (
               <li className="list-group-item" key={genreToString(genre)}>
-                {genre.join(' \uD83E\uDC02 ')}
+                {genre.join(' ➝ ')}
                 <Button
                   variant="light"
                   className={classNames([

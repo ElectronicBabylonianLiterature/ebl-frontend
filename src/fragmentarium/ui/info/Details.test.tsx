@@ -95,19 +95,17 @@ describe('All details', () => {
     act(() => {
       selectEvent.select(
         screen.getByLabelText('select genre'),
-        'ARCHIVAL -> Legal'
+        'ARCHIVAL ➝ Legal'
       )
     })
     await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
     expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Legal']])
-    screen.findByText('ARCHIVAL \uD83E\uDC02 Legal')
+    screen.findByText('ARCHIVAL ➝ Legal')
 
     userEvent.click(screen.getAllByRole('button')[1])
 
-    expect(
-      screen.queryByLabelText('ARCHIVAL \uD83E\uDC02 Legal')
-    ).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('ARCHIVAL ➝ Legal')).not.toBeInTheDocument()
   })
 })
 
