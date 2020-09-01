@@ -11,7 +11,7 @@ export default function Download({
 }): JSX.Element {
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
-  const [txml, setTei] = useState<string>()
+  const [xml, setTei] = useState<string>()
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
@@ -35,8 +35,8 @@ export default function Download({
     setAtf(atfUrl)
 
     return (): void => {
-      URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(atfUrl)
+      URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
     }
   }, [fragment])
@@ -71,8 +71,9 @@ export default function Download({
         Download as JSON File
       </Dropdown.Item>
       <Dropdown.Item
+        data-testid="download-xml"
         eventKey="5"
-        href={txml}
+        href={xml}
         download={`${fragment.number}.xml`}
       >
         Download as TEI XML File
