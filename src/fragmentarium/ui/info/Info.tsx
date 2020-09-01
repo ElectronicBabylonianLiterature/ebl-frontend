@@ -4,9 +4,12 @@ import Details from 'fragmentarium/ui/info/Details'
 import Record from 'fragmentarium/ui/info/Record'
 import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
-import serializeReference from 'bibliography/application/serializeReference'
 
-export default function Info({ fragment, fragmentService, onSave }) {
+export default function Info({
+  fragment,
+  fragmentService,
+  onSave,
+}): JSX.Element {
   const updateGenre = (genre) =>
     onSave(fragmentService.updateGenre(fragment.number, genre))
   return (

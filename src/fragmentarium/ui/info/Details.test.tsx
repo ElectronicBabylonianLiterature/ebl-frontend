@@ -1,27 +1,28 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, fireEvent, RenderResult } from '@testing-library/react'
+import {
+  act,
+  render,
+  RenderResult,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { fillBibliographySelect } from 'test-support/test-bibliographySelect'
-import { changeValueByLabel, clickNth } from 'test-support/utils'
-import exp from 'constants'
+import selectEvent from 'react-select-event'
+import userEvent from '@testing-library/user-event'
 
-let fragmentService
+const updateGenre = jest.fn()
 let fragment: Fragment
-let fragmentWithUpdatedGenre: Fragment
-let container
-let element: RenderResult
 
 function renderDetails() {
-  element = render(
+  render(
     <MemoryRouter>
-      <Details fragment={fragment} fragmentService={fragmentService} />
+      <Details fragment={fragment} updateGenre={updateGenre} />
     </MemoryRouter>
   )
-  container = element.container
 }
 
 describe('All details', () => {
@@ -29,34 +30,31 @@ describe('All details', () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
+      genre: [],
     })
     renderDetails()
   })
 
-  it('Renders museum', () => {
-    expect(container).toHaveTextContent(`${fragment.museum.name}`)
-  })
+  it('Renders museum', () => screen.getByText(`${fragment.museum.name}`))
 
-  it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum.name)).toHaveAttribute(
+  it('Links to museum home', () =>
+    expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
       'https://britishmuseum.org/'
-    )
-  })
+    ))
 
-  it('Renders colection', () => {
-    expect(container).toHaveTextContent(`(${fragment.collection} Collection)`)
-  })
+  it('Renders colection', () =>
+    screen.getByText(`(${fragment.collection} Collection)`))
 
   it(`Renders all joins`, () => {
     for (const item of fragment.joins) {
-      expect(container).toHaveTextContent(item)
+      screen.getByText(item)
     }
   })
 
   it(`Links all joins`, () => {
     for (const item of fragment.joins) {
-      expect(element.getByText(item)).toHaveAttribute(
+      expect(screen.getByText(item)).toHaveAttribute(
         'href',
         `/fragmentarium/${item}`
       )
@@ -65,54 +63,47 @@ describe('All details', () => {
 
   it('Renders measures', () => {
     const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
-    expect(container).toHaveTextContent(expectedMeasures)
+    screen.getByText(expectedMeasures)
   })
 
   it('Renders CDLI number', () => {
-    expect(container).toHaveTextContent(`CDLI: ${fragment.cdliNumber}`)
+    screen.getByText((content, node) => {
+      const hasText = (node) =>
+        node.textContent === `CDLI: ${fragment.cdliNumber}`
+      const nodeHasText = hasText(node)
+      const childrenDontHaveText = Array.from(node.children).every(
+        (child) => !hasText(child)
+      )
+
+      return nodeHasText && childrenDontHaveText
+    })
   })
 
-  it('Links CDLI number', () => {
-    expect(element.getByText(fragment.cdliNumber)).toHaveAttribute(
+  it('Links CDLI number', () =>
+    expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
       'href',
       `https://cdli.ucla.edu/${fragment.cdliNumber}`
-    )
-  })
+    ))
 
-  it('Renders accession', () => {
-    expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
-  })
-})
-describe('Genre selection', () => {
-  beforeEach(async () => {
-    fragmentService = {
-      updateGenre: jest.fn(),
-    }
-    fragmentService.updateGenre.mockReturnValue(fragmentWithUpdatedGenre)
-    fragmentWithUpdatedGenre = await factory.build('fragment', {
-      genre: [['ARCHIVE', 'Administrative']],
-    })
-    fragment = await factory.build('fragment', {
-      museum: Museum.of('The British Museum'),
-      collection: 'The Collection',
-      genre: [],
-    })
-    renderDetails()
-  })
+  it('Renders accession', () =>
+    screen.getByText(`Accession: ${fragment.accession}`))
   it('Select genre & delete selected genre', async () => {
-    fireEvent.click(element.getByRole('button'))
+    userEvent.click(screen.getByRole('button'))
+    act(() => {
+      selectEvent.select(
+        screen.getByLabelText('select genre'),
+        'ARCHIVAL -> Legal'
+      )
+    })
+    await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
-    const entry = 'ARCHIVAL -> Legal'
-    changeValueByLabel(element, 'select genre', 'ARCHIVAL -> Legal')
-    await element.findAllByText('ARCHIVAL -> Legal')[0]
-    await clickNth(element, 'ARCHIVAL -> Legal', 0)
+    expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Legal']])
+    await screen.findByText('ARCHIVAL \uD83E\uDC02 Legal')
 
-    await element.findByText('ARCHIVAL \uD83E\uDC02 Legal')
-
-    fireEvent.click(element.getAllByRole('button')[1])
+    userEvent.click(screen.getAllByRole('button')[1])
 
     expect(
-      element.queryByLabelText('ARCHIVAL \uD83E\uDC02 Legal')
+      screen.queryByLabelText('ARCHIVAL \uD83E\uDC02 Legal')
     ).not.toBeInTheDocument()
   })
 })
@@ -132,30 +123,22 @@ describe('Missing details', () => {
     renderDetails()
   })
 
-  it('Does not render undefined', () => {
-    expect(container).not.toHaveTextContent('undefined')
-  })
+  it('Does not render undefined', () =>
+    expect(screen.queryByText('undefined')).not.toBeInTheDocument())
 
-  it('Does not render colection', () => {
-    expect(container).not.toHaveTextContent('Collection')
-  })
+  it('Does not render colection', () =>
+    expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
-  it(`Renders dash for joins`, () => {
-    expect(container).toHaveTextContent('Joins: -')
-  })
+  it(`Renders dash for joins`, () => screen.getByText('Joins: -'))
 
-  it('Does not renders missing measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.thickness} cm`
-    expect(container).toHaveTextContent(expectedMeasures)
-  })
+  it('Does not renders missing measures', () =>
+    screen.getByText(
+      `${fragment.measures.length} × ${fragment.measures.thickness} cm`
+    ))
 
-  it('Renders dash for CDLI number', () => {
-    expect(container).toHaveTextContent('CDLI: -')
-  })
+  it('Renders dash for CDLI number', () => screen.getByText('CDLI: -'))
 
-  it('Renders dash for accession', () => {
-    expect(container).toHaveTextContent('Accession: -')
-  })
+  it('Renders dash for accession', () => screen.getByText('Accession: -'))
 })
 
 describe('Unknown museum', () => {
@@ -166,7 +149,8 @@ describe('Unknown museum', () => {
     renderDetails()
   })
 
-  it('Does not link museum', () => {
-    expect(element.getByText(fragment.museum.name)).not.toHaveAttribute('href')
-  })
+  it('Does not link museum', () =>
+    expect(screen.queryByText(fragment.museum.name)).not.toHaveAttribute(
+      'href'
+    ))
 })

@@ -9,9 +9,7 @@ import './Details.css'
 import { Button, OverlayTrigger, Popover, Tooltip } from 'react-bootstrap'
 import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
-import FragmentService from 'fragmentarium/application/FragmentService'
 import Select from 'react-select'
-import Reference from 'bibliography/domain/Reference'
 
 type Props = {
   fragment: Fragment
@@ -116,7 +114,7 @@ class Genre extends Component<DetailsProps, State> {
   }
   isGenreAlreadySelected = (genre: string[]): boolean => {
     return this.state.selectedGenres.some(
-      (element) => JSON.stringify(element) == JSON.stringify(genre)
+      (element) => JSON.stringify(element) === JSON.stringify(genre)
     )
   }
 
@@ -144,12 +142,7 @@ class Genre extends Component<DetailsProps, State> {
 
   render(): JSX.Element {
     const genreToString = (genre) => genre.join('-').replace(' ', '_')
-
     const options = parseGenreTrees(genres).map((genre: string[]) => {
-      let paddingLeft = ''
-      for (let i = 0; i < genre.length - 1; i++) {
-        paddingLeft = paddingLeft.concat('\u00a0\u00a0\u00a0\u00a0')
-      }
       return {
         value: genre,
         label: genre.join(' -> '),
@@ -177,7 +170,6 @@ class Genre extends Component<DetailsProps, State> {
               options={options}
               onChange={(event) => this.handleChange(event)}
               isSearchable={true}
-              data-testid="select-genre"
             />
           </Popover.Content>
         </OverlayTrigger>

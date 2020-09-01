@@ -12,6 +12,7 @@ import Lemmatization, {
 import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import setUpReferences from 'test-support/setUpReferences'
+import produce, { Draft } from 'immer'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -103,6 +104,7 @@ describe('methods returning hydrated fragment', () => {
   let fragment: Fragment
   let expectedFragment: Fragment
   let result: Fragment
+  const genre = [['ARCHIVE', 'Administrative']]
 
   beforeEach(async () => {
     const { entries, references, expectedReferences } = await setUpReferences(
@@ -111,6 +113,7 @@ describe('methods returning hydrated fragment', () => {
     fragment = await factory.build('fragment', {
       number: number,
       references: references,
+      genre: [],
     })
 
     bibliographyService.find.mockImplementation((id) => {
@@ -121,6 +124,9 @@ describe('methods returning hydrated fragment', () => {
     })
 
     expectedFragment = fragment.setReferences(expectedReferences)
+    produce(expectedFragment, (draft: Draft<Fragment>) => {
+      draft.genre = genre
+    })
   })
 
   describe('find', () => {
@@ -158,6 +164,16 @@ describe('methods returning hydrated fragment', () => {
         transliteration,
         notes
       ))
+  })
+
+  describe('update genre', () => {
+    beforeEach(async () => {
+      fragmentRepository.updateGenre.mockReturnValue(Promise.resolve(fragment))
+      result = await fragmentService.updateGenre(fragment.number, genre)
+    })
+
+    test('returns updated fragment', () =>
+      expect(result).toEqual(expectedFragment))
   })
 
   describe('update lemmatization', () => {
