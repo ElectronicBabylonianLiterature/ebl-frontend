@@ -4,12 +4,18 @@ import Details from 'fragmentarium/ui/info/Details'
 import Record from 'fragmentarium/ui/info/Record'
 import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
-
+import { Fragment } from 'fragmentarium/domain/fragment'
+import FragmentService from 'fragmentarium/application/FragmentService'
+interface Props {
+  fragment: Fragment
+  fragmentService: FragmentService
+  onSave: (x0: any) => any
+}
 export default function Info({
   fragment,
   fragmentService,
   onSave,
-}): JSX.Element {
+}: Props): JSX.Element {
   const updateGenre = (genre) =>
     onSave(fragmentService.updateGenre(fragment.number, genre))
   return (
