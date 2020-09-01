@@ -88,7 +88,11 @@ class FragmentService {
       )
   }
   updateGenre(number: string, genre: string[][]): Promise<Fragment> {
-    return this.fragmentRepository.updateGenre(number, genre)
+    return this.fragmentRepository
+      .updateGenre(number, genre)
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
   }
 
   updateTransliteration(

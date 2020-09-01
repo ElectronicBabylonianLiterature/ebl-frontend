@@ -158,7 +158,11 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
     <Container fluid>
       <Row>
         <Col md={2}>
-          <Info fragment={fragment} fragmentService={fragmentService} />
+          <Info
+            fragment={fragment}
+            fragmentService={fragmentService}
+            onSave={onSave}
+          />
         </Col>
         <Col md={5}>
           <EditorTabs

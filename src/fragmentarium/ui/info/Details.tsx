@@ -11,14 +11,10 @@ import classNames from 'classnames'
 import { genres, parseGenreTrees } from './genres'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Select from 'react-select'
+import Reference from 'bibliography/domain/Reference'
 
 type Props = {
   fragment: Fragment
-}
-
-type DetailsProps = {
-  fragment: Fragment
-  fragmentService: FragmentService
 }
 
 function Collection({ fragment }: Props) {
@@ -82,6 +78,12 @@ function CdliNumber({ fragment }: Props) {
 function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
+
+type DetailsProps = {
+  fragment: Fragment
+  updateGenre: (genre: readonly string[][]) => any
+}
+
 type State = {
   selectedGenres: string[][]
   isOverlayDisplayed: boolean
@@ -113,7 +115,7 @@ class Genre extends Component<DetailsProps, State> {
     }
   }
   isGenreAlreadySelected = (genre: string[]): boolean => {
-    return !!this.state.selectedGenres.some(
+    return this.state.selectedGenres.some(
       (element) => JSON.stringify(element) == JSON.stringify(genre)
     )
   }
@@ -136,13 +138,7 @@ class Genre extends Component<DetailsProps, State> {
       JSON.stringify(prevState.selectedGenres) !==
       JSON.stringify(this.state.selectedGenres)
     ) {
-      this.props.fragmentService
-        .updateGenre(this.props.fragment.number, this.state.selectedGenres)
-        .then((fragment) => {
-          this.setState({
-            selectedGenres: fragment.genre.map((elem) => elem.slice()),
-          })
-        })
+      this.props.updateGenre(this.state.selectedGenres)
     }
   }
 
@@ -225,7 +221,7 @@ class Genre extends Component<DetailsProps, State> {
   }
 }
 
-function Details({ fragment, fragmentService }: DetailsProps): JSX.Element {
+function Details({ fragment, updateGenre }: DetailsProps): JSX.Element {
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -247,7 +243,7 @@ function Details({ fragment, fragmentService }: DetailsProps): JSX.Element {
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
-        <Genre fragment={fragment} fragmentService={fragmentService} />
+        <Genre fragment={fragment} updateGenre={updateGenre} />
       </li>
     </ul>
   )
