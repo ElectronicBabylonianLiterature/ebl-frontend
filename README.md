@@ -16,13 +16,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 The following services are needed to run application:
 
-- [eBL API](https://github.com/ElectronicBabylonianLiterature/ebl-api) 
+- [eBL API](https://github.com/ElectronicBabylonianLiterature/ebl-api)
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
 ## Running tests
 
-```
+```shell
 yarn eslint --ext .ts,.tsx src/
 yarn tsc
 yarn test
@@ -33,7 +33,7 @@ yarn test
 The application reads the configuration from following environment variables:
 
 ```dotenv
-REACT_APP_AUTH0_DOMAIN=<Auth0 domain> 
+REACT_APP_AUTH0_DOMAIN=<Auth0 domain>
 REACT_APP_AUTH0_REDIRECT_URI=<Auth0 redirect URI>
 REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
 REACT_APP_AUTH0_RETURN_TO=<Auth0 return to URL>
@@ -43,12 +43,11 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 
 `yarn start` starts the development server. The envoronment variables are read from `.env.local`.
 
-
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
 
-```
+```sh
 yarn lighthouse <url>
 ```
 
@@ -59,5 +58,3 @@ yarn lighthouse <url>
 ## Acknowledgements
 
 [Junicode](http://junicode.sourceforge.net/) webfont by [psb1558](http://sourceforge.net/users/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](http://sourceforge.net/projects/junicode/?source=typ_redirect).
-
-
