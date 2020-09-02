@@ -20,9 +20,18 @@ The following services are needed to run application:
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
+### Gitpod
+
+The project comes with a [Gitpod](https://www.gitpod.io) configuration including
+select extensions. Click the button below, configure the environment variables and you are good to go.
+It might be necessary to use `.env.local` instead of [the facilities provided
+in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they seem to override `.env.test`.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
+
 ## Running tests
 
-```shell
+```sh
 yarn eslint --ext .ts,.tsx src/
 yarn tsc
 yarn test
