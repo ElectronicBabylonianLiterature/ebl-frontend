@@ -15,5 +15,8 @@ tasks:
 
 vscode:
   extensions:
-    - Orta.vscode-jest@3.1.1:e5QDEGVUNAQFNn6OtB9Qmw==
     - eamodio.gitlens@10.2.1:ZI2Sl3DHdJu4aG2wW92CQQ==
+    - DavidAnson.vscode-markdownlint@0.36.3:rP8OhcezPp70k1tUGpNulw==
+    - dbaeumer.vscode-eslint@2.1.8:02aHhbJ0Q4aGdjHXlTdVKg==
+    - esbenp.prettier-vscode@5.5.0:xcEnHt0vYXkhJ8IkBmNAuA==
+    - Orta.vscode-jest@4.0.0-alpha.1:TuNngpN2TTsC/Ck1qhIwrg==
