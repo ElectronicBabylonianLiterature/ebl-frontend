@@ -15,7 +15,3 @@ RUN bash -c ". .nvm/nvm.sh \
     && nvm alias default 14"
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
-
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN sudo apt update && sudo apt install --no-install-recommends yarn
