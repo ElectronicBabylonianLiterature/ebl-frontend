@@ -52,6 +52,12 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 
 `yarn start` starts the development server. The envoronment variables are read from `.env.local`.
 
+In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
+
+```dotenv
+INLINE_RUNTIME_CHUNK=false
+```
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
