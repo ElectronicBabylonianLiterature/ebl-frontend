@@ -119,7 +119,9 @@ class Genre extends Component<DetailsProps, State> {
   }
 
   switchIsOverlayDisplayed() {
-    this.setState({ isOverlayDisplayed: !this.state.isOverlayDisplayed })
+    this.setState((prevState) => ({
+      isOverlayDisplayed: !prevState.isOverlayDisplayed,
+    }))
   }
   deleteSelectedGenre(genreToDelete) {
     const newSelectedGenre = this.state.selectedGenres.filter(
@@ -159,7 +161,7 @@ class Genre extends Component<DetailsProps, State> {
           placement="top"
           show={this.state.isAlreadySelected}
           overlay={
-            <Tooltip id="already selected">
+            <Tooltip id="already-selected-tooltip">
               <strong>This option is already selected</strong>
             </Tooltip>
           }
