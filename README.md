@@ -16,13 +16,22 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 The following services are needed to run application:
 
-- [eBL API](https://github.com/ElectronicBabylonianLiterature/ebl-api) 
+- [eBL API](https://github.com/ElectronicBabylonianLiterature/ebl-api)
 - [Auth0](https://auth0.com)
 - [Sentry](https://sentry.io)
 
+### Gitpod
+
+The project comes with a [Gitpod](https://www.gitpod.io) configuration including
+select extensions. Click the button below, configure the environment variables and you are good to go.
+It might be necessary to use `.env.local` instead of [the facilities provided
+in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they seem to override `.env.test`.
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
+
 ## Running tests
 
-```
+```sh
 yarn eslint --ext .ts,.tsx src/
 yarn tsc
 yarn test
@@ -33,7 +42,7 @@ yarn test
 The application reads the configuration from following environment variables:
 
 ```dotenv
-REACT_APP_AUTH0_DOMAIN=<Auth0 domain> 
+REACT_APP_AUTH0_DOMAIN=<Auth0 domain>
 REACT_APP_AUTH0_REDIRECT_URI=<Auth0 redirect URI>
 REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
 REACT_APP_AUTH0_RETURN_TO=<Auth0 return to URL>
@@ -43,12 +52,17 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 
 `yarn start` starts the development server. The envoronment variables are read from `.env.local`.
 
+In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
+
+```dotenv
+INLINE_RUNTIME_CHUNK=false
+```
 
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
 
-```
+```sh
 yarn lighthouse <url>
 ```
 
@@ -59,5 +73,3 @@ yarn lighthouse <url>
 ## Acknowledgements
 
 [Junicode](http://junicode.sourceforge.net/) webfont by [psb1558](http://sourceforge.net/users/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](http://sourceforge.net/projects/junicode/?source=typ_redirect).
-
-
