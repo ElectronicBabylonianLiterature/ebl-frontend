@@ -124,9 +124,6 @@ describe('methods returning hydrated fragment', () => {
     })
 
     expectedFragment = fragment.setReferences(expectedReferences)
-    expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
-      draft.genre = genre
-    })
   })
 
   describe('find', () => {
@@ -168,12 +165,21 @@ describe('methods returning hydrated fragment', () => {
 
   describe('update genre', () => {
     beforeEach(async () => {
-      fragmentRepository.updateGenre.mockReturnValue(Promise.resolve(fragment))
+      expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
+        draft.genre = genre
+      })
+      fragmentRepository.updateGenre.mockReturnValue(
+        Promise.resolve(expectedFragment)
+      )
       result = await fragmentService.updateGenre(fragment.number, genre)
     })
-
     test('returns updated fragment', () =>
       expect(result).toEqual(expectedFragment))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.updateGenre).toHaveBeenCalledWith(
+        fragment.number,
+        genre
+      ))
   })
 
   describe('update lemmatization', () => {
