@@ -124,7 +124,7 @@ describe('methods returning hydrated fragment', () => {
     })
 
     expectedFragment = fragment.setReferences(expectedReferences)
-    produce(expectedFragment, (draft: Draft<Fragment>) => {
+    expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
       draft.genre = genre
     })
   })
