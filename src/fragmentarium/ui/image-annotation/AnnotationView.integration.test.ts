@@ -7,7 +7,7 @@ import produce from 'immer'
 const fragmentWithoutReferences = produce(fragmentDto, (draft) => {
   draft.references = []
 })
-const fragmentNumber = fragmentWithoutReferences._id
+const fragmentNumber = 'Test.Fragment'
 
 let fakeApi: FakeApi
 let appDriver: AppDriver
@@ -34,15 +34,15 @@ describe('Diplay annotate view', () => {
     appDriver.expectBreadcrumbs([
       'eBL',
       'Fragmentarium',
-      fragmentDto._id,
+      fragmentNumber,
       'Annotate',
     ])
   })
 
   test('Fragment crumb', () => {
     appDriver.expectBreadcrumb(
-      fragmentDto._id,
-      `/fragmentarium/${fragmentDto._id}`
+      fragmentNumber,
+      `/fragmentarium/${fragmentNumber}`
     )
   })
 
