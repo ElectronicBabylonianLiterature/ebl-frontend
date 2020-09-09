@@ -1,5 +1,8 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
+import MuseumNumber, {
+  museumNumberToString,
+} from 'fragmentarium/domain/MuseumNumber'
 
 type Dto = Record<string, unknown>
 
@@ -172,11 +175,11 @@ export default class FakeApi {
     return this
   }
 
-  expectFragment(fragmentDto: Dto): FakeApi {
+  expectFragment(fragmentDto: Dto & { museumNumber: MuseumNumber }): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/fragments/${fragmentDto._id}`,
+        path: `/fragments/${museumNumberToString(fragmentDto.museumNumber)}`,
         authenticate: true,
         response: fragmentDto,
         verify: true,
