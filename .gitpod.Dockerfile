@@ -1,5 +1,8 @@
 FROM gitpod/workspace-full
 
+RUN brew tap heroku/brew
+RUN brew install heroku
+
 # Install custom tools, runtime, etc. using apt-get
 # For example, the command below would install "bastet" - a command line tetris clone:
 #
