@@ -75,8 +75,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.2",
-    "@typescript-eslint/eslint-plugin": "^3.7.0",
-    "@typescript-eslint/parser": "^3.7.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
     "chance": "^1.0.16",
     "eslint-config-prettier": "^6.10.1",
     "eslint-config-react": "^1.1.7",
@@ -108,7 +108,6 @@
     "not safari < 12",
     "not ios < 14",
     "not chrome < 66",
-    "not opera 68",
     "not and_chr <= 78",
     "not kaios <= 2.5",
     "not and_qq <= 1.2"
