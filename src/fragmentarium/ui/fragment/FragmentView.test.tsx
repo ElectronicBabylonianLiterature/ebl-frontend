@@ -94,7 +94,6 @@ beforeEach(async () => {
   fragmentService.fetchGenre.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
-  fragmentService.updateGenre.mockReturnValue(Promise.resolve())
 })
 
 describe('Fragment is loaded', () => {
@@ -117,6 +116,7 @@ describe('Fragment is loaded', () => {
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
+    fragmentService.updateGenre.mockReturnValue(Promise.resolve(fragment))
     await renderFragmentView(
       fragmentNumber,
       selectedFolio.name,
