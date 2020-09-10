@@ -35,7 +35,6 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.7.0",
     "@sentry/browser": "^5.4.0",
-    "@testing-library/user-event": "^12.1.3",
     "@types/bluebird": "^3.5.28",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^24.0.25",
@@ -71,10 +70,11 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.4.1",
     "react-select": "^3.0.4",
-    "react-select-event": "^5.0.0",
     "typescript": "^3.6.4"
   },
   "devDependencies": {
+    "react-select-event": "^5.0.0",
+    "@testing-library/user-event": "^12.1.3",
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.2",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
