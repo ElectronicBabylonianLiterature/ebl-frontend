@@ -20,7 +20,7 @@ function getName(author: unknown): string {
   return particle ? `${particle} ${family}` : family
 }
 
-type CslData = { readonly [key: string]: any }
+export type CslData = { readonly [key: string]: any }
 class BibliographyEntry {
   private readonly cslData: CslData
 

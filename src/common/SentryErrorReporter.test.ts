@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser'
+import * as Sentry from '@sentry/react'
 import _ from 'lodash'
 import SentryErrorReporter from './SentryErrorReporter'
 import { ApiError } from 'http/ApiClient'

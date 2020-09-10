@@ -234,7 +234,11 @@ const lines: readonly TextLineDto[] = [
 ]
 
 export const fragmentDto = {
-  _id: 'Test.Fragment',
+  museumNumber: {
+    prefix: 'Test',
+    number: 'Fragment',
+    suffix: '',
+  },
   accession: '',
   cdliNumber: 'X0000',
   bmIdNumber: '',

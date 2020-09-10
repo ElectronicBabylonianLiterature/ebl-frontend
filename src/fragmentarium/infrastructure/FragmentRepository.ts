@@ -46,6 +46,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ControlLine } from 'transliteration/domain/line'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
 const lineClases = {
   TextLine: TextLine,
@@ -84,7 +85,7 @@ function createText(text): Text {
 function createFragment(dto): Fragment {
   return new Fragment({
     ...dto,
-    number: dto._id,
+    number: museumNumberToString(dto.museumNumber),
     museum: Museum.of(dto.museum),
     joins: dto.joins,
     measures: {
