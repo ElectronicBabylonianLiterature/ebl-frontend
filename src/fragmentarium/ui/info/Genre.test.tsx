@@ -52,7 +52,7 @@ describe('User Input', () => {
     await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
     expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
-    screen.getByText('ARCHIVAL ➝ Adminisrative')
+    await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getAllByRole('button')[1])
 
