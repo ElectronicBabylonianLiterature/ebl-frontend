@@ -161,8 +161,5 @@ export default withData<
   ({ fragment, updateGenre, data }) => (
     <Genre fragment={fragment} updateGenre={updateGenre} genreOptions={data} />
   ),
-  (props) => props.fragmentService.fetchGenre(),
-  {
-    watch: (props) => [],
-  }
+  (props) => props.fragmentService.fetchGenre()
 )

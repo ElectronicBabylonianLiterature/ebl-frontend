@@ -44,6 +44,8 @@ beforeEach(async () => {
     updateReferences: jest.fn(),
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
+    fetchGenre: jest.fn(),
+    updateGenre: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
     fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
@@ -62,6 +64,11 @@ beforeEach(async () => {
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
+
+  fragmentService.fetchGenre.mockReturnValue(
+    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+  )
+  fragmentService.updateGenre.mockReturnValue(Promise.resolve(fragment))
 
   await act(async () => {
     element = render(
