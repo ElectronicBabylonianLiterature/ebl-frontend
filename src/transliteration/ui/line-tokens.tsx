@@ -109,6 +109,7 @@ class LineAccumulator {
         />
       )
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     _.last(this.columns)?.content.push(component)
     this.enclosureOpened = isOpenEnclosure(token)
   }
@@ -130,6 +131,7 @@ class LineAccumulator {
   }
 
   private pushSeparator(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     _.last(this.columns)?.content.push(
       this.inGloss ? (
         <GlossWrapper key={`${this.index}-separator`}>
