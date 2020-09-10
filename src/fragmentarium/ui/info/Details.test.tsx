@@ -12,18 +12,30 @@ import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
+import Promise from 'bluebird'
 
 const updateGenre = jest.fn()
+const fragmentService = {
+  fetchGenre: jest.fn(),
+}
 let fragment: Fragment
 
 function renderDetails() {
   render(
     <MemoryRouter>
-      <Details fragment={fragment} updateGenre={updateGenre} />
+      <Details
+        fragment={fragment}
+        updateGenre={updateGenre}
+        fragmentService={fragmentService}
+      />
     </MemoryRouter>
   )
 }
-
+beforeEach(async () => {
+  fragmentService.fetchGenre.mockReturnValue(
+    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+  )
+})
 describe('All details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
@@ -89,23 +101,6 @@ describe('All details', () => {
 
   it('Renders accession', () => {
     screen.getByText(`Accession: ${fragment.accession}`)
-  })
-  it('Select genre & delete selected genre', async () => {
-    userEvent.click(screen.getByRole('button'))
-    act(() => {
-      selectEvent.select(
-        screen.getByLabelText('select genre'),
-        'ARCHIVAL ➝ Legal'
-      )
-    })
-    await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
-
-    expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Legal']])
-    screen.findByText('ARCHIVAL ➝ Legal')
-
-    userEvent.click(screen.getAllByRole('button')[1])
-
-    expect(screen.queryByLabelText('ARCHIVAL ➝ Legal')).not.toBeInTheDocument()
   })
 })
 

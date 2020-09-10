@@ -78,7 +78,7 @@ function Accession({ fragment }: Props) {
 type DetailsProps = {
   fragment: Fragment
   updateGenre: (genre: readonly string[][]) => any
-  fragmentService: FragmentService
+  fragmentService: any
 }
 
 function Details({
