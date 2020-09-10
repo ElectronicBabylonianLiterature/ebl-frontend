@@ -22,6 +22,7 @@ const fragmentRepository = {
   find: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
+  fetchGenre: jest.fn(),
   updateGenre: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
@@ -104,6 +105,7 @@ describe('methods returning hydrated fragment', () => {
   let fragment: Fragment
   let expectedFragment: Fragment
   let result: Fragment
+  let genreResult: string[][]
   const genre = [['ARCHIVE', 'Administrative']]
 
   beforeEach(async () => {
@@ -161,6 +163,15 @@ describe('methods returning hydrated fragment', () => {
         transliteration,
         notes
       ))
+  })
+  describe('fetch genre', () => {
+    beforeEach(async () => {
+      fragmentRepository.fetchGenre.mockReturnValue(Promise.resolve(genre))
+      genreResult = await fragmentService.fetchGenre()
+    })
+    test('returns genre', () => expect(genreResult).toEqual(genre))
+    test('calls repository with correct parameters', () =>
+      expect(fragmentRepository.fetchGenre).toHaveBeenCalled())
   })
 
   describe('update genre', () => {

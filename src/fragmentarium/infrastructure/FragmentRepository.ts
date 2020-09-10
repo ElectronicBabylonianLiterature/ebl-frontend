@@ -174,6 +174,9 @@ class ApiFragmentRepository
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
+  fetchGenre(): Promise<string[][]> {
+    return this.apiClient.fetchJson('/genre', true)
+  }
 
   updateGenre(number: string, genre: string[][]): Promise<Fragment> {
     const path = createFragmentPath(number, 'genre')

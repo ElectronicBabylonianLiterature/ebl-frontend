@@ -20,7 +20,11 @@ export default function Info({
     onSave(fragmentService.updateGenre(fragment.number, genre))
   return (
     <>
-      <Details fragment={fragment} updateGenre={updateGenre} />
+      <Details
+        fragment={fragment}
+        updateGenre={updateGenre}
+        fragmentService={fragmentService}
+      />
       <section>
         <h3>References</h3>
         <ReferenceList references={fragment.references} />

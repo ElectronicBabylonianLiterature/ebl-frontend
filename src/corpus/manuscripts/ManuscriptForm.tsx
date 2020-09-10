@@ -8,7 +8,7 @@ import { provenances } from 'corpus/provenance'
 
 import produce, { Draft } from 'immer'
 
-export default function ManusriptForm({
+export default function ManuscriptForm({
   manuscript,
   onChange,
   searchBibliography,
