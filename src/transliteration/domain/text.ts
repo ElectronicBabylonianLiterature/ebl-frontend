@@ -112,7 +112,7 @@ export class Text {
     let lineNumber = 0
     for (const line of this.allLines) {
       if (isNoteLine(line)) {
-        notes.get(lineNumber)?.push(line) // eslint-disable @typescript-eslint/no-unused-expressions
+        notes.get(lineNumber)?.push(line)
       } else {
         lineNumber++
         notes.set(lineNumber, [])
