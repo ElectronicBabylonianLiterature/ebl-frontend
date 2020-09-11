@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -9,7 +9,6 @@ import createAuthorRegExp from 'test-support/createAuthorRexExp'
 
 const BibliographyWithRouter = withRouter(Bibliography)
 
-let element: RenderResult
 let entries
 let bibliographyService
 let session
@@ -32,51 +31,43 @@ describe('Searching bibliography', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const { getByText, findByText } = await renderDictionary(
-      '/bibliography?query=Borger'
-    )
+    renderDictionary('/bibliography?query=Borger')
 
-    await findByText(createAuthorRegExp(entries[0]))
-
-    expect(getByText(createAuthorRegExp(entries[1]))).toBeDefined()
+    expect(
+      await screen.findByText(createAuthorRegExp(entries[0]))
+    ).toBeInTheDocument()
+    expect(screen.getByText(createAuthorRegExp(entries[1]))).toBeInTheDocument()
   })
 
   it('fills in search form query', async () => {
-    const { getByLabelText } = await renderDictionary(
-      '/bibliography?query=Borger'
-    )
+    renderDictionary('/bibliography?query=Borger')
 
-    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      'Borger'
-    )
+    expect(await screen.findByLabelText('Query')).toHaveValue('Borger')
   })
 
   it('displays empty search if no query', async () => {
-    const { getByLabelText } = await renderDictionary('/bibliography')
+    renderDictionary('/bibliography')
 
-    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
+    expect(await screen.findByLabelText('Query')).toHaveValue('')
   })
 })
 
 it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadBibliography.mockReturnValueOnce(false)
 
-  const { container } = await renderDictionary('/bibliography')
+  renderDictionary('/bibliography')
 
-  expect(container).toHaveTextContent(
-    'Please log in to browse the Bibliography.'
-  )
+  expect(
+    screen.getByText('Please log in to browse the Bibliography.')
+  ).toBeInTheDocument()
 })
 
-async function renderDictionary(path: string): Promise<RenderResult> {
-  await act(async () => {
-    element = render(
-      <MemoryRouter initialEntries={[path]}>
-        <SessionContext.Provider value={session}>
-          <BibliographyWithRouter bibliographyService={bibliographyService} />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-  })
-  return element
+function renderDictionary(path: string): void {
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <SessionContext.Provider value={session}>
+        <BibliographyWithRouter bibliographyService={bibliographyService} />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  )
 }
