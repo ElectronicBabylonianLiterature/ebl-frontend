@@ -25,7 +25,7 @@ describe('Value has attested property', () => {
   })
 
   it('Displays attested', () => {
-    expect(element.getByLabelText('attested').checked).toEqual(value.attested)
+    expect(element.getByLabelText('attested')).toBeChecked()
   })
 
   describe('On change with attested', () => {
@@ -66,7 +66,7 @@ describe('Value does not have attested property', () => {
   })
 
   it('Does not display attested', () => {
-    expect(element.queryByLabelText('attested')).toBeNull()
+    expect(element.queryByLabelText('attested')).not.toBeInTheDocument()
   })
 
   describe('On change with attested', () => {

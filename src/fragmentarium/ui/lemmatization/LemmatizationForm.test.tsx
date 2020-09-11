@@ -45,7 +45,7 @@ describe('Single lemma', () => {
   })
 
   it('Complex is not checked', async () => {
-    expect(element.getByLabelText('Complex')).not.toHaveAttribute('checked')
+    expect(element.getByLabelText('Complex')).not.toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
@@ -78,7 +78,7 @@ describe('Complex lemma', () => {
   })
 
   it('Complex is checked', async () => {
-    expect(element.getByLabelText('Complex')).toHaveAttribute('checked')
+    expect(element.getByLabelText('Complex')).toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
