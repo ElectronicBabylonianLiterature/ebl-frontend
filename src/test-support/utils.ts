@@ -3,6 +3,7 @@ import {
   waitFor,
   act,
   RenderResult,
+  Screen,
   Matcher,
 } from '@testing-library/react'
 import Bluebird from 'bluebird'
@@ -43,14 +44,14 @@ export async function clickNth(
 }
 
 type Changer<T> = (
-  element: RenderResult,
+  element: RenderResult | Screen,
   selector: Matcher,
   newValue: T,
   n?: number
 ) => void
 
 export function changeValueByValue<T>(
-  element: RenderResult,
+  element: RenderResult | Screen,
   value: Matcher,
   newValue: T,
   n = 0
@@ -59,7 +60,7 @@ export function changeValueByValue<T>(
 }
 
 export function changeValueByLabel<T>(
-  element: RenderResult,
+  element: RenderResult | Screen,
   label: Matcher,
   newValue: T,
   n = 0
@@ -81,7 +82,7 @@ export function whenClicked(
 }
 
 function whenChangedBy<T>(
-  element: RenderResult,
+  element: RenderResult | Screen,
   selector: Matcher,
   newValue: T,
   changer: Changer<T>
@@ -93,7 +94,7 @@ function whenChangedBy<T>(
 }
 
 export function whenChangedByValue<T>(
-  element: RenderResult,
+  element: RenderResult | Screen,
   value: Matcher,
   newValue: T
 ): WhenResult<void> {
@@ -101,7 +102,7 @@ export function whenChangedByValue<T>(
 }
 
 export function whenChangedByLabel<T>(
-  element: RenderResult,
+  element: RenderResult | Screen,
   label: Matcher,
   newValue: T
 ): WhenResult<void> {
@@ -116,7 +117,7 @@ export async function submitForm(element: RenderResult): Promise<void> {
 }
 
 export async function submitFormByTestId(
-  element: RenderResult,
+  element: RenderResult | Screen,
   testId: Matcher
 ): Promise<void> {
   await act(async () => {
