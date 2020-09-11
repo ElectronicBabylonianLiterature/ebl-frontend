@@ -27,9 +27,7 @@ function when<T>(createMatcher: MatcherFactory<T>): WhenResult<T> {
 }
 
 export function changeValue<T>(input: Element, newValue: T): void {
-  act(() => {
-    fireEvent.change(input, { target: { value: newValue } })
-  })
+  fireEvent.change(input, { target: { value: newValue } })
 }
 
 export async function clickNth(
