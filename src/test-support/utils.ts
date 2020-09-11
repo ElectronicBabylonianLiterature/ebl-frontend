@@ -114,13 +114,11 @@ export async function submitForm(element: RenderResult): Promise<void> {
   })
 }
 
-export async function submitFormByTestId(
+export function submitFormByTestId(
   element: RenderResult | Screen,
   testId: Matcher
-): Promise<void> {
-  await act(async () => {
-    fireEvent.submit(element.getByTestId(testId))
-  })
+): void {
+  fireEvent.submit(element.getByTestId(testId))
 }
 
 export type TestData = [string, any[], jest.Mock, any, (any[] | null)?, any?]

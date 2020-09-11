@@ -136,7 +136,7 @@ it('Updates view on Edition save', async () => {
     Promise.resolve(updatedFragment)
   )
 
-  await submitFormByTestId(element, 'transliteration-form')
+  submitFormByTestId(element, 'transliteration-form')
 
   await element.findAllByText(updatedFragment.cdliNumber)
 })
@@ -147,7 +147,7 @@ it('Updates view on References save', async () => {
   )
   await clickNth(element, 'References', 1)
   await element.findAllByText('Document')
-  await submitFormByTestId(element, 'references-form')
+  submitFormByTestId(element, 'references-form')
 
   await element.findByText(updatedFragment.cdliNumber)
 })
