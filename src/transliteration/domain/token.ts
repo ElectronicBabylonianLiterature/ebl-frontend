@@ -87,6 +87,11 @@ export interface Divider extends Sign {
   readonly divider: string
 }
 
+export interface LineBreak extends NotLemmatizableToken {
+  readonly type: 'LineBreak'
+  readonly value: '|'
+}
+
 export interface Grapheme extends Sign {
   readonly type: 'Grapheme'
   readonly name: string
@@ -141,6 +146,7 @@ export type Token =
   | NamedSign
   | Grapheme
   | Divider
+  | LineBreak
   | CompoundGrapheme
   | Gloss
   | Enclosure
