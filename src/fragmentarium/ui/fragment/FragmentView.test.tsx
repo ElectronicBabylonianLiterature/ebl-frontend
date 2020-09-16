@@ -60,8 +60,8 @@ beforeEach(async () => {
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
     folioPager: jest.fn(),
-    fetchGenre: jest.fn(),
-    updateGenre: jest.fn(),
+    fetchGenres: jest.fn(),
+    updateGenres: jest.fn(),
     fragmentPager: jest.fn(),
     createLemmatization: (text: Text): Promise<Lemmatization> =>
       Promise.resolve(new Lemmatization([], [])),
@@ -91,7 +91,7 @@ beforeEach(async () => {
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
   )
-  fragmentService.fetchGenre.mockReturnValue(
+  fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
 })
@@ -116,7 +116,7 @@ describe('Fragment is loaded', () => {
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     session.isAllowedToReadFragments.mockReturnValue(true)
-    fragmentService.updateGenre.mockReturnValue(Promise.resolve(fragment))
+    fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
     await renderFragmentView(
       fragmentNumber,
       selectedFolio.name,

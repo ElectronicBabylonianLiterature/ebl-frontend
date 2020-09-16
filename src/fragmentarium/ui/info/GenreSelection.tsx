@@ -15,13 +15,13 @@ import _ from 'lodash'
 
 type Props = {
   fragment: Fragment
-  updateGenre: (genre: Genre[]) => void
+  updateGenres: (genres: Genre[]) => void
   genreOptions: readonly string[][]
 }
 
 function GenreSelection({
   fragment,
-  updateGenre,
+  updateGenres,
   genreOptions,
 }: Props): JSX.Element {
   const [selectedGenre, setSelectedGenre] = useState<Genre>()
@@ -54,8 +54,7 @@ function GenreSelection({
   }
   useEffect(() => {
     if (JSON.stringify(prevGenres) !== JSON.stringify(genres)) {
-      // @ts-ignore
-      updateGenre(genres)
+      updateGenres(genres)
     }
   })
 
@@ -189,16 +188,16 @@ function GenreSelection({
 }
 
 export default withData<
-  { fragment: Fragment; updateGenre: (genre: Genre[]) => void },
+  { fragment: Fragment; updateGenres: (genres: Genre[]) => void },
   { fragmentService: any },
   readonly string[][]
 >(
-  ({ fragment, updateGenre, data }) => (
+  ({ fragment, updateGenres, data }) => (
     <GenreSelection
       fragment={fragment}
-      updateGenre={updateGenre}
+      updateGenres={updateGenres}
       genreOptions={data}
     />
   ),
-  (props) => props.fragmentService.fetchGenre()
+  (props) => props.fragmentService.fetchGenres()
 )

@@ -76,13 +76,13 @@ function Accession({ fragment }: Props) {
 
 type DetailsProps = {
   fragment: Fragment
-  updateGenre: (genre: Genre[]) => any
+  updateGenres: (genres: Genre[]) => any
   fragmentService: any
 }
 
 function Details({
   fragment,
-  updateGenre,
+  updateGenres,
   fragmentService,
 }: DetailsProps): JSX.Element {
   return (
@@ -108,7 +108,7 @@ function Details({
       <li className="Details__item">
         <GenreSelection
           fragment={fragment}
-          updateGenre={updateGenre}
+          updateGenres={updateGenres}
           fragmentService={fragmentService}
         />
       </li>

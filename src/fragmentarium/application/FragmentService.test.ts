@@ -10,9 +10,11 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Genre } from 'fragmentarium/domain/fragment'
 import setUpReferences from 'test-support/setUpReferences'
 import produce, { Draft } from 'immer'
+import { constants } from 'http2'
+import DEFAULT_SETTINGS_ENABLE_PUSH = module
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -22,8 +24,8 @@ const fragmentRepository = {
   find: jest.fn(),
   updateTransliteration: jest.fn(),
   updateLemmatization: jest.fn(),
-  fetchGenre: jest.fn(),
-  updateGenre: jest.fn(),
+  fetchGenres: jest.fn(),
+  updateGenres: jest.fn(),
   updateReferences: jest.fn(),
   folioPager: jest.fn(),
   fragmentPager: jest.fn(),
@@ -106,7 +108,13 @@ describe('methods returning hydrated fragment', () => {
   let expectedFragment: Fragment
   let result: Fragment
   let genreResult: string[][]
-  const genre = [['ARCHIVE', 'Administrative']]
+  const genreOptions = [['ARCHIVE', 'Administrative']]
+  const genres: Genre[] = [
+    {
+      category: ['ARCHIVE', 'Administrative'],
+      uncertain: false,
+    },
+  ]
 
   beforeEach(async () => {
     const { entries, references, expectedReferences } = await setUpReferences(
@@ -115,7 +123,7 @@ describe('methods returning hydrated fragment', () => {
     fragment = await factory.build('fragment', {
       number: number,
       references: references,
-      genre: [],
+      genres: [],
     })
 
     bibliographyService.find.mockImplementation((id) => {
@@ -164,32 +172,34 @@ describe('methods returning hydrated fragment', () => {
         notes
       ))
   })
-  describe('fetch genre', () => {
+  describe('fetch genres', () => {
     beforeEach(async () => {
-      fragmentRepository.fetchGenre.mockReturnValue(Promise.resolve(genre))
-      genreResult = await fragmentService.fetchGenre()
+      fragmentRepository.fetchGenres.mockReturnValue(
+        Promise.resolve(genreOptions)
+      )
+      genreResult = await fragmentService.fetchGenres()
     })
-    test('returns genre', () => expect(genreResult).toEqual(genre))
+    test('returns genres', () => expect(genreResult).toEqual(genreOptions))
     test('calls repository with correct parameters', () =>
-      expect(fragmentRepository.fetchGenre).toHaveBeenCalled())
+      expect(fragmentRepository.fetchGenres).toHaveBeenCalled())
   })
 
   describe('update genre', () => {
     beforeEach(async () => {
       expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
-        draft.genre = genre
+        draft.genres = genres
       })
-      fragmentRepository.updateGenre.mockReturnValue(
+      fragmentRepository.updateGenres.mockReturnValue(
         Promise.resolve(expectedFragment)
       )
-      result = await fragmentService.updateGenre(fragment.number, genre)
+      result = await fragmentService.updateGenres(fragment.number, genres)
     })
     test('returns updated fragment', () =>
       expect(result).toEqual(expectedFragment))
     test('calls repository with correct parameters', () =>
-      expect(fragmentRepository.updateGenre).toHaveBeenCalledWith(
+      expect(fragmentRepository.updateGenres).toHaveBeenCalledWith(
         fragment.number,
-        genre
+        genres
       ))
   })
 

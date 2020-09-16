@@ -65,7 +65,7 @@ beforeEach(async () => {
   )
   fragmentService.folioPager.mockReturnValue(Promise.resolve(folioPager))
 
-  fragmentService.fetchGenre.mockReturnValue(
+  fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   fragmentService.updateGenre.mockReturnValue(Promise.resolve(fragment))

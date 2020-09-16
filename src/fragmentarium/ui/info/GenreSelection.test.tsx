@@ -13,9 +13,9 @@ import userEvent from '@testing-library/user-event'
 import Genre from './Genre'
 import Promise from 'bluebird'
 
-const updateGenre = jest.fn()
+const updateGenres = jest.fn()
 const fragmentService = {
-  fetchGenre: jest.fn(),
+  fetchGenres: jest.fn(),
 }
 let fragment: Fragment
 
@@ -23,7 +23,7 @@ function renderDetails() {
   render(
     <Genre
       fragment={fragment}
-      updateGenre={updateGenre}
+      updateGenre={updateGenress}
       fragmentService={fragmentService}
     />
   )
@@ -32,10 +32,10 @@ beforeEach(async () => {
   fragment = await factory.build('fragment', {
     museum: Museum.of('The British Museum'),
     collection: 'The Collection',
-    genre: [],
+    genres: [],
   })
 
-  fragmentService.fetchGenre.mockReturnValue(
+  fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
   await renderDetails()
@@ -50,7 +50,7 @@ describe('User Input', () => {
 
     await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
-    expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
+    expect(updateGenres).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
     await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getByTestId('delete-button'))

@@ -7,9 +7,9 @@ import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 
-const updateGenre = jest.fn()
+const updateGenres = jest.fn()
 const fragmentService = {
-  fetchGenre: jest.fn(),
+  fetchGenres: jest.fn(),
 }
 let fragment: Fragment
 
@@ -18,14 +18,14 @@ function renderDetails() {
     <MemoryRouter>
       <Details
         fragment={fragment}
-        updateGenre={updateGenre}
+        updateGenre={updateGenres}
         fragmentService={fragmentService}
       />
     </MemoryRouter>
   )
 }
 beforeEach(async () => {
-  fragmentService.fetchGenre.mockReturnValue(
+  fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
 })
@@ -34,7 +34,7 @@ describe('All details', () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
-      genre: [],
+      genres: [],
     })
     renderDetails()
   })

@@ -99,7 +99,7 @@ function createFragment(dto): Fragment {
     text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
-    genres: dto.genre,
+    genres: dto.genres,
   })
 }
 
@@ -176,15 +176,15 @@ class ApiFragmentRepository
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
-  fetchGenre(): Promise<string[][]> {
-    return this.apiClient.fetchJson('/genre', true)
+  fetchGenres(): Promise<string[][]> {
+    return this.apiClient.fetchJson('/genres', true)
   }
 
-  updateGenre(number: string, genre: Genre[]): Promise<Fragment> {
-    const path = createFragmentPath(number, 'genre')
+  updateGenres(number: string, genres: Genre[]): Promise<Fragment> {
+    const path = createFragmentPath(number, 'genres')
     return this.apiClient
       .postJson(path, {
-        genres: genre,
+        genres: genres,
       })
       .then(createFragment)
   }
