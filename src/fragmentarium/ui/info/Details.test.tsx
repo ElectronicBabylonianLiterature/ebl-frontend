@@ -1,17 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import {
-  act,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import selectEvent from 'react-select-event'
-import userEvent from '@testing-library/user-event'
 import Promise from 'bluebird'
 
 const updateGenre = jest.fn()
@@ -47,7 +40,7 @@ describe('All details', () => {
   })
 
   it('Renders museum', () => {
-    screen.getByText(`${fragment.museum.name}`)
+    expect(screen.getByText(`${fragment.museum.name}`)).toBeInTheDocument()
   })
 
   it('Links to museum home', () =>
@@ -57,12 +50,14 @@ describe('All details', () => {
     ))
 
   it('Renders colection', () => {
-    screen.getByText(`(${fragment.collection} Collection)`)
+    expect(
+      screen.getByText(`(${fragment.collection} Collection)`)
+    ).toBeInTheDocument()
   })
 
   it(`Renders all joins`, () => {
     for (const item of fragment.joins) {
-      screen.getByText(item)
+      expect(screen.getByText(item)).toBeInTheDocument()
     }
   })
 
@@ -77,20 +72,15 @@ describe('All details', () => {
 
   it('Renders measures', () => {
     const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
-    screen.getByText(expectedMeasures)
+    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
   it('Renders CDLI number', () => {
-    screen.getByText((content, node) => {
-      const hasText = (node) =>
-        node.textContent === `CDLI: ${fragment.cdliNumber}`
-      const nodeHasText = hasText(node)
-      const childrenDontHaveText = Array.from(node.children).every(
-        (child) => !hasText(child)
-      )
-
-      return nodeHasText && childrenDontHaveText
-    })
+    expect(
+      screen.getByText((_, node) => {
+        return node.textContent === `CDLI: ${fragment.cdliNumber}`
+      })
+    ).toBeInTheDocument()
   })
 
   it('Links CDLI number', () =>
@@ -100,7 +90,9 @@ describe('All details', () => {
     ))
 
   it('Renders accession', () => {
-    screen.getByText(`Accession: ${fragment.accession}`)
+    expect(
+      screen.getByText(`Accession: ${fragment.accession}`)
+    ).toBeInTheDocument()
   })
 })
 
@@ -126,21 +118,23 @@ describe('Missing details', () => {
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
-    screen.getByText('Joins: -')
+    expect(screen.getByText('Joins: -')).toBeInTheDocument()
   })
 
   it('Does not renders missing measures', () => {
-    screen.getByText(
-      `${fragment.measures.length} × ${fragment.measures.thickness} cm`
-    )
+    expect(
+      screen.getByText(
+        `${fragment.measures.length} × ${fragment.measures.thickness} cm`
+      )
+    ).toBeInTheDocument()
   })
 
   it('Renders dash for CDLI number', () => {
-    screen.getByText('CDLI: -')
+    expect(screen.getByText('CDLI: -')).toBeInTheDocument()
   })
 
   it('Renders dash for accession', () => {
-    screen.getByText('Accession: -')
+    expect(screen.getByText('Accession: -')).toBeInTheDocument()
   })
 })
 
