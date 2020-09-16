@@ -43,12 +43,11 @@ beforeEach(async () => {
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
     userEvent.click(screen.getByRole('button'))
-    act(() => {
-      selectEvent.select(
-        screen.getByLabelText('select genre'),
-        'ARCHIVAL ➝ Administrative'
-      )
-    })
+    await selectEvent.select(
+      screen.getByLabelText('select genre'),
+      'ARCHIVAL ➝ Administrative'
+    )
+
     await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
 
     expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
