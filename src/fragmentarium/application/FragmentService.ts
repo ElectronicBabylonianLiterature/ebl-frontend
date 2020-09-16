@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Genre } from 'fragmentarium/domain/fragment'
 import _, { Dictionary } from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -30,7 +30,7 @@ export interface FragmentRepository {
   statistics(): Promise<any>
   find(number: string): Promise<Fragment>
   fetchGenre(): Promise<string[][]>
-  updateGenre(number: string, genre: string[][]): Promise<Fragment>
+  updateGenre(number: string, genre: Genre[]): Promise<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
@@ -88,7 +88,7 @@ class FragmentService {
         this.referenceInjector.injectReferences(fragment)
       )
   }
-  updateGenre(number: string, genre: string[][]): Promise<Fragment> {
+  updateGenre(number: string, genre: Genre[]): Promise<Fragment> {
     return this.fragmentRepository
       .updateGenre(number, genre)
       .then((fragment: Fragment) =>

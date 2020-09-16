@@ -88,6 +88,11 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
+export interface Genre {
+  readonly category: ReadonlyArray<string>
+  readonly uncertain: boolean
+}
+
 export class Fragment {
   readonly [immerable] = true
   readonly number: string
@@ -109,7 +114,7 @@ export class Fragment {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
   readonly atf: string
   readonly hasPhoto: boolean
-  readonly genre: ReadonlyArray<ReadonlyArray<string>>
+  readonly genres: ReadonlyArray<Genre>
 
   constructor({
     number,
@@ -131,7 +136,7 @@ export class Fragment {
     uncuratedReferences,
     atf,
     hasPhoto,
-    genre,
+    genres,
   }: {
     number: string
     cdliNumber: string
@@ -152,7 +157,7 @@ export class Fragment {
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
-    genre: ReadonlyArray<ReadonlyArray<string>>
+    genres: ReadonlyArray<Genre>
   }) {
     this.number = number
     this.cdliNumber = cdliNumber
@@ -173,7 +178,7 @@ export class Fragment {
     this.uncuratedReferences = uncuratedReferences || null
     this.atf = atf
     this.hasPhoto = hasPhoto
-    this.genre = genre
+    this.genres = genres
   }
 
   get hasUncuratedReferences(): boolean {

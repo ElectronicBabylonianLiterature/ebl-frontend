@@ -265,7 +265,12 @@ export const fragmentDto = {
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
-  genre: [['ARCHIVE', 'Administrative', 'Lists']],
+  genres: [
+    {
+      category: ['ARCHIVE', 'Administrative', 'Lists'],
+      uncertain: false,
+    },
+  ],
 }
 
 export const fragment = new Fragment({
@@ -311,5 +316,10 @@ export const fragment = new Fragment({
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
-  genre: [['ARCHIVE', 'Administrative', 'Lists']],
+  genres: [
+    {
+      category: ['ARCHIVE', 'Administrative', 'Lists'],
+      uncertain: false,
+    },
+  ],
 })

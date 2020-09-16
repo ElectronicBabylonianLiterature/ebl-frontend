@@ -1,4 +1,4 @@
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Genre } from 'fragmentarium/domain/fragment'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -15,37 +15,50 @@ import _ from 'lodash'
 
 type Props = {
   fragment: Fragment
-  updateGenre: (genre: any) => void
+  updateGenre: (genre: Genre[]) => void
   genreOptions: readonly string[][]
 }
 
-function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
-  const [genre, setGenre] = useState(fragment.genre)
-  const prevGenre = usePrevious(genre)
+function GenreSelection({
+  fragment,
+  updateGenre,
+  genreOptions,
+}: Props): JSX.Element {
+  const [selectedGenre, setSelectedGenre] = useState<Genre>()
+  const [genres, setGenres] = useState(fragment.genres)
+  const prevGenres = usePrevious(genres)
   const [isSelectDisplayed, setIsSelectDisplayed] = useState(false)
   const [
     isDuplicateWarningDisplayed,
     setIsDuplicateWarningDisplayed,
   ] = useState(false)
+  const [isSelectedGenreUncertain, setIsSelectedGenreUncertain] = useState(
+    false
+  )
   const target = useRef(null)
 
   function handleChange(event) {
-    if (!isGenreAlreadyPresent(event.value)) {
-      setGenre((currentGenre) =>
-        _.sortBy([...currentGenre, event.value], function (item) {
-          return JSON.stringify(genreOptions).indexOf(JSON.stringify(item))
+    const newSelection: Genre = event.value
+    setSelectedGenre(newSelection)
+    if (!isGenreAlreadyPresent(newSelection)) {
+      setGenres((currentGenres) =>
+        _.sortBy([...currentGenres, newSelection], function (genre) {
+          return JSON.stringify(genreOptions).indexOf(
+            JSON.stringify(genre.category)
+          )
         })
       )
-      setIsSelectDisplayed(false)
     } else {
       setIsDuplicateWarningDisplayed(true)
     }
   }
   useEffect(() => {
-    if (JSON.stringify(prevGenre) !== JSON.stringify(genre)) {
-      updateGenre(genre)
+    if (JSON.stringify(prevGenres) !== JSON.stringify(genres)) {
+      // @ts-ignore
+      updateGenre(genres)
     }
   })
+
   useEffect(() => {
     if (isDuplicateWarningDisplayed) {
       setTimeout(() => {
@@ -54,19 +67,17 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
     }
   })
 
-  function isGenreAlreadyPresent(selectedGenre: string[]): boolean {
-    return genre.some(
-      (element) => JSON.stringify(element) === JSON.stringify(selectedGenre)
+  function isGenreAlreadyPresent(selectedGenre: Genre): boolean {
+    return genres.some(
+      (element) =>
+        JSON.stringify(element.category) ===
+        JSON.stringify(selectedGenre.category)
     )
   }
 
-  function switchIsSelectDisplayed() {
-    setIsSelectDisplayed(!isSelectDisplayed)
-  }
-
   function deleteGenre(genreToDelete) {
-    setGenre(
-      genre.filter(
+    setGenres(
+      genres.filter(
         (elem) => JSON.stringify(elem) !== JSON.stringify(genreToDelete)
       )
     )
@@ -74,10 +85,16 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
   function genreToString(genreItem: readonly string[]): string {
     return genreItem.join('-').replace(' ', '_')
   }
+  function toggleUncertain() {
+    setSelectedGenre({ ...(selectedGenre as Genre), uncertain: true })
+  }
 
   const options = genreOptions.map((genreItem: string[]) => {
     return {
-      value: genreItem,
+      value: {
+        category: genreItem,
+        uncertain: false,
+      },
       label: genreItem.join(' ➝ '),
     }
   })
@@ -99,11 +116,27 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
       >
         <Popover.Content>
           <Select
-            aria-label="select genre"
             options={options}
             onChange={(event) => handleChange(event)}
             isSearchable={true}
           />
+          <div
+            style={{
+              color: 'hsl(0, 0%, 40%)',
+              display: 'inline-block',
+              fontSize: 12,
+              fontStyle: 'italic',
+              marginTop: '1em',
+              marginLeft: '0.2em',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={isSelectedGenreUncertain}
+              onChange={toggleUncertain}
+            />
+            &nbsp;Uncertain
+          </div>
         </Popover.Content>
       </OverlayTrigger>
     </Popover>
@@ -116,22 +149,27 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
         variant="light"
         ref={target}
         className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-        onClick={() => switchIsSelectDisplayed()}
+        onClick={() => setIsSelectDisplayed(true)}
       />
       <Overlay
         target={target.current}
         placement="right"
         show={isSelectDisplayed}
         rootClose={true}
+        rootCloseEvent={'click'}
         onHide={() => setIsSelectDisplayed(false)}
       >
         {popover}
       </Overlay>
       <ul className={classNames(['list-group', 'mt-2'])}>
-        {genre.map((genreItem) => {
+        {genres.map((genreItem) => {
+          const uncertain = genreItem.uncertain ? '(?)' : ''
           return (
-            <li className="list-group-item" key={genreToString(genreItem)}>
-              {genreItem.join(' ➝ ')}
+            <li
+              className="list-group-item"
+              key={genreToString(genreItem.category)}
+            >
+              {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
               <Button
                 variant="light"
                 data-testid="delete-button"
@@ -151,12 +189,16 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
 }
 
 export default withData<
-  { fragment: Fragment; updateGenre: (genre: string[][]) => void },
+  { fragment: Fragment; updateGenre: (genre: Genre[]) => void },
   { fragmentService: any },
   readonly string[][]
 >(
   ({ fragment, updateGenre, data }) => (
-    <Genre fragment={fragment} updateGenre={updateGenre} genreOptions={data} />
+    <GenreSelection
+      fragment={fragment}
+      updateGenre={updateGenre}
+      genreOptions={data}
+    />
   ),
   (props) => props.fragmentService.fetchGenre()
 )

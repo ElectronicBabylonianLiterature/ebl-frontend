@@ -59,4 +59,13 @@ describe('User Input', () => {
       screen.queryByLabelText('ARCHIVAL ➝ Administrative')
     ).not.toBeInTheDocument()
   })
+  it('click Uncertain Checkbox', async () => {
+    userEvent.click(screen.getByRole('button'))
+    userEvent.click(screen.getByRole('checkbox'))
+    await screen.findByText('UNCERTAIN')
+
+    userEvent.click(screen.getByTestId('delete-button'))
+
+    expect(screen.queryByLabelText('UNCERTAIN')).not.toBeInTheDocument()
+  })
 })

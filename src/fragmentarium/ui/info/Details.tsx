@@ -1,13 +1,12 @@
 import React from 'react'
 
 import _ from 'lodash'
-import { Fragment } from 'fragmentarium/domain/fragment'
+import { Fragment, Genre } from 'fragmentarium/domain/fragment'
 import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
-import Genre from 'fragmentarium/ui/info/Genre'
-import FragmentService from 'fragmentarium/application/FragmentService'
+import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 
 type Props = {
   fragment: Fragment
@@ -77,7 +76,7 @@ function Accession({ fragment }: Props) {
 
 type DetailsProps = {
   fragment: Fragment
-  updateGenre: (genre: readonly string[][]) => any
+  updateGenre: (genre: Genre[]) => any
   fragmentService: any
 }
 
@@ -107,7 +106,7 @@ function Details({
         <Accession fragment={fragment} />
       </li>
       <li className="Details__item">
-        <Genre
+        <GenreSelection
           fragment={fragment}
           updateGenre={updateGenre}
           fragmentService={fragmentService}

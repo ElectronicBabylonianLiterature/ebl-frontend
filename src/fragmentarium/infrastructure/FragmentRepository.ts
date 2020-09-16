@@ -5,6 +5,7 @@ import produce, { castDraft } from 'immer'
 import {
   Fragment,
   FragmentInfo,
+  Genre,
   RecordEntry,
 } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
@@ -179,11 +180,11 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson('/genre', true)
   }
 
-  updateGenre(number: string, genre: string[][]): Promise<Fragment> {
+  updateGenre(number: string, genre: Genre[]): Promise<Fragment> {
     const path = createFragmentPath(number, 'genre')
     return this.apiClient
       .postJson(path, {
-        genre: genre,
+        genres: genre,
       })
       .then(createFragment)
   }
