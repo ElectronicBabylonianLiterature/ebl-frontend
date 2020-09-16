@@ -12,7 +12,6 @@ import classNames from 'classnames'
 import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import _ from 'lodash'
-import FragmentService from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -28,9 +27,6 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
     isDuplicateWarningDisplayed,
     setIsDuplicateWarningDisplayed,
   ] = useState(false)
-  const prevIsDuplicateWarningDisplayed = usePrevious(
-    isDuplicateWarningDisplayed
-  )
   const target = useRef(null)
 
   function handleChange(event) {
@@ -51,7 +47,7 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
     }
   })
   useEffect(() => {
-    if (!prevIsDuplicateWarningDisplayed && isDuplicateWarningDisplayed) {
+    if (isDuplicateWarningDisplayed) {
       setTimeout(() => {
         setIsDuplicateWarningDisplayed(false)
       }, 2500)
@@ -138,6 +134,7 @@ function Genre({ fragment, updateGenre, genreOptions }: Props): JSX.Element {
               {genreItem.join(' ➝ ')}
               <Button
                 variant="light"
+                data-testid="delete-button"
                 className={classNames([
                   'float-right',
                   'fas fa-trash',

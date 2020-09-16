@@ -53,7 +53,7 @@ describe('User Input', () => {
     expect(updateGenre).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
     await screen.findByText('ARCHIVAL ➝ Administrative')
 
-    userEvent.click(screen.getAllByRole('button')[1])
+    userEvent.click(screen.getByTestId('delete-button'))
 
     expect(
       screen.queryByLabelText('ARCHIVAL ➝ Administrative')
