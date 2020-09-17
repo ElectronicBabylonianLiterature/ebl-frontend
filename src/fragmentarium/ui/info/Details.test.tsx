@@ -18,7 +18,7 @@ function renderDetails() {
     <MemoryRouter>
       <Details
         fragment={fragment}
-        updateGenre={updateGenres}
+        updateGenres={updateGenres}
         fragmentService={fragmentService}
       />
     </MemoryRouter>

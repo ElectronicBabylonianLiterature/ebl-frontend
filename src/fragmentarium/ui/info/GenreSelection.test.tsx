@@ -1,17 +1,12 @@
 import React from 'react'
-import {
-  act,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen, waitFor, waitForElement } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
-import userEvent from '@testing-library/user-event'
-import Genre from './Genre'
 import Promise from 'bluebird'
+import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
+import userEvent from '@testing-library/user-event'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -21,9 +16,9 @@ let fragment: Fragment
 
 function renderDetails() {
   render(
-    <Genre
+    <GenreSelection
       fragment={fragment}
-      updateGenre={updateGenress}
+      updateGenres={updateGenres}
       fragmentService={fragmentService}
     />
   )
@@ -38,19 +33,20 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
-  await renderDetails()
+  renderDetails()
 })
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
-    userEvent.click(screen.getByRole('button'))
+    await waitFor(() => userEvent.click(screen.getByRole('button')))
     await selectEvent.select(
-      screen.getByLabelText('select genre'),
+      screen.getByLabelText('select-genre'),
       'ARCHIVAL ➝ Administrative'
     )
 
-    await waitForElementToBeRemoved(screen.getByLabelText('select genre'))
-
-    expect(updateGenres).toHaveBeenCalledWith([['ARCHIVAL', 'Administrative']])
+    expect(updateGenres).toHaveBeenCalledWith({
+      category: ['ARCHIVAL', 'Administrative'],
+      uncertain: false,
+    })
     await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getByTestId('delete-button'))
@@ -61,11 +57,53 @@ describe('User Input', () => {
   })
   it('click Uncertain Checkbox', async () => {
     userEvent.click(screen.getByRole('button'))
+
+    await selectEvent.select(
+      screen.getByTestId('select-genre'),
+      'ARCHIVAL ➝ Administrative'
+    )
+
+    expect(updateGenres).toHaveBeenCalledWith([
+      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
+    ])
     userEvent.click(screen.getByRole('checkbox'))
-    await screen.findByText('UNCERTAIN')
+    expect(updateGenres).toHaveBeenCalledWith([
+      { category: ['ARCHIVAL', 'Administrative'], uncertain: true },
+    ])
+
+    await screen.findByText('ARCHIVAL ➝ Administrative (?)')
 
     userEvent.click(screen.getByTestId('delete-button'))
 
-    expect(screen.queryByLabelText('UNCERTAIN')).not.toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('ARCHIVAL ➝ Administrative (?)')
+    ).not.toBeInTheDocument()
+  })
+  it('select already selected genre & and change it from uncertain to certain', async () => {
+    userEvent.click(screen.getByRole('button'))
+
+    await selectEvent.select(
+      screen.getByTestId('select-genre'),
+      'ARCHIVAL ➝ Administrative'
+    )
+
+    expect(updateGenres).toHaveBeenCalledWith([
+      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
+    ])
+    userEvent.click(screen.getByRole('checkbox'))
+    expect(updateGenres).toHaveBeenCalledWith([
+      { category: ['ARCHIVAL', 'Administrative'], uncertain: true },
+    ])
+
+    await screen.findByText('ARCHIVAL ➝ Administrative (?)')
+    await selectEvent.select(
+      screen.getByTestId('select-genre'),
+      'ARCHIVAL ➝ Administrative'
+    )
+    userEvent.click(screen.getByRole('checkbox'))
+    expect(updateGenres).toHaveBeenCalledWith([
+      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
+    ])
+    await screen.findByText('ARCHIVAL ➝ Administrative')
   })
 })

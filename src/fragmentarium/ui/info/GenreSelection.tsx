@@ -12,6 +12,7 @@ import classNames from 'classnames'
 import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import _ from 'lodash'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type Props = {
   fragment: Fragment
@@ -24,14 +25,12 @@ function GenreSelection({
   updateGenres,
   genreOptions,
 }: Props): JSX.Element {
-  const [selectedGenre, setSelectedGenre] = useState<Genre>()
+  const [selectedGenre, setSelectedGenre] = useState<Genre | undefined>(
+    undefined
+  )
   const [genres, setGenres] = useState(fragment.genres)
   const prevGenres = usePrevious(genres)
   const [isSelectDisplayed, setIsSelectDisplayed] = useState(false)
-  const [
-    isDuplicateWarningDisplayed,
-    setIsDuplicateWarningDisplayed,
-  ] = useState(false)
   const [isSelectedGenreUncertain, setIsSelectedGenreUncertain] = useState(
     false
   )
@@ -49,20 +48,16 @@ function GenreSelection({
         })
       )
     } else {
-      setIsDuplicateWarningDisplayed(true)
+      const duplicateGenre = _.find(genres, {
+        category: newSelection.category.slice(),
+      }) as Genre
+      setSelectedGenre(duplicateGenre)
+      setIsSelectedGenreUncertain(duplicateGenre.uncertain)
     }
   }
   useEffect(() => {
     if (JSON.stringify(prevGenres) !== JSON.stringify(genres)) {
-      updateGenres(genres)
-    }
-  })
-
-  useEffect(() => {
-    if (isDuplicateWarningDisplayed) {
-      setTimeout(() => {
-        setIsDuplicateWarningDisplayed(false)
-      }, 2500)
+      updateGenres(genres as Genre[])
     }
   })
 
@@ -85,7 +80,21 @@ function GenreSelection({
     return genreItem.join('-').replace(' ', '_')
   }
   function toggleUncertain() {
-    setSelectedGenre({ ...(selectedGenre as Genre), uncertain: true })
+    if (selectedGenre) {
+      setIsSelectedGenreUncertain(!isSelectedGenreUncertain)
+      const updatedGenre = {
+        ...selectedGenre,
+        uncertain: !selectedGenre.uncertain,
+      }
+      setSelectedGenre(updatedGenre)
+      const genresCopy = _.cloneDeep(genres as Genre[])
+      genresCopy.splice(
+        _.findIndex(genresCopy, { category: updatedGenre.category.slice() }),
+        1,
+        updatedGenre
+      )
+      setGenres(genresCopy)
+    }
   }
 
   const options = genreOptions.map((genreItem: string[]) => {
@@ -104,40 +113,31 @@ function GenreSelection({
       id="popover-select-genre"
       className={'w-100'}
     >
-      <OverlayTrigger
-        placement="top"
-        show={isDuplicateWarningDisplayed}
-        overlay={
-          <Tooltip id="already-selected-tooltip">
-            <strong>This option is already selected</strong>
-          </Tooltip>
-        }
-      >
-        <Popover.Content>
-          <Select
-            options={options}
-            onChange={(event) => handleChange(event)}
-            isSearchable={true}
+      <Popover.Content>
+        <Select
+          aria-label="select-genre"
+          options={options}
+          onChange={(event) => handleChange(event)}
+          isSearchable={true}
+        />
+        <div
+          style={{
+            color: 'hsl(0, 0%, 40%)',
+            display: 'inline-block',
+            fontSize: 12,
+            fontStyle: 'italic',
+            marginTop: '1em',
+            marginLeft: '0.2em',
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={isSelectedGenreUncertain}
+            onChange={toggleUncertain}
           />
-          <div
-            style={{
-              color: 'hsl(0, 0%, 40%)',
-              display: 'inline-block',
-              fontSize: 12,
-              fontStyle: 'italic',
-              marginTop: '1em',
-              marginLeft: '0.2em',
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={isSelectedGenreUncertain}
-              onChange={toggleUncertain}
-            />
-            &nbsp;Uncertain
-          </div>
-        </Popover.Content>
-      </OverlayTrigger>
+          &nbsp;Uncertain
+        </div>
+      </Popover.Content>
     </Popover>
   )
 
@@ -156,7 +156,11 @@ function GenreSelection({
         show={isSelectDisplayed}
         rootClose={true}
         rootCloseEvent={'click'}
-        onHide={() => setIsSelectDisplayed(false)}
+        onHide={() => {
+          setIsSelectDisplayed(false)
+          setSelectedGenre(undefined)
+          setIsSelectedGenreUncertain(false)
+        }}
       >
         {popover}
       </Overlay>
@@ -189,7 +193,7 @@ function GenreSelection({
 
 export default withData<
   { fragment: Fragment; updateGenres: (genres: Genre[]) => void },
-  { fragmentService: any },
+  { fragmentService },
   readonly string[][]
 >(
   ({ fragment, updateGenres, data }) => (
