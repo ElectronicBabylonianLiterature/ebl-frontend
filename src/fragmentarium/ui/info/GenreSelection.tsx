@@ -56,7 +56,10 @@ function GenreSelection({
     }
   }
   useEffect(() => {
-    if (JSON.stringify(prevGenres) !== JSON.stringify(genres)) {
+    if (
+      JSON.stringify(prevGenres) !== JSON.stringify(genres) &&
+      prevGenres !== undefined
+    ) {
       updateGenres(genres as Genre[])
     }
   })
@@ -94,6 +97,7 @@ function GenreSelection({
         updatedGenre
       )
       setGenres(genresCopy)
+      setIsSelectDisplayed(false)
     }
   }
 

@@ -37,17 +37,19 @@ beforeEach(async () => {
 })
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
-    await waitFor(() => userEvent.click(screen.getByRole('button')))
+    userEvent.click(screen.getByRole('button'))
     await selectEvent.select(
-      screen.getByLabelText('select-genre'),
+      screen.getByText('Select...'),
       'ARCHIVAL ➝ Administrative'
     )
 
-    expect(updateGenres).toHaveBeenCalledWith({
-      category: ['ARCHIVAL', 'Administrative'],
-      uncertain: false,
-    })
-    await screen.findByText('ARCHIVAL ➝ Administrative')
+    expect(updateGenres).toHaveBeenCalledWith([
+      {
+        category: ['ARCHIVAL', 'Administrative'],
+        uncertain: false,
+      },
+    ])
+    //await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getByTestId('delete-button'))
 
@@ -59,7 +61,7 @@ describe('User Input', () => {
     userEvent.click(screen.getByRole('button'))
 
     await selectEvent.select(
-      screen.getByTestId('select-genre'),
+      screen.getByText('Select...'),
       'ARCHIVAL ➝ Administrative'
     )
 
@@ -80,10 +82,10 @@ describe('User Input', () => {
     ).not.toBeInTheDocument()
   })
   it('select already selected genre & and change it from uncertain to certain', async () => {
-    userEvent.click(screen.getByRole('button'))
+    await userEvent.click(screen.getByRole('button'))
 
-    await selectEvent.select(
-      screen.getByTestId('select-genre'),
+    selectEvent.select(
+      screen.getByText('Select...'),
       'ARCHIVAL ➝ Administrative'
     )
 

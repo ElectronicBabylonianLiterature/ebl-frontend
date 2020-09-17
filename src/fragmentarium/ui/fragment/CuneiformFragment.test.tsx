@@ -44,8 +44,8 @@ beforeEach(async () => {
     updateReferences: jest.fn(),
     findFolio: jest.fn(),
     findPhoto: jest.fn(),
-    fetchGenre: jest.fn(),
-    updateGenre: jest.fn(),
+    fetchGenres: jest.fn(),
+    updateGenres: jest.fn(),
     folioPager: jest.fn(),
     createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
     fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
@@ -68,7 +68,7 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
-  fragmentService.updateGenre.mockReturnValue(Promise.resolve(fragment))
+  fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
 
   await act(async () => {
     element = render(
