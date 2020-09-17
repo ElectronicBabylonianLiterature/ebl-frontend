@@ -81,31 +81,4 @@ describe('User Input', () => {
       screen.queryByLabelText('ARCHIVAL ➝ Administrative (?)')
     ).not.toBeInTheDocument()
   })
-  it('select already selected genre & and change it from uncertain to certain', async () => {
-    await userEvent.click(screen.getByRole('button'))
-
-    selectEvent.select(
-      screen.getByText('Select...'),
-      'ARCHIVAL ➝ Administrative'
-    )
-
-    expect(updateGenres).toHaveBeenCalledWith([
-      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
-    ])
-    userEvent.click(screen.getByRole('checkbox'))
-    expect(updateGenres).toHaveBeenCalledWith([
-      { category: ['ARCHIVAL', 'Administrative'], uncertain: true },
-    ])
-
-    await screen.findByText('ARCHIVAL ➝ Administrative (?)')
-    await selectEvent.select(
-      screen.getByTestId('select-genre'),
-      'ARCHIVAL ➝ Administrative'
-    )
-    userEvent.click(screen.getByRole('checkbox'))
-    expect(updateGenres).toHaveBeenCalledWith([
-      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
-    ])
-    await screen.findByText('ARCHIVAL ➝ Administrative')
-  })
 })
