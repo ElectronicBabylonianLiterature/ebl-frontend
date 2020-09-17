@@ -35,7 +35,7 @@ it('Redirects to interesting when clicked', async () => {
 
 it('Hides button if user does not have fragmentarium rights', async () => {
   renderLuckyButton(false)
-  expect(element.container.textContent).toEqual('')
+  expect(element.container).toBeEmptyDOMElement()
 })
 
 function renderLuckyButton(isAllowedTo) {

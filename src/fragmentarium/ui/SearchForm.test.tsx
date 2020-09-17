@@ -84,14 +84,14 @@ describe('User Input', () => {
     const userInput = 'RN0'
 
     changeValueByLabel(element, 'Number', userInput)
-    await expect(await element.getByLabelText('Number')).toHaveValue(userInput)
+    expect(element.getByLabelText('Number')).toHaveValue(userInput)
   })
 
   it('Displays User Input in TranslierationSearchForm', async () => {
     const userInput = 'ma i-ra\nka li'
 
     changeValueByLabel(element, 'Transliteration', userInput)
-    expect(await element.getByLabelText('Transliteration')).toHaveTextContent(
+    expect(element.getByLabelText('Transliteration')).toHaveTextContent(
       userInput.replace('\n', ' ')
     )
   })

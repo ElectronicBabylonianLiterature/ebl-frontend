@@ -1,10 +1,9 @@
 import React from 'react'
 import LemmaInput from './LemmaInput'
-import { render, fireEvent, act, RenderResult } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react'
 import { changeValueByLabel } from 'test-support/utils'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -17,21 +16,21 @@ describe('Value has attested property', () => {
       lemma: ['part1', 'part2'],
       attested: true,
     }
-    element = renderLemmaInput()
+    renderLemmaInput()
   })
 
   it('Displays lemma', () => {
-    expect(element.getByLabelText('Lemma').value).toEqual(value.lemma.join(' '))
+    expect(screen.getByLabelText('Lemma')).toHaveValue(value.lemma.join(' '))
   })
 
   it('Displays attested', () => {
-    expect(element.getByLabelText('attested').checked).toEqual(value.attested)
+    expect(screen.getByLabelText('attested')).toBeChecked()
   })
 
   describe('On change with attested', () => {
     it('onChanged is called with updated lemma', () => {
       const newLemma = 'new lemma'
-      changeValueByLabel(element, 'Lemma', newLemma)
+      changeValueByLabel(screen, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
@@ -40,10 +39,8 @@ describe('Value has attested property', () => {
     })
 
     it('onChanged is called with updated attested', async () => {
-      const attested = element.getByLabelText('attested')
-      await act(async () => {
-        fireEvent.click(attested)
-      })
+      const attested = screen.getByLabelText('attested')
+      fireEvent.click(attested)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: value.lemma,
@@ -52,21 +49,20 @@ describe('Value has attested property', () => {
     })
   })
 })
-
 describe('Value does not have attested property', () => {
   beforeEach(() => {
     value = {
       lemma: ['part1', 'part2'],
     }
-    element = renderLemmaInput()
+    renderLemmaInput()
   })
 
   it('Displays lemma', () => {
-    expect(element.getByLabelText('Lemma').value).toEqual(value.lemma.join(' '))
+    expect(screen.getByLabelText('Lemma')).toHaveValue(value.lemma.join(' '))
   })
 
   it('Does not display attested', () => {
-    expect(element.queryByLabelText('attested')).toBeNull()
+    expect(screen.queryByLabelText('attested')).not.toBeInTheDocument()
   })
 
   describe('On change with attested', () => {
@@ -75,12 +71,12 @@ describe('Value does not have attested property', () => {
         lemma: ['part1', 'part2'],
         attested: false,
       }
-      element = renderLemmaInput()
+      renderLemmaInput()
     })
 
     it('onChanged is called with updated lemma', () => {
       const newLemma = 'new lemma'
-      changeValueByLabel(element, 'Lemma', newLemma)
+      changeValueByLabel(screen, 'Lemma', newLemma)
 
       expect(onChange).toHaveBeenCalledWith({
         lemma: newLemma.split(' '),
@@ -89,6 +85,6 @@ describe('Value does not have attested property', () => {
   })
 })
 
-function renderLemmaInput(): RenderResult {
-  return render(<LemmaInput value={value} onChange={onChange} />)
+function renderLemmaInput() {
+  render(<LemmaInput value={value} onChange={onChange} />)
 }

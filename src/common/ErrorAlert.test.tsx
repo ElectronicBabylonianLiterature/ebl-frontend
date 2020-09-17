@@ -1,16 +1,20 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import ErrorAlert from './ErrorAlert'
 
 it('Displays error message', async () => {
   const error = { message: 'error message' }
-  const { container } = render(<ErrorAlert error={error} />)
+  render(<ErrorAlert error={error} />)
 
-  expect(container).toHaveTextContent(error.message)
+  expect(screen.getByText(error.message)).toBeInTheDocument()
 })
 
 it('Displays nothing if no error provided', async () => {
-  const { container } = render(<ErrorAlert error={null} />)
+  render(
+    <div data-testid="wrapper">
+      <ErrorAlert error={null} />
+    </div>
+  )
 
-  expect(container.textContent).toEqual('')
+  expect(screen.getByTestId('wrapper')).toBeEmptyDOMElement()
 })
