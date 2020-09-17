@@ -13,8 +13,6 @@ import FragmentService from './FragmentService'
 import { Fragment, Genre } from 'fragmentarium/domain/fragment'
 import setUpReferences from 'test-support/setUpReferences'
 import produce, { Draft } from 'immer'
-import { constants } from 'http2'
-import DEFAULT_SETTINGS_ENABLE_PUSH = module
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })

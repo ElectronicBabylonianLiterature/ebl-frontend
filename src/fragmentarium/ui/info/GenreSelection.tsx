@@ -49,7 +49,7 @@ function GenreSelection({
       )
     } else {
       const duplicateGenre = _.find(genres, {
-        category: newSelection.category.slice(),
+        category: newSelection.category,
       }) as Genre
       setSelectedGenre(duplicateGenre)
       setIsSelectedGenreUncertain(duplicateGenre.uncertain)
@@ -92,7 +92,7 @@ function GenreSelection({
       setSelectedGenre(updatedGenre)
       const genresCopy = _.cloneDeep(genres as Genre[])
       genresCopy.splice(
-        _.findIndex(genresCopy, { category: updatedGenre.category.slice() }),
+        _.findIndex(genresCopy, { category: updatedGenre.category }),
         1,
         updatedGenre
       )

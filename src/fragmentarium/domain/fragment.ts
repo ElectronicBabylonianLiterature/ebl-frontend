@@ -89,7 +89,7 @@ export interface UncuratedReference {
 }
 
 export interface Genre {
-  readonly category: ReadonlyArray<string>
+  readonly category: string[]
   readonly uncertain: boolean
 }
 
