@@ -62,15 +62,25 @@ function getParagraph(fragment: Fragment): string {
     if (isTextLine(line)) {
       result += getTextLine(line, fragment)
     } else if (line.prefix === '$') {
-      result += '<note>' + line.prefix + getLineContent(line) + '</note>'
+      result += getDollarLine(line)
     } else if (line.prefix === '@') {
-      if (lines[i - 1] && lines[i - 1].prefix !== '@') result += '</lg><lg>'
-      result += '<note>' + getLineContent(line) + '</note>'
+      result += getAtLine(i, lines, line)
     } else {
       result += '<l>' + line.prefix + getLineContent(line) + '</l>'
     }
   }
 
+  return result
+}
+
+function getDollarLine(line) {
+  return '<note>' + line.prefix + getLineContent(line) + '</note>'
+}
+
+function getAtLine(i, lines, line) {
+  let result = ''
+  if (lines[i - 1] && lines[i - 1].prefix !== '@') result += '</lg><lg>'
+  result += '<note>' + getLineContent(line) + '</note>'
   return result
 }
 
@@ -93,23 +103,27 @@ function getLineContent(line): string {
     const escaped_word_value = escapeXmlChars(word.value)
     if (line.type === 'TextLine') result += getWord(word, escaped_word_value)
     else result += escaped_word_value
-    if (i < line.content.length - 1) result += ' '
   }
   return result
 }
 
 function getWord(word: any, escaped_word_value: string): string {
   let result = ''
+
   if (word.lemmatizable && word.uniqueLemma.length > 0) {
-    let lemmata = ''
-    for (let i = 0; i < word.uniqueLemma.length; i++) {
-      lemmata += word.uniqueLemma[i]
-      if (i < word.uniqueLemma.length - 1) lemmata += ' '
-    }
+    const lemmata = getLemata(word)
     result = '<w lemma="' + lemmata + '">' + escaped_word_value + '</w>'
   } else result = '<w>' + escaped_word_value + '</w>'
 
   return result
+}
+
+function getLemata(word) {
+  let lemmata = ''
+  for (let i = 0; i < word.uniqueLemma.length; i++) {
+    lemmata += word.uniqueLemma[i] + ' '
+  }
+  return lemmata.slice(0, -1)
 }
 
 function escapeXmlChars(wordvalue: string): string {
