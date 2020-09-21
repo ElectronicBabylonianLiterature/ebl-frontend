@@ -58,8 +58,8 @@ export function isTextLine(line: AbstractLine): line is TextLine {
   return line instanceof TextLine
 }
 
-export function notIsEmptyLine(line: AbstractLine): line is EmptyLine {
-  return !(line instanceof EmptyLine)
+export function isEmptyLine(line: AbstractLine): line is EmptyLine {
+  return line instanceof EmptyLine
 }
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
