@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser'
+import * as Sentry from '@sentry/react'
 import { ErrorReporter } from 'ErrorReporterContext'
 
 function isIgnored(error: string | Error | null | undefined): boolean {
@@ -33,7 +33,7 @@ class SentryErrorReporter implements ErrorReporter {
     Sentry.showReportDialog()
   }
 
-  setUser(id, username, eblName): void {
+  setUser(id: string, username: string, eblName: string): void {
     Sentry.configureScope((scope) => {
       scope.setUser({ id, username, eblName })
     })

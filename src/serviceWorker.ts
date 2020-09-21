@@ -11,6 +11,8 @@
 // opt-in, read https://bit.ly/CRA-PWA
 
 const isLocalhost = Boolean(
+  /* eslint-disable */
+  // See: https://github.com/amilajack/eslint-plugin-compat/issues/376
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
     window.location.hostname === '[::1]' ||
@@ -97,7 +99,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
     })
 }
 
-export function register(config?: Config) {
+export function register(config?: Config): void {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
@@ -134,7 +136,7 @@ export function register(config?: Config) {
   }
 }
 
-export function unregister() {
+export function unregister(): void {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then((registration) => {
       registration.unregister()

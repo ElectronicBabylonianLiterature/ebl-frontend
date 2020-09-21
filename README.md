@@ -32,7 +32,7 @@ in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they seem to ov
 ## Running tests
 
 ```sh
-yarn eslint --ext .ts,.tsx src/
+yarn lint
 yarn tsc
 yarn test
 ```

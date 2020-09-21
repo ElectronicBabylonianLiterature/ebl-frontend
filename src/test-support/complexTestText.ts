@@ -423,6 +423,12 @@ const line6 = new TextLine({
     },
     {
       enclosureType: [],
+      cleanValue: '|',
+      value: '|',
+      type: 'LineBreak',
+    },
+    {
+      enclosureType: [],
       cleanValue: 'x',
       value: '[(x)',
       language: 'AKKADIAN',

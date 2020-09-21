@@ -7,7 +7,9 @@ import { Parser } from 'html-to-react'
 
 import ExternalLink from 'common/ExternalLink'
 import Spinner from 'common/Spinner'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyEntry, {
+  CslData,
+} from 'bibliography/domain/BibliographyEntry'
 
 import './BibliographyEntryForm.css'
 
@@ -27,22 +29,26 @@ function BibliographyHelp() {
   )
 }
 
-type State = {
+interface Props {
+  value?: BibliographyEntry | null
+  disabled: boolean
+  onSubmit: (entry: BibliographyEntry) => unknown
+}
+
+interface State {
   citation: string
-  value: any
-  cslData: ReadonlyArray<any> | null
+  value: string
+  cslData: ReadonlyArray<CslData> | null
   loading: boolean
   isInvalid: boolean
 }
-export default class BibliographyEntryForm extends Component<
-  { value; disabled: boolean; onSubmit },
-  State
-> {
-  static defaultProps: { value: null; disabled: false }
-  private promise: Promise<any>
-  private doLoad: (value: any) => Promise<any>
 
-  constructor(props) {
+export default class BibliographyEntryForm extends Component<Props, State> {
+  static defaultProps: { value: null; disabled: false }
+  private promise: Promise<void>
+  private doLoad: (value: string) => Promise<void> | undefined
+
+  constructor(props: Props) {
     super(props)
     this.state = props.value
       ? {
@@ -66,11 +72,11 @@ export default class BibliographyEntryForm extends Component<
     })
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return _.isArray(this.state.cslData) && this.state.cslData.length === 1
   }
 
-  get isInvalid() {
+  get isInvalid(): boolean {
     return (
       !this.state.loading &&
       !_.isEmpty(this.state.value) &&
@@ -78,11 +84,11 @@ export default class BibliographyEntryForm extends Component<
     )
   }
 
-  get isDisabled() {
+  get isDisabled(): boolean {
     return !this.isValid || this.props.disabled
   }
 
-  handleChange = (event: any) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({
       ...this.state,
       value: event.target.value,
@@ -92,12 +98,12 @@ export default class BibliographyEntryForm extends Component<
     this.promise = this.doLoad(event.target.value) || this.promise
   }
 
-  load = (value) => {
+  load = (value: string): Promise<void> => {
     this.promise.cancel()
     return new Promise((resolve, reject) => {
       Cite.async(value).then(resolve).catch(reject)
     })
-      .then((cite: any) => {
+      .then((cite: Cite) => {
         this.setState({
           ...this.state,
           citation: cite.format('bibliography', {
@@ -124,7 +130,7 @@ export default class BibliographyEntryForm extends Component<
       })
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = (event: React.FormEvent<HTMLElement>): void => {
     event.preventDefault()
     const entry = new BibliographyEntry(
       this.state.cslData && this.state.cslData[0]
@@ -132,7 +138,7 @@ export default class BibliographyEntryForm extends Component<
     this.props.onSubmit(entry)
   }
 
-  render() {
+  render(): JSX.Element {
     const parsed = new Parser().parse(this.state.citation)
     return (
       <>

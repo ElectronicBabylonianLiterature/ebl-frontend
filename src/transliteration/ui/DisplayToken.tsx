@@ -193,6 +193,10 @@ function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
+function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  return <Wrapper>|</Wrapper>
+}
+
 const tokens: ReadonlyMap<
   string,
   FunctionComponent<{
@@ -213,6 +217,7 @@ const tokens: ReadonlyMap<
   ['PhoneticGloss', GlossComponent],
   ['LinguisticGloss', GlossComponent],
   ['Tabulation', TabulationComponent],
+  ['LineBreak', LineBreakComponent],
 ])
 
 export default function DisplayToken({

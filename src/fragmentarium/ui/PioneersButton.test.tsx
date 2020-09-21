@@ -37,7 +37,7 @@ it('Redirects to interesting when clicked', async () => {
 
 it('Hides button if user does not have transliteration rights', async () => {
   renderPioneersButton(false)
-  expect(element.container.textContent).toEqual('')
+  expect(element.container).toBeEmptyDOMElement()
 })
 
 function renderPioneersButton(isAllowedTo) {
