@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import * as TeiExport from './TeiExport.js'
+import * as TeiExport from './TeiExport'
 
 export default function Download({
   fragment,
