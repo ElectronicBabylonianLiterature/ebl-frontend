@@ -41,7 +41,8 @@ function getHeader(fragment: Fragment): string {
 
 function getEnd(fragment: Fragment): string {
   let notes = ''
-  if (fragment.notes) notes = '<note>' + fragment.notes + '</note>'
+  if (fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' ')
+    notes = '<note>' + fragment.notes + '</note>'
   return notes + '</body></text></TEI>'
 }
 
@@ -59,17 +60,17 @@ function getParagraph(fragment: Fragment): string {
 
     if (isEmptyLine(line)) continue
     else if (isTextLine(line)) result += getTextLine(line, fragment)
-    else result += handleOtherLines(i, lines, line)
+    else result += handleOtherLines(lines[i - 1], lines, line)
   }
   return result
 }
 
-function handleOtherLines(i, lines, line) {
+function handleOtherLines(previous_line, lines, line) {
   let result = ''
   if (line.prefix === '$') {
     result += getDollarLine(line)
   } else if (line.prefix === '@') {
-    result += getAtLine(i, lines, line)
+    result += getAtLine(previous_line, lines, line)
   } else {
     result += '<l>' + line.prefix + getLineContent(line) + '</l>'
   }
@@ -80,9 +81,9 @@ function getDollarLine(line) {
   return '<note>' + line.prefix + getLineContent(line) + '</note>'
 }
 
-function getAtLine(i, lines, line) {
+function getAtLine(previous_line, lines, line) {
   let result = ''
-  if (lines[i - 1] && lines[i - 1].prefix !== '@') result += '</lg><lg>'
+  if (previous_line && previous_line.prefix !== '@') result += '</lg><lg>'
   result += '<note>' + getLineContent(line) + '</note>'
   return result
 }
@@ -104,7 +105,7 @@ function getLineContent(line): string {
   for (let i = 0; i < line.content.length; i++) {
     const word = line.content[i]
     const escaped_word_value = escapeXmlChars(word.value)
-    if (line.type === 'TextLine') result += getWord(word, escaped_word_value)
+    if (isTextLine(line)) result += getWord(word, escaped_word_value)
     else result += escaped_word_value
   }
   return result
