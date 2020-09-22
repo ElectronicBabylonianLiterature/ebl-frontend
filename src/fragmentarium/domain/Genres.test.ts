@@ -27,6 +27,10 @@ describe('Genre', () => {
   beforeEach(() => {
     genreNew = genre.setUncertain(true)
   })
+  test('empty init', () => {
+    const emptyGenre = new Genres([])
+    expect(emptyGenre.genres).toEqual([])
+  })
   test('toString', () => {
     expect(genre.toString).toEqual('ARCHIVAL')
   })

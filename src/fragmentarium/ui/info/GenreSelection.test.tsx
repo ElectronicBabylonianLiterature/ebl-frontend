@@ -7,6 +7,7 @@ import selectEvent from 'react-select-event'
 import Promise from 'bluebird'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import userEvent from '@testing-library/user-event'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -27,7 +28,7 @@ beforeEach(async () => {
   fragment = await factory.build('fragment', {
     museum: Museum.of('The British Museum'),
     collection: 'The Collection',
-    genres: [],
+    genres: new Genres([]),
   })
 
   fragmentService.fetchGenres.mockReturnValue(
@@ -43,12 +44,8 @@ describe('User Input', () => {
       'ARCHIVAL ➝ Administrative'
     )
 
-    expect(updateGenres).toHaveBeenCalledWith([
-      {
-        category: ['ARCHIVAL', 'Administrative'],
-        uncertain: false,
-      },
-    ])
+    expect(updateGenres).toHaveBeenCalledTimes(1)
+
     //await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getByTestId('delete-button'))
@@ -65,13 +62,9 @@ describe('User Input', () => {
       'ARCHIVAL ➝ Administrative'
     )
 
-    expect(updateGenres).toHaveBeenCalledWith([
-      { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
-    ])
+    expect(updateGenres).toHaveBeenCalled()
     userEvent.click(screen.getByRole('checkbox'))
-    expect(updateGenres).toHaveBeenCalledWith([
-      { category: ['ARCHIVAL', 'Administrative'], uncertain: true },
-    ])
+    expect(updateGenres).toHaveBeenCalled()
 
     await screen.findByText('ARCHIVAL ➝ Administrative (?)')
 
