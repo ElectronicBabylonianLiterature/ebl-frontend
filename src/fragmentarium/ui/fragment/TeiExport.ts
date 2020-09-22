@@ -93,7 +93,6 @@ function getAtLine(
   return result
 }
 
-// call lineNumberToString
 function getTextLine(line: TextLine, fragment: Fragment) {
   return (
     '<l n="' +
