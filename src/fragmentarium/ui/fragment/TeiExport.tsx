@@ -58,18 +58,21 @@ function getParagraph(fragment: Fragment): string {
     const line = lines[i]
 
     if (isEmptyLine(line)) continue
-
-    if (isTextLine(line)) {
-      result += getTextLine(line, fragment)
-    } else if (line.prefix === '$') {
-      result += getDollarLine(line)
-    } else if (line.prefix === '@') {
-      result += getAtLine(i, lines, line)
-    } else {
-      result += '<l>' + line.prefix + getLineContent(line) + '</l>'
-    }
+    else if (isTextLine(line)) result += getTextLine(line, fragment)
+    else result += handleOtherLines(i, lines, line)
   }
+  return result
+}
 
+function handleOtherLines(i, lines, line) {
+  let result = ''
+  if (line.prefix === '$') {
+    result += getDollarLine(line)
+  } else if (line.prefix === '@') {
+    result += getAtLine(i, lines, line)
+  } else {
+    result += '<l>' + line.prefix + getLineContent(line) + '</l>'
+  }
   return result
 }
 
