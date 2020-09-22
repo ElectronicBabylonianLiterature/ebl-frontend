@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
-import { Fragment, Genre } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import _, { Dictionary } from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
@@ -13,6 +13,7 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import { Token } from 'transliteration/domain/token'
 import ReferenceInjector from './ReferenceInjector'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -30,7 +31,7 @@ export interface FragmentRepository {
   statistics(): Promise<any>
   find(number: string): Promise<Fragment>
   fetchGenres(): Promise<string[][]>
-  updateGenres(number: string, genre: Genre[]): Promise<Fragment>
+  updateGenres(number: string, genres: Genres): Promise<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
@@ -88,9 +89,9 @@ class FragmentService {
         this.referenceInjector.injectReferences(fragment)
       )
   }
-  updateGenres(number: string, genre: Genre[]): Promise<Fragment> {
+  updateGenres(number: string, genres: Genres): Promise<Fragment> {
     return this.fragmentRepository
-      .updateGenres(number, genre)
+      .updateGenres(number, genres)
       .then((fragment: Fragment) =>
         this.referenceInjector.injectReferences(fragment)
       )

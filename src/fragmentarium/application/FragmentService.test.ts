@@ -10,9 +10,10 @@ import Lemmatization, {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
-import { Fragment, Genre } from 'fragmentarium/domain/fragment'
+import { Fragment } from 'fragmentarium/domain/fragment'
 import setUpReferences from 'test-support/setUpReferences'
-import produce, { Draft } from 'immer'
+import produce, { castDraft, Draft } from 'immer'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
@@ -107,12 +108,12 @@ describe('methods returning hydrated fragment', () => {
   let result: Fragment
   let genreResult: string[][]
   const genreOptions = [['ARCHIVE', 'Administrative']]
-  const genres: Genre[] = [
+  const genres: Genres = Genres.fromJSON([
     {
       category: ['ARCHIVE', 'Administrative'],
       uncertain: false,
     },
-  ]
+  ])
 
   beforeEach(async () => {
     const { entries, references, expectedReferences } = await setUpReferences(
@@ -121,9 +122,8 @@ describe('methods returning hydrated fragment', () => {
     fragment = await factory.build('fragment', {
       number: number,
       references: references,
-      genres: [],
+      genres: new Genres([]),
     })
-
     bibliographyService.find.mockImplementation((id) => {
       const entry = entries.find((entry) => entry.id === id)
       return entry
@@ -185,7 +185,7 @@ describe('methods returning hydrated fragment', () => {
   describe('update genre', () => {
     beforeEach(async () => {
       expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
-        draft.genres = genres
+        draft.genres = castDraft(genres)
       })
       fragmentRepository.updateGenres.mockReturnValue(
         Promise.resolve(expectedFragment)

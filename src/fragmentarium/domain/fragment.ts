@@ -7,6 +7,7 @@ import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const moment = extendMoment(Moment)
 
@@ -88,11 +89,6 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
-export interface Genre {
-  readonly category: string[]
-  readonly uncertain: boolean
-}
-
 export class Fragment {
   readonly [immerable] = true
   readonly number: string
@@ -114,7 +110,7 @@ export class Fragment {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
   readonly atf: string
   readonly hasPhoto: boolean
-  readonly genres: ReadonlyArray<Genre>
+  readonly genres: Genres
 
   constructor({
     number,
@@ -157,7 +153,7 @@ export class Fragment {
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
-    genres: ReadonlyArray<Genre>
+    genres: Genres
   }) {
     this.number = number
     this.cdliNumber = cdliNumber

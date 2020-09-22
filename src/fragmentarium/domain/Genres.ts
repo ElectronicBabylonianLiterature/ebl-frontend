@@ -1,0 +1,90 @@
+import produce, { castDraft, Draft, immerable } from 'immer'
+import _ from 'lodash'
+
+export class Genre {
+  [immerable] = true
+  readonly category: ReadonlyArray<string>
+  readonly uncertain: boolean
+
+  constructor(category: string[], uncertain: boolean) {
+    this.category = category
+    this.uncertain = uncertain
+  }
+
+  setUncertain(uncertain: boolean): Genre {
+    return produce(this, (draft: Draft<Genre>) => {
+      draft.uncertain = uncertain
+    })
+  }
+
+  get toString(): string {
+    return this.category.join('-').replace(' ', '_')
+  }
+}
+
+export class Genres {
+  [immerable] = true
+  readonly genres: ReadonlyArray<Genre>
+
+  constructor(genres: Genre[]) {
+    this.genres = genres
+  }
+
+  static fromJSON(
+    genreJSON: { category: string[]; uncertain: boolean }[]
+  ): Genres {
+    return new Genres(
+      genreJSON.map(({ category, uncertain }) => new Genre(category, uncertain))
+    )
+  }
+
+  isPresent(genre: Genre): boolean {
+    return this.genres.some(
+      (element) =>
+        JSON.stringify(element.category) === JSON.stringify(genre.category)
+    )
+  }
+
+  find(genre: Genre) {
+    return _.find(
+      this.genres,
+      (elem) => JSON.stringify(elem.category) === JSON.stringify(genre.category)
+    )
+  }
+
+  insertWithOrder(genre: Genre, indexLookup: readonly string[][]): Genres {
+    return produce(this, (draft: Draft<Genres>) => {
+      draft.genres = castDraft(
+        _.sortBy([...this.genres, genre], (genre) =>
+          JSON.stringify(indexLookup).indexOf(JSON.stringify(genre.category))
+        )
+      )
+    })
+  }
+
+  delete(genre: Genre): Genres {
+    return produce(this, (draft: Draft<Genres>) => {
+      draft.genres = castDraft(
+        this.genres.filter(
+          (elem) => JSON.stringify(elem) !== JSON.stringify(genre)
+        )
+      )
+    })
+  }
+
+  replace(genre: Genre): Genres {
+    return produce(this, (draft: Draft<Genres>) => {
+      const genres = _.cloneDeep(this.genres as Genre[])
+      const index = _.findIndex(
+        this.genres,
+        (content) =>
+          JSON.stringify(content.category) === JSON.stringify(genre.category)
+      )
+      genres.splice(index, 1, genre)
+      draft.genres = castDraft(genres)
+    })
+  }
+  isEqualTo(genres: Genres): boolean {
+    return JSON.stringify(genres) === JSON.stringify(this)
+  }
+}
