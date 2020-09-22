@@ -1,19 +1,18 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { Word, Token } from 'transliteration/domain/token'
 import { TextLine } from 'transliteration/domain/text-line'
 import { isTextLine, isEmptyLine } from 'transliteration/domain/type-guards'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
-export function teiExport(fragment): string {
-  let final_output = ''
+export function teiExport(fragment: Fragment): string {
   const header = getHeader(fragment)
   const body = getBody(fragment)
   const end = getEnd(fragment)
 
-  final_output += header
-  final_output += body
-  final_output += end
+  const finalOutput = header + body + end
 
-  return prettifyXml(final_output)
+  return prettifyXml(finalOutput)
 }
 
 function getHeader(fragment: Fragment): string {
@@ -40,9 +39,10 @@ function getHeader(fragment: Fragment): string {
 }
 
 function getEnd(fragment: Fragment): string {
-  let notes = ''
-  if (fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' ')
-    notes = '<note>' + fragment.notes + '</note>'
+  const notes =
+    fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' '
+      ? '<note>' + fragment.notes + '</note>'
+      : ''
   return notes + '</body></text></TEI>'
 }
 
@@ -58,60 +58,67 @@ function getParagraph(fragment: Fragment): string {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
 
-    if (isEmptyLine(line)) continue
-    else if (isTextLine(line)) result += getTextLine(line, fragment)
-    else result += handleOtherLines(lines[i - 1], lines, line)
+    if (isTextLine(line)) result += getTextLine(line, fragment)
+    else if (!isEmptyLine(line))
+      result += handleOtherLines(lines[i - 1], lines, line)
   }
   return result
 }
 
-function handleOtherLines(previous_line, lines, line) {
-  let result = ''
+function handleOtherLines(
+  previous_line: AbstractLine,
+  lines: readonly AbstractLine[],
+  line: AbstractLine
+) {
   if (line.prefix === '$') {
-    result += getDollarLine(line)
+    return getDollarLine(line)
   } else if (line.prefix === '@') {
-    result += getAtLine(previous_line, lines, line)
+    return getAtLine(previous_line, lines, line)
   } else {
-    result += '<l>' + line.prefix + getLineContent(line) + '</l>'
+    return '<l>' + line.prefix + getLineContent(line) + '</l>'
   }
-  return result
 }
 
-function getDollarLine(line) {
+function getDollarLine(line: AbstractLine) {
   return '<note>' + line.prefix + getLineContent(line) + '</note>'
 }
 
-function getAtLine(previous_line, lines, line) {
-  let result = ''
-  if (previous_line && previous_line.prefix !== '@') result += '</lg><lg>'
+function getAtLine(
+  previous_line: AbstractLine,
+  lines: readonly AbstractLine[],
+  line: AbstractLine
+) {
+  let result = previous_line && previous_line.prefix !== '@' ? '</lg><lg>' : ''
   result += '<note>' + getLineContent(line) + '</note>'
   return result
 }
 
-function getTextLine(line, fragment: Fragment) {
+// call lineNumberToString
+function getTextLine(line: TextLine, fragment: Fragment) {
   return (
     '<l n="' +
     fragment.number +
     '.' +
-    line.lineNumber.number +
+    lineNumberToString(line.lineNumber) +
     '">' +
     getLineContent(line) +
     '</l>'
   )
 }
 
-function getLineContent(line): string {
+function getLineContent(line: AbstractLine): string {
   let result = ''
   for (let i = 0; i < line.content.length; i++) {
     const word = line.content[i]
     const escaped_word_value = escapeXmlChars(word.value)
-    if (isTextLine(line)) result += getWord(word, escaped_word_value)
-    else result += escaped_word_value
+    result += isTextLine(line)
+      ? getWord(word, escaped_word_value)
+      : escaped_word_value
   }
   return result
 }
 
-function getWord(word: any, escaped_word_value: string): string {
+function getWord(word: Token, escaped_word_value: string): string {
   let result = ''
 
   if (word.lemmatizable && word.uniqueLemma.length > 0) {
@@ -122,7 +129,7 @@ function getWord(word: any, escaped_word_value: string): string {
   return result
 }
 
-function getLemata(word) {
+function getLemata(word: Word) {
   let lemmata = ''
   for (let i = 0; i < word.uniqueLemma.length; i++) {
     lemmata += word.uniqueLemma[i] + ' '
@@ -149,7 +156,7 @@ function escapeXmlChars(wordvalue: string): string {
   })
 }
 
-function prettifyXml(xml): string {
+function prettifyXml(xml: string): string {
   let formatted = '',
     indent = ''
   const tab = '\t'
