@@ -99,7 +99,7 @@ function createFragment(dto): Fragment {
     text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
-    genres: Genres.fromJSON(dto.genres),
+    genres: Genres.fromJson(dto.genres),
   })
 }
 

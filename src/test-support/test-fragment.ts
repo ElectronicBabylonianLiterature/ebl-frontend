@@ -317,7 +317,7 @@ export const fragment = new Fragment({
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
-  genres: Genres.fromJSON([
+  genres: Genres.fromJson([
     {
       category: ['ARCHIVE', 'Administrative', 'Lists'],
       uncertain: false,

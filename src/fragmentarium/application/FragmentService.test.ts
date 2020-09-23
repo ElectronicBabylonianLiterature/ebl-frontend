@@ -108,7 +108,7 @@ describe('methods returning hydrated fragment', () => {
   let result: Fragment
   let genreResult: string[][]
   const genreOptions = [['ARCHIVE', 'Administrative']]
-  const genres: Genres = Genres.fromJSON([
+  const genres: Genres = Genres.fromJson([
     {
       category: ['ARCHIVE', 'Administrative'],
       uncertain: false,

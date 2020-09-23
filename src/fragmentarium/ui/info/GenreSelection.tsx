@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
+import _ from 'lodash'
 
 type Props = {
   fragment: Fragment
@@ -37,10 +38,10 @@ function GenreSelection({
     }
   }
   useEffect(() => {
-    if (!genres.isEqualTo(prevGenres) && prevGenres !== undefined) {
+    if (!_.isEqual(genres, prevGenres) && prevGenres !== undefined) {
       updateGenres(genres)
     }
-  })
+  }, [genres, prevGenres, updateGenres])
 
   function toggleUncertain() {
     if (selected) {

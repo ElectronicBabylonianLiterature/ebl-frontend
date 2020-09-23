@@ -30,7 +30,7 @@ export class Genres {
     this.genres = genres
   }
 
-  static fromJSON(
+  static fromJson(
     genreJSON: { category: string[]; uncertain: boolean }[]
   ): Genres {
     return new Genres(
@@ -83,8 +83,5 @@ export class Genres {
       genres.splice(index, 1, genre)
       draft.genres = castDraft(genres)
     })
-  }
-  isEqualTo(genres: Genres): boolean {
-    return JSON.stringify(genres) === JSON.stringify(this)
   }
 }

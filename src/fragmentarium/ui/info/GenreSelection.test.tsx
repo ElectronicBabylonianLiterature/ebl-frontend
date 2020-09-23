@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, waitFor, waitForElement } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -45,8 +45,6 @@ describe('User Input', () => {
     )
 
     expect(updateGenres).toHaveBeenCalledTimes(1)
-
-    //await screen.findByText('ARCHIVAL ➝ Administrative')
 
     userEvent.click(screen.getByTestId('delete-button'))
 

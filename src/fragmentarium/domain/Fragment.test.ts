@@ -84,7 +84,7 @@ const config = {
   ],
   atf: '$ (atf)',
   hasPhoto: true,
-  genres: Genres.fromJSON([
+  genres: Genres.fromJson([
     { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
     { category: ['CATALOGUE', 'Memos'], uncertain: true },
   ]),

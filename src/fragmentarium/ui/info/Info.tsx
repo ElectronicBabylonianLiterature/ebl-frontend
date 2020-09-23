@@ -9,7 +9,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
-  onSave: (x0: any) => any
+  onSave: (updateGenres: any) => any
 }
 export default function Info({
   fragment,

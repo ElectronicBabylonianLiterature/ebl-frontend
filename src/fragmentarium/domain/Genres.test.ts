@@ -19,7 +19,7 @@ const genreConfig2 = {
 const genresConfig = [genreConfig1, genreConfig2]
 
 const genre = new Genre(genreConfig1.category, genreConfig1.uncertain)
-const genres = Genres.fromJSON(genresConfig)
+const genres = Genres.fromJson(genresConfig)
 let genreNew
 let genresNew
 
@@ -55,11 +55,6 @@ describe('Genres', () => {
     genresNew = genres.delete(genre)
     expect(genresNew.genres.length).toEqual(1)
     expect(genresNew.find(genre)).toEqual(undefined)
-  })
-  test('isEqual', () => {
-    expect(genres.isEqualTo(genres)).toEqual(true)
-    genresNew = genres.delete(genre)
-    expect(genres.isEqualTo(genresNew)).toEqual(false)
   })
   test('replace genre', () => {
     genreNew = genre.setUncertain(true)

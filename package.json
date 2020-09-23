@@ -74,10 +74,10 @@
     "typescript": "^4.0.2"
   },
   "devDependencies": {
-    "react-select-event": "^5.0.0",
-    "@testing-library/user-event": "^12.1.3",
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^11.0.2",
+    "@testing-library/react-hooks": "^3.4.1",
+    "@testing-library/user-event": "^12.1.3",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
     "chance": "^1.0.16",
@@ -95,7 +95,8 @@
     "jest-fetch-mock": "^3.0.1",
     "lighthouse": "^6.1.1",
     "lint-staged": "^10.1.3",
-    "prettier": "2.1.1"
+    "prettier": "2.1.1",
+    "react-select-event": "^5.0.0"
   },
   "resolutions": {
     "@citation-js/plugin-csl": "0.4.0-rc.4"
