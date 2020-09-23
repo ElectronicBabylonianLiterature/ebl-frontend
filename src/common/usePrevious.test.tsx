@@ -1,4 +1,3 @@
-import { renderHook } from '@testing-library/react-hooks'
 import { usePrevious } from 'common/usePrevious'
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
