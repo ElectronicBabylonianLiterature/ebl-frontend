@@ -13,6 +13,7 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import { Token } from 'transliteration/domain/token'
 import ReferenceInjector from './ReferenceInjector'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -29,6 +30,8 @@ export interface ImageRepository {
 export interface FragmentRepository {
   statistics(): Promise<any>
   find(number: string): Promise<Fragment>
+  fetchGenres(): Promise<string[][]>
+  updateGenres(number: string, genres: Genres): Promise<Fragment>
   updateTransliteration(
     number: string,
     transliteration: string,
@@ -85,6 +88,17 @@ class FragmentService {
       .then((fragment: Fragment) =>
         this.referenceInjector.injectReferences(fragment)
       )
+  }
+  updateGenres(number: string, genres: Genres): Promise<Fragment> {
+    return this.fragmentRepository
+      .updateGenres(number, genres)
+      .then((fragment: Fragment) =>
+        this.referenceInjector.injectReferences(fragment)
+      )
+  }
+
+  fetchGenres(): Promise<string[][]> {
+    return this.fragmentRepository.fetchGenres()
   }
 
   updateTransliteration(

@@ -11,7 +11,12 @@ import produce from 'immer'
 
 interface State {
   number: string | null | undefined
-  referenceEntry: any
+  referenceEntry: {
+    id: string
+    title: string
+    primaryAuthor: string
+    year: string
+  }
   pages: string | null | undefined
   transliteration: string | null | undefined
   isValid: boolean
@@ -159,7 +164,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col>
               <BibliographySelect
-                aria-label={'BibliographySelectSearchForm__label'}
+                aria-label="Select bibliography reference"
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}
                 searchBibliography={(query) =>

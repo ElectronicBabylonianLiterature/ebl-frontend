@@ -100,6 +100,13 @@ factory.define('fragment', Fragment, {
   museum: Museum.of('The British Museum'),
   references: async () => await factory.buildMany('referenceDto', 2),
   hasPhoto: factory.chance('bool'),
+  genres: factory.chance('pickone', [
+    [
+      { cataloge: ['ARCHIVE', 'Administrative', 'Lists'], uncertain: false },
+      { catalogue: ['Other', 'Fake', 'Certain'], uncertain: false },
+    ],
+    [{ cataloge: ['Other', 'Fake', 'Certain'], uncertain: false }],
+  ]),
 })
 
 factory.define('fragmentInfo', Object, {
