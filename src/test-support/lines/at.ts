@@ -19,6 +19,7 @@ export const surface: SurfaceAtLine = new SurfaceAtLine({
       type: 'ValueToken',
     },
   ],
+  // eslint-disable-next-line camelcase
   surface_label: {
     status: ['UNCERTAIN', 'CORRECTION'],
     surface: 'OBVERSE',
@@ -61,6 +62,7 @@ export const column: ColumnAtLine = new ColumnAtLine({
       type: 'ValueToken',
     },
   ],
+  // eslint-disable-next-line camelcase
   column_label: {
     status: ['UNCERTAIN'],
     abbreviation: 'iii',
@@ -114,6 +116,7 @@ export const discourse: DiscourseAtLine = new DiscourseAtLine({
       type: 'ValueToken',
     },
   ],
+  // eslint-disable-next-line camelcase
   discourse_label: 'COLOPHON',
   displayValue: 'colophon',
   type: 'DiscourseAtLine',

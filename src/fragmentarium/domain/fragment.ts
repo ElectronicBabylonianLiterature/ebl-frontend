@@ -17,6 +17,7 @@ export interface FragmentInfo {
   readonly description: string
   readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
   readonly editor: string
+  // eslint-disable-next-line camelcase
   readonly edition_date: string
   readonly references: ReadonlyArray<Reference>
 }
