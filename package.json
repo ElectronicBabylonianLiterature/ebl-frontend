@@ -16,6 +16,12 @@
     "src/**/*.tsx": [
       "prettier --write",
       "eslint --fix"
+    ],
+    "**/*.md": [
+      "prettier --write"
+    ],
+    "src/**/*.css": [
+      "prettier --write"
     ]
   },
   "scripts": {
@@ -100,8 +106,7 @@
   },
   "prettier": {
     "semi": false,
-    "singleQuote": true,
-    "endOfLine": "auto"
+    "singleQuote": true
   },
   "browserslist": [
     ">0.2%",

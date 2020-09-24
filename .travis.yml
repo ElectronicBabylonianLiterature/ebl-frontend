@@ -8,6 +8,7 @@ jobs:
     - chmod +x ./cc-test-reporter
     - "./cc-test-reporter before-build"
     script:
+    - yarn prettier --check ./src
     - yarn lint
     - yarn tsc
     - yarn test --coverage --forceExit --detectOpenHandles
