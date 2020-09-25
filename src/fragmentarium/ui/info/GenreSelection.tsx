@@ -129,16 +129,22 @@ function GenreSelection({
           return (
             <li className="list-group-item" key={genreItem.toString}>
               {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
-              <Button
-                variant="light"
-                data-testid="delete-button"
-                className={classNames([
-                  'float-right',
-                  'fas fa-trash',
-                  'align-top',
-                ])}
-                onClick={() => setGenres(genres.delete(genreItem))}
-              />
+              <SessionContext.Consumer>
+                {(session: Session): ReactNode =>
+                  session.isAllowedToTransliterateFragments() && (
+                    <Button
+                      variant="light"
+                      data-testid="delete-button"
+                      className={classNames([
+                        'float-right',
+                        'fas fa-trash',
+                        'align-top',
+                      ])}
+                      onClick={() => setGenres(genres.delete(genreItem))}
+                    />
+                  )
+                }
+              </SessionContext.Consumer>
             </li>
           )
         })}
