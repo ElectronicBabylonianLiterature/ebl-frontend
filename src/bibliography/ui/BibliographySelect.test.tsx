@@ -24,6 +24,7 @@ beforeEach(async () => {
   element = render(
     <>
       <BibliographySelect
+        isClearable={false}
         aria-label="label"
         searchBibliography={searchBibliography}
         value={entry}
@@ -39,7 +40,6 @@ it('Displays the entry label', () => {
 
 it('Calls onChange when selecting an entry', async () => {
   await fillBibliographySelect(searchEntry, 'label', element, 'Borger')
-  //await waitFor(() => expect(onChange).toHaveBeenCalledTimes(1))
   await waitFor(() =>
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
