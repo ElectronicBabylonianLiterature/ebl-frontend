@@ -63,15 +63,15 @@ class SearchForm extends Component<Props, State> {
     return !!(Number(pages) || !pages)
   }
 
-  onChangeBibliographyReference = (entry) => {
+  onChangeBibliographyReference = (event) => {
     const newState = produce(this.state, (draftState) => {
-      draftState.referenceEntry.title = entry ? entry.cslData.title : ''
-      draftState.referenceEntry.id = entry ? entry.cslData.id : ''
-      draftState.referenceEntry.primaryAuthor = entry
-        ? entry.cslData.author[0].family
+      draftState.referenceEntry.title = event ? event.entry.cslData.title : ''
+      draftState.referenceEntry.id = event ? event.entry.cslData.id : ''
+      draftState.referenceEntry.primaryAuthor = event
+        ? event.entry.cslData.author[0].family
         : ''
-      draftState.referenceEntry.year = entry
-        ? entry.cslData.issued['date-parts'][0][0]
+      draftState.referenceEntry.year = event
+        ? event.entry.cslData.issued['date-parts'][0][0]
         : ''
     })
     this.setState(newState)
@@ -166,6 +166,7 @@ class SearchForm extends Component<Props, State> {
             </Col>
             <Col>
               <BibliographySelect
+                isClearable={true}
                 aria-label="Select bibliography reference"
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}

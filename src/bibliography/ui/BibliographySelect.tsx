@@ -16,7 +16,7 @@ function createOption(entry) {
 }
 
 export default class BibliographySelect extends Component<
-  { value; searchBibliography; onChange },
+  { value; searchBibliography; onChange; isClearable },
   { selectedOption }
 > {
   constructor(props) {
@@ -45,14 +45,14 @@ export default class BibliographySelect extends Component<
     this.setState({
       selectedOption,
     })
-    this.props.onChange(selectedOption.entry)
+    this.props.onChange(selectedOption)
   }
 
   render() {
     return (
       <>
         <AsyncSelect
-          isClearable
+          isClearable={this.props.isClearable}
           aria-label={this.props['aria-label']}
           placeholder="Name Year Title"
           cacheOptions

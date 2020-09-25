@@ -22,10 +22,11 @@ export default function ReferenceForm({ value, onChange, searchBibliography }) {
       <Form.Group controlId={`${id}-Entry`}>
         <label>Document</label>
         <BibliographySelect
+          isClearable={false}
           aria-label={documentLabelId}
           value={value.document}
           searchBibliography={searchBibliography}
-          onChange={handleChange('setDocument')}
+          onChange={(event) => handleChange('setDocument')(event.entry)}
         />
       </Form.Group>
       <Form.Row>
