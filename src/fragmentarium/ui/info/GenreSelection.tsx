@@ -1,5 +1,5 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Button, Overlay, Popover } from 'react-bootstrap'
 import Select from 'react-select'
 import classNames from 'classnames'
@@ -7,6 +7,8 @@ import { usePrevious } from 'common/usePrevious'
 import withData from 'http/withData'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import _ from 'lodash'
+import { Session } from 'auth/Session'
+import SessionContext from 'auth/SessionContext'
 
 type Props = {
   fragment: Fragment
@@ -95,12 +97,18 @@ function GenreSelection({
   return (
     <div>
       Genres:
-      <Button
-        variant="light"
-        ref={target}
-        className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
-        onClick={() => setIsDisplayed(true)}
-      />
+      <SessionContext.Consumer>
+        {(session: Session): ReactNode =>
+          session.isAllowedToTransliterateFragments() && (
+            <Button
+              variant="light"
+              ref={target}
+              className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
+              onClick={() => setIsDisplayed(true)}
+            />
+          )
+        }
+      </SessionContext.Consumer>
       <Overlay
         target={target.current}
         placement="right"
