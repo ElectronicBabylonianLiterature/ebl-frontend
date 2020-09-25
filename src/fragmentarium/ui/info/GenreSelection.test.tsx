@@ -8,20 +8,24 @@ import Promise from 'bluebird'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import userEvent from '@testing-library/user-event'
 import { Genres } from 'fragmentarium/domain/Genres'
+import SessionContext from 'auth/SessionContext'
 
 const updateGenres = jest.fn()
 const fragmentService = {
   fetchGenres: jest.fn(),
 }
 let fragment: Fragment
+let session
 
 function renderDetails() {
   render(
-    <GenreSelection
-      fragment={fragment}
-      updateGenres={updateGenres}
-      fragmentService={fragmentService}
-    />
+    <SessionContext.Provider value={session}>
+      <GenreSelection
+        fragment={fragment}
+        updateGenres={updateGenres}
+        fragmentService={fragmentService}
+      />
+    </SessionContext.Provider>
   )
 }
 beforeEach(async () => {
@@ -30,10 +34,13 @@ beforeEach(async () => {
     collection: 'The Collection',
     genres: new Genres([]),
   })
-
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
+  session = {
+    isAllowedToTransliterateFragments: jest.fn(),
+  }
+  session.isAllowedToTransliterateFragments.mockReturnValue(true)
   renderDetails()
 })
 describe('User Input', () => {
