@@ -52,6 +52,7 @@ export default class BibliographySelect extends Component<
     return (
       <>
         <AsyncSelect
+          isClearable
           aria-label={this.props['aria-label']}
           placeholder="Name Year Title"
           cacheOptions

@@ -63,14 +63,16 @@ class SearchForm extends Component<Props, State> {
     return !!(Number(pages) || !pages)
   }
 
-  onChangeBibliographyReference = (event) => {
+  onChangeBibliographyReference = (entry) => {
     const newState = produce(this.state, (draftState) => {
-      draftState.referenceEntry.title = event.cslData.title || ''
-      draftState.referenceEntry.id = event.cslData.id || ''
-      draftState.referenceEntry.primaryAuthor =
-        event.cslData.author[0].family || ''
-      draftState.referenceEntry.year =
-        event.cslData.issued['date-parts'][0][0] || ''
+      draftState.referenceEntry.title = entry ? entry.cslData.title : ''
+      draftState.referenceEntry.id = entry ? entry.cslData.id : ''
+      draftState.referenceEntry.primaryAuthor = entry
+        ? entry.cslData.author[0].family
+        : ''
+      draftState.referenceEntry.year = entry
+        ? entry.cslData.issued['date-parts'][0][0]
+        : ''
     })
     this.setState(newState)
   }
