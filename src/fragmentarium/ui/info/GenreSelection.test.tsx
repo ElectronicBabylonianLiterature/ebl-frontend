@@ -37,7 +37,7 @@ beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )
-  const session = {
+  session = {
     isAllowedToTransliterateFragments: jest.fn(),
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
