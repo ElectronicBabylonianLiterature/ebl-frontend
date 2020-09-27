@@ -26,16 +26,19 @@ beforeEach(async () => {
 })
 
 describe.each([
-  ['atf', atfUrl],
-  ['json', jsonUrl],
-  ['xml', teiUrl],
-])('%s download link', (type, url) => {
+  ['Download as ATF', 'atf', atfUrl],
+  ['Download as JSON File', 'json', jsonUrl],
+  ['Download as TEI XML File', 'xml', teiUrl],
+])('%s download link', (name, type, url) => {
   test('href', () => {
-    expect(element.getByTestId(`download-${type}`)).toHaveAttribute('href', url)
+    expect(element.getByRole('link', { name: `${name}` })).toHaveAttribute(
+      'href',
+      url
+    )
   })
 
   test('download', () => {
-    expect(element.getByTestId(`download-${type}`)).toHaveAttribute(
+    expect(element.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'download',
       `${fragment.number}.${type}`
     )

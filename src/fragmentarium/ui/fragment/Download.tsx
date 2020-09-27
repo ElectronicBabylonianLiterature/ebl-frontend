@@ -55,7 +55,6 @@ export default function Download({
         Download as Word Document
       </Dropdown.Item>
       <Dropdown.Item
-        data-testid="download-atf"
         eventKey="3"
         href={atf}
         download={`${fragment.number}.atf`}
@@ -63,7 +62,6 @@ export default function Download({
         Download as ATF
       </Dropdown.Item>
       <Dropdown.Item
-        data-testid="download-json"
         eventKey="4"
         href={json}
         download={`${fragment.number}.json`}
@@ -71,7 +69,6 @@ export default function Download({
         Download as JSON File
       </Dropdown.Item>
       <Dropdown.Item
-        data-testid="download-xml"
         eventKey="5"
         href={xml}
         download={`${fragment.number}.xml`}
