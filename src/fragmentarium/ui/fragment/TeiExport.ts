@@ -19,23 +19,23 @@ function getHeader(fragment: Fragment): string {
   const result = ''
   const start =
     '<?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><teiHeader><fileDesc>'
-  const title_stmt =
+  const titleStmt =
     '<titleStmt><title>' + fragment.number + '</title></titleStmt>'
-  const pub_stmt =
+  const pubStmt =
     '<publicationStmt><p>' +
     fragment.museum.name +
     '</p><p>' +
     fragment.collection +
     ' Collection</p></publicationStmt>'
 
-  let source_desc = '<sourceDesc><p>' + fragment.description + '</p>'
+  let sourceDesc = '<sourceDesc><p>' + fragment.description + '</p>'
 
   if (fragment.publication)
-    source_desc += '<p>Publication: ' + fragment.publication + '</p>'
+    sourceDesc += '<p>Publication: ' + fragment.publication + '</p>'
 
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
-  return result + start + title_stmt + pub_stmt + source_desc + end
+  return result + start + titleStmt + pubStmt + sourceDesc + end
 }
 
 function getEnd(fragment: Fragment): string {
@@ -66,14 +66,14 @@ function getParagraph(fragment: Fragment): string {
 }
 
 function handleOtherLines(
-  previous_line: AbstractLine,
+  previousLine: AbstractLine,
   lines: readonly AbstractLine[],
   line: AbstractLine
 ) {
   if (line.prefix === '$') {
     return getDollarLine(line)
   } else if (line.prefix === '@') {
-    return getAtLine(previous_line, lines, line)
+    return getAtLine(previousLine, lines, line)
   } else {
     return '<l>' + line.prefix + getLineContent(line) + '</l>'
   }
@@ -84,11 +84,11 @@ function getDollarLine(line: AbstractLine) {
 }
 
 function getAtLine(
-  previous_line: AbstractLine,
+  previousLine: AbstractLine,
   lines: readonly AbstractLine[],
   line: AbstractLine
 ) {
-  let result = previous_line && previous_line.prefix !== '@' ? '</lg><lg>' : ''
+  let result = previousLine && previousLine.prefix !== '@' ? '</lg><lg>' : ''
   result += '<note>' + getLineContent(line) + '</note>'
   return result
 }
@@ -109,21 +109,21 @@ function getLineContent(line: AbstractLine): string {
   let result = ''
   for (let i = 0; i < line.content.length; i++) {
     const word = line.content[i]
-    const escaped_word_value = escapeXmlChars(word.value)
+    const escapedWordValue = escapeXmlChars(word.value)
     result += isTextLine(line)
-      ? getWord(word, escaped_word_value)
-      : escaped_word_value
+      ? getWord(word, escapedWordValue)
+      : escapedWordValue
   }
   return result
 }
 
-function getWord(word: Token, escaped_word_value: string): string {
+function getWord(word: Token, escapedWordValue: string): string {
   let result = ''
 
   if (word.lemmatizable && word.uniqueLemma.length > 0) {
     const lemmata = getLemata(word)
-    result = '<w lemma="' + lemmata + '">' + escaped_word_value + '</w>'
-  } else result = '<w>' + escaped_word_value + '</w>'
+    result = '<w lemma="' + lemmata + '">' + escapedWordValue + '</w>'
+  } else result = '<w>' + escapedWordValue + '</w>'
 
   return result
 }
