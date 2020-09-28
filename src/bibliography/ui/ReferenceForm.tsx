@@ -22,6 +22,7 @@ export default function ReferenceForm({ value, onChange, searchBibliography }) {
       <Form.Group controlId={`${id}-Entry`}>
         <label>Document</label>
         <BibliographySelect
+          isClearable={false}
           aria-label={documentLabelId}
           value={value.document}
           searchBibliography={searchBibliography}
