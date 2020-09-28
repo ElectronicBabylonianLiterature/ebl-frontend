@@ -70,7 +70,6 @@ function GenreSelection({
           options={options}
           onChange={(event) => handleChange(event)}
           isSearchable={true}
-          autoFocus={true}
         />
         <div
           style={{
