@@ -49,7 +49,7 @@ export default class BibliographySelect extends Component<
       })
       this.props.onChange(selectedOption.entry)
     } else {
-      this.props.onChange({ value: new BibliographyEntry() })
+      this.props.onChange(new BibliographyEntry())
     }
   }
 

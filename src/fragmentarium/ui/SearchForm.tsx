@@ -64,7 +64,6 @@ class SearchForm extends Component<Props, State> {
   }
 
   onChangeBibliographyReference = (event) => {
-    console.log(event)
     const newState = produce(this.state, (draftState) => {
       draftState.referenceEntry.title = event.title || ''
       draftState.referenceEntry.id = event.id || ''
