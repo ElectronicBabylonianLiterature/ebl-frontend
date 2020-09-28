@@ -22,7 +22,7 @@ export default function Info({
   const updateGenres = (genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
   const ReferencesHelp = () => (
-    <Popover id={_.uniqueId('ReferenceshHelp-')} title="References">
+    <Popover id={_.uniqueId('ReferencesHelp-')} title="References">
       <Popover.Content>
         <code>C</code> = Copy <br />
         <code>P</code> = Photograph <br />
