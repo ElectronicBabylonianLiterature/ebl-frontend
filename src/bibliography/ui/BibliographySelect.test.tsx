@@ -24,6 +24,7 @@ beforeEach(async () => {
   element = render(
     <>
       <BibliographySelect
+        isClearable={false}
         aria-label="label"
         searchBibliography={searchBibliography}
         value={entry}
