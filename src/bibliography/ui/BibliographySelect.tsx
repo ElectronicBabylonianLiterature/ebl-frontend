@@ -1,3 +1,4 @@
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
 
@@ -16,7 +17,7 @@ function createOption(entry) {
 }
 
 export default class BibliographySelect extends Component<
-  { value; searchBibliography; onChange },
+  { value; searchBibliography; onChange; isClearable },
   { selectedOption }
 > {
   constructor(props) {
@@ -42,16 +43,21 @@ export default class BibliographySelect extends Component<
   }
 
   handleChange = (selectedOption) => {
-    this.setState({
-      selectedOption,
-    })
-    this.props.onChange(selectedOption.entry)
+    if (selectedOption) {
+      this.setState({
+        selectedOption,
+      })
+      this.props.onChange(selectedOption.entry)
+    } else {
+      this.props.onChange(new BibliographyEntry())
+    }
   }
 
   render() {
     return (
       <>
         <AsyncSelect
+          isClearable={this.props.isClearable}
           aria-label={this.props['aria-label']}
           placeholder="Name Year Title"
           cacheOptions
