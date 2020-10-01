@@ -1,4 +1,3 @@
-import { act } from '@testing-library/react'
 import factory from 'factory-girl'
 import * as TeiExport from './TeiExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -9,9 +8,7 @@ let teiExport: string
 
 beforeEach(async () => {
   fragment = await factory.build('fragment')
-  await act(async () => {
-    teiExport = TeiExport.teiExport(fragment)
-  })
+  teiExport = TeiExport.teiExport(fragment)
 })
 
 test('outputType', () => {
@@ -23,5 +20,5 @@ test('outputSize', () => {
 })
 
 test('validXml', () => {
-  expect(parser.validate('teiExport') === true).toBeTruthy()
+  expect(parser.validate(teiExport) === true).toBeTruthy()
 })
