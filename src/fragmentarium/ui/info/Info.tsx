@@ -9,6 +9,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import { Popover, Row } from 'react-bootstrap'
+import './Info.css'
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
@@ -24,10 +25,27 @@ export default function Info({
   const ReferencesHelp = () => (
     <Popover id={_.uniqueId('ReferencesHelp-')} title="References">
       <Popover.Content>
-        <code>C</code> = Copy <br />
-        <code>P</code> = Photograph <br />
-        <code>E</code> = Edition <br />
-        <code>D</code> = Discussion <br />
+        <dl>
+          <dt>
+            <code>C</code>
+          </dt>
+          <dd>Copy</dd>
+
+          <dt>
+            <code>P</code>
+          </dt>
+          <dd>Photograph</dd>
+
+          <dt>
+            <code>E</code>
+          </dt>
+          <dd>Edition</dd>
+
+          <dt>
+            <code>D</code>
+          </dt>
+          <dd>Discussion</dd>
+        </dl>
       </Popover.Content>
     </Popover>
   )
@@ -42,15 +60,7 @@ export default function Info({
       <section>
         <Row>
           <h3>References</h3>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: '.5rem',
-              marginLeft: '.5rem',
-            }}
-          >
+          <div className="ReferencesHelp__icon">
             <HelpTrigger overlay={ReferencesHelp()} />
           </div>
         </Row>
