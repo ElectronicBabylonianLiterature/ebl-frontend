@@ -42,6 +42,7 @@ export class HeadingAtLine extends AtLine {
 
 export interface ColumnAtLineDto extends DollarAndAtLineDto {
   readonly type: 'ColumnAtLine'
+  // eslint-disable-next-line camelcase
   readonly column_label: ColumnLabel
 }
 
@@ -57,6 +58,7 @@ export class ColumnAtLine extends AtLine {
 
 export interface DiscourseAtLineDto extends DollarAndAtLineDto {
   readonly type: 'DiscourseAtLine'
+  // eslint-disable-next-line camelcase
   readonly discourse_label: string
 }
 
@@ -72,6 +74,7 @@ export class DiscourseAtLine extends AtLine {
 
 export interface SurfaceAtLineDto extends DollarAndAtLineDto {
   readonly type: 'SurfaceAtLine'
+  // eslint-disable-next-line camelcase
   readonly surface_label: SurfaceLabel
 }
 

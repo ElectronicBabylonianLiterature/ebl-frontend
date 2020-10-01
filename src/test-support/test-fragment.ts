@@ -3,6 +3,7 @@ import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import { TextLineDto, TextLine } from 'transliteration/domain/text-line'
 import Museum from 'fragmentarium/domain/museum'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const lines: readonly TextLineDto[] = [
   {
@@ -265,6 +266,12 @@ export const fragmentDto = {
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
+  genres: [
+    {
+      category: ['ARCHIVE', 'Administrative', 'Lists'],
+      uncertain: false,
+    },
+  ],
 }
 
 export const fragment = new Fragment({
@@ -310,4 +317,10 @@ export const fragment = new Fragment({
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
   hasPhoto: true,
+  genres: Genres.fromJson([
+    {
+      category: ['ARCHIVE', 'Administrative', 'Lists'],
+      uncertain: false,
+    },
+  ]),
 })

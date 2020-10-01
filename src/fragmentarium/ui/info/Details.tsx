@@ -6,6 +6,8 @@ import CdliLink from './CdliLink'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import ExternalLink from 'common/ExternalLink'
 import './Details.css'
+import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 type Props = {
   fragment: Fragment
@@ -73,7 +75,17 @@ function Accession({ fragment }: Props) {
   return <>Accession: {fragment.accession || '-'}</>
 }
 
-function Details({ fragment }: Props) {
+type DetailsProps = {
+  fragment: Fragment
+  updateGenres: (genres: Genres) => void
+  fragmentService: any
+}
+
+function Details({
+  fragment,
+  updateGenres,
+  fragmentService,
+}: DetailsProps): JSX.Element {
   return (
     <ul className="Details">
       <li className="Details__item">
@@ -93,6 +105,13 @@ function Details({ fragment }: Props) {
       </li>
       <li className="Details__item">
         <Accession fragment={fragment} />
+      </li>
+      <li className="Details__item">
+        <GenreSelection
+          fragment={fragment}
+          updateGenres={updateGenres}
+          fragmentService={fragmentService}
+        />
       </li>
     </ul>
   )

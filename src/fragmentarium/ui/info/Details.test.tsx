@@ -1,56 +1,69 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import Promise from 'bluebird'
 
-let fragment
-let container
-let element
+const updateGenres = jest.fn()
+const fragmentService = {
+  fetchGenres: jest.fn(),
+}
+let fragment: Fragment
 
 function renderDetails() {
-  element = render(
+  render(
     <MemoryRouter>
-      <Details fragment={fragment} />
+      <Details
+        fragment={fragment}
+        updateGenres={updateGenres}
+        fragmentService={fragmentService}
+      />
     </MemoryRouter>
   )
-  container = element.container
 }
-
+beforeEach(async () => {
+  fragmentService.fetchGenres.mockReturnValue(
+    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+  )
+})
 describe('All details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
+      genres: [],
     })
     renderDetails()
   })
 
   it('Renders museum', () => {
-    expect(container).toHaveTextContent(`${fragment.museum.name}`)
+    expect(screen.getByText(`${fragment.museum.name}`)).toBeInTheDocument()
   })
 
-  it('Links to museum home', () => {
-    expect(element.getByText(fragment.museum.name)).toHaveAttribute(
+  it('Links to museum home', () =>
+    expect(screen.getByText(fragment.museum.name)).toHaveAttribute(
       'href',
       'https://britishmuseum.org/'
-    )
-  })
+    ))
 
   it('Renders colection', () => {
-    expect(container).toHaveTextContent(`(${fragment.collection} Collection)`)
+    expect(
+      screen.getByText(`(${fragment.collection} Collection)`)
+    ).toBeInTheDocument()
   })
 
   it(`Renders all joins`, () => {
     for (const item of fragment.joins) {
-      expect(container).toHaveTextContent(item)
+      expect(screen.getByText(item)).toBeInTheDocument()
     }
   })
 
   it(`Links all joins`, () => {
     for (const item of fragment.joins) {
-      expect(element.getByText(item)).toHaveAttribute(
+      expect(screen.getByText(item)).toHaveAttribute(
         'href',
         `/fragmentarium/${item}`
       )
@@ -59,22 +72,27 @@ describe('All details', () => {
 
   it('Renders measures', () => {
     const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.width} × ${fragment.measures.thickness} cm`
-    expect(container).toHaveTextContent(expectedMeasures)
+    expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
   it('Renders CDLI number', () => {
-    expect(container).toHaveTextContent(`CDLI: ${fragment.cdliNumber}`)
+    expect(
+      screen.getByText((_, node) => {
+        return node.textContent === `CDLI: ${fragment.cdliNumber}`
+      })
+    ).toBeInTheDocument()
   })
 
-  it('Links CDLI number', () => {
-    expect(element.getByText(fragment.cdliNumber)).toHaveAttribute(
+  it('Links CDLI number', () =>
+    expect(screen.getByText(fragment.cdliNumber)).toHaveAttribute(
       'href',
       `https://cdli.ucla.edu/${fragment.cdliNumber}`
-    )
-  })
+    ))
 
   it('Renders accession', () => {
-    expect(container).toHaveTextContent(`Accession: ${fragment.accession}`)
+    expect(
+      screen.getByText(`Accession: ${fragment.accession}`)
+    ).toBeInTheDocument()
   })
 })
 
@@ -93,29 +111,30 @@ describe('Missing details', () => {
     renderDetails()
   })
 
-  it('Does not render undefined', () => {
-    expect(container).not.toHaveTextContent('undefined')
-  })
+  it('Does not render undefined', () =>
+    expect(screen.queryByText('undefined')).not.toBeInTheDocument())
 
-  it('Does not render colection', () => {
-    expect(container).not.toHaveTextContent('Collection')
-  })
+  it('Does not render colection', () =>
+    expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
-    expect(container).toHaveTextContent('Joins: -')
+    expect(screen.getByText('Joins: -')).toBeInTheDocument()
   })
 
   it('Does not renders missing measures', () => {
-    const expectedMeasures = `${fragment.measures.length} × ${fragment.measures.thickness} cm`
-    expect(container).toHaveTextContent(expectedMeasures)
+    expect(
+      screen.getByText(
+        `${fragment.measures.length} × ${fragment.measures.thickness} cm`
+      )
+    ).toBeInTheDocument()
   })
 
   it('Renders dash for CDLI number', () => {
-    expect(container).toHaveTextContent('CDLI: -')
+    expect(screen.getByText('CDLI: -')).toBeInTheDocument()
   })
 
   it('Renders dash for accession', () => {
-    expect(container).toHaveTextContent('Accession: -')
+    expect(screen.getByText('Accession: -')).toBeInTheDocument()
   })
 })
 
@@ -127,7 +146,8 @@ describe('Unknown museum', () => {
     renderDetails()
   })
 
-  it('Does not link museum', () => {
-    expect(element.getByText(fragment.museum.name)).not.toHaveAttribute('href')
-  })
+  it('Does not link museum', () =>
+    expect(screen.queryByText(fragment.museum.name)).not.toHaveAttribute(
+      'href'
+    ))
 })

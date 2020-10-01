@@ -47,6 +47,7 @@ import { ControlLine } from 'transliteration/domain/line'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const lineClases = {
   TextLine: TextLine,
@@ -98,6 +99,7 @@ function createFragment(dto): Fragment {
     text: createText(dto.text),
     references: dto.references,
     uncuratedReferences: dto.uncuratedReferences,
+    genres: Genres.fromJson(dto.genres),
   })
 }
 
@@ -173,6 +175,18 @@ class ApiFragmentRepository
 
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
+  }
+  fetchGenres(): Promise<string[][]> {
+    return this.apiClient.fetchJson('/genres', true)
+  }
+
+  updateGenres(number: string, genres: Genres): Promise<Fragment> {
+    const path = createFragmentPath(number, 'genres')
+    return this.apiClient
+      .postJson(path, {
+        genres: genres.genres,
+      })
+      .then(createFragment)
   }
 
   updateTransliteration(

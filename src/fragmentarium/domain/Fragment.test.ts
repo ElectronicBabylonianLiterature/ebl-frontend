@@ -22,6 +22,7 @@ import {
 } from 'test-support/record-fixtures'
 import Museum from './museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const config = {
   number: 'K.1',
@@ -83,6 +84,10 @@ const config = {
   ],
   atf: '$ (atf)',
   hasPhoto: true,
+  genres: Genres.fromJson([
+    { category: ['ARCHIVAL', 'Administrative'], uncertain: false },
+    { category: ['CATALOGUE', 'Memos'], uncertain: true },
+  ]),
 }
 
 describe('Fragment', () => {
@@ -92,7 +97,6 @@ describe('Fragment', () => {
     expect(_.get(fragment, property)).toEqual(expected)
   })
 })
-
 test.each([
   [[{ document: 'CAD 7', pages: [] }], true],
   [[], true],

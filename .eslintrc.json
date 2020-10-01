@@ -6,6 +6,7 @@
         "jest": true
     },
     "extends": [
+        "eslint:recommended",
         "react-app",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
@@ -36,6 +37,7 @@
         "jest-dom"
     ],
     "rules": {
+        "camelcase": "error",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "@typescript-eslint/ban-ts-comment": "warn",

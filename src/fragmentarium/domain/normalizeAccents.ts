@@ -19,19 +19,11 @@ export default function normalizeAccents(userInput: string): string {
   return userInput.replace(accentExpression, (match) => {
     const subindex = match
       .split('')
-      .map((character) =>
-        charactersWithAccents.hasOwnProperty(character)
-          ? charactersWithAccents[character].index
-          : null
-      )
+      .map((character) => charactersWithAccents[character]?.index)
 
     const characterWithoutAccent = match
       .split('')
-      .map((character) =>
-        charactersWithAccents.hasOwnProperty(character)
-          ? charactersWithAccents[character].letter
-          : character
-      )
+      .map((character) => charactersWithAccents[character]?.letter ?? character)
 
     return characterWithoutAccent.concat(subindex).join('')
   })

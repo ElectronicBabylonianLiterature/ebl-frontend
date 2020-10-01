@@ -4,9 +4,10 @@ import { extendMoment, DateRange } from 'moment-range'
 import produce, { Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
-import { Text } from '../../transliteration/domain/text'
+import { Text } from 'transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const moment = extendMoment(Moment)
 
@@ -17,6 +18,7 @@ export interface FragmentInfo {
   readonly description: string
   readonly matchingLines: ReadonlyArray<ReadonlyArray<string>>
   readonly editor: string
+  // eslint-disable-next-line camelcase
   readonly edition_date: string
   readonly references: ReadonlyArray<Reference>
 }
@@ -109,6 +111,7 @@ export class Fragment {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
   readonly atf: string
   readonly hasPhoto: boolean
+  readonly genres: Genres
 
   constructor({
     number,
@@ -130,6 +133,7 @@ export class Fragment {
     uncuratedReferences,
     atf,
     hasPhoto,
+    genres,
   }: {
     number: string
     cdliNumber: string
@@ -150,6 +154,7 @@ export class Fragment {
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
+    genres: Genres
   }) {
     this.number = number
     this.cdliNumber = cdliNumber
@@ -170,6 +175,7 @@ export class Fragment {
     this.uncuratedReferences = uncuratedReferences || null
     this.atf = atf
     this.hasPhoto = hasPhoto
+    this.genres = genres
   }
 
   get hasUncuratedReferences(): boolean {
@@ -191,7 +197,7 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: Reference[]): Fragment {
+  setReferences(references: Array<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
       draft.references = references
     })
