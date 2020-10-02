@@ -6,7 +6,9 @@ const defaultReconstruction = '%n '
 
 describe('createDefaultLineFactory', () => {
   test('no lines', () => {
-    expect(createDefaultLineFactory()()).toEqual(createLine({}))
+    expect(createDefaultLineFactory()()).toEqual(
+      createLine({ reconstruction: defaultReconstruction })
+    )
   })
 
   describe.each([

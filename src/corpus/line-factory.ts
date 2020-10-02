@@ -11,6 +11,8 @@ function nextNumber(number: string): string {
   }
 }
 
+const defaultReconstruction = '%n '
+
 export function createDefaultLineFactory(
   lastLine: Line | null = null
 ): () => Line {
@@ -18,7 +20,7 @@ export function createDefaultLineFactory(
     ? () =>
         createLine({
           number: nextNumber(lastLine.number),
-          reconstruction: '%n ',
+          reconstruction: defaultReconstruction,
           manuscripts: lastLine.manuscripts.map((manuscript) =>
             createManuscriptLine({
               manuscriptId: manuscript.manuscriptId,
@@ -27,5 +29,5 @@ export function createDefaultLineFactory(
             })
           ),
         })
-    : () => createLine({})
+    : () => createLine({ reconstruction: defaultReconstruction })
 }
