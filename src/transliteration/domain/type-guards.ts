@@ -19,6 +19,7 @@ import {
   Column,
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
+import { EmptyLine } from 'transliteration/domain/line'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -56,6 +57,10 @@ export function isColumn(token: Token): token is Column {
 
 export function isTextLine(line: AbstractLine): line is TextLine {
   return line instanceof TextLine
+}
+
+export function isEmptyLine(line: AbstractLine): line is EmptyLine {
+  return line instanceof EmptyLine
 }
 
 export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
