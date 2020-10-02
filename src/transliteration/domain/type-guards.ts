@@ -28,6 +28,7 @@ export function isEnclosure(token: Token): token is Enclosure {
     'IntentionalOmission',
     'Removal',
     'Erasure',
+    'Emendation',
   ].includes(token.type)
 }
 

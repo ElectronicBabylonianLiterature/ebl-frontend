@@ -106,7 +106,7 @@ const defaultManuscriptDto = {
 
 const defaultLineDto = {
   number: '',
-  reconstruction: '',
+  reconstruction: '%n ',
   manuscripts: [],
 }
 
