@@ -3,6 +3,7 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { commentaryProtocols } from 'test-support/lines/text-commentary-protocols'
 import * as at from 'test-support/lines/at'
 import * as columns from 'test-support/lines/text-columns'
+import * as normalized from 'test-support/lines/text-normalized'
 import * as composite from 'test-support/lines/composite'
 import * as control from 'test-support/lines/control'
 import * as dollar from 'test-support/lines/dollar'
@@ -3401,5 +3402,6 @@ export default new Text({
     dollar.loose,
     dollar.seal,
     control.comment,
+    normalized.akkadianWords,
   ],
 })
