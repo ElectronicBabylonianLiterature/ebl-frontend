@@ -3403,5 +3403,6 @@ export default new Text({
     dollar.seal,
     control.comment,
     normalized.akkadianWords,
+    normalized.breaks,
   ],
 })

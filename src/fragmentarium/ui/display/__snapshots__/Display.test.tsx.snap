@@ -5567,6 +5567,132 @@ exports[`Snapshot 1`] = `
              
           </td>
         </tr>
+        <tr
+          id="line-39"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <sup>
+              (
+              n+2
+              )
+            </sup>
+          </td>
+          <td
+            colspan="4"
+          >
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                |
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                (|)
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                ||
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                (||)
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
       </tbody>
     </table>
     <ol

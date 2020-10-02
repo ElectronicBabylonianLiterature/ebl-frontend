@@ -15,8 +15,6 @@ export interface BaseToken {
   readonly parts?: readonly Token[]
   readonly erasure?: string
   readonly enclosureType: readonly EnclosureType[]
-  readonly lemmatizable?: boolean
-  readonly alignable?: boolean
 }
 
 export interface NotLemmatizableToken extends BaseToken {
@@ -32,18 +30,25 @@ export interface ValueToken extends NotLemmatizableToken {
 
 export interface Word extends BaseToken {
   readonly type: 'Word' | 'LoneDeterminative'
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly alignment?: null | number
+  readonly lemmatizable: boolean
+  readonly alignable?: boolean
+  readonly uniqueLemma: readonly string[]
   readonly language: string
   readonly normalized: boolean
   readonly erasure: string
   readonly parts: readonly Token[]
 }
 
-export interface AkkadianWord extends BaseToken {
+export interface AkkadianWord extends NotLemmatizableToken {
   readonly type: 'AkkadianWord'
   readonly parts: readonly Token[]
   readonly modifiers: readonly string[]
+}
+
+export interface Break extends NotLemmatizableToken {
+  readonly type: 'MetricalFootSeparator' | 'Caesura'
+  readonly value: '|' | '(|)' | '||' | '(||)'
+  readonly isUncertain: boolean
 }
 
 export interface Shift extends NotLemmatizableToken {
@@ -146,6 +151,7 @@ export type Token =
   | ValueToken
   | Word
   | AkkadianWord
+  | Break
   | Shift
   | Erasure
   | Joiner
