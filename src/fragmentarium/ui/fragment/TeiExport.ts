@@ -20,19 +20,21 @@ function getHeader(fragment: Fragment): string {
   const start =
     '<?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><teiHeader><fileDesc>'
   const titleStmt =
-    '<titleStmt><title>' + fragment.number + '</title></titleStmt>'
+    '<titleStmt><title>' +
+    escapeXmlChars(fragment.number) +
+    '</title></titleStmt>'
   const pubStmt =
     '<publicationStmt><p>' +
-    fragment.museum.name +
+    escapeXmlChars(fragment.museum.name) +
     '</p><p>' +
-    fragment.collection +
+    escapeXmlChars(fragment.collection) +
     ' Collection</p></publicationStmt>'
-
-  let sourceDesc = '<sourceDesc><p>' + fragment.description + '</p>'
+  let sourceDesc =
+    '<sourceDesc><p>' + escapeXmlChars(fragment.description) + '</p>'
 
   if (fragment.publication)
-    sourceDesc += '<p>Publication: ' + fragment.publication + '</p>'
-
+    sourceDesc +=
+      '<p>Publication: ' + escapeXmlChars(fragment.publication) + '</p>'
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
   return result + start + titleStmt + pubStmt + sourceDesc + end
@@ -41,7 +43,7 @@ function getHeader(fragment: Fragment): string {
 function getEnd(fragment: Fragment): string {
   const notes =
     fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' '
-      ? '<note>' + fragment.notes + '</note>'
+      ? '<note>' + escapeXmlChars(fragment.notes) + '</note>'
       : ''
   return notes + '</body></text></TEI>'
 }
@@ -131,7 +133,7 @@ function getWord(word: Token, escapedWordValue: string): string {
 function getLemata(word: Word) {
   let lemmata = ''
   for (let i = 0; i < word.uniqueLemma.length; i++) {
-    lemmata += word.uniqueLemma[i] + ' '
+    lemmata += escapeXmlChars(word.uniqueLemma[i]) + ' '
   }
   return lemmata.slice(0, -1)
 }
