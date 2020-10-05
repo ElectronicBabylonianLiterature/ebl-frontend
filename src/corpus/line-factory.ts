@@ -1,6 +1,6 @@
-import { createLine, createManuscriptLine } from './text'
+import { createLine, createManuscriptLine, Line } from './text'
 
-function nextNumber(number) {
+function nextNumber(number: string): string {
   const match = /^(?<number>\d+)(?<prime>')?$/.exec(number)
   if (match && match.groups) {
     const value = Number(match.groups.number)
@@ -11,11 +11,16 @@ function nextNumber(number) {
   }
 }
 
-export function createDefaultLineFactory(lastLine: any = null) {
+const defaultReconstruction = '%n '
+
+export function createDefaultLineFactory(
+  lastLine: Line | null = null
+): () => Line {
   return lastLine
     ? () =>
         createLine({
           number: nextNumber(lastLine.number),
+          reconstruction: defaultReconstruction,
           manuscripts: lastLine.manuscripts.map((manuscript) =>
             createManuscriptLine({
               manuscriptId: manuscript.manuscriptId,
@@ -24,5 +29,5 @@ export function createDefaultLineFactory(lastLine: any = null) {
             })
           ),
         })
-    : () => createLine({})
+    : () => createLine({ reconstruction: defaultReconstruction })
 }

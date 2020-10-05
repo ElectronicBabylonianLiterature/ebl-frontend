@@ -15,7 +15,7 @@ interface Props {
 }
 
 class AlignmentForm extends Component<Props> {
-  handleAlignmentChange = (event: any) => {
+  handleAlignmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.props.onChange(
       produce(this.props.token, (draft: Draft<AtfToken>) => {
         const alignmentIndex = event.target.value
@@ -38,7 +38,7 @@ class AlignmentForm extends Component<Props> {
           >
             <option value="">--</option>
             {this.props.reconstructionTokens.map((reconstructionToken, index) =>
-              reconstructionToken.type === 'AkkadianWord' ? (
+              ['AkkadianWord', 'Word'].includes(reconstructionToken.type) ? (
                 <option key={index} value={index}>
                   {' '}
                   {reconstructionToken.value}
@@ -68,23 +68,23 @@ export default class WordAligner extends Component<Props, State> {
     }
   }
 
-  handleClick = (event: SyntheticEvent) => {
+  handleClick = (event: SyntheticEvent): void => {
     this.setState({
       target: event.target,
       show: !this.state.show,
     })
   }
 
-  handleChange = (value: AtfToken) => {
+  handleChange = (value: AtfToken): void => {
     this.props.onChange(value)
     this.hide()
   }
 
-  hide = () => {
+  hide = (): void => {
     this.setState({ show: false })
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <span className="WordAligner">
         <Word
