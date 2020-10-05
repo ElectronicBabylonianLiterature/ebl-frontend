@@ -203,7 +203,7 @@ class FragmentService {
     return Promise.all(
       mapText<string, Promise<Lemma>>(
         text,
-        (line) => line.flatMap((token) => token.uniqueLemma || []),
+        (line) => line.flatMap((token) => token.uniqueLemma ?? []),
         (uniqueLemma: string): Promise<Lemma> =>
           this.wordRepository
             .find(uniqueLemma)

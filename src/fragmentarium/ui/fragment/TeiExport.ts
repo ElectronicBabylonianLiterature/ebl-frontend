@@ -37,6 +37,7 @@ function getHeader(fragment: Fragment): string {
     sourceDesc +=
       '<p>Publication: ' + escapeXmlChars(fragment.publication) + '</p>'
 
+
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
   return result + start + titleStmt + pubStmt + sourceDesc + end
@@ -45,6 +46,7 @@ function getHeader(fragment: Fragment): string {
 function getEnd(fragment: Fragment): string {
   const notes =
     fragment.notes && fragment.notes.length > 0 && fragment.notes !== ' '
+
       ? '<note>' + escapeXmlChars(fragment.notes) + '</note>'
       : ''
   return notes + '</body></text></TEI>'

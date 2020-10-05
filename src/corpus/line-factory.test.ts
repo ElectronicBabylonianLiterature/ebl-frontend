@@ -2,9 +2,13 @@ import { createLine, createManuscriptLine } from './text'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
 
+const defaultReconstruction = '%n '
+
 describe('createDefaultLineFactory', () => {
   test('no lines', () => {
-    expect(createDefaultLineFactory()()).toEqual(createLine({}))
+    expect(createDefaultLineFactory()()).toEqual(
+      createLine({ reconstruction: defaultReconstruction })
+    )
   })
 
   describe.each([
@@ -25,6 +29,7 @@ describe('createDefaultLineFactory', () => {
         ).toEqual(
           createLine({
             number: expected,
+            reconstruction: defaultReconstruction,
           })
         )
       })
@@ -42,6 +47,7 @@ describe('createDefaultLineFactory', () => {
           )()
         ).toEqual(
           createLine({
+            reconstruction: defaultReconstruction,
             manuscripts: [
               createManuscriptLine({
                 number: expected,
@@ -72,6 +78,7 @@ describe('createDefaultLineFactory', () => {
       )()
     ).toEqual(
       createLine({
+        reconstruction: defaultReconstruction,
         manuscripts: produce(manuscripts, (draft) => {
           draft.forEach((manuscript) => {
             manuscript.atf = ''
