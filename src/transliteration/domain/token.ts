@@ -5,6 +5,7 @@ export type EnclosureType =
   | 'BROKEN_AWAY'
   | 'PERHAPS_BROKEN_AWAY'
   | 'PERHAPS'
+  | 'EMENDATION'
   | 'DOCUMENT_ORIENTED_GLOSS'
 
 export interface BaseToken {
@@ -31,12 +32,23 @@ export interface Word extends BaseToken {
   readonly type: 'Word' | 'LoneDeterminative'
   readonly lemmatizable: boolean
   readonly alignable?: boolean
-  readonly uniqueLemma: ReadonlyArray<string>
-  readonly alignment?: null | number
+  readonly uniqueLemma: readonly string[]
   readonly language: string
   readonly normalized: boolean
   readonly erasure: string
   readonly parts: readonly Token[]
+}
+
+export interface AkkadianWord extends NotLemmatizableToken {
+  readonly type: 'AkkadianWord'
+  readonly parts: readonly Token[]
+  readonly modifiers: readonly string[]
+}
+
+export interface Break extends NotLemmatizableToken {
+  readonly type: 'MetricalFootSeparator' | 'Caesura'
+  readonly value: '|' | '(|)' | '||' | '(||)'
+  readonly isUncertain: boolean
 }
 
 export interface Shift extends NotLemmatizableToken {
@@ -118,6 +130,7 @@ export interface Enclosure extends NotLemmatizableToken {
     | 'AccidentalOmission'
     | 'IntentionalOmission'
     | 'Removal'
+    | 'Emendation'
     | 'Erasure'
     | 'DocumentOrientedGloss'
   readonly side: 'LEFT' | 'CENTER' | 'RIGHT'
@@ -137,6 +150,8 @@ export interface Column extends NotLemmatizableToken {
 export type Token =
   | ValueToken
   | Word
+  | AkkadianWord
+  | Break
   | Shift
   | Erasure
   | Joiner

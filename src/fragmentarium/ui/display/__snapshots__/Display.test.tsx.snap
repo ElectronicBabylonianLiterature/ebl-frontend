@@ -5319,6 +5319,380 @@ exports[`Snapshot 1`] = `
              
           </td>
         </tr>
+        <tr
+          id="line-38"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <sup>
+              (
+              n+1
+              )
+            </sup>
+          </td>
+          <td
+            colspan="4"
+          >
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__Emendation"
+                >
+                  <span
+                    class=""
+                  >
+                    &lt;
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--EMENDATION"
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__Emendation"
+                >
+                  <span
+                    class="Transliteration__Emendation--EMENDATION"
+                  >
+                    &gt;
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  <span
+                    class=""
+                  >
+                    [
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY"
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__Joiner"
+                >
+                  <span
+                    class="Transliteration__Joiner--BROKEN_AWAY"
+                  >
+                    -
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__PerhapsBrokenAway"
+                >
+                  <span
+                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                  >
+                    (
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__PerhapsBrokenAway"
+                >
+                  <span
+                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
+                  >
+                    )
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__UnknownNumberOfSigns"
+                >
+                  …
+                </span>
+                <span
+                  class="Transliteration__BrokenAway"
+                >
+                  <span
+                    class="Transliteration__BrokenAway--BROKEN_AWAY"
+                  >
+                    ]
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__PerhapsBrokenAway"
+                >
+                  <span
+                    class=""
+                  >
+                    (
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class="Transliteration__ValueToken--PERHAPS"
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__PerhapsBrokenAway"
+                >
+                  <span
+                    class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                  >
+                    )
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__Joiner"
+                >
+                  <span
+                    class=""
+                  >
+                    -
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__ValueToken"
+                >
+                  <span
+                    class=""
+                  >
+                    kur
+                  </span>
+                </span>
+                <span
+                  class="Transliteration__UnknownNumberOfSigns"
+                >
+                  …
+                </span>
+              </span>
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-39"
+        >
+          <td
+            class="Transliteration__TextLine"
+          >
+            <sup>
+              (
+              n+2
+              )
+            </sup>
+          </td>
+          <td
+            colspan="4"
+          >
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                |
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__MetricalFootSeparator Transliteration__MetricalFootSeparator--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                (|)
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                ||
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Caesura Transliteration__Caesura--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                (||)
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+            >
+              …
+            </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
       </tbody>
     </table>
     <ol

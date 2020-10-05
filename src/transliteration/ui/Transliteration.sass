@@ -52,7 +52,8 @@
 
   &__Reading,
   &__UnidentifiedSign,
-  &__Joiner
+  &__Joiner,
+  &__AkkadianWord
     @include commentary-protocols
     
     font-style: italic
@@ -109,11 +110,25 @@
     &--BROKEN_AWAY
       color: darkgrey
 
+  &__AkkadianWord
+    .Transliteration__ValueToken
+      @include commentary-protocols
+
+      &--BROKEN_AWAY
+        color: darkgrey
+
+  &__Caesura,
+  &__MetricalFootSeparator
+    @include normal-font
+
+    color: red
+    
   &__BrokenAway,
   &__PerhapsBrokenAway,
   &__AccidentalOmission,
   &__IntentionalOmission,
-  &__Removal
+  &__Removal,
+  &__Emendation
     @include normal-font
     @include commentary-protocols
 
