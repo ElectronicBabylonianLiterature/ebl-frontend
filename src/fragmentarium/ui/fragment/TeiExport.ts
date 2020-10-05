@@ -29,14 +29,12 @@ function getHeader(fragment: Fragment): string {
     '</p><p>' +
     escapeXmlChars(fragment.collection) +
     ' Collection</p></publicationStmt>'
-
   let sourceDesc =
     '<sourceDesc><p>' + escapeXmlChars(fragment.description) + '</p>'
 
   if (fragment.publication)
     sourceDesc +=
       '<p>Publication: ' + escapeXmlChars(fragment.publication) + '</p>'
-
   const end = '</sourceDesc></fileDesc></teiHeader><text><body>'
 
   return result + start + titleStmt + pubStmt + sourceDesc + end
