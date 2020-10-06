@@ -1,12 +1,16 @@
 import React from 'react'
-import { act, render } from '@testing-library/react'
+import { act, render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
-import withData from './withData'
+import withData, { Config, WithData } from './withData'
 import ErrorReporterContext, {
   ErrorReporter,
   ConsoleErrorReporter,
 } from 'ErrorReporterContext'
+
+interface Props {
+  prop: string
+}
 
 const data = 'Test data'
 const defaultData = 'Default data'
@@ -15,19 +19,14 @@ const propValue = 'passed value'
 const newPropValue = 'new value'
 const errorMessage = 'error'
 
-let element
-let filter
-let config
-let getter
-
-let ComponentWithData
-let InnerComponent
+let element: RenderResult
+let filter: jest.Mock<boolean, [Props]>
+let config: Config<Props, string>
+let getter: jest.Mock<Promise<string>, [Props]>
+let ComponentWithData: React.ComponentType<Props>
+let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
 
 const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
-
-interface Props {
-  prop: string
-}
 
 async function renderWithData(): Promise<void> {
   await act(async () => {
@@ -87,7 +86,7 @@ beforeEach(async () => {
   filter.mockReturnValue(true)
   getter = jest.fn()
   InnerComponent = jest.fn()
-  InnerComponent.mockImplementation((props) => (
+  InnerComponent.mockImplementation((props: WithData<Props, string>) => (
     <h1>
       {props.prop} {props.data}
     </h1>
@@ -97,7 +96,11 @@ beforeEach(async () => {
     filter,
     defaultData,
   }
-  ComponentWithData = withData(InnerComponent, getter, config)
+  ComponentWithData = withData<Props, unknown, string>(
+    InnerComponent,
+    getter,
+    config
+  )
 })
 
 describe('On successful get', () => {
@@ -198,10 +201,12 @@ describe('Filtering', () => {
 
 describe('Child component crash', () => {
   beforeEach(() => {
-    const CrashingComponent = withData<unknown, unknown, string>(() => {
-      throw new Error(errorMessage)
-    }, getter)
-    getter.mockReturnValueOnce(Promise.resolve(data))
+    const CrashingComponent = withData<unknown, unknown, string>(
+      () => {
+        throw new Error(errorMessage)
+      },
+      () => Promise.resolve(data)
+    )
     element = render(
       <ErrorReporterContext.Provider value={errorReportingService}>
         <CrashingComponent />
