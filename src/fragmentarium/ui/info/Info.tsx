@@ -6,6 +6,10 @@ import OrganizationLinks from 'fragmentarium/ui/info/OrganizationLinks'
 import UncuratedReferences from 'fragmentarium/ui/info/UncuratedReferences'
 import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import HelpTrigger from 'common/HelpTrigger'
+import _ from 'lodash'
+import { Popover, Row } from 'react-bootstrap'
+import './Info.css'
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
@@ -18,6 +22,34 @@ export default function Info({
 }: Props): JSX.Element {
   const updateGenres = (genres) =>
     onSave(fragmentService.updateGenres(fragment.number, genres))
+  const ReferencesHelp = () => (
+    <Popover id={_.uniqueId('ReferencesHelp-')} title="References">
+      <Popover.Content>
+        <dl>
+          <dt>
+            <code>C</code>
+          </dt>
+          <dd>Copy</dd>
+
+          <dt>
+            <code>P</code>
+          </dt>
+          <dd>Photograph</dd>
+
+          <dt>
+            <code>E</code>
+          </dt>
+          <dd>Edition</dd>
+
+          <dt>
+            <code>D</code>
+          </dt>
+          <dd>Discussion</dd>
+        </dl>
+      </Popover.Content>
+    </Popover>
+  )
+
   return (
     <>
       <Details
@@ -26,7 +58,12 @@ export default function Info({
         fragmentService={fragmentService}
       />
       <section>
-        <h3>References</h3>
+        <Row>
+          <h3>References</h3>
+          <div className="ReferencesHelp__icon">
+            <HelpTrigger overlay={ReferencesHelp()} />
+          </div>
+        </Row>
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
