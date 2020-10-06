@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, RenderResult } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
@@ -28,24 +28,20 @@ let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
 
 const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
 
-async function renderWithData(): Promise<void> {
-  await act(async () => {
-    element = render(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <ComponentWithData prop={propValue} />{' '}
-      </ErrorReporterContext.Provider>
-    )
-  })
+function renderWithData(): void {
+  element = render(
+    <ErrorReporterContext.Provider value={errorReportingService}>
+      <ComponentWithData prop={propValue} />{' '}
+    </ErrorReporterContext.Provider>
+  )
 }
 
-async function rerender(prop): Promise<void> {
-  await act(async () => {
-    element.rerender(
-      <ErrorReporterContext.Provider value={errorReportingService}>
-        <ComponentWithData prop={prop} />{' '}
-      </ErrorReporterContext.Provider>
-    )
-  })
+function rerender(prop: string): void {
+  element.rerender(
+    <ErrorReporterContext.Provider value={errorReportingService}>
+      <ComponentWithData prop={prop} />{' '}
+    </ErrorReporterContext.Provider>
+  )
 }
 
 function clearMocks(): void {
@@ -106,7 +102,7 @@ beforeEach(async () => {
 describe('On successful get', () => {
   beforeEach(async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
-    await renderWithData()
+    renderWithData()
     await element.findByText(RegExp(propValue))
   })
 
@@ -121,7 +117,7 @@ describe('On successful get', () => {
 
     describe('Prop updated', () => {
       beforeEach(async () => {
-        await rerender(newPropValue)
+        rerender(newPropValue)
         await element.findByText(RegExp(newPropValue))
       })
 
@@ -130,8 +126,8 @@ describe('On successful get', () => {
     })
 
     describe('Prop did not update', () => {
-      beforeEach(async () => {
-        await rerender(propValue)
+      beforeEach(() => {
+        rerender(propValue)
       })
 
       it('Does not query the API', () => {
@@ -148,7 +144,7 @@ describe('On successful get', () => {
 describe('On failed request', () => {
   beforeEach(async () => {
     getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
-    await renderWithData()
+    renderWithData()
     await element.findByText(errorMessage)
   })
 
@@ -158,12 +154,12 @@ describe('On failed request', () => {
 })
 
 describe('When unmounting', () => {
-  let promise
+  let promise: Promise<string>
 
   beforeEach(async () => {
     promise = new Promise(_.noop)
     getter.mockReturnValueOnce(promise)
-    await renderWithData()
+    renderWithData()
     element.unmount()
   })
 
@@ -183,7 +179,7 @@ describe('When unmounting', () => {
 describe('Filtering', () => {
   beforeEach(async () => {
     filter.mockReturnValueOnce(false)
-    await renderWithData()
+    renderWithData()
   })
 
   it('Calls the filter with props', () => {
@@ -200,7 +196,7 @@ describe('Filtering', () => {
 })
 
 describe('Child component crash', () => {
-  beforeEach(() => {
+  it('Displays error message', async () => {
     const CrashingComponent = withData<unknown, unknown, string>(
       () => {
         throw new Error(errorMessage)
@@ -212,9 +208,6 @@ describe('Child component crash', () => {
         <CrashingComponent />
       </ErrorReporterContext.Provider>
     )
-  })
-
-  it('Displays error message', async () => {
     await element.findByText("Something's gone wrong.")
   })
 })
