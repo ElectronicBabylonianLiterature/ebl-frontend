@@ -5,3 +5,14 @@
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
 }
+
+dt {
+  float: left;
+  clear: left;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+dd {
+  float: left;
+}
