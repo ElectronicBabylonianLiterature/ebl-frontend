@@ -1,5 +1,5 @@
 import React from 'react'
-import { Chapter, Line, ManuscriptLine } from 'corpus/text'
+import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { Draft } from 'immer'
