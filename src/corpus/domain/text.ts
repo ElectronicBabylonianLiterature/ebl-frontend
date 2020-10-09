@@ -3,7 +3,7 @@ import { Period, PeriodModifier, periodModifiers, periods } from './period'
 
 import { Provenance, provenances } from './provenance'
 
-import produce, { castDraft, Draft, immerable } from 'immer'
+import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
 

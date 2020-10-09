@@ -55,6 +55,32 @@ function ChapterLineForm({
           />
         </Col>
       </Form.Row>
+      <Form.Row>
+        <Form.Check
+          inline
+          type="checkbox"
+          id={_.uniqueId('secondLineOfParallelism-')}
+          label="second line of parallelism"
+          checked={value.isSecondLineOfParallelism}
+          onChange={(): void =>
+            handleChangeValue('isSecondLineOfParallelism')(
+              !value.isSecondLineOfParallelism
+            )
+          }
+        />
+        <Form.Check
+          inline
+          type="checkbox"
+          id={_.uniqueId('beginningOfSection-')}
+          label="beginning of a section"
+          checked={value.isBeginningOfSection}
+          onChange={(): void =>
+            handleChangeValue('isBeginningOfSection')(
+              !value.isBeginningOfSection
+            )
+          }
+        />
+      </Form.Row>
       <ManuscriptLines
         lines={value.manuscripts}
         manuscripts={manuscripts}

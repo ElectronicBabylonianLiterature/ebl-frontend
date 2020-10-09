@@ -146,6 +146,14 @@ export default class AppDriver {
     ).toEqual(String(expectedValue))
   }
 
+  expectChecked(label: Matcher): void {
+    expect(this.getElement().getByLabelText(label)).toBeChecked()
+  }
+
+  expectNotChecked(label: Matcher): void {
+    expect(this.getElement().getByLabelText(label)).not.toBeChecked()
+  }
+
   async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {
     const input = this.getElement().getByLabelText(label)
     await act(async () => {
