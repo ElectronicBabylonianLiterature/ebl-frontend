@@ -4,22 +4,37 @@ import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
-import { produce } from 'immer'
+import produce, { castDraft } from 'immer'
 import { ManuscriptLines } from './ManuscriptLines'
+import { Manuscript, Line, Chapter } from 'corpus/domain/text'
 
-function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
-  const handleChangeValue = (property) => (propertyValue) =>
+interface FormProps {
+  value: Line
+  manuscripts: readonly Manuscript[]
+  onChange: (line: Line) => void
+  disabled?: boolean
+}
+
+function ChapterLineForm({
+  value,
+  manuscripts,
+  onChange,
+  disabled = false,
+}: FormProps) {
+  const handleChangeValue = (property: string) => (propertyValue): void =>
     onChange(
       produce(value, (draft) => {
         draft[property] = propertyValue
       })
     )
-  const handleChange = (property) => (event) =>
+
+  const handleChange = (property: string) => (event): void => {
     onChange(
       produce(value, (draft) => {
         draft[property] = event.target.value
       })
     )
+  }
   return (
     <>
       <Form.Row>
@@ -40,6 +55,32 @@ function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
           />
         </Col>
       </Form.Row>
+      <Form.Row>
+        <Form.Check
+          inline
+          type="checkbox"
+          id={_.uniqueId('secondLineOfParallelism-')}
+          label="second line of parallelism"
+          checked={value.isSecondLineOfParallelism}
+          onChange={(): void =>
+            handleChangeValue('isSecondLineOfParallelism')(
+              !value.isSecondLineOfParallelism
+            )
+          }
+        />
+        <Form.Check
+          inline
+          type="checkbox"
+          id={_.uniqueId('beginningOfSection-')}
+          label="beginning of a section"
+          checked={value.isBeginningOfSection}
+          onChange={(): void =>
+            handleChangeValue('isBeginningOfSection')(
+              !value.isBeginningOfSection
+            )
+          }
+        />
+      </Form.Row>
       <ManuscriptLines
         lines={value.manuscripts}
         manuscripts={manuscripts}
@@ -50,11 +91,23 @@ function ChapterLineForm({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-export default function ChapterLines({ chapter, onChange, onSave, disabled }) {
-  const handleChange = (lines) =>
+interface ChapterLinesLinesProps {
+  chapter: Chapter
+  onChange: (chapter: Chapter) => void
+  onSave: () => unknown
+  disabled?: boolean
+}
+
+export default function ChapterLines({
+  chapter,
+  onChange,
+  onSave,
+  disabled = false,
+}: ChapterLinesLinesProps): JSX.Element {
+  const handleChange = (lines: Line[]): void =>
     onChange(
       produce(chapter, (draft) => {
-        draft.lines = lines
+        draft.lines = castDraft(lines)
       })
     )
   return (
@@ -66,7 +119,7 @@ export default function ChapterLines({ chapter, onChange, onSave, disabled }) {
           value={chapter.lines}
           onChange={handleChange}
         >
-          {(line, onChange) => (
+          {(line: Line, onChange: (line: Line) => void) => (
             <ChapterLineForm
               onChange={onChange}
               value={line}

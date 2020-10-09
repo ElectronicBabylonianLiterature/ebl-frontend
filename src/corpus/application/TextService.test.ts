@@ -70,6 +70,8 @@ const textDto = {
               value: 'text',
             },
           ],
+          isBeginningOfSection: true,
+          isSecondLineOfParallelism: true,
           manuscripts: [
             {
               manuscriptId: 1,
@@ -154,6 +156,8 @@ const text = createText({
               value: 'text',
             },
           ],
+          isBeginningOfSection: true,
+          isSecondLineOfParallelism: true,
           manuscripts: [
             createManuscriptLine({
               manuscriptId: 1,
@@ -235,6 +239,8 @@ const linesDto = {
     {
       number: '1',
       reconstruction: 'reconstructed text',
+      isBeginningOfSection: true,
+      isSecondLineOfParallelism: true,
       manuscripts: [
         {
           manuscriptId: 1,

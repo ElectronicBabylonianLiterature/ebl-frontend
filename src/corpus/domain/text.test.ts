@@ -59,6 +59,8 @@ const lineConfig: Line = {
       value: 'text',
     },
   ],
+  isSecondLineOfParallelism: true,
+  isBeginningOfSection: true,
   manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
