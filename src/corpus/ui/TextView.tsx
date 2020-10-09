@@ -3,7 +3,7 @@ import AppContent from 'common/AppContent'
 import InlineMarkdown from 'common/InlineMarkdown'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
-import { Text } from './text'
+import { Text } from 'corpus/domain/text'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 

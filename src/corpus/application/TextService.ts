@@ -8,9 +8,9 @@ import {
   createLine,
   types,
   createManuscriptLine,
-} from './text'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
+} from 'corpus/domain/text'
+import { periodModifiers, periods } from 'corpus/domain/period'
+import { provenances } from 'corpus/domain/provenance'
 import { produce } from 'immer'
 import _ from 'lodash'
 

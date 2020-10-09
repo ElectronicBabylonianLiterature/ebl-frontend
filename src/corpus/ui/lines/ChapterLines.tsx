@@ -3,7 +3,7 @@ import { Button, Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
-import { createDefaultLineFactory } from 'corpus/line-factory'
+import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import { produce } from 'immer'
 import { ManuscriptLines } from './ManuscriptLines'
 

@@ -1,4 +1,4 @@
-import { createLine, createManuscriptLine, Line } from './text'
+import { createLine, createManuscriptLine, Line } from 'corpus/domain/text'
 
 function nextNumber(number: string): string {
   const match = /^(?<number>\d+)(?<prime>')?$/.exec(number)

@@ -9,10 +9,10 @@ import {
   createLine,
   createManuscriptLine,
   types,
-} from './text'
+} from 'corpus/domain/text'
 import TextService from './TextService'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
+import { periodModifiers, periods } from 'corpus/domain/period'
+import { provenances } from 'corpus/domain/provenance'
 
 const apiClient = {
   fetchJson: jest.fn(),

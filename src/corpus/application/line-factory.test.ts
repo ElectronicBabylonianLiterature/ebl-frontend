@@ -1,4 +1,4 @@
-import { createLine, createManuscriptLine } from './text'
+import { createLine, createManuscriptLine } from 'corpus/domain/text'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
 

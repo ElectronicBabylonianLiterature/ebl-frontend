@@ -1,8 +1,8 @@
 import React from 'react'
 import ListForm from 'common/List'
-import { createManuscript } from 'corpus/text'
+import { createManuscript } from 'corpus/domain/text'
 import ManuscriptForm from './ManuscriptForm'
-import populateIds from './populateIds'
+import populateIds from 'corpus/application/populateIds'
 import { produce } from 'immer'
 import { Button, Form } from 'react-bootstrap'
 

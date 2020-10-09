@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
-import ChapterManuscripts from './manuscripts/ChapterManuscripts'
-import ChapterLines from './lines/ChapterLines'
-import ChapterAlignment from 'corpus/alignment/ChapterAlignment'
+import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
+import ChapterLines from 'corpus/ui/lines/ChapterLines'
+import ChapterAlignment from 'corpus/ui/alignment/ChapterAlignment'
 import SessionContext from 'auth/SessionContext'
 import ChapterDetails from './ChapterDetails'
 
