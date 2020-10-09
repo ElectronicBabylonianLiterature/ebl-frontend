@@ -3,7 +3,7 @@ import { Period, PeriodModifier, periodModifiers, periods } from './period'
 
 import { Provenance, provenances } from './provenance'
 
-import produce, { Draft, immerable } from 'immer'
+import produce, { castDraft, Draft, immerable } from 'immer'
 
 import _ from 'lodash'
 
@@ -45,7 +45,7 @@ export class Manuscript {
   notes = ''
   references: ReadonlyArray<Reference> = []
 
-  get siglum() {
+  get siglum(): string {
     return [
       _.get(this, 'provenance.abbreviation', ''),
       _.get(this, 'period.abbreviation', ''),
@@ -99,13 +99,18 @@ export type Line = {
   readonly number: string
   readonly reconstruction: string
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly isSecondLineOfParallelism: boolean
+  readonly isBeginningOfSection: boolean
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
 export const createLine: (config: Partial<Line>) => Line = produce(
-  (draft: any): Line => ({
+  (draft: Draft<Partial<Line>>): Line => ({
     number: '',
     reconstruction: '',
     manuscripts: [],
+    reconstructionTokens: [],
+    isSecondLineOfParallelism: false,
+    isBeginningOfSection: false,
     ...draft,
   })
 )
@@ -119,7 +124,7 @@ export type Chapter = {
   readonly manuscripts: ReadonlyArray<Manuscript>
   readonly lines: ReadonlyArray<Line>
 }
-export const createChapter: (x0: Partial<Chapter>) => Chapter = produce(
+export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
   (draft: any): Chapter => ({
     classification: 'Ancient',
     stage: 'Neo-Assyrian',
@@ -140,7 +145,7 @@ export class Text {
   approximateVerses = false
   chapters: ReadonlyArray<Chapter> = []
 
-  findChapterIndex(stage: string, name: string) {
+  findChapterIndex(stage: string, name: string): number {
     return this.chapters.findIndex(
       (chapter) => chapter.stage === stage && chapter.name === name
     )

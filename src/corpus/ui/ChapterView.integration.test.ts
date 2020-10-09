@@ -78,6 +78,8 @@ const textDto = {
         {
           number: "1'",
           reconstruction: 'ideal',
+          isBeginningOfSection: false,
+          isSecondLineOfParallelism: false,
           manuscripts: [
             {
               manuscriptId: 1,
@@ -107,6 +109,8 @@ const defaultManuscriptDto = {
 const defaultLineDto = {
   number: '',
   reconstruction: '%n ',
+  isBeginningOfSection: false,
+  isSecondLineOfParallelism: false,
   manuscripts: [],
 }
 
