@@ -15,7 +15,7 @@ import FragmentRepository from 'fragmentarium/infrastructure/FragmentRepository'
 import ApiImageRepository from 'fragmentarium/infrastructure/ImageRepository'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
-import TextService from 'corpus/TextService'
+import TextService from 'corpus/application/TextService'
 import MemorySession, { Session, guestSession } from 'auth/Session'
 import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
@@ -144,6 +144,14 @@ export default class AppDriver {
     expect(
       (this.getElement().getByLabelText(label) as HTMLInputElement).value
     ).toEqual(String(expectedValue))
+  }
+
+  expectChecked(label: Matcher): void {
+    expect(this.getElement().getByLabelText(label)).toBeChecked()
+  }
+
+  expectNotChecked(label: Matcher): void {
+    expect(this.getElement().getByLabelText(label)).not.toBeChecked()
   }
 
   async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {

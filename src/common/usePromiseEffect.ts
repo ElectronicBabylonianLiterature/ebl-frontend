@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import Promise from 'bluebird'
 
-export default function usePromiseEffect<T = any>(): [
+export default function usePromiseEffect<T = unknown>(): [
   (promise: Promise<T>) => void,
   () => void
 ] {

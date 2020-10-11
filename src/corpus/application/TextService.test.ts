@@ -9,10 +9,10 @@ import {
   createLine,
   createManuscriptLine,
   types,
-} from './text'
+} from 'corpus/domain/text'
 import TextService from './TextService'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
+import { periodModifiers, periods } from 'corpus/domain/period'
+import { provenances } from 'corpus/domain/provenance'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -70,6 +70,8 @@ const textDto = {
               value: 'text',
             },
           ],
+          isBeginningOfSection: true,
+          isSecondLineOfParallelism: true,
           manuscripts: [
             {
               manuscriptId: 1,
@@ -154,6 +156,8 @@ const text = createText({
               value: 'text',
             },
           ],
+          isBeginningOfSection: true,
+          isSecondLineOfParallelism: true,
           manuscripts: [
             createManuscriptLine({
               manuscriptId: 1,
@@ -235,6 +239,8 @@ const linesDto = {
     {
       number: '1',
       reconstruction: 'reconstructed text',
+      isBeginningOfSection: true,
+      isSecondLineOfParallelism: true,
       manuscripts: [
         {
           manuscriptId: 1,

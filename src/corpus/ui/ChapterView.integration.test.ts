@@ -78,6 +78,8 @@ const textDto = {
         {
           number: "1'",
           reconstruction: 'ideal',
+          isBeginningOfSection: false,
+          isSecondLineOfParallelism: false,
           manuscripts: [
             {
               manuscriptId: 1,
@@ -107,6 +109,8 @@ const defaultManuscriptDto = {
 const defaultLineDto = {
   number: '',
   reconstruction: '%n ',
+  isBeginningOfSection: false,
+  isSecondLineOfParallelism: false,
   manuscripts: [],
 }
 
@@ -228,6 +232,28 @@ describe('Lines', () => {
       await appDriver.click('Save lines')
     }
   )
+
+  test.each([
+    ['second line of parallelism', 'isSecondLineOfParallelism'],
+    ['beginning of a section', 'isBeginningOfSection'],
+  ])('%s', async (label, property) => {
+    fakeApi.expectUpdateLines(textDto, 2, {
+      lines: [
+        produce(textDto.chapters[2].lines[0], (draft) => {
+          draft[property] = !draft[property]
+        }),
+      ],
+    })
+    const expectedValue = line[property]
+    expectedValue
+      ? appDriver.expectChecked(label)
+      : appDriver.expectNotChecked(label)
+    await appDriver.click(label)
+    expectedValue
+      ? appDriver.expectNotChecked(label)
+      : appDriver.expectChecked(label)
+    await appDriver.click('Save lines')
+  })
 })
 
 describe('Add line', () => {

@@ -7,7 +7,7 @@ import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { Text } from './text'
+import { Text } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Manuscript } from 'corpus/text'
+import { Manuscript } from 'corpus/domain/text'
 import { produce, Draft } from 'immer'
 
 function calculateNextId(manuscripts) {

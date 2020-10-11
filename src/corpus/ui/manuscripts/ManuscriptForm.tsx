@@ -1,10 +1,10 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
-import { types, Manuscript } from 'corpus/text'
+import { types, Manuscript } from 'corpus/domain/text'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
-import { periodModifiers, periods } from 'corpus/period'
-import { provenances } from 'corpus/provenance'
+import { periodModifiers, periods } from 'corpus/domain/period'
+import { provenances } from 'corpus/domain/provenance'
 
 import produce, { Draft } from 'immer'
 

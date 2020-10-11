@@ -6,7 +6,7 @@ import Word from './Word'
 import './WordAligner.css'
 import produce, { Draft } from 'immer'
 
-import { AtfToken, ReconstructionToken } from 'corpus/text'
+import { AtfToken, ReconstructionToken } from 'corpus/domain/text'
 
 interface Props {
   readonly token: AtfToken

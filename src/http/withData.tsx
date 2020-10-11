@@ -6,18 +6,18 @@ import ErrorBoundary from 'common/ErrorBoundary'
 
 export type WithoutData<T> = Omit<T, 'data'>
 
-type WithDataProps<DATA> = {
+export type WithData<PROPS, DATA> = PROPS & {
   data: DATA
 }
 
-type Config<PROPS, DATA> = {
+export type Config<PROPS, DATA> = {
   watch: (props: PROPS) => unknown[]
   filter: (props: PROPS) => boolean
   defaultData: DATA | null
 }
 
 export default function withData<PROPS, GETTER_PROPS, DATA>(
-  WrappedComponent: React.ComponentType<PROPS & WithDataProps<DATA>>,
+  WrappedComponent: React.ComponentType<WithData<PROPS, DATA>>,
   getter: (props: PROPS & GETTER_PROPS) => Promise<DATA>,
   config: Partial<Config<PROPS & GETTER_PROPS, DATA>> = {}
 ): React.ComponentType<PROPS & GETTER_PROPS> {
