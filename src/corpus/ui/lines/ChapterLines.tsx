@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Badge, Button, Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import ListForm from 'common/List'
 import Editor from 'editor/Editor'
@@ -112,6 +112,7 @@ export default function ChapterLines({
     )
   return (
     <Form>
+      <Badge variant="warning">Beta</Badge>
       <fieldset disabled={disabled}>
         <ListForm
           noun="line"
