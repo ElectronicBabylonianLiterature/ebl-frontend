@@ -137,7 +137,15 @@ export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
   })
 )
 
-export class Text {
+export interface TextInfo {
+  category: number
+  index: number
+  name: string
+  numberOfVerses: number
+  approximateVerses: boolean
+}
+
+export class Text implements TextInfo {
   category = 0
   index = 0
   name = ''

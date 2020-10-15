@@ -8,11 +8,15 @@ import {
   createLine,
   types,
   createManuscriptLine,
+  TextInfo,
+  Manuscript,
+  Line,
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
 import { produce } from 'immer'
 import _ from 'lodash'
+import Bluebird from 'bluebird'
 
 function fromDto(textDto) {
   return createText({
@@ -110,7 +114,7 @@ export default class TextService {
     this.apiClient = apiClient
   }
 
-  find(category, index) {
+  find(category: number, index: number): Bluebird<Text> {
     return this.apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
@@ -119,13 +123,16 @@ export default class TextService {
       .then(fromDto)
   }
 
-  list() {
-    return this.apiClient
-      .fetchJson('/texts', false)
-      .then((texts) => texts.map(fromDto))
+  list(): Bluebird<TextInfo[]> {
+    return this.apiClient.fetchJson('/texts', false)
   }
 
-  updateAlignment(category, index, chapterIndex, lines) {
+  updateAlignment(
+    category: number,
+    index: number,
+    chapterIndex: number,
+    lines: readonly Line[]
+  ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -136,7 +143,12 @@ export default class TextService {
       .then(fromDto)
   }
 
-  updateManuscripts(category, index, chapterIndex, manuscripts) {
+  updateManuscripts(
+    category: number,
+    index: number,
+    chapterIndex: number,
+    manuscripts: readonly Manuscript[]
+  ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -147,7 +159,12 @@ export default class TextService {
       .then(fromDto)
   }
 
-  updateLines(category, index, chapterIndex, lines) {
+  updateLines(
+    category: number,
+    index: number,
+    chapterIndex: number,
+    lines: readonly Line[]
+  ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
