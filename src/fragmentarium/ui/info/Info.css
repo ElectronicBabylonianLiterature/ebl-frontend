@@ -6,13 +6,21 @@
   margin-left: 0.5rem;
 }
 
-.ReferencesHelp_dl {
-  clear: left;
-  float: left;
-  font-weight: bold;
-  margin-right: 5px;
+.ReferencesHelp__dl {
+  width: 110px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
-
-.ReferencesHelp_dd {
+.ReferencesHelp__dt {
   float: left;
+  width: 20%;
+  padding: 0;
+  margin: 0;
+}
+.ReferencesHelp__dd {
+  float: left;
+  width: 80%;
+  padding: 0;
+  margin: 0;
 }
