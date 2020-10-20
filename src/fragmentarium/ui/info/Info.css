@@ -6,13 +6,13 @@
   margin-left: 0.5rem;
 }
 
-dt {
+.ReferencesHelp_dl {
   float: left;
   clear: left;
   margin-right: 5px;
   font-weight: bold;
 }
 
-dd {
+.ReferencesHelp_dd {
   float: left;
 }
