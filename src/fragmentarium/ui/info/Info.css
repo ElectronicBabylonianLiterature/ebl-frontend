@@ -7,10 +7,10 @@
 }
 
 .ReferencesHelp_dl {
-  float: left;
   clear: left;
-  margin-right: 5px;
+  float: left;
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .ReferencesHelp_dd {
