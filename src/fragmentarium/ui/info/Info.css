@@ -5,3 +5,14 @@
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
 }
+
+.ReferencesHelp_dl {
+  clear: left;
+  float: left;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.ReferencesHelp_dd {
+  float: left;
+}
