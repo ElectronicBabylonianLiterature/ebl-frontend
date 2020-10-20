@@ -25,26 +25,26 @@ export default function Info({
   const ReferencesHelp = () => (
     <Popover id={_.uniqueId('ReferencesHelp-')} title="References">
       <Popover.Content>
-        <dl>
-          <dt>
+        <dl className="ReferencesHelp__dl">
+          <dt className="ReferencesHelp__dt">
             <code>C</code>
           </dt>
-          <dd>Copy</dd>
+          <dd className="ReferencesHelp__dd">Copy</dd>
 
-          <dt>
+          <dt className="ReferencesHelp__dt">
             <code>P</code>
           </dt>
-          <dd>Photograph</dd>
+          <dd className="ReferencesHelp__dd">Photograph</dd>
 
-          <dt>
+          <dt className="ReferencesHelp__dt">
             <code>E</code>
           </dt>
-          <dd>Edition</dd>
+          <dd className="ReferencesHelp__dd">Edition</dd>
 
-          <dt>
+          <dt className="ReferencesHelp__dt">
             <code>D</code>
           </dt>
-          <dd>Discussion</dd>
+          <dd className="ReferencesHelp__dd">Discussion</dd>
         </dl>
       </Popover.Content>
     </Popover>

@@ -1,29 +1,57 @@
 import { NamedSign, Token, ValueToken } from 'transliteration/domain/token'
 
-const graveAccent = '\u0300'
-const acuteAccent = '\u0301'
-const breve = '\u032E'
-const vowels: readonly string[] = ['a', 'e', 'i', 'u', 'A', 'E', 'I', 'U']
+const vowels: ReadonlySet<string> = new Set([
+  'a',
+  'e',
+  'i',
+  'u',
+  'A',
+  'E',
+  'I',
+  'U',
+])
+const acuteAccents: ReadonlyMap<string, string> = new Map([
+  ['A', '\u00C1'],
+  ['E', '\u00C9'],
+  ['I', '\u00CD'],
+  ['O', '\u00D3'],
+  ['U', '\u00DA'],
+  ['a', '\u00E1'],
+  ['e', '\u00E9'],
+  ['i', '\u00ED'],
+  ['o', '\u00F3'],
+  ['u', '\u00FA'],
+])
+const graveAccents: ReadonlyMap<string, string> = new Map([
+  ['A', '\u00C0'],
+  ['E', '\u00C8'],
+  ['I', '\u00CC'],
+  ['O', '\u00D2'],
+  ['U', '\u00D9'],
+  ['a', '\u00E0'],
+  ['e', '\u00E8'],
+  ['i', '\u00EC'],
+  ['o', '\u00F2'],
+  ['u', '\u00F9'],
+])
+const hBreve = '\u1E2B'
 
 function isValueToken(token: Token): token is ValueToken {
   return token.type === 'ValueToken'
 }
 
 function isVowel(letter: string): boolean {
-  return vowels.includes(letter)
+  return vowels.has(letter)
 }
 
 function addGraveAccent(letter: string): string {
-  return `${letter}${graveAccent}`
+  return graveAccents.get(letter) ?? letter
 }
 
 function addAcuteAccent(letter: string): string {
-  return `${letter}${acuteAccent}`
+  return acuteAccents.get(letter) ?? letter
 }
 
-function addBreve(letter: string): string {
-  return `${letter}${breve}`
-}
 class Accumulator {
   isSubIndexConverted = false
   isFirstWovel = true
@@ -57,7 +85,7 @@ class Accumulator {
     if (this.isFirstWovel && isVowel(letter)) {
       return this.visitVowel(letter)
     } else if (letter === 'h') {
-      return addBreve(letter)
+      return hBreve
     } else {
       return letter
     }

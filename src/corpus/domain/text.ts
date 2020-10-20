@@ -104,7 +104,7 @@ export type Line = {
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
 export const createLine: (config: Partial<Line>) => Line = produce(
-  (draft: Draft<Partial<Line>>): Line => ({
+  (draft): Line => ({
     number: '',
     reconstruction: '',
     manuscripts: [],
@@ -125,7 +125,7 @@ export type Chapter = {
   readonly lines: ReadonlyArray<Line>
 }
 export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
-  (draft: any): Chapter => ({
+  (draft): Chapter => ({
     classification: 'Ancient',
     stage: 'Neo-Assyrian',
     version: '',
@@ -137,7 +137,15 @@ export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
   })
 )
 
-export class Text {
+export interface TextInfo {
+  category: number
+  index: number
+  name: string
+  numberOfVerses: number
+  approximateVerses: boolean
+}
+
+export class Text implements TextInfo {
   category = 0
   index = 0
   name = ''

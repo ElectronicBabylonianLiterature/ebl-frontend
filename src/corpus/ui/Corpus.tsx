@@ -7,11 +7,11 @@ import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import SessionContext from 'auth/SessionContext'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { Text } from 'corpus/domain/text'
+import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 
-function TextLine({ text }: { text: Text }): JSX.Element {
+function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const title = (
     <>
       {text.index}. <InlineMarkdown source={text.name} />
@@ -39,7 +39,7 @@ function TextLine({ text }: { text: Text }): JSX.Element {
   )
 }
 
-function Texts({ texts }: { texts: readonly Text[] }): JSX.Element {
+function Texts({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
   return (
     <>
       {[
@@ -64,10 +64,10 @@ function Texts({ texts }: { texts: readonly Text[] }): JSX.Element {
 }
 
 interface Props {
-  textService: { list(): Promise<readonly Text[]> }
+  textService: { list(): Promise<readonly TextInfo[]> }
 }
 
-const TextsWithData = withData<unknown, Props, readonly Text[]>(
+const TextsWithData = withData<unknown, Props, readonly TextInfo[]>(
   ({ data }) => <Texts texts={data} />,
   ({ textService }) => textService.list()
 )

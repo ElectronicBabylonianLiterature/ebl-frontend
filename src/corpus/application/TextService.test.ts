@@ -260,19 +260,7 @@ const textsDto = [
     name: 'Palm and Vine',
     numberOfVerses: 10,
     approximateVerses: true,
-    chapters: [],
   },
-]
-
-const texts = [
-  createText({
-    category: 1,
-    index: 1,
-    name: 'Palm and Vine',
-    numberOfVerses: 10,
-    approximateVerses: true,
-    chapters: [],
-  }),
 ]
 
 const testData: TestData[] = [
@@ -293,7 +281,7 @@ const testData: TestData[] = [
     'list',
     [],
     apiClient.fetchJson,
-    texts,
+    textsDto,
     ['/texts', false],
     Promise.resolve(textsDto),
   ],

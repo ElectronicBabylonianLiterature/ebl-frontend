@@ -82,8 +82,8 @@ export default function ChapterAlignment({
     )
   return (
     <Form>
+      <Badge variant="warning">Beta</Badge>
       <fieldset disabled={disabled}>
-        <Badge variant="warning">Beta</Badge>
         {chapter.lines.map((line, lineIndex) => (
           <section key={lineIndex}>
             <Reconstruction line={line} />
