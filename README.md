@@ -27,7 +27,7 @@ select extensions. Click the button below, configure the environment variables a
 It might be necessary to use `.env.local` instead of [the facilities provided
 in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
 
-To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to ``.
+To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to `https://3000-$GITPOD_WORKSPACE_ID.ws-eu01.gitpod.io` (change the region if needed). 
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
