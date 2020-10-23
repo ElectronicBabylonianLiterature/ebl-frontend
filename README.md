@@ -43,7 +43,7 @@ yarn test
 
 ### Auth0
 
-A single page application has to be setup in Auth0. The applications root URL (e.g. `http://localhost:3000` for development) must be in *Callback URLs*, *Logout URLs*, and *Web Origins*. *Domain* and *Client ID* are needed for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
+A single page application has to be setup in Auth0. The frontends root URL (e.g. `http://localhost:3000` for development) must be in *Callback URLs*, *Logout URLs*, and *Web Origins*. *Domain* and *Client ID* are needed for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
 
 ### Sentry
 
