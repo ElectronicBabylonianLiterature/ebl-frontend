@@ -22,22 +22,18 @@ function EblLogo(): JSX.Element {
   )
 }
 
-function NavItem(props: {
-  href: string
-  title: string
-  eventKey: string
-}): JSX.Element {
+function NavItem(props: { href: string; title: string }): JSX.Element {
   return (
     <Nav.Item>
       <LinkContainer to={props.href}>
-        <Nav.Link eventKey={props.eventKey}>{props.title}</Nav.Link>
+        <Nav.Link>{props.title}</Nav.Link>
       </LinkContainer>
     </Nav.Item>
   )
 }
 
 export default function Header(): JSX.Element {
-  const [activeKey, setActiveKey] = useState('/')
+  const [activeKey, setActiveKey] = useState<string | null>('/')
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">
@@ -55,25 +51,13 @@ export default function Header(): JSX.Element {
           <Navbar.Collapse id={id}>
             <Nav
               activeKey={activeKey}
-              onSelect={(key) => setActiveKey(key!)}
+              onSelect={(key) => setActiveKey(key)}
               className="mx-auto"
             >
-              <NavItem
-                eventKey="/dictionary"
-                href="/dictionary"
-                title="Dictionary"
-              />
-              <NavItem eventKey="/corpus" href="/corpus" title="Corpus" />
-              <NavItem
-                eventKey="/fragmentarium"
-                href="/fragmentarium"
-                title="Fragmentarium"
-              />
-              <NavItem
-                eventKey="/bibliography"
-                href="/bibliography"
-                title="Bibliography"
-              />
+              <NavItem href="/dictionary" title="Dictionary" />
+              <NavItem href="/corpus" title="Corpus" />
+              <NavItem href="/fragmentarium" title="Fragmentarium" />
+              <NavItem href="/bibliography" title="Bibliography" />
             </Nav>
             <Navbar.Text>
               <User />

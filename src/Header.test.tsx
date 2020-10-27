@@ -3,6 +3,7 @@ import { render, screen, act } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Header from './Header'
 import { AuthenticationContext, User } from 'auth/Auth'
+import userEvent from '@testing-library/user-event'
 
 let auth
 
@@ -49,6 +50,16 @@ function commonTests(): void {
     expect(screen.getByText(title)).toHaveAttribute('href', href)
   })
 }
+describe('Unfocus Header Labels on clicking ebl Logo', () => {
+  beforeEach(async () => await renderHeader(true))
+
+  test('click Logo', () => {
+    userEvent.click(screen.getByText('Fragmentarium'))
+    userEvent.click(screen.getByTitle('electronic Babylonian Literature (eBL)'))
+    expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
+    expect(screen.getByText('Fragmentarium')).not.toHaveFocus()
+  })
+})
 
 async function renderHeader(loggedIn: boolean): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
