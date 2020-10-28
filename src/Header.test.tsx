@@ -57,7 +57,6 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
     userEvent.click(screen.getByText('Fragmentarium'))
     userEvent.click(screen.getByTitle('electronic Babylonian Literature (eBL)'))
     expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
-    expect(screen.getByText('Fragmentarium')).not.toHaveFocus()
   })
 })
 
