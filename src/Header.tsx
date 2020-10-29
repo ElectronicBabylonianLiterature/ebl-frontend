@@ -33,7 +33,7 @@ function NavItem(props: { href: string; title: string }): JSX.Element {
 }
 
 export default function Header(): JSX.Element {
-  const [activeKey, setActiveKey] = useState<string | null>('/')
+  const [activeKey, setActiveKey] = useState<string | null>(null)
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">
