@@ -5,7 +5,6 @@ import { render, RenderResult } from '@testing-library/react'
 import Glossary from './Glossary'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
-import { act } from 'react-dom/test-utils'
 import { factory } from 'factory-girl'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -30,18 +29,17 @@ beforeEach(async () => {
     })
   })
 
-  await act(async () => {
-    element = render(
-      <MemoryRouter>
-        <Glossary
-          text={text}
-          wordService={(wordService as unknown) as WordService}
-        />
-      </MemoryRouter>
-    )
-  })
+  element = render(
+    <MemoryRouter>
+      <Glossary
+        text={text}
+        wordService={(wordService as unknown) as WordService}
+      />
+    </MemoryRouter>
+  )
 })
 
-test('Glossary snapshot', () => {
+test('Glossary snapshot', async () => {
+  await element.findByText('Glossary')
   expect(element.container).toMatchSnapshot()
 })
