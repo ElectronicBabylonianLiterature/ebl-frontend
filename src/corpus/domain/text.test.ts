@@ -103,7 +103,10 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties(config: any, factory: (config: any) => any) {
+function testProperties<T>(
+  config: Partial<T>,
+  factory: (config: Partial<T>) => T
+) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })
