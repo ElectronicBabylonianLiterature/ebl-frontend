@@ -3,15 +3,7 @@ import { Chapter, Line, ManuscriptLine, AtfToken } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
-
-function Reconstruction(props: { line: Line }) {
-  return (
-    <Form.Row>
-      <Col md={3}>{props.line.number}</Col>
-      <Col md={9}>{props.line.reconstruction}</Col>
-    </Form.Row>
-  )
-}
+import Reconstruction from '../Reconstruction'
 
 function ManuscriptAlignment(props: {
   chapter: Chapter
