@@ -115,7 +115,8 @@ export const createLine: (config: Partial<Line>) => Line = produce(
   })
 )
 
-export interface Chapter {
+export class Chapter {
+  readonly [immerable] = true
   readonly classification: string
   readonly stage: string
   readonly version: string
@@ -123,19 +124,40 @@ export interface Chapter {
   readonly order: number
   readonly manuscripts: ReadonlyArray<Manuscript>
   readonly lines: ReadonlyArray<Line>
+
+  constructor({
+    classification,
+    stage,
+    version,
+    name,
+    order,
+    manuscripts,
+    lines,
+  }: Partial<Chapter>) {
+    this.classification = classification ?? 'Ancient'
+    this.stage = stage ?? 'Neo-Assyrian'
+    this.version = version ?? ''
+    this.name = name ?? ''
+    this.order = order ?? 0
+    this.manuscripts = manuscripts ?? []
+    this.lines = lines ?? []
+  }
+
+  getSiglum(manuscriptLine: ManuscriptLine): string {
+    const manuscript = this.manuscripts.find(
+      (candidate) => candidate.id === manuscriptLine.manuscriptId
+    )
+    if (manuscript) {
+      return manuscript.siglum
+    } else {
+      return `<unknown ID: ${manuscriptLine.manuscriptId}>`
+    }
+  }
 }
-export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
-  (draft): Chapter => ({
-    classification: 'Ancient',
-    stage: 'Neo-Assyrian',
-    version: '',
-    name: '',
-    order: 0,
-    manuscripts: [],
-    lines: [],
-    ...draft,
-  })
-)
+
+export function createChapter(data: Partial<Chapter>): Chapter {
+  return new Chapter(data)
+}
 
 export interface TextInfo {
   category: number

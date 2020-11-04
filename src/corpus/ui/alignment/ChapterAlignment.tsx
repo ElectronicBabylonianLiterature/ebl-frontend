@@ -4,17 +4,6 @@ import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 
-function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
-  const manuscript = chapter.manuscripts.find(
-    (candidate) => candidate.id === manuscriptLine.manuscriptId
-  )
-  if (manuscript) {
-    return manuscript.siglum
-  } else {
-    return `<unknown ID: ${manuscriptLine.manuscriptId}>`
-  }
-}
-
 function Reconstruction(props: { line: Line }) {
   return (
     <Form.Row>
@@ -40,7 +29,7 @@ function ManuscriptAlignment(props: {
   return (
     <Form.Row>
       <Col md={1} />
-      <Col md={1}>{getSiglum(props.chapter, props.manuscriptLine)}</Col>
+      <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
