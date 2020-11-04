@@ -11,6 +11,7 @@ import {
   TextInfo,
   Manuscript,
   Line,
+  Text,
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'

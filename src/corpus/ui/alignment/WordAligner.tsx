@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 import { Popover, Overlay, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
@@ -53,7 +53,7 @@ class AlignmentForm extends Component<Props> {
 }
 
 interface State {
-  readonly target?: any
+  readonly target?
   readonly show: boolean
 }
 
@@ -68,7 +68,7 @@ export default class WordAligner extends Component<Props, State> {
     }
   }
 
-  handleClick = (event: SyntheticEvent): void => {
+  handleClick = (event: React.MouseEvent): void => {
     this.setState({
       target: event.target,
       show: !this.state.show,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
+import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import ReferencesForm, {
   defaultReference,
@@ -8,7 +9,7 @@ import ReferencesForm, {
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 type Props = {
-  searchBibliography(query: string): readonly BibliographyEntry[]
+  searchBibliography(query: string): Promise<readonly BibliographyEntry[]>
   references: readonly Reference[]
   disabled: boolean
 }

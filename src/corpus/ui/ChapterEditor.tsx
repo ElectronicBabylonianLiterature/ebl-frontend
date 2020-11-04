@@ -1,11 +1,25 @@
 import React, { useContext } from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
+import Promise from 'bluebird'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
 import ChapterAlignment from 'corpus/ui/alignment/ChapterAlignment'
 import SessionContext from 'auth/SessionContext'
 import ChapterDetails from './ChapterDetails'
+import { Chapter } from 'corpus/domain/text'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+
+interface Props {
+  onSaveLines: () => void
+  onSaveManuscripts: () => void
+  onSaveAlignment: () => void
+  disabled: boolean
+  dirty: boolean
+  chapter: Chapter
+  searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
+  onChange: (chaper: Chapter) => void
+}
 
 export default function ChapterEditor({
   onSaveLines,
@@ -16,7 +30,7 @@ export default function ChapterEditor({
   chapter,
   searchBibliography,
   onChange,
-}) {
+}: Props): JSX.Element {
   const session = useContext(SessionContext)
   return (
     <>

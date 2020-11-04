@@ -13,6 +13,7 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
+import TextService from 'corpus/application/TextService'
 
 function ChapterTitle({
   text,
@@ -31,7 +32,7 @@ function ChapterTitle({
 interface Props {
   text: Text
   chapterIndex: number
-  textService
+  textService: TextService
   bibliographyService: BibliographySearch
 }
 function ChapterView({

@@ -13,8 +13,8 @@ function Word({
 }: {
   readonly token: AtfToken
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
-  readonly onClick: (x0: any) => any
-}) {
+  readonly onClick: (event: React.MouseEvent) => void
+}): JSX.Element {
   return token.lemmatizable ? (
     <Button
       onClick={onClick}

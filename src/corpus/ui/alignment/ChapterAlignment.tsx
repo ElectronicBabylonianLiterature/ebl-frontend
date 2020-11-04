@@ -1,8 +1,8 @@
 import React from 'react'
-import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
+import { Chapter, Line, ManuscriptLine, AtfToken } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-import produce, { Draft } from 'immer'
+import produce, { castDraft, Draft } from 'immer'
 
 function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
   const manuscript = chapter.manuscripts.find(
@@ -28,12 +28,12 @@ function ManuscriptAlignment(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
-  onChange: (x0: ManuscriptLine) => void
+  onChange: (line: ManuscriptLine) => void
 }) {
-  const handleChange = (index) => (token) => {
+  const handleChange = (index: number) => (token: AtfToken) => {
     props.onChange(
       produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index] = token
+        draft.atfTokens[index] = castDraft(token)
       })
     )
   }
@@ -70,14 +70,18 @@ export default function ChapterAlignment({
   disabled,
 }: {
   chapter: Chapter
-  onChange: (x0: Chapter) => any
-  onSave: (x0: any) => any
+  onChange: (chapter: Chapter) => void
+  onSave: () => void
   disabled: boolean
-}) {
-  const handleChange = (lineIndex) => (manuscriptIndex) => (manuscript) =>
+}): JSX.Element {
+  const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
+    manuscript: ManuscriptLine
+  ) =>
     onChange(
       produce(chapter, (draft: Draft<Chapter>) => {
-        draft.lines[lineIndex].manuscripts[manuscriptIndex] = manuscript
+        draft.lines[lineIndex].manuscripts[manuscriptIndex] = castDraft(
+          manuscript
+        )
       })
     )
   return (

@@ -1,12 +1,14 @@
 import React from 'react'
 import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
+import Promise from 'bluebird'
+import produce, { castDraft, Draft } from 'immer'
 import { types, Manuscript } from 'corpus/domain/text'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
+import Reference from 'bibliography/domain/Reference'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
-
-import produce, { Draft } from 'immer'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export default function ManuscriptForm({
   manuscript,
@@ -14,10 +16,12 @@ export default function ManuscriptForm({
   searchBibliography,
 }: {
   manuscript: Manuscript
-  onChange: (x0: Manuscript) => void
-  searchBibliography: any
-}) {
-  const handleChange = (property: string) => (event) =>
+  onChange: (manuscript: Manuscript) => void
+  searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
+}): JSX.Element {
+  const handleChange = (property: string) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) =>
     onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = event.target.value
@@ -25,13 +29,14 @@ export default function ManuscriptForm({
     )
   const handleMapChange = (
     property: string,
-    values: ReadonlyMap<string, any>
-  ) => (event) =>
-    onChange(
+    values: ReadonlyMap<string, unknown>
+  ) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+    return onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
         draft[property] = values.get(event.target.value)
       })
     )
+  }
 
   return (
     <>
@@ -148,10 +153,10 @@ export default function ManuscriptForm({
       <ReferencesForm
         value={manuscript.references}
         label="References"
-        onChange={(value: any) =>
+        onChange={(value: readonly Reference[]) =>
           onChange(
             produce(manuscript, (draft: Draft<Manuscript>) => {
-              draft.references = value
+              draft.references = castDraft(value)
             })
           )
         }

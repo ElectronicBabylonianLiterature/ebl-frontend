@@ -1,10 +1,11 @@
 import React from 'react'
+import Promise from 'bluebird'
 import ListForm from 'common/List'
 import ReferenceForm from './ReferenceForm'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-export const defaultReference = () => new Reference()
+export const defaultReference = (): Reference => new Reference()
 
 export default function ReferencesForm({
   searchBibliography,
@@ -13,12 +14,14 @@ export default function ReferencesForm({
   label,
   collapsed,
 }: {
-  searchBibliography: (query: string) => ReadonlyArray<BibliographyEntry>
+  searchBibliography: (
+    query: string
+  ) => Promise<ReadonlyArray<BibliographyEntry>>
   value: ReadonlyArray<Reference>
   onChange: (value: ReadonlyArray<Reference>) => void
   label: string
   collapsed: boolean
-}) {
+}): JSX.Element {
   return (
     <ListForm
       value={value}

@@ -1,10 +1,20 @@
 import React from 'react'
+import Promise from 'bluebird'
 import ListForm from 'common/List'
-import { createManuscript } from 'corpus/domain/text'
+import { createManuscript, Chapter, Manuscript } from 'corpus/domain/text'
 import ManuscriptForm from './ManuscriptForm'
 import populateIds from 'corpus/application/populateIds'
-import { produce } from 'immer'
+import { castDraft, produce } from 'immer'
 import { Button, Form } from 'react-bootstrap'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+
+interface Props {
+  chapter: Chapter
+  onChange: (chapter: Chapter) => void
+  onSave: () => void
+  searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
+  disabled: boolean
+}
 
 export default function ChapterManuscripts({
   chapter,
@@ -12,11 +22,11 @@ export default function ChapterManuscripts({
   onSave,
   searchBibliography,
   disabled,
-}) {
-  const handeManuscriptsChange = (manuscripts) =>
+}: Props): JSX.Element {
+  const handeManuscriptsChange = (manuscripts: Manuscript[]) =>
     onChange(
       produce(chapter, (draft) => {
-        draft.manuscripts = populateIds(manuscripts)
+        draft.manuscripts = castDraft(populateIds(manuscripts))
       })
     )
   return (
