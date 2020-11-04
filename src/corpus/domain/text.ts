@@ -7,7 +7,7 @@ import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
 
-export type ManuscriptType = {
+export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
 }
@@ -62,7 +62,7 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
   })
 }
 
-export type AtfToken = {
+export interface AtfToken {
   readonly type: string
   readonly value: string
   readonly uniqueLemma?: ReadonlyArray<string>
@@ -72,7 +72,7 @@ export type AtfToken = {
   readonly erasure?: string
   readonly alignment?: number | null
 }
-export type ManuscriptLine = {
+export interface ManuscriptLine {
   readonly manuscriptId: number
   readonly labels: ReadonlyArray<string>
   readonly number: string
@@ -91,11 +91,11 @@ export const createManuscriptLine: (
     ...draft,
   })
 )
-export type ReconstructionToken = {
+export interface ReconstructionToken {
   readonly type: string
   readonly value: string
 }
-export type Line = {
+export interface Line {
   readonly number: string
   readonly reconstruction: string
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
@@ -115,7 +115,7 @@ export const createLine: (config: Partial<Line>) => Line = produce(
   })
 )
 
-export type Chapter = {
+export interface Chapter {
   readonly classification: string
   readonly stage: string
   readonly version: string
