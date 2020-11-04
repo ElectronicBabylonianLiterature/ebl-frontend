@@ -14,6 +14,7 @@ import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 function ChapterTitle({
   text,
@@ -34,12 +35,14 @@ interface Props {
   chapterIndex: number
   textService: TextService
   bibliographyService: BibliographySearch
+  fragmentService: FragmentService
 }
 function ChapterView({
   text,
   chapterIndex,
   textService,
   bibliographyService,
+  fragmentService,
 }: Props): JSX.Element {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isDirty, setIsDirty] = useState(false)
@@ -103,6 +106,9 @@ function ChapterView({
     )
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const updateLemmatization = () => {}
+
   const handleChange = (chapter: Chapter): void => {
     setChapter(chapter)
     setIsDirty(true)
@@ -125,10 +131,12 @@ function ChapterView({
           ): Promise<readonly BibliographyEntry[]> =>
             bibliographyService.search(query)
           }
+          fragmentService={fragmentService}
           onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}
           onSaveAlignment={updateAlignment}
+          onSaveLemmatization={updateLemmatization}
         />
       ) : (
         <Alert variant="danger">Chapter not found.</Alert>
@@ -145,6 +153,7 @@ export default withData<
     name: string
     textService
     bibliographyService: BibliographySearch
+    fragmentService: FragmentService
   },
   { category: string; index: string },
   Text

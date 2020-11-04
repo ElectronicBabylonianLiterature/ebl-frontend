@@ -149,6 +149,7 @@ function App({
               <ChapterView
                 textService={textService}
                 bibliographyService={bibliographyService}
+                fragmentService={fragmentService}
                 {...parseChapterParams(match.params)}
               />
             )}
