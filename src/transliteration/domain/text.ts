@@ -6,19 +6,11 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import { TextLine } from 'transliteration/domain/text-line'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { Word as TransliterationWord } from 'transliteration/domain/token'
-import {
-  isTextLine,
-  isWord,
-  isObjectAtLine,
-  isSurfaceAtLine,
-  isColumnAtLine,
-} from 'transliteration/domain/type-guards'
+import { isTextLine } from 'transliteration/domain/type-guards'
 import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
 import { AbstractLine } from './abstract-line'
 import Label from './Label'
-import { GlossaryToken, GlossaryData } from './glossary'
 
 export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 
@@ -66,52 +58,6 @@ export class Text {
       }
     }
     return notes
-  }
-
-  get glossary(): GlossaryData {
-    const [, labeledLines] = _.reduce(
-      this.lines,
-      (
-        [current, lines]: [Label, LabeledLine[]],
-        line: AbstractLine
-      ): [Label, LabeledLine[]] => {
-        if (isTextLine(line)) {
-          return [
-            current,
-            [...lines, [current.setLineNumber(line.lineNumber), line]],
-          ]
-        } else if (isObjectAtLine(line)) {
-          return [current.setObject(line.label), lines]
-        } else if (isSurfaceAtLine(line)) {
-          return [current.setSurface(line.label), lines]
-        } else if (isColumnAtLine(line)) {
-          return [current.setColumn(line.label), lines]
-        } else {
-          return [current, lines]
-        }
-      },
-      [new Label(), []]
-    )
-
-    return _(labeledLines)
-      .flatMap(([label, line]) =>
-        line.content
-          .filter(isWord)
-          .filter((token: TransliterationWord) => token.lemmatizable)
-          .flatMap(
-            (token): GlossaryToken[] =>
-              token.uniqueLemma?.map((lemma) => ({
-                label: label,
-                value: token.value,
-                word: token,
-                uniqueLemma: lemma,
-              })) ?? []
-          )
-      )
-      .groupBy((token) => token.uniqueLemma)
-      .toPairs()
-      .sortBy(([lemma, tokensByLemma]) => lemma)
-      .value()
   }
 
   createLemmatization(

@@ -30,38 +30,34 @@ test('create glossary', async () => {
     [
       'hepû I',
       [
-        {
-          ...createGlossaryToken(
-            new Label().setLineNumber(firstLine.lineNumber),
-            firstLine.content[0] as Word
+        createGlossaryToken(
+          new Label().setLineNumber(firstLine.lineNumber),
+          firstLine.content[0] as Word,
+          0,
+          hepuI
+        ),
+        createGlossaryToken(
+          new Label(
+            object.label,
+            surface.label,
+            column.label,
+            secondLine.lineNumber
           ),
-          dictionaryWord: hepuI,
-        },
-        {
-          ...createGlossaryToken(
-            new Label(
-              object.label,
-              surface.label,
-              column.label,
-              secondLine.lineNumber
-            ),
-            secondLine.content[0] as Word
-          ),
-          dictionaryWord: hepuI,
-        },
+          secondLine.content[0] as Word,
+          0,
+          hepuI
+        ),
       ],
     ],
     [
       'hepû II',
       [
-        {
-          ...createGlossaryToken(
-            new Label().setLineNumber(firstLine.lineNumber),
-            firstLine.content[0] as Word,
-            1
-          ),
-          dictionaryWord: hepuII,
-        },
+        createGlossaryToken(
+          new Label().setLineNumber(firstLine.lineNumber),
+          firstLine.content[0] as Word,
+          1,
+          hepuII
+        ),
       ],
     ],
   ]

@@ -8,7 +8,7 @@ export interface GlossaryToken {
   readonly value: string
   readonly word: TransliterationWord
   readonly uniqueLemma: string
-  readonly dictionaryWord?: DictionaryWord
+  readonly dictionaryWord: DictionaryWord | null
 }
 
 export type GlossaryEntry = readonly [string, readonly GlossaryToken[]]
