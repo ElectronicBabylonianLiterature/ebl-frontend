@@ -1,4 +1,5 @@
-import { Label, GlossaryToken } from 'transliteration/domain/text'
+import { GlossaryToken } from 'transliteration/domain/glossary'
+import Label from 'transliteration/domain/Label'
 import { Word } from 'transliteration/domain/token'
 
 export default function createGlossaryToken(
