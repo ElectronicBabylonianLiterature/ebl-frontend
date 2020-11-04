@@ -2,25 +2,16 @@ import { column, object, surface } from 'test-support/lines/at'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
-import { factory } from 'factory-girl'
 import GlossaryFactory from './GlossaryFactory'
-import createGlossaryToken from 'test-support/createGlossaryToken'
+import {
+  createDictionaryWord,
+  createGlossaryToken,
+} from 'test-support/glossary'
 import Label from 'transliteration/domain/Label'
 import { Word } from 'transliteration/domain/token'
-import DictionaryWord from 'dictionary/domain/Word'
 import Bluebird from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
-
-async function createDictionaryWord(wordId: string): Promise<DictionaryWord> {
-  const [lemma, homonym] = wordId.split(' ')
-  return await factory.build('word', {
-    _id: wordId,
-    lemma: [lemma],
-    homonym: homonym,
-    guideWord: `GW for ${wordId}`,
-  })
-}
 
 test('create glossary', async () => {
   const [firstLine, secondLine] = lemmatized
