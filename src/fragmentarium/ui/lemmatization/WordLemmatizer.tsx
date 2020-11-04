@@ -5,12 +5,16 @@ import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
 
 import './WordLemmatizer.css'
-import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import {
+  LemmatizationToken,
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 interface Props {
-  fragmentService
+  fragmentService: FragmentService
   token: LemmatizationToken
-  onChange
+  onChange: (uniqueLemma: UniqueLemma) => void
 }
 
 export default function WordLemmatizer({
@@ -21,7 +25,7 @@ export default function WordLemmatizer({
   const [show, setShow] = useState(false)
   const toggleId = _.uniqueId('LemmatizationToggle-')
 
-  const handleCange = (uniqueLemma): void => {
+  const handleCange = (uniqueLemma: UniqueLemma): void => {
     onChange(uniqueLemma)
     setShow(false)
   }
