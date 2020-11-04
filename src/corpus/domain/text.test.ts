@@ -64,7 +64,7 @@ const lineConfig: Line = {
   manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
-const chapterConfig: Chapter = {
+const chapterConfig: Partial<Chapter> = {
   classification: 'Ancient',
   stage: 'Old Babylonian',
   version: 'A',
@@ -103,7 +103,7 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties(config: any, factory: (x0: any) => any) {
+function testProperties(config: any, factory: (config: any) => any) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })
