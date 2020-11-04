@@ -5,24 +5,13 @@ import withData from 'http/withData'
 import Promise from 'bluebird'
 import WordService from 'dictionary/application/WordService'
 import produce, { castDraft, Draft } from 'immer'
-import compareWord from 'transliteration/domain/compareWord'
 import GlossaryLine from './GlossaryLine'
-import { GlossaryEntry, GlossaryData } from 'transliteration/domain/glossary'
+import {
+  GlossaryData,
+  compareGlossaryEntries,
+} from 'transliteration/domain/glossary'
 
 import './Glossary.sass'
-
-function compareGlossaryEntries(
-  [, [{ dictionaryWord: firstWord }]]: GlossaryEntry,
-  [, [{ dictionaryWord: secondWord }]]: GlossaryEntry
-): number {
-  if (firstWord && secondWord) {
-    return compareWord(firstWord, secondWord)
-  } else {
-    throw new Error(
-      'Either of the glossary entries is missing the dictionary word.'
-    )
-  }
-}
 
 function Glossary({ data }: { data: GlossaryData }): JSX.Element {
   return (

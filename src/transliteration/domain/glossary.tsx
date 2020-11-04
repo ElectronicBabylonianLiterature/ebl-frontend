@@ -1,6 +1,7 @@
 import Label from './Label'
 import { Word as TransliterationWord } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
+import compareWord from 'transliteration/domain/compareWord'
 
 export interface GlossaryToken {
   readonly label: Label
@@ -12,3 +13,16 @@ export interface GlossaryToken {
 
 export type GlossaryEntry = readonly [string, readonly GlossaryToken[]]
 export type GlossaryData = readonly GlossaryEntry[]
+
+export function compareGlossaryEntries(
+  [, [{ dictionaryWord: firstWord }]]: GlossaryEntry,
+  [, [{ dictionaryWord: secondWord }]]: GlossaryEntry
+): number {
+  if (firstWord && secondWord) {
+    return compareWord(firstWord, secondWord)
+  } else {
+    throw new Error(
+      'Either of the glossary entries is missing the dictionary word.'
+    )
+  }
+}
