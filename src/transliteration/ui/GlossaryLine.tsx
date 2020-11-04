@@ -2,12 +2,12 @@ import React from 'react'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import DisplayToken from 'transliteration/ui/DisplayToken'
-import { GlossaryToken } from 'transliteration/domain/text'
+import { GlossaryToken } from 'transliteration/domain/glossary'
 import { Label, Status } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
-export default function GlossaryEntry({
+export default function GlossaryLine({
   tokens,
 }: {
   tokens: readonly GlossaryToken[]

@@ -25,7 +25,9 @@ The following services are needed to run application:
 The project comes with a [Gitpod](https://www.gitpod.io) configuration including
 select extensions. Click the button below, configure the environment variables and you are good to go.
 It might be necessary to use `.env.local` instead of [the facilities provided
-in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they seem to override `.env.test`.
+in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
+
+To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to `https://3000-$GITPOD_WORKSPACE_ID.ws-eu01.gitpod.io` (change the region if needed). 
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
@@ -36,6 +38,21 @@ yarn lint
 yarn tsc
 yarn test
 ```
+
+## Configuring services
+
+### Auth0
+
+A single page application has to be setup in Auth0. The frontends root URL (e.g. `http://localhost:3000` for development) must be in *Callback URLs*, *Logout URLs*, and *Web Origins*. *Domain* and *Client ID* are needed for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
+
+### Sentry
+
+An organization and project need to be setup in Sentry. The applications domain must be in *Allowed Domains* of the project. *DSN* under *Client Keys* is needed for the for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
+
+### eBL API
+
+In a production environment the api domain must be added to *img-src* in CSP.
+
 
 ## Running the application
 
