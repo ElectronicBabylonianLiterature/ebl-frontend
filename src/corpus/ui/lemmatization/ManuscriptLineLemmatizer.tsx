@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
-import { Badge, Button, Col, Form } from 'react-bootstrap'
+import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import Promise from 'bluebird'
 import produce, { castDraft, Draft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
@@ -13,9 +13,10 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import Lemma from 'transliteration/domain/Lemma'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
-import withData from 'http/withData'
+import withData, { WithoutData } from 'http/withData'
 
 interface Props {
+  data: readonly LemmatizationToken[]
   fragmentService: FragmentService
   chapter: Chapter
   line: Line
@@ -23,9 +24,7 @@ interface Props {
   onChange: (line: ManuscriptLine) => void
 }
 
-function ManuscriptLineLemmatization(
-  props: Props & { data: readonly LemmatizationToken[] }
-) {
+function ManuscriptLineLemmatization(props: Props) {
   const [lemmatization, setLemmatization] = useState(props.data)
   const handleChange = (index: number) => (uniqueLemma: UniqueLemma) => {
     const newToken = lemmatization[index].setUniqueLemma(uniqueLemma)
@@ -43,7 +42,7 @@ function ManuscriptLineLemmatization(
     )
   }
   return (
-    <Form.Row>
+    <Row>
       <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
@@ -51,7 +50,7 @@ function ManuscriptLineLemmatization(
       </Col>
       <Col md={9}>
         {lemmatization.map((token, index) => (
-          <span key={index}>
+          <Fragment key={index}>
             {token.lemmatizable ? (
               <WordLemmatizer
                 fragmentService={props.fragmentService}
@@ -61,15 +60,15 @@ function ManuscriptLineLemmatization(
             ) : (
               token.value
             )}{' '}
-          </span>
+          </Fragment>
         ))}
       </Col>
-    </Form.Row>
+    </Row>
   )
 }
 
 const ManuscriptLineLemmatizationWithData = withData<
-  Props,
+  WithoutData<Props>,
   { wordService: WordService },
   readonly LemmatizationToken[]
 >(ManuscriptLineLemmatization, (props) =>
@@ -117,7 +116,7 @@ export default function ChapterLemmatization({
       })
     )
   return (
-    <Form>
+    <Container>
       <Badge variant="warning">Beta</Badge>
       <fieldset disabled={disabled}>
         {chapter.lines.map((line, lineIndex) => (
@@ -138,6 +137,6 @@ export default function ChapterLemmatization({
         ))}
         <Button onClick={onSave}>Save lemmatization</Button>
       </fieldset>
-    </Form>
+    </Container>
   )
 }
