@@ -149,7 +149,7 @@ export default function ChapterLemmatization({
           ))}
         </section>
       ))}
-      <Button onClick={onSave} disabled={disabled}>
+      <Button onClick={() => onSave()} disabled={disabled}>
         Save lemmatization
       </Button>
     </Container>
