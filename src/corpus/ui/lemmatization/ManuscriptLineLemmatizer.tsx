@@ -133,25 +133,25 @@ export default function ChapterLemmatization({
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
-      <fieldset disabled={disabled}>
-        {chapter.lines.map((line, lineIndex) => (
-          <section key={lineIndex}>
-            <Reconstruction line={line} />
-            {line.manuscripts.map((manuscript, manuscriptIndex) => (
-              <ManuscriptLineLemmatizationWithData
-                key={manuscriptIndex}
-                fragmentService={fragmentService}
-                wordService={wordService}
-                chapter={chapter}
-                line={line}
-                manuscriptLine={manuscript}
-                onChange={handleChange(lineIndex)(manuscriptIndex)}
-              />
-            ))}
-          </section>
-        ))}
-        <Button onClick={onSave}>Save lemmatization</Button>
-      </fieldset>
+      {chapter.lines.map((line, lineIndex) => (
+        <section key={lineIndex}>
+          <Reconstruction line={line} />
+          {line.manuscripts.map((manuscript, manuscriptIndex) => (
+            <ManuscriptLineLemmatizationWithData
+              key={manuscriptIndex}
+              fragmentService={fragmentService}
+              wordService={wordService}
+              chapter={chapter}
+              line={line}
+              manuscriptLine={manuscript}
+              onChange={handleChange(lineIndex)(manuscriptIndex)}
+            />
+          ))}
+        </section>
+      ))}
+      <Button onClick={onSave} disabled={disabled}>
+        Save lemmatization
+      </Button>
     </Container>
   )
 }
