@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
+import Promise from 'bluebird'
 import produce, { castDraft, Draft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
 import {
@@ -9,18 +10,35 @@ import {
 } from 'transliteration/domain/Lemmatization'
 import Reconstruction from 'corpus/ui/Reconstruction'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import Lemma from 'transliteration/domain/Lemma'
+import Word from 'dictionary/domain/Word'
+import WordService from 'dictionary/application/WordService'
+import withData from 'http/withData'
 
-function ManuscriptLineLemmatization(props: {
+interface Props {
   fragmentService: FragmentService
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
   onChange: (line: ManuscriptLine) => void
-}) {
+}
+
+function ManuscriptLineLemmatization(
+  props: Props & { data: readonly LemmatizationToken[] }
+) {
+  const [lemmatization, setLemmatization] = useState(props.data)
   const handleChange = (index: number) => (uniqueLemma: UniqueLemma) => {
+    const newToken = lemmatization[index].setUniqueLemma(uniqueLemma)
+    setLemmatization(
+      produce(lemmatization, (draft) => {
+        draft[index] = castDraft(newToken)
+      })
+    )
     props.onChange(
       produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index].uniqueLemma = castDraft(uniqueLemma)
+        draft.atfTokens[index].uniqueLemma = uniqueLemma.map(
+          (lemma) => lemma.value
+        )
       })
     )
   }
@@ -32,18 +50,12 @@ function ManuscriptLineLemmatization(props: {
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
       <Col md={9}>
-        {props.manuscriptLine.atfTokens.map((token, index) => (
+        {lemmatization.map((token, index) => (
           <span key={index}>
             {token.lemmatizable ? (
               <WordLemmatizer
                 fragmentService={props.fragmentService}
-                token={
-                  new LemmatizationToken(
-                    token.value,
-                    token.lemmatizable,
-                    token.uniqueLemma
-                  )
-                }
+                token={token}
                 onChange={handleChange(index)}
               />
             ) : (
@@ -56,14 +68,39 @@ function ManuscriptLineLemmatization(props: {
   )
 }
 
+const ManuscriptLineLemmatizationWithData = withData<
+  Props,
+  { wordService: WordService },
+  readonly LemmatizationToken[]
+>(ManuscriptLineLemmatization, (props) =>
+  Promise.all(
+    props.manuscriptLine.atfTokens.map((token) =>
+      Promise.all(
+        token.uniqueLemma?.map((value) =>
+          props.wordService.find(value).then((word: Word) => new Lemma(word))
+        ) ?? []
+      ).then(
+        (lemmas) =>
+          new LemmatizationToken(
+            token.value,
+            token.lemmatizable ?? false,
+            lemmas
+          )
+      )
+    )
+  )
+)
+
 export default function ChapterLemmatization({
   fragmentService,
+  wordService,
   chapter,
   onChange,
   onSave,
   disabled,
 }: {
   fragmentService: FragmentService
+  wordService: WordService
   chapter: Chapter
   onChange: (chapter: Chapter) => void
   onSave: () => void
@@ -87,9 +124,10 @@ export default function ChapterLemmatization({
           <section key={lineIndex}>
             <Reconstruction line={line} />
             {line.manuscripts.map((manuscript, manuscriptIndex) => (
-              <ManuscriptLineLemmatization
+              <ManuscriptLineLemmatizationWithData
                 key={manuscriptIndex}
                 fragmentService={fragmentService}
+                wordService={wordService}
                 chapter={chapter}
                 line={line}
                 manuscriptLine={manuscript}
@@ -98,7 +136,7 @@ export default function ChapterLemmatization({
             ))}
           </section>
         ))}
-        <Button onClick={onSave}>Save alignment</Button>
+        <Button onClick={onSave}>Save lemmatization</Button>
       </fieldset>
     </Form>
   )

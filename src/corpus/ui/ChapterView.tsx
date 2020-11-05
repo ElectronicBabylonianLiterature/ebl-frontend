@@ -15,6 +15,7 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import WordService from 'dictionary/application/WordService'
 
 function ChapterTitle({
   text,
@@ -36,6 +37,7 @@ interface Props {
   textService: TextService
   bibliographyService: BibliographySearch
   fragmentService: FragmentService
+  wordService: WordService
 }
 function ChapterView({
   text,
@@ -43,6 +45,7 @@ function ChapterView({
   textService,
   bibliographyService,
   fragmentService,
+  wordService,
 }: Props): JSX.Element {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isDirty, setIsDirty] = useState(false)
@@ -107,7 +110,16 @@ function ChapterView({
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const updateLemmatization = () => {}
+  const updateLemmatization = (): void => {
+    update(() =>
+      textService.updateLemmatization(
+        text.category,
+        text.index,
+        chapterIndex,
+        chapter.lines
+      )
+    )
+  }
 
   const handleChange = (chapter: Chapter): void => {
     setChapter(chapter)
@@ -132,6 +144,7 @@ function ChapterView({
             bibliographyService.search(query)
           }
           fragmentService={fragmentService}
+          wordService={wordService}
           onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}
@@ -154,6 +167,7 @@ export default withData<
     textService
     bibliographyService: BibliographySearch
     fragmentService: FragmentService
+    wordService: WordService
   },
   { category: string; index: string },
   Text

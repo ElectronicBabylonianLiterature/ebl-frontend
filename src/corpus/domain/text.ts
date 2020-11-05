@@ -6,7 +6,6 @@ import { Provenance, provenances } from './provenance'
 import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
-import { UniqueLemma } from 'transliteration/domain/Lemmatization'
 
 export interface ManuscriptType {
   readonly name: string
@@ -66,7 +65,7 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
 export interface AtfToken {
   readonly type: string
   readonly value: string
-  readonly uniqueLemma?: UniqueLemma
+  readonly uniqueLemma?: readonly string[]
   readonly normalized?: boolean
   readonly language?: string
   readonly lemmatizable?: boolean
