@@ -5,17 +5,13 @@ import { factory } from 'factory-girl'
 
 import { whenClicked, clickNth, changeValueByLabel } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
-import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import {
   createChapter,
   createManuscript,
-  types,
   createLine,
   createManuscriptLine,
   Chapter,
 } from 'corpus/domain/text'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
 import ChapterLemmatization from './ManuscriptLineLemmatizer'
 import Word from 'dictionary/domain/Word'
 import produce from 'immer'
@@ -54,38 +50,14 @@ beforeEach(async () => {
     manuscripts: [
       createManuscript({
         id: 1,
-        siglumDisambiguator: '1',
-        museumNumber: 'BM.X',
-        accession: 'X.1',
-        periodModifier: periodModifiers.get('Early'),
-        period: periods.get('Ur III'),
-        provenance: provenances.get('Nippur'),
-        type: types.get('School'),
-        notes: 'a note',
-        references: [],
       }),
     ],
     lines: [
       createLine({
-        number: '1',
-        reconstruction: 'reconstructed text',
-        reconstructionTokens: [
-          {
-            type: 'AkkadianWord',
-            value: 'reconstructed',
-          },
-          {
-            type: 'AkkadianWord',
-            value: 'text',
-          },
-        ],
-        isBeginningOfSection: true,
-        isSecondLineOfParallelism: true,
         manuscripts: [
           createManuscriptLine({
             manuscriptId: 1,
-            labels: ['o', 'iii'],
-            number: 'a+1',
+            number: '1',
             atf: 'kur ra',
             atfTokens: [
               {
