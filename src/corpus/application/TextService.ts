@@ -11,6 +11,7 @@ import {
   TextInfo,
   Manuscript,
   Line,
+  Text,
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
@@ -99,6 +100,19 @@ const toAlignmentDto = produce((lines) => {
   }
 })
 
+const toLemmatizationDto = produce((lines) => {
+  return {
+    lemmatization: lines.map((line) =>
+      line.manuscripts.map((manuscript) =>
+        manuscript.atfTokens.map((token) => ({
+          value: token.value,
+          uniqueLemma: token.uniqueLemma,
+        }))
+      )
+    ),
+  }
+})
+
 const toManuscriptsDto = (manuscripts) => ({
   manuscripts: manuscripts.map(toManuscriptDto),
 })
@@ -139,6 +153,24 @@ export default class TextService {
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
         toAlignmentDto(lines)
+      )
+      .then(fromDto)
+  }
+
+  updateLemmatization(
+    category: number,
+    index: number,
+    chapterIndex: number,
+    lines: readonly Line[]
+  ): Bluebird<Text> {
+    return this.apiClient
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(
+          chapterIndex
+        )}/manuscriptLemmatization`,
+        toLemmatizationDto(lines)
       )
       .then(fromDto)
   }

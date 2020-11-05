@@ -82,21 +82,27 @@ const textDto = {
                 {
                   type: 'Word',
                   value: 'kur',
+                  parts: [],
+                  cleanValue: 'kur',
                   uniqueLemma: [],
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
+                  enclosureType: [],
                 },
                 {
                   type: 'Word',
                   value: 'ra',
-                  uniqueLemma: [],
+                  parts: [],
+                  cleanValue: 'ra',
+                  uniqueLemma: ['aklu I'],
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
                   alignment: 1,
+                  enclosureType: [],
                 },
               ],
             },
@@ -168,21 +174,27 @@ const text = createText({
                 {
                   type: 'Word',
                   value: 'kur',
+                  parts: [],
+                  cleanValue: 'kur',
                   uniqueLemma: [],
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
+                  enclosureType: [],
                 },
                 {
                   type: 'Word',
                   value: 'ra',
-                  uniqueLemma: [],
+                  parts: [],
+                  cleanValue: 'ra',
+                  uniqueLemma: ['aklu I'],
                   normalized: false,
                   language: 'AKKADIAN',
                   lemmatizable: true,
                   erasure: 'NONE',
                   alignment: 1,
+                  enclosureType: [],
                 },
               ],
             }),
@@ -203,6 +215,23 @@ const alignmentDto = {
         {
           value: 'ra',
           alignment: 1,
+        },
+      ],
+    ],
+  ],
+}
+
+const lemmatizationDto = {
+  lemmatization: [
+    [
+      [
+        {
+          value: 'kur',
+          uniqueLemma: [],
+        },
+        {
+          value: 'ra',
+          uniqueLemma: ['aklu I'],
         },
       ],
     ],
@@ -295,6 +324,19 @@ const testData: TestData[] = [
         text.index
       )}/chapters/0/alignment`,
       alignmentDto,
+    ],
+    Promise.resolve(textDto),
+  ],
+  [
+    'updateLemmatization',
+    [text.category, text.index, 0, text.chapters[0].lines],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/manuscriptLemmatization`,
+      lemmatizationDto,
     ],
     Promise.resolve(textDto),
   ],

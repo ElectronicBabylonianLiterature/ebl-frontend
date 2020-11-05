@@ -4,17 +4,18 @@ import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import { AtfToken, ReconstructionToken } from 'corpus/domain/text'
+import { ReconstructionToken } from 'corpus/domain/text'
+import { Token } from 'transliteration/domain/token'
 
 function Word({
   token,
   reconstructionTokens,
   onClick,
 }: {
-  readonly token: AtfToken
+  readonly token: Token
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
-  readonly onClick: (x0: any) => any
-}) {
+  readonly onClick: (event: React.MouseEvent) => void
+}): JSX.Element {
   return token.lemmatizable ? (
     <Button
       onClick={onClick}

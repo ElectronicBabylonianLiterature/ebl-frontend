@@ -10,7 +10,7 @@ import Bluebird from 'bluebird'
 import _ from 'lodash'
 
 interface ExpectResult<T> {
-  toHaveBeenCalledWith(args: any): T
+  toHaveBeenCalledWith(...args: any): T
 }
 interface WhenResult<T> {
   expect(func: jest.Mock): ExpectResult<T>

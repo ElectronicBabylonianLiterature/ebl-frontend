@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 import { Popover, Overlay, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
@@ -6,18 +6,19 @@ import Word from './Word'
 import './WordAligner.css'
 import produce, { Draft } from 'immer'
 
-import { AtfToken, ReconstructionToken } from 'corpus/domain/text'
+import { ReconstructionToken } from 'corpus/domain/text'
+import { Token } from 'transliteration/domain/token'
 
 interface Props {
-  readonly token: AtfToken
+  readonly token: Token
   readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
-  readonly onChange: (token: AtfToken) => void
+  readonly onChange: (token: Token) => void
 }
 
 class AlignmentForm extends Component<Props> {
   handleAlignmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.props.onChange(
-      produce(this.props.token, (draft: Draft<AtfToken>) => {
+      produce(this.props.token, (draft: Draft<Token>) => {
         const alignmentIndex = event.target.value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
@@ -53,7 +54,7 @@ class AlignmentForm extends Component<Props> {
 }
 
 interface State {
-  readonly target?: any
+  readonly target?
   readonly show: boolean
 }
 
@@ -68,14 +69,14 @@ export default class WordAligner extends Component<Props, State> {
     }
   }
 
-  handleClick = (event: SyntheticEvent): void => {
+  handleClick = (event: React.MouseEvent): void => {
     this.setState({
       target: event.target,
       show: !this.state.show,
     })
   }
 
-  handleChange = (value: AtfToken): void => {
+  handleChange = (value: Token): void => {
     this.props.onChange(value)
     this.hide()
   }
