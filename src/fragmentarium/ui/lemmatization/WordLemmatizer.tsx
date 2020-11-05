@@ -47,11 +47,25 @@ export default function WordLemmatizer({
   )
 
   const LemmaMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
-    props,
+    {
+      style,
+      className,
+      'aria-labelledby': labeledBy,
+    }: {
+      children?: React.ReactNode
+      style?: React.CSSProperties
+      className?: string
+      'aria-labelledby'?: string
+    },
     ref
   ) {
     return (
-      <div ref={ref} {...props}>
+      <div
+        ref={ref}
+        style={style}
+        className={className}
+        aria-labelledby={labeledBy}
+      >
         <LemmatizationForm
           token={token}
           fragmentService={fragmentService}
