@@ -15,6 +15,26 @@ import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import withData, { WithoutData } from 'http/withData'
 
+function setLemmatizationToken(
+  lemmatization: readonly LemmatizationToken[],
+  index: number,
+  newToken: LemmatizationToken
+): readonly LemmatizationToken[] {
+  return produce(lemmatization, (draft) => {
+    draft[index] = castDraft(newToken)
+  })
+}
+
+function setUniqueLemma(
+  manuscriptLine: ManuscriptLine,
+  index: number,
+  uniqueLemma: UniqueLemma
+): ManuscriptLine {
+  return produce(manuscriptLine, (draft: Draft<ManuscriptLine>) => {
+    draft.atfTokens[index].uniqueLemma = uniqueLemma.map((lemma) => lemma.value)
+  })
+}
+
 interface Props {
   data: readonly LemmatizationToken[]
   fragmentService: FragmentService
@@ -27,19 +47,14 @@ interface Props {
 function ManuscriptLineLemmatization(props: Props) {
   const [lemmatization, setLemmatization] = useState(props.data)
   const handleChange = (index: number) => (uniqueLemma: UniqueLemma) => {
-    const newToken = lemmatization[index].setUniqueLemma(uniqueLemma)
     setLemmatization(
-      produce(lemmatization, (draft) => {
-        draft[index] = castDraft(newToken)
-      })
+      setLemmatizationToken(
+        lemmatization,
+        index,
+        lemmatization[index].setUniqueLemma(uniqueLemma)
+      )
     )
-    props.onChange(
-      produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index].uniqueLemma = uniqueLemma.map(
-          (lemma) => lemma.value
-        )
-      })
-    )
+    props.onChange(setUniqueLemma(props.manuscriptLine, index, uniqueLemma))
   }
   return (
     <Row>
