@@ -6,6 +6,7 @@ import { Provenance, provenances } from './provenance'
 import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
+import { Token } from 'transliteration/domain/token'
 
 export interface ManuscriptType {
   readonly name: string
@@ -62,22 +63,12 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
   })
 }
 
-export interface AtfToken {
-  readonly type: string
-  readonly value: string
-  readonly uniqueLemma?: readonly string[]
-  readonly normalized?: boolean
-  readonly language?: string
-  readonly lemmatizable?: boolean
-  readonly erasure?: string
-  readonly alignment?: number | null
-}
 export interface ManuscriptLine {
   readonly manuscriptId: number
   readonly labels: ReadonlyArray<string>
   readonly number: string
   readonly atf: string
-  readonly atfTokens: ReadonlyArray<AtfToken>
+  readonly atfTokens: ReadonlyArray<Token>
 }
 export const createManuscriptLine: (
   x0: Partial<ManuscriptLine>

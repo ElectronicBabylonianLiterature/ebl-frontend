@@ -36,8 +36,10 @@ beforeEach(async () => {
   fragmentService = {
     searchLemma: jest.fn(),
     createLemmatization: jest.fn(),
+    findSuggestions: jest.fn(),
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
+  fragmentService.findSuggestions.mockReturnValue(Promise.resolve([]))
   wordService = {
     find: jest.fn(),
   }
@@ -64,21 +66,27 @@ beforeEach(async () => {
               {
                 type: 'Word',
                 value: 'kur',
+                parts: [],
+                cleanValue: 'kur',
                 uniqueLemma: [],
                 normalized: false,
                 language: 'AKKADIAN',
                 lemmatizable: true,
                 erasure: 'NONE',
+                enclosureType: [],
               },
               {
                 type: 'Word',
                 value: 'ra',
+                parts: [],
+                cleanValue: 'ra',
                 uniqueLemma: [oldWord._id],
                 normalized: false,
                 language: 'AKKADIAN',
                 lemmatizable: true,
                 erasure: 'NONE',
                 alignment: 1,
+                enclosureType: [],
               },
             ],
           }),

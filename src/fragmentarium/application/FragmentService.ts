@@ -199,6 +199,16 @@ class FragmentService {
       )
   }
 
+  findSuggestions(value: string): Promise<ReadonlyArray<UniqueLemma>> {
+    return this.fragmentRepository
+      .findLemmas(value)
+      .then((lemmas) =>
+        lemmas.map((complexLemma) =>
+          complexLemma.map((word) => new Lemma(word))
+        )
+      )
+  }
+
   private fetchLemmas(text: Text): Promise<Lemma[]> {
     return Promise.all(
       mapText<string, Promise<Lemma>>(
@@ -221,15 +231,8 @@ class FragmentService {
           .filter((token) => token.lemmatizable && _.isEmpty(token.uniqueLemma))
           .flatMap((token) => token.cleanValue)
       ),
-      (value: string): [string, ReadonlyArray<UniqueLemma>] =>
-        this.fragmentRepository
-          .findLemmas(value)
-          .then((lemmas) => [
-            value,
-            lemmas.map((complexLemma) =>
-              complexLemma.map((word) => new Lemma(word))
-            ),
-          ])
+      (value: string): Promise<[string, ReadonlyArray<UniqueLemma>]> =>
+        this.findSuggestions(value).then((lemmas) => [value, lemmas])
     )
   }
 }

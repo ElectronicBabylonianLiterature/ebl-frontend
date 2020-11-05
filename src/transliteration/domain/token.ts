@@ -33,6 +33,7 @@ export interface Word extends BaseToken {
   readonly lemmatizable: boolean
   readonly alignable?: boolean
   readonly uniqueLemma: readonly string[]
+  readonly alignment?: number | null
   readonly language: string
   readonly normalized: boolean
   readonly erasure: string

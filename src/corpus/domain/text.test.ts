@@ -37,11 +37,14 @@ const manuscrpitLineConfig: ManuscriptLine = {
     {
       type: 'Word',
       value: 'kur',
+      parts: [],
+      cleanValue: 'kur',
       uniqueLemma: [],
       normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
       erasure: 'NONE',
+      enclosureType: [],
     },
   ],
 }

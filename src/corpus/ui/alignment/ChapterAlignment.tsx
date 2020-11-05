@@ -1,9 +1,10 @@
 import React from 'react'
-import { Chapter, Line, ManuscriptLine, AtfToken } from 'corpus/domain/text'
+import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from '../Reconstruction'
+import { Token } from 'transliteration/domain/token'
 
 function ManuscriptAlignment(props: {
   chapter: Chapter
@@ -11,7 +12,7 @@ function ManuscriptAlignment(props: {
   manuscriptLine: ManuscriptLine
   onChange: (line: ManuscriptLine) => void
 }) {
-  const handleChange = (index: number) => (token: AtfToken) => {
+  const handleChange = (index: number) => (token: Token) => {
     props.onChange(
       produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
         draft.atfTokens[index] = castDraft(token)

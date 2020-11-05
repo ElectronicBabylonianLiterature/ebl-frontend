@@ -89,18 +89,25 @@ const ManuscriptLineLemmatizationWithData = withData<
 >(ManuscriptLineLemmatization, (props) =>
   Promise.all(
     props.manuscriptLine.atfTokens.map((token) =>
-      Promise.all(
-        token.uniqueLemma?.map((value) =>
-          props.wordService.find(value).then((word: Word) => new Lemma(word))
-        ) ?? []
-      ).then(
-        (lemmas) =>
-          new LemmatizationToken(
-            token.value,
-            token.lemmatizable ?? false,
-            lemmas
+      props.fragmentService
+        .findSuggestions(token.cleanValue)
+        .then((suggestions) =>
+          Promise.all(
+            token.uniqueLemma?.map((value) =>
+              props.wordService
+                .find(value)
+                .then((word: Word) => new Lemma(word))
+            ) ?? []
+          ).then(
+            (lemmas) =>
+              new LemmatizationToken(
+                token.value,
+                token.lemmatizable ?? false,
+                lemmas,
+                suggestions
+              )
           )
-      )
+        )
     )
   )
 )
