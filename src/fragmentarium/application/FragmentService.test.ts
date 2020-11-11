@@ -102,10 +102,10 @@ const testData: TestData[] = [
   ],
   [
     'findSuggestions',
-    ['kur'],
+    ['kur', true],
     fragmentRepository.findLemmas,
     [[new Lemma(word)]],
-    ['kur'],
+    ['kur', true],
     Promise.resolve([[word]]),
   ],
 ]

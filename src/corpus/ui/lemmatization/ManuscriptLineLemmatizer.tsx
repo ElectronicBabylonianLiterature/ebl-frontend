@@ -90,7 +90,7 @@ const ManuscriptLineLemmatizationWithData = withData<
   Promise.all(
     props.manuscriptLine.atfTokens.map((token) =>
       props.fragmentService
-        .findSuggestions(token.cleanValue)
+        .findSuggestions(token.cleanValue, token.normalized ?? false)
         .then((suggestions) =>
           Promise.all(
             token.uniqueLemma?.map((value) =>

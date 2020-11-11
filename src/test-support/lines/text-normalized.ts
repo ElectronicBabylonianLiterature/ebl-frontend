@@ -20,6 +20,8 @@ export const akkadianWords: TextLine = new TextLine({
       lemmatizable: true,
       alignment: null,
       uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
       parts: [
         {
           value: 'kur',
@@ -40,6 +42,8 @@ export const akkadianWords: TextLine = new TextLine({
       lemmatizable: true,
       alignment: null,
       uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
       parts: [
         {
           value: '<',
@@ -76,6 +80,8 @@ export const akkadianWords: TextLine = new TextLine({
       lemmatizable: true,
       alignment: null,
       uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
       parts: [
         {
           value: '[',
@@ -149,6 +155,8 @@ export const akkadianWords: TextLine = new TextLine({
       lemmatizable: true,
       alignment: null,
       uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
       parts: [
         {
           value: '(',
@@ -185,6 +193,8 @@ export const akkadianWords: TextLine = new TextLine({
       lemmatizable: true,
       alignment: null,
       uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
       parts: [
         {
           value: 'kur',

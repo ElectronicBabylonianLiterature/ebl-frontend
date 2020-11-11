@@ -17,6 +17,7 @@ import {
   Token,
   Word,
   Column,
+  AkkadianWord,
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
@@ -49,6 +50,10 @@ export function isCommentaryProtocol(
 
 export function isWord(token: Token): token is Word {
   return token.type === 'Word'
+}
+
+export function isAkkadianWord(token: Token): token is AkkadianWord {
+  return token.type === 'AkkadianWord'
 }
 
 export function isColumn(token: Token): token is Column {

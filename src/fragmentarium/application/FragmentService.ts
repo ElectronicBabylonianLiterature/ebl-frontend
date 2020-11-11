@@ -47,7 +47,7 @@ export interface FragmentRepository {
   ): Promise<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Promise<any>
   fragmentPager(fragmentNumber: string): Promise<any>
-  findLemmas(lemma: string): Promise<any>
+  findLemmas(lemma: string, isNormalized: boolean): Promise<any>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
 
@@ -199,9 +199,12 @@ class FragmentService {
       )
   }
 
-  findSuggestions(value: string): Promise<ReadonlyArray<UniqueLemma>> {
+  findSuggestions(
+    value: string,
+    isNormalized: boolean
+  ): Promise<ReadonlyArray<UniqueLemma>> {
     return this.fragmentRepository
-      .findLemmas(value)
+      .findLemmas(value, isNormalized)
       .then((lemmas) =>
         lemmas.map((complexLemma) =>
           complexLemma.map((word) => new Lemma(word))
@@ -227,12 +230,15 @@ class FragmentService {
   ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
     return Promise.mapSeries(
       mapLines(text, (line) =>
-        line
-          .filter((token) => token.lemmatizable && _.isEmpty(token.uniqueLemma))
-          .flatMap((token) => token.cleanValue)
+        line.filter(
+          (token) => token.lemmatizable && _.isEmpty(token.uniqueLemma)
+        )
       ),
-      (value: string): Promise<[string, ReadonlyArray<UniqueLemma>]> =>
-        this.findSuggestions(value).then((lemmas) => [value, lemmas])
+      (token: Token): Promise<[string, ReadonlyArray<UniqueLemma>]> =>
+        this.findSuggestions(
+          token.cleanValue,
+          token.normalized ?? false
+        ).then((lemmas) => [token.cleanValue, lemmas])
     )
   }
 }
