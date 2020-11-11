@@ -40,10 +40,14 @@ export interface Word extends BaseToken {
   readonly parts: readonly Token[]
 }
 
-export interface AkkadianWord extends NotLemmatizableToken {
+export interface AkkadianWord extends BaseToken {
   readonly type: 'AkkadianWord'
   readonly parts: readonly Token[]
   readonly modifiers: readonly string[]
+  readonly alignable: boolean
+  readonly lemmatizable: boolean
+  readonly uniqueLemma: readonly string[]
+  readonly alignment: number | null
 }
 
 export interface Break extends NotLemmatizableToken {

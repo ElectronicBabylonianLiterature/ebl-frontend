@@ -17,6 +17,10 @@ export const akkadianWords: TextLine = new TextLine({
       cleanValue: 'kur',
       enclosureType: [],
       erasure: 'NONE',
+      lemmatizable: true,
+      alignable: true,
+      alignment: null,
+      uniqueLemma: [],
       parts: [
         {
           value: 'kur',
@@ -34,6 +38,10 @@ export const akkadianWords: TextLine = new TextLine({
       cleanValue: '<kur>',
       enclosureType: [],
       erasure: 'NONE',
+      lemmatizable: true,
+      alignable: true,
+      alignment: null,
+      uniqueLemma: [],
       parts: [
         {
           value: '<',
@@ -67,6 +75,10 @@ export const akkadianWords: TextLine = new TextLine({
       cleanValue: '[kur-(kur)...]',
       enclosureType: [],
       erasure: 'NONE',
+      lemmatizable: true,
+      alignable: true,
+      alignment: null,
+      uniqueLemma: [],
       parts: [
         {
           value: '[',
@@ -137,6 +149,10 @@ export const akkadianWords: TextLine = new TextLine({
       cleanValue: '(kur)',
       enclosureType: [],
       erasure: 'NONE',
+      lemmatizable: true,
+      alignable: true,
+      alignment: null,
+      uniqueLemma: [],
       parts: [
         {
           value: '(',
@@ -170,6 +186,10 @@ export const akkadianWords: TextLine = new TextLine({
       cleanValue: 'kur-kur...',
       enclosureType: [],
       erasure: 'NONE',
+      alignable: true,
+      lemmatizable: true,
+      alignment: null,
+      uniqueLemma: [],
       parts: [
         {
           value: 'kur',
