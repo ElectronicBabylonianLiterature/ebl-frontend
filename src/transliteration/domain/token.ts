@@ -19,14 +19,12 @@ export interface BaseToken {
 
 export interface NotLemmatizableToken extends BaseToken {
   readonly lemmatizable?: false
-  readonly alignable?: false
   readonly uniqueLemma?: null
   readonly alignment?: null
 }
 
 export interface LemmatizableToken extends BaseToken {
   readonly lemmatizable: boolean
-  readonly alignable?: boolean
   readonly uniqueLemma: readonly string[]
   readonly alignment?: number | null
 }
