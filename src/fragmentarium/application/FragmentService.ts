@@ -204,10 +204,12 @@ class FragmentService {
                           .then((word: Word) => new Lemma(word))
                       )
                     ),
-                    this.findSuggestions(
-                      token.cleanValue,
-                      token.normalized ?? false
-                    ),
+                    token.uniqueLemma && token.uniqueLemma.length > 0
+                      ? Promise.resolve([])
+                      : this.findSuggestions(
+                          token.cleanValue,
+                          token.normalized ?? false
+                        ),
                   ]).then(
                     ([lemmas, suggestions]) =>
                       new LemmatizationToken(
