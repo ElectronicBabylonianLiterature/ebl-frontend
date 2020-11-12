@@ -1,6 +1,6 @@
 import Reference from 'bibliography/domain/Reference'
 import Promise from 'bluebird'
-import Word from 'dictionary/domain/Word'
+import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -14,6 +14,7 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { LemmatizableToken, Token } from 'transliteration/domain/token'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -190,45 +191,49 @@ class FragmentService {
 
   createLemmatization(text: Text): Promise<Lemmatization> {
     return Promise.all(
-      text.allLines
-        .map((line) => line.content)
-        .map((tokens) =>
-          Promise.all(
-            tokens.map((token) =>
-              token.lemmatizable
-                ? Promise.all([
-                    Promise.all(
-                      (token.uniqueLemma ?? []).map((lemma) =>
-                        this.wordRepository
-                          .find(lemma)
-                          .then((word: Word) => new Lemma(word))
-                      )
-                    ),
-                    token.uniqueLemma && token.uniqueLemma.length > 0
-                      ? Promise.resolve([])
-                      : this.findSuggestions(
-                          token.cleanValue,
-                          token.normalized ?? false
-                        ),
-                  ]).then(
-                    ([lemmas, suggestions]) =>
-                      new LemmatizationToken(
-                        token.value,
-                        true,
-                        lemmas,
-                        suggestions
-                      )
-                  )
-                : Promise.resolve(new LemmatizationToken(token.value, false))
-            )
-          )
-        )
+      text.allLines.map((line) => this.createLemmatizationLine(line.content))
     ).then(
       (lines) =>
         new Lemmatization(
           text.allLines.map((line) => line.prefix),
           lines
         )
+    )
+  }
+
+  private createLemmatizationLine(
+    tokens: readonly Token[]
+  ): Promise<LemmatizationToken[]> {
+    return Promise.all(
+      tokens.map((token) =>
+        token.lemmatizable
+          ? Promise.all([
+              this.createLemmas(token),
+              this.createSuggestions(token),
+            ]).then(
+              ([lemmas, suggestions]) =>
+                new LemmatizationToken(token.value, true, lemmas, suggestions)
+            )
+          : Promise.resolve(new LemmatizationToken(token.value, false))
+      )
+    )
+  }
+
+  private createSuggestions(
+    token: LemmatizableToken
+  ): Promise<readonly UniqueLemma[]> {
+    return _.isEmpty(token.uniqueLemma)
+      ? this.findSuggestions(token.cleanValue, token.normalized)
+      : Promise.resolve([])
+  }
+
+  private createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
+    return Promise.all(
+      token.uniqueLemma.map((lemma) =>
+        this.wordRepository
+          .find(lemma)
+          .then((word: DictionaryWord) => new Lemma(word))
+      )
     )
   }
 
