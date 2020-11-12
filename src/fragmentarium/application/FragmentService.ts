@@ -4,14 +4,14 @@ import Word from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import _, { Dictionary } from 'lodash'
+import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   UniqueLemma,
   LemmatizationDto,
+  LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
-import { Token } from 'transliteration/domain/token'
 import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
 
@@ -189,14 +189,45 @@ class FragmentService {
   }
 
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.all([this.fetchLemmas(text), this.fetchSuggestions(text)])
-      .then(([lemmaData, suggestionsData]): [
-        Dictionary<Lemma>,
-        Dictionary<ReadonlyArray<UniqueLemma>>
-      ] => [_.keyBy(lemmaData, 'value'), _.fromPairs(suggestionsData)])
-      .then(([lemmas, suggestions]) =>
-        text.createLemmatization(lemmas, suggestions)
-      )
+    return Promise.all(
+      text.allLines
+        .map((line) => line.content)
+        .map((tokens) =>
+          Promise.all(
+            tokens.map((token) =>
+              token.lemmatizable
+                ? Promise.all([
+                    Promise.all(
+                      (token.uniqueLemma ?? []).map((lemma) =>
+                        this.wordRepository
+                          .find(lemma)
+                          .then((word: Word) => new Lemma(word))
+                      )
+                    ),
+                    this.findSuggestions(
+                      token.cleanValue,
+                      token.normalized ?? false
+                    ),
+                  ]).then(
+                    ([lemmas, suggestions]) =>
+                      new LemmatizationToken(
+                        token.value,
+                        true,
+                        lemmas,
+                        suggestions
+                      )
+                  )
+                : Promise.resolve(new LemmatizationToken(token.value, false))
+            )
+          )
+        )
+    ).then(
+      (lines) =>
+        new Lemmatization(
+          text.allLines.map((line) => line.prefix),
+          lines
+        )
+    )
   }
 
   findSuggestions(
@@ -211,56 +242,6 @@ class FragmentService {
         )
       )
   }
-
-  private fetchLemmas(text: Text): Promise<Lemma[]> {
-    return Promise.all(
-      mapText<string, Promise<Lemma>>(
-        text,
-        (line) => line.flatMap((token) => token.uniqueLemma ?? []),
-        (uniqueLemma: string): Promise<Lemma> =>
-          this.wordRepository
-            .find(uniqueLemma)
-            .then((word: Word) => new Lemma(word))
-      )
-    )
-  }
-
-  private fetchSuggestions(
-    text: Text
-  ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
-    return Promise.mapSeries(
-      mapLines(text, (line) =>
-        line.filter(
-          (token) => token.lemmatizable && _.isEmpty(token.uniqueLemma)
-        )
-      ),
-      (token: Token): Promise<[string, ReadonlyArray<UniqueLemma>]> =>
-        this.findSuggestions(
-          token.cleanValue,
-          token.normalized ?? false
-        ).then((lemmas) => [token.cleanValue, lemmas])
-    )
-  }
-}
-
-function mapText<T, U>(
-  text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>,
-  mapToken: (token: T) => U
-): ReadonlyArray<U> {
-  return mapLines(text, mapLine).map(mapToken)
-}
-
-function mapLines<T>(
-  text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>
-): ReadonlyArray<T> {
-  return _(text.lines)
-    .flatMap(({ content }) => mapLine(content))
-    .reject(_.isNil)
-    .uniq()
-    .sort()
-    .value()
 }
 
 export default FragmentService

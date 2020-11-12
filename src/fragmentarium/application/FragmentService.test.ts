@@ -285,14 +285,23 @@ test('createLemmatization', async () => {
   const expectedSuggestions = _.mapValues(suggestions, (word) => [
     [new Lemma(word)],
   ])
-  const lemmatization = new Lemmatization([], [])
-
-  jest.spyOn(text, 'createLemmatization').mockReturnValue(lemmatization)
+  const lemmatization = new Lemmatization(
+    ['1.', '#note: '],
+    text.allLines.map((line) =>
+      line.content.map(
+        (token) =>
+          new LemmatizationToken(
+            token.value,
+            token.lemmatizable ?? false,
+            token.uniqueLemma?.map((lemma) => expectedLemmas[lemma]) ?? null,
+            token.lemmatizable
+              ? expectedSuggestions[token.cleanValue] ?? []
+              : null
+          )
+      )
+    )
+  )
 
   const result = await fragmentService.createLemmatization(text)
   expect(result).toEqual(lemmatization)
-  expect(text.createLemmatization).toHaveBeenCalledWith(
-    expectedLemmas,
-    expectedSuggestions
-  )
 })
