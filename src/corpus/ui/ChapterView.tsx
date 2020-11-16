@@ -109,7 +109,6 @@ function ChapterView({
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const updateLemmatization = (): void => {
     update(() =>
       textService.updateLemmatization(
