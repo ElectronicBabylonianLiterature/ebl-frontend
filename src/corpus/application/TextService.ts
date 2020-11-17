@@ -18,6 +18,7 @@ import { provenances } from 'corpus/domain/provenance'
 import { produce } from 'immer'
 import _ from 'lodash'
 import Bluebird from 'bluebird'
+import { Token } from 'transliteration/domain/token'
 
 function fromDto(textDto) {
   return createText({
@@ -100,16 +101,18 @@ const toAlignmentDto = produce((lines) => {
   }
 })
 
-const toLemmatizationDto = produce((lines) => {
+const toLemmatizationDto = produce((lines: readonly Line[]) => {
+  function mapTokens(tokens: readonly Token[]) {
+    return tokens.map((token) => ({
+      value: token.value,
+      uniqueLemma: token.uniqueLemma,
+    }))
+  }
   return {
-    lemmatization: lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          uniqueLemma: token.uniqueLemma,
-        }))
-      )
-    ),
+    lemmatization: lines.map((line) => [
+      mapTokens(line.reconstructionTokens),
+      ...line.manuscripts.map((manuscript) => mapTokens(manuscript.atfTokens)),
+    ]),
   }
 })
 
@@ -167,9 +170,7 @@ export default class TextService {
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(
-          chapterIndex
-        )}/manuscriptLemmatization`,
+        )}/chapters/${encodeURIComponent(chapterIndex)}/lemmatization`,
         toLemmatizationDto(lines)
       )
       .then(fromDto)

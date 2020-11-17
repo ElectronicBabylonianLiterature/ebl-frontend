@@ -303,6 +303,16 @@ const lemmatizationDto = {
         },
         {
           value: 'ra',
+          uniqueLemma: [],
+        },
+      ],
+      [
+        {
+          value: 'kur',
+          uniqueLemma: [],
+        },
+        {
+          value: 'ra',
           uniqueLemma: ['aklu I'],
         },
       ],
@@ -407,7 +417,7 @@ const testData: TestData[] = [
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
         text.index
-      )}/chapters/0/manuscriptLemmatization`,
+      )}/chapters/0/lemmatization`,
       lemmatizationDto,
     ],
     Promise.resolve(textDto),
