@@ -190,8 +190,8 @@ class FragmentService {
   }
 
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.all(
-      text.allLines.map((line) => this.createLemmatizationLine(line.content))
+    return Promise.mapSeries(text.allLines, (line) =>
+      this.createLemmatizationLine(line.content)
     ).then(
       (lines) =>
         new Lemmatization(
@@ -204,18 +204,16 @@ class FragmentService {
   private createLemmatizationLine(
     tokens: readonly Token[]
   ): Promise<LemmatizationToken[]> {
-    return Promise.all(
-      tokens.map((token) =>
-        token.lemmatizable
-          ? Promise.all([
-              this.createLemmas(token),
-              this.createSuggestions(token),
-            ]).then(
-              ([lemmas, suggestions]) =>
-                new LemmatizationToken(token.value, true, lemmas, suggestions)
-            )
-          : Promise.resolve(new LemmatizationToken(token.value, false))
-      )
+    return Promise.mapSeries(tokens, (token) =>
+      token.lemmatizable
+        ? Promise.all([
+            this.createLemmas(token),
+            this.createSuggestions(token),
+          ]).then(
+            ([lemmas, suggestions]) =>
+              new LemmatizationToken(token.value, true, lemmas, suggestions)
+          )
+        : Promise.resolve(new LemmatizationToken(token.value, false))
     )
   }
 
@@ -228,12 +226,10 @@ class FragmentService {
   }
 
   private createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
-    return Promise.all(
-      token.uniqueLemma.map((lemma) =>
-        this.wordRepository
-          .find(lemma)
-          .then((word: DictionaryWord) => new Lemma(word))
-      )
+    return Promise.mapSeries(token.uniqueLemma, (lemma) =>
+      this.wordRepository
+        .find(lemma)
+        .then((word: DictionaryWord) => new Lemma(word))
     )
   }
 
