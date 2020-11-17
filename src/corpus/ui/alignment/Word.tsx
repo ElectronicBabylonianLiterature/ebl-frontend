@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import { ReconstructionToken } from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
 
 function Word({
@@ -13,7 +12,7 @@ function Word({
   onClick,
 }: {
   readonly token: Token
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<Token>
   readonly onClick: (event: React.MouseEvent) => void
 }): JSX.Element {
   return token.lemmatizable ? (

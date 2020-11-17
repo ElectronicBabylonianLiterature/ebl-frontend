@@ -82,14 +82,11 @@ export const createManuscriptLine: (
     ...draft,
   })
 )
-export interface ReconstructionToken {
-  readonly type: string
-  readonly value: string
-}
+
 export interface Line {
   readonly number: string
   readonly reconstruction: string
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<Token>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
