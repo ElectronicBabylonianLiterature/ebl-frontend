@@ -10,7 +10,7 @@ import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ChapterLemmatization from './lemmatization/ManuscriptLineLemmatizer'
+import ChapterLemmatization from './lemmatization/ChapterLemmatization'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {

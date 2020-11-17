@@ -118,7 +118,7 @@ it('Clicking word shows form', async () => {
 })
 
 it('Clicking save calls fragmentService', async () => {
-  await lemmatizeWord(element, lemma)
+  await lemmatizeWord(element, 'kur', lemma)
 
   const expected = new Lemmatization(
     ['1.'],

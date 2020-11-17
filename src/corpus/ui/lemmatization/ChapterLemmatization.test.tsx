@@ -12,7 +12,7 @@ import {
   createManuscriptLine,
   Chapter,
 } from 'corpus/domain/text'
-import ChapterLemmatization from './ManuscriptLineLemmatizer'
+import ChapterLemmatization from './ChapterLemmatization'
 import Word from 'dictionary/domain/Word'
 import produce from 'immer'
 import { lemmatizeWord } from 'test-support/lemmatization'
@@ -57,6 +57,40 @@ beforeEach(async () => {
     ],
     lines: [
       createLine({
+        reconstruction: '%n kur-kur',
+        reconstructionTokens: [
+          {
+            value: '%n',
+            cleanValue: '%n',
+            enclosureType: [],
+            erasure: 'NONE',
+            language: 'AKKADIAN',
+            normalized: true,
+            type: 'LanguageShift',
+          },
+          {
+            value: 'kur-kur',
+            cleanValue: 'kur-kur',
+            enclosureType: [],
+            erasure: 'NONE',
+            lemmatizable: true,
+            alignment: null,
+            uniqueLemma: [],
+            normalized: true,
+            language: 'AKKADIAN',
+            parts: [
+              {
+                value: 'kur-kur',
+                cleanValue: 'kur-kur',
+                enclosureType: [],
+                erasure: 'NONE',
+                type: 'ValueToken',
+              },
+            ],
+            modifiers: [],
+            type: 'AkkadianWord',
+          },
+        ],
         manuscripts: [
           createManuscriptLine({
             manuscriptId: 1,
@@ -107,8 +141,8 @@ beforeEach(async () => {
   await element.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
 })
 
-test('onChange is called on updates', async () => {
-  await lemmatizeWord(element, lemma)
+test('onChange is called on manuscript updates', async () => {
+  await lemmatizeWord(element, 'kur', lemma)
 
   expect(onChange).toHaveBeenCalledWith(
     produce(chapter, (draft) => {
@@ -117,8 +151,18 @@ test('onChange is called on updates', async () => {
   )
 })
 
+test('onChange is called on reconstruction updates', async () => {
+  await lemmatizeWord(element, 'kur-kur', lemma)
+
+  expect(onChange).toHaveBeenCalledWith(
+    produce(chapter, (draft) => {
+      draft.lines[0].reconstructionTokens[1].uniqueLemma = [lemma.value]
+    })
+  )
+})
+
 test('Clicking save button calls onSave', async () => {
-  await lemmatizeWord(element, lemma)
+  await lemmatizeWord(element, 'kur', lemma)
 
   await whenClicked(element, 'Save lemmatization')
     .expect(updateLemmatization)
