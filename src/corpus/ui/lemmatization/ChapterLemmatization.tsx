@@ -20,26 +20,24 @@ function findSuggestions(
   wordService: WordService,
   tokens: readonly Token[]
 ): Promise<LemmatizationToken[]> {
-  return Promise.all(
-    tokens.map((token) =>
-      fragmentService
-        .findSuggestions(token.cleanValue, token.normalized ?? false)
-        .then((suggestions) =>
-          Promise.all(
-            token.uniqueLemma?.map((value) =>
-              wordService.find(value).then((word: Word) => new Lemma(word))
-            ) ?? []
-          ).then(
-            (lemmas) =>
-              new LemmatizationToken(
-                token.value,
-                token.lemmatizable ?? false,
-                lemmas,
-                suggestions
-              )
-          )
+  return Promise.mapSeries(tokens, (token) =>
+    fragmentService
+      .findSuggestions(token.cleanValue, token.normalized ?? false)
+      .then((suggestions) =>
+        Promise.all(
+          token.uniqueLemma?.map((value) =>
+            wordService.find(value).then((word: Word) => new Lemma(word))
+          ) ?? []
+        ).then(
+          (lemmas) =>
+            new LemmatizationToken(
+              token.value,
+              token.lemmatizable ?? false,
+              lemmas,
+              suggestions
+            )
         )
-    )
+      )
   )
 }
 
@@ -133,7 +131,6 @@ interface ManuscriptLineLemmatizationProps {
   data: readonly LemmatizationToken[]
   fragmentService: FragmentService
   chapter: Chapter
-  line: Line
   manuscriptLine: ManuscriptLine
   onChange: (line: ManuscriptLine) => void
 }
@@ -176,15 +173,45 @@ function ManuscriptLineLemmatization(props: ManuscriptLineLemmatizationProps) {
   )
 }
 
-const ManuscriptLineLemmatizationWithData = withData<
-  WithoutData<ManuscriptLineLemmatizationProps>,
+interface ManuscriptsLemmatizationProps {
+  fragmentService: FragmentService
+  chapter: Chapter
+  manuscripts: readonly ManuscriptLine[]
+  onChange: (manuscriptIndex: number) => (line: ManuscriptLine) => void
+}
+
+function ManuscriptsLemmatization({
+  data,
+  fragmentService,
+  chapter,
+  manuscripts,
+  onChange,
+}): JSX.Element {
+  return manuscripts.map(
+    (manuscript: ManuscriptLine, manuscriptIndex: number) => (
+      <ManuscriptLineLemmatization
+        key={manuscriptIndex}
+        fragmentService={fragmentService}
+        chapter={chapter}
+        manuscriptLine={manuscript}
+        data={data[manuscriptIndex]}
+        onChange={onChange(manuscriptIndex)}
+      />
+    )
+  )
+}
+
+const ManuscriptsLemmatizationWithData = withData<
+  WithoutData<ManuscriptsLemmatizationProps>,
   { wordService: WordService },
-  readonly LemmatizationToken[]
->(ManuscriptLineLemmatization, (props) =>
-  findSuggestions(
-    props.fragmentService,
-    props.wordService,
-    props.manuscriptLine.atfTokens
+  readonly LemmatizationToken[][]
+>(ManuscriptsLemmatization, (props) =>
+  Promise.mapSeries(props.manuscripts, (manuscript) =>
+    findSuggestions(
+      props.fragmentService,
+      props.wordService,
+      manuscript.atfTokens
+    )
   )
 )
 
@@ -231,17 +258,13 @@ export default function ChapterLemmatization({
               )
             }
           />
-          {line.manuscripts.map((manuscript, manuscriptIndex) => (
-            <ManuscriptLineLemmatizationWithData
-              key={manuscriptIndex}
-              fragmentService={fragmentService}
-              wordService={wordService}
-              chapter={chapter}
-              line={line}
-              manuscriptLine={manuscript}
-              onChange={handleChange(lineIndex)(manuscriptIndex)}
-            />
-          ))}
+          <ManuscriptsLemmatizationWithData
+            fragmentService={fragmentService}
+            wordService={wordService}
+            manuscripts={line.manuscripts}
+            chapter={chapter}
+            onChange={handleChange(lineIndex)}
+          />
         </section>
       ))}
       <Button onClick={() => onSave()} disabled={disabled}>
