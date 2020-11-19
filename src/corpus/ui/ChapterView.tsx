@@ -16,6 +16,7 @@ import { BibliographySearch } from 'bibliography/application/BibliographyService
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
+import { ChapterLemmatization } from './lemmatization/ChapterLemmatization'
 
 function ChapterTitle({
   text,
@@ -109,13 +110,13 @@ function ChapterView({
     )
   }
 
-  const updateLemmatization = (): void => {
+  const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
     update(() =>
       textService.updateLemmatization(
         text.category,
         text.index,
         chapterIndex,
-        chapter.lines
+        lemmatization
       )
     )
   }

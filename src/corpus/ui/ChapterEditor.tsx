@@ -10,14 +10,16 @@ import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ChapterLemmatization from './lemmatization/ChapterLemmatization'
+import ChapterLemmatizer, {
+  ChapterLemmatization,
+} from './lemmatization/ChapterLemmatization'
 import WordService from 'dictionary/application/WordService'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
   onSaveAlignment: () => void
-  onSaveLemmatization: () => void
+  onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
   disabled: boolean
   dirty: boolean
   chapter: Chapter
@@ -84,9 +86,8 @@ export default function ChapterEditor({
           title="Lemmatization"
           disabled={!session.hasBetaAccess() || dirty}
         >
-          <ChapterLemmatization
+          <ChapterLemmatizer
             chapter={chapter}
-            onChange={onChange}
             onSave={onSaveLemmatization}
             disabled={disabled}
             fragmentService={fragmentService}

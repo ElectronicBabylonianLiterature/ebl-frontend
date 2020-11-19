@@ -16,6 +16,7 @@ import ChapterLemmatization from './ChapterLemmatization'
 import Word from 'dictionary/domain/Word'
 import produce from 'immer'
 import { lemmatizeWord } from 'test-support/lemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 let element: RenderResult
 let fragmentService
@@ -108,6 +109,7 @@ beforeEach(async () => {
                 lemmatizable: true,
                 erasure: 'NONE',
                 enclosureType: [],
+                alignment: 1,
               },
               {
                 type: 'Word',
@@ -131,7 +133,6 @@ beforeEach(async () => {
   element = render(
     <ChapterLemmatization
       chapter={chapter}
-      onChange={onChange}
       onSave={updateLemmatization}
       disabled={false}
       fragmentService={fragmentService}
@@ -141,30 +142,44 @@ beforeEach(async () => {
   await element.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
 })
 
-test('onChange is called on manuscript updates', async () => {
-  await lemmatizeWord(element, 'kur', lemma)
-
-  expect(onChange).toHaveBeenCalledWith(
-    produce(chapter, (draft) => {
-      draft.lines[0].manuscripts[0].atfTokens[0].uniqueLemma = [lemma.value]
-    })
-  )
-})
-
-test('onChange is called on reconstruction updates', async () => {
-  await lemmatizeWord(element, 'kur-kur', lemma)
-
-  expect(onChange).toHaveBeenCalledWith(
-    produce(chapter, (draft) => {
-      draft.lines[0].reconstructionTokens[1].uniqueLemma = [lemma.value]
-    })
-  )
-})
-
-test('Clicking save button calls onSave', async () => {
+test('Lemmatize manuscript', async () => {
   await lemmatizeWord(element, 'kur', lemma)
 
   await whenClicked(element, 'Save lemmatization')
     .expect(updateLemmatization)
-    .toHaveBeenCalledWith()
+    .toHaveBeenCalledWith([
+      [
+        [
+          new LemmatizationToken('%n', false, null, null),
+          new LemmatizationToken('kur-kur', true, [], []),
+        ],
+        [
+          [
+            new LemmatizationToken('kur', true, [lemma], []),
+            new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
+          ],
+        ],
+      ],
+    ])
+})
+
+test('Lemmatize reconstruction', async () => {
+  await lemmatizeWord(element, 'kur-kur', lemma)
+
+  await whenClicked(element, 'Save lemmatization')
+    .expect(updateLemmatization)
+    .toHaveBeenCalledWith([
+      [
+        [
+          new LemmatizationToken('%n', false, null, null),
+          new LemmatizationToken('kur-kur', true, [lemma], []),
+        ],
+        [
+          [
+            new LemmatizationToken('kur', true, [lemma], [], true),
+            new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
+          ],
+        ],
+      ],
+    ])
 })

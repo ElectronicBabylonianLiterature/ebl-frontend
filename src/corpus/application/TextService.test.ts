@@ -13,6 +13,8 @@ import {
 import TextService from './TextService'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
 
 const apiClient = {
   fetchJson: jest.fn(),
@@ -293,13 +295,36 @@ const alignmentDto = {
   ],
 }
 
+const lemmatization = [
+  [
+    [
+      new LemmatizationToken('%n', false, null),
+      new LemmatizationToken('ra', true, []),
+    ],
+    [
+      [
+        new LemmatizationToken('kur', true, []),
+        new LemmatizationToken('ra', true, [
+          new Lemma({
+            _id: 'aklu I',
+            pos: [],
+            lemma: ['aklu'],
+            homonym: 'I',
+            guideWord: '',
+            oraccWords: [],
+          }),
+        ]),
+      ],
+    ],
+  ],
+]
+
 const lemmatizationDto = {
   lemmatization: [
     [
       [
         {
-          value: 'kur',
-          uniqueLemma: [],
+          value: '%n',
         },
         {
           value: 'ra',
@@ -411,7 +436,7 @@ const testData: TestData[] = [
   ],
   [
     'updateLemmatization',
-    [text.category, text.index, 0, text.chapters[0].lines],
+    [text.category, text.index, 0, lemmatization],
     apiClient.postJson,
     text,
     [

@@ -1,8 +1,9 @@
 import React, { useState, Fragment } from 'react'
+import _ from 'lodash'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import Promise from 'bluebird'
-import produce, { castDraft, Draft } from 'immer'
+import produce, { castDraft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
 import {
   UniqueLemma,
@@ -15,6 +16,12 @@ import WordService from 'dictionary/application/WordService'
 import withData, { WithoutData } from 'http/withData'
 import { Token } from 'transliteration/domain/token'
 
+export type LineLemmatization = [
+  readonly LemmatizationToken[],
+  readonly LemmatizationToken[][]
+]
+export type ChapterLemmatization = readonly LineLemmatization[]
+
 function findSuggestions(
   fragmentService: FragmentService,
   wordService: WordService,
@@ -24,46 +31,26 @@ function findSuggestions(
     fragmentService
       .findSuggestions(token.cleanValue, token.normalized ?? false)
       .then((suggestions) =>
-        Promise.all(
-          token.uniqueLemma?.map((value) =>
-            wordService.find(value).then((word: Word) => new Lemma(word))
-          ) ?? []
-        ).then(
-          (lemmas) =>
-            new LemmatizationToken(
-              token.value,
-              token.lemmatizable ?? false,
-              lemmas,
-              suggestions
+        token.lemmatizable
+          ? Promise.all(
+              token.uniqueLemma?.map((value) =>
+                wordService.find(value).then((word: Word) => new Lemma(word))
+              ) ?? []
+            ).then(
+              (lemmas) =>
+                new LemmatizationToken(
+                  token.value,
+                  token.lemmatizable,
+                  lemmas,
+                  suggestions
+                )
             )
-        )
+          : new LemmatizationToken(token.value, false)
       )
   )
 }
 
-function setLemmatizationToken(
-  lemmatization: readonly LemmatizationToken[],
-  index: number,
-  newToken: LemmatizationToken
-): readonly LemmatizationToken[] {
-  return produce(lemmatization, (draft) => {
-    draft[index] = castDraft(newToken)
-  })
-}
-
-function setReconstructionLemma(
-  line: Line,
-  index: number,
-  uniqueLemma: UniqueLemma
-): Line {
-  return produce(line, (draft: Draft<Line>) => {
-    draft.reconstructionTokens[index].uniqueLemma = uniqueLemma.map(
-      (lemma) => lemma.value
-    )
-  })
-}
-
-interface RecontsructionLemmatizationProps {
+interface RecontsructionLemmatizerProps {
   data: readonly LemmatizationToken[]
   fragmentService: FragmentService
   chapter: Chapter
@@ -71,7 +58,7 @@ interface RecontsructionLemmatizationProps {
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
-function ReconstructionLemmatization(props: RecontsructionLemmatizationProps) {
+function ReconstructionLemmatizer(props: RecontsructionLemmatizerProps) {
   return (
     <Row>
       <Col md={3}>{props.line.number}</Col>
@@ -94,7 +81,7 @@ function ReconstructionLemmatization(props: RecontsructionLemmatizationProps) {
   )
 }
 
-interface ManuscriptLineLemmatizationProps {
+interface ManuscriptLineLemmatizerProps {
   data: readonly LemmatizationToken[]
   fragmentService: FragmentService
   chapter: Chapter
@@ -102,7 +89,7 @@ interface ManuscriptLineLemmatizationProps {
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
-function ManuscriptLineLemmatization(props: ManuscriptLineLemmatizationProps) {
+function ManuscriptLineLemmatizer(props: ManuscriptLineLemmatizerProps) {
   return (
     <Row>
       <Col md={1} />
@@ -129,7 +116,7 @@ function ManuscriptLineLemmatization(props: ManuscriptLineLemmatizationProps) {
   )
 }
 
-interface ManuscriptsLemmatizationProps {
+interface ManuscriptsLemmatizerProps {
   data: readonly LemmatizationToken[][]
   fragmentService: FragmentService
   chapter: Chapter
@@ -139,18 +126,18 @@ interface ManuscriptsLemmatizationProps {
   ) => (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
-function ManuscriptsLemmatization({
+function ManuscriptsLemmatizer({
   data,
   fragmentService,
   chapter,
   manuscripts,
   onChange,
-}: ManuscriptsLemmatizationProps): JSX.Element {
+}: ManuscriptsLemmatizerProps): JSX.Element {
   return (
     <>
       {manuscripts.map(
         (manuscript: ManuscriptLine, manuscriptIndex: number) => (
-          <ManuscriptLineLemmatization
+          <ManuscriptLineLemmatizer
             key={manuscriptIndex}
             fragmentService={fragmentService}
             chapter={chapter}
@@ -164,66 +151,68 @@ function ManuscriptsLemmatization({
   )
 }
 
-interface LinesLemmatizationProps {
-  data: [readonly LemmatizationToken[], readonly LemmatizationToken[][]]
+interface LineLemmatizerProps {
+  data: LineLemmatization
   fragmentService: FragmentService
   chapter: Chapter
   line: Line
-  onChange: (line: Line) => void
+  onChange: (lemmatization: LineLemmatization) => void
 }
 
-function LinesLemmatization({
+function LineLemmatizater({
   data,
   fragmentService,
   chapter,
   line,
   onChange,
-}: LinesLemmatizationProps) {
-  const [
-    reconstructionLemmatization,
-    setReconstructionLemmatization,
-  ] = useState(data[0])
-  const [manuscriptsLemmatization, setManuscriptsLemmatization] = useState(
-    data[1]
-  )
+}: LineLemmatizerProps) {
+  const [reconstructionLemmatization, manuscriptsLemmatization] = data
+
   const handleReconstructionChange = (index: number) => (
     uniqueLemma: UniqueLemma
-  ) => {
-    setReconstructionLemmatization(
+  ) =>
+    onChange([
       produce(reconstructionLemmatization, (draft) => {
         draft[index] = castDraft(draft[index].setUniqueLemma(uniqueLemma))
-      })
-    )
-    onChange(setReconstructionLemma(line, index, uniqueLemma))
-  }
+      }),
+      produce(manuscriptsLemmatization, (draft) => {
+        return draft.map((manuscript, manuscriptIndex) =>
+          manuscript.map((lemmatizationToken, tokenIndex) => {
+            const token =
+              line.manuscripts[manuscriptIndex].atfTokens[tokenIndex]
+            return token.lemmatizable &&
+              token.alignment === index &&
+              (_.isEmpty(lemmatizationToken.uniqueLemma) ||
+                lemmatizationToken.suggested)
+              ? lemmatizationToken.setUniqueLemma(uniqueLemma, true)
+              : lemmatizationToken
+          })
+        )
+      }),
+    ])
+
   const handleManuscriptChange = (manuscriptIndex: number) => (
     index: number
-  ) => (uniqueLemma: UniqueLemma) => {
-    setManuscriptsLemmatization(
+  ) => (uniqueLemma: UniqueLemma) =>
+    onChange([
+      reconstructionLemmatization,
       produce(manuscriptsLemmatization, (draft) => {
         draft[manuscriptIndex][index] = castDraft(
           draft[manuscriptIndex][index].setUniqueLemma(uniqueLemma)
         )
-      })
-    )
-    onChange(
-      produce(line, (draft: Draft<Line>) => {
-        draft.manuscripts[manuscriptIndex].atfTokens[
-          index
-        ].uniqueLemma = uniqueLemma.map((lemma) => lemma.value)
-      })
-    )
-  }
+      }),
+    ])
+
   return (
     <>
-      <ReconstructionLemmatization
+      <ReconstructionLemmatizer
         data={reconstructionLemmatization}
         line={line}
         fragmentService={fragmentService}
         chapter={chapter}
         onChange={handleReconstructionChange}
       />
-      <ManuscriptsLemmatization
+      <ManuscriptsLemmatizer
         data={manuscriptsLemmatization}
         fragmentService={fragmentService}
         manuscripts={line.manuscripts}
@@ -234,64 +223,77 @@ function LinesLemmatization({
   )
 }
 
-const LinesLemmatizationWithData = withData<
-  WithoutData<LinesLemmatizationProps>,
-  { wordService: WordService },
-  [readonly LemmatizationToken[], readonly LemmatizationToken[][]]
->(LinesLemmatization, (props) =>
-  Promise.all([
-    findSuggestions(
-      props.fragmentService,
-      props.wordService,
-      props.line.reconstructionTokens
-    ),
-    Promise.mapSeries(props.line.manuscripts, (manuscript) =>
-      findSuggestions(
-        props.fragmentService,
-        props.wordService,
-        manuscript.atfTokens
-      )
-    ),
-  ])
-)
-
-export default function ChapterLemmatization({
-  fragmentService,
-  wordService,
-  chapter,
-  onChange,
-  onSave,
-  disabled,
-}: {
+interface ChapterLemmatizerProps {
   fragmentService: FragmentService
   wordService: WordService
   chapter: Chapter
-  onChange: (chapter: Chapter) => void
-  onSave: () => void
+  data: ChapterLemmatization
+  onSave: (lemmatization: ChapterLemmatization) => void
   disabled: boolean
-}): JSX.Element {
-  const handleChange = (lineIndex: number) => (line: Line) =>
-    onChange(
-      produce(chapter, (draft: Draft<Chapter>) => {
-        draft.lines[lineIndex] = castDraft(line)
+}
+
+function ChapterLemmatizer({
+  fragmentService,
+  chapter,
+  data,
+  onSave,
+  disabled,
+}: ChapterLemmatizerProps): JSX.Element {
+  const [chapterLemmatization, setChapterLemmatization] = useState(data)
+  const handleChange = (lineIndex: number) => (
+    lemmatization: LineLemmatization
+  ) =>
+    setChapterLemmatization(
+      produce(chapterLemmatization, (draft) => {
+        draft[lineIndex] = castDraft(lemmatization)
       })
     )
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
-        <LinesLemmatizationWithData
+        <LineLemmatizater
           key={lineIndex}
           line={line}
+          data={chapterLemmatization[lineIndex]}
           fragmentService={fragmentService}
-          wordService={wordService}
           chapter={chapter}
           onChange={handleChange(lineIndex)}
         />
       ))}
-      <Button onClick={() => onSave()} disabled={disabled}>
+      <Button onClick={() => onSave(chapterLemmatization)} disabled={disabled}>
         Save lemmatization
       </Button>
     </Container>
   )
 }
+
+const ChapterLemmatizerWithData = withData<
+  WithoutData<ChapterLemmatizerProps>,
+  { wordService: WordService },
+  readonly [readonly LemmatizationToken[], readonly LemmatizationToken[][]][]
+>(
+  ChapterLemmatizer,
+  (props) =>
+    Promise.mapSeries(props.chapter.lines, (line) =>
+      Promise.all([
+        findSuggestions(
+          props.fragmentService,
+          props.wordService,
+          line.reconstructionTokens
+        ),
+        Promise.mapSeries(line.manuscripts, (manuscript) =>
+          findSuggestions(
+            props.fragmentService,
+            props.wordService,
+            manuscript.atfTokens
+          )
+        ),
+      ])
+    ),
+  {
+    watch: (props) => [props.chapter.lines],
+  }
+)
+
+export default ChapterLemmatizerWithData
