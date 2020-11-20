@@ -58,24 +58,44 @@ interface RecontsructionLemmatizerProps {
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
+function WordLemmatizers({
+  tokens,
+  fragmentService,
+  onChange,
+}: {
+  tokens: readonly LemmatizationToken[]
+  fragmentService: FragmentService
+  onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
+}): JSX.Element {
+  return (
+    <>
+      {tokens.map((token, index) => (
+        <Fragment key={index}>
+          {token.lemmatizable ? (
+            <WordLemmatizer
+              fragmentService={fragmentService}
+              token={token}
+              onChange={onChange(index)}
+            />
+          ) : (
+            token.value
+          )}{' '}
+        </Fragment>
+      ))}
+    </>
+  )
+}
+
 function ReconstructionLemmatizer(props: RecontsructionLemmatizerProps) {
   return (
     <Row>
       <Col md={3}>{props.line.number}</Col>
       <Col md={9}>
-        {props.data.map((token, index) => (
-          <Fragment key={index}>
-            {token.lemmatizable ? (
-              <WordLemmatizer
-                fragmentService={props.fragmentService}
-                token={token}
-                onChange={props.onChange(index)}
-              />
-            ) : (
-              token.value
-            )}{' '}
-          </Fragment>
-        ))}
+        <WordLemmatizers
+          tokens={props.data}
+          onChange={props.onChange}
+          fragmentService={props.fragmentService}
+        />
       </Col>
     </Row>
   )
@@ -98,19 +118,11 @@ function ManuscriptLineLemmatizer(props: ManuscriptLineLemmatizerProps) {
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
       <Col md={9}>
-        {props.data.map((token, index) => (
-          <Fragment key={index}>
-            {token.lemmatizable ? (
-              <WordLemmatizer
-                fragmentService={props.fragmentService}
-                token={token}
-                onChange={props.onChange(index)}
-              />
-            ) : (
-              token.value
-            )}{' '}
-          </Fragment>
-        ))}
+        <WordLemmatizers
+          tokens={props.data}
+          onChange={props.onChange}
+          fragmentService={props.fragmentService}
+        />
       </Col>
     </Row>
   )
