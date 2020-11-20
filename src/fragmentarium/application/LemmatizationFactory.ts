@@ -8,10 +8,9 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import { LemmatizableToken, Token } from 'transliteration/domain/token'
-import WordRepository from 'dictionary/infrastructure/WordRepository'
 import { FragmentService } from './FragmentService'
 
-export default class LemmatizationFactory {
+export abstract class AbstractLemmatizationFactory<T, U> {
   private readonly findSuggestions: (
     value: string,
     isNormalized: boolean
@@ -20,7 +19,7 @@ export default class LemmatizationFactory {
 
   constructor(
     fragmentService: FragmentService,
-    wordRepository: WordRepository
+    wordRepository: { find(word: string): Promise<DictionaryWord> }
   ) {
     this.findSuggestions = _.memoize(
       _.bind(fragmentService.findSuggestions, fragmentService)
@@ -28,19 +27,9 @@ export default class LemmatizationFactory {
     this.findWord = _.memoize(_.bind(wordRepository.find, wordRepository))
   }
 
-  createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.mapSeries(text.allLines, (line) =>
-      this.createLemmatizationLine(line.content)
-    ).then(
-      (lines) =>
-        new Lemmatization(
-          text.allLines.map((line) => line.prefix),
-          lines
-        )
-    )
-  }
+  abstract createLemmatization(text: T): Promise<U>
 
-  private createLemmatizationLine(
+  protected createLemmatizationLine(
     tokens: readonly Token[]
   ): Promise<LemmatizationToken[]> {
     return Promise.mapSeries(tokens, (token) =>
@@ -67,6 +56,22 @@ export default class LemmatizationFactory {
   private createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
     return Promise.mapSeries(token.uniqueLemma, (lemma) =>
       this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word))
+    )
+  }
+}
+export default class LemmatizationFactory extends AbstractLemmatizationFactory<
+  Text,
+  Lemmatization
+> {
+  createLemmatization(text: Text): Promise<Lemmatization> {
+    return Promise.mapSeries(text.allLines, (line) =>
+      this.createLemmatizationLine(line.content)
+    ).then(
+      (lines) =>
+        new Lemmatization(
+          text.allLines.map((line) => line.prefix),
+          lines
+        )
     )
   }
 }
