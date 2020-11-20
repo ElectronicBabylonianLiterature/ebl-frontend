@@ -9,7 +9,6 @@ import {
   LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
 import withData, { WithoutData } from 'http/withData'
 import TextService from 'corpus/application/TextService'
 import {

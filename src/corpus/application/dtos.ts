@@ -14,7 +14,7 @@ import {
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
-import { produce } from 'immer'
+import { Draft, produce } from 'immer'
 import _ from 'lodash'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 
@@ -83,7 +83,7 @@ const toManuscriptDto = produce((draft) => ({
   references: draft.references.map(serializeReference),
 }))
 
-const toLineDto = produce((draft) => ({
+const toLineDto = produce((draft: Draft<Line>) => ({
   ..._.omit(draft, 'reconstructionTokens'),
   manuscripts: draft.manuscripts.map((manuscript) =>
     _.omit(manuscript, 'atfTokens')

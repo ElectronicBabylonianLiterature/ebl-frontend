@@ -9,12 +9,11 @@ import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   UniqueLemma,
   LemmatizationDto,
-  LemmatizationToken,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { LemmatizableToken, Token } from 'transliteration/domain/token'
+import LemmatizationFactory from './LemmatizationFactory'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -59,7 +58,7 @@ export interface AnnotationRepository {
     annotations: readonly Annotation[]
   ): Promise<readonly Annotation[]>
 }
-class FragmentService {
+export class FragmentService {
   private readonly fragmentRepository
   private readonly imageRepository
   private readonly wordRepository
@@ -190,47 +189,10 @@ class FragmentService {
   }
 
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.mapSeries(text.allLines, (line) =>
-      this.createLemmatizationLine(line.content)
-    ).then(
-      (lines) =>
-        new Lemmatization(
-          text.allLines.map((line) => line.prefix),
-          lines
-        )
-    )
-  }
-
-  private createLemmatizationLine(
-    tokens: readonly Token[]
-  ): Promise<LemmatizationToken[]> {
-    return Promise.mapSeries(tokens, (token) =>
-      token.lemmatizable
-        ? Promise.all([
-            this.createLemmas(token),
-            this.createSuggestions(token),
-          ]).then(
-            ([lemmas, suggestions]) =>
-              new LemmatizationToken(token.value, true, lemmas, suggestions)
-          )
-        : Promise.resolve(new LemmatizationToken(token.value, false))
-    )
-  }
-
-  private createSuggestions(
-    token: LemmatizableToken
-  ): Promise<readonly UniqueLemma[]> {
-    return _.isEmpty(token.uniqueLemma)
-      ? this.findSuggestions(token.cleanValue, token.normalized)
-      : Promise.resolve([])
-  }
-
-  private createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
-    return Promise.mapSeries(token.uniqueLemma, (lemma) =>
+    return new LemmatizationFactory(
+      this,
       this.wordRepository
-        .find(lemma)
-        .then((word: DictionaryWord) => new Lemma(word))
-    )
+    ).createLemmatization(text)
   }
 
   findSuggestions(
@@ -239,9 +201,9 @@ class FragmentService {
   ): Promise<ReadonlyArray<UniqueLemma>> {
     return this.fragmentRepository
       .findLemmas(value, isNormalized)
-      .then((lemmas) =>
-        lemmas.map((complexLemma) =>
-          complexLemma.map((word) => new Lemma(word))
+      .then((lemmas: DictionaryWord[][]) =>
+        lemmas.map((complexLemma: DictionaryWord[]) =>
+          complexLemma.map((word: DictionaryWord) => new Lemma(word))
         )
       )
   }

@@ -8,7 +8,6 @@ import WordService from 'dictionary/application/WordService'
 import { Token } from 'transliteration/domain/token'
 import Lemma from 'transliteration/domain/Lemma'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import ApiClient from 'http/ApiClient'
 import {
   fromDto,
   toAlignmentDto,
