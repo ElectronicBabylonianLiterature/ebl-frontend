@@ -50,11 +50,11 @@ function findSuggestions(
   )
 }
 
-interface RecontsructionLemmatizerProps {
+interface LineLemmatizerProps<T> {
   data: readonly LemmatizationToken[]
   fragmentService: FragmentService
   chapter: Chapter
-  line: Line
+  line: T
   onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
 }
 
@@ -86,7 +86,7 @@ function WordLemmatizers({
   )
 }
 
-function ReconstructionLemmatizer(props: RecontsructionLemmatizerProps) {
+function ReconstructionLemmatizer(props: LineLemmatizerProps<Line>) {
   return (
     <Row>
       <Col md={3}>{props.line.number}</Col>
@@ -101,21 +101,13 @@ function ReconstructionLemmatizer(props: RecontsructionLemmatizerProps) {
   )
 }
 
-interface ManuscriptLineLemmatizerProps {
-  data: readonly LemmatizationToken[]
-  fragmentService: FragmentService
-  chapter: Chapter
-  manuscriptLine: ManuscriptLine
-  onChange: (index: number) => (uniqueLemma: UniqueLemma) => void
-}
-
-function ManuscriptLineLemmatizer(props: ManuscriptLineLemmatizerProps) {
+function ManuscriptLineLemmatizer(props: LineLemmatizerProps<ManuscriptLine>) {
   return (
     <Row>
       <Col md={1} />
-      <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
+      <Col md={1}>{props.chapter.getSiglum(props.line)}</Col>
       <Col md={1}>
-        {props.manuscriptLine.labels} {props.manuscriptLine.number}
+        {props.line.labels} {props.line.number}
       </Col>
       <Col md={9}>
         <WordLemmatizers
@@ -153,7 +145,7 @@ function ManuscriptsLemmatizer({
             key={manuscriptIndex}
             fragmentService={fragmentService}
             chapter={chapter}
-            manuscriptLine={manuscript}
+            line={manuscript}
             data={data[manuscriptIndex]}
             onChange={onChange(manuscriptIndex)}
           />
@@ -163,7 +155,7 @@ function ManuscriptsLemmatizer({
   )
 }
 
-interface LineLemmatizerProps {
+interface ChapterLineLemmatizerProps {
   data: LineLemmatization
   fragmentService: FragmentService
   chapter: Chapter
@@ -171,13 +163,13 @@ interface LineLemmatizerProps {
   onChange: (lemmatization: LineLemmatization) => void
 }
 
-function LineLemmatizater({
+function ChapterLineLemmatizater({
   data,
   fragmentService,
   chapter,
   line,
   onChange,
-}: LineLemmatizerProps) {
+}: ChapterLineLemmatizerProps) {
   const [reconstructionLemmatization, manuscriptsLemmatization] = data
 
   const handleReconstructionChange = (index: number) => (
@@ -264,7 +256,7 @@ function ChapterLemmatizer({
     <Container>
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
-        <LineLemmatizater
+        <ChapterLineLemmatizater
           key={lineIndex}
           line={line}
           data={chapterLemmatization[lineIndex]}
