@@ -50,8 +50,17 @@ export const textDto = {
       lines: [
         {
           number: '1',
-          reconstruction: 'reconstructed text',
+          reconstruction: '%n kur ra',
           reconstructionTokens: [
+            {
+              value: '%n',
+              cleanValue: '%n',
+              enclosureType: [],
+              erasure: 'NONE',
+              language: 'AKKADIAN',
+              normalized: true,
+              type: 'LanguageShift',
+            },
             {
               value: 'kur',
               cleanValue: 'kur',
@@ -178,8 +187,17 @@ export const text = createText({
       lines: [
         createLine({
           number: '1',
-          reconstruction: 'reconstructed text',
+          reconstruction: '%n kur ra',
           reconstructionTokens: [
+            {
+              value: '%n',
+              cleanValue: '%n',
+              enclosureType: [],
+              erasure: 'NONE',
+              language: 'AKKADIAN',
+              normalized: true,
+              type: 'LanguageShift',
+            },
             {
               value: 'kur',
               cleanValue: 'kur',

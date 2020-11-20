@@ -16,7 +16,7 @@ import { BibliographySearch } from 'bibliography/application/BibliographyService
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
-import { ChapterLemmatization } from './lemmatization/ChapterLemmatization'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 
 function ChapterTitle({
   text,
@@ -144,7 +144,7 @@ function ChapterView({
             bibliographyService.search(query)
           }
           fragmentService={fragmentService}
-          wordService={wordService}
+          textService={textService}
           onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}

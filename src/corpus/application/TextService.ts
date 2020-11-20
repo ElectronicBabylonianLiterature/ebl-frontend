@@ -1,127 +1,63 @@
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
-import serializeReference from 'bibliography/application/serializeReference'
-import {
-  createText,
-  createChapter,
-  createManuscript,
-  createLine,
-  types,
-  createManuscriptLine,
-  TextInfo,
-  Manuscript,
-  Line,
-  Text,
-} from 'corpus/domain/text'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
-import { produce } from 'immer'
-import _ from 'lodash'
+import Promise from 'bluebird'
+import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
 import Bluebird from 'bluebird'
-import { ChapterLemmatization } from 'corpus/ui/lemmatization/ChapterLemmatization'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import Word from 'dictionary/domain/Word'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import WordService from 'dictionary/application/WordService'
+import { Token } from 'transliteration/domain/token'
+import Lemma from 'transliteration/domain/Lemma'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import ApiClient from 'http/ApiClient'
+import {
+  fromDto,
+  toAlignmentDto,
+  toLemmatizationDto,
+  toManuscriptsDto,
+  toLinesDto,
+} from './dtos'
 
-function fromDto(textDto) {
-  return createText({
-    ...textDto,
-    chapters: textDto.chapters.map((chapterDto) =>
-      createChapter({
-        ...chapterDto,
-        manuscripts: chapterDto.manuscripts.map((manuscriptDto) =>
-          createManuscript({
-            ...manuscriptDto,
-            periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
-            period: periods.get(manuscriptDto.period),
-            provenance: provenances.get(manuscriptDto.provenance),
-            type: types.get(manuscriptDto.type),
-            references: manuscriptDto.references.map(
-              (referenceDto) =>
-                new Reference(
-                  referenceDto.type,
-                  referenceDto.pages,
-                  referenceDto.notes,
-                  referenceDto.linesCited,
-                  new BibliographyEntry(referenceDto.document)
+function findSuggestions(
+  fragmentService: FragmentService,
+  wordService: WordService,
+  tokens: readonly Token[]
+): Promise<LemmatizationToken[]> {
+  return Promise.mapSeries(tokens, (token) =>
+    fragmentService
+      .findSuggestions(token.cleanValue, token.normalized ?? false)
+      .then((suggestions) =>
+        token.lemmatizable
+          ? Promise.all(
+              token.uniqueLemma?.map((value) =>
+                wordService.find(value).then((word: Word) => new Lemma(word))
+              ) ?? []
+            ).then(
+              (lemmas) =>
+                new LemmatizationToken(
+                  token.value,
+                  token.lemmatizable,
+                  lemmas,
+                  suggestions
                 )
-            ),
-          })
-        ),
-        lines: chapterDto.lines.map((lineDto) =>
-          createLine({
-            ...lineDto,
-            manuscripts: lineDto.manuscripts.map((manuscriptLineDto) =>
-              createManuscriptLine({
-                manuscriptId: manuscriptLineDto['manuscriptId'],
-                labels: manuscriptLineDto['labels'],
-                number: manuscriptLineDto['number'],
-                atf: manuscriptLineDto['atf'],
-                atfTokens: manuscriptLineDto['atfTokens'],
-              })
-            ),
-          })
-        ),
-      })
-    ),
-  })
-}
-
-function toName(record) {
-  return record.name
-}
-
-const toManuscriptDto = produce((draft) => ({
-  id: draft.id,
-  siglumDisambiguator: draft.siglumDisambiguator,
-  museumNumber: draft.museumNumber,
-  accession: draft.accession,
-  provenance: toName(draft.provenance),
-  periodModifier: toName(draft.periodModifier),
-  period: toName(draft.period),
-  type: toName(draft.type),
-  notes: draft.notes,
-  references: draft.references.map(serializeReference),
-}))
-
-const toLineDto = produce((draft) => ({
-  ..._.omit(draft, 'reconstructionTokens'),
-  manuscripts: draft.manuscripts.map((manuscript) =>
-    _.omit(manuscript, 'atfTokens')
-  ),
-}))
-
-const toAlignmentDto = produce((lines) => {
-  return {
-    alignment: lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          alignment: token.alignment,
-        }))
+            )
+          : new LemmatizationToken(token.value, false)
       )
-    ),
-  }
-})
-
-const toLemmatizationDto = produce((lemmatization: ChapterLemmatization) => {
-  return {
-    lemmatization: lemmatization.map((line) =>
-      [line[0], ...line[1]].map((line) => line.map((token) => token.toDto()))
-    ),
-  }
-})
-
-const toManuscriptsDto = (manuscripts) => ({
-  manuscripts: manuscripts.map(toManuscriptDto),
-})
-
-const toLinesDto = (lines) => ({
-  lines: lines.map(toLineDto),
-})
+  )
+}
 
 export default class TextService {
   private readonly apiClient
+  private readonly wordService: WordService
+  private readonly fragmentService: FragmentService
 
-  constructor(apiClient) {
+  constructor(
+    apiClient,
+    fragmentService: FragmentService,
+    wordService: WordService
+  ) {
     this.apiClient = apiClient
+    this.fragmentService = fragmentService
+    this.wordService = wordService
   }
 
   find(category: number, index: number): Bluebird<Text> {
@@ -199,5 +135,24 @@ export default class TextService {
         toLinesDto(lines)
       )
       .then(fromDto)
+  }
+
+  findSuggestions(chapter: Chapter): Promise<ChapterLemmatization> {
+    return Promise.mapSeries(chapter.lines, (line) =>
+      Promise.all([
+        findSuggestions(
+          this.fragmentService,
+          this.wordService,
+          line.reconstructionTokens
+        ),
+        Promise.mapSeries(line.manuscripts, (manuscript) =>
+          findSuggestions(
+            this.fragmentService,
+            this.wordService,
+            manuscript.atfTokens
+          )
+        ),
+      ])
+    )
   }
 }

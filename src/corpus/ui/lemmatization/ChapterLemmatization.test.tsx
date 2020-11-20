@@ -2,6 +2,7 @@ import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
+import produce, { castDraft } from 'immer'
 
 import { whenClicked } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
@@ -12,39 +13,51 @@ import {
   createManuscriptLine,
   Chapter,
 } from 'corpus/domain/text'
-import ChapterLemmatization from './ChapterLemmatization'
 import Word from 'dictionary/domain/Word'
-import produce from 'immer'
 import { lemmatizeWord } from 'test-support/lemmatization'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import ChapterLemmatizer from './ChapterLemmatization'
 
 let element: RenderResult
 let fragmentService
-let wordService
-let updateLemmatization: jest.Mock<void, []>
-let onChange: jest.Mock<void, [Chapter]>
+let textService
+let updateLemmatization: jest.Mock<void, [ChapterLemmatization]>
 let chapter: Chapter
 let word: Word
 let oldWord: Word
 let lemma: Lemma
+let lemmatization: ChapterLemmatization
 
 beforeEach(async () => {
   word = await factory.build('word')
   lemma = new Lemma(word)
   oldWord = await factory.build('word')
   updateLemmatization = jest.fn()
-  onChange = jest.fn()
   fragmentService = {
     searchLemma: jest.fn(),
     createLemmatization: jest.fn(),
     findSuggestions: jest.fn(),
   }
   fragmentService.searchLemma.mockReturnValue(Promise.resolve([word]))
-  fragmentService.findSuggestions.mockReturnValue(Promise.resolve([]))
-  wordService = {
-    find: jest.fn(),
+  textService = {
+    findSuggestions: jest.fn(),
   }
-  wordService.find.mockReturnValue(Promise.resolve(oldWord))
+  lemmatization = [
+    [
+      [
+        new LemmatizationToken('%n', false, null, null),
+        new LemmatizationToken('kur-kur', true, [], []),
+      ],
+      [
+        [
+          new LemmatizationToken('kur', true, [], []),
+          new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
+        ],
+      ],
+    ],
+  ]
+  textService.findSuggestions.mockReturnValue(Promise.resolve(lemmatization))
   chapter = createChapter({
     classification: 'Ancient',
     stage: 'Old Babylonian',
@@ -131,12 +144,12 @@ beforeEach(async () => {
     ],
   })
   element = render(
-    <ChapterLemmatization
+    <ChapterLemmatizer
       chapter={chapter}
       onSave={updateLemmatization}
       disabled={false}
       fragmentService={fragmentService}
-      wordService={wordService}
+      textService={textService}
     />
   )
   await element.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
@@ -147,20 +160,13 @@ test('Lemmatize manuscript', async () => {
 
   await whenClicked(element, 'Save lemmatization')
     .expect(updateLemmatization)
-    .toHaveBeenCalledWith([
-      [
-        [
-          new LemmatizationToken('%n', false, null, null),
-          new LemmatizationToken('kur-kur', true, [], []),
-        ],
-        [
-          [
-            new LemmatizationToken('kur', true, [lemma], []),
-            new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
-          ],
-        ],
-      ],
-    ])
+    .toHaveBeenCalledWith(
+      produce(lemmatization, (draft) => {
+        draft[0][1][0][0] = castDraft(
+          new LemmatizationToken('kur', true, [lemma], [])
+        )
+      })
+    )
 })
 
 test('Lemmatize reconstruction', async () => {
@@ -168,18 +174,14 @@ test('Lemmatize reconstruction', async () => {
 
   await whenClicked(element, 'Save lemmatization')
     .expect(updateLemmatization)
-    .toHaveBeenCalledWith([
-      [
-        [
-          new LemmatizationToken('%n', false, null, null),
-          new LemmatizationToken('kur-kur', true, [lemma], []),
-        ],
-        [
-          [
-            new LemmatizationToken('kur', true, [lemma], [], true),
-            new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
-          ],
-        ],
-      ],
-    ])
+    .toHaveBeenCalledWith(
+      produce(lemmatization, (draft) => {
+        draft[0][0][1] = castDraft(
+          new LemmatizationToken('kur-kur', true, [lemma], [])
+        )
+        draft[0][1][0][0] = castDraft(
+          new LemmatizationToken('kur', true, [lemma], [], true)
+        )
+      })
+    )
 })
