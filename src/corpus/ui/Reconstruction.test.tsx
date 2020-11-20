@@ -1,61 +1,9 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Line } from 'corpus/domain/text'
 import Reconstruction from './Reconstruction'
+import { text } from 'test-support/test-corpus-text'
 
-const line: Line = {
-  number: "1'",
-  reconstruction: 'kur ra',
-  reconstructionTokens: [
-    {
-      value: 'kur',
-      cleanValue: 'kur',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
-        {
-          value: 'kur',
-          cleanValue: 'kur',
-          enclosureType: [],
-          erasure: 'NONE',
-          type: 'ValueToken',
-        },
-      ],
-      modifiers: [],
-      type: 'AkkadianWord',
-    },
-    {
-      value: 'ra',
-      cleanValue: 'ra',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
-        {
-          value: 'ra',
-          cleanValue: 'ra',
-          enclosureType: [],
-          erasure: 'NONE',
-          type: 'ValueToken',
-        },
-      ],
-      modifiers: [],
-      type: 'AkkadianWord',
-    },
-  ],
-  isBeginningOfSection: false,
-  isSecondLineOfParallelism: false,
-  manuscripts: [],
-}
+const line = text.chapters[0].lines[0]
 
 beforeEach(() => {
   render(<Reconstruction line={line} />)
