@@ -102,6 +102,7 @@ function GenreSelection({
         {(session: Session): ReactNode =>
           session.isAllowedToTransliterateFragments() && (
             <Button
+              data-testid="browse-genre-button"
               variant="light"
               ref={target}
               className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
@@ -125,31 +126,30 @@ function GenreSelection({
         {popover}
       </Overlay>
       <ul className={classNames(['list-group', 'mt-2'])}>
-        {genres.genres &&
-          genres.genres.map((genreItem: Genre) => {
-            const uncertain = genreItem.uncertain ? '(?)' : ''
-            return (
-              <li className="list-group-item" key={genreItem.toString}>
-                {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
-                <SessionContext.Consumer>
-                  {(session: Session): ReactNode =>
-                    session.isAllowedToTransliterateFragments() && (
-                      <Button
-                        variant="light"
-                        data-testid="delete-button"
-                        className={classNames([
-                          'float-right',
-                          'fas fa-trash',
-                          'align-top',
-                        ])}
-                        onClick={() => setGenres(genres.delete(genreItem))}
-                      />
-                    )
-                  }
-                </SessionContext.Consumer>
-              </li>
-            )
-          })}
+        {genres.genres.map((genreItem) => {
+          const uncertain = genreItem.uncertain ? '(?)' : ''
+          return (
+            <li className="list-group-item" key={genreItem.toString}>
+              {`${genreItem.category.join(' ➝ ')} ${uncertain}`}
+              <SessionContext.Consumer>
+                {(session: Session): ReactNode =>
+                  session.isAllowedToTransliterateFragments() && (
+                    <Button
+                      variant="light"
+                      data-testid="delete-button"
+                      className={classNames([
+                        'float-right',
+                        'fas fa-trash',
+                        'align-top',
+                      ])}
+                      onClick={() => setGenres(genres.delete(genreItem))}
+                    />
+                  )
+                }
+              </SessionContext.Consumer>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

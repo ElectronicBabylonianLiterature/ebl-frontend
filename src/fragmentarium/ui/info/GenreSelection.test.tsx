@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -17,18 +17,16 @@ const fragmentService = {
 let fragment: Fragment
 let session
 
-async function renderDetails() {
-  await act(async () => {
-    render(
-      <SessionContext.Provider value={session}>
-        <GenreSelection
-          fragment={fragment}
-          updateGenres={updateGenres}
-          fragmentService={fragmentService}
-        />
-      </SessionContext.Provider>
-    )
-  })
+function renderDetails() {
+  render(
+    <SessionContext.Provider value={session}>
+      <GenreSelection
+        fragment={fragment}
+        updateGenres={updateGenres}
+        fragmentService={fragmentService}
+      />
+    </SessionContext.Provider>
+  )
 }
 beforeEach(async () => {
   fragment = await factory.build('fragment', {
@@ -43,7 +41,8 @@ beforeEach(async () => {
     isAllowedToTransliterateFragments: jest.fn(),
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
-  await renderDetails()
+  renderDetails()
+  expect(await screen.findByTestId('browse-genre-button'))
 })
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {

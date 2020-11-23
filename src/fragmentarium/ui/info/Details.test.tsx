@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
@@ -13,18 +13,16 @@ const fragmentService = {
 }
 let fragment: Fragment
 
-async function renderDetails() {
-  await act(async () => {
-    render(
-      <MemoryRouter>
-        <Details
-          fragment={fragment}
-          updateGenres={updateGenres}
-          fragmentService={fragmentService}
-        />
-      </MemoryRouter>
-    )
-  })
+function renderDetails() {
+  render(
+    <MemoryRouter>
+      <Details
+        fragment={fragment}
+        updateGenres={updateGenres}
+        fragmentService={fragmentService}
+      />
+    </MemoryRouter>
+  )
 }
 beforeEach(async () => {
   fragmentService.fetchGenres.mockReturnValue(
@@ -38,7 +36,7 @@ describe('All details', () => {
       collection: 'The Collection',
       genres: [],
     })
-    await renderDetails()
+    renderDetails()
   })
 
   it('Renders museum', () => {
