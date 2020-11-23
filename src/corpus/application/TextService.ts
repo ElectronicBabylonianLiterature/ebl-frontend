@@ -1,131 +1,46 @@
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
-import serializeReference from 'bibliography/application/serializeReference'
-import {
-  createText,
-  createChapter,
-  createManuscript,
-  createLine,
-  types,
-  createManuscriptLine,
-  TextInfo,
-  Manuscript,
-  Line,
-  Text,
-} from 'corpus/domain/text'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
-import { produce } from 'immer'
-import _ from 'lodash'
 import Bluebird from 'bluebird'
+import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import WordService from 'dictionary/application/WordService'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  fromDto,
+  toAlignmentDto,
+  toLemmatizationDto,
+  toManuscriptsDto,
+  toLinesDto,
+} from './dtos'
+import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
 
-function fromDto(textDto) {
-  return createText({
-    ...textDto,
-    chapters: textDto.chapters.map((chapterDto) =>
-      createChapter({
-        ...chapterDto,
-        manuscripts: chapterDto.manuscripts.map((manuscriptDto) =>
-          createManuscript({
-            ...manuscriptDto,
-            periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
-            period: periods.get(manuscriptDto.period),
-            provenance: provenances.get(manuscriptDto.provenance),
-            type: types.get(manuscriptDto.type),
-            references: manuscriptDto.references.map(
-              (referenceDto) =>
-                new Reference(
-                  referenceDto.type,
-                  referenceDto.pages,
-                  referenceDto.notes,
-                  referenceDto.linesCited,
-                  new BibliographyEntry(referenceDto.document)
-                )
-            ),
-          })
+class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
+  Chapter,
+  ChapterLemmatization
+> {
+  createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
+    return Bluebird.mapSeries(chapter.lines, (line) =>
+      Bluebird.all([
+        this.createLemmatizationLine(line.reconstructionTokens),
+        Bluebird.mapSeries(line.manuscripts, (manuscript) =>
+          this.createLemmatizationLine(manuscript.atfTokens)
         ),
-        lines: chapterDto.lines.map((lineDto) =>
-          createLine({
-            ...lineDto,
-            manuscripts: lineDto.manuscripts.map((manuscriptLineDto) =>
-              createManuscriptLine({
-                manuscriptId: manuscriptLineDto['manuscriptId'],
-                labels: manuscriptLineDto['labels'],
-                number: manuscriptLineDto['number'],
-                atf: manuscriptLineDto['atf'],
-                atfTokens: manuscriptLineDto['atfTokens'],
-              })
-            ),
-          })
-        ),
-      })
-    ),
-  })
-}
-
-function toName(record) {
-  return record.name
-}
-
-const toManuscriptDto = produce((draft) => ({
-  id: draft.id,
-  siglumDisambiguator: draft.siglumDisambiguator,
-  museumNumber: draft.museumNumber,
-  accession: draft.accession,
-  provenance: toName(draft.provenance),
-  periodModifier: toName(draft.periodModifier),
-  period: toName(draft.period),
-  type: toName(draft.type),
-  notes: draft.notes,
-  references: draft.references.map(serializeReference),
-}))
-
-const toLineDto = produce((draft) => ({
-  ..._.omit(draft, 'reconstructionTokens'),
-  manuscripts: draft.manuscripts.map((manuscript) =>
-    _.omit(manuscript, 'atfTokens')
-  ),
-}))
-
-const toAlignmentDto = produce((lines) => {
-  return {
-    alignment: lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          alignment: token.alignment,
-        }))
-      )
-    ),
+      ])
+    )
   }
-})
-
-const toLemmatizationDto = produce((lines) => {
-  return {
-    lemmatization: lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          uniqueLemma: token.uniqueLemma,
-        }))
-      )
-    ),
-  }
-})
-
-const toManuscriptsDto = (manuscripts) => ({
-  manuscripts: manuscripts.map(toManuscriptDto),
-})
-
-const toLinesDto = (lines) => ({
-  lines: lines.map(toLineDto),
-})
+}
 
 export default class TextService {
   private readonly apiClient
+  private readonly wordService: WordService
+  private readonly fragmentService: FragmentService
 
-  constructor(apiClient) {
+  constructor(
+    apiClient,
+    fragmentService: FragmentService,
+    wordService: WordService
+  ) {
     this.apiClient = apiClient
+    this.fragmentService = fragmentService
+    this.wordService = wordService
   }
 
   find(category: number, index: number): Bluebird<Text> {
@@ -161,16 +76,14 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    lines: readonly Line[]
+    lemmatization: ChapterLemmatization
   ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(
-          chapterIndex
-        )}/manuscriptLemmatization`,
-        toLemmatizationDto(lines)
+        )}/chapters/${encodeURIComponent(chapterIndex)}/lemmatization`,
+        toLemmatizationDto(lemmatization)
       )
       .then(fromDto)
   }
@@ -205,5 +118,12 @@ export default class TextService {
         toLinesDto(lines)
       )
       .then(fromDto)
+  }
+
+  findSuggestions(chapter: Chapter): Bluebird<ChapterLemmatization> {
+    return new CorpusLemmatizationFactory(
+      this.fragmentService,
+      this.wordService
+    ).createLemmatization(chapter)
   }
 }

@@ -38,7 +38,7 @@ function createApp(api): JSX.Element {
     bibliographyService
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const textService = new TextService(api)
+  const textService = new TextService(api, fragmentService, wordService)
 
   return (
     <App

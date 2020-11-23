@@ -6,12 +6,11 @@ import Word from './Word'
 import './WordAligner.css'
 import produce, { Draft } from 'immer'
 
-import { ReconstructionToken } from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
 
 interface Props {
   readonly token: Token
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<Token>
   readonly onChange: (token: Token) => void
 }
 
