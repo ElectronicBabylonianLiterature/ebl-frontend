@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
@@ -8,10 +8,9 @@ import { factory } from 'factory-girl'
 const query = 'lem[ma?]'
 let words
 let wordService
-let element
 
 function renderWordSearch(): void {
-  element = render(
+  render(
     <MemoryRouter>
       <WordSearch query={query} wordService={wordService} />
     </MemoryRouter>
@@ -25,6 +24,7 @@ beforeEach(async () => {
   }
   wordService.search.mockReturnValueOnce(Promise.resolve(words))
   renderWordSearch()
+  await screen.findByText(words[0].meaning)
 })
 
 it('Searches with the query', () => {
@@ -32,6 +32,5 @@ it('Searches with the query', () => {
 })
 
 it('Displays results', async () => {
-  await element.findByText(words[0].meaning)
-  expect(element.getByText(words[1].meaning)).toBeDefined()
+  expect(screen.getByText(words[1].meaning)).toBeDefined()
 })

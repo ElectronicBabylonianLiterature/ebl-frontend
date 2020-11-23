@@ -37,23 +37,26 @@ describe('Searching for word', () => {
     expect(getByText(words[1].meaning)).toBeDefined()
   })
 
-  it('fills in search form query', () => {
-    const { getByLabelText } = renderDictionary('/dictionary?query=lemma')
+  it('fills in search form query', async () => {
+    const { getByLabelText, findByText } = renderDictionary(
+      '/dictionary?query=lemma'
+    )
 
+    await findByText(words[0].meaning)
     expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('lemma')
   })
 
-  it('displays empty search if no query', () => {
-    const { getByLabelText } = renderDictionary('/dictionary')
+  it('displays empty search if no query', async () => {
+    const { getByLabelText, findByText } = renderDictionary('/dictionary')
 
     expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
   })
 })
 
-it('Displays a message if user is not logged in', () => {
+it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadWords.mockReturnValueOnce(false)
 
-  const { container } = renderDictionary('/dictionary')
+  const { container, findByText } = renderDictionary('/dictionary')
 
   expect(container).toHaveTextContent('Please log in to browse the Dictionary.')
 })

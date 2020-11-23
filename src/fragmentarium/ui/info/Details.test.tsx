@@ -1,15 +1,17 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
+import { Genres } from '../../domain/Genres'
 
 const updateGenres = jest.fn()
+const promise = Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
 const fragmentService = {
-  fetchGenres: jest.fn(),
+  fetchGenres: jest.fn(() => promise),
 }
 let fragment: Fragment
 
@@ -24,19 +26,17 @@ function renderDetails() {
     </MemoryRouter>
   )
 }
-beforeEach(async () => {
-  fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
-  )
-})
 describe('All details', () => {
   beforeEach(async () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
-      genres: [],
+      genres: new Genres([]),
     })
     renderDetails()
+    await act(async () => {
+      await promise
+    })
   })
 
   it('Renders museum', () => {
@@ -109,6 +109,9 @@ describe('Missing details', () => {
       }),
     })
     renderDetails()
+    await act(async () => {
+      await promise
+    })
   })
 
   it('Does not render undefined', () =>
@@ -144,6 +147,9 @@ describe('Unknown museum', () => {
       museum: Museum.of('The Other Museum'),
     })
     renderDetails()
+    await act(async () => {
+      await promise
+    })
   })
 
   it('Does not link museum', () =>

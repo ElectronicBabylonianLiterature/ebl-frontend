@@ -39,6 +39,7 @@ function GenreSelection({
       setIsUncertain(retrievedGenre.uncertain)
     }
   }
+
   useEffect(() => {
     if (!_.isEqual(genres, prevGenres) && prevGenres !== undefined) {
       updateGenres(genres)
