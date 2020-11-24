@@ -2,45 +2,27 @@ import React from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
-import produce, { Draft } from 'immer'
-
-function getSiglum(chapter: Chapter, manuscriptLine: ManuscriptLine) {
-  const manuscript = chapter.manuscripts.find(
-    (candidate) => candidate.id === manuscriptLine.manuscriptId
-  )
-  if (manuscript) {
-    return manuscript.siglum
-  } else {
-    return `<unknown ID: ${manuscriptLine.manuscriptId}>`
-  }
-}
-
-function Reconstruction(props: { line: Line }) {
-  return (
-    <Form.Row>
-      <Col md={3}>{props.line.number}</Col>
-      <Col md={9}>{props.line.reconstruction}</Col>
-    </Form.Row>
-  )
-}
+import produce, { castDraft, Draft } from 'immer'
+import Reconstruction from '../Reconstruction'
+import { Token } from 'transliteration/domain/token'
 
 function ManuscriptAlignment(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
-  onChange: (x0: ManuscriptLine) => void
+  onChange: (line: ManuscriptLine) => void
 }) {
-  const handleChange = (index) => (token) => {
+  const handleChange = (index: number) => (token: Token) => {
     props.onChange(
       produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index] = token
+        draft.atfTokens[index] = castDraft(token)
       })
     )
   }
   return (
     <Form.Row>
       <Col md={1} />
-      <Col md={1}>{getSiglum(props.chapter, props.manuscriptLine)}</Col>
+      <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
@@ -70,14 +52,18 @@ export default function ChapterAlignment({
   disabled,
 }: {
   chapter: Chapter
-  onChange: (x0: Chapter) => any
-  onSave: (x0: any) => any
+  onChange: (chapter: Chapter) => void
+  onSave: () => void
   disabled: boolean
-}) {
-  const handleChange = (lineIndex) => (manuscriptIndex) => (manuscript) =>
+}): JSX.Element {
+  const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
+    manuscript: ManuscriptLine
+  ) =>
     onChange(
       produce(chapter, (draft: Draft<Chapter>) => {
-        draft.lines[lineIndex].manuscripts[manuscriptIndex] = manuscript
+        draft.lines[lineIndex].manuscripts[manuscriptIndex] = castDraft(
+          manuscript
+        )
       })
     )
   return (

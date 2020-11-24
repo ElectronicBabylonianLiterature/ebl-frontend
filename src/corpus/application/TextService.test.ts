@@ -1,197 +1,29 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
-import {
-  createText,
-  createChapter,
-  createManuscript,
-  createLine,
-  createManuscriptLine,
-  types,
-} from 'corpus/domain/text'
 import TextService from './TextService'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import Lemma from 'transliteration/domain/Lemma'
+import { text, textDto } from 'test-support/test-corpus-text'
+import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import Word from 'dictionary/domain/Word'
+
+jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
 
 const apiClient = {
   fetchJson: jest.fn(),
   postJson: jest.fn(),
 }
-const testService = new TextService(apiClient)
-
-const textDto = {
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 10,
-  approximateVerses: true,
-  chapters: [
-    {
-      classification: 'Ancient',
-      stage: 'Old Babylonian',
-      version: 'A',
-      name: 'The Only Chapter',
-      order: 1,
-      manuscripts: [
-        {
-          id: 1,
-          siglumDisambiguator: '1',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: 'Early',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: 'a note',
-          references: [
-            {
-              id: 'RN1853',
-              linesCited: [],
-              notes: '',
-              pages: '34-54',
-              type: 'DISCUSSION',
-              document: { id: 'RN1853' },
-            },
-          ],
-        },
-      ],
-      lines: [
-        {
-          number: '1',
-          reconstruction: 'reconstructed text',
-          reconstructionTokens: [
-            {
-              type: 'AkkadianWord',
-              value: 'reconstructed',
-            },
-            {
-              type: 'AkkadianWord',
-              value: 'text',
-            },
-          ],
-          isBeginningOfSection: true,
-          isSecondLineOfParallelism: true,
-          manuscripts: [
-            {
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra',
-              atfTokens: [
-                {
-                  type: 'Word',
-                  value: 'kur',
-                  uniqueLemma: [],
-                  normalized: false,
-                  language: 'AKKADIAN',
-                  lemmatizable: true,
-                  erasure: 'NONE',
-                },
-                {
-                  type: 'Word',
-                  value: 'ra',
-                  uniqueLemma: [],
-                  normalized: false,
-                  language: 'AKKADIAN',
-                  lemmatizable: true,
-                  erasure: 'NONE',
-                  alignment: 1,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-}
-
-const text = createText({
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 10,
-  approximateVerses: true,
-  chapters: [
-    createChapter({
-      classification: 'Ancient',
-      stage: 'Old Babylonian',
-      version: 'A',
-      name: 'The Only Chapter',
-      order: 1,
-      manuscripts: [
-        createManuscript({
-          id: 1,
-          siglumDisambiguator: '1',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: periodModifiers.get('Early'),
-          period: periods.get('Ur III'),
-          provenance: provenances.get('Nippur'),
-          type: types.get('School'),
-          notes: 'a note',
-          references: [
-            new Reference(
-              'DISCUSSION',
-              '34-54',
-              '',
-              [],
-              new BibliographyEntry({ id: 'RN1853' })
-            ),
-          ],
-        }),
-      ],
-      lines: [
-        createLine({
-          number: '1',
-          reconstruction: 'reconstructed text',
-          reconstructionTokens: [
-            {
-              type: 'AkkadianWord',
-              value: 'reconstructed',
-            },
-            {
-              type: 'AkkadianWord',
-              value: 'text',
-            },
-          ],
-          isBeginningOfSection: true,
-          isSecondLineOfParallelism: true,
-          manuscripts: [
-            createManuscriptLine({
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra',
-              atfTokens: [
-                {
-                  type: 'Word',
-                  value: 'kur',
-                  uniqueLemma: [],
-                  normalized: false,
-                  language: 'AKKADIAN',
-                  lemmatizable: true,
-                  erasure: 'NONE',
-                },
-                {
-                  type: 'Word',
-                  value: 'ra',
-                  uniqueLemma: [],
-                  normalized: false,
-                  language: 'AKKADIAN',
-                  lemmatizable: true,
-                  erasure: 'NONE',
-                  alignment: 1,
-                },
-              ],
-            }),
-          ],
-        }),
-      ],
-    }),
-  ],
-})
+const MockFragmentService = FragmentService as jest.Mock<FragmentService>
+const fragmentServiceMock = new MockFragmentService()
+const MockWordService = WordService as jest.Mock<WordService>
+const wordServiceMock = new MockWordService()
+const testService = new TextService(
+  apiClient,
+  fragmentServiceMock,
+  wordServiceMock
+)
 
 const alignmentDto = {
   alignment: [
@@ -203,6 +35,61 @@ const alignmentDto = {
         {
           value: 'ra',
           alignment: 1,
+        },
+      ],
+    ],
+  ],
+}
+
+const word: Word = {
+  _id: 'aklu I',
+  pos: [],
+  lemma: ['aklu'],
+  homonym: 'I',
+  guideWord: '',
+  oraccWords: [],
+}
+
+const lemmatization = [
+  [
+    [
+      new LemmatizationToken('%n', false, null, null),
+      new LemmatizationToken('kur', true, [], []),
+      new LemmatizationToken('ra', true, [], []),
+    ],
+    [
+      [
+        new LemmatizationToken('kur', true, [], []),
+        new LemmatizationToken('ra', true, [new Lemma(word)], []),
+      ],
+    ],
+  ],
+]
+
+const lemmatizationDto = {
+  lemmatization: [
+    [
+      [
+        {
+          value: '%n',
+        },
+        {
+          value: 'kur',
+          uniqueLemma: [],
+        },
+        {
+          value: 'ra',
+          uniqueLemma: [],
+        },
+      ],
+      [
+        {
+          value: 'kur',
+          uniqueLemma: [],
+        },
+        {
+          value: 'ra',
+          uniqueLemma: ['aklu I'],
         },
       ],
     ],
@@ -238,7 +125,7 @@ const linesDto = {
   lines: [
     {
       number: '1',
-      reconstruction: 'reconstructed text',
+      reconstruction: '%n kur ra',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
       manuscripts: [
@@ -299,6 +186,19 @@ const testData: TestData[] = [
     Promise.resolve(textDto),
   ],
   [
+    'updateLemmatization',
+    [text.category, text.index, 0, lemmatization],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/lemmatization`,
+      lemmatizationDto,
+    ],
+    Promise.resolve(textDto),
+  ],
+  [
     'updateManuscripts',
     [text.category, text.index, 0, text.chapters[0].manuscripts],
     apiClient.postJson,
@@ -327,3 +227,13 @@ const testData: TestData[] = [
 ]
 
 describe('TextService', () => testDelegation(testService, testData))
+
+test('findSuggestions', async () => {
+  ;(wordServiceMock.find as jest.Mock).mockReturnValue(Promise.resolve(word))
+  ;(fragmentServiceMock.findSuggestions as jest.Mock).mockReturnValue(
+    Promise.resolve([])
+  )
+  await expect(testService.findSuggestions(text.chapters[0])).resolves.toEqual(
+    lemmatization
+  )
+})

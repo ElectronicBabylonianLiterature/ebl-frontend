@@ -1,9 +1,10 @@
 import React from 'react'
 import { render, screen, act } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Router } from 'react-router-dom'
 import Header from './Header'
+import { createMemoryHistory } from 'history'
 import { AuthenticationContext, User } from 'auth/Auth'
-
+import userEvent from '@testing-library/user-event'
 let auth
 
 beforeEach(() => {
@@ -49,16 +50,48 @@ function commonTests(): void {
     expect(screen.getByText(title)).toHaveAttribute('href', href)
   })
 }
+describe('Unfocus Header Labels on clicking ebl Logo', () => {
+  beforeEach(async () => await renderHeader(true))
 
-async function renderHeader(loggedIn: boolean): Promise<void> {
+  test('correct element becomes active when clicking link on the header', () => {
+    userEvent.click(screen.getByText('Fragmentarium'))
+    userEvent.click(screen.getByTitle('electronic Babylonian Literature (eBL)'))
+    expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
+    expect(screen.getByText('Bibliography')).not.toHaveClass('active')
+    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
+    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+  })
+})
+describe('Correct element is active based on the route', () => {
+  test('Logout button', async () => {
+    await renderHeader(true, 'bibliography')
+    expect(screen.getByText('Bibliography')).toHaveClass('active')
+    expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
+    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
+    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+  })
+  test('correct element becomes active when clicking link on the header after redirect', async () => {
+    await renderHeader(true, 'bibliography')
+    userEvent.click(screen.getByText('Fragmentarium'))
+    expect(screen.getByText('Fragmentarium')).toHaveClass('active')
+    expect(screen.getByText('Bibliography')).not.toHaveClass('active')
+    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
+    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+  })
+})
+async function renderHeader(loggedIn: boolean, path?: string): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
+  const history = createMemoryHistory()
+  {
+    path && history.push(path)
+  }
   await act(async () => {
     render(
-      <MemoryRouter>
+      <Router history={history}>
         <AuthenticationContext.Provider value={auth}>
           <Header />
         </AuthenticationContext.Provider>
-      </MemoryRouter>
+      </Router>
     )
   })
 }

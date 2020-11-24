@@ -5,12 +5,16 @@ import LemmatizationForm from './LemmatizationForm'
 import Word from './Word'
 
 import './WordLemmatizer.css'
-import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
+import {
+  LemmatizationToken,
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 interface Props {
-  fragmentService
+  fragmentService: FragmentService
   token: LemmatizationToken
-  onChange
+  onChange: (uniqueLemma: UniqueLemma) => void
 }
 
 export default function WordLemmatizer({
@@ -21,7 +25,7 @@ export default function WordLemmatizer({
   const [show, setShow] = useState(false)
   const toggleId = _.uniqueId('LemmatizationToggle-')
 
-  const handleCange = (uniqueLemma): void => {
+  const handleCange = (uniqueLemma: UniqueLemma): void => {
     onChange(uniqueLemma)
     setShow(false)
   }
@@ -43,11 +47,25 @@ export default function WordLemmatizer({
   )
 
   const LemmaMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
-    props,
+    {
+      style,
+      className,
+      'aria-labelledby': labeledBy,
+    }: {
+      children?: React.ReactNode
+      style?: React.CSSProperties
+      className?: string
+      'aria-labelledby'?: string
+    },
     ref
   ) {
     return (
-      <div ref={ref} {...props}>
+      <div
+        ref={ref}
+        style={style}
+        className={className}
+        aria-labelledby={labeledBy}
+      >
         <LemmatizationForm
           token={token}
           fragmentService={fragmentService}

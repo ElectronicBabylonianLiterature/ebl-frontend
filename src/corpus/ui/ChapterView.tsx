@@ -13,6 +13,10 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
+import TextService from 'corpus/application/TextService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import WordService from 'dictionary/application/WordService'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 
 function ChapterTitle({
   text,
@@ -31,14 +35,18 @@ function ChapterTitle({
 interface Props {
   text: Text
   chapterIndex: number
-  textService
+  textService: TextService
   bibliographyService: BibliographySearch
+  fragmentService: FragmentService
+  wordService: WordService
 }
 function ChapterView({
   text,
   chapterIndex,
   textService,
   bibliographyService,
+  fragmentService,
+  wordService,
 }: Props): JSX.Element {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isDirty, setIsDirty] = useState(false)
@@ -102,6 +110,17 @@ function ChapterView({
     )
   }
 
+  const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
+    update(() =>
+      textService.updateLemmatization(
+        text.category,
+        text.index,
+        chapterIndex,
+        lemmatization
+      )
+    )
+  }
+
   const handleChange = (chapter: Chapter): void => {
     setChapter(chapter)
     setIsDirty(true)
@@ -124,10 +143,13 @@ function ChapterView({
           ): Promise<readonly BibliographyEntry[]> =>
             bibliographyService.search(query)
           }
+          fragmentService={fragmentService}
+          textService={textService}
           onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}
           onSaveAlignment={updateAlignment}
+          onSaveLemmatization={updateLemmatization}
         />
       ) : (
         <Alert variant="danger">Chapter not found.</Alert>
@@ -144,6 +166,8 @@ export default withData<
     name: string
     textService
     bibliographyService: BibliographySearch
+    fragmentService: FragmentService
+    wordService: WordService
   },
   { category: string; index: string },
   Text

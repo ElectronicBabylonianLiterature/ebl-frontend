@@ -6,8 +6,9 @@ import { Provenance, provenances } from './provenance'
 import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
+import { Token } from 'transliteration/domain/token'
 
-export type ManuscriptType = {
+export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
 }
@@ -62,22 +63,12 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
   })
 }
 
-export type AtfToken = {
-  readonly type: string
-  readonly value: string
-  readonly uniqueLemma?: ReadonlyArray<string>
-  readonly normalized?: boolean
-  readonly language?: string
-  readonly lemmatizable?: boolean
-  readonly erasure?: string
-  readonly alignment?: number | null
-}
-export type ManuscriptLine = {
+export interface ManuscriptLine {
   readonly manuscriptId: number
   readonly labels: ReadonlyArray<string>
   readonly number: string
   readonly atf: string
-  readonly atfTokens: ReadonlyArray<AtfToken>
+  readonly atfTokens: ReadonlyArray<Token>
 }
 export const createManuscriptLine: (
   x0: Partial<ManuscriptLine>
@@ -91,14 +82,11 @@ export const createManuscriptLine: (
     ...draft,
   })
 )
-export type ReconstructionToken = {
-  readonly type: string
-  readonly value: string
-}
-export type Line = {
+
+export interface Line {
   readonly number: string
   readonly reconstruction: string
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<Token>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
@@ -115,7 +103,8 @@ export const createLine: (config: Partial<Line>) => Line = produce(
   })
 )
 
-export type Chapter = {
+export class Chapter {
+  readonly [immerable] = true
   readonly classification: string
   readonly stage: string
   readonly version: string
@@ -123,19 +112,40 @@ export type Chapter = {
   readonly order: number
   readonly manuscripts: ReadonlyArray<Manuscript>
   readonly lines: ReadonlyArray<Line>
+
+  constructor({
+    classification,
+    stage,
+    version,
+    name,
+    order,
+    manuscripts,
+    lines,
+  }: Partial<Chapter>) {
+    this.classification = classification ?? 'Ancient'
+    this.stage = stage ?? 'Neo-Assyrian'
+    this.version = version ?? ''
+    this.name = name ?? ''
+    this.order = order ?? 0
+    this.manuscripts = manuscripts ?? []
+    this.lines = lines ?? []
+  }
+
+  getSiglum(manuscriptLine: ManuscriptLine): string {
+    const manuscript = this.manuscripts.find(
+      (candidate) => candidate.id === manuscriptLine.manuscriptId
+    )
+    if (manuscript) {
+      return manuscript.siglum
+    } else {
+      return `<unknown ID: ${manuscriptLine.manuscriptId}>`
+    }
+  }
 }
-export const createChapter: (config: Partial<Chapter>) => Chapter = produce(
-  (draft): Chapter => ({
-    classification: 'Ancient',
-    stage: 'Neo-Assyrian',
-    version: '',
-    name: '',
-    order: 0,
-    manuscripts: [],
-    lines: [],
-    ...draft,
-  })
-)
+
+export function createChapter(data: Partial<Chapter>): Chapter {
+  return new Chapter(data)
+}
 
 export interface TextInfo {
   category: number

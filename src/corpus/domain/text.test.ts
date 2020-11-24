@@ -37,11 +37,14 @@ const manuscrpitLineConfig: ManuscriptLine = {
     {
       type: 'Word',
       value: 'kur',
+      parts: [],
+      cleanValue: 'kur',
       uniqueLemma: [],
       normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
       erasure: 'NONE',
+      enclosureType: [],
     },
   ],
 }
@@ -51,12 +54,48 @@ const lineConfig: Line = {
   reconstruction: 'reconstructed text',
   reconstructionTokens: [
     {
+      value: 'kur',
+      cleanValue: 'kur',
+      enclosureType: [],
+      erasure: 'NONE',
+      lemmatizable: true,
+      alignment: null,
+      uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
+      parts: [
+        {
+          value: 'kur',
+          cleanValue: 'kur',
+          enclosureType: [],
+          erasure: 'NONE',
+          type: 'ValueToken',
+        },
+      ],
+      modifiers: [],
       type: 'AkkadianWord',
-      value: 'reconstructed',
     },
     {
+      value: 'ra',
+      cleanValue: 'ra',
+      enclosureType: [],
+      erasure: 'NONE',
+      lemmatizable: true,
+      alignment: null,
+      uniqueLemma: [],
+      normalized: true,
+      language: 'AKKADIAN',
+      parts: [
+        {
+          value: 'ra',
+          cleanValue: 'ra',
+          enclosureType: [],
+          erasure: 'NONE',
+          type: 'ValueToken',
+        },
+      ],
+      modifiers: [],
       type: 'AkkadianWord',
-      value: 'text',
     },
   ],
   isSecondLineOfParallelism: true,
@@ -64,7 +103,7 @@ const lineConfig: Line = {
   manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
-const chapterConfig: Chapter = {
+const chapterConfig: Partial<Chapter> = {
   classification: 'Ancient',
   stage: 'Old Babylonian',
   version: 'A',
@@ -103,7 +142,10 @@ describe('Line', () => {
   testProperties(lineConfig, createLine)
 })
 
-function testProperties(config: any, factory: (x0: any) => any) {
+function testProperties<T>(
+  config: Partial<T>,
+  factory: (config: Partial<T>) => T
+) {
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(factory(config)[property]).toEqual(expected)
   })

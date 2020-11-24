@@ -52,7 +52,7 @@ function InjectedApp(): JSX.Element {
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const wordService = new WordService(wordRepository)
-  const textService = new TextService(apiClient)
+  const textService = new TextService(apiClient, fragmentService, wordService)
   return (
     <App
       wordService={wordService}

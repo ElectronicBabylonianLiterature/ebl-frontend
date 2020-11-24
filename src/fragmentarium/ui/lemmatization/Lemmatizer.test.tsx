@@ -1,9 +1,9 @@
 import React from 'react'
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
-import { whenClicked, clickNth, changeValueByLabel } from 'test-support/utils'
+import { whenClicked, clickNth } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatizer from './Lemmatizer'
 import Lemmatization, {
@@ -11,6 +11,7 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
+import { lemmatizeWord } from 'test-support/lemmatization'
 
 let element
 let fragmentService
@@ -117,7 +118,7 @@ it('Clicking word shows form', async () => {
 })
 
 it('Clicking save calls fragmentService', async () => {
-  await lemmatizeWord()
+  await lemmatizeWord(element, 'kur', lemma)
 
   const expected = new Lemmatization(
     ['1.'],
@@ -127,12 +128,3 @@ it('Clicking save calls fragmentService', async () => {
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(expected)
 })
-
-async function lemmatizeWord(): Promise<void> {
-  await element.findByText('kur')
-  await clickNth(element, 'kur', 0)
-  await element.findByLabelText('Lemma')
-  changeValueByLabel(element, 'Lemma', 'a')
-  await element.findByText(lemma.lemma)
-  await clickNth(element, lemma.lemma, 0)
-}

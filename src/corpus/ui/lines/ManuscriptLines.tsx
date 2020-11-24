@@ -1,5 +1,9 @@
 import ListForm from 'common/List'
-import { createManuscriptLine } from 'corpus/domain/text'
+import {
+  createManuscriptLine,
+  ManuscriptLine,
+  Manuscript,
+} from 'corpus/domain/text'
 import React from 'react'
 import { produce } from 'immer'
 import { Col, Form } from 'react-bootstrap'
@@ -7,7 +11,19 @@ import _ from 'lodash'
 import ArrayInput from 'common/ArrayInput'
 import Editor from 'editor/Editor'
 
-function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
+interface ManuscriptLineFormProps {
+  value: ManuscriptLine
+  manuscripts: readonly Manuscript[]
+  onChange: (line: ManuscriptLine) => void
+  disabled: boolean
+}
+
+function ManuscriptLineForm({
+  value,
+  manuscripts,
+  onChange,
+  disabled,
+}: ManuscriptLineFormProps): JSX.Element {
   const handleChange = (property) => (event) =>
     onChange(
       produce(value, (draft) => {
@@ -33,7 +49,7 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
             --
           </option>
           {manuscripts.map((manuscript) => (
-            <option key={manuscript.id} value={manuscript.id}>
+            <option key={manuscript.id} value={manuscript.id ?? ''}>
               {manuscript.siglum}
             </option>
           ))}
@@ -77,7 +93,19 @@ function ManuscriptLineForm({ value, manuscripts, onChange, disabled }) {
   )
 }
 
-export function ManuscriptLines({ lines, manuscripts, onChange, disabled }) {
+interface ManuscriptLinesProps {
+  lines: readonly ManuscriptLine[]
+  manuscripts: readonly Manuscript[]
+  onChange: (lines: ManuscriptLine) => void
+  disabled: boolean
+}
+
+export function ManuscriptLines({
+  lines,
+  manuscripts,
+  onChange,
+  disabled,
+}: ManuscriptLinesProps): JSX.Element {
   return (
     <ListForm
       noun="manuscript"

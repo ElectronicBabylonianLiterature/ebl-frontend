@@ -14,10 +14,22 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import setUpReferences from 'test-support/setUpReferences'
 import produce, { castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
+import Word from 'dictionary/domain/Word'
+import LemmatizationFactory from './LemmatizationFactory'
+
+jest.mock('./LemmatizationFactory')
 
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
+const word: Word = {
+  _id: 'aklu I',
+  lemma: ['aklu'],
+  homonym: 'I',
+  guideWord: 'test',
+  oraccWords: [],
+  pos: [],
+}
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),
@@ -90,6 +102,14 @@ const testData: TestData[] = [
     [fragment.number, resultStub],
     fragmentRepository.updateAnnotations,
     resultStub,
+  ],
+  [
+    'findSuggestions',
+    ['kur', true],
+    fragmentRepository.findLemmas,
+    [[new Lemma(word)]],
+    ['kur', true],
+    Promise.resolve([[word]]),
   ],
 ]
 
@@ -248,34 +268,21 @@ describe('methods returning hydrated fragment', () => {
 })
 
 test('createLemmatization', async () => {
-  const [text, words] = await createLemmatizationTestText()
-  const wordMap = _.keyBy(words, '_id')
-  const suggestions = {
-    kur: words[2],
-    nu: words[3],
-  }
-  wordRepository.find.mockImplementation((id) =>
-    wordMap[id] ? Promise.resolve(wordMap[id]) : Promise.reject(new Error())
-  )
-  fragmentRepository.findLemmas.mockImplementation((word) =>
-    Promise.resolve(suggestions[word] ? [[suggestions[word]]] : [])
-  )
-
-  const expectedLemmas = _([words[0]])
-    .map((word) => new Lemma(word))
-    .keyBy('value')
-    .value()
-  const expectedSuggestions = _.mapValues(suggestions, (word) => [
-    [new Lemma(word)],
-  ])
+  const [text] = await createLemmatizationTestText()
   const lemmatization = new Lemmatization([], [])
 
-  jest.spyOn(text, 'createLemmatization').mockReturnValue(lemmatization)
+  const createLemmatization = jest.fn<Promise<Lemmatization>, [Text]>()
+  createLemmatization.mockReturnValue(Promise.resolve(lemmatization))
+  const MockLemmatizationFactory = LemmatizationFactory as jest.Mock
+  MockLemmatizationFactory.mockImplementation(() => ({
+    createLemmatization,
+  }))
 
   const result = await fragmentService.createLemmatization(text)
-  expect(result).toEqual(lemmatization)
-  expect(text.createLemmatization).toHaveBeenCalledWith(
-    expectedLemmas,
-    expectedSuggestions
+  expect(MockLemmatizationFactory).toHaveBeenCalledWith(
+    fragmentService,
+    wordRepository
   )
+  expect(createLemmatization).toBeCalledWith(text)
+  expect(result).toEqual(lemmatization)
 })

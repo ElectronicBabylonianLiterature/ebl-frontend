@@ -1,6 +1,6 @@
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import { Word, Token } from 'transliteration/domain/token'
+import { Token, LemmatizableToken } from 'transliteration/domain/token'
 import { TextLine } from 'transliteration/domain/text-line'
 import { isTextLine, isEmptyLine } from 'transliteration/domain/type-guards'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
@@ -130,7 +130,7 @@ function getWord(word: Token, escapedWordValue: string): string {
   return result
 }
 
-function getLemata(word: Word) {
+function getLemata(word: LemmatizableToken) {
   let lemmata = ''
   for (let i = 0; i < word.uniqueLemma.length; i++) {
     lemmata += escapeXmlChars(word.uniqueLemma[i]) + ' '

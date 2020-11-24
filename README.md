@@ -27,7 +27,7 @@ select extensions. Click the button below, configure the environment variables a
 It might be necessary to use `.env.local` instead of [the facilities provided
 in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
 
-To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to `https://3000-$GITPOD_WORKSPACE_ID.ws-eu01.gitpod.io` (change the region if needed). 
+To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to `https://3000-$GITPOD_WORKSPACE_ID.ws-eu01.gitpod.io` (change the region if needed).
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
@@ -43,16 +43,15 @@ yarn test
 
 ### Auth0
 
-A single page application has to be setup in Auth0. The frontends root URL (e.g. `http://localhost:3000` for development) must be in *Callback URLs*, *Logout URLs*, and *Web Origins*. *Domain* and *Client ID* are needed for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
+A single page application has to be setup in Auth0. The frontends root URL (e.g. `http://localhost:3000` for development) must be in _Callback URLs_, _Logout URLs_, and _Web Origins_. _Domain_ and _Client ID_ are needed for the environment variables (see below). In a production environment the domain must be added to _frame-src_ in the CSP.
 
 ### Sentry
 
-An organization and project need to be setup in Sentry. The applications domain must be in *Allowed Domains* of the project. *DSN* under *Client Keys* is needed for the for the environment variables (see below). In a production environment the domain must be added to *frame-src* in CSP.
+An organization and project need to be setup in Sentry. The applications domain must be in _Allowed Domains_ of the project. _DSN_ under _Client Keys_ is needed for the for the environment variables (see below). In a production environment the domain must be added to _frame-src_ in CSP.
 
 ### eBL API
 
-In a production environment the api domain must be added to *img-src* in CSP.
-
+In a production environment the api domain must be added to _img-src_ in CSP.
 
 ## Running the application
 
@@ -63,17 +62,14 @@ REACT_APP_AUTH0_DOMAIN=<Auth0 domain>
 REACT_APP_AUTH0_REDIRECT_URI=<Auth0 redirect URI>
 REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
 REACT_APP_AUTH0_RETURN_TO=<Auth0 return to URL>
+REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>
 ```
 
-`yarn start` starts the development server. The envoronment variables are read from `.env.local`.
-
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
 
-```dotenv
-INLINE_RUNTIME_CHUNK=false
-```
+`yarn start` starts the development server. The envoronment variables are read from `.env.local`.
 
 ## Lighthouse
 

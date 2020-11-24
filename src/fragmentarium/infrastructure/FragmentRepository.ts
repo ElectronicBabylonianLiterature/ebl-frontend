@@ -48,6 +48,7 @@ import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
+import Word from 'dictionary/domain/Word'
 
 const lineClases = {
   TextLine: TextLine,
@@ -236,9 +237,11 @@ class ApiFragmentRepository
     )
   }
 
-  findLemmas(word: string) {
+  findLemmas(word: string, isNormalized: boolean): Promise<Word[][]> {
     return this.apiClient.fetchJson(
-      `/lemmas?word=${encodeURIComponent(word)}`,
+      `/lemmas?word=${encodeURIComponent(
+        word
+      )}&isNormalized=${encodeURIComponent(isNormalized)}`,
       true
     )
   }
