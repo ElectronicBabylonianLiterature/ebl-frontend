@@ -1,6 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
 import { factory } from 'factory-girl'
@@ -11,7 +15,7 @@ const query = 'Börger'
 let entries: BibliographyEntry[]
 let bibliographyService
 
-function renderWordSearch(): void {
+async function renderWordSearch(): Promise<void> {
   render(
     <MemoryRouter>
       <BibliographySearch
@@ -20,17 +24,16 @@ function renderWordSearch(): void {
       />
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 
 beforeEach(async () => {
   entries = await factory.buildMany('bibliographyEntry', 2)
-  const promise = Promise.resolve(entries)
   bibliographyService = {
-    search: jest.fn(() => promise),
+    search: jest.fn(),
   }
   bibliographyService.search.mockReturnValueOnce(Promise.resolve(entries))
-  renderWordSearch()
-  await screen.findAllByText(createAuthorRegExp(entries[0]))
+  await renderWordSearch()
 })
 
 test('Fetch results from service', () => {

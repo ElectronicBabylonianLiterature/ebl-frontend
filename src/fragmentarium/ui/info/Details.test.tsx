@@ -1,21 +1,25 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen, act } from '@testing-library/react'
+import {
+  render,
+  screen,
+  act,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
-import { Genres } from '../../domain/Genres'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const updateGenres = jest.fn()
-const promise = Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
 const fragmentService = {
-  fetchGenres: jest.fn(() => promise),
+  fetchGenres: jest.fn(),
 }
 let fragment: Fragment
 
-function renderDetails() {
+async function renderDetails() {
   render(
     <MemoryRouter>
       <Details
@@ -25,18 +29,19 @@ function renderDetails() {
       />
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 describe('All details', () => {
   beforeEach(async () => {
+    fragmentService.fetchGenres.mockReturnValue(
+      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    )
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
       genres: new Genres([]),
     })
-    renderDetails()
-    await act(async () => {
-      await promise
-    })
+    await renderDetails()
   })
 
   it('Renders museum', () => {
@@ -108,10 +113,7 @@ describe('Missing details', () => {
         width: null,
       }),
     })
-    renderDetails()
-    await act(async () => {
-      await promise
-    })
+    await renderDetails()
   })
 
   it('Does not render undefined', () =>
@@ -146,10 +148,7 @@ describe('Unknown museum', () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The Other Museum'),
     })
-    renderDetails()
-    await act(async () => {
-      await promise
-    })
+    await renderDetails()
   })
 
   it('Does not link museum', () =>

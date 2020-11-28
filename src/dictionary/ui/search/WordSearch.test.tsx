@@ -1,6 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import Promise from 'bluebird'
 import WordSearch from './WordSearch'
 import { factory } from 'factory-girl'
@@ -9,12 +13,13 @@ const query = 'lem[ma?]'
 let words
 let wordService
 
-function renderWordSearch(): void {
+async function renderWordSearch(): Promise<void> {
   render(
     <MemoryRouter>
       <WordSearch query={query} wordService={wordService} />
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 
 beforeEach(async () => {
@@ -23,8 +28,7 @@ beforeEach(async () => {
     search: jest.fn(),
   }
   wordService.search.mockReturnValueOnce(Promise.resolve(words))
-  renderWordSearch()
-  await screen.findByText(words[0].meaning)
+  await renderWordSearch()
 })
 
 it('Searches with the query', () => {

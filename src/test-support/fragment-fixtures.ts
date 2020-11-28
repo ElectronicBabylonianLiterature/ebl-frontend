@@ -4,7 +4,7 @@ import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
-import { Genre, Genres } from '../fragmentarium/domain/Genres'
+import { Genre, Genres } from 'fragmentarium/domain/Genres'
 
 const chance = new Chance()
 
