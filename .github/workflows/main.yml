@@ -20,26 +20,36 @@ jobs:
           node-version: '14'
 
       - name: Install
+        id: install
         run: yarn install --dev --frozen-lockfile
 
       - name: Lint
+        if: steps.install.outcome == 'success'
         run: yarn lint
      
       - name: Compile
+        if: steps.install.outcome == 'success'
         run: yarn tsc
 
       - name: Unit Tests
+        id: unit_tests
+        if: steps.install.outcome == 'success'
         env:
           CI: true
-        run: |
-          yarn test --coverage --forceExit --detectOpenHandles
+        run: yarn test --coverage --forceExit --detectOpenHandles
           
       - uses: paambaati/codeclimate-action@v2.7.4
+        if: steps.unit_tests.outcome == 'success' || steps.unit_tests.outcome == 'failure'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
-
+  
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.6.8
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name:  ${{secrets.HEROKU_APP_NAME}}
