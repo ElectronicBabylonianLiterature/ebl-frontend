@@ -41,12 +41,7 @@ jobs:
           CI: true
         run: |
           yarn test --coverage --forceExit --detectOpenHandles
-
-  coverage:
-    needs: [ test ]
-    name: coverage
-    runs-on: ubuntu-latest
-    steps:
+          
       - uses: paambaati/codeclimate-action@v2.7.4
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
