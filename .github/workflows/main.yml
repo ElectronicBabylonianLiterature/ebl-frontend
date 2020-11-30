@@ -39,7 +39,7 @@ jobs:
         run: yarn test --coverage --forceExit --detectOpenHandles
           
       - uses: paambaati/codeclimate-action@v2.7.4
-        if: steps.unit_tests.outcome == 'success' || steps.unit_tests.outcome == failure'
+        if: steps.unit_tests.outcome == 'success' || steps.unit_tests.outcome == 'failure'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
   
