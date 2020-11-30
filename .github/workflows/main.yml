@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+
+      - name: Install
+        run: yarn install --dev --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+     
+      - name: Compile
+        run: yarn tsc
+
+      - name: Unit Tests
+        env:
+          CI: true
+        run: |
+          yarn test --coverage --forceExit --detectOpenHandles
+          
+      - uses: paambaati/codeclimate-action@v2.7.4
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
+
+      - uses: akhileshns/heroku-deploy@v3.6.8
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name:  ${{secrets.HEROKU_APP_NAME}}
+          heroku_email:  ${{secrets.HEROKU_EMAIL}}
+          healthcheck: "https://www.ebabylon.org"
