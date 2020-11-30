@@ -47,9 +47,9 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
 
       - uses: akhileshns/heroku-deploy@v3.6.8
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name:  ${{secrets.HEROKU_APP_NAME}}
           heroku_email:  ${{secrets.HEROKU_EMAIL}}
-          branch: "master"
           healthcheck: "https://www.ebabylon.org"
