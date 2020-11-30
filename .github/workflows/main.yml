@@ -24,15 +24,15 @@ jobs:
         run: yarn install --dev --frozen-lockfile
 
       - name: Lint
-        if: ${{ steps.install.outcome == success }}
+        if: ${{ steps.install.outcome == 'success' }}
         run: yarn lint
      
       - name: Compile
-        if: ${{ steps.install.outcome == success }}
+        if: ${{ steps.install.outcome == 'success' }}
         run: yarn tsc
 
       - name: Unit Tests
-        if: ${{ steps.install.outcome == success }}
+        if: ${{ steps.install.outcome == 'success' }}
         env:
           CI: true
         run: yarn test --coverage --forceExit --detectOpenHandles
