@@ -24,26 +24,28 @@ jobs:
         run: yarn install --dev --frozen-lockfile
 
       - name: Lint
-        if: ${{ steps.install.outcome == 'success' }}
+        if: steps.install.outcome == 'success'
         run: yarn lint
      
       - name: Compile
-        if: ${{ steps.install.outcome == 'success' }}
+        if: steps.install.outcome == 'success'
         run: yarn tsc
 
       - name: Unit Tests
-        if: ${{ steps.install.outcome == 'success' }}
+        id: unit_tests
+        if: steps.install.outcome == 'success'
         env:
           CI: true
         run: yarn test --coverage --forceExit --detectOpenHandles
           
       - uses: paambaati/codeclimate-action@v2.7.4
+        if: contains(['success', failure'], steps.unit_tests.outcome)
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
   
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [test]
     steps:
       - uses: actions/checkout@v2
