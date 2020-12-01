@@ -41,6 +41,7 @@ const fragmentRepository = {
   fetchCdliInfo: jest.fn(),
   findAnnotations: jest.fn(),
   updateAnnotations: jest.fn(),
+  lineToVecRanking: jest.fn(),
 }
 const wordRepository = {
   searchLemma: jest.fn(),

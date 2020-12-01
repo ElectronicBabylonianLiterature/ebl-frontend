@@ -49,6 +49,12 @@ export interface FragmentRepository {
   fragmentPager(fragmentNumber: string): Promise<any>
   findLemmas(lemma: string): Promise<any>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
+  lineToVecRanking(
+    number: string
+  ): Promise<{
+    score: ReadonlyArray<[string, number]>
+    scoreWeighted: ReadonlyArray<[string, number]>
+  }>
 }
 
 export interface AnnotationRepository {
@@ -80,6 +86,15 @@ class FragmentService {
 
   statistics() {
     return this.fragmentRepository.statistics()
+  }
+
+  lineToVecRanking(
+    number: string
+  ): Promise<{
+    score: ReadonlyArray<[string, number]>
+    scoreWeighted: ReadonlyArray<[string, number]>
+  }> {
+    return this.fragmentRepository.lineToVecRanking(number)
   }
 
   find(number: string): Promise<Fragment> {

@@ -122,6 +122,15 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
+  lineToVecRanking(
+    number: string
+  ): Promise<{
+    score: ReadonlyArray<[string, number]>
+    scoreWeighted: ReadonlyArray<[string, number]>
+  }> {
+    return this.apiClient.fetchJson(`/fragments/${number}/match`, true)
+  }
+
   find(number: string): Promise<Fragment> {
     return this.apiClient
       .fetchJson(createFragmentPath(number), true)
