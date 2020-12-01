@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  act,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
@@ -14,12 +9,13 @@ let statistics
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
+  const promise = Promise.resolve()
   fragmentService = {
-    statistics: jest.fn(),
+    statistics: jest.fn(() => promise),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   render(<Statistics fragmentService={fragmentService} />)
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await act(() => promise)
 })
 
 it('Shows the number of transliterated tablets', async () => {

@@ -103,7 +103,7 @@ function GenreSelection({
         {(session: Session): ReactNode =>
           session.isAllowedToTransliterateFragments() && (
             <Button
-              aria-label="Browse genres button"
+              data-testid="browse-genre-button"
               variant="light"
               ref={target}
               className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
@@ -137,7 +137,7 @@ function GenreSelection({
                   session.isAllowedToTransliterateFragments() && (
                     <Button
                       variant="light"
-                      aria-label="Delete genre button"
+                      data-testid="delete-button"
                       className={classNames([
                         'float-right',
                         'fas fa-trash',
