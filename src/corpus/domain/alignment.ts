@@ -1,11 +1,8 @@
 export type AlignmentToken =
   | {
       value: string
-    }
-  | {
-      value: string
-      alignment: number | null
-      variant: ''
+      alignment?: null
+      variant?: ''
     }
   | {
       value: string

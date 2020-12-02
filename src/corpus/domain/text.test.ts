@@ -141,10 +141,16 @@ describe('Chapter', () => {
           {
             value: 'kur',
             alignment: null,
+            variant: '',
+            language: 'AKKADIAN',
+            isNormalized: false,
           },
           {
             value: 'ra',
             alignment: 1,
+            variant: 'ra',
+            language: 'AKKADIAN',
+            isNormalized: false,
           },
           {
             value: '...',

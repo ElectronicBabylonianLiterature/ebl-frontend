@@ -135,10 +135,17 @@ export class Chapter {
   get alignment(): Alignment {
     return this.lines.map((line) =>
       line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          alignment: token.alignment,
-        }))
+        manuscript.atfTokens.map((token) =>
+          token.lemmatizable
+            ? {
+                value: token.value,
+                alignment: token.alignment,
+                variant: token.variant?.value ?? '',
+                language: 'AKKADIAN',
+                isNormalized: false,
+              }
+            : { value: token.value }
+        )
       )
     )
   }

@@ -4,7 +4,6 @@ import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from '../Reconstruction'
-import { Token } from 'transliteration/domain/token'
 import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
 
 function ManuscriptAlignment(props: {
@@ -14,7 +13,7 @@ function ManuscriptAlignment(props: {
   alignment: readonly AlignmentToken[]
   onChange: (alignment: readonly AlignmentToken[]) => void
 }) {
-  const handleChange = (index: number) => (token: Token) => {
+  const handleChange = (index: number) => (token: AlignmentToken) => {
     props.onChange(
       produce(props.alignment, (draft: Draft<AlignmentToken[]>) => {
         draft[index] = castDraft(token)
@@ -33,7 +32,7 @@ function ManuscriptAlignment(props: {
           <span key={index}>
             {token.lemmatizable ? (
               <WordAligner
-                token={token}
+                token={props.alignment[index]}
                 reconstructionTokens={props.line.reconstructionTokens}
                 onChange={handleChange(index)}
               />

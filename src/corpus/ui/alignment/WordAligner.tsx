@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Popover, Overlay, Form } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Form, Dropdown, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
 
@@ -7,113 +7,146 @@ import './WordAligner.css'
 import produce, { Draft } from 'immer'
 
 import { Token } from 'transliteration/domain/token'
+import { AlignmentToken } from 'corpus/domain/alignment'
 
-interface Props {
-  readonly token: Token
+interface FormProps {
+  readonly token: AlignmentToken
   readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly onChange: (token: Token) => void
+  readonly onChange: (token: AlignmentToken, shouldClose: boolean) => void
 }
 
-class AlignmentForm extends Component<Props> {
-  handleAlignmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.props.onChange(
-      produce(this.props.token, (draft: Draft<Token>) => {
+function AlignmentForm(props: FormProps) {
+  const handleAlignmentChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    props.onChange(
+      produce(props.token, (draft: Draft<AlignmentToken>) => {
         const alignmentIndex = event.target.value
         draft.alignment = /\d+/.test(alignmentIndex)
           ? Number(alignmentIndex)
           : null
-      })
+      }),
+      true
     )
   }
 
-  render() {
-    return (
-      <>
-        <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
-          <Form.Label>Ideal word</Form.Label>
-          <Form.Control
-            as="select"
-            value={String(this.props.token.alignment)}
-            onChange={this.handleAlignmentChange}
-          >
-            <option value="">--</option>
-            {this.props.reconstructionTokens.map((reconstructionToken, index) =>
-              ['AkkadianWord', 'Word'].includes(reconstructionToken.type) ? (
-                <option key={index} value={index}>
-                  {' '}
-                  {reconstructionToken.value}
-                </option>
-              ) : null
-            )}
-          </Form.Control>
-        </Form.Group>
-      </>
+  const handleVariantChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.onChange(
+      produce(props.token, (draft: Draft<AlignmentToken>) => {
+        draft.variant = event.target.value
+      }),
+      false
     )
   }
+
+  return (
+    <div className="WordAligner__form">
+      <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
+        <Form.Label>Ideal word</Form.Label>
+        <Form.Control
+          as="select"
+          value={String(props.token.alignment)}
+          onChange={handleAlignmentChange}
+        >
+          <option value="">--</option>
+          {props.reconstructionTokens.map((reconstructionToken, index) =>
+            ['AkkadianWord', 'Word'].includes(reconstructionToken.type) ? (
+              <option key={index} value={index}>
+                {' '}
+                {reconstructionToken.value}
+              </option>
+            ) : null
+          )}
+        </Form.Control>
+      </Form.Group>
+      <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
+        <Form.Label>Variant</Form.Label>
+        <Form.Control
+          as="input"
+          value={props.token.variant}
+          onChange={handleVariantChange}
+        />
+      </Form.Group>
+    </div>
+  )
 }
 
-interface State {
-  readonly target?
-  readonly show: boolean
+interface AlignerProps {
+  readonly token: AlignmentToken
+  readonly reconstructionTokens: ReadonlyArray<Token>
+  readonly onChange: (token: AlignmentToken) => void
 }
 
-export default class WordAligner extends Component<Props, State> {
-  readonly popOverId: string
+export default function WordAligner({
+  token,
+  reconstructionTokens,
+  onChange,
+}: AlignerProps): JSX.Element {
+  const toggleId = _.uniqueId('AlignmentPopOver-')
+  const [show, setShow] = useState(false)
 
-  constructor(props: Props) {
-    super(props)
-    this.popOverId = _.uniqueId('AlignmentPopOver-')
-    this.state = {
-      show: false,
+  const handleChange = (value: AlignmentToken, shouldClose: boolean): void => {
+    onChange(value)
+    if (shouldClose) {
+      setShow(false)
     }
   }
 
-  handleClick = (event: React.MouseEvent): void => {
-    this.setState({
-      target: event.target,
-      show: !this.state.show,
-    })
-  }
-
-  handleChange = (value: Token): void => {
-    this.props.onChange(value)
-    this.hide()
-  }
-
-  hide = (): void => {
-    this.setState({ show: false })
-  }
-
-  render(): JSX.Element {
-    return (
-      <span className="WordAligner">
-        <Word
-          token={this.props.token}
-          onClick={this.handleClick}
-          reconstructionTokens={this.props.reconstructionTokens}
-        />
-        <Overlay
-          rootClose
-          onHide={this.hide}
-          show={this.state.show}
-          target={this.state.target}
-          placement="top"
+  const AlignmentToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
+    function toggle(props, ref) {
+      return (
+        <Button
+          ref={ref}
+          size="sm"
+          variant="outline-dark"
+          active={show}
+          {...props}
         >
-          <Popover
-            id={this.popOverId}
-            title="Align"
-            className="WordAligner__form"
-          >
-            <Popover.Content>
-              <AlignmentForm
-                token={this.props.token}
-                reconstructionTokens={this.props.reconstructionTokens}
-                onChange={this.handleChange}
-              />
-            </Popover.Content>
-          </Popover>
-        </Overlay>
-      </span>
-    )
-  }
+          <Word token={token} reconstructionTokens={reconstructionTokens} />
+        </Button>
+      )
+    }
+  )
+
+  const AlignmentMennu = React.forwardRef<HTMLDivElement, unknown>(
+    function menu(
+      {
+        style,
+        className,
+        'aria-labelledby': labeledBy,
+      }: {
+        children?: React.ReactNode
+        style?: React.CSSProperties
+        className?: string
+        'aria-labelledby'?: string
+      },
+      ref
+    ) {
+      return (
+        <div
+          ref={ref}
+          style={style}
+          className={className}
+          aria-labelledby={labeledBy}
+        >
+          <AlignmentForm
+            token={token}
+            reconstructionTokens={reconstructionTokens}
+            onChange={handleChange}
+          />
+        </div>
+      )
+    }
+  )
+
+  return (
+    <Dropdown as="span" onToggle={setShow} show={show}>
+      <Dropdown.Toggle
+        as={AlignmentToggle}
+        id={toggleId}
+        bsPrefix="AlignmentLemmatizer__toggle"
+      />
+      <Dropdown.Menu as={AlignmentMennu} />
+    </Dropdown>
+  )
 }
