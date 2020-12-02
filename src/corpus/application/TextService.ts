@@ -5,7 +5,6 @@ import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   fromDto,
-  toAlignmentDto,
   toLemmatizationDto,
   toManuscriptsDto,
   toLinesDto,
@@ -60,14 +59,14 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    lines: readonly Line[]
+    chapter: Chapter
   ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
-        toAlignmentDto(lines)
+        { alignment: chapter.alignment }
       )
       .then(fromDto)
   }

@@ -14,6 +14,7 @@ import {
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
+import { text } from 'test-support/test-corpus-text'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -132,6 +133,26 @@ describe('Text', () => {
 
 describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
+
+  test('alignment', () => {
+    expect(text.chapters[0].alignment).toEqual([
+      [
+        [
+          {
+            value: 'kur',
+            alignment: null,
+          },
+          {
+            value: 'ra',
+            alignment: 1,
+          },
+          {
+            value: '...',
+          },
+        ],
+      ],
+    ])
+  })
 })
 
 describe('Manuscript', () => {

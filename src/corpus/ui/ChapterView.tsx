@@ -83,7 +83,7 @@ function ChapterView({
         text.category,
         text.index,
         chapterIndex,
-        chapter.lines
+        chapter
       )
     )
   }

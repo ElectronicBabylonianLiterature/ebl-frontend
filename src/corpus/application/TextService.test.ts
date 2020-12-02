@@ -26,23 +26,7 @@ const testService = new TextService(
 )
 
 const alignmentDto = {
-  alignment: [
-    [
-      [
-        {
-          value: 'kur',
-          alignment: null,
-        },
-        {
-          value: 'ra',
-          alignment: 1,
-        },
-        {
-          value: '...',
-        },
-      ],
-    ],
-  ],
+  alignment: text.chapters[0].alignment,
 }
 
 const word: Word = {
@@ -182,7 +166,7 @@ const testData: TestData[] = [
   ],
   [
     'updateAlignment',
-    [text.category, text.index, 0, text.chapters[0].lines],
+    [text.category, text.index, 0, text.chapters[0]],
     apiClient.postJson,
     text,
     [
