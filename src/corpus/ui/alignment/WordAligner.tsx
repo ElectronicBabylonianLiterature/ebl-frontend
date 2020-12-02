@@ -22,9 +22,19 @@ function AlignmentForm(props: FormProps) {
     props.onChange(
       produce(props.token, (draft: Draft<AlignmentToken>) => {
         const alignmentIndex = event.target.value
-        draft.alignment = /\d+/.test(alignmentIndex)
-          ? Number(alignmentIndex)
-          : null
+        if (/\d+/.test(alignmentIndex)) {
+          const token = props.reconstructionTokens[Number(alignmentIndex)]
+          draft.alignment = Number(alignmentIndex)
+          if (token.type === 'AkkadianWord' || token.type === 'Word') {
+            draft.language = token.language
+            draft.isNormalized = token.normalized
+          }
+        } else {
+          return {
+            value: draft.value,
+            alignment: null,
+          }
+        }
       }),
       true
     )

@@ -141,8 +141,8 @@ export class Chapter {
                 value: token.value,
                 alignment: token.alignment,
                 variant: token.variant?.value ?? '',
-                language: 'AKKADIAN',
-                isNormalized: false,
+                language: token.variant?.language ?? '',
+                isNormalized: token.variant?.normalized ?? false,
               }
             : { value: token.value }
         )

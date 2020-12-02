@@ -3,6 +3,8 @@ export type AlignmentToken =
       value: string
       alignment?: null
       variant?: ''
+      language?: string
+      isNormalized?: boolean
     }
   | {
       value: string
