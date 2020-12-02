@@ -9,6 +9,52 @@ import produce, { Draft } from 'immer'
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 
+function dropdownMenu(content: React.ReactNode) {
+  return React.forwardRef<HTMLDivElement, unknown>(function menu(
+    {
+      style,
+      className,
+      'aria-labelledby': labeledBy,
+    }: {
+      children?: React.ReactNode
+      style?: React.CSSProperties
+      className?: string
+      'aria-labelledby'?: string
+    },
+    ref
+  ) {
+    return (
+      <div
+        ref={ref}
+        style={style}
+        className={className}
+        aria-labelledby={labeledBy}
+      >
+        {content}
+      </div>
+    )
+  })
+}
+
+function dropdownButton(content: React.ReactNode, active: boolean) {
+  return React.forwardRef<HTMLButtonElement & Button, unknown>(function toggle(
+    props,
+    ref
+  ) {
+    return (
+      <Button
+        ref={ref}
+        size="sm"
+        variant="outline-dark"
+        active={active}
+        {...props}
+      >
+        {content}
+      </Button>
+    )
+  })
+}
+
 interface FormProps {
   readonly token: AlignmentToken
   readonly reconstructionTokens: ReadonlyArray<Token>
@@ -102,50 +148,18 @@ export default function WordAligner({
     }
   }
 
-  const AlignmentToggle = React.forwardRef<HTMLButtonElement & Button, unknown>(
-    function toggle(props, ref) {
-      return (
-        <Button
-          ref={ref}
-          size="sm"
-          variant="outline-dark"
-          active={show}
-          {...props}
-        >
-          <Word token={token} reconstructionTokens={reconstructionTokens} />
-        </Button>
-      )
-    }
+  const AlignmentToggle = dropdownButton(
+    <Word token={token} reconstructionTokens={reconstructionTokens} />,
+    show
   )
 
-  const AlignmentMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
-    {
-      style,
-      className,
-      'aria-labelledby': labeledBy,
-    }: {
-      children?: React.ReactNode
-      style?: React.CSSProperties
-      className?: string
-      'aria-labelledby'?: string
-    },
-    ref
-  ) {
-    return (
-      <div
-        ref={ref}
-        style={style}
-        className={className}
-        aria-labelledby={labeledBy}
-      >
-        <AlignmentForm
-          token={token}
-          reconstructionTokens={reconstructionTokens}
-          onChange={handleChange}
-        />
-      </div>
-    )
-  })
+  const AlignmentMenu = dropdownMenu(
+    <AlignmentForm
+      token={token}
+      reconstructionTokens={reconstructionTokens}
+      onChange={handleChange}
+    />
+  )
 
   return (
     <Dropdown as="span" onToggle={setShow} show={show}>
