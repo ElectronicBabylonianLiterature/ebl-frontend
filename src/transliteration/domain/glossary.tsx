@@ -1,7 +1,7 @@
 import Label from './Label'
 import { Word as TransliterationWord } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
-import compareWord from 'transliteration/domain/compareWord'
+import compareWord from 'dictionary/domain/compareWord'
 
 export interface GlossaryToken {
   readonly label: Label
