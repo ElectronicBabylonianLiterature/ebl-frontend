@@ -9,7 +9,7 @@ import produce, { Draft } from 'immer'
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 
-function dropdownMenu(content: React.ReactNode) {
+function divMenu(content: React.ReactNode) {
   return React.forwardRef<HTMLDivElement, unknown>(function menu(
     {
       style,
@@ -36,7 +36,7 @@ function dropdownMenu(content: React.ReactNode) {
   })
 }
 
-function dropdownButton(content: React.ReactNode, active: boolean) {
+function buttonToggle(content: React.ReactNode, active: boolean) {
   return React.forwardRef<HTMLButtonElement & Button, unknown>(function toggle(
     props,
     ref
@@ -53,6 +53,29 @@ function dropdownButton(content: React.ReactNode, active: boolean) {
       </Button>
     )
   })
+}
+
+function DropdownButton({
+  menu,
+  toggle,
+  onToggle,
+  show,
+}: {
+  menu: React.ReactNode
+  toggle: React.ReactNode
+  onToggle: (show: boolean) => void
+  show: boolean
+}): JSX.Element {
+  return (
+    <Dropdown as="span" onToggle={onToggle} show={show}>
+      <Dropdown.Toggle
+        as={buttonToggle(toggle, show)}
+        id={_.uniqueId('DropdownPopOver-')}
+        bsPrefix="DropdownButton__toggle"
+      />
+      <Dropdown.Menu as={divMenu(menu)} />
+    </Dropdown>
+  )
 }
 
 interface FormProps {
@@ -138,7 +161,6 @@ export default function WordAligner({
   reconstructionTokens,
   onChange,
 }: AlignerProps): JSX.Element {
-  const toggleId = _.uniqueId('AlignmentPopOver-')
   const [show, setShow] = useState(false)
 
   const handleChange = (value: AlignmentToken, shouldClose: boolean): void => {
@@ -148,12 +170,11 @@ export default function WordAligner({
     }
   }
 
-  const AlignmentToggle = dropdownButton(
-    <Word token={token} reconstructionTokens={reconstructionTokens} />,
-    show
+  const toggle = (
+    <Word token={token} reconstructionTokens={reconstructionTokens} />
   )
 
-  const AlignmentMenu = dropdownMenu(
+  const menu = (
     <AlignmentForm
       token={token}
       reconstructionTokens={reconstructionTokens}
@@ -162,13 +183,11 @@ export default function WordAligner({
   )
 
   return (
-    <Dropdown as="span" onToggle={setShow} show={show}>
-      <Dropdown.Toggle
-        as={AlignmentToggle}
-        id={toggleId}
-        bsPrefix="AlignmentLemmatizer__toggle"
-      />
-      <Dropdown.Menu as={AlignmentMenu} />
-    </Dropdown>
+    <DropdownButton
+      onToggle={setShow}
+      show={show}
+      toggle={toggle}
+      menu={menu}
+    />
   )
 }
