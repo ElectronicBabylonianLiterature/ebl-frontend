@@ -25,6 +25,12 @@ test.each([
   ['šaniš', 'šan iš', -1],
   ['abu', "ab'u", 0],
   ['abʾu', 'abu', 0],
+  ['abux', 'abu', 0],
+  ['abuX', 'abu', 0],
+  ['abuc', 'abu', 0],
+  ['abuC', 'abu', 0],
+  ['abuo', 'abu', 0],
+  ['abuO', 'abu', 0],
 ])('compares %s and %s', (word, anotherWord, expected) => {
   const comparedWords = compareAkkadianStrings(word, anotherWord)
   expect(comparedWords).toBe(expected)
