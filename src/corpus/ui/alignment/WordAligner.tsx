@@ -118,36 +118,34 @@ export default function WordAligner({
     }
   )
 
-  const AlignmentMennu = React.forwardRef<HTMLDivElement, unknown>(
-    function menu(
-      {
-        style,
-        className,
-        'aria-labelledby': labeledBy,
-      }: {
-        children?: React.ReactNode
-        style?: React.CSSProperties
-        className?: string
-        'aria-labelledby'?: string
-      },
-      ref
-    ) {
-      return (
-        <div
-          ref={ref}
-          style={style}
-          className={className}
-          aria-labelledby={labeledBy}
-        >
-          <AlignmentForm
-            token={token}
-            reconstructionTokens={reconstructionTokens}
-            onChange={handleChange}
-          />
-        </div>
-      )
-    }
-  )
+  const AlignmentMenu = React.forwardRef<HTMLDivElement, unknown>(function menu(
+    {
+      style,
+      className,
+      'aria-labelledby': labeledBy,
+    }: {
+      children?: React.ReactNode
+      style?: React.CSSProperties
+      className?: string
+      'aria-labelledby'?: string
+    },
+    ref
+  ) {
+    return (
+      <div
+        ref={ref}
+        style={style}
+        className={className}
+        aria-labelledby={labeledBy}
+      >
+        <AlignmentForm
+          token={token}
+          reconstructionTokens={reconstructionTokens}
+          onChange={handleChange}
+        />
+      </div>
+    )
+  })
 
   return (
     <Dropdown as="span" onToggle={setShow} show={show}>
@@ -156,7 +154,7 @@ export default function WordAligner({
         id={toggleId}
         bsPrefix="AlignmentLemmatizer__toggle"
       />
-      <Dropdown.Menu as={AlignmentMennu} />
+      <Dropdown.Menu as={AlignmentMenu} />
     </Dropdown>
   )
 }
