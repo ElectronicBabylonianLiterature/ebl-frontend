@@ -13,11 +13,12 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import TextService from 'corpus/application/TextService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import { Alignment } from 'corpus/domain/alignment'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
-  onSaveAlignment: () => void
+  onSaveAlignment: (alignment: Alignment) => void
   onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
   disabled: boolean
   dirty: boolean
@@ -75,7 +76,6 @@ export default function ChapterEditor({
         >
           <ChapterAlignment
             chapter={chapter}
-            onChange={onChange}
             onSave={onSaveAlignment}
             disabled={disabled}
           />

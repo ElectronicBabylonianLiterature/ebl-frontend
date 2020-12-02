@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from '../Reconstruction'
 import { Token } from 'transliteration/domain/token'
+import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
 
 function ManuscriptAlignment(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
-  onChange: (line: ManuscriptLine) => void
+  alignment: readonly AlignmentToken[]
+  onChange: (alignment: readonly AlignmentToken[]) => void
 }) {
   const handleChange = (index: number) => (token: Token) => {
     props.onChange(
-      produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index] = castDraft(token)
+      produce(props.alignment, (draft: Draft<AlignmentToken[]>) => {
+        draft[index] = castDraft(token)
       })
     )
   }
@@ -47,23 +49,20 @@ function ManuscriptAlignment(props: {
 
 export default function ChapterAlignment({
   chapter,
-  onChange,
   onSave,
   disabled,
 }: {
   chapter: Chapter
-  onChange: (chapter: Chapter) => void
-  onSave: () => void
+  onSave: (alignment: Alignment) => void
   disabled: boolean
 }): JSX.Element {
+  const [alignment, setAlignment] = useState(chapter.alignment)
   const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
-    manuscript: ManuscriptLine
+    manuscriptAlignment: readonly AlignmentToken[]
   ) =>
-    onChange(
-      produce(chapter, (draft: Draft<Chapter>) => {
-        draft.lines[lineIndex].manuscripts[manuscriptIndex] = castDraft(
-          manuscript
-        )
+    setAlignment(
+      produce(alignment, (draft: Draft<Alignment>) => {
+        draft[lineIndex][manuscriptIndex] = castDraft(manuscriptAlignment)
       })
     )
   return (
@@ -79,12 +78,13 @@ export default function ChapterAlignment({
                 chapter={chapter}
                 line={line}
                 manuscriptLine={manuscript}
+                alignment={alignment[lineIndex][manuscriptIndex]}
                 onChange={handleChange(lineIndex)(manuscriptIndex)}
               />
             ))}
           </section>
         ))}
-        <Button onClick={onSave}>Save alignment</Button>
+        <Button onClick={() => onSave(alignment)}>Save alignment</Button>
       </fieldset>
     </Form>
   )
