@@ -8,7 +8,7 @@ import produce, { Draft } from 'immer'
 
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
-import DropdownButton from './DropdownButton'
+import DropdownButton from 'common/DropdownButton'
 
 interface FormProps {
   readonly token: AlignmentToken
