@@ -53,6 +53,8 @@ beforeEach(async () => {
             erasure: 'NONE',
             cleanValue: 'kur',
             value: 'kur',
+            alignment: null,
+            variant: null,
             parts: [
               {
                 enclosureType: [],

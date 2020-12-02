@@ -15,6 +15,8 @@ const testWord: WordToken = {
   normalized: false,
   lemmatizable: true,
   erasure: 'NONE',
+  alignment: null,
+  variant: null,
   parts: [
     {
       type: 'Reading',

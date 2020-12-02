@@ -31,6 +31,7 @@ const alignmentDto = {
       [
         {
           value: 'kur',
+          alignment: null,
         },
         {
           value: 'ra',
