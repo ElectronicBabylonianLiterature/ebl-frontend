@@ -37,6 +37,9 @@ const alignmentDto = {
           value: 'ra',
           alignment: 1,
         },
+        {
+          value: '...',
+        },
       ],
     ],
   ],
@@ -62,6 +65,7 @@ const lemmatization = [
       [
         new LemmatizationToken('kur', true, [], []),
         new LemmatizationToken('ra', true, [new Lemma(word)], []),
+        new LemmatizationToken('...', false, null, null),
       ],
     ],
   ],
@@ -91,6 +95,9 @@ const lemmatizationDto = {
         {
           value: 'ra',
           uniqueLemma: ['aklu I'],
+        },
+        {
+          value: '...',
         },
       ],
     ],
