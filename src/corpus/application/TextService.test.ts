@@ -166,7 +166,7 @@ const testData: TestData[] = [
   ],
   [
     'updateAlignment',
-    [text.category, text.index, 0, text.chapters[0]],
+    [text.category, text.index, 0, text.chapters[0].alignment],
     apiClient.postJson,
     text,
     [
