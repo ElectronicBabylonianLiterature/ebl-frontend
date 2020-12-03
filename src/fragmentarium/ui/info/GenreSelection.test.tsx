@@ -36,8 +36,6 @@ async function renderGenreSelection() {
 }
 beforeEach(async () => {
   fragment = await factory.build('fragment', {
-    museum: Museum.of('The British Museum'),
-    collection: 'The Collection',
     genres: new Genres([]),
   })
   fragmentService.fetchGenres.mockReturnValue(
