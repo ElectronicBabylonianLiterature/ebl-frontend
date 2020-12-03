@@ -147,7 +147,7 @@ test('Align word', async () => {
   ]
 
   await element.findByText('kur')
-  await clickNth(element, 'kur', 0)
+  clickNth(element, 'kur', 0)
   changeValueByLabel(element, 'Ideal word', '1')
 
   await whenClicked(element, 'Save alignment')
