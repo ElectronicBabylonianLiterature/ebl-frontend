@@ -59,6 +59,14 @@ const testData: TestData[] = [
     Promise.resolve(resultStub),
   ],
   [
+    'lineToVecRanking',
+    [fragmentId],
+    apiClient.fetchJson,
+    resultStub,
+    [`/fragments/${encodeURIComponent(fragmentId)}/match`, true],
+    Promise.resolve(resultStub),
+  ],
+  [
     'find',
     [fragmentId],
     apiClient.fetchJson,

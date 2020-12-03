@@ -6,16 +6,14 @@ import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import React, { ReactNode } from 'react'
 import withData from 'http/withData'
+import { LineToVecRanking } from '../../domain/lineToVecRanking'
 
 function FragmentLineToVecRanking({
   lineToVecRanking,
   number,
 }: {
-  lineToVecRanking: {
-    score: ReadonlyArray<[string, number]>
-    scoreWeighted: ReadonlyArray<[string, number]>
-  }
   number: string
+  lineToVecRanking: LineToVecRanking
 }): JSX.Element {
   const LineToVecDisplay = ({ lineToVecRanking }) => (
     <Container>
@@ -67,10 +65,7 @@ function FragmentLineToVecRanking({
 export default withData<
   { fragmentService; number: string },
   { number: string },
-  {
-    score: ReadonlyArray<[string, number]>
-    scoreWeighted: ReadonlyArray<[string, number]>
-  }
+  LineToVecRanking
 >(
   ({ data, ...props }) => (
     <FragmentLineToVecRanking lineToVecRanking={data} number={props.number} />

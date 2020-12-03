@@ -49,6 +49,7 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
+import { LineToVecRanking } from '../domain/lineToVecRanking'
 
 const lineClases = {
   TextLine: TextLine,
@@ -123,13 +124,8 @@ class ApiFragmentRepository
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 
-  lineToVecRanking(
-    number: string
-  ): Promise<{
-    score: ReadonlyArray<[string, number]>
-    scoreWeighted: ReadonlyArray<[string, number]>
-  }> {
-    return this.apiClient.fetchJson(`/fragments/${number}/match`, true)
+  lineToVecRanking(number: string): Promise<LineToVecRanking> {
+    return this.apiClient.fetchJson(createFragmentPath(number, 'match'), true)
   }
 
   find(number: string): Promise<Fragment> {

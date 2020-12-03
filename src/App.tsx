@@ -183,7 +183,11 @@ function App({
           />
           <Route
             path="/fragmentarium/:id/match"
-            render={({ match }): ReactNode => (
+            render={({
+              match,
+            }: {
+              match: Match<{ id: string }>
+            }): ReactNode => (
               <FragmentLineToVecRanking
                 fragmentService={fragmentService}
                 number={decodeURIComponent(match.params.id)}
