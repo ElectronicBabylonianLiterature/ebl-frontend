@@ -20,36 +20,31 @@ function AlignmentForm(props: AlignerProps) {
   const [alignment, setAlignment] = useState(props.token.alignment)
   const [variant, setVariant] = useState(props.token.variant)
 
-  const onClick = () => {
-    props.onChange(
-      produce(props.token, (draft: Draft<AlignmentToken>) => {
-        if (_.isNil(alignment)) {
-          return {
-            value: draft.value,
-            alignment: null,
-          }
-        } else {
-          const token = props.reconstructionTokens[alignment]
-          draft.alignment = alignment
-          draft.variant = variant
-          if (token.type === 'AkkadianWord' || token.type === 'Word') {
-            draft.language = token.language
-            draft.isNormalized = token.normalized
-          }
-        }
-      })
-    )
-  }
+  const updateToken = produce((draft: Draft<AlignmentToken>) => {
+    if (_.isNil(alignment)) {
+      return {
+        value: draft.value,
+        alignment: null,
+      }
+    } else {
+      const token = props.reconstructionTokens[alignment]
+      draft.alignment = alignment
+      draft.variant = variant
+      if (token.type === 'AkkadianWord' || token.type === 'Word') {
+        draft.language = token.language
+        draft.isNormalized = token.normalized
+      }
+    }
+  })
+
+  const onClick = () => props.onChange(updateToken(props.token))
 
   const handleAlignmentChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const alignmentIndex = event.target.value
-    if (/\d+/.test(alignmentIndex)) {
-      setAlignment(Number(alignmentIndex))
-    } else {
-      setAlignment(null)
-    }
+    const alignmnet = /\d+/.test(alignmentIndex) ? Number(alignmentIndex) : null
+    setAlignment(alignmnet)
   }
 
   const handleVariantChange = (event: React.ChangeEvent<HTMLInputElement>) => {
