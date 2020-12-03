@@ -1,13 +1,8 @@
 import { immerable } from 'immer'
 import _ from 'lodash'
-import Lemmatization, {
-  LemmatizationToken,
-  UniqueLemma,
-} from 'transliteration/domain/Lemmatization'
 import { TextLine } from 'transliteration/domain/text-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { isTextLine } from 'transliteration/domain/type-guards'
-import Lemma from './Lemma'
 import { isNoteLine } from './type-guards'
 import { AbstractLine } from './abstract-line'
 import Label from './Label'
@@ -28,6 +23,7 @@ export function noteNumber(
 type LabeledLine = readonly [Label, TextLine]
 
 export class Text {
+  readonly [immerable] = true
   readonly allLines: readonly AbstractLine[]
 
   constructor({ lines }: { lines: readonly AbstractLine[] }) {
@@ -59,28 +55,4 @@ export class Text {
     }
     return notes
   }
-
-  createLemmatization(
-    lemmas: { [key: string]: Lemma },
-    suggestions: { [key: string]: readonly UniqueLemma[] }
-  ): Lemmatization {
-    return new Lemmatization(
-      this.allLines.map((line) => line.prefix),
-      this.allLines
-        .map((line) => line.content)
-        .map((tokens) =>
-          tokens.map((token) =>
-            token.lemmatizable
-              ? new LemmatizationToken(
-                  token.value,
-                  true,
-                  (token.uniqueLemma || []).map((id) => lemmas[id]),
-                  suggestions[token.cleanValue] ?? []
-                )
-              : new LemmatizationToken(token.value, false)
-          )
-        )
-    )
-  }
 }
-Text[immerable] = true

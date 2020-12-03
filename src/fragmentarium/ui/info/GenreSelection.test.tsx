@@ -2,6 +2,7 @@ import React from 'react'
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import { factory } from 'factory-girl'
@@ -21,7 +22,7 @@ const fragmentService = {
 let fragment: Fragment
 let session
 
-async function renderDetails() {
+async function renderGenreSelection() {
   render(
     <SessionContext.Provider value={session}>
       <GenreSelection
@@ -46,7 +47,7 @@ beforeEach(async () => {
     isAllowedToTransliterateFragments: jest.fn(),
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
-  await renderDetails()
+  await renderGenreSelection()
 })
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
@@ -56,7 +57,7 @@ describe('User Input', () => {
       'ARCHIVAL ➝ Administrative'
     )
 
-    expect(updateGenres).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(updateGenres).toHaveBeenCalledTimes(1))
 
     userEvent.click(screen.getByLabelText('Delete genre button'))
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
@@ -33,18 +33,27 @@ function NavItem(props: { href: string; title: string }): JSX.Element {
 }
 
 export default function Header(): JSX.Element {
+  const [activeKey, setActiveKey] = useState<string | null>(null)
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">
       <Navbar variant="light" expand="md">
         <Container>
-          <LinkContainer to="/" title="electronic Babylonian Literature (eBL)">
+          <LinkContainer
+            to="/"
+            title="electronic Babylonian Literature (eBL)"
+            onClick={() => setActiveKey('/')}
+          >
             <Navbar.Brand>
               <EblLogo />
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Collapse id={id}>
-            <Nav className="mx-auto">
+            <Nav
+              activeKey={activeKey}
+              onSelect={(key) => setActiveKey(key)}
+              className="mx-auto"
+            >
               <NavItem href="/dictionary" title="Dictionary" />
               <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/fragmentarium" title="Fragmentarium" />

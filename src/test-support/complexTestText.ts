@@ -22,6 +22,8 @@ const line2 = new TextLine({
       normalized: false,
       lemmatizable: false,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -154,6 +156,8 @@ const line2 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['BROKEN_AWAY'],
@@ -239,6 +243,8 @@ const line4 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -270,6 +276,8 @@ const line4 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -350,6 +358,8 @@ const line6 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -382,6 +392,8 @@ const line6 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -402,6 +414,8 @@ const line6 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -437,6 +451,8 @@ const line6 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -478,6 +494,8 @@ const line6 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['BROKEN_AWAY'],
@@ -525,6 +543,8 @@ const line7 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -657,6 +677,8 @@ const line8 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'ERASED',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -696,6 +718,8 @@ const line8 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'OVER_ERASED',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -735,6 +759,8 @@ const line8 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -871,6 +897,8 @@ const line10 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1008,6 +1036,8 @@ const line10 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1055,6 +1085,8 @@ const line10 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1140,6 +1172,8 @@ const line10 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1206,6 +1240,8 @@ const line10 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1311,6 +1347,8 @@ const line10 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -1391,6 +1429,8 @@ const line11 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1608,6 +1648,8 @@ const line12 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1648,6 +1690,8 @@ const line12 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1707,6 +1751,8 @@ const line12 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1748,6 +1794,8 @@ const line12 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1788,6 +1836,8 @@ const line12 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1820,6 +1870,8 @@ const line12 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1889,6 +1941,8 @@ const line12 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1943,6 +1997,8 @@ const line13 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -1962,6 +2018,8 @@ const line13 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2074,6 +2132,8 @@ const line13 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2142,6 +2202,8 @@ const line13 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2224,6 +2286,8 @@ const line14 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2243,6 +2307,8 @@ const line14 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2355,6 +2421,8 @@ const line14 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2423,6 +2491,8 @@ const line14 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2497,6 +2567,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2536,6 +2608,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['ACCIDENTAL_OMISSION'],
@@ -2575,6 +2649,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2614,6 +2690,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['INTENTIONAL_OMISSION'],
@@ -2653,6 +2731,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -2693,6 +2773,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['REMOVAL'],
@@ -2739,6 +2821,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2786,6 +2870,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'ACCIDENTAL_OMISSION'],
@@ -2825,6 +2911,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2867,6 +2955,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'INTENTIONAL_OMISSION'],
@@ -2909,6 +2999,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -2948,6 +3040,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS', 'REMOVAL'],
@@ -3001,6 +3095,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3080,6 +3176,8 @@ const line15 = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['DOCUMENT_ORIENTED_GLOSS'],
@@ -3161,6 +3259,8 @@ const line16 = new TextLine({
       lemmatizable: true,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3241,6 +3341,8 @@ const line17 = new TextLine({
       lemmatizable: true,
       uniqueLemma: ['hepû II'],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: ['BROKEN_AWAY', 'DOCUMENT_ORIENTED_GLOSS'],
@@ -3332,6 +3434,8 @@ const line18 = new TextLine({
       lemmatizable: false,
       uniqueLemma: [],
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],

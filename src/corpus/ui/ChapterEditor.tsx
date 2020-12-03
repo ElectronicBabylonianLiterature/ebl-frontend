@@ -10,21 +10,23 @@ import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import ChapterLemmatization from './lemmatization/ManuscriptLineLemmatizer'
-import WordService from 'dictionary/application/WordService'
+import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
+import TextService from 'corpus/application/TextService'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import { Alignment } from 'corpus/domain/alignment'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
-  onSaveAlignment: () => void
-  onSaveLemmatization: () => void
+  onSaveAlignment: (alignment: Alignment) => void
+  onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
   disabled: boolean
   dirty: boolean
   chapter: Chapter
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
   onChange: (chaper: Chapter) => void
   fragmentService: FragmentService
-  wordService: WordService
+  textService: TextService
 }
 
 export default function ChapterEditor({
@@ -38,7 +40,7 @@ export default function ChapterEditor({
   searchBibliography,
   onChange,
   fragmentService,
-  wordService,
+  textService,
 }: Props): JSX.Element {
   const session = useContext(SessionContext)
   return (
@@ -74,7 +76,6 @@ export default function ChapterEditor({
         >
           <ChapterAlignment
             chapter={chapter}
-            onChange={onChange}
             onSave={onSaveAlignment}
             disabled={disabled}
           />
@@ -84,13 +85,12 @@ export default function ChapterEditor({
           title="Lemmatization"
           disabled={!session.hasBetaAccess() || dirty}
         >
-          <ChapterLemmatization
+          <ChapterLemmatizer
             chapter={chapter}
-            onChange={onChange}
             onSave={onSaveLemmatization}
             disabled={disabled}
             fragmentService={fragmentService}
-            wordService={wordService}
+            textService={textService}
           />
         </Tab>
       </Tabs>

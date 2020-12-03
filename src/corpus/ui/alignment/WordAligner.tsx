@@ -1,45 +1,75 @@
-import React, { Component } from 'react'
-import { Popover, Overlay, Form } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-import produce, { Draft } from 'immer'
 
-import { ReconstructionToken } from 'corpus/domain/text'
-import { Token } from 'transliteration/domain/token'
+import {
+  Token,
+  Word as WordToken,
+  AkkadianWord,
+} from 'transliteration/domain/token'
+import { AlignmentToken } from 'corpus/domain/alignment'
+import DropdownButton from 'common/DropdownButton'
 
-interface Props {
-  readonly token: Token
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
-  readonly onChange: (token: Token) => void
+interface AlignerProps {
+  readonly token: AlignmentToken
+  readonly reconstructionTokens: ReadonlyArray<Token>
+  readonly onChange: (token: AlignmentToken) => void
 }
 
-class AlignmentForm extends Component<Props> {
-  handleAlignmentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.props.onChange(
-      produce(this.props.token, (draft: Draft<Token>) => {
-        const alignmentIndex = event.target.value
-        draft.alignment = /\d+/.test(alignmentIndex)
-          ? Number(alignmentIndex)
-          : null
-      })
-    )
+function isAnyWord(token: Token): token is WordToken | AkkadianWord {
+  return token.type === 'AkkadianWord' || token.type === 'Word'
+}
+
+function AlignmentForm(props: AlignerProps) {
+  const [alignment, setAlignment] = useState(props.token.alignment)
+  const [variant, setVariant] = useState(props.token.variant)
+
+  function updateToken(alignmentToken: AlignmentToken): AlignmentToken {
+    const token = !_.isNil(alignment) && props.reconstructionTokens[alignment]
+    return token && isAnyWord(token)
+      ? {
+          value: alignmentToken.value,
+          alignment: alignment ?? null,
+          variant: variant ?? '',
+          language: token.language,
+          isNormalized: token.normalized,
+        }
+      : {
+          value: alignmentToken.value,
+          alignment: null,
+        }
   }
 
-  render() {
-    return (
-      <>
-        <Form.Group controlId={_.uniqueId('WordAligner-Select-')}>
+  const onClick = () => props.onChange(updateToken(props.token))
+
+  const handleAlignmentChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const alignmentIndex = event.target.value
+    const alignmnet = /\d+/.test(alignmentIndex) ? Number(alignmentIndex) : null
+    setAlignment(alignmnet)
+  }
+
+  const handleVariantChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVariant(event.target.value)
+  }
+
+  return (
+    <Form className="WordAligner__form">
+      <Row>
+        <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
           <Form.Label>Ideal word</Form.Label>
           <Form.Control
             as="select"
-            value={String(this.props.token.alignment)}
-            onChange={this.handleAlignmentChange}
+            value={String(alignment)}
+            onChange={handleAlignmentChange}
           >
             <option value="">--</option>
-            {this.props.reconstructionTokens.map((reconstructionToken, index) =>
-              ['AkkadianWord', 'Word'].includes(reconstructionToken.type) ? (
+            {props.reconstructionTokens.map((reconstructionToken, index) =>
+              isAnyWord(reconstructionToken) ? (
                 <option key={index} value={index}>
                   {' '}
                   {reconstructionToken.value}
@@ -48,73 +78,50 @@ class AlignmentForm extends Component<Props> {
             )}
           </Form.Control>
         </Form.Group>
-      </>
-    )
-  }
+        <Form.Group as={Col} controlId={_.uniqueId('WordAligner-Select-')}>
+          <Form.Label>Variant</Form.Label>
+          <Form.Control
+            as="input"
+            value={variant}
+            onChange={handleVariantChange}
+          />
+        </Form.Group>
+      </Row>
+      <Button onClick={onClick}>Set alignment</Button>
+    </Form>
+  )
 }
 
-interface State {
-  readonly target?
-  readonly show: boolean
-}
+export default function WordAligner({
+  token,
+  reconstructionTokens,
+  onChange,
+}: AlignerProps): JSX.Element {
+  const [show, setShow] = useState(false)
 
-export default class WordAligner extends Component<Props, State> {
-  readonly popOverId: string
-
-  constructor(props: Props) {
-    super(props)
-    this.popOverId = _.uniqueId('AlignmentPopOver-')
-    this.state = {
-      show: false,
-    }
+  const handleChange = (value: AlignmentToken): void => {
+    onChange(value)
+    setShow(false)
   }
 
-  handleClick = (event: React.MouseEvent): void => {
-    this.setState({
-      target: event.target,
-      show: !this.state.show,
-    })
-  }
+  const toggle = (
+    <Word token={token} reconstructionTokens={reconstructionTokens} />
+  )
 
-  handleChange = (value: Token): void => {
-    this.props.onChange(value)
-    this.hide()
-  }
+  const menu = (
+    <AlignmentForm
+      token={token}
+      reconstructionTokens={reconstructionTokens}
+      onChange={handleChange}
+    />
+  )
 
-  hide = (): void => {
-    this.setState({ show: false })
-  }
-
-  render(): JSX.Element {
-    return (
-      <span className="WordAligner">
-        <Word
-          token={this.props.token}
-          onClick={this.handleClick}
-          reconstructionTokens={this.props.reconstructionTokens}
-        />
-        <Overlay
-          rootClose
-          onHide={this.hide}
-          show={this.state.show}
-          target={this.state.target}
-          placement="top"
-        >
-          <Popover
-            id={this.popOverId}
-            title="Align"
-            className="WordAligner__form"
-          >
-            <Popover.Content>
-              <AlignmentForm
-                token={this.props.token}
-                reconstructionTokens={this.props.reconstructionTokens}
-                onChange={this.handleChange}
-              />
-            </Popover.Content>
-          </Popover>
-        </Overlay>
-      </span>
-    )
-  }
+  return (
+    <DropdownButton
+      onToggle={setShow}
+      show={show}
+      toggle={toggle}
+      menu={menu}
+    />
+  )
 }

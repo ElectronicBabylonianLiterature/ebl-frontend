@@ -1,19 +1,19 @@
 import Reference from 'bibliography/domain/Reference'
 import Promise from 'bluebird'
-import Word from 'dictionary/domain/Word'
+import DictionaryWord from 'dictionary/domain/Word'
 import Annotation from 'fragmentarium/domain/annotation'
 import Folio from 'fragmentarium/domain/Folio'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import _, { Dictionary } from 'lodash'
+import _ from 'lodash'
 import Lemma from 'transliteration/domain/Lemma'
 import Lemmatization, {
   UniqueLemma,
   LemmatizationDto,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
-import { Token } from 'transliteration/domain/token'
 import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
+import LemmatizationFactory from './LemmatizationFactory'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -47,7 +47,7 @@ export interface FragmentRepository {
   ): Promise<Fragment>
   folioPager(folio: Folio, fragmentNumber: string): Promise<any>
   fragmentPager(fragmentNumber: string): Promise<any>
-  findLemmas(lemma: string): Promise<any>
+  findLemmas(lemma: string, isNormalized: boolean): Promise<any>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
 }
 
@@ -58,7 +58,7 @@ export interface AnnotationRepository {
     annotations: readonly Annotation[]
   ): Promise<readonly Annotation[]>
 }
-class FragmentService {
+export class FragmentService {
   private readonly fragmentRepository
   private readonly imageRepository
   private readonly wordRepository
@@ -189,72 +189,24 @@ class FragmentService {
   }
 
   createLemmatization(text: Text): Promise<Lemmatization> {
-    return Promise.all([this.fetchLemmas(text), this.fetchSuggestions(text)])
-      .then(([lemmaData, suggestionsData]): [
-        Dictionary<Lemma>,
-        Dictionary<ReadonlyArray<UniqueLemma>>
-      ] => [_.keyBy(lemmaData, 'value'), _.fromPairs(suggestionsData)])
-      .then(([lemmas, suggestions]) =>
-        text.createLemmatization(lemmas, suggestions)
-      )
+    return new LemmatizationFactory(
+      this,
+      this.wordRepository
+    ).createLemmatization(text)
   }
 
-  findSuggestions(value: string): Promise<ReadonlyArray<UniqueLemma>> {
+  findSuggestions(
+    value: string,
+    isNormalized: boolean
+  ): Promise<ReadonlyArray<UniqueLemma>> {
     return this.fragmentRepository
-      .findLemmas(value)
-      .then((lemmas) =>
-        lemmas.map((complexLemma) =>
-          complexLemma.map((word) => new Lemma(word))
+      .findLemmas(value, isNormalized)
+      .then((lemmas: DictionaryWord[][]) =>
+        lemmas.map((complexLemma: DictionaryWord[]) =>
+          complexLemma.map((word: DictionaryWord) => new Lemma(word))
         )
       )
   }
-
-  private fetchLemmas(text: Text): Promise<Lemma[]> {
-    return Promise.all(
-      mapText<string, Promise<Lemma>>(
-        text,
-        (line) => line.flatMap((token) => token.uniqueLemma ?? []),
-        (uniqueLemma: string): Promise<Lemma> =>
-          this.wordRepository
-            .find(uniqueLemma)
-            .then((word: Word) => new Lemma(word))
-      )
-    )
-  }
-
-  private fetchSuggestions(
-    text: Text
-  ): Promise<ReadonlyArray<[string, ReadonlyArray<UniqueLemma>]>> {
-    return Promise.mapSeries(
-      mapLines(text, (line) =>
-        line
-          .filter((token) => token.lemmatizable && _.isEmpty(token.uniqueLemma))
-          .flatMap((token) => token.cleanValue)
-      ),
-      (value: string): Promise<[string, ReadonlyArray<UniqueLemma>]> =>
-        this.findSuggestions(value).then((lemmas) => [value, lemmas])
-    )
-  }
-}
-
-function mapText<T, U>(
-  text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>,
-  mapToken: (token: T) => U
-): ReadonlyArray<U> {
-  return mapLines(text, mapLine).map(mapToken)
-}
-
-function mapLines<T>(
-  text: Text,
-  mapLine: (tokens: ReadonlyArray<Token>) => ReadonlyArray<T>
-): ReadonlyArray<T> {
-  return _(text.lines)
-    .flatMap(({ content }) => mapLine(content))
-    .reject(_.isNil)
-    .uniq()
-    .sort()
-    .value()
 }
 
 export default FragmentService

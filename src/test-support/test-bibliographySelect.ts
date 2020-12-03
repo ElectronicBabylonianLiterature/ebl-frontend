@@ -1,5 +1,5 @@
 import { changeValueByLabel, clickNth } from './utils'
-import BibliographyEntry from '../bibliography/domain/BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { RenderResult } from '@testing-library/react'
 
 export async function fillBibliographySelect(
@@ -11,7 +11,7 @@ export async function fillBibliographySelect(
   const label = expectedLabel(entry)
   changeValueByLabel(element, bibliographySelectLabel, value)
   await element.findByText(label)
-  await clickNth(element, label, 0)
+  clickNth(element, label, 0)
 }
 
 export function expectedLabel(entry: BibliographyEntry): string {

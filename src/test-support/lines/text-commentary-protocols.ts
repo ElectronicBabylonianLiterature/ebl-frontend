@@ -12,6 +12,8 @@ export const commentaryProtocols = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -53,6 +55,8 @@ export const commentaryProtocols = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -94,6 +98,8 @@ export const commentaryProtocols = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -135,6 +141,8 @@ export const commentaryProtocols = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -176,6 +184,8 @@ export const commentaryProtocols = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],

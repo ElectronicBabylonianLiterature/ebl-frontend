@@ -176,10 +176,10 @@ const testData: TestData[] = [
   ],
   [
     'findLemmas',
-    [word],
+    [word, true],
     apiClient.fetchJson,
     resultStub,
-    [`/lemmas?word=${encodeURIComponent(word)}`, true],
+    [`/lemmas?word=${encodeURIComponent(word)}&isNormalized=true`, true],
     Promise.resolve(resultStub),
   ],
   [

@@ -152,7 +152,7 @@ it('Updates view on References save', async () => {
   fragmentService.updateReferences.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
-  await clickNth(element, 'References', 1)
+  clickNth(element, 'References', 1)
   await element.findAllByText('Document')
   submitFormByTestId(element, 'references-form')
 

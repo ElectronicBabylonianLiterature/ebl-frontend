@@ -10,6 +10,12 @@ const ignoredCharacters: readonly string[] = [
   '-',
   ']',
   '.',
+  'x',
+  'X',
+  'c',
+  'C',
+  'o',
+  'O',
 ]
 
 const ignoredRegExp = new RegExp(

@@ -7,6 +7,7 @@ import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
+import { Alignment } from './alignment'
 
 export interface ManuscriptType {
   readonly name: string
@@ -82,14 +83,11 @@ export const createManuscriptLine: (
     ...draft,
   })
 )
-export interface ReconstructionToken {
-  readonly type: string
-  readonly value: string
-}
+
 export interface Line {
   readonly number: string
   readonly reconstruction: string
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
+  readonly reconstructionTokens: ReadonlyArray<Token>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
@@ -132,6 +130,24 @@ export class Chapter {
     this.order = order ?? 0
     this.manuscripts = manuscripts ?? []
     this.lines = lines ?? []
+  }
+
+  get alignment(): Alignment {
+    return this.lines.map((line) =>
+      line.manuscripts.map((manuscript) =>
+        manuscript.atfTokens.map((token) =>
+          token.lemmatizable
+            ? {
+                value: token.value,
+                alignment: token.alignment,
+                variant: token.variant?.value ?? '',
+                language: token.variant?.language ?? '',
+                isNormalized: token.variant?.normalized ?? false,
+              }
+            : { value: token.value }
+        )
+      )
+    )
   }
 
   getSiglum(manuscriptLine: ManuscriptLine): string {

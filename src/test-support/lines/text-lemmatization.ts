@@ -13,6 +13,8 @@ export const lemmatized: TextLine[] = [
         normalized: false,
         lemmatizable: true,
         uniqueLemma: ['hepû I', 'hepû II'],
+        alignment: null,
+        variant: null,
         parts: [
           {
             enclosureType: [],
@@ -67,6 +69,8 @@ export const lemmatized: TextLine[] = [
         normalized: false,
         lemmatizable: true,
         uniqueLemma: ['hepû I'],
+        alignment: null,
+        variant: null,
         parts: [
           {
             enclosureType: [],

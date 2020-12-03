@@ -16,6 +16,8 @@ import { BibliographySearch } from 'bibliography/application/BibliographyService
 import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import { Alignment } from 'corpus/domain/alignment'
 
 function ChapterTitle({
   text,
@@ -76,13 +78,13 @@ function ChapterView({
     setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
   }
 
-  const updateAlignment = (): void => {
+  const updateAlignment = (alignment: Alignment): void => {
     update(() =>
       textService.updateAlignment(
         text.category,
         text.index,
         chapterIndex,
-        chapter.lines
+        alignment
       )
     )
   }
@@ -109,14 +111,13 @@ function ChapterView({
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const updateLemmatization = (): void => {
+  const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
     update(() =>
       textService.updateLemmatization(
         text.category,
         text.index,
         chapterIndex,
-        chapter.lines
+        lemmatization
       )
     )
   }
@@ -144,7 +145,7 @@ function ChapterView({
             bibliographyService.search(query)
           }
           fragmentService={fragmentService}
-          wordService={wordService}
+          textService={textService}
           onChange={handleChange}
           onSaveLines={updateLines}
           onSaveManuscripts={updateManuscripts}

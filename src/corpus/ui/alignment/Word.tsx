@@ -1,40 +1,25 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
-import classNames from 'classnames'
 import _ from 'lodash'
 
 import './Word.css'
-import { ReconstructionToken } from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
+import { AlignmentToken } from 'corpus/domain/alignment'
 
-function Word({
-  token,
-  reconstructionTokens,
-  onClick,
-}: {
-  readonly token: Token
-  readonly reconstructionTokens: ReadonlyArray<ReconstructionToken>
-  readonly onClick: (event: React.MouseEvent) => void
-}): JSX.Element {
-  return token.lemmatizable ? (
-    <Button
-      onClick={onClick}
-      size="sm"
-      variant="outline-dark"
-      className={classNames({
-        Word: true,
-        'Word--with-alignment': _.isNumber(token.alignment),
-      })}
-    >
+interface Props {
+  token: AlignmentToken
+  reconstructionTokens: ReadonlyArray<Token>
+}
+
+function Word({ token, reconstructionTokens }: Props): JSX.Element {
+  return (
+    <>
       {token.value}
       {_.isNumber(token.alignment) && (
         <span className="Word__alignment">
           {reconstructionTokens[Number(token.alignment)].value}
         </span>
       )}
-    </Button>
-  ) : (
-    <span className="Word">{token.value}</span>
+    </>
   )
 }
 
