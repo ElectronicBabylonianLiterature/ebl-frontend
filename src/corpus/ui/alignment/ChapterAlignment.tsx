@@ -3,7 +3,7 @@ import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
-import Reconstruction from '../Reconstruction'
+import Reconstruction from 'corpus/ui/Reconstruction'
 import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
 
 function ManuscriptAlignment(props: {

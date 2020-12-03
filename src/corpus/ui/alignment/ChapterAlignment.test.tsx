@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import { whenClicked, clickNth, changeValueByLabel } from 'test-support/utils'
+import userEvent from '@testing-library/user-event'
+import { whenClicked, clickNth } from 'test-support/utils'
 import {
   createChapter,
   createManuscript,
@@ -148,8 +149,7 @@ test('Align word', async () => {
 
   await element.findByText('kur')
   clickNth(element, 'kur', 0)
-  changeValueByLabel(element, 'Ideal word', '1')
-
+  userEvent.selectOptions(element.getByLabelText('Ideal word'), ['1'])
   await whenClicked(element, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)
