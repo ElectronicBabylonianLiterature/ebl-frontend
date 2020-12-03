@@ -6,9 +6,10 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import Promise from 'bluebird'
+import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 
 beforeEach(async () => {
-  const lineToVecRankingsResults = {
+  const lineToVecRankingsResults: LineToVecRanking = {
     score: [
       ['X.1', 10],
       ['X.2', 8],
