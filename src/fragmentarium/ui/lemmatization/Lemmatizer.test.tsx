@@ -53,6 +53,8 @@ beforeEach(async () => {
             erasure: 'NONE',
             cleanValue: 'kur',
             value: 'kur',
+            alignment: null,
+            variant: null,
             parts: [
               {
                 enclosureType: [],
@@ -113,7 +115,7 @@ it('Displays the transliteration', () => {
 })
 
 it('Clicking word shows form', async () => {
-  await clickNth(element, 'kur', 0)
+  clickNth(element, 'kur', 0)
   await element.findByLabelText('Lemma')
 })
 

@@ -29,7 +29,8 @@ export interface LemmatizableToken extends BaseToken {
   readonly normalized: boolean
   readonly lemmatizable: boolean
   readonly uniqueLemma: readonly string[]
-  readonly alignment?: number | null
+  readonly alignment: number | null
+  readonly variant: Word | AkkadianWord | null
 }
 
 export interface ValueToken extends NotLemmatizableToken {

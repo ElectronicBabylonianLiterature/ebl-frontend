@@ -14,6 +14,7 @@ import {
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
+import { text } from 'test-support/test-corpus-text'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -44,6 +45,8 @@ const manuscrpitLineConfig: ManuscriptLine = {
       language: 'AKKADIAN',
       lemmatizable: true,
       erasure: 'NONE',
+      alignment: null,
+      variant: null,
       enclosureType: [],
     },
   ],
@@ -60,6 +63,7 @@ const lineConfig: Line = {
       erasure: 'NONE',
       lemmatizable: true,
       alignment: null,
+      variant: null,
       uniqueLemma: [],
       normalized: true,
       language: 'AKKADIAN',
@@ -82,6 +86,7 @@ const lineConfig: Line = {
       erasure: 'NONE',
       lemmatizable: true,
       alignment: null,
+      variant: null,
       uniqueLemma: [],
       normalized: true,
       language: 'AKKADIAN',
@@ -128,6 +133,32 @@ describe('Text', () => {
 
 describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
+
+  test('alignment', () => {
+    expect(text.chapters[0].alignment).toEqual([
+      [
+        [
+          {
+            value: 'kur',
+            alignment: null,
+            variant: '',
+            language: '',
+            isNormalized: false,
+          },
+          {
+            value: 'ra',
+            alignment: 1,
+            variant: 'ra',
+            language: 'AKKADIAN',
+            isNormalized: true,
+          },
+          {
+            value: '...',
+          },
+        ],
+      ],
+    ])
+  })
 })
 
 describe('Manuscript', () => {

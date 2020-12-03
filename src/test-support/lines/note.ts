@@ -80,6 +80,8 @@ export const note: NoteLine = new NoteLine({
           normalized: false,
           lemmatizable: true,
           uniqueLemma: [],
+          alignment: null,
+          variant: null,
           parts: [
             {
               enclosureType: [],
@@ -124,6 +126,8 @@ export const note: NoteLine = new NoteLine({
           normalized: false,
           lemmatizable: false,
           uniqueLemma: [],
+          alignment: null,
+          variant: null,
           parts: [
             {
               enclosureType: [],

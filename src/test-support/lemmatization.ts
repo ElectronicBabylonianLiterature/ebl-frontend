@@ -8,9 +8,9 @@ export async function lemmatizeWord(
   lemma: Lemma
 ): Promise<void> {
   await element.findByText(word)
-  await clickNth(element, word, 0)
+  clickNth(element, word, 0)
   await element.findByLabelText('Lemma')
   changeValueByLabel(element, 'Lemma', 'a')
   await element.findByText(lemma.lemma)
-  await clickNth(element, lemma.lemma, 0)
+  clickNth(element, lemma.lemma, 0)
 }

@@ -6,11 +6,12 @@ import {
   Screen,
   Matcher,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 
 interface ExpectResult<T> {
-  toHaveBeenCalledWith(...args: any): T
+  toHaveBeenCalledWith(...args: unknown[]): T
 }
 interface WhenResult<T> {
   expect(func: jest.Mock): ExpectResult<T>
@@ -30,15 +31,9 @@ export function changeValue<T>(input: Element, newValue: T): void {
   fireEvent.change(input, { target: { value: newValue } })
 }
 
-export async function clickNth(
-  element: RenderResult,
-  text: Matcher,
-  n = 0
-): Promise<void> {
+export function clickNth(element: RenderResult, text: Matcher, n = 0): void {
   const clickable = element.getAllByText(text)[n]
-  await act(async () => {
-    fireEvent.click(clickable)
-  })
+  userEvent.click(clickable)
 }
 
 type Changer<T> = (
@@ -72,7 +67,7 @@ export function whenClicked(
   n = 0
 ): WhenResult<Promise<void>> {
   return when((onChange) => async (...expectedChange): Promise<void> => {
-    await clickNth(element, text, n)
+    clickNth(element, text, n)
     await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith(...expectedChange)
     )
@@ -121,15 +116,22 @@ export function submitFormByTestId(
   fireEvent.submit(element.getByTestId(testId))
 }
 
-export type TestData = [string, any[], jest.Mock, any, (any[] | null)?, any?]
+export type TestData = [
+  string,
+  unknown[],
+  jest.Mock,
+  unknown,
+  (unknown[] | null)?,
+  unknown?
+]
 export function testDelegation(
-  object: any,
+  object: unknown,
   testData: readonly TestData[]
 ): void {
   describe.each(testData)(
     '%s',
     (method, params, target, expectedResult, expectedParams, targetResult) => {
-      let result: any
+      let result: unknown
 
       beforeEach(() => {
         jest.clearAllMocks()

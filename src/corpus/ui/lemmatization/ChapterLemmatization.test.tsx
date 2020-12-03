@@ -6,18 +6,13 @@ import produce, { castDraft } from 'immer'
 
 import { whenClicked } from 'test-support/utils'
 import Lemma from 'transliteration/domain/Lemma'
-import {
-  createChapter,
-  createManuscript,
-  createLine,
-  createManuscriptLine,
-  Chapter,
-} from 'corpus/domain/text'
+import { createManuscriptLine, Chapter } from 'corpus/domain/text'
 import Word from 'dictionary/domain/Word'
 import { lemmatizeWord } from 'test-support/lemmatization'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import ChapterLemmatizer from './ChapterLemmatization'
+import { text } from 'test-support/test-corpus-text'
 
 let element: RenderResult
 let fragmentService
@@ -58,73 +53,40 @@ beforeEach(async () => {
     ],
   ]
   textService.findSuggestions.mockReturnValue(Promise.resolve(lemmatization))
-  chapter = createChapter({
-    classification: 'Ancient',
-    stage: 'Old Babylonian',
-    version: 'A',
-    name: 'The Only Chapter',
-    order: 1,
-    manuscripts: [
-      createManuscript({
-        id: 1,
-      }),
-    ],
-    lines: [
-      createLine({
-        reconstruction: '%n kur-kur',
-        reconstructionTokens: [
-          {
-            value: '%n',
-            cleanValue: '%n',
-            enclosureType: [],
-            erasure: 'NONE',
-            language: 'AKKADIAN',
-            normalized: true,
-            type: 'LanguageShift',
-          },
-          {
-            value: 'kur-kur',
-            cleanValue: 'kur-kur',
-            enclosureType: [],
-            erasure: 'NONE',
-            lemmatizable: true,
-            alignment: null,
-            uniqueLemma: [],
-            normalized: true,
-            language: 'AKKADIAN',
-            parts: [
-              {
-                value: 'kur-kur',
-                cleanValue: 'kur-kur',
-                enclosureType: [],
-                erasure: 'NONE',
-                type: 'ValueToken',
-              },
-            ],
-            modifiers: [],
-            type: 'AkkadianWord',
-          },
-        ],
-        manuscripts: [
-          createManuscriptLine({
-            manuscriptId: 1,
-            number: '1',
-            atf: 'kur ra',
-            atfTokens: [
-              {
-                type: 'Word',
-                value: 'kur',
-                parts: [],
-                cleanValue: 'kur',
-                uniqueLemma: [],
-                normalized: false,
-                language: 'AKKADIAN',
-                lemmatizable: true,
-                erasure: 'NONE',
-                enclosureType: [],
-                alignment: 1,
-              },
-              {
+  chapter = produce(text.chapters[0], (draft) => {
+    draft.lines[0].manuscripts = [
+      castDraft(
+        createManuscriptLine({
+          manuscriptId: 1,
+          number: '1',
+          atf: 'kur ra',
+          atfTokens: [
+            {
+              type: 'Word',
+              value: 'kur',
+              parts: [],
+              cleanValue: 'kur',
+              uniqueLemma: [],
+              normalized: false,
+              language: 'AKKADIAN',
+              lemmatizable: true,
+              erasure: 'NONE',
+              enclosureType: [],
+              alignment: 1,
+              variant: null,
+            },
+            {
+              type: 'Word',
+              value: 'ra',
+              parts: [],
+              cleanValue: 'ra',
+              uniqueLemma: [oldWord._id],
+              normalized: false,
+              language: 'AKKADIAN',
+              lemmatizable: true,
+              erasure: 'NONE',
+              alignment: 1,
+              variant: {
                 type: 'Word',
                 value: 'ra',
                 parts: [],
@@ -134,15 +96,18 @@ beforeEach(async () => {
                 language: 'AKKADIAN',
                 lemmatizable: true,
                 erasure: 'NONE',
-                alignment: 1,
+                alignment: null,
+                variant: null,
                 enclosureType: [],
               },
-            ],
-          }),
-        ],
-      }),
-    ],
+              enclosureType: [],
+            },
+          ],
+        })
+      ),
+    ]
   })
+
   element = render(
     <ChapterLemmatizer
       chapter={chapter}

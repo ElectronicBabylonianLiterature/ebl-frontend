@@ -46,7 +46,7 @@ describe('On successful request', () => {
 describe('On failed request', () => {
   beforeEach(async () => {
     query.mockReturnValueOnce(Promise.reject(new Error(message)))
-    await clickNth(element, buttonText, 0)
+    clickNth(element, buttonText, 0)
     await element.findByText(message)
   })
 
@@ -59,7 +59,7 @@ describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
     query.mockReturnValueOnce(promise)
-    await clickNth(element, buttonText, 0)
+    clickNth(element, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
   })

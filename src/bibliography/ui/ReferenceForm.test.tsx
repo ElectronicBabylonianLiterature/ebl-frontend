@@ -34,7 +34,7 @@ beforeEach(async () => {
 test(`Changing document calls onChange with updated value`, async () => {
   changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
   await element.findByText(/Borger 1957/)
-  await clickNth(element, /Borger 1957/, 0)
+  clickNth(element, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith(reference.setDocument(entry))
 })
