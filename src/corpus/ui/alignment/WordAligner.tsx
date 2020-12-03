@@ -4,9 +4,12 @@ import _ from 'lodash'
 import Word from './Word'
 
 import './WordAligner.css'
-import produce, { Draft } from 'immer'
 
-import { Token } from 'transliteration/domain/token'
+import {
+  Token,
+  Word as WordToken,
+  AkkadianWord,
+} from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 import DropdownButton from 'common/DropdownButton'
 
@@ -16,26 +19,29 @@ interface AlignerProps {
   readonly onChange: (token: AlignmentToken) => void
 }
 
+function isAnyWord(token: Token): token is WordToken | AkkadianWord {
+  return token.type === 'AkkadianWord' || token.type === 'Word'
+}
+
 function AlignmentForm(props: AlignerProps) {
   const [alignment, setAlignment] = useState(props.token.alignment)
   const [variant, setVariant] = useState(props.token.variant)
 
-  const updateToken = produce((draft: Draft<AlignmentToken>) => {
-    if (_.isNil(alignment)) {
-      return {
-        value: draft.value,
-        alignment: null,
-      }
-    } else {
-      const token = props.reconstructionTokens[alignment]
-      draft.alignment = alignment
-      draft.variant = variant
-      if (token.type === 'AkkadianWord' || token.type === 'Word') {
-        draft.language = token.language
-        draft.isNormalized = token.normalized
-      }
-    }
-  })
+  function updateToken(alignmentToken: AlignmentToken): AlignmentToken {
+    const token = !_.isNil(alignment) && props.reconstructionTokens[alignment]
+    return token && isAnyWord(token)
+      ? {
+          value: alignmentToken.value,
+          alignment: alignment ?? null,
+          variant: variant ?? '',
+          language: token.language,
+          isNormalized: token.normalized,
+        }
+      : {
+          value: alignmentToken.value,
+          alignment: null,
+        }
+  }
 
   const onClick = () => props.onChange(updateToken(props.token))
 
@@ -63,7 +69,7 @@ function AlignmentForm(props: AlignerProps) {
           >
             <option value="">--</option>
             {props.reconstructionTokens.map((reconstructionToken, index) =>
-              ['AkkadianWord', 'Word'].includes(reconstructionToken.type) ? (
+              isAnyWord(reconstructionToken) ? (
                 <option key={index} value={index}>
                   {' '}
                   {reconstructionToken.value}
