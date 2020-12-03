@@ -10,6 +10,42 @@ import {
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import { Token } from 'transliteration/domain/token'
+
+const reconstructionTokens: Token[] = [
+  {
+    value: '%n',
+    cleanValue: '%n',
+    enclosureType: [],
+    erasure: 'NONE',
+    language: 'AKKADIAN',
+    normalized: true,
+    type: 'LanguageShift',
+  },
+  {
+    value: 'kur-kur',
+    cleanValue: 'kur-kur',
+    enclosureType: [],
+    erasure: 'NONE',
+    lemmatizable: true,
+    alignment: null,
+    variant: null,
+    uniqueLemma: [],
+    normalized: true,
+    language: 'AKKADIAN',
+    parts: [
+      {
+        value: 'kur-kur',
+        cleanValue: 'kur-kur',
+        enclosureType: [],
+        erasure: 'NONE',
+        type: 'ValueToken',
+      },
+    ],
+    modifiers: [],
+    type: 'AkkadianWord',
+  },
+]
 
 export const textDto = {
   category: 1,
@@ -50,64 +86,8 @@ export const textDto = {
       lines: [
         {
           number: '1',
-          reconstruction: '%n kur ra',
-          reconstructionTokens: [
-            {
-              value: '%n',
-              cleanValue: '%n',
-              enclosureType: [],
-              erasure: 'NONE',
-              language: 'AKKADIAN',
-              normalized: true,
-              type: 'LanguageShift',
-            },
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              lemmatizable: true,
-              alignment: null,
-              variant: null,
-              uniqueLemma: [],
-              normalized: true,
-              language: 'AKKADIAN',
-              parts: [
-                {
-                  value: 'kur',
-                  cleanValue: 'kur',
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  type: 'ValueToken',
-                },
-              ],
-              modifiers: [],
-              type: 'AkkadianWord',
-            },
-            {
-              value: 'ra',
-              cleanValue: 'ra',
-              enclosureType: [],
-              erasure: 'NONE',
-              lemmatizable: true,
-              alignment: null,
-              variant: null,
-              uniqueLemma: [],
-              normalized: true,
-              language: 'AKKADIAN',
-              parts: [
-                {
-                  value: 'ra',
-                  cleanValue: 'ra',
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  type: 'ValueToken',
-                },
-              ],
-              modifiers: [],
-              type: 'AkkadianWord',
-            },
-          ],
+          reconstruction: '%n kur-kur',
+          reconstructionTokens: reconstructionTokens,
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
           manuscripts: [
@@ -148,7 +128,7 @@ export const textDto = {
                     parts: [],
                     cleanValue: 'ra',
                     uniqueLemma: ['aklu I'],
-                    normalized: false,
+                    normalized: true,
                     language: 'AKKADIAN',
                     lemmatizable: true,
                     erasure: 'NONE',
@@ -212,64 +192,8 @@ export const text = createText({
       lines: [
         createLine({
           number: '1',
-          reconstruction: '%n kur ra',
-          reconstructionTokens: [
-            {
-              value: '%n',
-              cleanValue: '%n',
-              enclosureType: [],
-              erasure: 'NONE',
-              language: 'AKKADIAN',
-              normalized: true,
-              type: 'LanguageShift',
-            },
-            {
-              value: 'kur',
-              cleanValue: 'kur',
-              enclosureType: [],
-              erasure: 'NONE',
-              lemmatizable: true,
-              alignment: null,
-              variant: null,
-              uniqueLemma: [],
-              normalized: true,
-              language: 'AKKADIAN',
-              parts: [
-                {
-                  value: 'kur',
-                  cleanValue: 'kur',
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  type: 'ValueToken',
-                },
-              ],
-              modifiers: [],
-              type: 'AkkadianWord',
-            },
-            {
-              value: 'ra',
-              cleanValue: 'ra',
-              enclosureType: [],
-              erasure: 'NONE',
-              lemmatizable: true,
-              alignment: null,
-              variant: null,
-              uniqueLemma: [],
-              normalized: true,
-              language: 'AKKADIAN',
-              parts: [
-                {
-                  value: 'ra',
-                  cleanValue: 'ra',
-                  enclosureType: [],
-                  erasure: 'NONE',
-                  type: 'ValueToken',
-                },
-              ],
-              modifiers: [],
-              type: 'AkkadianWord',
-            },
-          ],
+          reconstruction: '%n kur-kur',
+          reconstructionTokens: reconstructionTokens,
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
           manuscripts: [
@@ -310,7 +234,7 @@ export const text = createText({
                     parts: [],
                     cleanValue: 'ra',
                     uniqueLemma: ['aklu I'],
-                    normalized: false,
+                    normalized: true,
                     language: 'AKKADIAN',
                     lemmatizable: true,
                     erasure: 'NONE',

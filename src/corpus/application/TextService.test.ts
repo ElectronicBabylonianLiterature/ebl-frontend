@@ -42,8 +42,7 @@ const lemmatization = [
   [
     [
       new LemmatizationToken('%n', false, null, null),
-      new LemmatizationToken('kur', true, [], []),
-      new LemmatizationToken('ra', true, [], []),
+      new LemmatizationToken('kur-kur', true, [], []),
     ],
     [
       [
@@ -63,11 +62,7 @@ const lemmatizationDto = {
           value: '%n',
         },
         {
-          value: 'kur',
-          uniqueLemma: [],
-        },
-        {
-          value: 'ra',
+          value: 'kur-kur',
           uniqueLemma: [],
         },
       ],
@@ -117,7 +112,7 @@ const linesDto = {
   lines: [
     {
       number: '1',
-      reconstruction: '%n kur ra',
+      reconstruction: '%n kur-kur',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
       manuscripts: [

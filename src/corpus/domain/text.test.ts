@@ -150,7 +150,7 @@ describe('Chapter', () => {
             alignment: 1,
             variant: 'ra',
             language: 'AKKADIAN',
-            isNormalized: false,
+            isNormalized: true,
           },
           {
             value: '...',

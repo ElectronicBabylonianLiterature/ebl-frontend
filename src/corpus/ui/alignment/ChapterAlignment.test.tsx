@@ -2,15 +2,10 @@ import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { whenClicked, clickNth } from 'test-support/utils'
-import {
-  createChapter,
-  createManuscript,
-  createLine,
-  createManuscriptLine,
-  Chapter,
-} from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/text'
 import { Alignment } from 'corpus/domain/alignment'
 import ChapterAlignment from './ChapterAlignment'
+import { text } from 'test-support/test-corpus-text'
 
 let element: RenderResult
 let onSave: jest.Mock<void, [Alignment]>
@@ -18,107 +13,7 @@ let chapter: Chapter
 
 beforeEach(async () => {
   onSave = jest.fn()
-  chapter = createChapter({
-    classification: 'Ancient',
-    stage: 'Old Babylonian',
-    version: 'A',
-    name: 'The Only Chapter',
-    order: 1,
-    manuscripts: [
-      createManuscript({
-        id: 1,
-      }),
-    ],
-    lines: [
-      createLine({
-        reconstruction: '%n kur-kur',
-        reconstructionTokens: [
-          {
-            value: '%n',
-            cleanValue: '%n',
-            enclosureType: [],
-            erasure: 'NONE',
-            language: 'AKKADIAN',
-            normalized: true,
-            type: 'LanguageShift',
-          },
-          {
-            value: 'kur-kur',
-            cleanValue: 'kur-kur',
-            enclosureType: [],
-            erasure: 'NONE',
-            lemmatizable: true,
-            alignment: null,
-            variant: null,
-            uniqueLemma: [],
-            normalized: true,
-            language: 'AKKADIAN',
-            parts: [
-              {
-                value: 'kur-kur',
-                cleanValue: 'kur-kur',
-                enclosureType: [],
-                erasure: 'NONE',
-                type: 'ValueToken',
-              },
-            ],
-            modifiers: [],
-            type: 'AkkadianWord',
-          },
-        ],
-        manuscripts: [
-          createManuscriptLine({
-            manuscriptId: 1,
-            number: '1',
-            atf: 'kur ra',
-            atfTokens: [
-              {
-                type: 'Word',
-                value: 'kur',
-                parts: [],
-                cleanValue: 'kur',
-                uniqueLemma: [],
-                normalized: false,
-                language: 'AKKADIAN',
-                lemmatizable: true,
-                erasure: 'NONE',
-                enclosureType: [],
-                alignment: null,
-                variant: null,
-              },
-              {
-                type: 'Word',
-                value: 'ra',
-                parts: [],
-                cleanValue: 'ra',
-                uniqueLemma: [],
-                normalized: false,
-                language: 'AKKADIAN',
-                lemmatizable: true,
-                erasure: 'NONE',
-                alignment: 1,
-                variant: {
-                  type: 'Word',
-                  value: 'ra',
-                  parts: [],
-                  cleanValue: 'ra',
-                  uniqueLemma: [],
-                  normalized: true,
-                  language: 'AKKADIAN',
-                  lemmatizable: true,
-                  erasure: 'NONE',
-                  alignment: null,
-                  variant: null,
-                  enclosureType: [],
-                },
-                enclosureType: [],
-              },
-            ],
-          }),
-        ],
-      }),
-    ],
-  })
+  chapter = text.chapters[0]
   element = render(
     <ChapterAlignment chapter={chapter} onSave={onSave} disabled={false} />
   )
@@ -142,6 +37,9 @@ test('Align word', async () => {
           variant: 'ra',
           language: 'AKKADIAN',
           isNormalized: true,
+        },
+        {
+          value: '...',
         },
       ],
     ],
