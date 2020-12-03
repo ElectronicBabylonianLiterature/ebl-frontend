@@ -15,25 +15,24 @@ function FragmentLineToVecRanking({
   number: string
   lineToVecRanking: LineToVecRanking
 }): JSX.Element {
+  const RankingList = ({ score }) => {
+    return score.map((score, index) => (
+      <li key={index}>
+        {score[0]}:{score[1]}
+      </li>
+    ))
+  }
   const LineToVecDisplay = ({ lineToVecRanking }) => (
     <Container>
       <Col>
         <Row>
           <Col>
             <Row>Score</Row>
-            {lineToVecRanking.score.map((score, index) => (
-              <li key={index}>
-                {score[0]}:{score[1]}
-              </li>
-            ))}
+            <RankingList score={lineToVecRanking.score} />
           </Col>
           <Col>
             <Row>Weighted Score</Row>
-            {lineToVecRanking.scoreWeighted.map((score, index) => (
-              <li key={index}>
-                {score[0]}:{score[1]}
-              </li>
-            ))}
+            <RankingList score={lineToVecRanking.scoreWeighted} />
           </Col>
         </Row>
       </Col>

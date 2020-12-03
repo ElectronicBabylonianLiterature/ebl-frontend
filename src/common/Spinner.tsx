@@ -6,7 +6,10 @@ type Props = {
   children?: React.ReactNode
 }
 
-export default function Spinner({ loading, children }: Props) {
+export default function Spinner({
+  loading,
+  children,
+}: Props): JSX.Element | null {
   return loading ? (
     <>
       <BootstrapSpinner
