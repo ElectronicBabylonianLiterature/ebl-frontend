@@ -13,7 +13,7 @@ jest.mock('dictionary/application/WordService')
 let wordService
 let fragment: Fragment
 let element: RenderResult
-let container: HTMLElement
+let container: Element
 
 beforeEach(async () => {
   wordService = new WordService(null)
