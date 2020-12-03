@@ -132,7 +132,7 @@ test('Align word', async () => {
         {
           value: 'kur',
           alignment: 1,
-          variant: '',
+          variant: 'variant',
           language: 'AKKADIAN',
           isNormalized: true,
         },
@@ -150,6 +150,8 @@ test('Align word', async () => {
   await element.findByText('kur')
   clickNth(element, 'kur', 0)
   userEvent.selectOptions(element.getByLabelText('Ideal word'), ['1'])
+  userEvent.type(element.getByLabelText('Variant'), 'variant')
+  userEvent.click(element.getByRole('button', { name: 'Set alignment' }))
   await whenClicked(element, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)

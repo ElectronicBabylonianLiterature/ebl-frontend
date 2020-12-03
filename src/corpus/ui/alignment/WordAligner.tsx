@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import Word from './Word'
 
@@ -13,41 +13,47 @@ import DropdownButton from 'common/DropdownButton'
 interface FormProps {
   readonly token: AlignmentToken
   readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly onChange: (token: AlignmentToken, shouldClose: boolean) => void
+  readonly onChange: (token: AlignmentToken) => void
 }
 
 function AlignmentForm(props: FormProps) {
-  const handleAlignmentChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const [alignment, setAlignment] = useState(props.token.alignment)
+  const [variant, setVariant] = useState(props.token.variant)
+
+  const onClick = () => {
     props.onChange(
       produce(props.token, (draft: Draft<AlignmentToken>) => {
-        const alignmentIndex = event.target.value
-        if (/\d+/.test(alignmentIndex)) {
-          const token = props.reconstructionTokens[Number(alignmentIndex)]
-          draft.alignment = Number(alignmentIndex)
-          if (token.type === 'AkkadianWord' || token.type === 'Word') {
-            draft.language = token.language
-            draft.isNormalized = token.normalized
-          }
-        } else {
+        if (_.isNil(alignment)) {
           return {
             value: draft.value,
             alignment: null,
           }
+        } else {
+          const token = props.reconstructionTokens[alignment]
+          draft.alignment = alignment
+          draft.variant = variant
+          if (token.type === 'AkkadianWord' || token.type === 'Word') {
+            draft.language = token.language
+            draft.isNormalized = token.normalized
+          }
         }
-      }),
-      true
+      })
     )
   }
 
+  const handleAlignmentChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const alignmentIndex = event.target.value
+    if (/\d+/.test(alignmentIndex)) {
+      setAlignment(Number(alignmentIndex))
+    } else {
+      setAlignment(null)
+    }
+  }
+
   const handleVariantChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.onChange(
-      produce(props.token, (draft: Draft<AlignmentToken>) => {
-        draft.variant = event.target.value
-      }),
-      false
-    )
+    setVariant(event.target.value)
   }
 
   return (
@@ -56,7 +62,7 @@ function AlignmentForm(props: FormProps) {
         <Form.Label>Ideal word</Form.Label>
         <Form.Control
           as="select"
-          value={String(props.token.alignment)}
+          value={String(alignment)}
           onChange={handleAlignmentChange}
         >
           <option value="">--</option>
@@ -74,10 +80,11 @@ function AlignmentForm(props: FormProps) {
         <Form.Label>Variant</Form.Label>
         <Form.Control
           as="input"
-          value={props.token.variant}
+          value={variant}
           onChange={handleVariantChange}
         />
       </Form.Group>
+      <Button onClick={onClick}>Set alignment</Button>
     </div>
   )
 }
@@ -95,11 +102,9 @@ export default function WordAligner({
 }: AlignerProps): JSX.Element {
   const [show, setShow] = useState(false)
 
-  const handleChange = (value: AlignmentToken, shouldClose: boolean): void => {
+  const handleChange = (value: AlignmentToken): void => {
     onChange(value)
-    if (shouldClose) {
-      setShow(false)
-    }
+    setShow(false)
   }
 
   const toggle = (
