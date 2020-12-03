@@ -1,5 +1,10 @@
 import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -17,7 +22,7 @@ const fragmentService = {
 let fragment: Fragment
 let session
 
-function renderGenreSelection() {
+async function renderGenreSelection() {
   render(
     <SessionContext.Provider value={session}>
       <GenreSelection
@@ -27,12 +32,10 @@ function renderGenreSelection() {
       />
     </SessionContext.Provider>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
-
 beforeEach(async () => {
   fragment = await factory.build('fragment', {
-    museum: Museum.of('The British Museum'),
-    collection: 'The Collection',
     genres: new Genres([]),
   })
   fragmentService.fetchGenres.mockReturnValue(
@@ -42,9 +45,8 @@ beforeEach(async () => {
     isAllowedToTransliterateFragments: jest.fn(),
   }
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
-  renderGenreSelection()
+  await renderGenreSelection()
 })
-
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
     userEvent.click(screen.getByRole('button'))
@@ -55,13 +57,12 @@ describe('User Input', () => {
 
     await waitFor(() => expect(updateGenres).toHaveBeenCalledTimes(1))
 
-    userEvent.click(screen.getByTestId('delete-button'))
+    userEvent.click(screen.getByLabelText('Delete genre button'))
 
     expect(
       screen.queryByLabelText('ARCHIVAL ➝ Administrative')
     ).not.toBeInTheDocument()
   })
-
   it('click Uncertain Checkbox', async () => {
     userEvent.click(screen.getByRole('button'))
 
@@ -76,7 +77,7 @@ describe('User Input', () => {
 
     await screen.findByText('ARCHIVAL ➝ Administrative (?)')
 
-    userEvent.click(screen.getByTestId('delete-button'))
+    userEvent.click(screen.getByLabelText('Delete genre button'))
 
     expect(
       screen.queryByLabelText('ARCHIVAL ➝ Administrative (?)')

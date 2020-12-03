@@ -4,6 +4,7 @@ import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
+import { Genre, Genres } from 'fragmentarium/domain/Genres'
 
 const chance = new Chance()
 
@@ -101,11 +102,11 @@ factory.define('fragment', Fragment, {
   references: async () => await factory.buildMany('referenceDto', 2),
   hasPhoto: factory.chance('bool'),
   genres: factory.chance('pickone', [
-    [
-      { cataloge: ['ARCHIVE', 'Administrative', 'Lists'], uncertain: false },
-      { catalogue: ['Other', 'Fake', 'Certain'], uncertain: false },
-    ],
-    [{ cataloge: ['Other', 'Fake', 'Certain'], uncertain: false }],
+    new Genres([
+      new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
+      new Genre(['Other', 'Fake', 'Certain'], false),
+    ]),
+    new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
   ]),
 })
 
