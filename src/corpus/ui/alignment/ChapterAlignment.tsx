@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
-import { Badge, Button, Col, Form } from 'react-bootstrap'
+import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from 'corpus/ui/Reconstruction'
@@ -21,7 +21,7 @@ function ManuscriptAlignment(props: {
     )
   }
   return (
-    <Form.Row>
+    <Row>
       <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
@@ -42,7 +42,7 @@ function ManuscriptAlignment(props: {
           </span>
         ))}
       </Col>
-    </Form.Row>
+    </Row>
   )
 }
 
@@ -65,26 +65,26 @@ export default function ChapterAlignment({
       })
     )
   return (
-    <Form>
+    <Container>
       <Badge variant="warning">Beta</Badge>
-      <fieldset disabled={disabled}>
-        {chapter.lines.map((line, lineIndex) => (
-          <section key={lineIndex}>
-            <Reconstruction line={line} />
-            {line.manuscripts.map((manuscript, manuscriptIndex) => (
-              <ManuscriptAlignment
-                key={manuscriptIndex}
-                chapter={chapter}
-                line={line}
-                manuscriptLine={manuscript}
-                alignment={alignment[lineIndex][manuscriptIndex]}
-                onChange={handleChange(lineIndex)(manuscriptIndex)}
-              />
-            ))}
-          </section>
-        ))}
-        <Button onClick={() => onSave(alignment)}>Save alignment</Button>
-      </fieldset>
-    </Form>
+      {chapter.lines.map((line, lineIndex) => (
+        <section key={lineIndex}>
+          <Reconstruction line={line} />
+          {line.manuscripts.map((manuscript, manuscriptIndex) => (
+            <ManuscriptAlignment
+              key={manuscriptIndex}
+              chapter={chapter}
+              line={line}
+              manuscriptLine={manuscript}
+              alignment={alignment[lineIndex][manuscriptIndex]}
+              onChange={handleChange(lineIndex)(manuscriptIndex)}
+            />
+          ))}
+        </section>
+      ))}
+      <Button onClick={() => onSave(alignment)} disabled={disabled}>
+        Save alignment
+      </Button>
+    </Container>
   )
 }
