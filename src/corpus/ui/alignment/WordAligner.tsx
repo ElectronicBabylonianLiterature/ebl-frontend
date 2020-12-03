@@ -10,13 +10,13 @@ import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 import DropdownButton from 'common/DropdownButton'
 
-interface FormProps {
+interface AlignerProps {
   readonly token: AlignmentToken
   readonly reconstructionTokens: ReadonlyArray<Token>
   readonly onChange: (token: AlignmentToken) => void
 }
 
-function AlignmentForm(props: FormProps) {
+function AlignmentForm(props: AlignerProps) {
   const [alignment, setAlignment] = useState(props.token.alignment)
   const [variant, setVariant] = useState(props.token.variant)
 
@@ -89,12 +89,6 @@ function AlignmentForm(props: FormProps) {
       <Button onClick={onClick}>Set alignment</Button>
     </Form>
   )
-}
-
-interface AlignerProps {
-  readonly token: AlignmentToken
-  readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly onChange: (token: AlignmentToken) => void
 }
 
 export default function WordAligner({
