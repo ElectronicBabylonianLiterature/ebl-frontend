@@ -1,11 +1,15 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import {
+  act,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
 
 let fragmentService
-let element
 let statistics
 
 beforeEach(async () => {
@@ -14,17 +18,18 @@ beforeEach(async () => {
     statistics: jest.fn(),
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
-  element = render(<Statistics fragmentService={fragmentService} />)
+  render(<Statistics fragmentService={fragmentService} />)
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 })
 
 it('Shows the number of transliterated tablets', async () => {
-  const { textContent } = await element.findByText(/tablets transliterated$/)
-  expect(textContent).toContain(
+  expect(screen.getByText(/tablets transliterated$/)).toHaveTextContent(
     statistics.transliteratedFragments.toLocaleString()
   )
 })
 
 it('Shows the number of transliterated lines', async () => {
-  const { textContent } = await element.findByText(/lines of text$/)
-  expect(textContent).toContain(statistics.lines.toLocaleString())
+  expect(screen.getByText(/lines of text$/)).toHaveTextContent(
+    statistics.lines.toLocaleString()
+  )
 })

@@ -1,11 +1,17 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, screen } from '@testing-library/react'
+import {
+  render,
+  screen,
+  act,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
+import { Genres } from 'fragmentarium/domain/Genres'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -13,7 +19,7 @@ const fragmentService = {
 }
 let fragment: Fragment
 
-function renderDetails() {
+async function renderDetails() {
   render(
     <MemoryRouter>
       <Details
@@ -23,20 +29,19 @@ function renderDetails() {
       />
     </MemoryRouter>
   )
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
-beforeEach(async () => {
-  fragmentService.fetchGenres.mockReturnValue(
-    Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
-  )
-})
 describe('All details', () => {
   beforeEach(async () => {
+    fragmentService.fetchGenres.mockReturnValue(
+      Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
+    )
     fragment = await factory.build('fragment', {
       museum: Museum.of('The British Museum'),
       collection: 'The Collection',
-      genres: [],
+      genres: new Genres([]),
     })
-    renderDetails()
+    await renderDetails()
   })
 
   it('Renders museum', () => {
@@ -108,7 +113,7 @@ describe('Missing details', () => {
         width: null,
       }),
     })
-    renderDetails()
+    await renderDetails()
   })
 
   it('Does not render undefined', () =>
@@ -143,7 +148,7 @@ describe('Unknown museum', () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The Other Museum'),
     })
-    renderDetails()
+    await renderDetails()
   })
 
   it('Does not link museum', () =>
