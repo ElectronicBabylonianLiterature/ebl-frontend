@@ -4,9 +4,9 @@ import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from 'corpus/ui/Reconstruction'
-import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
+import { ChapterAlignment, AlignmentToken } from 'corpus/domain/alignment'
 
-function ManuscriptAlignment(props: {
+function ManuscriptAligner(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
@@ -46,13 +46,13 @@ function ManuscriptAlignment(props: {
   )
 }
 
-export default function ChapterAlignment({
+export default function ChapterAligner({
   chapter,
   onSave,
   disabled,
 }: {
   chapter: Chapter
-  onSave: (alignment: Alignment) => void
+  onSave: (alignment: ChapterAlignment) => void
   disabled: boolean
 }): JSX.Element {
   const [alignment, setAlignment] = useState(chapter.alignment)
@@ -60,7 +60,7 @@ export default function ChapterAlignment({
     manuscriptAlignment: readonly AlignmentToken[]
   ) =>
     setAlignment(
-      produce(alignment, (draft: Draft<Alignment>) => {
+      produce(alignment, (draft: Draft<ChapterAlignment>) => {
         draft[lineIndex][manuscriptIndex] = castDraft(manuscriptAlignment)
       })
     )
@@ -71,7 +71,7 @@ export default function ChapterAlignment({
         <section key={lineIndex}>
           <Reconstruction line={line} />
           {line.manuscripts.map((manuscript, manuscriptIndex) => (
-            <ManuscriptAlignment
+            <ManuscriptAligner
               key={manuscriptIndex}
               chapter={chapter}
               line={line}

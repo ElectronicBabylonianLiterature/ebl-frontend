@@ -18,4 +18,4 @@ export type AlignmentToken =
       readonly isAlignable: true
     }
 
-export type Alignment = readonly AlignmentToken[][][]
+export type ChapterAlignment = readonly AlignmentToken[][][]

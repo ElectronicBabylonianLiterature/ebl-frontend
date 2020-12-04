@@ -17,7 +17,7 @@ import { provenances } from 'corpus/domain/provenance'
 import { Draft, produce } from 'immer'
 import _ from 'lodash'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { Alignment } from 'corpus/domain/alignment'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 
 export function fromDto(textDto): Text {
   return createText({
@@ -91,7 +91,7 @@ const toLineDto = produce((draft: Draft<Line>) => ({
   ),
 }))
 
-export function toAlignmentDto(alignment: Alignment) {
+export function toAlignmentDto(alignment: ChapterAlignment) {
   return {
     alignment: alignment.map((line) =>
       line.map((manuscript) =>

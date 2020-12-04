@@ -7,7 +7,7 @@ import produce, { Draft, immerable } from 'immer'
 
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
-import { Alignment } from './alignment'
+import { ChapterAlignment } from './alignment'
 
 export interface ManuscriptType {
   readonly name: string
@@ -132,7 +132,7 @@ export class Chapter {
     this.lines = lines ?? []
   }
 
-  get alignment(): Alignment {
+  get alignment(): ChapterAlignment {
     return this.lines.map((line) =>
       line.manuscripts.map((manuscript) =>
         manuscript.atfTokens.map((token) =>
