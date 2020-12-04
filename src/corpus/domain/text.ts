@@ -140,11 +140,19 @@ export class Chapter {
             ? {
                 value: token.value,
                 alignment: token.alignment,
-                variant: token.variant?.value ?? '',
-                language: token.variant?.language ?? '',
-                isNormalized: token.variant?.normalized ?? false,
+                variant: token.variant && {
+                  value: token.variant.value,
+                  language: token.variant.language,
+                  isNormalized: token.variant.normalized,
+                },
+                isAlignable: true,
               }
-            : { value: token.value }
+            : {
+                value: token.value,
+                alignment: null,
+                variant: null,
+                isAlignable: false,
+              }
         )
       )
     )

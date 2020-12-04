@@ -8,6 +8,7 @@ import {
   toLemmatizationDto,
   toManuscriptsDto,
   toLinesDto,
+  toAlignmentDto,
 } from './dtos'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
 import { Alignment } from 'corpus/domain/alignment'
@@ -67,7 +68,7 @@ export default class TextService {
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
-        { alignment: alignment }
+        toAlignmentDto(alignment)
       )
       .then(fromDto)
   }

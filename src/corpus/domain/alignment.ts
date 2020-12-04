@@ -1,17 +1,21 @@
+interface Variant {
+  readonly value: string
+  readonly language: string
+  readonly isNormalized: boolean
+}
+
 export type AlignmentToken =
   | {
-      value: string
-      alignment?: null
-      variant?: ''
-      language?: string
-      isNormalized?: boolean
+      readonly value: string
+      readonly alignment: null
+      readonly variant: null
+      readonly isAlignable: false
     }
   | {
-      value: string
-      alignment: number | null
-      variant: string
-      language: string
-      isNormalized: boolean
+      readonly value: string
+      readonly alignment: number | null
+      readonly variant: Variant | null
+      readonly isAlignable: true
     }
 
 export type Alignment = readonly AlignmentToken[][][]

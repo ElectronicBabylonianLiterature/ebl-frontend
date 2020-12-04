@@ -26,7 +26,29 @@ const testService = new TextService(
 )
 
 const alignmentDto = {
-  alignment: text.chapters[0].alignment,
+  alignment: [
+    [
+      [
+        {
+          value: 'kur',
+          alignment: null,
+          variant: '',
+          language: '',
+          isNormalized: false,
+        },
+        {
+          value: 'ra',
+          alignment: 1,
+          variant: 'ra',
+          language: 'AKKADIAN',
+          isNormalized: true,
+        },
+        {
+          value: '...',
+        },
+      ],
+    ],
+  ],
 }
 
 const word: Word = {

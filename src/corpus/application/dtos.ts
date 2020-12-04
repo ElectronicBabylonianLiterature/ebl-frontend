@@ -17,6 +17,7 @@ import { provenances } from 'corpus/domain/provenance'
 import { Draft, produce } from 'immer'
 import _ from 'lodash'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import { Alignment } from 'corpus/domain/alignment'
 
 export function fromDto(textDto): Text {
   return createText({
@@ -89,6 +90,28 @@ const toLineDto = produce((draft: Draft<Line>) => ({
     _.omit(manuscript, 'atfTokens')
   ),
 }))
+
+export function toAlignmentDto(alignment: Alignment) {
+  return {
+    alignment: alignment.map((line) =>
+      line.map((manuscript) =>
+        manuscript.map((token) =>
+          token.isAlignable
+            ? {
+                value: token.value,
+                alignment: token.alignment,
+                variant: token.variant?.value ?? '',
+                language: token.variant?.language ?? '',
+                isNormalized: token.variant?.isNormalized ?? false,
+              }
+            : {
+                value: token.value,
+              }
+        )
+      )
+    ),
+  }
+}
 
 export const toLemmatizationDto = produce(
   (lemmatization: ChapterLemmatization) => {

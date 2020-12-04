@@ -25,21 +25,28 @@ function isAnyWord(token: Token): token is WordToken | AkkadianWord {
 
 function AlignmentForm(props: AlignerProps) {
   const [alignment, setAlignment] = useState(props.token.alignment)
-  const [variant, setVariant] = useState(props.token.variant)
+  const [variant, setVariant] = useState(props.token.variant?.value ?? '')
 
   function updateToken(alignmentToken: AlignmentToken): AlignmentToken {
     const token = !_.isNil(alignment) && props.reconstructionTokens[alignment]
     return token && isAnyWord(token)
       ? {
           value: alignmentToken.value,
-          alignment: alignment ?? null,
-          variant: variant ?? '',
-          language: token.language,
-          isNormalized: token.normalized,
+          alignment: alignment,
+          variant: variant
+            ? {
+                value: variant,
+                language: token.language,
+                isNormalized: token.normalized,
+              }
+            : null,
+          isAlignable: true,
         }
       : {
           value: alignmentToken.value,
           alignment: null,
+          variant: null,
+          isAlignable: true,
         }
   }
 
