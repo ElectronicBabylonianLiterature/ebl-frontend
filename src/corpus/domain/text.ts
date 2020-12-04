@@ -133,29 +133,31 @@ export class Chapter {
   }
 
   get alignment(): ChapterAlignment {
-    return this.lines.map((line) =>
-      line.manuscripts.map((manuscript) => ({
-        alignment: manuscript.atfTokens.map((token) =>
-          token.lemmatizable
-            ? {
-                value: token.value,
-                alignment: token.alignment,
-                variant: token.variant && {
-                  value: token.variant.value,
-                  language: token.variant.language,
-                  isNormalized: token.variant.normalized,
-                },
-                isAlignable: true,
-              }
-            : {
-                value: token.value,
-                alignment: null,
-                variant: null,
-                isAlignable: false,
-              }
-        ),
-        omittedWords: [],
-      }))
+    return new ChapterAlignment(
+      this.lines.map((line) =>
+        line.manuscripts.map((manuscript) => ({
+          alignment: manuscript.atfTokens.map((token) =>
+            token.lemmatizable
+              ? {
+                  value: token.value,
+                  alignment: token.alignment,
+                  variant: token.variant && {
+                    value: token.variant.value,
+                    language: token.variant.language,
+                    isNormalized: token.variant.normalized,
+                  },
+                  isAlignable: true,
+                }
+              : {
+                  value: token.value,
+                  alignment: null,
+                  variant: null,
+                  isAlignable: false,
+                }
+          ),
+          omittedWords: [],
+        }))
+      )
     )
   }
 

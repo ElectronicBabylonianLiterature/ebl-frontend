@@ -56,16 +56,13 @@ export default function ChapterAligner({
   disabled: boolean
 }): JSX.Element {
   const [alignment, setAlignment] = useState(chapter.alignment)
-  const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
+  const handleChange = (lineIndex: number, manuscriptIndex: number) => (
     manuscriptAlignment: readonly AlignmentToken[]
   ) =>
     setAlignment(
-      produce(alignment, (draft: Draft<ChapterAlignment>) => {
-        draft[lineIndex][manuscriptIndex].alignment = castDraft(
-          manuscriptAlignment
-        )
-      })
+      alignment.setAlignment(lineIndex, manuscriptIndex, manuscriptAlignment)
     )
+
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
@@ -78,8 +75,8 @@ export default function ChapterAligner({
               chapter={chapter}
               line={line}
               manuscriptLine={manuscript}
-              alignment={alignment[lineIndex][manuscriptIndex].alignment}
-              onChange={handleChange(lineIndex)(manuscriptIndex)}
+              alignment={alignment.getAlignment(lineIndex, manuscriptIndex)}
+              onChange={handleChange(lineIndex, manuscriptIndex)}
             />
           ))}
         </section>

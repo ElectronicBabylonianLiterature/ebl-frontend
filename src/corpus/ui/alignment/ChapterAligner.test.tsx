@@ -21,7 +21,7 @@ beforeEach(async () => {
 })
 
 test('Align word', async () => {
-  const expected: ChapterAlignment = [
+  const expected: ChapterAlignment = new ChapterAlignment([
     [
       {
         alignment: [
@@ -55,7 +55,7 @@ test('Align word', async () => {
         omittedWords: [],
       },
     ],
-  ]
+  ])
 
   await element.findByText('kur')
   clickNth(element, 'kur', 0)

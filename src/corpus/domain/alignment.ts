@@ -1,3 +1,5 @@
+import produce, { immerable, Draft, castDraft } from 'immer'
+
 interface Variant {
   readonly value: string
   readonly language: string
@@ -23,4 +25,28 @@ export interface ManuscriptAlignment {
   readonly omittedWords: readonly number[]
 }
 
-export type ChapterAlignment = readonly ManuscriptAlignment[][]
+export class ChapterAlignment {
+  readonly [immerable] = true
+  readonly lines: readonly ManuscriptAlignment[][]
+
+  constructor(lines: readonly ManuscriptAlignment[][]) {
+    this.lines = lines
+  }
+
+  getAlignment(
+    lineIndex: number,
+    manuscriptIndex: number
+  ): readonly AlignmentToken[] {
+    return this.lines[lineIndex][manuscriptIndex].alignment
+  }
+
+  setAlignment(
+    lineIndex: number,
+    manuscriptIndex: number,
+    alignment: readonly AlignmentToken[]
+  ): ChapterAlignment {
+    return produce(this, (draft: Draft<ChapterAlignment>) => {
+      draft.lines[lineIndex][manuscriptIndex].alignment = castDraft(alignment)
+    })
+  }
+}

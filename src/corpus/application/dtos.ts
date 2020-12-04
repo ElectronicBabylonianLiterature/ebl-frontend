@@ -91,9 +91,11 @@ const toLineDto = produce((draft: Draft<Line>) => ({
   ),
 }))
 
-export function toAlignmentDto(alignment: ChapterAlignment) {
+export function toAlignmentDto(
+  alignment: ChapterAlignment
+): Record<string, unknown> {
   return {
-    alignment: alignment.map((line) =>
+    alignment: alignment.lines.map((line) =>
       line.map((manuscript) =>
         manuscript.alignment.map((token) =>
           token.isAlignable
