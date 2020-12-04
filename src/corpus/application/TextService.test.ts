@@ -28,25 +28,28 @@ const testService = new TextService(
 const alignmentDto = {
   alignment: [
     [
-      [
-        {
-          value: 'kur',
-          alignment: null,
-          variant: '',
-          language: '',
-          isNormalized: false,
-        },
-        {
-          value: 'ra',
-          alignment: 1,
-          variant: 'ra',
-          language: 'AKKADIAN',
-          isNormalized: true,
-        },
-        {
-          value: '...',
-        },
-      ],
+      {
+        alignment: [
+          {
+            value: 'kur',
+            alignment: null,
+            variant: '',
+            language: '',
+            isNormalized: false,
+          },
+          {
+            value: 'ra',
+            alignment: 1,
+            variant: 'ra',
+            language: 'AKKADIAN',
+            isNormalized: true,
+          },
+          {
+            value: '...',
+          },
+        ],
+        omittedWords: [],
+      },
     ],
   ],
 }

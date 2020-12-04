@@ -36,17 +36,17 @@ export class ChapterAlignment {
   getAlignment(
     lineIndex: number,
     manuscriptIndex: number
-  ): readonly AlignmentToken[] {
-    return this.lines[lineIndex][manuscriptIndex].alignment
+  ): ManuscriptAlignment {
+    return this.lines[lineIndex][manuscriptIndex]
   }
 
   setAlignment(
     lineIndex: number,
     manuscriptIndex: number,
-    alignment: readonly AlignmentToken[]
+    alignment: ManuscriptAlignment
   ): ChapterAlignment {
     return produce(this, (draft: Draft<ChapterAlignment>) => {
-      draft.lines[lineIndex][manuscriptIndex].alignment = castDraft(alignment)
+      draft.lines[lineIndex][manuscriptIndex] = castDraft(alignment)
     })
   }
 }

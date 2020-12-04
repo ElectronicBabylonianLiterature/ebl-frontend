@@ -96,8 +96,8 @@ export function toAlignmentDto(
 ): Record<string, unknown> {
   return {
     alignment: alignment.lines.map((line) =>
-      line.map((manuscript) =>
-        manuscript.alignment.map((token) =>
+      line.map((manuscript) => ({
+        alignment: manuscript.alignment.map((token) =>
           token.isAlignable
             ? {
                 value: token.value,
@@ -109,8 +109,9 @@ export function toAlignmentDto(
             : {
                 value: token.value,
               }
-        )
-      )
+        ),
+        omittedWords: manuscript.omittedWords,
+      }))
     ),
   }
 }

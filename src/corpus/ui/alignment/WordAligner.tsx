@@ -5,22 +5,15 @@ import Word from './Word'
 
 import './WordAligner.css'
 
-import {
-  Token,
-  Word as WordToken,
-  AkkadianWord,
-} from 'transliteration/domain/token'
+import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 import DropdownButton from 'common/DropdownButton'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface AlignerProps {
   readonly token: AlignmentToken
   readonly reconstructionTokens: ReadonlyArray<Token>
   readonly onChange: (token: AlignmentToken) => void
-}
-
-function isAnyWord(token: Token): token is WordToken | AkkadianWord {
-  return token.type === 'AkkadianWord' || token.type === 'Word'
 }
 
 function AlignmentForm(props: AlignerProps) {
