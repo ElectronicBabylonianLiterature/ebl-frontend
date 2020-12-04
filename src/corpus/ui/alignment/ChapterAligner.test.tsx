@@ -23,34 +23,37 @@ beforeEach(async () => {
 test('Align word', async () => {
   const expected: ChapterAlignment = [
     [
-      [
-        {
-          value: 'kur',
-          alignment: 1,
-          variant: {
-            value: 'variant',
-            language: 'AKKADIAN',
-            isNormalized: true,
+      {
+        alignment: [
+          {
+            value: 'kur',
+            alignment: 1,
+            variant: {
+              value: 'variant',
+              language: 'AKKADIAN',
+              isNormalized: true,
+            },
+            isAlignable: true,
           },
-          isAlignable: true,
-        },
-        {
-          value: 'ra',
-          alignment: 1,
-          variant: {
+          {
             value: 'ra',
-            language: 'AKKADIAN',
-            isNormalized: true,
+            alignment: 1,
+            variant: {
+              value: 'ra',
+              language: 'AKKADIAN',
+              isNormalized: true,
+            },
+            isAlignable: true,
           },
-          isAlignable: true,
-        },
-        {
-          value: '...',
-          alignment: null,
-          variant: null,
-          isAlignable: false,
-        },
-      ],
+          {
+            value: '...',
+            alignment: null,
+            variant: null,
+            isAlignable: false,
+          },
+        ],
+        omittedWords: [],
+      },
     ],
   ]
 

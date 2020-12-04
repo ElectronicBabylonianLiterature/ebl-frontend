@@ -134,8 +134,8 @@ export class Chapter {
 
   get alignment(): ChapterAlignment {
     return this.lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) =>
+      line.manuscripts.map((manuscript) => ({
+        alignment: manuscript.atfTokens.map((token) =>
           token.lemmatizable
             ? {
                 value: token.value,
@@ -153,8 +153,9 @@ export class Chapter {
                 variant: null,
                 isAlignable: false,
               }
-        )
-      )
+        ),
+        omittedWords: [],
+      }))
     )
   }
 

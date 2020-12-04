@@ -95,7 +95,7 @@ export function toAlignmentDto(alignment: ChapterAlignment) {
   return {
     alignment: alignment.map((line) =>
       line.map((manuscript) =>
-        manuscript.map((token) =>
+        manuscript.alignment.map((token) =>
           token.isAlignable
             ? {
                 value: token.value,

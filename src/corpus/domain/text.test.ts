@@ -137,30 +137,33 @@ describe('Chapter', () => {
   test('alignment', () => {
     expect(text.chapters[0].alignment).toEqual([
       [
-        [
-          {
-            value: 'kur',
-            alignment: null,
-            variant: null,
-            isAlignable: true,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: {
-              value: 'ra',
-              language: 'AKKADIAN',
-              isNormalized: true,
+        {
+          alignment: [
+            {
+              value: 'kur',
+              alignment: null,
+              variant: null,
+              isAlignable: true,
             },
-            isAlignable: true,
-          },
-          {
-            value: '...',
-            alignment: null,
-            variant: null,
-            isAlignable: false,
-          },
-        ],
+            {
+              value: 'ra',
+              alignment: 1,
+              variant: {
+                value: 'ra',
+                language: 'AKKADIAN',
+                isNormalized: true,
+              },
+              isAlignable: true,
+            },
+            {
+              value: '...',
+              alignment: null,
+              variant: null,
+              isAlignable: false,
+            },
+          ],
+          omittedWords: [],
+        },
       ],
     ])
   })

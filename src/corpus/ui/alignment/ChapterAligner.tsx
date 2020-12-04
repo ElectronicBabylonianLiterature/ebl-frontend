@@ -61,7 +61,9 @@ export default function ChapterAligner({
   ) =>
     setAlignment(
       produce(alignment, (draft: Draft<ChapterAlignment>) => {
-        draft[lineIndex][manuscriptIndex] = castDraft(manuscriptAlignment)
+        draft[lineIndex][manuscriptIndex].alignment = castDraft(
+          manuscriptAlignment
+        )
       })
     )
   return (
@@ -76,7 +78,7 @@ export default function ChapterAligner({
               chapter={chapter}
               line={line}
               manuscriptLine={manuscript}
-              alignment={alignment[lineIndex][manuscriptIndex]}
+              alignment={alignment[lineIndex][manuscriptIndex].alignment}
               onChange={handleChange(lineIndex)(manuscriptIndex)}
             />
           ))}

@@ -18,4 +18,9 @@ export type AlignmentToken =
       readonly isAlignable: true
     }
 
-export type ChapterAlignment = readonly AlignmentToken[][][]
+export interface ManuscriptAlignment {
+  readonly alignment: AlignmentToken[]
+  readonly omittedWords: readonly number[]
+}
+
+export type ChapterAlignment = readonly ManuscriptAlignment[][]
