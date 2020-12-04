@@ -90,19 +90,6 @@ const toLineDto = produce((draft: Draft<Line>) => ({
   ),
 }))
 
-export const toAlignmentDto = produce((lines) => {
-  return {
-    alignment: lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) => ({
-          value: token.value,
-          alignment: token.alignment,
-        }))
-      )
-    ),
-  }
-})
-
 export const toLemmatizationDto = produce(
   (lemmatization: ChapterLemmatization) => {
     return {

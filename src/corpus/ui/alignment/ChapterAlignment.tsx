@@ -1,26 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
-import { Badge, Button, Col, Form } from 'react-bootstrap'
+import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import WordAligner from './WordAligner'
 import produce, { castDraft, Draft } from 'immer'
-import Reconstruction from '../Reconstruction'
-import { Token } from 'transliteration/domain/token'
+import Reconstruction from 'corpus/ui/Reconstruction'
+import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
 
 function ManuscriptAlignment(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
-  onChange: (line: ManuscriptLine) => void
+  alignment: readonly AlignmentToken[]
+  onChange: (alignment: readonly AlignmentToken[]) => void
 }) {
-  const handleChange = (index: number) => (token: Token) => {
+  const handleChange = (index: number) => (token: AlignmentToken) => {
     props.onChange(
-      produce(props.manuscriptLine, (draft: Draft<ManuscriptLine>) => {
-        draft.atfTokens[index] = castDraft(token)
+      produce(props.alignment, (draft: Draft<AlignmentToken[]>) => {
+        draft[index] = castDraft(token)
       })
     )
   }
   return (
-    <Form.Row>
+    <Row>
       <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
@@ -31,7 +32,7 @@ function ManuscriptAlignment(props: {
           <span key={index}>
             {token.lemmatizable ? (
               <WordAligner
-                token={token}
+                token={props.alignment[index]}
                 reconstructionTokens={props.line.reconstructionTokens}
                 onChange={handleChange(index)}
               />
@@ -41,51 +42,49 @@ function ManuscriptAlignment(props: {
           </span>
         ))}
       </Col>
-    </Form.Row>
+    </Row>
   )
 }
 
 export default function ChapterAlignment({
   chapter,
-  onChange,
   onSave,
   disabled,
 }: {
   chapter: Chapter
-  onChange: (chapter: Chapter) => void
-  onSave: () => void
+  onSave: (alignment: Alignment) => void
   disabled: boolean
 }): JSX.Element {
+  const [alignment, setAlignment] = useState(chapter.alignment)
   const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
-    manuscript: ManuscriptLine
+    manuscriptAlignment: readonly AlignmentToken[]
   ) =>
-    onChange(
-      produce(chapter, (draft: Draft<Chapter>) => {
-        draft.lines[lineIndex].manuscripts[manuscriptIndex] = castDraft(
-          manuscript
-        )
+    setAlignment(
+      produce(alignment, (draft: Draft<Alignment>) => {
+        draft[lineIndex][manuscriptIndex] = castDraft(manuscriptAlignment)
       })
     )
   return (
-    <Form>
+    <Container>
       <Badge variant="warning">Beta</Badge>
-      <fieldset disabled={disabled}>
-        {chapter.lines.map((line, lineIndex) => (
-          <section key={lineIndex}>
-            <Reconstruction line={line} />
-            {line.manuscripts.map((manuscript, manuscriptIndex) => (
-              <ManuscriptAlignment
-                key={manuscriptIndex}
-                chapter={chapter}
-                line={line}
-                manuscriptLine={manuscript}
-                onChange={handleChange(lineIndex)(manuscriptIndex)}
-              />
-            ))}
-          </section>
-        ))}
-        <Button onClick={onSave}>Save alignment</Button>
-      </fieldset>
-    </Form>
+      {chapter.lines.map((line, lineIndex) => (
+        <section key={lineIndex}>
+          <Reconstruction line={line} />
+          {line.manuscripts.map((manuscript, manuscriptIndex) => (
+            <ManuscriptAlignment
+              key={manuscriptIndex}
+              chapter={chapter}
+              line={line}
+              manuscriptLine={manuscript}
+              alignment={alignment[lineIndex][manuscriptIndex]}
+              onChange={handleChange(lineIndex)(manuscriptIndex)}
+            />
+          ))}
+        </section>
+      ))}
+      <Button onClick={() => onSave(alignment)} disabled={disabled}>
+        Save alignment
+      </Button>
+    </Container>
   )
 }

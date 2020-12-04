@@ -26,19 +26,7 @@ const testService = new TextService(
 )
 
 const alignmentDto = {
-  alignment: [
-    [
-      [
-        {
-          value: 'kur',
-        },
-        {
-          value: 'ra',
-          alignment: 1,
-        },
-      ],
-    ],
-  ],
+  alignment: text.chapters[0].alignment,
 }
 
 const word: Word = {
@@ -54,13 +42,13 @@ const lemmatization = [
   [
     [
       new LemmatizationToken('%n', false, null, null),
-      new LemmatizationToken('kur', true, [], []),
-      new LemmatizationToken('ra', true, [], []),
+      new LemmatizationToken('kur-kur', true, [], []),
     ],
     [
       [
         new LemmatizationToken('kur', true, [], []),
         new LemmatizationToken('ra', true, [new Lemma(word)], []),
+        new LemmatizationToken('...', false, null, null),
       ],
     ],
   ],
@@ -74,11 +62,7 @@ const lemmatizationDto = {
           value: '%n',
         },
         {
-          value: 'kur',
-          uniqueLemma: [],
-        },
-        {
-          value: 'ra',
+          value: 'kur-kur',
           uniqueLemma: [],
         },
       ],
@@ -90,6 +74,9 @@ const lemmatizationDto = {
         {
           value: 'ra',
           uniqueLemma: ['aklu I'],
+        },
+        {
+          value: '...',
         },
       ],
     ],
@@ -125,7 +112,7 @@ const linesDto = {
   lines: [
     {
       number: '1',
-      reconstruction: '%n kur ra',
+      reconstruction: '%n kur-kur',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
       manuscripts: [
@@ -174,7 +161,7 @@ const testData: TestData[] = [
   ],
   [
     'updateAlignment',
-    [text.category, text.index, 0, text.chapters[0].lines],
+    [text.category, text.index, 0, text.chapters[0].alignment],
     apiClient.postJson,
     text,
     [

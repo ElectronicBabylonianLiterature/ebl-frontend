@@ -39,6 +39,7 @@ function GenreSelection({
       setIsUncertain(retrievedGenre.uncertain)
     }
   }
+
   useEffect(() => {
     if (!_.isEqual(genres, prevGenres) && prevGenres !== undefined) {
       updateGenres(genres)
@@ -102,6 +103,7 @@ function GenreSelection({
         {(session: Session): ReactNode =>
           session.isAllowedToTransliterateFragments() && (
             <Button
+              aria-label="Browse genres button"
               variant="light"
               ref={target}
               className={classNames(['float-right', 'far fa-edit', 'mh-100'])}
@@ -135,7 +137,7 @@ function GenreSelection({
                   session.isAllowedToTransliterateFragments() && (
                     <Button
                       variant="light"
-                      data-testid="delete-button"
+                      aria-label="Delete genre button"
                       className={classNames([
                         'float-right',
                         'fas fa-trash',

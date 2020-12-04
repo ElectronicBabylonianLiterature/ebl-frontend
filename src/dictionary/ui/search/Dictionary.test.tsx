@@ -1,5 +1,9 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -29,41 +33,36 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const { getByText, findByText } = renderDictionary(
-      '/dictionary?query=lemma'
+    await renderDictionary('/dictionary?query=lemma')
+    expect(screen.getByText(words[1].meaning)).toBeDefined()
+    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
+      'lemma'
     )
-
-    await findByText(words[0].meaning)
-    expect(getByText(words[1].meaning)).toBeDefined()
   })
 
-  it('fills in search form query', () => {
-    const { getByLabelText } = renderDictionary('/dictionary?query=lemma')
-
-    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('lemma')
-  })
-
-  it('displays empty search if no query', () => {
-    const { getByLabelText } = renderDictionary('/dictionary')
-
-    expect((getByLabelText('Query') as HTMLInputElement).value).toEqual('')
+  it('displays empty search if no query', async () => {
+    await renderDictionary('/dictionary')
+    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
+      ''
+    )
   })
 })
 
-it('Displays a message if user is not logged in', () => {
+it('Displays a message if user is not logged in', async () => {
   session.isAllowedToReadWords.mockReturnValueOnce(false)
-
-  const { container } = renderDictionary('/dictionary')
-
-  expect(container).toHaveTextContent('Please log in to browse the Dictionary.')
+  await renderDictionary('/dictionary')
+  expect(
+    screen.getByText('Please log in to browse the Dictionary.')
+  ).toBeVisible()
 })
 
-function renderDictionary(path) {
-  return render(
+async function renderDictionary(path: string): Promise<void> {
+  render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
         <DictionaryWithRouter wordService={wordService} />
       </SessionContext.Provider>
     </MemoryRouter>
   )
+  await screen.findAllByText('Dictionary')
 }

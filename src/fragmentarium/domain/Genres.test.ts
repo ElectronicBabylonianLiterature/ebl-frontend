@@ -20,6 +20,7 @@ const genresConfig = [genreConfig1, genreConfig2]
 
 const genre = new Genre(genreConfig1.category, genreConfig1.uncertain)
 const genres = Genres.fromJson(genresConfig)
+
 let genreNew
 let genresNew
 

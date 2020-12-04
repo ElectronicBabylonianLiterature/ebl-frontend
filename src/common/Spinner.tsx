@@ -10,6 +10,7 @@ export default function Spinner({ loading, children }: Props) {
   return loading ? (
     <>
       <BootstrapSpinner
+        aria-label="Spinner"
         as="span"
         animation="border"
         size="sm"

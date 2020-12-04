@@ -20,6 +20,8 @@ export const emptyFirstColumn: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -62,6 +64,8 @@ export const emptyFirstColumn: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -104,6 +108,8 @@ export const emptyFirstColumn: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -152,6 +158,8 @@ export const implicitFirstColumn: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -194,6 +202,8 @@ export const implicitFirstColumn: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -250,6 +260,8 @@ export const firstColumnSpan: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -292,6 +304,8 @@ export const firstColumnSpan: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -340,6 +354,8 @@ export const span: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
@@ -382,6 +398,8 @@ export const span: TextLine = new TextLine({
       normalized: false,
       lemmatizable: true,
       uniqueLemma: [],
+      alignment: null,
+      variant: null,
       parts: [
         {
           enclosureType: [],
