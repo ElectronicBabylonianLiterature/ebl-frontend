@@ -24,18 +24,16 @@ function FragmentLineToVecRanking({
   }
   const LineToVecDisplay = ({ lineToVecRanking }) => (
     <Container>
-      <Col>
-        <Row>
-          <Col>
-            <Row>Score</Row>
-            <RankingList score={lineToVecRanking.score} />
-          </Col>
-          <Col>
-            <Row>Weighted Score</Row>
-            <RankingList score={lineToVecRanking.scoreWeighted} />
-          </Col>
-        </Row>
-      </Col>
+      <Row>
+        <Col>
+          <Row>Score</Row>
+          <RankingList score={lineToVecRanking.score} />
+        </Col>
+        <Col>
+          <Row>Weighted Score</Row>
+          <RankingList score={lineToVecRanking.scoreWeighted} />
+        </Col>
+      </Row>
     </Container>
   )
 

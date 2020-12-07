@@ -49,7 +49,7 @@ import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
-import { LineToVecRanking } from '../domain/lineToVecRanking'
+import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 
 const lineClases = {
   TextLine: TextLine,
