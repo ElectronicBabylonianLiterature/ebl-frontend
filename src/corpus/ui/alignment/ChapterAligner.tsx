@@ -26,10 +26,8 @@ const setAlignment = produce(
 )
 
 const setOmittedWords = produce(
-  (draft: Draft<ManuscriptAlignment>, value: ValueType<OmittedWordOption>) => {
-    draft.omittedWords = _.isArray(value)
-      ? value.map((option) => option.value)
-      : []
+  (draft: Draft<ManuscriptAlignment>, value: number[]) => {
+    draft.omittedWords = value
   }
 )
 
@@ -49,6 +47,36 @@ function createOmittedWordOptions(
     .value() as OmittedWordOption[]
 }
 
+function OmittedWordsSelect(props: {
+  label: string
+  reconstructionTokens: readonly Token[]
+  value: readonly number[]
+  onChange: (value: number[]) => void
+}): JSX.Element {
+  const handleChange = (value: ValueType<OmittedWordOption>) => {
+    props.onChange(_.isArray(value) ? value.map((option) => option.value) : [])
+  }
+
+  const options: OptionsType<OmittedWordOption> = createOmittedWordOptions(
+    props.reconstructionTokens
+  )
+
+  return (
+    <Select
+      aria-label={props.label}
+      placeholder={props.label}
+      options={options}
+      value={
+        props.value
+          .map((index) => options.find((option) => option.value === index))
+          .filter((option) => option) as OmittedWordOption[]
+      }
+      isMulti
+      onChange={handleChange}
+    />
+  )
+}
+
 function ManuscriptAligner(props: {
   chapter: Chapter
   line: Line
@@ -60,15 +88,9 @@ function ManuscriptAligner(props: {
     props.onChange(setAlignment(props.alignment, index, token))
   }
 
-  const handleOmittedChange = (value: ValueType<OmittedWordOption>) => {
+  const handleOmittedChange = (value: number[]) => {
     props.onChange(setOmittedWords(props.alignment, value))
   }
-
-  const options: OptionsType<OmittedWordOption> = createOmittedWordOptions(
-    props.line.reconstructionTokens
-  )
-
-  const omittedWordsLabel = 'Omitted words'
 
   return (
     <Row>
@@ -93,16 +115,10 @@ function ManuscriptAligner(props: {
         ))}
       </Col>
       <Col md={3}>
-        <Select
-          aria-label={omittedWordsLabel}
-          placeholder={omittedWordsLabel}
-          options={options}
-          value={
-            props.alignment.omittedWords
-              .map((index) => options.find((option) => option.value === index))
-              .filter((option) => option) as OmittedWordOption[]
-          }
-          isMulti
+        <OmittedWordsSelect
+          label="Omitted words"
+          value={props.alignment.omittedWords}
+          reconstructionTokens={props.line.reconstructionTokens}
           onChange={handleOmittedChange}
         />
       </Col>
