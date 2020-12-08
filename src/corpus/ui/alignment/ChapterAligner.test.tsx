@@ -7,6 +7,7 @@ import { Chapter } from 'corpus/domain/text'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import ChapterAligner from './ChapterAligner'
 import { text } from 'test-support/test-corpus-text'
+import produce, { Draft } from 'immer'
 
 let element: RenderResult
 let onSave: jest.Mock<void, [ChapterAlignment]>
@@ -69,37 +70,12 @@ test('Align word', async () => {
 })
 
 test('Omit word', async () => {
-  const expected: ChapterAlignment = new ChapterAlignment([
-    [
-      {
-        alignment: [
-          {
-            value: 'kur',
-            alignment: null,
-            variant: null,
-            isAlignable: true,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: {
-              value: 'ra',
-              language: 'AKKADIAN',
-              isNormalized: true,
-            },
-            isAlignable: true,
-          },
-          {
-            value: '...',
-            alignment: null,
-            variant: null,
-            isAlignable: false,
-          },
-        ],
-        omittedWords: [1],
-      },
-    ],
-  ])
+  const expected: ChapterAlignment = produce(
+    chapter.alignment,
+    (draft: Draft<ChapterAlignment>) => {
+      draft.lines[0][0].omittedWords = [1]
+    }
+  )
 
   await selectEvent.select(
     await element.findByLabelText('Omitted words'),
