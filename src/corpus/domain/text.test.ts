@@ -51,6 +51,7 @@ const manuscrpitLineConfig: ManuscriptLine = {
       enclosureType: [],
     },
   ],
+  omittedWords: [],
 }
 
 const lineConfig: Line = {

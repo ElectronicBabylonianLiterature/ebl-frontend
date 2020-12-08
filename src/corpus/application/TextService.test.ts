@@ -146,6 +146,7 @@ const linesDto = {
           labels: ['o', 'iii'],
           number: 'a+1',
           atf: 'kur ra',
+          omittedWords: [],
         },
       ],
     },

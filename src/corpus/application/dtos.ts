@@ -62,6 +62,7 @@ function fromLineDto(lineDto): Line {
         number: manuscriptLineDto['number'],
         atf: manuscriptLineDto['atf'],
         atfTokens: manuscriptLineDto['atfTokens'],
+        omittedWords: manuscriptLineDto['omittedWords'],
       })
     ),
   })

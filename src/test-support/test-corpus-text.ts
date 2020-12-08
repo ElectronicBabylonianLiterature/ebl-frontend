@@ -96,6 +96,7 @@ export const textDto = {
               labels: ['o', 'iii'],
               number: 'a+1',
               atf: 'kur ra',
+              omittedWords: [],
               atfTokens: [
                 {
                   type: 'Word',
