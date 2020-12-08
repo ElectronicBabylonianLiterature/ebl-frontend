@@ -58,6 +58,8 @@ function ManuscriptAligner(props: {
     .reject(_.isNull)
     .value() as OmittedWordOption[]
 
+  const omittedWordsLabel = 'Omitted words'
+
   return (
     <Row>
       <Col md={1} />
@@ -82,7 +84,8 @@ function ManuscriptAligner(props: {
       </Col>
       <Col md={3}>
         <Select
-          aria-label="Omitted words"
+          aria-label={omittedWordsLabel}
+          placeholder={omittedWordsLabel}
           options={options}
           value={
             props.alignment.omittedWords
