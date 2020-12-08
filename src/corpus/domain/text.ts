@@ -1,13 +1,10 @@
 import Reference from 'bibliography/domain/Reference'
-import { Period, PeriodModifier, periodModifiers, periods } from './period'
-
-import { Provenance, provenances } from './provenance'
-
 import produce, { Draft, immerable } from 'immer'
-
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
-import { ChapterAlignment } from './alignment'
+import { ChapterAlignment, createAlignmentToken } from './alignment'
+import { Period, PeriodModifier, periodModifiers, periods } from './period'
+import { Provenance, provenances } from './provenance'
 
 export interface ManuscriptType {
   readonly name: string
@@ -141,25 +138,7 @@ export class Chapter {
     return new ChapterAlignment(
       this.lines.map((line) =>
         line.manuscripts.map((manuscript) => ({
-          alignment: manuscript.atfTokens.map((token) =>
-            token.lemmatizable
-              ? {
-                  value: token.value,
-                  alignment: token.alignment,
-                  variant: token.variant && {
-                    value: token.variant.value,
-                    language: token.variant.language,
-                    isNormalized: token.variant.normalized,
-                  },
-                  isAlignable: true,
-                }
-              : {
-                  value: token.value,
-                  alignment: null,
-                  variant: null,
-                  isAlignable: false,
-                }
-          ),
+          alignment: manuscript.atfTokens.map(createAlignmentToken),
           omittedWords: manuscript.omittedWords,
         }))
       )

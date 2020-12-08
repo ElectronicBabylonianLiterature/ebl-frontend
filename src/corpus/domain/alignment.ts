@@ -1,4 +1,5 @@
-import produce, { immerable, Draft, castDraft } from 'immer'
+import produce, { castDraft, Draft, immerable } from 'immer'
+import { Token } from 'transliteration/domain/token'
 
 interface Variant {
   readonly value: string
@@ -49,4 +50,24 @@ export class ChapterAlignment {
       draft.lines[lineIndex][manuscriptIndex] = castDraft(alignment)
     })
   }
+}
+
+export function createAlignmentToken(token: Token): AlignmentToken {
+  return token.lemmatizable
+    ? {
+        value: token.value,
+        alignment: token.alignment,
+        variant: token.variant && {
+          value: token.variant.value,
+          language: token.variant.language,
+          isNormalized: token.variant.normalized,
+        },
+        isAlignable: true,
+      }
+    : {
+        value: token.value,
+        alignment: null,
+        variant: null,
+        isAlignable: false,
+      }
 }
