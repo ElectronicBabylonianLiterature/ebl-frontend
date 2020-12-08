@@ -12,41 +12,31 @@ import {
   ManuscriptAlignment,
 } from 'corpus/domain/alignment'
 import { isAnyWord } from 'transliteration/domain/type-guards'
+import { Token } from 'transliteration/domain/token'
 
 interface OmittedWordOption {
   value: number
   label: string
 }
 
-function ManuscriptAligner(props: {
-  chapter: Chapter
-  line: Line
-  manuscriptLine: ManuscriptLine
-  alignment: ManuscriptAlignment
-  onChange: (alignment: ManuscriptAlignment) => void
-}) {
-  const handleChange = (index: number) => (token: AlignmentToken) => {
-    props.onChange(
-      produce(props.alignment, (draft: Draft<ManuscriptAlignment>) => {
-        draft.alignment[index] = castDraft(token)
-      })
-    )
+const setAlignment = produce(
+  (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
+    draft.alignment[index] = castDraft(token)
   }
+)
 
-  const handleOmittedChange = (value: ValueType<OmittedWordOption>) => {
-    console.log(value)
-    props.onChange(
-      produce(props.alignment, (draft: Draft<ManuscriptAlignment>) => {
-        draft.omittedWords = _.isArray(value)
-          ? value.map((option) => option.value)
-          : []
-      })
-    )
+const setOmittedWords = produce(
+  (draft: Draft<ManuscriptAlignment>, value: ValueType<OmittedWordOption>) => {
+    draft.omittedWords = _.isArray(value)
+      ? value.map((option) => option.value)
+      : []
   }
+)
 
-  const options: OptionsType<OmittedWordOption> = _(
-    props.line.reconstructionTokens
-  )
+function createOmittedWordOptions(
+  reconstructionTokens: readonly Token[]
+): OptionsType<OmittedWordOption> {
+  return _(reconstructionTokens)
     .map((reconstructionToken, index) =>
       isAnyWord(reconstructionToken)
         ? {
@@ -57,6 +47,26 @@ function ManuscriptAligner(props: {
     )
     .reject(_.isNull)
     .value() as OmittedWordOption[]
+}
+
+function ManuscriptAligner(props: {
+  chapter: Chapter
+  line: Line
+  manuscriptLine: ManuscriptLine
+  alignment: ManuscriptAlignment
+  onChange: (alignment: ManuscriptAlignment) => void
+}) {
+  const handleChange = (index: number) => (token: AlignmentToken) => {
+    props.onChange(setAlignment(props.alignment, index, token))
+  }
+
+  const handleOmittedChange = (value: ValueType<OmittedWordOption>) => {
+    props.onChange(setOmittedWords(props.alignment, value))
+  }
+
+  const options: OptionsType<OmittedWordOption> = createOmittedWordOptions(
+    props.line.reconstructionTokens
+  )
 
   const omittedWordsLabel = 'Omitted words'
 
