@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import selectEvent from 'react-select-event'
 import { whenClicked, clickNth } from 'test-support/utils'
 import { Chapter } from 'corpus/domain/text'
 import { ChapterAlignment } from 'corpus/domain/alignment'
@@ -62,6 +63,48 @@ test('Align word', async () => {
   userEvent.selectOptions(element.getByLabelText('Ideal word'), ['1'])
   userEvent.type(element.getByLabelText('Variant'), 'variant')
   userEvent.click(element.getByRole('button', { name: 'Set alignment' }))
+  await whenClicked(element, 'Save alignment')
+    .expect(onSave)
+    .toHaveBeenCalledWith(expected)
+})
+
+test('Omit word', async () => {
+  const expected: ChapterAlignment = new ChapterAlignment([
+    [
+      {
+        alignment: [
+          {
+            value: 'kur',
+            alignment: null,
+            variant: null,
+            isAlignable: true,
+          },
+          {
+            value: 'ra',
+            alignment: 1,
+            variant: {
+              value: 'ra',
+              language: 'AKKADIAN',
+              isNormalized: true,
+            },
+            isAlignable: true,
+          },
+          {
+            value: '...',
+            alignment: null,
+            variant: null,
+            isAlignable: false,
+          },
+        ],
+        omittedWords: [1],
+      },
+    ],
+  ])
+
+  await selectEvent.select(
+    await element.findByLabelText('Omitted words'),
+    'kur-kur'
+  )
   await whenClicked(element, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)
