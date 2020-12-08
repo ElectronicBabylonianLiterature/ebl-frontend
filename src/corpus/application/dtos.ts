@@ -1,22 +1,23 @@
+import serializeReference from 'bibliography/application/serializeReference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
-import serializeReference from 'bibliography/application/serializeReference'
-import {
-  createText,
-  createChapter,
-  createManuscript,
-  createLine,
-  Text,
-  types,
-  createManuscriptLine,
-  Manuscript,
-  Line,
-} from 'corpus/domain/text'
+import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import {
+  createChapter,
+  createLine,
+  createManuscript,
+  createManuscriptLine,
+  createText,
+  Line,
+  Manuscript,
+  Text,
+  types,
+} from 'corpus/domain/text'
 import { Draft, produce } from 'immer'
 import _ from 'lodash'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 
 export function fromDto(textDto): Text {
   return createText({
@@ -61,6 +62,7 @@ function fromLineDto(lineDto): Line {
         number: manuscriptLineDto['number'],
         atf: manuscriptLineDto['atf'],
         atfTokens: manuscriptLineDto['atfTokens'],
+        omittedWords: manuscriptLineDto['omittedWords'],
       })
     ),
   })
@@ -89,6 +91,33 @@ const toLineDto = produce((draft: Draft<Line>) => ({
     _.omit(manuscript, 'atfTokens')
   ),
 }))
+
+function toAlignmentTokenDto(token: AlignmentToken) {
+  return token.isAlignable
+    ? {
+        value: token.value,
+        alignment: token.alignment,
+        variant: token.variant?.value ?? '',
+        language: token.variant?.language ?? '',
+        isNormalized: token.variant?.isNormalized ?? false,
+      }
+    : {
+        value: token.value,
+      }
+}
+
+export function toAlignmentDto(
+  alignment: ChapterAlignment
+): Record<string, unknown> {
+  return {
+    alignment: alignment.lines.map((line) =>
+      line.map((manuscript) => ({
+        alignment: manuscript.alignment.map(toAlignmentTokenDto),
+        omittedWords: manuscript.omittedWords,
+      }))
+    ),
+  }
+}
 
 export const toLemmatizationDto = produce(
   (lemmatization: ChapterLemmatization) => {

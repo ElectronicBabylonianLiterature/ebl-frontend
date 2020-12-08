@@ -26,7 +26,32 @@ const testService = new TextService(
 )
 
 const alignmentDto = {
-  alignment: text.chapters[0].alignment,
+  alignment: [
+    [
+      {
+        alignment: [
+          {
+            value: 'kur',
+            alignment: null,
+            variant: '',
+            language: '',
+            isNormalized: false,
+          },
+          {
+            value: 'ra',
+            alignment: 1,
+            variant: 'ra',
+            language: 'AKKADIAN',
+            isNormalized: true,
+          },
+          {
+            value: '...',
+          },
+        ],
+        omittedWords: [],
+      },
+    ],
+  ],
 }
 
 const word: Word = {
@@ -121,6 +146,7 @@ const linesDto = {
           labels: ['o', 'iii'],
           number: 'a+1',
           atf: 'kur ra',
+          omittedWords: [],
         },
       ],
     },

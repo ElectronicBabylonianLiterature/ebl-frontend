@@ -1,25 +1,43 @@
-import React, { useState } from 'react'
+import {
+  AlignmentToken,
+  ChapterAlignment,
+  ManuscriptAlignment,
+} from 'corpus/domain/alignment'
 import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
-import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
-import WordAligner from './WordAligner'
-import produce, { castDraft, Draft } from 'immer'
 import Reconstruction from 'corpus/ui/Reconstruction'
-import { Alignment, AlignmentToken } from 'corpus/domain/alignment'
+import produce, { castDraft, Draft } from 'immer'
+import React, { useState } from 'react'
+import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
+import OmittedWordsSelect from './OmittedWordsSelect'
+import WordAligner from './WordAligner'
 
-function ManuscriptAlignment(props: {
+const setAlignment = produce(
+  (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
+    draft.alignment[index] = castDraft(token)
+  }
+)
+
+const setOmittedWords = produce(
+  (draft: Draft<ManuscriptAlignment>, value: number[]) => {
+    draft.omittedWords = value
+  }
+)
+
+function ManuscriptAligner(props: {
   chapter: Chapter
   line: Line
   manuscriptLine: ManuscriptLine
-  alignment: readonly AlignmentToken[]
-  onChange: (alignment: readonly AlignmentToken[]) => void
+  alignment: ManuscriptAlignment
+  onChange: (alignment: ManuscriptAlignment) => void
 }) {
   const handleChange = (index: number) => (token: AlignmentToken) => {
-    props.onChange(
-      produce(props.alignment, (draft: Draft<AlignmentToken[]>) => {
-        draft[index] = castDraft(token)
-      })
-    )
+    props.onChange(setAlignment(props.alignment, index, token))
   }
+
+  const handleOmittedChange = (value: number[]) => {
+    props.onChange(setOmittedWords(props.alignment, value))
+  }
+
   return (
     <Row>
       <Col md={1} />
@@ -27,12 +45,12 @@ function ManuscriptAlignment(props: {
       <Col md={1}>
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
-      <Col md={9}>
+      <Col md={6}>
         {props.manuscriptLine.atfTokens.map((token, index) => (
           <span key={index}>
             {token.lemmatizable ? (
               <WordAligner
-                token={props.alignment[index]}
+                token={props.alignment.alignment[index]}
                 reconstructionTokens={props.line.reconstructionTokens}
                 onChange={handleChange(index)}
               />
@@ -42,28 +60,35 @@ function ManuscriptAlignment(props: {
           </span>
         ))}
       </Col>
+      <Col md={3}>
+        <OmittedWordsSelect
+          label="Omitted words"
+          value={props.alignment.omittedWords}
+          reconstructionTokens={props.line.reconstructionTokens}
+          onChange={handleOmittedChange}
+        />
+      </Col>
     </Row>
   )
 }
 
-export default function ChapterAlignment({
+export default function ChapterAligner({
   chapter,
   onSave,
   disabled,
 }: {
   chapter: Chapter
-  onSave: (alignment: Alignment) => void
+  onSave: (alignment: ChapterAlignment) => void
   disabled: boolean
 }): JSX.Element {
   const [alignment, setAlignment] = useState(chapter.alignment)
-  const handleChange = (lineIndex: number) => (manuscriptIndex: number) => (
-    manuscriptAlignment: readonly AlignmentToken[]
+  const handleChange = (lineIndex: number, manuscriptIndex: number) => (
+    manuscriptAlignment: ManuscriptAlignment
   ) =>
     setAlignment(
-      produce(alignment, (draft: Draft<Alignment>) => {
-        draft[lineIndex][manuscriptIndex] = castDraft(manuscriptAlignment)
-      })
+      alignment.setAlignment(lineIndex, manuscriptIndex, manuscriptAlignment)
     )
+
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
@@ -71,13 +96,13 @@ export default function ChapterAlignment({
         <section key={lineIndex}>
           <Reconstruction line={line} />
           {line.manuscripts.map((manuscript, manuscriptIndex) => (
-            <ManuscriptAlignment
+            <ManuscriptAligner
               key={manuscriptIndex}
               chapter={chapter}
               line={line}
               manuscriptLine={manuscript}
-              alignment={alignment[lineIndex][manuscriptIndex]}
-              onChange={handleChange(lineIndex)(manuscriptIndex)}
+              alignment={alignment.getAlignment(lineIndex, manuscriptIndex)}
+              onChange={handleChange(lineIndex, manuscriptIndex)}
             />
           ))}
         </section>

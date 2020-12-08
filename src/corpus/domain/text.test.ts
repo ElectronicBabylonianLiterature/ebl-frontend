@@ -15,6 +15,7 @@ import {
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
 import { text } from 'test-support/test-corpus-text'
+import { ChapterAlignment } from './alignment'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -50,6 +51,7 @@ const manuscrpitLineConfig: ManuscriptLine = {
       enclosureType: [],
     },
   ],
+  omittedWords: [],
 }
 
 const lineConfig: Line = {
@@ -135,29 +137,39 @@ describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
 
   test('alignment', () => {
-    expect(text.chapters[0].alignment).toEqual([
-      [
+    expect(text.chapters[0].alignment).toEqual(
+      new ChapterAlignment([
         [
           {
-            value: 'kur',
-            alignment: null,
-            variant: '',
-            language: '',
-            isNormalized: false,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: 'ra',
-            language: 'AKKADIAN',
-            isNormalized: true,
-          },
-          {
-            value: '...',
+            alignment: [
+              {
+                value: 'kur',
+                alignment: null,
+                variant: null,
+                isAlignable: true,
+              },
+              {
+                value: 'ra',
+                alignment: 1,
+                variant: {
+                  value: 'ra',
+                  language: 'AKKADIAN',
+                  isNormalized: true,
+                },
+                isAlignable: true,
+              },
+              {
+                value: '...',
+                alignment: null,
+                variant: null,
+                isAlignable: false,
+              },
+            ],
+            omittedWords: [],
           },
         ],
-      ],
-    ])
+      ])
+    )
   })
 })
 

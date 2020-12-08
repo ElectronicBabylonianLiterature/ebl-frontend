@@ -17,7 +17,7 @@ import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { Alignment } from 'corpus/domain/alignment'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 
 function ChapterTitle({
   text,
@@ -78,7 +78,7 @@ function ChapterView({
     setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
   }
 
-  const updateAlignment = (alignment: Alignment): void => {
+  const updateAlignment = (alignment: ChapterAlignment): void => {
     update(() =>
       textService.updateAlignment(
         text.category,

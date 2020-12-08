@@ -8,9 +8,10 @@ import {
   toLemmatizationDto,
   toManuscriptsDto,
   toLinesDto,
+  toAlignmentDto,
 } from './dtos'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
-import { Alignment } from 'corpus/domain/alignment'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -60,14 +61,14 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    alignment: Alignment
+    alignment: ChapterAlignment
   ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
-        { alignment: alignment }
+        toAlignmentDto(alignment)
       )
       .then(fromDto)
   }
