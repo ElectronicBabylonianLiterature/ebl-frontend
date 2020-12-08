@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import selectEvent from 'react-select-event'
 import { whenClicked, clickNth } from 'test-support/utils'
@@ -9,17 +9,14 @@ import ChapterAligner from './ChapterAligner'
 import { text } from 'test-support/test-corpus-text'
 import produce, { Draft } from 'immer'
 
-let element: RenderResult
 let onSave: jest.Mock<void, [ChapterAlignment]>
 let chapter: Chapter
 
 beforeEach(async () => {
   onSave = jest.fn()
   chapter = text.chapters[0]
-  element = render(
-    <ChapterAligner chapter={chapter} onSave={onSave} disabled={false} />
-  )
-  await element.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
+  render(<ChapterAligner chapter={chapter} onSave={onSave} disabled={false} />)
+  await screen.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
 })
 
 test('Align word', async () => {
@@ -59,12 +56,12 @@ test('Align word', async () => {
     ],
   ])
 
-  await element.findByText('kur')
-  clickNth(element, 'kur', 0)
-  userEvent.selectOptions(element.getByLabelText('Ideal word'), ['1'])
-  userEvent.type(element.getByLabelText('Variant'), 'variant')
-  userEvent.click(element.getByRole('button', { name: 'Set alignment' }))
-  await whenClicked(element, 'Save alignment')
+  await screen.findByText('kur')
+  clickNth(screen, 'kur', 0)
+  userEvent.selectOptions(screen.getByLabelText('Ideal word'), ['1'])
+  userEvent.type(screen.getByLabelText('Variant'), 'variant')
+  userEvent.click(screen.getByRole('button', { name: 'Set alignment' }))
+  await whenClicked(screen, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)
 })
@@ -78,10 +75,10 @@ test('Omit word', async () => {
   )
 
   await selectEvent.select(
-    await element.findByLabelText('Omitted words'),
+    await screen.findByLabelText('Omitted words'),
     'kur-kur'
   )
-  await whenClicked(element, 'Save alignment')
+  await whenClicked(screen, 'Save alignment')
     .expect(onSave)
     .toHaveBeenCalledWith(expected)
 })
