@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Route, Switch, match as Match } from 'react-router-dom'
+import { match as Match, Route, Switch } from 'react-router-dom'
 import { parse } from 'query-string'
 import _ from 'lodash'
 
@@ -18,8 +18,9 @@ import Corpus from 'corpus/ui/Corpus'
 import ChapterView from 'corpus/ui/ChapterView'
 import TextView from 'corpus/ui/TextView'
 import { Location } from 'history'
-import AnnotationView from './fragmentarium/ui/image-annotation/AnnotationView'
+import AnnotationView from 'fragmentarium/ui/image-annotation/AnnotationView'
 import { useAuthentication } from 'auth/Auth'
+import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 
 function parseStringParam(
   location: Location,
@@ -177,6 +178,19 @@ function App({
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
                 {...parseFragmentSearchParams(location)}
+              />
+            )}
+          />
+          <Route
+            path="/fragmentarium/:id/match"
+            render={({
+              match,
+            }: {
+              match: Match<{ id: string }>
+            }): ReactNode => (
+              <FragmentLineToVecRanking
+                fragmentService={fragmentService}
+                number={decodeURIComponent(match.params.id)}
               />
             )}
           />

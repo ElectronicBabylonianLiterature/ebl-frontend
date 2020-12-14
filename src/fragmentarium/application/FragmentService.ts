@@ -14,6 +14,7 @@ import { Text } from 'transliteration/domain/text'
 import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
 import LemmatizationFactory from './LemmatizationFactory'
+import { LineToVecRanking } from '../domain/lineToVecRanking'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -49,6 +50,7 @@ export interface FragmentRepository {
   fragmentPager(fragmentNumber: string): Promise<any>
   findLemmas(lemma: string, isNormalized: boolean): Promise<any>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
+  lineToVecRanking(number: string): Promise<LineToVecRanking>
 }
 
 export interface AnnotationRepository {
@@ -80,6 +82,10 @@ export class FragmentService {
 
   statistics() {
     return this.fragmentRepository.statistics()
+  }
+
+  lineToVecRanking(number: string): Promise<LineToVecRanking> {
+    return this.fragmentRepository.lineToVecRanking(number)
   }
 
   find(number: string): Promise<Fragment> {
