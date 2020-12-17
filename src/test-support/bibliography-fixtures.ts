@@ -55,7 +55,7 @@ factory.define('cslData', Object, {
 })
 
 factory.extend('cslData', 'cslDataWithContainerTitleShort', {
-  'container-title-short': factory.chance('sentence'),
+  'container-title-short': factory.chance('syllable'),
 })
 
 factory.define(

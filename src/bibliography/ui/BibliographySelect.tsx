@@ -2,8 +2,15 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/async'
 
-function createLabel(entry) {
-  return `${entry.primaryAuthor} ${entry.year} ${entry.title}`
+function createLabel(entry: BibliographyEntry): string {
+  const containerShort = entry.shortContainerTitle
+  const collectionNumber = entry.collectionNumber
+    ? ` ${entry.collectionNumber} `
+    : ' '
+  const label = `${entry.primaryAuthor} ${entry.year} ${entry.title}`
+  return containerShort
+    ? `${containerShort}${collectionNumber}= ${label}`
+    : label
 }
 
 function createOption(entry) {
