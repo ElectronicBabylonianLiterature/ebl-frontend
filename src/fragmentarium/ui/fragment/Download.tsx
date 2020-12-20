@@ -3,8 +3,8 @@ import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from './TeiExport'
-import { wordExport } from './WordExport'
 import WordService from 'dictionary/application/WordService'
+import WordDownloadButton from './WordDownloadButton'
 
 type Props = {
   fragment: Fragment
@@ -18,15 +18,8 @@ export default function Download({
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
   const [xml, setTei] = useState<string>()
-  const [docx, setWord] = useState<string>()
-  useEffect(() => {
-    async function wordBlobToUrl() {
-      const wordBlob = await wordExport(fragment, wordService)
-      const wordUrl = URL.createObjectURL(wordBlob)
-      setWord(wordUrl)
-    }
-    wordBlobToUrl()
 
+  useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
         type: 'text/plain;charset=UTF-8',
@@ -52,7 +45,6 @@ export default function Download({
       URL.revokeObjectURL(atfUrl)
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
-      // URL.revokeObjectURL(wordUrl)
     }
   }, [fragment, wordService])
   return (
@@ -66,13 +58,9 @@ export default function Download({
       <Dropdown.Item eventKey="1" disabled>
         Download as PDF
       </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="2"
-        href={docx}
-        download={`${fragment.number}.docx`}
-      >
-        Download as Word Document
-      </Dropdown.Item>
+      <WordDownloadButton fragment={fragment} wordService={wordService}>
+        Download as Word
+      </WordDownloadButton>
       <Dropdown.Item
         eventKey="3"
         href={atf}

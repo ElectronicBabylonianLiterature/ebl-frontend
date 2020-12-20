@@ -18,6 +18,7 @@ import {
   HyperlinkType,
   FootnoteReferenceRun,
 } from 'docx'
+import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
 import { Glossary } from 'transliteration/ui/Glossary'
@@ -32,29 +33,37 @@ export async function wordExport(
   fragment: Fragment,
   wordService: WordService
 ): Promise<Blob> {
-  const zeit0 = performance.now()
-  const table = $(renderToString(TransliterationLines({ text: fragment.text })))
-  const notes = $(
+  const tableHtml: JQuery = $(
+    renderToString(TransliterationLines({ text: fragment.text }))
+  )
+  const notesHtml: JQuery = $(
     renderToString(TransliterationNotes({ notes: fragment.text.notes }))
   )
-  const records = $(renderToString(Record({ record: fragment.uniqueRecord })))
+  const records: JQuery = $(
+    renderToString(Record({ record: fragment.uniqueRecord }))
+  )
 
-  const glossaryFactory = new GlossaryFactory(wordService)
-  const glossaryJsx = await glossaryFactory
+  const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
+  const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
     .then((glossaryData) => {
       return Glossary({ data: glossaryData })
     })
-  const glossaryHtml = $(renderToString(wrapWithMemoryRouter(glossaryJsx)))
+  const glossaryHtml: JQuery = $(
+    renderToString(wrapWithMemoryRouter(glossaryJsx))
+  )
 
-  const glossary =
+  const glossary: Paragraph | false =
     glossaryHtml.children().length > 1 ? getGlossary(glossaryHtml) : false
-  const footNotes = getFootNotes(notes)
-  const tableWithFootnotes = getMainTableWithFootnotes(table, footNotes)
+  const footNotes: Paragraph[] = getFootNotes(notesHtml)
+  const tableWithFootnotes: any = getMainTableWithFootnotes(
+    tableHtml,
+    footNotes
+  )
 
-  const headline = getHeadline(fragment)
+  const headline: Paragraph = getHeadline(fragment)
 
-  const doc = generateWordDocument(
+  const doc: Document = generateWordDocument(
     tableWithFootnotes.table,
     tableWithFootnotes.footNotes,
     glossary,
@@ -63,25 +72,24 @@ export async function wordExport(
     fragment
   )
 
-  const zeit1 = performance.now()
-
-  console.log('Der Aufruf dauerte ' + (zeit1 - zeit0) + ' Millisekunden.')
-
-  const wordBlob = await Packer.toBlob(doc).then((blob) => {
+  const wordBlob: Blob = await Packer.toBlob(doc).then((blob) => {
     return blob
   })
   return wordBlob
 }
 
-function wrapWithMemoryRouter(component) {
+function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
   return <MemoryRouter>{component}</MemoryRouter>
 }
 
-function getMainTableWithFootnotes(table, footNotesLines) {
+function getMainTableWithFootnotes(
+  table: JQuery,
+  footNotesLines: Paragraph[]
+): any {
   table.hide()
   $('body').append(table)
 
-  const tablelines = table.find('tr')
+  const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
 
   let footNotesCounter = 1
@@ -89,100 +97,111 @@ function getMainTableWithFootnotes(table, footNotesLines) {
   const rows: TableRow[] = []
   const footNotes: Paragraph[] = []
 
-  tablelines.each(function (i, el) {
-    const lineType = getLineTypeByHtml(el)
+  tablelines.each((i, el) => {
+    const lineType = getLineTypeByHtml($(el))
     const nextElement = $(el).next()
     const nextLineType = getLineTypeByHtml(nextElement)
+
+    if (lineType === 'emptyLine') return
 
     const tds: TableCell[] = []
 
     $(el)
       .find('td')
-      .each(function (i, el) {
+      .each((i, el) => {
         const runs: TextRun[] = []
 
         if (lineType === 'textLine') {
           $(el)
-            .find('span,sup')
-            .each(function (i, el) {
-              getTransliterationText(el, runs)
+            .find('span,em,sup')
+            .each((i, el) => {
+              getTransliterationText($(el), runs)
             })
-        } else if (
-          lineType === 'dollarAndAtLine' &&
-          $(el).hasClass('Transliteration__DollarAndAtLine')
-        ) {
-          runs.push(getTextRun($(el)))
-        } else if (
-          lineType !== 'emptyLine' &&
-          lineType !== 'rulingDollarLine'
-        ) {
+        } else if (lineType !== 'rulingDollarLine') {
           runs.push(getTextRun($(el)))
         }
 
-        if (isNoteCell(el)) {
+        if (isNoteCell($(el))) {
           runs.push(new FootnoteReferenceRun(footNotesCounter))
           footNotes.push(footNotesLines[footNotesCounter - 1])
           footNotesCounter++
         }
 
-        const para = [
+        const para: Paragraph[] = [
           new Paragraph({
             children: runs,
             style: 'wellSpaced',
             heading: HeadingLevel.HEADING_1,
           }),
         ]
+
+        const colspan: string | undefined = $(el).is('[colspan]')
+          ? $(el).attr('colspan')
+          : '1'
+        const colspanInt: number = colspan ? parseInt(colspan) : 1
+
         tds.push(
-          new TableCell({
-            children: para,
-            borders: {
-              top: {
-                style: getBorderStyle(el),
-                size: 0,
-                color: '000000',
-              },
-              bottom: getBottomStyle(nextLineType, nextElement, el),
-              left: {
-                style: getBorderStyle(el),
-                size: 0,
-                color: '000000',
-              },
-              right: {
-                style: getBorderStyle(el),
-                size: 0,
-                color: '000000',
-              },
-            },
-          })
+          getFormatedTableCell(para, nextLineType, nextElement, colspanInt)
         )
       }) //td
-
     rows.push(new TableRow({ children: tds }))
   }) //tr
 
   table.remove()
-  const wordTable =
+  const wordTable: Table | false =
     rows.length > 0
       ? new Table({
           rows: rows,
           width: { size: 100, type: WidthType.PERCENTAGE },
         })
-      : {}
+      : false
   return { table: wordTable, footNotes: footNotes }
 }
 
-function getFootNotes(footNotesHtml) {
+function getFormatedTableCell(
+  para: Paragraph[],
+  nextLineType: string,
+  nextElement: JQuery,
+  colspan: number
+) {
+  return new TableCell({
+    children: para,
+    columnSpan: colspan,
+    borders: {
+      top: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+      bottom: getBottomStyle(nextLineType, nextElement),
+      left: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+      right: {
+        style: BorderStyle.NONE,
+        size: 0,
+        color: '000000',
+      },
+    },
+  })
+}
+
+function getFootNotes(footNotesHtml): Paragraph[] {
   footNotesHtml.hide()
   $('body').append(footNotesHtml)
 
+  fixHtmlParseOrder(footNotesHtml)
+
   const footNotes: Paragraph[] = []
 
-  footNotesHtml.find('li').each(function (i, el) {
+  footNotesHtml.find('li').each((i, el) => {
     const runs: TextRun[] = []
     $(el)
-      .find('span,em')
-      .each(function (i, el) {
-        getTransliterationText(el, runs)
+      .find('span,em,sup')
+      .each((i, el) => {
+        getTransliterationText($(el), runs)
       })
     footNotes.push(new Paragraph({ children: runs }))
   })
@@ -191,14 +210,15 @@ function getFootNotes(footNotesHtml) {
   return footNotes
 }
 
-function getGlossary(glossaryHtml) {
+function getGlossary(glossaryHtml): Paragraph {
   glossaryHtml.hide()
   $('body').append(glossaryHtml)
 
   const runs: TextRun[] = []
-  const divs = glossaryHtml.find('div')
+  const divs: JQuery = glossaryHtml.find('div')
+  fixHtmlParseOrder(divs)
 
-  const headline = glossaryHtml.find('h4')
+  const headline: JQuery = glossaryHtml.find('h4')
 
   runs.push(
     new TextRun({
@@ -209,18 +229,18 @@ function getGlossary(glossaryHtml) {
 
   runs.push(new TextRun('').break())
 
-  divs.each(function (i, el) {
+  divs.each((i, el) => {
     $(el)
       .contents()
-      .each(function (i, el) {
+      .each((i, el) => {
         if ($(el).is('a')) runs.push(getTextRun($(el).find('span')))
         else if ($(el)[0].nodeType === 3)
           runs.push(new TextRun({ text: $(el).text(), size: 24 }))
         else if ($(el).is('span.Transliteration')) {
           $(el)
             .find('span,sup')
-            .each(function (i, el) {
-              getTransliterationText(el, runs)
+            .each((i, el) => {
+              getTransliterationText($(el), runs)
             })
         } else if ($(el).is('sup')) runs.push(getTextRun($(el)))
       })
@@ -237,40 +257,33 @@ function getGlossary(glossaryHtml) {
   })
 }
 
-function getTransliterationText(el, runs) {
+function getTransliterationText(el: JQuery, runs: TextRun[]): void {
   if (
-    ($(el).children().length === 0 &&
-      $(el).text().trim().length &&
-      $(el).parent().css('display') !== 'none') ||
-    $(el).hasClass('Transliteration__wordSeparator')
+    (el.children().length === 0 &&
+      el.text().trim().length &&
+      el.parent().css('display') !== 'none') ||
+    el.hasClass('Transliteration__wordSeparator')
   ) {
     runs.push(getTextRun($(el)))
   }
 }
 
-function fixHtmlParseOrder(tablelines) {
-  tablelines
-    .find('span')
-    .filter(function (i, el) {
+function fixHtmlParseOrder(inputElements: any): void {
+  inputElements
+    .find('span,em,sup')
+    .filter((i, el) => {
       return $(el).children().length > 0
     })
     .contents()
-    .filter(function (i, el) {
+    .filter((i, el) => {
       return $(el)[0].nodeType === 3 && $.trim($(el)[0].textContent).length
     })
     .wrap('<span></span>')
 }
 
-function getBorderStyle(el) {
-  // return (isNoteCell(el)) ? BorderStyle.SINGLE : BorderStyle.NONE
-  return BorderStyle.NONE
-}
-
-function getBottomStyle(nextLineType, nextElement, el) {
-  // if(nextLineType==="rulingDollarLine" || isNoteCell(el)){
-
+function getBottomStyle(nextLineType: string, nextElement: JQuery): any {
   if (nextLineType === 'rulingDollarLine') {
-    const borderType = getUnderLineType(nextElement)
+    const borderType: BorderStyle = getUnderLineType(nextElement)
 
     return {
       style: borderType,
@@ -285,46 +298,47 @@ function getBottomStyle(nextLineType, nextElement, el) {
     }
 }
 
-function getUnderLineType(element) {
-  const num = element.find('div').length
+function getUnderLineType(element: JQuery): BorderStyle {
+  const num: number = element.find('div').length
   if (num === 3) return BorderStyle.TRIPLE
   else if (num === 2) return BorderStyle.DOUBLE
   else return BorderStyle.SINGLE
 }
 
-function getLineTypeByHtml(el) {
-  if ($(el).children().first('td').hasClass('Transliteration__TextLine'))
+function getLineTypeByHtml(element: JQuery): string {
+  if (element.children().first().hasClass('Transliteration__TextLine'))
     return 'textLine'
-  else if ($(el).find('div').hasClass('Transliteration__ruling'))
+  else if (element.find('div').hasClass('Transliteration__ruling'))
     return 'rulingDollarLine'
-  else if ($(el).text().length < 2) return 'emptyLine'
-  else if ($(el).find('.Transliteration__DollarAndAtLine').length > 0)
+  else if (element.text().length < 2) return 'emptyLine'
+  else if (element.find('.Transliteration__DollarAndAtLine').length > 0)
     return 'dollarAndAtLine'
   else return 'otherLine'
 }
 
-function isNoteCell(el) {
-  return $(el).find('.Transliteration__NoteLink').length > 0 ? true : false
+function isNoteCell(element: JQuery) {
+  return element.find('.Transliteration__NoteLink').length > 0 ? true : false
 }
 
 function generateWordDocument(
-  table,
-  footNotes,
-  glossary,
-  headline,
-  records,
-  fragment
+  table: Table,
+  footNotes: Paragraph[],
+  glossary: Paragraph | false,
+  headline: Paragraph,
+  records: JQuery,
+  fragment: Fragment
 ) {
-  const doc = new Document({
+  const doc: Document = new Document({
     styles: getStyles(),
     footnotes: footNotes,
     hyperlinks: getHyperLink(fragment),
   })
 
-  const headLink = getHyperLinkParagraph()
-  const credit = getCreditForHead(records)
+  const headLink: Paragraph = getHyperLinkParagraph()
+  const credit: Paragraph = getCreditForHead(records)
 
-  const docParts = [headline, headLink, credit, table]
+  const docParts: any[] = [headline, headLink, credit]
+  if (table) docParts.push(table)
   if (glossary) docParts.push(glossary)
 
   doc.addSection({
@@ -334,14 +348,14 @@ function generateWordDocument(
   return doc
 }
 
-function getHyperLinkParagraph() {
+function getHyperLinkParagraph(): Paragraph {
   return new Paragraph({
     children: [new HyperlinkRef('headLink')],
     alignment: AlignmentType.CENTER,
   })
 }
 
-function getHyperLink(fragment) {
+function getHyperLink(fragment: Fragment) {
   return {
     headLink: {
       link: 'https://www.ebabylon.org/fragmentarium/' + fragment.number,
@@ -351,14 +365,14 @@ function getHyperLink(fragment) {
   }
 }
 
-function getHeadline(fragment) {
+function getHeadline(fragment: Fragment): Paragraph {
   return new Paragraph({
     children: [new TextRun({ text: fragment.number, size: 32, bold: true })],
     alignment: AlignmentType.CENTER,
   })
 }
 
-function getCreditForHead(records) {
+function getCreditForHead(records: JQuery): Paragraph {
   return new Paragraph({
     children: [
       new TextRun({ text: getCredit(records), size: 16 }).break(),
@@ -368,19 +382,19 @@ function getCreditForHead(records) {
   })
 }
 
-function getCredit(records) {
-  console.log(records)
+function getCredit(records: JQuery) {
   return (
-    'Credit: Electronic Babylonian Literature Project, ' +
+    'Credit: Electronic Babylonian Literature Project; ' +
     records
       .find('.Record__entry')
       .map((i, el) => $(el).text() + ', ')
       .get()
       .join('')
+      .slice(0, -2)
   )
 }
 
-function getStyles() {
+function getStyles(): any {
   return {
     paragraphStyles: [
       {
@@ -396,13 +410,16 @@ function getStyles() {
   }
 }
 
-function getTextRun(el) {
-  const italics = el.css('font-style') === 'italic' ? true : false
-  const color = el.css('color') ? rgbHex(el.css('color')) : undefined
-  const text = el.text()
-  const superScript = el.is('sup') ? true : false
-  const smallCaps = el.css('font-variant') === 'small-caps' ? true : false
-  const size = el.css('font-variant') === 'small-caps' ? 16 : 24
+function getTextRun(el: any) {
+  const italics: boolean = el.css('font-style') === 'italic' ? true : false
+  const color: string | undefined = el.css('color')
+    ? rgbHex(el.css('color'))
+    : undefined
+  const text: string = el.text()
+  const superScript: boolean = el.is('sup') ? true : false
+  const smallCaps: boolean =
+    el.css('font-variant') === 'small-caps' ? true : false
+  const size: number = el.css('font-variant') === 'small-caps' ? 16 : 24
 
   return new TextRun({
     text: text,
