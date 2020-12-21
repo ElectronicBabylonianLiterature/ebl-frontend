@@ -7,9 +7,9 @@ import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
 
 type Props = {
-  children?: React.ReactNode
-  fragment?: Fragment
-  wordService?: WordService
+  children: React.ReactNode
+  fragment: Fragment
+  wordService: WordService
 }
 
 export default function WordDownloadButton({
@@ -22,6 +22,7 @@ export default function WordDownloadButton({
   const handleClick = (event) => {
     setIsLoading(true)
     saveWordBlob(fragment, wordService).then((blob) => {
+      saveAs(blob, `${fragment.number}.docx`)
       setIsLoading(false)
     })
   }
@@ -35,7 +36,10 @@ export default function WordDownloadButton({
   )
 }
 
-async function saveWordBlob(fragment, wordService) {
+async function saveWordBlob(
+  fragment: Fragment,
+  wordService: WordService
+): Promise<Blob> {
   const wordBlob = await wordExport(fragment, wordService)
-  saveAs(wordBlob, `${fragment.number}.docx`)
+  return wordBlob
 }
