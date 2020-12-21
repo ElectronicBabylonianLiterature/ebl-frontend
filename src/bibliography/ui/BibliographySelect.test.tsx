@@ -25,10 +25,7 @@ describe('no container short, no collection number', () => {
   })
 
   it('Calls onChange when selecting an entry', async () => {
-    await userEvent.type(
-      screen.getByLabelText('label'),
-      expectedLabel(searchEntry)
-    )
+    userEvent.type(screen.getByLabelText('label'), expectedLabel(searchEntry))
     await selectEvent.select(
       screen.getByLabelText('label'),
       expectedLabel(searchEntry)

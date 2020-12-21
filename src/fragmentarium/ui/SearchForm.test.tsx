@@ -70,13 +70,13 @@ beforeEach(async () => {
 describe('User Input', () => {
   it('Displys User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'
-    await userEvent.type(screen.getByLabelText('Number'), userInput)
+    userEvent.type(screen.getByLabelText('Number'), userInput)
     expect(screen.getByLabelText('Number')).toHaveValue(userInput)
   })
 
   it('Displays User Input in TranslierationSearchForm', async () => {
     const userInput = 'ma i-ra\nka li'
-    await userEvent.type(screen.getByLabelText('Transliteration'), userInput)
+    userEvent.type(screen.getByLabelText('Transliteration'), userInput)
     await waitFor(() =>
       expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
         userInput.replace('\n', ' ')
@@ -86,7 +86,7 @@ describe('User Input', () => {
 
   it('Displays User Input in BibliographySelect', async () => {
     const userInput = 'Borger'
-    await userEvent.type(
+    userEvent.type(
       screen.getByLabelText('Select bibliography reference'),
       userInput
     )
@@ -101,10 +101,7 @@ describe('User Input', () => {
 describe('Click Search', () => {
   it('Search Transliteration', async () => {
     const transliteration = 'ma i-ra'
-    await userEvent.type(
-      screen.getByLabelText('Transliteration'),
-      transliteration
-    )
+    userEvent.type(screen.getByLabelText('Transliteration'), transliteration)
     userEvent.click(screen.getByText('Search'))
     await waitFor(() =>
       expect(history.push).toHaveBeenCalledWith(
