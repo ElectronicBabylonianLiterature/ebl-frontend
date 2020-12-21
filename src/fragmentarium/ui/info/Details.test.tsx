@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import {
   render,
   screen,
-  act,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import { factory } from 'factory-girl'

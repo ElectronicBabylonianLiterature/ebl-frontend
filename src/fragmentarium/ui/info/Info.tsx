@@ -13,7 +13,7 @@ import './Info.css'
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
-  onSave: (updateGenres: any) => any
+  onSave: (fragment: Promise<Fragment>) => void
 }
 export default function Info({
   fragment,

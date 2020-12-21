@@ -78,7 +78,7 @@ function Accession({ fragment }: Props) {
 type DetailsProps = {
   fragment: Fragment
   updateGenres: (genres: Genres) => void
-  fragmentService: any
+  fragmentService
 }
 
 function Details({

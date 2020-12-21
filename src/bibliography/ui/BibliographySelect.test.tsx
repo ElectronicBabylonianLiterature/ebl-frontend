@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
-import BibliographySelect from './BibliographySelect'
+import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -89,7 +89,7 @@ function renderBibliographySelect(): void {
     <>
       <BibliographySelect
         isClearable={false}
-        aria-label="label"
+        ariaLabel="label"
         searchBibliography={searchBibliography}
         value={entry}
         onChange={onChange}

@@ -11,7 +11,7 @@ type Props = {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference>
 }
 
-function UncuratedReferencesHelp() {
+function UncuratedReferencesHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('UncuratedReferencesHelp-')}>
       <Popover.Content>
@@ -26,7 +26,9 @@ function UncuratedReferencesHelp() {
   )
 }
 
-function UncuratedReferencesPopOver({ uncuratedReferences }: Props) {
+function UncuratedReferencesPopOver({
+  uncuratedReferences,
+}: Props): JSX.Element {
   return (
     <Popover
       id={_.uniqueId('UncuratedReferencesList-')}

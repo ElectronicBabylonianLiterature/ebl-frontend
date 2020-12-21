@@ -5,9 +5,20 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import SearchForms from './SearchForm'
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory, MemoryHistory } from 'history'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import userEvent from '@testing-library/user-event'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import MemorySession from 'auth/Session'
+
+jest.mock('fragmentarium/application/FragmentService')
+
+const fragmentService = new (FragmentService as jest.Mock<FragmentService>)()
+const fragmentSearchService = new (FragmentSearchService as jest.Mock<
+  FragmentSearchService
+>)()
+const session = new (MemorySession as jest.Mock<MemorySession>)()
 
 let number: string
 let id: string
@@ -16,16 +27,8 @@ let primaryAuthor: string
 let year: string
 let pages: string
 let transliteration: string
-let fragmentService: {
-  searchBibliography: jest.Mock
-}
-let fragmentSearchService: {
-  random: jest.Mock
-  interesting: jest.Mock
-}
 
-let session
-let history
+let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
 async function renderSearchForms() {
@@ -53,22 +56,15 @@ async function renderSearchForms() {
 
 beforeEach(async () => {
   searchEntry = await factory.build('bibliographyEntry')
-  fragmentService = {
-    searchBibliography: jest.fn(),
-  }
-  fragmentService.searchBibliography.mockReturnValue(
-    Promise.resolve([searchEntry])
-  )
-  fragmentSearchService = {
-    random: jest.fn(),
-    interesting: jest.fn(),
-  }
-  session = {
-    isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: jest.fn(),
-  }
-  session.isAllowedToReadFragments.mockReturnValue(true)
-  session.isAllowedToTransliterateFragments.mockReturnValue(true)
+  fragmentService.searchBibliography = jest
+    .fn()
+    .mockReturnValue(Promise.resolve([searchEntry]))
+
+  fragmentSearchService.random = jest.fn()
+  fragmentSearchService.interesting = jest.fn()
+
+  session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
+  session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(true)
   await renderSearchForms()
 })
 describe('User Input', () => {
