@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  act,
   render,
   screen,
   waitFor,
@@ -49,14 +50,20 @@ beforeEach(async () => {
 describe('User Input', () => {
   it('Select genre & delete selected genre', async () => {
     userEvent.click(screen.getByRole('button'))
-    await selectEvent.select(
+
+    selectEvent.select(
       screen.getByText('Select...'),
       'ARCHIVAL ➝ Administrative'
     )
+    await screen.findByText('ARCHIVAL ➝ Administrative')
 
     await waitFor(() => expect(updateGenres).toHaveBeenCalledTimes(1))
 
-    userEvent.click(screen.getByLabelText('Delete genre button'))
+    act(() => userEvent.click(screen.getByLabelText('Delete genre button')))
+
+    await waitForElementToBeRemoved(() =>
+      screen.getByText('ARCHIVAL ➝ Administrative')
+    )
 
     expect(
       screen.queryByLabelText('ARCHIVAL ➝ Administrative')
@@ -65,18 +72,23 @@ describe('User Input', () => {
   it('click Uncertain Checkbox', async () => {
     userEvent.click(screen.getByRole('button'))
 
-    await selectEvent.select(
+    selectEvent.select(
       screen.getByText('Select...'),
       'ARCHIVAL ➝ Administrative'
     )
+    await screen.findByText('ARCHIVAL ➝ Administrative')
 
     expect(updateGenres).toHaveBeenCalled()
+
     userEvent.click(screen.getByRole('checkbox'))
     expect(updateGenres).toHaveBeenCalled()
 
     await screen.findByText('ARCHIVAL ➝ Administrative (?)')
 
-    userEvent.click(screen.getByLabelText('Delete genre button'))
+    act(() => userEvent.click(screen.getByLabelText('Delete genre button')))
+    await waitForElementToBeRemoved(() =>
+      screen.getByText('ARCHIVAL ➝ Administrative')
+    )
 
     expect(
       screen.queryByLabelText('ARCHIVAL ➝ Administrative (?)')
