@@ -42,12 +42,16 @@ function UncuratedReferencesPopOver({
   )
 }
 
-function createText(uncuratedReferences: ReadonlyArray<UncuratedReference>) {
+function createText(
+  uncuratedReferences: ReadonlyArray<UncuratedReference>
+): string {
   const count = uncuratedReferences.length
   return count === 1 ? '1 uncurated reference' : `${count} uncurated references`
 }
 
-export default function UncuratedReferences({ uncuratedReferences }: Props) {
+export default function UncuratedReferences({
+  uncuratedReferences,
+}: Props): JSX.Element {
   return (
     <p>
       <HelpTrigger overlay={UncuratedReferencesHelp()} />
