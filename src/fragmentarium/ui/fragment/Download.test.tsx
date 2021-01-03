@@ -8,7 +8,8 @@ import WordService from 'dictionary/application/WordService'
 const atfUrl = 'ATF URL mock'
 const jsonUrl = 'JSON URL mock'
 const teiUrl = 'TEI URL mock'
-const mockWordService = WordService as jest.Mock<WordService>
+const MockWordService = WordService as jest.Mock<WordService>
+const wordServiceMock = new MockWordService()
 let fragment: Fragment
 let element: RenderResult
 
@@ -21,7 +22,7 @@ beforeEach(async () => {
   fragment = await factory.build('fragment')
   await act(async () => {
     element = render(
-      <Download fragment={fragment} wordService={mockWordService} />
+      <Download fragment={fragment} wordService={wordServiceMock} />
     )
   })
   await act(async () => {
