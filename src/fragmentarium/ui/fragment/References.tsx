@@ -30,8 +30,6 @@ function References({
         value={references}
         onChange={onChange}
         searchBibliography={searchBibliography}
-        collapsed={false}
-        label={''}
       />
       <Button type="submit" variant="primary" disabled={disabled}>
         Save
