@@ -4,12 +4,14 @@ import setUpReferences from 'test-support/setUpReferences'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
-const bibliographyService = {
-  find: jest.fn(),
-}
+const bibliographyService = new (BibliographyService as jest.Mock<
+  BibliographyService
+>)() as jest.Mocked<BibliographyService>
+bibliographyService.find = jest.fn()
 
-const injector = new ReferenceInjector(bibliographyService as any)
+const injector = new ReferenceInjector(bibliographyService)
 
 let promise: Promise<Fragment>
 let expectedReferences: Reference[]

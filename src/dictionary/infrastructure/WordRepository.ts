@@ -1,29 +1,32 @@
+import ApiClient from 'http/ApiClient'
+import Word from 'dictionary/domain/Word'
+
 class WordRepository {
   private readonly apiClient
 
-  constructor(apiClient) {
+  constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
   }
 
-  find(id) {
+  find(id: string): Word {
     return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
-  search(query) {
+  search(query: string): Word {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
       true
     )
   }
 
-  searchLemma(lemma) {
+  searchLemma(lemma: string): Word {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
       true
     )
   }
 
-  update(word) {
+  update(word: { _id: string }) {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
       word

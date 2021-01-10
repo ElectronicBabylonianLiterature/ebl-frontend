@@ -1,10 +1,12 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import { factory } from 'factory-girl'
+import Promise from 'bluebird'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
-export default async function setUpReferences(bibliographyService: {
-  find: jest.Mock
-}): Promise<{
+export default async function setUpReferences(
+  bibliographyService: jest.Mocked<BibliographyService>
+): Promise<{
   entries: readonly BibliographyEntry[]
   references: readonly Record<string, unknown>[]
   expectedReferences: Reference[]

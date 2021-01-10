@@ -36,6 +36,6 @@ function SpecialCharactersHelp() {
   )
 }
 
-export default function SpecialCharactersHelpTrigger() {
+export default function SpecialCharactersHelpTrigger(): JSX.Element {
   return <HelpTrigger overlay={SpecialCharactersHelp()} />
 }

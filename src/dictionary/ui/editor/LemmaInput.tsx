@@ -7,7 +7,7 @@ class LemmaInput extends Component<{ value; onChange }> {
     return _.has(this.props.value, 'attested')
   }
 
-  lemmaFormControl = () => {
+  lemmaFormControl = (): JSX.Element => {
     return (
       <FormControl
         type="text"
@@ -17,7 +17,7 @@ class LemmaInput extends Component<{ value; onChange }> {
     )
   }
 
-  lemmaChanged = (event) => {
+  lemmaChanged = (event): void => {
     this.props.onChange({
       ...this.props.value,
       lemma: event.target.value.split(' '),
@@ -31,7 +31,7 @@ class LemmaInput extends Component<{ value; onChange }> {
     })
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <FormGroup controlId={_.uniqueId('LemmaInput-')}>
         <FormLabel>Lemma</FormLabel>

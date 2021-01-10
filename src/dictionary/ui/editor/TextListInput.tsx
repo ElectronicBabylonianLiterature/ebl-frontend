@@ -5,7 +5,7 @@ import TextInput from './TextInput'
 import List from 'common/List'
 
 class ListInput extends Component<{ value; onChange }> {
-  render() {
+  render(): JSX.Element {
     return (
       <FormGroup>
         <List

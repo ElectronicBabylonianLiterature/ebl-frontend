@@ -15,6 +15,9 @@ import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
 import LemmatizationFactory from './LemmatizationFactory'
 import { LineToVecRanking } from '../domain/lineToVecRanking'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -29,7 +32,7 @@ export interface ImageRepository {
 }
 
 export interface FragmentRepository {
-  statistics(): Promise<any>
+  statistics(): Promise<{ transliteratedFragments: number; lines: number }>
   find(number: string): Promise<Fragment>
   fetchGenres(): Promise<string[][]>
   updateGenres(number: string, genres: Genres): Promise<Fragment>
@@ -70,8 +73,8 @@ export class FragmentService {
   constructor(
     fragmentRepository: FragmentRepository & AnnotationRepository,
     imageRepository: ImageRepository,
-    wordRepository: any,
-    bibliographyService: any
+    wordRepository: WordRepository,
+    bibliographyService: BibliographyService
   ) {
     this.fragmentRepository = fragmentRepository
     this.imageRepository = imageRepository
@@ -80,7 +83,7 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics() {
+  statistics(): { transliteratedFragments: number; lines: number } {
     return this.fragmentRepository.statistics()
   }
 
@@ -169,11 +172,11 @@ export class FragmentService {
       : this.wordRepository.searchLemma(lemma)
   }
 
-  searchBibliography(query: string) {
+  searchBibliography(query: string): Promise<readonly BibliographyEntry[]> {
     return this.bibliographyService.search(query)
   }
 
-  fetchCdliInfo(fragment: Fragment) {
+  fetchCdliInfo(fragment: Fragment): Promise<CdliInfo> {
     return fragment.cdliNumber
       ? this.fragmentRepository.fetchCdliInfo(fragment.cdliNumber)
       : Promise.resolve({

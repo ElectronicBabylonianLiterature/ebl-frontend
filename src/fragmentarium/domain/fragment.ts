@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import * as Moment from 'moment'
 import { extendMoment, DateRange } from 'moment-range'
-import produce, { Draft, immerable } from 'immer'
+import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
@@ -107,7 +107,7 @@ export class Fragment {
   readonly text: Text
   readonly notes: string
   readonly museum: Museum
-  readonly references: ReadonlyArray<any>
+  readonly references: ReadonlyArray<Reference>
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
   readonly atf: string
   readonly hasPhoto: boolean
@@ -150,7 +150,7 @@ export class Fragment {
     text: Text
     notes: string
     museum: Museum
-    references: ReadonlyArray<any>
+    references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
@@ -197,9 +197,9 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: Array<Reference>): Fragment {
+  setReferences(references: ReadonlyArray<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
-      draft.references = references
+      draft.references = castDraft(references)
     })
   }
 
