@@ -7,7 +7,11 @@ import HelpTrigger from 'common/HelpTrigger'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import NotesHelp from './NotesHelp'
 
-export default function ReferenceForm({ value, onChange, searchBibliography }) {
+export default function ReferenceForm({
+  value,
+  onChange,
+  searchBibliography,
+}): JSX.Element {
   const id = _.uniqueId('ReferenceForm-')
   const documentLabelId = _.uniqueId('ReferenceForm-Document-')
 

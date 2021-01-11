@@ -54,7 +54,7 @@ beforeEach(async () => {
     next: { fragmentNumber: 'K.00001' },
     previous: { fragmentNumber: 'J.99999' },
   }
-  wordService = new WordService(null)
+  wordService = new (WordService as jest.Mock<WordService>)()
   const word = await factory.build('word')
   ;(wordService.find as jest.Mock).mockReturnValue(Promise.resolve(word))
   fragmentService = {

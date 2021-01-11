@@ -80,7 +80,7 @@ function commonTests() {
 }
 
 function renderList() {
-  function TestFormControl({ onChange, value }) {
+  function TestFormControl({ onChange, value }): JSX.Element {
     return (
       <FormControl
         type="text"

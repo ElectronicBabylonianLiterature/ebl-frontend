@@ -2,57 +2,46 @@ import React, { Component } from 'react'
 import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-class LemmaInput extends Component<{ value; onChange }> {
-  get hasAttested() {
-    return _.has(this.props.value, 'attested')
-  }
-
-  lemmaFormControl = (): JSX.Element => {
-    return (
-      <FormControl
-        type="text"
-        value={this.props.value.lemma.join(' ')}
-        onChange={this.lemmaChanged}
-      />
-    )
-  }
-
-  lemmaChanged = (event): void => {
-    this.props.onChange({
-      ...this.props.value,
+export default function LemmaInput({ value, onChange }): JSX.Element {
+  const lemmaChanged = (event): void => {
+    onChange({
+      ...value,
       lemma: event.target.value.split(' '),
     })
   }
 
-  attestedChanged = (event) => {
-    this.props.onChange({
-      ...this.props.value,
+  const LemmaFormControl = () => (
+    <FormControl
+      type="text"
+      value={value.lemma.join(' ')}
+      onChange={lemmaChanged}
+    />
+  )
+
+  const attestedChanged = (event): void => {
+    onChange({
+      ...value,
       attested: event.target.checked,
     })
   }
-
-  render(): JSX.Element {
-    return (
-      <FormGroup controlId={_.uniqueId('LemmaInput-')}>
-        <FormLabel>Lemma</FormLabel>
-        {_.has(this.props.value, 'attested') ? (
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Checkbox
-                type="checkbox"
-                aria-label="attested"
-                checked={this.props.value.attested}
-                onChange={this.attestedChanged}
-              />
-            </InputGroup.Prepend>
-            <this.lemmaFormControl />
-          </InputGroup>
-        ) : (
-          <this.lemmaFormControl />
-        )}
-      </FormGroup>
-    )
-  }
+  return (
+    <FormGroup controlId={_.uniqueId('LemmaInput-')}>
+      <FormLabel>Lemma</FormLabel>
+      {_.has(value, 'attested') ? (
+        <InputGroup>
+          <InputGroup.Prepend>
+            <InputGroup.Checkbox
+              type="checkbox"
+              aria-label="attested"
+              checked={value.attested}
+              onChange={attestedChanged}
+            />
+          </InputGroup.Prepend>
+          <LemmaFormControl />
+        </InputGroup>
+      ) : (
+        <LemmaFormControl />
+      )}
+    </FormGroup>
+  )
 }
-
-export default LemmaInput

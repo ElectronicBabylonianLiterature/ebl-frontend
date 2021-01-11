@@ -1,4 +1,4 @@
-import Bluebird from 'bluebird'
+import Promise from 'bluebird'
 import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -12,16 +12,17 @@ import {
 } from './dtos'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import ApiClient from 'http/ApiClient'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
   ChapterLemmatization
 > {
-  createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
-    return Bluebird.mapSeries(chapter.lines, (line) =>
-      Bluebird.all([
+  createLemmatization(chapter: Chapter): Promise<ChapterLemmatization> {
+    return Promise.mapSeries(chapter.lines, (line) =>
+      Promise.all([
         this.createLemmatizationLine(line.reconstructionTokens),
-        Bluebird.mapSeries(line.manuscripts, (manuscript) =>
+        Promise.mapSeries(line.manuscripts, (manuscript) =>
           this.createLemmatizationLine(manuscript.atfTokens)
         ),
       ])
@@ -30,12 +31,12 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
 }
 
 export default class TextService {
-  private readonly apiClient
+  private readonly apiClient: ApiClient
   private readonly wordService: WordService
   private readonly fragmentService: FragmentService
 
   constructor(
-    apiClient,
+    apiClient: ApiClient,
     fragmentService: FragmentService,
     wordService: WordService
   ) {
@@ -44,7 +45,7 @@ export default class TextService {
     this.wordService = wordService
   }
 
-  find(category: number, index: number): Bluebird<Text> {
+  find(category: string, index: string): Promise<Text> {
     return this.apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
@@ -53,7 +54,7 @@ export default class TextService {
       .then(fromDto)
   }
 
-  list(): Bluebird<TextInfo[]> {
+  list(): Promise<TextInfo[]> {
     return this.apiClient.fetchJson('/texts', false)
   }
 
@@ -62,7 +63,7 @@ export default class TextService {
     index: number,
     chapterIndex: number,
     alignment: ChapterAlignment
-  ): Bluebird<Text> {
+  ): Promise<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -78,7 +79,7 @@ export default class TextService {
     index: number,
     chapterIndex: number,
     lemmatization: ChapterLemmatization
-  ): Bluebird<Text> {
+  ): Promise<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -94,7 +95,7 @@ export default class TextService {
     index: number,
     chapterIndex: number,
     manuscripts: readonly Manuscript[]
-  ): Bluebird<Text> {
+  ): Promise<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -110,7 +111,7 @@ export default class TextService {
     index: number,
     chapterIndex: number,
     lines: readonly Line[]
-  ): Bluebird<Text> {
+  ): Promise<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
@@ -121,7 +122,7 @@ export default class TextService {
       .then(fromDto)
   }
 
-  findSuggestions(chapter: Chapter): Bluebird<ChapterLemmatization> {
+  findSuggestions(chapter: Chapter): Promise<ChapterLemmatization> {
     return new CorpusLemmatizationFactory(
       this.fragmentService,
       this.wordService

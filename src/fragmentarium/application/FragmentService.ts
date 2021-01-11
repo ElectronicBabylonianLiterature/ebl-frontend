@@ -18,6 +18,8 @@ import { LineToVecRanking } from '../domain/lineToVecRanking'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
+import Word from 'dictionary/domain/Word'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -49,9 +51,9 @@ export interface FragmentRepository {
     number: string,
     references: ReadonlyArray<Reference>
   ): Promise<Fragment>
-  folioPager(folio: Folio, fragmentNumber: string): Promise<any>
-  fragmentPager(fragmentNumber: string): Promise<any>
-  findLemmas(lemma: string, isNormalized: boolean): Promise<any>
+  folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData>
+  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData>
+  findLemmas(lemma: string, isNormalized: boolean): Promise<Word[][]>
   fetchCdliInfo(cdliNumber: string): Promise<CdliInfo>
   lineToVecRanking(number: string): Promise<LineToVecRanking>
 }
@@ -144,29 +146,29 @@ export class FragmentService {
       )
   }
 
-  findFolio(folio: Folio) {
+  findFolio(folio: Folio): Promise<Blob> {
     return this.imageRepository.findFolio(folio)
   }
 
-  findImage(fileName: string) {
+  findImage(fileName: string): Promise<Blob> {
     return this.imageRepository.find(fileName)
   }
 
-  findPhoto(fragment: Fragment) {
+  findPhoto(fragment: Fragment): Promise<Blob> {
     return fragment.hasPhoto
       ? this.imageRepository.findPhoto(fragment.number)
       : Promise.resolve(null)
   }
 
-  folioPager(folio: Folio, fragmentNumber: string) {
+  folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData> {
     return this.fragmentRepository.folioPager(folio, fragmentNumber)
   }
 
-  fragmentPager(fragmentNumber: string) {
+  fragmentPager(fragmentNumber: string): Promise<FragmentPagerData> {
     return this.fragmentRepository.fragmentPager(fragmentNumber)
   }
 
-  searchLemma(lemma: string) {
+  searchLemma(lemma: string): Promise<readonly Word[]> {
     return _.isEmpty(lemma)
       ? Promise.resolve([])
       : this.wordRepository.searchLemma(lemma)

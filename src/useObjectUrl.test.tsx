@@ -12,7 +12,7 @@ function ObjectUrlComponent({ data }: { data: Blob }): JSX.Element {
 }
 
 beforeEach(async () => {
-  ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
+  (URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   data = new Blob(['Babel_Project_01_cropped'], { type: 'image/jpeg' })
   await act(async () => {
     element = render(<ObjectUrlComponent data={data} />)

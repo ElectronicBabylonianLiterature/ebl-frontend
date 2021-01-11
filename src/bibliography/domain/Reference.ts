@@ -28,77 +28,77 @@ export default class Reference {
     this.document = document_
   }
 
-  get hasShortContainerTitle() {
+  get hasShortContainerTitle(): boolean {
     return !_.isEmpty(this.shortContainerTitle)
   }
 
-  get hasLinesCited() {
+  get hasLinesCited(): boolean {
     return !_.isEmpty(this.linesCited)
   }
 
-  get id() {
+  get id(): string {
     return this.document.id
   }
 
-  get primaryAuthor() {
+  get primaryAuthor(): string {
     return this.document.primaryAuthor
   }
 
-  get authors() {
+  get authors(): string[] {
     return this.document.authors
   }
 
-  get year() {
+  get year(): string {
     return this.document.year
   }
 
-  get link() {
+  get link(): string {
     return this.document.link
   }
 
-  get shortContainerTitle() {
+  get shortContainerTitle(): string {
     return this.document.shortContainerTitle
   }
 
-  get collectionNumber() {
+  get collectionNumber(): string {
     return this.document.collectionNumber
   }
 
-  get typeAbbreviation() {
+  get typeAbbreviation(): string {
     return this.type[0]
   }
 
-  setType(type: ReferenceType) {
+  setType(type: ReferenceType): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.type = type
     })
   }
 
-  setPages(pages: string) {
+  setPages(pages: string): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.pages = pages
     })
   }
 
-  setNotes(notes: string) {
+  setNotes(notes: string): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.notes = notes
     })
   }
 
-  setLinesCited(linesCited: Array<string>) {
+  setLinesCited(linesCited: Array<string>): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.linesCited = linesCited
     })
   }
 
-  setDocument(document_: BibliographyEntry) {
+  setDocument(document_: BibliographyEntry): Reference {
     return produce(this, (draft: Draft<Reference>) => {
       draft.document = document_
     })
   }
 
-  toHtml() {
+  toHtml(): string {
     return this.document ? this.document.toHtml() : ''
   }
 }

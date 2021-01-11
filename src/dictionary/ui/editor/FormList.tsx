@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -11,28 +11,27 @@ const defaultForm = {
   homonym: '',
   notes: [],
 }
-
-class FormList extends Component<{ value; fields; onChange }> {
-  get defaultValue() {
-    const fields = this.props.fields || _.keys(defaultForm)
-    return _.pick(defaultForm, fields)
+export default function FormList({
+  value,
+  fields,
+  onChange,
+  children,
+}): JSX.Element {
+  const defaultValue = () => {
+    const fieldsResult = fields || _.keys(defaultForm)
+    return _.pick(defaultForm, fieldsResult)
   }
-
-  render() {
-    return (
-      <FormGroup>
-        <List
-          label={this.props.children}
-          value={this.props.value}
-          onChange={this.props.onChange}
-          noun="form"
-          defaultValue={this.defaultValue}
-        >
-          {(form, onChange) => <FormInput onChange={onChange} value={form} />}
-        </List>
-      </FormGroup>
-    )
-  }
+  return (
+    <FormGroup>
+      <List
+        label={children}
+        value={value}
+        onChange={onChange}
+        noun="form"
+        defaultValue={defaultValue}
+      >
+        {(form, onChange) => <FormInput onChange={onChange} value={form} />}
+      </List>
+    </FormGroup>
+  )
 }
-
-export default FormList

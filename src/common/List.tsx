@@ -6,7 +6,7 @@ import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
 import { produce } from 'immer'
 
-function SizeBadge({ collection }) {
+function SizeBadge({ collection }): JSX.Element | null {
   const size = collection.length
   return size > 0 ? (
     <Badge variant="light" pill>

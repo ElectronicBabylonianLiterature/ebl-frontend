@@ -3,7 +3,11 @@ import { Form, Col } from 'react-bootstrap'
 import _ from 'lodash'
 import { Chapter } from 'corpus/domain/text'
 
-export default function ChapterDetails({ chapter }: { chapter: Chapter }) {
+export default function ChapterDetails({
+  chapter,
+}: {
+  chapter: Chapter
+}): JSX.Element {
   return (
     <Form>
       <Form.Row>

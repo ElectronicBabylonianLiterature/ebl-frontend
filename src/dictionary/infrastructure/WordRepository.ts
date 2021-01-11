@@ -20,7 +20,7 @@ class WordRepository {
     )
   }
 
-  searchLemma(lemma: string): Promise<Word> {
+  searchLemma(lemma: string): Promise<readonly Word[]> {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
       true

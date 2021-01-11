@@ -7,14 +7,14 @@ import { text, textDto } from 'test-support/test-corpus-text'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
+import ApiClient from 'http/ApiClient'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 
-const apiClient = {
-  fetchJson: jest.fn(),
-  postJson: jest.fn(),
-}
+const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
+;(apiClient.fetchJson as jest.Mock) = jest.fn()
+;(apiClient.postJson as jest.Mock) = jest.fn()
 const MockFragmentService = FragmentService as jest.Mock<FragmentService>
 const fragmentServiceMock = new MockFragmentService()
 const MockWordService = WordService as jest.Mock<WordService>
@@ -167,7 +167,7 @@ const testData: TestData[] = [
   [
     'find',
     [text.category, text.index],
-    apiClient.fetchJson,
+    apiClient.fetchJson as jest.Mock,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -180,7 +180,7 @@ const testData: TestData[] = [
   [
     'list',
     [],
-    apiClient.fetchJson,
+    apiClient.fetchJson as jest.Mock,
     textsDto,
     ['/texts', false],
     Promise.resolve(textsDto),
@@ -188,7 +188,7 @@ const testData: TestData[] = [
   [
     'updateAlignment',
     [text.category, text.index, 0, text.chapters[0].alignment],
-    apiClient.postJson,
+    apiClient.postJson as jest.Mock,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -201,7 +201,7 @@ const testData: TestData[] = [
   [
     'updateLemmatization',
     [text.category, text.index, 0, lemmatization],
-    apiClient.postJson,
+    apiClient.postJson as jest.Mock,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -214,7 +214,7 @@ const testData: TestData[] = [
   [
     'updateManuscripts',
     [text.category, text.index, 0, text.chapters[0].manuscripts],
-    apiClient.postJson,
+    apiClient.postJson as jest.Mock,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -227,7 +227,7 @@ const testData: TestData[] = [
   [
     'updateLines',
     [text.category, text.index, 0, text.chapters[0].lines],
-    apiClient.postJson,
+    apiClient.postJson as jest.Mock,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -242,7 +242,7 @@ const testData: TestData[] = [
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
-  ;(wordServiceMock.find as jest.Mock).mockReturnValue(Promise.resolve(word))
+  (wordServiceMock.find as jest.Mock).mockReturnValue(Promise.resolve(word))
   ;(fragmentServiceMock.findSuggestions as jest.Mock).mockReturnValue(
     Promise.resolve([])
   )

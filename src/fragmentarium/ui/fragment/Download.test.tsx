@@ -11,7 +11,7 @@ let fragment: Fragment
 let element: RenderResult
 
 beforeEach(async () => {
-  ;(URL.createObjectURL as jest.Mock)
+  (URL.createObjectURL as jest.Mock)
     .mockReturnValueOnce(teiUrl)
     .mockReturnValueOnce(jsonUrl)
     .mockReturnValueOnce(atfUrl)

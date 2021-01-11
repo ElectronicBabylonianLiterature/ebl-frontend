@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import ErrorAlert from './ErrorAlert'
 
 it('Displays error message', async () => {
-  const error = { message: 'error message' }
+  const error = new Error('error message')
   render(<ErrorAlert error={error} />)
 
   expect(screen.getByText(error.message)).toBeInTheDocument()

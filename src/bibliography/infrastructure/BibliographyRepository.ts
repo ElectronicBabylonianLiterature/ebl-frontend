@@ -1,4 +1,5 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Promise from 'bluebird'
 
 function createEntry(cslData) {
   return new BibliographyEntry(cslData)
@@ -11,25 +12,25 @@ export default class BibliographyRepository {
     this.apiClient = apiClient
   }
 
-  find(id) {
+  find(id): Promise<BibliographyEntry> {
     return this.apiClient
       .fetchJson(`/bibliography/${encodeURIComponent(id)}`, true)
       .then(createEntry)
   }
 
-  search(query) {
+  search(query): Promise<BibliographyEntry[]> {
     return this.apiClient
       .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, true)
       .then((result) => result.map(createEntry))
   }
 
-  update(entry) {
+  update(entry): Promise<BibliographyEntry> {
     return this.apiClient
       .postJson(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toJson())
       .then(createEntry)
   }
 
-  create(entry) {
+  create(entry): Promise<BibliographyEntry> {
     return this.apiClient
       .postJson(`/bibliography`, entry.toJson())
       .then(createEntry)

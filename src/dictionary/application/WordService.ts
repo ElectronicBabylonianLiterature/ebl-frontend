@@ -1,10 +1,11 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 
 class WordService {
   private readonly wordRepository
 
-  constructor(wordRepository) {
+  constructor(wordRepository: WordRepository) {
     this.wordRepository = wordRepository
   }
 
