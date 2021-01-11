@@ -3,7 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 import {
   render,
   screen,
-  act,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import { factory } from 'factory-girl'
@@ -83,7 +82,7 @@ describe('All details', () => {
   it('Renders CDLI number', () => {
     expect(
       screen.getByText((_, node) => {
-        return node.textContent === `CDLI: ${fragment.cdliNumber}`
+        return node?.textContent === `CDLI: ${fragment.cdliNumber}`
       })
     ).toBeInTheDocument()
   })

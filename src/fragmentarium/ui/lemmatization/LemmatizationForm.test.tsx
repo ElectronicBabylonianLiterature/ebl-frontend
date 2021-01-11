@@ -85,7 +85,7 @@ describe('Complex lemma', () => {
     await lemmatize('Lemmata')
     await waitFor(() =>
       expect(onChange).toHaveBeenCalledWith([
-        ...token.uniqueLemma,
+        ...(token.uniqueLemma ?? []),
         new Lemma(searchWord),
       ])
     )
