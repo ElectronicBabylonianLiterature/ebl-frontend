@@ -44,7 +44,7 @@ test('Broken CDLI photo', async () => {
     Promise.resolve({ photoUrl: null, lineArtUrl, detailLineArtUrl })
   )
   await renderImages()
-  expect(element.queryByText('Photo')).toBeNull()
+  expect(element.queryByText('Photo')).not.toBeInTheDocument()
 })
 
 test('Broken CDLI line art', async () => {
@@ -52,7 +52,7 @@ test('Broken CDLI line art', async () => {
     Promise.resolve({ photoUrl, lineArtUrl: null, detailLineArtUrl })
   )
   await renderImages()
-  expect(element.queryByText('Line Art')).toBeNull()
+  expect(element.queryByText('Line Art')).not.toBeInTheDocument()
 })
 
 test('Broken CDLI detail line art', async () => {
@@ -60,7 +60,7 @@ test('Broken CDLI detail line art', async () => {
     Promise.resolve({ photoUrl, lineArtUrl, detailLineArtUrl: null })
   )
   await renderImages()
-  expect(element.queryByText('Detail Line Art')).toBeNull()
+  expect(element.queryByText('Detail Line Art')).not.toBeInTheDocument()
 })
 
 test('All broken', async () => {

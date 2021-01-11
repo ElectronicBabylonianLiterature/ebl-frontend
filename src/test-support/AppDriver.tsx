@@ -120,7 +120,7 @@ export default class AppDriver {
   }
 
   expectNotInContent(text: Matcher): void {
-    expect(this.getElement().queryByText(text)).toBeNull()
+    expect(this.getElement().queryByText(text)).not.toBeInTheDocument()
   }
 
   expectLink(text: Matcher, expectedHref: string): void {

@@ -41,5 +41,5 @@ test('Fetch results from service', () => {
 })
 
 test('Result display', async () => {
-  expect(screen.getByText(createAuthorRegExp(entries[1]))).toBeDefined()
+  expect(screen.getByText(createAuthorRegExp(entries[1]))).toBeInTheDocument()
 })

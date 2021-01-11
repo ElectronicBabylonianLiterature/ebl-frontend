@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
@@ -34,7 +30,7 @@ describe('Searching for word', () => {
 
   it('displays result on successfull query', async () => {
     await renderDictionary('/dictionary?query=lemma')
-    expect(screen.getByText(words[1].meaning)).toBeDefined()
+    expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
     expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
       'lemma'
     )

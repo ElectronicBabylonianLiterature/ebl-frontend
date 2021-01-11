@@ -31,7 +31,7 @@ export default function OmittedWordsSelect(props: {
   value: readonly number[]
   onChange: (value: number[]) => void
 }): JSX.Element {
-  const handleChange = (value: ValueType<OmittedWordOption>) => {
+  const handleChange = (value: ValueType<OmittedWordOption, true>) => {
     props.onChange(_.isArray(value) ? value.map((option) => option.value) : [])
   }
   const options: OptionsType<OmittedWordOption> = createOmittedWordOptions(
