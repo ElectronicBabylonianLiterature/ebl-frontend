@@ -1,4 +1,4 @@
-import React, { Component, FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 

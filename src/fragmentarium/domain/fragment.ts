@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import * as Moment from 'moment'
-import { extendMoment, DateRange } from 'moment-range'
+import { DateRange, extendMoment } from 'moment-range'
 import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
@@ -8,7 +8,6 @@ import { Text } from 'transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { ReferenceDto } from 'transliteration/domain/note-line'
 
 const moment = extendMoment(Moment)
 

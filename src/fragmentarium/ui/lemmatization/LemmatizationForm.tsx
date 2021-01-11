@@ -43,7 +43,7 @@ type Props = {
 }
 type State = {
   isComplex: boolean
-  selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
+  selectedOption: ValueType<Lemma>
   menuIsOpen: boolean | undefined
 }
 
@@ -78,9 +78,7 @@ class LemmatizationForm extends Component<Props, State> {
       .then(callback)
   }
 
-  handleChange = (
-    selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
-  ): void => {
+  handleChange = (selectedOption: ValueType<Lemma>): void => {
     this.setState({
       ...this.state,
       selectedOption,
@@ -90,7 +88,7 @@ class LemmatizationForm extends Component<Props, State> {
         ? []
         : _.isArray(selectedOption)
         ? selectedOption
-        : [selectedOption as Lemma]
+        : [selectedOption]
     )
   }
 

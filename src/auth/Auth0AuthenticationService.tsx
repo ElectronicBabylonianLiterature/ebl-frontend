@@ -1,5 +1,5 @@
 import { Auth0Client } from '@auth0/auth0-spa-js'
-import { Session, guestSession } from 'auth/Session'
+import { guestSession, Session } from 'auth/Session'
 import { AuthenticationService, User } from 'auth/Auth'
 
 export default class Auth0AuthenticationService

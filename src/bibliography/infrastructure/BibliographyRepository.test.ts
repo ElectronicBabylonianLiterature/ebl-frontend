@@ -2,11 +2,13 @@ import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import ApiClient from 'http/ApiClient'
 
-const apiClient = {
-  fetchJson: jest.fn(),
-  postJson: jest.fn(),
-}
+const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
+const apiClientFetchJson = jest.fn()
+const apiClientPostJson = jest.fn()
+apiClient.fetchJson = apiClientFetchJson
+apiClient.postJson = apiClientPostJson
 const wordRepository = new BibliographyRepository(apiClient)
 const query = 'Bor Ger 1998 The Qualifications'
 const id = 'RN 2020'
@@ -19,7 +21,7 @@ const testData: TestData[] = [
   [
     'find',
     [id],
-    apiClient.fetchJson,
+    apiClientFetchJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, true],
     Promise.resolve(resultStub),
@@ -27,7 +29,7 @@ const testData: TestData[] = [
   [
     'search',
     [query],
-    apiClient.fetchJson,
+    apiClientFetchJson,
     [entry],
     [`/bibliography?query=${encodeURIComponent(query)}`, true],
     Promise.resolve([resultStub]),
@@ -35,7 +37,7 @@ const testData: TestData[] = [
   [
     'update',
     [entry],
-    apiClient.postJson,
+    apiClientPostJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, resultStub],
     Promise.resolve(resultStub),
@@ -43,7 +45,7 @@ const testData: TestData[] = [
   [
     'create',
     [entry],
-    apiClient.postJson,
+    apiClientPostJson,
     entry,
     ['/bibliography', resultStub],
     Promise.resolve(resultStub),

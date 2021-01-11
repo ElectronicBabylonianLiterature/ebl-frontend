@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { FormGroup, FormLabel, FormControl, InputGroup } from 'react-bootstrap'
+import React from 'react'
+import { FormControl, FormGroup, FormLabel, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 export default function LemmaInput({ value, onChange }): JSX.Element {

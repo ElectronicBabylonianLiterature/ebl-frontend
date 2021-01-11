@@ -1,36 +1,37 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Promise from 'bluebird'
+import ApiClient from 'http/ApiClient'
 
 function createEntry(cslData) {
   return new BibliographyEntry(cslData)
 }
 
 export default class BibliographyRepository {
-  private readonly apiClient
+  private readonly apiClient: ApiClient
 
-  constructor(apiClient) {
+  constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
   }
 
-  find(id): Promise<BibliographyEntry> {
+  find(id: string): Promise<BibliographyEntry> {
     return this.apiClient
       .fetchJson(`/bibliography/${encodeURIComponent(id)}`, true)
       .then(createEntry)
   }
 
-  search(query): Promise<BibliographyEntry[]> {
+  search(query: string): Promise<BibliographyEntry[]> {
     return this.apiClient
       .fetchJson(`/bibliography?query=${encodeURIComponent(query)}`, true)
       .then((result) => result.map(createEntry))
   }
 
-  update(entry): Promise<BibliographyEntry> {
+  update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
       .postJson(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toJson())
       .then(createEntry)
   }
 
-  create(entry): Promise<BibliographyEntry> {
+  create(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
       .postJson(`/bibliography`, entry.toJson())
       .then(createEntry)
