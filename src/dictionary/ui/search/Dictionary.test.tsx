@@ -30,7 +30,7 @@ describe('Searching for word', () => {
 
   it('displays result on successfull query', async () => {
     await renderDictionary('/dictionary?query=lemma')
-    expect(screen.getByText(words[1].meaning)).toBeDefined()
+    expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
     expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
       'lemma'
     )

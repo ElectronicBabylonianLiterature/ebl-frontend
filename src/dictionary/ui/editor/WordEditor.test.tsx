@@ -36,7 +36,7 @@ describe('Fecth word', () => {
   it('Displays result on successfull query', async () => {
     const { getByText } = await renderWithRouter()
 
-    expect(getByText(result.lemma.join(' '))).toBeDefined()
+    expect(getByText(result.lemma.join(' '))).toBeInTheDocument()
   })
 })
 

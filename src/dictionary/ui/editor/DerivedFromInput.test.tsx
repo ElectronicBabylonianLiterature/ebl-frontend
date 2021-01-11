@@ -19,21 +19,21 @@ describe('Derived from set', () => {
   })
 
   it('Displays lemma', () => {
-    expect(element.getByDisplayValue(value.lemma.join(' '))).toBeVisible()
+    expect(element.getByDisplayValue(value.lemma.join(' '))).toBeInTheDocument()
   })
 
   it('Displays homonym', () => {
-    expect(element.getByDisplayValue(value.homonym)).toBeVisible()
+    expect(element.getByDisplayValue(value.homonym)).toBeInTheDocument()
   })
 
   it('Displays all notes', () => {
     value.notes.forEach((note) =>
-      expect(element.getByDisplayValue(note)).toBeVisible()
+      expect(element.getByDisplayValue(note)).toBeInTheDocument()
     )
   })
 
   it('Does not display add button', () => {
-    expect(element.queryByLabelText('Add derived from')).toBeNull()
+    expect(element.queryByLabelText('Add derived from')).not.toBeInTheDocument()
   })
 
   it('Removes derived from when Delete is clicked', async () => {
@@ -60,11 +60,13 @@ describe('No derived from set', () => {
   })
 
   it('Does not display form', () => {
-    expect(element.queryByLabelText('Lemma')).toBeNull()
+    expect(element.queryByLabelText('Lemma')).not.toBeInTheDocument()
   })
 
   it('Does not display delete button', () => {
-    expect(element.queryByLabelText('Delete derived from')).toBeNull()
+    expect(
+      element.queryByLabelText('Delete derived from')
+    ).not.toBeInTheDocument()
   })
 
   it('Adds derived from whe Add is clicked', async () => {
