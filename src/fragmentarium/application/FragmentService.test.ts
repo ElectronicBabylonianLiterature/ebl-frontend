@@ -15,9 +15,22 @@ import produce, { castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import LemmatizationFactory from './LemmatizationFactory'
+import BibliographyService from 'bibliography/application/BibliographyService'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 
 jest.mock('./LemmatizationFactory')
 
+jest.mock('bibliography/application/BibliographyService', () => {
+  return function () {
+    return { find: jest.fn(), search: jest.fn() }
+  }
+})
+
+jest.mock('dictionary/infrastructure/WordRepository', () => {
+  return function () {
+    return { searchLemma: jest.fn(), find: jest.fn() }
+  }
+})
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
@@ -45,19 +58,14 @@ const fragmentRepository = {
   updateAnnotations: jest.fn(),
   lineToVecRanking: jest.fn(),
 }
-const wordRepository = {
-  searchLemma: jest.fn(),
-  find: jest.fn(),
-}
+
 const imageRepository = {
   find: jest.fn(),
   findFolio: jest.fn(),
   findPhoto: jest.fn(),
 }
-const bibliographyService = {
-  find: jest.fn(),
-  search: jest.fn(),
-}
+const bibliographyService = new (BibliographyService as jest.Mock)()
+const wordRepository = new (WordRepository as jest.Mock)()
 const fragmentService = new FragmentService(
   fragmentRepository,
   imageRepository,

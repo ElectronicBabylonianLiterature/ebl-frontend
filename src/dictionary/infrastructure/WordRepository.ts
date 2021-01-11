@@ -1,5 +1,6 @@
 import ApiClient from 'http/ApiClient'
 import Word from 'dictionary/domain/Word'
+import Promise from 'bluebird'
 
 class WordRepository {
   private readonly apiClient
@@ -8,18 +9,18 @@ class WordRepository {
     this.apiClient = apiClient
   }
 
-  find(id: string): Word {
+  find(id: string): Promise<Word> {
     return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
-  search(query: string): Word {
+  search(query: string): Promise<Word> {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
       true
     )
   }
 
-  searchLemma(lemma: string): Word {
+  searchLemma(lemma: string): Promise<Word> {
     return this.apiClient.fetchJson(
       `/words?lemma=${encodeURIComponent(lemma)}`,
       true

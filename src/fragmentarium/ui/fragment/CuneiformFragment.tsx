@@ -18,6 +18,7 @@ import './CuneiformFragment.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
+import Reference from 'bibliography/domain/Reference'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -119,7 +120,7 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
           >
             <ContentSection>
               <References
-                references={fragment.references}
+                references={fragment.references as readonly Reference[]}
                 searchBibliography={searchBibliography}
                 updateReferences={updateReferences}
                 disabled={disabled}

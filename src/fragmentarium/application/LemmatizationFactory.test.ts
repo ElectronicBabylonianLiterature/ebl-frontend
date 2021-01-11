@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import _ from 'lodash'
 import createLemmatizationTestText from 'test-support/test-text'
 import Lemma from 'transliteration/domain/Lemma'

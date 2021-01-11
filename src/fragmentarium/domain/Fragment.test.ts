@@ -23,6 +23,7 @@ import {
 import Museum from './museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { ReferenceDto } from 'transliteration/domain/note-line'
 
 const config = {
   number: 'K.1',

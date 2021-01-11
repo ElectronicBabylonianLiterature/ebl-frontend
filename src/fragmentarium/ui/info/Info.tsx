@@ -10,6 +10,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import { Popover, Row } from 'react-bootstrap'
 import './Info.css'
+import Reference from 'bibliography/domain/Reference'
 interface Props {
   fragment: Fragment
   fragmentService: FragmentService
@@ -64,7 +65,9 @@ export default function Info({
             <HelpTrigger overlay={ReferencesHelp()} />
           </div>
         </Row>
-        <ReferenceList references={fragment.references} />
+        <ReferenceList
+          references={fragment.references as ReadonlyArray<Reference>}
+        />
         {fragment.hasUncuratedReferences && (
           <UncuratedReferences
             uncuratedReferences={
