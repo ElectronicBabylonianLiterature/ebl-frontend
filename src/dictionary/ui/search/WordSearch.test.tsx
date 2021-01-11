@@ -36,5 +36,5 @@ it('Searches with the query', () => {
 })
 
 it('Displays results', async () => {
-  expect(screen.getByText(words[1].meaning)).toBeDefined()
+  expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
 })

@@ -16,7 +16,9 @@ import {
   MultiValueProps,
 } from 'react-select'
 
-const Option = (props: OptionProps<Lemma>): JSX.Element => (
+const Option = (
+  props: OptionProps<Lemma, true> | OptionProps<Lemma, false>
+): JSX.Element => (
   <components.Option {...props}>
     <InlineMarkdown source={props.label} />
   </components.Option>
@@ -41,7 +43,7 @@ type Props = {
 }
 type State = {
   isComplex: boolean
-  selectedOption: ValueType<Lemma>
+  selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
   menuIsOpen: boolean | undefined
 }
 
@@ -76,7 +78,9 @@ class LemmatizationForm extends Component<Props, State> {
       .then(callback)
   }
 
-  handleChange = (selectedOption: ValueType<Lemma>): void => {
+  handleChange = (
+    selectedOption: ValueType<Lemma, true> | ValueType<Lemma, false>
+  ): void => {
     this.setState({
       ...this.state,
       selectedOption,
@@ -86,7 +90,7 @@ class LemmatizationForm extends Component<Props, State> {
         ? []
         : _.isArray(selectedOption)
         ? selectedOption
-        : [selectedOption]
+        : [selectedOption as Lemma]
     )
   }
 
