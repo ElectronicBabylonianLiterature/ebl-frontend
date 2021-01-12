@@ -28,28 +28,30 @@ const testService = new TextService(
 const alignmentDto = {
   alignment: [
     [
-      {
-        alignment: [
-          {
-            value: 'kur',
-            alignment: null,
-            variant: '',
-            language: '',
-            isNormalized: false,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: 'ra',
-            language: 'AKKADIAN',
-            isNormalized: true,
-          },
-          {
-            value: '...',
-          },
-        ],
-        omittedWords: [],
-      },
+      [
+        {
+          alignment: [
+            {
+              value: 'kur',
+              alignment: null,
+              variant: '',
+              language: '',
+              isNormalized: false,
+            },
+            {
+              value: 'ra',
+              alignment: 1,
+              variant: 'ra',
+              language: 'AKKADIAN',
+              isNormalized: true,
+            },
+            {
+              value: '...',
+            },
+          ],
+          omittedWords: [],
+        },
+      ],
     ],
   ],
 }
@@ -66,14 +68,16 @@ const word: Word = {
 const lemmatization = [
   [
     [
-      new LemmatizationToken('%n', false, null, null),
-      new LemmatizationToken('kur-kur', true, [], []),
-    ],
-    [
       [
-        new LemmatizationToken('kur', true, [], []),
-        new LemmatizationToken('ra', true, [new Lemma(word)], []),
-        new LemmatizationToken('...', false, null, null),
+        new LemmatizationToken('%n', false, null, null),
+        new LemmatizationToken('kur-kur', true, [], []),
+      ],
+      [
+        [
+          new LemmatizationToken('kur', true, [], []),
+          new LemmatizationToken('ra', true, [new Lemma(word)], []),
+          new LemmatizationToken('...', false, null, null),
+        ],
       ],
     ],
   ],
@@ -82,28 +86,32 @@ const lemmatization = [
 const lemmatizationDto = {
   lemmatization: [
     [
-      [
-        {
-          value: '%n',
-        },
-        {
-          value: 'kur-kur',
-          uniqueLemma: [],
-        },
-      ],
-      [
-        {
-          value: 'kur',
-          uniqueLemma: [],
-        },
-        {
-          value: 'ra',
-          uniqueLemma: ['aklu I'],
-        },
-        {
-          value: '...',
-        },
-      ],
+      {
+        reconstruction: [
+          {
+            value: '%n',
+          },
+          {
+            value: 'kur-kur',
+            uniqueLemma: [],
+          },
+        ],
+        manuscripts: [
+          [
+            {
+              value: 'kur',
+              uniqueLemma: [],
+            },
+            {
+              value: 'ra',
+              uniqueLemma: ['aklu I'],
+            },
+            {
+              value: '...',
+            },
+          ],
+        ],
+      },
     ],
   ],
 }
@@ -136,17 +144,21 @@ const manuscriptsDto = {
 const linesDto = {
   lines: [
     {
-      number: '1',
-      reconstruction: '%n kur-kur',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
-      manuscripts: [
+      variants: [
         {
-          manuscriptId: 1,
-          labels: ['o', 'iii'],
-          number: 'a+1',
-          atf: 'kur ra',
-          omittedWords: [],
+          number: '1',
+          reconstruction: '%n kur-kur',
+          manuscripts: [
+            {
+              manuscriptId: 1,
+              labels: ['o', 'iii'],
+              number: 'a+1',
+              atf: 'kur ra',
+              omittedWords: [],
+            },
+          ],
         },
       ],
     },

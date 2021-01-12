@@ -6,21 +6,27 @@ import Editor from 'editor/Editor'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import produce, { castDraft } from 'immer'
 import { ManuscriptLines } from './ManuscriptLines'
-import { Manuscript, Line, Chapter } from 'corpus/domain/text'
+import {
+  Manuscript,
+  Line,
+  Chapter,
+  LineVariant,
+  createVariant,
+} from 'corpus/domain/text'
 
-interface FormProps {
-  value: Line
+interface VariantFormProps {
+  value: LineVariant
   manuscripts: readonly Manuscript[]
-  onChange: (line: Line) => void
+  onChange: (line: LineVariant) => void
   disabled?: boolean
 }
 
-function ChapterLineForm({
+function LineVariantForm({
   value,
   manuscripts,
   onChange,
   disabled = false,
-}: FormProps) {
+}: VariantFormProps) {
   const handleChangeValue = (property: string) => (propertyValue): void =>
     onChange(
       produce(value, (draft) => {
@@ -55,6 +61,44 @@ function ChapterLineForm({
           />
         </Col>
       </Form.Row>
+      <ManuscriptLines
+        lines={value.manuscripts}
+        manuscripts={manuscripts}
+        onChange={handleChangeValue('manuscripts')}
+        disabled={disabled}
+      />
+    </>
+  )
+}
+
+interface FormProps {
+  value: Line
+  manuscripts: readonly Manuscript[]
+  onChange: (line: Line) => void
+  disabled?: boolean
+}
+
+function ChapterLineForm({
+  value,
+  manuscripts,
+  onChange,
+  disabled = false,
+}: FormProps) {
+  const handleChangeValue = (property: string) => (propertyValue): void =>
+    onChange(
+      produce(value, (draft) => {
+        draft[property] = propertyValue
+      })
+    )
+
+  const handleChange = (variants: LineVariant[]): void =>
+    onChange(
+      produce(value, (draft) => {
+        draft.variants = castDraft(variants)
+      })
+    )
+  return (
+    <>
       <Form.Row>
         <Form.Check
           inline
@@ -81,12 +125,21 @@ function ChapterLineForm({
           }
         />
       </Form.Row>
-      <ManuscriptLines
-        lines={value.manuscripts}
-        manuscripts={manuscripts}
-        onChange={handleChangeValue('manuscripts')}
-        disabled={disabled}
-      />
+      <ListForm
+        noun="variant"
+        defaultValue={createVariant({})}
+        value={value.variants}
+        onChange={handleChange}
+      >
+        {(variant: LineVariant, onChange: (variant: LineVariant) => void) => (
+          <LineVariantForm
+            onChange={onChange}
+            value={variant}
+            manuscripts={manuscripts}
+            disabled={disabled}
+          />
+        )}
+      </ListForm>
     </>
   )
 }

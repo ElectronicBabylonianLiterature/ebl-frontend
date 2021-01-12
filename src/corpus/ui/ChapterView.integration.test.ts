@@ -76,16 +76,20 @@ const textDto = {
       ],
       lines: [
         {
-          number: "1'",
-          reconstruction: 'ideal',
           isBeginningOfSection: false,
           isSecondLineOfParallelism: false,
-          manuscripts: [
+          variants: [
             {
-              manuscriptId: 1,
-              labels: ['iii'],
-              number: 'a+1',
-              atf: 'kur',
+              number: "1'",
+              reconstruction: 'ideal',
+              manuscripts: [
+                {
+                  manuscriptId: 1,
+                  labels: ['iii'],
+                  number: 'a+1',
+                  atf: 'kur',
+                },
+              ],
             },
           ],
         },
@@ -107,11 +111,15 @@ const defaultManuscriptDto = {
 }
 
 const defaultLineDto = {
-  number: '',
-  reconstruction: '%n ',
   isBeginningOfSection: false,
   isSecondLineOfParallelism: false,
-  manuscripts: [],
+  variants: [
+    {
+      number: '',
+      reconstruction: '%n ',
+      manuscripts: [],
+    },
+  ],
 }
 
 let fakeApi: FakeApi
@@ -221,11 +229,11 @@ describe('Lines', () => {
       fakeApi.expectUpdateLines(textDto, 2, {
         lines: [
           produce(textDto.chapters[2].lines[0], (draft) => {
-            draft[property] = newValue
+            draft.variants[0][property] = newValue
           }),
         ],
       })
-      const expectedValue = line[property]
+      const expectedValue = line.variants[0][property]
       appDriver.expectInputElement(label, expectedValue)
       await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
@@ -267,7 +275,7 @@ describe('Add line', () => {
   test.each([['Number', 'number']])('%s', async (label, property) => {
     fakeApi.expectUpdateLines(textDto, 1, { lines: [defaultLineDto] })
     await appDriver.click('Add line')
-    appDriver.expectInputElement(label, defaultLineDto[property])
+    appDriver.expectInputElement(label, defaultLineDto.variants[0][property])
     await appDriver.click('Save lines')
   })
 })

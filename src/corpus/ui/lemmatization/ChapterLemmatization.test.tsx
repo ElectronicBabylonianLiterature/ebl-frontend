@@ -41,20 +41,22 @@ beforeEach(async () => {
   lemmatization = [
     [
       [
-        new LemmatizationToken('%n', false, null, null),
-        new LemmatizationToken('kur-kur', true, [], []),
-      ],
-      [
         [
-          new LemmatizationToken('kur', true, [], []),
-          new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
+          new LemmatizationToken('%n', false, null, null),
+          new LemmatizationToken('kur-kur', true, [], []),
+        ],
+        [
+          [
+            new LemmatizationToken('kur', true, [], []),
+            new LemmatizationToken('ra', true, [new Lemma(oldWord)], []),
+          ],
         ],
       ],
     ],
   ]
   textService.findSuggestions.mockReturnValue(Promise.resolve(lemmatization))
   chapter = produce(text.chapters[0], (draft) => {
-    draft.lines[0].manuscripts = [
+    draft.lines[0].variants[0].manuscripts = [
       castDraft(
         createManuscriptLine({
           manuscriptId: 1,
@@ -117,7 +119,9 @@ beforeEach(async () => {
       textService={textService}
     />
   )
-  await element.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
+  await element.findByText(
+    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])
+  )
 })
 
 test('Lemmatize manuscript', async () => {
@@ -127,7 +131,7 @@ test('Lemmatize manuscript', async () => {
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {
-        draft[0][1][0][0] = castDraft(
+        draft[0][0][1][0][0] = castDraft(
           new LemmatizationToken('kur', true, [lemma], [])
         )
       })
@@ -141,10 +145,10 @@ test('Lemmatize reconstruction', async () => {
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {
-        draft[0][0][1] = castDraft(
+        draft[0][0][0][1] = castDraft(
           new LemmatizationToken('kur-kur', true, [lemma], [])
         )
-        draft[0][1][0][0] = castDraft(
+        draft[0][0][1][0][0] = castDraft(
           new LemmatizationToken('kur', true, [lemma], [], true)
         )
       })

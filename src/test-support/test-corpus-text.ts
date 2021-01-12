@@ -7,6 +7,7 @@ import {
   createLine,
   createManuscriptLine,
   types,
+  createVariant,
 } from 'corpus/domain/text'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
@@ -136,19 +137,23 @@ export const textDto = {
       ],
       lines: [
         {
-          number: '1',
-          reconstruction: '%n kur-kur',
-          reconstructionTokens: reconstructionTokens,
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
-          manuscripts: [
+          variants: [
             {
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra',
-              omittedWords: [],
-              atfTokens: atfTokens,
+              number: '1',
+              reconstruction: '%n kur-kur',
+              reconstructionTokens: reconstructionTokens,
+              manuscripts: [
+                {
+                  manuscriptId: 1,
+                  labels: ['o', 'iii'],
+                  number: 'a+1',
+                  atf: 'kur ra',
+                  omittedWords: [],
+                  atfTokens: atfTokens,
+                },
+              ],
             },
           ],
         },
@@ -194,18 +199,22 @@ export const text = createText({
       ],
       lines: [
         createLine({
-          number: '1',
-          reconstruction: '%n kur-kur',
-          reconstructionTokens: reconstructionTokens,
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
-          manuscripts: [
-            createManuscriptLine({
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra',
-              atfTokens: atfTokens,
+          variants: [
+            createVariant({
+              number: '1',
+              reconstruction: '%n kur-kur',
+              reconstructionTokens: reconstructionTokens,
+              manuscripts: [
+                createManuscriptLine({
+                  manuscriptId: 1,
+                  labels: ['o', 'iii'],
+                  number: 'a+1',
+                  atf: 'kur ra',
+                  atfTokens: atfTokens,
+                }),
+              ],
             }),
           ],
         }),

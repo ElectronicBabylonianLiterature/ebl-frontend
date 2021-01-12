@@ -19,12 +19,14 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
 > {
   createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
     return Bluebird.mapSeries(chapter.lines, (line) =>
-      Bluebird.all([
-        this.createLemmatizationLine(line.reconstructionTokens),
-        Bluebird.mapSeries(line.manuscripts, (manuscript) =>
-          this.createLemmatizationLine(manuscript.atfTokens)
-        ),
-      ])
+      Bluebird.mapSeries(line.variants, (variant) =>
+        Bluebird.all([
+          this.createLemmatizationLine(variant.reconstructionTokens),
+          Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
+            this.createLemmatizationLine(manuscript.atfTokens)
+          ),
+        ])
+      )
     )
   }
 }

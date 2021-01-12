@@ -85,23 +85,36 @@ export const createManuscriptLine: (
   })
 )
 
-export interface Line {
+export interface LineVariant {
   readonly number: string
   readonly reconstruction: string
   readonly reconstructionTokens: ReadonlyArray<Token>
+  readonly manuscripts: ReadonlyArray<ManuscriptLine>
+}
+
+export interface Line {
+  readonly variants: ReadonlyArray<LineVariant>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
-  readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
 
 export const createLine: (config: Partial<Line>) => Line = produce(
   (draft): Line => ({
+    variants: [],
+    isSecondLineOfParallelism: false,
+    isBeginningOfSection: false,
+    ...draft,
+  })
+)
+
+export const createVariant: (
+  config: Partial<LineVariant>
+) => LineVariant = produce(
+  (draft): LineVariant => ({
     number: '',
     reconstruction: '',
     manuscripts: [],
     reconstructionTokens: [],
-    isSecondLineOfParallelism: false,
-    isBeginningOfSection: false,
     ...draft,
   })
 )
@@ -137,10 +150,12 @@ export class Chapter {
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
       this.lines.map((line) =>
-        line.manuscripts.map((manuscript) => ({
-          alignment: manuscript.atfTokens.map(createAlignmentToken),
-          omittedWords: manuscript.omittedWords,
-        }))
+        line.variants.map((variant) =>
+          variant.manuscripts.map((manuscript) => ({
+            alignment: manuscript.atfTokens.map(createAlignmentToken),
+            omittedWords: manuscript.omittedWords,
+          }))
+        )
       )
     )
   }

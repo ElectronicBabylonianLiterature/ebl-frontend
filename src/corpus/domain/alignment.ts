@@ -28,26 +28,30 @@ export interface ManuscriptAlignment {
 
 export class ChapterAlignment {
   readonly [immerable] = true
-  readonly lines: readonly ManuscriptAlignment[][]
+  readonly lines: readonly ManuscriptAlignment[][][]
 
-  constructor(lines: readonly ManuscriptAlignment[][]) {
+  constructor(lines: readonly ManuscriptAlignment[][][]) {
     this.lines = lines
   }
 
   getAlignment(
     lineIndex: number,
+    variantIndex: number,
     manuscriptIndex: number
   ): ManuscriptAlignment {
-    return this.lines[lineIndex][manuscriptIndex]
+    return this.lines[lineIndex][variantIndex][manuscriptIndex]
   }
 
   setAlignment(
     lineIndex: number,
+    variantIndex: number,
     manuscriptIndex: number,
     alignment: ManuscriptAlignment
   ): ChapterAlignment {
     return produce(this, (draft: Draft<ChapterAlignment>) => {
-      draft.lines[lineIndex][manuscriptIndex] = castDraft(alignment)
+      draft.lines[lineIndex][variantIndex][manuscriptIndex] = castDraft(
+        alignment
+      )
     })
   }
 }

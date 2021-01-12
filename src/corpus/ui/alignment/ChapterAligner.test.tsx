@@ -16,43 +16,47 @@ beforeEach(async () => {
   onSave = jest.fn()
   chapter = text.chapters[0]
   render(<ChapterAligner chapter={chapter} onSave={onSave} disabled={false} />)
-  await screen.findByText(chapter.getSiglum(chapter.lines[0].manuscripts[0]))
+  await screen.findByText(
+    chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])
+  )
 })
 
 test('Align word', async () => {
   const expected: ChapterAlignment = new ChapterAlignment([
     [
-      {
-        alignment: [
-          {
-            value: 'kur',
-            alignment: 1,
-            variant: {
-              value: 'variant',
-              language: 'AKKADIAN',
-              isNormalized: true,
+      [
+        {
+          alignment: [
+            {
+              value: 'kur',
+              alignment: 1,
+              variant: {
+                value: 'variant',
+                language: 'AKKADIAN',
+                isNormalized: true,
+              },
+              isAlignable: true,
             },
-            isAlignable: true,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: {
+            {
               value: 'ra',
-              language: 'AKKADIAN',
-              isNormalized: true,
+              alignment: 1,
+              variant: {
+                value: 'ra',
+                language: 'AKKADIAN',
+                isNormalized: true,
+              },
+              isAlignable: true,
             },
-            isAlignable: true,
-          },
-          {
-            value: '...',
-            alignment: null,
-            variant: null,
-            isAlignable: false,
-          },
-        ],
-        omittedWords: [],
-      },
+            {
+              value: '...',
+              alignment: null,
+              variant: null,
+              isAlignable: false,
+            },
+          ],
+          omittedWords: [],
+        },
+      ],
     ],
   ])
 
@@ -70,7 +74,7 @@ test('Omit word', async () => {
   const expected: ChapterAlignment = produce(
     chapter.alignment,
     (draft: Draft<ChapterAlignment>) => {
-      draft.lines[0][0].omittedWords = [1]
+      draft.lines[0][0][0].omittedWords = [1]
     }
   )
 

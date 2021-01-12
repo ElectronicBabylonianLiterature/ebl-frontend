@@ -1,4 +1,9 @@
-import { createLine, createManuscriptLine, Line } from 'corpus/domain/text'
+import {
+  createLine,
+  createVariant,
+  createManuscriptLine,
+  Line,
+} from 'corpus/domain/text'
 
 function nextNumber(number: string): string {
   const match = /^(?<number>\d+)(?<prime>')?$/.exec(number)
@@ -19,15 +24,22 @@ export function createDefaultLineFactory(
   return lastLine
     ? () =>
         createLine({
-          number: nextNumber(lastLine.number),
-          reconstruction: defaultReconstruction,
-          manuscripts: lastLine.manuscripts.map((manuscript) =>
-            createManuscriptLine({
-              manuscriptId: manuscript.manuscriptId,
-              labels: manuscript.labels,
-              number: nextNumber(manuscript.number),
+          variants: lastLine.variants.map((variant) =>
+            createVariant({
+              number: nextNumber(variant.number),
+              reconstruction: defaultReconstruction,
+              manuscripts: variant.manuscripts.map((manuscript) =>
+                createManuscriptLine({
+                  manuscriptId: manuscript.manuscriptId,
+                  labels: manuscript.labels,
+                  number: nextNumber(manuscript.number),
+                })
+              ),
             })
           ),
         })
-    : () => createLine({ reconstruction: defaultReconstruction })
+    : () =>
+        createLine({
+          variants: [createVariant({ reconstruction: defaultReconstruction })],
+        })
 }

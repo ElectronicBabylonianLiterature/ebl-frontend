@@ -55,59 +55,63 @@ const manuscrpitLineConfig: ManuscriptLine = {
 }
 
 const lineConfig: Line = {
-  number: '2',
-  reconstruction: 'reconstructed text',
-  reconstructionTokens: [
+  variants: [
     {
-      value: 'kur',
-      cleanValue: 'kur',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      variant: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
+      number: '2',
+      reconstruction: 'reconstructed text',
+      reconstructionTokens: [
         {
           value: 'kur',
           cleanValue: 'kur',
           enclosureType: [],
           erasure: 'NONE',
-          type: 'ValueToken',
+          lemmatizable: true,
+          alignment: null,
+          variant: null,
+          uniqueLemma: [],
+          normalized: true,
+          language: 'AKKADIAN',
+          parts: [
+            {
+              value: 'kur',
+              cleanValue: 'kur',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'ValueToken',
+            },
+          ],
+          modifiers: [],
+          type: 'AkkadianWord',
         },
-      ],
-      modifiers: [],
-      type: 'AkkadianWord',
-    },
-    {
-      value: 'ra',
-      cleanValue: 'ra',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      variant: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
         {
           value: 'ra',
           cleanValue: 'ra',
           enclosureType: [],
           erasure: 'NONE',
-          type: 'ValueToken',
+          lemmatizable: true,
+          alignment: null,
+          variant: null,
+          uniqueLemma: [],
+          normalized: true,
+          language: 'AKKADIAN',
+          parts: [
+            {
+              value: 'ra',
+              cleanValue: 'ra',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'ValueToken',
+            },
+          ],
+          modifiers: [],
+          type: 'AkkadianWord',
         },
       ],
-      modifiers: [],
-      type: 'AkkadianWord',
+      manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
     },
   ],
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
-  manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
 const chapterConfig: Partial<Chapter> = {
@@ -140,33 +144,35 @@ describe('Chapter', () => {
     expect(text.chapters[0].alignment).toEqual(
       new ChapterAlignment([
         [
-          {
-            alignment: [
-              {
-                value: 'kur',
-                alignment: null,
-                variant: null,
-                isAlignable: true,
-              },
-              {
-                value: 'ra',
-                alignment: 1,
-                variant: {
-                  value: 'ra',
-                  language: 'AKKADIAN',
-                  isNormalized: true,
+          [
+            {
+              alignment: [
+                {
+                  value: 'kur',
+                  alignment: null,
+                  variant: null,
+                  isAlignable: true,
                 },
-                isAlignable: true,
-              },
-              {
-                value: '...',
-                alignment: null,
-                variant: null,
-                isAlignable: false,
-              },
-            ],
-            omittedWords: [],
-          },
+                {
+                  value: 'ra',
+                  alignment: 1,
+                  variant: {
+                    value: 'ra',
+                    language: 'AKKADIAN',
+                    isNormalized: true,
+                  },
+                  isAlignable: true,
+                },
+                {
+                  value: '...',
+                  alignment: null,
+                  variant: null,
+                  isAlignable: false,
+                },
+              ],
+              omittedWords: [],
+            },
+          ],
         ],
       ])
     )
