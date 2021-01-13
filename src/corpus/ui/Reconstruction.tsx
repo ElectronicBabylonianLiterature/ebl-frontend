@@ -7,7 +7,7 @@ export default function Reconstruction(props: {
 }): JSX.Element {
   return (
     <Row>
-      <Col md={3}></Col>
+      <Col md={2}></Col>
       <Col md={9}>{props.line.reconstruction}</Col>
     </Row>
   )

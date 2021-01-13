@@ -40,12 +40,11 @@ function ManuscriptAligner(props: {
 
   return (
     <Row>
-      <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
-      <Col md={6}>
+      <Col md={7}>
         {props.manuscriptLine.atfTokens.map((token, index) => (
           <span key={index}>
             {token.lemmatizable ? (
@@ -100,32 +99,34 @@ export default function ChapterAligner({
     <Container>
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
-        <ol key={lineIndex}>
-          <>{line.number}</>
-          {line.variants.map((variant, variantIndex) => (
-            <li key={variantIndex}>
-              <Reconstruction line={variant} />
-              {variant.manuscripts.map((manuscript, manuscriptIndex) => (
-                <ManuscriptAligner
-                  key={manuscriptIndex}
-                  chapter={chapter}
-                  line={variant}
-                  manuscriptLine={manuscript}
-                  alignment={alignment.getAlignment(
-                    lineIndex,
-                    variantIndex,
-                    manuscriptIndex
-                  )}
-                  onChange={handleChange(
-                    lineIndex,
-                    variantIndex,
-                    manuscriptIndex
-                  )}
-                />
-              ))}
-            </li>
-          ))}
-        </ol>
+        <Row key={lineIndex}>
+          <Col md={1}>{line.number}</Col>
+          <Col md={11}>
+            {line.variants.map((variant, variantIndex) => (
+              <div key={variantIndex}>
+                <Reconstruction line={variant} />
+                {variant.manuscripts.map((manuscript, manuscriptIndex) => (
+                  <ManuscriptAligner
+                    key={manuscriptIndex}
+                    chapter={chapter}
+                    line={variant}
+                    manuscriptLine={manuscript}
+                    alignment={alignment.getAlignment(
+                      lineIndex,
+                      variantIndex,
+                      manuscriptIndex
+                    )}
+                    onChange={handleChange(
+                      lineIndex,
+                      variantIndex,
+                      manuscriptIndex
+                    )}
+                  />
+                ))}
+              </div>
+            ))}
+          </Col>
+        </Row>
       ))}
       <Button onClick={() => onSave(alignment)} disabled={disabled}>
         Save alignment
