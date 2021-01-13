@@ -98,10 +98,12 @@ function ChapterLineForm({
   return (
     <>
       <Form.Row>
-        <Form.Group as={Col} md={1} controlId={_.uniqueId('Lines-')}>
-          <Form.Label>Number</Form.Label>
-          <Form.Control value={value.number} onChange={handleNumberChange} />
-        </Form.Group>
+        <Col md={1}>
+          <Form.Group controlId={_.uniqueId('Lines-')}>
+            <Form.Label>Number</Form.Label>
+            <Form.Control value={value.number} onChange={handleNumberChange} />
+          </Form.Group>
+        </Col>
         <Col md={11}>
           <Form.Check
             inline
@@ -129,23 +131,26 @@ function ChapterLineForm({
               )
             }
           />
+          <ListForm
+            noun="variant"
+            defaultValue={createVariant({})}
+            value={value.variants}
+            onChange={handleChange}
+          >
+            {(
+              variant: LineVariant,
+              onChange: (variant: LineVariant) => void
+            ) => (
+              <LineVariantForm
+                onChange={onChange}
+                value={variant}
+                manuscripts={manuscripts}
+                disabled={disabled}
+              />
+            )}
+          </ListForm>
         </Col>
       </Form.Row>
-      <ListForm
-        noun="variant"
-        defaultValue={createVariant({})}
-        value={value.variants}
-        onChange={handleChange}
-      >
-        {(variant: LineVariant, onChange: (variant: LineVariant) => void) => (
-          <LineVariantForm
-            onChange={onChange}
-            value={variant}
-            manuscripts={manuscripts}
-            disabled={disabled}
-          />
-        )}
-      </ListForm>
     </>
   )
 }
