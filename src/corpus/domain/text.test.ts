@@ -55,9 +55,9 @@ const manuscrpitLineConfig: ManuscriptLine = {
 }
 
 const lineConfig: Line = {
+  number: '2',
   variants: [
     {
-      number: '2',
       reconstruction: 'reconstructed text',
       reconstructionTokens: [
         {

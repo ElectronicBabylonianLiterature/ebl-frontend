@@ -30,9 +30,10 @@ describe('createDefaultLineFactory', () => {
           createDefaultLineFactory(
             createLine(
               createLine({
+                number: number,
                 variants: [
                   createVariant({
-                    number: number,
+                    reconstruction: defaultReconstruction,
                   }),
                 ],
               })
@@ -40,9 +41,9 @@ describe('createDefaultLineFactory', () => {
           )()
         ).toEqual(
           createLine({
+            number: expected,
             variants: [
               createVariant({
-                number: expected,
                 reconstruction: defaultReconstruction,
               }),
             ],

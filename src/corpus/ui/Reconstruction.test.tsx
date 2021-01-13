@@ -9,10 +9,6 @@ beforeEach(() => {
   render(<Reconstruction line={line} />)
 })
 
-test('line number', () => {
-  expect(screen.getByText(line.number)).toBeVisible()
-})
-
 test('reconstruction', () => {
   expect(screen.getByText(line.reconstruction)).toBeVisible()
 })

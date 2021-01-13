@@ -27,36 +27,23 @@ function LineVariantForm({
   onChange,
   disabled = false,
 }: VariantFormProps) {
-  const handleChangeValue = (property: string) => (propertyValue): void =>
+  const handleChange = (property: string) => (propertyValue): void =>
     onChange(
       produce(value, (draft) => {
         draft[property] = propertyValue
       })
     )
 
-  const handleChange = (property: string) => (event): void => {
-    onChange(
-      produce(value, (draft) => {
-        draft[property] = event.target.value
-      })
-    )
-  }
   return (
     <>
       <Form.Row>
-        <Form.Group as={Col} md={1} controlId={_.uniqueId('Lines-')}>
-          <Form.Label>Number</Form.Label>
-          <Form.Control
-            value={value.number}
-            onChange={handleChange('number')}
-          />
-        </Form.Group>
+        <Col md={1}></Col>
         <Col>
           <label>Ideal reconstruction</label>
           <Editor
             name={_.uniqueId('IdealReconstruction-')}
             value={value.reconstruction}
-            onChange={handleChangeValue('reconstruction')}
+            onChange={handleChange('reconstruction')}
             disabled={disabled}
           />
         </Col>
@@ -64,7 +51,7 @@ function LineVariantForm({
       <ManuscriptLines
         lines={value.manuscripts}
         manuscripts={manuscripts}
-        onChange={handleChangeValue('manuscripts')}
+        onChange={handleChange('manuscripts')}
         disabled={disabled}
       />
     </>
@@ -84,13 +71,25 @@ function ChapterLineForm({
   onChange,
   disabled = false,
 }: FormProps) {
-  const handleChangeValue = (property: string) => (propertyValue): void =>
+  const handleChangeBoolean = (
+    property: string,
+    propertyValue: boolean
+  ): void =>
     onChange(
       produce(value, (draft) => {
         draft[property] = propertyValue
       })
     )
 
+  const handleNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    onChange(
+      produce(value, (draft) => {
+        draft.number = event.target.value
+      })
+    )
+  }
   const handleChange = (variants: LineVariant[]): void =>
     onChange(
       produce(value, (draft) => {
@@ -100,30 +99,38 @@ function ChapterLineForm({
   return (
     <>
       <Form.Row>
-        <Form.Check
-          inline
-          type="checkbox"
-          id={_.uniqueId('secondLineOfParallelism-')}
-          label="second line of parallelism"
-          checked={value.isSecondLineOfParallelism}
-          onChange={(): void =>
-            handleChangeValue('isSecondLineOfParallelism')(
-              !value.isSecondLineOfParallelism
-            )
-          }
-        />
-        <Form.Check
-          inline
-          type="checkbox"
-          id={_.uniqueId('beginningOfSection-')}
-          label="beginning of a section"
-          checked={value.isBeginningOfSection}
-          onChange={(): void =>
-            handleChangeValue('isBeginningOfSection')(
-              !value.isBeginningOfSection
-            )
-          }
-        />
+        <Form.Group as={Col} md={1} controlId={_.uniqueId('Lines-')}>
+          <Form.Label>Number</Form.Label>
+          <Form.Control value={value.number} onChange={handleNumberChange} />
+        </Form.Group>
+        <Col md={11}>
+          <Form.Check
+            inline
+            type="checkbox"
+            id={_.uniqueId('secondLineOfParallelism-')}
+            label="second line of parallelism"
+            checked={value.isSecondLineOfParallelism}
+            onChange={(): void =>
+              handleChangeBoolean(
+                'isSecondLineOfParallelism',
+                !value.isSecondLineOfParallelism
+              )
+            }
+          />
+          <Form.Check
+            inline
+            type="checkbox"
+            id={_.uniqueId('beginningOfSection-')}
+            label="beginning of a section"
+            checked={value.isBeginningOfSection}
+            onChange={(): void =>
+              handleChangeBoolean(
+                'isBeginningOfSection',
+                !value.isBeginningOfSection
+              )
+            }
+          />
+        </Col>
       </Form.Row>
       <ListForm
         noun="variant"

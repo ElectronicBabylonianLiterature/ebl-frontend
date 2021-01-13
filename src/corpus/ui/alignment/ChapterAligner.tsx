@@ -101,6 +101,7 @@ export default function ChapterAligner({
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
         <ol key={lineIndex}>
+          <>{line.number}</>
           {line.variants.map((variant, variantIndex) => (
             <li key={variantIndex}>
               <Reconstruction line={variant} />

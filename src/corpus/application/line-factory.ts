@@ -24,9 +24,9 @@ export function createDefaultLineFactory(
   return lastLine
     ? () =>
         createLine({
+          number: nextNumber(lastLine.number),
           variants: lastLine.variants.map((variant) =>
             createVariant({
-              number: nextNumber(variant.number),
               reconstruction: defaultReconstruction,
               manuscripts: variant.manuscripts.map((manuscript) =>
                 createManuscriptLine({

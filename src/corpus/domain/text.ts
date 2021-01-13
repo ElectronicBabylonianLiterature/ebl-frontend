@@ -72,7 +72,7 @@ export interface ManuscriptLine {
 }
 
 export const createManuscriptLine: (
-  x0: Partial<ManuscriptLine>
+  data: Partial<ManuscriptLine>
 ) => ManuscriptLine = produce(
   (draft: Partial<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
@@ -86,13 +86,13 @@ export const createManuscriptLine: (
 )
 
 export interface LineVariant {
-  readonly number: string
   readonly reconstruction: string
   readonly reconstructionTokens: ReadonlyArray<Token>
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
 
 export interface Line {
+  readonly number: string
   readonly variants: ReadonlyArray<LineVariant>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
@@ -100,6 +100,7 @@ export interface Line {
 
 export const createLine: (config: Partial<Line>) => Line = produce(
   (draft): Line => ({
+    number: '',
     variants: [],
     isSecondLineOfParallelism: false,
     isBeginningOfSection: false,
@@ -111,7 +112,6 @@ export const createVariant: (
   config: Partial<LineVariant>
 ) => LineVariant = produce(
   (draft): LineVariant => ({
-    number: '',
     reconstruction: '',
     manuscripts: [],
     reconstructionTokens: [],

@@ -144,11 +144,11 @@ const manuscriptsDto = {
 const linesDto = {
   lines: [
     {
+      number: '1',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
       variants: [
         {
-          number: '1',
           reconstruction: '%n kur-kur',
           manuscripts: [
             {

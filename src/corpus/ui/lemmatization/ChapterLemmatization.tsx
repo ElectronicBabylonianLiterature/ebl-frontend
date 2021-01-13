@@ -55,7 +55,7 @@ function WordLemmatizers({
 function ReconstructionLemmatizer(props: LineLemmatizerProps<LineVariant>) {
   return (
     <Row>
-      <Col md={3}>{props.line.number}</Col>
+      <Col md={3}></Col>
       <Col md={9}>
         <WordLemmatizers
           tokens={props.data}
@@ -223,6 +223,7 @@ function ChapterLemmatizer({
       <ol>
         {chapter.lines.map((line, lineIndex) => (
           <li key={lineIndex}>
+            <>{line.number}</>
             {line.variants.map((variant, variantIndex) => (
               <LineVariantLemmatizater
                 key={variantIndex}

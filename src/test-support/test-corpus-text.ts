@@ -137,11 +137,11 @@ export const textDto = {
       ],
       lines: [
         {
+          number: '1',
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
           variants: [
             {
-              number: '1',
               reconstruction: '%n kur-kur',
               reconstructionTokens: reconstructionTokens,
               manuscripts: [
@@ -199,11 +199,11 @@ export const text = createText({
       ],
       lines: [
         createLine({
+          number: '1',
           isBeginningOfSection: true,
           isSecondLineOfParallelism: true,
           variants: [
             createVariant({
-              number: '1',
               reconstruction: '%n kur-kur',
               reconstructionTokens: reconstructionTokens,
               manuscripts: [

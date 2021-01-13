@@ -1,6 +1,7 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
+import { Chapter } from 'corpus/domain/text'
 
 const category = 1
 const index = 1
@@ -76,11 +77,11 @@ const textDto = {
       ],
       lines: [
         {
+          number: "1'",
           isBeginningOfSection: false,
           isSecondLineOfParallelism: false,
           variants: [
             {
-              number: "1'",
               reconstruction: 'ideal',
               manuscripts: [
                 {
@@ -111,11 +112,11 @@ const defaultManuscriptDto = {
 }
 
 const defaultLineDto = {
+  number: '',
   isBeginningOfSection: false,
   isSecondLineOfParallelism: false,
   variants: [
     {
-      number: '',
       reconstruction: '%n ',
       manuscripts: [],
     },
@@ -229,11 +230,11 @@ describe('Lines', () => {
       fakeApi.expectUpdateLines(textDto, 2, {
         lines: [
           produce(textDto.chapters[2].lines[0], (draft) => {
-            draft.variants[0][property] = newValue
+            draft[property] = newValue
           }),
         ],
       })
-      const expectedValue = line.variants[0][property]
+      const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)
       await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
@@ -275,7 +276,7 @@ describe('Add line', () => {
   test.each([['Number', 'number']])('%s', async (label, property) => {
     fakeApi.expectUpdateLines(textDto, 1, { lines: [defaultLineDto] })
     await appDriver.click('Add line')
-    appDriver.expectInputElement(label, defaultLineDto.variants[0][property])
+    appDriver.expectInputElement(label, defaultLineDto[property])
     await appDriver.click('Save lines')
   })
 })
@@ -310,7 +311,7 @@ async function setup(chapter, expectText = true) {
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
 }
 
-function createChapterPath(stage, name) {
+function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
     index
   )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
