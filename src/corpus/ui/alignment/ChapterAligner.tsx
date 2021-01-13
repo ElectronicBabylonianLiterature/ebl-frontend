@@ -3,7 +3,7 @@ import {
   ChapterAlignment,
   ManuscriptAlignment,
 } from 'corpus/domain/alignment'
-import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
+import { Chapter, ManuscriptLine, LineVariant } from 'corpus/domain/text'
 import Reconstruction from 'corpus/ui/Reconstruction'
 import produce, { castDraft, Draft } from 'immer'
 import React, { useState } from 'react'
@@ -25,7 +25,7 @@ const setOmittedWords = produce(
 
 function ManuscriptAligner(props: {
   chapter: Chapter
-  line: Line
+  line: LineVariant
   manuscriptLine: ManuscriptLine
   alignment: ManuscriptAlignment
   onChange: (alignment: ManuscriptAlignment) => void
@@ -40,12 +40,11 @@ function ManuscriptAligner(props: {
 
   return (
     <Row>
-      <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.manuscriptLine)}</Col>
       <Col md={1}>
         {props.manuscriptLine.labels} {props.manuscriptLine.number}
       </Col>
-      <Col md={6}>
+      <Col md={7}>
         {props.manuscriptLine.atfTokens.map((token, index) => (
           <span key={index}>
             {token.lemmatizable ? (
@@ -82,30 +81,52 @@ export default function ChapterAligner({
   disabled: boolean
 }): JSX.Element {
   const [alignment, setAlignment] = useState(chapter.alignment)
-  const handleChange = (lineIndex: number, manuscriptIndex: number) => (
-    manuscriptAlignment: ManuscriptAlignment
-  ) =>
+  const handleChange = (
+    lineIndex: number,
+    variantIndex: number,
+    manuscriptIndex: number
+  ) => (manuscriptAlignment: ManuscriptAlignment) =>
     setAlignment(
-      alignment.setAlignment(lineIndex, manuscriptIndex, manuscriptAlignment)
+      alignment.setAlignment(
+        lineIndex,
+        variantIndex,
+        manuscriptIndex,
+        manuscriptAlignment
+      )
     )
 
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
-        <section key={lineIndex}>
-          <Reconstruction line={line} />
-          {line.manuscripts.map((manuscript, manuscriptIndex) => (
-            <ManuscriptAligner
-              key={manuscriptIndex}
-              chapter={chapter}
-              line={line}
-              manuscriptLine={manuscript}
-              alignment={alignment.getAlignment(lineIndex, manuscriptIndex)}
-              onChange={handleChange(lineIndex, manuscriptIndex)}
-            />
-          ))}
-        </section>
+        <Row key={lineIndex}>
+          <Col md={1}>{line.number}</Col>
+          <Col md={11}>
+            {line.variants.map((variant, variantIndex) => (
+              <div key={variantIndex}>
+                <Reconstruction line={variant} />
+                {variant.manuscripts.map((manuscript, manuscriptIndex) => (
+                  <ManuscriptAligner
+                    key={manuscriptIndex}
+                    chapter={chapter}
+                    line={variant}
+                    manuscriptLine={manuscript}
+                    alignment={alignment.getAlignment(
+                      lineIndex,
+                      variantIndex,
+                      manuscriptIndex
+                    )}
+                    onChange={handleChange(
+                      lineIndex,
+                      variantIndex,
+                      manuscriptIndex
+                    )}
+                  />
+                ))}
+              </div>
+            ))}
+          </Col>
+        </Row>
       ))}
       <Button onClick={() => onSave(alignment)} disabled={disabled}>
         Save alignment

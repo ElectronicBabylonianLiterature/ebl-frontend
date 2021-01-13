@@ -1,12 +1,14 @@
 import React from 'react'
-import { Col, Form } from 'react-bootstrap'
-import { Line } from 'corpus/domain/text'
+import { Col, Row } from 'react-bootstrap'
+import { LineVariant } from 'corpus/domain/text'
 
-export default function Reconstruction(props: { line: Line }): JSX.Element {
+export default function Reconstruction(props: {
+  line: LineVariant
+}): JSX.Element {
   return (
-    <Form.Row>
-      <Col md={3}>{props.line.number}</Col>
+    <Row>
+      <Col md={2}></Col>
       <Col md={9}>{props.line.reconstruction}</Col>
-    </Form.Row>
+    </Row>
   )
 }

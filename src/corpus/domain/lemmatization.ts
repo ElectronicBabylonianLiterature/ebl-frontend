@@ -5,4 +5,4 @@ export type LineLemmatization = [
   readonly LemmatizationToken[][]
 ]
 
-export type ChapterLemmatization = readonly LineLemmatization[]
+export type ChapterLemmatization = readonly LineLemmatization[][]
