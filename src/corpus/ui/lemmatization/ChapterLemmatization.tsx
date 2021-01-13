@@ -55,8 +55,8 @@ function WordLemmatizers({
 function ReconstructionLemmatizer(props: LineLemmatizerProps<LineVariant>) {
   return (
     <Row>
-      <Col md={3}></Col>
-      <Col md={9}>
+      <Col md={2}></Col>
+      <Col md={10}>
         <WordLemmatizers
           tokens={props.data}
           onChange={props.onChange}
@@ -70,12 +70,11 @@ function ReconstructionLemmatizer(props: LineLemmatizerProps<LineVariant>) {
 function ManuscriptLineLemmatizer(props: LineLemmatizerProps<ManuscriptLine>) {
   return (
     <Row>
-      <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.line)}</Col>
       <Col md={1}>
         {props.line.labels} {props.line.number}
       </Col>
-      <Col md={9}>
+      <Col md={10}>
         <WordLemmatizers
           tokens={props.data}
           onChange={props.onChange}
@@ -220,10 +219,10 @@ function ChapterLemmatizer({
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
-      <ol>
-        {chapter.lines.map((line, lineIndex) => (
-          <li key={lineIndex}>
-            <>{line.number}</>
+      {chapter.lines.map((line, lineIndex) => (
+        <Row key={lineIndex}>
+          <Col md={1}>{line.number}</Col>
+          <Col md={11}>
             {line.variants.map((variant, variantIndex) => (
               <LineVariantLemmatizater
                 key={variantIndex}
@@ -234,9 +233,9 @@ function ChapterLemmatizer({
                 onChange={handleChange(lineIndex, variantIndex)}
               />
             ))}
-          </li>
-        ))}
-      </ol>
+          </Col>
+        </Row>
+      ))}
       <Button onClick={() => onSave(chapterLemmatization)} disabled={disabled}>
         Save lemmatization
       </Button>
