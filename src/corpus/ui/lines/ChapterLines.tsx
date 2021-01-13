@@ -37,7 +37,6 @@ function LineVariantForm({
   return (
     <>
       <Form.Row>
-        <Col md={1}></Col>
         <Col>
           <label>Ideal reconstruction</label>
           <Editor
