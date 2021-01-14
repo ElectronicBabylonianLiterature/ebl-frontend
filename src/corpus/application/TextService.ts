@@ -1,9 +1,20 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
-import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
+import {
+  TextInfo,
+  Manuscript,
+  Line,
+  Text,
+  Chapter,
+  LineVariant,
+  ManuscriptLine,
+} from 'corpus/domain/text'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  ChapterLemmatization,
+  LineLemmatization,
+} from 'corpus/domain/lemmatization'
 import {
   fromDto,
   toLemmatizationDto,
@@ -26,50 +37,62 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
     return Bluebird.mapSeries(chapter.lines, (line) =>
       Bluebird.mapSeries(line.variants, (variant) =>
-        this.createLemmatizationLine(variant.reconstructionTokens).then(
-          (lemmatizedReconstruction) => {
-            const lemmatizedReconstructionWithSuggestions = lemmatizedReconstruction.map(
-              (token) => token.applySuggestion()
-            )
-            return Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
-              this.createLemmatizationLine(manuscript.atfTokens)
-            ).then((lemmatizedManuscripts) => {
-              return [
-                lemmatizedReconstructionWithSuggestions,
-                lemmatizedManuscripts.map(
-                  (lemmatizedManuscript, manuscriptIndex) =>
-                    lemmatizedManuscript.map(
-                      (lemmatizationToken, tokenIndex) => {
-                        const atfToken: Token =
-                          variant.manuscripts[manuscriptIndex].atfTokens[
-                            tokenIndex
-                          ]
-                        if (!lemmatizationToken.lemmatizable) {
-                          return lemmatizationToken
-                        } else if (_.isNil(atfToken.alignment)) {
-                          return lemmatizationToken.applySuggestion()
-                        } else {
-                          const reconstructionLemma: LemmatizationToken =
-                            lemmatizedReconstructionWithSuggestions[
-                              atfToken.alignment
-                            ]
-                          return !_.isEmpty(reconstructionLemma.uniqueLemma) &&
-                            _.isEmpty(lemmatizationToken.uniqueLemma)
-                            ? lemmatizationToken.setUniqueLemma(
-                                reconstructionLemma.uniqueLemma as UniqueLemma,
-                                true
-                              )
-                            : lemmatizationToken.applySuggestion()
-                        }
-                      }
-                    )
-                ),
-              ]
-            })
-          }
-        )
+        this.lemmatizeVariant(variant)
       )
     )
+  }
+
+  private lemmatizeVariant(variant: LineVariant): Bluebird<LineLemmatization> {
+    return this.createLemmatizationLine(variant.reconstructionTokens)
+      .then((lemmatizedReconstruction) =>
+        lemmatizedReconstruction.map((token) => token.applySuggestion())
+      )
+      .then((lemmatizedReconstruction) =>
+        Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
+          this.lemmatizeManuscript(manuscript, lemmatizedReconstruction)
+        ).then((lemmatizedManuscripts) => [
+          lemmatizedReconstruction,
+          lemmatizedManuscripts,
+        ])
+      )
+  }
+
+  private lemmatizeManuscript(
+    manuscript: ManuscriptLine,
+    lemmatizedReconstructionWithSuggestions: LemmatizationToken[]
+  ): Bluebird<LemmatizationToken[]> {
+    return this.createLemmatizationLine(manuscript.atfTokens).then(
+      (lemmatizedManuscript) =>
+        lemmatizedManuscript.map((lemmatizationToken, tokenIndex) => {
+          const atfToken: Token = manuscript.atfTokens[tokenIndex]
+          return lemmatizationToken.lemmatizable
+            ? this.applySuggestion(
+                lemmatizationToken,
+                atfToken,
+                lemmatizedReconstructionWithSuggestions
+              )
+            : lemmatizationToken
+        })
+    )
+  }
+
+  private applySuggestion(
+    lemmatizationToken: LemmatizationToken,
+    atfToken: Token,
+    lemmatizedReconstructionWithSuggestions: LemmatizationToken[]
+  ): LemmatizationToken {
+    if (_.isNil(atfToken.alignment) || lemmatizationToken.hasLemma) {
+      return lemmatizationToken.applySuggestion()
+    } else {
+      const reconstructionLemma: LemmatizationToken =
+        lemmatizedReconstructionWithSuggestions[atfToken.alignment]
+      return reconstructionLemma.hasLemma
+        ? lemmatizationToken.setUniqueLemma(
+            reconstructionLemma.uniqueLemma as UniqueLemma,
+            true
+          )
+        : lemmatizationToken.applySuggestion()
+    }
   }
 }
 
