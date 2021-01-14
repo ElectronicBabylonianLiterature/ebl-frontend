@@ -36,6 +36,10 @@ export class LemmatizationToken {
     this.suggested = suggested
   }
 
+  get hasLemma(): boolean {
+    return !_.isEmpty(this.uniqueLemma)
+  }
+
   setUniqueLemma(
     uniqueLemma: UniqueLemma,
     suggested = false
@@ -47,11 +51,7 @@ export class LemmatizationToken {
   }
 
   applySuggestion(): LemmatizationToken {
-    if (
-      this.suggestions &&
-      this.suggestions.length === 1 &&
-      _.isEmpty(this.uniqueLemma)
-    ) {
+    if (this.suggestions?.length === 1 && !this.hasLemma) {
       return this.setUniqueLemma(this.suggestions[0], true)
     } else {
       return this

@@ -1,8 +1,20 @@
 import Bluebird from 'bluebird'
-import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
+import _ from 'lodash'
+import {
+  TextInfo,
+  Manuscript,
+  Line,
+  Text,
+  Chapter,
+  LineVariant,
+  ManuscriptLine,
+} from 'corpus/domain/text'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  ChapterLemmatization,
+  LineLemmatization,
+} from 'corpus/domain/lemmatization'
 import {
   fromDto,
   toLemmatizationDto,
@@ -12,6 +24,11 @@ import {
 } from './dtos'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import { Token } from 'transliteration/domain/token'
+import {
+  LemmatizationToken,
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -20,14 +37,59 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
     return Bluebird.mapSeries(chapter.lines, (line) =>
       Bluebird.mapSeries(line.variants, (variant) =>
-        Bluebird.all([
-          this.createLemmatizationLine(variant.reconstructionTokens),
-          Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
-            this.createLemmatizationLine(manuscript.atfTokens)
-          ),
-        ])
+        this.lemmatizeVariant(variant)
       )
     )
+  }
+
+  private lemmatizeVariant(variant: LineVariant): Bluebird<LineLemmatization> {
+    return this.createLemmatizationLine(variant.reconstructionTokens)
+      .then((reconstruction) =>
+        reconstruction.map((token) => token.applySuggestion())
+      )
+      .then((reconstruction) =>
+        Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
+          this.lemmatizeManuscript(manuscript, reconstruction)
+        ).then((lemmatizedManuscripts) => [
+          reconstruction,
+          lemmatizedManuscripts,
+        ])
+      )
+  }
+
+  private lemmatizeManuscript(
+    manuscript: ManuscriptLine,
+    reconstruction: LemmatizationToken[]
+  ): Bluebird<LemmatizationToken[]> {
+    return this.createLemmatizationLine(manuscript.atfTokens).then(
+      (lemmatizedManuscript) =>
+        lemmatizedManuscript.map((lemmatizationToken, tokenIndex) => {
+          const atfToken: Token = manuscript.atfTokens[tokenIndex]
+          return lemmatizationToken.lemmatizable
+            ? this.applySuggestion(lemmatizationToken, atfToken, reconstruction)
+            : lemmatizationToken
+        })
+    )
+  }
+
+  private applySuggestion(
+    lemmatizationToken: LemmatizationToken,
+    atfToken: Token,
+    reconstruction: LemmatizationToken[]
+  ): LemmatizationToken {
+    const suggestion = this.getSuggestion(atfToken, reconstruction)
+    return lemmatizationToken.hasLemma || _.isEmpty(suggestion)
+      ? lemmatizationToken.applySuggestion()
+      : lemmatizationToken.setUniqueLemma(suggestion as UniqueLemma, true)
+  }
+
+  private getSuggestion(
+    atfToken: Token,
+    reconstruction: LemmatizationToken[]
+  ): UniqueLemma | null {
+    return _.isNil(atfToken.alignment)
+      ? null
+      : reconstruction[atfToken.alignment].uniqueLemma
   }
 }
 

@@ -2,8 +2,9 @@ import _ from 'lodash'
 import { factory } from 'factory-girl'
 import Lemma from './Lemma'
 import Lemmatization, { LemmatizationToken } from './Lemmatization'
+import Word from 'dictionary/domain/Word'
 
-let words
+let words: Word[]
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
@@ -124,4 +125,24 @@ it('clearSuggestionFlags clears flags', () => {
   expect(
     _.map(lemmatization.clearSuggestionFlags().tokens[0], 'suggested')
   ).toEqual([false, false])
+})
+
+test.each([
+  [
+    new LemmatizationToken('kur', true, [
+      new Lemma({
+        _id: '',
+        lemma: ['kur'],
+        homonym: 'I',
+        pos: [],
+        guideWord: '',
+        oraccWords: [],
+      }),
+    ]),
+    true,
+  ],
+  [new LemmatizationToken('kur', true, []), false],
+  [new LemmatizationToken('kur', true, null), false],
+])('hasLemma', (token, expected) => {
+  expect(token.hasLemma).toEqual(expected)
 })
