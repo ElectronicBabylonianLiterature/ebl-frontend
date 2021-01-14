@@ -1,4 +1,5 @@
 import Bluebird from 'bluebird'
+import _ from 'lodash'
 import { TextInfo, Manuscript, Line, Text, Chapter } from 'corpus/domain/text'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
@@ -12,6 +13,11 @@ import {
 } from './dtos'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import { Token } from 'transliteration/domain/token'
+import {
+  LemmatizationToken,
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -20,12 +26,48 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
     return Bluebird.mapSeries(chapter.lines, (line) =>
       Bluebird.mapSeries(line.variants, (variant) =>
-        Bluebird.all([
-          this.createLemmatizationLine(variant.reconstructionTokens),
-          Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
-            this.createLemmatizationLine(manuscript.atfTokens)
-          ),
-        ])
+        this.createLemmatizationLine(variant.reconstructionTokens).then(
+          (lemmatizedReconstruction) => {
+            const lemmatizedReconstructionWithSuggestions = lemmatizedReconstruction.map(
+              (token) => token.applySuggestion()
+            )
+            return Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
+              this.createLemmatizationLine(manuscript.atfTokens)
+            ).then((lemmatizedManuscripts) => {
+              return [
+                lemmatizedReconstructionWithSuggestions,
+                lemmatizedManuscripts.map(
+                  (lemmatizedManuscript, manuscriptIndex) =>
+                    lemmatizedManuscript.map(
+                      (lemmatizationToken, tokenIndex) => {
+                        const atfToken: Token =
+                          variant.manuscripts[manuscriptIndex].atfTokens[
+                            tokenIndex
+                          ]
+                        if (!lemmatizationToken.lemmatizable) {
+                          return lemmatizationToken
+                        } else if (_.isNil(atfToken.alignment)) {
+                          return lemmatizationToken.applySuggestion()
+                        } else {
+                          const reconstructionLemma: LemmatizationToken =
+                            lemmatizedReconstructionWithSuggestions[
+                              atfToken.alignment
+                            ]
+                          return !_.isEmpty(reconstructionLemma.uniqueLemma) &&
+                            _.isEmpty(lemmatizationToken.uniqueLemma)
+                            ? lemmatizationToken.setUniqueLemma(
+                                reconstructionLemma.uniqueLemma as UniqueLemma,
+                                true
+                              )
+                            : lemmatizationToken.applySuggestion()
+                        }
+                      }
+                    )
+                ),
+              ]
+            })
+          }
+        )
       )
     )
   }
