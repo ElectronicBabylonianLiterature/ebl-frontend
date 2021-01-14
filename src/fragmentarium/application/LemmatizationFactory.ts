@@ -22,7 +22,9 @@ export abstract class AbstractLemmatizationFactory<T, U> {
     wordRepository: { find(word: string): Promise<DictionaryWord> }
   ) {
     this.findSuggestions = _.memoize(
-      _.bind(fragmentService.findSuggestions, fragmentService)
+      _.bind(fragmentService.findSuggestions, fragmentService),
+      (...args: Parameters<typeof fragmentService.findSuggestions>) =>
+        String(args)
     )
     this.findWord = _.memoize(_.bind(wordRepository.find, wordRepository))
   }
