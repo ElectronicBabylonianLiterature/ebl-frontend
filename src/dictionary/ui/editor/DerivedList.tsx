@@ -3,31 +3,30 @@ import { FormGroup } from 'react-bootstrap'
 
 import FormList from './FormList'
 import List from 'common/List'
-
-class DerivedList extends Component<{ value; onChange }> {
-  render() {
-    return (
-      <FormGroup>
-        <List
-          label={this.props.children}
-          value={this.props.value}
-          onChange={this.props.onChange}
-          noun="group"
-          defaultValue={[]}
-        >
-          {(group, onChange, groupIndex) => (
-            <FormList
-              onChange={onChange}
-              value={group}
-              fields={['lemma', 'homonym', 'notes']}
-            >
-              {groupIndex + 1}. group
-            </FormList>
-          )}
-        </List>
-      </FormGroup>
-    )
-  }
+export default function DerivedList({
+  value,
+  onChange,
+  children,
+}): JSX.Element {
+  return (
+    <FormGroup>
+      <List
+        label={children}
+        value={value}
+        onChange={onChange}
+        noun="group"
+        defaultValue={[]}
+      >
+        {(group, onChange, groupIndex) => (
+          <FormList
+            onChange={onChange}
+            value={group}
+            fields={['lemma', 'homonym', 'notes']}
+          >
+            {groupIndex + 1}. group
+          </FormList>
+        )}
+      </List>
+    </FormGroup>
+  )
 }
-
-export default DerivedList
