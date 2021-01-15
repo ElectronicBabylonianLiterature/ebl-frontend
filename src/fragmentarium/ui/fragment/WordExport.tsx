@@ -5,7 +5,6 @@ import Record from 'fragmentarium/ui/info/Record'
 import {
   Document,
   HeadingLevel,
-  Packer,
   Paragraph,
   TextRun,
   TableCell,
@@ -32,7 +31,7 @@ import { MemoryRouter } from 'react-router-dom'
 export async function wordExport(
   fragment: Fragment,
   wordService: WordService
-): Promise<Blob> {
+): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(TransliterationLines({ text: fragment.text }))
   )
@@ -72,11 +71,7 @@ export async function wordExport(
     fragment
   )
 
-  const wordBlob: Blob = await Packer.toBlob(doc).then((blob) => {
-    return blob
-  })
-
-  return wordBlob
+  return doc
 }
 
 function wrapWithMemoryRouter(component: JSX.Element): ReactElement {

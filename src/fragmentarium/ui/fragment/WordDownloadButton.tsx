@@ -5,6 +5,7 @@ import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
+import { Packer } from 'docx'
 
 type Props = {
   children: React.ReactNode
@@ -21,7 +22,7 @@ export default function WordDownloadButton({
 
   const handleClick = (event) => {
     setIsLoading(true)
-    saveWordBlob(fragment, wordService).then((blob) => {
+    getWordBlob(fragment, wordService).then((blob) => {
       saveAs(blob, `${fragment.number}.docx`)
       setIsLoading(false)
     })
@@ -36,10 +37,15 @@ export default function WordDownloadButton({
   )
 }
 
-async function saveWordBlob(
+async function getWordBlob(
   fragment: Fragment,
   wordService: WordService
 ): Promise<Blob> {
-  const wordBlob = await wordExport(fragment, wordService)
+  const wordDoc = await wordExport(fragment, wordService).then((doc) => {
+    return doc
+  })
+  const wordBlob: Blob = await Packer.toBlob(wordDoc).then((blob) => {
+    return blob
+  })
   return wordBlob
 }
