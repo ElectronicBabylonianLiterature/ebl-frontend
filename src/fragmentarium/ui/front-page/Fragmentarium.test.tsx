@@ -4,9 +4,10 @@ import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Fragmentarium from './Fragmentarium'
+import Promise from 'bluebird'
 
 const fragmentService: FragmentService = new (FragmentService as jest.Mock<
   FragmentService
@@ -14,7 +15,7 @@ const fragmentService: FragmentService = new (FragmentService as jest.Mock<
 const fragmentSearchService: FragmentSearchService = new (FragmentSearchService as jest.Mock<
   FragmentSearchService
 >)()
-let session: Session
+const session = new (MemorySession as jest.Mock<MemorySession>)()
 let container: Element
 let element: RenderResult
 let statistics: { transliteratedFragments: number; lines: number }
@@ -39,8 +40,12 @@ async function renderFragmentarium() {
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
-  fragmentService.statistics = jest.fn().mockResolvedValue(statistics)
-  fragmentService.findImage = jest.fn().mockResolvedValue(statistics)
+  fragmentService.statistics = jest
+    .fn()
+    .mockReturnValue(Promise.resolve(statistics))
+  fragmentService.findImage = jest
+    .fn()
+    .mockReturnValue(Promise.resolve(statistics))
   fragmentSearchService.fetchLatestTransliterations = jest.fn()
 
   fragmentSearchService.fetchLatestTransliterations = jest.fn()
@@ -77,13 +82,13 @@ describe('Fragment lists', () => {
     session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
     fragmentSearchService.fetchLatestTransliterations = jest
       .fn()
-      .mockResolvedValueOnce([latest])
+      .mockReturnValueOnce(Promise.resolve([latest]))
 
     needsRevision = await factory.build('fragment')
     session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(true)
     fragmentSearchService.fetchNeedsRevision = jest
       .fn()
-      .mockResolvedValueOnce([needsRevision])
+      .mockReturnValue(Promise.resolve([needsRevision]))
     await renderFragmentarium()
   })
 

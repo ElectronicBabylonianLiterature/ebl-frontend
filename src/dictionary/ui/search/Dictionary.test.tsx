@@ -7,13 +7,13 @@ import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
-import { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 
 const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
 
 let words: readonly Word[]
 const wordService = new (WordService as jest.Mock<WordService>)()
-let session: Session
+const session = new (MemorySession as jest.Mock<MemorySession>)()
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
@@ -26,7 +26,7 @@ beforeEach(async () => {
 describe('Searching for word', () => {
   beforeEach(() => {
     session.isAllowedToReadWords = jest.fn().mockReturnValue(true)
-    wordService.search = jest.fn().mockResolvedValueOnce(words)
+    wordService.search = jest.fn().mockReturnValue(Promise.resolve(words))
   })
 
   it('displays result on successfull query', async () => {

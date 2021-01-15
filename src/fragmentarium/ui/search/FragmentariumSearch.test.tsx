@@ -6,13 +6,13 @@ import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import { Session } from 'auth/Session'
+import MemorySession from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
 const fragmentSearchService = new (FragmentSearchService as jest.Mock<
   FragmentSearchService
 >)()
-let session: Session
+const session = new (MemorySession as jest.Mock<MemorySession>)()
 let container: Element
 let element: RenderResult
 
@@ -69,7 +69,7 @@ describe('Search', () => {
       fragments = await factory.buildMany('fragmentInfo', 2)
       fragmentSearchService.searchNumber = jest
         .fn()
-        .mockResolvedValueOnce(fragments)
+        .mockReturnValueOnce(Promise.resolve(fragments))
       await renderFragmentariumSearch({ number })
     })
 
@@ -96,7 +96,7 @@ describe('Search', () => {
       ])
       fragmentSearchService.searchTransliteration = jest
         .fn()
-        .mockResolvedValueOnce(fragments)
+        .mockReturnValueOnce(Promise.resolve(fragments))
       await renderFragmentariumSearch({ transliteration })
     })
 
