@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
 class TextInput extends Component<{ value; onChange }> {
-  onChange = (event: ChangeEvent): void => {
+  onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.props.onChange(event.target.value)
   }
 

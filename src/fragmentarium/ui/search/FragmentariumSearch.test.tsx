@@ -1,16 +1,20 @@
-import React, { FunctionComponent } from 'react'
-import { MemoryRouter, RouteComponentProps, withRouter } from 'react-router-dom'
-import { act, render } from '@testing-library/react'
+import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
+import { act, render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import FragmentariumSearch, { Props } from './FragmentariumSearch'
+import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 
-let fragmentSearchService
-let session
-let container
-let element
+const fragmentSearchService = new (FragmentSearchService as jest.Mock<
+  FragmentSearchService
+>)()
+let session: Session
+let container: Element
+let element: RenderResult
 
 async function renderFragmentariumSearch({
   number,
@@ -19,21 +23,17 @@ async function renderFragmentariumSearch({
   number?: string | null | undefined
   transliteration?: string | null | undefined
 }): Promise<void> {
-  const FragmentariumSearchWithRouter = withRouter<
-    Props & RouteComponentProps,
-    FunctionComponent<Props>
-  >(FragmentariumSearch)
   await act(async () => {
     element = render(
       <MemoryRouter>
         <SessionContext.Provider value={session}>
-          <FragmentariumSearchWithRouter
-            number={number}
+          <FragmentariumSearch
             id={undefined}
             title={undefined}
+            pages={undefined}
             primaryAuthor={undefined}
             year={undefined}
-            pages={undefined}
+            number={number}
             transliteration={transliteration}
             fragmentSearchService={fragmentSearchService}
             fragmentService={
@@ -48,21 +48,18 @@ async function renderFragmentariumSearch({
 }
 
 beforeEach(async () => {
-  fragmentSearchService = {
-    searchNumber: jest.fn(),
-    searchTransliteration: jest.fn(),
-  }
-  session = {
-    isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: (): boolean => false,
-  }
+  fragmentSearchService.searchNumber = jest.fn()
+  fragmentSearchService.searchTransliteration = jest.fn()
+
+  session.isAllowedToReadFragments = jest.fn()
+  session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(false)
 })
 
 describe('Search', () => {
   let fragments
 
   beforeEach(async () => {
-    session.isAllowedToReadFragments.mockReturnValue(true)
+    session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
   })
 
   describe('Searching fragments by number', () => {
@@ -70,9 +67,9 @@ describe('Search', () => {
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragmentInfo', 2)
-      fragmentSearchService.searchNumber.mockReturnValueOnce(
-        Promise.resolve(fragments)
-      )
+      fragmentSearchService.searchNumber = jest
+        .fn()
+        .mockResolvedValueOnce(fragments)
       await renderFragmentariumSearch({ number })
     })
 
@@ -82,7 +79,9 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Number').value).toEqual(number)
+      expect(
+        (element.getByLabelText('Number') as HTMLInputElement).value
+      ).toEqual(number)
     })
   })
 
@@ -95,9 +94,9 @@ describe('Search', () => {
         { matchingLines: [['line 1', 'line 2']] },
         { matchingLines: [['line 3'], ['line 4']] },
       ])
-      fragmentSearchService.searchTransliteration.mockReturnValueOnce(
-        Promise.resolve(fragments)
-      )
+      fragmentSearchService.searchTransliteration = jest
+        .fn()
+        .mockResolvedValueOnce(fragments)
       await renderFragmentariumSearch({ transliteration })
     })
 
@@ -107,9 +106,9 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Transliteration').value).toEqual(
-        replacedTransliteration
-      )
+      expect(
+        (element.getByLabelText('Transliteration') as HTMLInputElement).value
+      ).toEqual(replacedTransliteration)
     })
   })
 })

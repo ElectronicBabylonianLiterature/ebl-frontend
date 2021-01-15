@@ -38,7 +38,11 @@ export default function WordForm({
     updateWord({ [key]: value })
   }
 
-  const TextInputDisplay = ({ property: string }): JSX.Element => (
+  const TextInputDisplay = ({
+    property,
+  }: {
+    property: string
+  }): JSX.Element => (
     <TextInput value={word[property]} onChange={onChangeValue(property)}>
       {_.startCase(property)}
     </TextInput>

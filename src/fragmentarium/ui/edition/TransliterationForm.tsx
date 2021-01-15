@@ -36,7 +36,7 @@ class TransliteratioForm extends Component<Props, State> {
   }
 
   private readonly formId: string
-  private updatePromise: Promise<undefined>
+  private updatePromise: Promise<void>
 
   constructor(props: Props) {
     super(props)

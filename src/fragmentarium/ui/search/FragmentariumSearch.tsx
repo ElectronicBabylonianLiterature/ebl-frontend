@@ -83,5 +83,3 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
 }
 
 export default FragmentariumSearch
-
-export type { Props }

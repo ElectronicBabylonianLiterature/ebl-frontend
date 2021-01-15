@@ -3,11 +3,7 @@ import _ from 'lodash'
 import { Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-export default function ChapterNavigation({
-  text,
-}: {
-  text: Text
-}): JSX.Element {
+export default function ChapterNavigation({ text }): JSX.Element {
   return (
     <Nav variant="tabs">
       {_(text.chapters)
