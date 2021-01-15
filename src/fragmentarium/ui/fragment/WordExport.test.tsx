@@ -3,7 +3,6 @@ import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
-import Display from './Display'
 import { wordDto } from 'test-support/test-word'
 import { wordExport } from './WordExport'
 
@@ -11,7 +10,7 @@ jest.mock('dictionary/application/WordService')
 
 let wordService
 let fragment: Fragment
-let wordBlob: Promise<Blob>
+let wordBlob: any
 
 beforeEach(async () => {
   wordService = new WordService(null)
