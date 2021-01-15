@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import Word from './Word'
@@ -74,18 +74,18 @@ describe('broken word display', () => {
       forms: ['broken-form'],
       derived: [['broken-derived']],
     })
-    render(
+    textContent = render(
       <MemoryRouter>
         <Word value={word} />
       </MemoryRouter>
-    )
+    ).container.textContent
   })
 
   it('form', () => {
-    expect(screen.getByText('broken-form')).toBeVisible()
+    expect(textContent).toContain('broken-form')
   })
 
   it('derived', () => {
-    expect(screen.getByText('broken-derived')).toBeVisible()
+    expect(textContent).toContain('broken-derived')
   })
 })
