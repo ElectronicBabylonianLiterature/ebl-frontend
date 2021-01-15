@@ -1,11 +1,15 @@
 import React, { ChangeEvent, Component } from 'react'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
-
-class ArrayInput extends Component<{ value; onChange; separator }> {
+interface Props {
+  value: readonly string[]
+  onChange: (value: readonly string[]) => void
+  separator: string
+}
+class ArrayInput extends Component<Props, { id: string }> {
   private readonly id: string
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.id = _.uniqueId('ArrayInput-')
   }

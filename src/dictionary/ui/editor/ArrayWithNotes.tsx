@@ -11,7 +11,7 @@ class ArrayWithNotes extends Component<{
   property
   noun
 }> {
-  update = (property) => (value): void => {
+  update = (property: string) => (value): void => {
     this.props.onChange({ ...this.props.value, [property]: value })
   }
 

@@ -5,7 +5,7 @@ import {
   Manuscript,
 } from 'corpus/domain/text'
 import React from 'react'
-import { produce } from 'immer'
+import { castDraft, produce } from 'immer'
 import { Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
 import ArrayInput from 'common/ArrayInput'
@@ -62,7 +62,7 @@ function ManuscriptLineForm({
           onChange={(labels) =>
             onChange(
               produce(value, (draft) => {
-                draft.labels = labels
+                draft.labels = castDraft(labels)
               })
             )
           }

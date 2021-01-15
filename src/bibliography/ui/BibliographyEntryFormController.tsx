@@ -17,7 +17,7 @@ export default class BibliographyEntryFormController extends Component<
 > {
   static contextType = SessionContext
 
-  private updatePromise: Promise<any>
+  private updatePromise: Promise<void>
 
   constructor(props: Props) {
     super(props)
@@ -35,7 +35,7 @@ export default class BibliographyEntryFormController extends Component<
     return this.state.saving || !this.context.isAllowedToWriteBibliography()
   }
 
-  handleSubmit = (entry): void => {
+  handleSubmit = (entry: BibliographyEntry): void => {
     this.updatePromise.cancel()
     this.setState({ error: null, saving: true })
     this.updatePromise = this.props

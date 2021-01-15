@@ -8,7 +8,7 @@ function DerivedFromInput({
   onChange,
 }: {
   value: any
-  onChange: (value: any) => void
+  onChange: (value) => void
 }): JSX.Element {
   return (
     <Card border="light">
