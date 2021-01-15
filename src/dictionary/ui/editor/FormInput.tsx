@@ -5,8 +5,15 @@ import _ from 'lodash'
 import LemmaInput from './LemmaInput'
 import ListInput from './TextListInput'
 import TextInput from './TextInput'
+import { Word } from 'transliteration/domain/token'
 
-export default function FormInput({ value, onChange }): JSX.Element {
+export default function FormInput({
+  value,
+  onChange,
+}: {
+  value
+  onChange: (word: Word) => void
+}): JSX.Element {
   const lemmaChanged = (lemma): void => {
     onChange({
       ...value,
@@ -26,7 +33,7 @@ export default function FormInput({ value, onChange }): JSX.Element {
     })
   }
 
-  const hasProperty = (property) => _.has(value, property)
+  const hasProperty = (property): boolean => _.has(value, property)
 
   return (
     <FormGroup>

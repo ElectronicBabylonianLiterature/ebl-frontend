@@ -14,7 +14,7 @@ export default class FactoryAdapter extends DefaultAdapter {
   get(model, attr, Factory) {
     return model[attr]
   }
-  set(props, model, Factory) {
+  set(props, model, Factory): void {
     throw new Error('FactoryAdapter.set is not implemented.')
   }
 }

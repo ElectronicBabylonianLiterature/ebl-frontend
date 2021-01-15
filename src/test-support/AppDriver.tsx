@@ -52,12 +52,12 @@ function createApp(api): JSX.Element {
 }
 
 export default class AppDriver {
-  private readonly api
+  private readonly api: { fetchJson: jest.Mock }
   private initialEntries: string[] = []
   private element: RenderResult | null = null
   private session: Session | null = null
 
-  constructor(api) {
+  constructor(api: { fetchJson: jest.Mock }) {
     this.api = api
   }
 
@@ -69,7 +69,7 @@ export default class AppDriver {
     }
   }
 
-  withPath(path): AppDriver {
+  withPath(path: string): AppDriver {
     this.initialEntries = [path]
     return this
   }

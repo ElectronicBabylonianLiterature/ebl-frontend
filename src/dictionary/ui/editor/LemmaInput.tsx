@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { FormControl, FormGroup, FormLabel, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
-export default function LemmaInput({ value, onChange }): JSX.Element {
-  const lemmaChanged = (event): void => {
+export default function LemmaInput({
+  value,
+  onChange,
+}: {
+  value
+  onChange: (lemma) => void
+}): JSX.Element {
+  const lemmaChanged = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     onChange({
       ...value,
       lemma: event.target.value.split(' '),
@@ -18,7 +24,7 @@ export default function LemmaInput({ value, onChange }): JSX.Element {
     />
   )
 
-  const attestedChanged = (event): void => {
+  const attestedChanged = (event: ChangeEvent<HTMLInputElement>): void => {
     onChange({
       ...value,
       attested: event.target.checked,

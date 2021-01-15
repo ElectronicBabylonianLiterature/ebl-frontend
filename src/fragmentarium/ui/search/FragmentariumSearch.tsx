@@ -10,6 +10,8 @@ import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 interface Props {
   number: string | null | undefined
@@ -19,8 +21,8 @@ interface Props {
   year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
 }
 
 const FragmentariumSearch: FunctionComponent<Props> = ({
@@ -81,3 +83,5 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
 }
 
 export default FragmentariumSearch
+
+export type { Props }

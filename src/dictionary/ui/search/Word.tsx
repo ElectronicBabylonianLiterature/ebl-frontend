@@ -61,7 +61,11 @@ function Form({ value }): JSX.Element {
     </Notes>
   )
 }
-function AmplifiedMeanings({ values }): JSX.Element {
+function AmplifiedMeanings({
+  values,
+}: {
+  values: readonly any[]
+}): JSX.Element {
   return (
     <ul>
       {_.map(values, (value, topLevelindex) => (
@@ -100,12 +104,12 @@ function Derived({ derived }: { derived: readonly any[][] }): JSX.Element {
   )
 }
 
-class WordDisplay extends Component<{ value }> {
-  get word() {
+class WordDisplay extends Component<{ value: Word }> {
+  get word(): Word {
     return this.props.value
   }
 
-  get forms() {
+  get forms(): JSX.Element {
     return (
       <ul className="Word__forms">
         {this.word.forms.map((form, index) => (
@@ -117,11 +121,11 @@ class WordDisplay extends Component<{ value }> {
     )
   }
 
-  isNotEmpty(property) {
+  isNotEmpty(property): boolean {
     return !_.isEmpty(this.word[property])
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div className="Word">
         <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>

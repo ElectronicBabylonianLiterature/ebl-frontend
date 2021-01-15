@@ -1,10 +1,11 @@
-import React from 'react'
-import { MemoryRouter, withRouter } from 'react-router-dom'
+import React, { FunctionComponent } from 'react'
+import { MemoryRouter, RouteComponentProps, withRouter } from 'react-router-dom'
 import { act, render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
-import FragmentariumSearch from './FragmentariumSearch'
+import FragmentariumSearch, { Props } from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 let fragmentSearchService
 let session
@@ -18,17 +19,26 @@ async function renderFragmentariumSearch({
   number?: string | null | undefined
   transliteration?: string | null | undefined
 }): Promise<void> {
-  const FragmentariumSearchWithRouter = withRouter<any, any>(
-    FragmentariumSearch
-  )
+  const FragmentariumSearchWithRouter = withRouter<
+    Props & RouteComponentProps,
+    FunctionComponent<Props>
+  >(FragmentariumSearch)
   await act(async () => {
     element = render(
       <MemoryRouter>
         <SessionContext.Provider value={session}>
           <FragmentariumSearchWithRouter
             number={number}
+            id={undefined}
+            title={undefined}
+            primaryAuthor={undefined}
+            year={undefined}
+            pages={undefined}
             transliteration={transliteration}
             fragmentSearchService={fragmentSearchService}
+            fragmentService={
+              new (FragmentService as jest.Mock<FragmentService>)()
+            }
           />
         </SessionContext.Provider>
       </MemoryRouter>

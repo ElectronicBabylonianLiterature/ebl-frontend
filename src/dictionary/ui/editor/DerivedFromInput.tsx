@@ -3,7 +3,13 @@ import { Button, Card } from 'react-bootstrap'
 
 import FormInput from './FormInput'
 
-function DerivedFromInput({ value, onChange }) {
+function DerivedFromInput({
+  value,
+  onChange,
+}: {
+  value: any
+  onChange: (value: any) => void
+}): JSX.Element {
   return (
     <Card border="light">
       <Card.Header>Derived from</Card.Header>

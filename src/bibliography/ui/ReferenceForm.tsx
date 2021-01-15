@@ -6,12 +6,20 @@ import ArrayInput from 'common/ArrayInput'
 import HelpTrigger from 'common/HelpTrigger'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import NotesHelp from './NotesHelp'
-
+import Promise from 'bluebird'
+import BibliographyEntry, {
+  CslData,
+} from 'bibliography/domain/BibliographyEntry'
+interface Props {
+  value: CslData
+  searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
+  onChange: (event: BibliographyEntry) => void
+}
 export default function ReferenceForm({
   value,
   onChange,
   searchBibliography,
-}): JSX.Element {
+}: Props): JSX.Element {
   const id = _.uniqueId('ReferenceForm-')
   const documentLabelId = _.uniqueId('ReferenceForm-Document-')
 
