@@ -21,6 +21,11 @@ import { Location } from 'history'
 import AnnotationView from 'fragmentarium/ui/image-annotation/AnnotationView'
 import { useAuthentication } from 'auth/Auth'
 import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
+import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import BibliographyService from 'bibliography/application/BibliographyService'
+import TextService from 'corpus/application/TextService'
 
 function parseStringParam(
   location: Location,
@@ -97,6 +102,12 @@ function App({
   fragmentSearchService,
   bibliographyService,
   textService,
+}: {
+  wordService: WordService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
+  bibliographyService: BibliographyService
+  textService: TextService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (

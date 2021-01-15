@@ -45,7 +45,7 @@ export class Genres {
     )
   }
 
-  find(genre: Genre) {
+  find(genre: Genre): Genre | undefined {
     return _.find(
       this.genres,
       (elem) => JSON.stringify(elem.category) === JSON.stringify(genre.category)

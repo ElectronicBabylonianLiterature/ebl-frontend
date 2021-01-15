@@ -1,10 +1,11 @@
 import Promise from 'bluebird'
 import Word from 'dictionary/domain/Word'
+import WordRepository from 'dictionary/infrastructure/WordRepository'
 
 class WordService {
-  private readonly wordRepository
+  private readonly wordRepository: WordRepository
 
-  constructor(wordRepository) {
+  constructor(wordRepository: WordRepository) {
     this.wordRepository = wordRepository
   }
 
@@ -12,7 +13,7 @@ class WordService {
     return this.wordRepository.find(id)
   }
 
-  search(query: string): Promise<Word[]> {
+  search(query: string): Promise<Word> {
     return this.wordRepository.search(query)
   }
 

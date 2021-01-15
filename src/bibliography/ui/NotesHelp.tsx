@@ -2,7 +2,7 @@ import React from 'react'
 import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
 
-export default function NotesHelp() {
+export default function NotesHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('NotesHelp-')} title="Notes Help">
       <Popover.Content>

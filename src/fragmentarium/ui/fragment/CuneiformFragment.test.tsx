@@ -24,7 +24,7 @@ let updatedFragment
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
   const references = await factory.buildMany('reference', 2)
-  wordService = new WordService(null)
+  wordService = new (WordService as jest.Mock<WordService>)()
   fragment = (
     await factory.build('fragment', {
       atf: '1. ku',

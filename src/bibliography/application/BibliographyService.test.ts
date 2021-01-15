@@ -1,15 +1,20 @@
 import { testDelegation, TestData } from 'test-support/utils'
 import BibliographyService from './BibliographyService'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 
+jest.mock('bibliography/infrastructure/BibliographyRepository', () => {
+  return function () {
+    return {
+      find: jest.fn(),
+      search: jest.fn(),
+      update: jest.fn(),
+      create: jest.fn(),
+    }
+  }
+})
 const resultStub = {}
 
-const bibliographyRepository = {
-  find: jest.fn(),
-  search: jest.fn(),
-  update: jest.fn(),
-  create: jest.fn(),
-}
-
+const bibliographyRepository = new (BibliographyRepository as jest.Mock)()
 const bibliographyService = new BibliographyService(bibliographyRepository)
 
 const testData: TestData[] = [

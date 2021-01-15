@@ -8,7 +8,7 @@ type Props = {
   alt: string
 }
 
-export default function LinkedImage({ src, alt }: Props) {
+export default function LinkedImage({ src, alt }: Props): JSX.Element {
   return (
     <ExternalLink href={src}>
       <Image src={src} alt={alt} fluid />
