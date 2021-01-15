@@ -4,10 +4,12 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Popover, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
-import BibliographySelect from '../../bibliography/ui/BibliographySelect'
-import HelpTrigger from '../../common/HelpTrigger'
+import BibliographySelect from 'bibliography/ui/BibliographySelect'
+import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import produce from 'immer'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface State {
   number: string | null | undefined
@@ -30,8 +32,8 @@ type Props = {
   title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   history: History
 } & RouteComponentProps
 

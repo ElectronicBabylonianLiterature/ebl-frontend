@@ -11,8 +11,8 @@ export default function ReferencesForm({
   searchBibliography,
   value,
   onChange,
-  label,
-  collapsed,
+  label = '',
+  collapsed = false,
 }: {
   searchBibliography: (
     query: string

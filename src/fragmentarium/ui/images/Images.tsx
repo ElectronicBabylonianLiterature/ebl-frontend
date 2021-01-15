@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { History } from 'history'

@@ -11,7 +11,7 @@ type Props = {
   readonly uncuratedReferences: ReadonlyArray<UncuratedReference>
 }
 
-function UncuratedReferencesHelp() {
+function UncuratedReferencesHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('UncuratedReferencesHelp-')}>
       <Popover.Content>
@@ -26,7 +26,9 @@ function UncuratedReferencesHelp() {
   )
 }
 
-function UncuratedReferencesPopOver({ uncuratedReferences }: Props) {
+function UncuratedReferencesPopOver({
+  uncuratedReferences,
+}: Props): JSX.Element {
   return (
     <Popover
       id={_.uniqueId('UncuratedReferencesList-')}
@@ -40,12 +42,16 @@ function UncuratedReferencesPopOver({ uncuratedReferences }: Props) {
   )
 }
 
-function createText(uncuratedReferences: ReadonlyArray<UncuratedReference>) {
+function createText(
+  uncuratedReferences: ReadonlyArray<UncuratedReference>
+): string {
   const count = uncuratedReferences.length
   return count === 1 ? '1 uncurated reference' : `${count} uncurated references`
 }
 
-export default function UncuratedReferences({ uncuratedReferences }: Props) {
+export default function UncuratedReferences({
+  uncuratedReferences,
+}: Props): JSX.Element {
   return (
     <p>
       <HelpTrigger overlay={UncuratedReferencesHelp()} />

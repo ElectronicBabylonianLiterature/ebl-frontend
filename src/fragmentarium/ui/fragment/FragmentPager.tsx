@@ -9,9 +9,22 @@ type Props = {
   data: FragmentPagerData
   fragmentNumber: string
 }
-const FragmentPager: FunctionComponent<Props> = ({ data, fragmentNumber }) => {
-  const PagerLink = ({ nextFragmentNumber, direction }) => (
-    <FragmentLink number={nextFragmentNumber} aria-label={direction}>
+const FragmentPager: FunctionComponent<Props> = ({
+  data,
+  fragmentNumber,
+}: Props): JSX.Element => {
+  const PagerLink = ({
+    nextFragmentNumber,
+    direction,
+  }: {
+    nextFragmentNumber: string
+    direction: string
+  }) => (
+    <FragmentLink
+      number={nextFragmentNumber}
+      aria-label={direction}
+      folio={null}
+    >
       <i
         className={classNames({
           fas: true,
