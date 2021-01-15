@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 
 import FormList from './FormList'
 import List from 'common/List'
+
 export default function DerivedList({
   value,
   onChange,

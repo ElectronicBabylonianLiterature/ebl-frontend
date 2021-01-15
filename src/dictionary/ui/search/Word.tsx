@@ -110,7 +110,7 @@ class Word extends Component<{ value }> {
     return this.props.value
   }
 
-  get forms() {
+  get forms(): JSX.Element {
     return (
       <ul className="Word__forms">
         {this.word.forms.map((form, index) => (
@@ -122,11 +122,11 @@ class Word extends Component<{ value }> {
     )
   }
 
-  isNotEmpty(property) {
+  isNotEmpty(property): boolean {
     return !_.isEmpty(this.word[property])
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div className="Word">
         <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
