@@ -4,7 +4,7 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
-import ChapterAlignment from 'corpus/ui/alignment/ChapterAlignment'
+import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'
 import SessionContext from 'auth/SessionContext'
 import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
@@ -13,12 +13,12 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import TextService from 'corpus/application/TextService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { Alignment } from 'corpus/domain/alignment'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
-  onSaveAlignment: (alignment: Alignment) => void
+  onSaveAlignment: (alignment: ChapterAlignment) => void
   onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
   disabled: boolean
   dirty: boolean
@@ -74,7 +74,7 @@ export default function ChapterEditor({
           title="Alignment"
           disabled={!session.hasBetaAccess() || dirty}
         >
-          <ChapterAlignment
+          <ChapterAligner
             chapter={chapter}
             onSave={onSaveAlignment}
             disabled={disabled}

@@ -44,6 +44,7 @@ const fragmentRepository = {
   fetchCdliInfo: jest.fn(),
   findAnnotations: jest.fn(),
   updateAnnotations: jest.fn(),
+  lineToVecRanking: jest.fn(),
 }
 const wordRepository = {
   searchLemma: jest.fn(),
@@ -66,6 +67,12 @@ const fragmentService = new FragmentService(
 )
 const testData: TestData[] = [
   ['statistics', [], fragmentRepository.statistics, resultStub],
+  [
+    'lineToVecRanking',
+    ['X.0'],
+    fragmentRepository.lineToVecRanking,
+    resultStub,
+  ],
   ['findFolio', [folio], imageRepository.findFolio, resultStub, [folio]],
   ['findImage', [fileName], imageRepository.find, resultStub, [fileName]],
   [

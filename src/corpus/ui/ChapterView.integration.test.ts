@@ -1,6 +1,7 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
+import { Chapter } from 'corpus/domain/text'
 
 const category = 1
 const index = 1
@@ -77,15 +78,19 @@ const textDto = {
       lines: [
         {
           number: "1'",
-          reconstruction: 'ideal',
           isBeginningOfSection: false,
           isSecondLineOfParallelism: false,
-          manuscripts: [
+          variants: [
             {
-              manuscriptId: 1,
-              labels: ['iii'],
-              number: 'a+1',
-              atf: 'kur',
+              reconstruction: 'ideal',
+              manuscripts: [
+                {
+                  manuscriptId: 1,
+                  labels: ['iii'],
+                  number: 'a+1',
+                  atf: 'kur',
+                },
+              ],
             },
           ],
         },
@@ -108,10 +113,14 @@ const defaultManuscriptDto = {
 
 const defaultLineDto = {
   number: '',
-  reconstruction: '%n ',
   isBeginningOfSection: false,
   isSecondLineOfParallelism: false,
-  manuscripts: [],
+  variants: [
+    {
+      reconstruction: '%n ',
+      manuscripts: [],
+    },
+  ],
 }
 
 let fakeApi: FakeApi
@@ -302,7 +311,7 @@ async function setup(chapter, expectText = true) {
   await appDriver.waitForText(`Edit ${createChapterTitle(chapter)}`)
 }
 
-function createChapterPath(stage, name) {
+function createChapterPath(stage: string, name: string) {
   return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
     index
   )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`

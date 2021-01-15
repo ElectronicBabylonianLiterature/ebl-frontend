@@ -1,22 +1,25 @@
+import serializeReference from 'bibliography/application/serializeReference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
-import serializeReference from 'bibliography/application/serializeReference'
-import {
-  createText,
-  createChapter,
-  createManuscript,
-  createLine,
-  Text,
-  types,
-  createManuscriptLine,
-  Manuscript,
-  Line,
-} from 'corpus/domain/text'
+import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
+import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import {
+  createChapter,
+  createLine,
+  createManuscript,
+  createManuscriptLine,
+  createText,
+  Line,
+  Manuscript,
+  Text,
+  types,
+  LineVariant,
+  createVariant,
+} from 'corpus/domain/text'
 import { Draft, produce } from 'immer'
 import _ from 'lodash'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 
 export function fromDto(textDto): Text {
   return createText({
@@ -51,18 +54,26 @@ function fromManuscriptDto(manuscriptDto): Manuscript {
   })
 }
 
-function fromLineDto(lineDto): Line {
-  return createLine({
-    ...lineDto,
-    manuscripts: lineDto.manuscripts.map((manuscriptLineDto) =>
+function fromLineVariantDto(variantDto): LineVariant {
+  return createVariant({
+    ...variantDto,
+    manuscripts: variantDto.manuscripts.map((manuscriptLineDto) =>
       createManuscriptLine({
         manuscriptId: manuscriptLineDto['manuscriptId'],
         labels: manuscriptLineDto['labels'],
         number: manuscriptLineDto['number'],
         atf: manuscriptLineDto['atf'],
         atfTokens: manuscriptLineDto['atfTokens'],
+        omittedWords: manuscriptLineDto['omittedWords'],
       })
     ),
+  })
+}
+
+function fromLineDto(lineDto): Line {
+  return createLine({
+    ...lineDto,
+    variants: lineDto.variants.map(fromLineVariantDto),
   })
 }
 
@@ -84,17 +95,54 @@ const toManuscriptDto = produce((draft) => ({
 }))
 
 const toLineDto = produce((draft: Draft<Line>) => ({
-  ..._.omit(draft, 'reconstructionTokens'),
-  manuscripts: draft.manuscripts.map((manuscript) =>
-    _.omit(manuscript, 'atfTokens')
-  ),
+  ...draft,
+  variants: draft.variants.map((variant) => ({
+    ..._.omit(variant, 'reconstructionTokens'),
+    manuscripts: variant.manuscripts.map((manuscript) =>
+      _.omit(manuscript, 'atfTokens')
+    ),
+  })),
 }))
+
+function toAlignmentTokenDto(token: AlignmentToken) {
+  return token.isAlignable
+    ? {
+        value: token.value,
+        alignment: token.alignment,
+        variant: token.variant?.value ?? '',
+        language: token.variant?.language ?? '',
+        isNormalized: token.variant?.isNormalized ?? false,
+      }
+    : {
+        value: token.value,
+      }
+}
+
+export function toAlignmentDto(
+  alignment: ChapterAlignment
+): Record<string, unknown> {
+  return {
+    alignment: alignment.lines.map((line) =>
+      line.map((variant) =>
+        variant.map((manuscript) => ({
+          alignment: manuscript.alignment.map(toAlignmentTokenDto),
+          omittedWords: manuscript.omittedWords,
+        }))
+      )
+    ),
+  }
+}
 
 export const toLemmatizationDto = produce(
   (lemmatization: ChapterLemmatization) => {
     return {
       lemmatization: lemmatization.map((line) =>
-        [line[0], ...line[1]].map((line) => line.map((token) => token.toDto()))
+        line.map((variant) => ({
+          reconstruction: variant[0].map((token) => token.toDto()),
+          manuscripts: variant[1].map((line) =>
+            line.map((token) => token.toDto())
+          ),
+        }))
       ),
     }
   }

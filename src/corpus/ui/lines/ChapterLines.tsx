@@ -6,7 +6,56 @@ import Editor from 'editor/Editor'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import produce, { castDraft } from 'immer'
 import { ManuscriptLines } from './ManuscriptLines'
-import { Manuscript, Line, Chapter } from 'corpus/domain/text'
+import {
+  Manuscript,
+  Line,
+  Chapter,
+  LineVariant,
+  createVariant,
+} from 'corpus/domain/text'
+
+interface VariantFormProps {
+  value: LineVariant
+  manuscripts: readonly Manuscript[]
+  onChange: (line: LineVariant) => void
+  disabled?: boolean
+}
+
+function LineVariantForm({
+  value,
+  manuscripts,
+  onChange,
+  disabled = false,
+}: VariantFormProps) {
+  const handleChange = (property: string) => (propertyValue): void =>
+    onChange(
+      produce(value, (draft) => {
+        draft[property] = propertyValue
+      })
+    )
+
+  return (
+    <>
+      <Form.Row>
+        <Col>
+          <label>Ideal reconstruction</label>
+          <Editor
+            name={_.uniqueId('IdealReconstruction-')}
+            value={value.reconstruction}
+            onChange={handleChange('reconstruction')}
+            disabled={disabled}
+          />
+        </Col>
+      </Form.Row>
+      <ManuscriptLines
+        lines={value.manuscripts}
+        manuscripts={manuscripts}
+        onChange={handleChange('manuscripts')}
+        disabled={disabled}
+      />
+    </>
+  )
+}
 
 interface FormProps {
   value: Line
@@ -21,72 +70,87 @@ function ChapterLineForm({
   onChange,
   disabled = false,
 }: FormProps) {
-  const handleChangeValue = (property: string) => (propertyValue): void =>
+  const handleChangeBoolean = (
+    property: string,
+    propertyValue: boolean
+  ): void =>
     onChange(
       produce(value, (draft) => {
         draft[property] = propertyValue
       })
     )
 
-  const handleChange = (property: string) => (event): void => {
+  const handleNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     onChange(
       produce(value, (draft) => {
-        draft[property] = event.target.value
+        draft.number = event.target.value
       })
     )
   }
+  const handleChange = (variants: LineVariant[]): void =>
+    onChange(
+      produce(value, (draft) => {
+        draft.variants = castDraft(variants)
+      })
+    )
   return (
     <>
       <Form.Row>
-        <Form.Group as={Col} md={1} controlId={_.uniqueId('Lines-')}>
-          <Form.Label>Number</Form.Label>
-          <Form.Control
-            value={value.number}
-            onChange={handleChange('number')}
+        <Col md={1}>
+          <Form.Group controlId={_.uniqueId('Lines-')}>
+            <Form.Label>Number</Form.Label>
+            <Form.Control value={value.number} onChange={handleNumberChange} />
+          </Form.Group>
+        </Col>
+        <Col md={11}>
+          <Form.Check
+            inline
+            type="checkbox"
+            id={_.uniqueId('secondLineOfParallelism-')}
+            label="second line of parallelism"
+            checked={value.isSecondLineOfParallelism}
+            onChange={(): void =>
+              handleChangeBoolean(
+                'isSecondLineOfParallelism',
+                !value.isSecondLineOfParallelism
+              )
+            }
           />
-        </Form.Group>
-        <Col>
-          <label>Ideal reconstruction</label>
-          <Editor
-            name={_.uniqueId('IdealReconstruction-')}
-            value={value.reconstruction}
-            onChange={handleChangeValue('reconstruction')}
-            disabled={disabled}
+          <Form.Check
+            inline
+            type="checkbox"
+            id={_.uniqueId('beginningOfSection-')}
+            label="beginning of a section"
+            checked={value.isBeginningOfSection}
+            onChange={(): void =>
+              handleChangeBoolean(
+                'isBeginningOfSection',
+                !value.isBeginningOfSection
+              )
+            }
           />
+          <ListForm
+            noun="variant"
+            defaultValue={createVariant({})}
+            value={value.variants}
+            onChange={handleChange}
+          >
+            {(
+              variant: LineVariant,
+              onChange: (variant: LineVariant) => void
+            ) => (
+              <LineVariantForm
+                onChange={onChange}
+                value={variant}
+                manuscripts={manuscripts}
+                disabled={disabled}
+              />
+            )}
+          </ListForm>
         </Col>
       </Form.Row>
-      <Form.Row>
-        <Form.Check
-          inline
-          type="checkbox"
-          id={_.uniqueId('secondLineOfParallelism-')}
-          label="second line of parallelism"
-          checked={value.isSecondLineOfParallelism}
-          onChange={(): void =>
-            handleChangeValue('isSecondLineOfParallelism')(
-              !value.isSecondLineOfParallelism
-            )
-          }
-        />
-        <Form.Check
-          inline
-          type="checkbox"
-          id={_.uniqueId('beginningOfSection-')}
-          label="beginning of a section"
-          checked={value.isBeginningOfSection}
-          onChange={(): void =>
-            handleChangeValue('isBeginningOfSection')(
-              !value.isBeginningOfSection
-            )
-          }
-        />
-      </Form.Row>
-      <ManuscriptLines
-        lines={value.manuscripts}
-        manuscripts={manuscripts}
-        onChange={handleChangeValue('manuscripts')}
-        disabled={disabled}
-      />
     </>
   )
 }

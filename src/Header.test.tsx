@@ -56,29 +56,35 @@ describe('Unfocus Header Labels on clicking ebl Logo', () => {
   test('correct element becomes active when clicking link on the header', () => {
     userEvent.click(screen.getByText('Fragmentarium'))
     userEvent.click(screen.getByTitle('electronic Babylonian Literature (eBL)'))
-    expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
-    expect(screen.getByText('Bibliography')).not.toHaveClass('active')
-    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
-    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+    expectHeaderLabelNotActive('')
   })
 })
 describe('Correct element is active based on the route', () => {
   test('Logout button', async () => {
     await renderHeader(true, 'bibliography')
     expect(screen.getByText('Bibliography')).toHaveClass('active')
-    expect(screen.getByText('Fragmentarium')).not.toHaveClass('active')
-    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
-    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+    expectHeaderLabelNotActive('Bibliography')
   })
   test('correct element becomes active when clicking link on the header after redirect', async () => {
     await renderHeader(true, 'bibliography')
     userEvent.click(screen.getByText('Fragmentarium'))
     expect(screen.getByText('Fragmentarium')).toHaveClass('active')
-    expect(screen.getByText('Bibliography')).not.toHaveClass('active')
-    expect(screen.getByText('Dictionary')).not.toHaveClass('active')
-    expect(screen.getByText('Corpus')).not.toHaveClass('active')
+    expectHeaderLabelNotActive('Fragmentarium')
   })
 })
+
+function expectHeaderLabelNotActive(activeLabel: string): void {
+  const allHeaderLabels = [
+    'Fragmentarium',
+    'Bibliography',
+    'Dictionary',
+    'Corpus',
+  ]
+  allHeaderLabels
+    .filter((label) => label !== activeLabel)
+    .map((label) => expect(screen.getByText(label)).not.toHaveClass('active'))
+}
+
 async function renderHeader(loggedIn: boolean, path?: string): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
   const history = createMemoryHistory()

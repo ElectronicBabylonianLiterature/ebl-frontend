@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import _ from 'lodash'
-import { Chapter, Line, ManuscriptLine } from 'corpus/domain/text'
+import { Chapter, ManuscriptLine, LineVariant } from 'corpus/domain/text'
 import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import produce, { castDraft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'
@@ -52,11 +52,11 @@ function WordLemmatizers({
   )
 }
 
-function ReconstructionLemmatizer(props: LineLemmatizerProps<Line>) {
+function ReconstructionLemmatizer(props: LineLemmatizerProps<LineVariant>) {
   return (
     <Row>
-      <Col md={3}>{props.line.number}</Col>
-      <Col md={9}>
+      <Col md={2}></Col>
+      <Col md={10}>
         <WordLemmatizers
           tokens={props.data}
           onChange={props.onChange}
@@ -70,12 +70,11 @@ function ReconstructionLemmatizer(props: LineLemmatizerProps<Line>) {
 function ManuscriptLineLemmatizer(props: LineLemmatizerProps<ManuscriptLine>) {
   return (
     <Row>
-      <Col md={1} />
       <Col md={1}>{props.chapter.getSiglum(props.line)}</Col>
       <Col md={1}>
         {props.line.labels} {props.line.number}
       </Col>
-      <Col md={9}>
+      <Col md={10}>
         <WordLemmatizers
           tokens={props.data}
           onChange={props.onChange}
@@ -125,11 +124,11 @@ interface ChapterLineLemmatizerProps {
   data: LineLemmatization
   fragmentService: FragmentService
   chapter: Chapter
-  line: Line
+  line: LineVariant
   onChange: (lemmatization: LineLemmatization) => void
 }
 
-function ChapterLineLemmatizater({
+function LineVariantLemmatizater({
   data,
   fragmentService,
   chapter,
@@ -209,26 +208,33 @@ function ChapterLemmatizer({
   disabled,
 }: ChapterLemmatizerProps): JSX.Element {
   const [chapterLemmatization, setChapterLemmatization] = useState(data)
-  const handleChange = (lineIndex: number) => (
+  const handleChange = (lineIndex: number, variantIndex: number) => (
     lemmatization: LineLemmatization
   ) =>
     setChapterLemmatization(
       produce(chapterLemmatization, (draft) => {
-        draft[lineIndex] = castDraft(lemmatization)
+        draft[lineIndex][variantIndex] = castDraft(lemmatization)
       })
     )
   return (
     <Container>
       <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
-        <ChapterLineLemmatizater
-          key={lineIndex}
-          line={line}
-          data={chapterLemmatization[lineIndex]}
-          fragmentService={fragmentService}
-          chapter={chapter}
-          onChange={handleChange(lineIndex)}
-        />
+        <Row key={lineIndex}>
+          <Col md={1}>{line.number}</Col>
+          <Col md={11}>
+            {line.variants.map((variant, variantIndex) => (
+              <LineVariantLemmatizater
+                key={variantIndex}
+                line={variant}
+                data={chapterLemmatization[lineIndex][variantIndex]}
+                fragmentService={fragmentService}
+                chapter={chapter}
+                onChange={handleChange(lineIndex, variantIndex)}
+              />
+            ))}
+          </Col>
+        </Row>
       ))}
       <Button onClick={() => onSave(chapterLemmatization)} disabled={disabled}>
         Save lemmatization

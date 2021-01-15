@@ -5,13 +5,10 @@ import Word from './Word'
 
 import './WordAligner.css'
 
-import {
-  Token,
-  Word as WordToken,
-  AkkadianWord,
-} from 'transliteration/domain/token'
+import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
 import DropdownButton from 'common/DropdownButton'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface AlignerProps {
   readonly token: AlignmentToken
@@ -19,27 +16,30 @@ interface AlignerProps {
   readonly onChange: (token: AlignmentToken) => void
 }
 
-function isAnyWord(token: Token): token is WordToken | AkkadianWord {
-  return token.type === 'AkkadianWord' || token.type === 'Word'
-}
-
 function AlignmentForm(props: AlignerProps) {
   const [alignment, setAlignment] = useState(props.token.alignment)
-  const [variant, setVariant] = useState(props.token.variant)
+  const [variant, setVariant] = useState(props.token.variant?.value ?? '')
 
   function updateToken(alignmentToken: AlignmentToken): AlignmentToken {
     const token = !_.isNil(alignment) && props.reconstructionTokens[alignment]
     return token && isAnyWord(token)
       ? {
           value: alignmentToken.value,
-          alignment: alignment ?? null,
-          variant: variant ?? '',
-          language: token.language,
-          isNormalized: token.normalized,
+          alignment: alignment,
+          variant: variant
+            ? {
+                value: variant,
+                language: token.language,
+                isNormalized: token.normalized,
+              }
+            : null,
+          isAlignable: true,
         }
       : {
           value: alignmentToken.value,
           alignment: null,
+          variant: null,
+          isAlignable: true,
         }
   }
 

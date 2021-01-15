@@ -31,7 +31,11 @@ export function changeValue<T>(input: Element, newValue: T): void {
   fireEvent.change(input, { target: { value: newValue } })
 }
 
-export function clickNth(element: RenderResult, text: Matcher, n = 0): void {
+export function clickNth(
+  element: RenderResult | Screen,
+  text: Matcher,
+  n = 0
+): void {
   const clickable = element.getAllByText(text)[n]
   userEvent.click(clickable)
 }
@@ -62,7 +66,7 @@ export function changeValueByLabel<T>(
 }
 
 export function whenClicked(
-  element: RenderResult,
+  element: RenderResult | Screen,
   text: Matcher,
   n = 0
 ): WhenResult<Promise<void>> {

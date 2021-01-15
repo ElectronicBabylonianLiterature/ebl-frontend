@@ -15,6 +15,7 @@ import {
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
 import { text } from 'test-support/test-corpus-text'
+import { ChapterAlignment } from './alignment'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -50,62 +51,67 @@ const manuscrpitLineConfig: ManuscriptLine = {
       enclosureType: [],
     },
   ],
+  omittedWords: [],
 }
 
 const lineConfig: Line = {
   number: '2',
-  reconstruction: 'reconstructed text',
-  reconstructionTokens: [
+  variants: [
     {
-      value: 'kur',
-      cleanValue: 'kur',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      variant: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
+      reconstruction: 'reconstructed text',
+      reconstructionTokens: [
         {
           value: 'kur',
           cleanValue: 'kur',
           enclosureType: [],
           erasure: 'NONE',
-          type: 'ValueToken',
+          lemmatizable: true,
+          alignment: null,
+          variant: null,
+          uniqueLemma: [],
+          normalized: true,
+          language: 'AKKADIAN',
+          parts: [
+            {
+              value: 'kur',
+              cleanValue: 'kur',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'ValueToken',
+            },
+          ],
+          modifiers: [],
+          type: 'AkkadianWord',
         },
-      ],
-      modifiers: [],
-      type: 'AkkadianWord',
-    },
-    {
-      value: 'ra',
-      cleanValue: 'ra',
-      enclosureType: [],
-      erasure: 'NONE',
-      lemmatizable: true,
-      alignment: null,
-      variant: null,
-      uniqueLemma: [],
-      normalized: true,
-      language: 'AKKADIAN',
-      parts: [
         {
           value: 'ra',
           cleanValue: 'ra',
           enclosureType: [],
           erasure: 'NONE',
-          type: 'ValueToken',
+          lemmatizable: true,
+          alignment: null,
+          variant: null,
+          uniqueLemma: [],
+          normalized: true,
+          language: 'AKKADIAN',
+          parts: [
+            {
+              value: 'ra',
+              cleanValue: 'ra',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'ValueToken',
+            },
+          ],
+          modifiers: [],
+          type: 'AkkadianWord',
         },
       ],
-      modifiers: [],
-      type: 'AkkadianWord',
+      manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
     },
   ],
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
-  manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
 }
 
 const chapterConfig: Partial<Chapter> = {
@@ -135,29 +141,41 @@ describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
 
   test('alignment', () => {
-    expect(text.chapters[0].alignment).toEqual([
-      [
+    expect(text.chapters[0].alignment).toEqual(
+      new ChapterAlignment([
         [
-          {
-            value: 'kur',
-            alignment: null,
-            variant: '',
-            language: '',
-            isNormalized: false,
-          },
-          {
-            value: 'ra',
-            alignment: 1,
-            variant: 'ra',
-            language: 'AKKADIAN',
-            isNormalized: true,
-          },
-          {
-            value: '...',
-          },
+          [
+            {
+              alignment: [
+                {
+                  value: 'kur',
+                  alignment: null,
+                  variant: null,
+                  isAlignable: true,
+                },
+                {
+                  value: 'ra',
+                  alignment: 1,
+                  variant: {
+                    value: 'ra',
+                    language: 'AKKADIAN',
+                    isNormalized: true,
+                  },
+                  isAlignable: true,
+                },
+                {
+                  value: '...',
+                  alignment: null,
+                  variant: null,
+                  isAlignable: false,
+                },
+              ],
+              omittedWords: [],
+            },
+          ],
         ],
-      ],
-    ])
+      ])
+    )
   })
 })
 

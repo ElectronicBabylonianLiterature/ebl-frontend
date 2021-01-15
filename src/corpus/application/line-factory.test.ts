@@ -1,4 +1,8 @@
-import { createLine, createManuscriptLine } from 'corpus/domain/text'
+import {
+  createLine,
+  createVariant,
+  createManuscriptLine,
+} from 'corpus/domain/text'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
 
@@ -7,7 +11,9 @@ const defaultReconstruction = '%n '
 describe('createDefaultLineFactory', () => {
   test('no lines', () => {
     expect(createDefaultLineFactory()()).toEqual(
-      createLine({ reconstruction: defaultReconstruction })
+      createLine({
+        variants: [createVariant({ reconstruction: defaultReconstruction })],
+      })
     )
   })
 
@@ -22,14 +28,25 @@ describe('createDefaultLineFactory', () => {
       test('line', () => {
         expect(
           createDefaultLineFactory(
-            createLine({
-              number: number,
-            })
+            createLine(
+              createLine({
+                number: number,
+                variants: [
+                  createVariant({
+                    reconstruction: defaultReconstruction,
+                  }),
+                ],
+              })
+            )
           )()
         ).toEqual(
           createLine({
             number: expected,
-            reconstruction: defaultReconstruction,
+            variants: [
+              createVariant({
+                reconstruction: defaultReconstruction,
+              }),
+            ],
           })
         )
       })
@@ -38,19 +55,27 @@ describe('createDefaultLineFactory', () => {
         expect(
           createDefaultLineFactory(
             createLine({
-              manuscripts: [
-                createManuscriptLine({
-                  number: number,
+              variants: [
+                createVariant({
+                  manuscripts: [
+                    createManuscriptLine({
+                      number: number,
+                    }),
+                  ],
                 }),
               ],
             })
           )()
         ).toEqual(
           createLine({
-            reconstruction: defaultReconstruction,
-            manuscripts: [
-              createManuscriptLine({
-                number: expected,
+            variants: [
+              createVariant({
+                reconstruction: defaultReconstruction,
+                manuscripts: [
+                  createManuscriptLine({
+                    number: expected,
+                  }),
+                ],
               }),
             ],
           })
@@ -73,17 +98,25 @@ describe('createDefaultLineFactory', () => {
     expect(
       createDefaultLineFactory(
         createLine({
-          manuscripts: manuscripts,
+          variants: [
+            createVariant({
+              manuscripts: manuscripts,
+            }),
+          ],
         })
       )()
     ).toEqual(
       createLine({
-        reconstruction: defaultReconstruction,
-        manuscripts: produce(manuscripts, (draft) => {
-          draft.forEach((manuscript) => {
-            manuscript.atf = ''
-          })
-        }),
+        variants: [
+          createVariant({
+            reconstruction: defaultReconstruction,
+            manuscripts: produce(manuscripts, (draft) => {
+              draft.forEach((manuscript) => {
+                manuscript.atf = ''
+              })
+            }),
+          }),
+        ],
       })
     )
   })

@@ -56,6 +56,10 @@ export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
 }
 
+export function isAnyWord(token: Token): token is Word | AkkadianWord {
+  return isWord(token) || isAkkadianWord(token)
+}
+
 export function isColumn(token: Token): token is Column {
   return token.type === 'Column'
 }

@@ -1,18 +1,16 @@
 import Reference from 'bibliography/domain/Reference'
-import { Period, PeriodModifier, periodModifiers, periods } from './period'
-
-import { Provenance, provenances } from './provenance'
-
 import produce, { Draft, immerable } from 'immer'
-
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
-import { Alignment } from './alignment'
+import { ChapterAlignment, createAlignmentToken } from './alignment'
+import { Period, PeriodModifier, periodModifiers, periods } from './period'
+import { Provenance, provenances } from './provenance'
 
 export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
 }
+
 export const types: ReadonlyMap<string, ManuscriptType> = new Map([
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
@@ -22,30 +20,31 @@ export const types: ReadonlyMap<string, ManuscriptType> = new Map([
 ])
 
 export class Manuscript {
-  id: number | undefined | null = null
-  siglumDisambiguator = ''
-  museumNumber = ''
-  accession = ''
-  periodModifier: PeriodModifier = periodModifiers.get('None') || {
+  readonly [immerable] = true
+  readonly id: number | undefined | null = null
+  readonly siglumDisambiguator: string = ''
+  readonly museumNumber: string = ''
+  readonly accession: string = ''
+  readonly periodModifier: PeriodModifier = periodModifiers.get('None') || {
     name: 'None',
     displayName: '-',
   }
-  period: Period = periods.get('Neo-Assyrian') || {
+  readonly period: Period = periods.get('Neo-Assyrian') || {
     name: 'Neo-Assyrian',
     abbreviation: 'NA',
     description: '(ca. 1000–609 BCE)',
   }
-  provenance: Provenance = provenances.get('Nineveh') || {
+  readonly provenance: Provenance = provenances.get('Nineveh') || {
     name: 'Nineveh',
     abbreviation: 'Nin',
     parent: 'Assyria',
   }
-  type: ManuscriptType = types.get('Library') || {
+  readonly type: ManuscriptType = types.get('Library') || {
     name: 'Library',
     abbreviation: '',
   }
-  notes = ''
-  references: ReadonlyArray<Reference> = []
+  readonly notes: string = ''
+  readonly references: readonly Reference[] = []
 
   get siglum(): string {
     return [
@@ -56,7 +55,6 @@ export class Manuscript {
     ].join('')
   }
 }
-Manuscript[immerable] = true
 
 export function createManuscript(data: Partial<Manuscript>): Manuscript {
   return produce(new Manuscript(), (draft: Draft<Manuscript>) => {
@@ -66,13 +64,15 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
 
 export interface ManuscriptLine {
   readonly manuscriptId: number
-  readonly labels: ReadonlyArray<string>
+  readonly labels: readonly string[]
   readonly number: string
   readonly atf: string
-  readonly atfTokens: ReadonlyArray<Token>
+  readonly atfTokens: readonly Token[]
+  readonly omittedWords: readonly number[]
 }
+
 export const createManuscriptLine: (
-  x0: Partial<ManuscriptLine>
+  data: Partial<ManuscriptLine>
 ) => ManuscriptLine = produce(
   (draft: Partial<ManuscriptLine>): ManuscriptLine => ({
     manuscriptId: 0,
@@ -80,26 +80,41 @@ export const createManuscriptLine: (
     number: '',
     atf: '',
     atfTokens: [],
+    omittedWords: [],
     ...draft,
   })
 )
 
-export interface Line {
-  readonly number: string
+export interface LineVariant {
   readonly reconstruction: string
   readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly isSecondLineOfParallelism: boolean
-  readonly isBeginningOfSection: boolean
   readonly manuscripts: ReadonlyArray<ManuscriptLine>
 }
+
+export interface Line {
+  readonly number: string
+  readonly variants: ReadonlyArray<LineVariant>
+  readonly isSecondLineOfParallelism: boolean
+  readonly isBeginningOfSection: boolean
+}
+
 export const createLine: (config: Partial<Line>) => Line = produce(
   (draft): Line => ({
     number: '',
+    variants: [],
+    isSecondLineOfParallelism: false,
+    isBeginningOfSection: false,
+    ...draft,
+  })
+)
+
+export const createVariant: (
+  config: Partial<LineVariant>
+) => LineVariant = produce(
+  (draft): LineVariant => ({
     reconstruction: '',
     manuscripts: [],
     reconstructionTokens: [],
-    isSecondLineOfParallelism: false,
-    isBeginningOfSection: false,
     ...draft,
   })
 )
@@ -132,19 +147,14 @@ export class Chapter {
     this.lines = lines ?? []
   }
 
-  get alignment(): Alignment {
-    return this.lines.map((line) =>
-      line.manuscripts.map((manuscript) =>
-        manuscript.atfTokens.map((token) =>
-          token.lemmatizable
-            ? {
-                value: token.value,
-                alignment: token.alignment,
-                variant: token.variant?.value ?? '',
-                language: token.variant?.language ?? '',
-                isNormalized: token.variant?.normalized ?? false,
-              }
-            : { value: token.value }
+  get alignment(): ChapterAlignment {
+    return new ChapterAlignment(
+      this.lines.map((line) =>
+        line.variants.map((variant) =>
+          variant.manuscripts.map((manuscript) => ({
+            alignment: manuscript.atfTokens.map(createAlignmentToken),
+            omittedWords: manuscript.omittedWords,
+          }))
         )
       )
     )

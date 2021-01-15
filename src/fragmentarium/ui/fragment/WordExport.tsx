@@ -75,6 +75,7 @@ export async function wordExport(
   const wordBlob: Blob = await Packer.toBlob(doc).then((blob) => {
     return blob
   })
+
   return wordBlob
 }
 
