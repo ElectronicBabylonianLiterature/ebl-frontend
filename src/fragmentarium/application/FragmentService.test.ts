@@ -1,7 +1,6 @@
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import Folio from 'fragmentarium/domain/Folio'
-import _ from 'lodash'
 import { fragment } from 'test-support/test-fragment'
 import createLemmatizationTestText from 'test-support/test-text'
 import { TestData, testDelegation } from 'test-support/utils'
