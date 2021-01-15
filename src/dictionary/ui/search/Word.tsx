@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Word.css'
@@ -31,7 +31,13 @@ function Lemma({
   )
 }
 
-function Notes({ notes, children }): JSX.Element {
+function Notes({
+  notes,
+  children,
+}: {
+  notes: readonly string[]
+  children: ReactNode
+}): JSX.Element {
   const preNote = _.head(notes) || ''
   const postNote = _.tail(notes).join(' ')
   return (
@@ -52,7 +58,7 @@ function Notes({ notes, children }): JSX.Element {
   )
 }
 
-function Form({ value }): JSX.Element {
+function Form({ value }: { value: string | Word }): JSX.Element {
   return _.isString(value) ? (
     <InlineMarkdown source={value} />
   ) : (
@@ -121,7 +127,7 @@ class WordDisplay extends Component<{ value: Word }> {
     )
   }
 
-  isNotEmpty(property): boolean {
+  isNotEmpty(property: string): boolean {
     return !_.isEmpty(this.word[property])
   }
 

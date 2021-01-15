@@ -63,7 +63,7 @@ export default class ReferenceInjector {
   }
 
   private createReferences(
-    referenceDtos: readonly any[]
+    referenceDtos: readonly ReferenceDto[]
   ): Promise<Reference[]> {
     return Promise.all<Reference>(
       referenceDtos.map((reference) =>

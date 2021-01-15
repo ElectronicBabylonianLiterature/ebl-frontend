@@ -83,7 +83,7 @@ interface MuseumConfig {
   readonly logo?: string
   readonly url?: string
   readonly copyright?: string
-  readonly museumClass?: any
+  readonly museumClass?: typeof Museum
 }
 
 const museums: ReadonlyMap<string, MuseumConfig> = new Map([

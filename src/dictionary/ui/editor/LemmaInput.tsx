@@ -6,7 +6,7 @@ export default function LemmaInput({
   value,
   onChange,
 }: {
-  value
+  value: { lemma: readonly string[]; attested?: boolean }
   onChange: (lemma) => void
 }): JSX.Element {
   const lemmaChanged = (event: ChangeEvent<HTMLTextAreaElement>): void => {

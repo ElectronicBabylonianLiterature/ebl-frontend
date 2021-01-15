@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { ChangeEvent, Component } from 'react'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -10,7 +10,7 @@ class ArrayInput extends Component<{ value; onChange; separator }> {
     this.id = _.uniqueId('ArrayInput-')
   }
 
-  onChange = (event): void => {
+  onChange = (event: ChangeEvent): void => {
     const value = event.target.value
     const array = _.isEmpty(value) ? [] : value.split(this.props.separator)
     this.props.onChange(array)

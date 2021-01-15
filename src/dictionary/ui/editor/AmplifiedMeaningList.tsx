@@ -17,7 +17,7 @@ class AmplifiedMeaningList extends Component<{
     return this.props.entry ? 'entry' : 'amplified meaning'
   }
 
-  get defaultValue() {
+  get defaultValue(): { [key: string]: string | [] } {
     return this.props.entry
       ? { meaning: '', vowels: [] }
       : { key: '', meaning: '', vowels: [], entries: [] }

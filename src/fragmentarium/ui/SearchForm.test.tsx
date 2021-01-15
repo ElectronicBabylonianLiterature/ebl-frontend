@@ -34,7 +34,7 @@ let searchEntry: BibliographyEntry
 async function renderSearchForms() {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
-  const SearchFormsWithRouter = withRouter<any, any>(SearchForms)
+  const SearchFormsWithRouter = withRouter<any, typeof SearchForms>(SearchForms)
   render(
     <Router history={history}>
       <SessionContext.Provider value={session}>

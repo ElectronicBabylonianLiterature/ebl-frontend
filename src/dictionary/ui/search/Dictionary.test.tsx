@@ -5,27 +5,28 @@ import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'
+import Word from 'dictionary/domain/Word'
+import WordService from 'dictionary/application/WordService'
+import { Session } from 'auth/Session'
 
-const DictionaryWithRouter = withRouter<any, any>(Dictionary)
+const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
 
-let words
-let wordService
-let session
+let words: readonly Word[]
+const wordService = new (WordService as jest.Mock<WordService>)()
+let session: Session
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-  wordService = {
-    search: jest.fn(),
-  }
-  session = {
-    isAllowedToReadWords: jest.fn(),
-  }
+
+  wordService.search = jest.fn()
+
+  session.isAllowedToReadWords = jest.fn()
 })
 
 describe('Searching for word', () => {
   beforeEach(() => {
-    session.isAllowedToReadWords.mockReturnValue(true)
-    wordService.search.mockReturnValueOnce(Promise.resolve(words))
+    session.isAllowedToReadWords = jest.fn().mockReturnValue(true)
+    wordService.search = jest.fn().mockResolvedValueOnce(words)
   })
 
   it('displays result on successfull query', async () => {
@@ -45,7 +46,7 @@ describe('Searching for word', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  session.isAllowedToReadWords.mockReturnValueOnce(false)
+  session.isAllowedToReadWords = jest.fn().mockReturnValueOnce(false)
   await renderDictionary('/dictionary')
   expect(
     screen.getByText('Please log in to browse the Dictionary.')

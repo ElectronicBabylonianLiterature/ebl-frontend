@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, ReactNode } from 'react'
 
 import ArrayWithNotesList from './ArrayWithNotesList'
 import TextInput from './TextInput'
@@ -12,7 +12,13 @@ class AmplifiedMeaningInput extends Component<{ value; onChange; entry }> {
     })
   }
 
-  textInput = ({ property, children }): JSX.Element => (
+  textInput = ({
+    property,
+    children,
+  }: {
+    property: string
+    children: ReactNode
+  }): JSX.Element => (
     <TextInput
       value={this.props.value[property]}
       onChange={this.onChange(property)}

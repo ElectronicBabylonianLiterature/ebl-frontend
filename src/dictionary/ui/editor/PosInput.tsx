@@ -56,7 +56,7 @@ const posOptions = _.map(
 )
 
 class PosInput extends Component<{ value; onChange }> {
-  updatePos = (event): void => {
+  updatePos = (event: ChangeEvent): void => {
     this.props.onChange({
       pos: _(event.target.options).filter('selected').map('value').value(),
     })
