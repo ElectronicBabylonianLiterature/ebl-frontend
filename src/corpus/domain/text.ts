@@ -9,6 +9,7 @@ import {
 } from './alignment'
 import { Period, PeriodModifier, periodModifiers, periods } from './period'
 import { Provenance, provenances } from './provenance'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 export interface ManuscriptType {
   readonly name: string
@@ -123,9 +124,23 @@ export const createVariant: (
   })
 )
 
-function getVariantAlignment(variant: LineVariant): ManuscriptAlignment[] {
+export function createVariantAlignment(
+  variant: LineVariant
+): ManuscriptAlignment[] {
+  const reconstruction = variant.reconstructionTokens
   return variant.manuscripts.map((manuscript) => ({
-    alignment: manuscript.atfTokens.map(createAlignmentToken),
+    alignment: manuscript.atfTokens.map((token, index) => {
+      const alignment = createAlignmentToken(token)
+      return alignment.isAlignable &&
+        _.isNil(alignment.alignment) &&
+        isAnyWord(reconstruction[index])
+        ? {
+            ...alignment,
+            alignment: index,
+            suggested: true,
+          }
+        : alignment
+    }),
     omittedWords: manuscript.omittedWords,
   }))
 }
@@ -160,7 +175,7 @@ export class Chapter {
 
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
-      this.lines.map((line) => line.variants.map(getVariantAlignment))
+      this.lines.map((line) => line.variants.map(createVariantAlignment))
     )
   }
 
