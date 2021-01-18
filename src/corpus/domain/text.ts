@@ -127,22 +127,41 @@ export const createVariant: (
 export function createVariantAlignment(
   variant: LineVariant
 ): ManuscriptAlignment[] {
-  const reconstruction = variant.reconstructionTokens
-  return variant.manuscripts.map((manuscript) => ({
-    alignment: manuscript.atfTokens.map((token, index) => {
-      const alignment = createAlignmentToken(token)
-      return alignment.isAlignable &&
-        _.isNil(alignment.alignment) &&
-        isAnyWord(reconstruction[index])
-        ? {
-            ...alignment,
-            alignment: index,
-            suggested: true,
-          }
-        : alignment
-    }),
-    omittedWords: manuscript.omittedWords,
-  }))
+  const reconstruction = variant.reconstructionTokens.reduce<
+    (Token & {
+      originalIndex: number
+    })[]
+  >((acc, current, index) => {
+    return isAnyWord(current)
+      ? [...acc, { ...current, originalIndex: index }]
+      : acc
+  }, [])
+
+  return variant.manuscripts.map((manuscript) => {
+    const indexMap = manuscript.atfTokens.reduce<number[]>((acc, current) => {
+      const previousIndex = _.last(acc) ?? 0
+      return _.isEmpty(acc)
+        ? [0]
+        : isAnyWord(current)
+        ? [...acc, previousIndex + 1]
+        : [...acc, previousIndex]
+    }, [])
+    return {
+      alignment: manuscript.atfTokens.map((token, index) => {
+        const alignment = createAlignmentToken(token)
+        return alignment.isAlignable &&
+          _.isNil(alignment.alignment) &&
+          isAnyWord(reconstruction[indexMap[index]])
+          ? {
+              ...alignment,
+              alignment: reconstruction[indexMap[index]]?.originalIndex ?? null,
+              suggested: true,
+            }
+          : alignment
+      }),
+      omittedWords: manuscript.omittedWords,
+    }
+  })
 }
 
 export class Chapter {

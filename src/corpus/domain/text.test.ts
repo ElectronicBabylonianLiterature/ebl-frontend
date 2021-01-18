@@ -151,10 +151,10 @@ describe('Chapter', () => {
               alignment: [
                 {
                   value: 'kur',
-                  alignment: null,
+                  alignment: 1,
                   variant: null,
                   isAlignable: true,
-                  suggested: false,
+                  suggested: true,
                 },
                 {
                   value: 'ra',
@@ -275,20 +275,6 @@ describe('LineVariant', () => {
             },
             {
               type: 'Word',
-              value: 'kur',
-              parts: [],
-              cleanValue: 'kur',
-              uniqueLemma: [],
-              normalized: false,
-              language: 'AKKADIAN',
-              lemmatizable: true,
-              erasure: 'NONE',
-              alignment: null,
-              variant: null,
-              enclosureType: [],
-            },
-            {
-              type: 'Word',
               value: 'ra',
               parts: [],
               cleanValue: 'ra',
@@ -297,7 +283,7 @@ describe('LineVariant', () => {
               language: 'AKKADIAN',
               lemmatizable: true,
               erasure: 'NONE',
-              alignment: 1,
+              alignment: 2,
               variant: null,
               enclosureType: [],
             },
@@ -311,13 +297,6 @@ describe('LineVariant', () => {
         alignment: [
           {
             value: 'kur',
-            alignment: null,
-            variant: null,
-            isAlignable: true,
-            suggested: false,
-          },
-          {
-            value: 'kur',
             alignment: 1,
             variant: null,
             isAlignable: true,
@@ -325,7 +304,7 @@ describe('LineVariant', () => {
           },
           {
             value: 'ra',
-            alignment: 1,
+            alignment: 2,
             variant: null,
             isAlignable: true,
             suggested: false,

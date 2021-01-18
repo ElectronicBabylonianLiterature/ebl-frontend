@@ -33,7 +33,7 @@ const alignmentDto = {
           alignment: [
             {
               value: 'kur',
-              alignment: null,
+              alignment: 1,
               variant: '',
               language: '',
               isNormalized: false,
