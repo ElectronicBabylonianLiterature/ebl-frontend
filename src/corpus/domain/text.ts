@@ -2,7 +2,11 @@ import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
-import { ChapterAlignment, createAlignmentToken } from './alignment'
+import {
+  ChapterAlignment,
+  createAlignmentToken,
+  ManuscriptAlignment,
+} from './alignment'
 import { Period, PeriodModifier, periodModifiers, periods } from './period'
 import { Provenance, provenances } from './provenance'
 
@@ -119,6 +123,13 @@ export const createVariant: (
   })
 )
 
+function getVariantAlignment(variant: LineVariant): ManuscriptAlignment[] {
+  return variant.manuscripts.map((manuscript) => ({
+    alignment: manuscript.atfTokens.map(createAlignmentToken),
+    omittedWords: manuscript.omittedWords,
+  }))
+}
+
 export class Chapter {
   readonly [immerable] = true
   readonly classification: string
@@ -149,14 +160,7 @@ export class Chapter {
 
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
-      this.lines.map((line) =>
-        line.variants.map((variant) =>
-          variant.manuscripts.map((manuscript) => ({
-            alignment: manuscript.atfTokens.map(createAlignmentToken),
-            omittedWords: manuscript.omittedWords,
-          }))
-        )
-      )
+      this.lines.map((line) => line.variants.map(getVariantAlignment))
     )
   }
 
