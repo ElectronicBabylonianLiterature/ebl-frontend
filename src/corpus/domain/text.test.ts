@@ -152,6 +152,7 @@ describe('Chapter', () => {
                   alignment: null,
                   variant: null,
                   isAlignable: true,
+                  suggested: false,
                 },
                 {
                   value: 'ra',
@@ -162,12 +163,14 @@ describe('Chapter', () => {
                     isNormalized: true,
                   },
                   isAlignable: true,
+                  suggested: false,
                 },
                 {
                   value: '...',
                   alignment: null,
                   variant: null,
                   isAlignable: false,
+                  suggested: false,
                 },
               ],
               omittedWords: [],
