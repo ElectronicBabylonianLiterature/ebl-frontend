@@ -4,8 +4,8 @@ import PioneersButton from 'fragmentarium/ui/PioneersButton'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { Button, ButtonToolbar, Col, Form, Popover, Row } from 'react-bootstrap'
 import { stringify } from 'query-string'
-import BibliographySelect from '../../bibliography/ui/BibliographySelect'
-import HelpTrigger from '../../common/HelpTrigger'
+import BibliographySelect from 'bibliography/ui/BibliographySelect'
+import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import produce from 'immer'
 
@@ -163,7 +163,7 @@ class SearchForm extends Component<Props, State> {
             <Col>
               <BibliographySelect
                 isClearable={true}
-                aria-label="Select bibliography reference"
+                ariaLabel="Select bibliography reference"
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}
                 searchBibliography={(query) =>
