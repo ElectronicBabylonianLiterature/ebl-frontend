@@ -124,37 +124,41 @@ export const createVariant: (
   })
 )
 
+type TokenWithIndex = Token & {
+  originalIndex: number
+}
+
 export function createVariantAlignment(
   variant: LineVariant
 ): ManuscriptAlignment[] {
-  const reconstruction = variant.reconstructionTokens.reduce<
-    (Token & {
-      originalIndex: number
-    })[]
-  >((acc, current, index) => {
-    return isAnyWord(current)
-      ? [...acc, { ...current, originalIndex: index }]
-      : acc
-  }, [])
+  const reconstruction = variant.reconstructionTokens.reduce<TokenWithIndex[]>(
+    (acc, current, index) => {
+      return isAnyWord(current)
+        ? [...acc, { ...current, originalIndex: index }]
+        : acc
+    },
+    []
+  )
 
   return variant.manuscripts.map((manuscript) => {
     const indexMap = manuscript.atfTokens.reduce<number[]>((acc, current) => {
-      const previousIndex = _.last(acc) ?? 0
-      return _.isEmpty(acc)
-        ? [0]
-        : isAnyWord(current)
+      const previousIndex = _.last(acc) ?? -1
+      return isAnyWord(current)
         ? [...acc, previousIndex + 1]
         : [...acc, previousIndex]
     }, [])
     return {
       alignment: manuscript.atfTokens.map((token, index) => {
         const alignment = createAlignmentToken(token)
+        const reconstructedWord: TokenWithIndex | undefined =
+          reconstruction[indexMap[index]]
         return alignment.isAlignable &&
           _.isNil(alignment.alignment) &&
-          isAnyWord(reconstruction[indexMap[index]])
+          reconstructedWord &&
+          isAnyWord(reconstructedWord)
           ? {
               ...alignment,
-              alignment: reconstruction[indexMap[index]]?.originalIndex ?? null,
+              alignment: reconstructedWord.originalIndex,
               suggested: true,
             }
           : alignment
