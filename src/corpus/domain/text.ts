@@ -9,7 +9,12 @@ import {
 } from './alignment'
 import { Period, PeriodModifier, periodModifiers, periods } from './period'
 import { Provenance, provenances } from './provenance'
-import { isAnyWord } from 'transliteration/domain/type-guards'
+import {
+  isAnyWord,
+  isWord,
+  isAkkadianWord,
+  isSignToken,
+} from 'transliteration/domain/type-guards'
 
 export interface ManuscriptType {
   readonly name: string
@@ -78,6 +83,18 @@ export class ManuscriptLine {
     readonly atfTokens: readonly Token[],
     readonly omittedWords: readonly number[]
   ) {}
+
+  get endsWithLacuna(): boolean {
+    const lastSign = _(this.atfTokens)
+      .filter(isAnyWord)
+      .flatMap((word) => (isWord(word) ? word.parts : word))
+      .filter((token) => isAkkadianWord(token) || isSignToken(token))
+      .last()
+
+    return ['UnclearSign', 'UnknownNumberOfSigns'].includes(
+      lastSign?.type ?? ''
+    )
+  }
 }
 
 export const createManuscriptLine: (
