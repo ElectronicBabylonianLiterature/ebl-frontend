@@ -12,7 +12,7 @@ import {
   Manuscript,
   ManuscriptLine,
   createVariant,
-  createVariantAlignment,
+  LineVariant,
 } from './text'
 import { periods, periodModifiers } from './period'
 import { provenances } from './provenance'
@@ -59,9 +59,9 @@ const manuscrpitLineConfig: ManuscriptLine = {
 const lineConfig: Line = {
   number: '2',
   variants: [
-    {
-      reconstruction: 'reconstructed text',
-      reconstructionTokens: [
+    new LineVariant(
+      'reconstructed text',
+      [
         {
           value: 'kur',
           cleanValue: 'kur',
@@ -109,8 +109,8 @@ const lineConfig: Line = {
           type: 'AkkadianWord',
         },
       ],
-      manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
-    },
+      [createManuscriptLine(manuscrpitLineConfig)]
+    ),
   ],
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
@@ -292,7 +292,7 @@ describe('LineVariant', () => {
       ],
     })
 
-    expect(createVariantAlignment(variant)).toEqual([
+    expect(variant.alignment).toEqual([
       {
         alignment: [
           {

@@ -90,10 +90,56 @@ export const createManuscriptLine: (
   })
 )
 
-export interface LineVariant {
-  readonly reconstruction: string
-  readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly manuscripts: ReadonlyArray<ManuscriptLine>
+type TokenWithIndex = Token & {
+  originalIndex: number
+}
+
+export class LineVariant {
+  readonly [immerable] = true
+
+  constructor(
+    readonly reconstruction: string,
+    readonly reconstructionTokens: ReadonlyArray<Token>,
+    readonly manuscripts: ReadonlyArray<ManuscriptLine>
+  ) {}
+
+  get alignment(): ManuscriptAlignment[] {
+    const reconstruction = this.reconstructionTokens.reduce<TokenWithIndex[]>(
+      (acc, current, index) => {
+        return isAnyWord(current)
+          ? [...acc, { ...current, originalIndex: index }]
+          : acc
+      },
+      []
+    )
+
+    return this.manuscripts.map((manuscript) => {
+      const indexMap = manuscript.atfTokens.reduce<number[]>((acc, current) => {
+        const previousIndex = _.last(acc) ?? -1
+        return isAnyWord(current)
+          ? [...acc, previousIndex + 1]
+          : [...acc, previousIndex]
+      }, [])
+      return {
+        alignment: manuscript.atfTokens.map((token, index) => {
+          const alignment = createAlignmentToken(token)
+          const reconstructedWord: TokenWithIndex | undefined =
+            reconstruction[indexMap[index]]
+          return alignment.isAlignable &&
+            _.isNil(alignment.alignment) &&
+            reconstructedWord &&
+            isAnyWord(reconstructedWord)
+            ? {
+                ...alignment,
+                alignment: reconstructedWord.originalIndex,
+                suggested: true,
+              }
+            : alignment
+        }),
+        omittedWords: manuscript.omittedWords,
+      }
+    })
+  }
 }
 
 export interface Line {
@@ -116,57 +162,13 @@ export const createLine: (config: Partial<Line>) => Line = produce(
 export const createVariant: (
   config: Partial<LineVariant>
 ) => LineVariant = produce(
-  (draft): LineVariant => ({
-    reconstruction: '',
-    manuscripts: [],
-    reconstructionTokens: [],
-    ...draft,
-  })
+  (draft): LineVariant =>
+    new LineVariant(
+      draft.reconstruction ?? '',
+      draft.reconstructionTokens ?? [],
+      draft.manuscripts ?? []
+    )
 )
-
-type TokenWithIndex = Token & {
-  originalIndex: number
-}
-
-export function createVariantAlignment(
-  variant: LineVariant
-): ManuscriptAlignment[] {
-  const reconstruction = variant.reconstructionTokens.reduce<TokenWithIndex[]>(
-    (acc, current, index) => {
-      return isAnyWord(current)
-        ? [...acc, { ...current, originalIndex: index }]
-        : acc
-    },
-    []
-  )
-
-  return variant.manuscripts.map((manuscript) => {
-    const indexMap = manuscript.atfTokens.reduce<number[]>((acc, current) => {
-      const previousIndex = _.last(acc) ?? -1
-      return isAnyWord(current)
-        ? [...acc, previousIndex + 1]
-        : [...acc, previousIndex]
-    }, [])
-    return {
-      alignment: manuscript.atfTokens.map((token, index) => {
-        const alignment = createAlignmentToken(token)
-        const reconstructedWord: TokenWithIndex | undefined =
-          reconstruction[indexMap[index]]
-        return alignment.isAlignable &&
-          _.isNil(alignment.alignment) &&
-          reconstructedWord &&
-          isAnyWord(reconstructedWord)
-          ? {
-              ...alignment,
-              alignment: reconstructedWord.originalIndex,
-              suggested: true,
-            }
-          : alignment
-      }),
-      omittedWords: manuscript.omittedWords,
-    }
-  })
-}
 
 export class Chapter {
   readonly [immerable] = true
@@ -198,7 +200,9 @@ export class Chapter {
 
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
-      this.lines.map((line) => line.variants.map(createVariantAlignment))
+      this.lines.map((line) =>
+        line.variants.map((variant) => variant.alignment)
+      )
     )
   }
 

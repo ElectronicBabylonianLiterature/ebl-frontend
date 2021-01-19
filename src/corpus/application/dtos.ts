@@ -97,7 +97,7 @@ const toManuscriptDto = produce((draft) => ({
 const toLineDto = produce((draft: Draft<Line>) => ({
   ...draft,
   variants: draft.variants.map((variant) => ({
-    ..._.omit(variant, 'reconstructionTokens'),
+    reconstruction: variant.reconstruction,
     manuscripts: variant.manuscripts.map((manuscript) =>
       _.omit(manuscript, 'atfTokens')
     ),
