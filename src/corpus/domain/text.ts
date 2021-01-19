@@ -67,27 +67,31 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
   })
 }
 
-export interface ManuscriptLine {
-  readonly manuscriptId: number
-  readonly labels: readonly string[]
-  readonly number: string
-  readonly atf: string
-  readonly atfTokens: readonly Token[]
-  readonly omittedWords: readonly number[]
+export class ManuscriptLine {
+  readonly [immerable] = true
+
+  constructor(
+    readonly manuscriptId: number,
+    readonly labels: readonly string[],
+    readonly number: string,
+    readonly atf: string,
+    readonly atfTokens: readonly Token[],
+    readonly omittedWords: readonly number[]
+  ) {}
 }
 
 export const createManuscriptLine: (
   data: Partial<ManuscriptLine>
 ) => ManuscriptLine = produce(
-  (draft: Partial<ManuscriptLine>): ManuscriptLine => ({
-    manuscriptId: 0,
-    labels: [],
-    number: '',
-    atf: '',
-    atfTokens: [],
-    omittedWords: [],
-    ...draft,
-  })
+  (draft: Partial<ManuscriptLine>): ManuscriptLine =>
+    new ManuscriptLine(
+      draft.manuscriptId ?? 0,
+      draft.labels ?? [],
+      draft.number ?? '',
+      draft.atf ?? '',
+      draft.atfTokens ?? [],
+      draft.omittedWords ?? []
+    )
 )
 
 type TokenWithIndex = Token & {

@@ -98,9 +98,13 @@ const toLineDto = produce((draft: Draft<Line>) => ({
   ...draft,
   variants: draft.variants.map((variant) => ({
     reconstruction: variant.reconstruction,
-    manuscripts: variant.manuscripts.map((manuscript) =>
-      _.omit(manuscript, 'atfTokens')
-    ),
+    manuscripts: variant.manuscripts.map((manuscript) => ({
+      manuscriptId: manuscript.manuscriptId,
+      labels: manuscript.labels,
+      number: manuscript.number,
+      atf: manuscript.atf,
+      omittedWords: manuscript.omittedWords,
+    })),
   })),
 }))
 

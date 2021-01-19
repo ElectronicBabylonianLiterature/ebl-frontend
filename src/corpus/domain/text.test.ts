@@ -32,7 +32,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   references: [],
 }
 
-const manuscrpitLineConfig: ManuscriptLine = {
+const manuscrpitLineConfig: Partial<ManuscriptLine> = {
   manuscriptId: 1,
   labels: ['iii'],
   number: 'a+1',
