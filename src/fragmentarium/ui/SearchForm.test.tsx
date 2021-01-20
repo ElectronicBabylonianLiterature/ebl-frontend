@@ -13,12 +13,15 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import MemorySession from 'auth/Session'
 
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('auth/Session')
 
-const fragmentService = new (FragmentService as jest.Mock<FragmentService>)()
-const fragmentSearchService = new (FragmentSearchService as jest.Mock<
-  FragmentSearchService
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
 >)()
-const session = new (MemorySession as jest.Mock<MemorySession>)()
+const fragmentSearchService = new (FragmentSearchService as jest.Mock<
+  jest.Mocked<FragmentSearchService>
+>)()
+const session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 
 let number: string
 let id: string
@@ -56,15 +59,11 @@ async function renderSearchForms() {
 
 beforeEach(async () => {
   searchEntry = await factory.build('bibliographyEntry')
-  fragmentService.searchBibliography = jest
-    .fn()
-    .mockReturnValue(Promise.resolve([searchEntry]))
-
-  fragmentSearchService.random = jest.fn()
-  fragmentSearchService.interesting = jest.fn()
-
-  session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
-  session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(true)
+  fragmentService.searchBibliography.mockReturnValue(
+    Promise.resolve([searchEntry])
+  )
+  session.isAllowedToReadFragments.mockReturnValue(true)
+  session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderSearchForms()
 })
 describe('User Input', () => {
