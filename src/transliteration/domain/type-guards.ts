@@ -18,6 +18,9 @@ import {
   Word,
   Column,
   AkkadianWord,
+  UnknownSign,
+  UnknownNumberOfSigns,
+  NamedSign,
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
@@ -54,6 +57,19 @@ export function isWord(token: Token): token is Word {
 
 export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
+}
+
+export function isSignToken(
+  token: Token
+): token is NamedSign | UnknownNumberOfSigns | UnknownSign {
+  return [
+    'Reading',
+    'Logogram',
+    'Number',
+    'UnidentifiedSign',
+    'UnclearSign',
+    'UnknownNumberOfSigns',
+  ].includes(token.type)
 }
 
 export function isAnyWord(token: Token): token is Word | AkkadianWord {

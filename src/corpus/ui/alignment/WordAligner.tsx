@@ -34,12 +34,14 @@ function AlignmentForm(props: AlignerProps) {
               }
             : null,
           isAlignable: true,
+          suggested: false,
         }
       : {
           value: alignmentToken.value,
           alignment: null,
           variant: null,
           isAlignable: true,
+          suggested: false,
         }
   }
 

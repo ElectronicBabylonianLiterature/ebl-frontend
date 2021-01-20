@@ -1,13 +1,14 @@
+import produce, { castDraft, Draft } from 'immer'
+import React, { useState } from 'react'
+import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import {
   AlignmentToken,
   ChapterAlignment,
   ManuscriptAlignment,
 } from 'corpus/domain/alignment'
-import { Chapter, ManuscriptLine, LineVariant } from 'corpus/domain/text'
+import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
+import { Chapter } from 'corpus/domain/text'
 import Reconstruction from 'corpus/ui/Reconstruction'
-import produce, { castDraft, Draft } from 'immer'
-import React, { useState } from 'react'
-import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import OmittedWordsSelect from './OmittedWordsSelect'
 import WordAligner from './WordAligner'
 
