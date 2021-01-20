@@ -1,4 +1,3 @@
-import produce, { immerable } from 'immer'
 import _ from 'lodash'
 import { Token } from 'transliteration/domain/token'
 import {
@@ -8,6 +7,7 @@ import {
   isWord,
 } from 'transliteration/domain/type-guards'
 import { createAlignmentToken, ManuscriptAlignment } from './alignment'
+import produce, { immerable } from 'immer'
 
 export class ManuscriptLine {
   readonly [immerable] = true
@@ -34,19 +34,18 @@ export class ManuscriptLine {
   }
 }
 
-export const createManuscriptLine: (
-  data: Partial<ManuscriptLine>
-) => ManuscriptLine = produce(
-  (draft: Partial<ManuscriptLine>): ManuscriptLine =>
-    new ManuscriptLine(
-      draft.manuscriptId ?? 0,
-      draft.labels ?? [],
-      draft.number ?? '',
-      draft.atf ?? '',
-      draft.atfTokens ?? [],
-      draft.omittedWords ?? []
-    )
-)
+export function createManuscriptLine(
+  config: Partial<ManuscriptLine>
+): ManuscriptLine {
+  return new ManuscriptLine(
+    config.manuscriptId ?? 0,
+    config.labels ?? [],
+    config.number ?? '',
+    config.atf ?? '',
+    config.atfTokens ?? [],
+    config.omittedWords ?? []
+  )
+}
 
 type TokenWithIndex = Token & {
   originalIndex: number
@@ -128,6 +127,14 @@ export class LineVariant {
   }
 }
 
+export function createVariant(config: Partial<LineVariant>): LineVariant {
+  return new LineVariant(
+    config.reconstruction ?? '',
+    config.reconstructionTokens ?? [],
+    config.manuscripts ?? []
+  )
+}
+
 export interface Line {
   readonly number: string
   readonly variants: ReadonlyArray<LineVariant>
@@ -143,15 +150,4 @@ export const createLine: (config: Partial<Line>) => Line = produce(
     isBeginningOfSection: false,
     ...draft,
   })
-)
-
-export const createVariant: (
-  config: Partial<LineVariant>
-) => LineVariant = produce(
-  (draft): LineVariant =>
-    new LineVariant(
-      draft.reconstruction ?? '',
-      draft.reconstructionTokens ?? [],
-      draft.manuscripts ?? []
-    )
 )
