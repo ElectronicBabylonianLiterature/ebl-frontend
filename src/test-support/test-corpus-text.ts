@@ -1,16 +1,18 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import {
-  createText,
-  createChapter,
-  createManuscript,
   createLine,
   createManuscriptLine,
-  types,
   createVariant,
-} from 'corpus/domain/text'
+} from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import {
+  createChapter,
+  createManuscript,
+  createText,
+  types,
+} from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
 
 const reconstructionTokens: Token[] = [

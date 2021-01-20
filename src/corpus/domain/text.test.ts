@@ -1,22 +1,24 @@
 import _ from 'lodash'
-import {
-  Text,
-  createText,
-  createChapter,
-  createManuscript,
-  types,
-  createLine,
-  createManuscriptLine,
-  Chapter,
-  Line,
-  Manuscript,
-  ManuscriptLine,
-  LineVariant,
-} from './text'
-import { periods, periodModifiers } from './period'
-import { provenances } from './provenance'
 import { text } from 'test-support/test-corpus-text'
 import { ChapterAlignment } from './alignment'
+import {
+  createLine,
+  createManuscriptLine,
+  Line,
+  LineVariant,
+  ManuscriptLine,
+} from './line'
+import { periodModifiers, periods } from './period'
+import { provenances } from './provenance'
+import {
+  Chapter,
+  createChapter,
+  createManuscript,
+  createText,
+  Manuscript,
+  Text,
+  types,
+} from './text'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,

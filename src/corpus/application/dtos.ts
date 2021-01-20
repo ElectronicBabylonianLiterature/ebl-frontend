@@ -1,24 +1,26 @@
+import { Draft, produce } from 'immer'
 import serializeReference from 'bibliography/application/serializeReference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  createLine,
+  createManuscriptLine,
+  createVariant,
+  Line,
+  LineVariant,
+} from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
 import {
   createChapter,
-  createLine,
   createManuscript,
-  createManuscriptLine,
   createText,
-  Line,
   Manuscript,
   Text,
   types,
-  LineVariant,
-  createVariant,
 } from 'corpus/domain/text'
-import { Draft, produce } from 'immer'
 
 export function fromDto(textDto): Text {
   return createText({

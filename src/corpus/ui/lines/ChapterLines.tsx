@@ -1,18 +1,13 @@
+import produce, { castDraft } from 'immer'
+import _ from 'lodash'
 import React from 'react'
 import { Badge, Button, Col, Form } from 'react-bootstrap'
-import _ from 'lodash'
 import ListForm from 'common/List'
-import Editor from 'editor/Editor'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
-import produce, { castDraft } from 'immer'
+import { createVariant, LineVariant, Line } from 'corpus/domain/line'
+import { Chapter, Manuscript } from 'corpus/domain/text'
+import Editor from 'editor/Editor'
 import { ManuscriptLines } from './ManuscriptLines'
-import {
-  Manuscript,
-  Line,
-  Chapter,
-  LineVariant,
-  createVariant,
-} from 'corpus/domain/text'
 
 interface VariantFormProps {
   value: LineVariant

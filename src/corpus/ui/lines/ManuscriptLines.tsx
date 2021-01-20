@@ -1,14 +1,11 @@
-import ListForm from 'common/List'
-import {
-  createManuscriptLine,
-  ManuscriptLine,
-  Manuscript,
-} from 'corpus/domain/text'
-import React from 'react'
 import { produce } from 'immer'
-import { Col, Form } from 'react-bootstrap'
 import _ from 'lodash'
+import React from 'react'
+import { Col, Form } from 'react-bootstrap'
 import ArrayInput from 'common/ArrayInput'
+import ListForm from 'common/List'
+import { createManuscriptLine, ManuscriptLine } from 'corpus/domain/line'
+import { Manuscript } from 'corpus/domain/text'
 import Editor from 'editor/Editor'
 
 interface ManuscriptLineFormProps {

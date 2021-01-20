@@ -1,4 +1,4 @@
-import { createManuscriptLine } from './text'
+import { createManuscriptLine } from './line'
 import {
   NamedSign,
   UnknownSign,

@@ -1,4 +1,4 @@
-import { createVariant, createManuscriptLine } from './text'
+import { createVariant, createManuscriptLine } from './line'
 
 describe('alignment', () => {
   test('Already aligned.', () => {
