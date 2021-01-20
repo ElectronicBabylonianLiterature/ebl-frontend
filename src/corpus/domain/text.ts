@@ -135,12 +135,23 @@ export class LineVariant {
     )
 
     return this.manuscripts.map((manuscript) => {
-      const indexMap = manuscript.atfTokens.reduce<number[]>((acc, current) => {
-        const previousIndex = _.last(acc) ?? -1
-        return isAnyWord(current)
-          ? [...acc, previousIndex + 1]
-          : [...acc, previousIndex]
-      }, [])
+      const indexMap = manuscript.endsWithLacuna
+        ? manuscript.atfTokens.reduce<number[]>((acc, current) => {
+            const previousIndex = _.last(acc) ?? -1
+            return isAnyWord(current)
+              ? [...acc, previousIndex + 1]
+              : [...acc, previousIndex]
+          }, [])
+        : _.reduceRight<Token, number[]>(
+            manuscript.atfTokens,
+            (acc, current) => {
+              const previousIndex = _.first(acc) ?? reconstruction.length
+              return isAnyWord(current)
+                ? [previousIndex - 1, ...acc]
+                : [previousIndex, ...acc]
+            },
+            []
+          )
       return {
         alignment: manuscript.atfTokens.map((token, index) => {
           const alignment = createAlignmentToken(token)

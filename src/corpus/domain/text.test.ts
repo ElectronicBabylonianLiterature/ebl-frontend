@@ -150,10 +150,10 @@ describe('Chapter', () => {
               alignment: [
                 {
                   value: 'kur',
-                  alignment: 1,
+                  alignment: null,
                   variant: null,
                   isAlignable: true,
-                  suggested: true,
+                  suggested: false,
                 },
                 {
                   value: 'ra',
