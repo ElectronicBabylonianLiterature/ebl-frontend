@@ -19,7 +19,6 @@ import {
   createVariant,
 } from 'corpus/domain/text'
 import { Draft, produce } from 'immer'
-import _ from 'lodash'
 
 export function fromDto(textDto): Text {
   return createText({
