@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Token } from 'transliteration/domain/token'
+import { Token, ErasureType } from 'transliteration/domain/token'
 import {
   isAkkadianWord,
   isAnyWord,
@@ -8,6 +8,11 @@ import {
 } from 'transliteration/domain/type-guards'
 import { createAlignmentToken, ManuscriptAlignment } from './alignment'
 import produce, { immerable } from 'immer'
+
+function isAlignmentRelevant(token: Token): boolean {
+  const erased: ErasureType = 'ERASED'
+  return isAnyWord(token) && token.erasure !== erased
+}
 
 export class ManuscriptLine {
   readonly [immerable] = true
@@ -23,7 +28,7 @@ export class ManuscriptLine {
 
   get endsWithLacuna(): boolean {
     const lastSign = _(this.atfTokens)
-      .filter(isAnyWord)
+      .filter(isAlignmentRelevant)
       .flatMap((word) => (isWord(word) ? word.parts : word))
       .filter((token) => isAkkadianWord(token) || isSignToken(token))
       .last()
@@ -54,7 +59,7 @@ type TokenWithIndex = Token & {
 function createIndexMap(atfTokens: readonly Token[]): number[] {
   return atfTokens.reduce<number[]>((acc, current) => {
     const previousIndex = _.last(acc) ?? -1
-    return isAnyWord(current)
+    return isAlignmentRelevant(current)
       ? [...acc, previousIndex + 1]
       : [...acc, previousIndex]
   }, [])
@@ -68,7 +73,7 @@ function createReverseIndexMap(
     atfTokens,
     (acc, current) => {
       const previousIndex = _.first(acc) ?? length
-      return isAnyWord(current)
+      return isAlignmentRelevant(current)
         ? [previousIndex - 1, ...acc]
         : [previousIndex, ...acc]
     },
@@ -81,7 +86,7 @@ function stripReconstruction(
 ): TokenWithIndex[] {
   return reconstructionTokens.reduce<TokenWithIndex[]>(
     (acc, current, index) => {
-      return isAnyWord(current)
+      return isAlignmentRelevant(current)
         ? [...acc, { ...current, originalIndex: index }]
         : acc
     },
