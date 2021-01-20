@@ -52,6 +52,44 @@ type TokenWithIndex = Token & {
   originalIndex: number
 }
 
+function createIndexMap(atfTokens: readonly Token[]): number[] {
+  return atfTokens.reduce<number[]>((acc, current) => {
+    const previousIndex = _.last(acc) ?? -1
+    return isAnyWord(current)
+      ? [...acc, previousIndex + 1]
+      : [...acc, previousIndex]
+  }, [])
+}
+
+function createReverseIndexMap(
+  atfTokens: readonly Token[],
+  length: number
+): number[] {
+  return _.reduceRight<Token, number[]>(
+    atfTokens,
+    (acc, current) => {
+      const previousIndex = _.first(acc) ?? length
+      return isAnyWord(current)
+        ? [previousIndex - 1, ...acc]
+        : [previousIndex, ...acc]
+    },
+    []
+  )
+}
+
+function stripReconstruction(
+  reconstructionTokens: readonly Token[]
+): TokenWithIndex[] {
+  return reconstructionTokens.reduce<TokenWithIndex[]>(
+    (acc, current, index) => {
+      return isAnyWord(current)
+        ? [...acc, { ...current, originalIndex: index }]
+        : acc
+    },
+    []
+  )
+}
+
 export class LineVariant {
   readonly [immerable] = true
 
@@ -62,33 +100,12 @@ export class LineVariant {
   ) {}
 
   get alignment(): ManuscriptAlignment[] {
-    const reconstruction = this.reconstructionTokens.reduce<TokenWithIndex[]>(
-      (acc, current, index) => {
-        return isAnyWord(current)
-          ? [...acc, { ...current, originalIndex: index }]
-          : acc
-      },
-      []
-    )
+    const reconstruction = stripReconstruction(this.reconstructionTokens)
 
     return this.manuscripts.map((manuscript) => {
       const indexMap = manuscript.endsWithLacuna
-        ? manuscript.atfTokens.reduce<number[]>((acc, current) => {
-            const previousIndex = _.last(acc) ?? -1
-            return isAnyWord(current)
-              ? [...acc, previousIndex + 1]
-              : [...acc, previousIndex]
-          }, [])
-        : _.reduceRight<Token, number[]>(
-            manuscript.atfTokens,
-            (acc, current) => {
-              const previousIndex = _.first(acc) ?? reconstruction.length
-              return isAnyWord(current)
-                ? [previousIndex - 1, ...acc]
-                : [previousIndex, ...acc]
-            },
-            []
-          )
+        ? createIndexMap(manuscript.atfTokens)
+        : createReverseIndexMap(manuscript.atfTokens, reconstruction.length)
       return {
         alignment: manuscript.atfTokens.map((token, index) => {
           const alignment = createAlignmentToken(token)
