@@ -8,12 +8,14 @@ export type EnclosureType =
   | 'EMENDATION'
   | 'DOCUMENT_ORIENTED_GLOSS'
 
+export type ErasureType = 'NONE' | 'ERASED' | 'OVER_ERASED'
+
 export interface BaseToken {
   readonly type: string
   readonly value: string
   readonly cleanValue: string
   readonly parts?: readonly Token[]
-  readonly erasure?: string
+  readonly erasure?: ErasureType
   readonly enclosureType: readonly EnclosureType[]
 }
 
@@ -39,7 +41,7 @@ export interface ValueToken extends NotLemmatizableToken {
 
 export interface Word extends LemmatizableToken {
   readonly type: 'Word' | 'LoneDeterminative'
-  readonly erasure: string
+  readonly erasure: ErasureType
   readonly parts: readonly Token[]
 }
 
@@ -61,11 +63,6 @@ export interface Shift extends NotLemmatizableToken {
   readonly type: 'LanguageShift'
   readonly normalized: boolean
   readonly language: string
-}
-
-export interface Erasure extends NotLemmatizableToken {
-  readonly type: 'Erasure'
-  readonly side: string
 }
 
 export interface Joiner extends NotLemmatizableToken {
@@ -159,7 +156,6 @@ export type Token =
   | AkkadianWord
   | Break
   | Shift
-  | Erasure
   | Joiner
   | UnknownNumberOfSigns
   | UnknownSign
