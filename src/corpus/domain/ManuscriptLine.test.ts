@@ -49,6 +49,39 @@ test.each([
   [reading, false],
   [unclearSign, true],
   [unknownNumberOfSigns, true],
+])('beginsWithLacuna', (token, expected) => {
+  const line = createManuscriptLine({
+    atfTokens: [
+      {
+        enclosureType: [],
+        cleanValue: '|',
+        value: '|',
+        type: 'LineBreak',
+      },
+      {
+        type: 'Word',
+        value: token.value,
+        parts: [token],
+        cleanValue: token.cleanValue,
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        alignment: null,
+        variant: null,
+        enclosureType: [],
+      },
+    ],
+  })
+
+  expect(line.beginsWithLacuna).toBe(expected)
+})
+
+test.each([
+  [reading, false],
+  [unclearSign, true],
+  [unknownNumberOfSigns, true],
 ])('endsWithLacuna', (token, expected) => {
   const line = createManuscriptLine({
     atfTokens: [

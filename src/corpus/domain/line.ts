@@ -9,6 +9,11 @@ import {
 import { createAlignmentToken, ManuscriptAlignment } from './alignment'
 import produce, { immerable } from 'immer'
 
+function isLacuna(token: Token | undefined) {
+  const lacunaTypes: readonly string[] = ['UnclearSign', 'UnknownNumberOfSigns']
+  return lacunaTypes.includes(token?.type ?? '')
+}
+
 function isAlignmentRelevant(token: Token): boolean {
   const erased: ErasureType = 'ERASED'
   return isAnyWord(token) && token.erasure !== erased
@@ -26,16 +31,19 @@ export class ManuscriptLine {
     readonly omittedWords: readonly number[]
   ) {}
 
+  get beginsWithLacuna(): boolean {
+    return isLacuna(this.signs.first())
+  }
+
   get endsWithLacuna(): boolean {
-    const lastSign = _(this.atfTokens)
+    return isLacuna(this.signs.last())
+  }
+
+  private get signs(): _.Collection<Token> {
+    return _(this.atfTokens)
       .filter(isAlignmentRelevant)
       .flatMap((word) => (isWord(word) ? word.parts : word))
       .filter((token) => isAkkadianWord(token) || isSignToken(token))
-      .last()
-
-    return ['UnclearSign', 'UnknownNumberOfSigns'].includes(
-      lastSign?.type ?? ''
-    )
   }
 
   findMatchingWords(word: Word): number[] {
