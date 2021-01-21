@@ -51,13 +51,16 @@ export class ManuscriptLine {
   }
 
   alignTo(reconstruction: TokenWithIndex[]): AlignmentToken[] {
+    const begingsAndEndsWithLacuna =
+      this.beginsWithLacuna && this.endsWithLacuna
     const indexMap = this.createAlignmentIndexMap(reconstruction.length)
 
     return this.atfTokens.map((token, index) => {
       const alignment = createAlignmentToken(token)
       const reconstructedWord: TokenWithIndex | undefined =
         reconstruction[indexMap[index]]
-      return alignment.isAlignable &&
+      return !begingsAndEndsWithLacuna &&
+        alignment.isAlignable &&
         _.isNil(alignment.alignment) &&
         reconstructedWord &&
         isAnyWord(reconstructedWord)

@@ -355,4 +355,154 @@ describe('alignment', () => {
       },
     ])
   })
+
+  test('Line begins and ends with lacuna.', () => {
+    const variant = createVariant({
+      reconstructionTokens: [
+        {
+          value: '%n',
+          cleanValue: '%n',
+          enclosureType: [],
+          erasure: 'NONE',
+          language: 'AKKADIAN',
+          normalized: true,
+          type: 'LanguageShift',
+        },
+        {
+          value: 'kur',
+          cleanValue: 'kur',
+          enclosureType: [],
+          erasure: 'NONE',
+          lemmatizable: true,
+          alignment: null,
+          variant: null,
+          uniqueLemma: [],
+          normalized: true,
+          language: 'AKKADIAN',
+          parts: [
+            {
+              value: 'kur',
+              cleanValue: 'kur',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'ValueToken',
+            },
+          ],
+          modifiers: [],
+          type: 'AkkadianWord',
+        },
+      ],
+      manuscripts: [
+        createManuscriptLine({
+          atfTokens: [
+            {
+              type: 'Word',
+              value: '...',
+              parts: [
+                {
+                  enclosureType: [],
+                  cleanValue: '...',
+                  value: '...',
+                  type: 'UnknownNumberOfSigns',
+                },
+              ],
+              cleanValue: '...',
+              uniqueLemma: [],
+              normalized: false,
+              language: 'AKKADIAN',
+              lemmatizable: false,
+              erasure: 'NONE',
+              alignment: null,
+              variant: null,
+              enclosureType: [],
+            },
+            {
+              type: 'Word',
+              value: 'kur',
+              parts: [
+                {
+                  enclosureType: [],
+                  cleanValue: 'kur',
+                  value: 'kur',
+                  name: 'kur',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'kur',
+                      value: 'kur',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
+              ],
+              cleanValue: 'kur',
+              uniqueLemma: [],
+              normalized: false,
+              language: 'AKKADIAN',
+              lemmatizable: true,
+              erasure: 'NONE',
+              alignment: null,
+              variant: null,
+              enclosureType: [],
+            },
+            {
+              type: 'Word',
+              value: '...',
+              parts: [
+                {
+                  enclosureType: [],
+                  cleanValue: '...',
+                  value: '...',
+                  type: 'UnknownNumberOfSigns',
+                },
+              ],
+              cleanValue: '...',
+              uniqueLemma: [],
+              normalized: false,
+              language: 'AKKADIAN',
+              lemmatizable: false,
+              erasure: 'NONE',
+              alignment: null,
+              variant: null,
+              enclosureType: [],
+            },
+          ],
+        }),
+      ],
+    })
+
+    expect(variant.alignment).toEqual([
+      {
+        alignment: [
+          {
+            value: '...',
+            alignment: null,
+            variant: null,
+            isAlignable: false,
+            suggested: false,
+          },
+          {
+            value: 'kur',
+            alignment: null,
+            variant: null,
+            isAlignable: true,
+            suggested: false,
+          },
+          {
+            value: '...',
+            alignment: null,
+            variant: null,
+            isAlignable: false,
+            suggested: false,
+          },
+        ],
+        omittedWords: [],
+      },
+    ])
+  })
 })
