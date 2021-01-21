@@ -6,7 +6,11 @@ import {
   isSignToken,
   isWord,
 } from 'transliteration/domain/type-guards'
-import { createAlignmentToken, ManuscriptAlignment } from './alignment'
+import {
+  createAlignmentToken,
+  ManuscriptAlignment,
+  AlignmentToken,
+} from './alignment'
 import produce, { immerable } from 'immer'
 
 function isLacuna(token: Token | undefined) {
@@ -44,6 +48,26 @@ export class ManuscriptLine {
       .filter(isAlignmentRelevant)
       .flatMap((word) => (isWord(word) ? word.parts : word))
       .filter((token) => isAkkadianWord(token) || isSignToken(token))
+  }
+
+  alignTo(reconstruction: TokenWithIndex[]): AlignmentToken[] {
+    const indexMap = this.createAlignmentIndexMap(reconstruction.length)
+
+    return this.atfTokens.map((token, index) => {
+      const alignment = createAlignmentToken(token)
+      const reconstructedWord: TokenWithIndex | undefined =
+        reconstruction[indexMap[index]]
+      return alignment.isAlignable &&
+        _.isNil(alignment.alignment) &&
+        reconstructedWord &&
+        isAnyWord(reconstructedWord)
+        ? {
+            ...alignment,
+            alignment: reconstructedWord.originalIndex,
+            suggested: true,
+          }
+        : alignment
+    })
   }
 
   findMatchingWords(word: Word): number[] {
@@ -126,25 +150,9 @@ export class LineVariant {
 
   get alignment(): ManuscriptAlignment[] {
     const reconstruction = stripReconstruction(this.reconstructionTokens)
-
     return this.manuscripts.map((manuscript) => {
-      const indexMap = manuscript.createAlignmentIndexMap(reconstruction.length)
       return {
-        alignment: manuscript.atfTokens.map((token, index) => {
-          const alignment = createAlignmentToken(token)
-          const reconstructedWord: TokenWithIndex | undefined =
-            reconstruction[indexMap[index]]
-          return alignment.isAlignable &&
-            _.isNil(alignment.alignment) &&
-            reconstructedWord &&
-            isAnyWord(reconstructedWord)
-            ? {
-                ...alignment,
-                alignment: reconstructedWord.originalIndex,
-                suggested: true,
-              }
-            : alignment
-        }),
+        alignment: manuscript.alignTo(reconstruction),
         omittedWords: manuscript.omittedWords,
       }
     })
