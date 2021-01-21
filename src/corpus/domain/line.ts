@@ -37,6 +37,34 @@ export class ManuscriptLine {
       lastSign?.type ?? ''
     )
   }
+
+  createAlignmentIndexMap(targetLength: number): number[] {
+    return this.endsWithLacuna
+      ? this.createIndexMapFromLeft()
+      : this.createIndexMapFromRight(targetLength)
+  }
+
+  private createIndexMapFromLeft(): number[] {
+    return this.atfTokens.reduce<number[]>((acc, current) => {
+      const previousIndex = _.last(acc) ?? -1
+      return isAlignmentRelevant(current)
+        ? [...acc, previousIndex + 1]
+        : [...acc, previousIndex]
+    }, [])
+  }
+
+  private createIndexMapFromRight(targetLength: number): number[] {
+    return _.reduceRight<Token, number[]>(
+      this.atfTokens,
+      (acc, current) => {
+        const previousIndex = _.first(acc) ?? targetLength
+        return isAlignmentRelevant(current)
+          ? [previousIndex - 1, ...acc]
+          : [previousIndex, ...acc]
+      },
+      []
+    )
+  }
 }
 
 export function createManuscriptLine(
@@ -54,31 +82,6 @@ export function createManuscriptLine(
 
 type TokenWithIndex = Token & {
   originalIndex: number
-}
-
-function createIndexMap(atfTokens: readonly Token[]): number[] {
-  return atfTokens.reduce<number[]>((acc, current) => {
-    const previousIndex = _.last(acc) ?? -1
-    return isAlignmentRelevant(current)
-      ? [...acc, previousIndex + 1]
-      : [...acc, previousIndex]
-  }, [])
-}
-
-function createReverseIndexMap(
-  atfTokens: readonly Token[],
-  length: number
-): number[] {
-  return _.reduceRight<Token, number[]>(
-    atfTokens,
-    (acc, current) => {
-      const previousIndex = _.first(acc) ?? length
-      return isAlignmentRelevant(current)
-        ? [previousIndex - 1, ...acc]
-        : [previousIndex, ...acc]
-    },
-    []
-  )
 }
 
 function stripReconstruction(
@@ -107,9 +110,7 @@ export class LineVariant {
     const reconstruction = stripReconstruction(this.reconstructionTokens)
 
     return this.manuscripts.map((manuscript) => {
-      const indexMap = manuscript.endsWithLacuna
-        ? createIndexMap(manuscript.atfTokens)
-        : createReverseIndexMap(manuscript.atfTokens, reconstruction.length)
+      const indexMap = manuscript.createAlignmentIndexMap(reconstruction.length)
       return {
         alignment: manuscript.atfTokens.map((token, index) => {
           const alignment = createAlignmentToken(token)
