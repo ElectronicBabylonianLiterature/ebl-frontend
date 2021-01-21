@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Token, ErasureType } from 'transliteration/domain/token'
+import { Token, ErasureType, Word } from 'transliteration/domain/token'
 import {
   isAkkadianWord,
   isAnyWord,
@@ -35,6 +35,16 @@ export class ManuscriptLine {
 
     return ['UnclearSign', 'UnknownNumberOfSigns'].includes(
       lastSign?.type ?? ''
+    )
+  }
+
+  findMatchingWords(word: Word): number[] {
+    return this.atfTokens.reduce<number[]>(
+      (acc, token, index) =>
+        isWord(token) && token.cleanValue === word.cleanValue
+          ? [...acc, index]
+          : acc,
+      []
     )
   }
 
