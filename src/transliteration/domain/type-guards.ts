@@ -59,17 +59,18 @@ export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
 }
 
+export function isNamedSign(token: Token): token is NamedSign {
+  return ['Reading', 'Logogram', 'Number'].includes(token.type)
+}
+
 export function isSignToken(
   token: Token
 ): token is NamedSign | UnknownNumberOfSigns | UnknownSign {
-  return [
-    'Reading',
-    'Logogram',
-    'Number',
-    'UnidentifiedSign',
-    'UnclearSign',
-    'UnknownNumberOfSigns',
-  ].includes(token.type)
+  return (
+    ['UnidentifiedSign', 'UnclearSign', 'UnknownNumberOfSigns'].includes(
+      token.type
+    ) || isNamedSign(token)
+  )
 }
 
 export function isAnyWord(token: Token): token is Word | AkkadianWord {

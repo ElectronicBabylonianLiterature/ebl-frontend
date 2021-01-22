@@ -547,18 +547,84 @@ describe('alignment', () => {
           atfTokens: [
             {
               type: 'Word',
-              value: 'kur',
+              value: 'ku[r-ra-pa',
               parts: [
                 {
                   enclosureType: [],
                   cleanValue: 'kur',
-                  value: 'kur',
+                  value: 'k[ur',
                   name: 'kur',
                   nameParts: [
                     {
                       enclosureType: [],
-                      cleanValue: 'kur',
+                      cleanValue: 'ku',
                       value: 'kur',
+                      type: 'ValueToken',
+                    },
+                    {
+                      value: '[',
+                      cleanValue: '',
+                      enclosureType: [],
+                      erasure: 'NONE',
+                      side: 'LEFT',
+                      type: 'BrokenAway',
+                    },
+                    {
+                      enclosureType: [],
+                      cleanValue: 'r',
+                      value: 'r',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
+                {
+                  value: '-',
+                  cleanValue: '-',
+                  enclosureType: ['BROKEN_AWAY'],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra',
+                  name: 'ra',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'ra',
+                      value: 'ra',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
+                {
+                  value: '-',
+                  cleanValue: '-',
+                  enclosureType: ['BROKEN_AWAY'],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'pa',
+                  value: 'pa',
+                  name: 'pa',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'pa',
+                      value: 'pa',
                       type: 'ValueToken',
                     },
                   ],
@@ -569,7 +635,7 @@ describe('alignment', () => {
                   type: 'Reading',
                 },
               ],
-              cleanValue: 'kur',
+              cleanValue: 'kur-ra-pa',
               uniqueLemma: [],
               normalized: false,
               language: 'AKKADIAN',
@@ -585,7 +651,7 @@ describe('alignment', () => {
           atfTokens: [
             {
               type: 'Word',
-              value: 'kur',
+              value: 'kur-ra?-pa',
               parts: [
                 {
                   enclosureType: [],
@@ -606,8 +672,60 @@ describe('alignment', () => {
                   sign: null,
                   type: 'Reading',
                 },
+                {
+                  value: '-',
+                  cleanValue: '-',
+                  enclosureType: [],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra?',
+                  name: 'ra',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'ra',
+                      value: 'ra',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: ['UNCERTAIN'],
+                  sign: null,
+                  type: 'Reading',
+                },
+                {
+                  value: '-',
+                  cleanValue: '-',
+                  enclosureType: [],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'pa',
+                  value: 'pa',
+                  name: 'pa',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'pa',
+                      value: 'pa',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
               ],
-              cleanValue: 'kur',
+              cleanValue: 'kur-ra-pa',
               uniqueLemma: [],
               normalized: false,
               language: 'AKKADIAN',
@@ -644,7 +762,7 @@ describe('alignment', () => {
             },
             {
               type: 'Word',
-              value: 'kur',
+              value: 'kur+ra-ra',
               parts: [
                 {
                   enclosureType: [],
@@ -665,8 +783,60 @@ describe('alignment', () => {
                   sign: null,
                   type: 'Reading',
                 },
+                {
+                  value: '+',
+                  cleanValue: '+',
+                  enclosureType: [],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra',
+                  name: 'ra',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'ra',
+                      value: 'ra',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
+                {
+                  value: '-',
+                  cleanValue: '-',
+                  enclosureType: [],
+                  erasure: 'NONE',
+                  type: 'Joiner',
+                },
+                {
+                  enclosureType: [],
+                  cleanValue: 'ra',
+                  value: 'ra',
+                  name: 'ra',
+                  nameParts: [
+                    {
+                      enclosureType: [],
+                      cleanValue: 'ra',
+                      value: 'ra',
+                      type: 'ValueToken',
+                    },
+                  ],
+                  subIndex: 1,
+                  modifiers: [],
+                  flags: [],
+                  sign: null,
+                  type: 'Reading',
+                },
               ],
-              cleanValue: 'kur',
+              cleanValue: 'kur+ra-ra',
               uniqueLemma: [],
               normalized: false,
               language: 'AKKADIAN',
@@ -706,7 +876,7 @@ describe('alignment', () => {
       {
         alignment: [
           {
-            value: 'kur',
+            value: 'ku[r-ra-pa',
             alignment: 1,
             variant: null,
             isAlignable: true,
@@ -718,7 +888,7 @@ describe('alignment', () => {
       {
         alignment: [
           {
-            value: 'kur',
+            value: 'kur-ra?-pa',
             alignment: 1,
             variant: null,
             isAlignable: true,
@@ -737,7 +907,7 @@ describe('alignment', () => {
             suggested: false,
           },
           {
-            value: 'kur',
+            value: 'kur+ra-ra',
             alignment: 1,
             variant: null,
             isAlignable: true,

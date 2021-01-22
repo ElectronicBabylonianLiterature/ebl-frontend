@@ -5,6 +5,7 @@ import {
   isAnyWord,
   isSignToken,
   isWord,
+  isNamedSign,
 } from 'transliteration/domain/type-guards'
 import {
   createAlignmentToken,
@@ -21,6 +22,24 @@ function isLacuna(token: Token | undefined) {
 function isAlignmentRelevant(token: Token): boolean {
   const erased: ErasureType = 'ERASED'
   return isAnyWord(token) && token.erasure !== erased
+}
+
+function isPrefixEqual(first: Word, second: Word): boolean {
+  const signsToCompare = 2
+  return (_([first, second])
+    .map('parts')
+    .invokeMap('filter', isSignToken)
+    .unzip() as _.Collection<readonly Token[]>)
+    .take(signsToCompare)
+    .every(([signOfFirstWord, signOfSecondWord]) => {
+      return (
+        signOfFirstWord &&
+        signOfSecondWord &&
+        isNamedSign(signOfFirstWord) &&
+        isNamedSign(signOfSecondWord) &&
+        signOfFirstWord.name === signOfSecondWord.name
+      )
+    })
 }
 
 export class ManuscriptLine {
@@ -76,9 +95,7 @@ export class ManuscriptLine {
   findMatchingWords(word: Word): number[] {
     return this.atfTokens.reduce<number[]>(
       (acc, token, index) =>
-        isWord(token) && token.cleanValue === word.cleanValue
-          ? [...acc, index]
-          : acc,
+        isWord(token) && isPrefixEqual(word, token) ? [...acc, index] : acc,
       []
     )
   }
