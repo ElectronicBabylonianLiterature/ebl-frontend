@@ -3,27 +3,32 @@ import {
   NamedSign,
   UnknownSign,
   UnknownNumberOfSigns,
+  Word,
 } from 'transliteration/domain/token'
 
-const reading: NamedSign = {
-  enclosureType: [],
-  cleanValue: 'ra',
-  value: 'ra',
-  name: 'ra',
-  nameParts: [
-    {
-      enclosureType: [],
-      cleanValue: 'ra',
-      value: 'ra',
-      type: 'ValueToken',
-    },
-  ],
-  subIndex: 1,
-  modifiers: [],
-  flags: [],
-  sign: null,
-  type: 'Reading',
+function makeReading(value: string): NamedSign {
+  return {
+    enclosureType: [],
+    cleanValue: value,
+    value: value,
+    name: value,
+    nameParts: [
+      {
+        enclosureType: [],
+        cleanValue: value,
+        value: value,
+        type: 'ValueToken',
+      },
+    ],
+    subIndex: 1,
+    modifiers: [],
+    flags: [],
+    sign: null,
+    type: 'Reading',
+  }
 }
+
+const reading: NamedSign = makeReading('ra')
 
 const unclearSign: UnknownSign = {
   enclosureType: [],
@@ -39,6 +44,39 @@ const unknownNumberOfSigns: UnknownNumberOfSigns = {
   value: '...',
   type: 'UnknownNumberOfSigns',
 }
+
+test.each([
+  [reading, false],
+  [unclearSign, true],
+  [unknownNumberOfSigns, true],
+])('beginsWithLacuna', (token, expected) => {
+  const line = createManuscriptLine({
+    atfTokens: [
+      {
+        enclosureType: [],
+        cleanValue: '|',
+        value: '|',
+        type: 'LineBreak',
+      },
+      {
+        type: 'Word',
+        value: token.value,
+        parts: [token],
+        cleanValue: token.cleanValue,
+        uniqueLemma: [],
+        normalized: false,
+        language: 'AKKADIAN',
+        lemmatizable: true,
+        erasure: 'NONE',
+        alignment: null,
+        variant: null,
+        enclosureType: [],
+      },
+    ],
+  })
+
+  expect(line.beginsWithLacuna).toBe(expected)
+})
 
 test.each([
   [reading, false],
@@ -71,4 +109,26 @@ test.each([
   })
 
   expect(line.endsWithLacuna).toBe(expected)
+})
+
+test('findMatchingWords', () => {
+  const query: Word = {
+    type: 'Word',
+    value: reading.value,
+    parts: [reading],
+    cleanValue: reading.cleanValue,
+    uniqueLemma: [],
+    normalized: false,
+    language: 'AKKADIAN',
+    lemmatizable: true,
+    erasure: 'NONE',
+    alignment: null,
+    variant: null,
+    enclosureType: [],
+  }
+  const line = createManuscriptLine({
+    atfTokens: [unclearSign, query, makeReading('kur')],
+  })
+
+  expect(line.findMatchingWords(query)).toEqual([1])
 })
