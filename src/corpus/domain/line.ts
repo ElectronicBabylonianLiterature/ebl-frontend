@@ -152,6 +152,11 @@ export class LineVariant {
   ) {}
 
   get alignment(): ManuscriptAlignment[] {
+    const indexAlignment = this.createIndexAlignment()
+    return this.createPrefixAlignment(indexAlignment)
+  }
+
+  private createIndexAlignment(): ManuscriptAlignment[] {
     const reconstruction = stripReconstruction(this.reconstructionTokens)
     return this.manuscripts.map((manuscript) => {
       return {
@@ -159,6 +164,71 @@ export class LineVariant {
         omittedWords: manuscript.omittedWords,
       }
     })
+  }
+
+  private createPrefixAlignment(
+    baseAlignment: readonly ManuscriptAlignment[]
+  ): ManuscriptAlignment[] {
+    return baseAlignment.map((alignment, index) => ({
+      ...alignment,
+      alignment: this.getPrefixSuggestions(
+        alignment.alignment,
+        baseAlignment,
+        index
+      ),
+    }))
+  }
+
+  getPrefixSuggestions(
+    alignment: readonly AlignmentToken[],
+    baseAlignment: readonly ManuscriptAlignment[],
+    index: number
+  ): AlignmentToken[] {
+    return alignment.map((token, tokenIndex) => {
+      const matches = this.getMatches(index, tokenIndex, baseAlignment)
+      const matchingWords = new Set(matches.flatMap(_.identity))
+      const alignment = matchingWords.values().next().value
+
+      return matches.length > 1 &&
+        matchingWords.size === 1 &&
+        token.isAlignable &&
+        (token.suggested || _.isNil(token.alignment))
+        ? {
+            ...token,
+            alignment:
+              _.isNil(token.alignment) || alignment === token.alignment
+                ? alignment
+                : null,
+            suggested: _.isNil(token.alignment)
+              ? true
+              : alignment === token.alignment,
+          }
+        : token
+    })
+  }
+
+  getMatches(
+    index: number,
+    tokenIndex: number,
+    baseAlignment: readonly ManuscriptAlignment[]
+  ): number[][] {
+    const atfToken = this.manuscripts[index].atfTokens[tokenIndex]
+    return isWord(atfToken)
+      ? this.manuscripts
+          .map((manuscript, manuscriptIndex) =>
+            index === manuscriptIndex
+              ? []
+              : (manuscript
+                  .findMatchingWords(atfToken)
+                  .map(
+                    (tokenIndex) =>
+                      baseAlignment[manuscriptIndex].alignment[tokenIndex]
+                        .alignment
+                  )
+                  .filter(_.negate(_.isNil)) as number[])
+          )
+          .filter((matches) => matches.length === 1)
+      : []
   }
 }
 
