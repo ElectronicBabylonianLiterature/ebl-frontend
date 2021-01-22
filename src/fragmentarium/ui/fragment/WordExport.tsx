@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { RefObject } from 'react'
 
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
@@ -30,7 +30,8 @@ import { MemoryRouter } from 'react-router-dom'
 
 export async function wordExport(
   fragment: Fragment,
-  wordService: WordService
+  wordService: WordService,
+  jQueryRef: RefObject<HTMLDivElement>
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(TransliterationLines({ text: fragment.text }))
@@ -53,22 +54,29 @@ export async function wordExport(
   )
 
   const glossary: Paragraph | false =
-    glossaryHtml.children().length > 1 ? getGlossary(glossaryHtml) : false
-  const footNotes: Paragraph[] = getFootNotes(notesHtml)
+    glossaryHtml.children().length > 1
+      ? getGlossary(glossaryHtml, jQueryRef)
+      : false
+  const footNotes: Paragraph[] = getFootNotes(notesHtml, jQueryRef)
   const tableWithFootnotes: any = getMainTableWithFootnotes(
     tableHtml,
-    footNotes
+    footNotes,
+    jQueryRef
   )
 
   const headline: Paragraph = getHeadline(fragment)
 
-  const doc: Document = generateWordDocument(
+  const docParts = getDocParts(
     tableWithFootnotes.table,
-    tableWithFootnotes.footNotes,
-    glossary,
-    headline,
     records,
-    fragment
+    headline,
+    glossary
+  )
+
+  const doc: Document = generateWordDocument(
+    tableWithFootnotes.footNotes,
+    fragment,
+    docParts
   )
 
   return doc
@@ -80,10 +88,12 @@ function wrapWithMemoryRouter(component: JSX.Element): ReactElement {
 
 function getMainTableWithFootnotes(
   table: JQuery,
-  footNotesLines: Paragraph[]
+  footNotesLines: Paragraph[],
+  jQueryRef: any
 ): any {
   table.hide()
-  $('body').append(table)
+
+  $(jQueryRef.current).append(table)
 
   const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
@@ -184,9 +194,9 @@ function getFormatedTableCell(
   })
 }
 
-function getFootNotes(footNotesHtml): Paragraph[] {
+function getFootNotes(footNotesHtml, jQueryRef: any): Paragraph[] {
   footNotesHtml.hide()
-  $('body').append(footNotesHtml)
+  $(jQueryRef.current).append(footNotesHtml)
 
   fixHtmlParseOrder(footNotesHtml)
 
@@ -206,9 +216,9 @@ function getFootNotes(footNotesHtml): Paragraph[] {
   return footNotes
 }
 
-function getGlossary(glossaryHtml): Paragraph {
+function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
   glossaryHtml.hide()
-  $('body').append(glossaryHtml)
+  $(jQueryRef.current).append(glossaryHtml)
 
   const runs: TextRun[] = []
   const divs: JQuery = glossaryHtml.find('div')
@@ -229,16 +239,7 @@ function getGlossary(glossaryHtml): Paragraph {
     $(el)
       .contents()
       .each((i, el) => {
-        if ($(el).is('a')) runs.push(getTextRun($(el).find('span')))
-        else if ($(el)[0].nodeType === 3)
-          runs.push(new TextRun({ text: $(el).text(), size: 24 }))
-        else if ($(el).is('span.Transliteration')) {
-          $(el)
-            .find('span,sup')
-            .each((i, el) => {
-              getTransliterationText($(el), runs)
-            })
-        } else if ($(el).is('sup')) runs.push(getTextRun($(el)))
+        dealWithGlossaryHTML(el, runs)
       })
 
     runs.push(new TextRun('').break())
@@ -251,6 +252,19 @@ function getGlossary(glossaryHtml): Paragraph {
     style: 'wellSpaced',
     heading: HeadingLevel.HEADING_1,
   })
+}
+
+function dealWithGlossaryHTML(el: any, runs: TextRun[]) {
+  if ($(el).is('a')) runs.push(getTextRun($(el).find('span')))
+  else if ($(el)[0].nodeType === 3)
+    runs.push(new TextRun({ text: $(el).text(), size: 24 }))
+  else if ($(el).is('span.Transliteration')) {
+    $(el)
+      .find('span,sup')
+      .each((i, el) => {
+        getTransliterationText($(el), runs)
+      })
+  } else if ($(el).is('sup')) runs.push(getTextRun($(el)))
 }
 
 function getTransliterationText(el: JQuery, runs: TextRun[]): void {
@@ -316,26 +330,31 @@ function isNoteCell(element: JQuery) {
   return element.find('.Transliteration__NoteLink').length > 0 ? true : false
 }
 
-function generateWordDocument(
-  table: Table,
-  footNotes: Paragraph[],
-  glossary: Paragraph | false,
-  headline: Paragraph,
+function getDocParts(
+  table: Paragraph,
   records: JQuery,
-  fragment: Fragment
+  headline: Paragraph,
+  glossary: Paragraph | false
+): any[] {
+  const headLink: Paragraph = getHyperLinkParagraph()
+  const credit: Paragraph = getCreditForHead(records)
+  const docParts = [headline, headLink, credit]
+  if (table) docParts.push(table)
+  if (glossary) docParts.push(glossary)
+
+  return docParts
+}
+
+function generateWordDocument(
+  footNotes: Paragraph[],
+  fragment: Fragment,
+  docParts: any[]
 ) {
   const doc: Document = new Document({
     styles: getStyles(),
     footnotes: footNotes,
     hyperlinks: getHyperLink(fragment),
   })
-
-  const headLink: Paragraph = getHyperLinkParagraph()
-  const credit: Paragraph = getCreditForHead(records)
-
-  const docParts: any[] = [headline, headLink, credit]
-  if (table) docParts.push(table)
-  if (glossary) docParts.push(glossary)
 
   doc.addSection({
     children: docParts,
