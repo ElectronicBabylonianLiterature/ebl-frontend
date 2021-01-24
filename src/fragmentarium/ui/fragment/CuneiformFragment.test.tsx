@@ -9,8 +9,13 @@ import SessionContext from 'auth/SessionContext'
 import CuneiformFragment from './CuneiformFragment'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import MemorySession from 'auth/Session'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('auth/Session')
 
 let fragment
 let element
@@ -38,24 +43,23 @@ beforeEach(async () => {
       atf: fragment.atf,
     })
   ).setReferences(references)
+  fragmentService = new (FragmentService as jest.Mock<
+    jest.Mocked<FragmentService>
+  >)()
+  fragmentService.createLemmatization.mockImplementation((text) =>
+    Promise.resolve(new Lemmatization([], []))
+  )
+  fragmentService.fetchCdliInfo.mockImplementation(() =>
+    Promise.resolve({ photoUrl: null })
+  )
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    FragmentSearchService
+  >)()
+  session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 
-  fragmentService = {
-    updateTransliteration: jest.fn(),
-    updateReferences: jest.fn(),
-    findFolio: jest.fn(),
-    findPhoto: jest.fn(),
-    fetchGenres: jest.fn(),
-    updateGenres: jest.fn(),
-    folioPager: jest.fn(),
-    createLemmatization: (text) => Promise.resolve(new Lemmatization([], [])),
-    fetchCdliInfo: () => Promise.resolve({ photoUrl: null }),
-  }
-  fragmentSearchService = {}
-  session = {
-    isAllowedToTransliterateFragments: () => true,
-    isAllowedToLemmatizeFragments: () => false,
-    hasBetaAccess: () => false,
-  }
+  session.isAllowedToTransliterateFragments.mockReturnValue(true)
+  session.isAllowedToLemmatizeFragments.mockReturnValue(false)
+  session.hasBetaAccess.mockReturnValue(false)
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))

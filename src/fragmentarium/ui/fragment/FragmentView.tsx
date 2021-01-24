@@ -12,6 +12,8 @@ import { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Download from './Download'
 import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 function AnnotateButton({
   number,
@@ -31,8 +33,8 @@ function AnnotateButton({
 
 type Props = {
   fragment: Fragment
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   wordService: WordService
   number: string
   folioName?: string | null | undefined
@@ -71,7 +73,7 @@ function FragmentView({
         <FragmentPager
           fragmentNumber={number}
           fragmentService={fragmentService}
-        ></FragmentPager>
+        />
       }
       actions={
         <ButtonGroup>

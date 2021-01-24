@@ -10,15 +10,15 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession from 'auth/Session'
+import MemorySession, { Session } from 'auth/Session'
 
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('auth/Session')
+jest.mock('fragmentarium/application/FragmentSearchService')
 
-const fragmentService = new (FragmentService as jest.Mock<FragmentService>)()
-const fragmentSearchService = new (FragmentSearchService as jest.Mock<
-  FragmentSearchService
->)()
-const session = new (MemorySession as jest.Mock<MemorySession>)()
+let fragmentService: jest.Mocked<FragmentService>
+let fragmentSearchService: jest.Mocked<FragmentSearchService>
+let session: jest.Mocked<Session>
 
 let number: string
 let id: string
@@ -32,6 +32,9 @@ let history: MemoryHistory
 let searchEntry: BibliographyEntry
 
 async function renderSearchForms() {
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
   const SearchFormsWithRouter = withRouter<any, any>(SearchForms)
@@ -55,16 +58,17 @@ async function renderSearchForms() {
 }
 
 beforeEach(async () => {
+  fragmentService = new (FragmentService as jest.Mock<
+    jest.Mocked<FragmentService>
+  >)()
+
+  session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
   searchEntry = await factory.build('bibliographyEntry')
-  fragmentService.searchBibliography = jest
-    .fn()
-    .mockReturnValue(Promise.resolve([searchEntry]))
-
-  fragmentSearchService.random = jest.fn()
-  fragmentSearchService.interesting = jest.fn()
-
-  session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
-  session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(true)
+  fragmentService.searchBibliography.mockReturnValue(
+    Promise.resolve([searchEntry])
+  )
+  session.isAllowedToReadFragments.mockReturnValue(true)
+  session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderSearchForms()
 })
 describe('User Input', () => {
