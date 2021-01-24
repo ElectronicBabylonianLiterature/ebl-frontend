@@ -14,6 +14,7 @@ import MemorySession from 'auth/Session'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
+jest.mock('fragmentarium/application/FragmentSearchService')
 
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
