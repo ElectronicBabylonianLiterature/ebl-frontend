@@ -10,8 +10,8 @@ import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface Props {
   number: string | null | undefined
