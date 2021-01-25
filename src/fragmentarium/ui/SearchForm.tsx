@@ -8,6 +8,8 @@ import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import produce from 'immer'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface State {
   number: string | null | undefined
@@ -30,8 +32,8 @@ type Props = {
   title: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   history: History
 } & RouteComponentProps
 

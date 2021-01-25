@@ -22,7 +22,11 @@ function FragmentLineToVecRanking({
       </li>
     ))
   }
-  const LineToVecDisplay = ({ lineToVecRanking }) => (
+  const LineToVecDisplay = ({
+    lineToVecRanking,
+  }: {
+    lineToVecRanking: LineToVecRanking
+  }) => (
     <Container>
       <Row>
         <Col>

@@ -8,7 +8,7 @@ import { FragmentLink } from 'fragmentarium/domain/museum'
 
 import './OrganizationLinks.css'
 
-function MuseumLink({ link }: { readonly link: FragmentLink }) {
+function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
     <ExternalLink alt={link.name} href={link.url} aria-label={link.label}>
       <img
@@ -24,7 +24,7 @@ export default function OrganizationLinks({
   fragment,
 }: {
   readonly fragment: Fragment
-}) {
+}): JSX.Element {
   const cdliNumber = fragment.cdliNumber
   return (
     <p className="OrganizationLinks">

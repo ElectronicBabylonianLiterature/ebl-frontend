@@ -23,13 +23,17 @@ function Lines({ fragment }: { fragment: FragmentInfo }) {
   )
 }
 
-function TransliterationSearchResult({ data }) {
-  function makeLine(fragment) {
+function TransliterationSearchResult({
+  fragmentInfos,
+}: {
+  fragmentInfos: readonly FragmentInfo[]
+}) {
+  function makeLine(fragment: FragmentInfo) {
     return <Lines fragment={fragment} />
   }
   return (
     <FragmentList
-      fragments={data}
+      fragments={fragmentInfos}
       columns={{
         Script: 'script',
         'Matching lines': makeLine,
@@ -44,7 +48,9 @@ export default withData<
   readonly FragmentInfo[]
 >(
   ({ transliteration, data }) =>
-    transliteration ? <TransliterationSearchResult data={data} /> : null,
+    transliteration ? (
+      <TransliterationSearchResult fragmentInfos={data} />
+    ) : null,
   (props) =>
     props.fragmentSearchService.searchTransliteration(props.transliteration),
   {

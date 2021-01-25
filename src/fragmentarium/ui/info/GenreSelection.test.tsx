@@ -6,7 +6,6 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import { factory } from 'factory-girl'
-import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
 import Promise from 'bluebird'

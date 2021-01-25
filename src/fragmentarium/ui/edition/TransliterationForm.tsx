@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import {
   FormGroup,
   FormLabel,
@@ -38,7 +38,7 @@ class TransliteratioForm extends Component<Props, State> {
   private readonly formId: string
   private updatePromise: Promise<any>
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.formId = _.uniqueId('TransliteratioForm-')
     this.state = {
@@ -75,7 +75,7 @@ class TransliteratioForm extends Component<Props, State> {
     })
   }
 
-  submit = (event): void => {
+  submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     this.setState({
       ...this.state,

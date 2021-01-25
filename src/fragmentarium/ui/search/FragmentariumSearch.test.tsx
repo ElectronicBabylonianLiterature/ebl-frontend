@@ -5,6 +5,9 @@ import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import MemorySession from 'auth/Session'
+jest.mock('fragmentarium/application/FragmentSearchService')
 
 let fragmentSearchService
 let session
@@ -38,22 +41,14 @@ async function renderFragmentariumSearch({
 }
 
 beforeEach(async () => {
-  fragmentSearchService = {
-    searchNumber: jest.fn(),
-    searchTransliteration: jest.fn(),
-  }
-  session = {
-    isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: (): boolean => false,
-  }
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
+  session = new MemorySession(['read:fragments'])
 })
 
 describe('Search', () => {
   let fragments
-
-  beforeEach(async () => {
-    session.isAllowedToReadFragments.mockReturnValue(true)
-  })
 
   describe('Searching fragments by number', () => {
     const number = 'K.2'

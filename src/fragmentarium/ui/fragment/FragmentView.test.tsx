@@ -6,11 +6,15 @@ import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'
-import { CdliInfo } from 'fragmentarium/application/FragmentService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { act } from 'react-dom/test-utils'
 import WordService from 'dictionary/application/WordService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import MemorySession from 'auth/Session'
 
 jest.mock('dictionary/application/WordService')
+jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
 
 const message = 'message'
 const fragmentNumber = 'K,K.1'
@@ -54,33 +58,26 @@ beforeEach(async () => {
     next: { fragmentNumber: 'K.00001' },
     previous: { fragmentNumber: 'J.99999' },
   }
-  wordService = new WordService(null)
+  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   const word = await factory.build('word')
-  ;(wordService.find as jest.Mock).mockReturnValue(Promise.resolve(word))
-  fragmentService = {
-    find: jest.fn(),
-    findFolio: jest.fn(),
-    findPhoto: jest.fn(),
-    folioPager: jest.fn(),
-    fetchGenres: jest.fn(),
-    updateGenres: jest.fn(),
-    fragmentPager: jest.fn(),
-    createLemmatization: (text: Text): Promise<Lemmatization> =>
-      Promise.resolve(new Lemmatization([], [])),
-    fetchCdliInfo: (): Promise<CdliInfo> =>
-      Promise.resolve({
-        photoUrl: null,
-        lineArtUrl: null,
-        detailLineArtUrl: null,
-      }),
-  }
-  fragmentSearchService = {}
-  session = {
-    isAllowedToReadFragments: jest.fn(),
-    isAllowedToTransliterateFragments: (): boolean => false,
-    isAllowedToLemmatizeFragments: (): boolean => false,
-    hasBetaAccess: (): boolean => false,
-  }
+  wordService.find.mockReturnValue(Promise.resolve(word))
+  fragmentService = new (FragmentService as jest.Mock<
+    jest.Mocked<FragmentService>
+  >)()
+  fragmentService.createLemmatization.mockReturnValue(
+    Promise.resolve(new Lemmatization([], []))
+  )
+  fragmentService.fetchCdliInfo.mockReturnValue(
+    Promise.resolve({
+      photoUrl: null,
+      lineArtUrl: null,
+      detailLineArtUrl: null,
+    })
+  )
+  fragmentSearchService = new (FragmentSearchService as jest.Mock<
+    jest.Mocked<FragmentSearchService>
+  >)()
+  session = new MemorySession(['read:fragments'])
   ;(URL.createObjectURL as jest.Mock).mockReturnValue('url')
   fragmentService.findFolio.mockReturnValue(
     Promise.resolve(new Blob([''], { type: 'image/jpeg' }))
@@ -117,7 +114,6 @@ describe('Fragment is loaded', () => {
     ).setReferences(await factory.buildMany('reference', 2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
-    session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
     await renderFragmentView(
       fragmentNumber,
@@ -165,7 +161,6 @@ describe('Fragment without an image is loaded', () => {
       references: [],
     })
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
-    session.isAllowedToReadFragments.mockReturnValue(true)
     await renderFragmentView(fragment.number, null, null, null)
     await element.findByText('Display')
   })
@@ -180,7 +175,6 @@ describe('Fragment without an image is loaded', () => {
 
 describe('On error', () => {
   beforeEach(async () => {
-    session.isAllowedToReadFragments.mockReturnValue(true)
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
     await renderFragmentView(fragmentNumber, null, null, null)
   })
