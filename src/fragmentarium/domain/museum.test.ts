@@ -25,6 +25,13 @@ describe.each([
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
     null,
   ],
+  [
+    'Yale Babylonian Collection, Peabody Museum',
+    '',
+    'https://babylonian-collection.yale.edu/',
+    'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
+    null,
+  ],
   ['Other Museum', '', '', '', null],
 ] as [string, string, string, string, FragmentLink | null][])(
   '%s',

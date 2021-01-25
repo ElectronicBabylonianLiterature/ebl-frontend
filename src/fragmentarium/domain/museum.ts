@@ -99,4 +99,12 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
         'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
     },
   ],
+  [
+    'Yale Babylonian Collection, Peabody Museum',
+    {
+      url: 'https://babylonian-collection.yale.edu/',
+      copyright:
+        'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
+    },
+  ],
 ])
