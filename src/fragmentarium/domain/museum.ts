@@ -75,6 +75,28 @@ class BritishMuseum extends Museum {
   }
 }
 
+class YaleBabylonianCollection extends Museum {
+  hasFragmentLink(fragment: Fragment) {
+    return fragment.accession !== ''
+  }
+
+  createLinkFor(fragment: Fragment): FragmentLink {
+    if (this.hasFragmentLink(fragment)) {
+      const accession = fragment.accession.replace('.', '-')
+      return {
+        name: this.name,
+        logo: this.logo,
+        url: `https://collections.peabody.yale.edu/search/Record/YPM-${encodeURIComponent(
+          accession
+        )}`,
+        label: this.name,
+      }
+    } else {
+      throw new Error(`Fragment ${fragment.number} does not have accession.`)
+    }
+  }
+}
+
 interface MuseumConfig {
   readonly logo?: string
   readonly url?: string
@@ -107,6 +129,7 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
       url: 'https://babylonian-collection.yale.edu/',
       copyright:
         'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
+      museumClass: YaleBabylonianCollection,
     },
   ],
 ])
