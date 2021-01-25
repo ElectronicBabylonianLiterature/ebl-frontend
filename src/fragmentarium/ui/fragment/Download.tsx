@@ -46,7 +46,7 @@ export default function Download({
       URL.revokeObjectURL(jsonUrl)
       URL.revokeObjectURL(teiUrl)
     }
-  }, [fragment, wordService])
+  }, [fragment])
   return (
     <DropdownButton
       as={ButtonGroup}

@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
@@ -31,7 +31,7 @@ import { MemoryRouter } from 'react-router-dom'
 export async function wordExport(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: RefObject<HTMLDivElement>
+  jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
     renderToString(TransliterationLines({ text: fragment.text }))

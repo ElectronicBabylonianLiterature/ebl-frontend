@@ -1,4 +1,4 @@
-import React, { useState, useRef, RefObject } from 'react'
+import React, { useState } from 'react'
 import { wordExport } from './WordExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
@@ -6,6 +6,7 @@ import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
 import { Packer } from 'docx'
+import $ from 'jquery'
 type Props = {
   children: React.ReactNode
   fragment: Fragment
@@ -18,7 +19,8 @@ export default function WordDownloadButton({
   children,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  const jQueryRef = useRef(null)
+  // const jQueryRef = useRef(null)
+  const jQueryRef = $('#jQueryContainer')
   const handleClick = (event) => {
     setIsLoading(true)
     getWordBlob(fragment, wordService, jQueryRef).then((blob) => {
@@ -32,7 +34,7 @@ export default function WordDownloadButton({
       <Dropdown.Item onClick={handleClick}>
         {isLoading ? <Spinner /> : children}
       </Dropdown.Item>
-      <div ref={jQueryRef} style={{ display: 'none' }}></div>
+      <div id="jQueryContainer" style={{ display: 'none' }}></div>
     </>
   )
 }
@@ -40,15 +42,10 @@ export default function WordDownloadButton({
 async function getWordBlob(
   fragment: Fragment,
   wordService: WordService,
-  jQueryRef: RefObject<HTMLDivElement>
+  jQueryRef: JQuery
 ): Promise<Blob> {
-  const wordDoc = await wordExport(fragment, wordService, jQueryRef).then(
-    (doc) => {
-      return doc
-    }
-  )
-  const wordBlob: Blob = await Packer.toBlob(wordDoc).then((blob) => {
-    return blob
-  })
+  const wordDoc = await wordExport(fragment, wordService, jQueryRef)
+  const wordBlob: Blob = await Packer.toBlob(wordDoc)
+
   return wordBlob
 }
