@@ -36,11 +36,7 @@ describe.each([
 ] as [string, string, string, string, FragmentLink | null][])(
   '%s',
   (name, logo, url, copyright, link) => {
-    let museum: Museum
-
-    beforeEach(() => {
-      museum = Museum.of(name)
-    })
+    const museum: Museum = Museum.of(name)
 
     test('name', () => {
       expect(museum.name).toEqual(name)
