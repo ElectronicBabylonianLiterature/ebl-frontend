@@ -20,7 +20,7 @@ const folioTypes: {
   ILF: { name: 'Finkel', hasImage: true },
   RB: { name: 'Borger', hasImage: true },
   SP: { name: 'Parpola', hasImage: true },
-  ARG: { name: 'George', hasImage: false },
+  ARG: { name: 'George', hasImage: true },
 }
 
 export default class Folio {
