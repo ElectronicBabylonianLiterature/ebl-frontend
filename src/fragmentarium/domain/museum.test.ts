@@ -1,4 +1,4 @@
-import Museum from './museum'
+import Museum, { FragmentLink } from './museum'
 import { factory } from 'factory-girl'
 import bmLogo from './The_British_Museum.png'
 
@@ -26,7 +26,7 @@ describe.each([
     null,
   ],
   ['Other Museum', '', '', '', null],
-] as [string, string, string, string, Record<string, unknown> | null][])(
+] as [string, string, string, string, FragmentLink | null][])(
   '%s',
   (name, logo, url, copyright, link) => {
     let museum: Museum

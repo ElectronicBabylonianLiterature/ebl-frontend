@@ -16,11 +16,6 @@ export interface MuseumData {
 }
 
 export default class Museum {
-  readonly name: string
-  readonly logo: string
-  readonly url: string
-  readonly copyright: string
-
   static of(name: string): Museum {
     const data = {
       name,
@@ -30,15 +25,15 @@ export default class Museum {
       museumClass: Museum,
       ...museums.get(name),
     }
-    return new data.museumClass(data)
+    return new data.museumClass(data.name, data.logo, data.url, data.copyright)
   }
 
-  constructor({ name, logo, url, copyright }: MuseumData) {
-    this.name = name
-    this.logo = logo
-    this.url = url
-    this.copyright = copyright
-  }
+  protected constructor(
+    readonly name: string,
+    readonly logo: string,
+    readonly url: string,
+    readonly copyright: string
+  ) {}
 
   get hasUrl(): boolean {
     return this.url !== ''
@@ -48,21 +43,21 @@ export default class Museum {
     return this.copyright !== ''
   }
 
-  hasFragmentLink(fragment: Fragment): boolean {
+  hasFragmentLink(_fragment: Fragment): boolean {
     return false
   }
 
-  createLinkFor(fragment: Fragment): FragmentLink {
+  createLinkFor(_fragment: Fragment): FragmentLink {
     throw new Error(`${this.name} does not support fragment links.`)
   }
 }
 
 class BritishMuseum extends Museum {
-  hasFragmentLink(fragment) {
+  hasFragmentLink(fragment: Fragment) {
     return fragment.bmIdNumber !== ''
   }
 
-  createLinkFor(fragment) {
+  createLinkFor(fragment: Fragment): FragmentLink {
     if (this.hasFragmentLink(fragment)) {
       const bmIdNumber = fragment.bmIdNumber
       return {
@@ -83,7 +78,7 @@ interface MuseumConfig {
   readonly logo?: string
   readonly url?: string
   readonly copyright?: string
-  readonly museumClass?: any
+  readonly museumClass?: typeof Museum
 }
 
 const museums: ReadonlyMap<string, MuseumConfig> = new Map([
