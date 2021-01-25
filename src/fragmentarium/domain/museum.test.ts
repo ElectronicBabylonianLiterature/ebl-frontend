@@ -1,6 +1,7 @@
 import Museum, { FragmentLink } from './museum'
 import { factory } from 'factory-girl'
 import bmLogo from './The_British_Museum.png'
+import ybcLogo from './YBC_small.jpg'
 
 const bmIdNumber = 'A 1234+43'
 describe.each([
@@ -27,7 +28,7 @@ describe.each([
   ],
   [
     'Yale Babylonian Collection, Peabody Museum',
-    '',
+    ybcLogo,
     'https://babylonian-collection.yale.edu/',
     'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
     null,

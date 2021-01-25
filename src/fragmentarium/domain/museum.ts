@@ -1,5 +1,6 @@
 import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
+import ybcLogo from './YBC_small.jpg'
 
 export interface FragmentLink {
   readonly name: string
@@ -102,6 +103,7 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
   [
     'Yale Babylonian Collection, Peabody Museum',
     {
+      logo: ybcLogo,
       url: 'https://babylonian-collection.yale.edu/',
       copyright:
         'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
