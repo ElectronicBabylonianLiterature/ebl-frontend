@@ -7,6 +7,7 @@ import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
 import { Packer } from 'docx'
 import $ from 'jquery'
+
 type Props = {
   children: React.ReactNode
   fragment: Fragment
