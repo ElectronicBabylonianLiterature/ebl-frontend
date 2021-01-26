@@ -8,6 +8,7 @@ import Spinner from 'common/Spinner'
 import { Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
+import { Document } from 'docx'
 
 type Props = {
   children: React.ReactNode
@@ -47,13 +48,13 @@ function getWordDoc(
   fragment: Fragment,
   wordService: WordService,
   jQueryRef: JQuery
-) {
+): Promise<Document> {
   return new Promise(function (resolve) {
     resolve(wordExport(fragment, wordService, jQueryRef))
   })
 }
 
-function packWordDoc(doc) {
+function packWordDoc(doc: Document): Promise<Blob> {
   return new Promise(function (resolve) {
     resolve(Packer.toBlob(doc))
   })
