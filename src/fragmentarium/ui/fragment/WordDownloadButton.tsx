@@ -7,6 +7,7 @@ import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
 import { Packer } from 'docx'
 import $ from 'jquery'
+import Promise from 'bluebird'
 
 type Props = {
   children: React.ReactNode
@@ -20,13 +21,15 @@ export default function WordDownloadButton({
   children,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
-  // const jQueryRef = useRef(null)
-  const jQueryRef = $('#jQueryContainer')
   const handleClick = (event) => {
+    const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
-    getWordBlob(fragment, wordService, jQueryRef).then((blob) => {
-      saveAs(blob, `${fragment.number}.docx`)
-      setIsLoading(false)
+
+    getWordDoc(fragment, wordService, jQueryRef).then((doc) => {
+      packWordDoc(doc).then((blob) => {
+        saveAs(blob, `${fragment.number}.docx`)
+        setIsLoading(false)
+      })
     })
   }
 
@@ -40,13 +43,18 @@ export default function WordDownloadButton({
   )
 }
 
-async function getWordBlob(
+function getWordDoc(
   fragment: Fragment,
   wordService: WordService,
   jQueryRef: JQuery
-): Promise<Blob> {
-  const wordDoc = await wordExport(fragment, wordService, jQueryRef)
-  const wordBlob: Blob = await Packer.toBlob(wordDoc)
+) {
+  return new Promise(function (resolve) {
+    resolve(wordExport(fragment, wordService, jQueryRef))
+  })
+}
 
-  return wordBlob
+function packWordDoc(doc) {
+  return new Promise(function (resolve) {
+    resolve(Packer.toBlob(doc))
+  })
 }

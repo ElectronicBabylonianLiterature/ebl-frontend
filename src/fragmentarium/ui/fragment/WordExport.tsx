@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
 import {
@@ -64,6 +64,8 @@ export async function wordExport(
     jQueryRef
   )
 
+  console.log(jQueryRef[0])
+
   const headline: Paragraph = getHeadline(fragment)
 
   const docParts = getDocParts(
@@ -93,7 +95,7 @@ function getMainTableWithFootnotes(
 ): any {
   table.hide()
 
-  $(jQueryRef.current).append(table)
+  jQueryRef.append(table)
 
   const tablelines: JQuery = table.find('tr')
   fixHtmlParseOrder(tablelines)
@@ -196,7 +198,7 @@ function getFormatedTableCell(
 
 function getFootNotes(footNotesHtml, jQueryRef: any): Paragraph[] {
   footNotesHtml.hide()
-  $(jQueryRef.current).append(footNotesHtml)
+  jQueryRef.append(footNotesHtml)
 
   fixHtmlParseOrder(footNotesHtml)
 
@@ -218,7 +220,7 @@ function getFootNotes(footNotesHtml, jQueryRef: any): Paragraph[] {
 
 function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
   glossaryHtml.hide()
-  $(jQueryRef.current).append(glossaryHtml)
+  jQueryRef.append(glossaryHtml)
 
   const runs: TextRun[] = []
   const divs: JQuery = glossaryHtml.find('div')
