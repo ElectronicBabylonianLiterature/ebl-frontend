@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { wordExport } from './WordExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
@@ -9,6 +9,7 @@ import { Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
 import { Document } from 'docx'
+import usePromiseEffect from 'common/usePromiseEffect'
 
 type Props = {
   children: React.ReactNode
@@ -22,17 +23,30 @@ export default function WordDownloadButton({
   children,
 }: Props): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
+  const [setPromise, cancelPromise] = usePromiseEffect()
+
   const handleClick = (event) => {
     const jQueryRef = $('#jQueryContainer')
     setIsLoading(true)
+    cancelPromise()
 
-    getWordDoc(fragment, wordService, jQueryRef).then((doc) => {
-      packWordDoc(doc).then((blob) => {
-        saveAs(blob, `${fragment.number}.docx`)
-        setIsLoading(false)
-      })
-    })
+    setPromise(
+      getWordDoc(fragment, wordService, jQueryRef)
+        .then((doc) => {
+          setPromise(
+            packWordDoc(doc)
+              .then((blob) => {
+                saveAs(blob, `${fragment.number}.docx`)
+                setIsLoading(false)
+              })
+              .catch((reason) => cancelPromise())
+          )
+        })
+        .catch((reason) => cancelPromise())
+    )
   }
+
+  // useEffect( () => () => console.log("unmount"), [] );
 
   return (
     <>

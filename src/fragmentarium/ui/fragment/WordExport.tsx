@@ -64,8 +64,6 @@ export async function wordExport(
     jQueryRef
   )
 
-  console.log(jQueryRef[0])
-
   const headline: Paragraph = getHeadline(fragment)
 
   const docParts = getDocParts(
