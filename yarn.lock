@@ -4759,7 +4759,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-docx@^5.3.0:
+docx@^5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/docx/-/docx-5.4.1.tgz#5a5a5988877ac0c1d7309f9775232339ec631918"
   integrity sha512-qJwrj/Pt+gpa6d5ooZJQLlBRCmx/rsv3u+nYIV9O/X460byQygCQMSNfYvHcgL+VdsQl8bcPdONvVuAckVLunA==
