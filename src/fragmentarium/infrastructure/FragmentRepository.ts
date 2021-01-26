@@ -120,7 +120,7 @@ class ApiFragmentRepository
     this.apiClient = apiClient
   }
 
-  statistics() {
+  statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)
   }
 

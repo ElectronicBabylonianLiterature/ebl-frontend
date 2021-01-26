@@ -7,15 +7,19 @@ import ReferenceList from 'bibliography/ui/ReferenceList'
 
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
-function ReferenceSearchResult({ data }) {
-  function makeReferences(data) {
+function ReferenceSearchResult({
+  fragmentInfos,
+}: {
+  fragmentInfos: readonly FragmentInfo[]
+}) {
+  function makeReferences(data: FragmentInfo) {
     return <ReferenceList references={data.references} />
   }
   return (
     <FragmentList
-      fragments={data}
+      fragments={fragmentInfos}
       columns={{
-        References: (data) => makeReferences(data),
+        References: (fragmentInfo) => makeReferences(fragmentInfo),
         Description: 'description',
       }}
     />
@@ -31,7 +35,7 @@ export default withData<
   readonly FragmentInfo[]
 >(
   ({ id, pages, data }) =>
-    id || pages ? <ReferenceSearchResult data={data} /> : null,
+    id || pages ? <ReferenceSearchResult fragmentInfos={data} /> : null,
   (props) => props.fragmentSearchService.searchReference(props.id, props.pages),
   {
     watch: (props) => [props.id, props.pages],

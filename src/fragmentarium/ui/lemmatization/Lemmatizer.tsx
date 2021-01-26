@@ -14,7 +14,7 @@ import { Text } from 'transliteration/domain/text'
 type Props = {
   data: Lemmatization
   fragmentService
-  updateLemmatization(lemmatization: Lemmatization): any
+  updateLemmatization(lemmatization: Lemmatization): void
   disabled?: boolean
 }
 type State = { lemmatization: Lemmatization }

@@ -11,16 +11,16 @@ export default function ReferencesForm({
   searchBibliography,
   value,
   onChange,
-  label,
-  collapsed,
+  label = '',
+  collapsed = false,
 }: {
   searchBibliography: (
     query: string
   ) => Promise<ReadonlyArray<BibliographyEntry>>
   value: ReadonlyArray<Reference>
   onChange: (value: ReadonlyArray<Reference>) => void
-  label: string
-  collapsed: boolean
+  label?: string
+  collapsed?: boolean
 }): JSX.Element {
   return (
     <ListForm
@@ -40,8 +40,4 @@ export default function ReferencesForm({
       )}
     </ListForm>
   )
-}
-ReferencesForm.defaultProps = {
-  label: '',
-  collapsed: false,
 }

@@ -1,34 +1,27 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
-import {
-  TextInfo,
-  Manuscript,
-  Line,
-  Text,
-  Chapter,
-  LineVariant,
-  ManuscriptLine,
-} from 'corpus/domain/text'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 import {
   ChapterLemmatization,
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
-import {
-  fromDto,
-  toLemmatizationDto,
-  toManuscriptsDto,
-  toLinesDto,
-  toAlignmentDto,
-} from './dtos'
+import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
+import { Chapter, Manuscript, Text, TextInfo } from 'corpus/domain/text'
+import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
-import { ChapterAlignment } from 'corpus/domain/alignment'
-import { Token } from 'transliteration/domain/token'
 import {
   LemmatizationToken,
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
+import { Token } from 'transliteration/domain/token'
+import {
+  fromDto,
+  toAlignmentDto,
+  toLemmatizationDto,
+  toLinesDto,
+  toManuscriptsDto,
+} from './dtos'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,

@@ -1,25 +1,26 @@
+import { Draft, produce } from 'immer'
 import serializeReference from 'bibliography/application/serializeReference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
+import {
+  createLine,
+  createManuscriptLine,
+  createVariant,
+  Line,
+  LineVariant,
+} from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
 import {
   createChapter,
-  createLine,
   createManuscript,
-  createManuscriptLine,
   createText,
-  Line,
   Manuscript,
   Text,
   types,
-  LineVariant,
-  createVariant,
 } from 'corpus/domain/text'
-import { Draft, produce } from 'immer'
-import _ from 'lodash'
 
 export function fromDto(textDto): Text {
   return createText({
@@ -97,10 +98,14 @@ const toManuscriptDto = produce((draft) => ({
 const toLineDto = produce((draft: Draft<Line>) => ({
   ...draft,
   variants: draft.variants.map((variant) => ({
-    ..._.omit(variant, 'reconstructionTokens'),
-    manuscripts: variant.manuscripts.map((manuscript) =>
-      _.omit(manuscript, 'atfTokens')
-    ),
+    reconstruction: variant.reconstruction,
+    manuscripts: variant.manuscripts.map((manuscript) => ({
+      manuscriptId: manuscript.manuscriptId,
+      labels: manuscript.labels,
+      number: manuscript.number,
+      atf: manuscript.atf,
+      omittedWords: manuscript.omittedWords,
+    })),
   })),
 }))
 

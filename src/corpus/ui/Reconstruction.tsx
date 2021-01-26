@@ -1,6 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
-import { LineVariant } from 'corpus/domain/text'
+import { LineVariant } from 'corpus/domain/line'
 
 export default function Reconstruction(props: {
   line: LineVariant

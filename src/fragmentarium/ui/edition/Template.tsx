@@ -22,19 +22,19 @@ function createTemplate({
 class Template {
   readonly pattern: string
 
-  constructor(pattern) {
+  constructor(pattern: string) {
     this.pattern = pattern
   }
 
-  get isEmpty() {
+  get isEmpty(): boolean {
     return this.pattern === ''
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return /^\d+[^,]*(?:,\s*\d+[^,]*)?$/.test(this.pattern)
   }
 
-  generate() {
+  generate(): string {
     const [obverse, reverse] = this.pattern
       .split(/,\s*/)
       .map(parseSide)

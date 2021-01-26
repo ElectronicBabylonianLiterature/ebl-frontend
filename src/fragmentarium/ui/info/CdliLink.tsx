@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import ExternalLink from 'common/ExternalLink'
 
-export default function CdliLink({ cdliNumber, children }) {
+interface Props {
+  cdliNumber: string
+  children: ReactNode
+}
+export default function CdliLink({ cdliNumber, children }: Props): JSX.Element {
   const cdliUrl = `https://cdli.ucla.edu/${encodeURIComponent(cdliNumber)}`
   return (
     <ExternalLink href={cdliUrl} aria-label={`CDLI text ${cdliNumber}`}>
