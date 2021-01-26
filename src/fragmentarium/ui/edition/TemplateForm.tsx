@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { ChangeEvent, Component, FormEvent } from 'react'
 import { Form } from 'react-bootstrap'
 import Template from './Template'
 
@@ -14,7 +14,7 @@ class TemplateForm extends Component<
     isValid: false,
   }
 
-  onChange = (event) => {
+  onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const template = new Template(event.target.value)
 
     this.setState({
@@ -23,7 +23,7 @@ class TemplateForm extends Component<
     })
   }
 
-  submit = (event) => {
+  submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     if (this.state.isValid) {
       const generatedTemplate = this.state.template.generate()
@@ -31,7 +31,7 @@ class TemplateForm extends Component<
     }
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Form inline noValidate onSubmit={this.submit}>
         <Form.Group controlId="template">

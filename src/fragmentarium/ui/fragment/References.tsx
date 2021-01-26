@@ -43,7 +43,7 @@ type State = {
 }
 
 type ControllerProps = {
-  updateReferences(references: readonly Reference[]): any
+  updateReferences(references: readonly Reference[]): void
 } & Props
 export default class ReferencesController extends Component<
   ControllerProps,
@@ -62,15 +62,15 @@ export default class ReferencesController extends Component<
     }
   }
 
-  handleChange = (value: readonly Reference[]) =>
+  handleChange = (value: readonly Reference[]): void =>
     this.setState({ references: value })
 
-  submit = (event: React.FormEvent<HTMLFormElement>) => {
+  submit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     this.props.updateReferences(this.state.references)
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <>
         <References

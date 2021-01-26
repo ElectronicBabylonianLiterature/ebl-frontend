@@ -4,18 +4,24 @@ import _ from 'lodash'
 import { DateRange } from 'moment-range'
 import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
+import * as Moment from 'moment'
 
 type EntryProps = {
   entry: RecordEntry
 }
 
-function Date({ date, humanFormat, machineFormat }) {
+interface DateProps {
+  date: Moment.Moment
+  humanFormat: string
+  machineFormat: string
+}
+function Date({ date, humanFormat, machineFormat }: DateProps): JSX.Element {
   const humanDate = date.format(humanFormat)
   const machineDate = date.format(machineFormat)
   return <time dateTime={machineDate}>{humanDate}</time>
 }
 
-function Year({ date }) {
+function Year({ date }: { date: Moment.Moment }) {
   return <Date date={date} humanFormat="YYYY" machineFormat="YYYY" />
 }
 
@@ -24,7 +30,7 @@ function BasicEntry({ entry }: EntryProps) {
     <>
       {entry.user} ({entry.type},{' '}
       <Date
-        date={entry.moment}
+        date={entry.moment as Moment.Moment}
         humanFormat="D/M/YYYY"
         machineFormat="YYYY-MM-DD"
       />
@@ -51,7 +57,11 @@ function Entry({ entry }: EntryProps) {
   )
 }
 
-function Record({ record }: { record: ReadonlyArray<RecordEntry> }) {
+function Record({
+  record,
+}: {
+  record: ReadonlyArray<RecordEntry>
+}): JSX.Element {
   return (
     <section>
       <h3>Record</h3>

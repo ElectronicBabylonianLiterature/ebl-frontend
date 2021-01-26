@@ -18,6 +18,8 @@ import './CuneiformFragment.css'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 const ContentSection: FunctionComponent = ({
   children,
@@ -134,12 +136,12 @@ const EditorTabs: FunctionComponent<TabsProps> = ({
 
 type CuneiformFragmentProps = {
   fragment: Fragment
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   wordService: WordService
   activeFolio: Folio | null
   tab: string | null
-  onSave
+  onSave: (updatedFragment: Promise<Fragment>) => void
   saving: boolean
   error: Error | null
 }
@@ -191,8 +193,8 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
 
 type ControllerProps = {
   fragment: Fragment
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
   wordService: WordService
   activeFolio?: Folio | null
   tab?: string | null

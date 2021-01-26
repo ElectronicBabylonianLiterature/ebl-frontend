@@ -19,7 +19,7 @@ function Edition({
   fragmentSearchService,
   updateTransliteration,
   disabled,
-}: Props) {
+}: Props): JSX.Element {
   return (
     <>
       <TransliterationHeader fragment={fragment} />

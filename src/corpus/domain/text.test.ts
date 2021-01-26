@@ -1,21 +1,24 @@
 import _ from 'lodash'
-import {
-  Text,
-  createText,
-  createChapter,
-  createManuscript,
-  types,
-  createLine,
-  createManuscriptLine,
-  Chapter,
-  Line,
-  Manuscript,
-  ManuscriptLine,
-} from './text'
-import { periods, periodModifiers } from './period'
-import { provenances } from './provenance'
 import { text } from 'test-support/test-corpus-text'
 import { ChapterAlignment } from './alignment'
+import {
+  createLine,
+  createManuscriptLine,
+  Line,
+  LineVariant,
+  ManuscriptLine,
+} from './line'
+import { periodModifiers, periods } from './period'
+import { provenances } from './provenance'
+import {
+  Chapter,
+  createChapter,
+  createManuscript,
+  createText,
+  Manuscript,
+  Text,
+  types,
+} from './text'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -30,7 +33,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   references: [],
 }
 
-const manuscrpitLineConfig: ManuscriptLine = {
+const manuscrpitLineConfig: Partial<ManuscriptLine> = {
   manuscriptId: 1,
   labels: ['iii'],
   number: 'a+1',
@@ -57,9 +60,9 @@ const manuscrpitLineConfig: ManuscriptLine = {
 const lineConfig: Line = {
   number: '2',
   variants: [
-    {
-      reconstruction: 'reconstructed text',
-      reconstructionTokens: [
+    new LineVariant(
+      'reconstructed text',
+      [
         {
           value: 'kur',
           cleanValue: 'kur',
@@ -107,8 +110,8 @@ const lineConfig: Line = {
           type: 'AkkadianWord',
         },
       ],
-      manuscripts: [createManuscriptLine(manuscrpitLineConfig)],
-    },
+      [createManuscriptLine(manuscrpitLineConfig)]
+    ),
   ],
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
@@ -152,6 +155,7 @@ describe('Chapter', () => {
                   alignment: null,
                   variant: null,
                   isAlignable: true,
+                  suggested: false,
                 },
                 {
                   value: 'ra',
@@ -162,12 +166,14 @@ describe('Chapter', () => {
                     isNormalized: true,
                   },
                   isAlignable: true,
+                  suggested: false,
                 },
                 {
                   value: '...',
                   alignment: null,
                   variant: null,
                   isAlignable: false,
+                  suggested: false,
                 },
               ],
               omittedWords: [],

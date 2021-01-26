@@ -1,7 +1,6 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
-import { Chapter } from 'corpus/domain/text'
 
 const category = 1
 const index = 1
@@ -89,6 +88,7 @@ const textDto = {
                   labels: ['iii'],
                   number: 'a+1',
                   atf: 'kur',
+                  omittedWords: [],
                 },
               ],
             },

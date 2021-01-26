@@ -3,7 +3,7 @@ import {
   createVariant,
   createManuscriptLine,
   Line,
-} from 'corpus/domain/text'
+} from 'corpus/domain/line'
 
 function nextNumber(number: string): string {
   const match = /^(?<number>\d+)(?<prime>')?$/.exec(number)

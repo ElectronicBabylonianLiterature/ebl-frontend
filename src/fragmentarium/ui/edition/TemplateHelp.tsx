@@ -12,7 +12,7 @@ const obverseReverseAndsuffix = `@obverse
 1. [...]  [...]
 2. [...]  [...]`
 
-export default function TemplateHelp() {
+export default function TemplateHelp(): JSX.Element {
   return (
     <Popover id={_.uniqueId('TemplateHelp-')} title="Create template">
       <Popover.Content>

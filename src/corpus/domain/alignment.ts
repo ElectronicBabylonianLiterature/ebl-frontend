@@ -13,12 +13,14 @@ export type AlignmentToken =
       readonly alignment: null
       readonly variant: null
       readonly isAlignable: false
+      readonly suggested: false
     }
   | {
       readonly value: string
       readonly alignment: number | null
       readonly variant: Variant | null
       readonly isAlignable: true
+      readonly suggested: boolean
     }
 
 export interface ManuscriptAlignment {
@@ -67,11 +69,13 @@ export function createAlignmentToken(token: Token): AlignmentToken {
           isNormalized: token.variant.normalized,
         },
         isAlignable: true,
+        suggested: false,
       }
     : {
         value: token.value,
         alignment: null,
         variant: null,
         isAlignable: false,
+        suggested: false,
       }
 }
