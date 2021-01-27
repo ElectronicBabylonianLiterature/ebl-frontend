@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { wordExport } from './WordExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
@@ -32,21 +32,13 @@ export default function WordDownloadButton({
 
     setPromise(
       getWordDoc(fragment, wordService, jQueryRef)
-        .then((doc) => {
-          setPromise(
-            packWordDoc(doc)
-              .then((blob) => {
-                saveAs(blob, `${fragment.number}.docx`)
-                setIsLoading(false)
-              })
-              .catch((reason) => cancelPromise())
-          )
+        .then(packWordDoc)
+        .then((blob) => {
+          saveAs(blob, `${fragment.number}.docx`)
+          setIsLoading(false)
         })
-        .catch((reason) => cancelPromise())
     )
   }
-
-  // useEffect( () => () => console.log("unmount"), [] );
 
   return (
     <>
