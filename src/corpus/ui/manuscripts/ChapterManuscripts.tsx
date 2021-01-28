@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import Promise from 'bluebird'
 import ListForm from 'common/List'
@@ -23,6 +24,13 @@ export default function ChapterManuscripts({
   searchBibliography,
   disabled,
 }: Props): JSX.Element {
+  const handleUncertainFragmentsChange = (uncertainFragments: string[]) => {
+    onChange(
+      produce(chapter, (draft) => {
+        draft.uncertainFragments = uncertainFragments
+      })
+    )
+  }
   const handeManuscriptsChange = (manuscripts: Manuscript[]) =>
     onChange(
       produce(chapter, (draft) => {
@@ -33,17 +41,36 @@ export default function ChapterManuscripts({
     <Form>
       <fieldset disabled={disabled}>
         <ListForm
+          label="Manuscripts"
           noun="manuscript"
           defaultValue={createManuscript({})}
           value={chapter.manuscripts}
           onChange={handeManuscriptsChange}
         >
-          {(manuscript, onChange) => (
+          {(manuscript: Manuscript, onChange) => (
             <ManuscriptForm
               onChange={onChange}
               manuscript={manuscript}
               searchBibliography={searchBibliography}
             />
+          )}
+        </ListForm>
+        <ListForm
+          label="Uncertain Fragments"
+          noun="fragment"
+          defaultValue=""
+          value={chapter.uncertainFragments}
+          onChange={handleUncertainFragmentsChange}
+          collapsed
+        >
+          {(fragment: string, onChange) => (
+            <Form.Group controlId={_.uniqueId('uncertainFragment-')}>
+              <Form.Label>Museum Number</Form.Label>
+              <Form.Control
+                value={fragment}
+                onChange={(event) => onChange(event.target.value)}
+              />
+            </Form.Group>
           )}
         </ListForm>
         <Button onClick={onSave}>Save manuscripts</Button>

@@ -139,6 +139,7 @@ const manuscriptsDto = {
       ],
     },
   ],
+  uncertainFragments: ['K.1'],
 }
 
 const linesDto = {
@@ -225,7 +226,13 @@ const testData: TestData[] = [
   ],
   [
     'updateManuscripts',
-    [text.category, text.index, 0, text.chapters[0].manuscripts],
+    [
+      text.category,
+      text.index,
+      0,
+      text.chapters[0].manuscripts,
+      text.chapters[0].uncertainFragments,
+    ],
     apiClient.postJson,
     text,
     [

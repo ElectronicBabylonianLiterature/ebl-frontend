@@ -150,14 +150,15 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    manuscripts: readonly Manuscript[]
+    manuscripts: readonly Manuscript[],
+    uncertainChapters: readonly string[]
   ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
-        toManuscriptsDto(manuscripts)
+        toManuscriptsDto(manuscripts, uncertainChapters)
       )
       .then(fromDto)
   }
