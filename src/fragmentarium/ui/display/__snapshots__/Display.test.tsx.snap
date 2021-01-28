@@ -4745,7 +4745,7 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     <span
-                      class="Transliteration__EgyptianMetricalFeetSeparator__value"
+                      class="Transliteration__EgyptianMetricalFeetSeparator--colored"
                     >
                       •
                     </span>
