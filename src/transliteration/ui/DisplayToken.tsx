@@ -133,7 +133,9 @@ function EgyptianMetricalFeetSeparatorComponent({
     <DamagedFlag sign={sign} Wrapper={Wrapper}>
       <Wrapper>
         <EnclosureFlags token={token}>
-          <span style={{ color: 'red' }}>{'•'}</span>
+          <span className="Transliteration__EgyptianMetricalFeetSeparator__value">
+            {'•'}
+          </span>
           <Flags flags={sign.flags} />
         </EnclosureFlags>
       </Wrapper>
