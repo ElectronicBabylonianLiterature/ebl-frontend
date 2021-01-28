@@ -70,6 +70,7 @@ export class Chapter {
   readonly name: string
   readonly order: number
   readonly manuscripts: ReadonlyArray<Manuscript>
+  readonly uncertainFragments: ReadonlyArray<string>
   readonly lines: ReadonlyArray<Line>
 
   constructor({
@@ -79,6 +80,7 @@ export class Chapter {
     name,
     order,
     manuscripts,
+    uncertainFragments,
     lines,
   }: Partial<Chapter>) {
     this.classification = classification ?? 'Ancient'
@@ -87,6 +89,7 @@ export class Chapter {
     this.name = name ?? ''
     this.order = order ?? 0
     this.manuscripts = manuscripts ?? []
+    this.uncertainFragments = uncertainFragments ?? []
     this.lines = lines ?? []
   }
 
