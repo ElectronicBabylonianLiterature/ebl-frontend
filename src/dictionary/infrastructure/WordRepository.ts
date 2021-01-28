@@ -13,7 +13,7 @@ class WordRepository {
     return this.apiClient.fetchJson(`/words/${encodeURIComponent(id)}`, true)
   }
 
-  search(query: string): Promise<Word> {
+  search(query: string): Promise<Word[]> {
     return this.apiClient.fetchJson(
       `/words?query=${encodeURIComponent(query)}`,
       true

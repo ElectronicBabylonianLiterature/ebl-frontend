@@ -3,7 +3,7 @@ import { testDelegation, TestData } from 'test-support/utils'
 import WordRepository from './WordRepository'
 import ApiClient from 'http/ApiClient'
 
-const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 const mockFetchJson = jest.fn()
 const mockPostJson = jest.fn()
 apiClient.fetchJson = mockFetchJson
@@ -51,5 +51,6 @@ const testData: TestData[] = [
     Promise.resolve(resultStub),
   ],
 ]
-
-testDelegation(wordRepository, testData)
+describe('test word repository', () => {
+  testDelegation(wordRepository, testData)
+})
