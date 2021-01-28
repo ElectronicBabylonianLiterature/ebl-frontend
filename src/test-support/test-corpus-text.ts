@@ -137,6 +137,7 @@ export const textDto = {
           ],
         },
       ],
+      uncertainFragments: ['K.1'],
       lines: [
         {
           number: '1',
@@ -177,6 +178,7 @@ export const text = createText({
       version: 'A',
       name: 'The Only Chapter',
       order: 1,
+      uncertainFragments: ['K.1'],
       manuscripts: [
         createManuscript({
           id: 1,

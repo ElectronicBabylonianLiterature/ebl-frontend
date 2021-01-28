@@ -18,6 +18,7 @@ const textDto = {
       name: 'III',
       order: 3,
       manuscripts: [],
+      uncertainFragments: [],
       lines: [],
     },
     {
@@ -40,6 +41,7 @@ const textDto = {
           references: [],
         },
       ],
+      uncertainFragments: [],
       lines: [],
     },
     {
@@ -74,6 +76,7 @@ const textDto = {
           references: [],
         },
       ],
+      uncertainFragments: [],
       lines: [
         {
           number: "1'",
@@ -174,6 +177,7 @@ describe('Diplay chapter', () => {
               [property]: newValue,
             },
           ],
+          uncertainFragments: textDto.chapters[1].uncertainFragments,
         }))
       )
       const value = manuscript[property]
@@ -208,10 +212,30 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1,
     }
-    fakeApi.expectUpdateManuscripts(textDto, 0, { manuscripts: [manuscript] })
+    fakeApi.expectUpdateManuscripts(textDto, 0, {
+      manuscripts: [manuscript],
+      uncertainFragments: [],
+    })
     await appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
     await appDriver.click('Save manuscripts')
+  })
+})
+
+test('Uncertain Fragments', async () => {
+  const chapter = textDto.chapters[0]
+  const museumNumber = 'X.1'
+  const label = 'Museum Number'
+
+  await setup(chapter)
+  await appDriver.click('Add fragment')
+  await appDriver.changeValueByLabel(label, museumNumber)
+  appDriver.expectInputElement(label, museumNumber)
+  await appDriver.click('Save manuscripts')
+
+  fakeApi.expectUpdateManuscripts(textDto, 0, {
+    manuscripts: chapter.manuscripts,
+    uncertainFragments: [museumNumber],
   })
 })
 

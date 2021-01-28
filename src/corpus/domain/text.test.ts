@@ -124,6 +124,7 @@ const chapterConfig: Partial<Chapter> = {
   name: 'III',
   order: -1,
   manuscripts: [createManuscript(manuscriptConfig)],
+  uncertainFragments: ['K.1'],
   lines: [createLine(lineConfig)],
 }
 

@@ -74,7 +74,7 @@ function fromLineVariantDto(variantDto): LineVariant {
 function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
-    variants: lineDto.variants.map(fromLineVariantDto),
+    variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
   })
 }
 
@@ -153,11 +153,15 @@ export const toLemmatizationDto = produce(
   }
 )
 
-export const toManuscriptsDto = (
-  manuscripts: readonly Manuscript[]
-): Record<string, unknown> => ({
-  manuscripts: manuscripts.map(toManuscriptDto),
-})
+export function toManuscriptsDto(
+  manuscripts: readonly Manuscript[],
+  uncertainChapters: readonly string[]
+): Record<string, unknown> {
+  return {
+    manuscripts: manuscripts.map(toManuscriptDto),
+    uncertainFragments: uncertainChapters,
+  }
+}
 
 export const toLinesDto = (
   lines: readonly Line[]
