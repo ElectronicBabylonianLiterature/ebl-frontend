@@ -153,9 +153,9 @@ const WithAnnotations = withData<
 const WithPhoto = withData<
   { fragment: Fragment; fragmentService: FragmentService },
   unknown,
-  Blob
+  Blob | null
 >(
-  ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
+  ({ data, ...props }) => <WithAnnotations {...props} image={data!} />,
   ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
 )
 
