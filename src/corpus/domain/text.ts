@@ -64,34 +64,17 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
 
 export class Chapter {
   readonly [immerable] = true
-  readonly classification: string
-  readonly stage: string
-  readonly version: string
-  readonly name: string
-  readonly order: number
-  readonly manuscripts: ReadonlyArray<Manuscript>
-  readonly uncertainFragments: ReadonlyArray<string>
-  readonly lines: ReadonlyArray<Line>
 
-  constructor({
-    classification,
-    stage,
-    version,
-    name,
-    order,
-    manuscripts,
-    uncertainFragments,
-    lines,
-  }: Partial<Chapter>) {
-    this.classification = classification ?? 'Ancient'
-    this.stage = stage ?? 'Neo-Assyrian'
-    this.version = version ?? ''
-    this.name = name ?? ''
-    this.order = order ?? 0
-    this.manuscripts = manuscripts ?? []
-    this.uncertainFragments = uncertainFragments ?? []
-    this.lines = lines ?? []
-  }
+  constructor(
+    readonly classification: string,
+    readonly stage: string,
+    readonly version: string,
+    readonly name: string,
+    readonly order: number,
+    readonly manuscripts: ReadonlyArray<Manuscript>,
+    readonly uncertainFragments: ReadonlyArray<string>,
+    readonly lines: ReadonlyArray<Line>
+  ) {}
 
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
@@ -114,7 +97,16 @@ export class Chapter {
 }
 
 export function createChapter(data: Partial<Chapter>): Chapter {
-  return new Chapter(data)
+  return new Chapter(
+    data.classification ?? 'Ancient',
+    data.stage ?? 'Neo-Assyrian',
+    data.version ?? '',
+    data.name ?? '',
+    data.order ?? 0,
+    data.manuscripts ?? [],
+    data.uncertainFragments ?? [],
+    data.lines ?? []
+  )
 }
 
 export interface TextInfo {
