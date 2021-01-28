@@ -9,6 +9,7 @@ import {
   Gloss,
   Sign,
   EnclosureType,
+  EgyptianMetricalFeetSeparator,
 } from 'transliteration/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -123,6 +124,22 @@ function UnknownSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
     </DamagedFlag>
   )
 }
+function EgyptianMetricalFeetSeparatorComponent({
+  token,
+  Wrapper,
+}: TokenProps): JSX.Element {
+  const sign = token as EgyptianMetricalFeetSeparator
+  return (
+    <DamagedFlag sign={sign} Wrapper={Wrapper}>
+      <Wrapper>
+        <EnclosureFlags token={token}>
+          <span style={{ color: 'red' }}>{'•'}</span>
+          <Flags flags={sign.flags} />
+        </EnclosureFlags>
+      </Wrapper>
+    </DamagedFlag>
+  )
+}
 
 function signComponent(nameProperty: string) {
   return function SignComponent({ token, Wrapper }: TokenProps): JSX.Element {
@@ -206,6 +223,7 @@ const tokens: ReadonlyMap<
 > = new Map([
   ['UnknownNumberOfSigns', (): JSX.Element => <>…</>],
   ['Variant', VariantComponent],
+  ['EgyptianMetricalFeetSeparator', EgyptianMetricalFeetSeparatorComponent],
   ['Reading', NamedSignComponent],
   ['Logogram', NamedSignComponent],
   ['Number', NamedSignComponent],
