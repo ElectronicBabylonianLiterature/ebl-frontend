@@ -154,10 +154,12 @@ export class FragmentService {
     return this.imageRepository.find(fileName)
   }
 
-  findPhoto(fragment: Fragment): Promise<Blob | null> {
-    return fragment.hasPhoto
-      ? this.imageRepository.findPhoto(fragment.number)
-      : Promise.resolve(null)
+  findPhoto(fragment: Fragment): Promise<Blob> {
+    if (fragment.hasPhoto) {
+      return this.imageRepository.findPhoto(fragment.number)
+    } else {
+      throw Error(`Fragment ${fragment.number} doesn't have a Photo`)
+    }
   }
 
   folioPager(folio: Folio, fragmentNumber: string): Promise<FolioPagerData> {

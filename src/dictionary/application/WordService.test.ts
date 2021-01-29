@@ -12,9 +12,9 @@ const wordRepository = new (WordRepository as jest.Mock<
 const wordService = new WordService(wordRepository)
 
 const testData: TestData[] = [
-  ['find', ['id'], wordRepository.find as jest.Mock, resultStub],
-  ['search', ['aklu'], wordRepository.search as jest.Mock, resultStub],
-  ['update', [{ _id: 'id' }], wordRepository.update as jest.Mock, resultStub],
+  ['find', ['id'], wordRepository.find, resultStub],
+  ['search', ['aklu'], wordRepository.search, resultStub],
+  ['update', [{ _id: 'id' }], wordRepository.update, resultStub],
 ]
 describe('test word Service', () => {
   testDelegation(wordService, testData)

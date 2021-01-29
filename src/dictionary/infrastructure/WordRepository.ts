@@ -27,7 +27,7 @@ class WordRepository {
     )
   }
 
-  update(word: { _id: string }): Promise<Word> {
+  update(word: Word): Promise<Word> {
     return this.apiClient.postJson(
       `/words/${encodeURIComponent(word._id)}`,
       word

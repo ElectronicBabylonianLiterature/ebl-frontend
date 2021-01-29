@@ -180,7 +180,7 @@ const testData: TestData[] = [
   [
     'find',
     [text.category, text.index],
-    apiClient.fetchJson as jest.Mock,
+    apiClient.fetchJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -193,7 +193,7 @@ const testData: TestData[] = [
   [
     'list',
     [],
-    apiClient.fetchJson as jest.Mock,
+    apiClient.fetchJson,
     textsDto,
     ['/texts', false],
     Bluebird.resolve(textsDto),
@@ -201,7 +201,7 @@ const testData: TestData[] = [
   [
     'updateAlignment',
     [text.category, text.index, 0, text.chapters[0].alignment],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -214,7 +214,7 @@ const testData: TestData[] = [
   [
     'updateLemmatization',
     [text.category, text.index, 0, lemmatization],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -227,7 +227,7 @@ const testData: TestData[] = [
   [
     'updateManuscripts',
     [text.category, text.index, 0, text.chapters[0].manuscripts],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -240,7 +240,7 @@ const testData: TestData[] = [
   [
     'updateLines',
     [text.category, text.index, 0, text.chapters[0].lines],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
