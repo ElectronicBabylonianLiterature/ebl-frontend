@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, RenderResult, waitFor } from '@testing-library/react'
+import { act, render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
@@ -41,6 +41,6 @@ test(`Renders header`, () => {
   expect(container).toHaveTextContent(fragment.publication)
 })
 
-test('Snapshot', async () => {
+test('Snapshot', () => {
   expect(container).toMatchSnapshot()
 })
