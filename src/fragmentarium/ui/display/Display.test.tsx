@@ -7,7 +7,6 @@ import WordService from 'dictionary/application/WordService'
 import Display from './Display'
 import { wordDto } from 'test-support/test-word'
 import { MemoryRouter } from 'react-router-dom'
-import exp from 'constants'
 
 jest.mock('dictionary/application/WordService')
 
