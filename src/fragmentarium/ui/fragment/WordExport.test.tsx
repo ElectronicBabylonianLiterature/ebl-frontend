@@ -16,7 +16,7 @@ let fragment: Fragment
 let wordBlob: any
 
 beforeEach(async () => {
-  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+  wordService = new (WordService as jest.Mock<WordService>)()
   jest
     .spyOn(wordService, 'find')
     .mockImplementation(() => Promise.resolve(wordDto))

@@ -9,24 +9,22 @@ import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 
+jest.mock('dictionary/application/WordService')
+
 const DictionaryWithRouter = withRouter<any, typeof Dictionary>(Dictionary)
 
-let words: readonly Word[]
-const wordService = new (WordService as jest.Mock<WordService>)()
-const session = new (MemorySession as jest.Mock<MemorySession>)()
+let words: Word[]
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+let session: MemorySession
 
 beforeEach(async () => {
   words = await factory.buildMany('word', 2)
-
-  wordService.search = jest.fn()
-
-  session.isAllowedToReadWords = jest.fn()
 })
 
 describe('Searching for word', () => {
   beforeEach(() => {
-    session.isAllowedToReadWords = jest.fn().mockReturnValue(true)
-    wordService.search = jest.fn().mockReturnValue(Promise.resolve(words))
+    session = new MemorySession(['read:words'])
+    wordService.search.mockReturnValue(Promise.resolve(words))
   })
 
   it('displays result on successfull query', async () => {
@@ -46,7 +44,7 @@ describe('Searching for word', () => {
 })
 
 it('Displays a message if user is not logged in', async () => {
-  session.isAllowedToReadWords = jest.fn().mockReturnValueOnce(false)
+  session = new MemorySession([])
   await renderDictionary('/dictionary')
   expect(
     screen.getByText('Please log in to browse the Dictionary.')

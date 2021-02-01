@@ -4,11 +4,10 @@ import BibliographyRepository from './BibliographyRepository'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import ApiClient from 'http/ApiClient'
 
-const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
-const apiClientFetchJson = jest.fn()
-const apiClientPostJson = jest.fn()
-apiClient.fetchJson = apiClientFetchJson
-apiClient.postJson = apiClientPostJson
+jest.mock('http/ApiClient')
+
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+
 const wordRepository = new BibliographyRepository(apiClient)
 const query = 'Bor Ger 1998 The Qualifications'
 const id = 'RN 2020'
@@ -21,7 +20,7 @@ const testData: TestData[] = [
   [
     'find',
     [id],
-    apiClientFetchJson,
+    apiClient.fetchJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, true],
     Promise.resolve(resultStub),
@@ -29,7 +28,7 @@ const testData: TestData[] = [
   [
     'search',
     [query],
-    apiClientFetchJson,
+    apiClient.fetchJson,
     [entry],
     [`/bibliography?query=${encodeURIComponent(query)}`, true],
     Promise.resolve([resultStub]),
@@ -37,7 +36,7 @@ const testData: TestData[] = [
   [
     'update',
     [entry],
-    apiClientPostJson,
+    apiClient.postJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, resultStub],
     Promise.resolve(resultStub),
@@ -45,7 +44,7 @@ const testData: TestData[] = [
   [
     'create',
     [entry],
-    apiClientPostJson,
+    apiClient.postJson,
     entry,
     ['/bibliography', resultStub],
     Promise.resolve(resultStub),
