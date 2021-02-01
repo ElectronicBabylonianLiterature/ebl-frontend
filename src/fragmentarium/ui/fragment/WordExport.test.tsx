@@ -16,10 +16,9 @@ let fragment: Fragment
 let wordBlob: any
 
 beforeEach(async () => {
-  wordService = new (WordService as jest.Mock<WordService>)()
-  jest
-    .spyOn(wordService, 'find')
-    .mockImplementation(() => Promise.resolve(wordDto))
+  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+  wordService.find.mockResolvedValue(wordDto)
+
   fragment = await factory.build('fragment', {
     publication: 'Guod cigipli epibif odepuwu.',
     text: complexText,
