@@ -26,6 +26,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
+import WordInformationDisplay from 'dictionary/ui/display/WordInformationDisplay'
 
 function parseStringParam(
   location: Location,
@@ -143,10 +144,17 @@ function App({
               />
             )}
           />
+          {/*
           <Route
             path="/dictionary/:id"
             render={(props): ReactNode => (
               <WordEditor wordService={wordService} {...props} />
+            )}
+          />*/}
+          <Route
+            path="/dictionary/:id"
+            render={(props): ReactNode => (
+              <WordInformationDisplay wordService={wordService} {...props} />
             )}
           />
           <Route
