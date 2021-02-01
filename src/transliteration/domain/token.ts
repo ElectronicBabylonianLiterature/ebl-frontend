@@ -82,7 +82,10 @@ export interface Variant extends NotLemmatizableToken {
   readonly type: 'Variant' | 'Variant2'
   readonly tokens: readonly Token[]
 }
-
+export interface EgyptianMetricalFeetSeparator extends NotLemmatizableToken {
+  readonly type: 'EgyptianMetricalFeetSeparator'
+  readonly flags: readonly string[]
+}
 export interface Sign extends NotLemmatizableToken {
   readonly modifiers: readonly string[]
   readonly flags: readonly string[]
@@ -170,3 +173,4 @@ export type Token =
   | Tabulation
   | CommentaryProtocol
   | Column
+  | EgyptianMetricalFeetSeparator
