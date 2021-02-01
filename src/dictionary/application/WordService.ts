@@ -13,7 +13,7 @@ class WordService {
     return this.wordRepository.find(id)
   }
 
-  search(query: string): Promise<Word> {
+  search(query: string): Promise<Word[]> {
     return this.wordRepository.search(query)
   }
 

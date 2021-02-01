@@ -165,7 +165,7 @@ class SearchForm extends Component<Props, State> {
             <Col>
               <BibliographySelect
                 isClearable={true}
-                aria-label="Select bibliography reference"
+                ariaLabel="Select bibliography reference"
                 value={this.state.referenceEntry}
                 onChange={this.onChangeBibliographyReference}
                 searchBibliography={(query) =>

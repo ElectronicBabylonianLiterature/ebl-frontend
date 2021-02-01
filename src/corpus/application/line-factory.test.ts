@@ -2,7 +2,7 @@ import {
   createLine,
   createVariant,
   createManuscriptLine,
-} from 'corpus/domain/text'
+} from 'corpus/domain/line'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
 

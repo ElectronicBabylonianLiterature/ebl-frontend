@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import Bluebird from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
@@ -11,13 +11,14 @@ import ApiClient from 'http/ApiClient'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('http/ApiClient')
 
-const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
-;(apiClient.fetchJson as jest.Mock) = jest.fn()
-;(apiClient.postJson as jest.Mock) = jest.fn()
-const MockFragmentService = FragmentService as jest.Mock<FragmentService>
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+const MockFragmentService = FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
+>
 const fragmentServiceMock = new MockFragmentService()
-const MockWordService = WordService as jest.Mock<WordService>
+const MockWordService = WordService as jest.Mock<jest.Mocked<WordService>>
 const wordServiceMock = new MockWordService()
 const testService = new TextService(
   apiClient,
@@ -139,6 +140,7 @@ const manuscriptsDto = {
       ],
     },
   ],
+  uncertainFragments: ['K.1'],
 }
 
 const linesDto = {
@@ -179,7 +181,7 @@ const testData: TestData[] = [
   [
     'find',
     [text.category, text.index],
-    apiClient.fetchJson as jest.Mock,
+    apiClient.fetchJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -187,20 +189,20 @@ const testData: TestData[] = [
       )}`,
       true,
     ],
-    Promise.resolve(textDto),
+    Bluebird.resolve(textDto),
   ],
   [
     'list',
     [],
-    apiClient.fetchJson as jest.Mock,
+    apiClient.fetchJson,
     textsDto,
     ['/texts', false],
-    Promise.resolve(textsDto),
+    Bluebird.resolve(textsDto),
   ],
   [
     'updateAlignment',
     [text.category, text.index, 0, text.chapters[0].alignment],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -208,12 +210,12 @@ const testData: TestData[] = [
       )}/chapters/0/alignment`,
       alignmentDto,
     ],
-    Promise.resolve(textDto),
+    Bluebird.resolve(textDto),
   ],
   [
     'updateLemmatization',
     [text.category, text.index, 0, lemmatization],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -221,12 +223,18 @@ const testData: TestData[] = [
       )}/chapters/0/lemmatization`,
       lemmatizationDto,
     ],
-    Promise.resolve(textDto),
+    Bluebird.resolve(textDto),
   ],
   [
     'updateManuscripts',
-    [text.category, text.index, 0, text.chapters[0].manuscripts],
-    apiClient.postJson as jest.Mock,
+    [
+      text.category,
+      text.index,
+      0,
+      text.chapters[0].manuscripts,
+      text.chapters[0].uncertainFragments,
+    ],
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -234,12 +242,12 @@ const testData: TestData[] = [
       )}/chapters/0/manuscripts`,
       manuscriptsDto,
     ],
-    Promise.resolve(textDto),
+    Bluebird.resolve(textDto),
   ],
   [
     'updateLines',
     [text.category, text.index, 0, text.chapters[0].lines],
-    apiClient.postJson as jest.Mock,
+    apiClient.postJson,
     text,
     [
       `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
@@ -247,17 +255,15 @@ const testData: TestData[] = [
       )}/chapters/0/lines`,
       linesDto,
     ],
-    Promise.resolve(textDto),
+    Bluebird.resolve(textDto),
   ],
 ]
 
 describe('TextService', () => testDelegation(testService, testData))
 
 test('findSuggestions', async () => {
-  ;(wordServiceMock.find as jest.Mock).mockReturnValue(Promise.resolve(word))
-  ;(fragmentServiceMock.findSuggestions as jest.Mock) = jest
-    .fn()
-    .mockReturnValue(Promise.resolve([]))
+  wordServiceMock.find.mockReturnValue(Bluebird.resolve(word))
+  fragmentServiceMock.findSuggestions.mockReturnValue(Bluebird.resolve([]))
   await expect(testService.findSuggestions(text.chapters[0])).resolves.toEqual(
     lemmatization
   )

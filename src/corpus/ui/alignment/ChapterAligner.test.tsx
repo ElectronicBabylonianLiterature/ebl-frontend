@@ -36,6 +36,7 @@ test('Align word', async () => {
                 isNormalized: true,
               },
               isAlignable: true,
+              suggested: false,
             },
             {
               value: 'ra',
@@ -46,12 +47,14 @@ test('Align word', async () => {
                 isNormalized: true,
               },
               isAlignable: true,
+              suggested: false,
             },
             {
               value: '...',
               alignment: null,
               variant: null,
               isAlignable: false,
+              suggested: false,
             },
           ],
           omittedWords: [],

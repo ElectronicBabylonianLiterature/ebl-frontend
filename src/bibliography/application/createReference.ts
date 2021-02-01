@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { ReferenceDto } from 'transliteration/domain/note-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export default function createReference(
   data: ReferenceDto,

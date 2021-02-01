@@ -1,8 +1,10 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import AsyncSelect from 'react-select/async'
+import { usePrevious } from 'common/usePrevious'
+import Promise from 'bluebird'
 
-function createLabel(entry: BibliographyEntry): string {
+function createLabel(entry: BibliographyEntryPartial): string {
   const containerShort = entry.shortContainerTitle
   const collectionNumber = entry.collectionNumber
     ? ` ${entry.collectionNumber} `
@@ -13,7 +15,12 @@ function createLabel(entry: BibliographyEntry): string {
     : label
 }
 
-function createOption(entry) {
+interface SelectedOption {
+  value: string
+  label: string
+  entry: BibliographyEntryPartial
+}
+function createOption(entry: BibliographyEntryPartial): SelectedOption | null {
   return entry && entry.id
     ? {
         value: entry.id,
@@ -22,57 +29,59 @@ function createOption(entry) {
       }
     : null
 }
+interface BibliographyEntryPartial extends Partial<BibliographyEntry> {
+  label?: string
+}
 
-export default class BibliographySelect extends Component<
-  { value; searchBibliography; onChange; isClearable },
-  { selectedOption }
-> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedOption: createOption(props.value),
+interface Props {
+  ariaLabel: string
+  value: BibliographyEntryPartial
+  searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
+  onChange: (event: BibliographyEntry) => void
+  isClearable: boolean
+}
+export default function BibliographySelect({
+  ariaLabel,
+  value,
+  searchBibliography,
+  onChange,
+  isClearable,
+}: Props): JSX.Element {
+  const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(
+    createOption(value)
+  )
+  const prevValue = usePrevious(value)
+
+  useEffect(() => {
+    if (value !== prevValue) {
+      setSelectedOption(createOption(value))
     }
-  }
+  }, [value, prevValue])
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.value !== prevProps.value) {
-      this.setState({
-        selectedOption: createOption(this.props.value),
-      })
-    }
+  const loadOptions = async (inputValue, callback) => {
+    const entries = await searchBibliography(inputValue)
+    callback(entries.map(createOption))
   }
-
-  loadOptions = (inputValue, callback) => {
-    this.props
-      .searchBibliography(inputValue)
-      .then((entries) => entries.map(createOption))
-      .then(callback)
-  }
-
-  handleChange = (selectedOption) => {
+  const handleChange = (selectedOption) => {
     if (selectedOption) {
-      this.setState({
-        selectedOption,
-      })
-      this.props.onChange(selectedOption.entry)
+      setSelectedOption(selectedOption)
+      onChange(selectedOption.entry)
     } else {
-      this.props.onChange(new BibliographyEntry())
+      onChange(new BibliographyEntry())
     }
   }
 
-  render(): JSX.Element {
-    return (
-      <>
-        <AsyncSelect
-          isClearable={this.props.isClearable}
-          aria-label={this.props['aria-label']}
-          placeholder="Name Year Title"
-          cacheOptions
-          loadOptions={this.loadOptions}
-          onChange={this.handleChange}
-          value={this.state.selectedOption}
-        />
-      </>
-    )
-  }
+  return (
+    <>
+      <AsyncSelect
+        isClearable={isClearable}
+        aria-label={ariaLabel}
+        placeholder="Name Year Title"
+        cacheOptions
+        loadOptions={loadOptions}
+        onChange={handleChange}
+        value={selectedOption}
+      />
+    </>
+  )
 }

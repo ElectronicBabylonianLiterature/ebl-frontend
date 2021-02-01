@@ -1,8 +1,8 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
-import { Token } from 'transliteration/domain/token'
-import { ChapterAlignment, createAlignmentToken } from './alignment'
+import { ChapterAlignment } from './alignment'
+import { Line, ManuscriptLine } from './line'
 import { Period, PeriodModifier, periodModifiers, periods } from './period'
 import { Provenance, provenances } from './provenance'
 
@@ -62,100 +62,24 @@ export function createManuscript(data: Partial<Manuscript>): Manuscript {
   })
 }
 
-export interface ManuscriptLine {
-  readonly manuscriptId: number
-  readonly labels: readonly string[]
-  readonly number: string
-  readonly atf: string
-  readonly atfTokens: readonly Token[]
-  readonly omittedWords: readonly number[]
-}
-
-export const createManuscriptLine: (
-  data: Partial<ManuscriptLine>
-) => ManuscriptLine = produce(
-  (draft: Partial<ManuscriptLine>): ManuscriptLine => ({
-    manuscriptId: 0,
-    labels: [],
-    number: '',
-    atf: '',
-    atfTokens: [],
-    omittedWords: [],
-    ...draft,
-  })
-)
-
-export interface LineVariant {
-  readonly reconstruction: string
-  readonly reconstructionTokens: ReadonlyArray<Token>
-  readonly manuscripts: ReadonlyArray<ManuscriptLine>
-}
-
-export interface Line {
-  readonly number: string
-  readonly variants: ReadonlyArray<LineVariant>
-  readonly isSecondLineOfParallelism: boolean
-  readonly isBeginningOfSection: boolean
-}
-
-export const createLine: (config: Partial<Line>) => Line = produce(
-  (draft): Line => ({
-    number: '',
-    variants: [],
-    isSecondLineOfParallelism: false,
-    isBeginningOfSection: false,
-    ...draft,
-  })
-)
-
-export const createVariant: (
-  config: Partial<LineVariant>
-) => LineVariant = produce(
-  (draft): LineVariant => ({
-    reconstruction: '',
-    manuscripts: [],
-    reconstructionTokens: [],
-    ...draft,
-  })
-)
-
 export class Chapter {
   readonly [immerable] = true
-  readonly classification: string
-  readonly stage: string
-  readonly version: string
-  readonly name: string
-  readonly order: number
-  readonly manuscripts: ReadonlyArray<Manuscript>
-  readonly lines: ReadonlyArray<Line>
 
-  constructor({
-    classification,
-    stage,
-    version,
-    name,
-    order,
-    manuscripts,
-    lines,
-  }: Partial<Chapter>) {
-    this.classification = classification ?? 'Ancient'
-    this.stage = stage ?? 'Neo-Assyrian'
-    this.version = version ?? ''
-    this.name = name ?? ''
-    this.order = order ?? 0
-    this.manuscripts = manuscripts ?? []
-    this.lines = lines ?? []
-  }
+  constructor(
+    readonly classification: string,
+    readonly stage: string,
+    readonly version: string,
+    readonly name: string,
+    readonly order: number,
+    readonly manuscripts: ReadonlyArray<Manuscript>,
+    readonly uncertainFragments: ReadonlyArray<string>,
+    readonly lines: ReadonlyArray<Line>
+  ) {}
 
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
       this.lines.map((line) =>
-        line.variants.map((variant) =>
-          variant.manuscripts.map((manuscript) => ({
-            alignment: manuscript.atfTokens.map(createAlignmentToken),
-            omittedWords: manuscript.omittedWords,
-          }))
-        )
+        line.variants.map((variant) => variant.alignment)
       )
     )
   }
@@ -173,7 +97,16 @@ export class Chapter {
 }
 
 export function createChapter(data: Partial<Chapter>): Chapter {
-  return new Chapter(data)
+  return new Chapter(
+    data.classification ?? 'Ancient',
+    data.stage ?? 'Neo-Assyrian',
+    data.version ?? '',
+    data.name ?? '',
+    data.order ?? 0,
+    data.manuscripts ?? [],
+    data.uncertainFragments ?? [],
+    data.lines ?? []
+  )
 }
 
 export interface TextInfo {

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import Bluebird from 'bluebird'
 import cancellableFetch from './cancellableFetch'
 import { AuthenticationService } from 'auth/Auth'
@@ -44,7 +45,13 @@ export class ApiError extends Error {
     return response
       .json()
       .then(
-        (body) => new ApiError(body.description || response.statusText, body)
+        (body) =>
+          new ApiError(
+            _.isString(body.description)
+              ? body.description
+              : body.title || response.statusText,
+            body
+          )
       )
       .catch(() => new ApiError(response.statusText, {}))
   }

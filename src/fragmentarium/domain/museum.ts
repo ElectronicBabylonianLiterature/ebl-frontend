@@ -1,5 +1,6 @@
 import { Fragment } from './fragment'
 import bmLogo from './The_British_Museum.png'
+import ybcLogo from './YBC_small.jpg'
 
 export interface FragmentLink {
   readonly name: string
@@ -16,11 +17,6 @@ export interface MuseumData {
 }
 
 export default class Museum {
-  readonly name: string
-  readonly logo: string
-  readonly url: string
-  readonly copyright: string
-
   static of(name: string): Museum {
     const data = {
       name,
@@ -30,15 +26,15 @@ export default class Museum {
       museumClass: Museum,
       ...museums.get(name),
     }
-    return new data.museumClass(data)
+    return new data.museumClass(data.name, data.logo, data.url, data.copyright)
   }
 
-  constructor({ name, logo, url, copyright }: MuseumData) {
-    this.name = name
-    this.logo = logo
-    this.url = url
-    this.copyright = copyright
-  }
+  protected constructor(
+    readonly name: string,
+    readonly logo: string,
+    readonly url: string,
+    readonly copyright: string
+  ) {}
 
   get hasUrl(): boolean {
     return this.url !== ''
@@ -48,21 +44,21 @@ export default class Museum {
     return this.copyright !== ''
   }
 
-  hasFragmentLink(fragment: Fragment): boolean {
+  hasFragmentLink(_fragment: Fragment): boolean {
     return false
   }
 
-  createLinkFor(fragment: Fragment): FragmentLink {
+  createLinkFor(_fragment: Fragment): FragmentLink {
     throw new Error(`${this.name} does not support fragment links.`)
   }
 }
 
 class BritishMuseum extends Museum {
-  hasFragmentLink(fragment) {
+  hasFragmentLink(fragment: Fragment) {
     return fragment.bmIdNumber !== ''
   }
 
-  createLinkFor(fragment) {
+  createLinkFor(fragment: Fragment): FragmentLink {
     if (this.hasFragmentLink(fragment)) {
       const bmIdNumber = fragment.bmIdNumber
       return {
@@ -75,6 +71,28 @@ class BritishMuseum extends Museum {
       }
     } else {
       throw new Error(`Fragment ${fragment.number} does not have bmIdNumber.`)
+    }
+  }
+}
+
+class YaleBabylonianCollection extends Museum {
+  hasFragmentLink(fragment: Fragment) {
+    return fragment.accession !== ''
+  }
+
+  createLinkFor(fragment: Fragment): FragmentLink {
+    if (this.hasFragmentLink(fragment)) {
+      const accession = fragment.accession.replace('.', '-')
+      return {
+        name: this.name,
+        logo: this.logo,
+        url: `https://collections.peabody.yale.edu/search/Record/YPM-${encodeURIComponent(
+          accession
+        )}`,
+        label: this.name,
+      }
+    } else {
+      throw new Error(`Fragment ${fragment.number} does not have accession.`)
     }
   }
 }
@@ -102,6 +120,16 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
     {
       copyright:
         'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',
+    },
+  ],
+  [
+    'Yale Babylonian Collection, Peabody Museum',
+    {
+      logo: ybcLogo,
+      url: 'https://babylonian-collection.yale.edu/',
+      copyright:
+        'Courtesy of the [Yale Babylonian Collection](https://peabody.yale.edu/about-us/terms-use-what-you-need-know)',
+      museumClass: YaleBabylonianCollection,
     },
   ],
 ])

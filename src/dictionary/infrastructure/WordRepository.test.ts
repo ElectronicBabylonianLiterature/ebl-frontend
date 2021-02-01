@@ -3,12 +3,9 @@ import { testDelegation, TestData } from 'test-support/utils'
 import WordRepository from './WordRepository'
 import ApiClient from 'http/ApiClient'
 
-const apiClient = new (ApiClient as jest.Mock<ApiClient>)()
-const mockFetchJson = jest.fn()
-const mockPostJson = jest.fn()
-apiClient.fetchJson = mockFetchJson
-apiClient.postJson = mockPostJson
+jest.mock('http/ApiClient')
 
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 const wordRepository = new WordRepository(apiClient)
 const wordId = '123+123'
 const query = 'the king'
@@ -21,7 +18,7 @@ const testData: TestData[] = [
   [
     'find',
     [wordId],
-    mockFetchJson,
+    apiClient.fetchJson,
     resultStub,
     [`/words/${encodeURIComponent(wordId)}`, true],
     Promise.resolve(resultStub),
@@ -29,7 +26,7 @@ const testData: TestData[] = [
   [
     'search',
     [query],
-    mockFetchJson,
+    apiClient.fetchJson,
     [resultStub],
     [`/words?query=${encodeURIComponent(query)}`, true],
     Promise.resolve([resultStub]),
@@ -37,7 +34,7 @@ const testData: TestData[] = [
   [
     'searchLemma',
     [query],
-    mockFetchJson,
+    apiClient.fetchJson,
     [resultStub],
     [`/words?lemma=${encodeURIComponent(query)}`, true],
     Promise.resolve([resultStub]),
@@ -45,11 +42,12 @@ const testData: TestData[] = [
   [
     'update',
     [word],
-    mockPostJson,
+    apiClient.postJson,
     resultStub,
     [`/words/${encodeURIComponent(word._id)}`, word],
     Promise.resolve(resultStub),
   ],
 ]
-
-testDelegation(wordRepository, testData)
+describe('test word repository', () => {
+  testDelegation(wordRepository, testData)
+})

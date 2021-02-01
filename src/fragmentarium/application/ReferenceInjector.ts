@@ -8,9 +8,9 @@ import {
   BibliographyPart,
   NoteLine,
   NoteLinePart,
-  ReferenceDto,
 } from 'transliteration/domain/note-line'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export default class ReferenceInjector {
   private readonly bibliographyService: BibliographyService

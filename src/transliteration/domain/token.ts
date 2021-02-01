@@ -8,12 +8,14 @@ export type EnclosureType =
   | 'EMENDATION'
   | 'DOCUMENT_ORIENTED_GLOSS'
 
+export type ErasureType = 'NONE' | 'ERASED' | 'OVER_ERASED'
+
 export interface BaseToken {
   readonly type: string
   readonly value: string
   readonly cleanValue: string
   readonly parts?: readonly Token[]
-  readonly erasure?: string
+  readonly erasure?: ErasureType
   readonly enclosureType: readonly EnclosureType[]
 }
 
@@ -39,7 +41,7 @@ export interface ValueToken extends NotLemmatizableToken {
 
 export interface Word extends LemmatizableToken {
   readonly type: 'Word' | 'LoneDeterminative'
-  readonly erasure: string
+  readonly erasure: ErasureType
   readonly parts: readonly Token[]
 }
 
@@ -63,11 +65,6 @@ export interface Shift extends NotLemmatizableToken {
   readonly language: string
 }
 
-export interface Erasure extends NotLemmatizableToken {
-  readonly type: 'Erasure'
-  readonly side: string
-}
-
 export interface Joiner extends NotLemmatizableToken {
   readonly type: 'Joiner'
 }
@@ -85,7 +82,10 @@ export interface Variant extends NotLemmatizableToken {
   readonly type: 'Variant' | 'Variant2'
   readonly tokens: readonly Token[]
 }
-
+export interface EgyptianMetricalFeetSeparator extends NotLemmatizableToken {
+  readonly type: 'EgyptianMetricalFeetSeparator'
+  readonly flags: readonly string[]
+}
 export interface Sign extends NotLemmatizableToken {
   readonly modifiers: readonly string[]
   readonly flags: readonly string[]
@@ -159,7 +159,6 @@ export type Token =
   | AkkadianWord
   | Break
   | Shift
-  | Erasure
   | Joiner
   | UnknownNumberOfSigns
   | UnknownSign
@@ -174,3 +173,4 @@ export type Token =
   | Tabulation
   | CommentaryProtocol
   | Column
+  | EgyptianMetricalFeetSeparator

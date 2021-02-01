@@ -93,7 +93,8 @@ function ChapterView({
         text.category,
         text.index,
         chapterIndex,
-        chapter.manuscripts
+        chapter.manuscripts,
+        chapter.uncertainFragments
       )
     )
   }
