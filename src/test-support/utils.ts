@@ -123,7 +123,7 @@ export function submitFormByTestId(
 export type TestData = [
   string,
   unknown[],
-  jest.Mock,
+  jest.Mock | jest.MockInstance<any, any>,
   unknown,
   (unknown[] | null)?,
   unknown?

@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepository'
 
 export interface BibliographySearch {
   search(query: string): Promise<readonly BibliographyEntry[]>
@@ -8,7 +9,7 @@ export interface BibliographySearch {
 export default class BibliographyService implements BibliographySearch {
   private readonly bibliographyRepository
 
-  constructor(bibliographyRepository) {
+  constructor(bibliographyRepository: BibliographyRepository) {
     this.bibliographyRepository = bibliographyRepository
   }
 

@@ -27,13 +27,13 @@ export default class Citation {
     this.reference = reference
   }
 
-  getMarkdown() {
+  getMarkdown(): string {
     return ''
   }
 }
 
 export class ContainerCitation extends Citation {
-  getMarkdown() {
+  getMarkdown(): string {
     const reference = this.reference
     return [
       `*${reference.shortContainerTitle}*`,
@@ -50,7 +50,7 @@ export class ContainerCitation extends Citation {
 }
 
 export class CompactCitation extends Citation {
-  getMarkdown() {
+  getMarkdown(): string {
     const reference = this.reference
     return [
       this.getAuthor(),
@@ -64,7 +64,7 @@ export class CompactCitation extends Citation {
     ].join('')
   }
 
-  getAuthor() {
+  getAuthor(): string {
     const authors = this.reference.authors
     return authors.length > 3
       ? `${this.reference.primaryAuthor} *et al.*`

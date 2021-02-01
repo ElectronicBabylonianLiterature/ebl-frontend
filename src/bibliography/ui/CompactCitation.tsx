@@ -7,6 +7,6 @@ export default function CompactCitation({
   reference,
 }: {
   reference: Reference
-}) {
+}): JSX.Element {
   return <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
 }

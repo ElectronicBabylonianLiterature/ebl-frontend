@@ -1,10 +1,11 @@
 import React from 'react'
-import { render, screen, act } from '@testing-library/react'
-import { MemoryRouter, Route, Router } from 'react-router-dom'
+import { act, render, screen } from '@testing-library/react'
+import { Router } from 'react-router-dom'
 import Header from './Header'
 import { createMemoryHistory } from 'history'
 import { AuthenticationContext, User } from 'auth/Auth'
 import userEvent from '@testing-library/user-event'
+
 let auth
 
 beforeEach(() => {
@@ -88,9 +89,7 @@ function expectHeaderLabelNotActive(activeLabel: string): void {
 async function renderHeader(loggedIn: boolean, path?: string): Promise<void> {
   auth.isAuthenticated.mockReturnValue(loggedIn)
   const history = createMemoryHistory()
-  {
-    path && history.push(path)
-  }
+  path && history.push(path)
   await act(async () => {
     render(
       <Router history={history}>
