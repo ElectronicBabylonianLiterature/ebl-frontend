@@ -1,20 +1,20 @@
-import Promise from 'bluebird'
+import Bluebird from 'bluebird'
 import _ from 'lodash'
-import {
-  Chapter,
-  Line,
-  LineVariant,
-  Manuscript,
-  ManuscriptLine,
-  Text,
-  TextInfo,
-} from 'corpus/domain/text'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
+import { ChapterAlignment } from 'corpus/domain/alignment'
 import {
   ChapterLemmatization,
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
+import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
+import { Chapter, Manuscript, Text, TextInfo } from 'corpus/domain/text'
+import WordService from 'dictionary/application/WordService'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
+import {
+  LemmatizationToken,
+  UniqueLemma,
+} from 'transliteration/domain/Lemmatization'
+import { Token } from 'transliteration/domain/token'
 import {
   fromDto,
   toAlignmentDto,
@@ -22,34 +22,27 @@ import {
   toLinesDto,
   toManuscriptsDto,
 } from './dtos'
-import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
-import { ChapterAlignment } from 'corpus/domain/alignment'
-import ApiClient from 'http/ApiClient'
-import {
-  LemmatizationToken,
-  UniqueLemma,
-} from 'transliteration/domain/Lemmatization'
 import { Token } from 'transliteration/domain/token'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
   ChapterLemmatization
 > {
-  createLemmatization(chapter: Chapter): Promise<ChapterLemmatization> {
-    return Promise.mapSeries(chapter.lines, (line) =>
-      Promise.mapSeries(line.variants, (variant) =>
+  createLemmatization(chapter: Chapter): Bluebird<ChapterLemmatization> {
+    return Bluebird.mapSeries(chapter.lines, (line) =>
+      Bluebird.mapSeries(line.variants, (variant) =>
         this.lemmatizeVariant(variant)
       )
     )
   }
 
-  private lemmatizeVariant(variant: LineVariant): Promise<LineLemmatization> {
+  private lemmatizeVariant(variant: LineVariant): Bluebird<LineLemmatization> {
     return this.createLemmatizationLine(variant.reconstructionTokens)
       .then((reconstruction) =>
         reconstruction.map((token) => token.applySuggestion())
       )
       .then((reconstruction) =>
-        Promise.mapSeries(variant.manuscripts, (manuscript) =>
+        Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
           this.lemmatizeManuscript(manuscript, reconstruction)
         ).then((lemmatizedManuscripts) => [
           reconstruction,
@@ -61,7 +54,7 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   private lemmatizeManuscript(
     manuscript: ManuscriptLine,
     reconstruction: LemmatizationToken[]
-  ): Promise<LemmatizationToken[]> {
+  ): Bluebird<LemmatizationToken[]> {
     return this.createLemmatizationLine(manuscript.atfTokens).then(
       (lemmatizedManuscript) =>
         lemmatizedManuscript.map((lemmatizationToken, tokenIndex) => {
@@ -109,7 +102,7 @@ export default class TextService {
     this.wordService = wordService
   }
 
-  find(category: string, index: string): Promise<Text> {
+  find(category: string, index: string): Bluebird<Text> {
     return this.apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
@@ -158,14 +151,15 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    manuscripts: readonly Manuscript[]
-  ): Promise<Text> {
+    manuscripts: readonly Manuscript[],
+    uncertainChapters: readonly string[]
+  ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
-        toManuscriptsDto(manuscripts)
+        toManuscriptsDto(manuscripts, uncertainChapters)
       )
       .then(fromDto)
   }

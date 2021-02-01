@@ -77,7 +77,7 @@ function FragmentView({
       }
       actions={
         <ButtonGroup>
-          <Download fragment={fragment} />
+          <Download fragment={fragment} wordService={wordService} />
           <AnnotateButton number={number} disabled={!fragment.hasPhoto} />
         </ButtonGroup>
       }

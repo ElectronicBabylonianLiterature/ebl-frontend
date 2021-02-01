@@ -1,16 +1,18 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
 import {
-  createText,
-  createChapter,
-  createManuscript,
   createLine,
   createManuscriptLine,
-  types,
   createVariant,
-} from 'corpus/domain/text'
+} from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
+import {
+  createChapter,
+  createManuscript,
+  createText,
+  types,
+} from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
 
 const reconstructionTokens: Token[] = [
@@ -135,6 +137,7 @@ export const textDto = {
           ],
         },
       ],
+      uncertainFragments: ['K.1'],
       lines: [
         {
           number: '1',
@@ -175,6 +178,7 @@ export const text = createText({
       version: 'A',
       name: 'The Only Chapter',
       order: 1,
+      uncertainFragments: ['K.1'],
       manuscripts: [
         createManuscript({
           id: 1,

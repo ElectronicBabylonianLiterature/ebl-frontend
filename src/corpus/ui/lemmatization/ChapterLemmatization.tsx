@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react'
 import _ from 'lodash'
-import { Chapter, ManuscriptLine, LineVariant } from 'corpus/domain/text'
+import { ManuscriptLine, LineVariant } from 'corpus/domain/line'
+import { Chapter } from 'corpus/domain/text'
 import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import produce, { castDraft } from 'immer'
 import WordLemmatizer from 'fragmentarium/ui/lemmatization/WordLemmatizer'

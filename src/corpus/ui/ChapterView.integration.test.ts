@@ -1,7 +1,6 @@
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
-import { Chapter } from 'corpus/domain/text'
 
 const category = 1
 const index = 1
@@ -19,6 +18,7 @@ const textDto = {
       name: 'III',
       order: 3,
       manuscripts: [],
+      uncertainFragments: [],
       lines: [],
     },
     {
@@ -41,6 +41,7 @@ const textDto = {
           references: [],
         },
       ],
+      uncertainFragments: [],
       lines: [],
     },
     {
@@ -75,6 +76,7 @@ const textDto = {
           references: [],
         },
       ],
+      uncertainFragments: [],
       lines: [
         {
           number: "1'",
@@ -89,6 +91,7 @@ const textDto = {
                   labels: ['iii'],
                   number: 'a+1',
                   atf: 'kur',
+                  omittedWords: [],
                 },
               ],
             },
@@ -174,6 +177,7 @@ describe('Diplay chapter', () => {
               [property]: newValue,
             },
           ],
+          uncertainFragments: textDto.chapters[1].uncertainFragments,
         }))
       )
       const value = manuscript[property]
@@ -208,10 +212,30 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1,
     }
-    fakeApi.expectUpdateManuscripts(textDto, 0, { manuscripts: [manuscript] })
+    fakeApi.expectUpdateManuscripts(textDto, 0, {
+      manuscripts: [manuscript],
+      uncertainFragments: [],
+    })
     await appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
     await appDriver.click('Save manuscripts')
+  })
+})
+
+test('Uncertain Fragments', async () => {
+  const chapter = textDto.chapters[0]
+  const museumNumber = 'X.1'
+  const label = 'Museum Number'
+
+  await setup(chapter)
+  await appDriver.click('Add fragment')
+  await appDriver.changeValueByLabel(label, museumNumber)
+  appDriver.expectInputElement(label, museumNumber)
+  await appDriver.click('Save manuscripts')
+
+  fakeApi.expectUpdateManuscripts(textDto, 0, {
+    manuscripts: chapter.manuscripts,
+    uncertainFragments: [museumNumber],
   })
 })
 

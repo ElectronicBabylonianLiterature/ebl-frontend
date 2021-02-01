@@ -27,7 +27,7 @@ export default function ReferenceForm({
         <label>Document</label>
         <BibliographySelect
           isClearable={false}
-          aria-label={documentLabelId}
+          ariaLabel={documentLabelId}
           value={value.document}
           searchBibliography={searchBibliography}
           onChange={handleChange('setDocument')}

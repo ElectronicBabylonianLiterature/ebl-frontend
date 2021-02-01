@@ -3447,6 +3447,53 @@ const line18 = new TextLine({
       ],
       type: 'Word',
     },
+    {
+      enclosureType: [],
+      cleanValue: 'a-•',
+      value: 'a-•?',
+      language: 'AKKADIAN',
+      normalized: false,
+      lemmatizable: false,
+      uniqueLemma: [],
+      erasure: 'NONE',
+      alignment: null,
+      variant: null,
+      parts: [
+        {
+          enclosureType: [],
+          cleanValue: 'a',
+          value: 'a',
+          name: 'a',
+          nameParts: [
+            {
+              enclosureType: [],
+              cleanValue: 'a',
+              value: 'a',
+              type: 'ValueToken',
+            },
+          ],
+          subIndex: 1,
+          modifiers: [],
+          flags: [],
+          sign: null,
+          type: 'Reading',
+        },
+        {
+          enclosureType: [],
+          cleanValue: '-',
+          value: '-',
+          type: 'Joiner',
+        },
+        {
+          enclosureType: [],
+          cleanValue: '•',
+          value: '•?',
+          flags: ['?'],
+          type: 'EgyptianMetricalFeetSeparator',
+        },
+      ],
+      type: 'Word',
+    },
   ],
   lineNumber: {
     start: {

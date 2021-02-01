@@ -3,10 +3,13 @@ import { render, act, RenderResult, fireEvent } from '@testing-library/react'
 import factory from 'factory-girl'
 import Download from './Download'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import WordService from 'dictionary/application/WordService'
 
 const atfUrl = 'ATF URL mock'
 const jsonUrl = 'JSON URL mock'
 const teiUrl = 'TEI URL mock'
+const MockWordService = WordService as jest.Mock<WordService>
+const wordServiceMock = new MockWordService()
 let fragment: Fragment
 let element: RenderResult
 
@@ -18,7 +21,9 @@ beforeEach(async () => {
 
   fragment = await factory.build('fragment')
   await act(async () => {
-    element = render(<Download fragment={fragment} />)
+    element = render(
+      <Download fragment={fragment} wordService={wordServiceMock} />
+    )
   })
   await act(async () => {
     fireEvent.click(element.getByRole('button'))

@@ -3,15 +3,22 @@ import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from './TeiExport'
+import WordService from 'dictionary/application/WordService'
+import WordDownloadButton from './WordDownloadButton'
+
+type Props = {
+  fragment: Fragment
+  wordService: WordService
+}
 
 export default function Download({
   fragment,
-}: {
-  fragment: Fragment
-}): JSX.Element {
+  wordService,
+}: Props): JSX.Element {
   const [json, setJson] = useState<string>()
   const [atf, setAtf] = useState<string>()
   const [xml, setTei] = useState<string>()
+
   useEffect(() => {
     const teiUrl = URL.createObjectURL(
       new Blob([TeiExport.teiExport(fragment)], {
@@ -51,9 +58,9 @@ export default function Download({
       <Dropdown.Item eventKey="1" disabled>
         Download as PDF
       </Dropdown.Item>
-      <Dropdown.Item eventKey="2" disabled>
-        Download as Word Document
-      </Dropdown.Item>
+      <WordDownloadButton fragment={fragment} wordService={wordService}>
+        Download as Word
+      </WordDownloadButton>
       <Dropdown.Item
         eventKey="3"
         href={atf}
