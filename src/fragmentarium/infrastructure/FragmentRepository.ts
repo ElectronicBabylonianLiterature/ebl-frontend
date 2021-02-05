@@ -69,6 +69,9 @@ const lineClases = {
   ObjectAtLine: ObjectAtLine,
   DivisionAtLine: DivisionAtLine,
   CompositeAtLine: CompositeAtLine,
+  ParallelFragment: ControlLine,
+  ParallelText: ControlLine,
+  ParallelComposition: ControlLine,
 }
 
 function createText(text): Text {
