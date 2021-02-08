@@ -64,6 +64,7 @@
     "fast-xml-parser": "^3.17.4",
     "file-saver": "^2.0.5",
     "html-to-react": "^1.3.4",
+    "iconv-lite": "^0.6.2",
     "immer": "^8.0.1",
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",

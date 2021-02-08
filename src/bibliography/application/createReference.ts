@@ -1,11 +1,10 @@
 import Promise from 'bluebird'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export default function createReference(
-  data: {
-    [x: string]: any
-  },
+  data: ReferenceDto,
   bibliographyRepository: {
     find: (x0: string) => Promise<BibliographyEntry>
   }

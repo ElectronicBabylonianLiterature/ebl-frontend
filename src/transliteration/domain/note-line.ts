@@ -1,6 +1,7 @@
 import { Token } from './token'
 import Reference from 'bibliography/domain/Reference'
 import { AbstractLine, LineBaseDto } from './abstract-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export interface TextPart {
   readonly type: 'StringPart' | 'EmphasisPart'
@@ -11,14 +12,6 @@ export interface LanguagePart {
   readonly type: 'LanguagePart'
   readonly language: 'AKKADIAN' | 'SUMERIAN' | 'EMESAL'
   readonly tokens: readonly Token[]
-}
-
-export interface ReferenceDto {
-  readonly id: string
-  readonly type: 'DISCUSSION'
-  readonly pages: string
-  readonly notes: ''
-  readonly linesCited: []
 }
 
 export interface BibliographyPart {

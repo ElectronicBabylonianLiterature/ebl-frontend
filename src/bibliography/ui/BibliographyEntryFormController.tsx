@@ -22,15 +22,15 @@ export default class BibliographyEntryFormController extends Component<
     }
     this.updatePromise = Promise.resolve()
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.updatePromise.cancel()
   }
 
-  get disabled() {
+  get disabled(): boolean {
     return this.state.saving || !this.context.isAllowedToWriteBibliography()
   }
 
-  handleSubmit = (entry) => {
+  handleSubmit = (entry): void => {
     this.updatePromise.cancel()
     this.setState({ error: null, saving: true })
     this.updatePromise = this.props
@@ -41,7 +41,7 @@ export default class BibliographyEntryFormController extends Component<
       })
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <>
         <BibliographyEntryForm

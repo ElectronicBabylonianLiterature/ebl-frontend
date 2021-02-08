@@ -22,6 +22,7 @@ import {
   toLinesDto,
   toManuscriptsDto,
 } from './dtos'
+import ApiClient from 'http/ApiClient'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -87,12 +88,12 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
 }
 
 export default class TextService {
-  private readonly apiClient
+  private readonly apiClient: ApiClient
   private readonly wordService: WordService
   private readonly fragmentService: FragmentService
 
   constructor(
-    apiClient,
+    apiClient: ApiClient,
     fragmentService: FragmentService,
     wordService: WordService
   ) {
@@ -101,7 +102,7 @@ export default class TextService {
     this.wordService = wordService
   }
 
-  find(category: number, index: number): Bluebird<Text> {
+  find(category: string, index: string): Bluebird<Text> {
     return this.apiClient
       .fetchJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
@@ -150,14 +151,15 @@ export default class TextService {
     category: number,
     index: number,
     chapterIndex: number,
-    manuscripts: readonly Manuscript[]
+    manuscripts: readonly Manuscript[],
+    uncertainChapters: readonly string[]
   ): Bluebird<Text> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
         )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
-        toManuscriptsDto(manuscripts)
+        toManuscriptsDto(manuscripts, uncertainChapters)
       )
       .then(fromDto)
   }

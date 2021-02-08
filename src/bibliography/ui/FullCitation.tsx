@@ -6,7 +6,11 @@ import Reference from 'bibliography/domain/Reference'
 
 import './FullCitation.css'
 
-export default function FullCitation({ reference }: { reference: Reference }) {
+export default function FullCitation({
+  reference,
+}: {
+  reference: Reference
+}): JSX.Element {
   const parser = new Parser()
   const citation = reference.toHtml()
   const parsed = parser.parse(citation)

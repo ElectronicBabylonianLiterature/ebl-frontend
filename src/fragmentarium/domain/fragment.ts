@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import * as Moment from 'moment'
 import { extendMoment, DateRange } from 'moment-range'
-import produce, { Draft, immerable } from 'immer'
+import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
 import { Text } from 'transliteration/domain/text'
@@ -197,9 +197,9 @@ export class Fragment {
     return this.record.reduce(reducer, [])
   }
 
-  setReferences(references: Array<Reference>): Fragment {
+  setReferences(references: ReadonlyArray<Reference>): Fragment {
     return produce(this, (draft: Draft<Fragment>) => {
-      draft.references = references
+      draft.references = castDraft(references)
     })
   }
 

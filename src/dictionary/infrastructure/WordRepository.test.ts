@@ -1,11 +1,11 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import WordRepository from './WordRepository'
+import ApiClient from 'http/ApiClient'
 
-const apiClient = {
-  fetchJson: jest.fn(),
-  postJson: jest.fn(),
-}
+jest.mock('http/ApiClient')
+
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
 const wordRepository = new WordRepository(apiClient)
 const wordId = '123+123'
 const query = 'the king'
@@ -48,5 +48,6 @@ const testData: TestData[] = [
     Promise.resolve(resultStub),
   ],
 ]
-
-testDelegation(wordRepository, testData)
+describe('test word repository', () => {
+  testDelegation(wordRepository, testData)
+})

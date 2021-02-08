@@ -10,6 +10,7 @@ import {
   NoteLinePart,
 } from 'transliteration/domain/note-line'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
 
 export default class ReferenceInjector {
   private readonly bibliographyService: BibliographyService
@@ -43,7 +44,10 @@ export default class ReferenceInjector {
             .flatMap((line: Draft<NoteLine>) => line.parts)
             .filter(isBibliographyPart)
             .map((part: Draft<BibliographyPart>) =>
-              createReference(part.reference, this.bibliographyService)
+              createReference(
+                part.reference as ReferenceDto,
+                this.bibliographyService
+              )
                 .then((reference): void => {
                   part.reference = castDraft(reference)
                 })

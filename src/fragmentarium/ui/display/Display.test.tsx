@@ -16,7 +16,7 @@ let element: RenderResult
 let container: Element
 
 beforeEach(async () => {
-  wordService = new WordService(null)
+  wordService = new (WordService as jest.Mock<WordService>)()
   jest
     .spyOn(wordService, 'find')
     .mockImplementation(() => Promise.resolve(wordDto))

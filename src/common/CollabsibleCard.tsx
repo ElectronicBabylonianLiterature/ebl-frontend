@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Card, Collapse } from 'react-bootstrap'
 
-function CollapseIndicator({ open }) {
+function CollapseIndicator({ open }: { open: boolean }): JSX.Element {
   return (
     <i
       data-testid="CollapseIndicator"
@@ -30,7 +30,7 @@ export class CollapsibleCard extends Component<
     this.collapseId = _.uniqueId('List-collapse-')
   }
 
-  render() {
+  render(): JSX.Element {
     const toggleState = () => this.setState({ open: !this.state.open })
     return (
       <Card border="light">
