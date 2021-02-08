@@ -5,10 +5,9 @@ import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
 import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
-import { Packer } from 'docx'
+import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
-import { Document } from 'docx'
 import usePromiseEffect from 'common/usePromiseEffect'
 
 type Props = {
