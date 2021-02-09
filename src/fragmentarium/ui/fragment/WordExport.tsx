@@ -433,8 +433,8 @@ function getTextRun(el: any) {
   const text: string = el.text()
   const superScript: boolean = el.is('sup') ? true : false
   const smallCaps: boolean =
-    el.css('font-variant') === 'small-caps' ? true : false
-  const size: number = el.css('font-variant') === 'small-caps' ? 16 : 24
+    el.css('font-variant') === 'all-small-caps' ? true : false
+  const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
 
   return new TextRun({
     text: text,
