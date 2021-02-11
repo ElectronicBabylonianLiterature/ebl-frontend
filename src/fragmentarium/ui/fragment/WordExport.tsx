@@ -121,7 +121,12 @@ function getMainTableWithFootnotes(
           $(el)
             .find('span,em,sup')
             .each((i, el) => {
-              getTransliterationText($(el), runs)
+              if (
+                $(el).contents().text().length > 0 &&
+                $(el).contents()[0].nodeType === 3
+              ) {
+                getTransliterationText($(el), runs)
+              }
             })
         } else if (lineType !== 'rulingDollarLine') {
           runs.push(getTextRun($(el)))
