@@ -28,6 +28,7 @@ describe.each([
         language: 'AKKADIAN',
         normalized: false,
         lemmatizable: true,
+        alignable: true,
         suggested: suggested,
       }
       element = render(<Word token={token} />)

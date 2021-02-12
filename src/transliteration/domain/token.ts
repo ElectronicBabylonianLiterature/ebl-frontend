@@ -30,6 +30,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly language: string
   readonly normalized: boolean
   readonly lemmatizable: boolean
+  readonly alignable: boolean
   readonly uniqueLemma: readonly string[]
   readonly alignment: number | null
   readonly variant: Word | AkkadianWord | null
