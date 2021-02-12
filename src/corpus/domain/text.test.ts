@@ -167,7 +167,7 @@ describe('Chapter', () => {
                   variant: {
                     value: 'ra',
                     language: 'AKKADIAN',
-                    isNormalized: true,
+                    isNormalized: false,
                   },
                   isAlignable: true,
                   suggested: false,

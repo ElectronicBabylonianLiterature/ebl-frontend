@@ -44,7 +44,7 @@ const alignmentDto = {
               alignment: 1,
               variant: 'ra',
               language: 'AKKADIAN',
-              isNormalized: true,
+              isNormalized: false,
             },
             {
               value: '...',

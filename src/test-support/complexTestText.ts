@@ -4,6 +4,7 @@ import { commentaryProtocols } from 'test-support/lines/text-commentary-protocol
 import * as at from 'test-support/lines/at'
 import * as columns from 'test-support/lines/text-columns'
 import * as normalized from 'test-support/lines/text-normalized'
+import * as greek from 'test-support/lines/text-greek'
 import * as composite from 'test-support/lines/composite'
 import * as control from 'test-support/lines/control'
 import * as dollar from 'test-support/lines/dollar'
@@ -3608,5 +3609,8 @@ export default new Text({
     control.comment,
     normalized.akkadianWords,
     normalized.breaks,
+    greek.greek,
+    greek.akkadian,
+    greek.sumerian,
   ],
 })

@@ -85,7 +85,7 @@ const atfTokens: Token[] = [
       parts: [],
       cleanValue: 'ra',
       uniqueLemma: ['aklu I'],
-      normalized: true,
+      normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
       alignable: true,

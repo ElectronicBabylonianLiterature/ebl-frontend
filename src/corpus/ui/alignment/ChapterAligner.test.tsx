@@ -44,7 +44,7 @@ test('Align word', async () => {
               variant: {
                 value: 'ra',
                 language: 'AKKADIAN',
-                isNormalized: true,
+                isNormalized: false,
               },
               isAlignable: true,
               suggested: false,
