@@ -1,5 +1,6 @@
 import produce, { castDraft, Draft, immerable } from 'immer'
 import { Token } from 'transliteration/domain/token'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface Variant {
   readonly value: string
@@ -59,7 +60,7 @@ export class ChapterAlignment {
 }
 
 export function createAlignmentToken(token: Token): AlignmentToken {
-  return 'variant' in token && token.alignable
+  return isAnyWord(token) && token.alignable
     ? {
         value: token.value,
         alignment: token.alignment,
