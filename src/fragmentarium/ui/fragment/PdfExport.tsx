@@ -2,17 +2,6 @@ import React from 'react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Record from 'fragmentarium/ui/info/Record'
 
-import {
-  HeadingLevel,
-  Paragraph,
-  TextRun,
-  BorderStyle,
-  WidthType,
-  AlignmentType,
-  HyperlinkRef,
-  HyperlinkType,
-  FootnoteReferenceRun,
-} from 'docx'
 import { ReactElement } from 'react'
 import TransliterationLines from 'transliteration/ui/TransliterationLines'
 import TransliterationNotes from 'transliteration/ui/TransliterationNotes'
@@ -59,22 +48,26 @@ async function getPdfDoc(
 
   addCustomFonts(doc)
 
-  let yPos = 15
+  const initialPos = 15
 
   tableHtml.show()
   jQueryRef.show()
 
-  yPos = addPdfHeadLine(doc, fragment, yPos)
-  yPos += 10
+  let posAfterHeadline = addPdfHeadLine(doc, fragment, initialPos)
+  posAfterHeadline += 10
 
-  yPos = addMainTableWithFootnotes(tableHtml, notesHtml, jQueryRef, yPos, doc)
+  const posAfterTable = addMainTableWithFootnotes(
+    tableHtml,
+    notesHtml,
+    jQueryRef,
+    posAfterHeadline,
+    doc
+  )
 
   const glossaryHtml = await getGlossaryHtml(wordService, fragment)
 
   if (glossaryHtml.find('div').length > 0)
-    yPos = addGlossary(glossaryHtml, jQueryRef, yPos, doc)
-
-  doc.save(fragment.number + '.pdf')
+    addGlossary(glossaryHtml, jQueryRef, posAfterTable, doc)
 
   return doc
 }
@@ -130,10 +123,10 @@ function addPdfHeadLine(doc, fragment, yPos) {
     doc.internal.pageSize.width - outerPaddingForCredits
   )
 
-  creditsSplit.map((c) => {
-    doc.text(c, centerText(doc, c), yPos)
+  for (const key in creditsSplit) {
+    doc.text(creditsSplit[key], centerText(doc, creditsSplit[key]), yPos)
     yPos += currentLineHeight
-  })
+  }
 
   return yPos
 }
@@ -193,8 +186,6 @@ function addMainTableWithFootnotes(
   const firstColumnMinWidth = getFirstColumnSize(tablelines, doc)
   const firstColumnSize = outerPaddingForTable + firstColumnMinWidth
 
-  const footNotesCounter = 1
-
   let maxRowOffset = 0
   const linePositions = {}
   let maxXPos = 0
@@ -205,16 +196,6 @@ function addMainTableWithFootnotes(
     firstColumnMinWidth,
     doc
   )
-  const underLineWidth = getUnderLineWidth(
-    table,
-    jQueryRef,
-    outerPaddingForTable,
-    firstColumnMinWidth,
-    doc
-  )
-
-  const rows = []
-  // const footNotes: Paragraph[] = []
 
   let xPos = 0
 
@@ -224,8 +205,6 @@ function addMainTableWithFootnotes(
     const nextLineType = getLineTypeByHtml(nextElement)
 
     if (lineType === 'emptyLine') return
-
-    const tds = []
 
     if (xPos > maxRowOffset) {
       maxRowOffset = xPos
@@ -249,7 +228,7 @@ function addMainTableWithFootnotes(
         xPos = columnDefs['startpos']
         const tdIdx = i
 
-        if ($(el).next().length == 0 || $(el).next().next().length == 0)
+        if ($(el).next().length === 0 || $(el).next().next().length === 0)
           lastElement = true
 
         const colspan: string | undefined = $(el).is('[colspan]')
@@ -267,7 +246,7 @@ function addMainTableWithFootnotes(
                 $(el).contents().text().length > 0 &&
                 $(el).contents()[0].nodeType === 3
               ) {
-                if (i == 0 && $(el).text() == ' ') return
+                if (i === 0 && $(el).text() === ' ') return
 
                 const test =
                   xPos + getTransliterationText(el, doc, xPos, yPos, false)
@@ -338,7 +317,7 @@ function addMainTableWithFootnotes(
         }
       }) //td
 
-    if (nextLineType == 'rulingDollarLine') {
+    if (nextLineType === 'rulingDollarLine') {
       yPos += getLineHeight(doc) / 2
     } else {
       yPos = moveOneRowDown(yPos, doc)
@@ -423,7 +402,6 @@ function getColumnSizes(
   })
 
   let startpos = outerPaddingForTable
-  const len = $(firstRowWithMaxChildren).find('td').length
 
   $(firstRowWithMaxChildren)
     .find('td')
@@ -434,7 +412,7 @@ function getColumnSizes(
       if (outerWidth && tableWidth) percentage = outerWidth / tableWidth
       let docWidth = doc.internal.pageSize.width - outerPaddingForTable * 2
 
-      if (i == 0) {
+      if (i === 0) {
         docWidth = firstColumnMinWidth
         percentage = 1
       }
@@ -444,30 +422,13 @@ function getColumnSizes(
       columnSizes[i]['width'] = docWidth * percentage
       columnSizes[i]['endpos'] = startpos + docWidth * percentage
 
-      columnSizes[i]['firstElement'] = i == 0 ? true : false
+      columnSizes[i]['firstElement'] = i === 0 ? true : false
       startpos += docWidth * percentage
     })
 
   unSetJQueryRef1000Px(jQueryRef)
 
   return columnSizes
-}
-
-function getUnderLineWidth(
-  table,
-  jQueryRef,
-  outerPaddingForTable,
-  firstColumnSize,
-  doc
-) {
-  setJQueryRefTo1000Px(jQueryRef)
-
-  const docWidth = doc.internal.pageSize.width - outerPaddingForTable * 2
-  const ratio = table.find('tbody').outerWidth() / jQueryRef.outerWidth()
-
-  unSetJQueryRef1000Px(jQueryRef)
-
-  return docWidth * ratio - firstColumnSize
 }
 
 function setJQueryRefTo1000Px(jQueryRef) {
@@ -527,7 +488,6 @@ function addGlossary(glossaryHtml, jQueryRef, yPos, doc) {
   jQueryRef.append(glossaryHtml)
 
   const paddingForGlossary = 17
-  const xPos = paddingForGlossary
 
   yPos += 3
 
@@ -570,8 +530,6 @@ function addGlossary(glossaryHtml, jQueryRef, yPos, doc) {
   })
 
   glossaryHtml.remove()
-
-  return yPos
 }
 
 function addText(text, xPos, yPos, doc) {
@@ -755,13 +713,6 @@ function getLineTypeByHtml(element: JQuery): string {
 
 function isNoteCell(element: JQuery) {
   return element.find('.Transliteration__NoteLink').length > 0 ? true : false
-}
-
-function getHyperLinkParagraph(): Paragraph {
-  return new Paragraph({
-    children: [new HyperlinkRef('headLink')],
-    alignment: AlignmentType.CENTER,
-  })
 }
 
 function getHyperLink(fragment: Fragment) {

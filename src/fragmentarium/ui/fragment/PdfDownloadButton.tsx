@@ -3,12 +3,9 @@ import { pdfExport } from './PdfExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
-import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
-import { Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
-import { Document } from 'docx'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { jsPDF } from 'jspdf'
 
@@ -31,50 +28,12 @@ export default function PdfDownloadButton({
     setIsLoading(true)
     cancelPromise()
 
-    // setPromise(
-    //   getWordDoc(fragment, wordService, jQueryRef)
-    //     .then(packWordDoc)
-    //     .then((blob) => {
-    //       saveAs(blob, `${fragment.number}.docx`)
-    //       setIsLoading(false)
-    //     })
-    // )
-
-    pdfExport(fragment, wordService, jQueryRef)
-
-    // setPromise(
-
-    // .then((doc) => {
-
-    // var options = {
-    // styleMap: [
-    // "comment-reference => sup"
-    // ]
-    // };
-
-    // var xy = convertToHtml({arrayBuffer: buffer}, options);
-    // xy.then((html) =>{
-
-    // const pdfdoc = new jsPDF();
-
-    // pdfdoc.html(html.value, {
-    // callback: function (doc) {
-    // doc.save();
-    // },
-    // x: 10,
-    // y: 10
-    // });
-
-    //   // var element = document.getElementById('root');
-    //   //  html2pdf(element)
-
-    // })
-
-    // setIsLoading(false)
-
-    // })
-
-    // )
+    setPromise(
+      getPdfDoc(fragment, wordService, jQueryRef).then((doc) => {
+        doc.save(fragment.number + '.pdf')
+        setIsLoading(false)
+      })
+    )
   }
 
   return (
@@ -87,24 +46,12 @@ export default function PdfDownloadButton({
   )
 }
 
-// function getPdfDoc(
-//   fragment: Fragment,
-//   wordService: WordService,
-//   jQueryRef: JQuery
-// ): Promise<Document> {
-//   return new Promise(function (resolve) {
-//     resolve(pdfExport(fragment, wordService, jQueryRef))
-//   })
-// }
-
-function packWordDoc(doc: Document): Promise<Blob> {
+function getPdfDoc(
+  fragment: Fragment,
+  wordService: WordService,
+  jQueryRef: JQuery
+): Promise<jsPDF> {
   return new Promise(function (resolve) {
-    resolve(Packer.toBlob(doc))
-  })
-}
-
-function packWordDocToBuffer(doc: Document): Promise<Buffer> {
-  return new Promise(function (resolve) {
-    resolve(Packer.toBuffer(doc))
+    resolve(pdfExport(fragment, wordService, jQueryRef))
   })
 }
