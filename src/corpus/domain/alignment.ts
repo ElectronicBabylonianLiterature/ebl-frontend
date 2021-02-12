@@ -59,7 +59,7 @@ export class ChapterAlignment {
 }
 
 export function createAlignmentToken(token: Token): AlignmentToken {
-  return token.lemmatizable
+  return 'variant' in token && token.alignable
     ? {
         value: token.value,
         alignment: token.alignment,

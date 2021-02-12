@@ -48,7 +48,7 @@ function ManuscriptAligner(props: {
       <Col md={7}>
         {props.manuscriptLine.atfTokens.map((token, index) => (
           <span key={index}>
-            {token.lemmatizable ? (
+            {'variant' in token && token.alignable ? (
               <WordAligner
                 token={props.alignment.alignment[index]}
                 reconstructionTokens={props.line.reconstructionTokens}
