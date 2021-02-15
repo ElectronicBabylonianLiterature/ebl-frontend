@@ -10,6 +10,7 @@ import {
   Sign,
   EnclosureType,
   EgyptianMetricalFeetSeparator,
+  GreekLetter,
 } from 'transliteration/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -124,6 +125,7 @@ function UnknownSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
     </DamagedFlag>
   )
 }
+
 function EgyptianMetricalFeetSeparatorComponent({
   token,
   Wrapper,
@@ -204,6 +206,20 @@ function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
+function GreekLetterComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  const letter = token as GreekLetter
+  return (
+    <DamagedFlag sign={letter} Wrapper={Wrapper}>
+      <Wrapper>
+        <EnclosureFlags token={letter}>
+          {letter.letter}
+          <Flags flags={letter.flags} />
+        </EnclosureFlags>
+      </Wrapper>
+    </DamagedFlag>
+  )
+}
+
 function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
   return (
     <Wrapper>
@@ -238,6 +254,7 @@ const tokens: ReadonlyMap<
   ['LinguisticGloss', GlossComponent],
   ['Tabulation', TabulationComponent],
   ['LineBreak', LineBreakComponent],
+  ['GreekLetter', GreekLetterComponent],
 ])
 
 export default function DisplayToken({

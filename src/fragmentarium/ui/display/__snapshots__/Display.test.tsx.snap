@@ -5789,6 +5789,9 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     Α
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </span>
@@ -5837,9 +5840,24 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__GreekLetter"
                 >
                   <span
+                    class="Transliteration__bracket"
+                  >
+                    ⸢
+                  </span>
+                  <span
                     class="Transliteration__GreekLetter--BROKEN_AWAY"
                   >
-                    Α#?
+                    Α
+                    <sup
+                      class="Transliteration__flag"
+                    >
+                      ?
+                    </sup>
+                  </span>
+                  <span
+                    class="Transliteration__bracket"
+                  >
+                    ⸣
                   </span>
                 </span>
                 <span
@@ -5858,6 +5876,9 @@ exports[`Snapshot 1`] = `
                     class=""
                   >
                     Α
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </span>
@@ -5908,7 +5929,12 @@ exports[`Snapshot 1`] = `
                   <span
                     class="Transliteration__GreekLetter--BROKEN_AWAY"
                   >
-                    Α!
+                    Α
+                    <sup
+                      class="Transliteration__flag"
+                    >
+                      !
+                    </sup>
                   </span>
                 </span>
               </span>
