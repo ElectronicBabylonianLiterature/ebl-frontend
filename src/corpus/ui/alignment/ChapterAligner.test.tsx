@@ -32,6 +32,7 @@ test('Align word', async () => {
               alignment: 1,
               variant: {
                 value: 'variant',
+                type: 'AkkadianWord',
                 language: 'AKKADIAN',
                 isNormalized: true,
               },
@@ -43,6 +44,7 @@ test('Align word', async () => {
               alignment: 1,
               variant: {
                 value: 'ra',
+                type: 'Word',
                 language: 'AKKADIAN',
                 isNormalized: false,
               },

@@ -166,6 +166,7 @@ describe('Chapter', () => {
                   alignment: 1,
                   variant: {
                     value: 'ra',
+                    type: 'Word',
                     language: 'AKKADIAN',
                     isNormalized: false,
                   },

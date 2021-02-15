@@ -4,6 +4,7 @@ import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface Variant {
   readonly value: string
+  readonly type: string
   readonly language: string
   readonly isNormalized: boolean
 }
@@ -66,6 +67,7 @@ export function createAlignmentToken(token: Token): AlignmentToken {
         alignment: token.alignment,
         variant: token.variant && {
           value: token.variant.value,
+          type: token.type,
           language: token.variant.language,
           isNormalized: token.variant.normalized,
         },
