@@ -168,7 +168,6 @@ describe('Chapter', () => {
                     value: 'ra',
                     type: 'Word',
                     language: 'AKKADIAN',
-                    isNormalized: false,
                   },
                   isAlignable: true,
                   suggested: false,

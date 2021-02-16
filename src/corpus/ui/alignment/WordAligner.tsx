@@ -31,7 +31,6 @@ function AlignmentForm(props: AlignerProps) {
                 value: variant,
                 type: token.type,
                 language: token.language,
-                isNormalized: token.normalized,
               }
             : null,
           isAlignable: true,

@@ -6,7 +6,6 @@ interface Variant {
   readonly value: string
   readonly type: string
   readonly language: string
-  readonly isNormalized: boolean
 }
 
 export type AlignmentToken =
@@ -67,9 +66,8 @@ export function createAlignmentToken(token: Token): AlignmentToken {
         alignment: token.alignment,
         variant: token.variant && {
           value: token.variant.value,
-          type: token.type,
+          type: token.variant.type,
           language: token.variant.language,
-          isNormalized: token.variant.normalized,
         },
         isAlignable: true,
         suggested: false,
