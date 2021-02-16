@@ -52,7 +52,7 @@ export class ApiError extends Error {
   }
 
   static bodyToMessage(
-    body: { description?: unknown; title?: unknown },
+    body: { [key: string]: unknown },
     statusText: string
   ): string {
     if (_.isString(body.description)) {
@@ -62,7 +62,7 @@ export class ApiError extends Error {
       const description = body.description
         ? ': ' + JSON.stringify(body.description)
         : ''
-      return `${description}${title}`
+      return `${title}${description}`
     } else {
       return JSON.stringify(body)
     }
