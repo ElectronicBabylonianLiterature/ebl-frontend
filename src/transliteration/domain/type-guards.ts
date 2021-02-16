@@ -60,10 +60,14 @@ export function isAkkadianWord(token: Token): token is AkkadianWord {
   return token.type === 'AkkadianWord'
 }
 
+export function isGreekWord(token: Token): token is GreekWord {
+  return token.type === 'GreekWord'
+}
+
 export function isAnyWord(
   token: Token
 ): token is Word | AkkadianWord | GreekWord {
-  return 'variant' in token
+  return isWord(token) || isAkkadianWord(token) || isGreekWord(token)
 }
 
 export function isNamedSign(token: Token): token is NamedSign {
