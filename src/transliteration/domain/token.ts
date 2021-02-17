@@ -62,6 +62,8 @@ export interface GreekWord extends LemmatizableToken {
   readonly language: 'GREEK' | 'AKKADIAN' | 'SUMERIAN'
 }
 
+export type AnyWord = Word | AkkadianWord | GreekWord
+
 export interface Break extends NotLemmatizableToken {
   readonly type: 'MetricalFootSeparator' | 'Caesura'
   readonly value: '|' | '(|)' | '||' | '(||)'
@@ -172,8 +174,6 @@ export interface Column extends NotLemmatizableToken {
 
 export type Token =
   | ValueToken
-  | Word
-  | AkkadianWord
   | Break
   | Shift
   | Joiner
@@ -191,5 +191,5 @@ export type Token =
   | CommentaryProtocol
   | Column
   | EgyptianMetricalFeetSeparator
-  | GreekWord
   | GreekLetter
+  | AnyWord

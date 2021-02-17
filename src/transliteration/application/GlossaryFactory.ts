@@ -4,7 +4,7 @@ import { GlossaryData, GlossaryToken } from 'transliteration/domain/glossary'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import Label from 'transliteration/domain/Label'
-import { Word as TransliterationWord } from 'transliteration/domain/token'
+import { AnyWord } from 'transliteration/domain/token'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { TextLine } from 'transliteration/domain/text-line'
 import {
@@ -12,7 +12,7 @@ import {
   isObjectAtLine,
   isSurfaceAtLine,
   isColumnAtLine,
-  isWord,
+  isAnyWord,
 } from 'transliteration/domain/type-guards'
 
 type LabeledLine = readonly [Label, TextLine]
@@ -71,8 +71,8 @@ export default class GlossaryFactory {
     GlossaryToken
   >[] {
     return line.content
-      .filter(isWord)
-      .filter((token: TransliterationWord) => token.lemmatizable)
+      .filter(isAnyWord)
+      .filter((token: AnyWord) => token.lemmatizable)
       .flatMap((token): Promise<GlossaryToken>[] =>
         this.createTokensForWord(label, token)
       )
@@ -80,7 +80,7 @@ export default class GlossaryFactory {
 
   private createTokensForWord(
     label: Label,
-    transliterationWord: TransliterationWord
+    transliterationWord: AnyWord
   ): Promise<GlossaryToken>[] {
     return (
       transliterationWord.uniqueLemma?.map((lemma) =>
@@ -91,7 +91,7 @@ export default class GlossaryFactory {
 
   private createToken(
     label: Label,
-    transliterationWord: TransliterationWord,
+    transliterationWord: AnyWord,
     lemma: string
   ): Promise<GlossaryToken> {
     return this.dictionary

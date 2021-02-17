@@ -22,6 +22,7 @@ import {
   UnknownNumberOfSigns,
   NamedSign,
   GreekWord,
+  AnyWord,
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
@@ -64,9 +65,7 @@ export function isGreekWord(token: Token): token is GreekWord {
   return token.type === 'GreekWord'
 }
 
-export function isAnyWord(
-  token: Token
-): token is Word | AkkadianWord | GreekWord {
+export function isAnyWord(token: Token): token is AnyWord {
   return isWord(token) || isAkkadianWord(token) || isGreekWord(token)
 }
 
