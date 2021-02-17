@@ -73,6 +73,7 @@ beforeEach(async () => {
               normalized: false,
               language: 'AKKADIAN',
               lemmatizable: true,
+              alignable: true,
               erasure: 'NONE',
               enclosureType: [],
               alignment: 1,
@@ -87,6 +88,7 @@ beforeEach(async () => {
               normalized: false,
               language: 'AKKADIAN',
               lemmatizable: true,
+              alignable: true,
               erasure: 'NONE',
               alignment: 1,
               variant: {
@@ -98,6 +100,7 @@ beforeEach(async () => {
                 normalized: false,
                 language: 'AKKADIAN',
                 lemmatizable: true,
+                alignable: true,
                 erasure: 'NONE',
                 alignment: null,
                 variant: null,

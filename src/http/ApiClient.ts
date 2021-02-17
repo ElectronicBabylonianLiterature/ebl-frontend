@@ -46,14 +46,33 @@ export class ApiError extends Error {
       .json()
       .then(
         (body) =>
-          new ApiError(
-            _.isString(body.description)
-              ? body.description
-              : body.title || response.statusText,
-            body
-          )
+          new ApiError(ApiError.bodyToMessage(body, response.statusText), body)
       )
       .catch(() => new ApiError(response.statusText, {}))
+  }
+
+  static bodyToMessage(
+    body: { [key: string]: unknown },
+    statusText: string
+  ): string {
+    if (_.isString(body.description)) {
+      return body.description
+    } else if (body.description || body.title) {
+      return ApiError.titleAndDescriptionToMessage(body, statusText)
+    } else {
+      return JSON.stringify(body)
+    }
+  }
+
+  private static titleAndDescriptionToMessage(
+    body: { [key: string]: unknown },
+    statusText: string
+  ) {
+    const title = body.title || statusText
+    const description = body.description
+      ? ': ' + JSON.stringify(body.description)
+      : ''
+    return `${title}${description}`
   }
 }
 

@@ -30,6 +30,7 @@ export interface LemmatizableToken extends BaseToken {
   readonly language: string
   readonly normalized: boolean
   readonly lemmatizable: boolean
+  readonly alignable: boolean
   readonly uniqueLemma: readonly string[]
   readonly alignment: number | null
   readonly variant: Word | AkkadianWord | null
@@ -43,6 +44,7 @@ export interface Word extends LemmatizableToken {
   readonly type: 'Word' | 'LoneDeterminative'
   readonly erasure: ErasureType
   readonly parts: readonly Token[]
+  readonly normalized: false
 }
 
 export interface AkkadianWord extends LemmatizableToken {
@@ -51,6 +53,13 @@ export interface AkkadianWord extends LemmatizableToken {
   readonly modifiers: readonly string[]
   readonly normalized: true
   readonly language: 'AKKADIAN'
+}
+
+export interface GreekWord extends LemmatizableToken {
+  readonly type: 'GreekWord'
+  readonly parts: readonly Token[]
+  readonly normalized: false
+  readonly language: 'GREEK' | 'AKKADIAN' | 'SUMERIAN'
 }
 
 export interface Break extends NotLemmatizableToken {
@@ -82,10 +91,12 @@ export interface Variant extends NotLemmatizableToken {
   readonly type: 'Variant' | 'Variant2'
   readonly tokens: readonly Token[]
 }
+
 export interface EgyptianMetricalFeetSeparator extends NotLemmatizableToken {
   readonly type: 'EgyptianMetricalFeetSeparator'
   readonly flags: readonly string[]
 }
+
 export interface Sign extends NotLemmatizableToken {
   readonly modifiers: readonly string[]
   readonly flags: readonly string[]
@@ -103,6 +114,12 @@ export interface NamedSign extends Sign {
 export interface Divider extends Sign {
   readonly type: 'Divider'
   readonly divider: string
+}
+
+export interface GreekLetter extends NotLemmatizableToken {
+  readonly type: 'GreekLetter' | 'UnclearSign'
+  readonly letter: string
+  readonly flags: readonly string[]
 }
 
 export interface LineBreak extends NotLemmatizableToken {
@@ -174,3 +191,5 @@ export type Token =
   | CommentaryProtocol
   | Column
   | EgyptianMetricalFeetSeparator
+  | GreekWord
+  | GreekLetter

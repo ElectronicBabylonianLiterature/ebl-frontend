@@ -49,6 +49,7 @@ beforeEach(async () => {
             language: 'AKKADIAN',
             normalized: false,
             lemmatizable: true,
+            alignable: true,
             enclosureType: [],
             erasure: 'NONE',
             cleanValue: 'kur',
