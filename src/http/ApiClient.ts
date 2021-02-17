@@ -58,14 +58,21 @@ export class ApiError extends Error {
     if (_.isString(body.description)) {
       return body.description
     } else if (body.description || body.title) {
-      const title = body.title || statusText
-      const description = body.description
-        ? ': ' + JSON.stringify(body.description)
-        : ''
-      return `${title}${description}`
+      return ApiError.titleAndDescriptionToMessage(body, statusText)
     } else {
       return JSON.stringify(body)
     }
+  }
+
+  private static titleAndDescriptionToMessage(
+    body: { [key: string]: unknown },
+    statusText: string
+  ) {
+    const title = body.title || statusText
+    const description = body.description
+      ? ': ' + JSON.stringify(body.description)
+      : ''
+    return `${title}${description}`
   }
 }
 
