@@ -1,12 +1,12 @@
 import Label from './Label'
-import { Word as TransliterationWord } from 'transliteration/domain/token'
+import { AnyWord } from 'transliteration/domain/token'
 import DictionaryWord from 'dictionary/domain/Word'
 import compareWord from 'dictionary/domain/compareWord'
 
 export interface GlossaryToken {
   readonly label: Label
   readonly value: string
-  readonly word: TransliterationWord
+  readonly word: AnyWord
   readonly uniqueLemma: string
   readonly dictionaryWord: DictionaryWord | null
 }

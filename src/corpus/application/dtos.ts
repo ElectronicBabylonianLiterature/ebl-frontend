@@ -115,8 +115,8 @@ function toAlignmentTokenDto(token: AlignmentToken) {
         value: token.value,
         alignment: token.alignment,
         variant: token.variant?.value ?? '',
+        type: token.variant?.type ?? '',
         language: token.variant?.language ?? '',
-        isNormalized: token.variant?.isNormalized ?? false,
       }
     : {
         value: token.value,

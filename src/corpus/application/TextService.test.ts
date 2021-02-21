@@ -36,15 +36,15 @@ const alignmentDto = {
               value: 'kur',
               alignment: null,
               variant: '',
+              type: '',
               language: '',
-              isNormalized: false,
             },
             {
               value: 'ra',
               alignment: 1,
               variant: 'ra',
+              type: 'Word',
               language: 'AKKADIAN',
-              isNormalized: true,
             },
             {
               value: '...',

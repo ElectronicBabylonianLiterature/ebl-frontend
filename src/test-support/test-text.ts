@@ -14,6 +14,7 @@ const testWord: WordToken = {
   language: 'AKKADIAN',
   normalized: false,
   lemmatizable: true,
+  alignable: true,
   erasure: 'NONE',
   alignment: null,
   variant: null,
