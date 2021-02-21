@@ -38,12 +38,12 @@ export async function pdfExport(
 }
 
 async function getPdfDoc(
-  tableHtml,
-  notesHtml,
-  jQueryRef,
-  wordService,
-  fragment
-) {
+  tableHtml: JQuery,
+  notesHtml: JQuery,
+  jQueryRef: JQuery,
+  wordService: WordService,
+  fragment: Fragment
+): Promise<jsPDF> {
   const doc = new jsPDF()
 
   addCustomFonts(doc)
@@ -72,7 +72,7 @@ async function getPdfDoc(
   return doc
 }
 
-function addCustomFonts(doc) {
+function addCustomFonts(doc: jsPDF) {
   doc.addFileToVFS('Junicode.ttf', getJunicodeRegular())
   doc.addFont('Junicode.ttf', 'Junicode', 'normal')
 
@@ -83,7 +83,10 @@ function addCustomFonts(doc) {
   doc.addFont('JunicodeItalic.ttf', 'JunicodeItalic', 'normal')
 }
 
-async function getGlossaryHtml(wordService, fragment) {
+async function getGlossaryHtml(
+  wordService: WordService,
+  fragment: Fragment
+): Promise<JQuery> {
   const glossaryFactory: GlossaryFactory = new GlossaryFactory(wordService)
   const glossaryJsx: JSX.Element = await glossaryFactory
     .createGlossary(fragment.text)
@@ -98,7 +101,7 @@ async function getGlossaryHtml(wordService, fragment) {
   return glossaryHtml
 }
 
-function addPdfHeadLine(doc, fragment, yPos) {
+function addPdfHeadLine(doc: jsPDF, fragment: Fragment, yPos: number): number {
   const headlineParts = getPdfHeadline(fragment)
   const outerPaddingForCredits = 20
 
@@ -126,33 +129,36 @@ function addPdfHeadLine(doc, fragment, yPos) {
   for (const key in creditsSplit) {
     doc.text(creditsSplit[key], centerText(doc, creditsSplit[key]), yPos)
     yPos += currentLineHeight
+    if (checkIfNewPage(yPos, doc)) {
+      doc.addPage()
+    }
   }
 
   return yPos
 }
 
-function getLineHeight(doc) {
+function getLineHeight(doc: any): number {
   return doc.internal.getFontSize() / 2
 }
 
-function centerText(doc, text) {
+function centerText(doc: jsPDF, text: string): number {
   const textWidth = getTextWidth(doc, text)
   const textOffset = (doc.internal.pageSize.width - textWidth) / 2
   return textOffset
 }
 
-function getTextWidth(doc, text) {
+function getTextWidth(doc: any, text: string): number {
   return (
     (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
     doc.internal.scaleFactor
   )
 }
 
-function getTextHeight(doc, text) {
+function getTextHeight(doc: jsPDF, text: string): number {
   return doc.getTextDimensions(text).h
 }
 
-function getPdfHeadline(fragment) {
+function getPdfHeadline(fragment: Fragment): any {
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
@@ -170,9 +176,9 @@ function addMainTableWithFootnotes(
   table: JQuery,
   notes: JQuery,
   jQueryRef: any,
-  yPos,
-  doc
-) {
+  yPos: number,
+  doc: any
+): number {
   // table.hide()
 
   jQueryRef.append(table)
@@ -340,7 +346,12 @@ function addMainTableWithFootnotes(
   return yPos
 }
 
-function addLines(linePositions, maxXPos, endposFirstColumn, doc) {
+function addLines(
+  linePositions: any,
+  maxXPos: number,
+  endposFirstColumn: number,
+  doc: jsPDF
+) {
   for (const yPos in linePositions) {
     addUnderLine(
       yPos,
@@ -353,7 +364,7 @@ function addLines(linePositions, maxXPos, endposFirstColumn, doc) {
   }
 }
 
-function getFirstColumnSize(tablelines, doc) {
+function getFirstColumnSize(tablelines: JQuery, doc: jsPDF): number {
   let maxCharsInFirstTd = 0
   let longestFirstTd
   tablelines.each((i, el) => {
@@ -367,7 +378,12 @@ function getFirstColumnSize(tablelines, doc) {
   return Math.ceil(getTextWidth(doc, longestFirstTd)) + 0.5
 }
 
-function getCellEndpos(columnSizes, tdIdx, endpos, colspanInt) {
+function getCellEndpos(
+  columnSizes: any,
+  tdIdx: number,
+  endpos: number,
+  colspanInt: number
+) {
   if (colspanInt > 1) {
     return columnSizes[tdIdx + colspanInt - 1]['endpos']
   } else {
@@ -375,18 +391,18 @@ function getCellEndpos(columnSizes, tdIdx, endpos, colspanInt) {
   }
 }
 
-function moveOneRowDown(yPos, doc) {
+function moveOneRowDown(yPos: number, doc: jsPDF) {
   yPos += getLineHeight(doc) + 0.6
   return yPos
 }
 
 function getColumnSizes(
-  table,
-  jQueryRef,
-  outerPaddingForTable,
-  firstColumnMinWidth,
-  doc
-) {
+  table: JQuery,
+  jQueryRef: JQuery,
+  outerPaddingForTable: number,
+  firstColumnMinWidth: number,
+  doc: jsPDF
+): any {
   const columnSizes = {}
 
   setJQueryRefTo1000Px(jQueryRef)
@@ -431,23 +447,29 @@ function getColumnSizes(
   return columnSizes
 }
 
-function setJQueryRefTo1000Px(jQueryRef) {
+function setJQueryRefTo1000Px(jQueryRef: JQuery) {
   jQueryRef.css('position', 'absolute')
   jQueryRef.css('width', '1000px')
 }
 
-function unSetJQueryRef1000Px(jQueryRef) {
+function unSetJQueryRef1000Px(jQueryRef: JQuery) {
   jQueryRef.css('position', '')
   jQueryRef.css('width', '')
 }
 
-function checkIfNewPage(yPos, doc) {
+function checkIfNewPage(yPos: number, doc: jsPDF): boolean {
   if (yPos >= doc.internal.pageSize.height - 10) {
     return true
   } else return false
 }
 
-function addFootnotes(notes, padding, jQueryRef, yPos, doc) {
+function addFootnotes(
+  notes: JQuery,
+  padding: number,
+  jQueryRef: JQuery,
+  yPos: number,
+  doc: jsPDF
+) {
   notes.hide()
   jQueryRef.append(notes)
 
@@ -483,7 +505,12 @@ function addFootnotes(notes, padding, jQueryRef, yPos, doc) {
   return yPos
 }
 
-function addGlossary(glossaryHtml, jQueryRef, yPos, doc) {
+function addGlossary(
+  glossaryHtml: JQuery,
+  jQueryRef: JQuery,
+  yPos: number,
+  doc: any
+): void {
   glossaryHtml.hide()
   jQueryRef.append(glossaryHtml)
 
@@ -494,7 +521,7 @@ function addGlossary(glossaryHtml, jQueryRef, yPos, doc) {
   const divs: JQuery = glossaryHtml.find('div')
   fixHtmlParseOrder(divs)
 
-  const headline: JQuery = glossaryHtml.find('h4').text()
+  const headline: string = glossaryHtml.find('h4').text()
 
   doc.setFont('JunicodeBold', 'normal')
   doc.setFontSize(14)
@@ -532,12 +559,17 @@ function addGlossary(glossaryHtml, jQueryRef, yPos, doc) {
   glossaryHtml.remove()
 }
 
-function addText(text, xPos, yPos, doc) {
+function addText(text: any, xPos: any, yPos: any, doc: jsPDF) {
   doc.text(xPos, yPos, text)
   return getTextWidth(doc, text)
 }
 
-function dealWithFootNotesHtml(el, doc, xPos, yPos) {
+function dealWithFootNotesHtml(
+  el: HTMLElement | Text | Comment | Document,
+  doc: jsPDF,
+  xPos: number,
+  yPos: number
+): number {
   let wordLength = 0
   const text = $(el).text()
 
@@ -588,7 +620,12 @@ function dealWithFootNotesHtml(el, doc, xPos, yPos) {
   return wordLength
 }
 
-function dealWithGlossaryHtml(el, doc, xPos, yPos) {
+function dealWithGlossaryHtml(
+  el: HTMLElement | Text | Comment | Document,
+  doc: jsPDF,
+  xPos: number,
+  yPos: number
+) {
   let wordLength = 0
   const text = $(el).text()
 
@@ -625,7 +662,13 @@ function dealWithGlossaryHtml(el, doc, xPos, yPos) {
   return wordLength
 }
 
-function getTransliterationText(el, doc, xPos, yPos, add): number {
+function getTransliterationText(
+  el: HTMLElement | Text | Comment | Document,
+  doc: jsPDF,
+  xPos: number,
+  yPos: number,
+  add: boolean
+): number {
   setDocStyle($(el), doc)
 
   const superScript: boolean = $(el).is('sup') ? true : false
@@ -668,7 +711,14 @@ function fixHtmlParseOrder(inputElements: any): void {
     .wrap('<span></span>')
 }
 
-function addUnderLine(yPos, endpos, num, page, endposFirstColumn, doc) {
+function addUnderLine(
+  yPos: any,
+  endpos: number,
+  num: number,
+  page: number,
+  endposFirstColumn: number,
+  doc: jsPDF
+) {
   doc.setPage(page)
 
   const smallLineStep = 1
@@ -711,15 +761,15 @@ function getLineTypeByHtml(element: JQuery): string {
   else return 'otherLine'
 }
 
-function isNoteCell(element: JQuery) {
+function isNoteCell(element: JQuery): boolean {
   return element.find('.Transliteration__NoteLink').length > 0 ? true : false
 }
 
-function getHyperLink(fragment: Fragment) {
+function getHyperLink(fragment: Fragment): string {
   return 'https://www.ebabylon.org/fragmentarium/' + fragment.number
 }
 
-function getCredit(records: JQuery) {
+function getCredit(records: JQuery): string {
   return (
     'Credit: Electronic Babylonian Literature Project; ' +
     records
@@ -731,7 +781,7 @@ function getCredit(records: JQuery) {
   )
 }
 
-function setDocStyle(el, doc) {
+function setDocStyle(el: any, doc: jsPDF) {
   const superScript = el.is('sup')
   const allSmall = el.css('font-variant') === 'all-small-caps'
 
@@ -743,5 +793,5 @@ function setDocStyle(el, doc) {
   if (superScript) doc.setFontSize(7)
   if (!superScript && !allSmall) doc.setFontSize(10)
 
-  doc.setTextColor(el.css('color') ? '#' + rgbHex(el.css('color')) : undefined)
+  doc.setTextColor(el.css('color') ? '#' + rgbHex(el.css('color')) : '#ffffff')
 }
