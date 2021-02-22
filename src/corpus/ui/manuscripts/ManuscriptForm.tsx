@@ -9,6 +9,7 @@ import Reference from 'bibliography/domain/Reference'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Editor from 'editor/Editor'
 
 export default function ManuscriptForm({
   manuscript,
@@ -148,6 +149,20 @@ export default function ManuscriptForm({
         <Form.Control
           value={manuscript.notes}
           onChange={handleChange('notes')}
+        />
+      </Form.Group>
+      <Form.Group controlId={_.uniqueId('colophon-')}>
+        <Form.Label>Colophon</Form.Label>{' '}
+        <Editor
+          name={_.uniqueId('colophon-editor-')}
+          value={manuscript.colophon}
+          onChange={(atf) =>
+            onChange(
+              produce(manuscript, (draft) => {
+                draft.colophon = atf
+              })
+            )
+          }
         />
       </Form.Group>
       <ReferencesForm
