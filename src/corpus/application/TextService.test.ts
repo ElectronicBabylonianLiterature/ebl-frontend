@@ -129,6 +129,7 @@ const manuscriptsDto = {
       provenance: 'Nippur',
       type: 'School',
       notes: 'a note',
+      colophon: '1. kur',
       references: [
         {
           id: 'RN1853',

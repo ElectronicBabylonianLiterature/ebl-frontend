@@ -129,6 +129,7 @@ export const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'a note',
+          colophon: '1. kur',
           references: [
             {
               id: 'RN1853',
@@ -194,6 +195,7 @@ export const text = createText({
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
           notes: 'a note',
+          colophon: '1. kur',
           references: [
             new Reference(
               'DISCUSSION',
