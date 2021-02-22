@@ -38,6 +38,7 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'some notes',
+          colophon: '1. kur',
           references: [],
         },
       ],
@@ -61,6 +62,7 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: '',
+          colophon: '',
           references: [],
         },
         {
@@ -73,6 +75,7 @@ const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: '',
+          colophon: '',
           references: [],
         },
       ],
@@ -111,6 +114,7 @@ const defaultManuscriptDto = {
   provenance: 'Nineveh',
   type: 'Library',
   notes: '',
+  colophon: '',
   references: [],
 }
 

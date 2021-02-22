@@ -30,6 +30,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   provenance: provenances.values().next().value,
   type: types.values().next().value,
   notes: 'some notes',
+  colophon: '1. kur',
   references: [],
 }
 
