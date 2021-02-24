@@ -235,10 +235,11 @@ function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
     new TextRun({
       text: headline.text(),
       size: parseInt(headline.css('font-size'), 10) * 2,
-    }).break()
+      break: 1,
+    })
   )
 
-  runs.push(new TextRun('').break())
+  runs.push(new TextRun({ break: 1 }))
 
   divs.each((i, el) => {
     $(el)
@@ -247,7 +248,7 @@ function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
         dealWithGlossaryHTML(el, runs)
       })
 
-    runs.push(new TextRun('').break())
+    runs.push(new TextRun({ break: 1 }))
   })
 
   glossaryHtml.remove()
@@ -395,8 +396,8 @@ function getHeadline(fragment: Fragment): Paragraph {
 function getCreditForHead(records: JQuery): Paragraph {
   return new Paragraph({
     children: [
-      new TextRun({ text: getCredit(records), size: 16 }).break(),
-      new TextRun('').break(),
+      new TextRun({ text: getCredit(records), size: 16, break: 1 }),
+      new TextRun({ break: 1 }),
     ],
     alignment: AlignmentType.CENTER,
   })

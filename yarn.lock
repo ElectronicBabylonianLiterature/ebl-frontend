@@ -1964,9 +1964,9 @@
   integrity sha512-vwX+/ija9xKc/z9VqMCdbf4WYcMTGsI0I/L/6shIF3qXURxZOhPQlPRHtjTpiNhAwn0paMJzlOQqw6mAGEQnTA==
 
 "@types/node@^14.0.5":
-  version "14.14.21"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.21.tgz#d934aacc22424fe9622ebf6857370c052eae464e"
-  integrity sha512-cHYfKsnwllYhjOzuC5q1VpguABBeecUp24yFluHpn/BQaVxB1CuQ1FSRZCzrPxrkIfWISXV2LbeoBthLWg0+0A==
+  version "14.14.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.31.tgz#72286bd33d137aa0d152d47ec7c1762563d34055"
+  integrity sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==
 
 "@types/node@^7.0.31":
   version "7.10.14"
@@ -4828,9 +4828,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 docx@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/docx/-/docx-5.4.1.tgz#5a5a5988877ac0c1d7309f9775232339ec631918"
-  integrity sha512-qJwrj/Pt+gpa6d5ooZJQLlBRCmx/rsv3u+nYIV9O/X460byQygCQMSNfYvHcgL+VdsQl8bcPdONvVuAckVLunA==
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/docx/-/docx-5.5.0.tgz#708002eaecf7bfeb07405fd50e15fa01083463ba"
+  integrity sha512-AkJJ3Or0Nup6ESSC+w4kgpVrH+G9pAwKhhRVvlexEv+72vzvllx8iR6yuL3ABmL4/Xlyna/n4Ok7WzhTiMhoqg==
   dependencies:
     "@types/jszip" "^3.1.4"
     "@types/node" "^14.0.5"
@@ -8264,9 +8264,9 @@ jsx-ast-utils@^2.2.1, jsx-ast-utils@^2.2.3:
     object.assign "^4.1.0"
 
 jszip@*, jszip@^3.1.5:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.5.0.tgz#b4fd1f368245346658e781fec9675802489e15f6"
-  integrity sha512-WRtu7TPCmYePR1nazfrtuF216cIVon/3GWOvHS9QR5bIwSbnxtdpma6un3jyGGNhHsKCSzn5Ypk+EkDRvTGiFA==
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.6.0.tgz#839b72812e3f97819cc13ac4134ffced95dd6af9"
+  integrity sha512-jgnQoG9LKnWO3mnVNBnfhkh0QknICd1FGSrXcgrl67zioyJ4wgx25o9ZqwNtrROSflGBCGYnJfjrIyRIby1OoQ==
   dependencies:
     lie "~3.3.0"
     pako "~1.0.2"
