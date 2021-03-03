@@ -1,0 +1,6 @@
+.linkContainer:hover {
+  cursor: pointer;
+}
+.markdown {
+  margin-bottom: 0 !important;
+}

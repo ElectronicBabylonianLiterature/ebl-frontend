@@ -144,13 +144,12 @@ function App({
               />
             )}
           />
-          {/*
           <Route
-            path="/dictionary/:id"
+            path="/dictionary/:id/edit"
             render={(props): ReactNode => (
               <WordEditor wordService={wordService} {...props} />
             )}
-          />*/}
+          />
           <Route
             path="/dictionary/:id"
             render={(props): ReactNode => (

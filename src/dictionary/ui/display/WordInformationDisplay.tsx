@@ -4,148 +4,43 @@ import withData, { WithoutData } from 'http/withData'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Col, Navbar, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
-import { LinkContainer } from 'react-router-bootstrap'
+import './wordInformationDisplay.css'
+import ReactMarkdown from 'react-markdown'
+import ExternalLink from 'common/ExternalLink'
+import WordService from 'dictionary/application/WordService'
 
 type Props = {
   data: Word
-  wordService
+  wordService: WordService
 } & RouteComponentProps<{ id: string }>
 
-function WordInformationDisplay({ word }: { word: Word }) {
-  console.log(word)
-
-  const replaceByCurlyQuotes = (str: string): string =>
-    str.replace(/"([^"]*)"/g, '“$1”')
-  const AttestedStems = () => (
-    <>
-      Attested stems:&nbsp;
-      {word.amplifiedMeanings.map((amplifiedMeaning, index) => (
-        <>
-          <HashLink to={`/dictionary/${word._id}#attested-stem-${index}`}>
-            {amplifiedMeaning.key}
-          </HashLink>
-          {index !== word.amplifiedMeanings.length - 1 && <>,&nbsp;</>}
-        </>
-      ))}
-    </>
-  )
-  const AttestedStemsDetails = () => {
-    const AttestedStemDetail = ({ amplifiedMeaning }) => (
-      <Row>
-        <Col xs={12}>
-          <strong>{amplifiedMeaning.key}</strong>&nbsp;&nbsp;&nbsp;
-          {replaceByCurlyQuotes(amplifiedMeaning.meaning)}
-          <ol>
-            {amplifiedMeaning.entries.map((entry, index) => (
-              <li id={`attested-stem-${index}`} key={index}>
-                <div className="ml-3">
-                  {replaceByCurlyQuotes(entry.meaning)}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </Col>
-      </Row>
-    )
-    return (
-      <Col>
-        {word.amplifiedMeanings.map((amplifiedMeaning, index) => (
-          <AttestedStemDetail key={index} amplifiedMeaning={amplifiedMeaning} />
-        ))}
+const LiteratureRedirectBox = (): JSX.Element => (
+  <ExternalLink
+    style={{ color: 'black' }}
+    href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+    title="A Concise Dictionary of Akkadian, Harrassowitz Verlag"
+  >
+    <Row>
+      <Col xs={11} className="mx-auto">
+        <Row className="m-3 py-2 border border-dark">
+          <Col xs="auto">
+            <i className="linkContainer mt-2 fas fa-shopping-cart" />
+          </Col>
+          <Col className="linkContainer my-auto" style={{ fontSize: '0.7em' }}>
+            From Black, J.; George, A.R.; Postgate, N., A Concise Dictionary of
+            Akkadian. 2nd (corrected) printing. SANTAG Arbeiten und
+            Untersuchungen zur Keilschriftkunde, Band 5. Wiesbaden:
+            Harrassowitz, 2000
+          </Col>
+        </Row>
       </Col>
-    )
-  }
+    </Row>
+  </ExternalLink>
+)
 
-  const extractLemmas = (derivatives) =>
-    derivatives.map((derivative) =>
-      derivative.map((derivativeParts) => {
-        const homonym = derivativeParts.homonym
-          ? ` ${derivativeParts.homonym}`
-          : ''
-        const filteredNotes = derivativeParts.notes.filter((note) => note)
-        const notes = filteredNotes.length ? `${filteredNotes.join(',')}` : ''
-
-        return `${derivativeParts.lemma[0]}${homonym}${notes}`
-      })
-    )
-
-  const Derivatives = () => {
-    const extractedLemmas = extractLemmas(word.derived)
-    console.log(extractedLemmas)
-    const extractedLemmasWithLink = extractedLemmas.map(
-      (lemmas, lemmasIndex) => (
-        <>
-          {lemmas.map((lemma, lemmaIndex) => (
-            <>
-              <Link to={`/dictionary/${lemma}`}>{lemma.split(' ')[0]}</Link>
-              &nbsp;{lemma.split(' ')[1]}
-              {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
-            </>
-          ))}
-          {lemmasIndex !== extractedLemmas.length - 1 && <>;&nbsp;</>}
-        </>
-      )
-    )
-    return <>Derivatives:&nbsp;{extractedLemmasWithLink}</>
-  }
-
-  const DetailsSection = () => {
-    return (
-      <Row>
-        <Row>
-          <Col xs={{ offset: 1 }}>
-            <Row>
-              <Col>{word.attested && <AttestedStems />}</Col>
-            </Row>
-            <Row>
-              <Col>{word.derived.length && <Derivatives />}</Col>
-            </Row>
-            <Row>
-              <Col>
-                {word.logograms.length &&
-                  `Logograms: ${word.logograms
-                    .map((logogram) => logogram.logogram[0])
-                    .join(', ')}`}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {word.roots.length && `Roots: ${word.roots.join(', ')}`}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <br />
-                {word.meaning && replaceByCurlyQuotes(word.meaning)}
-                <br />
-                <br />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <AttestedStemsDetails />
-          </Col>
-        </Row>
-      </Row>
-    )
-  }
-  const LiteratureRedirectBox = () => (
-    <LinkContainer to="/" title="electronic Babylonian Literature (eBL)">
-      <Row>
-        <Col xs="auto" className="ml-3 border border-dark text-center">
-          From askldölkasjdlkasjdlkasjdlkasjdlkasjdlkasdjlaksjdlkasdjlkasjdlkj
-        </Col>
-        <Col>
-          <i className="mt-2 fas fa-shopping-cart" />
-        </Col>
-      </Row>
-    </LinkContainer>
-  )
-
+function WordInformation({ word }: { word: Word }): JSX.Element {
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
@@ -159,24 +54,228 @@ function WordInformationDisplay({ word }: { word: Word }) {
           <Row>
             <Col>
               <strong>
-                {word.attested === false && '*'}
-                {word.lemma.join(' ')} {word.homonym}
+                {word.lemma.join(' ')}
+                {word.attested === false && '*'} {word.homonym}
               </strong>
               , &ldquo;{word.guideWord}&rdquo;
             </Col>
             <Col>
-              <span className="text-secondary">({word.pos.join(', ')})</span>
+              {Boolean(word.pos.length) && (
+                <h5 className="text-secondary">({word.pos.join(', ')})</h5>
+              )}
             </Col>
           </Row>
         </>
       }
     >
-      <DetailsSection />
+      <WordInformationDetails word={word} />
     </AppContent>
   )
 }
 
+function replaceByCurlyQuotes(str: string): string {
+  return str.replace(/"([^"]*)"/g, '“$1”')
+}
+
+function OtherForms({
+  forms,
+}: {
+  forms: { attested: boolean; lemma: string[] }[]
+}): JSX.Element {
+  const otherForm = (form) => {
+    const attested = form.attested ? '' : '*'
+    return form.lemma
+      .map((lemmaElement) => `*${lemmaElement}*${attested}`)
+      .join('; ')
+  }
+  return (
+    <>
+      Other forms:{' '}
+      <ReactMarkdown renderers={{ paragraph: 'span' }}>
+        {forms.map((form) => otherForm(form)).join(', ')}
+      </ReactMarkdown>
+    </>
+  )
+}
+interface Derivative {
+  lemma: string[]
+  homonym: string
+  notes: string[]
+}
+
+function Derivatives({
+  derivatives,
+}: {
+  derivatives: Derivative[][]
+}): JSX.Element {
+  const extractLemmas = (derivatives: Derivative[][]): string[][] =>
+    derivatives.map((derivative) =>
+      derivative.map((derivativeParts) => {
+        const homonym = derivativeParts.homonym
+          ? ` ${derivativeParts.homonym}`
+          : ''
+        const filteredNotes = derivativeParts.notes.filter((note) => note)
+        const notes = filteredNotes.length ? `${filteredNotes.join(',')}` : ''
+
+        return `${derivativeParts.lemma[0]}${homonym}${notes}`
+      })
+    )
+
+  const extractedLemmas = extractLemmas(derivatives)
+
+  const extractedLemmasWithLink = extractedLemmas.map((lemmas, lemmasIndex) => (
+    <>
+      {lemmas.map((lemma, lemmaIndex) => (
+        <>
+          <Link to={`/dictionary/${lemma}`}>
+            <em>{lemma.split(' ')[0]}</em>
+          </Link>
+          &nbsp;{lemma.split(' ')[1]}
+          {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
+        </>
+      ))}
+      {lemmasIndex !== extractedLemmas.length - 1 && <>;&nbsp;</>}
+    </>
+  ))
+  return <>Derivatives:&nbsp;{extractedLemmasWithLink}</>
+}
+interface AmplifiedMeaning {
+  meaning: string
+  key: string
+  entries: { meaning: string }[]
+}
+function AmplifiedMeanings({
+  amplifiedMeanings,
+  wordId,
+}: {
+  amplifiedMeanings: AmplifiedMeaning[]
+  wordId: string
+}): JSX.Element {
+  return (
+    <>
+      Attested stems:&nbsp;
+      {amplifiedMeanings.map((amplifiedMeaning, index) => (
+        <>
+          <HashLink to={`/dictionary/${wordId}#attested-stem-${index}`}>
+            {amplifiedMeaning.key}
+          </HashLink>
+          {index !== amplifiedMeanings.length - 1 && <>,&nbsp;</>}
+        </>
+      ))}
+    </>
+  )
+}
+
+function AmplifiedMeaningsDetails({
+  amplifiedMeanings,
+}: {
+  amplifiedMeanings: AmplifiedMeaning[]
+}): JSX.Element {
+  const AttestedStemDetail = ({
+    amplifiedMeaning,
+  }: {
+    amplifiedMeaning: AmplifiedMeaning
+  }): JSX.Element => (
+    <Row>
+      <Col>
+        <Row>
+          <strong>{amplifiedMeaning.key}</strong>&nbsp;&nbsp;&nbsp;{' '}
+          <ReactMarkdown>
+            {replaceByCurlyQuotes(amplifiedMeaning.meaning)}
+          </ReactMarkdown>
+        </Row>
+        <Row>
+          <ol>
+            {amplifiedMeaning.entries.map((entry, index) => (
+              <li id={`attested-stem-${index}`} key={index}>
+                <div className="ml-3">
+                  <ReactMarkdown
+                    source={replaceByCurlyQuotes(entry.meaning)}
+                    renderers={{ paragraph: 'span' }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ol>
+        </Row>
+      </Col>
+    </Row>
+  )
+  return (
+    <Col>
+      {amplifiedMeanings.map((amplifiedMeaning, index) => (
+        <AttestedStemDetail key={index} amplifiedMeaning={amplifiedMeaning} />
+      ))}
+    </Col>
+  )
+}
+
+function WordInformationDetails({ word }: { word: Word }): JSX.Element {
+  console.log(word)
+  return (
+    <Row>
+      <Col>
+        <Row>
+          <Col xs={{ offset: 1 }}>
+            <Row>
+              <Col>
+                {word.forms.length && <OtherForms forms={word.forms} />}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {Boolean(word.amplifiedMeanings.length) &&
+                  Boolean(word.amplifiedMeanings[0].key) && (
+                    <AmplifiedMeanings
+                      amplifiedMeanings={word.amplifiedMeanings}
+                      wordId={word._id}
+                    />
+                  )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {Boolean(word.derived.length) && (
+                  <Derivatives derivatives={word.derived} />
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {Boolean(word.logograms.length) &&
+                  `Logograms: ${word.logograms
+                    .map((logogram) => logogram.logogram[0])
+                    .join(', ')}`}
+              </Col>
+            </Row>
+            <Row>
+              <Col>{word.roots && `Roots: ${word.roots.join(', ')}`}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <br />
+                {word.meaning && (
+                  <ReactMarkdown>
+                    {replaceByCurlyQuotes(word.meaning)}
+                  </ReactMarkdown>
+                )}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AmplifiedMeaningsDetails
+              amplifiedMeanings={word.amplifiedMeanings}
+            />
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  )
+}
+
 export default withData<WithoutData<Props>, { match; wordService }, Word>(
-  ({ data, match }) => <WordInformationDisplay word={data} />,
+  ({ data, match }) => <WordInformation word={data} />,
   (props) => props.wordService.find(props.match.params['id'])
 )
