@@ -123,6 +123,12 @@ function ChapterView({
     )
   }
 
+  const importChapter = (atf: string): void => {
+    update(() =>
+      textService.importChapter(text.category, text.index, chapterIndex, atf)
+    )
+  }
+
   const handleChange = (chapter: Chapter): void => {
     setChapter(chapter)
     setIsDirty(true)
@@ -152,6 +158,7 @@ function ChapterView({
           onSaveManuscripts={updateManuscripts}
           onSaveAlignment={updateAlignment}
           onSaveLemmatization={updateLemmatization}
+          onImport={importChapter}
         />
       ) : (
         <Alert variant="danger">Chapter not found.</Alert>

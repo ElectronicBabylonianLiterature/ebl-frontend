@@ -14,12 +14,14 @@ import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import TextService from 'corpus/application/TextService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import ChapterImport from './import/ChapterImport'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
   onSaveAlignment: (alignment: ChapterAlignment) => void
   onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
+  onImport: (atf: string) => unknown
   disabled: boolean
   dirty: boolean
   chapter: Chapter
@@ -34,6 +36,7 @@ export default function ChapterEditor({
   onSaveManuscripts,
   onSaveAlignment,
   onSaveLemmatization,
+  onImport,
   disabled,
   dirty,
   chapter,
@@ -60,6 +63,9 @@ export default function ChapterEditor({
             onSave={onSaveManuscripts}
             disabled={disabled}
           />
+        </Tab>
+        <Tab eventKey="import" title="Import" disabled={dirty}>
+          <ChapterImport onSave={onImport} disabled={disabled} />
         </Tab>
         <Tab eventKey="lines" title="Lines" disabled={dirty}>
           <ChapterLines
