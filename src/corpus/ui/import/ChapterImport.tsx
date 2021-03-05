@@ -21,7 +21,9 @@ export default function ChapterImport({
         onChange={setAtf}
         disabled={disabled}
       />
-      <Button onClick={() => onSave(atf)}>Save</Button>
+      <Button className="m-1" onClick={() => onSave(atf)}>
+        Save
+      </Button>
     </>
   )
 }
