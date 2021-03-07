@@ -4,7 +4,7 @@ import withData, { WithoutData } from 'http/withData'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.css'
 import ReactMarkdown from 'react-markdown'
@@ -41,6 +41,10 @@ const LiteratureRedirectBox = (): JSX.Element => (
 )
 
 function WordInformation({ word }: { word: Word }): JSX.Element {
+  console.log(word)
+  const copyableInformation = `+${word.lemma[0]}[${word.guideWord}]${
+    word.pos[0] ? word.pos[0] : ''
+  }$`
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
@@ -63,6 +67,23 @@ function WordInformation({ word }: { word: Word }): JSX.Element {
               {Boolean(word.pos.length) && (
                 <h5 className="text-secondary">({word.pos.join(', ')})</h5>
               )}
+            </Col>
+            <Col xs="auto" className="pr-5 mr-5">
+              <div
+                className="border border-dark p-1"
+                style={{ fontSize: '0.5em', color: 'grey' }}
+              >
+                {copyableInformation}
+                <Button
+                  style={{ padding: '3px 5px 0 5px' }}
+                  className="ml-2"
+                  onClick={async () =>
+                    await navigator.clipboard.writeText(copyableInformation)
+                  }
+                >
+                  <i className="fas fa-copy" />
+                </Button>
+              </div>
             </Col>
           </Row>
         </>
@@ -124,18 +145,18 @@ function Derivatives({
   const extractedLemmas = extractLemmas(derivatives)
 
   const extractedLemmasWithLink = extractedLemmas.map((lemmas, lemmasIndex) => (
-    <>
+    <span key={lemmasIndex}>
       {lemmas.map((lemma, lemmaIndex) => (
-        <>
+        <span key={lemmaIndex}>
           <Link to={`/dictionary/${lemma}`}>
             <em>{lemma.split(' ')[0]}</em>
           </Link>
           &nbsp;{lemma.split(' ')[1]}
           {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
-        </>
+        </span>
       ))}
       {lemmasIndex !== extractedLemmas.length - 1 && <>;&nbsp;</>}
-    </>
+    </span>
   ))
   return <>Derivatives:&nbsp;{extractedLemmasWithLink}</>
 }
@@ -211,7 +232,6 @@ function AmplifiedMeaningsDetails({
 }
 
 function WordInformationDetails({ word }: { word: Word }): JSX.Element {
-  console.log(word)
   return (
     <Row>
       <Col>
