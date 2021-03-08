@@ -309,56 +309,6 @@ describe('Add line', () => {
   })
 })
 
-describe('Lines', () => {
-  const chapter = textDto.chapters[2]
-  const line = chapter.lines[0]
-
-  beforeEach(async () => {
-    await setup(chapter, false)
-    await appDriver.click('Lines')
-  })
-
-  test.each([['Number', 'number', '2']])(
-    '%s',
-    async (label, property, newValue) => {
-      fakeApi.expectUpdateLines(textDto, 2, {
-        lines: [
-          produce(textDto.chapters[2].lines[0], (draft) => {
-            draft[property] = newValue
-          }),
-        ],
-      })
-      const expectedValue = line[property]
-      appDriver.expectInputElement(label, expectedValue)
-      await appDriver.changeValueByLabel(label, newValue)
-      appDriver.expectInputElement(label, newValue)
-      await appDriver.click('Save lines')
-    }
-  )
-
-  test.each([
-    ['second line of parallelism', 'isSecondLineOfParallelism'],
-    ['beginning of a section', 'isBeginningOfSection'],
-  ])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(textDto, 2, {
-      lines: [
-        produce(textDto.chapters[2].lines[0], (draft) => {
-          draft[property] = !draft[property]
-        }),
-      ],
-    })
-    const expectedValue = line[property]
-    expectedValue
-      ? appDriver.expectChecked(label)
-      : appDriver.expectNotChecked(label)
-    await appDriver.click(label)
-    expectedValue
-      ? appDriver.expectNotChecked(label)
-      : appDriver.expectChecked(label)
-    await appDriver.click('Save lines')
-  })
-})
-
 test('Import chapter', async () => {
   const chapter = textDto.chapters[1]
   fakeApi.expectImportChapter(textDto, 1, '1. kur')
