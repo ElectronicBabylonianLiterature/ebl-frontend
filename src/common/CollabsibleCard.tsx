@@ -16,7 +16,7 @@ function CollapseIndicator({ open }: { open: boolean }): JSX.Element {
   )
 }
 interface Props {
-  label: JSX.Element | null
+  label: ReactNode
   children: ReactNode
   collapsed: boolean
 }

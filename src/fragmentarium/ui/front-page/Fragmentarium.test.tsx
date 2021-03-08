@@ -4,22 +4,25 @@ import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession from 'auth/Session'
+import MemorySession, { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Fragmentarium from './Fragmentarium'
 import Promise from 'bluebird'
+import Bluebird from 'bluebird'
 
-const fragmentService: FragmentService = new (FragmentService as jest.Mock<
-  FragmentService
+jest.mock('fragmentarium/application/FragmentSearchService')
+jest.mock('fragmentarium/application/FragmentService')
+const fragmentService = new (FragmentService as jest.Mock<
+  jest.Mocked<FragmentService>
 >)()
-const fragmentSearchService: FragmentSearchService = new (FragmentSearchService as jest.Mock<
-  FragmentSearchService
+const fragmentSearchService = new (FragmentSearchService as jest.Mock<
+  jest.Mocked<FragmentSearchService>
 >)()
-const session = new (MemorySession as jest.Mock<MemorySession>)()
+
+let session: Session
 let container: Element
 let element: RenderResult
 let statistics: { transliteratedFragments: number; lines: number }
-
 async function renderFragmentarium() {
   const FragmentariumWithRouter = withRouter<any, typeof Fragmentarium>(
     Fragmentarium
@@ -40,34 +43,19 @@ async function renderFragmentarium() {
 
 beforeEach(async () => {
   statistics = await factory.build('statistics')
-  fragmentService.statistics = jest
-    .fn()
-    .mockReturnValue(Promise.resolve(statistics))
-  fragmentService.findImage = jest
-    .fn()
-    .mockReturnValue(Promise.resolve(statistics))
-  fragmentSearchService.fetchLatestTransliterations = jest.fn()
-
-  fragmentSearchService.fetchLatestTransliterations = jest.fn()
-  fragmentSearchService.fetchNeedsRevision = jest.fn()
-
-  session.isAllowedToReadFragments = jest.fn()
-  session.isAllowedToTransliterateFragments = jest.fn()
+  fragmentService.statistics.mockReturnValue(Bluebird.resolve(statistics))
 })
 
 describe('Statistics', () => {
   beforeEach(async () => {
-    session.isAllowedToReadFragments = jest.fn().mockReturnValue(false)
-    session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(false)
+    session = new MemorySession([])
     await renderFragmentarium()
   })
-
   it('Shows the number of transliterated tablets', async () => {
     expect(container).toHaveTextContent(
       statistics.transliteratedFragments.toLocaleString()
     )
   })
-
   it('Shows the number of transliterated lines', async () => {
     expect(container).toHaveTextContent(statistics.lines.toLocaleString())
   })
@@ -79,19 +67,16 @@ describe('Fragment lists', () => {
 
   beforeEach(async () => {
     latest = await factory.build('fragment')
-    session.isAllowedToReadFragments = jest.fn().mockReturnValue(true)
-    fragmentSearchService.fetchLatestTransliterations = jest
-      .fn()
-      .mockReturnValueOnce(Promise.resolve([latest]))
-
+    session = new MemorySession(['read:fragments', 'transliterate:fragments'])
+    fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
+      Promise.resolve([latest])
+    )
     needsRevision = await factory.build('fragment')
-    session.isAllowedToTransliterateFragments = jest.fn().mockReturnValue(true)
-    fragmentSearchService.fetchNeedsRevision = jest
-      .fn()
-      .mockReturnValue(Promise.resolve([needsRevision]))
+    fragmentSearchService.fetchNeedsRevision.mockReturnValue(
+      Promise.resolve([needsRevision])
+    )
     await renderFragmentarium()
   })
-
   test('Shows the latest additions', () => {
     expect(container).toHaveTextContent(latest.number)
   })

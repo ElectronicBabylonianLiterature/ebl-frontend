@@ -6,6 +6,7 @@ import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
 import { wordDto } from 'test-support/test-word'
 import { wordExport } from './WordExport'
+import Bluebird from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
@@ -15,7 +16,7 @@ let wordBlob: any
 
 beforeEach(async () => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  wordService.find.mockResolvedValue(wordDto)
+  wordService.find.mockReturnValue(Bluebird.resolve(wordDto))
 
   fragment = await factory.build('fragment', {
     publication: 'Guod cigipli epibif odepuwu.',

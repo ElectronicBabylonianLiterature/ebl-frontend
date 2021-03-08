@@ -7,11 +7,9 @@ import HelpTrigger from 'common/HelpTrigger'
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import NotesHelp from './NotesHelp'
 import Promise from 'bluebird'
-import BibliographyEntry, {
-  CslData,
-} from 'bibliography/domain/BibliographyEntry'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 interface Props {
-  value: CslData
+  value
   searchBibliography: (query: string) => Promise<readonly BibliographyEntry[]>
   onChange: (event: BibliographyEntry) => void
 }

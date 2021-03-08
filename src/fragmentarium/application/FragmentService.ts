@@ -85,7 +85,7 @@ export class FragmentService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  statistics(): { transliteratedFragments: number; lines: number } {
+  statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.fragmentRepository.statistics()
   }
 

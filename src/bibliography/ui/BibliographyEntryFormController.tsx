@@ -9,7 +9,9 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 interface Props {
   entry: BibliographyEntry
-  onSubmit: (entry: BibliographyEntry) => Promise<BibliographyEntry | void>
+  onSubmit: (
+    entry: BibliographyEntry
+  ) => Promise<BibliographyEntry | void | unknown>
 }
 export default class BibliographyEntryFormController extends Component<
   Props,
