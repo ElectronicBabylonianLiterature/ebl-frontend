@@ -45,9 +45,10 @@ const LiteratureRedirectBox = (): JSX.Element => (
 )
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
-  const copyableInformation = `+${word.lemma[0]}[${word.guideWord}]${
-    word.pos[0] ?? ''
-  }$`
+  const guideWord = word.guideWord ? `[${word.guideWord}]` : ''
+  const pos = word.pos[0] ?? ''
+
+  const copyableInformation = `+${word.lemma[0]}${guideWord}${pos}$`
   return (
     <AppContent
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
