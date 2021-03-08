@@ -7,7 +7,7 @@ export interface BibliographySearch {
 }
 
 export default class BibliographyService implements BibliographySearch {
-  private readonly bibliographyRepository
+  private readonly bibliographyRepository: BibliographyRepository
 
   constructor(bibliographyRepository: BibliographyRepository) {
     this.bibliographyRepository = bibliographyRepository

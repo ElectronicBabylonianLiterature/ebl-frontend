@@ -39,7 +39,6 @@ interface Props {
   textService: TextService
   bibliographyService: BibliographySearch
   fragmentService: FragmentService
-  wordService: WordService
 }
 function ChapterView({
   text,
@@ -47,7 +46,6 @@ function ChapterView({
   textService,
   bibliographyService,
   fragmentService,
-  wordService,
 }: Props): JSX.Element {
   const [chapter, setChapter] = useState(text.chapters[chapterIndex])
   const [isDirty, setIsDirty] = useState(false)

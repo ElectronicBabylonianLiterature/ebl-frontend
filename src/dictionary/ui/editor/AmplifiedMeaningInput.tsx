@@ -1,18 +1,24 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, ReactNode } from 'react'
 
 import ArrayWithNotesList from './ArrayWithNotesList'
 import TextInput from './TextInput'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 
 class AmplifiedMeaningInput extends Component<{ value; onChange; entry }> {
-  onChange = (key) => (value) => {
+  onChange = (key: string) => (value): void => {
     this.props.onChange({
       ...this.props.value,
       [key]: value,
     })
   }
 
-  textInput = ({ property, children }) => (
+  textInput = ({
+    property,
+    children,
+  }: {
+    property: string
+    children: ReactNode
+  }): JSX.Element => (
     <TextInput
       value={this.props.value[property]}
       onChange={this.onChange(property)}
@@ -21,7 +27,7 @@ class AmplifiedMeaningInput extends Component<{ value; onChange; entry }> {
     </TextInput>
   )
 
-  render() {
+  render(): JSX.Element {
     return (
       <Fragment>
         {!this.props.entry && (

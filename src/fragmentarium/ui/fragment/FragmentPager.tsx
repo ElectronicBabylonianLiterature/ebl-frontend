@@ -44,7 +44,11 @@ const FragmentPager: FunctionComponent<Props> = ({
   )
 }
 
-export default withData<WithoutData<Props>, { fragmentService }, any>(
+export default withData<
+  WithoutData<Props>,
+  { fragmentService },
+  FragmentPagerData
+>(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
   (props) => props.fragmentService.fragmentPager(props.fragmentNumber),
   {

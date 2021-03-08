@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { Component } from 'react'
+import React, { Component, ReactNode } from 'react'
 import _ from 'lodash'
 import { Card, Collapse } from 'react-bootstrap'
 
@@ -15,14 +15,15 @@ function CollapseIndicator({ open }: { open: boolean }): JSX.Element {
     />
   )
 }
-
-export class CollapsibleCard extends Component<
-  { label; children; collapsed: boolean },
-  { open: boolean }
-> {
+interface Props {
+  label: ReactNode
+  children: ReactNode
+  collapsed: boolean
+}
+export class CollapsibleCard extends Component<Props, { open: boolean }> {
   private readonly collapseId: string
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       open: !this.props.collapsed,

@@ -11,6 +11,8 @@ import NeedsRevision from './NeedsRevision'
 import 'fragmentarium/ui/front-page/Fragmentarium.css'
 import { Session } from 'auth/Session'
 import { SectionCrumb } from 'common/Breadcrumbs'
+import FragmentService from 'fragmentarium/application/FragmentService'
+import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
 interface Props {
   number: string | null | undefined
@@ -20,8 +22,8 @@ interface Props {
   year: string | null | undefined
   pages: string | null | undefined
   transliteration: string | null | undefined
-  fragmentService
-  fragmentSearchService
+  fragmentService: FragmentService
+  fragmentSearchService: FragmentSearchService
 }
 
 function Fragmentarium({

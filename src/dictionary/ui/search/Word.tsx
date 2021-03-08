@@ -1,116 +1,121 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Word.css'
 import InlineMarkdown from 'common/InlineMarkdown'
+import Word from 'dictionary/domain/Word'
 
-class Lemma extends Component<{ container; value }> {
-  render() {
-    const container = this.props.container || 'em'
-    const attested = this.props.value.attested === false ? '*' : ''
-    const lemma = this.props.value.lemma.join(' ')
-    return (
-      <Fragment>
-        {this.props.value._id
-          ? React.createElement(
-              container,
-              {},
-              <Link to={`/dictionary/${this.props.value._id}`}>
-                {attested}
-                {lemma}
-              </Link>
-            )
-          : React.createElement(container, {}, `${attested}${lemma}`)}
-        {this.props.value.homonym && ` ${this.props.value.homonym}`}
-      </Fragment>
-    )
-  }
+function Lemma({
+  container = 'em',
+  word,
+}: {
+  container: string
+  word: Word
+}): JSX.Element {
+  const attested = word.attested === false ? '*' : ''
+  const lemma = word.lemma.join(' ')
+  return (
+    <Fragment>
+      {word._id
+        ? React.createElement(
+            container,
+            {},
+            <Link to={`/dictionary/${word._id}`}>
+              {attested}
+              {lemma}
+            </Link>
+          )
+        : React.createElement(container, {}, `${attested}${lemma}`)}
+      {word.homonym && ` ${word.homonym}`}
+    </Fragment>
+  )
 }
 
-class Notes extends Component<{ value: ReadonlyArray<string> }> {
-  render() {
-    const preNote = _.head(this.props.value) || ''
-    const postNote = _.tail(this.props.value).join(' ')
-    return (
-      <Fragment>
-        {!_.isEmpty(preNote) && (
-          <span className="Notes-note">
-            <InlineMarkdown source={preNote} />{' '}
-          </span>
-        )}
-        {this.props.children}
-        {!_.isEmpty(postNote) && (
-          <span className="Notes-note">
-            {' '}
-            <InlineMarkdown source={postNote} />
-          </span>
-        )}
-      </Fragment>
-    )
-  }
+function Notes({
+  notes,
+  children,
+}: {
+  notes: readonly string[]
+  children: ReactNode
+}): JSX.Element {
+  const preNote = _.head(notes) || ''
+  const postNote = _.tail(notes).join(' ')
+  return (
+    <Fragment>
+      {!_.isEmpty(preNote) && (
+        <span className="Notes-note">
+          <InlineMarkdown source={preNote as string} />{' '}
+        </span>
+      )}
+      {children}
+      {!_.isEmpty(postNote) && (
+        <span className="Notes-note">
+          {' '}
+          <InlineMarkdown source={postNote} />
+        </span>
+      )}
+    </Fragment>
+  )
 }
 
-class Form extends Component<{ value }> {
-  render() {
-    return _.isString(this.props.value) ? (
-      <InlineMarkdown source={this.props.value} />
-    ) : (
-      <Notes value={this.props.value.notes}>
-        <Lemma value={this.props.value} container="em" />
-      </Notes>
-    )
-  }
+function Form({ value }: { value: string | Word }): JSX.Element {
+  return _.isString(value) ? (
+    <InlineMarkdown source={value} />
+  ) : (
+    <Notes notes={value.notes}>
+      <Lemma word={value} container="em" />
+    </Notes>
+  )
+}
+function AmplifiedMeanings({
+  values,
+}: {
+  values: readonly any[]
+}): JSX.Element {
+  return (
+    <ul>
+      {_.map(values, (value, topLevelindex) => (
+        <li key={topLevelindex}>
+          {value.key !== '' && <strong>{value.key}</strong>}{' '}
+          <InlineMarkdown source={value.meaning} />{' '}
+          <ul>
+            {value.entries.map((value, enryIndex) => (
+              <li className="AmplifiedMeanings__entry" key={enryIndex}>
+                <strong>{`${enryIndex + 1}.`}</strong>{' '}
+                <InlineMarkdown source={value.meaning} />
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
-class AmplifiedMeanings extends Component<{ value }> {
-  render() {
-    return (
-      <ul>
-        {_.map(this.props.value, (value, topLevelindex) => (
-          <li key={topLevelindex}>
-            {value.key !== '' && <strong>{value.key}</strong>}{' '}
-            <InlineMarkdown source={value.meaning} />{' '}
-            <ul>
-              {value.entries.map((value, enryIndex) => (
-                <li className="AmplifiedMeanings__entry" key={enryIndex}>
-                  <strong>{`${enryIndex + 1}.`}</strong>{' '}
-                  <InlineMarkdown source={value.meaning} />
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+function Derived({ derived }: { derived: readonly any[][] }): JSX.Element {
+  return (
+    <ul>
+      {derived.map((group, index) => (
+        <li key={index}>
+          <ul className="Derived__group">
+            {group.map((derived, innerIndex) => (
+              <li className="Derived__entry" key={innerIndex}>
+                <Form value={derived} />
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
-class Derived extends Component<{ value }> {
-  render() {
-    return (
-      <ul>
-        {this.props.value.map((group, index) => (
-          <li key={index}>
-            <ul className="Derived__group">
-              {group.map((derived, innerIndex) => (
-                <li className="Derived__entry" key={innerIndex}>
-                  <Form value={derived} />
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-}
-
-class Word extends Component<{ value }> {
-  get word() {
+class WordDisplay extends Component<{ value: Word }> {
+  get word(): Word {
     return this.props.value
   }
 
-  get forms() {
+  get forms(): JSX.Element {
     return (
       <ul className="Word__forms">
         {this.word.forms.map((form, index) => (
@@ -122,22 +127,22 @@ class Word extends Component<{ value }> {
     )
   }
 
-  isNotEmpty(property) {
+  isNotEmpty(property: string): boolean {
     return !_.isEmpty(this.word[property])
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div className="Word">
         <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
-          <Lemma value={this.word} container="strong" />
+          <Lemma word={this.word} container="strong" />
         </dfn>
         {!_.isEmpty(this.forms) && this.forms}{' '}
         <InlineMarkdown source={this.word.meaning} />{' '}
         {this.isNotEmpty('amplifiedMeanings') && (
-          <AmplifiedMeanings value={this.word.amplifiedMeanings} />
+          <AmplifiedMeanings values={this.word.amplifiedMeanings} />
         )}{' '}
-        {this.isNotEmpty('derived') && <Derived value={this.word.derived} />}{' '}
+        {this.isNotEmpty('derived') && <Derived derived={this.word.derived} />}{' '}
         {this.word.derivedFrom && (
           <span className="Word__derivedFrom">
             <Form value={this.word.derivedFrom} />
@@ -148,4 +153,4 @@ class Word extends Component<{ value }> {
   }
 }
 
-export default Word
+export default WordDisplay

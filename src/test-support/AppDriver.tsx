@@ -23,6 +23,8 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import { Promise } from 'bluebird'
 import { submitForm } from 'test-support/utils'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
+import ApiClient from 'http/ApiClient'
+import FakeApi from 'test-support/FakeApi'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -69,7 +71,7 @@ export default class AppDriver {
     }
   }
 
-  withPath(path): AppDriver {
+  withPath(path: string): AppDriver {
     this.initialEntries = [path]
     return this
   }

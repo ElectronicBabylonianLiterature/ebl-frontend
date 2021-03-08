@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Badge, Button, Card, ListGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -6,7 +6,11 @@ import './List.css'
 import { CollapsibleCard } from './CollabsibleCard'
 import { produce } from 'immer'
 
-function SizeBadge({ collection }): JSX.Element | null {
+function SizeBadge({
+  collection,
+}: {
+  collection: unknown[]
+}): JSX.Element | null {
   const size = collection.length
   return size > 0 ? (
     <Badge variant="light" pill>
@@ -33,7 +37,7 @@ function listController(ListView) {
     defaultValue,
     ...props
   }) {
-    const add = () => {
+    const add = (): void => {
       const newItem = createDefaultValue(defaultValue)
       onChange(
         produce(value, (draft) => {
@@ -81,6 +85,14 @@ function CardListView({
   collapsed,
   onAdd,
   onDelete,
+}: {
+  label: ReactNode
+  noun: string
+  elements: any[]
+  ordered: boolean
+  collapsed: boolean
+  onAdd: () => void
+  onDelete: (index: number) => () => void
 }) {
   const fullLabel = !_.isNil(label) ? (
     <>

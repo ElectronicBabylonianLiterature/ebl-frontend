@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React, { ChangeEvent, Component } from 'react'
 import _ from 'lodash'
 import { FormGroup, FormLabel, FormControl } from 'react-bootstrap'
 
 class TextInput extends Component<{ value; onChange }> {
-  onChange = (event) => {
+  onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.props.onChange(event.target.value)
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <FormGroup controlId={_.uniqueId('TextInput-')}>
         {this.props.children && <FormLabel>{this.props.children}</FormLabel>}

@@ -1,12 +1,12 @@
-import { produce } from 'immer'
-import _ from 'lodash'
-import React from 'react'
-import { Col, Form } from 'react-bootstrap'
-import ArrayInput from 'common/ArrayInput'
 import ListForm from 'common/List'
-import { createManuscriptLine, ManuscriptLine } from 'corpus/domain/line'
 import { Manuscript } from 'corpus/domain/text'
+import React from 'react'
+import { castDraft, produce } from 'immer'
+import { Col, Form } from 'react-bootstrap'
+import _ from 'lodash'
+import ArrayInput from 'common/ArrayInput'
 import Editor from 'editor/Editor'
+import { createManuscriptLine, ManuscriptLine } from 'corpus/domain/line'
 
 interface ManuscriptLineFormProps {
   value: ManuscriptLine
@@ -59,7 +59,7 @@ function ManuscriptLineForm({
           onChange={(labels) =>
             onChange(
               produce(value, (draft) => {
-                draft.labels = labels
+                draft.labels = castDraft(labels)
               })
             )
           }

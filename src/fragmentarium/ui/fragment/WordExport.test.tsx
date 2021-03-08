@@ -1,13 +1,12 @@
-import React, { useState, useRef, RefObject } from 'react'
+import React from 'react'
 import $ from 'jquery'
-import { act, render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
 import { wordDto } from 'test-support/test-word'
 import { wordExport } from './WordExport'
-import WordDownloadButton from './WordDownloadButton'
+import Bluebird from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
@@ -17,9 +16,8 @@ let wordBlob: any
 
 beforeEach(async () => {
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  jest
-    .spyOn(wordService, 'find')
-    .mockImplementation(() => Promise.resolve(wordDto))
+  wordService.find.mockReturnValue(Bluebird.resolve(wordDto))
+
   fragment = await factory.build('fragment', {
     publication: 'Guod cigipli epibif odepuwu.',
     text: complexText,

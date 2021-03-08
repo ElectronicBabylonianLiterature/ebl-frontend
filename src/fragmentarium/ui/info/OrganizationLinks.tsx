@@ -10,7 +10,7 @@ import './OrganizationLinks.css'
 
 function MuseumLink({ link }: { readonly link: FragmentLink }): JSX.Element {
   return (
-    <ExternalLink alt={link.name} href={link.url} aria-label={link.label}>
+    <ExternalLink href={link.url} aria-label={link.label}>
       <img
         className="OrganizationLinks__image"
         src={link.logo}

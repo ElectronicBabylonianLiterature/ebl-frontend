@@ -13,17 +13,17 @@ class AmplifiedMeaningList extends Component<{
   static defaultProps = {
     entry: false,
   }
-  get noun() {
+  get noun(): string {
     return this.props.entry ? 'entry' : 'amplified meaning'
   }
 
-  get defaultValue() {
+  get defaultValue(): { [key: string]: string | [] } {
     return this.props.entry
       ? { meaning: '', vowels: [] }
       : { key: '', meaning: '', vowels: [], entries: [] }
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <FormGroup>
         <List

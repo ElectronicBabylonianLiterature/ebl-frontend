@@ -5,16 +5,23 @@ import BibliographyEntryForm from './BibliographyEntryForm'
 import Spinner from 'common/Spinner'
 import ErrorAlert from 'common/ErrorAlert'
 import SessionContext from 'auth/SessionContext'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
+interface Props {
+  entry: BibliographyEntry
+  onSubmit: (
+    entry: BibliographyEntry
+  ) => Promise<BibliographyEntry | void | unknown>
+}
 export default class BibliographyEntryFormController extends Component<
-  { entry; onSubmit },
+  Props,
   { error: Error | null; saving: boolean }
 > {
   static contextType = SessionContext
 
-  private updatePromise: Promise<any>
+  private updatePromise: Promise<void>
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
     this.state = {
       error: null,
@@ -30,7 +37,7 @@ export default class BibliographyEntryFormController extends Component<
     return this.state.saving || !this.context.isAllowedToWriteBibliography()
   }
 
-  handleSubmit = (entry): void => {
+  handleSubmit = (entry: BibliographyEntry): void => {
     this.updatePromise.cancel()
     this.setState({ error: null, saving: true })
     this.updatePromise = this.props

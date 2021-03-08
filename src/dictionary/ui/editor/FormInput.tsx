@@ -1,58 +1,53 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { FormGroup } from 'react-bootstrap'
 import _ from 'lodash'
 
 import LemmaInput from './LemmaInput'
 import ListInput from './TextListInput'
 import TextInput from './TextInput'
+import { Word } from 'transliteration/domain/token'
 
-class FormInput extends Component<{ value; onChange }> {
-  lemmaChanged = (lemma) => {
-    this.props.onChange({
-      ...this.props.value,
+export default function FormInput({
+  value,
+  onChange,
+}: {
+  value
+  onChange: (word: Word) => void
+}): JSX.Element {
+  const lemmaChanged = (lemma): void => {
+    onChange({
+      ...value,
       ...lemma,
     })
   }
-
-  homonymChanged = (homonym) => {
-    this.props.onChange({
-      ...this.props.value,
+  const homonymChanged = (homonym): void => {
+    onChange({
+      ...value,
       homonym: homonym,
     })
   }
-
-  notesChanged = (notes) => {
-    this.props.onChange({
-      ...this.props.value,
+  const notesChanged = (notes): void => {
+    onChange({
+      ...value,
       notes: notes,
     })
   }
 
-  hasProperty = (property) => _.has(this.props.value, property)
+  const hasProperty = (property): boolean => _.has(value, property)
 
-  render() {
-    return (
-      <FormGroup>
-        <LemmaInput value={this.props.value} onChange={this.lemmaChanged} />
-        {this.hasProperty('homonym') && (
-          <TextInput
-            value={this.props.value.homonym}
-            onChange={this.homonymChanged}
-          >
-            Homonym
-          </TextInput>
-        )}
-        {this.hasProperty('notes') && (
-          <ListInput
-            value={this.props.value.notes}
-            onChange={this.notesChanged}
-          >
-            Notes
-          </ListInput>
-        )}
-      </FormGroup>
-    )
-  }
+  return (
+    <FormGroup>
+      <LemmaInput value={value} onChange={lemmaChanged} />
+      {hasProperty('homonym') && (
+        <TextInput value={value.homonym} onChange={homonymChanged}>
+          Homonym
+        </TextInput>
+      )}
+      {hasProperty('notes') && (
+        <ListInput value={value.notes} onChange={notesChanged}>
+          Notes
+        </ListInput>
+      )}
+    </FormGroup>
+  )
 }
-
-export default FormInput
