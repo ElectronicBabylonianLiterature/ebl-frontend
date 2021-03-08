@@ -11,6 +11,7 @@ import { Chapter } from 'corpus/domain/text'
 import Reconstruction from 'corpus/ui/Reconstruction'
 import OmittedWordsSelect from './OmittedWordsSelect'
 import WordAligner from './WordAligner'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 const setAlignment = produce(
   (draft: Draft<ManuscriptAlignment>, index: number, token: AlignmentToken) => {
@@ -48,7 +49,7 @@ function ManuscriptAligner(props: {
       <Col md={7}>
         {props.manuscriptLine.atfTokens.map((token, index) => (
           <span key={index}>
-            {token.lemmatizable ? (
+            {isAnyWord(token) && token.alignable ? (
               <WordAligner
                 token={props.alignment.alignment[index]}
                 reconstructionTokens={props.line.reconstructionTokens}

@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
-import { wordExport } from './WordExport'
+import { pdfExport } from './PdfExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
 import { Dropdown } from 'react-bootstrap'
-import { saveAs } from 'file-saver'
 import Spinner from 'common/Spinner'
-import { Document, Packer } from 'docx'
 import $ from 'jquery'
 import Promise from 'bluebird'
 import usePromiseEffect from 'common/usePromiseEffect'
+import { jsPDF } from 'jspdf'
 
 type Props = {
   children: React.ReactNode
@@ -16,7 +15,7 @@ type Props = {
   wordService: WordService
 }
 
-export default function WordDownloadButton({
+export default function PdfDownloadButton({
   fragment,
   wordService,
   children,
@@ -30,12 +29,10 @@ export default function WordDownloadButton({
     cancelPromise()
 
     setPromise(
-      getWordDoc(fragment, wordService, jQueryRef)
-        .then(packWordDoc)
-        .then((blob) => {
-          saveAs(blob, `${fragment.number}.docx`)
-          setIsLoading(false)
-        })
+      getPdfDoc(fragment, wordService, jQueryRef).then((doc) => {
+        doc.save(fragment.number + '.pdf')
+        setIsLoading(false)
+      })
     )
   }
 
@@ -49,18 +46,12 @@ export default function WordDownloadButton({
   )
 }
 
-function getWordDoc(
+function getPdfDoc(
   fragment: Fragment,
   wordService: WordService,
   jQueryRef: JQuery
-): Promise<Document> {
+): Promise<jsPDF> {
   return new Promise(function (resolve) {
-    resolve(wordExport(fragment, wordService, jQueryRef))
-  })
-}
-
-function packWordDoc(doc: Document): Promise<Blob> {
-  return new Promise(function (resolve) {
-    resolve(Packer.toBlob(doc))
+    resolve(pdfExport(fragment, wordService, jQueryRef))
   })
 }

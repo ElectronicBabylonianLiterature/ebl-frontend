@@ -92,6 +92,7 @@ const toManuscriptDto = produce((draft) => ({
   period: toName(draft.period),
   type: toName(draft.type),
   notes: draft.notes,
+  colophon: draft.colophon,
   references: draft.references.map(serializeReference),
 }))
 
@@ -115,8 +116,8 @@ function toAlignmentTokenDto(token: AlignmentToken) {
         value: token.value,
         alignment: token.alignment,
         variant: token.variant?.value ?? '',
+        type: token.variant?.type ?? '',
         language: token.variant?.language ?? '',
-        isNormalized: token.variant?.isNormalized ?? false,
       }
     : {
         value: token.value,

@@ -30,6 +30,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   provenance: provenances.values().next().value,
   type: types.values().next().value,
   notes: 'some notes',
+  colophon: '1. kur',
   references: [],
 }
 
@@ -48,6 +49,7 @@ const manuscrpitLineConfig: Partial<ManuscriptLine> = {
       normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
+      alignable: true,
       erasure: 'NONE',
       alignment: null,
       variant: null,
@@ -69,6 +71,7 @@ const lineConfig: Line = {
           enclosureType: [],
           erasure: 'NONE',
           lemmatizable: true,
+          alignable: true,
           alignment: null,
           variant: null,
           uniqueLemma: [],
@@ -92,6 +95,7 @@ const lineConfig: Line = {
           enclosureType: [],
           erasure: 'NONE',
           lemmatizable: true,
+          alignable: true,
           alignment: null,
           variant: null,
           uniqueLemma: [],
@@ -163,8 +167,8 @@ describe('Chapter', () => {
                   alignment: 1,
                   variant: {
                     value: 'ra',
+                    type: 'Word',
                     language: 'AKKADIAN',
-                    isNormalized: true,
                   },
                   isAlignable: true,
                   suggested: false,

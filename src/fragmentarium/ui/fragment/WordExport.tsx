@@ -121,7 +121,12 @@ function getMainTableWithFootnotes(
           $(el)
             .find('span,em,sup')
             .each((i, el) => {
-              getTransliterationText($(el), runs)
+              if (
+                $(el).contents().text().length > 0 &&
+                $(el).contents()[0].nodeType === 3
+              ) {
+                getTransliterationText($(el), runs)
+              }
             })
         } else if (lineType !== 'rulingDollarLine') {
           runs.push(getTextRun($(el)))
@@ -230,10 +235,11 @@ function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
     new TextRun({
       text: headline.text(),
       size: parseInt(headline.css('font-size'), 10) * 2,
-    }).break()
+      break: 1,
+    })
   )
 
-  runs.push(new TextRun('').break())
+  runs.push(new TextRun({ break: 1 }))
 
   divs.each((i, el) => {
     $(el)
@@ -242,7 +248,7 @@ function getGlossary(glossaryHtml, jQueryRef: any): Paragraph {
         dealWithGlossaryHTML(el, runs)
       })
 
-    runs.push(new TextRun('').break())
+    runs.push(new TextRun({ break: 1 }))
   })
 
   glossaryHtml.remove()
@@ -390,8 +396,8 @@ function getHeadline(fragment: Fragment): Paragraph {
 function getCreditForHead(records: JQuery): Paragraph {
   return new Paragraph({
     children: [
-      new TextRun({ text: getCredit(records), size: 16 }).break(),
-      new TextRun('').break(),
+      new TextRun({ text: getCredit(records), size: 16, break: 1 }),
+      new TextRun({ break: 1 }),
     ],
     alignment: AlignmentType.CENTER,
   })
@@ -433,8 +439,8 @@ function getTextRun(el: any) {
   const text: string = el.text()
   const superScript: boolean = el.is('sup') ? true : false
   const smallCaps: boolean =
-    el.css('font-variant') === 'small-caps' ? true : false
-  const size: number = el.css('font-variant') === 'small-caps' ? 16 : 24
+    el.css('font-variant') === 'all-small-caps' ? true : false
+  const size: number = el.css('font-variant') === 'all-small-caps' ? 16 : 24
 
   return new TextRun({
     text: text,

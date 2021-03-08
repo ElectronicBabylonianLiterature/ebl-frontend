@@ -5,6 +5,7 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import * as TeiExport from './TeiExport'
 import WordService from 'dictionary/application/WordService'
 import WordDownloadButton from './WordDownloadButton'
+import PdfDownloadButton from './PdfDownloadButton'
 
 type Props = {
   fragment: Fragment
@@ -55,9 +56,9 @@ export default function Download({
       id={_.uniqueId('fragment-download-')}
       variant="outline-primary"
     >
-      <Dropdown.Item eventKey="1" disabled>
+      <PdfDownloadButton fragment={fragment} wordService={wordService}>
         Download as PDF
-      </Dropdown.Item>
+      </PdfDownloadButton>
       <WordDownloadButton fragment={fragment} wordService={wordService}>
         Download as Word
       </WordDownloadButton>

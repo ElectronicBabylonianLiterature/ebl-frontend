@@ -41,6 +41,7 @@ interface Props {
 class Editor extends Component<Props> {
   static defaultProps = {
     error: null,
+    disabled: false,
   }
   readonly aceEditor = React.createRef<AceEditor>()
 

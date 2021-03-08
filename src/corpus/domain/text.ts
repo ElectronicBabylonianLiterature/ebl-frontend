@@ -17,6 +17,8 @@ export const types: ReadonlyMap<string, ManuscriptType> = new Map([
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
   ['Commentary', { name: 'Commentary', abbreviation: 'Com' }],
   ['Quotation', { name: 'Quotation', abbreviation: 'Quo' }],
+  ['Excerpt', { name: 'Excerpt', abbreviation: 'Ex' }],
+  ['Parallel', { name: 'Parallel', abbreviation: 'Par' }],
 ])
 
 export class Manuscript {
@@ -44,6 +46,7 @@ export class Manuscript {
     abbreviation: '',
   }
   readonly notes: string = ''
+  readonly colophon: string = ''
   readonly references: readonly Reference[] = []
 
   get siglum(): string {

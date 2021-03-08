@@ -1,10 +1,11 @@
 import produce, { castDraft, Draft, immerable } from 'immer'
 import { Token } from 'transliteration/domain/token'
+import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface Variant {
   readonly value: string
+  readonly type: string
   readonly language: string
-  readonly isNormalized: boolean
 }
 
 export type AlignmentToken =
@@ -59,14 +60,14 @@ export class ChapterAlignment {
 }
 
 export function createAlignmentToken(token: Token): AlignmentToken {
-  return token.lemmatizable
+  return isAnyWord(token) && token.alignable
     ? {
         value: token.value,
         alignment: token.alignment,
         variant: token.variant && {
           value: token.variant.value,
+          type: token.variant.type,
           language: token.variant.language,
-          isNormalized: token.variant.normalized,
         },
         isAlignable: true,
         suggested: false,

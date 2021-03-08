@@ -31,6 +31,7 @@ const reconstructionTokens: Token[] = [
     enclosureType: [],
     erasure: 'NONE',
     lemmatizable: true,
+    alignable: true,
     alignment: null,
     variant: null,
     uniqueLemma: [],
@@ -60,6 +61,7 @@ const atfTokens: Token[] = [
     normalized: false,
     language: 'AKKADIAN',
     lemmatizable: true,
+    alignable: true,
     erasure: 'NONE',
     alignment: null,
     variant: null,
@@ -74,6 +76,7 @@ const atfTokens: Token[] = [
     normalized: false,
     language: 'AKKADIAN',
     lemmatizable: true,
+    alignable: true,
     erasure: 'NONE',
     alignment: 1,
     variant: {
@@ -82,9 +85,10 @@ const atfTokens: Token[] = [
       parts: [],
       cleanValue: 'ra',
       uniqueLemma: ['aklu I'],
-      normalized: true,
+      normalized: false,
       language: 'AKKADIAN',
       lemmatizable: true,
+      alignable: true,
       erasure: 'NONE',
       alignment: null,
       variant: null,
@@ -125,6 +129,7 @@ export const textDto = {
           provenance: 'Nippur',
           type: 'School',
           notes: 'a note',
+          colophon: '1. kur',
           references: [
             {
               id: 'RN1853',
@@ -190,6 +195,7 @@ export const text = createText({
           provenance: provenances.get('Nippur'),
           type: types.get('School'),
           notes: 'a note',
+          colophon: '1. kur',
           references: [
             new Reference(
               'DISCUSSION',
