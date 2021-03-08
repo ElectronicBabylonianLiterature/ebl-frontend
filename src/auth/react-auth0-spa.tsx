@@ -8,6 +8,7 @@ import MemorySession, { Session } from 'auth/Session'
 import Spinner from 'common/Spinner'
 import { AuthenticationContext, AuthenticationService } from 'auth/Auth'
 import Auth0AuthenticationService from 'auth/Auth0AuthenticationService'
+import 'auth/AuthenticationSpinner.css'
 
 async function createSession(auth0Client: Auth0Client): Promise<Session> {
   const accessToken = await auth0Client.getTokenSilently()
@@ -80,6 +81,8 @@ export const Auth0Provider = ({
       {children}
     </AuthenticationContext.Provider>
   ) : (
-    <Spinner>Authenticating...</Spinner>
+    <div className="text-center spinner__center">
+      <Spinner>Authenticating...</Spinner>
+    </div>
   )
 }
