@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
 import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'
-import SessionContext from 'auth/SessionContext'
 import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -45,7 +44,6 @@ export default function ChapterEditor({
   fragmentService,
   textService,
 }: Props): JSX.Element {
-  const session = useContext(SessionContext)
   return (
     <>
       <ChapterDetails chapter={chapter} />
@@ -75,22 +73,14 @@ export default function ChapterEditor({
             disabled={disabled}
           />
         </Tab>
-        <Tab
-          eventKey="alignment"
-          title="Alignment"
-          disabled={!session.hasBetaAccess() || dirty}
-        >
+        <Tab eventKey="alignment" title="Alignment" disabled={dirty}>
           <ChapterAligner
             chapter={chapter}
             onSave={onSaveAlignment}
             disabled={disabled}
           />
         </Tab>
-        <Tab
-          eventKey="lemmatization"
-          title="Lemmatization"
-          disabled={!session.hasBetaAccess() || dirty}
-        >
+        <Tab eventKey="lemmatization" title="Lemmatization" disabled={dirty}>
           <ChapterLemmatizer
             chapter={chapter}
             onSave={onSaveLemmatization}

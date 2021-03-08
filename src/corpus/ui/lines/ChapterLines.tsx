@@ -1,7 +1,7 @@
 import produce, { castDraft } from 'immer'
 import _ from 'lodash'
 import React from 'react'
-import { Badge, Button, Col, Form } from 'react-bootstrap'
+import { Button, Col, Form } from 'react-bootstrap'
 import ListForm from 'common/List'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import { createVariant, LineVariant, Line } from 'corpus/domain/line'
@@ -171,7 +171,6 @@ export default function ChapterLines({
     )
   return (
     <Form>
-      <Badge variant="warning">Beta</Badge>
       <fieldset disabled={disabled}>
         <ListForm
           noun="line"
