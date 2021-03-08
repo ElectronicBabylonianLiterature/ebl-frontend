@@ -142,6 +142,19 @@ export default class FakeApi {
     return this
   }
 
+  expectImportChapter(text: Dto, chapterIndex: number, atf: string): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'POST',
+        path: `/texts/${text.category}/${text.index}/chapters/${chapterIndex}/import`,
+        response: text,
+        verify: true,
+        body: { atf },
+      })
+    )
+    return this
+  }
+
   expectAnnotations(number: string, annotationDtos: readonly Dto[]): FakeApi {
     this.expectations.push(
       new Expectation({

@@ -180,6 +180,22 @@ export default class TextService {
       .then(fromDto)
   }
 
+  importChapter(
+    category: number,
+    index: number,
+    chapterIndex: number,
+    atf: string
+  ): Bluebird<Text> {
+    return this.apiClient
+      .postJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(chapterIndex)}/import`,
+        { atf }
+      )
+      .then(fromDto)
+  }
+
   findSuggestions(chapter: Chapter): Bluebird<ChapterLemmatization> {
     return new CorpusLemmatizationFactory(
       this.fragmentService,

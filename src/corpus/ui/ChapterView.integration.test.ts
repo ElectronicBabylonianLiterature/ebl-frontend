@@ -309,6 +309,14 @@ describe('Add line', () => {
   })
 })
 
+test('Import chapter', async () => {
+  const chapter = textDto.chapters[1]
+  fakeApi.expectImportChapter(textDto, 1, '1. kur')
+  await setup(chapter)
+  await appDriver.click('Import')
+  await appDriver.click('Save')
+})
+
 describe('Chapter not found', () => {
   const chapter = textDto.chapters[1]
   const chapterName = 'Unknown Chapter'

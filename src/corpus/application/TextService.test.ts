@@ -258,6 +258,19 @@ const testData: TestData[] = [
     ],
     Bluebird.resolve(textDto),
   ],
+  [
+    'importChapter',
+    [text.category, text.index, 0, '1. kur'],
+    apiClient.postJson,
+    text,
+    [
+      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
+        text.index
+      )}/chapters/0/import`,
+      { atf: '1. kur' },
+    ],
+    Bluebird.resolve(textDto),
+  ],
 ]
 
 describe('TextService', () => testDelegation(testService, testData))

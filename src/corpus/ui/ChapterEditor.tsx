@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Tabs, Tab } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import ChapterManuscripts from 'corpus/ui/manuscripts/ChapterManuscripts'
 import ChapterLines from 'corpus/ui/lines/ChapterLines'
 import ChapterAligner from 'corpus/ui/alignment/ChapterAligner'
-import SessionContext from 'auth/SessionContext'
 import ChapterDetails from './ChapterDetails'
 import { Chapter } from 'corpus/domain/text'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
@@ -14,12 +13,14 @@ import ChapterLemmatizer from 'corpus/ui/lemmatization/ChapterLemmatization'
 import TextService from 'corpus/application/TextService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import ChapterImport from './import/ChapterImport'
 
 interface Props {
   onSaveLines: () => void
   onSaveManuscripts: () => void
   onSaveAlignment: (alignment: ChapterAlignment) => void
   onSaveLemmatization: (lemmatization: ChapterLemmatization) => void
+  onImport: (atf: string) => unknown
   disabled: boolean
   dirty: boolean
   chapter: Chapter
@@ -34,6 +35,7 @@ export default function ChapterEditor({
   onSaveManuscripts,
   onSaveAlignment,
   onSaveLemmatization,
+  onImport,
   disabled,
   dirty,
   chapter,
@@ -42,7 +44,6 @@ export default function ChapterEditor({
   fragmentService,
   textService,
 }: Props): JSX.Element {
-  const session = useContext(SessionContext)
   return (
     <>
       <ChapterDetails chapter={chapter} />
@@ -61,6 +62,9 @@ export default function ChapterEditor({
             disabled={disabled}
           />
         </Tab>
+        <Tab eventKey="import" title="Import" disabled={dirty}>
+          <ChapterImport onSave={onImport} disabled={disabled} />
+        </Tab>
         <Tab eventKey="lines" title="Lines" disabled={dirty}>
           <ChapterLines
             chapter={chapter}
@@ -69,22 +73,14 @@ export default function ChapterEditor({
             disabled={disabled}
           />
         </Tab>
-        <Tab
-          eventKey="alignment"
-          title="Alignment"
-          disabled={!session.hasBetaAccess() || dirty}
-        >
+        <Tab eventKey="alignment" title="Alignment" disabled={dirty}>
           <ChapterAligner
             chapter={chapter}
             onSave={onSaveAlignment}
             disabled={disabled}
           />
         </Tab>
-        <Tab
-          eventKey="lemmatization"
-          title="Lemmatization"
-          disabled={!session.hasBetaAccess() || dirty}
-        >
+        <Tab eventKey="lemmatization" title="Lemmatization" disabled={dirty}>
           <ChapterLemmatizer
             chapter={chapter}
             onSave={onSaveLemmatization}

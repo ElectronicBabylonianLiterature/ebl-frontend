@@ -1,6 +1,6 @@
 import produce, { castDraft, Draft } from 'immer'
 import React, { useState } from 'react'
-import { Badge, Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import {
   AlignmentToken,
   ChapterAlignment,
@@ -99,7 +99,6 @@ export default function ChapterAligner({
 
   return (
     <Container>
-      <Badge variant="warning">Beta</Badge>
       {chapter.lines.map((line, lineIndex) => (
         <Row key={lineIndex}>
           <Col md={1}>{line.number}</Col>
