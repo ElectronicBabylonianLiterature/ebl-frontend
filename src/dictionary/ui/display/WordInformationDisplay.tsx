@@ -11,11 +11,6 @@ import ReactMarkdown from 'react-markdown'
 import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
 
-type Props = {
-  data: Word
-  wordService: WordService
-} & RouteComponentProps<{ id: string }>
-
 const LiteratureRedirectBox = (): JSX.Element => (
   <ExternalLink
     style={{ color: 'black' }}
@@ -41,7 +36,6 @@ const LiteratureRedirectBox = (): JSX.Element => (
 )
 
 function WordInformation({ word }: { word: Word }): JSX.Element {
-  console.log(word)
   const copyableInformation = `+${word.lemma[0]}[${word.guideWord}]${
     word.pos[0] ? word.pos[0] : ''
   }$`
@@ -148,9 +142,9 @@ function Derivatives({
     <span key={lemmasIndex}>
       {lemmas.map((lemma, lemmaIndex) => (
         <span key={lemmaIndex}>
-          <Link to={`/dictionary/${lemma}`}>
+          <a href={`/dictionary/${lemma}`}>
             <em>{lemma.split(' ')[0]}</em>
-          </Link>
+          </a>
           &nbsp;{lemma.split(' ')[1]}
           {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
         </span>
@@ -176,12 +170,12 @@ function AmplifiedMeanings({
     <>
       Attested stems:&nbsp;
       {amplifiedMeanings.map((amplifiedMeaning, index) => (
-        <>
+        <span key={index}>
           <HashLink to={`/dictionary/${wordId}#attested-stem-${index}`}>
             {amplifiedMeaning.key}
           </HashLink>
           {index !== amplifiedMeanings.length - 1 && <>,&nbsp;</>}
-        </>
+        </span>
       ))}
     </>
   )
@@ -294,8 +288,12 @@ function WordInformationDetails({ word }: { word: Word }): JSX.Element {
     </Row>
   )
 }
+type Props = {
+  data: Word
+  wordService: WordService
+} & RouteComponentProps<{ id: string }>
 
 export default withData<WithoutData<Props>, { match; wordService }, Word>(
-  ({ data, match }) => <WordInformation word={data} />,
+  ({ data }) => <WordInformation word={data} />,
   (props) => props.wordService.find(props.match.params['id'])
 )
