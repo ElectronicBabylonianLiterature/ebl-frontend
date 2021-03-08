@@ -7,7 +7,7 @@ import {
 import { factory } from 'factory-girl'
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
-import WordInformationDisplay from 'dictionary/ui/display/WordInformationDisplay'
+import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
@@ -44,7 +44,7 @@ async function renderWordInformationDisplay(): Promise<void> {
         <Route
           path="/dictionary/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <WordInformationDisplay wordService={wordService} {...props} />
+            <WordDisplay wordService={wordService} {...props} />
           )}
         />
       </SessionContext.Provider>
