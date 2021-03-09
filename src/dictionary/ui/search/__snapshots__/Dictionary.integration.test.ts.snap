@@ -11,6 +11,14 @@ exports[`Query 1`] = `
       <div
         class="container"
       >
+        <span
+          class="navbar-brand"
+        >
+          <img
+            class="Header__corporate-logo img-fluid"
+            src="LMU_Logo.svg"
+          />
+        </span>
         <a
           class="active navbar-brand"
           href="/"
@@ -313,6 +321,14 @@ exports[`Snapshot 1`] = `
       <div
         class="container"
       >
+        <span
+          class="navbar-brand"
+        >
+          <img
+            class="Header__corporate-logo img-fluid"
+            src="LMU_Logo.svg"
+          />
+        </span>
         <a
           class="active navbar-brand"
           href="/"
