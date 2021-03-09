@@ -17,12 +17,12 @@ beforeEach(async () => {
   }
   const lineToVecRankingsResults: LineToVecRanking = {
     score: [
-      ['X.1', 10],
-      ['X.2', 8],
+      { id: 'X.1', script: 'NA', score: 10 },
+      { id: 'X.2', script: 'NA', score: 8 },
     ],
     scoreWeighted: [
-      ['X.1', 13],
-      ['X.2', 8],
+      { id: 'X.1', script: 'NA', score: 13 },
+      { id: 'X.2', script: 'NA', score: 9 },
     ],
   }
   const fragmentService = {
@@ -45,5 +45,6 @@ beforeEach(async () => {
 })
 
 it('Shows the number of transliterated tablets', async () => {
-  expect(screen.getByText('X.1:10')).toBeVisible()
+  expect(screen.getAllByText(/X.1/)[0]).toBeVisible()
+  expect(screen.getByText(/,\s*NA:\s*10/)).toBeVisible()
 })

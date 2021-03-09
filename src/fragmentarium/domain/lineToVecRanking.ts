@@ -1,4 +1,10 @@
 export interface LineToVecRanking {
-  score: ReadonlyArray<[string, number]>
-  scoreWeighted: ReadonlyArray<[string, number]>
+  score: ReadonlyArray<LineToVecScore>
+  scoreWeighted: ReadonlyArray<LineToVecScore>
+}
+
+export interface LineToVecScore {
+  id: string
+  script: string
+  score: number
 }
