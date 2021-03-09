@@ -26,14 +26,14 @@ describe('Fetch word', () => {
     expect(wordService.find).toBeCalledWith('id')
   })
   it('Word parts are displayed', async () => {
-    word.lemma.map((lemma) => expectToBeVisible(new RegExp(lemma)))
+    word.lemma.forEach((lemma) => expectToBeVisible(new RegExp(lemma)))
     expectToBeVisible(new RegExp(word.guideWord))
     expectToBeVisible(new RegExp(word.meaning))
 
     function expectToBeVisible(text: string | RegExp): void {
       screen
         .getAllByText(text)
-        .map((gettedText) => expect(gettedText).toBeVisible())
+        .forEach((gettedText) => expect(gettedText).toBeVisible())
     }
   })
 })
