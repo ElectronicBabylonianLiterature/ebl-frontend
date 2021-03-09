@@ -43,7 +43,7 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
       )
       .then((reconstruction) =>
         Bluebird.mapSeries(variant.manuscripts, (manuscript) =>
-          this.lemmatizeManuscript(manuscript, reconstruction)
+          this.lemmatizeManuscript(manuscript)
         ).then((lemmatizedManuscripts) => [
           reconstruction,
           lemmatizedManuscripts,
@@ -52,17 +52,14 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   }
 
   private lemmatizeManuscript(
-    manuscript: ManuscriptLine,
-    reconstruction: LemmatizationToken[]
+    manuscript: ManuscriptLine
   ): Bluebird<LemmatizationToken[]> {
-    return this.createLemmatizationLine(manuscript.atfTokens).then(
-      (lemmatizedManuscript) =>
-        lemmatizedManuscript.map((lemmatizationToken, tokenIndex) => {
-          const atfToken: Token = manuscript.atfTokens[tokenIndex]
-          return lemmatizationToken.lemmatizable
-            ? this.applySuggestion(lemmatizationToken, atfToken, reconstruction)
-            : lemmatizationToken
-        })
+    return Bluebird.mapSeries(manuscript.atfTokens, (token) =>
+      token.lemmatizable
+        ? this.createLemmas(token).then(
+            (lemmas) => new LemmatizationToken(token.value, true, lemmas, [])
+          )
+        : new LemmatizationToken(token.value, false)
     )
   }
 

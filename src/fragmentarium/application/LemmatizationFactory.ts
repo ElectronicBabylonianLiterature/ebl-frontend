@@ -55,7 +55,7 @@ export abstract class AbstractLemmatizationFactory<T, U> {
       : Promise.resolve([])
   }
 
-  private createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
+  protected createLemmas(token: LemmatizableToken): Promise<UniqueLemma> {
     return Promise.mapSeries(token.uniqueLemma, (lemma) =>
       this.findWord(lemma).then((word: DictionaryWord) => new Lemma(word))
     )
