@@ -7,6 +7,7 @@ import User from './auth/User'
 
 import './Header.css'
 import lmuLogo from './LMU_Logo.svg'
+import ExternalLink from 'common/ExternalLink'
 
 function EblLogo(): JSX.Element {
   return (
@@ -41,7 +42,9 @@ export default function Header(): JSX.Element {
       <Navbar variant="light" expand="md">
         <Container>
           <Navbar.Brand>
-            <Image className="Header__corporate-logo" src={lmuLogo} fluid />
+            <ExternalLink href="https://www.lmu.de">
+              <Image className="Header__corporate-logo" src={lmuLogo} fluid />
+            </ExternalLink>
           </Navbar.Brand>
           <LinkContainer
             to="/"

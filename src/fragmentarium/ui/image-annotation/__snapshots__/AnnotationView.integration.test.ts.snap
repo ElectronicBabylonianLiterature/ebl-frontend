@@ -14,10 +14,16 @@ exports[`Diplay annotate view Snapshot 1`] = `
         <span
           class="navbar-brand"
         >
-          <img
-            class="Header__corporate-logo img-fluid"
-            src="LMU_Logo.svg"
-          />
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
         </span>
         <a
           class="active navbar-brand"
