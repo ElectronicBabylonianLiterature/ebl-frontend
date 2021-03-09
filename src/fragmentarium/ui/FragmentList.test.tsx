@@ -68,7 +68,7 @@ describe.each([
             : fragment[property as string]
         )
         .join('')
-        .replace('\n', ' ')
+        .replace(/\n/g, ' ')
       expect(element.container).toHaveTextContent(expectedRow)
     })
 

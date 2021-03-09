@@ -83,7 +83,7 @@ describe('User Input', () => {
     userEvent.type(screen.getByLabelText('Transliteration'), userInput)
     await waitFor(() =>
       expect(screen.getByLabelText('Transliteration')).toHaveTextContent(
-        userInput.replace('\n', ' ')
+        userInput.replace(/\n/g, ' ')
       )
     )
   })

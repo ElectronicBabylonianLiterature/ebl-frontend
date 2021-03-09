@@ -44,6 +44,6 @@ test.each(_.range(numberOfFragments))('Fragment %i', (index) => {
   const expectedRow = _.keys(expectedColumns)
     .map((property) => fragments[index][property])
     .join('')
-    .replace('\n', ' ')
+    .replace(/\n/g, ' ')
   expect(container).toHaveTextContent(expectedRow)
 })
