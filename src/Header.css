@@ -1,3 +1,8 @@
+.Header__corporate-logo {
+  height: 4em;
+  margin-bottom: 0.5rem;
+}
+
 .Header__title {
   font-size: 1em;
 }

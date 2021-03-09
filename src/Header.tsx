@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Nav, Navbar, Container } from 'react-bootstrap'
+import { Image, Nav, Navbar, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import _ from 'lodash'
 
 import User from './auth/User'
 
 import './Header.css'
+import lmuLogo from './LMU_Logo.svg'
 
 function EblLogo(): JSX.Element {
   return (
@@ -39,6 +40,9 @@ export default function Header(): JSX.Element {
     <header className="Header">
       <Navbar variant="light" expand="md">
         <Container>
+          <Navbar.Brand>
+            <Image className="Header__corporate-logo" src={lmuLogo} fluid />
+          </Navbar.Brand>
           <LinkContainer
             to="/"
             title="electronic Babylonian Literature (eBL)"
