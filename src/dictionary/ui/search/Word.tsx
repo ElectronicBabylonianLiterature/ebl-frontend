@@ -134,6 +134,12 @@ class WordDisplay extends Component<{ value: Word }> {
   render(): JSX.Element {
     return (
       <div className="Word">
+        <Link
+          to={`/dictionary/${this.props.value._id}/edit`}
+          className="BibliographySearch__edit"
+        >
+          <i className="fas fa-edit" />
+        </Link>
         <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
           <Lemma word={this.word} container="strong" />
         </dfn>

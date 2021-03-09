@@ -205,6 +205,14 @@ exports[`Query 1`] = `
         <div
           class="Word"
         >
+          <a
+            class="BibliographySearch__edit"
+            href="/dictionary/test I/edit"
+          >
+            <i
+              class="fas fa-edit"
+            />
+          </a>
           <dfn
             title="test I"
           >

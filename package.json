@@ -82,6 +82,7 @@
     "react-markdown": "^4.0.3",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.0.0",
+    "react-router-hash-link": "^2.4.0",
     "react-scripts": "3.4.3",
     "react-select": "^3.0.4",
     "rgb-hex": "^3.0.0",

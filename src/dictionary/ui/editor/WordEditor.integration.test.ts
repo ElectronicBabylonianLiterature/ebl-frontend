@@ -15,7 +15,7 @@ beforeEach(async () => {
   fakeApi = new FakeApi().expectWord(word)
   appDriver = await new AppDriver(fakeApi.client)
     .withSession()
-    .withPath(`/dictionary/${encodeURIComponent(word._id)}`)
+    .withPath(`/dictionary/${encodeURIComponent(word._id)}/edit`)
     .render()
 })
 
