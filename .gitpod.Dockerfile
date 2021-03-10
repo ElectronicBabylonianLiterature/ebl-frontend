@@ -18,3 +18,6 @@ RUN bash -c ". .nvm/nvm.sh \
     && nvm alias default 14"
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
+
+RUN export PATH="$(yarn global bin):$PATH"
+RUN yarn global add serve
