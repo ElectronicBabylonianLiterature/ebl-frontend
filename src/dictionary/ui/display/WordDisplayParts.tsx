@@ -34,16 +34,22 @@ interface Derivative {
   notes: string[]
 }
 
-function extractLemmas(derivatives): string[][] {
+function extractLemmas(
+  derivatives
+): {
+  firstNote: string
+  secondNote: string
+  lemma: string
+  homonym: string
+}[][] {
   return derivatives.map((derivative) =>
     derivative.map((derivativeParts) => {
-      const homonym = derivativeParts.homonym
-        ? ` ${derivativeParts.homonym}`
-        : ''
-      const filteredNotes = derivativeParts.notes.filter((note) => note)
-      const notes = filteredNotes.length ? `${filteredNotes.join(',')}` : ''
-
-      return `${derivativeParts.lemma[0]}${homonym}${notes}`
+      return {
+        firstNote: derivativeParts.notes[0],
+        secondNote: derivativeParts.notes[1],
+        lemma: derivativeParts.lemma[0],
+        homonym: derivativeParts.homonym,
+      }
     })
   )
 }
@@ -59,10 +65,21 @@ export function Derivatives({
     <span key={lemmasIndex}>
       {lemmas.map((lemma, lemmaIndex) => (
         <span key={lemmaIndex}>
+          <ReactMarkdown
+            source={lemma.firstNote}
+            renderers={{ paragraph: 'span' }}
+          />
+          {lemma.firstNote && ' '}
           <a href={`/dictionary/${lemma}`}>
-            <em>{lemma.split(' ')[0]}</em>
+            <em>{lemma.lemma}</em>
           </a>
-          &nbsp;{lemma.split(' ')[1]}
+          &nbsp;
+          <ReactMarkdown
+            source={lemma.secondNote}
+            renderers={{ paragraph: 'span' }}
+          />
+          {lemma.secondNote && ' '}
+          {lemma.homonym}
           {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
         </span>
       ))}

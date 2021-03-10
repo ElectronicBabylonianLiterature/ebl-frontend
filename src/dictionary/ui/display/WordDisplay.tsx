@@ -95,6 +95,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
 }
 
 function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
+  console.log(word)
   return (
     <Row>
       <Col>
