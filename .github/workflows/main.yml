@@ -87,7 +87,8 @@ jobs:
              {"title": "Action URL", "value": "${env.GITHUB_SERVER_URL}/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}"}]
 
   docker:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -114,8 +115,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            jlaasonen/ebl-frontend:test
-            ${{format('jlaasonen/ebl-frontend:test.{0}', github.run_number)}}
+            jlaasonen/ebl-frontend:master
+            ${{format('jlaasonen/ebl-frontend:master.{0}', github.run_number)}}
       
       - uses: edge/simple-slack-notify@v1.1.1
         if: always()
