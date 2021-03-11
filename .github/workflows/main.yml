@@ -108,7 +108,7 @@ jobs:
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
             REACT_APP_DICTIONARY_API_URL=https://api.cluster.ebabylon.org
             REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
-          no-cache:  true
+          context: .
           push: true
           tags: |
             jlaasonen/ebl-frontend:test
