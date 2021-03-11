@@ -88,7 +88,7 @@ jobs:
 
   docker:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [test]
+    #needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
             REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
             REACT_APP_AUTH0_RETURN_TO=https://www.ebabylon.org
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-            REACT_APP_DICTIONARY_API_URL=https://api.cluster.ebabylon.org
+            REACT_APP_DICTIONARY_API_URL=https://api.ebabylon.org
             REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
           context: .
           file: ./Dockerfile
