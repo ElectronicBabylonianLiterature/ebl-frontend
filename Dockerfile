@@ -5,7 +5,7 @@ WORKDIR /usr/src/ebl-frontend
 
 COPY package.json ./
 COPY yarn.lock ./
-RUN yarn install --frozen-lockfile --dev
+RUN yarn install --frozen-lockfile --production=false --dev
 
 COPY tsconfig.json  ./
 COPY .env ./
