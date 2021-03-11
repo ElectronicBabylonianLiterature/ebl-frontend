@@ -11709,6 +11709,11 @@ remark-parse@^5.0.0:
     vfile-location "^2.0.0"
     xtend "^4.0.1"
 
+remark-sub-super@^1.0.20:
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/remark-sub-super/-/remark-sub-super-1.0.20.tgz#1e198c2e9e335ce414f23429f7b8eae8fef8e469"
+  integrity sha512-ohnGWuB8FSvod8Qp+gEo/7QRDlI2RA8d+YyY4eLuMQPD3WGwqGMCuyWdNOSW0mzDMqse82PJqeke/GGXaj795A==
+
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
