@@ -17,12 +17,12 @@ beforeEach(async () => {
   }
   const lineToVecRankingsResults: LineToVecRanking = {
     score: [
-      { id: 'X.1', script: 'NA', score: 10 },
-      { id: 'X.2', script: 'NA', score: 8 },
+      { museumNumber: 'X.1', script: 'NA', score: 10 },
+      { museumNumber: 'X.2', script: 'NA', score: 8 },
     ],
     scoreWeighted: [
-      { id: 'X.1', script: 'NA', score: 13 },
-      { id: 'X.2', script: 'NA', score: 9 },
+      { museumNumber: 'X.1', script: 'NA', score: 13 },
+      { museumNumber: 'X.2', script: 'NA', score: 9 },
     ],
   }
   const fragmentService = {

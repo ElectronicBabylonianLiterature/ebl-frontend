@@ -4,7 +4,7 @@ export interface LineToVecRanking {
 }
 
 export interface LineToVecScore {
-  id: string
+  museumNumber: string
   script: string
   score: number
 }
