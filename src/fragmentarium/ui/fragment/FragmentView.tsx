@@ -25,7 +25,7 @@ function AnnotateButton({
   return (
     <LinkContainer to={`${createFragmentUrl(number)}/annotate`}>
       <Button variant="outline-primary" disabled={disabled}>
-        Annotate Fragment Image
+        Tag signs
       </Button>
     </LinkContainer>
   )

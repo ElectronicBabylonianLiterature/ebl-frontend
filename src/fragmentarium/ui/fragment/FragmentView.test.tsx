@@ -137,9 +137,7 @@ describe('Fragment is loaded', () => {
   })
 
   it('Shows annotate button', () => {
-    expect(element.getByText('Annotate Fragment Image')).not.toHaveAttribute(
-      'aria-disabled'
-    )
+    expect(element.getByText('Tag signs')).not.toHaveAttribute('aria-disabled')
   })
 
   it('Selects active folio', () => {
@@ -166,7 +164,7 @@ describe('Fragment without an image is loaded', () => {
   })
 
   it('Annotate button is disabled', () => {
-    expect(element.getByText('Annotate Fragment Image')).toHaveAttribute(
+    expect(element.getByText('Tag signs')).toHaveAttribute(
       'aria-disabled',
       'true'
     )
