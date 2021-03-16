@@ -18,7 +18,8 @@ function FragmentLineToVecRanking({
   const RankingList = ({ score }) => {
     return score.map((score, index) => (
       <li key={index}>
-        {score[0]}:{score[1]}
+        <a href={`fragmentarium/${score.id}`}>{score.museumNumber}</a>,&nbsp;
+        {score.script}:&nbsp;{score.score}
       </li>
     ))
   }
