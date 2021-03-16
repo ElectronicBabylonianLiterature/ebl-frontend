@@ -35,7 +35,7 @@ describe('Diplay annotate view', () => {
       'eBL',
       'Fragmentarium',
       fragmentNumber,
-      'Annotate',
+      'Tag signs',
     ])
   })
 

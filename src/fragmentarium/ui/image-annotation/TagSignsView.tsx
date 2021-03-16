@@ -8,7 +8,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 
-export default function AnnotationView({
+export default function TagSignsView({
   fragmentService,
   number,
 }: {
@@ -20,9 +20,9 @@ export default function AnnotationView({
       crumbs={[
         new SectionCrumb('Fragmentarium'),
         new FragmentCrumb(number),
-        new TextCrumb('Annotate'),
+        new TextCrumb('Tag signs'),
       ]}
-      title={`Annotate ${number}`}
+      title={`Tag ${number}`}
       wide
     >
       <SessionContext.Consumer>
@@ -30,7 +30,7 @@ export default function AnnotationView({
           session.isAllowedToReadFragments() ? (
             <Annotator number={number} fragmentService={fragmentService} />
           ) : (
-            'Please log in to annotate Fragments.'
+            'Please log in to tag signs.'
           )
         }
       </SessionContext.Consumer>

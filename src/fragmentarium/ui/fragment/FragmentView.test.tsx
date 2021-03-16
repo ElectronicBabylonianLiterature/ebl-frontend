@@ -163,7 +163,7 @@ describe('Fragment without an image is loaded', () => {
     await element.findByText('Display')
   })
 
-  it('Annotate button is disabled', () => {
+  it('Tag signs button is disabled', () => {
     expect(element.getByText('Tag signs')).toHaveAttribute(
       'aria-disabled',
       'true'

@@ -169,7 +169,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
             aria-current="page"
             class="breadcrumb-item active"
           >
-            Annotate
+            Tag signs
           </li>
         </ol>
       </nav>
@@ -178,7 +178,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
         role="toolbar"
       />
       <h2>
-        Annotate Test.Fragment
+        Tag Test.Fragment
       </h2>
     </header>
     <div

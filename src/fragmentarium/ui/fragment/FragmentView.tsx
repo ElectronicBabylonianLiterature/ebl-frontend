@@ -15,7 +15,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 
-function AnnotateButton({
+function TagSignsButton({
   number,
   disabled,
 }: {
@@ -78,7 +78,7 @@ function FragmentView({
       actions={
         <ButtonGroup>
           <Download fragment={fragment} wordService={wordService} />
-          <AnnotateButton number={number} disabled={!fragment.hasPhoto} />
+          <TagSignsButton number={number} disabled={!fragment.hasPhoto} />
         </ButtonGroup>
       }
       wide
