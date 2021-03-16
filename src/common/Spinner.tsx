@@ -13,6 +13,7 @@ export default function Spinner({
   return loading ? (
     <>
       <BootstrapSpinner
+        className="mr-2"
         aria-label="Spinner"
         as="span"
         animation="border"

@@ -51,7 +51,11 @@ export default function withData<PROPS, GETTER_PROPS, DATA>(
 
     return (
       <ErrorBoundary>
-        <Spinner loading={!data && !error} />
+        {!data && !error && (
+          <div className="text-center my-5">
+            <Spinner />
+          </div>
+        )}
         <ErrorAlert error={error} />
         {data && <WrappedComponent data={data} {...props} />}
       </ErrorBoundary>

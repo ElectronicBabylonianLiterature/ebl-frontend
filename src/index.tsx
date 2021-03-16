@@ -95,9 +95,13 @@ ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
       <Router>
-        <InjectedAuth0Provider>
-          <InjectedApp />
-        </InjectedAuth0Provider>
+        <div className="mh-100">
+          <div>
+            <InjectedAuth0Provider>
+              <InjectedApp />
+            </InjectedAuth0Provider>
+          </div>
+        </div>
       </Router>
     </ErrorBoundary>
   </ErrorReporterContext.Provider>,
