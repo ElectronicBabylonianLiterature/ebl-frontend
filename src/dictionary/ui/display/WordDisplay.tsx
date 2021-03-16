@@ -147,7 +147,7 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
                     Logograms:&nbsp;
                     <Join
                       list={word.logograms}
-                      seperator={', '}
+                      separator={', '}
                       Component={Logogram}
                     />
                   </>

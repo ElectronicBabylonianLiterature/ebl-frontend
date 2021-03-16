@@ -27,28 +27,39 @@ export function OtherForms({
     </>
   )
 }
-
-export function Join({ list, seperator, Component }) {
+interface JoinProps {
+  list: unknown[]
+  separator: string
+  Component
+}
+export function Join({ list, separator, Component }: JoinProps): JSX.Element {
   return (
     <>
       {' '}
       {list.map((element, index) => (
         <React.Fragment key={index}>
           <Component {...element} />
-          {index !== list.length - 1 ? seperator : ''}
+          {index !== list.length - 1 ? separator : ''}
         </React.Fragment>
       ))}
     </>
   )
 }
-export function JoinMarkdown({ list, seperator }) {
+interface JoinMarkdownProps {
+  list: string[]
+  separator: string
+}
+export function JoinMarkdown({
+  list,
+  separator,
+}: JoinMarkdownProps): JSX.Element {
   return (
     <>
       {' '}
       {list.map((element, index) => (
         <React.Fragment key={index}>
           <Markdown text={element} />
-          {index !== list.length - 1 ? seperator : ''}
+          {index !== list.length - 1 ? separator : ''}
         </React.Fragment>
       ))}
     </>
@@ -68,7 +79,7 @@ export function Logogram({
       <Markdown text={logogram[0]}>&nbsp;</Markdown>
       {logogram.length > 1 && (
         <span>
-          <JoinMarkdown list={logogram.slice(1)} seperator={', '} />
+          <JoinMarkdown list={logogram.slice(1)} separator={', '} />
           &nbsp;
         </span>
       )}
@@ -76,7 +87,7 @@ export function Logogram({
       {notes.length > 1 && (
         <>
           &nbsp;
-          <JoinMarkdown seperator={' '} list={notes.slice(1)} />
+          <JoinMarkdown separator={' '} list={notes.slice(1)} />
         </>
       )}
     </span>
@@ -143,21 +154,25 @@ export function SingleDerivative({
       {notes[1] && (
         <>
           &nbsp;
-          <JoinMarkdown list={notes.slice(1)} seperator={' '} />
+          <JoinMarkdown list={notes.slice(1)} separator={' '} />
         </>
       )}
     </span>
   )
 }
 
-export function Derivatives({ derivatives }): JSX.Element {
+export function Derivatives({
+  derivatives,
+}: {
+  derivatives: any[][]
+}): JSX.Element {
   return (
     <>
       {derivatives.map((groupOfDerivatives, index) => (
         <React.Fragment key={index}>
           <Join
             list={groupOfDerivatives}
-            seperator={', '}
+            separator={', '}
             Component={SingleDerivative}
           />
           {'; '}
