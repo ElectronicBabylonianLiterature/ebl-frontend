@@ -12,6 +12,7 @@ import {
   AmplifiedMeanings,
   AmplifiedMeaningsDetails,
   Derivatives,
+  Join,
   Logogram,
   Markdown,
   OtherForms,
@@ -98,6 +99,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
 }
 
 function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
+  console.log(word)
   return (
     <Row>
       <Col>
@@ -105,15 +107,13 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
           <Col xs={{ offset: 1 }}>
             <Row>
               <Col>
-                {Boolean(word.forms.length) && (
-                  <OtherForms forms={word.forms} />
-                )}
+                {word.forms.length > 0 && <OtherForms forms={word.forms} />}
               </Col>
             </Row>
             <Row>
               <Col>
-                {Boolean(word.amplifiedMeanings.length) &&
-                  Boolean(word.amplifiedMeanings[0].key) && (
+                {word.amplifiedMeanings.length > 0 &&
+                  word.amplifiedMeanings[0].key && (
                     <AmplifiedMeanings
                       amplifiedMeanings={word.amplifiedMeanings}
                       wordId={word._id}
@@ -123,7 +123,7 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             </Row>
             <Row>
               <Col>
-                {Boolean(word.derived.length) && (
+                {word.derived.length > 0 && (
                   <>
                     Derivatives:&nbsp;
                     <Derivatives derivatives={word.derived} />
@@ -133,7 +133,7 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             </Row>
             <Row>
               <Col>
-                {Boolean(word.derivedFrom) && (
+                {word.derivedFrom && (
                   <>
                     Derived from:&nbsp;
                     <SingleDerivative {...word.derivedFrom} />
@@ -143,18 +143,14 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             </Row>
             <Row>
               <Col>
-                {Boolean(word.logograms.length) && (
+                {word.logograms.length > 0 && (
                   <>
-                    {'Logograms: '}
-                    {word.logograms
-                      .map((logogram, index) => (
-                        <Logogram
-                          key={index}
-                          logogram={logogram.logogram}
-                          notes={logogram.notes}
-                        />
-                      ))
-                      .reduce((prev, curr) => [prev, ', ', curr])}
+                    Logograms:&nbsp;
+                    <Join
+                      list={word.logograms}
+                      seperator={', '}
+                      Component={Logogram}
+                    />
                   </>
                 )}
               </Col>

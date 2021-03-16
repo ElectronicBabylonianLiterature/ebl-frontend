@@ -27,6 +27,33 @@ export function OtherForms({
     </>
   )
 }
+export function Join({ list, seperator, Component }) {
+  return (
+    <>
+      {' '}
+      {list.map((element, index) => (
+        <React.Fragment key={index}>
+          <Component {...element} />
+          {index !== list.length - 1 ? seperator : ''}
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+export function JoinMarkdown({ list, seperator }) {
+  return (
+    <>
+      {' '}
+      {list.map((element, index) => (
+        <React.Fragment key={index}>
+          <Markdown text={element} />
+          {index !== list.length - 1 ? seperator : ''}
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+
 export function Logogram({
   logogram,
   notes,
@@ -34,32 +61,30 @@ export function Logogram({
   logogram: string[]
   notes: string[]
 }): JSX.Element {
-  const MultipleLogograms = ({ logograms }): JSX.Element => (
-    <span>
-      {logograms
-        .map((logogram, index) => <Markdown key={index} text={logogram} />)
-        .reduce((prev, curr) => [prev, ', ', curr])}
-    </span>
-  )
   return (
     <span>
       {notes[0] && <Markdown text={notes[0]}>&nbsp;</Markdown>}
       <Markdown text={logogram[0]}>&nbsp;</Markdown>
       {logogram.length > 1 && (
         <span>
-          (<MultipleLogograms logograms={logogram.slice(1)} />
-          )&nbsp;
+          <Join
+            list={logogram.slice(1)}
+            seperator={', '}
+            Component={Markdown}
+          />
+          &nbsp;
         </span>
       )}
-      {notes[1] && (
+      {notes.length > 1 && (
         <>
           &nbsp;
-          <ListOfMarkdown texts={notes.slice(1)} />
+          <JoinMarkdown seperator={' '} list={notes.slice(1)} />
         </>
       )}
     </span>
   )
 }
+
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
@@ -91,16 +116,6 @@ interface SingleDerivative {
   notes: string[]
 }
 
-function ListOfMarkdown({ texts }): JSX.Element {
-  return (
-    <span>
-      {texts
-        .map((text, index) => <Markdown key={index} text={text} />)
-        .reduce((prev, curr) => [prev, ' ', curr])}
-    </span>
-  )
-}
-
 export function SingleDerivative({
   lemma,
   homonym,
@@ -123,48 +138,33 @@ export function SingleDerivative({
 
   return (
     <span>
-      {notes[0] && (
-        <>
-          <Markdown text={notes[0]} />
-          &nbsp;
-        </>
-      )}
+      {notes[0] && <Markdown text={notes[0]}>&nbsp;</Markdown>}
       <Lemmas lemmas={lemma} homonym={homonym} />
       &nbsp;
       {homonym}
       {notes[1] && (
         <>
           &nbsp;
-          <ListOfMarkdown texts={notes.slice(1)} />
+          <JoinMarkdown list={notes.slice(1)} seperator={' '} />
         </>
       )}
     </span>
   )
 }
 
-function GroupOfDerivatives({ goupOfDerivatives }): JSX.Element {
-  return (
-    <>
-      {goupOfDerivatives
-        .map((singleDerivative, index) => (
-          <SingleDerivative key={index} {...singleDerivative} />
-        ))
-        .reduce((prev, curr) => [prev, ', ', curr])}
-    </>
-  )
-}
-
 export function Derivatives({ derivatives }): JSX.Element {
   return (
     <>
-      {derivatives
-        .map((groupOfDerivatives, index) => (
-          <GroupOfDerivatives
-            key={index}
-            goupOfDerivatives={groupOfDerivatives}
+      {derivatives.map((groupOfDerivatives, index) => (
+        <React.Fragment key={index}>
+          <Join
+            list={groupOfDerivatives}
+            seperator={', '}
+            Component={SingleDerivative}
           />
-        ))
-        .reduce((prev, curr) => [prev, '; ', curr])}
+          {'; '}
+        </React.Fragment>
+      ))}
     </>
   )
 }
