@@ -27,6 +27,7 @@ export function OtherForms({
     </>
   )
 }
+
 export function Join({ list, seperator, Component }) {
   return (
     <>
@@ -67,14 +68,11 @@ export function Logogram({
       <Markdown text={logogram[0]}>&nbsp;</Markdown>
       {logogram.length > 1 && (
         <span>
-          <Join
-            list={logogram.slice(1)}
-            seperator={', '}
-            Component={Markdown}
-          />
+          <JoinMarkdown list={logogram.slice(1)} seperator={', '} />
           &nbsp;
         </span>
       )}
+
       {notes.length > 1 && (
         <>
           &nbsp;
