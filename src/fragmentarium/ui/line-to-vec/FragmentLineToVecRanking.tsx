@@ -6,7 +6,7 @@ import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import React, { ReactNode } from 'react'
 import withData from 'http/withData'
-import { LineToVecRanking } from '../../domain/lineToVecRanking'
+import { LineToVecRanking, LineToVecScore } from '../../domain/lineToVecRanking'
 
 function FragmentLineToVecRanking({
   lineToVecRanking,
@@ -15,13 +15,22 @@ function FragmentLineToVecRanking({
   number: string
   lineToVecRanking: LineToVecRanking
 }): JSX.Element {
-  const RankingList = ({ score }) => {
-    return score.map((score, index) => (
+  const RankingList = ({
+    scores,
+  }: {
+    scores: readonly LineToVecScore[]
+  }): JSX.Element => {
+    console.log(scores)
+    const listOfScores = scores.map((score, index) => (
       <li key={index}>
-        <a href={`fragmentarium/${score.id}`}>{score.museumNumber}</a>,&nbsp;
+        <a href={`/fragmentarium/${score.museumNumber}`}>
+          {score.museumNumber}
+        </a>
+        ,&nbsp;
         {score.script}:&nbsp;{score.score}
       </li>
     ))
+    return <ul>{listOfScores}</ul>
   }
   const LineToVecDisplay = ({
     lineToVecRanking,
@@ -32,11 +41,11 @@ function FragmentLineToVecRanking({
       <Row>
         <Col>
           <Row>Score</Row>
-          <RankingList score={lineToVecRanking.score} />
+          <RankingList scores={lineToVecRanking.score} />
         </Col>
         <Col>
           <Row>Weighted Score</Row>
-          <RankingList score={lineToVecRanking.scoreWeighted} />
+          <RankingList scores={lineToVecRanking.scoreWeighted} />
         </Col>
       </Row>
     </Container>
