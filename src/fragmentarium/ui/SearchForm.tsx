@@ -10,6 +10,7 @@ import _ from 'lodash'
 import produce from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 interface State {
   number: string | null | undefined
@@ -88,6 +89,9 @@ class SearchForm extends Component<Props, State> {
   }
   search = (event) => {
     event.preventDefault()
+    this.onChange('transliteration')(
+      replaceTransliteration(this.state.transliteration || '')
+    )
     this.props.history.push(
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
     )
