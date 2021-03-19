@@ -20,7 +20,6 @@ function FragmentLineToVecRanking({
   }: {
     scores: readonly LineToVecScore[]
   }): JSX.Element => {
-    console.log(scores)
     const listOfScores = scores.map((score, index) => (
       <li key={index}>
         <a href={`/fragmentarium/${score.museumNumber}`}>
