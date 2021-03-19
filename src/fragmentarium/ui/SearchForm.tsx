@@ -13,15 +13,15 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 interface State {
-  number: string | null | undefined
+  number: string
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  pages: string
+  transliteration: string
   isValid: boolean
 }
 
@@ -84,14 +84,11 @@ class SearchForm extends Component<Props, State> {
       primaryAuthor: state.referenceEntry.primaryAuthor,
       year: state.referenceEntry.year,
       pages: state.pages,
-      transliteration: state.transliteration,
+      transliteration: replaceTransliteration(state.transliteration),
     }
   }
   search = (event) => {
     event.preventDefault()
-    this.onChange('transliteration')(
-      replaceTransliteration(this.state.transliteration || '')
-    )
     this.props.history.push(
       `/fragmentarium/search/?${stringify(this.flattenState(this.state))}`
     )

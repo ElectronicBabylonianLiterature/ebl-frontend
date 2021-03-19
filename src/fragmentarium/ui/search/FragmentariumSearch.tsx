@@ -36,8 +36,6 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   fragmentService,
   fragmentSearchService,
 }: Props) => {
-  const replacedTransliteration =
-    transliteration && replaceTransliteration(transliteration)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
@@ -48,6 +46,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
                 <SearchGroup
+                  key={Math.random()}
                   number={number}
                   id={id}
                   primaryAuthor={primaryAuthor}
@@ -55,7 +54,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   title={title}
                   pages={pages}
                   fragmentService={fragmentService}
-                  transliteration={replacedTransliteration}
+                  transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
@@ -69,7 +68,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 fragmentSearchService={fragmentSearchService}
               />
               <TransliterationSearch
-                transliteration={replacedTransliteration}
+                transliteration={transliteration}
                 fragmentSearchService={fragmentSearchService}
               />
             </section>
