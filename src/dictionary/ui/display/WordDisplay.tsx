@@ -70,7 +70,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
               , &ldquo;{word.guideWord}&rdquo;
             </Col>
 
-            {Boolean(word.pos.length) && (
+            {word.pos.length > 0 && (
               <Col>
                 <h5 className="text-secondary">({word.pos.join(', ')})</h5>
               </Col>
@@ -111,13 +111,12 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             </Row>
             <Row>
               <Col>
-                {word.amplifiedMeanings.length > 0 &&
-                  word.amplifiedMeanings[0].key && (
-                    <AmplifiedMeanings
-                      amplifiedMeanings={word.amplifiedMeanings}
-                      wordId={word._id}
-                    />
-                  )}
+                {word.amplifiedMeanings.length > 0 && (
+                  <AmplifiedMeanings
+                    amplifiedMeanings={word.amplifiedMeanings}
+                    wordId={word._id}
+                  />
+                )}
               </Col>
             </Row>
             <Row>
