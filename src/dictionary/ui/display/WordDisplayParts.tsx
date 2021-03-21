@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react'
+import React, { ElementType, FunctionComponent } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.css'
@@ -27,18 +27,22 @@ export function OtherForms({
     </>
   )
 }
-interface JoinProps {
-  list: unknown[]
+interface JoinProps<T> {
+  list: T[]
   separator: string
-  Component
+  Component: FunctionComponent<T>
 }
-export function Join({ list, separator, Component }: JoinProps): JSX.Element {
+export function Join<T>({
+  list,
+  separator,
+  Component,
+}: JoinProps<T>): JSX.Element {
   return (
     <>
       {' '}
-      {list.map((element, index) => (
+      {list.map((props, index) => (
         <React.Fragment key={index}>
-          <Component {...element} />
+          <Component {...props} />
           {index !== list.length - 1 ? separator : ''}
         </React.Fragment>
       ))}
@@ -46,20 +50,20 @@ export function Join({ list, separator, Component }: JoinProps): JSX.Element {
   )
 }
 interface JoinMarkdownProps {
-  list: string[]
+  listOfMarkdown: string[]
   separator: string
 }
 export function JoinMarkdown({
-  list,
+  listOfMarkdown,
   separator,
 }: JoinMarkdownProps): JSX.Element {
   return (
     <>
       {' '}
-      {list.map((element, index) => (
+      {listOfMarkdown.map((text, index) => (
         <React.Fragment key={index}>
-          <Markdown text={element} />
-          {index !== list.length - 1 ? separator : ''}
+          <Markdown text={text} />
+          {index !== listOfMarkdown.length - 1 ? separator : ''}
         </React.Fragment>
       ))}
     </>
@@ -79,7 +83,7 @@ export function Logogram({
       <Markdown text={logogram[0]}>&nbsp;</Markdown>
       {logogram.length > 1 && (
         <span>
-          <JoinMarkdown list={logogram.slice(1)} separator={', '} />
+          <JoinMarkdown listOfMarkdown={logogram.slice(1)} separator={', '} />
           &nbsp;
         </span>
       )}
@@ -87,7 +91,7 @@ export function Logogram({
       {notes.length > 1 && (
         <>
           &nbsp;
-          <JoinMarkdown separator={' '} list={notes.slice(1)} />
+          <JoinMarkdown separator={' '} listOfMarkdown={notes.slice(1)} />
         </>
       )}
     </span>
@@ -154,7 +158,7 @@ export function SingleDerivative({
       {notes[1] && (
         <>
           &nbsp;
-          <JoinMarkdown list={notes.slice(1)} separator={' '} />
+          <JoinMarkdown listOfMarkdown={notes.slice(1)} separator={' '} />
         </>
       )}
     </span>
