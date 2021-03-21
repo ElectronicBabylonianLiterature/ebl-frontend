@@ -12,6 +12,7 @@ import { Session } from 'auth/Session'
 import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import _ from 'lodash'
 
 interface Props {
   number: string | null | undefined
@@ -46,7 +47,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
                 <SearchGroup
-                  key={Math.random()}
+                  key={`${_.uniqueId('transliteration')}-${transliteration}`}
                   number={number}
                   id={id}
                   primaryAuthor={primaryAuthor}
