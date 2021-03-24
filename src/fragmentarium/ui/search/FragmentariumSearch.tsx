@@ -4,7 +4,6 @@ import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
