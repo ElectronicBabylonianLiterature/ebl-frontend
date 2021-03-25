@@ -30,6 +30,7 @@ async function renderDetails() {
   )
   await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
+
 describe('All details', () => {
   beforeEach(async () => {
     fragmentService.fetchGenres.mockReturnValue(
@@ -112,6 +113,7 @@ describe('Missing details', () => {
         width: null,
       }),
     })
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 
@@ -147,6 +149,7 @@ describe('Unknown museum', () => {
     fragment = await factory.build('fragment', {
       museum: Museum.of('The Other Museum'),
     })
+    fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
 
