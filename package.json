@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.7.0",
-    "@sentry/react": "^5.23.0",
+    "@sentry/react": "^6.2.3",
     "@types/bluebird": "^3.5.28",
     "@types/classnames": "^2.2.9",
     "@types/jquery": "^3.5.5",
