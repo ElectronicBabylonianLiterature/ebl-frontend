@@ -1,9 +1,11 @@
 import { immerable } from 'immer'
 import _ from 'lodash'
+import { TextLine } from 'transliteration/domain/text-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import { isNoteLine } from './type-guards'
 import { AbstractLine } from './abstract-line'
+import Label from './Label'
 
 export type Notes = ReadonlyMap<number, readonly NoteLine[]>
 
@@ -17,6 +19,8 @@ export function noteNumber(
   )
   return 1 + noteIndex + numberOfNotesOnPreviousLines
 }
+
+type LabeledLine = readonly [Label, TextLine]
 
 export class Text {
   readonly [immerable] = true
