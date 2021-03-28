@@ -185,10 +185,10 @@ describe('Fetch word', () => {
   beforeEach(async () => {
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     element = renderWordInformationDisplay()
-    await element.findAllByText(new RegExp(word.guideWord))
     expect(wordService.find).toBeCalledWith('id')
   })
   it('Word parts are displayed correctly', async () => {
+    await element.findAllByText(new RegExp(word.guideWord))
     expect(element.container).toMatchSnapshot()
   })
 })
