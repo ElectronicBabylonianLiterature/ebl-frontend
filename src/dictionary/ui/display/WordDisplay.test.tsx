@@ -6,6 +6,7 @@ import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
 import Bluebird from 'bluebird'
+import { act } from 'react-dom/test-utils'
 
 jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
@@ -184,7 +185,9 @@ const word = {
 describe('Fetch word', () => {
   beforeEach(async () => {
     wordService.find.mockReturnValue(Bluebird.resolve(word))
-    element = renderWordInformationDisplay()
+    await act(async () => {
+      element = renderWordInformationDisplay()
+    })
     expect(wordService.find).toBeCalledWith('id')
   })
   it('Word parts are displayed correctly', async () => {
