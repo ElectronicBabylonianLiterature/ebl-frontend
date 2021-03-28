@@ -61,6 +61,7 @@ export default function Header(): JSX.Element {
               onSelect={(key) => setActiveKey(key)}
               className="mx-auto"
             >
+              <NavItem href="/signs" title="Signs" />
               <NavItem href="/dictionary" title="Dictionary" />
               <NavItem href="/corpus" title="Corpus" />
               <NavItem href="/fragmentarium" title="Fragmentarium" />

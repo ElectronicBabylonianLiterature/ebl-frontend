@@ -27,6 +27,7 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
+import Signs from 'signs/ui/search/Signs'
 
 function parseStringParam(
   location: Location,
@@ -142,6 +143,12 @@ function App({
                 bibliographyService={bibliographyService}
                 {...props}
               />
+            )}
+          />
+          <Route
+            path="/signs"
+            render={(props): ReactNode => (
+              <Signs {...props} fragmentSearchService={fragmentSearchService} />
             )}
           />
           <Route
