@@ -87,7 +87,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            wwww.ebabylon.org/ebl-frontend:master
+            www.ebabylon.org/ebl-frontend:master
             ${{format('www.ebabylon.org/ebl-frontend:master.{0}', github.run_number)}}
       
       - uses: edge/simple-slack-notify@v1.1.1
