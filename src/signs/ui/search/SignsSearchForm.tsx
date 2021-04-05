@@ -10,7 +10,6 @@ type Props = {
   query: string[] | string | null | undefined
   isIncludeHomophones: boolean
   isCompositeSigns: boolean
-  fragmentSearchService: FragmentSearchService
   history
   location
   match
@@ -21,7 +20,6 @@ function SignsSearchForm({
   isIncludeHomophones,
   isCompositeSigns,
   history,
-  fragmentSearchService,
 }: Props): JSX.Element {
   const [queryState, setQuery] = useState(
     _.isArray(query) ? query.join(' ') : query || ''

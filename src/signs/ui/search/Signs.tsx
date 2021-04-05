@@ -9,11 +9,11 @@ import { Session } from 'auth/Session'
 import { RouteComponentProps } from 'react-router-dom'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import './Signs.css'
+import _ from 'lodash'
+import WordSearch from 'dictionary/ui/search/WordSearch'
+import SignsSearch from 'signs/ui/search/SignsSearch'
 
-export default function Signs({
-  location,
-  fragmentSearchService,
-}): JSX.Element {
+export default function Signs({ location, signsService }): JSX.Element {
   const query = parse(location.search) || {
     query: '',
     isIncludeHomophones: false,
@@ -31,9 +31,16 @@ export default function Signs({
                   query={query.query || ''}
                   isIncludeHomophones={query.isIncludeHomophones === 'true'}
                   isCompositeSigns={query.isCompositeSigns === 'true'}
-                  fragmentSearchService={fragmentSearchService}
                 />
               </div>
+              <SignsSearch
+                query={
+                  _.isArray(query)
+                    ? (query.join('') as string)
+                    : ((query as unknown) as string)
+                }
+                signsService={signsService}
+              />
             </>
           ) : (
             <p>Please log in to search for Signs.</p>

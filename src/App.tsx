@@ -104,12 +104,14 @@ function App({
   fragmentSearchService,
   bibliographyService,
   textService,
+  signsService,
 }: {
   wordService: WordService
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   bibliographyService: BibliographyService
   textService: TextService
+  signsService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -148,7 +150,7 @@ function App({
           <Route
             path="/signs"
             render={(props): ReactNode => (
-              <Signs {...props} fragmentSearchService={fragmentSearchService} />
+              <Signs {...props} signsService={signsService} />
             )}
           />
           <Route
