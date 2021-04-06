@@ -200,7 +200,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                  
                 <span>
                   <span>
-                    tin
+                    tin 
                   </span>
                   <a
                     href="/dictionary/pabemiiwu%20pa%20II"
@@ -221,7 +221,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                 , 
                 <span>
                   <span>
-                    cujuwibi
+                    cujuwibi 
                   </span>
                   <a
                     href="/dictionary/tesbu%20pi%20IV"
@@ -244,7 +244,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                  
                 <span>
                   <span>
-                    sulhe
+                    sulhe 
                   </span>
                   <a
                     href="/dictionary/utgibhev%20ra%20II"
@@ -265,7 +265,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                 , 
                 <span>
                   <span>
-                    ziwaini
+                    ziwaini 
                   </span>
                   <a
                     href="/dictionary/tokteuf%20nowu%20I"
@@ -296,7 +296,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                 Derived from: 
                 <span>
                   <span>
-                    muvi
+                    muvi 
                   </span>
                   <a
                     href="/dictionary/jaruw%20itiparu%20III"
@@ -326,7 +326,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                  
                 <span>
                   <span>
-                    zuisi
+                    zuisi 
                   </span>
                   <span>
                     echo
@@ -349,7 +349,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                 , 
                 <span>
                   <span>
-                    ofinijvef
+                    ofinijvef 
                   </span>
                   <span>
                     bravo

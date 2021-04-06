@@ -79,15 +79,14 @@ export function Logogram({
 }): JSX.Element {
   return (
     <span>
-      {notes[0] && <Markdown text={notes[0]}>&nbsp;</Markdown>}
-      <Markdown text={logogram[0]}>&nbsp;</Markdown>
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
+      {logogram[0] && <Markdown text={logogram[0]}>&nbsp;</Markdown>}
       {logogram.length > 1 && (
         <span>
           <JoinMarkdown listOfMarkdown={logogram.slice(1)} separator={', '} />
           &nbsp;
         </span>
       )}
-
       {notes.length > 1 && (
         <>
           &nbsp;
@@ -106,7 +105,6 @@ type MarkdownProps = {
 export function Markdown({
   text,
   paragraph = 'span',
-  children,
 }: MarkdownProps): JSX.Element {
   return (
     <ReactMarkdown
@@ -117,9 +115,7 @@ export function Markdown({
         sub: 'sub',
         sup: 'sup',
       }}
-    >
-      {children}
-    </ReactMarkdown>
+    />
   )
 }
 
@@ -151,7 +147,7 @@ export function SingleDerivative({
 
   return (
     <span>
-      {notes[0] && <Markdown text={notes[0]}>&nbsp;</Markdown>}
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
       <Lemmas lemmas={lemma} homonym={homonym} />
       &nbsp;
       {homonym}
