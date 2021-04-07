@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import Sign from 'signs/domain/Sign'
 
 class SignsService {
   private readonly signsRepository
@@ -6,7 +7,7 @@ class SignsService {
   constructor(signsRepository) {
     this.signsRepository = signsRepository
   }
-  search(query): Promise<any[]> {
+  search(query): Promise<Sign> {
     return this.signsRepository.search(query.query)
   }
 }

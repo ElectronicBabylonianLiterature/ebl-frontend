@@ -6,11 +6,9 @@ import SessionContext from 'auth/SessionContext'
 
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
-import { RouteComponentProps } from 'react-router-dom'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import './Signs.css'
 import _ from 'lodash'
-import WordSearch from 'dictionary/ui/search/WordSearch'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 
 export default function Signs({ location, signsService }): JSX.Element {
