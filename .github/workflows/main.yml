@@ -70,7 +70,7 @@ jobs:
         
       - uses: docker/login-action@v1 
         with:
-          registry: www.ebabylon.org
+          registry: www.ebl.lmu.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
@@ -87,8 +87,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            www.ebabylon.org/ebl-frontend:master
-            ${{format('www.ebabylon.org/ebl-frontend:master.{0}', github.run_number)}}
+            www.ebl.lmu.de/ebl-frontend:master
+            ${{format('www.ebl.lmu.de/ebl-frontend:master.{0}', github.run_number)}}
       
       - uses: edge/simple-slack-notify@v1.1.1
         if: always()
@@ -113,7 +113,7 @@ jobs:
         
       - uses: docker/login-action@v1 
         with:
-          registry: www.ebabylon.org
+          registry: www.ebl.lmu.de
           username: ${{ secrets.EBL_REGISTRY_USERNAME }}
           password: ${{ secrets.EBL_REGISTRY_PASSWORD }}
 
@@ -130,7 +130,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            www.ebabylon.org/ebl-frontend:test
+            www.ebl.lmu.de/ebl-frontend:test
       
       - uses: edge/simple-slack-notify@v1.1.1
         if: always()
