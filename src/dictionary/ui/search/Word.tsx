@@ -2,8 +2,8 @@ import React, { Component, Fragment, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Word.css'
-import InlineMarkdown from 'common/InlineMarkdown'
 import Word from 'dictionary/domain/Word'
+import { Markdown } from 'dictionary/ui/display/WordDisplayParts'
 
 function Lemma({
   container = 'em',
@@ -26,7 +26,7 @@ function Lemma({
             </Link>
           )
         : React.createElement(container, {}, `${attested}${lemma}`)}
-      {word.homonym && ` ${word.homonym}`}
+      {word.homonym && <Markdown text={` ${word.homonym}`} />}
     </Fragment>
   )
 }
@@ -44,14 +44,14 @@ function Notes({
     <Fragment>
       {!_.isEmpty(preNote) && (
         <span className="Notes-note">
-          <InlineMarkdown source={preNote as string} />{' '}
+          <Markdown text={preNote as string} />{' '}
         </span>
       )}
       {children}
       {!_.isEmpty(postNote) && (
         <span className="Notes-note">
           {' '}
-          <InlineMarkdown source={postNote} />
+          <Markdown text={postNote} />
         </span>
       )}
     </Fragment>
@@ -60,7 +60,7 @@ function Notes({
 
 function Form({ value }: { value: string | Word }): JSX.Element {
   return _.isString(value) ? (
-    <InlineMarkdown source={value} />
+    <Markdown text={value} />
   ) : (
     <Notes notes={value.notes}>
       <Lemma word={value} container="em" />
@@ -77,12 +77,12 @@ function AmplifiedMeanings({
       {_.map(values, (value, topLevelindex) => (
         <li key={topLevelindex}>
           {value.key !== '' && <strong>{value.key}</strong>}{' '}
-          <InlineMarkdown source={value.meaning} />{' '}
+          <Markdown text={value.meaning} />{' '}
           <ul>
             {value.entries.map((value, enryIndex) => (
               <li className="AmplifiedMeanings__entry" key={enryIndex}>
                 <strong>{`${enryIndex + 1}.`}</strong>{' '}
-                <InlineMarkdown source={value.meaning} />
+                <Markdown text={value.meaning} />
               </li>
             ))}
           </ul>
@@ -144,7 +144,7 @@ class WordDisplay extends Component<{ value: Word }> {
           <Lemma word={this.word} container="strong" />
         </dfn>
         {!_.isEmpty(this.forms) && this.forms}{' '}
-        <InlineMarkdown source={this.word.meaning} />{' '}
+        <Markdown text={this.word.meaning} />{' '}
         {this.isNotEmpty('amplifiedMeanings') && (
           <AmplifiedMeanings values={this.word.amplifiedMeanings} />
         )}{' '}

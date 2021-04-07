@@ -6,27 +6,34 @@ import ReactMarkdown from 'react-markdown'
 import * as remarkSubSuper from 'remark-sub-super'
 
 export function replaceByCurlyQuotes(str: string): string {
-  return str.replace(/"([^"]*)"/g, '“$1”').replace(/'([^']*)'/g, '“$1”')
+  return str.replace(/"([^"]*)"/g, '“$1”')
 }
-
-export function OtherForms({
-  forms,
-}: {
-  forms: { attested: boolean; lemma: string[] }[]
-}): JSX.Element {
-  const otherForm = (form) => {
-    const attested = form.attested ? '' : '*'
-    return form.lemma
-      .map((lemmaElement) => `*${lemmaElement}*${attested}`)
-      .join('; ')
-  }
+interface Form {
+  attested: boolean
+  lemma: string[]
+  notes: string[]
+}
+export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
+  const attestedSign = attested ? '' : '*'
   return (
-    <>
-      Other forms:{' '}
-      <Markdown text={forms.map((form) => otherForm(form)).join(', ')} />
-    </>
+    <span>
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
+      <Markdown
+        text={lemma
+          .map((lemmaElement) => `*${lemmaElement}*${attestedSign}`)
+          .join('; ')}
+      />
+      &nbsp;
+      {notes.length > 1 && (
+        <>
+          &nbsp;
+          <JoinMarkdown separator={' '} listOfMarkdown={notes.slice(1)} />
+        </>
+      )}
+    </span>
   )
 }
+
 interface JoinProps<T> {
   list: T[]
   separator: string
@@ -80,7 +87,7 @@ export function Logogram({
   return (
     <span>
       {notes[0] && <Markdown text={`${notes[0]} `} />}
-      {logogram[0] && <Markdown text={logogram[0]}>&nbsp;</Markdown>}
+      {logogram[0] && <Markdown text={logogram[0]} />}&nbsp;
       {logogram.length > 1 && (
         <span>
           <JoinMarkdown listOfMarkdown={logogram.slice(1)} separator={', '} />
@@ -119,7 +126,7 @@ export function Markdown({
   )
 }
 
-interface SingleDerivative {
+interface SingleDerivativeProps {
   lemma: string[]
   homonym: string
   notes: string[]
@@ -129,7 +136,7 @@ export function SingleDerivative({
   lemma,
   homonym,
   notes,
-}: SingleDerivative): JSX.Element {
+}: SingleDerivativeProps): JSX.Element {
   const Lemmas = ({
     lemmas,
     homonym,

@@ -51,7 +51,7 @@ exports[`Query 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-2"
+          id="Header-1"
         >
           <div
             class="mx-auto navbar-nav"
@@ -114,7 +114,7 @@ exports[`Query 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-2"
+          aria-controls="Header-1"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -230,7 +230,9 @@ exports[`Query 1`] = `
                 test
               </a>
             </strong>
-             I
+            <span>
+               I
+            </span>
           </dfn>
           <ul
             class="Word__forms"
@@ -241,7 +243,9 @@ exports[`Query 1`] = `
               <span
                 class="Notes-note"
               >
-                dsdsds
+                <span>
+                  dsdsds
+                </span>
                  
               </span>
               <em />
@@ -252,9 +256,11 @@ exports[`Query 1`] = `
               <span
                 class="Notes-note"
               >
-                <strong>
-                  BOLD
-                </strong>
+                <span>
+                  <strong>
+                    BOLD
+                  </strong>
+                </span>
                  
               </span>
               <em>
@@ -263,8 +269,10 @@ exports[`Query 1`] = `
             </li>
           </ul>
            
-          ~
-           "to weed" O/jB
+          <span>
+            ~
+             “to weed” O/jB
+          </span>
            
           <ul>
             <li>
@@ -272,11 +280,13 @@ exports[`Query 1`] = `
                 G
               </strong>
                
-              (
-              <em>
-                i/i
-              </em>
-              ) field
+              <span>
+                (
+                <em>
+                  i/i
+                </em>
+                ) field
+              </span>
                
               <ul>
                 <li
@@ -286,7 +296,9 @@ exports[`Query 1`] = `
                     1.
                   </strong>
                    
-                  mmkkk
+                  <span>
+                    mmkkk
+                  </span>
                 </li>
               </ul>
             </li>
@@ -303,7 +315,9 @@ exports[`Query 1`] = `
                   <em>
                     wabûtu
                   </em>
-                   I
+                  <span>
+                     I
+                  </span>
                 </li>
               </ul>
             </li>
