@@ -1,24 +1,23 @@
 import React from 'react'
 import _ from 'lodash'
-
-import Word from 'dictionary/domain/Word'
 import withData from 'http/withData'
+import Sign, { SignQuery } from 'signs/domain/Sign'
+import SignsService from 'signs/application/SignsService'
 
 interface Props {
-  data: readonly Word[]
+  data: readonly Sign[]
 }
 
 function SignsSearch({ data }: Props): JSX.Element {
-  console.log(data)
   return <div>asd</div>
 }
 
 export default withData<
   unknown,
-  { query: string; signsService },
-  readonly Word[]
->(SignsSearch, (props) => props.signsService.search(props.query), {
-  watch: (props) => [props.query],
-  filter: (props) => !_.isEmpty(props.query),
+  { signQuery: SignQuery; signsService: SignsService },
+  readonly Sign[]
+>(SignsSearch, (props) => props.signsService.search(props.signQuery), {
+  watch: (props) => [props.signQuery],
+  filter: (props) => !_.isEmpty(props.signQuery),
   defaultData: [],
 })

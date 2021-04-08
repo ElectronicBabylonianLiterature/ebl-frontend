@@ -3,43 +3,19 @@ import { stringify } from 'query-string'
 import { Button, Col, Form, FormControl, Popover, Row } from 'react-bootstrap'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import _ from 'lodash'
-import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import HelpTrigger from 'common/HelpTrigger'
+import { SignQuery } from 'signs/domain/Sign'
 
-type Props = {
-  query: string[] | string | null | undefined
-  isIncludeHomophones: boolean
-  isCompositeSigns: boolean
-  history
-  location
-  match
-} & RouteComponentProps
+interface Props extends RouteComponentProps {
+  signQuery: SignQuery
+}
 
-function SignsSearchForm({
-  query,
-  isIncludeHomophones,
-  isCompositeSigns,
-  history,
-}: Props): JSX.Element {
-  const [queryState, setQuery] = useState(
-    _.isArray(query) ? query.join(' ') : query || ''
-  )
-  const [isIncludeHomophonesState, setIsIncludeHomophones] = useState(
-    isIncludeHomophones
-  )
-  const [isCompositeSignsState, setIsCompositeSigns] = useState(
-    isCompositeSigns
-  )
+function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
+  const [signQueryState, setSignQueryState] = useState<SignQuery>(signQuery)
 
   const submit = (event) => {
     event.preventDefault()
-    history.push(
-      `?${stringify({
-        query: queryState,
-        isIncludeHomophones: isIncludeHomophonesState,
-        isCompositeSigns: isCompositeSignsState,
-      })}`
-    )
+    history.push(`?${stringify(signQueryState)}`)
   }
   /*
   - MZL = R. Borger, *Mesopotamisches Zeichenlexikon* (Münster, ²2010).
@@ -137,9 +113,15 @@ function SignsSearchForm({
         <Col sm={6}>
           <FormControl
             type="text"
-            value={queryState}
+            value={signQueryState.value}
             placeholder="Sign or Reading"
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              event.persist()
+              setSignQueryState((prevState) => ({
+                ...prevState,
+                value: event.target.value || '',
+              }))
+            }}
           />
         </Col>
         <Col sm={4}>
@@ -154,14 +136,28 @@ function SignsSearchForm({
             <Form.Check
               type="radio"
               label="Include Homophones"
-              onClick={() => setIsIncludeHomophones(!isIncludeHomophonesState)}
+              checked={signQueryState.isIncludeHomophones}
+              onClick={() =>
+                setSignQueryState((prevState) => ({
+                  ...prevState,
+                  isIncludeHomophones: !prevState.isIncludeHomophones,
+                  isComposite: false,
+                }))
+              }
             />
           </Col>
           <Col>
             <Form.Check
               type="radio"
               label="Composite Signs"
-              onClick={() => setIsCompositeSigns(!isCompositeSignsState)}
+              checked={signQueryState.isComposite}
+              onClick={() =>
+                setSignQueryState((prevState) => ({
+                  ...prevState,
+                  isComposite: !prevState.isComposite,
+                  isIncludeHomophones: false,
+                }))
+              }
             />
           </Col>
         </Row>
@@ -172,7 +168,18 @@ function SignsSearchForm({
             <HelpTrigger overlay={SignsSearchHelp()} />
           </Col>
           <Col className="pl-0 ml-0 mr-0 pr-0">
-            <Form.Control as="select">
+            <Form.Control
+              as="select"
+              value={signQueryState.signList}
+              onChange={(event) => {
+                event.persist()
+                setSignQueryState((prevState) => ({
+                  ...prevState,
+                  signList: event.target.value,
+                }))
+              }}
+            >
+              <option selected />
               <option>MZL</option>
               <option>ŠL/MÉA = SLLHA</option>
               <option>ABZ</option>
@@ -183,9 +190,15 @@ function SignsSearchForm({
           <Col className="ml-0 pl-0">
             <FormControl
               type="text"
-              value={queryState}
+              value={signQuery.subIndex}
               placeholder="Number"
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                event.persist()
+                setSignQueryState((prevState) => ({
+                  ...prevState,
+                  subIndex: event.target.value,
+                }))
+              }}
             />
           </Col>
           <Col sm={4}>

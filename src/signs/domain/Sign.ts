@@ -20,3 +20,11 @@ interface SignListRecord {
   name: string
   number: string
 }
+
+export interface SignQuery {
+  value: string
+  subIndex: string
+  isIncludeHomophones: boolean
+  isComposite: boolean
+  signList: string
+}

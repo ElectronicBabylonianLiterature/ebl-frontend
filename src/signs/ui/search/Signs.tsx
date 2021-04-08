@@ -8,15 +8,19 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import './Signs.css'
-import _ from 'lodash'
 import SignsSearch from 'signs/ui/search/SignsSearch'
+import { SignQuery } from 'signs/domain/Sign'
 
 export default function Signs({ location, signsService }): JSX.Element {
-  const query = parse(location.search) || {
-    query: '',
-    isIncludeHomophones: false,
-    isCompositeSigns: false,
+  const query = parse(location.search)
+  const signQuery: SignQuery = {
+    value: (query.value as string) || '',
+    subIndex: (query.subIndex as string) || '',
+    isIncludeHomophones: query.isIncludeHomophones === 'true',
+    isComposite: query.isCompositeSigns === 'true',
+    signList: (query.signList as string) || '',
   }
+  console.log(signQuery)
 
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
@@ -25,20 +29,9 @@ export default function Signs({ location, signsService }): JSX.Element {
           session.isAllowedToReadWords() ? (
             <>
               <div className="Signs-search">
-                <SignsSearchForm
-                  query={query.query || ''}
-                  isIncludeHomophones={query.isIncludeHomophones === 'true'}
-                  isCompositeSigns={query.isCompositeSigns === 'true'}
-                />
+                <SignsSearchForm signQuery={signQuery} />
               </div>
-              <SignsSearch
-                query={
-                  _.isArray(query)
-                    ? (query.join('') as string)
-                    : ((query as unknown) as string)
-                }
-                signsService={signsService}
-              />
+              <SignsSearch signQuery={signQuery} signsService={signsService} />
             </>
           ) : (
             <p>Please log in to search for Signs.</p>

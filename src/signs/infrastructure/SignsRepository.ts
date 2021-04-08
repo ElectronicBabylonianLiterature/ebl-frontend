@@ -1,6 +1,7 @@
 import ApiClient from 'http/ApiClient'
-import Word from 'dictionary/domain/Word'
 import Promise from 'bluebird'
+import { SignQuery } from 'signs/domain/Sign'
+import { stringify } from 'query-string'
 
 class SignsRepository {
   private readonly apiClient
@@ -9,12 +10,8 @@ class SignsRepository {
     this.apiClient = apiClient
   }
 
-  search(query: string): Promise<any[]> {
-    console.log(query)
-    return this.apiClient.fetchJson(
-      `/signs?query=${encodeURIComponent(query)}`,
-      true
-    )
+  search(signQuery: SignQuery): Promise<any[]> {
+    return this.apiClient.fetchJson(`/signs?${stringify(signQuery)}`, true)
   }
 }
 
