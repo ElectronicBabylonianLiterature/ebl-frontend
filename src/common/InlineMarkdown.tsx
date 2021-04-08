@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+import * as remarkSubSuper from 'remark-sub-super'
 
 export default function InlineMarkdown({
   source,
@@ -9,6 +10,7 @@ export default function InlineMarkdown({
   return (
     <ReactMarkdown
       source={source}
+      plugins={[remarkSubSuper]}
       disallowedTypes={['paragraph']}
       unwrapDisallowed
     />

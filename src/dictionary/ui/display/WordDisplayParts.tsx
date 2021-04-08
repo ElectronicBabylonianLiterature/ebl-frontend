@@ -107,7 +107,6 @@ export function Logogram({
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
-  children?: React.ReactNode
 }
 export function Markdown({
   text,
