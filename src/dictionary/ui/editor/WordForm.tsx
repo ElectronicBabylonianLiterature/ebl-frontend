@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { Component, FormEvent } from 'react'
 import { Button } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -18,123 +18,138 @@ interface Props {
   onSubmit: (word: Word) => void
   disabled: boolean
 }
+class WordForm extends Component<Props, { word: Word }> {
+  constructor(props: Props) {
+    super(props)
 
-export default function WordForm({
-  value,
-  onSubmit,
-  disabled,
-}: Props): JSX.Element {
-  const [word, setWord] = useState(value)
-  const submit = (event: FormEvent<HTMLFormElement>): void => {
+    this.state = {
+      word: this.props.value,
+    }
+  }
+
+  submit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    onSubmit(word)
+    this.props.onSubmit(this.state.word)
   }
 
-  const updateWord = (updatedFields: Partial<Word>): void => {
-    setWord({ ...word, ...updatedFields })
+  updateWord = (updatedFields: Partial<Word>): void => {
+    this.setState({
+      word: {
+        ...this.state.word,
+        ...updatedFields,
+      },
+    })
   }
 
-  const onChangeValue = (key: string) => (value: any): void => {
-    updateWord({ [key]: value })
+  onChangeValue = (key: string) => (value: unknown): void => {
+    this.updateWord({ [key]: value })
   }
 
-  const TextInputDisplay = ({
-    property,
-  }: {
-    property: string
-  }): JSX.Element => (
-    <TextInput value={word[property]} onChange={onChangeValue(property)}>
+  textInput = ({ property }: { property: string }): JSX.Element => (
+    <TextInput
+      value={this.state.word[property]}
+      onChange={this.onChangeValue(property)}
+    >
       {_.startCase(property)}
     </TextInput>
   )
 
-  const Lemma = (): JSX.Element => (
-    <LemmaInput value={word} onChange={updateWord} />
+  lemma = (): JSX.Element => (
+    <LemmaInput value={this.state.word} onChange={this.updateWord} />
   )
 
-  const Pos = (): JSX.Element => <PosInput value={word} onChange={updateWord} />
+  pos = (): JSX.Element => (
+    <PosInput value={this.state.word} onChange={this.updateWord} />
+  )
 
-  const AmplifiedMeanings = (): JSX.Element => (
+  amplifiedMeanings = (): JSX.Element => (
     <AmplifiedMeaningList
-      value={word.amplifiedMeanings}
-      onChange={onChangeValue('amplifiedMeanings')}
+      value={this.state.word.amplifiedMeanings}
+      onChange={this.onChangeValue('amplifiedMeanings')}
     >
       Amplified meanings
     </AmplifiedMeaningList>
   )
 
-  const Forms = (): JSX.Element => (
+  forms = (): JSX.Element => (
     <FormList
-      value={word.forms}
-      onChange={onChangeValue('forms')}
+      value={this.state.word.forms}
+      onChange={this.onChangeValue('forms')}
       fields={['lemma', 'attested', 'notes']}
     >
       Forms
     </FormList>
   )
 
-  const Logograms = (): JSX.Element => (
+  logograms = (): JSX.Element => (
     <ArrayWithNotesList
-      value={word.logograms}
+      value={this.state.word.logograms}
       separator=" "
       property="logogram"
       noun="logogram"
-      onChange={onChangeValue('logograms')}
+      onChange={this.onChangeValue('logograms')}
     />
   )
 
-  const Derived = (): JSX.Element => (
-    <DerivedList value={word.derived} onChange={onChangeValue('derived')}>
+  derived = (): JSX.Element => (
+    <DerivedList
+      value={this.state.word.derived}
+      onChange={this.onChangeValue('derived')}
+    >
       Derived
     </DerivedList>
   )
 
-  const DerivedFrom = (): JSX.Element => (
+  derivedFrom = (): JSX.Element => (
     <DerivedFromInput
-      value={word.derivedFrom}
-      onChange={onChangeValue('derivedFrom')}
+      value={this.state.word.derivedFrom}
+      onChange={this.onChangeValue('derivedFrom')}
     />
   )
 
-  const OraccWords = (): JSX.Element => (
+  oraccWords = (): JSX.Element => (
     <OraccWordsList
-      value={word.oraccWords}
-      onChange={onChangeValue('oraccWords')}
+      value={this.state.word.oraccWords}
+      onChange={this.onChangeValue('oraccWords')}
     />
   )
 
-  return (
-    <form className="WordForm" onSubmit={submit}>
-      <fieldset disabled={disabled}>
-        <Lemma />
-        <TextInputDisplay property="legacyLemma" />
-        <TextInputDisplay property="homonym" />
-        <Pos />
-        <TextInputDisplay property="meaning" />
-        <hr />
+  render(): JSX.Element {
+    return (
+      <form className="WordForm" onSubmit={this.submit}>
+        <fieldset disabled={this.props.disabled}>
+          <this.lemma />
+          <this.textInput property="legacyLemma" />
+          <this.textInput property="homonym" />
+          <this.pos />
+          <this.textInput property="meaning" />
+          <hr />
 
-        <Forms />
-        <hr />
+          <this.forms />
+          <hr />
 
-        <AmplifiedMeanings />
-        <hr />
+          <this.amplifiedMeanings />
+          <hr />
 
-        <Logograms />
-        <hr />
+          <this.logograms />
+          <hr />
 
-        <Derived />
-        <hr />
+          <this.derived />
+          <hr />
 
-        <DerivedFrom />
-        <hr />
+          <this.derivedFrom />
+          <hr />
 
-        <TextInputDisplay property="guideWord" />
-        <OraccWords />
+          <this.textInput property="guideWord" />
+          <this.oraccWords />
 
-        <Button type="submit" variant="primary">
-          Save
-        </Button>
-      </fieldset>
-    </form>
-  )
+          <Button type="submit" variant="primary">
+            Save
+          </Button>
+        </fieldset>
+      </form>
+    )
+  }
 }
+
+export default WordForm
