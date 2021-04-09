@@ -152,18 +152,46 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
               <div
                 class="col"
               >
-                Other forms:
+                Other forms: 
                  
                 <span>
-                  <em>
-                    gajremdac**; 
-                  </em>
-                  la
-                  <strong>
-                    , *rap
-                  </strong>
-                  ; *oneun**
+                  <span>
+                    pe 
+                  </span>
+                  <span>
+                    <em>
+                      gajremdac**; 
+                    </em>
+                    la**
+                  </span>
+                   
+                   
+                   
+                  <span>
+                    usrew
+                  </span>
+                  
                 </span>
+                , 
+                <span>
+                  <span>
+                    gi 
+                  </span>
+                  <span>
+                    <em>
+                      rap**; 
+                    </em>
+                    oneun**
+                  </span>
+                   
+                   
+                   
+                  <span>
+                    sobkuva
+                  </span>
+                  
+                </span>
+                
               </div>
             </div>
             <div
@@ -331,6 +359,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                   <span>
                     echo
                   </span>
+                   
                   <span>
                      
                     <span>
@@ -354,6 +383,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                   <span>
                     bravo
                   </span>
+                   
                   <span>
                      
                     <span>

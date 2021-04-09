@@ -15,7 +15,7 @@ import {
   Join,
   Logogram,
   Markdown,
-  OtherForms,
+  OtherForm,
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
 
@@ -106,7 +106,16 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
           <Col xs={{ offset: 1 }}>
             <Row>
               <Col>
-                {word.forms.length > 0 && <OtherForms forms={word.forms} />}
+                {word.forms.length > 0 && (
+                  <>
+                    Other forms:&nbsp;
+                    <Join
+                      list={word.forms}
+                      separator={', '}
+                      Component={OtherForm}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
