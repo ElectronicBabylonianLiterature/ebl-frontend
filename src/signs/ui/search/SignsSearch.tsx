@@ -40,9 +40,7 @@ function SignComponent({ sign }): JSX.Element {
         source={`(${sign.values
           .map(
             (value) =>
-              `${value.value}<sub>${
-                value.subIndex ? value.subIndex : 'x'
-              }</sub>`
+              `${value.value}~${value.subIndex ? value.subIndex : 'x'}~`
           )
           .join(', ')})`}
       />
