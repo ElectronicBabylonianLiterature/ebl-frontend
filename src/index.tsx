@@ -78,7 +78,7 @@ function InjectedAuth0Provider({
     <Auth0Provider
       domain={auth0Config.domain ?? ''}
       client_id={auth0Config.clientID ?? ''}
-      redirect_uri={auth0Config.redirectUri ?? window.location.origin}
+      redirect_uri={window.location.origin}
       onRedirectCallback={(appState): void => {
         history.push(
           appState && appState.targetUrl
@@ -88,7 +88,7 @@ function InjectedAuth0Provider({
       }}
       scope={scopeString}
       audience={auth0Config.audience}
-      returnTo={auth0Config.returnTo}
+      returnTo={window.location.origin}
       useRefreshTokens={true}
     >
       {children}

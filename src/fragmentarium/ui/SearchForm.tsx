@@ -10,17 +10,18 @@ import _ from 'lodash'
 import produce from 'immer'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 interface State {
-  number: string | null | undefined
+  number: string
   referenceEntry: {
     id: string
     title: string
     primaryAuthor: string
     year: string
   }
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  pages: string
+  transliteration: string
   isValid: boolean
 }
 
@@ -83,7 +84,7 @@ class SearchForm extends Component<Props, State> {
       primaryAuthor: state.referenceEntry.primaryAuthor,
       year: state.referenceEntry.year,
       pages: state.pages,
-      transliteration: state.transliteration,
+      transliteration: replaceTransliteration(state.transliteration),
     }
   }
   search = (event) => {

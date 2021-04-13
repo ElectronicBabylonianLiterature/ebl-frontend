@@ -4,7 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/test_coverage)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0787509d99e64ee3cb93/maintainability)](https://codeclimate.com/github/ElectronicBabylonianLiterature/ebl-frontend/maintainability)
 [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4)](https://prettier.io)
-[![Mozilla HTTP Observatory Grade](https://img.shields.io/mozilla-observatory/grade/www.ebabylon.org?publish)](https://observatory.mozilla.org/analyze/www.ebabylon.org)
+[![Mozilla HTTP Observatory Grade](https://img.shields.io/mozilla-observatory/grade/www.ebl.lmu.de?publish)](https://observatory.mozilla.org/analyze/www.ebl.lmu.de)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent version of the guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
@@ -26,8 +26,6 @@ The project comes with a [Gitpod](https://www.gitpod.io) configuration including
 select extensions. Click the button below, configure the environment variables and you are good to go.
 It might be necessary to use `.env.local` instead of [the facilities provided
 in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
-
-To always have correct configuration regardless of the pod address, `REACT_APP_AUTH0_REDIRECT_URI` and `REACT_APP_AUTH0_RETURN_TO` can be set to `https://3000-$GITPOD_WORKSPACE_ID.ws-eu01.gitpod.io` (change the region if needed).
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
@@ -59,9 +57,7 @@ The application reads the configuration from following environment variables:
 
 ```dotenv
 REACT_APP_AUTH0_DOMAIN=<Auth0 domain>
-REACT_APP_AUTH0_REDIRECT_URI=<Auth0 redirect URI>
 REACT_APP_AUTH0_CLIENT_ID=<Auth0 client ID>
-REACT_APP_AUTH0_RETURN_TO=<Auth0 return to URL>
 REACT_APP_AUTH0_AUDIENCE=<Auth0 audience>
 REACT_APP_DICTIONARY_API_URL=<eBL API URL>
 REACT_APP_SENTRY_DSN=<Sentry DSN>

@@ -7,6 +7,7 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+COPY .eslintrc.json  ./
 COPY tsconfig.json  ./
 COPY .env ./
 COPY public ./public

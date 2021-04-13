@@ -4,7 +4,6 @@ import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
-import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -12,6 +11,7 @@ import { Session } from 'auth/Session'
 import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
+import _ from 'lodash'
 
 interface Props {
   number: string | null | undefined
@@ -36,8 +36,6 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   fragmentService,
   fragmentSearchService,
 }: Props) => {
-  const replacedTransliteration =
-    transliteration && replaceTransliteration(transliteration)
   return (
     <AppContent
       crumbs={[new SectionCrumb('Fragmentarium'), new TextCrumb('Search')]}
@@ -48,6 +46,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
             <section className="Fragmentarium-search">
               <header className="Fragmentarium-search__header">
                 <SearchGroup
+                  key={`${_.uniqueId('transliteration')}-${transliteration}`}
                   number={number}
                   id={id}
                   primaryAuthor={primaryAuthor}
@@ -55,7 +54,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                   title={title}
                   pages={pages}
                   fragmentService={fragmentService}
-                  transliteration={replacedTransliteration}
+                  transliteration={transliteration}
                   fragmentSearchService={fragmentSearchService}
                 />
               </header>
@@ -69,7 +68,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 fragmentSearchService={fragmentSearchService}
               />
               <TransliterationSearch
-                transliteration={replacedTransliteration}
+                transliteration={transliteration}
                 fragmentSearchService={fragmentSearchService}
               />
             </section>

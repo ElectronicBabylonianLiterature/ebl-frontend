@@ -1,13 +1,10 @@
-import React, { useState, useRef, RefObject } from 'react'
 import $ from 'jquery'
-import { act, render } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
 import { wordDto } from 'test-support/test-word'
 import { pdfExport } from './PdfExport'
-import WordDownloadButton from './WordDownloadButton'
 import { jsPDF } from 'jspdf'
 
 jest.mock('dictionary/application/WordService')

@@ -1,4 +1,3 @@
-import React from 'react'
 import $ from 'jquery'
 import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'

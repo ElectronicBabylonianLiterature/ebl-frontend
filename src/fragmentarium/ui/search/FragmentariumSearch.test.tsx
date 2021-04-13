@@ -72,8 +72,7 @@ describe('Search', () => {
   })
 
   describe('Searching fragments by transliteration', () => {
-    const transliteration = 'LI23 cí-s,a-pèl-t,a3'
-    const replacedTransliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
+    const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
 
     beforeEach(async () => {
       fragments = await factory.buildMany('fragmentInfo', 2, [
@@ -93,7 +92,7 @@ describe('Search', () => {
 
     it('Fills in search form query', () => {
       expect(element.getByLabelText('Transliteration').value).toEqual(
-        replacedTransliteration
+        transliteration
       )
     })
   })

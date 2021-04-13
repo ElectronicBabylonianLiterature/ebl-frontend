@@ -6,15 +6,17 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button, Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.css'
-import ReactMarkdown from 'react-markdown'
 import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
 import {
   AmplifiedMeanings,
   AmplifiedMeaningsDetails,
   Derivatives,
-  OtherForms,
-  replaceByCurlyQuotes,
+  Join,
+  Logogram,
+  Markdown,
+  OtherForm,
+  SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
 
 const LiteratureRedirectBox = (): JSX.Element => (
@@ -67,11 +69,13 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
               </strong>
               , &ldquo;{word.guideWord}&rdquo;
             </Col>
-            <Col>
-              {Boolean(word.pos.length) && (
+
+            {word.pos.length > 0 && (
+              <Col>
                 <h5 className="text-secondary">({word.pos.join(', ')})</h5>
-              )}
-            </Col>
+              </Col>
+            )}
+
             <Col xs="auto" className="pr-5 mr-5">
               <div className="border border-dark p-1 text-secondary h6">
                 {copyableInformation}
@@ -102,33 +106,60 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
           <Col xs={{ offset: 1 }}>
             <Row>
               <Col>
-                {word.forms.length && <OtherForms forms={word.forms} />}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {Boolean(word.amplifiedMeanings.length) &&
-                  Boolean(word.amplifiedMeanings[0].key) && (
-                    <AmplifiedMeanings
-                      amplifiedMeanings={word.amplifiedMeanings}
-                      wordId={word._id}
+                {word.forms.length > 0 && (
+                  <>
+                    Other forms:&nbsp;
+                    <Join
+                      list={word.forms}
+                      separator={', '}
+                      Component={OtherForm}
                     />
-                  )}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                {Boolean(word.derived.length) && (
-                  <Derivatives derivatives={word.derived} />
+                  </>
                 )}
               </Col>
             </Row>
             <Row>
               <Col>
-                {Boolean(word.logograms.length) &&
-                  `Logograms: ${word.logograms
-                    .map((logogram) => logogram.logogram[0])
-                    .join(', ')}`}
+                {word.amplifiedMeanings.length > 0 && (
+                  <AmplifiedMeanings
+                    amplifiedMeanings={word.amplifiedMeanings}
+                    wordId={word._id}
+                  />
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {word.derived.length > 0 && (
+                  <>
+                    Derivatives:&nbsp;
+                    <Derivatives derivatives={word.derived} />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {word.derivedFrom && (
+                  <>
+                    Derived from:&nbsp;
+                    <SingleDerivative {...word.derivedFrom} />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {word.logograms.length > 0 && (
+                  <>
+                    Logograms:&nbsp;
+                    <Join
+                      list={word.logograms}
+                      separator={', '}
+                      Component={Logogram}
+                    />
+                  </>
+                )}
               </Col>
             </Row>
             <Row>
@@ -137,11 +168,7 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             <Row>
               <Col>
                 <br />
-                {word.meaning && (
-                  <ReactMarkdown>
-                    {replaceByCurlyQuotes(word.meaning)}
-                  </ReactMarkdown>
-                )}
+                {word.meaning && <Markdown text={word.meaning} />}
               </Col>
             </Row>
           </Col>

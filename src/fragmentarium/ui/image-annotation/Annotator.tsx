@@ -16,17 +16,19 @@ import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
 import useObjectUrl from 'common/useObjectUrl'
 
-const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) => ({
-  annotation,
-}: Omit<ContentProps, 'onDelete'>): JSX.Element => (
-  <Content annotation={annotation} onDelete={onDelete} />
-)
+const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) =>
+  function ContentWithOnDelete({
+    annotation,
+  }: Omit<ContentProps, 'onDelete'>): JSX.Element {
+    return <Content annotation={annotation} onDelete={onDelete} />
+  }
 
 const editorWithTokens = (
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-) => (props: Omit<EditorProps, 'tokens'>): JSX.Element => (
-  <Editor tokens={tokens} {...props} />
-)
+) =>
+  function EditorWithTokens(props: Omit<EditorProps, 'tokens'>): JSX.Element {
+    return <Editor tokens={tokens} {...props} />
+  }
 
 interface Props {
   image: URL | string

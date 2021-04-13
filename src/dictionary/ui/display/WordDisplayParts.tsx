@@ -1,75 +1,191 @@
-import React from 'react'
+import React, { ElementType, FunctionComponent } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.css'
 import ReactMarkdown from 'react-markdown'
+import * as remarkSubSuper from 'remark-sub-super'
 
 export function replaceByCurlyQuotes(str: string): string {
   return str.replace(/"([^"]*)"/g, '“$1”')
 }
+interface Form {
+  attested: boolean
+  lemma: string[]
+  notes: string[]
+}
+export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
+  const attestedSign = attested ? '' : '*'
+  return (
+    <span>
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
+      <Markdown
+        text={lemma
+          .map((lemmaElement) => `*${lemmaElement}*${attestedSign}`)
+          .join('; ')}
+      />
+      &nbsp;
+      {notes.length > 1 && (
+        <>
+          &nbsp;
+          <JoinMarkdown separator={' '} listOfMarkdown={notes.slice(1)} />
+        </>
+      )}
+    </span>
+  )
+}
 
-export function OtherForms({
-  forms,
-}: {
-  forms: { attested: boolean; lemma: string[] }[]
-}): JSX.Element {
-  const otherForm = (form) => {
-    const attested = form.attested ? '' : '*'
-    return form.lemma
-      .map((lemmaElement) => `*${lemmaElement}*${attested}`)
-      .join('; ')
-  }
+interface JoinProps<T> {
+  list: T[]
+  separator: string
+  Component: FunctionComponent<T>
+}
+export function Join<T>({
+  list,
+  separator,
+  Component,
+}: JoinProps<T>): JSX.Element {
   return (
     <>
-      Other forms:{' '}
-      <ReactMarkdown renderers={{ paragraph: 'span' }}>
-        {forms.map((form) => otherForm(form)).join(', ')}
-      </ReactMarkdown>
+      {' '}
+      {list.map((props, index) => (
+        <React.Fragment key={index}>
+          <Component {...props} />
+          {index !== list.length - 1 ? separator : ''}
+        </React.Fragment>
+      ))}
     </>
   )
 }
-interface Derivative {
+interface JoinMarkdownProps {
+  listOfMarkdown: string[]
+  separator: string
+}
+export function JoinMarkdown({
+  listOfMarkdown,
+  separator,
+}: JoinMarkdownProps): JSX.Element {
+  return (
+    <>
+      {' '}
+      {listOfMarkdown.map((text, index) => (
+        <React.Fragment key={index}>
+          <Markdown text={text} />
+          {index !== listOfMarkdown.length - 1 ? separator : ''}
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+
+export function Logogram({
+  logogram,
+  notes,
+}: {
+  logogram: string[]
+  notes: string[]
+}): JSX.Element {
+  return (
+    <span>
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
+      {logogram[0] && <Markdown text={logogram[0]} />}&nbsp;
+      {logogram.length > 1 && (
+        <span>
+          <JoinMarkdown listOfMarkdown={logogram.slice(1)} separator={', '} />
+          &nbsp;
+        </span>
+      )}
+      {notes.length > 1 && (
+        <>
+          &nbsp;
+          <JoinMarkdown separator={' '} listOfMarkdown={notes.slice(1)} />
+        </>
+      )}
+    </span>
+  )
+}
+
+type MarkdownProps = {
+  text: string
+  paragraph?: ElementType
+}
+export function Markdown({
+  text,
+  paragraph = 'span',
+}: MarkdownProps): JSX.Element {
+  return (
+    <ReactMarkdown
+      source={replaceByCurlyQuotes(text)}
+      plugins={[remarkSubSuper]}
+      renderers={{
+        paragraph: paragraph,
+        sub: 'sub',
+        sup: 'sup',
+      }}
+    />
+  )
+}
+
+interface SingleDerivativeProps {
   lemma: string[]
   homonym: string
   notes: string[]
 }
 
-function extractLemmas(derivatives): string[][] {
-  return derivatives.map((derivative) =>
-    derivative.map((derivativeParts) => {
-      const homonym = derivativeParts.homonym
-        ? ` ${derivativeParts.homonym}`
-        : ''
-      const filteredNotes = derivativeParts.notes.filter((note) => note)
-      const notes = filteredNotes.length ? `${filteredNotes.join(',')}` : ''
+export function SingleDerivative({
+  lemma,
+  homonym,
+  notes,
+}: SingleDerivativeProps): JSX.Element {
+  const Lemmas = ({
+    lemmas,
+    homonym,
+  }: {
+    lemmas: string[]
+    homonym: string
+  }): JSX.Element => {
+    const joinedLemmas = lemmas.join(' ')
+    return (
+      <a href={`/dictionary/${encodeURI(`${joinedLemmas} ${homonym}`)}`}>
+        <em>{joinedLemmas}</em>
+      </a>
+    )
+  }
 
-      return `${derivativeParts.lemma[0]}${homonym}${notes}`
-    })
+  return (
+    <span>
+      {notes[0] && <Markdown text={`${notes[0]} `} />}
+      <Lemmas lemmas={lemma} homonym={homonym} />
+      &nbsp;
+      {homonym}
+      {notes[1] && (
+        <>
+          &nbsp;
+          <JoinMarkdown listOfMarkdown={notes.slice(1)} separator={' '} />
+        </>
+      )}
+    </span>
   )
 }
 
 export function Derivatives({
   derivatives,
 }: {
-  derivatives: Derivative[][]
+  derivatives: any[][]
 }): JSX.Element {
-  const extractedLemmas = extractLemmas(derivatives)
-
-  const extractedLemmasWithLink = extractedLemmas.map((lemmas, lemmasIndex) => (
-    <span key={lemmasIndex}>
-      {lemmas.map((lemma, lemmaIndex) => (
-        <span key={lemmaIndex}>
-          <a href={`/dictionary/${lemma}`}>
-            <em>{lemma.split(' ')[0]}</em>
-          </a>
-          &nbsp;{lemma.split(' ')[1]}
-          {lemmaIndex !== lemmas.length - 1 && <>,&nbsp;</>}
-        </span>
+  return (
+    <>
+      {derivatives.map((groupOfDerivatives, index) => (
+        <React.Fragment key={index}>
+          <Join
+            list={groupOfDerivatives}
+            separator={', '}
+            Component={SingleDerivative}
+          />
+          {'; '}
+        </React.Fragment>
       ))}
-      {lemmasIndex !== extractedLemmas.length - 1 && <>;&nbsp;</>}
-    </span>
-  ))
-  return <>Derivatives:&nbsp;{extractedLemmasWithLink}</>
+    </>
+  )
 }
 
 interface AmplifiedMeaning {
@@ -113,19 +229,14 @@ export function AmplifiedMeaningsDetails({
       <Col>
         <Row>
           <strong>{amplifiedMeaning.key}</strong>&nbsp;&nbsp;&nbsp;{' '}
-          <ReactMarkdown>
-            {replaceByCurlyQuotes(amplifiedMeaning.meaning)}
-          </ReactMarkdown>
+          <Markdown text={amplifiedMeaning.meaning} paragraph={'p'} />
         </Row>
         <Row>
           <ol>
             {amplifiedMeaning.entries.map((entry, index) => (
               <li id={`attested-stem-${index}`} key={index}>
                 <div className="ml-3">
-                  <ReactMarkdown
-                    source={replaceByCurlyQuotes(entry.meaning)}
-                    renderers={{ paragraph: 'span' }}
-                  />
+                  <Markdown text={entry.meaning} />
                 </div>
               </li>
             ))}
