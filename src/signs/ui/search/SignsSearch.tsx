@@ -44,6 +44,17 @@ function SignComponent({
       </Popover.Content>
     </Popover>
   )
+  const parseSubIndex = (subIndex) => {
+    if (subIndex == undefined) {
+      if (isIncludeHomophones) {
+        return '~x~'
+      } else {
+        return ''
+      }
+    } else {
+      return `~${subIndex}~`
+    }
+  }
 
   return (
     <div className="Word">
@@ -51,7 +62,7 @@ function SignComponent({
         to={`/signs/${sign.name}/edit`}
         className="BibliographySearch__edit"
       >
-        <i className="fas fa-edit" />
+        {String.fromCodePoint(sign.unicode[0])}
       </Link>
       <dfn title={sign.name}>
         <strong>
@@ -63,26 +74,23 @@ function SignComponent({
       {sign.values && sign.values.length > 0 ? (
         <InlineMarkdown
           source={`(${sign.values
-            .map(
-              (value) =>
-                `${value.value}~${
-                  value.subIndex == null && isIncludeHomophones
-                    ? 'x'
-                    : value.subIndex
-                }~`
-            )
+            .map((value) => `${value.value}${parseSubIndex(value.subIndex)}`)
             .join(', ')})`}
         />
       ) : null}
-      &nbsp;&mdash;&nbsp;
-      <OverlayTrigger
-        rootClose
-        overlay={popover}
-        trigger={['hover']}
-        placement="right"
-      >
-        <span className="ReferenceList__citation">MesZl</span>
-      </OverlayTrigger>
+      {sign.mesZl && (
+        <>
+          &nbsp;&mdash;&nbsp;
+          <OverlayTrigger
+            rootClose
+            overlay={popover}
+            trigger={['hover']}
+            placement="right"
+          >
+            <span className="ReferenceList__citation">MesZl</span>
+          </OverlayTrigger>
+        </>
+      )}
     </div>
   )
 }
