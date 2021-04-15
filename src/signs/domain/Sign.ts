@@ -4,6 +4,7 @@ export default interface Sign {
   values: readonly Value[] | null
   logograms: readonly Logogram[]
   mesZl: string | null
+  unicode: number
 }
 interface Logogram {
   logogram: string

@@ -20,8 +20,6 @@ export default function Signs({ location, signsService }): JSX.Element {
     isComposite: query.isCompositeSigns === 'true',
     signList: (query.signList as string) || '',
   }
-  console.log(signQuery)
-
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <SessionContext.Consumer>
