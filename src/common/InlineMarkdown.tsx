@@ -14,7 +14,6 @@ export default function InlineMarkdown({
       disallowedTypes={['paragraph']}
       unwrapDisallowed
       renderers={{
-        paragraph: 'span',
         sub: 'sub',
         sup: 'sup',
       }}
