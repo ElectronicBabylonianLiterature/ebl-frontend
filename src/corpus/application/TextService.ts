@@ -1,5 +1,6 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
+import { stringify } from 'query-string'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import {
   ChapterLemmatization,
@@ -110,6 +111,13 @@ export default class TextService {
 
   list(): Bluebird<TextInfo[]> {
     return this.apiClient.fetchJson('/texts', false)
+  }
+
+  searchTransliteration(transliteration: string): Bluebird<any[]> {
+    return this.apiClient.fetchJson(
+      `/textsearch?${stringify({ transliteration })}`,
+      true
+    )
   }
 
   updateAlignment(

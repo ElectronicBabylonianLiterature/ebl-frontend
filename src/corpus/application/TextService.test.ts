@@ -201,6 +201,14 @@ const testData: TestData[] = [
     Bluebird.resolve(textsDto),
   ],
   [
+    'searchTransliteration',
+    ['kur'],
+    apiClient.fetchJson,
+    [],
+    ['/textsearch?transliteration=kur', true],
+    Bluebird.resolve([]),
+  ],
+  [
     'updateAlignment',
     [text.category, text.index, 0, text.chapters[0].alignment],
     apiClient.postJson,
