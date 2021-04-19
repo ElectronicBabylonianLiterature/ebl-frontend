@@ -71,7 +71,7 @@ function fromLineVariantDto(variantDto): LineVariant {
   })
 }
 
-function fromLineDto(lineDto): Line {
+export function fromLineDto(lineDto): Line {
   return createLine({
     ...lineDto,
     variants: lineDto.variants?.map(fromLineVariantDto) ?? [],

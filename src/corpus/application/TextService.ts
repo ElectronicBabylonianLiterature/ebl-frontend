@@ -18,6 +18,7 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromDto,
+  fromLineDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
@@ -114,10 +115,17 @@ export default class TextService {
   }
 
   searchTransliteration(transliteration: string): Bluebird<any[]> {
-    return this.apiClient.fetchJson(
-      `/textsearch?${stringify({ transliteration })}`,
-      true
-    )
+    return this.apiClient
+      .fetchJson(`/textsearch?${stringify({ transliteration })}`, true)
+      .then((result) =>
+        result.map((dto) => ({
+          ...dto,
+          matchingChapters: dto.matchingChapters.map((chapterDto) => ({
+            ...chapterDto,
+            matchingLines: chapterDto.matchingLines.map(fromLineDto),
+          })),
+        }))
+      )
   }
 
   updateAlignment(
