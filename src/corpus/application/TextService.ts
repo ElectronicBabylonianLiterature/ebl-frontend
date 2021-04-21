@@ -25,6 +25,7 @@ import {
   toManuscriptsDto,
 } from './dtos'
 import ApiClient from 'http/ApiClient'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -114,7 +115,9 @@ export default class TextService {
     return this.apiClient.fetchJson('/texts', false)
   }
 
-  searchTransliteration(transliteration: string): Bluebird<any[]> {
+  searchTransliteration(
+    transliteration: string
+  ): Bluebird<TransliterationSearchResult[]> {
     return this.apiClient
       .fetchJson(`/textsearch?${stringify({ transliteration })}`, true)
       .then((result) =>

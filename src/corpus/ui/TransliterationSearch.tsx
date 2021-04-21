@@ -6,11 +6,12 @@ import withData from 'http/withData'
 import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 
-function TransliterationSearchResult({
+function TransliterationSearch({
   textInfos,
 }: {
-  textInfos: readonly any[]
+  textInfos: readonly TransliterationSearchResult[]
 }) {
   return (
     <Table responsive>
@@ -24,10 +25,8 @@ function TransliterationSearchResult({
       </thead>
       <tbody>
         {textInfos.flatMap((textInfo) =>
-          textInfo.matchingChapters.map((chapterInfo) => (
-            <tr
-              key={`${textInfo.id.category}.${textInfo.id.index} ${chapterInfo.id.stage} ${chapterInfo.id.name}`}
-            >
+          textInfo.matchingChapters.map((chapterInfo, index: number) => (
+            <tr key={index}>
               <td>
                 {textInfo.id.category && numberToRoman(textInfo.id.category)}.
                 {textInfo.id.index}
@@ -91,7 +90,7 @@ export default withData<
   readonly any[]
 >(
   ({ transliteration, data }) =>
-    transliteration ? <TransliterationSearchResult textInfos={data} /> : null,
+    transliteration ? <TransliterationSearch textInfos={data} /> : null,
   (props) =>
     props.textService.searchTransliteration(props.transliteration ?? ''),
   {
