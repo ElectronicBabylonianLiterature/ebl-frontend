@@ -6,13 +6,60 @@ import withData from 'http/withData'
 import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
+import TransliterationSearchResult, {
+  ChapterInfo,
+} from 'corpus/domain/TransliterationSearchResult'
+
+function Lines({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
+  return (
+    <>
+      {chapterInfo.matchingLines.map((line: Line, index: number) => (
+        <p key={index}>
+          {line.variants.map((variant, index) => (
+            <Fragment key={index}>
+              {index > 0 && <br />}
+              {line.number}. {variant.reconstruction}
+              {variant.manuscripts.map((manuscript, index) => (
+                <Fragment key={index}>
+                  <br />
+                  {chapterInfo.siglums[String(manuscript.manuscriptId)]}{' '}
+                  {manuscript.labels.join(' ')} {manuscript.number}.{' '}
+                  {manuscript.atf}
+                </Fragment>
+              ))}
+            </Fragment>
+          ))}
+        </p>
+      ))}
+    </>
+  )
+}
+
+function Colophons({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
+  return (
+    <>
+      {_.map(
+        chapterInfo.matchingColophonLines,
+        (lines: string[], manuscriptId: string) => (
+          <p key={manuscriptId}>
+            {lines.map((line, index) => (
+              <Fragment key={index}>
+                {index > 0 && <br />}
+                {chapterInfo.siglums[manuscriptId]} {line}
+              </Fragment>
+            ))}
+          </p>
+        )
+      )}
+    </>
+  )
+}
 
 function TransliterationSearch({
   textInfos,
 }: {
   textInfos: readonly TransliterationSearchResult[]
-}) {
+}): JSX.Element {
   return (
     <Table responsive>
       <thead>
@@ -40,41 +87,8 @@ function TransliterationSearch({
                 </Link>
               </td>
               <td>
-                {chapterInfo.matchingLines.map((line: Line, index: number) => (
-                  <p key={index}>
-                    {line.variants.map((variant, index) => (
-                      <Fragment key={index}>
-                        {index > 0 && <br />}
-                        {line.number}. {variant.reconstruction}
-                        {variant.manuscripts.map((manuscript, index) => (
-                          <Fragment key={index}>
-                            <br />
-                            {
-                              chapterInfo.siglums[
-                                String(manuscript.manuscriptId)
-                              ]
-                            }{' '}
-                            {manuscript.labels.join(' ')} {manuscript.number}.{' '}
-                            {manuscript.atf}
-                          </Fragment>
-                        ))}
-                      </Fragment>
-                    ))}
-                  </p>
-                ))}
-                {_.map(
-                  chapterInfo.matchingColophonLines,
-                  (lines: string[], manuscriptId: string) => (
-                    <p key={manuscriptId}>
-                      {lines.map((line, index) => (
-                        <Fragment key={index}>
-                          {index > 0 && <br />}
-                          {chapterInfo.siglums[manuscriptId]} {line}
-                        </Fragment>
-                      ))}
-                    </p>
-                  )
-                )}
+                <Lines chapterInfo={chapterInfo} />
+                <Colophons chapterInfo={chapterInfo} />
               </td>
             </tr>
           ))
@@ -87,7 +101,7 @@ function TransliterationSearch({
 export default withData<
   { transliteration: string | null | undefined },
   { textService: TextService },
-  readonly any[]
+  readonly TransliterationSearchResult[]
 >(
   ({ transliteration, data }) =>
     transliteration ? <TransliterationSearch textInfos={data} /> : null,
