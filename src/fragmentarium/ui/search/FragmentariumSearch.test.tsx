@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { act, render, RenderResult } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
@@ -20,30 +20,32 @@ let session: Session
 let container: HTMLElement
 let element: RenderResult
 
-async function renderFragmentariumSearch({
-  number,
-  transliteration,
-}: {
-  number?: string | null | undefined
-  transliteration?: string | null | undefined
-}): Promise<void> {
+async function renderFragmentariumSearch(
+  waitFor: string,
+  {
+    number,
+    transliteration,
+  }: {
+    number?: string | null | undefined
+    transliteration?: string | null | undefined
+  }
+): Promise<void> {
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
   )
-  await act(async () => {
-    element = render(
-      <MemoryRouter>
-        <SessionContext.Provider value={session}>
-          <FragmentariumSearchWithRouter
-            number={number}
-            transliteration={transliteration}
-            fragmentSearchService={fragmentSearchService}
-            textService={textService}
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-  })
+  element = render(
+    <MemoryRouter>
+      <SessionContext.Provider value={session}>
+        <FragmentariumSearchWithRouter
+          number={number}
+          transliteration={transliteration}
+          fragmentSearchService={fragmentSearchService}
+          textService={textService}
+        />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  )
+  await element.findByText(waitFor)
   container = element.container
 }
 
@@ -66,11 +68,10 @@ describe('Search', () => {
       fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
-      await renderFragmentariumSearch({ number })
+      await renderFragmentariumSearch(fragments[0].number, { number })
     })
 
     it('Displays result on successfull query', async () => {
-      await element.findByText(fragments[0].number)
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
@@ -132,7 +133,7 @@ describe('Search', () => {
       textService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve([corpusResult])
       )
-      await renderFragmentariumSearch({ transliteration })
+      await renderFragmentariumSearch(fragments[0].number, { transliteration })
     })
 
     it('Fills in search form query', () => {
@@ -142,7 +143,6 @@ describe('Search', () => {
     })
 
     it('Displays Fragmentarium result on successfull query', async () => {
-      await element.findByText(fragments[0].number)
       expect(container).toHaveTextContent(fragments[1].number)
     })
 
