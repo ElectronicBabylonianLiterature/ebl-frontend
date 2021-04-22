@@ -8,6 +8,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
 import ApiClient from 'http/ApiClient'
+import produce, { castDraft } from 'immer'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -178,6 +179,26 @@ const textsDto = [
   },
 ]
 
+const searchDto = {
+  id: {
+    category: 1,
+    index: 2,
+  },
+  matchingChapters: [
+    {
+      id: {
+        stage: 'Old Babyblonian',
+        name: 'My Chapter',
+      },
+      siglums: { '1': 'NinSchb' },
+      matchingLines: textDto.chapters[0].lines,
+      matchingColophonLines: {
+        '1': ['1. kur'],
+      },
+    },
+  ],
+}
+
 const testData: TestData[] = [
   [
     'find',
@@ -199,6 +220,20 @@ const testData: TestData[] = [
     textsDto,
     ['/texts', false],
     Bluebird.resolve(textsDto),
+  ],
+  [
+    'searchTransliteration',
+    ['kur'],
+    apiClient.fetchJson,
+    [
+      produce(searchDto, (draft: any) => {
+        draft.matchingChapters[0].matchingLines = castDraft(
+          text.chapters[0].lines
+        )
+      }),
+    ],
+    ['/textsearch?transliteration=kur', true],
+    Bluebird.resolve([searchDto]),
   ],
   [
     'updateAlignment',

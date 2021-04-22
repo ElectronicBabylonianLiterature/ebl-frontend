@@ -195,6 +195,7 @@ function App({
               <FragmentariumSearch
                 fragmentService={fragmentService}
                 fragmentSearchService={fragmentSearchService}
+                textService={textService}
                 {...parseFragmentSearchParams(location)}
               />
             )}
