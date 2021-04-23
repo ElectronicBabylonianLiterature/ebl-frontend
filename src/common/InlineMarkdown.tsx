@@ -13,6 +13,10 @@ export default function InlineMarkdown({
       plugins={[remarkSubSuper]}
       disallowedTypes={['paragraph']}
       unwrapDisallowed
+      renderers={{
+        sub: 'sub',
+        sup: 'sup',
+      }}
     />
   )
 }
