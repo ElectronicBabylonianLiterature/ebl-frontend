@@ -65,8 +65,7 @@ function TransliterationSearch({
       <thead>
         <tr>
           <th>Text</th>
-          <th>Stage</th>
-          <th>Name</th>
+          <th>Chapter</th>
           <th>Matching Lines</th>
         </tr>
       </thead>
@@ -78,12 +77,12 @@ function TransliterationSearch({
                 {textInfo.id.category && numberToRoman(textInfo.id.category)}.
                 {textInfo.id.index}
               </td>
-              <td>{chapterInfo.id.stage}</td>
               <td>
                 <Link
                   to={`/corpus/${textInfo.id.category}/${textInfo.id.index}/${chapterInfo.id.stage}/${chapterInfo.id.name}`}
                 >
-                  {chapterInfo.id.name}
+                  {chapterInfo.id.stage}
+                  {chapterInfo.id.name !== '-' && ` ${chapterInfo.id.name}`}
                 </Link>
               </td>
               <td>

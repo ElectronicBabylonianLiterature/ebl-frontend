@@ -151,15 +151,11 @@ describe('Search', () => {
         expect(await element.findByText('I.2')).toBeVisible()
       })
 
-      it('Displays stage', async () => {
-        expect(
-          await element.findByText(corpusResult.matchingChapters[0].id.stage)
-        ).toBeVisible()
-      })
-
       it('Name links to chapter', async () => {
         expect(
-          await element.findByText(corpusResult.matchingChapters[0].id.name)
+          await element.findByText(
+            `${corpusResult.matchingChapters[0].id.stage} ${corpusResult.matchingChapters[0].id.name}`
+          )
         ).toHaveAttribute(
           'href',
           `/corpus/${corpusResult.id.category}/${corpusResult.id.index}/${corpusResult.matchingChapters[0].id.stage}/${corpusResult.matchingChapters[0].id.name}`
