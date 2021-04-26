@@ -8,7 +8,7 @@ import {
   UniqueLemma,
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import DropdownButton from 'common/DropdownButton'
+import ModalButton from 'common/ModalButton'
 
 interface Props {
   fragmentService: FragmentService
@@ -39,11 +39,11 @@ export default function WordLemmatizer({
   )
 
   return token.lemmatizable ? (
-    <DropdownButton
+    <ModalButton
       onToggle={setShow}
       show={show}
       toggle={LemmaToggle}
-      menu={LemmaMenu}
+      dialog={LemmaMenu}
     />
   ) : (
     <span className="Word">{token.value}</span>
