@@ -5,17 +5,48 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import _ from 'lodash'
 import HelpTrigger from 'common/HelpTrigger'
 import { SignQuery } from 'signs/domain/Sign'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 interface Props extends RouteComponentProps {
   signQuery: SignQuery
+  sign: string | undefined
 }
 
-function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
+function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
   const [signQueryState, setSignQueryState] = useState<SignQuery>(signQuery)
+  const [signState, setSignState] = useState(sign || '')
+  const [unnormalizedSignQuery, setUnnormalizedSignQuery] = useState(
+    `${signQuery.value}${signQuery.subIndex ? signQuery.subIndex : ''}`
+  )
 
-  const submit = (event) => {
+  const parseValue = (sign: string): { value: string; subIndex: number } => {
+    const match = sign.match(/^([^\d]+)(\d*)$/)
+    return {
+      value: match ? replaceTransliteration(match[1]) : '',
+      subIndex: match && match[2] ? parseInt(match[2]) : 1,
+    }
+  }
+
+  const query = (event) => {
     event.preventDefault()
-    history.push(`?${stringify(signQueryState)}`)
+    history.push(
+      `?${stringify({
+        ...signQueryState,
+        ...parseValue(unnormalizedSignQuery),
+        sign: replaceTransliteration(signState),
+      })}`
+    )
+  }
+  const querySignList = (event) => {
+    event.preventDefault()
+    if (signQueryState.listsName && signQueryState.listsNumber) {
+      history.push(
+        `?${stringify({
+          listsName: signQueryState.listsName,
+          listsNumber: signQueryState.listsNumber,
+        })}`
+      )
+    }
   }
   /*
   - MZL = R. Borger, *Mesopotamisches Zeichenlexikon* (Münster, ²2010).
@@ -104,8 +135,9 @@ function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
       </Popover>
     )
   }
+
   return (
-    <Form onSubmit={submit}>
+    <Form>
       <Form.Group as={Row} controlId="query">
         <Form.Label column sm={2}>
           Query
@@ -113,19 +145,16 @@ function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
         <Col sm={6}>
           <FormControl
             type="text"
-            value={signQueryState.value}
+            value={signState}
             placeholder="Sign or Reading"
             onChange={(event) => {
-              event.persist()
-              setSignQueryState((prevState) => ({
-                ...prevState,
-                value: event.target.value || '',
-              }))
+              setUnnormalizedSignQuery(event.target.value || '')
+              setSignState(event.target.value || '')
             }}
           />
         </Col>
         <Col sm={4}>
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" onClick={query}>
             Query
           </Button>
         </Col>
@@ -170,12 +199,12 @@ function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
           <Col className="pl-0 ml-0 mr-0 pr-0">
             <Form.Control
               as="select"
-              value={signQueryState.signList}
+              value={signQueryState.listsName}
               onChange={(event) => {
                 event.persist()
                 setSignQueryState((prevState) => ({
                   ...prevState,
-                  signList: event.target.value,
+                  listsName: event.target.value,
                 }))
               }}
             >
@@ -190,19 +219,19 @@ function SignsSearchForm({ signQuery, history }: Props): JSX.Element {
           <Col className="ml-0 pl-0">
             <FormControl
               type="text"
-              value={signQuery.subIndex}
+              value={signQueryState.listsNumber}
               placeholder="Number"
               onChange={(event) => {
                 event.persist()
                 setSignQueryState((prevState) => ({
                   ...prevState,
-                  subIndex: event.target.value,
+                  listsNumber: event.target.value,
                 }))
               }}
             />
           </Col>
           <Col sm={4}>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" onClick={querySignList}>
               Query
             </Button>
           </Col>

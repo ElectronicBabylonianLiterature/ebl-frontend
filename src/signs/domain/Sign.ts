@@ -4,7 +4,7 @@ export default interface Sign {
   values: readonly Value[] | null
   logograms: readonly Logogram[]
   mesZl: string | null
-  unicode: number
+  unicode: readonly number[]
 }
 interface Logogram {
   logogram: string
@@ -23,9 +23,10 @@ interface SignListRecord {
 }
 
 export interface SignQuery {
-  value: string
-  subIndex: string
-  isIncludeHomophones: boolean
-  isComposite: boolean
-  signList: string
+  value: string | undefined
+  subIndex: number | undefined
+  listsName: string | undefined
+  listsNumber: string | undefined
+  isIncludeHomophones: boolean | undefined
+  isComposite: boolean | undefined
 }

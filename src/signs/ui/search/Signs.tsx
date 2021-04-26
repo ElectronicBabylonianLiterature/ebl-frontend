@@ -10,16 +10,27 @@ import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import './Signs.css'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import { SignQuery } from 'signs/domain/Sign'
+import _ from 'lodash'
 
 export default function Signs({ location, signsService }): JSX.Element {
   const query = parse(location.search)
-  const signQuery: SignQuery = {
-    value: (query.value as string) || '',
-    subIndex: (query.subIndex as string) || '',
-    isIncludeHomophones: query.isIncludeHomophones === 'true',
-    isComposite: query.isCompositeSigns === 'true',
-    signList: (query.signList as string) || '',
+  function parseQuery(value: string | null | string[]): string | undefined {
+    if (typeof value === 'string' && value !== '') {
+      return value
+    } else {
+      return undefined
+    }
   }
+  const signQuery: SignQuery = {
+    value: parseQuery(query.value),
+    subIndex: query.subIndex ? parseInt(query.subIndex as string) : undefined,
+    listsName: parseQuery(query.listsName),
+    listsNumber: parseQuery(query.listsNumber),
+    isIncludeHomophones:
+      parseQuery(query.isIncludeHomophones) === 'true' ? true : undefined,
+    isComposite: parseQuery(query.isComposite) === 'true' ? true : undefined,
+  }
+  console.log({ signQuery })
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <SessionContext.Consumer>
@@ -27,7 +38,11 @@ export default function Signs({ location, signsService }): JSX.Element {
           session.isAllowedToReadWords() ? (
             <>
               <div className="Signs-search">
-                <SignsSearchForm signQuery={signQuery} />
+                <SignsSearchForm
+                  sign={parseQuery(query.sign)}
+                  signQuery={signQuery}
+                  key={`${_.uniqueId('signs')}-${signQuery.value}`}
+                />
               </div>
               <SignsSearch signQuery={signQuery} signsService={signsService} />
             </>

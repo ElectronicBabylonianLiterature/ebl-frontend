@@ -15,7 +15,6 @@ interface Props {
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  console.log(signs)
   return (
     <ul className="WordSearch-results">
       {signs.map((sign) => (
@@ -55,14 +54,15 @@ function SignComponent({
       return `~${subIndex}~`
     }
   }
-
   return (
     <div className="Word">
       <Link
         to={`/signs/${sign.name}/edit`}
         className="BibliographySearch__edit"
       >
-        {String.fromCodePoint(sign.unicode[0])}
+        {sign.unicode.length > 0
+          ? String.fromCodePoint(sign.unicode[0])
+          : sign.unicode[0]}
       </Link>
       <dfn title={sign.name}>
         <strong>
@@ -109,7 +109,7 @@ export default withData<
   (props) => props.signsService.search(props.signQuery),
   {
     watch: (props) => [props.signQuery],
-    filter: (props) => !_.isEmpty(props.signQuery),
+    filter: (props) => _.some(props.signQuery, _.isEmpty),
     defaultData: [],
   }
 )
