@@ -8,34 +8,46 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
+import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
+import produce from 'immer'
 
 interface Props {
-  signs: readonly Sign[]
+  signs: Sign[]
   isIncludeHomophones: boolean
+}
+function signsSortedValues(signs: Sign[]): Sign[] {
+  return produce(signs, (draftSigns) => {
+    draftSigns.forEach((draftSign) => {
+      draftSign.values = draftSign.values.sort((value1, value2) =>
+        compareAkkadianStrings(value1.value, value2.value)
+      )
+    })
+  })
+}
+function signsSortedByName(signs: Sign[]): Sign[] {
+  return signs.sort((sign1, sign2) =>
+    compareAkkadianStrings(sign1.name, sign2.name)
+  )
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
+  const signsValuesSorted = signsSortedValues(signs)
+  const signsNew = isIncludeHomophones
+    ? signsSortedByName(signsValuesSorted)
+    : signsValuesSorted
+
   return (
     <ul className="WordSearch-results">
-      {signs.map((sign) => (
+      {signsNew.map((sign) => (
         <li key={sign.name} className="WordSearch-results__result">
-          <SignComponent
-            sign={sign}
-            isIncludeHomophones={isIncludeHomophones}
-          />
+          <SignComponent sign={sign} />
         </li>
       ))}
     </ul>
   )
 }
 
-function SignComponent({
-  sign,
-  isIncludeHomophones,
-}: {
-  sign: Sign
-  isIncludeHomophones: boolean
-}): JSX.Element {
+function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
       <Popover.Content>
@@ -45,11 +57,7 @@ function SignComponent({
   )
   const parseSubIndex = (subIndex) => {
     if (subIndex == undefined) {
-      if (isIncludeHomophones) {
-        return '~x~'
-      } else {
-        return ''
-      }
+      return '~x~'
     } else {
       return `~${subIndex}~`
     }
@@ -57,7 +65,7 @@ function SignComponent({
   return (
     <div className="Word">
       <Link
-        to={`/signs/${sign.name}/edit`}
+        to={`/signs/${encodeURIComponent(sign.name)}/edit`}
         className="BibliographySearch__edit"
       >
         {sign.unicode.length > 0
@@ -67,7 +75,9 @@ function SignComponent({
       <dfn title={sign.name}>
         <strong>
           {' '}
-          <Link to={`/dictionary/${sign.name}`}>{sign.name}</Link>
+          <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+            {sign.name}
+          </Link>
         </strong>
       </dfn>
       &nbsp;

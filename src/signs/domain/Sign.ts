@@ -1,11 +1,12 @@
 export default interface Sign {
   name: string
   lists: readonly SignListRecord[]
-  values: readonly Value[] | null
+  values: readonly Value[]
   logograms: readonly Logogram[]
-  mesZl: string | null
+  mesZl: string
   unicode: readonly number[]
 }
+
 interface Logogram {
   logogram: string
   atf: string
@@ -14,7 +15,7 @@ interface Logogram {
 }
 interface Value {
   value: string
-  subIndex: number | null
+  subIndex: number | undefined
 }
 
 interface SignListRecord {
