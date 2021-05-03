@@ -204,7 +204,7 @@ class SearchForm extends Component<Props, State> {
                 as="textarea"
                 value={this.state.transliteration || ''}
                 rows={Math.max(2, rows)}
-                placeholder="Search transliterations"
+                placeholder="Search transliterations (in Corpus and Fragmentarium)"
                 aria-label="Transliteration"
                 name="transliteration"
                 onChange={(

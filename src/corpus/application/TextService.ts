@@ -1,5 +1,6 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
+import { stringify } from 'query-string'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import {
   ChapterLemmatization,
@@ -17,12 +18,14 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromDto,
+  fromLineDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
 } from './dtos'
 import ApiClient from 'http/ApiClient'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -110,6 +113,22 @@ export default class TextService {
 
   list(): Bluebird<TextInfo[]> {
     return this.apiClient.fetchJson('/texts', false)
+  }
+
+  searchTransliteration(
+    transliteration: string
+  ): Bluebird<TransliterationSearchResult[]> {
+    return this.apiClient
+      .fetchJson(`/textsearch?${stringify({ transliteration })}`, true)
+      .then((result) =>
+        result.map((dto) => ({
+          ...dto,
+          matchingChapters: dto.matchingChapters.map((chapterDto) => ({
+            ...chapterDto,
+            matchingLines: chapterDto.matchingLines.map(fromLineDto),
+          })),
+        }))
+      )
   }
 
   updateAlignment(

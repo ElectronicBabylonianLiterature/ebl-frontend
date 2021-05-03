@@ -7,7 +7,7 @@ import './WordAligner.css'
 
 import { Token } from 'transliteration/domain/token'
 import { AlignmentToken } from 'corpus/domain/alignment'
-import DropdownButton from 'common/DropdownButton'
+import ModalButton from 'common/ModalButton'
 import { isAnyWord } from 'transliteration/domain/type-guards'
 
 interface AlignerProps {
@@ -119,11 +119,6 @@ export default function WordAligner({
   )
 
   return (
-    <DropdownButton
-      onToggle={setShow}
-      show={show}
-      toggle={toggle}
-      menu={menu}
-    />
+    <ModalButton onToggle={setShow} show={show} toggle={toggle} dialog={menu} />
   )
 }

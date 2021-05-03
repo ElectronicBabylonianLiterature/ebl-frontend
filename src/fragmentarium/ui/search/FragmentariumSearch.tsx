@@ -1,17 +1,19 @@
 import React, { FunctionComponent } from 'react'
+import _ from 'lodash'
 import AppContent from 'common/AppContent'
 import NumberSearch from 'fragmentarium/ui/search/NumberSearch'
 import TransliterationSearch from 'fragmentarium/ui/search/TransliterationSearch'
+import CorpusTransliterationSearch from 'corpus/ui/TransliterationSearch'
 import SessionContext from 'auth/SessionContext'
 import SearchGroup from 'fragmentarium/ui/SearchForm'
-
-import 'fragmentarium/ui/search/FragmentariumSearch.css'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import ReferenceSearch from 'fragmentarium/ui/search/ReferenceSearch'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import _ from 'lodash'
+import TextService from 'corpus/application/TextService'
+
+import 'fragmentarium/ui/search/FragmentariumSearch.css'
 
 interface Props {
   number: string | null | undefined
@@ -23,6 +25,7 @@ interface Props {
   transliteration: string | null | undefined
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
+  textService: TextService
 }
 
 const FragmentariumSearch: FunctionComponent<Props> = ({
@@ -35,6 +38,7 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
   transliteration,
   fragmentService,
   fragmentSearchService,
+  textService,
 }: Props) => {
   return (
     <AppContent
@@ -66,6 +70,10 @@ const FragmentariumSearch: FunctionComponent<Props> = ({
                 id={id}
                 pages={pages}
                 fragmentSearchService={fragmentSearchService}
+              />
+              <CorpusTransliterationSearch
+                transliteration={transliteration}
+                textService={textService}
               />
               <TransliterationSearch
                 transliteration={transliteration}

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Alert, Button } from 'react-bootstrap'
 import Editor from 'editor/Editor'
 
 interface ChapterImportProps {
@@ -15,6 +15,10 @@ export default function ChapterImport({
   const [atf, setAtf] = useState('')
   return (
     <>
+      <Alert variant="info">
+        The imported lines are added to the end of the chapter. Existing lines
+        will not change.
+      </Alert>
       <Editor
         name={_.uniqueId('ChapterImport-')}
         value={atf}
