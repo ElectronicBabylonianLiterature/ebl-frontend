@@ -56,7 +56,21 @@ export default class Sign {
   readonly mesZl: string
   readonly unicode: readonly number[]
 
-  constructor({ name, lists, values, logograms, mesZl, unicode }: any) {
+  constructor({
+    name,
+    lists,
+    values,
+    logograms,
+    mesZl,
+    unicode,
+  }: {
+    name: string
+    lists: readonly SignListRecord[]
+    values: readonly Value[]
+    logograms: readonly Logogram[]
+    mesZl: string
+    unicode: readonly number[]
+  }) {
     this.name = name
     this.lists = lists
     this.values = values
