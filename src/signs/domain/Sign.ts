@@ -114,7 +114,7 @@ export default class Sign {
       draftSignDto.values = draftSignDto.values.map(
         (value) => new Value(value.value, value.subIndex)
       )
-    })
+    }) as Sign
     return new Sign(sign)
   }
 }
