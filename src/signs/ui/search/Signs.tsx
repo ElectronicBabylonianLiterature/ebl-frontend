@@ -30,7 +30,6 @@ export default function Signs({ location, signsService }): JSX.Element {
       parseQuery(query.isIncludeHomophones) === 'true' ? true : undefined,
     isComposite: parseQuery(query.isComposite) === 'true' ? true : undefined,
   }
-  console.log({ signQuery })
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <SessionContext.Consumer>

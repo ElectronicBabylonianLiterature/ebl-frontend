@@ -1,6 +1,6 @@
 import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
-import { SignQuery } from 'signs/domain/Sign'
+import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 
 class SignsRepository {
@@ -10,8 +10,10 @@ class SignsRepository {
     this.apiClient = apiClient
   }
 
-  search(signQuery: SignQuery): Promise<any[]> {
-    return this.apiClient.fetchJson(`/signs?${stringify(signQuery)}`, true)
+  search(signQuery: SignQuery): Promise<Sign[]> {
+    return this.apiClient
+      .fetchJson(`/signs?${stringify(signQuery)}`, true)
+      .then((signDtos) => signDtos.map((signDto) => Sign.fromJson(signDto)))
   }
 }
 

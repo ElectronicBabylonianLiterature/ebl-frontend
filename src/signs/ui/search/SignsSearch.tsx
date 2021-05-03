@@ -7,34 +7,25 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap'
 import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
-import produce from 'immer'
 
 interface Props {
   signs: Sign[]
   isIncludeHomophones: boolean
 }
-function signsSortedValues(signs: Sign[]): Sign[] {
-  return produce(signs, (draftSigns) => {
-    draftSigns.forEach((draftSign) => {
-      draftSign.values = draftSign.values.sort((value1, value2) =>
-        compareAkkadianStrings(value1.value, value2.value)
-      )
-    })
+
+function signsSorted(signs: Sign[]): Sign[] {
+  return signs.sort((sign1, sign2) => {
+    return compareAkkadianStrings(
+      Sign.cleanAkkadianString(sign1.name),
+      Sign.cleanAkkadianString(sign2.name)
+    )
   })
-}
-function signsSortedByName(signs: Sign[]): Sign[] {
-  return signs.sort((sign1, sign2) =>
-    compareAkkadianStrings(sign1.name, sign2.name)
-  )
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  const signsValuesSorted = signsSortedValues(signs)
-  const signsNew = isIncludeHomophones
-    ? signsSortedByName(signsValuesSorted)
-    : signsValuesSorted
+  const signsNew = isIncludeHomophones ? signsSorted(signs) : signs
 
   return (
     <ul className="WordSearch-results">
@@ -55,53 +46,49 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
       </Popover.Content>
     </Popover>
   )
-  const parseSubIndex = (subIndex) => {
-    if (subIndex == undefined) {
-      return '~x~'
-    } else {
-      return `~${subIndex}~`
-    }
-  }
+
   return (
-    <div className="Word">
-      <Link
-        to={`/signs/${encodeURIComponent(sign.name)}/edit`}
-        className="BibliographySearch__edit"
-      >
-        {sign.unicode.length > 0
-          ? String.fromCodePoint(sign.unicode[0])
-          : sign.unicode[0]}
-      </Link>
-      <dfn title={sign.name}>
-        <strong>
-          {' '}
-          <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-            {sign.name}
-          </Link>
-        </strong>
-      </dfn>
-      &nbsp;
-      {sign.values && sign.values.length > 0 ? (
-        <InlineMarkdown
-          source={`(${sign.values
-            .map((value) => `${value.value}${parseSubIndex(value.subIndex)}`)
-            .join(', ')})`}
-        />
-      ) : null}
-      {sign.mesZl && (
-        <>
-          &nbsp;&mdash;&nbsp;
-          <OverlayTrigger
-            rootClose
-            overlay={popover}
-            trigger={['hover']}
-            placement="right"
-          >
-            <span className="ReferenceList__citation">MesZl</span>
-          </OverlayTrigger>
-        </>
-      )}
-    </div>
+    <Row>
+      <Col style={{ maxWidth: '190px' }}>
+        <Row>
+          <Col xs={4}>
+            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+              <span className="cuneiformFont">
+                {sign.displayCuneiformSigns}
+              </span>
+            </Link>
+          </Col>
+          <Col xs={8} className="pr-0 mr-0">
+            <dfn title={sign.name}>
+              <strong>
+                {' '}
+                <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+                  {sign.displaySignName}
+                </Link>
+              </strong>
+            </dfn>
+          </Col>
+        </Row>
+      </Col>
+      <Col>
+        {sign.values.length > 0 ? (
+          <InlineMarkdown source={sign.displayValues} />
+        ) : null}
+        {sign.mesZl && (
+          <>
+            &nbsp;&mdash;&nbsp;
+            <OverlayTrigger
+              rootClose
+              overlay={popover}
+              trigger={['hover']}
+              placement="right"
+            >
+              <span className="ReferenceList__citation">MesZl</span>
+            </OverlayTrigger>
+          </>
+        )}
+      </Col>
+    </Row>
   )
 }
 
@@ -119,7 +106,7 @@ export default withData<
   (props) => props.signsService.search(props.signQuery),
   {
     watch: (props) => [props.signQuery],
-    filter: (props) => _.some(props.signQuery, _.isEmpty),
+    filter: (props) => _.some(props.signQuery),
     defaultData: [],
   }
 )
