@@ -60,6 +60,17 @@ exports[`Query 1`] = `
               class="nav-item"
             >
               <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
                 class="active nav-link"
                 data-rb-event-key="/dictionary"
                 href="/dictionary"
@@ -380,6 +391,17 @@ exports[`Snapshot 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
             <div
               class="nav-item"
             >
