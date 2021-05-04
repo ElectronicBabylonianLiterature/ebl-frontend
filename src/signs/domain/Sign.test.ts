@@ -25,11 +25,7 @@ describe('Sign', () => {
     expect(Sign.fromJson(signDto)).toEqual(sign)
   })
   test('sort Values', () => {
-    expect(sign.sortValues()).toEqual([
-      { value: 'du', subIndex: 1 },
-      { value: 'dul', subIndex: 10 },
-      { value: 'gabu' },
-    ])
+    expect(sign.displayValues).toEqual('du~1~, dul~10~, gabu~x~')
   })
   test('cuneiform signs', () => {
     expect(sign.displayCuneiformSigns).toEqual('𒆏𒁍')
