@@ -6,6 +6,7 @@ import _ from 'lodash'
 import 'test-support/bibliography-fixtures'
 import 'test-support/fragment-fixtures'
 import 'test-support/word-fixtures'
+import 'test-support/sign-fixtures'
 
 import fetchMock from 'jest-fetch-mock'
 
