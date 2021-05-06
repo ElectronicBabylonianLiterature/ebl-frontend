@@ -7,20 +7,21 @@ import SessionContext from 'auth/SessionContext'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
-import './Signs.css'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import { SignQuery } from 'signs/domain/Sign'
 import _ from 'lodash'
 
+function parseQuery(value: string | null | string[]): string | undefined {
+  if (typeof value === 'string' && value !== '') {
+    return value
+  } else {
+    return undefined
+  }
+}
+
 export default function Signs({ location, signsService }): JSX.Element {
   const query = parse(location.search)
-  function parseQuery(value: string | null | string[]): string | undefined {
-    if (typeof value === 'string' && value !== '') {
-      return value
-    } else {
-      return undefined
-    }
-  }
+
   const signQuery: SignQuery = {
     value: parseQuery(query.value),
     subIndex: query.subIndex ? parseInt(query.subIndex as string) : undefined,
@@ -36,13 +37,11 @@ export default function Signs({ location, signsService }): JSX.Element {
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
             <>
-              <div className="Signs-search">
-                <SignsSearchForm
-                  sign={parseQuery(query.sign)}
-                  signQuery={signQuery}
-                  key={`${_.uniqueId('signs')}-${signQuery.value}`}
-                />
-              </div>
+              <SignsSearchForm
+                sign={parseQuery(query.sign)}
+                signQuery={signQuery}
+                key={`${_.uniqueId('signs')}-${signQuery.value}`}
+              />
               <SignsSearch signQuery={signQuery} signsService={signsService} />
             </>
           ) : (

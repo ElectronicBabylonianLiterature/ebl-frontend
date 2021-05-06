@@ -9,6 +9,7 @@ import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
 import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap'
 import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
+import './Signs.css'
 
 interface Props {
   signs: Sign[]
@@ -26,69 +27,72 @@ function signsSorted(signs: Sign[]): Sign[] {
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
   const signsNew = isIncludeHomophones ? signsSorted(signs) : signs
-
   return (
     <ul className="WordSearch-results">
-      {signsNew.map((sign) => (
+      {signsNew.map((sign, index) => (
         <li key={sign.name} className="WordSearch-results__result">
-          <SignComponent sign={sign} />
+          <SignComponent key={index} sign={sign} />
         </li>
       ))}
     </ul>
   )
 }
-
-function SignComponent({ sign }: { sign: Sign }): JSX.Element {
+function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
       <Popover.Content>
-        <div dangerouslySetInnerHTML={{ __html: sign.mesZl! }} />
+        <div dangerouslySetInnerHTML={{ __html: mesZl }} />
       </Popover.Content>
     </Popover>
   )
-
   return (
-    <Row>
-      <Col style={{ maxWidth: '190px' }}>
-        <Row>
-          <Col xs={4}>
-            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              <span className="cuneiformFont">
-                {sign.displayCuneiformSigns}
-              </span>
-            </Link>
-          </Col>
-          <Col xs={8} className="pr-0 mr-0">
-            <dfn title={sign.name}>
-              <strong>
-                {' '}
-                <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-                  {sign.displaySignName}
-                </Link>
-              </strong>
-            </dfn>
-          </Col>
-        </Row>
-      </Col>
-      <Col>
-        {sign.values.length > 0 ? (
-          <InlineMarkdown source={sign.displayValues} />
-        ) : null}
-        {sign.mesZl && (
-          <>
-            &nbsp;&mdash;&nbsp;
-            <OverlayTrigger
-              rootClose
-              overlay={popover}
-              trigger={['hover']}
-              placement="right"
-            >
-              <span className="ReferenceList__citation">MesZl</span>
-            </OverlayTrigger>
-          </>
-        )}
-      </Col>
-    </Row>
+    <>
+      &nbsp;&mdash;&nbsp;
+      <OverlayTrigger
+        rootClose
+        overlay={popover}
+        trigger={['hover']}
+        placement="right"
+      >
+        <span className="ReferenceList__citation">MesZl</span>
+      </OverlayTrigger>
+    </>
+  )
+}
+
+function SignComponent({ sign }: { sign: Sign }): JSX.Element {
+  return (
+    <div className="Signs-search">
+      <Row>
+        <Col style={{ maxWidth: '190px' }}>
+          <Row>
+            <Col xs={4}>
+              <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+                <span className="cuneiformFont">
+                  {sign.displayCuneiformSigns}
+                </span>
+              </Link>
+            </Col>
+            <Col xs={8} className="pr-0 mr-0">
+              <dfn title={sign.name}>
+                <strong>
+                  {' '}
+                  <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+                    {sign.displaySignName}
+                  </Link>
+                </strong>
+              </dfn>
+            </Col>
+          </Row>
+        </Col>
+        <Col>
+          {sign.values.length > 0 ? (
+            <InlineMarkdown source={sign.displayValues} />
+          ) : null}
+          {sign.mesZl && <MesZL mesZl={sign.mesZl} />}
+        </Col>
+      </Row>
+    </div>
   )
 }
 
