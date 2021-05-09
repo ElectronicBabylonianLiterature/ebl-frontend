@@ -30,12 +30,11 @@ describe('Searching for word', () => {
   })
 
   it('displays result on successfull query', async () => {
-    const value = signs[1].values[0].value
+    const value = signs[1].values[0]
     await renderSigns(`/signs?sign=${value}&subIndex=1&value=${value}`)
-    expect(screen.getByText(value)).toBeInTheDocument()
-    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      value
-    )
+    expect(
+      screen.getAllByText(new RegExp(`${value.value}~${value.subIndex}`))[0]
+    ).toBeInTheDocument()
   })
   it('displays empty search if no query', async () => {
     await renderSigns('/signs')

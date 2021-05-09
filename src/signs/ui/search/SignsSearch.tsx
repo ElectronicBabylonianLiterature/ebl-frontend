@@ -30,8 +30,8 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
-        <li key={sign.name} className="WordSearch-results__result">
-          <SignComponent key={index} sign={sign} />
+        <li key={index} className="WordSearch-results__result">
+          <SignComponent sign={sign} />
         </li>
       ))}
     </ul>
@@ -51,7 +51,7 @@ function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
       <OverlayTrigger
         rootClose
         overlay={popover}
-        trigger={['hover']}
+        trigger={['hover', 'focus']}
         placement="right"
       >
         <span className="ReferenceList__citation">MesZl</span>
@@ -97,13 +97,13 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
 }
 
 export default withData<
-  any,
-  { signQuery: SignQuery; signsService: SignsService },
-  readonly Sign[]
+  { signQuery: SignQuery },
+  { signsService: SignsService },
+  Sign[]
 >(
   ({ data, signQuery }) => (
     <SignsSearch
-      isIncludeHomophones={signQuery.isIncludeHomophones}
+      isIncludeHomophones={signQuery.isIncludeHomophones || false}
       signs={data}
     />
   ),

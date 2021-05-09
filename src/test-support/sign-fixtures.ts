@@ -1,4 +1,4 @@
-import Sign from 'signs/domain/Sign'
+import Sign, { Value } from 'signs/domain/Sign'
 import { factory } from 'factory-girl'
 
 factory.define('sign', Sign, {
@@ -10,24 +10,7 @@ factory.define('sign', Sign, {
       { name: 'LAK', number: '752' },
     ],
   ]),
-  values: factory.chance('pickone', [
-    [
-      {
-        value: 'ba',
-        subIndex: 15,
-      },
-      {
-        value: 'bar',
-        subIndex: 1,
-      },
-    ],
-    [
-      {
-        value: 'war',
-        subIndex: 1,
-      },
-    ],
-  ]),
+  values: factory.chance('pickone', [[new Value('war', 1)]]),
   unicode: factory.chance('pickone', [[73799], [74848, 73849]]),
   logograms: [
     {

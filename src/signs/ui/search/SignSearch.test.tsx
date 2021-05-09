@@ -11,6 +11,7 @@ import { factory } from 'factory-girl'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
 import SignsService from 'signs/application/SignsService'
+import Bluebird from 'bluebird'
 
 jest.mock('signs/application/SignsService')
 
@@ -18,6 +19,7 @@ let signs: Sign[]
 const signsService = new (SignsService as jest.Mock<
   jest.Mocked<SignsService>
 >)()
+
 const query = {
   value: 'bu',
   subIndex: 1,
@@ -29,7 +31,7 @@ const query = {
 async function renderSignSearch(): Promise<void> {
   render(
     <MemoryRouter>
-      <SignsSearch signQuery={query} signService={signsService} />
+      <SignsSearch signQuery={query} signsService={signsService} />
     </MemoryRouter>
   )
   await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
@@ -38,10 +40,8 @@ async function renderSignSearch(): Promise<void> {
 describe('Display Search Results', () => {
   beforeEach(async () => {
     signs = await factory.buildMany('sign', 2)
-    signsService.search.mockReturnValue(Promise.resolve(signs))
+    signsService.search.mockReturnValue(Bluebird.resolve(signs))
     await renderSignSearch()
-  })
-  it('Searches with the query', () => {
     expect(signsService.search).toBeCalledWith(query)
   })
   it('Displays results', async () => {

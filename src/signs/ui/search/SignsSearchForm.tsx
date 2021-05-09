@@ -175,7 +175,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
                 }))
               }}
             >
-              <option selected />
+              <option defaultValue={''} />
               <option>MZL</option>
               <option>ŠL/MÉA = SLLHA</option>
               <option>ABZ</option>

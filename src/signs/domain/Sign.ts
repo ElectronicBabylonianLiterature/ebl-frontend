@@ -106,7 +106,7 @@ export default class Sign {
     return this.unicode.map((unicode) => String.fromCodePoint(unicode)).join('')
   }
   get displaySignName(): string {
-    return this.name.replaceAll('|', '')
+    return this.name.replace(/\|/g, '')
   }
 
   static fromJson(signJSON: SignDto): Sign {
