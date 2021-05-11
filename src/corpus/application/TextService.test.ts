@@ -3,7 +3,12 @@ import { testDelegation, TestData } from 'test-support/utils'
 import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
-import { text, textDto } from 'test-support/test-corpus-text'
+import {
+  chapter,
+  text,
+  chapterDto,
+  textDto,
+} from 'test-support/test-corpus-text'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
@@ -169,35 +174,29 @@ const linesDto = {
   ],
 }
 
-const textsDto = [
-  {
-    category: 1,
-    index: 1,
-    name: 'Palm and Vine',
-    numberOfVerses: 10,
-    approximateVerses: true,
-  },
-]
+const textsDto = [textDto]
 
 const searchDto = {
   id: {
-    category: 1,
-    index: 2,
-  },
-  matchingChapters: [
-    {
-      id: {
-        stage: 'Old Babyblonian',
-        name: 'My Chapter',
-      },
-      siglums: { '1': 'NinSchb' },
-      matchingLines: textDto.chapters[0].lines,
-      matchingColophonLines: {
-        '1': ['1. kur'],
-      },
+    textId: {
+      category: 1,
+      index: 2,
     },
-  ],
+    stage: 'Old Babyblonian',
+    name: 'My Chapter',
+  },
+  siglums: { '1': 'NinSchb' },
+  matchingLines: chapterDto.lines,
+  matchingColophonLines: {
+    '1': ['1. kur'],
+  },
 }
+
+const chapterUrl = `/texts/${encodeURIComponent(
+  chapter.textId.category
+)}/${encodeURIComponent(chapter.textId.index)}/chapters/${encodeURIComponent(
+  chapter.stage
+)}/${encodeURIComponent(chapter.name)}`
 
 const testData: TestData[] = [
   [
@@ -227,9 +226,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     [
       produce(searchDto, (draft: any) => {
-        draft.matchingChapters[0].matchingLines = castDraft(
-          text.chapters[0].lines
-        )
+        draft.matchingLines = castDraft(chapter.lines)
       }),
     ],
     ['/textsearch?transliteration=kur', true],
@@ -237,74 +234,74 @@ const testData: TestData[] = [
   ],
   [
     'updateAlignment',
-    [text.category, text.index, 0, text.chapters[0].alignment],
-    apiClient.postJson,
-    text,
     [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}/chapters/0/alignment`,
-      alignmentDto,
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name,
+      chapter.alignment,
     ],
-    Bluebird.resolve(textDto),
+    apiClient.postJson,
+    chapter,
+    [`${chapterUrl}/alignment`, alignmentDto],
+    Bluebird.resolve(chapterDto),
   ],
   [
     'updateLemmatization',
-    [text.category, text.index, 0, lemmatization],
-    apiClient.postJson,
-    text,
     [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}/chapters/0/lemmatization`,
-      lemmatizationDto,
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name,
+      lemmatization,
     ],
-    Bluebird.resolve(textDto),
+    apiClient.postJson,
+    chapter,
+    [`${chapterUrl}/lemmatization`, lemmatizationDto],
+    Bluebird.resolve(chapterDto),
   ],
   [
     'updateManuscripts',
     [
-      text.category,
-      text.index,
-      0,
-      text.chapters[0].manuscripts,
-      text.chapters[0].uncertainFragments,
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name,
+      chapter.manuscripts,
+      chapter.uncertainFragments,
     ],
     apiClient.postJson,
-    text,
-    [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}/chapters/0/manuscripts`,
-      manuscriptsDto,
-    ],
-    Bluebird.resolve(textDto),
+    chapter,
+    [`${chapterUrl}/manuscripts`, manuscriptsDto],
+    Bluebird.resolve(chapterDto),
   ],
   [
     'updateLines',
-    [text.category, text.index, 0, text.chapters[0].lines],
-    apiClient.postJson,
-    text,
     [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}/chapters/0/lines`,
-      linesDto,
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name,
+      chapter.lines,
     ],
-    Bluebird.resolve(textDto),
+    apiClient.postJson,
+    chapter,
+    [`${chapterUrl}/lines`, linesDto],
+    Bluebird.resolve(chapterDto),
   ],
   [
     'importChapter',
-    [text.category, text.index, 0, '1. kur'],
-    apiClient.postJson,
-    text,
     [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}/chapters/0/import`,
-      { atf: '1. kur' },
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name,
+      '1. kur',
     ],
-    Bluebird.resolve(textDto),
+    apiClient.postJson,
+    chapter,
+    [`${chapterUrl}/import`, { atf: '1. kur' }],
+    Bluebird.resolve(chapterDto),
   ],
 ]
 
@@ -313,7 +310,7 @@ describe('TextService', () => testDelegation(testService, testData))
 test('findSuggestions', async () => {
   wordServiceMock.find.mockReturnValue(Bluebird.resolve(word))
   fragmentServiceMock.findSuggestions.mockReturnValue(Bluebird.resolve([]))
-  await expect(testService.findSuggestions(text.chapters[0])).resolves.toEqual(
+  await expect(testService.findSuggestions(chapter)).resolves.toEqual(
     lemmatization
   )
 })

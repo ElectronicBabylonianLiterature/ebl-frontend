@@ -69,6 +69,7 @@ export class Chapter {
   readonly [immerable] = true
 
   constructor(
+    readonly textId: { readonly category: number; readonly index: number },
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -101,6 +102,7 @@ export class Chapter {
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
+    data.textId ?? { category: 0, index: 0 },
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',
@@ -121,20 +123,14 @@ export interface TextInfo {
 }
 
 export class Text implements TextInfo {
+  readonly [immerable] = true
   category = 0
   index = 0
   name = ''
   numberOfVerses = 0
   approximateVerses = false
-  chapters: ReadonlyArray<Chapter> = []
-
-  findChapterIndex(stage: string, name: string): number {
-    return this.chapters.findIndex(
-      (chapter) => chapter.stage === stage && chapter.name === name
-    )
-  }
+  chapters: ReadonlyArray<{ name: string; stage: string }> = []
 }
-Text[immerable] = true
 
 export function createText(data: Partial<Text>): Text {
   return produce(new Text(), (draft: Draft<Text>) => {

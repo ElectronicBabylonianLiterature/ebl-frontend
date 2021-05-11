@@ -6,14 +6,47 @@ import withData from 'http/withData'
 import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
-import TransliterationSearchResult, {
-  ChapterInfo,
-} from 'corpus/domain/TransliterationSearchResult'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 
-function Lines({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
+const defaultName = '-'
+
+function TextId({
+  searchResult: {
+    id: { textId },
+  },
+}: {
+  searchResult: TransliterationSearchResult
+}): JSX.Element {
   return (
     <>
-      {chapterInfo.matchingLines.map((line: Line, index: number) => (
+      {textId.category && numberToRoman(textId.category)}.{textId.index}
+    </>
+  )
+}
+
+function ChapterLink({
+  searchResult: {
+    id: { textId, stage, name },
+  },
+}: {
+  searchResult: TransliterationSearchResult
+}): JSX.Element {
+  return (
+    <Link to={`/corpus/${textId.category}/${textId.index}/${stage}/${name}`}>
+      {stage}
+      {name !== defaultName && ` ${name}`}
+    </Link>
+  )
+}
+
+function Lines({
+  searchResult: { matchingLines, siglums },
+}: {
+  searchResult: TransliterationSearchResult
+}): JSX.Element {
+  return (
+    <>
+      {matchingLines.map((line: Line, index: number) => (
         <p key={index}>
           {line.variants.map((variant, index) => (
             <Fragment key={index}>
@@ -22,7 +55,7 @@ function Lines({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
               {variant.manuscripts.map((manuscript, index) => (
                 <Fragment key={index}>
                   <br />
-                  {chapterInfo.siglums[String(manuscript.manuscriptId)]}{' '}
+                  {siglums[String(manuscript.manuscriptId)]}{' '}
                   {manuscript.labels.join(' ')} {manuscript.number}.{' '}
                   {manuscript.atf}
                 </Fragment>
@@ -35,30 +68,31 @@ function Lines({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
   )
 }
 
-function Colophons({ chapterInfo }: { chapterInfo: ChapterInfo }): JSX.Element {
+function Colophons({
+  searchResult: { matchingColophonLines, siglums },
+}: {
+  searchResult: TransliterationSearchResult
+}): JSX.Element {
   return (
     <>
-      {_.map(
-        chapterInfo.matchingColophonLines,
-        (lines: string[], manuscriptId: string) => (
-          <p key={manuscriptId}>
-            {lines.map((line, index) => (
-              <Fragment key={index}>
-                {index > 0 && <br />}
-                {chapterInfo.siglums[manuscriptId]} {line}
-              </Fragment>
-            ))}
-          </p>
-        )
-      )}
+      {_.map(matchingColophonLines, (lines: string[], manuscriptId: string) => (
+        <p key={manuscriptId}>
+          {lines.map((line, index) => (
+            <Fragment key={index}>
+              {index > 0 && <br />}
+              {siglums[manuscriptId]} {line}
+            </Fragment>
+          ))}
+        </p>
+      ))}
     </>
   )
 }
 
 function TransliterationSearch({
-  textInfos,
+  results,
 }: {
-  textInfos: readonly TransliterationSearchResult[]
+  results: readonly TransliterationSearchResult[]
 }): JSX.Element {
   return (
     <Table responsive>
@@ -70,28 +104,20 @@ function TransliterationSearch({
         </tr>
       </thead>
       <tbody>
-        {textInfos.flatMap((textInfo) =>
-          textInfo.matchingChapters.map((chapterInfo, index: number) => (
-            <tr key={index}>
-              <td>
-                {textInfo.id.category && numberToRoman(textInfo.id.category)}.
-                {textInfo.id.index}
-              </td>
-              <td>
-                <Link
-                  to={`/corpus/${textInfo.id.category}/${textInfo.id.index}/${chapterInfo.id.stage}/${chapterInfo.id.name}`}
-                >
-                  {chapterInfo.id.stage}
-                  {chapterInfo.id.name !== '-' && ` ${chapterInfo.id.name}`}
-                </Link>
-              </td>
-              <td>
-                <Lines chapterInfo={chapterInfo} />
-                <Colophons chapterInfo={chapterInfo} />
-              </td>
-            </tr>
-          ))
-        )}
+        {results.map((searchResult, index: number) => (
+          <tr key={index}>
+            <td>
+              <TextId searchResult={searchResult} />
+            </td>
+            <td>
+              <ChapterLink searchResult={searchResult} />
+            </td>
+            <td>
+              <Lines searchResult={searchResult} />
+              <Colophons searchResult={searchResult} />
+            </td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   )
@@ -103,7 +129,7 @@ export default withData<
   readonly TransliterationSearchResult[]
 >(
   ({ transliteration, data }) =>
-    transliteration ? <TransliterationSearch textInfos={data} /> : null,
+    transliteration ? <TransliterationSearch results={data} /> : null,
   (props) =>
     props.textService.searchTransliteration(props.transliteration ?? ''),
   {

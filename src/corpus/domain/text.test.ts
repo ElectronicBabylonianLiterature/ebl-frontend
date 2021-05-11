@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { text } from 'test-support/test-corpus-text'
+import { chapter } from 'test-support/test-corpus-text'
 import { ChapterAlignment } from './alignment'
 import {
   createLine,
@@ -121,11 +121,13 @@ const lineConfig: Line = {
   isBeginningOfSection: true,
 }
 
+const stage = 'Old Babylonian'
+const name = 'III'
 const chapterConfig: Partial<Chapter> = {
   classification: 'Ancient',
-  stage: 'Old Babylonian',
+  stage: stage,
   version: 'A',
-  name: 'III',
+  name: name,
   order: -1,
   manuscripts: [createManuscript(manuscriptConfig)],
   uncertainFragments: ['K.1'],
@@ -138,7 +140,7 @@ const textConfig: Partial<Text> = {
   name: 'Palm and Vine',
   numberOfVerses: 930,
   approximateVerses: true,
-  chapters: [createChapter(chapterConfig)],
+  chapters: [{ stage: stage, name: name }],
 }
 
 describe('Text', () => {
@@ -149,7 +151,7 @@ describe('Chapter', () => {
   testProperties(chapterConfig, createChapter)
 
   test('alignment', () => {
-    expect(text.chapters[0].alignment).toEqual(
+    expect(chapter.alignment).toEqual(
       new ChapterAlignment([
         [
           [
