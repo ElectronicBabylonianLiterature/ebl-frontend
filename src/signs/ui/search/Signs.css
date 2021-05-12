@@ -4,15 +4,15 @@
 }
 
 @font-face {
-  font-family: 'Assurbanipal';
-  src: url('Assurbanipal.woff2') format('woff2'),
-    url('Assurbanipal.woff') format('woff'),
-    url('Assurbanipal.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
   font-display: swap;
+  font-family: 'Assurbanipal';
+  font-style: normal;
+  font-weight: normal;
+  src: url('Assurbanipal.woff') format('woff'),
+    url('Assurbanipal.woff2') format('woff2'),
+    url('Assurbanipal.ttf') format('truetype');
 }
 
 .cuneiformFont {
-  font-family: 'Assurbanipal', 'Junicode';
+  font-family: 'Assurbanipal', inherit;
 }

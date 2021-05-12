@@ -57,3 +57,9 @@ export default function compareAkkadianStrings(
       .head() ?? Math.sign(replacedWord.length - anotherWordReplaced.length)
   )
 }
+export function cleanAkkadianString(akkadianString: string): string {
+  return akkadianString
+    .split('')
+    .map((signChar) => (alphabet.indexOf(signChar) > 0 ? signChar : ''))
+    .join('')
+}

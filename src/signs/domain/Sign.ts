@@ -1,6 +1,7 @@
 import produce, { immerable } from 'immer'
-import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
-import alphabet from 'dictionary/domain/alphabet.json'
+import compareAkkadianStrings, {
+  cleanAkkadianString,
+} from 'dictionary/domain/compareAkkadianStrings'
 
 interface Logogram {
   logogram: string
@@ -79,19 +80,12 @@ export default class Sign {
     this.unicode = unicode
   }
 
-  static cleanAkkadianString(akkadianString: string): string {
-    return akkadianString
-      .split('')
-      .map((signChar) => (alphabet.indexOf(signChar) > 0 ? signChar : ''))
-      .join('')
-  }
-
   private sortedValues(): Value[] {
     return produce(this.values, (draftValues) => {
       return draftValues.sort((value1, value2) => {
         return compareAkkadianStrings(
-          Sign.cleanAkkadianString(value1.value),
-          Sign.cleanAkkadianString(value2.value)
+          cleanAkkadianString(value1.value),
+          cleanAkkadianString(value2.value)
         )
       })
     })
@@ -109,12 +103,16 @@ export default class Sign {
     return this.name.replace(/\|/g, '')
   }
 
-  static fromJson(signJSON: SignDto): Sign {
-    const sign = produce(signJSON, (draftSignDto) => {
+  static fromJavascriptObject(signJavascriptObject: SignDto): Sign {
+    const sign = produce(signJavascriptObject, (draftSignDto) => {
       draftSignDto.values = draftSignDto.values.map(
         (value) => new Value(value.value, value.subIndex)
       )
-    }) as Sign
+    }) as SignDtoWithValues
     return new Sign(sign)
   }
+}
+
+interface SignDtoWithValues extends Omit<SignDto, 'values'> {
+  values: readonly Value[]
 }

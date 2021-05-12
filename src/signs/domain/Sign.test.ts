@@ -22,7 +22,7 @@ const sign = new Sign({
 })
 describe('Sign', () => {
   test('from Json', () => {
-    expect(Sign.fromJson(signDto)).toEqual(sign)
+    expect(Sign.fromJavascriptObject(signDto)).toEqual(sign)
   })
   test('sort Values', () => {
     expect(sign.displayValues).toEqual('du~1~, dul~10~, gabu~x~')

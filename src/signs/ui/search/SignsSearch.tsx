@@ -62,37 +62,35 @@ function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
 
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   return (
-    <div className="Signs-search">
-      <Row>
-        <Col style={{ maxWidth: '190px' }}>
-          <Row>
-            <Col xs={4}>
-              <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-                <span className="cuneiformFont">
-                  {sign.displayCuneiformSigns}
-                </span>
-              </Link>
-            </Col>
-            <Col xs={8} className="pr-0 mr-0">
-              <dfn title={sign.name}>
-                <strong>
-                  {' '}
-                  <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-                    {sign.displaySignName}
-                  </Link>
-                </strong>
-              </dfn>
-            </Col>
-          </Row>
-        </Col>
-        <Col>
-          {sign.values.length > 0 ? (
-            <InlineMarkdown source={sign.displayValues} />
-          ) : null}
-          {sign.mesZl && <MesZL mesZl={sign.mesZl} />}
-        </Col>
-      </Row>
-    </div>
+    <Row>
+      <Col style={{ maxWidth: '190px' }}>
+        <Row>
+          <Col xs={4}>
+            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+              <span className="cuneiformFont">
+                {sign.displayCuneiformSigns}
+              </span>
+            </Link>
+          </Col>
+          <Col xs={8} className="pr-0 mr-0">
+            <dfn title={sign.name}>
+              <strong>
+                {' '}
+                <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+                  {sign.displaySignName}
+                </Link>
+              </strong>
+            </dfn>
+          </Col>
+        </Row>
+      </Col>
+      <Col>
+        {sign.values.length > 0 ? (
+          <InlineMarkdown source={sign.displayValues} />
+        ) : null}
+        {sign.mesZl && <MesZL mesZl={sign.mesZl} />}
+      </Col>
+    </Row>
   )
 }
 

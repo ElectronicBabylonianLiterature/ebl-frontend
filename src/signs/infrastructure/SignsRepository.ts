@@ -13,7 +13,9 @@ class SignsRepository {
   search(signQuery: SignQuery): Promise<Sign[]> {
     return this.apiClient
       .fetchJson(`/signs?${stringify(signQuery)}`, true)
-      .then((signDtos) => signDtos.map((signDto) => Sign.fromJson(signDto)))
+      .then((signDtos) =>
+        signDtos.map((signDto) => Sign.fromJavascriptObject(signDto))
+      )
   }
 }
 
