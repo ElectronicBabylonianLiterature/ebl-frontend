@@ -16,3 +16,14 @@
 .cuneiformFont {
   font-family: 'Assurbanipal', inherit;
 }
+
+.Help__list-name {
+  max-width: 80px;
+}
+.Help__popover {
+  min-width: 600px;
+}
+
+.Results {
+  max-width: 190px;
+}

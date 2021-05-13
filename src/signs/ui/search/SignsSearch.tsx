@@ -65,7 +65,7 @@ function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   return (
     <Row>
-      <Col style={{ maxWidth: '190px' }}>
+      <Col className="Results">
         <Row>
           <Col xs={4}>
             <Link to={`/signs/${encodeURIComponent(sign.name)}`}>

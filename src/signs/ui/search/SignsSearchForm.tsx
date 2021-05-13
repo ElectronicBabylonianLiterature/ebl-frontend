@@ -13,12 +13,10 @@ interface Props extends RouteComponentProps {
 }
 
 function SignsSearchHelp(): JSX.Element {
-  const Section = ({ label, text }) => (
+  const Section = ({ label, text }: { label: string; text: string }) => (
     <li>
       <Row>
-        <Col style={{ maxWidth: '80px' }} className="pr-1 mr-0">
-          {label}
-        </Col>
+        <Col className="pr-1 mr-0 Help__list-name">{label}</Col>
         <Col xs="auto" className="pl-0 ml-0">
           =
         </Col>
@@ -57,7 +55,7 @@ function SignsSearchHelp(): JSX.Element {
     <Popover
       id={_.uniqueId('SignsSearchHelp-')}
       title="Search transliterations"
-      style={{ minWidth: '600px' }}
+      className="Help__popover"
     >
       <Popover.Content>
         <ul>

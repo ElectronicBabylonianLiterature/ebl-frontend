@@ -10,6 +10,8 @@ import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import { SignQuery } from 'signs/domain/Sign'
 import _ from 'lodash'
+import SignsService from 'signs/application/SignsService'
+import { RouteComponentProps } from 'react-router-dom'
 
 function parseQuery(value: string | null | string[]): string | undefined {
   if (typeof value === 'string' && value !== '') {
@@ -18,8 +20,11 @@ function parseQuery(value: string | null | string[]): string | undefined {
     return undefined
   }
 }
+type Props = {
+  signsService: SignsService
+} & RouteComponentProps
 
-export default function Signs({ location, signsService }): JSX.Element {
+export default function Signs({ location, signsService }: Props): JSX.Element {
   const query = parse(location.search)
 
   const signQuery: SignQuery = {

@@ -5,7 +5,7 @@ import SignsRepository from 'signs/infrastructure/SignsRepository'
 export default class SignsService {
   private readonly signsRepository: SignsRepository
 
-  constructor(signsRepository) {
+  constructor(signsRepository: SignsRepository) {
     this.signsRepository = signsRepository
   }
   search(signQuery: SignQuery): Promise<Sign[]> {
