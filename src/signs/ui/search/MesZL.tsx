@@ -9,7 +9,6 @@ export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
     .replaceAll('\n', '  \n')
     .replaceAll('[', '\\[')
     .replaceAll(']', '\\]')
-
   const popover = (
     <Popover
       id={_.uniqueId('Citation-')}
@@ -17,10 +16,10 @@ export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
     >
       <Popover.Content>
         <Markdown
-          className={'text-center MesZL'}
+          className={'text-justify MesZL'}
           paragraph={'p'}
           text={mesZlFormatted}
-          skipHtml={false}
+          skipHtml={true}
         />
       </Popover.Content>
     </Popover>

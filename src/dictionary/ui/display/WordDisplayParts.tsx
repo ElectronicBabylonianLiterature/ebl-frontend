@@ -113,7 +113,7 @@ type MarkdownProps = {
 export function Markdown({
   text,
   paragraph = 'span',
-  skipHtml = true,
+  skipHtml = false,
   className = '',
 }: MarkdownProps): JSX.Element {
   return (
