@@ -8,7 +8,9 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
 import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap'
-import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
+import compareAkkadianStrings, {
+  cleanAkkadianString,
+} from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.css'
 
 interface Props {
@@ -16,17 +18,17 @@ interface Props {
   isIncludeHomophones: boolean
 }
 
-function signsSorted(signs: Sign[]): Sign[] {
+function sortSigns(signs: Sign[]): Sign[] {
   return signs.sort((sign1, sign2) => {
     return compareAkkadianStrings(
-      Sign.cleanAkkadianString(sign1.name),
-      Sign.cleanAkkadianString(sign2.name)
+      cleanAkkadianString(sign1.name),
+      cleanAkkadianString(sign2.name)
     )
   })
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  const signsNew = isIncludeHomophones ? signsSorted(signs) : signs
+  const signsNew = isIncludeHomophones ? sortSigns(signs) : signs
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (

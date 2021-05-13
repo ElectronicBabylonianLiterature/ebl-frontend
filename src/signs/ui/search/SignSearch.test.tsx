@@ -45,6 +45,6 @@ describe('Display Search Results', () => {
     expect(signsService.search).toBeCalledWith(query)
   })
   it('Displays results', async () => {
-    expect(screen.getByText(signs[1].name)).toBeInTheDocument()
+    expect(screen.getByText(new RegExp(signs[1].name))).toBeInTheDocument()
   })
 })

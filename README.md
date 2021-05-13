@@ -82,3 +82,5 @@ yarn lighthouse <url>
 ## Acknowledgements
 
 [Junicode](http://junicode.sourceforge.net/) webfont by [psb1558](http://sourceforge.net/users/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](http://sourceforge.net/projects/junicode/?source=typ_redirect).
+
+[Assurbanipal](https://www.hethport.uni-wuerzburg.de/cuneifont//) webfont by [Sylvie Vanséveren](https://www.hethport.uni-wuerzburg.de/cuneifont/) is freely available for the scientific community. You can get the full distribution from [Assurbanipal download page](https://www.hethport.uni-wuerzburg.de/cuneifont/).

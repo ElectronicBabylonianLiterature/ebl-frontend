@@ -16,37 +16,40 @@ function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }) => (
     <li>
       <Row>
-        <Col xs={2} className="pr-1">
+        <Col style={{ maxWidth: '80px' }} className="pr-1 mr-0">
           {label}
+        </Col>
+        <Col xs="auto" className="pl-0 ml-0">
+          =
         </Col>
         <Col className="pl-0">{text}</Col>
       </Row>
     </li>
   )
   const signsSearchHelpList = [
-    ['MZL =', 'R. Borger, *Mesopotamisches Zeichenlexikon* (Münster, ²2010).'],
+    ['MZL', 'R. Borger, *Mesopotamisches Zeichenlexikon* (Münster, ²2010).'],
     [
-      'ŠL/MÉA =',
+      'ŠL/MÉA',
       'A. Deimel, *Šumerisches Lexikon* (Rom, 1925/1950) / R. Labat, *Manuel d’épigraphie akkadienne* (Paris, ⁶1988).',
     ],
     [
-      'ABZ =',
+      'ABZ',
       'R. Borger, *Assyrisch-babylonische Zeichenliste* (Neukirchen-Vluyn, ⁴1988).',
     ],
     [
-      'OBZL =',
+      'OBZL',
       'C. Mittermayer, *Altbabylonische Zeichenliste der sumerisch-literarischen Texte* (Göttingen, 2006).',
     ],
     [
-      'KWU =',
+      'KWU',
       'N. Schneider, *Die Keilschriftzeichen der Wirtschaftsurkunden von Ur III* (Rom, 1935).',
     ],
     [
-      'LAK =',
+      'LAK',
       'A. Deimel, *Liste der archaischen Keilschriftzeichen* (Leipzig, 1922).',
     ],
     [
-      'HZL =',
+      'HZL',
       'Ch. Rüster; E. Neu, *Hethitisches Zeichenlexikon* (Wiesbaden, 1989).',
     ],
   ]
