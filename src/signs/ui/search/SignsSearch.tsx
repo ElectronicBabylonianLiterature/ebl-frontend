@@ -42,7 +42,6 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
 }
 
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
-  console.log(sign)
   return (
     <Row>
       <Col className="Results">
