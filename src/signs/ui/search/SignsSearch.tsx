@@ -7,11 +7,12 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import compareAkkadianStrings, {
   cleanAkkadianString,
 } from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.css'
+import MesZL from 'signs/ui/search/MesZL'
 
 interface Props {
   signs: Sign[]
@@ -39,28 +40,6 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
     </ul>
   )
 }
-function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
-  const popover = (
-    <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
-      <Popover.Content>
-        <div dangerouslySetInnerHTML={{ __html: mesZl }} />
-      </Popover.Content>
-    </Popover>
-  )
-  return (
-    <>
-      &nbsp;&mdash;&nbsp;
-      <OverlayTrigger
-        rootClose
-        overlay={popover}
-        trigger={['hover', 'focus']}
-        placement="right"
-      >
-        <span className="ReferenceList__citation">MesZl</span>
-      </OverlayTrigger>
-    </>
-  )
-}
 
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   return (
@@ -69,13 +48,13 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         <Row>
           <Col xs={4}>
             <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              <span className="cuneiformFont">
+              <span className="CuneiformFont">
                 {sign.displayCuneiformSigns}
               </span>
             </Link>
           </Col>
           <Col xs={8} className="pr-0 mr-0">
-            <dfn title={sign.name}>
+            <dfn title={sign.name} className="SignName">
               <strong>
                 {' '}
                 <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
@@ -88,7 +67,7 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
       </Col>
       <Col>
         {sign.values.length > 0 ? (
-          <InlineMarkdown source={sign.displayValues} />
+          <InlineMarkdown source={sign.displayValuesMarkdown} />
         ) : null}
         {sign.mesZl && <MesZL mesZl={sign.mesZl} />}
       </Col>

@@ -25,7 +25,7 @@ describe('Sign', () => {
     expect(Sign.fromJavascriptObject(signDto)).toEqual(sign)
   })
   test('sort Values', () => {
-    expect(sign.displayValues).toEqual('du~1~, dul~10~, gabu~x~')
+    expect(sign.displayValuesMarkdown).toEqual('*du*, *dul*~10~, *gabu*~x~')
   })
   test('cuneiform signs', () => {
     expect(sign.displayCuneiformSigns).toEqual('𒆏𒁍')

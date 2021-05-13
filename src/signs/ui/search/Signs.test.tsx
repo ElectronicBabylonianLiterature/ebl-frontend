@@ -35,7 +35,7 @@ describe('Searching for word', () => {
       `/signs?sign=${value.value}&subIndex=1&value=${value.value}`
     )
     expect(
-      screen.getAllByText(new RegExp(`${value.value}~${value.subIndex}`))[0]
+      screen.getAllByText(new RegExp(`${value.value}`))[0]
     ).toBeInTheDocument()
     expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
       value.value

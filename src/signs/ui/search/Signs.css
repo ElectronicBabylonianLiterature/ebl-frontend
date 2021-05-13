@@ -13,8 +13,12 @@
     url('Assurbanipal.ttf') format('truetype');
 }
 
-.cuneiformFont {
+.CuneiformFont {
   font-family: 'Assurbanipal', inherit;
+}
+.SignName {
+  font-style: normal;
+  text-transform: lowercase;
 }
 
 .Help__list-name {

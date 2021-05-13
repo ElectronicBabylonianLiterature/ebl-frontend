@@ -40,10 +40,13 @@ export class Value {
     this.subIndex = subIndex
   }
   get displaySubIndex(): string {
-    if (this.subIndex === undefined) {
-      return '~x~'
-    } else {
-      return `~${this.subIndex}~`
+    switch (this.subIndex) {
+      case undefined:
+        return '~x~'
+      case 1:
+        return ''
+      default:
+        return `~${this.subIndex}~`
     }
   }
 }
@@ -90,9 +93,9 @@ export default class Sign {
       })
     })
   }
-  get displayValues(): string {
+  get displayValuesMarkdown(): string {
     return this.sortedValues()
-      .map((value) => `${value.value}${value.displaySubIndex}`)
+      .map((value) => `*${value.value}*${value.displaySubIndex}`)
       .join(', ')
   }
 
