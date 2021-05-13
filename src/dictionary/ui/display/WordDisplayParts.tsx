@@ -107,15 +107,21 @@ export function Logogram({
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
+  skipHtml?: boolean
+  className?: string
 }
 export function Markdown({
   text,
   paragraph = 'span',
+  skipHtml = true,
+  className = '',
 }: MarkdownProps): JSX.Element {
   return (
     <ReactMarkdown
+      className={className}
       source={replaceByCurlyQuotes(text)}
       plugins={[remarkSubSuper]}
+      skipHtml={skipHtml}
       renderers={{
         paragraph: paragraph,
         sub: 'sub',

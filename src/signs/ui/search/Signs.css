@@ -13,6 +13,14 @@
     url('Assurbanipal.ttf') format('truetype');
 }
 
+.MesZL--text {
+  line-height: 180%;
+}
+
+.MesZL--popover {
+  min-width: 40%;
+}
+
 .CuneiformFont {
   font-family: 'Assurbanipal', monospace;
 }
