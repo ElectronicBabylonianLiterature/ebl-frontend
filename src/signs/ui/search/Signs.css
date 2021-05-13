@@ -14,7 +14,7 @@
 }
 
 .CuneiformFont {
-  font-family: 'Assurbanipal', inherit;
+  font-family: 'Assurbanipal', monospace;
 }
 .SignName {
   font-style: normal;

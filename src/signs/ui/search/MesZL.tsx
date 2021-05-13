@@ -1,12 +1,17 @@
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
+import './Signs.css'
+import ReactMarkdown from 'react-markdown'
 
 export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
   const popover = (
     <Popover id={_.uniqueId('Citation-')} className="ReferenceList__popover">
       <Popover.Content>
-        <div dangerouslySetInnerHTML={{ __html: mesZl }} />
+        <ReactMarkdown
+          className="CuneiformFont"
+          source={mesZl.replaceAll('\n', '  \n')}
+        />
       </Popover.Content>
     </Popover>
   )

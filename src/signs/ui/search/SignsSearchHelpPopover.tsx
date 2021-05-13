@@ -1,6 +1,7 @@
 import { Col, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
+import signSearchHelpList from './signSearchHelpList.json'
 
 export default function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }: { label: string; text: string }) => (
@@ -14,33 +15,6 @@ export default function SignsSearchHelp(): JSX.Element {
       </Row>
     </li>
   )
-  const signsSearchHelpList = [
-    ['MZL', 'R. Borger, *Mesopotamisches Zeichenlexikon* (Münster, ²2010).'],
-    [
-      'ŠL/MÉA',
-      'A. Deimel, *Šumerisches Lexikon* (Rom, 1925/1950) / R. Labat, *Manuel d’épigraphie akkadienne* (Paris, ⁶1988).',
-    ],
-    [
-      'ABZ',
-      'R. Borger, *Assyrisch-babylonische Zeichenliste* (Neukirchen-Vluyn, ⁴1988).',
-    ],
-    [
-      'OBZL',
-      'C. Mittermayer, *Altbabylonische Zeichenliste der sumerisch-literarischen Texte* (Göttingen, 2006).',
-    ],
-    [
-      'KWU',
-      'N. Schneider, *Die Keilschriftzeichen der Wirtschaftsurkunden von Ur III* (Rom, 1935).',
-    ],
-    [
-      'LAK',
-      'A. Deimel, *Liste der archaischen Keilschriftzeichen* (Leipzig, 1922).',
-    ],
-    [
-      'HZL',
-      'Ch. Rüster; E. Neu, *Hethitisches Zeichenlexikon* (Wiesbaden, 1989).',
-    ],
-  ]
   return (
     <Popover
       id={_.uniqueId('SignsSearchHelp-')}
@@ -49,7 +23,7 @@ export default function SignsSearchHelp(): JSX.Element {
     >
       <Popover.Content>
         <ul>
-          {signsSearchHelpList.map((help, index) => (
+          {signSearchHelpList.map((help, index) => (
             <Section key={index} label={help[0]} text={help[1]} />
           ))}
         </ul>
