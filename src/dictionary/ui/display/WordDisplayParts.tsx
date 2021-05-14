@@ -21,9 +21,8 @@ export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
       <Markdown
         text={lemma
           .map((lemmaElement) => `*${lemmaElement}*${attestedSign}`)
-          .join('; ')}
+          .join(' ')}
       />
-      &nbsp;
       {notes.length > 1 && (
         <>
           &nbsp;
