@@ -6,9 +6,9 @@ import { Markdown } from 'dictionary/ui/display/WordDisplayParts'
 
 export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
   const mesZlFormatted = mesZl
-    .replaceAll('\n', '  \n')
-    .replaceAll('[', '\\[')
-    .replaceAll(']', '\\]')
+    .replace(/\n/g, '  \n')
+    .replace(/\[/g, '\\[')
+    .replace(/]/g, '\\]')
   const popover = (
     <Popover
       id={_.uniqueId('Citation-')}
