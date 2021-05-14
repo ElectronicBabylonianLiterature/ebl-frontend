@@ -9,7 +9,8 @@ export default function SignsSearchHelp(): JSX.Element {
       <Row>
         <Col className="pr-1 mr-0 Help__list-name">{label}</Col>
         <Col xs="auto" className="pl-0 ml-0">
-          =
+          {' '}
+          ={' '}
         </Col>
         <Col className="pl-0">{text}</Col>
       </Row>
