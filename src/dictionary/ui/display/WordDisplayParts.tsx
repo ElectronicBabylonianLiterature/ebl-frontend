@@ -109,17 +109,19 @@ type MarkdownProps = {
   paragraph?: ElementType
   skipHtml?: boolean
   className?: string
+  isReplaceCurlyQuotes?: boolean
 }
 export function Markdown({
   text,
   paragraph = 'span',
   skipHtml = false,
   className = '',
+  isReplaceCurlyQuotes = true,
 }: MarkdownProps): JSX.Element {
   return (
     <ReactMarkdown
       className={className}
-      source={replaceByCurlyQuotes(text)}
+      source={isReplaceCurlyQuotes ? replaceByCurlyQuotes(text) : text}
       plugins={[remarkSubSuper]}
       skipHtml={skipHtml}
       renderers={{
