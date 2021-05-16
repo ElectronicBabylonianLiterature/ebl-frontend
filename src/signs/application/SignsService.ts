@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import Bluebird from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import SignsRepository from 'signs/infrastructure/SignsRepository'
 
@@ -8,7 +8,8 @@ export default class SignsService {
   constructor(signsRepository: SignsRepository) {
     this.signsRepository = signsRepository
   }
-  search(signQuery: SignQuery): Promise<Sign[]> {
+
+  search(signQuery: SignQuery): Bluebird<Sign[]> {
     return this.signsRepository.search(signQuery)
   }
 }

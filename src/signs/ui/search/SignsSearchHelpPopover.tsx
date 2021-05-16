@@ -1,19 +1,14 @@
-import { Col, Popover, Row } from 'react-bootstrap'
+import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
 import signSearchHelpList from './signSearchHelpList.json'
 
 export default function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }: { label: string; text: string }) => (
-    <li>
-      <Row>
-        <Col className="pr-1 mr-0 Help__list-name">{label}</Col>
-        <Col xs="auto" className="pl-0 ml-0">
-          {' '}
-          ={' '}
-        </Col>
-        <Col className="pl-0">{text}</Col>
-      </Row>
+    <li className="Help__list">
+      <div className="Help__list-name">{label}</div>
+      <div>&nbsp;=&nbsp;</div>
+      <div className="ml-2">{text}</div>
     </li>
   )
   return (

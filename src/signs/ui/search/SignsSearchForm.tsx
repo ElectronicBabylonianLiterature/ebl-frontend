@@ -8,7 +8,7 @@ import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
 
 interface Props extends RouteComponentProps {
-  signQuery: SignQuery
+  signQuery: Partial<SignQuery>
   sign: string | undefined
 }
 function parseValue(sign: string): { value: string; subIndex: number } {
@@ -20,21 +20,25 @@ function parseValue(sign: string): { value: string; subIndex: number } {
 }
 
 function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
-  const [signQueryState, setSignQueryState] = useState<SignQuery>(signQuery)
+  const [signQueryState, setSignQueryState] = useState(signQuery)
   const [signState, setSignState] = useState(sign || '')
   const [unnormalizedSignQuery, setUnnormalizedSignQuery] = useState(
-    `${signQuery.value}${signQuery.subIndex ? signQuery.subIndex : ''}`
+    signQuery.value
+      ? `${signQuery.value}${signQuery.subIndex ? signQuery.subIndex : ''}`
+      : undefined
   )
 
   const query = (event) => {
     event.preventDefault()
-    history.push(
-      `?${stringify({
-        ...signQueryState,
-        ...parseValue(unnormalizedSignQuery),
-        sign: replaceTransliteration(signState),
-      })}`
-    )
+    if (unnormalizedSignQuery) {
+      history.push(
+        `?${stringify({
+          ...signQueryState,
+          ...parseValue(unnormalizedSignQuery),
+          sign: replaceTransliteration(signState),
+        })}`
+      )
+    }
   }
   const querySignList = (event) => {
     event.preventDefault()
@@ -74,6 +78,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
         <Row>
           <Col xs={{ offset: 2, span: 3 }}>
             <Form.Check
+              readOnly
               type="radio"
               label="Include Homophones"
               checked={signQueryState.isIncludeHomophones}
@@ -89,6 +94,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
           <Col>
             <Form.Check
               type="radio"
+              readOnly
               label="Composite Signs"
               checked={signQueryState.isComposite}
               onClick={() =>

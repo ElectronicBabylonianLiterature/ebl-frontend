@@ -3,16 +3,6 @@
   max-width: 32em;
 }
 
-@font-face {
-  font-display: swap;
-  font-family: 'Assurbanipal';
-  font-style: normal;
-  font-weight: normal;
-  src: url('Assurbanipal.woff') format('woff'),
-    url('Assurbanipal.woff2') format('woff2'),
-    url('Assurbanipal.ttf') format('truetype');
-}
-
 .MesZL--text {
   line-height: 180%;
 }
@@ -21,16 +11,15 @@
   min-width: 40%;
 }
 
-.CuneiformFont {
-  font-family: 'Assurbanipal', monospace;
-}
 .SignName {
   font-style: normal;
   text-transform: lowercase;
 }
-
+.Help__list {
+  display: flex;
+}
 .Help__list-name {
-  max-width: 80px;
+  min-width: 60px;
 }
 .Help__popover {
   min-width: 600px;

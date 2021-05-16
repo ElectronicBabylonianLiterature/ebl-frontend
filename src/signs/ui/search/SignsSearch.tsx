@@ -48,9 +48,7 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         <Row>
           <Col xs={4}>
             <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              <span className="CuneiformFont">
-                {sign.displayCuneiformSigns}
-              </span>
+              {sign.displayCuneiformSigns}
             </Link>
           </Col>
           <Col xs={8} className="pr-0 mr-0">

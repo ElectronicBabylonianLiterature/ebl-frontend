@@ -16,12 +16,12 @@ interface SignListRecord {
 }
 
 export interface SignQuery {
-  value: string | undefined
-  subIndex: number | undefined
-  listsName: string | undefined
-  listsNumber: string | undefined
-  isIncludeHomophones: boolean | undefined
-  isComposite: boolean | undefined
+  value?: string
+  subIndex?: number
+  listsName?: string
+  listsNumber?: string
+  isIncludeHomophones?: boolean
+  isComposite?: boolean
 }
 export interface SignDto {
   name: string
@@ -106,8 +106,8 @@ export default class Sign {
     return this.name.replace(/\|/g, '')
   }
 
-  static fromJavascriptObject(signJavascriptObject: SignDto): Sign {
-    const sign = produce(signJavascriptObject, (draftSignDto) => {
+  static fromDto(signDto: SignDto): Sign {
+    const sign = produce(signDto, (draftSignDto) => {
       draftSignDto.values = draftSignDto.values.map(
         (value) => new Value(value.value, value.subIndex)
       )
