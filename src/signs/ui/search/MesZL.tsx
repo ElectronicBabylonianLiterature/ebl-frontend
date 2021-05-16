@@ -4,7 +4,13 @@ import React from 'react'
 import './Signs.css'
 import { Markdown } from 'dictionary/ui/display/WordDisplayParts'
 
-export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
+export default function MesZL({
+  mesZl,
+  mesZlNumber,
+}: {
+  mesZl: string
+  mesZlNumber: string | undefined
+}): JSX.Element {
   const mesZlLines = mesZl.split('\n')
   const mesZlRest = mesZlLines.slice()
   mesZlRest.shift()
@@ -13,6 +19,7 @@ export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
 
+  const formattedNumber = mesZlNumber ? ` ${mesZlNumber}` : ''
   const popover = (
     <Popover
       id={_.uniqueId('Citation-')}
@@ -39,7 +46,9 @@ export default function MesZL({ mesZl }: { mesZl: string }): JSX.Element {
         trigger={['hover', 'focus']}
         placement="right"
       >
-        <span className="ReferenceList__citation">MesZL</span>
+        <span className="ReferenceList__citation border border-dark p-1">
+          MesZL{formattedNumber}
+        </span>
       </OverlayTrigger>
     </>
   )

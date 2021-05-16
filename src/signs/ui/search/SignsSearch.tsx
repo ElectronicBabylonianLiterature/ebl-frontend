@@ -42,6 +42,8 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
 }
 
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
+  console.log(sign)
+  const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name == 'MZL')
   return (
     <Row>
       <Col className="Results">
@@ -67,7 +69,12 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         {sign.values.length > 0 ? (
           <InlineMarkdown source={sign.displayValuesMarkdown} />
         ) : null}
-        {sign.mesZl && <MesZL mesZl={sign.mesZl} />}
+        {sign.mesZl && (
+          <MesZL
+            mesZl={sign.mesZl}
+            mesZlNumber={mesZlNumber ? mesZlNumber.number : undefined}
+          />
+        )}
       </Col>
     </Row>
   )
