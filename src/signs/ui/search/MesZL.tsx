@@ -18,7 +18,7 @@ export default function MesZL({
     .join('  \n')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
-
+  console.log(mesZlNumber)
   const formattedNumber = mesZlNumber ? ` ${mesZlNumber}` : ''
   const popover = (
     <Popover

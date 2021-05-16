@@ -43,7 +43,7 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
 
 function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   console.log(sign)
-  const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name == 'MZL')
+  const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name === 'MZL')
   return (
     <Row>
       <Col className="Results">
