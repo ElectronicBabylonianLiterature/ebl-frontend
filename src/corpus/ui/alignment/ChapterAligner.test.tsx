@@ -3,18 +3,15 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import selectEvent from 'react-select-event'
 import { whenClicked, clickNth } from 'test-support/utils'
-import { Chapter } from 'corpus/domain/text'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import ChapterAligner from './ChapterAligner'
-import { text } from 'test-support/test-corpus-text'
+import { chapter } from 'test-support/test-corpus-text'
 import produce, { Draft } from 'immer'
 
 let onSave: jest.Mock<void, [ChapterAlignment]>
-let chapter: Chapter
 
 beforeEach(async () => {
   onSave = jest.fn()
-  chapter = text.chapters[0]
   render(<ChapterAligner chapter={chapter} onSave={onSave} disabled={false} />)
   await screen.findByText(
     chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])

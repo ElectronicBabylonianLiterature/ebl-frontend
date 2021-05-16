@@ -12,7 +12,6 @@ export default function ChapterNavigation({
   return (
     <Nav variant="tabs">
       {_(text.chapters)
-        .sortBy((chapter) => chapter.order)
         .map((chapter, index) => (
           <Nav.Item key={index}>
             <LinkContainer

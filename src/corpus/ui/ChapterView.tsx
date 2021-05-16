@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Alert } from 'react-bootstrap'
 import AppContent from 'common/AppContent'
 import withData from 'http/withData'
 import InlineMarkdown from 'common/InlineMarkdown'
@@ -28,26 +27,25 @@ function ChapterTitle({
 }): JSX.Element {
   return (
     <>
-      <InlineMarkdown source={text.name} />{' '}
-      {chapter && `${chapter.stage} ${chapter.name}`}
+      <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
     </>
   )
 }
 interface Props {
   text: Text
-  chapterIndex: number
+  chapter: Chapter
   textService: TextService
   bibliographyService: BibliographySearch
   fragmentService: FragmentService
 }
 function ChapterView({
   text,
-  chapterIndex,
+  chapter,
   textService,
   bibliographyService,
   fragmentService,
 }: Props): JSX.Element {
-  const [chapter, setChapter] = useState(text.chapters[chapterIndex])
+  const [currentChapter, setChapter] = useState(chapter)
   const [isDirty, setIsDirty] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<Error | null>(null)
@@ -63,14 +61,14 @@ function ChapterView({
     setError(error)
   }
 
-  const setStateUpdated = (updatedText: Text): void => {
-    setChapter(updatedText.chapters[chapterIndex])
+  const setStateUpdated = (updatedChapter: Chapter): void => {
+    setChapter(updatedChapter)
     setIsSaving(false)
     setIsDirty(false)
     setError(null)
   }
 
-  const update = (updater: () => Promise<Text>): void => {
+  const update = (updater: () => Promise<Chapter>): void => {
     cancelUpdatePromise()
     setStateUpdating()
     setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
@@ -79,9 +77,10 @@ function ChapterView({
   const updateAlignment = (alignment: ChapterAlignment): void => {
     update(() =>
       textService.updateAlignment(
-        text.category,
-        text.index,
-        chapterIndex,
+        currentChapter.textId.category,
+        currentChapter.textId.index,
+        currentChapter.stage,
+        currentChapter.name,
         alignment
       )
     )
@@ -90,11 +89,12 @@ function ChapterView({
   const updateManuscripts = (): void => {
     update(() =>
       textService.updateManuscripts(
-        text.category,
-        text.index,
-        chapterIndex,
-        chapter.manuscripts,
-        chapter.uncertainFragments
+        currentChapter.textId.category,
+        currentChapter.textId.index,
+        currentChapter.stage,
+        currentChapter.name,
+        currentChapter.manuscripts,
+        currentChapter.uncertainFragments
       )
     )
   }
@@ -102,10 +102,11 @@ function ChapterView({
   const updateLines = (): void => {
     update(() =>
       textService.updateLines(
-        text.category,
-        text.index,
-        chapterIndex,
-        chapter.lines
+        currentChapter.textId.category,
+        currentChapter.textId.index,
+        currentChapter.stage,
+        currentChapter.name,
+        currentChapter.lines
       )
     )
   }
@@ -113,9 +114,10 @@ function ChapterView({
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
     update(() =>
       textService.updateLemmatization(
-        text.category,
-        text.index,
-        chapterIndex,
+        currentChapter.textId.category,
+        currentChapter.textId.index,
+        currentChapter.stage,
+        currentChapter.name,
         lemmatization
       )
     )
@@ -123,7 +125,13 @@ function ChapterView({
 
   const importChapter = (atf: string): void => {
     update(() =>
-      textService.importChapter(text.category, text.index, chapterIndex, atf)
+      textService.importChapter(
+        currentChapter.textId.category,
+        currentChapter.textId.index,
+        currentChapter.stage,
+        currentChapter.name,
+        atf
+      )
     )
   }
 
@@ -139,28 +147,24 @@ function ChapterView({
       title={<>Edit {title}</>}
     >
       <ChapterNavigation text={text} />
-      {chapter ? (
-        <ChapterEditor
-          chapter={chapter}
-          disabled={isSaving}
-          dirty={isDirty}
-          searchBibliography={(
-            query: string
-          ): Promise<readonly BibliographyEntry[]> =>
-            bibliographyService.search(query)
-          }
-          fragmentService={fragmentService}
-          textService={textService}
-          onChange={handleChange}
-          onSaveLines={updateLines}
-          onSaveManuscripts={updateManuscripts}
-          onSaveAlignment={updateAlignment}
-          onSaveLemmatization={updateLemmatization}
-          onImport={importChapter}
-        />
-      ) : (
-        <Alert variant="danger">Chapter not found.</Alert>
-      )}
+      <ChapterEditor
+        chapter={currentChapter}
+        disabled={isSaving}
+        dirty={isDirty}
+        searchBibliography={(
+          query: string
+        ): Promise<readonly BibliographyEntry[]> =>
+          bibliographyService.search(query)
+        }
+        fragmentService={fragmentService}
+        textService={textService}
+        onChange={handleChange}
+        onSaveLines={updateLines}
+        onSaveManuscripts={updateManuscripts}
+        onSaveAlignment={updateAlignment}
+        onSaveLemmatization={updateLemmatization}
+        onImport={importChapter}
+      />
       <Spinner loading={isSaving}>Saving...</Spinner>
       <ErrorAlert error={error} />
     </AppContent>
@@ -169,6 +173,8 @@ function ChapterView({
 
 export default withData<
   {
+    category: string
+    index: string
     stage: string
     name: string
     textService
@@ -177,17 +183,17 @@ export default withData<
     wordService: WordService
   },
   { category: string; index: string },
-  Text
+  [Text, Chapter]
 >(
-  ({ data, stage, name, ...props }) => (
-    <ChapterView
-      text={data}
-      chapterIndex={data.findChapterIndex(stage, name)}
-      {...props}
-    />
+  ({ data, ...props }) => (
+    <ChapterView text={data[0]} chapter={data[1]} {...props} />
   ),
-  ({ category, index, textService }) => textService.find(category, index),
+  ({ category, index, stage, name, textService }) =>
+    Promise.all([
+      textService.find(category, index),
+      textService.findChapter(category, index, stage, name),
+    ]),
   {
-    watch: (props) => [props.stage, props.name],
+    watch: (props) => [props.category, props.index, props.stage, props.name],
   }
 )

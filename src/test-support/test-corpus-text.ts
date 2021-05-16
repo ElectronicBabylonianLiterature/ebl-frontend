@@ -105,63 +105,54 @@ const atfTokens: Token[] = [
   },
 ]
 
-export const textDto = {
-  category: 1,
-  index: 1,
-  name: 'Palm and Vine',
-  numberOfVerses: 10,
-  approximateVerses: true,
-  chapters: [
+export const chapterDto = {
+  classification: 'Ancient',
+  stage: 'Old Babylonian',
+  version: 'A',
+  name: 'The Only Chapter',
+  order: 1,
+  manuscripts: [
     {
-      classification: 'Ancient',
-      stage: 'Old Babylonian',
-      version: 'A',
-      name: 'The Only Chapter',
-      order: 1,
-      manuscripts: [
+      id: 1,
+      siglumDisambiguator: '1',
+      museumNumber: 'BM.X',
+      accession: 'X.1',
+      periodModifier: 'Early',
+      period: 'Ur III',
+      provenance: 'Nippur',
+      type: 'School',
+      notes: 'a note',
+      colophon: '1. kur',
+      references: [
         {
-          id: 1,
-          siglumDisambiguator: '1',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: 'Early',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: 'a note',
-          colophon: '1. kur',
-          references: [
-            {
-              id: 'RN1853',
-              linesCited: [],
-              notes: '',
-              pages: '34-54',
-              type: 'DISCUSSION',
-              document: { id: 'RN1853' },
-            },
-          ],
+          id: 'RN1853',
+          linesCited: [],
+          notes: '',
+          pages: '34-54',
+          type: 'DISCUSSION',
+          document: { id: 'RN1853' },
         },
       ],
-      uncertainFragments: ['K.1'],
-      lines: [
+    },
+  ],
+  uncertainFragments: ['K.1'],
+  lines: [
+    {
+      number: '1',
+      isBeginningOfSection: true,
+      isSecondLineOfParallelism: true,
+      variants: [
         {
-          number: '1',
-          isBeginningOfSection: true,
-          isSecondLineOfParallelism: true,
-          variants: [
+          reconstruction: '%n kur-kur',
+          reconstructionTokens: reconstructionTokens,
+          manuscripts: [
             {
-              reconstruction: '%n kur-kur',
-              reconstructionTokens: reconstructionTokens,
-              manuscripts: [
-                {
-                  manuscriptId: 1,
-                  labels: ['o', 'iii'],
-                  number: 'a+1',
-                  atf: 'kur ra',
-                  omittedWords: [],
-                  atfTokens: atfTokens,
-                },
-              ],
+              manuscriptId: 1,
+              labels: ['o', 'iii'],
+              number: 'a+1',
+              atf: 'kur ra',
+              omittedWords: [],
+              atfTokens: atfTokens,
             },
           ],
         },
@@ -170,65 +161,79 @@ export const textDto = {
   ],
 }
 
-export const text = createText({
+export const textDto = {
   category: 1,
   index: 1,
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
   chapters: [
-    createChapter({
-      classification: 'Ancient',
+    {
       stage: 'Old Babylonian',
-      version: 'A',
       name: 'The Only Chapter',
-      order: 1,
-      uncertainFragments: ['K.1'],
-      manuscripts: [
-        createManuscript({
-          id: 1,
-          siglumDisambiguator: '1',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: periodModifiers.get('Early'),
-          period: periods.get('Ur III'),
-          provenance: provenances.get('Nippur'),
-          type: types.get('School'),
-          notes: 'a note',
-          colophon: '1. kur',
-          references: [
-            new Reference(
-              'DISCUSSION',
-              '34-54',
-              '',
-              [],
-              new BibliographyEntry({ id: 'RN1853' })
-            ),
-          ],
-        }),
+    },
+  ],
+}
+
+export const chapter = createChapter({
+  classification: 'Ancient',
+  stage: 'Old Babylonian',
+  version: 'A',
+  name: 'The Only Chapter',
+  order: 1,
+  uncertainFragments: ['K.1'],
+  manuscripts: [
+    createManuscript({
+      id: 1,
+      siglumDisambiguator: '1',
+      museumNumber: 'BM.X',
+      accession: 'X.1',
+      periodModifier: periodModifiers.get('Early'),
+      period: periods.get('Ur III'),
+      provenance: provenances.get('Nippur'),
+      type: types.get('School'),
+      notes: 'a note',
+      colophon: '1. kur',
+      references: [
+        new Reference(
+          'DISCUSSION',
+          '34-54',
+          '',
+          [],
+          new BibliographyEntry({ id: 'RN1853' })
+        ),
       ],
-      lines: [
-        createLine({
-          number: '1',
-          isBeginningOfSection: true,
-          isSecondLineOfParallelism: true,
-          variants: [
-            createVariant({
-              reconstruction: '%n kur-kur',
-              reconstructionTokens: reconstructionTokens,
-              manuscripts: [
-                createManuscriptLine({
-                  manuscriptId: 1,
-                  labels: ['o', 'iii'],
-                  number: 'a+1',
-                  atf: 'kur ra',
-                  atfTokens: atfTokens,
-                }),
-              ],
+    }),
+  ],
+  lines: [
+    createLine({
+      number: '1',
+      isBeginningOfSection: true,
+      isSecondLineOfParallelism: true,
+      variants: [
+        createVariant({
+          reconstruction: '%n kur-kur',
+          reconstructionTokens: reconstructionTokens,
+          manuscripts: [
+            createManuscriptLine({
+              manuscriptId: 1,
+              labels: ['o', 'iii'],
+              number: 'a+1',
+              atf: 'kur ra',
+              atfTokens: atfTokens,
             }),
           ],
         }),
       ],
     }),
   ],
+})
+
+export const text = createText({
+  category: 1,
+  index: 1,
+  name: 'Palm and Vine',
+  numberOfVerses: 10,
+  approximateVerses: true,
+  chapters: [{ stage: chapter.stage, name: chapter.name }],
 })

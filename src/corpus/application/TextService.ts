@@ -17,6 +17,7 @@ import {
 } from 'transliteration/domain/Lemmatization'
 import { Token } from 'transliteration/domain/token'
 import {
+  fromChapterDto,
   fromDto,
   fromLineDto,
   toAlignmentDto,
@@ -111,6 +112,22 @@ export default class TextService {
       .then(fromDto)
   }
 
+  findChapter(
+    category: string,
+    index: string,
+    stage: string,
+    name: string
+  ): Bluebird<Chapter> {
+    return this.apiClient
+      .fetchJson(
+        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
+          index
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`,
+        true
+      )
+      .then(fromChapterDto)
+  }
+
   list(): Bluebird<TextInfo[]> {
     return this.apiClient.fetchJson('/texts', false)
   }
@@ -123,10 +140,7 @@ export default class TextService {
       .then((result) =>
         result.map((dto) => ({
           ...dto,
-          matchingChapters: dto.matchingChapters.map((chapterDto) => ({
-            ...chapterDto,
-            matchingLines: chapterDto.matchingLines.map(fromLineDto),
-          })),
+          matchingLines: dto.matchingLines.map(fromLineDto),
         }))
       )
   }
@@ -134,82 +148,97 @@ export default class TextService {
   updateAlignment(
     category: number,
     index: number,
-    chapterIndex: number,
+    stage: string,
+    name: string,
     alignment: ChapterAlignment
-  ): Bluebird<Text> {
+  ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(chapterIndex)}/alignment`,
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+          name
+        )}/alignment`,
         toAlignmentDto(alignment)
       )
-      .then(fromDto)
+      .then(fromChapterDto)
   }
 
   updateLemmatization(
     category: number,
     index: number,
-    chapterIndex: number,
+    stage: string,
+    name: string,
     lemmatization: ChapterLemmatization
-  ): Bluebird<Text> {
+  ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(chapterIndex)}/lemmatization`,
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+          name
+        )}/lemmatization`,
         toLemmatizationDto(lemmatization)
       )
-      .then(fromDto)
+      .then(fromChapterDto)
   }
 
   updateManuscripts(
     category: number,
     index: number,
-    chapterIndex: number,
+    stage: string,
+    name: string,
     manuscripts: readonly Manuscript[],
     uncertainChapters: readonly string[]
-  ): Bluebird<Text> {
+  ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(chapterIndex)}/manuscripts`,
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+          name
+        )}/manuscripts`,
         toManuscriptsDto(manuscripts, uncertainChapters)
       )
-      .then(fromDto)
+      .then(fromChapterDto)
   }
 
   updateLines(
     category: number,
     index: number,
-    chapterIndex: number,
+    stage: string,
+    name: string,
     lines: readonly Line[]
-  ): Bluebird<Text> {
+  ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(chapterIndex)}/lines`,
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+          name
+        )}/lines`,
         toLinesDto(lines)
       )
-      .then(fromDto)
+      .then(fromChapterDto)
   }
 
   importChapter(
     category: number,
     index: number,
-    chapterIndex: number,
+    stage: string,
+    name: string,
     atf: string
-  ): Bluebird<Text> {
+  ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
         `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
           index
-        )}/chapters/${encodeURIComponent(chapterIndex)}/import`,
+        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+          name
+        )}/import`,
         { atf }
       )
-      .then(fromDto)
+      .then(fromChapterDto)
   }
 
   findSuggestions(chapter: Chapter): Bluebird<ChapterLemmatization> {

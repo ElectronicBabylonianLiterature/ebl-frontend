@@ -12,98 +12,121 @@ const textDto = {
   approximateVerses: false,
   chapters: [
     {
-      classification: 'Ancient',
-      stage: 'Neo-Babylonian',
-      version: 'A',
-      name: 'III',
-      order: 3,
-      manuscripts: [],
-      uncertainFragments: [],
-      lines: [],
-    },
-    {
-      classification: 'Ancient',
       stage: 'Old Babylonian',
-      version: 'B',
       name: 'The First Chapter',
-      order: 1,
-      manuscripts: [
-        {
-          id: 1,
-          siglumDisambiguator: '1c',
-          museumNumber: 'BM.X',
-          accession: 'X.1',
-          periodModifier: 'Late',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: 'some notes',
-          colophon: '1. kur',
-          references: [],
-        },
-      ],
-      uncertainFragments: [],
-      lines: [],
     },
     {
-      classification: 'Ancient',
+      stage: 'Neo-Babylonian',
+      name: 'III',
+    },
+    {
       stage: 'Old Babylonian',
-      version: '',
       name: 'The Second Chapter',
-      order: 5,
-      manuscripts: [
-        {
-          id: 1,
-          siglumDisambiguator: 'A',
-          museumNumber: '',
-          accession: '',
-          periodModifier: 'Late',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: '',
-          colophon: '',
-          references: [],
-        },
-        {
-          id: 2,
-          siglumDisambiguator: 'B',
-          museumNumber: '',
-          accession: '',
-          periodModifier: 'Late',
-          period: 'Ur III',
-          provenance: 'Nippur',
-          type: 'School',
-          notes: '',
-          colophon: '',
-          references: [],
-        },
-      ],
-      uncertainFragments: [],
-      lines: [
-        {
-          number: "1'",
-          isBeginningOfSection: false,
-          isSecondLineOfParallelism: false,
-          variants: [
-            {
-              reconstruction: 'ideal',
-              manuscripts: [
-                {
-                  manuscriptId: 1,
-                  labels: ['iii'],
-                  number: 'a+1',
-                  atf: 'kur',
-                  omittedWords: [],
-                },
-              ],
-            },
-          ],
-        },
-      ],
     },
   ],
 }
+
+const textId = {
+  category: category,
+  index: index,
+}
+const chapterDtos = [
+  {
+    textId: textId,
+    classification: 'Ancient',
+    stage: 'Old Babylonian',
+    version: 'B',
+    name: 'The First Chapter',
+    order: 1,
+    manuscripts: [
+      {
+        id: 1,
+        siglumDisambiguator: '1c',
+        museumNumber: 'BM.X',
+        accession: 'X.1',
+        periodModifier: 'Late',
+        period: 'Ur III',
+        provenance: 'Nippur',
+        type: 'School',
+        notes: 'some notes',
+        colophon: '1. kur',
+        references: [],
+      },
+    ],
+    uncertainFragments: [],
+    lines: [],
+  },
+  {
+    textId: textId,
+    classification: 'Ancient',
+    stage: 'Neo-Babylonian',
+    version: 'A',
+    name: 'III',
+    order: 3,
+    manuscripts: [],
+    uncertainFragments: [],
+    lines: [],
+  },
+  {
+    textId: textId,
+    classification: 'Ancient',
+    stage: 'Old Babylonian',
+    version: '',
+    name: 'The Second Chapter',
+    order: 5,
+    manuscripts: [
+      {
+        id: 1,
+        siglumDisambiguator: 'A',
+        museumNumber: '',
+        accession: '',
+        periodModifier: 'Late',
+        period: 'Ur III',
+        provenance: 'Nippur',
+        type: 'School',
+        notes: '',
+        colophon: '',
+        references: [],
+      },
+      {
+        id: 2,
+        siglumDisambiguator: 'B',
+        museumNumber: '',
+        accession: '',
+        periodModifier: 'Late',
+        period: 'Ur III',
+        provenance: 'Nippur',
+        type: 'School',
+        notes: '',
+        colophon: '',
+        references: [],
+      },
+    ],
+    uncertainFragments: [],
+    lines: [
+      {
+        number: "1'",
+        isBeginningOfSection: false,
+        isSecondLineOfParallelism: false,
+        variants: [
+          {
+            reconstruction: 'ideal',
+            manuscripts: [
+              {
+                manuscriptId: 1,
+                labels: ['iii'],
+                number: 'a+1',
+                atf: 'kur',
+                omittedWords: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]
+
 const defaultManuscriptDto = {
   id: null,
   siglumDisambiguator: '',
@@ -138,7 +161,7 @@ afterEach(() => {
 })
 
 describe('Diplay chapter', () => {
-  const chapter = textDto.chapters[1]
+  const chapter = chapterDtos[0]
   const chapterTitle = createChapterTitle(chapter)
 
   beforeEach(async () => {
@@ -172,16 +195,15 @@ describe('Diplay chapter', () => {
       ['Notes', 'notes', 'more notes'],
     ])('%s', async (label, property, newValue) => {
       fakeApi.expectUpdateManuscripts(
-        textDto,
-        1,
-        produce(textDto.chapters[1].manuscripts, (draft) => ({
+        chapterDtos[0],
+        produce(chapterDtos[0].manuscripts, (draft) => ({
           manuscripts: [
             {
               ...draft[0],
               [property]: newValue,
             },
           ],
-          uncertainFragments: textDto.chapters[1].uncertainFragments,
+          uncertainFragments: chapterDtos[0].uncertainFragments,
         }))
       )
       const value = manuscript[property]
@@ -195,7 +217,7 @@ describe('Diplay chapter', () => {
 })
 
 describe('Add manuscript', () => {
-  const chapter = textDto.chapters[0]
+  const chapter = chapterDtos[1]
 
   beforeEach(async () => {
     await setup(chapter)
@@ -216,7 +238,7 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1,
     }
-    fakeApi.expectUpdateManuscripts(textDto, 0, {
+    fakeApi.expectUpdateManuscripts(chapterDtos[1], {
       manuscripts: [manuscript],
       uncertainFragments: [],
     })
@@ -227,7 +249,7 @@ describe('Add manuscript', () => {
 })
 
 test('Uncertain Fragments', async () => {
-  const chapter = textDto.chapters[0]
+  const chapter = chapterDtos[1]
   const museumNumber = 'X.1'
   const label = 'Museum Number'
 
@@ -237,27 +259,27 @@ test('Uncertain Fragments', async () => {
   appDriver.expectInputElement(label, museumNumber)
   await appDriver.click('Save manuscripts')
 
-  fakeApi.expectUpdateManuscripts(textDto, 0, {
+  fakeApi.expectUpdateManuscripts(chapterDtos[1], {
     manuscripts: chapter.manuscripts,
     uncertainFragments: [museumNumber],
   })
 })
 
 describe('Lines', () => {
-  const chapter = textDto.chapters[2]
+  const chapter = chapterDtos[2]
   const line = chapter.lines[0]
 
   beforeEach(async () => {
-    await setup(chapter, false)
+    await setup(chapter)
     await appDriver.click('Lines')
   })
 
   test.each([['Number', 'number', '2']])(
     '%s',
     async (label, property, newValue) => {
-      fakeApi.expectUpdateLines(textDto, 2, {
+      fakeApi.expectUpdateLines(chapterDtos[2], {
         lines: [
-          produce(textDto.chapters[2].lines[0], (draft) => {
+          produce(chapterDtos[2].lines[0], (draft) => {
             draft[property] = newValue
           }),
         ],
@@ -274,9 +296,9 @@ describe('Lines', () => {
     ['second line of parallelism', 'isSecondLineOfParallelism'],
     ['beginning of a section', 'isBeginningOfSection'],
   ])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(textDto, 2, {
+    fakeApi.expectUpdateLines(chapterDtos[2], {
       lines: [
-        produce(textDto.chapters[2].lines[0], (draft) => {
+        produce(chapterDtos[2].lines[0], (draft) => {
           draft[property] = !draft[property]
         }),
       ],
@@ -294,7 +316,7 @@ describe('Lines', () => {
 })
 
 describe('Add line', () => {
-  const chapter = textDto.chapters[1]
+  const chapter = chapterDtos[0]
 
   beforeEach(async () => {
     await setup(chapter)
@@ -302,7 +324,7 @@ describe('Add line', () => {
   })
 
   test.each([['Number', 'number']])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(textDto, 1, { lines: [defaultLineDto] })
+    fakeApi.expectUpdateLines(chapterDtos[0], { lines: [defaultLineDto] })
     await appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
     await appDriver.click('Save lines')
@@ -310,36 +332,15 @@ describe('Add line', () => {
 })
 
 test('Import chapter', async () => {
-  const chapter = textDto.chapters[1]
-  fakeApi.expectImportChapter(textDto, 1, '1. kur')
+  const chapter = chapterDtos[0]
+  fakeApi.expectImportChapter(chapterDtos[0], '1. kur')
   await setup(chapter)
   await appDriver.click('Import')
   await appDriver.click('Save')
 })
 
-describe('Chapter not found', () => {
-  const chapter = textDto.chapters[1]
-  const chapterName = 'Unknown Chapter'
-
-  beforeEach(async () => {
-    fakeApi = new FakeApi().allowText(textDto)
-    appDriver = await new AppDriver(fakeApi.client)
-      .withSession()
-      .withPath(createChapterPath(chapter.stage, chapterName))
-      .render()
-
-    await appDriver.waitForText(`Edit ${textDto.name}`)
-  })
-
-  test('Error message', () => {
-    appDriver.expectTextContent(`Chapter not found.`)
-  })
-})
-
-async function setup(chapter, expectText = true) {
-  fakeApi = expectText
-    ? new FakeApi().expectText(textDto)
-    : new FakeApi().allowText(textDto)
+async function setup(chapter) {
+  fakeApi = new FakeApi().expectText(textDto).expectChapter(chapter)
   appDriver = await new AppDriver(fakeApi.client)
     .withSession()
     .withPath(createChapterPath(chapter.stage, chapter.name))

@@ -13,7 +13,7 @@ import { lemmatizeWord } from 'test-support/lemmatization'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import ChapterLemmatizer from './ChapterLemmatization'
-import { text } from 'test-support/test-corpus-text'
+import { chapter as chapter_ } from 'test-support/test-corpus-text'
 
 let element: RenderResult
 let fragmentService
@@ -56,7 +56,7 @@ beforeEach(async () => {
     ],
   ]
   textService.findSuggestions.mockReturnValue(Promise.resolve(lemmatization))
-  chapter = produce(text.chapters[0], (draft) => {
+  chapter = produce(chapter_, (draft) => {
     draft.lines[0].variants[0].manuscripts = [
       castDraft(
         createManuscriptLine({
