@@ -108,6 +108,7 @@ const chapterDtos = [
         number: "1'",
         isBeginningOfSection: false,
         isSecondLineOfParallelism: false,
+        translation: '#tr.en: translation',
         variants: [
           {
             reconstruction: 'ideal',
@@ -145,6 +146,7 @@ const defaultLineDto = {
   number: '',
   isBeginningOfSection: false,
   isSecondLineOfParallelism: false,
+  translation: '',
   variants: [
     {
       reconstruction: '%n ',
