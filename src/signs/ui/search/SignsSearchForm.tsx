@@ -81,7 +81,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
               readOnly
               type="radio"
               label="Include Homophones"
-              checked={signQueryState.isIncludeHomophones}
+              checked={signQueryState.isIncludeHomophones || false}
               onClick={() =>
                 setSignQueryState((prevState) => ({
                   ...prevState,
@@ -96,7 +96,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
               type="radio"
               readOnly
               label="Composite Signs"
-              checked={signQueryState.isComposite}
+              checked={signQueryState.isComposite || false}
               onClick={() =>
                 setSignQueryState((prevState) => ({
                   ...prevState,
@@ -116,7 +116,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
           <Col className="pl-0 ml-0 mr-0 pr-0">
             <Form.Control
               as="select"
-              value={signQueryState.listsName}
+              value={signQueryState.listsName || ''}
               onChange={(event) => {
                 event.persist()
                 setSignQueryState((prevState) => ({
@@ -136,7 +136,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
           <Col className="ml-0 pl-0">
             <FormControl
               type="text"
-              value={signQueryState.listsNumber}
+              value={signQueryState.listsNumber || ''}
               placeholder="Number"
               onChange={(event) => {
                 event.persist()
