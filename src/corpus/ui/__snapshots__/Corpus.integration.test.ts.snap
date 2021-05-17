@@ -61,6 +61,17 @@ exports[`With session 1`] = `
             >
               <a
                 class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
                 data-rb-event-key="/dictionary"
                 href="/dictionary"
               >
@@ -365,6 +376,17 @@ exports[`Without session 1`] = `
           <div
             class="mx-auto navbar-nav"
           >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
             <div
               class="nav-item"
             >
