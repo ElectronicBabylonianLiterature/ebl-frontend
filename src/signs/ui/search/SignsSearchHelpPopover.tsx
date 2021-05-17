@@ -2,13 +2,16 @@ import { Popover } from 'react-bootstrap'
 import _ from 'lodash'
 import React from 'react'
 import signSearchHelpList from './signSearchHelpList.json'
+import InlineMarkdown from 'common/InlineMarkdown'
 
 export default function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }: { label: string; text: string }) => (
     <li className="Help__list">
       <div className="Help__list-name">{label}</div>
       <div>&nbsp;=&nbsp;</div>
-      <div className="ml-2">{text}</div>
+      <div className="ml-2">
+        <InlineMarkdown source={text} />
+      </div>
     </li>
   )
   return (

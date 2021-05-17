@@ -34,6 +34,8 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
       history.push(
         `?${stringify({
           ...signQueryState,
+          listsName: null,
+          listsNumber: null,
           ...parseValue(unnormalizedSignQuery),
           sign: replaceTransliteration(signState),
         })}`
@@ -127,7 +129,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
             >
               <option defaultValue={''} />
               <option>MZL</option>
-              <option>ŠL/MÉA = SLLHA</option>
+              <option value={'SLLHA'}>ŠL/MÉA</option>
               <option>ABZ</option>
               <option>KWU</option>
               <option>HZL</option>

@@ -38,12 +38,11 @@ export default function MesZL({
   )
   return (
     <>
-      &nbsp;&mdash;&nbsp;
       <OverlayTrigger
         rootClose
+        placement={'auto'}
         overlay={popover}
         trigger={['hover', 'focus']}
-        placement="right"
       >
         <span className="ReferenceList__citation border border-dark p-1">
           MesZL{formattedNumber}

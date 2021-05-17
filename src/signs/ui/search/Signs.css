@@ -24,7 +24,12 @@
 .Help__popover {
   min-width: 600px;
 }
-
+.Results--font {
+  font-size: 120%;
+}
+.Results--values {
+  font-variant: all-small-caps;
+}
 .Results {
   max-width: 190px;
 }
