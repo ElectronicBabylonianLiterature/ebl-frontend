@@ -50,6 +50,7 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 const lineClases = {
   TextLine: TextLine,
@@ -72,6 +73,7 @@ const lineClases = {
   ParallelFragment: ControlLine,
   ParallelText: ControlLine,
   ParallelComposition: ControlLine,
+  TranslationLine: TranslationLine,
 }
 
 function createText(text): Text {

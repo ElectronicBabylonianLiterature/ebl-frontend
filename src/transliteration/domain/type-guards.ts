@@ -4,12 +4,12 @@ import {
   SurfaceAtLine,
   ColumnAtLine,
 } from 'transliteration/domain/at-lines'
+import { NoteLine } from 'transliteration/domain/note-line'
 import {
   BibliographyPart,
   LanguagePart,
-  NoteLinePart,
-  NoteLine,
-} from 'transliteration/domain/note-line'
+  MarkupPart,
+} from 'transliteration/domain/markup'
 import {
   CommentaryProtocol,
   Enclosure,
@@ -95,13 +95,11 @@ export function isEmptyLine(line: AbstractLine): line is EmptyLine {
   return line instanceof EmptyLine
 }
 
-export function isLanguagePart(part: NoteLinePart): part is LanguagePart {
+export function isLanguagePart(part: MarkupPart): part is LanguagePart {
   return part.type === 'LanguagePart'
 }
 
-export function isBibliographyPart(
-  part: NoteLinePart
-): part is BibliographyPart {
+export function isBibliographyPart(part: MarkupPart): part is BibliographyPart {
   return part.type === 'BibliographyPart'
 }
 

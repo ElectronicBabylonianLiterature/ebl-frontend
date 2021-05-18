@@ -8,6 +8,17 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { MarkupPart } from 'transliteration/domain/markup'
+import TranslationLine from 'transliteration/domain/translation-line'
+import {
+  isBibliographyPart,
+  isLanguagePart,
+} from 'transliteration/domain/type-guards'
+import {
+  DisplayBibliographyPart,
+  DisplayLaguagePart,
+  DisplayTextPart,
+} from 'transliteration/ui/markup'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -21,6 +32,31 @@ function DisplayControlLine({
         className={classNames([`Transliteration__${type}`])}
       >
         {content.map(({ value }) => value).join('')}
+      </td>
+    </>
+  )
+}
+
+function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
+  const translationLine = line as TranslationLine
+  return (
+    <>
+      <td className={classNames([`Transliteration__${line.type}`])}>
+        {line.prefix}
+      </td>
+      <td
+        colSpan={columns}
+        className={classNames([`Transliteration__${line.type}`])}
+      >
+        {translationLine.parts.map((part: MarkupPart, index: number) => {
+          if (isLanguagePart(part)) {
+            return <DisplayLaguagePart key={index} part={part} />
+          } else if (isBibliographyPart(part)) {
+            return <DisplayBibliographyPart key={index} part={part} />
+          } else {
+            return <DisplayTextPart key={index} part={part} />
+          }
+        })}
       </td>
     </>
   )
@@ -44,6 +80,7 @@ const lineComponents: ReadonlyMap<
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
+  ['TranslationLine', DisplayTranslationLine],
 ])
 
 function FirstLineNotes({
