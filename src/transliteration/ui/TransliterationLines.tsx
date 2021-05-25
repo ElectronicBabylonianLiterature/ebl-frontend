@@ -8,17 +8,8 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import { MarkupPart } from 'transliteration/domain/markup'
 import TranslationLine from 'transliteration/domain/translation-line'
-import {
-  isBibliographyPart,
-  isLanguagePart,
-} from 'transliteration/domain/type-guards'
-import {
-  DisplayBibliographyPart,
-  DisplayLaguagePart,
-  DisplayTextPart,
-} from 'transliteration/ui/markup'
+import Markup from 'transliteration/ui/markup'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -48,15 +39,7 @@ function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
         colSpan={columns}
         className={classNames([`Transliteration__${line.type}`])}
       >
-        {translationLine.parts.map((part: MarkupPart, index: number) => {
-          if (isLanguagePart(part)) {
-            return <DisplayLaguagePart key={index} part={part} />
-          } else if (isBibliographyPart(part)) {
-            return <DisplayBibliographyPart key={index} part={part} />
-          } else {
-            return <DisplayTextPart key={index} part={part} />
-          }
-        })}
+        <Markup line={translationLine} />
       </td>
     </>
   )
