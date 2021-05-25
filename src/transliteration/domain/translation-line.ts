@@ -23,10 +23,12 @@ function exentToString(extent: Extent | null): string {
 export default class TranslationLine extends AbstractLine {
   readonly type = 'TranslationLine'
   readonly parts: readonly MarkupPart[]
+  readonly language: string
   readonly extent: Extent | null
 
   constructor(data) {
     super(`#tr.${data.language}${exentToString(data.extent)}: `, data.content)
+    this.language = data.language
     this.parts = data.parts
     this.extent = data.extent
   }

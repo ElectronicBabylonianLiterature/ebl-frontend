@@ -8,8 +8,11 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import TranslationLine from 'transliteration/domain/translation-line'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -28,12 +31,30 @@ function DisplayControlLine({
   )
 }
 
+function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
+  const labels = extent.labels.join(' ')
+  return (
+    <>
+      ({labels}
+      {!_.isEmpty(labels) && ' '}
+      {lineNumberToString(extent.number)})
+    </>
+  )
+}
+
 function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
   const translationLine = line as TranslationLine
   return (
     <>
       <td className={classNames([`Transliteration__${line.type}`])}>
-        {line.prefix}
+        {translationLine.language}
+        {translationLine.extent && (
+          <>
+            {' '}
+            <DispalyExtent extent={translationLine.extent} />
+          </>
+        )}
+        :
       </td>
       <td
         colSpan={columns}
