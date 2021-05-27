@@ -10,6 +10,15 @@
 .MesZL--popover {
   min-width: 40%;
 }
+.MesZL--popover p {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+.MesZL--popover hr {
+  border-style: solid;
+  border-color: black;
+  border-width: 0 0 0.5px 0;
+}
 
 .SignName {
   font-style: normal;
@@ -24,11 +33,11 @@
 .Help__popover {
   min-width: 600px;
 }
-.Results--font {
-  font-size: 120%;
-}
-.Results--values {
+.Results--sign {
   font-variant: all-small-caps;
+}
+.Results--cuneiform {
+  font-size: 150%;
 }
 .Results {
   max-width: 190px;

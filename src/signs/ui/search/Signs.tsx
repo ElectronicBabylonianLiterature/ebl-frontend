@@ -17,6 +17,7 @@ type Props = {
 } & RouteComponentProps
 
 export default function Signs({ location, signsService }: Props): JSX.Element {
+  console.log(location.search)
   const query = parse(location.search, {
     parseBooleans: true,
     parseNumbers: true,
@@ -33,7 +34,10 @@ export default function Signs({ location, signsService }: Props): JSX.Element {
                 key={`${_.uniqueId('signs')}-${query.value}`}
               />
               <SignsSearch
-                signQuery={_.pickBy({ ...query, sign: null }, _.identity)}
+                signQuery={_.pickBy(
+                  { ...query, sign: null },
+                  (property) => _.identity(property) || property === ''
+                )}
                 signsService={signsService}
               />
             </>

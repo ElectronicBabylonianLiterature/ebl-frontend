@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps {
 function parseValue(sign: string): { value: string; subIndex: number } {
   const match = sign.match(/^([^\d]+)(\d*)$/)
   return {
-    value: match ? replaceTransliteration(match[1]) : '',
+    value: match ? replaceTransliteration(match[1].toLowerCase()) : '',
     subIndex: match && match[2] ? parseInt(match[2]) : 1,
   }
 }
@@ -37,7 +37,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
           listsName: null,
           listsNumber: null,
           ...parseValue(unnormalizedSignQuery),
-          sign: replaceTransliteration(signState),
+          sign: replaceTransliteration(signState.toLowerCase()),
         })}`
       )
     }
