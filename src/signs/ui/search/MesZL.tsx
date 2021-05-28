@@ -62,12 +62,11 @@ export default function MesZL({
 
   const subSup = (mesZL) =>
     mesZL
-      .replaceAll(/^([^\^]*)^/g, '<sup>$1</sup>')
+      .replaceAll(/\^([^\^]*)\^/g, '<sup>$1</sup>')
       .replaceAll(/~([^~]*)~/g, '<sub>$1</sub>')
 
-  return (
-    mesZlHead &&
-    mesZlBody && (
+  if (mesZlHead && mesZlBody) {
+    return (
       <>
         <Button
           variant="outline-dark"
@@ -126,5 +125,7 @@ export default function MesZL({
         </Overlay>
       </>
     )
-  )
+  } else {
+    return null
+  }
 }
