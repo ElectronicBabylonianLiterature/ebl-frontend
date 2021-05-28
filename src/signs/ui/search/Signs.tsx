@@ -17,11 +17,11 @@ type Props = {
 } & RouteComponentProps
 
 export default function Signs({ location, signsService }: Props): JSX.Element {
-  console.log(location.search)
   const query = parse(location.search, {
     parseBooleans: true,
     parseNumbers: true,
   })
+
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <SessionContext.Consumer>

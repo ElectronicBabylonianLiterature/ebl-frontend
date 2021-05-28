@@ -22,15 +22,15 @@ export default function MesZL({
   const target = useRef(null)
 
   const mesZlLines = mesZl.split('\n')
-  const mesZlRest = mesZlLines.slice()
-  mesZlRest.shift()
-  const mesZlFormatted = mesZlRest
+
+  const mesZlFormatted = mesZlLines
+    .slice(1, 6)
     .join('\n\n')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
 
   const formattedNumber = mesZlNumber ? ` ${mesZlNumber}` : ''
-  console.log(mesZlLines[0])
+
   useEffect(() => {
     unified()
       .use(remarkParse)
@@ -49,21 +49,14 @@ export default function MesZL({
       .use(stringify)
       .process(mesZlLines[0], function (err, file) {
         if (err) throw err
-        setMesZlHead(
-          subSup(
-            String(file).replaceAll(
-              /\s/g,
-              '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-            )
-          )
-        )
+        setMesZlHead(subSup(String(file).replace(/\s/g, '&#9')))
       })
   }, [mesZlFormatted, mesZlLines])
 
   const subSup = (mesZL) =>
     mesZL
-      .replaceAll(/\^([^\^]*)\^/g, '<sup>$1</sup>')
-      .replaceAll(/~([^~]*)~/g, '<sub>$1</sub>')
+      .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
+      .replace(/~([^~]*)~/g, '<sub>$1</sub>')
 
   if (mesZlHead && mesZlBody) {
     return (
@@ -91,14 +84,20 @@ export default function MesZL({
               {...props}
             >
               <Popover.Content>
-                <div
-                  className="text-center"
-                  dangerouslySetInnerHTML={{ __html: mesZlHead as string }}
-                />
+                <div>
+                  <pre>
+                    <div
+                      className="text-center"
+                      dangerouslySetInnerHTML={{ __html: mesZlHead as string }}
+                    />
+                  </pre>
+                </div>
+
                 <hr />
                 <div
                   dangerouslySetInnerHTML={{ __html: mesZlBody as string }}
                 />
+                <div className="text-center">...</div>
                 <div className="text-center border border-dark mt-2">
                   <strong>From</strong>
                   <br />

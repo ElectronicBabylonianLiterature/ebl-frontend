@@ -14,7 +14,9 @@ it('Adds lemma to query string on submit', async () => {
   userEvent.type(screen.getByPlaceholderText('Sign or Reading'), 'ba')
   userEvent.click(screen.getAllByRole('button')[0])
 
-  expect(history.push).toBeCalledWith('?sign=ba&subIndex=1&value=ba')
+  expect(history.push).toBeCalledWith(
+    '?listsName&listsNumber&sign=ba&subIndex=1&value=ba'
+  )
 })
 
 function renderSignsSearchForm() {
