@@ -6,15 +6,7 @@ import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
-import { sanitize, defaultSchema } from 'hast-util-sanitize'
-
-//remark-sanitize copy but their types are wrong
-function clean(options) {
-  return transformer
-  function transformer(tree) {
-    return sanitize(tree, options)
-  }
-}
+import DOMPurify from 'dompurify'
 
 function splitMesZl(mesZl: string): { mesZlHead: string; mesZlBody: string } {
   const mesZlLines = mesZl.split('\n')
@@ -36,7 +28,6 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
     .use(remark2rehype)
     .use(raw)
     .use(stringify)
-    .use(clean, defaultSchema)
     .process(markdown)
   return subSup(String(file))
 }
@@ -70,13 +61,17 @@ export default function MesZlContent({
           <pre>
             <div
               className="text-center"
-              dangerouslySetInnerHTML={{ __html: mesZlHead }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(mesZlHead),
+              }}
             />
           </pre>
         </div>
 
         <hr />
-        <div dangerouslySetInnerHTML={{ __html: mesZlBody }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mesZlBody) }}
+        />
         <div className="text-center">...</div>
         <div className="text-center border border-dark mt-2">
           <strong>From</strong>
