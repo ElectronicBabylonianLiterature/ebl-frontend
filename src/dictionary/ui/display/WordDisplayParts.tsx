@@ -106,7 +106,6 @@ export function Logogram({
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
-  skipHtml?: boolean
   className?: string
   isReplaceCurlyQuotes?: boolean
 }

@@ -6,49 +6,62 @@ import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
+import { sanitize, defaultSchema } from 'hast-util-sanitize'
+
+//remark-sanitize copy but their types are wrong
+function clean(options) {
+  return transformer
+  function transformer(tree) {
+    return sanitize(tree, options)
+  }
+}
+
+function splitMesZl(mesZl: string): { mesZlHead: string; mesZlBody: string } {
+  const mesZlLines = mesZl.split('\n')
+  const mesZlBody = mesZlLines
+    .slice(1, 6)
+    .join('\n\n')
+    .replace(/\[/g, '\\[')
+    .replace(/]/g, '\\]')
+  return { mesZlHead: mesZlLines[0], mesZlBody: mesZlBody }
+}
+async function convertMarkdownToHtml(markdown: string): Promise<string> {
+  const subSup = (mesZL: string): string =>
+    mesZL
+      .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
+      .replace(/~([^~]*)~/g, '<sub>$1</sub>')
+
+  const file = await unified()
+    .use(remarkParse)
+    .use(remark2rehype)
+    .use(raw)
+    .use(stringify)
+    .use(clean, defaultSchema)
+    .process(markdown)
+  return subSup(String(file))
+}
 
 export default function MesZlContent({
   mesZl,
 }: {
   mesZl: string
 }): JSX.Element | null {
-  const [mesZlHead, setMesZlHead] = useState<string | null>(null)
-  const [mesZlBody, setMesZlBody] = useState<string | null>(null)
-
-  const mesZlLines = mesZl.split('\n')
-
-  const mesZlFormatted = mesZlLines
-    .slice(1, 6)
-    .join('\n\n')
-    .replace(/\[/g, '\\[')
-    .replace(/]/g, '\\]')
-
-  const subSup = (mesZL) =>
-    mesZL
-      .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
-      .replace(/~([^~]*)~/g, '<sub>$1</sub>')
+  const [mesZlHead, setMesZlHead] = useState<string>('')
+  const [mesZlBody, setMesZlBody] = useState<string>('')
 
   useEffect(() => {
-    unified()
-      .use(remarkParse)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(raw)
-      .use(stringify)
-      .process(mesZlFormatted, function (err, file) {
-        if (err) throw err
-        setMesZlBody(subSup(String(file)))
-      })
-
-    unified()
-      .use(remarkParse)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(raw)
-      .use(stringify)
-      .process(mesZlLines[0], function (err, file) {
-        if (err) throw err
-        setMesZlHead(subSup(String(file).replace(/\s/g, '&#9')))
-      })
-  }, [mesZlFormatted, mesZlLines])
+    ;(async () => {
+      const mesZlSplitted = splitMesZl(mesZl)
+      const mesZlHeadConverted = await convertMarkdownToHtml(
+        mesZlSplitted.mesZlHead
+      )
+      const mesZlBodyConverted = await convertMarkdownToHtml(
+        mesZlSplitted.mesZlBody
+      )
+      setMesZlBody(mesZlBodyConverted)
+      setMesZlHead(mesZlHeadConverted.replace(/\s/g, '&#9'))
+    })()
+  }, [mesZl])
 
   if (mesZlHead && mesZlBody) {
     return (
