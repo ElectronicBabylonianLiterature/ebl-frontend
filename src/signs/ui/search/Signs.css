@@ -11,12 +11,12 @@
   min-width: 40%;
 }
 .MesZL--popover p {
+  margin-bottom: 0;
   margin-top: 0.5em;
-  margin-bottom: 0em;
 }
 .MesZL--popover hr {
-  border-style: solid;
   border-color: black;
+  border-style: solid;
   border-width: 0 0 0.5px 0;
 }
 
