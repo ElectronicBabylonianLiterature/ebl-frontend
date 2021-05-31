@@ -2,6 +2,7 @@ import produce, { immerable } from 'immer'
 import compareAkkadianStrings, {
   cleanAkkadianString,
 } from 'dictionary/domain/compareAkkadianStrings'
+import { subscriptNumbers } from 'transliteration/ui/SubIndex'
 
 interface Logogram {
   logogram: string
@@ -40,13 +41,16 @@ export class Value {
     this.subIndex = subIndex
   }
   get displaySubIndex(): string {
-    switch (this.subIndex) {
-      case undefined:
-        return '~x~'
-      case 1:
-        return ''
-      default:
-        return `~${this.subIndex}~`
+    if (this.subIndex === undefined) {
+      return '~x~'
+    } else if (this.subIndex === 1) {
+      return ''
+    } else {
+      return this.subIndex
+        .toString()
+        .split('')
+        .map((digit) => subscriptNumbers.get(digit))
+        .join('')
     }
   }
 }

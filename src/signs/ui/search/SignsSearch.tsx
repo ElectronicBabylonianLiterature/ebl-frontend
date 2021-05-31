@@ -29,45 +29,60 @@ function sortSigns(signs: Sign[]): Sign[] {
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
+  const maxUnicodeSignsLength =
+    _.maxBy(signs, (sign) => sign.unicode.length)?.unicode.length ?? 1
   const signsNew = isIncludeHomophones ? sortSigns(signs) : signs
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
-          <SignComponent sign={sign} />
+          <SignComponent
+            sign={sign}
+            columnSize={maxUnicodeSignsLength > 2 ? 2 : 1}
+          />
         </li>
       ))}
     </ul>
   )
 }
 
-function SignComponent({ sign }: { sign: Sign }): JSX.Element {
+function SignComponent({
+  sign,
+  columnSize,
+}: {
+  sign: Sign
+  columnSize: number
+}): JSX.Element {
   const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name === 'MZL')
+  let mesZlDash = <></>
+  if (sign.mesZl && sign.displayValuesMarkdown[0]) {
+    mesZlDash = <span>&nbsp;&mdash;&nbsp;</span>
+  }
+
   return (
     <Row>
-      <Col className="Results">
-        <Row>
-          <Col xs={4}>
+      <Col xs={columnSize}>
+        <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+          <span className={'Results--cuneiform'}>
+            {sign.displayCuneiformSigns}
+          </span>
+        </Link>
+      </Col>
+      <Col xs={columnSize}>
+        <dfn title={sign.name} className="SignName">
+          <strong>
+            {' '}
             <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              {sign.displayCuneiformSigns}
+              <span className="Results--sign">{sign.displaySignName}</span>
             </Link>
-          </Col>
-          <Col xs={8} className="pr-0 mr-0">
-            <dfn title={sign.name} className="SignName">
-              <strong>
-                {' '}
-                <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-                  {sign.displaySignName}
-                </Link>
-              </strong>
-            </dfn>
-          </Col>
-        </Row>
+          </strong>
+        </dfn>
       </Col>
       <Col>
         {sign.values.length > 0 ? (
           <InlineMarkdown source={sign.displayValuesMarkdown} />
         ) : null}
+        {mesZlDash}
         {sign.mesZl && (
           <MesZL
             mesZl={sign.mesZl}

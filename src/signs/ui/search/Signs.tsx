@@ -21,6 +21,7 @@ export default function Signs({ location, signsService }: Props): JSX.Element {
     parseBooleans: true,
     parseNumbers: true,
   })
+
   return (
     <AppContent crumbs={[new SectionCrumb('Signs')]}>
       <SessionContext.Consumer>
@@ -33,7 +34,10 @@ export default function Signs({ location, signsService }: Props): JSX.Element {
                 key={`${_.uniqueId('signs')}-${query.value}`}
               />
               <SignsSearch
-                signQuery={_.pickBy({ ...query, sign: null }, _.identity)}
+                signQuery={_.pickBy(
+                  { ...query, sign: null },
+                  (property) => _.identity(property) || property === ''
+                )}
                 signsService={signsService}
               />
             </>
