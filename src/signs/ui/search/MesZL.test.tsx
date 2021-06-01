@@ -27,12 +27,12 @@ bar = *zâzu*, verteilen (cf Nougayrol, RA 62 46ff.).
 ^udu^𒁇𒊩 = BAR-MUNUS = *parratu*, weibliches Lamm. CAD <span style="color: #00610F;">P</span> 192b liest *parsallu*.
 ^túg^𒁇𒋝 = bar-sig = *paršigu*, Kopfbinde.`
 
-const mesZlNumber = '121'
+const mesZlRecords = [{ name: 'MesZL', number: '131' }]
 
 describe('MesZl', () => {
   it('MesZl Button', async () => {
-    render(<MesZL mesZl={mesZl} mesZlNumber={mesZlNumber} />)
-    await screen.findByText(`MesZL ${mesZlNumber}`)
+    render(<MesZL mesZl={mesZl} mesZlRecords={mesZlRecords} />)
+    await screen.findByText(`MesZL 131`)
     userEvent.click(screen.getByRole('button'))
     await screen.findByText(
       'Mesopotamisches Zeichenlexikon, Zweite revidierte und aktualisiert Auflage'

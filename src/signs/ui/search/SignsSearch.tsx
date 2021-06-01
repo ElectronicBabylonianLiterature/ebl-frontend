@@ -53,7 +53,7 @@ function SignComponent({
   sign: Sign
   columnSize: number
 }): JSX.Element {
-  const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name === 'MZL')
+  const mesZlRecords = sign.lists.filter((listElem) => listElem.name === 'MZL')
   let mesZlDash = <></>
   if (sign.mesZl && sign.displayValuesMarkdown[0]) {
     mesZlDash = <span>&nbsp;&mdash;&nbsp;</span>
@@ -83,12 +83,7 @@ function SignComponent({
           <InlineMarkdown source={sign.displayValuesMarkdown} />
         ) : null}
         {mesZlDash}
-        {sign.mesZl && (
-          <MesZL
-            mesZl={sign.mesZl}
-            mesZlNumber={mesZlNumber ? mesZlNumber.number : undefined}
-          />
-        )}
+        {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
       </Col>
     </Row>
   )

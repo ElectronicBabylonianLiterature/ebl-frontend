@@ -3,18 +3,17 @@ import _ from 'lodash'
 import React, { useRef, useState } from 'react'
 import './Signs.css'
 import MesZlContent from 'signs/ui/search/MesZLContent'
+import { SignListRecord } from 'signs/domain/Sign'
 
 export default function MesZL({
   mesZl,
-  mesZlNumber,
+  mesZlRecords,
 }: {
   mesZl: string
-  mesZlNumber: string | undefined
+  mesZlRecords: SignListRecord[]
 }): JSX.Element | null {
   const [show, setShow] = useState(false)
   const target = useRef(null)
-
-  const formattedNumber = mesZlNumber ? ` ${mesZlNumber}` : ''
 
   return (
     <>
@@ -24,7 +23,11 @@ export default function MesZL({
         ref={target}
         onClick={() => setShow(!show)}
       >
-        <span className="ReferenceList__citation">MesZL{formattedNumber}</span>
+        <span className="ReferenceList__citation">
+          {mesZlRecords
+            .map((record) => `${record.name} ${record.number}`)
+            .join(', ')}
+        </span>
       </Button>
       <Overlay
         flip={true}
