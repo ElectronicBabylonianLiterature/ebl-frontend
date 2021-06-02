@@ -17,7 +17,6 @@ exports[`MesZl MesZl Content 1`] = `
       </div>
     </pre>
   </div>
-  <hr />
   <div>
     <p>
       ASy 48. Lww. bar (allg.); pár (allg.).
@@ -76,7 +75,7 @@ exports[`MesZl MesZl Content 1`] = `
   <div
     class="text-center"
   >
-    ...
+    (Read more)
   </div>
   <div
     class="text-center border border-dark mt-2"
@@ -88,12 +87,19 @@ exports[`MesZl MesZl Content 1`] = `
     R. Borger,
      
     <em>
-      Mesopotamisches Zeichenlexikon, Zweite revidierte und aktualisiert Auflage
+      Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
     </em>
-    . Alter Orient und Altes Testament 305. Münster: Ugarit Verlag, second Edition, 2010; Kapitel Ⅲ
+    Alter Orient und Altes Testament 305.
+    <br />
+     Münster: Ugarit Verlag, 
+    <sup>
+      2
+    </sup>
+    2010; Kapitel Ⅲ
+    <br />
     <br />
     <strong>
-      By permission by Ugarit-Verlag.
+      By permission from Ugarit-Verlag.
     </strong>
     <br />
     <a

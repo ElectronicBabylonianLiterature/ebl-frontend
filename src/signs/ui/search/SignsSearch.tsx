@@ -27,10 +27,20 @@ function sortSigns(signs: Sign[]): Sign[] {
     )
   })
 }
-
+function columnSizes(
+  nameLengths: number[],
+  unicodeLengths: number[]
+): { unicodeSize: number; nameSize: number } {
+  const unicodeSize = Math.max(...unicodeLengths)
+    ? Math.max(...unicodeLengths)
+    : 1
+  const nameSize = Math.max(...nameLengths) ? Math.max(...nameLengths) : 1
+  return {
+    unicodeSize: Math.ceil(unicodeSize / 3),
+    nameSize: Math.ceil(nameSize / 10),
+  }
+}
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  const maxUnicodeSignsLength =
-    _.maxBy(signs, (sign) => sign.unicode.length)?.unicode.length ?? 1
   const signsNew = isIncludeHomophones ? sortSigns(signs) : signs
   return (
     <ul className="WordSearch-results">
@@ -38,7 +48,10 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
         <li key={index} className="WordSearch-results__result">
           <SignComponent
             sign={sign}
-            columnSize={maxUnicodeSignsLength > 2 ? 2 : 1}
+            {...columnSizes(
+              signs.map((sign) => sign.name.length),
+              signs.map((sign) => sign.unicode.length)
+            )}
           />
         </li>
       ))}
@@ -48,10 +61,12 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
 
 function SignComponent({
   sign,
-  columnSize,
+  unicodeSize,
+  nameSize,
 }: {
   sign: Sign
-  columnSize: number
+  unicodeSize: number
+  nameSize: number
 }): JSX.Element {
   const mesZlRecords = sign.lists.filter((listElem) => listElem.name === 'MZL')
   let mesZlDash = <></>
@@ -61,14 +76,14 @@ function SignComponent({
 
   return (
     <Row>
-      <Col xs={columnSize}>
+      <Col xs={unicodeSize}>
         <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
           <span className={'Results--cuneiform'}>
             {sign.displayCuneiformSigns}
           </span>
         </Link>
       </Col>
-      <Col xs={columnSize}>
+      <Col xs={nameSize}>
         <dfn title={sign.name} className="SignName">
           <strong>
             {' '}

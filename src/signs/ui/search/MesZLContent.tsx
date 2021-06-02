@@ -40,9 +40,12 @@ export default function MesZlContent({
   const [mesZlHead, setMesZlHead] = useState<string>('')
   const [mesZlBody, setMesZlBody] = useState<string>('')
 
+  const [ready, setReady] = useState(false)
+
+  const mesZlSplitted = splitMesZl(mesZl)
+
   useEffect(() => {
     ;(async () => {
-      const mesZlSplitted = splitMesZl(mesZl)
       const mesZlHeadConverted = await convertMarkdownToHtml(
         mesZlSplitted.mesZlHead
       )
@@ -50,11 +53,12 @@ export default function MesZlContent({
         mesZlSplitted.mesZlBody
       )
       setMesZlBody(mesZlBodyConverted)
-      setMesZlHead(mesZlHeadConverted.replace(/\s/g, '&#9'))
+      setMesZlHead(mesZlHeadConverted)
+      setReady(true)
     })()
-  }, [mesZl])
+  }, [mesZl, mesZlSplitted])
 
-  if (mesZlHead && mesZlBody) {
+  if (ready) {
     return (
       <>
         <div>
@@ -67,24 +71,25 @@ export default function MesZlContent({
             />
           </pre>
         </div>
-
-        <hr />
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mesZlBody) }}
         />
-        <div className="text-center">...</div>
+        {mesZlSplitted.mesZlBody.length > 6 ? (
+          <div className="text-center">(Read more)</div>
+        ) : null}
         <div className="text-center border border-dark mt-2">
           <strong>From</strong>
           <br />
           R. Borger,{' '}
           <em>
-            Mesopotamisches Zeichenlexikon, Zweite revidierte und aktualisiert
-            Auflage
+            Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte
+            Auflage.&nbsp;
           </em>
-          . Alter Orient und Altes Testament 305. Münster: Ugarit Verlag, second
-          Edition, 2010; Kapitel &#8546;
+          Alter Orient und Altes Testament 305.
+          <br /> Münster: Ugarit Verlag, <sup>2</sup>2010; Kapitel &#8546;
           <br />
-          <strong>By permission by Ugarit-Verlag.</strong>
+          <br />
+          <strong>By permission from Ugarit-Verlag.</strong>
           <br />
           <ExternalLink
             className="text-dark "
