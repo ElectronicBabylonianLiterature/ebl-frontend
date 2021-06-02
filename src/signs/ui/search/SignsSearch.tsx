@@ -41,7 +41,7 @@ function columnSizes(
   }
 }
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  const signsNew = isIncludeHomophones ? sortSigns(signs) : signs
+  const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
