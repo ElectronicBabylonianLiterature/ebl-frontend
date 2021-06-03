@@ -119,6 +119,7 @@ const lineConfig: Line = {
   ],
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
+  translation: '',
 }
 
 const stage = 'Old Babylonian'

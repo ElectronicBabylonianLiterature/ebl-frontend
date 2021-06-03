@@ -156,6 +156,7 @@ const linesDto = {
       number: '1',
       isBeginningOfSection: true,
       isSecondLineOfParallelism: true,
+      translation: '',
       variants: [
         {
           reconstruction: '%n kur-kur',
