@@ -27,18 +27,31 @@ function sortSigns(signs: Sign[]): Sign[] {
     )
   })
 }
-
+function columnSizes(
+  nameLengths: number[],
+  unicodeLengths: number[]
+): { unicodeSize: number; nameSize: number } {
+  const unicodeSize = Math.max(...unicodeLengths)
+    ? Math.max(...unicodeLengths)
+    : 1
+  const nameSize = Math.max(...nameLengths) ? Math.max(...nameLengths) : 1
+  return {
+    unicodeSize: Math.ceil(unicodeSize / 3),
+    nameSize: Math.ceil(nameSize / 10),
+  }
+}
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
-  const maxUnicodeSignsLength =
-    _.maxBy(signs, (sign) => sign.unicode.length)?.unicode.length ?? 1
-  const signsNew = isIncludeHomophones ? sortSigns(signs) : signs
+  const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
           <SignComponent
             sign={sign}
-            columnSize={maxUnicodeSignsLength > 2 ? 2 : 1}
+            {...columnSizes(
+              signs.map((sign) => sign.name.length),
+              signs.map((sign) => sign.unicode.length)
+            )}
           />
         </li>
       ))}
@@ -48,12 +61,14 @@ function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
 
 function SignComponent({
   sign,
-  columnSize,
+  unicodeSize,
+  nameSize,
 }: {
   sign: Sign
-  columnSize: number
+  unicodeSize: number
+  nameSize: number
 }): JSX.Element {
-  const mesZlNumber = _.find(sign.lists, (listElem) => listElem.name === 'MZL')
+  const mesZlRecords = sign.lists.filter((listElem) => listElem.name === 'MZL')
   let mesZlDash = <></>
   if (sign.mesZl && sign.displayValuesMarkdown[0]) {
     mesZlDash = <span>&nbsp;&mdash;&nbsp;</span>
@@ -61,14 +76,14 @@ function SignComponent({
 
   return (
     <Row>
-      <Col xs={columnSize}>
+      <Col xs={unicodeSize}>
         <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
           <span className={'Results--cuneiform'}>
             {sign.displayCuneiformSigns}
           </span>
         </Link>
       </Col>
-      <Col xs={columnSize}>
+      <Col xs={nameSize}>
         <dfn title={sign.name} className="SignName">
           <strong>
             {' '}
@@ -83,12 +98,7 @@ function SignComponent({
           <InlineMarkdown source={sign.displayValuesMarkdown} />
         ) : null}
         {mesZlDash}
-        {sign.mesZl && (
-          <MesZL
-            mesZl={sign.mesZl}
-            mesZlNumber={mesZlNumber ? mesZlNumber.number : undefined}
-          />
-        )}
+        {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
       </Col>
     </Row>
   )

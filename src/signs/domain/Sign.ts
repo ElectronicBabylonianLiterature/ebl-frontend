@@ -11,7 +11,7 @@ interface Logogram {
   schrammLogogramme: string
 }
 
-interface SignListRecord {
+export interface SignListRecord {
   name: string
   number: string
 }
