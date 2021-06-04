@@ -8,6 +8,11 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
+import Markup from 'transliteration/ui/markup'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -21,6 +26,41 @@ function DisplayControlLine({
         className={classNames([`Transliteration__${type}`])}
       >
         {content.map(({ value }) => value).join('')}
+      </td>
+    </>
+  )
+}
+
+function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
+  const labels = extent.labels.join(' ')
+  return (
+    <>
+      ({labels}
+      {!_.isEmpty(labels) && ' '}
+      {lineNumberToString(extent.number)})
+    </>
+  )
+}
+
+function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
+  const translationLine = line as TranslationLine
+  return (
+    <>
+      <td className={classNames([`Transliteration__${line.type}`])}>
+        {translationLine.language}
+        {translationLine.extent && (
+          <>
+            {' '}
+            <DispalyExtent extent={translationLine.extent} />
+          </>
+        )}
+        :
+      </td>
+      <td
+        colSpan={columns}
+        className={classNames([`Transliteration__${line.type}`])}
+      >
+        <Markup line={translationLine} />
       </td>
     </>
   )
@@ -44,6 +84,7 @@ const lineComponents: ReadonlyMap<
   ['ObjectAtLine', DisplayDollarAndAtLine],
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
+  ['TranslationLine', DisplayTranslationLine],
 ])
 
 function FirstLineNotes({

@@ -23,15 +23,14 @@ import {
 } from 'corpus/domain/text'
 
 export function fromDto(textDto): Text {
-  return createText({
-    ...textDto,
-    chapters: textDto.chapters.map((chapterDto) =>
-      createChapter({
-        ...chapterDto,
-        manuscripts: chapterDto.manuscripts.map(fromManuscriptDto),
-        lines: chapterDto.lines.map(fromLineDto),
-      })
-    ),
+  return createText(textDto)
+}
+
+export function fromChapterDto(chapterDto) {
+  return createChapter({
+    ...chapterDto,
+    manuscripts: chapterDto.manuscripts.map(fromManuscriptDto),
+    lines: chapterDto.lines.map(fromLineDto),
   })
 }
 

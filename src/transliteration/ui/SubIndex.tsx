@@ -1,7 +1,7 @@
 import React from 'react'
 import { NamedSign } from 'transliteration/domain/token'
 
-const subscriptNumbers: ReadonlyMap<string, string> = new Map([
+export const subscriptNumbers: ReadonlyMap<string, string> = new Map([
   ['0', '₀'],
   ['1', '₁'],
   ['2', '₂'],

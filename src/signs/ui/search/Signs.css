@@ -1,0 +1,44 @@
+.Signs-search {
+  margin: 0 auto 2em auto;
+  max-width: 45em;
+}
+
+.MesZL--text {
+  line-height: 180%;
+}
+
+.MesZL--popover {
+  min-width: 40%;
+}
+.MesZL--popover p {
+  margin-bottom: 0;
+  margin-top: 0.5em;
+}
+.MesZL--popover hr {
+  border-color: black;
+  border-style: solid;
+  border-width: 0 0 0.5px 0;
+}
+
+.SignName {
+  font-style: normal;
+  text-transform: lowercase;
+}
+.Help__list {
+  display: flex;
+}
+.Help__list-name {
+  min-width: 60px;
+}
+.Help__popover {
+  min-width: 600px;
+}
+.Results--sign {
+  font-variant: all-small-caps;
+}
+.Results--cuneiform {
+  font-size: 150%;
+}
+.Results {
+  max-width: 190px;
+}

@@ -262,6 +262,7 @@ export interface Line {
   readonly variants: ReadonlyArray<LineVariant>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
+  readonly translation: string
 }
 
 export const createLine: (config: Partial<Line>) => Line = produce(
@@ -270,6 +271,7 @@ export const createLine: (config: Partial<Line>) => Line = produce(
     variants: [],
     isSecondLineOfParallelism: false,
     isBeginningOfSection: false,
+    translation: '',
     ...draft,
   })
 )

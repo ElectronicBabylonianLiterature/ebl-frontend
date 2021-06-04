@@ -84,42 +84,38 @@ describe('Search', () => {
     const transliteration = 'LI₂₃ ši₂-ṣa-pel₃-ṭa₃'
     const corpusResult = {
       id: {
-        category: 1,
-        index: 2,
+        textId: {
+          category: 1,
+          index: 2,
+        },
+        stage: 'Old Babyblonian',
+        name: 'My Chapter',
       },
-      matchingChapters: [
-        {
-          id: {
-            stage: 'Old Babyblonian',
-            name: 'My Chapter',
-          },
-          siglums: { '1': 'NinSchb' },
-          matchingLines: [
-            fromLineDto({
-              number: '1',
-              isBeginningOfSection: false,
-              isSecondLineOfParallelism: false,
-              variants: [
+      siglums: { '1': 'NinSchb' },
+      matchingLines: [
+        fromLineDto({
+          number: '1',
+          isBeginningOfSection: false,
+          isSecondLineOfParallelism: false,
+          variants: [
+            {
+              reconstruction: '%n ra',
+              manuscripts: [
                 {
-                  reconstruction: '%n ra',
-                  manuscripts: [
-                    {
-                      manuscriptId: 1,
-                      labels: ['o', 'iii'],
-                      number: 'a+1',
-                      atf: 'ra',
-                      omittedWords: [],
-                    },
-                  ],
+                  manuscriptId: 1,
+                  labels: ['o', 'iii'],
+                  number: 'a+1',
+                  atf: 'ra',
+                  omittedWords: [],
                 },
               ],
-            }),
+            },
           ],
-          matchingColophonLines: {
-            '1': ['1. kur'],
-          },
-        },
+        }),
       ],
+      matchingColophonLines: {
+        '1': ['1. kur'],
+      },
     }
 
     beforeEach(async () => {
@@ -154,11 +150,11 @@ describe('Search', () => {
       it('Name links to chapter', async () => {
         expect(
           await element.findByText(
-            `${corpusResult.matchingChapters[0].id.stage} ${corpusResult.matchingChapters[0].id.name}`
+            `${corpusResult.id.stage} ${corpusResult.id.name}`
           )
         ).toHaveAttribute(
           'href',
-          `/corpus/${corpusResult.id.category}/${corpusResult.id.index}/${corpusResult.matchingChapters[0].id.stage}/${corpusResult.matchingChapters[0].id.name}`
+          `/corpus/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
         )
       })
 

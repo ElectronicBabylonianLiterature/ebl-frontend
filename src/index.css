@@ -1,5 +1,5 @@
 body {
-  font-family: Junicode;
+  font-family: Assurbanipal, Junicode;
   font-size: initial;
   margin: 0;
   padding: 0;
@@ -31,4 +31,15 @@ body {
   font-family: 'Junicode';
   font-style: italic;
   src: url('Junicode-Italic.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Assurbanipal';
+  font-style: normal;
+  font-weight: normal;
+  src: url('Assurbanipal.woff') format('woff'),
+    url('Assurbanipal.woff2') format('woff2'),
+    url('Assurbanipal.ttf') format('truetype');
+  unicode-range: U+12000-123FF, U+12400-1247F, U+12480-1254F, U+100000-10FFFD;
 }

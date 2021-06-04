@@ -21,9 +21,8 @@ export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
       <Markdown
         text={lemma
           .map((lemmaElement) => `*${lemmaElement}*${attestedSign}`)
-          .join('; ')}
+          .join(' ')}
       />
-      &nbsp;
       {notes.length > 1 && (
         <>
           &nbsp;
@@ -107,21 +106,27 @@ export function Logogram({
 type MarkdownProps = {
   text: string
   paragraph?: ElementType
+  className?: string
+  isReplaceCurlyQuotes?: boolean
 }
 export function Markdown({
   text,
   paragraph = 'span',
+  className = '',
+  isReplaceCurlyQuotes = true,
 }: MarkdownProps): JSX.Element {
   return (
     <ReactMarkdown
-      source={replaceByCurlyQuotes(text)}
+      className={className}
       plugins={[remarkSubSuper]}
       renderers={{
         paragraph: paragraph,
         sub: 'sub',
         sup: 'sup',
       }}
-    />
+    >
+      {isReplaceCurlyQuotes ? replaceByCurlyQuotes(text) : text}
+    </ReactMarkdown>
   )
 }
 

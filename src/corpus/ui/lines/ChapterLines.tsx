@@ -65,10 +65,7 @@ function ChapterLineForm({
   onChange,
   disabled = false,
 }: FormProps) {
-  const handleChangeBoolean = (
-    property: string,
-    propertyValue: boolean
-  ): void =>
+  const handleChange = (property: string) => (propertyValue): void =>
     onChange(
       produce(value, (draft) => {
         draft[property] = propertyValue
@@ -84,7 +81,7 @@ function ChapterLineForm({
       })
     )
   }
-  const handleChange = (variants: LineVariant[]): void =>
+  const handleVariantsChange = (variants: LineVariant[]): void =>
     onChange(
       produce(value, (draft) => {
         draft.variants = castDraft(variants)
@@ -99,7 +96,7 @@ function ChapterLineForm({
             <Form.Control value={value.number} onChange={handleNumberChange} />
           </Form.Group>
         </Col>
-        <Col md={11}>
+        <Col md={3}>
           <Form.Check
             inline
             type="checkbox"
@@ -107,8 +104,7 @@ function ChapterLineForm({
             label="second line of parallelism"
             checked={value.isSecondLineOfParallelism}
             onChange={(): void =>
-              handleChangeBoolean(
-                'isSecondLineOfParallelism',
+              handleChange('isSecondLineOfParallelism')(
                 !value.isSecondLineOfParallelism
               )
             }
@@ -120,17 +116,27 @@ function ChapterLineForm({
             label="beginning of a section"
             checked={value.isBeginningOfSection}
             onChange={(): void =>
-              handleChangeBoolean(
-                'isBeginningOfSection',
-                !value.isBeginningOfSection
-              )
+              handleChange('isBeginningOfSection')(!value.isBeginningOfSection)
             }
           />
+        </Col>
+        <Col>
+          <label>Translation</label>
+          <Editor
+            name={_.uniqueId('Translation-')}
+            value={value.translation}
+            onChange={handleChange('translation')}
+            disabled={disabled}
+          />
+        </Col>
+      </Form.Row>
+      <Form.Row>
+        <Col>
           <ListForm
             noun="variant"
             defaultValue={createVariant({})}
             value={value.variants}
-            onChange={handleChange}
+            onChange={handleVariantsChange}
           >
             {(
               variant: LineVariant,

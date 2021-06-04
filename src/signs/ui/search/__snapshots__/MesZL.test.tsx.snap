@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MesZl MesZl Content 1`] = `
+<div>
+  <div>
+    <pre>
+      <div
+        class="text-center"
+      >
+        <p>
+          121	
+          <strong>
+            BAR
+          </strong>
+          	𒁇
+        </p>
+      </div>
+    </pre>
+  </div>
+  <div>
+    <p>
+      ASy 48. Lww. bar (allg.); pár (allg.).
+    </p>
+    
+
+    <p>
+      Statt Lw. war (ass.-a.) lieber, wie von Hecker, OLZ 65 144f. erwogen, einfach bar zu umschreiben (ebenso in CAD A/II 286ff.; der altassyr. Monatsname lautet nicht 
+      <em>
+        tan-war-ta
+      </em>
+      , sondern 
+      <em>
+        kán-bar-ta
+      </em>
+      , cf Donbaz, JCS 24 26b Mitte [und AHw 1320a]). Statt 
+      <em>
+        war-ḫaṣ
+      </em>
+       (bab.-n.) liest CAD M/I 385a vielmehr 
+      <em>
+        maš-qut
+      </em>
+      .
+    </p>
+    
+
+    <p>
+      Der nach Thureau-D., Homophones 43 für KAR 152 2f. vorgeschlagene Lw. “pàra” (hätte pára lauten müssen) wird in CAD N/I 285a Mitte angezweifelt.
+    </p>
+    
+
+    <hr />
+    
+
+    <p>
+      bar = 
+      <em>
+        aḫû
+      </em>
+      , fremd. bar-
+      <em>
+        tum
+      </em>
+       usw. = 
+      <em>
+        aḫī-tum
+      </em>
+      , Unheil; nach CAD A/I 192b oben auch 
+      <em>
+        uššur-tum
+      </em>
+       (?? nicht in AHw 1498b).
+    </p>
+  </div>
+  <div
+    class="text-center"
+  >
+    (Read more)
+  </div>
+  <div
+    class="text-center border border-dark mt-2"
+  >
+    <strong>
+      From
+    </strong>
+    <br />
+    R. Borger,
+     
+    <em>
+      Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
+    </em>
+    Alter Orient und Altes Testament 305.
+    <br />
+     Münster: Ugarit Verlag, 
+    <sup>
+      2
+    </sup>
+    2010; Kapitel Ⅲ
+    <br />
+    <br />
+    <strong>
+      By permission from Ugarit-Verlag.
+    </strong>
+    <br />
+    <a
+      class="text-dark "
+      href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <i
+        class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+      />
+    </a>
+  </div>
+</div>
+`;

@@ -43,6 +43,7 @@ function commonTests(): void {
   })
 
   test.each([
+    ['Signs', '/signs'],
     ['Dictionary', '/dictionary'],
     ['Fragmentarium', '/fragmentarium'],
     ['Bibliography', '/bibliography'],
@@ -76,6 +77,7 @@ describe('Correct element is active based on the route', () => {
 
 function expectHeaderLabelNotActive(activeLabel: string): void {
   const allHeaderLabels = [
+    'Signs',
     'Fragmentarium',
     'Bibliography',
     'Dictionary',

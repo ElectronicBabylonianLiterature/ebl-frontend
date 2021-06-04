@@ -78,7 +78,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:        
           build-args: |
-            REACT_APP_AUTH0_DOMAIN=electronic-babylonian-literature.eu.auth0.com
+            REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
             REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
             REACT_APP_DICTIONARY_API_URL=/api
@@ -121,7 +121,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:        
           build-args: |
-            REACT_APP_AUTH0_DOMAIN=electronic-babylonian-literature.eu.auth0.com
+            REACT_APP_AUTH0_DOMAIN=auth.ebl.lmu.de
             REACT_APP_AUTH0_CLIENT_ID=${{ secrets.REACT_APP_AUTH0_CLIENT_ID }}
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
             REACT_APP_DICTIONARY_API_URL=/test/api
