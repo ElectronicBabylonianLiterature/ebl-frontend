@@ -68,7 +68,13 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
       )}
       {mesZlDash}
-      {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
+      {sign.mesZl && (
+        <MesZL
+          mesZl={sign.mesZl}
+          mesZlRecords={mesZlRecords}
+          signName={sign.name}
+        />
+      )}
     </div>
   )
 }

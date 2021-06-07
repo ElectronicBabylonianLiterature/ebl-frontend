@@ -28,6 +28,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
+import SignDisplay from 'signs/ui/display/SignDisplay'
 
 function parseStringParam(
   location: Location,
@@ -147,6 +148,7 @@ function App({
               />
             )}
           />
+          <Route path="/signs/:id" render={SignDisplay} />
           <Route
             path="/signs"
             render={(props): ReactNode => (

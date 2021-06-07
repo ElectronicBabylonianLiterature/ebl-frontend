@@ -8,7 +8,9 @@ import { SignListRecord } from 'signs/domain/Sign'
 export default function MesZL({
   mesZl,
   mesZlRecords,
+  signName,
 }: {
+  signName: string
   mesZl: string
   mesZlRecords: SignListRecord[]
 }): JSX.Element | null {
@@ -19,7 +21,7 @@ export default function MesZL({
       {...props}
     >
       <Popover.Content>
-        <MesZlContent mesZl={mesZl} />
+        <MesZlContent mesZl={mesZl} signName={signName} />
       </Popover.Content>
     </Popover>
   )

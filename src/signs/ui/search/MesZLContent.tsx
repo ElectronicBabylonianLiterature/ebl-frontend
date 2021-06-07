@@ -7,6 +7,7 @@ import remark2rehype from 'remark-rehype'
 import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
 import DOMPurify from 'dompurify'
+import { Link } from 'react-router-dom'
 
 function splitMesZl(
   mesZl: string
@@ -39,8 +40,10 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
 }
 
 export default function MesZlContent({
+  signName,
   mesZl,
 }: {
+  signName: string
   mesZl: string
 }): JSX.Element | null {
   const [mesZlHead, setMesZlHead] = useState<string>('')
@@ -79,7 +82,12 @@ export default function MesZlContent({
         {mesZl.split('\n').length > 7 && (
           <div className="text-center">
             <br />
-            (Read more ...)
+            <strong>
+              <Link to={`/signs/${encodeURIComponent(signName)}`}>
+                (Read more ...)
+              </Link>
+            </strong>
+
             <br />
             <br />
           </div>
