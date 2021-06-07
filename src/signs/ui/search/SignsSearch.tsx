@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import { Col, Row } from 'react-bootstrap'
 import compareAkkadianStrings, {
   cleanAkkadianString,
 } from 'dictionary/domain/compareAkkadianStrings'
@@ -75,32 +74,28 @@ function SignComponent({
   }
 
   return (
-    <Row>
-      <Col xs={unicodeSize}>
-        <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-          <span className={'Results--cuneiform'}>
-            {sign.displayCuneiformSigns}
-          </span>
-        </Link>
-      </Col>
-      <Col xs={nameSize}>
-        <dfn title={sign.name} className="SignName">
-          <strong>
-            {' '}
-            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              <span className="Results--sign">{sign.displaySignName}</span>
-            </Link>
-          </strong>
-        </dfn>
-      </Col>
-      <Col>
-        {sign.values.length > 0 ? (
-          <InlineMarkdown source={sign.displayValuesMarkdown} />
-        ) : null}
-        {mesZlDash}
-        {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
-      </Col>
-    </Row>
+    <div className="HangingIndent">
+      <Link to={`/signs/${encodeURIComponent(sign.name)}`} className="mx-2">
+        <span className={'Results--cuneiform'}>
+          {sign.displayCuneiformSigns}
+        </span>
+      </Link>
+
+      <dfn title={sign.name} className="SignName mx-2">
+        <strong>
+          {' '}
+          <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+            <span className="Results--sign">{sign.displaySignName}</span>
+          </Link>
+        </strong>
+      </dfn>
+
+      {sign.values.length > 0 && (
+        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
+      )}
+      {mesZlDash}
+      {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
+    </div>
   )
 }
 

@@ -8,28 +8,34 @@ import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
 import DOMPurify from 'dompurify'
 
-function splitMesZl(mesZl: string): { mesZlHead: string; mesZlBody: string } {
+function splitMesZl(
+  mesZl: string
+): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines
-    .slice(1, 6)
+    .slice(1, 7)
     .join('\n\n')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
-  return { mesZlHead: mesZlLines[0], mesZlBody: mesZlBody }
+  return { mesZlHeadMarkdown: mesZlLines[0], mesZlBodyMarkdown: mesZlBody }
 }
-async function convertMarkdownToHtml(markdown: string): Promise<string> {
+
+async function convertMarkdownToHtml(markdown: any): Promise<string> {
   const subSup = (mesZL: string): string =>
     mesZL
       .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
       .replace(/~([^~]*)~/g, '<sub>$1</sub>')
 
+  const italic = (mesZL: string): string =>
+    mesZL.replace(/\*([^*]*)\*/g, '<em>$1</em>')
+
   const file = await unified()
     .use(remarkParse)
-    .use(remark2rehype)
+    .use(remark2rehype, { allowDangerousHtml: true })
     .use(raw)
     .use(stringify)
     .process(markdown)
-  return subSup(String(file))
+  return italic(subSup(String(file)))
 }
 
 export default function MesZlContent({
@@ -42,21 +48,16 @@ export default function MesZlContent({
 
   const [ready, setReady] = useState(false)
 
-  const mesZlSplitted = splitMesZl(mesZl)
+  const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl)
 
   useEffect(() => {
     ;(async () => {
-      const mesZlHeadConverted = await convertMarkdownToHtml(
-        mesZlSplitted.mesZlHead
-      )
-      const mesZlBodyConverted = await convertMarkdownToHtml(
-        mesZlSplitted.mesZlBody
-      )
-      setMesZlBody(mesZlBodyConverted)
-      setMesZlHead(mesZlHeadConverted)
+      setMesZlHead(await convertMarkdownToHtml(mesZlHeadMarkdown))
+      setMesZlBody(await convertMarkdownToHtml(mesZlBodyMarkdown))
+
       setReady(true)
     })()
-  }, [mesZl, mesZlSplitted])
+  }, [mesZl, mesZlHeadMarkdown, mesZlBodyMarkdown])
 
   if (ready) {
     return (
@@ -64,6 +65,7 @@ export default function MesZlContent({
         <div>
           <pre>
             <div
+              style={{ fontFamily: 'Assurbanipal' }}
               className="text-center"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(mesZlHead),
@@ -74,10 +76,15 @@ export default function MesZlContent({
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mesZlBody) }}
         />
-        {mesZlSplitted.mesZlBody.length > 6 ? (
-          <div className="text-center">(Read more)</div>
-        ) : null}
-        <div className="text-center border border-dark mt-2">
+        {mesZl.split('\n').length > 7 && (
+          <div className="text-center">
+            <br />
+            (Read more ...)
+            <br />
+            <br />
+          </div>
+        )}
+        <div className="text-center border border-dark">
           <strong>From</strong>
           <br />
           R. Borger,{' '}
@@ -86,7 +93,7 @@ export default function MesZlContent({
             Auflage.&nbsp;
           </em>
           Alter Orient und Altes Testament 305.
-          <br /> Münster: Ugarit Verlag, <sup>2</sup>2010; Kapitel &#8546;
+          <br /> Münster: Ugarit-Verlag, <sup>2</sup>2010; Kapitel &#8546;.
           <br />
           <br />
           <strong>By permission from Ugarit-Verlag.</strong>
