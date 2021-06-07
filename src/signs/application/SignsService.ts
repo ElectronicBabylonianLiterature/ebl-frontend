@@ -12,4 +12,7 @@ export default class SignsService {
   search(signQuery: SignQuery): Bluebird<Sign[]> {
     return this.signsRepository.search(signQuery)
   }
+  find(signName: string): Bluebird<Sign> {
+    return this.signsRepository.find(signName)
+  }
 }
