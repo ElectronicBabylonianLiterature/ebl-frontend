@@ -20,7 +20,7 @@ function splitMesZl(
   return { mesZlHeadMarkdown: mesZlLines[0], mesZlBodyMarkdown: mesZlBody }
 }
 
-async function convertMarkdownToHtml(markdown: any): Promise<string> {
+async function convertMarkdownToHtml(markdown: string): Promise<string> {
   const subSup = (mesZL: string): string =>
     mesZL
       .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')

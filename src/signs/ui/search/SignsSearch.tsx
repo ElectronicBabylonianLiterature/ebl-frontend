@@ -26,52 +26,26 @@ function sortSigns(signs: Sign[]): Sign[] {
     )
   })
 }
-function columnSizes(
-  nameLengths: number[],
-  unicodeLengths: number[]
-): { unicodeSize: number; nameSize: number } {
-  const unicodeSize = Math.max(...unicodeLengths)
-    ? Math.max(...unicodeLengths)
-    : 1
-  const nameSize = Math.max(...nameLengths) ? Math.max(...nameLengths) : 1
-  return {
-    unicodeSize: Math.ceil(unicodeSize / 3),
-    nameSize: Math.ceil(nameSize / 10),
-  }
-}
+
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
   const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
-          <SignComponent
-            sign={sign}
-            {...columnSizes(
-              signs.map((sign) => sign.name.length),
-              signs.map((sign) => sign.unicode.length)
-            )}
-          />
+          <SignComponent sign={sign} />
         </li>
       ))}
     </ul>
   )
 }
 
-function SignComponent({
-  sign,
-  unicodeSize,
-  nameSize,
-}: {
-  sign: Sign
-  unicodeSize: number
-  nameSize: number
-}): JSX.Element {
+function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   const mesZlRecords = sign.lists.filter((listElem) => listElem.name === 'MZL')
-  let mesZlDash = <></>
-  if (sign.mesZl && sign.displayValuesMarkdown[0]) {
-    mesZlDash = <span>&nbsp;&mdash;&nbsp;</span>
-  }
+  const mesZlDash =
+    sign.mesZl && sign.displayValuesMarkdown[0] ? (
+      <span>&nbsp;&mdash;&nbsp;</span>
+    ) : null
 
   return (
     <div className="HangingIndent">
