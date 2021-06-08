@@ -9,9 +9,11 @@ import { Provenance, provenances } from './provenance'
 export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
+  readonly displayName?: string
 }
 
 export const types: ReadonlyMap<string, ManuscriptType> = new Map([
+  ['None', { name: 'None', abbreviation: '', displayName: '-' }],
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
