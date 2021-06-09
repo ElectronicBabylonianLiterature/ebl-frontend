@@ -12,9 +12,10 @@ import { Link } from 'react-router-dom'
 function splitMesZl(
   mesZl: string
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
+  const cutOff = 7
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines
-    .slice(1, 7)
+    .slice(1, cutOff)
     .join('\n\n')
     .replace(/\[/g, '\\[')
     .replace(/]/g, '\\]')
@@ -26,9 +27,11 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
     mesZL
       .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
       .replace(/~([^~]*)~/g, '<sub>$1</sub>')
-
+  //remark uses commonMarkdown, that's why we have to parse italic manually ontop of transforming it with remarksanitize
   const italic = (mesZL: string): string =>
     mesZL.replace(/\*([^*]*)\*/g, '<em>$1</em>')
+  // remark supSuber library which we use in other places doesn't work with unified https://github.com/zestedesavoir/zmarkdown/issues/438
+  // DOMPurify instead of https://github.com/syntax-tree/hast-util-sanitize because it is not working. (They are used to sanitizie HTML)
 
   const file = await unified()
     .use(remarkParse)
@@ -68,7 +71,6 @@ export default function MesZlContent({
         <div>
           <pre>
             <div
-              style={{ fontFamily: 'Assurbanipal' }}
               className="text-center"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(mesZlHead),

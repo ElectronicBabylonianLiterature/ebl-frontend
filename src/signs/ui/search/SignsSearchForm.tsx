@@ -56,7 +56,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
     }
   }
   return (
-    <Form className="Signs-search">
+    <Form className="signs-search">
       <Form.Group as={Row} controlId="query">
         <Form.Label column sm={2}>
           Query

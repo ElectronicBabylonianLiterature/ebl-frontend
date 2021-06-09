@@ -1,47 +1,44 @@
-.Signs-search {
+.signs_form {
   margin: 0 auto 2em auto;
   max-width: 45em;
 }
 
-.MesZL--text {
+.mesZL__text {
   line-height: 180%;
 }
 
-.MesZL--popover {
+.mesZL__popover {
   min-width: 40%;
 }
-.MesZL--popover p {
+.mesZL__popover p {
   margin-bottom: 0;
   margin-top: 0.5em;
 }
-.MesZL--popover hr {
+.mesZL__popover hr {
   border-color: black;
   border-style: solid;
   border-width: 0 0 0.5px 0;
 }
-.HangingIndent {
+.signs__sign {
   padding-left: 44px;
   text-indent: -44px;
 }
-.SignName {
+.signs_sign__name {
   font-style: normal;
   text-transform: lowercase;
 }
-.Help__list {
+.signs__help__list {
   display: flex;
 }
-.Help__list-name {
+.signs__help__list__label {
   min-width: 60px;
 }
-.Help__popover {
+.signs__help_popover {
   min-width: 600px;
 }
-.Results--sign {
+.signs_sign__values {
   font-variant: all-small-caps;
 }
-.Results--cuneiform {
+.signs_sign__cuneiform {
   font-size: 150%;
-}
-.Results {
-  max-width: 190px;
 }
