@@ -48,18 +48,18 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
     ) : null
 
   return (
-    <div className="HangingIndent">
+    <div className="signs__sign">
       <Link to={`/signs/${encodeURIComponent(sign.name)}`} className="mx-2">
-        <span className={'Results--cuneiform'}>
+        <span className="signs__sign__cuneiform">
           {sign.displayCuneiformSigns}
         </span>
       </Link>
 
-      <dfn title={sign.name} className="SignName mx-2">
+      <dfn title={sign.name} className="signs_sign__name mx-2">
         <strong>
           {' '}
           <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-            <span className="Results--sign">{sign.displaySignName}</span>
+            <span className="signs_sign__values">{sign.displaySignName}</span>
           </Link>
         </strong>
       </dfn>

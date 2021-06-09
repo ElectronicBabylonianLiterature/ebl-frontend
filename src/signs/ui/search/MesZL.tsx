@@ -17,7 +17,7 @@ export default function MesZL({
   const renderPopover = (props) => (
     <Popover
       id={_.uniqueId('Citation-')}
-      className="ReferenceList__popover MesZL--popover"
+      className="ReferenceList__popover mesZL__popover"
       {...props}
     >
       <Popover.Content>
