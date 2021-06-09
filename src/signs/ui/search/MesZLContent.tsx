@@ -23,16 +23,20 @@ function splitMesZl(
 }
 
 async function convertMarkdownToHtml(markdown: string): Promise<string> {
+  // remark supSuber library which we use in other places doesn't work with unified
+  // supSuper Issue https://github.com/zestedesavoir/zmarkdown/issues/438
   const subSup = (mesZL: string): string =>
     mesZL
       .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
       .replace(/~([^~]*)~/g, '<sub>$1</sub>')
-  //remark uses commonMarkdown, that's why we have to parse italic manually ontop of transforming it with remarksanitize
+
+  // remark uses commonMarkdown, that's why we have to parse italic manually ontop of transforming it with remark
+  // Issue/Question CommonMarkdown Italic https://github.com/remarkjs/remark-rehype/issues/18
   const italic = (mesZL: string): string =>
     mesZL.replace(/\*([^*]*)\*/g, '<em>$1</em>')
-  // remark supSuber library which we use in other places doesn't work with unified https://github.com/zestedesavoir/zmarkdown/issues/438
-  // DOMPurify instead of https://github.com/syntax-tree/hast-util-sanitize because it is not working. (They are used to sanitizie HTML)
 
+  //remark sanitize https://github.com/syntax-tree/hast-util-sanitize is not working
+  //we are using DOMPurify instead to sanitize HTML before setting "dangerouslySetInnerHTML"
   const file = await unified()
     .use(remarkParse)
     .use(remark2rehype, { allowDangerousHtml: true })
