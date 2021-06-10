@@ -3,12 +3,14 @@ import { Col, Container, Popover, Row } from 'react-bootstrap'
 import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignsService from 'signs/application/SignsService'
-import Sign from 'signs/domain/Sign'
+import Sign, { Logogram } from 'signs/domain/Sign'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import './signDisplay.css'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import MesZlContent from 'signs/ui/search/MesZLContent'
+import Word from './Word'
+import WordService from 'dictionary/application/WordService'
 
 function CuneiformFontsHelpPopover(): JSX.Element {
   return (
@@ -77,7 +79,13 @@ function SignHeading({
   )
 }
 
-function SignInformation({ sign }: { sign: Sign }): JSX.Element {
+function SignInformation({
+  sign,
+  wordService,
+}: {
+  sign: Sign
+  wordService: WordService
+}): JSX.Element {
   console.log(sign)
   return (
     <>
@@ -103,8 +111,10 @@ function SignInformation({ sign }: { sign: Sign }): JSX.Element {
         </Col>
       </Row>
       <Row>
-        <Col>Words (as logogram):</Col>
-        <Col></Col>
+        <Col xs={'auto'}>Words (as logogram):</Col>
+        <Col>
+          <Logograms logograms={sign.logograms} wordService={wordService} />
+        </Col>
       </Row>
       <Row>
         <Col></Col>
@@ -112,6 +122,57 @@ function SignInformation({ sign }: { sign: Sign }): JSX.Element {
     </>
   )
 }
+
+function WordsWithLink({
+  wordIds,
+  wordService,
+}: {
+  wordIds: readonly string[]
+  wordService: WordService
+}): JSX.Element {
+  return (
+    <>
+      {wordIds.map((wordId, index) => (
+        <span key={index}>
+          <Word wordId={wordId} wordService={wordService} />
+          {index < wordIds.length - 1 ? ', ' : ''}
+        </span>
+      ))}
+    </>
+  )
+}
+function LogogramDisplay({
+  logogram,
+  wordService,
+}: {
+  logogram: Logogram
+  wordService: WordService
+}): JSX.Element {
+  return (
+    <div>
+      <WordsWithLink wordIds={logogram.wordId} wordService={wordService} />
+    </div>
+  )
+}
+
+function Logograms({
+  logograms,
+  wordService,
+}: {
+  logograms: readonly Logogram[]
+  wordService: WordService
+}): JSX.Element {
+  return (
+    <ul>
+      {logograms.map((logogram, index) => (
+        <li key={index}>
+          <LogogramDisplay logogram={logogram} wordService={wordService} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 function MesZl({
   signName,
   mesZl,
@@ -135,24 +196,33 @@ function MesZl({
   )
 }
 
-function SignDisplay({ sign }: { sign: Sign }): JSX.Element {
+function SignDisplay({
+  sign,
+  wordService,
+}: {
+  sign: Sign
+  wordService: WordService
+}): JSX.Element {
   return (
     <Container>
       <SignHeading
         signName={sign.name}
         cuneiformLetters={sign.displayCuneiformSigns}
       />
-      <SignInformation sign={sign} />
+      <SignInformation sign={sign} wordService={wordService} />
       <MesZl signName={sign.name} mesZl={sign.mesZl} />
     </Container>
   )
 }
 type Props = {
   data: Sign
+  wordService: WordService
   signsService: SignsService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<WithoutData<Props>, { match; signsService }, Sign>(
-  ({ data }) => <SignDisplay sign={data} />,
+  ({ data, wordService }) => (
+    <SignDisplay sign={data} wordService={wordService} />
+  ),
   (props) => props.signsService.find(props.match.params['id'])
 )
