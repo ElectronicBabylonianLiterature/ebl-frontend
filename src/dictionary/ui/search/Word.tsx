@@ -5,11 +5,11 @@ import './Word.css'
 import InlineMarkdown from 'common/InlineMarkdown'
 import Word from 'dictionary/domain/Word'
 
-function Lemma({
+export function Lemma({
   container = 'em',
   word,
 }: {
-  container: string
+  container?: string
   word: Word
 }): JSX.Element {
   const attested = word.attested === false ? '*' : ''

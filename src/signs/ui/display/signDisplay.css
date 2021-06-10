@@ -1,0 +1,37 @@
+.old-babylonian-monumental {
+  font-family: 'Old-Babylonian (Monumental)', Junicode, serif;
+}
+.old-babylonian-cursive {
+  font-family: 'Old-Babylonian Cursive', Junicode, serif;
+}
+
+.hittite {
+  font-family: 'Hittite', Junicode, serif;
+}
+.neo-babylonian {
+  font-family: 'Neo-Babylonian', Junicode, serif;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian (Monumental)';
+  src: url('fonts/SantakkuM.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Old-Babylonian Cursive';
+  src: url('fonts/SantakkuM.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Hittite';
+  src: url('fonts/UllikummiA.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Neo-Babylonian';
+  src: url('fonts/Esagil.woff') format('woff');
+}
