@@ -18,7 +18,7 @@ export default function SignsSearchHelp(): JSX.Element {
     <Popover
       id={_.uniqueId('SignsSearchHelp-')}
       title="Search transliterations"
-      className="signs__help_popover"
+      className="signs__help__popover"
     >
       <Popover.Content>
         <ul>
