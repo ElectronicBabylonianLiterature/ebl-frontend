@@ -8,18 +8,20 @@ import { SignListRecord } from 'signs/domain/Sign'
 export default function MesZL({
   mesZl,
   mesZlRecords,
+  signName,
 }: {
+  signName: string
   mesZl: string
   mesZlRecords: SignListRecord[]
 }): JSX.Element | null {
   const renderPopover = (props) => (
     <Popover
       id={_.uniqueId('Citation-')}
-      className="ReferenceList__popover MesZL--popover"
+      className="ReferenceList__popover mesZL__popover"
       {...props}
     >
       <Popover.Content>
-        <MesZlContent mesZl={mesZl} />
+        <MesZlContent mesZl={mesZl} signName={signName} />
       </Popover.Content>
     </Popover>
   )

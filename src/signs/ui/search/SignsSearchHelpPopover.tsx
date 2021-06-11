@@ -6,8 +6,8 @@ import InlineMarkdown from 'common/InlineMarkdown'
 
 export default function SignsSearchHelp(): JSX.Element {
   const Section = ({ label, text }: { label: string; text: string }) => (
-    <li className="Help__list">
-      <div className="Help__list-name">{label}</div>
+    <li className="signs__help__list">
+      <div className="signs__help__list__label">{label}</div>
       <div>&nbsp;=&nbsp;</div>
       <div className="ml-2">
         <InlineMarkdown source={text} />
@@ -18,7 +18,7 @@ export default function SignsSearchHelp(): JSX.Element {
     <Popover
       id={_.uniqueId('SignsSearchHelp-')}
       title="Search transliterations"
-      className="Help__popover"
+      className="signs__help__popover"
     >
       <Popover.Content>
         <ul>

@@ -33,11 +33,13 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
     if (unnormalizedSignQuery) {
       history.push(
         `?${stringify({
+          isComposite: false,
+          isIncludeHomophones: false,
           ...signQueryState,
-          listsName: null,
-          listsNumber: null,
           ...parseValue(unnormalizedSignQuery),
           sign: replaceTransliteration(signState.toLowerCase()),
+          listsName: null,
+          listsNumber: null,
         })}`
       )
     }
@@ -54,7 +56,7 @@ function SignsSearchForm({ sign, signQuery, history }: Props): JSX.Element {
     }
   }
   return (
-    <Form className="Signs-search">
+    <Form className="signs__form">
       <Form.Group as={Row} controlId="query">
         <Form.Label column sm={2}>
           Query

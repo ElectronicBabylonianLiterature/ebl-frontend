@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import { Col, Row } from 'react-bootstrap'
 import compareAkkadianStrings, {
   cleanAkkadianString,
 } from 'dictionary/domain/compareAkkadianStrings'
@@ -27,80 +26,56 @@ function sortSigns(signs: Sign[]): Sign[] {
     )
   })
 }
-function columnSizes(
-  nameLengths: number[],
-  unicodeLengths: number[]
-): { unicodeSize: number; nameSize: number } {
-  const unicodeSize = Math.max(...unicodeLengths)
-    ? Math.max(...unicodeLengths)
-    : 1
-  const nameSize = Math.max(...nameLengths) ? Math.max(...nameLengths) : 1
-  return {
-    unicodeSize: Math.ceil(unicodeSize / 3),
-    nameSize: Math.ceil(nameSize / 10),
-  }
-}
+
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
   const signsNew = isIncludeHomophones ? signs : sortSigns(signs)
   return (
     <ul className="WordSearch-results">
       {signsNew.map((sign, index) => (
         <li key={index} className="WordSearch-results__result">
-          <SignComponent
-            sign={sign}
-            {...columnSizes(
-              signs.map((sign) => sign.name.length),
-              signs.map((sign) => sign.unicode.length)
-            )}
-          />
+          <SignComponent sign={sign} />
         </li>
       ))}
     </ul>
   )
 }
 
-function SignComponent({
-  sign,
-  unicodeSize,
-  nameSize,
-}: {
-  sign: Sign
-  unicodeSize: number
-  nameSize: number
-}): JSX.Element {
+function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   const mesZlRecords = sign.lists.filter((listElem) => listElem.name === 'MZL')
-  let mesZlDash = <></>
-  if (sign.mesZl && sign.displayValuesMarkdown[0]) {
-    mesZlDash = <span>&nbsp;&mdash;&nbsp;</span>
-  }
+  const mesZlDash =
+    sign.mesZl && sign.displayValuesMarkdown[0] ? (
+      <span>&nbsp;&mdash;&nbsp;</span>
+    ) : null
 
   return (
-    <Row>
-      <Col xs={unicodeSize}>
-        <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-          <span className={'Results--cuneiform'}>
-            {sign.displayCuneiformSigns}
-          </span>
-        </Link>
-      </Col>
-      <Col xs={nameSize}>
-        <dfn title={sign.name} className="SignName">
-          <strong>
-            {' '}
-            <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-              <span className="Results--sign">{sign.displaySignName}</span>
-            </Link>
-          </strong>
-        </dfn>
-      </Col>
-      <Col>
-        {sign.values.length > 0 ? (
-          <InlineMarkdown source={sign.displayValuesMarkdown} />
-        ) : null}
-        {mesZlDash}
-        {sign.mesZl && <MesZL mesZl={sign.mesZl} mesZlRecords={mesZlRecords} />}
-      </Col>
-    </Row>
+    <div className="signs__sign">
+      <Link to={`/signs/${encodeURIComponent(sign.name)}`} className="mx-2">
+        <span className="signs__sign__cuneiform">
+          {sign.displayCuneiformSigns}
+        </span>
+      </Link>
+
+      <dfn title={sign.name} className="signs_sign__name mx-2">
+        <strong>
+          {' '}
+          <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
+            <span className="signs_sign__values">{sign.displaySignName}</span>
+          </Link>
+        </strong>
+      </dfn>
+
+      {sign.values.length > 0 && (
+        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
+      )}
+      {mesZlDash}
+      {sign.mesZl && (
+        <MesZL
+          mesZl={sign.mesZl}
+          mesZlRecords={mesZlRecords}
+          signName={sign.name}
+        />
+      )}
+    </div>
   )
 }
 
