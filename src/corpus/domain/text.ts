@@ -71,7 +71,11 @@ export class Chapter {
   readonly [immerable] = true
 
   constructor(
-    readonly textId: { readonly category: number; readonly index: number },
+    readonly textId: {
+      readonly genre: string
+      readonly category: number
+      readonly index: number
+    },
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -104,7 +108,7 @@ export class Chapter {
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
-    data.textId ?? { category: 0, index: 0 },
+    data.textId ?? { genre: 'L', category: 0, index: 0 },
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',
