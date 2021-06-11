@@ -4,6 +4,7 @@ import FakeApi from 'test-support/FakeApi'
 
 const textsDto = [
   {
+    genre: 'L',
     category: 1,
     index: 2,
     name: 'First Category 2',
@@ -12,6 +13,7 @@ const textsDto = [
     chapters: [],
   },
   {
+    genre: 'L',
     category: 2,
     index: 1,
     name: 'Second Category',
@@ -20,6 +22,7 @@ const textsDto = [
     chapters: [],
   },
   {
+    genre: 'L',
     category: 3,
     index: 1,
     name: 'Third Category',
@@ -28,6 +31,7 @@ const textsDto = [
     chapters: [],
   },
   {
+    genre: 'L',
     category: 1,
     index: 1,
     name: 'First Category 1',
@@ -36,6 +40,7 @@ const textsDto = [
     chapters: [],
   },
   {
+    genre: 'L',
     category: 4,
     index: 1,
     name: 'Hidden Text',

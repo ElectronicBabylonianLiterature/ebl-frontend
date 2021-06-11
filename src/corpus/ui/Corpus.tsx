@@ -22,7 +22,11 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
     <Row as="li">
       <Col md={8}>
         {session.isAllowedToWriteTexts() ? (
-          <Link to={`/corpus/${text.category}/${text.index}`}>{title}</Link>
+          <Link
+            to={`/corpus/${text.genre.abbreviation}/${text.category}/${text.index}`}
+          >
+            {title}
+          </Link>
         ) : (
           title
         )}

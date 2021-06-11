@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, Manuscript, Text, TextInfo } from 'corpus/domain/text'
+import { Chapter, Manuscript, Text } from 'corpus/domain/text'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
@@ -88,6 +88,30 @@ class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   }
 }
 
+function createTextUrl(
+  genre: string,
+  category: string | number,
+  index: string | number
+): string {
+  return `/texts/${encodeURIComponent(genre)}/${encodeURIComponent(
+    category
+  )}/${encodeURIComponent(index)}`
+}
+
+function createChapterUrl(
+  genre: string,
+  category: string | number,
+  index: string | number,
+  stage: string,
+  name: string
+): string {
+  return `${createTextUrl(
+    genre,
+    category,
+    index
+  )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
+}
+
 export default class TextService {
   private readonly apiClient: ApiClient
   private readonly wordService: WordService
@@ -103,33 +127,28 @@ export default class TextService {
     this.wordService = wordService
   }
 
-  find(category: string, index: string): Bluebird<Text> {
+  find(genre: string, category: string, index: string): Bluebird<Text> {
     return this.apiClient
-      .fetchJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(index)}`,
-        true
-      )
+      .fetchJson(createTextUrl(genre, category, index), true)
       .then(fromDto)
   }
 
   findChapter(
+    genre: string,
     category: string,
     index: string,
     stage: string,
     name: string
   ): Bluebird<Chapter> {
     return this.apiClient
-      .fetchJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`,
-        true
-      )
+      .fetchJson(createChapterUrl(genre, category, index, stage, name), true)
       .then(fromChapterDto)
   }
 
-  list(): Bluebird<TextInfo[]> {
-    return this.apiClient.fetchJson('/texts', false)
+  list(): Bluebird<Text[]> {
+    return this.apiClient
+      .fetchJson('/texts', false)
+      .then((dtos) => dtos.map(fromDto))
   }
 
   searchTransliteration(
@@ -146,6 +165,7 @@ export default class TextService {
   }
 
   updateAlignment(
+    genre: string,
     category: number,
     index: number,
     stage: string,
@@ -154,17 +174,14 @@ export default class TextService {
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
-          name
-        )}/alignment`,
+        `${createChapterUrl(genre, category, index, stage, name)}/alignment`,
         toAlignmentDto(alignment)
       )
       .then(fromChapterDto)
   }
 
   updateLemmatization(
+    genre: string,
     category: number,
     index: number,
     stage: string,
@@ -173,9 +190,11 @@ export default class TextService {
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
+        `${createChapterUrl(
+          genre,
+          category,
+          index,
+          stage,
           name
         )}/lemmatization`,
         toLemmatizationDto(lemmatization)
@@ -184,6 +203,7 @@ export default class TextService {
   }
 
   updateManuscripts(
+    genre: string,
     category: number,
     index: number,
     stage: string,
@@ -193,17 +213,14 @@ export default class TextService {
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
-          name
-        )}/manuscripts`,
+        `${createChapterUrl(genre, category, index, stage, name)}/manuscripts`,
         toManuscriptsDto(manuscripts, uncertainChapters)
       )
       .then(fromChapterDto)
   }
 
   updateLines(
+    genre: string,
     category: number,
     index: number,
     stage: string,
@@ -212,17 +229,14 @@ export default class TextService {
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
-          name
-        )}/lines`,
+        `${createChapterUrl(genre, category, index, stage, name)}/lines`,
         toLinesDto(lines)
       )
       .then(fromChapterDto)
   }
 
   importChapter(
+    genre: string,
     category: number,
     index: number,
     stage: string,
@@ -231,11 +245,7 @@ export default class TextService {
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `/texts/${encodeURIComponent(category)}/${encodeURIComponent(
-          index
-        )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(
-          name
-        )}/import`,
+        `${createChapterUrl(genre, category, index, stage, name)}/import`,
         { atf }
       )
       .then(fromChapterDto)

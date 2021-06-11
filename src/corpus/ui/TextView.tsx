@@ -20,12 +20,16 @@ function TextView({ text }: { text: Text }): JSX.Element {
 export default withData<
   unknown,
   {
+    genre: string
     category: string
     index: string
-    textService: { find(category: string, index: string): Promise<Text> }
+    textService: {
+      find(genre: string, category: string, index: string): Promise<Text>
+    }
   },
   Text
 >(
   ({ data }) => <TextView text={data} />,
-  ({ category, index, textService }) => textService.find(category, index)
+  ({ genre, category, index, textService }) =>
+    textService.find(genre, category, index)
 )
