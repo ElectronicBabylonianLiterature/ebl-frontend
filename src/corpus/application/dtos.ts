@@ -17,13 +17,14 @@ import {
   createChapter,
   createManuscript,
   createText,
+  genres,
   Manuscript,
   Text,
   types,
 } from 'corpus/domain/text'
 
 export function fromDto(textDto): Text {
-  return createText(textDto)
+  return createText({ ...textDto, genre: genres.get(textDto.genre) })
 }
 
 export function fromChapterDto(chapterDto) {

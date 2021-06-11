@@ -11,6 +11,7 @@ import {
   createChapter,
   createManuscript,
   createText,
+  genres,
   types,
 } from 'corpus/domain/text'
 import { Token } from 'transliteration/domain/token'
@@ -162,6 +163,7 @@ export const chapterDto = {
 }
 
 export const textDto = {
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',
@@ -230,6 +232,7 @@ export const chapter = createChapter({
 })
 
 export const text = createText({
+  genre: genres.get('L'),
   category: 1,
   index: 1,
   name: 'Palm and Vine',

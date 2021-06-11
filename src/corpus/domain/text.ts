@@ -116,7 +116,19 @@ export function createChapter(data: Partial<Chapter>): Chapter {
   )
 }
 
+export interface Genre {
+  readonly name: string
+  readonly abbreviation: string
+}
+
+export const genres: ReadonlyMap<string, Genre> = new Map([
+  ['L', { name: 'Literature', abbreviation: 'L' }],
+  ['D', { name: 'Divination', abbreviation: 'D' }],
+  ['Lex', { name: 'Lexicography', abbreviation: 'Lex' }],
+])
+
 export interface TextInfo {
+  genre: Genre
   category: number
   index: number
   name: string
@@ -126,6 +138,7 @@ export interface TextInfo {
 
 export class Text implements TextInfo {
   readonly [immerable] = true
+  genre = { name: 'Literature', abbreviation: 'L' }
   category = 0
   index = 0
   name = ''
