@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import _ from 'lodash'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ApiImage from 'common/ApiImage'
 import AppContent from 'common/AppContent'
@@ -54,7 +54,9 @@ function Texts({
     <>
       {categories.map((title, category) => (
         <section key={category}>
-          <h3>{title}</h3>
+          <h3>
+            <InlineMarkdown source={title} />
+          </h3>
           <Container fluid as="ol">
             {_(texts)
               .filter((text) => text.category === category)
@@ -74,15 +76,42 @@ function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
       <Container fluid>
         <Row>
           <Col md={5}>
-            <Texts
-              texts={texts}
-              categories={[
-                '',
-                'I. Narrative Poetry',
-                'II. Monologue and dialogue literature',
-                'III. Literary Hymns and Prayers',
-              ]}
-            />
+            <Tabs defaultActiveKey="L" id={_.uniqueId('CorpusTab-')}>
+              <Tab eventKey="L" title="Literature">
+                <Texts
+                  texts={texts.filter(
+                    (text) => text.genre.abbreviation === 'L'
+                  )}
+                  categories={[
+                    '',
+                    'I. Narrative Poetry',
+                    'II. Monologue and dialogue literature',
+                    'III. Literary Hymns and Prayers',
+                  ]}
+                />
+              </Tab>
+              <Tab eventKey="D" title="Divination">
+                <Texts
+                  texts={texts.filter(
+                    (text) => text.genre.abbreviation === 'D'
+                  )}
+                  categories={[
+                    '',
+                    'I. Celestial Divination (*Enūma Anu Enlil*)',
+                    'II. Terrestrial Divination (*Šumma Ālu*)',
+                    'III. Extispicy (*Bārûtu*)',
+                  ]}
+                />
+              </Tab>
+              <Tab eventKey="Lex" title="Lexicography">
+                <Texts
+                  texts={texts.filter(
+                    (text) => text.genre.abbreviation === 'Lex'
+                  )}
+                  categories={['', 'I.  Urra = *ḫubullu*']}
+                />
+              </Tab>
+            </Tabs>
           </Col>
           <Col md={7}>
             <ApiImage fileName="LibraryCropped.svg" />
