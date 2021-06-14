@@ -43,15 +43,16 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   )
 }
 
-function Texts({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
+function Texts({
+  texts,
+  categories,
+}: {
+  texts: readonly TextInfo[]
+  categories: readonly string[]
+}): JSX.Element {
   return (
     <>
-      {[
-        '',
-        'I. Narrative Poetry',
-        'II. Monologue and dialogue literature',
-        'III. Literary Hymns and Prayers',
-      ].map((title, category) => (
+      {categories.map((title, category) => (
         <section key={category}>
           <h3>{title}</h3>
           <Container fluid as="ol">
@@ -72,7 +73,17 @@ interface Props {
 }
 
 const TextsWithData = withData<unknown, Props, readonly TextInfo[]>(
-  ({ data }) => <Texts texts={data} />,
+  ({ data }) => (
+    <Texts
+      texts={data}
+      categories={[
+        '',
+        'I. Narrative Poetry',
+        'II. Monologue and dialogue literature',
+        'III. Literary Hymns and Prayers',
+      ]}
+    />
+  ),
   ({ textService }) => textService.list()
 )
 
