@@ -68,32 +68,21 @@ function Texts({
   )
 }
 
-interface Props {
-  textService: { list(): Promise<readonly TextInfo[]> }
-}
-
-const TextsWithData = withData<unknown, Props, readonly TextInfo[]>(
-  ({ data }) => (
-    <Texts
-      texts={data}
-      categories={[
-        '',
-        'I. Narrative Poetry',
-        'II. Monologue and dialogue literature',
-        'III. Literary Hymns and Prayers',
-      ]}
-    />
-  ),
-  ({ textService }) => textService.list()
-)
-
-function Corpus({ textService }: Props): JSX.Element {
+function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
           <Col md={5}>
-            <TextsWithData textService={textService} />
+            <Texts
+              texts={texts}
+              categories={[
+                '',
+                'I. Narrative Poetry',
+                'II. Monologue and dialogue literature',
+                'III. Literary Hymns and Prayers',
+              ]}
+            />
           </Col>
           <Col md={7}>
             <ApiImage fileName="LibraryCropped.svg" />
@@ -104,4 +93,13 @@ function Corpus({ textService }: Props): JSX.Element {
   )
 }
 
-export default Corpus
+export default withData<
+  unknown,
+  {
+    textService: { list(): Promise<readonly TextInfo[]> }
+  },
+  readonly TextInfo[]
+>(
+  ({ data }) => <Corpus texts={data} />,
+  ({ textService }) => textService.list()
+)
