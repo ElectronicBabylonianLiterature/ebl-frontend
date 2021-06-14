@@ -22,9 +22,7 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
     <Row as="li">
       <Col md={8}>
         {session.isAllowedToWriteTexts() ? (
-          <Link
-            to={`/corpus/${text.genre.abbreviation}/${text.category}/${text.index}`}
-          >
+          <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
             {title}
           </Link>
         ) : (
@@ -70,6 +68,38 @@ function Texts({
   )
 }
 
+const genres: readonly {
+  readonly genre: string
+  readonly name: string
+  readonly categories: readonly string[]
+}[] = [
+  {
+    genre: 'L',
+    name: 'Literature',
+    categories: [
+      '',
+      'I. Narrative Poetry',
+      'II. Monologue and dialogue literature',
+      'III. Literary Hymns and Prayers',
+    ],
+  },
+  {
+    genre: 'D',
+    name: 'Divination',
+    categories: [
+      '',
+      'I. Celestial Divination (*Enūma Anu Enlil*)',
+      'II. Terrestrial Divination (*Šumma Ālu*)',
+      'III. Extispicy (*Bārûtu*)',
+    ],
+  },
+  {
+    genre: 'Lex',
+    name: 'Lexicography',
+    categories: ['', 'I.  Urra = *ḫubullu*'],
+  },
+]
+
 function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
@@ -77,40 +107,14 @@ function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
         <Row>
           <Col md={5}>
             <Tabs defaultActiveKey="L" id={_.uniqueId('CorpusTab-')}>
-              <Tab eventKey="L" title="Literature">
-                <Texts
-                  texts={texts.filter(
-                    (text) => text.genre.abbreviation === 'L'
-                  )}
-                  categories={[
-                    '',
-                    'I. Narrative Poetry',
-                    'II. Monologue and dialogue literature',
-                    'III. Literary Hymns and Prayers',
-                  ]}
-                />
-              </Tab>
-              <Tab eventKey="D" title="Divination">
-                <Texts
-                  texts={texts.filter(
-                    (text) => text.genre.abbreviation === 'D'
-                  )}
-                  categories={[
-                    '',
-                    'I. Celestial Divination (*Enūma Anu Enlil*)',
-                    'II. Terrestrial Divination (*Šumma Ālu*)',
-                    'III. Extispicy (*Bārûtu*)',
-                  ]}
-                />
-              </Tab>
-              <Tab eventKey="Lex" title="Lexicography">
-                <Texts
-                  texts={texts.filter(
-                    (text) => text.genre.abbreviation === 'Lex'
-                  )}
-                  categories={['', 'I.  Urra = *ḫubullu*']}
-                />
-              </Tab>
+              {genres.map(({ genre, name, categories }) => (
+                <Tab eventKey={genre} title={name} key={genre}>
+                  <Texts
+                    texts={texts.filter((text) => text.genre === genre)}
+                    categories={categories}
+                  />
+                </Tab>
+              ))}
             </Tabs>
           </Col>
           <Col md={7}>

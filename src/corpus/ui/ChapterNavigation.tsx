@@ -15,7 +15,7 @@ export default function ChapterNavigation({
         .map((chapter, index) => (
           <Nav.Item key={index}>
             <LinkContainer
-              to={`/corpus/${text.genre.abbreviation}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
+              to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
             >
               <Nav.Link>
                 {chapter.stage} {chapter.name}

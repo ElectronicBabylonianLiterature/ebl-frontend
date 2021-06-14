@@ -15,7 +15,6 @@ import {
   createChapter,
   createManuscript,
   createText,
-  genres,
   Manuscript,
   Text,
   types,
@@ -138,7 +137,7 @@ const chapterConfig: Partial<Chapter> = {
 }
 
 const textConfig: Partial<Text> = {
-  genre: genres.get('L'),
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',

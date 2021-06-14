@@ -91,7 +91,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${text.abbreviation}/${text.category}/${text.index}`,
+        path: `/texts/${text.genre}/${text.category}/${text.index}`,
         authenticate: true,
         response: text,
       })

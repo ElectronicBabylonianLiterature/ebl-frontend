@@ -205,15 +205,13 @@ const chapterUrl = `/texts/${encodeURIComponent(
 const testData: TestData[] = [
   [
     'find',
-    [text.genre.abbreviation, text.category, text.index],
+    [text.genre, text.category, text.index],
     apiClient.fetchJson,
     text,
     [
-      `/texts/${encodeURIComponent(
-        text.genre.abbreviation
-      )}/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}`,
+      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
+        text.category
+      )}/${encodeURIComponent(text.index)}`,
       true,
     ],
     Bluebird.resolve(textDto),
