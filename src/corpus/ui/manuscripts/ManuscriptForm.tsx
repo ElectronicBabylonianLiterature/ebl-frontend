@@ -165,6 +165,20 @@ export default function ManuscriptForm({
           }
         />
       </Form.Group>
+      <Form.Group controlId={_.uniqueId('colophon-')}>
+        <Form.Label>Unplaced Lines</Form.Label>{' '}
+        <Editor
+          name={_.uniqueId('unplaced-lines-editor-')}
+          value={manuscript.unplacedLines}
+          onChange={(atf) =>
+            onChange(
+              produce(manuscript, (draft) => {
+                draft.unplacedLines = atf
+              })
+            )
+          }
+        />
+      </Form.Group>
       <ReferencesForm
         value={manuscript.references}
         label="References"
