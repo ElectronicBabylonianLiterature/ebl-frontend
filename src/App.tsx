@@ -39,12 +39,14 @@ function parseStringParam(
 }
 
 interface TextParams {
+  genre: string
   category: string
   index: string
 }
 
 function parseTextParams(params): TextParams {
   return {
+    genre: decodeURIComponent(params.genre),
     category: decodeURIComponent(params.category),
     index: decodeURIComponent(params.index),
   }
@@ -174,7 +176,7 @@ function App({
             )}
           />
           <Route
-            path="/corpus/:category/:index/:stage/:chapter"
+            path="/corpus/:genre/:category/:index/:stage/:chapter"
             render={({ match }): ReactNode => (
               <ChapterView
                 textService={textService}
@@ -186,7 +188,7 @@ function App({
             )}
           />
           <Route
-            path="/corpus/:category/:index"
+            path="/corpus/:genre/:category/:index"
             render={({ match }): ReactNode => (
               <TextView
                 textService={textService}

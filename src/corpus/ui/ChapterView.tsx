@@ -77,6 +77,7 @@ function ChapterView({
   const updateAlignment = (alignment: ChapterAlignment): void => {
     update(() =>
       textService.updateAlignment(
+        currentChapter.textId.genre,
         currentChapter.textId.category,
         currentChapter.textId.index,
         currentChapter.stage,
@@ -89,6 +90,7 @@ function ChapterView({
   const updateManuscripts = (): void => {
     update(() =>
       textService.updateManuscripts(
+        currentChapter.textId.genre,
         currentChapter.textId.category,
         currentChapter.textId.index,
         currentChapter.stage,
@@ -102,6 +104,7 @@ function ChapterView({
   const updateLines = (): void => {
     update(() =>
       textService.updateLines(
+        currentChapter.textId.genre,
         currentChapter.textId.category,
         currentChapter.textId.index,
         currentChapter.stage,
@@ -114,6 +117,7 @@ function ChapterView({
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
     update(() =>
       textService.updateLemmatization(
+        currentChapter.textId.genre,
         currentChapter.textId.category,
         currentChapter.textId.index,
         currentChapter.stage,
@@ -126,6 +130,7 @@ function ChapterView({
   const importChapter = (atf: string): void => {
     update(() =>
       textService.importChapter(
+        currentChapter.textId.genre,
         currentChapter.textId.category,
         currentChapter.textId.index,
         currentChapter.stage,
@@ -173,6 +178,7 @@ function ChapterView({
 
 export default withData<
   {
+    genre: string
     category: string
     index: string
     stage: string
@@ -182,18 +188,24 @@ export default withData<
     fragmentService: FragmentService
     wordService: WordService
   },
-  { category: string; index: string },
+  { genre: string; category: string; index: string },
   [Text, Chapter]
 >(
   ({ data, ...props }) => (
     <ChapterView text={data[0]} chapter={data[1]} {...props} />
   ),
-  ({ category, index, stage, name, textService }) =>
+  ({ genre, category, index, stage, name, textService }) =>
     Promise.all([
-      textService.find(category, index),
-      textService.findChapter(category, index, stage, name),
+      textService.find(genre, category, index),
+      textService.findChapter(genre, category, index, stage, name),
     ]),
   {
-    watch: (props) => [props.category, props.index, props.stage, props.name],
+    watch: (props) => [
+      props.genre,
+      props.category,
+      props.index,
+      props.stage,
+      props.name,
+    ],
   }
 )

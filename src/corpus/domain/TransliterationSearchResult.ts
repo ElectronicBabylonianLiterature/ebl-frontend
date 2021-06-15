@@ -3,6 +3,7 @@ import { Line } from 'corpus/domain/line'
 export default interface TransliterationSearchResult {
   readonly id: {
     readonly textId: {
+      readonly genre: string
       readonly category: number
       readonly index: number
     }
