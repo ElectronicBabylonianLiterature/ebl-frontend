@@ -26,9 +26,9 @@
   padding-left: 44px;
   text-indent: -44px;
 }
-.signs_sign__name {
+.signs__sign__name {
   font-style: normal;
-  text-transform: lowercase;
+  font-variant: all-small-caps;
 }
 .signs__help__list {
   display: flex;
@@ -39,9 +39,6 @@
 .signs__help__popover {
   min-width: 600px;
 }
-.signs_sign__values {
-  font-variant: all-small-caps;
-}
-.signs_sign__cuneiform {
+.signs__sign__cuneiform {
   font-size: 150%;
 }

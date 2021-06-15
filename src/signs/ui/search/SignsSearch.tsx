@@ -55,11 +55,11 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         </span>
       </Link>
 
-      <dfn title={sign.name} className="signs_sign__name mx-2">
+      <dfn title={sign.name} className="signs__sign__name mx-2">
         <strong>
           {' '}
           <Link to={`/signs/${encodeURIComponent(sign.name)}`}>
-            <span className="signs_sign__values">{sign.displaySignName}</span>
+            <span>{sign.displaySignName}</span>
           </Link>
         </strong>
       </dfn>
