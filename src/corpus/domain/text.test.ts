@@ -31,6 +31,7 @@ const manuscriptConfig: Partial<Manuscript> = {
   type: types.values().next().value,
   notes: 'some notes',
   colophon: '1. kur',
+  unplacedLines: '1. bu',
   references: [],
 }
 

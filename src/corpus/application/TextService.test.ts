@@ -136,6 +136,7 @@ const manuscriptsDto = {
       type: 'School',
       notes: 'a note',
       colophon: '1. kur',
+      unplacedLines: '1. bu',
       references: [
         {
           id: 'RN1853',

@@ -92,6 +92,7 @@ const toManuscriptDto = produce((draft) => ({
   type: toName(draft.type),
   notes: draft.notes,
   colophon: draft.colophon,
+  unplacedLines: draft.unplacedLines,
   references: draft.references.map(serializeReference),
 }))
 
