@@ -168,6 +168,7 @@ export const textDto = {
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
+  intro: 'This is a *test text*.',
   chapters: [
     {
       stage: 'Old Babylonian',
@@ -237,5 +238,6 @@ export const text = createText({
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
+  intro: 'This is a *test text*.',
   chapters: [{ stage: chapter.stage, name: chapter.name }],
 })

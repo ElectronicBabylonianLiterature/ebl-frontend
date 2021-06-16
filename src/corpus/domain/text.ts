@@ -137,6 +137,7 @@ export class Text implements TextInfo {
   name = ''
   numberOfVerses = 0
   approximateVerses = false
+  intro = ''
   chapters: ReadonlyArray<{ name: string; stage: string }> = []
 }
 

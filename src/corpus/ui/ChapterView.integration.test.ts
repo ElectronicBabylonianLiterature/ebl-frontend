@@ -12,6 +12,7 @@ const textDto = {
   name: 'Palm and Vine',
   numberOfVerses: 99,
   approximateVerses: false,
+  intro: '**Test**',
   chapters: [
     {
       stage: 'Old Babylonian',
