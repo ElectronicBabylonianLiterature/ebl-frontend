@@ -150,7 +150,6 @@ function App({
               />
             )}
           />
-          <Route path="/signs/:id" render={SignDisplay} />
           <Route
             path="/signs/:id"
             render={(props): ReactNode => (
