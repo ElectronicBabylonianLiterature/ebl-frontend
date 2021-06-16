@@ -1,0 +1,268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sign Display Sign Display Snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-3"
+      >
+        <h1>
+          BAR
+        </h1>
+      </div>
+      <div
+        class="col"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-4"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <h2
+                  class="old-babylonian-monumental"
+                >
+                  𒁇
+                </h2>
+              </div>
+              <div
+                class="col"
+              >
+                <span
+                  class="text-secondary"
+                >
+                  Old-Babylonian (Monumental)
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-4"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <h2
+                  class="old-babylonian-cursive"
+                >
+                  𒁇
+                </h2>
+              </div>
+              <div
+                class="col"
+              >
+                <span
+                  class="text-secondary"
+                >
+                  Old-Babylonian Cursive
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-4"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <h2
+                  class="hittite"
+                >
+                  𒁇
+                </h2>
+              </div>
+              <div
+                class="col"
+              >
+                <span
+                  class="text-secondary"
+                >
+                  Hittite
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-4"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <h2
+                  class=""
+                >
+                  𒁇
+                </h2>
+              </div>
+              <div
+                class="col"
+              >
+                <span
+                  class="text-secondary"
+                >
+                  Neo-Assyrian
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-4"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-3"
+              >
+                <h2
+                  class="neo-babylonian"
+                >
+                  𒁇
+                </h2>
+              </div>
+              <div
+                class="col"
+              >
+                <span
+                  class="text-secondary"
+                >
+                  Neo-Babylonian
+                </span>
+              </div>
+            </div>
+          </div>
+          <i
+            class="ml-3 fas fa-info-circle"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <h1>
+          Ⅰ. MesZL
+        </h1>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="p-5 col"
+      >
+        <div>
+          <pre>
+            <div
+              class="text-center"
+            >
+              <p>
+                1	
+                <strong>
+                  AŠ
+                </strong>
+                	𒀸
+              </p>
+            </div>
+          </pre>
+        </div>
+        <div>
+          <p>
+            ASy 1. Lww. aš (allg.; ass. häufiger áš); às (wohl sehr selten, nicht altakk. und ass.-a.) — rum (allg. ausser altakk. und ass.-a.); rù (do., cf SLOBA p108) — rim₅ (bab-a., cf SLOBA p111) — dil (n.); ṭil (n.) — dàl (n.) — ina (n., Präsens Verba primae Nun); in₆ (n., Labat ìn).
+          </p>
+          
+
+          <p>
+            Lw. dili siehe 1. Anhang.
+          </p>
+          
+
+          <hr />
+          
+
+          <p>
+            aš, dili = Zahl 1 (AHw 400, CAD I/J 275ff.).
+          </p>
+          
+
+          <p>
+            AŠ = 
+            <em>
+              aplu
+            </em>
+            , Sohn (N.P.).
+          </p>
+          
+
+          <p>
+            AŠ = 
+            <em>
+              aširtu
+            </em>
+            , Heiligtum. Cf CAD A/II 436a.
+          </p>
+        </div>
+        <div
+          class="text-center border border-dark"
+        >
+          <strong>
+            From
+          </strong>
+          <br />
+          R. Borger,
+           
+          <em>
+            Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
+          </em>
+          Alter Orient und Altes Testament 305.
+          <br />
+           Münster: Ugarit-Verlag, 
+          <sup>
+            2
+          </sup>
+          2010; Kapitel Ⅲ.
+          <br />
+          <br />
+          <strong>
+            By permission from Ugarit-Verlag.
+          </strong>
+          <br />
+          <a
+            class="text-dark "
+            href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
