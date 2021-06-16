@@ -165,7 +165,7 @@ export default function ManuscriptForm({
           }
         />
       </Form.Group>
-      <Form.Group controlId={_.uniqueId('colophon-')}>
+      <Form.Group controlId={_.uniqueId('unplaced-lines-')}>
         <Form.Label>Unplaced Lines</Form.Label>{' '}
         <Editor
           name={_.uniqueId('unplaced-lines-editor-')}
