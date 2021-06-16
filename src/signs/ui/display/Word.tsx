@@ -5,7 +5,6 @@ import WordService from 'dictionary/application/WordService'
 import { Link } from 'react-router-dom'
 
 function Lemma({ word }: { word: Word }): JSX.Element {
-  console.log(word)
   const attested = word.attested === false ? '*' : ''
   const lemma = word.lemma.join(' ')
   return (
@@ -18,7 +17,10 @@ function Lemma({ word }: { word: Word }): JSX.Element {
       ) : (
         <em>{`${attested}${lemma}`}</em>
       )}
-      <span>{word.homonym && ` ${word.homonym}`}</span>
+      <span>
+        {word.homonym && ` ${word.homonym}`}
+        {word.guideWord && ` ,${word.guideWord}`}
+      </span>
     </Fragment>
   )
 }

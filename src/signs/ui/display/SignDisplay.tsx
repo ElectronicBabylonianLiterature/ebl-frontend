@@ -151,7 +151,10 @@ function LogogramDisplay({
   return (
     <div>
       {logogram.wordId.map((wordIdElem, index) => (
-        <Word key={index} wordId={wordIdElem} wordService={wordService} />
+        <span key={index}>
+          <Word wordId={wordIdElem} wordService={wordService} />
+          {index < logogram.wordId.length - 1 ? ', ' : ''}
+        </span>
       ))}
     </div>
   )
