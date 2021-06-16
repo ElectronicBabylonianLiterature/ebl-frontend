@@ -180,6 +180,7 @@ const textsDto = [textDto]
 const searchDto = {
   id: {
     textId: {
+      genre: 'L',
       category: 1,
       index: 2,
     },
@@ -194,21 +195,23 @@ const searchDto = {
 }
 
 const chapterUrl = `/texts/${encodeURIComponent(
-  chapter.textId.category
-)}/${encodeURIComponent(chapter.textId.index)}/chapters/${encodeURIComponent(
-  chapter.stage
-)}/${encodeURIComponent(chapter.name)}`
+  chapter.textId.genre
+)}/${encodeURIComponent(chapter.textId.category)}/${encodeURIComponent(
+  chapter.textId.index
+)}/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
+  chapter.name
+)}`
 
 const testData: TestData[] = [
   [
     'find',
-    [text.category, text.index],
+    [text.genre, text.category, text.index],
     apiClient.fetchJson,
     text,
     [
-      `/texts/${encodeURIComponent(text.category)}/${encodeURIComponent(
-        text.index
-      )}`,
+      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
+        text.category
+      )}/${encodeURIComponent(text.index)}`,
       true,
     ],
     Bluebird.resolve(textDto),
@@ -217,7 +220,7 @@ const testData: TestData[] = [
     'list',
     [],
     apiClient.fetchJson,
-    textsDto,
+    [text],
     ['/texts', false],
     Bluebird.resolve(textsDto),
   ],
@@ -236,6 +239,7 @@ const testData: TestData[] = [
   [
     'updateAlignment',
     [
+      chapter.textId.genre,
       chapter.textId.category,
       chapter.textId.index,
       chapter.stage,
@@ -250,6 +254,7 @@ const testData: TestData[] = [
   [
     'updateLemmatization',
     [
+      chapter.textId.genre,
       chapter.textId.category,
       chapter.textId.index,
       chapter.stage,
@@ -264,6 +269,7 @@ const testData: TestData[] = [
   [
     'updateManuscripts',
     [
+      chapter.textId.genre,
       chapter.textId.category,
       chapter.textId.index,
       chapter.stage,
@@ -279,6 +285,7 @@ const testData: TestData[] = [
   [
     'updateLines',
     [
+      chapter.textId.genre,
       chapter.textId.category,
       chapter.textId.index,
       chapter.stage,
@@ -293,6 +300,7 @@ const testData: TestData[] = [
   [
     'importChapter',
     [
+      chapter.textId.genre,
       chapter.textId.category,
       chapter.textId.index,
       chapter.stage,

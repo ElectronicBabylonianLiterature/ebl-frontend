@@ -19,7 +19,8 @@ function TextId({
 }): JSX.Element {
   return (
     <>
-      {textId.category && numberToRoman(textId.category)}.{textId.index}
+      {textId.genre} {textId.category && numberToRoman(textId.category)}.
+      {textId.index}
     </>
   )
 }
@@ -32,7 +33,9 @@ function ChapterLink({
   searchResult: TransliterationSearchResult
 }): JSX.Element {
   return (
-    <Link to={`/corpus/${textId.category}/${textId.index}/${stage}/${name}`}>
+    <Link
+      to={`/corpus/${textId.genre}/${textId.category}/${textId.index}/${stage}/${name}`}
+    >
       {stage}
       {name !== defaultName && ` ${name}`}
     </Link>

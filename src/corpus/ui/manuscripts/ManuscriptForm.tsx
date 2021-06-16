@@ -118,7 +118,7 @@ export default function ManuscriptForm({
               {[...periods.values()].map((period) =>
                 _.isNil(period.parent) ? (
                   <option key={period.name} value={period.name}>
-                    {period.name} {period.description}
+                    {period.displayName ?? period.name} {period.description}
                   </option>
                 ) : (
                   <option key={period.name} value={period.name}>
@@ -138,7 +138,7 @@ export default function ManuscriptForm({
           >
             {[...types.values()].map((type) => (
               <option key={type.name} value={type.name}>
-                {type.name}
+                {type.displayName ?? type.name}
               </option>
             ))}
           </Form.Control>

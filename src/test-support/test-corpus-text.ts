@@ -162,6 +162,7 @@ export const chapterDto = {
 }
 
 export const textDto = {
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',
@@ -230,6 +231,7 @@ export const chapter = createChapter({
 })
 
 export const text = createText({
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',

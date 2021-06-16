@@ -125,6 +125,7 @@ const lineConfig: Line = {
 const stage = 'Old Babylonian'
 const name = 'III'
 const chapterConfig: Partial<Chapter> = {
+  textId: { genre: 'L', category: 1, index: 1 },
   classification: 'Ancient',
   stage: stage,
   version: 'A',
@@ -136,6 +137,7 @@ const chapterConfig: Partial<Chapter> = {
 }
 
 const textConfig: Partial<Text> = {
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',

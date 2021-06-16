@@ -2,9 +2,11 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 
+const genre = 'L'
 const category = 1
 const index = 1
 const textDto = {
+  genre: genre,
   category: category,
   index: index,
   name: 'Palm and Vine',
@@ -27,6 +29,7 @@ const textDto = {
 }
 
 const textId = {
+  genre: genre,
   category: category,
   index: index,
 }
@@ -351,9 +354,11 @@ async function setup(chapter) {
 }
 
 function createChapterPath(stage: string, name: string) {
-  return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
-    index
-  )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
+  return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
+    category
+  )}/${encodeURIComponent(index)}/${encodeURIComponent(
+    stage
+  )}/${encodeURIComponent(name)}`
 }
 
 function createChapterTitle(chapter) {
