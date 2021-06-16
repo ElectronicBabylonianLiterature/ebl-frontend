@@ -49,6 +49,7 @@ export class Manuscript {
   }
   readonly notes: string = ''
   readonly colophon: string = ''
+  readonly unplacedLines: string = ''
   readonly references: readonly Reference[] = []
 
   get siglum(): string {

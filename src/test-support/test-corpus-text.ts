@@ -123,6 +123,7 @@ export const chapterDto = {
       type: 'School',
       notes: 'a note',
       colophon: '1. kur',
+      unplacedLines: '1. bu',
       references: [
         {
           id: 'RN1853',
@@ -195,6 +196,7 @@ export const chapter = createChapter({
       type: types.get('School'),
       notes: 'a note',
       colophon: '1. kur',
+      unplacedLines: '1. bu',
       references: [
         new Reference(
           'DISCUSSION',

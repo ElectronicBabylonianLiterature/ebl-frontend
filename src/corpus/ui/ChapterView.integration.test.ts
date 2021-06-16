@@ -53,6 +53,7 @@ const chapterDtos = [
         type: 'School',
         notes: 'some notes',
         colophon: '1. kur',
+        unplacedLines: '1. bu',
         references: [],
       },
     ],
@@ -89,6 +90,7 @@ const chapterDtos = [
         type: 'School',
         notes: '',
         colophon: '',
+        unplacedLines: '',
         references: [],
       },
       {
@@ -102,6 +104,7 @@ const chapterDtos = [
         type: 'School',
         notes: '',
         colophon: '',
+        unplacedLines: '',
         references: [],
       },
     ],
@@ -142,6 +145,7 @@ const defaultManuscriptDto = {
   type: 'Library',
   notes: '',
   colophon: '',
+  unplacedLines: '',
   references: [],
 }
 
