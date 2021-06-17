@@ -31,7 +31,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 class="col-3"
               >
                 <h2
-                  class="old-babylonian-monumental"
+                  class="CuneiformFonts__heading-old-babylonian-monumental"
                 >
                   𒆏
                 </h2>
@@ -57,7 +57,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 class="col-3"
               >
                 <h2
-                  class="old-babylonian-cursive"
+                  class="CuneiformFonts__heading-old-babylonian-cursive"
                 >
                   𒆏
                 </h2>
@@ -83,7 +83,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 class="col-3"
               >
                 <h2
-                  class="hittite"
+                  class="CuneiformFonts__heading-hittite"
                 >
                   𒆏
                 </h2>
@@ -135,7 +135,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 class="col-3"
               >
                 <h2
-                  class="neo-babylonian"
+                  class="CuneiformFonts__heading-neo-babylonian"
                 >
                   𒆏
                 </h2>
@@ -152,7 +152,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             </div>
           </div>
           <i
-            class="ml-3 fas fa-info-circle"
+            class="className fas fa-info-circle"
           />
         </div>
       </div>
