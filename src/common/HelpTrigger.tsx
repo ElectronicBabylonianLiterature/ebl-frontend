@@ -8,7 +8,7 @@ type Props = {
 function HelpTrigger({ className = '', ...props }: Props): JSX.Element {
   return (
     <OverlayTrigger placement="right" {...props}>
-      <i className={`${className ?? className} fas fa-info-circle`} />
+      <i className={`${className} fas fa-info-circle`} />
     </OverlayTrigger>
   )
 }
