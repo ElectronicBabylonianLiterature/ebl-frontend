@@ -63,6 +63,7 @@ export default function ReferenceForm({
               <option value="DISCUSSION">Discussion</option>
               <option value="COPY">Copy</option>
               <option value="PHOTO">Photo</option>
+              <option value="TRANSLATION">Translation</option>
             </Form.Control>
           </Form.Group>
         </Col>

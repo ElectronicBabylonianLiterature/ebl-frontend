@@ -73,7 +73,13 @@ export async function buildBorger1957(): Promise<BibliographyEntry> {
 
 factory.define('referenceDto', Object, {
   id: factory.chance('string'),
-  type: factory.chance('pickone', ['EDITION', 'DISCUSSION', 'COPY', 'PHOTO']),
+  type: factory.chance('pickone', [
+    'EDITION',
+    'DISCUSSION',
+    'COPY',
+    'PHOTO',
+    'TRANSLATION',
+  ]),
   pages: async () =>
     `${await factory.chance('natural')()}-${await factory.chance('natural')()}`,
   notes: factory.chance('sentence'),

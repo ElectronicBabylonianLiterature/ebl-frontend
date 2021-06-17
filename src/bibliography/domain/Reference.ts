@@ -3,7 +3,12 @@ import produce, { Draft, immerable } from 'immer'
 
 import BibliographyEntry from './BibliographyEntry'
 
-export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
+export type ReferenceType =
+  | 'EDITION'
+  | 'DISCUSSION'
+  | 'COPY'
+  | 'PHOTO'
+  | 'TRANSLATION'
 
 export default class Reference {
   readonly type: ReferenceType
