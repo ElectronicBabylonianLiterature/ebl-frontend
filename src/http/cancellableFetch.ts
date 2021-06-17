@@ -1,4 +1,3 @@
-/* global AbortController */
 import Promise from 'bluebird'
 
 export default function cancellableFetch(
