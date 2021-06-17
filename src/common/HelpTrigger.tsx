@@ -1,5 +1,6 @@
 import React from 'react'
 import { OverlayTrigger, OverlayTriggerProps } from 'react-bootstrap'
+import classNames from 'classnames'
 
 type Props = {
   className?: string
@@ -8,7 +9,12 @@ type Props = {
 function HelpTrigger({ className = '', ...props }: Props): JSX.Element {
   return (
     <OverlayTrigger placement="right" {...props}>
-      <i className={`${className} fas fa-info-circle`} />
+      <i
+        className={classNames(
+          { className: Boolean(className) },
+          'fas fa-info-circle'
+        )}
+      />
     </OverlayTrigger>
   )
 }
