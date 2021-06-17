@@ -27,7 +27,7 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
   // supSuper Issue https://github.com/zestedesavoir/zmarkdown/issues/438
   const subSup = (mesZL: string): string =>
     mesZL
-      .replace(/\^([^\^]*)\^/g, '<sup>$1</sup>')
+      .replace(/\^([^^]*)\^/g, '<sup>$1</sup>')
       .replace(/~([^~]*)~/g, '<sub>$1</sub>')
 
   // remark uses commonMarkdown, that's why we have to parse italic manually ontop of transforming it with remark
