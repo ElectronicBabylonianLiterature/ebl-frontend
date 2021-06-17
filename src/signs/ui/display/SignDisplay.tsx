@@ -30,16 +30,16 @@ function SignHeading({
   cuneiformLetters: string
 }): JSX.Element {
   const CuneiformFonts = ({
-    font = undefined,
+    font = '',
     description,
   }: {
-    font?: string | undefined
+    font?: string
     description: string
   }): JSX.Element => (
     <Col xs={4}>
       <Row>
         <Col xs={3}>
-          <h2 className={font ? font : ''}>{cuneiformLetters}</h2>
+          <h2 className={font}>{cuneiformLetters}</h2>
         </Col>
         <Col>
           <span className={'text-secondary'}>{description}</span>
@@ -56,17 +56,20 @@ function SignHeading({
       <Col>
         <Row>
           <CuneiformFonts
-            font={'old-babylonian-monumental'}
+            font={'CuneiformFonts__heading-old-babylonian-monumental'}
             description={'Old-Babylonian (Monumental)'}
           />
           <CuneiformFonts
-            font={'old-babylonian-cursive'}
+            font={'CuneiformFonts__heading-old-babylonian-cursive'}
             description={'Old-Babylonian Cursive'}
           />
-          <CuneiformFonts font={'hittite'} description={'Hittite'} />
+          <CuneiformFonts
+            font={'CuneiformFonts__heading-hittite'}
+            description={'Hittite'}
+          />
           <CuneiformFonts description={'Neo-Assyrian'} />
           <CuneiformFonts
-            font={'neo-babylonian'}
+            font={'CuneiformFonts__heading-neo-babylonian'}
             description={'Neo-Babylonian'}
           />
           <HelpTrigger className="ml-3" overlay={CuneiformFontsHelpPopover()} />
@@ -92,7 +95,7 @@ function MesZl({
       </Row>
       <Row>
         <Col className={'p-5'}>
-          <MesZlContent signName={signName} mesZl={mesZl} cutOff={-1} />
+          <MesZlContent signName={signName} mesZl={mesZl} />
         </Col>
       </Row>
     </>

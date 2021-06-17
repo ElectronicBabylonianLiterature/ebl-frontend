@@ -21,7 +21,7 @@ export default function MesZL({
       {...props}
     >
       <Popover.Content>
-        <MesZlContent mesZl={mesZl} signName={signName} />
+        <MesZlContent mesZl={mesZl} signName={signName} cutOff={7} />
       </Popover.Content>
     </Popover>
   )

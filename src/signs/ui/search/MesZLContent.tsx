@@ -49,7 +49,7 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
 export default function MesZlContent({
   signName,
   mesZl,
-  cutOff = 7,
+  cutOff = -1,
 }: {
   signName: string
   mesZl: string
@@ -87,7 +87,7 @@ export default function MesZlContent({
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mesZlBody) }}
         />
-        {mesZl.split('\n').length > 7 && cutOff !== -1 && (
+        {mesZl.split('\n').length > cutOff && cutOff !== -1 && (
           <div className="text-center">
             <br />
             <strong>
