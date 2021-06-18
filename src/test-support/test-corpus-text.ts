@@ -176,6 +176,7 @@ export const textDto = {
       name: 'The Only Chapter',
     },
   ],
+  references: [],
 }
 
 export const chapter = createChapter({
