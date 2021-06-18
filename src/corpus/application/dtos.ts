@@ -23,7 +23,19 @@ import {
 } from 'corpus/domain/text'
 
 export function fromDto(textDto): Text {
-  return createText(textDto)
+  return createText({
+    ...textDto,
+    references: textDto.references.map(
+      (referenceDto) =>
+        new Reference(
+          referenceDto.type,
+          referenceDto.pages,
+          referenceDto.notes,
+          referenceDto.linesCited,
+          new BibliographyEntry(referenceDto.document)
+        )
+    ),
+  })
 }
 
 export function fromChapterDto(chapterDto) {

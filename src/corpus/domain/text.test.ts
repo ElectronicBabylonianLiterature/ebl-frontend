@@ -1,3 +1,4 @@
+import Reference from 'bibliography/domain/Reference'
 import _ from 'lodash'
 import { chapter } from 'test-support/test-corpus-text'
 import { ChapterAlignment } from './alignment'
@@ -144,7 +145,9 @@ const textConfig: Partial<Text> = {
   name: 'Palm and Vine',
   numberOfVerses: 930,
   approximateVerses: true,
+  intro: 'Introduction',
   chapters: [{ stage: stage, name: name }],
+  references: [new Reference()],
 }
 
 describe('Text', () => {
