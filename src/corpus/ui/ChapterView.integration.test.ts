@@ -27,6 +27,7 @@ const textDto = {
       name: 'The Second Chapter',
     },
   ],
+  references: [],
 }
 
 const textId = {

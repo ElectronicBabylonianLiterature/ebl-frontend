@@ -1,17 +1,22 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
 
 import FullCitation from './FullCitation'
+import {
+  bibliographyEntryFactory,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import Reference from 'bibliography/domain/Reference'
 
-let entry
-let reference
-let container
+let entry: BibliographyEntry
+let reference: Reference
+let container: HTMLElement
 
 describe('With link', () => {
-  beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry')
-    reference = await factory.build('reference', { document: entry })
+  beforeEach(() => {
+    entry = bibliographyEntryFactory.build()
+    reference = referenceFactory.build({ document: entry })
     container = render(<FullCitation reference={reference} />).container
   })
 
@@ -23,25 +28,25 @@ describe('With link', () => {
 })
 
 describe('Without link', () => {
-  beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry', { URL: '' })
-    reference = await factory.build('reference', { document: entry })
+  beforeEach(() => {
+    entry = bibliographyEntryFactory.build({}, { transient: { URL: null } })
+    reference = referenceFactory.build({ document: entry })
     container = render(<FullCitation reference={reference} />).container
   })
 
   commomTests()
 
-  test('No A', async () => {
+  test('No A', () => {
     expect(container.querySelector('a')).toBeNull()
   })
 })
 
 function commomTests() {
-  test('Formatted citation', async () => {
+  test('Formatted citation', () => {
     expect(container).toHaveTextContent(entry.title)
   })
 
-  test('Notes', async () => {
+  test('Notes', () => {
     expect(container).toHaveTextContent(reference.notes)
   })
 }

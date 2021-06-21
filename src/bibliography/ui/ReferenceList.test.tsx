@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
 
 import ReferenceList from './ReferenceList'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
-it('List all references', async () => {
-  const references = await factory.buildMany('reference', 2)
+it('List all references', () => {
+  const references = referenceFactory.buildList(2)
   const { container } = render(<ReferenceList references={references} />)
   for (const reference of references) {
     expect(container).toHaveTextContent(reference.primaryAuthor)

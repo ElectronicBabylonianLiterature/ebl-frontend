@@ -7,6 +7,7 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import { Text } from 'corpus/domain/text'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
+import ReferenceList from 'bibliography/ui/ReferenceList'
 
 function TextView({ text }: { text: Text }): JSX.Element {
   const title = <InlineMarkdown source={text.name} />
@@ -16,6 +17,8 @@ function TextView({ text }: { text: Text }): JSX.Element {
       <section>
         <h3>Introduction</h3>
         <ReactMarkdown source={text.intro} />
+        <h4>References</h4>
+        <ReferenceList references={text.references} />
       </section>
       <section>
         <h3>Chapters</h3>

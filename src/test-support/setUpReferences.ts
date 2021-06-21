@@ -1,27 +1,31 @@
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Reference from 'bibliography/domain/Reference'
-import { factory } from 'factory-girl'
+import { ReferenceDto } from 'bibliography/domain/referenceDto'
+import {
+  bibliographyEntryFactory,
+  referenceDtoFactory,
+} from './bibliography-fixtures'
 
 export default async function setUpReferences(bibliographyService: {
   find: jest.Mock
 }): Promise<{
   entries: readonly BibliographyEntry[]
-  references: readonly Record<string, unknown>[]
+  references: readonly ReferenceDto[]
   expectedReferences: Reference[]
 }> {
-  const entries = await factory.buildMany('bibliographyEntry', 2)
-  const references = await factory.buildMany(
-    'referenceDto',
-    2,
-    entries.map((entry: BibliographyEntry) => ({ id: entry.id }))
+  const entries = bibliographyEntryFactory.buildList(2)
+  const references = entries.map((entry: BibliographyEntry) =>
+    referenceDtoFactory.build({ id: entry.id })
   )
-  const expectedReferences = await factory.buildMany(
-    'reference',
-    2,
-    references.map((dto: Record<string, unknown>, index: number) => ({
-      ...dto,
-      document: entries[index],
-    }))
+  const expectedReferences = references.map(
+    (dto: ReferenceDto, index: number) =>
+      new Reference(
+        dto.type,
+        dto.pages,
+        dto.notes,
+        dto.linesCited,
+        entries[index]
+      )
   )
   bibliographyService.find.mockImplementation((id) =>
     Promise.resolve(entries.find((entry: BibliographyEntry) => entry.id === id))

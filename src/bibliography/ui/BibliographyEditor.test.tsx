@@ -3,12 +3,12 @@ import { matchPath, MemoryRouter, match } from 'react-router'
 import { render, Matcher } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
-import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import BibliographyEditor from './BibliographyEditor'
 import { template } from 'bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 
 const errorMessage = 'error'
 const createWaitFor = /family name/
@@ -18,7 +18,7 @@ let bibliographyService
 let session
 
 beforeEach(async () => {
-  result = await factory.build('bibliographyEntry', { id: resultId })
+  result = bibliographyEntryFactory.build({}, { transient: { id: resultId } })
   session = {
     isAllowedToReadBibliography: _.stubTrue(),
     isAllowedToWriteBibliography: jest.fn(),

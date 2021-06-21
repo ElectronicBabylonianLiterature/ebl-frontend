@@ -140,6 +140,7 @@ export class Text implements TextInfo {
   approximateVerses = false
   intro = ''
   chapters: ReadonlyArray<{ name: string; stage: string }> = []
+  references: ReadonlyArray<Reference> = []
 }
 
 export function createText(data: Partial<Text>): Text {

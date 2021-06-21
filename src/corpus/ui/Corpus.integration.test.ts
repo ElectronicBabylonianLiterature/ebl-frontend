@@ -11,6 +11,7 @@ const textsDto = [
     numberOfVerses: 674,
     approximateVerses: true,
     chapters: [],
+    references: [],
   },
   {
     genre: 'Lex',
@@ -20,6 +21,7 @@ const textsDto = [
     numberOfVerses: 3,
     approximateVerses: false,
     chapters: [],
+    references: [],
   },
   {
     genre: 'L',
@@ -29,6 +31,7 @@ const textsDto = [
     numberOfVerses: 99,
     approximateVerses: false,
     chapters: [],
+    references: [],
   },
   {
     genre: 'L',
@@ -38,6 +41,7 @@ const textsDto = [
     numberOfVerses: 2,
     approximateVerses: false,
     chapters: [],
+    references: [],
   },
   {
     genre: 'L',
@@ -47,6 +51,7 @@ const textsDto = [
     numberOfVerses: 45,
     approximateVerses: true,
     chapters: [],
+    references: [],
   },
   {
     genre: 'L',
@@ -56,6 +61,7 @@ const textsDto = [
     numberOfVerses: 99,
     approximateVerses: false,
     chapters: [],
+    references: [],
   },
   {
     genre: 'L',
@@ -65,6 +71,7 @@ const textsDto = [
     numberOfVerses: 1,
     approximateVerses: false,
     chapters: [],
+    references: [],
   },
 ]
 
