@@ -8,7 +8,6 @@ import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import './signDisplay.css'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
-import MesZlContent from 'signs/ui/search/MesZLContent'
 import Word from './Word'
 import WordService from 'dictionary/application/WordService'
 
@@ -86,7 +85,6 @@ function SignInformation({
   sign: Sign
   wordService: WordService
 }): JSX.Element {
-  console.log(sign)
   return (
     <>
       <Row>
@@ -122,7 +120,7 @@ function SignInformation({
     </>
   )
 }
-
+/*
 function WordsWithLink({
   wordIds,
   wordService,
@@ -141,6 +139,8 @@ function WordsWithLink({
     </>
   )
 }
+
+ */
 function LogogramDisplay({
   logogram,
   wordService,
@@ -150,7 +150,12 @@ function LogogramDisplay({
 }): JSX.Element {
   return (
     <div>
-      <WordsWithLink wordIds={logogram.wordId} wordService={wordService} />
+      {logogram.wordId.map((wordIdElem, index) => (
+        <span key={index}>
+          <Word wordId={wordIdElem} wordService={wordService} />
+          {index < logogram.wordId.length - 1 ? ', ' : ''}
+        </span>
+      ))}
     </div>
   )
 }
@@ -173,29 +178,6 @@ function Logograms({
   )
 }
 
-function MesZl({
-  signName,
-  mesZl,
-}: {
-  signName: string
-  mesZl: string
-}): JSX.Element | null {
-  return (
-    <>
-      <Row>
-        <Col>
-          <h1>2. MesZL</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col className={'p-5'}>
-          <MesZlContent signName={signName} mesZl={mesZl} />
-        </Col>
-      </Row>
-    </>
-  )
-}
-
 function SignDisplay({
   sign,
   wordService,
@@ -210,7 +192,6 @@ function SignDisplay({
         cuneiformLetters={sign.displayCuneiformSigns}
       />
       <SignInformation sign={sign} wordService={wordService} />
-      <MesZl signName={sign.name} mesZl={sign.mesZl} />
     </Container>
   )
 }
