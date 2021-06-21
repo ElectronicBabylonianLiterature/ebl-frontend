@@ -59,7 +59,7 @@ function SignHeading({
   return (
     <Row>
       <Col xs={3}>
-        <h1>{signName}</h1>
+        <h3>{signName}</h3>
       </Col>
       <Col>
         <Row>

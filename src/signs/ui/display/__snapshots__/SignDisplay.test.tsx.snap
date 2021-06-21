@@ -11,9 +11,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
       <div
         class="col-3"
       >
-        <h1>
+        <h3>
           BU
-        </h1>
+        </h3>
       </div>
       <div
         class="col"
