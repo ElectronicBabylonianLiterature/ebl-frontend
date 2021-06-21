@@ -19,13 +19,7 @@ function Lemma({ word }: { word: Word }): JSX.Element {
       )}
       <span>
         {word.homonym && ` ${word.homonym}`}
-        {word.guideWord && ` ,${word.guideWord}`}
-        {word.logograms.length &&
-          word.logograms.map((logogram, index) => (
-            <span key={index}>
-              {index < word.logograms.length - 1 ? ', ' : ''}
-            </span>
-          ))}
+        {word.guideWord && `, “${word.guideWord}”`}
       </span>
     </Fragment>
   )

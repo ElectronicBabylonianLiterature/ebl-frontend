@@ -4,79 +4,14 @@ import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignsService from 'signs/application/SignsService'
 import Sign, { Logogram } from 'signs/domain/Sign'
-import HelpTrigger from 'common/HelpTrigger'
-import _ from 'lodash'
 import './signDisplay.css'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import Word from './Word'
 import WordService from 'dictionary/application/WordService'
-
-function CuneiformFontsHelpPopover(): JSX.Element {
-  return (
-    <Popover
-      id={_.uniqueId('CuneiformFontsHelpHelp-')}
-      title="Cuneiform Form Help"
-    >
-      <Popover.Content>
-        <div>Help</div>
-      </Popover.Content>
-    </Popover>
-  )
-}
-
-function SignHeading({
-  signName,
-  cuneiformLetters,
-}: {
-  signName: string
-  cuneiformLetters: string
-}): JSX.Element {
-  const CuneiformFonts = ({
-    font = undefined,
-    description,
-  }: {
-    font?: string | undefined
-    description: string
-  }): JSX.Element => (
-    <Col xs={4}>
-      <Row>
-        <Col xs={3}>
-          <h2 className={font ? font : ''}>{cuneiformLetters}</h2>
-        </Col>
-        <Col>
-          <span className={'text-secondary'}>{description}</span>
-        </Col>
-      </Row>
-    </Col>
-  )
-
-  return (
-    <Row>
-      <Col xs={3}>
-        <h1>{signName}</h1>
-      </Col>
-      <Col>
-        <Row>
-          <CuneiformFonts
-            font={'old-babylonian-monumental'}
-            description={'Old-Babylonian (Monumental)'}
-          />
-          <CuneiformFonts
-            font={'old-babylonian-cursive'}
-            description={'Old-Babylonian Cursive'}
-          />
-          <CuneiformFonts font={'hittite'} description={'Hittite'} />
-          <CuneiformFonts description={'Neo-Assyrian'} />
-          <CuneiformFonts
-            font={'neo-babylonian'}
-            description={'Neo-Babylonian'}
-          />
-          <HelpTrigger className="ml-3" overlay={CuneiformFontsHelpPopover()} />
-        </Row>
-      </Col>
-    </Row>
-  )
-}
+import DOMPurify from 'dompurify'
+import HelpTrigger from 'common/HelpTrigger'
+import InlineMarkdown from 'common/InlineMarkdown'
+import _ from 'lodash'
 
 function SignInformation({
   sign,
@@ -85,6 +20,7 @@ function SignInformation({
   sign: Sign
   wordService: WordService
 }): JSX.Element {
+  console.log(sign)
   return (
     <>
       <Row>
@@ -114,33 +50,10 @@ function SignInformation({
           <Logograms logograms={sign.logograms} wordService={wordService} />
         </Col>
       </Row>
-      <Row>
-        <Col></Col>
-      </Row>
-    </>
-  )
-}
-/*
-function WordsWithLink({
-  wordIds,
-  wordService,
-}: {
-  wordIds: readonly string[]
-  wordService: WordService
-}): JSX.Element {
-  return (
-    <>
-      {wordIds.map((wordId, index) => (
-        <span key={index}>
-          <Word wordId={wordId} wordService={wordService} />
-          {index < wordIds.length - 1 ? ', ' : ''}
-        </span>
-      ))}
     </>
   )
 }
 
- */
 function LogogramDisplay({
   logogram,
   wordService,
@@ -149,14 +62,41 @@ function LogogramDisplay({
   wordService: WordService
 }): JSX.Element {
   return (
-    <div>
-      {logogram.wordId.map((wordIdElem, index) => (
-        <span key={index}>
-          <Word wordId={wordIdElem} wordService={wordService} />
-          {index < logogram.wordId.length - 1 ? ', ' : ''}
-        </span>
-      ))}
-    </div>
+    <Row>
+      <Col>
+        {logogram.wordId.map((wordIdElem, index) => (
+          <span key={index}>
+            <Word wordId={wordIdElem} wordService={wordService} />
+            {index < logogram.wordId.length - 1 ? ', ' : ''}
+          </span>
+        ))}
+        {logogram.logogram && (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(` (${logogram.logogram})`),
+            }}
+          />
+        )}
+      </Col>
+      <Col>
+        {logogram.schrammLogogramme && (
+          <span>
+            &nbsp;
+            <HelpTrigger overlay={LogogramInfo(logogram.schrammLogogramme)} />
+          </span>
+        )}
+      </Col>
+    </Row>
+  )
+}
+
+function LogogramInfo(schrammLogogram: string): JSX.Element {
+  return (
+    <Popover id={_.uniqueId('LogogramInfo-')} title="Logogram Info">
+      <Popover.Content>
+        <InlineMarkdown source={schrammLogogram} />
+      </Popover.Content>
+    </Popover>
   )
 }
 
@@ -187,10 +127,6 @@ function SignDisplay({
 }): JSX.Element {
   return (
     <Container>
-      <SignHeading
-        signName={sign.name}
-        cuneiformLetters={sign.displayCuneiformSigns}
-      />
       <SignInformation sign={sign} wordService={wordService} />
     </Container>
   )
