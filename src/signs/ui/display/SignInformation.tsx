@@ -1,19 +1,15 @@
-import React from 'react'
-import { Col, Container, Popover, Row } from 'react-bootstrap'
-import { RouteComponentProps } from 'react-router-dom'
-import withData, { WithoutData } from 'http/withData'
-import SignsService from 'signs/application/SignsService'
 import Sign, { Logogram } from 'signs/domain/Sign'
-import 'signs/ui/display/signInformation.css'
-import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
-import Word from './Word'
 import WordService from 'dictionary/application/WordService'
+import { Col, Popover, Row } from 'react-bootstrap'
+import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
+import LogogramWord from 'signs/ui/display/LogogramWord'
+import { ContainerWithInnerHtml } from 'common/markdownToHtml'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
-import { ContainerWithInnerHtml } from 'common/markdownToHtml'
 import ExternalLink from 'common/ExternalLink'
+import React from 'react'
 
-function SignDetails({
+export default function SignInformation({
   sign,
   wordService,
 }: {
@@ -65,7 +61,7 @@ function LogogramDisplay({
       <Col>
         {logogram.wordId.map((wordIdElem, index) => (
           <span key={index}>
-            <Word wordId={wordIdElem} wordService={wordService} />
+            <LogogramWord wordId={wordIdElem} wordService={wordService} />
             {index < logogram.wordId.length - 1 ? ', ' : ''}
           </span>
         ))}
@@ -145,29 +141,3 @@ function Logograms({
     </ul>
   )
 }
-
-function SignInformation({
-  sign,
-  wordService,
-}: {
-  sign: Sign
-  wordService: WordService
-}): JSX.Element {
-  return (
-    <Container>
-      <SignDetails sign={sign} wordService={wordService} />
-    </Container>
-  )
-}
-type Props = {
-  data: Sign
-  wordService: WordService
-  signsService: SignsService
-} & RouteComponentProps<{ id: string }>
-
-export default withData<WithoutData<Props>, { match; signsService }, Sign>(
-  ({ data, wordService }) => (
-    <SignInformation sign={data} wordService={wordService} />
-  ),
-  (props) => props.signsService.find(props.match.params['id'])
-)

@@ -4,7 +4,7 @@ import React, { Fragment } from 'react'
 import WordService from 'dictionary/application/WordService'
 import { Link } from 'react-router-dom'
 
-function Lemma({ word }: { word: Word }): JSX.Element {
+function LogogramWord({ word }: { word: Word }): JSX.Element {
   const attested = word.attested === false ? '*' : ''
   const lemma = word.lemma.join(' ')
   return (
@@ -31,6 +31,6 @@ type Props = {
 }
 
 export default withData<WithoutData<Props>, { wordId; wordService }, Word>(
-  ({ data }) => <Lemma word={data} />,
+  ({ data }) => <LogogramWord word={data} />,
   (props) => props.wordService.find(props.wordId)
 )
