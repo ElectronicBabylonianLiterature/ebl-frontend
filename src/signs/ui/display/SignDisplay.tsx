@@ -8,15 +8,23 @@ import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import './signDisplay.css'
 import MesZlContent from 'signs/ui/search/MesZLContent'
+import ExternalLink from 'common/ExternalLink'
 
 function CuneiformFontsHelpPopover(): JSX.Element {
   return (
     <Popover
       id={_.uniqueId('CuneiformFontsHelpHelp-')}
-      title="Cuneiform Form Help"
+      title="Cuneiform Fonts Help"
+      className={'mb-2'}
     >
       <Popover.Content>
-        <div>Cuneiform fonts by S. Vanserveren </div>
+        Cuneiform fonts by S. Vanserveren{' '}
+        <ExternalLink
+          href={'https://www.hethport.uni-wuerzburg.de/cuneifont/'}
+          className={'text-dark'}
+        >
+          <i className="fas fa-external-link-square-alt" />
+        </ExternalLink>
       </Popover.Content>
     </Popover>
   )
@@ -72,7 +80,12 @@ function SignHeading({
             font={'CuneiformFonts__heading-neo-babylonian'}
             description={'Neo-Babylonian'}
           />
-          <HelpTrigger className="ml-3" overlay={CuneiformFontsHelpPopover()} />
+          <Col>
+            <HelpTrigger
+              delay={{ show: 0, hide: 1200 }}
+              overlay={CuneiformFontsHelpPopover()}
+            />
+          </Col>
         </Row>
       </Col>
     </Row>
@@ -90,7 +103,7 @@ function MesZl({
     <>
       <Row>
         <Col>
-          <h1>&#8544;. MesZL</h1>
+          <h3>&#8544;. MesZL</h3>
         </Col>
       </Row>
       <Row>

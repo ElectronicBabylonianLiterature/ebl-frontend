@@ -9,12 +9,7 @@ type Props = {
 function HelpTrigger({ className = '', ...props }: Props): JSX.Element {
   return (
     <OverlayTrigger placement="right" {...props}>
-      <i
-        className={classNames(
-          { className: Boolean(className) },
-          'fas fa-info-circle'
-        )}
-      />
+      <i className={classNames(className, 'fas', 'fa-info-circle')} />
     </OverlayTrigger>
   )
 }

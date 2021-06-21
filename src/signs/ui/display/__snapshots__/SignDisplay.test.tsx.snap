@@ -151,9 +151,13 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               </div>
             </div>
           </div>
-          <i
-            class="className fas fa-info-circle"
-          />
+          <div
+            class="col"
+          >
+            <i
+              class="fas fa-info-circle"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -163,9 +167,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
       <div
         class="col"
       >
-        <h1>
+        <h3>
           Ⅰ. MesZL
-        </h1>
+        </h3>
       </div>
     </div>
     <div
