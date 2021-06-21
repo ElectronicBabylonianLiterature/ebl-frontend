@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import { ContainerWithInnerHtml } from 'common/markdownToHtml'
 
 function splitMesZl(
-  mesZl: string
+  mesZl: string,
+  cutOff: number
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
-  const cutOff = 7
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines
     .slice(1, cutOff)
@@ -20,11 +20,13 @@ function splitMesZl(
 export default function MesZlContent({
   signName,
   mesZl,
+  cutOff = Number.POSITIVE_INFINITY,
 }: {
   signName: string
   mesZl: string
+  cutOff?: number
 }): JSX.Element | null {
-  const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl)
+  const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl, cutOff)
   return (
     <>
       <div>
@@ -37,7 +39,7 @@ export default function MesZlContent({
       </div>
       <ContainerWithInnerHtml markdown={mesZlBodyMarkdown} />
 
-      {mesZl.split('\n').length > 7 && (
+      {mesZl.split('\n').length > cutOff && (
         <div className="text-center">
           <br />
           <strong>
