@@ -7,9 +7,9 @@ import {
 } from '@testing-library/react'
 import Promise from 'bluebird'
 import BibliographySearch from './BibliographySearch'
-import { factory } from 'factory-girl'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 
 const query = 'Börger'
 let entries: BibliographyEntry[]
@@ -28,7 +28,7 @@ async function renderWordSearch(): Promise<void> {
 }
 
 beforeEach(async () => {
-  entries = await factory.buildMany('bibliographyEntry', 2)
+  entries = bibliographyEntryFactory.buildList(2)
   bibliographyService = {
     search: jest.fn(),
   }

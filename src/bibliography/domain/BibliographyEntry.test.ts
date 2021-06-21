@@ -1,14 +1,14 @@
-import { factory } from 'factory-girl'
 import _ from 'lodash'
 import Cite from 'citation-js'
 import BibliographyEntry from './BibliographyEntry'
+import { cslDataFactory } from 'test-support/bibliography-fixtures'
 
 let cslData
 let entry
 let cite
 
-beforeEach(async () => {
-  cslData = await factory.build('cslData', {
+beforeEach(() => {
+  cslData = cslDataFactory.build({
     author: [{ family: 'Family', extra: 'Extra' }],
     _underscored: 'should be omitted',
     'container-title-short': 'short title',
@@ -23,12 +23,12 @@ test.each([
   ['title', 'title'],
   ['link', 'URL'],
   ['shortContainerTitle', 'container-title-short'],
-])('%s', async (property, path) =>
+])('%s', (property, path) =>
   expect(entry[property]).toEqual(_.get(cslData, path))
 )
 
-test('non-dropping particle', async () => {
-  cslData = await factory.build('cslData', {
+test('non-dropping particle', () => {
+  cslData = cslDataFactory.build({
     author: [
       {
         'non-dropping-particle': 'von',
@@ -40,8 +40,8 @@ test('non-dropping particle', async () => {
   expect(entry.primaryAuthor).toEqual('von Soden')
 })
 
-test('authors', async () => {
-  cslData = await factory.build('cslData', {
+test('authors', () => {
+  cslData = cslDataFactory.build({
     author: [
       {
         'non-dropping-particle': 'von',
@@ -56,18 +56,18 @@ test('authors', async () => {
   expect(entry.authors).toEqual(['von Soden', 'Nodes'])
 })
 
-test('fallback link', async () => {
-  cslData = await factory.build('cslData', { URL: null, DOI: 'doi' })
+test('fallback link', () => {
+  cslData = cslDataFactory.build({ URL: null, DOI: 'doi' })
   entry = new BibliographyEntry(cslData)
   expect(entry.link).toEqual(`https://doi.org/${cslData.DOI}`)
 })
 
-test('year', async () => {
+test('year', () => {
   expect(entry.year).toEqual(String(_.get(cslData, 'issued.date-parts.0.0')))
 })
 
-test('year range', async () => {
-  cslData = await factory.build('cslData', {
+test('year range', () => {
+  cslData = cslDataFactory.build({
     issued: {
       'date-parts': [[1800], [2900]],
     },
@@ -96,8 +96,8 @@ test('toBibtex', () => {
   )
 })
 
-test('toJson', async () => {
-  const expectedCslData = await factory.build('cslData', {
+test('toJson', () => {
+  const expectedCslData = cslDataFactory.build({
     ..._.omit(cslData, '_underscored'),
     author: [{ family: 'Family' }],
   })

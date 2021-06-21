@@ -1,7 +1,6 @@
 import React from 'react'
 import { Router, withRouter } from 'react-router-dom'
 import { render, screen, waitFor } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import SearchForms from './SearchForm'
@@ -11,6 +10,7 @@ import userEvent from '@testing-library/user-event'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('auth/Session')
@@ -63,7 +63,7 @@ beforeEach(async () => {
   >)()
 
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
-  searchEntry = await factory.build('bibliographyEntry')
+  searchEntry = bibliographyEntryFactory.build()
   fragmentService.searchBibliography.mockReturnValue(
     Promise.resolve([searchEntry])
   )
@@ -71,6 +71,7 @@ beforeEach(async () => {
   session.isAllowedToTransliterateFragments.mockReturnValue(true)
   await renderSearchForms()
 })
+
 describe('User Input', () => {
   it('Displys User Input in NumbersSearchForm', async () => {
     const userInput = 'RN0'

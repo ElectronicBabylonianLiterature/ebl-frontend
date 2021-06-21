@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -111,7 +112,7 @@ describe('Fragment is loaded', () => {
         atf: '1. ku',
         hasPhoto: true,
       })
-    ).setReferences(await factory.buildMany('reference', 2))
+    ).setReferences(referenceFactory.buildList(2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))

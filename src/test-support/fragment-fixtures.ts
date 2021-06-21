@@ -5,6 +5,7 @@ import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
+import { referenceDtoFactory } from './bibliography-fixtures'
 
 const chance = new Chance()
 
@@ -99,7 +100,7 @@ factory.define('fragment', Fragment, {
   text: complexText,
   notes: factory.chance('sentence'),
   museum: Museum.of('The British Museum'),
-  references: async () => await factory.buildMany('referenceDto', 2),
+  references: () => referenceDtoFactory.buildList(2),
   hasPhoto: factory.chance('bool'),
   genres: factory.chance('pickone', [
     new Genres([

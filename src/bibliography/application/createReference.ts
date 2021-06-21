@@ -6,7 +6,7 @@ import { ReferenceDto } from 'bibliography/domain/referenceDto'
 export default function createReference(
   data: ReferenceDto,
   bibliographyRepository: {
-    find: (x0: string) => Promise<BibliographyEntry>
+    find: (id: string) => Promise<BibliographyEntry>
   }
 ): Promise<Reference> {
   return bibliographyRepository

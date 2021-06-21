@@ -2,19 +2,20 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import Bibliography from './Bibliography'
 import createAuthorRegExp from 'test-support/createAuthorRexExp'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const BibliographyWithRouter = withRouter(Bibliography)
 
-let entries
+let entries: BibliographyEntry[]
 let bibliographyService
 let session
 
-beforeEach(async () => {
-  entries = await factory.buildMany('bibliographyEntry', 2)
+beforeEach(() => {
+  entries = bibliographyEntryFactory.buildList(2)
   bibliographyService = {
     search: jest.fn(),
   }

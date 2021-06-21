@@ -1,6 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
+import { render, RenderResult } from '@testing-library/react'
 
 import {
   whenChangedByLabel,
@@ -8,17 +7,21 @@ import {
   clickNth,
 } from 'test-support/utils'
 import ReferenceForm from './ReferenceForm'
-import { buildBorger1957 } from 'test-support/bibliography-fixtures'
+import {
+  buildBorger1957,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
+import Reference from 'bibliography/domain/Reference'
 
-let reference
-let element
+let reference: Reference
+let element: RenderResult
 let onChange
 let searchBibliography
 let entry
 
-beforeEach(async () => {
-  reference = await factory.build('reference')
-  entry = await buildBorger1957()
+beforeEach(() => {
+  reference = referenceFactory.build()
+  entry = buildBorger1957()
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([entry]))
@@ -47,7 +50,9 @@ describe.each([
   ['Notes', 'notes', 'setNotes', ''],
 ])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
-    expect(element.getByLabelText(label).value).toEqual(reference[property])
+    expect((element.getByLabelText(label) as HTMLInputElement).value).toEqual(
+      reference[property]
+    )
   })
 
   it(`Calls onChange with updated value`, () => {
@@ -58,9 +63,9 @@ describe.each([
 })
 
 it('Displays Lines Cited', () => {
-  expect(element.getByLabelText('Lines Cited').value).toEqual(
-    reference.linesCited.join(',')
-  )
+  expect(
+    (element.getByLabelText('Lines Cited') as HTMLInputElement).value
+  ).toEqual(reference.linesCited.join(','))
 })
 
 test.each([

@@ -1,6 +1,5 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
@@ -8,7 +7,10 @@ import { changeValueByLabel, clickNth } from 'test-support/utils'
 import ReferencesForm from './ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { buildBorger1957 } from 'test-support/bibliography-fixtures'
+import {
+  buildBorger1957,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 
 const defaultReference = new Reference()
 
@@ -17,11 +19,11 @@ let references: Reference[]
 let element: RenderResult
 let searchEntry: BibliographyEntry
 let searchBibliography
-let onChange
+let onChange: (references: readonly Reference[]) => void
 
 beforeEach(async () => {
-  references = await factory.buildMany('reference', 2)
-  searchEntry = await buildBorger1957()
+  references = referenceFactory.buildList(2)
+  searchEntry = buildBorger1957()
   expectedReference = (_.head(references) as Reference).setDocument(searchEntry)
   searchBibliography = (): Promise<BibliographyEntry[]> =>
     Promise.resolve([searchEntry])
