@@ -1,13 +1,9 @@
-import React, { ElementType, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.css'
-import ReactMarkdown from 'react-markdown'
-import * as remarkSubSuper from 'remark-sub-super'
+import { Markdown } from 'common/Markdown'
 
-export function replaceByCurlyQuotes(str: string): string {
-  return str.replace(/"([^"]*)"/g, '“$1”')
-}
 interface Form {
   attested: boolean
   lemma: string[]
@@ -100,33 +96,6 @@ export function Logogram({
         </>
       )}
     </span>
-  )
-}
-
-type MarkdownProps = {
-  text: string
-  paragraph?: ElementType
-  className?: string
-  isReplaceCurlyQuotes?: boolean
-}
-export function Markdown({
-  text,
-  paragraph = 'span',
-  className = '',
-  isReplaceCurlyQuotes = true,
-}: MarkdownProps): JSX.Element {
-  return (
-    <ReactMarkdown
-      className={className}
-      plugins={[remarkSubSuper]}
-      renderers={{
-        paragraph: paragraph,
-        sub: 'sub',
-        sup: 'sup',
-      }}
-    >
-      {isReplaceCurlyQuotes ? replaceByCurlyQuotes(text) : text}
-    </ReactMarkdown>
   )
 }
 

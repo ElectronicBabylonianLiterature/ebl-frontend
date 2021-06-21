@@ -14,10 +14,10 @@ import {
   Derivatives,
   Join,
   Logogram,
-  Markdown,
   OtherForm,
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
+import { Markdown } from 'common/Markdown'
 
 const LiteratureRedirectBox = (): JSX.Element => (
   <ExternalLink

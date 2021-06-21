@@ -8,10 +8,10 @@ import './signDisplay.css'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import Word from './Word'
 import WordService from 'dictionary/application/WordService'
-import DOMPurify from 'dompurify'
 import HelpTrigger from 'common/HelpTrigger'
-import InlineMarkdown from 'common/InlineMarkdown'
 import _ from 'lodash'
+import { ContainerWithInnerHtml } from 'common/markdownToHtml'
+import ExternalLink from 'common/ExternalLink'
 
 function SignInformation({
   sign,
@@ -71,18 +71,24 @@ function LogogramDisplay({
           </span>
         ))}
         {logogram.logogram && (
-          <span
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(` (${logogram.logogram})`),
-            }}
-          />
+          <span>
+            &nbsp;(
+            <ContainerWithInnerHtml
+              container={'span'}
+              markdown={logogram.logogram}
+            />
+            )
+          </span>
         )}
       </Col>
       <Col>
         {logogram.schrammLogogramme && (
           <span>
             &nbsp;
-            <HelpTrigger overlay={LogogramInfo(logogram.schrammLogogramme)} />
+            <HelpTrigger
+              delay={{ show: 0, hide: 1500 }}
+              overlay={LogogramInfo(logogram.schrammLogogramme)}
+            />
           </span>
         )}
       </Col>
@@ -92,9 +98,34 @@ function LogogramDisplay({
 
 function LogogramInfo(schrammLogogram: string): JSX.Element {
   return (
-    <Popover id={_.uniqueId('LogogramInfo-')} title="Logogram Info">
+    <Popover
+      id={_.uniqueId('LogogramInfo-')}
+      title="Logogram Info"
+      className={'signDisplay__LogogramInfo'}
+    >
       <Popover.Content>
-        <InlineMarkdown source={schrammLogogram} />
+        <ContainerWithInnerHtml markdown={schrammLogogram} />
+        <div className="text-center mt-3">
+          <small>
+            <strong>From</strong>
+            <br />
+            R. Borger,{' '}
+            <em>
+              Mesopotamisches Zeichenlexikon. Zweite, revidierte und
+              aktualisierte Auflage.&nbsp;
+            </em>
+            Alter Orient und Altes Testament 305.
+            <br /> Münster: Ugarit-Verlag, <sup>2</sup>2010; Kapitel &#8546;.
+            <strong>By permission from Ugarit-Verlag.</strong>
+            <br />
+            <ExternalLink
+              className="text-dark "
+              href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+            >
+              <i className="fas fa-shopping-cart fa-2x" />
+            </ExternalLink>
+          </small>
+        </div>
       </Popover.Content>
     </Popover>
   )
