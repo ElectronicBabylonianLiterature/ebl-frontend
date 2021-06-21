@@ -10,9 +10,9 @@ import DOMPurify from 'dompurify'
 import { Link } from 'react-router-dom'
 
 function splitMesZl(
-  mesZl: string
+  mesZl: string,
+  cutOff: number
 ): { mesZlHeadMarkdown: string; mesZlBodyMarkdown: string } {
-  const cutOff = 7
   const mesZlLines = mesZl.split('\n')
   const mesZlBody = mesZlLines
     .slice(1, cutOff)
@@ -49,16 +49,18 @@ async function convertMarkdownToHtml(markdown: string): Promise<string> {
 export default function MesZlContent({
   signName,
   mesZl,
+  cutOff = Number.POSITIVE_INFINITY,
 }: {
   signName: string
   mesZl: string
+  cutOff?: number
 }): JSX.Element | null {
   const [mesZlHead, setMesZlHead] = useState<string>('')
   const [mesZlBody, setMesZlBody] = useState<string>('')
 
   const [ready, setReady] = useState(false)
 
-  const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl)
+  const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl, cutOff)
 
   useEffect(() => {
     ;(async () => {
@@ -85,7 +87,7 @@ export default function MesZlContent({
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(mesZlBody) }}
         />
-        {mesZl.split('\n').length > 7 && (
+        {mesZl.split('\n').length > cutOff && (
           <div className="text-center">
             <br />
             <strong>

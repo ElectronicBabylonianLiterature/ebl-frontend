@@ -4,7 +4,7 @@ import compareAkkadianStrings, {
 } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/ui/SubIndex'
 
-interface Logogram {
+export interface Logogram {
   logogram: string
   atf: string
   wordId: readonly string[]

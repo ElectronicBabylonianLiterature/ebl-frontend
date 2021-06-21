@@ -150,7 +150,12 @@ function App({
               />
             )}
           />
-          <Route path="/signs/:id" render={SignDisplay} />
+          <Route
+            path="/signs/:id"
+            render={(props): ReactNode => (
+              <SignDisplay signsService={signsService} {...props} />
+            )}
+          />
           <Route
             path="/signs"
             render={(props): ReactNode => (

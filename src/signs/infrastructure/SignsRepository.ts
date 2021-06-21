@@ -15,6 +15,11 @@ class SignsRepository {
       .fetchJson(`/signs?${stringify(signQuery)}`, true)
       .then((signDtos) => signDtos.map((signDto) => Sign.fromDto(signDto)))
   }
+  find(signName: string): Promise<Sign> {
+    return this.apiClient
+      .fetchJson(`/signs/${encodeURIComponent(signName)}`, true)
+      .then(Sign.fromDto)
+  }
 }
 
 export default SignsRepository
