@@ -13,7 +13,7 @@ export default function MesZl({
     <>
       <Row>
         <Col>
-          <h3>&#8544;. MesZL</h3>
+          <h3>&#8545;. MesZL</h3>
         </Col>
       </Row>
       <Row>

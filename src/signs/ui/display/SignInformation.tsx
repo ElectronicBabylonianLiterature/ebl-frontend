@@ -20,7 +20,7 @@ export default function SignInformation({
     <>
       <Row>
         <Col>
-          <h1>1. Sign Information</h1>
+          <h3>&#8544;. Sign Information</h3>
         </Col>
       </Row>
       <Row>
