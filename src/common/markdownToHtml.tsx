@@ -54,6 +54,7 @@ export function ContainerWithInnerHtml({
       setIsReady(true)
     })()
   }, [html])
+
   if (isReady) {
     if (container === 'div') {
       return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />

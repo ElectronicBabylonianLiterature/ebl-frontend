@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignsService from 'signs/application/SignsService'
 import Sign, { Logogram } from 'signs/domain/Sign'
-import './signDisplay.css'
+import 'signs/ui/display/signInformation.css'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import Word from './Word'
 import WordService from 'dictionary/application/WordService'
@@ -13,14 +13,13 @@ import _ from 'lodash'
 import { ContainerWithInnerHtml } from 'common/markdownToHtml'
 import ExternalLink from 'common/ExternalLink'
 
-function SignInformation({
+function SignDetails({
   sign,
   wordService,
 }: {
   sign: Sign
   wordService: WordService
 }): JSX.Element {
-  console.log(sign)
   return (
     <>
       <Row>
@@ -104,25 +103,23 @@ function LogogramInfo(schrammLogogram: string): JSX.Element {
       className={'signDisplay__LogogramInfo'}
     >
       <Popover.Content>
-        <ContainerWithInnerHtml markdown={schrammLogogram} />
+        <ContainerWithInnerHtml
+          className="text-center my-1"
+          markdown={schrammLogogram}
+        />
         <div className="text-center mt-3">
           <small>
-            <strong>From</strong>
-            <br />
-            R. Borger,{' '}
-            <em>
-              Mesopotamisches Zeichenlexikon. Zweite, revidierte und
-              aktualisierte Auflage.&nbsp;
-            </em>
-            Alter Orient und Altes Testament 305.
-            <br /> Münster: Ugarit-Verlag, <sup>2</sup>2010; Kapitel &#8546;.
-            <strong>By permission from Ugarit-Verlag.</strong>
-            <br />
+            From W. Schramm,{' '}
+            <em>Akkadische Logogramme. Zweite, revidierte Auflage.&nbsp;</em>
+            Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
+            Göttingen,
+            <sup>2</sup>2010. (CC BY-ND 3.0).
+            <br /> <br />
             <ExternalLink
               className="text-dark "
               href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
             >
-              <i className="fas fa-shopping-cart fa-2x" />
+              <i className="fas fa-external-link-square-alt fa-2x" />
             </ExternalLink>
           </small>
         </div>
@@ -149,7 +146,7 @@ function Logograms({
   )
 }
 
-function SignDisplay({
+function SignInformation({
   sign,
   wordService,
 }: {
@@ -158,7 +155,7 @@ function SignDisplay({
 }): JSX.Element {
   return (
     <Container>
-      <SignInformation sign={sign} wordService={wordService} />
+      <SignDetails sign={sign} wordService={wordService} />
     </Container>
   )
 }
@@ -170,7 +167,7 @@ type Props = {
 
 export default withData<WithoutData<Props>, { match; signsService }, Sign>(
   ({ data, wordService }) => (
-    <SignDisplay sign={data} wordService={wordService} />
+    <SignInformation sign={data} wordService={wordService} />
   ),
   (props) => props.signsService.find(props.match.params['id'])
 )

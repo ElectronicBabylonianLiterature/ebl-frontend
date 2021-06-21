@@ -28,7 +28,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import TextService from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
-import SignDisplay from 'signs/ui/display/SignDisplay'
+import SignDisplay from 'signs/ui/display/SignInformation'
 
 function parseStringParam(
   location: Location,
