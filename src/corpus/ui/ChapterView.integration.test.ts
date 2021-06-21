@@ -2,14 +2,17 @@ import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 
+const genre = 'L'
 const category = 1
 const index = 1
 const textDto = {
+  genre: genre,
   category: category,
   index: index,
   name: 'Palm and Vine',
   numberOfVerses: 99,
   approximateVerses: false,
+  intro: '**Test**',
   chapters: [
     {
       stage: 'Old Babylonian',
@@ -24,9 +27,11 @@ const textDto = {
       name: 'The Second Chapter',
     },
   ],
+  references: [],
 }
 
 const textId = {
+  genre: genre,
   category: category,
   index: index,
 }
@@ -50,6 +55,7 @@ const chapterDtos = [
         type: 'School',
         notes: 'some notes',
         colophon: '1. kur',
+        unplacedLines: '1. bu',
         references: [],
       },
     ],
@@ -86,6 +92,7 @@ const chapterDtos = [
         type: 'School',
         notes: '',
         colophon: '',
+        unplacedLines: '',
         references: [],
       },
       {
@@ -99,6 +106,7 @@ const chapterDtos = [
         type: 'School',
         notes: '',
         colophon: '',
+        unplacedLines: '',
         references: [],
       },
     ],
@@ -139,6 +147,7 @@ const defaultManuscriptDto = {
   type: 'Library',
   notes: '',
   colophon: '',
+  unplacedLines: '',
   references: [],
 }
 
@@ -351,9 +360,11 @@ async function setup(chapter) {
 }
 
 function createChapterPath(stage: string, name: string) {
-  return `/corpus/${encodeURIComponent(category)}/${encodeURIComponent(
-    index
-  )}/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
+  return `/corpus/${encodeURIComponent(genre)}/${encodeURIComponent(
+    category
+  )}/${encodeURIComponent(index)}/${encodeURIComponent(
+    stage
+  )}/${encodeURIComponent(name)}`
 }
 
 function createChapterTitle(chapter) {

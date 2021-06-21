@@ -1,18 +1,19 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import _ from 'lodash'
-import { factory } from 'factory-girl'
 
 import { changeValueByLabel, clickNth } from 'test-support/utils'
 import BibliographyEntryForm from './BibliographyEntryForm'
+import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-let json
-let entry
-let element
-let onSubmit
+let json: string
+let entry: BibliographyEntry
+let element: RenderResult
+let onSubmit: () => void
 
-beforeEach(async () => {
-  entry = await factory.build('bibliographyEntry')
+beforeEach(() => {
+  entry = bibliographyEntryFactory.build()
   json = JSON.stringify(entry.toJson(), null, 2)
   onSubmit = jest.fn()
 })

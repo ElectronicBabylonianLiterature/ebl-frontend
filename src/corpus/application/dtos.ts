@@ -22,8 +22,21 @@ import {
   types,
 } from 'corpus/domain/text'
 
+function createReference(referenceDto): Reference {
+  return new Reference(
+    referenceDto.type,
+    referenceDto.pages,
+    referenceDto.notes,
+    referenceDto.linesCited,
+    new BibliographyEntry(referenceDto.document)
+  )
+}
+
 export function fromDto(textDto): Text {
-  return createText(textDto)
+  return createText({
+    ...textDto,
+    references: textDto.references.map(createReference),
+  })
 }
 
 export function fromChapterDto(chapterDto) {
@@ -41,16 +54,7 @@ function fromManuscriptDto(manuscriptDto): Manuscript {
     period: periods.get(manuscriptDto.period),
     provenance: provenances.get(manuscriptDto.provenance),
     type: types.get(manuscriptDto.type),
-    references: manuscriptDto.references.map(
-      (referenceDto) =>
-        new Reference(
-          referenceDto.type,
-          referenceDto.pages,
-          referenceDto.notes,
-          referenceDto.linesCited,
-          new BibliographyEntry(referenceDto.document)
-        )
-    ),
+    references: manuscriptDto.references.map(createReference),
   })
 }
 
@@ -92,6 +96,7 @@ const toManuscriptDto = produce((draft) => ({
   type: toName(draft.type),
   notes: draft.notes,
   colophon: draft.colophon,
+  unplacedLines: draft.unplacedLines,
   references: draft.references.map(serializeReference),
 }))
 

@@ -13,8 +13,18 @@ export type Period = {
   readonly abbreviation: string
   readonly description: string
   readonly parent?: string
+  readonly displayName?: string
 }
 export const periods: ReadonlyMap<string, Period> = new Map([
+  [
+    'None',
+    {
+      name: 'None',
+      abbreviation: '',
+      description: '',
+      displayName: '-',
+    },
+  ],
   [
     'Ur III',
     {

@@ -85,6 +85,7 @@ describe('Search', () => {
     const corpusResult = {
       id: {
         textId: {
+          genre: 'L',
           category: 1,
           index: 2,
         },
@@ -144,7 +145,7 @@ describe('Search', () => {
 
     describe('Corpus results', () => {
       it('Displays text id', async () => {
-        expect(await element.findByText('I.2')).toBeVisible()
+        expect(await element.findByText('L I.2')).toBeVisible()
       })
 
       it('Name links to chapter', async () => {
@@ -154,7 +155,7 @@ describe('Search', () => {
           )
         ).toHaveAttribute(
           'href',
-          `/corpus/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
+          `/corpus/${corpusResult.id.textId.genre}/${corpusResult.id.textId.category}/${corpusResult.id.textId.index}/${corpusResult.id.stage}/${corpusResult.id.name}`
         )
       })
 

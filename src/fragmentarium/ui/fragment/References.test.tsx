@@ -1,13 +1,15 @@
 import React from 'react'
 import { render, RenderResult } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
 import { changeValueByLabel, clickNth, submitForm } from 'test-support/utils'
 import References from './References'
 import Reference from 'bibliography/domain/Reference'
-import { buildBorger1957 } from 'test-support/bibliography-fixtures'
+import {
+  buildBorger1957,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const defaultReference = new Reference()
@@ -20,7 +22,7 @@ let searchBibliography
 let updateReferences
 
 beforeEach(async () => {
-  searchEntry = await buildBorger1957()
+  searchEntry = buildBorger1957()
   expectedReference = new Reference(
     'COPY',
     '1-2',
@@ -35,7 +37,7 @@ beforeEach(async () => {
 
 describe('Edit references', () => {
   beforeEach(async () => {
-    references = await factory.buildMany('reference', 2)
+    references = referenceFactory.buildList(2)
     await renderReferencesAndWait()
   })
 

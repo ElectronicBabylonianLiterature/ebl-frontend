@@ -91,7 +91,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${text.category}/${text.index}`,
+        path: `/texts/${text.genre}/${text.category}/${text.index}`,
         authenticate: true,
         response: text,
       })
@@ -103,7 +103,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${chapter.textId.category}/${
+        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
           chapter.textId.index
         }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
           chapter.name
@@ -119,7 +119,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${text.category}/${text.index}`,
+        path: `/texts/${text.genre}/${text.category}/${text.index}`,
         authenticate: true,
         response: text,
         verify: true,
@@ -132,7 +132,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${chapter.textId.category}/${
+        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
           chapter.textId.index
         }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
           chapter.name
@@ -149,7 +149,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.category}/${
+        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
           chapter.textId.index
         }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
           chapter.name
@@ -166,7 +166,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.category}/${
+        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
           chapter.textId.index
         }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
           chapter.name
@@ -183,7 +183,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.category}/${
+        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
           chapter.textId.index
         }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
           chapter.name

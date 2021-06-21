@@ -5,11 +5,12 @@ import Reference from 'bibliography/domain/Reference'
 import './ReferenceList.css'
 import Citation from './Citation'
 
-const typeOrder = {
+const typeOrder: { readonly [key: string]: number } = {
   COPY: 1,
   PHOTO: 2,
   EDITION: 3,
-  DISCUSSION: 4,
+  TRANSLATION: 4,
+  DISCUSSION: 5,
 }
 
 function ReferenceGroup({

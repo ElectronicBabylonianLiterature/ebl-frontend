@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import _ from 'lodash'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ApiImage from 'common/ApiImage'
 import AppContent from 'common/AppContent'
@@ -22,7 +22,9 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
     <Row as="li">
       <Col md={8}>
         {session.isAllowedToWriteTexts() ? (
-          <Link to={`/corpus/${text.category}/${text.index}`}>{title}</Link>
+          <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
+            {title}
+          </Link>
         ) : (
           title
         )}
@@ -39,17 +41,20 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   )
 }
 
-function Texts({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
+function Texts({
+  texts,
+  categories,
+}: {
+  texts: readonly TextInfo[]
+  categories: readonly string[]
+}): JSX.Element {
   return (
     <>
-      {[
-        '',
-        'I. Narrative Poetry',
-        'II. Monologue and dialogue literature',
-        'III. Literary Hymns and Prayers',
-      ].map((title, category) => (
+      {categories.map((title, category) => (
         <section key={category}>
-          <h3>{title}</h3>
+          <h3>
+            <InlineMarkdown source={title} />
+          </h3>
           <Container fluid as="ol">
             {_(texts)
               .filter((text) => text.category === category)
@@ -63,22 +68,54 @@ function Texts({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
   )
 }
 
-interface Props {
-  textService: { list(): Promise<readonly TextInfo[]> }
-}
+const genres: readonly {
+  readonly genre: string
+  readonly name: string
+  readonly categories: readonly string[]
+}[] = [
+  {
+    genre: 'L',
+    name: 'Literature',
+    categories: [
+      '',
+      'I. Narrative Poetry',
+      'II. Monologue and dialogue literature',
+      'III. Literary Hymns and Prayers',
+    ],
+  },
+  {
+    genre: 'D',
+    name: 'Divination',
+    categories: [
+      '',
+      'I. Celestial Divination (*Enūma Anu Enlil*)',
+      'II. Terrestrial Divination (*Šumma Ālu*)',
+      'III. Extispicy (*Bārûtu*)',
+    ],
+  },
+  {
+    genre: 'Lex',
+    name: 'Lexicography',
+    categories: ['', 'I.  Urra = *ḫubullu*'],
+  },
+]
 
-const TextsWithData = withData<unknown, Props, readonly TextInfo[]>(
-  ({ data }) => <Texts texts={data} />,
-  ({ textService }) => textService.list()
-)
-
-function Corpus({ textService }: Props): JSX.Element {
+function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
           <Col md={5}>
-            <TextsWithData textService={textService} />
+            <Tabs defaultActiveKey="L" id={_.uniqueId('CorpusTab-')}>
+              {genres.map(({ genre, name, categories }) => (
+                <Tab eventKey={genre} title={name} key={genre}>
+                  <Texts
+                    texts={texts.filter((text) => text.genre === genre)}
+                    categories={categories}
+                  />
+                </Tab>
+              ))}
+            </Tabs>
           </Col>
           <Col md={7}>
             <ApiImage fileName="LibraryCropped.svg" />
@@ -89,4 +126,13 @@ function Corpus({ textService }: Props): JSX.Element {
   )
 }
 
-export default Corpus
+export default withData<
+  unknown,
+  {
+    textService: { list(): Promise<readonly TextInfo[]> }
+  },
+  readonly TextInfo[]
+>(
+  ({ data }) => <Corpus texts={data} />,
+  ({ textService }) => textService.list()
+)

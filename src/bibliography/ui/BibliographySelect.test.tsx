@@ -1,22 +1,26 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Promise } from 'bluebird'
-import { factory } from 'factory-girl'
 
 import BibliographySelect from 'bibliography/ui/BibliographySelect'
 import selectEvent from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { expectedLabel } from 'test-support/test-bibliographySelect'
+import {
+  bibliographyEntryFactory,
+  cslDataFactory,
+  cslDataWithContainerTitleShortFactory,
+} from 'test-support/bibliography-fixtures'
 
 let entry: BibliographyEntry
 let searchEntry: BibliographyEntry
 const onChange = jest.fn()
 
 describe('no container short, no collection number', () => {
-  beforeEach(async () => {
-    entry = await factory.build('bibliographyEntry')
-    searchEntry = await factory.build('bibliographyEntry')
+  beforeEach(() => {
+    entry = bibliographyEntryFactory.build()
+    searchEntry = bibliographyEntryFactory.build()
     renderBibliographySelect()
   })
 
@@ -34,10 +38,11 @@ describe('no container short, no collection number', () => {
   })
 })
 describe('container short, no collection number', () => {
-  let expectedLabelPrefix
+  let expectedLabelPrefix: string
+
   beforeEach(async () => {
-    const cslData = await factory.build('cslDataWithContainerTitleShort')
-    entry = await factory.build('bibliographyEntry', cslData)
+    const cslData = cslDataWithContainerTitleShortFactory.build()
+    entry = bibliographyEntryFactory.build({}, { transient: cslData })
     expectedLabelPrefix = `${entry.shortContainerTitle} = `
     renderBibliographySelect()
   })
@@ -49,12 +54,13 @@ describe('container short, no collection number', () => {
 })
 
 describe('container short, collection number', () => {
-  let expectedLabelPrefix
-  beforeEach(async () => {
-    const cslData = await factory.build('cslDataWithContainerTitleShort', {
+  let expectedLabelPrefix: string
+
+  beforeEach(() => {
+    const cslData = cslDataWithContainerTitleShortFactory.build({
       'collection-number': '8/1',
     })
-    entry = await factory.build('bibliographyEntry', cslData)
+    entry = bibliographyEntryFactory.build({}, { transient: cslData })
     expectedLabelPrefix = `${entry.shortContainerTitle} ${entry.collectionNumber} = `
     renderBibliographySelect()
   })
@@ -66,11 +72,11 @@ describe('container short, collection number', () => {
   })
 })
 describe('no container short, collection number', () => {
-  beforeEach(async () => {
-    const cslData = await factory.build('cslData', {
+  beforeEach(() => {
+    const cslData = cslDataFactory.build({
       'collection-number': '8/1',
     })
-    entry = await factory.build('bibliographyEntry', cslData)
+    entry = bibliographyEntryFactory.build({}, { transient: cslData })
     renderBibliographySelect()
   })
   it('Displays the entry label', () => {

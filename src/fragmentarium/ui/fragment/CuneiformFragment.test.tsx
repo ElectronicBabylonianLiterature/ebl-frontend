@@ -12,6 +12,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -28,7 +29,7 @@ let updatedFragment
 
 beforeEach(async () => {
   const folioPager = await factory.build('folioPager')
-  const references = await factory.buildMany('reference', 2)
+  const references = referenceFactory.buildList(2)
   wordService = new (WordService as jest.Mock<WordService>)()
   fragment = (
     await factory.build('fragment', {
@@ -36,7 +37,7 @@ beforeEach(async () => {
       hasPhoto: true,
       collection: 'Sippar',
     })
-  ).setReferences(await factory.buildMany('reference', 2))
+  ).setReferences(referenceFactory.buildList(2))
   updatedFragment = (
     await factory.build('fragment', {
       number: fragment.number,

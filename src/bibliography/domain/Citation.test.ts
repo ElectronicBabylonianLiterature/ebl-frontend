@@ -1,12 +1,12 @@
-import { factory } from 'factory-girl'
 import {
   buildReferenceWithContainerTitle,
   buildReferenceWithManyAuthors,
+  referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import Citation, { CompactCitation, ContainerCitation } from './Citation'
 
 test.each([
-  [factory.build('reference'), CompactCitation],
+  [referenceFactory.build(), CompactCitation],
   [buildReferenceWithContainerTitle('PHOTO'), CompactCitation],
   [buildReferenceWithContainerTitle('COPY'), ContainerCitation],
   [buildReferenceWithContainerTitle('EDITION'), ContainerCitation],
@@ -27,13 +27,12 @@ test.each([
     buildReferenceWithContainerTitle('DISCUSSION', { id: 'RN2721' }),
     ContainerCitation,
   ],
-])('Citation.for %#', async (factoryPromise, ExpectedType) => {
-  const reference = await factoryPromise
+])('Citation.for %#', async (reference, ExpectedType) => {
   expect(Citation.for(reference)).toEqual(new ExpectedType(reference))
 })
 
-test('CompactCitation', async () => {
-  const reference = await factory.build('reference')
+test('CompactCitation', () => {
+  const reference = referenceFactory.build()
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `${reference.authors.join(' & ')}, ${reference.year}: ${
@@ -44,8 +43,8 @@ test('CompactCitation', async () => {
   )
 })
 
-test('CompactCitation with empty properties', async () => {
-  const reference = await factory.build('reference', {
+test('CompactCitation with empty properties', () => {
+  const reference = referenceFactory.build({
     pages: '',
     linesCited: [],
   })
@@ -57,8 +56,8 @@ test('CompactCitation with empty properties', async () => {
   )
 })
 
-test('CompactCitation with more than 3 authors', async () => {
-  const reference = await buildReferenceWithManyAuthors()
+test('CompactCitation with more than 3 authors', () => {
+  const reference = buildReferenceWithManyAuthors()
   const citation = new CompactCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `${reference.primaryAuthor} *et al.*, ${reference.year}: ${
@@ -69,23 +68,19 @@ test('CompactCitation with more than 3 authors', async () => {
   )
 })
 
-test('ContainerCitation', async () => {
-  const reference = (
-    await buildReferenceWithContainerTitle('COPY')
-  ).setLinesCited([])
+test('ContainerCitation', () => {
+  const reference = buildReferenceWithContainerTitle('COPY').setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${reference.pages} (${reference.typeAbbreviation})`
   )
 })
 
-test('ContainerCitation with collection number', async () => {
+test('ContainerCitation with collection number', () => {
   const collectionNumber = '76'
-  const reference = (
-    await buildReferenceWithContainerTitle('COPY', {
-      'collection-number': collectionNumber,
-    })
-  ).setLinesCited([])
+  const reference = buildReferenceWithContainerTitle('COPY', {
+    'collection-number': collectionNumber,
+  }).setLinesCited([])
   const citation = new ContainerCitation(reference)
   expect(citation.getMarkdown()).toEqual(
     `*${reference.shortContainerTitle}* ${collectionNumber}, ${reference.pages} (${reference.typeAbbreviation})`

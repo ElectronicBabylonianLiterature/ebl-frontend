@@ -118,7 +118,7 @@ export default function ManuscriptForm({
               {[...periods.values()].map((period) =>
                 _.isNil(period.parent) ? (
                   <option key={period.name} value={period.name}>
-                    {period.name} {period.description}
+                    {period.displayName ?? period.name} {period.description}
                   </option>
                 ) : (
                   <option key={period.name} value={period.name}>
@@ -138,7 +138,7 @@ export default function ManuscriptForm({
           >
             {[...types.values()].map((type) => (
               <option key={type.name} value={type.name}>
-                {type.name}
+                {type.displayName ?? type.name}
               </option>
             ))}
           </Form.Control>
@@ -160,6 +160,20 @@ export default function ManuscriptForm({
             onChange(
               produce(manuscript, (draft) => {
                 draft.colophon = atf
+              })
+            )
+          }
+        />
+      </Form.Group>
+      <Form.Group controlId={_.uniqueId('unplaced-lines-')}>
+        <Form.Label>Unplaced Lines</Form.Label>{' '}
+        <Editor
+          name={_.uniqueId('unplaced-lines-editor-')}
+          value={manuscript.unplacedLines}
+          onChange={(atf) =>
+            onChange(
+              produce(manuscript, (draft) => {
+                draft.unplacedLines = atf
               })
             )
           }

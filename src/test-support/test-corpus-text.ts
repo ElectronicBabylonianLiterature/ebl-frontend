@@ -123,6 +123,7 @@ export const chapterDto = {
       type: 'School',
       notes: 'a note',
       colophon: '1. kur',
+      unplacedLines: '1. bu',
       references: [
         {
           id: 'RN1853',
@@ -162,17 +163,20 @@ export const chapterDto = {
 }
 
 export const textDto = {
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
+  intro: 'This is a *test text*.',
   chapters: [
     {
       stage: 'Old Babylonian',
       name: 'The Only Chapter',
     },
   ],
+  references: [],
 }
 
 export const chapter = createChapter({
@@ -194,6 +198,7 @@ export const chapter = createChapter({
       type: types.get('School'),
       notes: 'a note',
       colophon: '1. kur',
+      unplacedLines: '1. bu',
       references: [
         new Reference(
           'DISCUSSION',
@@ -230,10 +235,12 @@ export const chapter = createChapter({
 })
 
 export const text = createText({
+  genre: 'L',
   category: 1,
   index: 1,
   name: 'Palm and Vine',
   numberOfVerses: 10,
   approximateVerses: true,
+  intro: 'This is a *test text*.',
   chapters: [{ stage: chapter.stage, name: chapter.name }],
 })

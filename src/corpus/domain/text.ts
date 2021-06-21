@@ -9,9 +9,11 @@ import { Provenance, provenances } from './provenance'
 export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
+  readonly displayName?: string
 }
 
 export const types: ReadonlyMap<string, ManuscriptType> = new Map([
+  ['None', { name: 'None', abbreviation: '', displayName: '-' }],
   ['Library', { name: 'Library', abbreviation: '' }],
   ['School', { name: 'School', abbreviation: 'Sch' }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
@@ -47,6 +49,7 @@ export class Manuscript {
   }
   readonly notes: string = ''
   readonly colophon: string = ''
+  readonly unplacedLines: string = ''
   readonly references: readonly Reference[] = []
 
   get siglum(): string {
@@ -69,7 +72,11 @@ export class Chapter {
   readonly [immerable] = true
 
   constructor(
-    readonly textId: { readonly category: number; readonly index: number },
+    readonly textId: {
+      readonly genre: string
+      readonly category: number
+      readonly index: number
+    },
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -102,7 +109,7 @@ export class Chapter {
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
-    data.textId ?? { category: 0, index: 0 },
+    data.textId ?? { genre: 'L', category: 0, index: 0 },
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',
@@ -115,6 +122,7 @@ export function createChapter(data: Partial<Chapter>): Chapter {
 }
 
 export interface TextInfo {
+  genre: string
   category: number
   index: number
   name: string
@@ -124,12 +132,15 @@ export interface TextInfo {
 
 export class Text implements TextInfo {
   readonly [immerable] = true
+  genre = 'L'
   category = 0
   index = 0
   name = ''
   numberOfVerses = 0
   approximateVerses = false
+  intro = ''
   chapters: ReadonlyArray<{ name: string; stage: string }> = []
+  references: ReadonlyArray<Reference> = []
 }
 
 export function createText(data: Partial<Text>): Text {

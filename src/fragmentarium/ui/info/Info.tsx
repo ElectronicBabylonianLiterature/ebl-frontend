@@ -45,6 +45,11 @@ export default function Info({
             <code>D</code>
           </dt>
           <dd className="ReferencesHelp__dd">Discussion</dd>
+
+          <dt className="ReferencesHelp__dt">
+            <code>T</code>
+          </dt>
+          <dd className="ReferencesHelp__dd">Translation</dd>
         </dl>
       </Popover.Content>
     </Popover>

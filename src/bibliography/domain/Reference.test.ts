@@ -1,6 +1,9 @@
-import { factory } from 'factory-girl'
 import _ from 'lodash'
-import { buildReferenceWithContainerTitle } from 'test-support/bibliography-fixtures'
+import {
+  bibliographyEntryFactory,
+  buildReferenceWithContainerTitle,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
 import Reference from './Reference'
 import BibliographyEntry from './BibliographyEntry'
 
@@ -13,8 +16,8 @@ test('default reference', () => {
 describe('Reference', () => {
   let reference
 
-  beforeEach(async () => {
-    reference = await factory.build('reference')
+  beforeEach(() => {
+    reference = referenceFactory.build()
   })
 
   test.each([
@@ -25,24 +28,22 @@ describe('Reference', () => {
   )
 })
 
-test('toHtml', async () => {
-  const entry = await factory.build('bibliographyEntry')
-  const reference = await factory.build('reference', { document: entry })
+test('toHtml', () => {
+  const entry = bibliographyEntryFactory.build()
+  const reference = referenceFactory.build({ document: entry })
   expect(reference.toHtml()).toEqual(entry.toHtml())
 })
 
 test.each([
-  [factory.build('reference', { linesCited: [] }), false],
-  [factory.build('reference', { linesCited: ['1'] }), true],
-])('hasLinesCited %#', async (factoryPromise, expected) => {
-  const reference = await factoryPromise
+  [referenceFactory.build({ linesCited: [] }), false],
+  [referenceFactory.build({ linesCited: ['1'] }), true],
+])('hasLinesCited %#', (reference, expected) => {
   expect(reference.hasLinesCited).toEqual(expected)
 })
 
 test.each([
-  [factory.build('reference'), false],
+  [referenceFactory.build(), false],
   [buildReferenceWithContainerTitle('PHOTO'), true],
-])('hasShortContainerTitle %#', async (factoryPromise, expected) => {
-  const reference = await factoryPromise
+])('hasShortContainerTitle %#', (reference, expected) => {
   expect(reference.hasShortContainerTitle).toEqual(expected)
 })

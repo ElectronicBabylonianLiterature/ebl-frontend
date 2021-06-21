@@ -3,30 +3,23 @@ import produce, { Draft, immerable } from 'immer'
 
 import BibliographyEntry from './BibliographyEntry'
 
-export type ReferenceType = 'EDITION' | 'DISCUSSION' | 'COPY' | 'PHOTO'
+export type ReferenceType =
+  | 'EDITION'
+  | 'DISCUSSION'
+  | 'COPY'
+  | 'PHOTO'
+  | 'TRANSLATION'
 
 export default class Reference {
-  readonly type: ReferenceType
-  readonly pages: string
-  readonly notes: string
-  readonly linesCited: ReadonlyArray<string>
-  readonly document: BibliographyEntry
-
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
   constructor(
-    type: ReferenceType = Reference.DEFAULT_TYPE,
-    pages = '',
-    notes = '',
-    linesCited: ReadonlyArray<string> = [],
-    document_: BibliographyEntry = new BibliographyEntry({})
-  ) {
-    this.type = type
-    this.pages = pages
-    this.notes = notes
-    this.linesCited = linesCited
-    this.document = document_
-  }
+    readonly type: ReferenceType = Reference.DEFAULT_TYPE,
+    readonly pages: string = '',
+    readonly notes: string = '',
+    readonly linesCited: ReadonlyArray<string> = [],
+    readonly document: BibliographyEntry = new BibliographyEntry({})
+  ) {}
 
   get hasShortContainerTitle(): boolean {
     return !_.isEmpty(this.shortContainerTitle)

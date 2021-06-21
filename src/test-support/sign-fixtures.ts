@@ -21,6 +21,16 @@ factory.define('sign', Sign, {
         '<sup>giš</sup>BAR-KIN₂; *seḫpu* (Bast, Rinde); ME 69 CD 320a',
     },
   ],
-  mesZl:
-    '1\t**AŠ**\t𒀸\nASy 1. Lww. aš (allg.; ass. häufiger áš); às (wohl sehr selten, nicht altakk. und ass.-a.) — rum (allg. ausser altakk. und ass.-a.); rù (do., cf SLOBA p108) — rim₅ (bab-a., cf SLOBA p111) — dil (n.); ṭil (n.) — dàl (n.) — ina (n., Präsens Verba primae Nun); in₆ (n., Labat ìn).\nLw. dili siehe 1. Anhang.\n---\naš, dili = Zahl 1 (AHw 400, CAD I/J 275ff.).\nAŠ = *aplu*, Sohn (N.P.).\nAŠ = *aširtu*, Heiligtum. Cf CAD A/II 436a.\nAŠ = *aššur*',
+  mesZl: `123	**ALSK13**	𒁇𒍴
+Lorem ipsum dolor *sit* amet, consetetur <span style="color: #00610F;">*sadipscing*(*l*)*ubasd*</span>sadipscing elitr, sed diam *nonumy*
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
+lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+^aba^𒁇𒊩 = BAR-MUNUS = *parratu*, weibliches Lamm. CAD <span style="color: #00610F;">P</span> 192b liest *parsallu*.
+<span style="color: #00610F;">P</span>
+^aba^𒁇𒋝
+^asdg^𒋝
+^ghas^𒁈
+𒁖^asd^
+𒍴^q12asd^
+`,
 })

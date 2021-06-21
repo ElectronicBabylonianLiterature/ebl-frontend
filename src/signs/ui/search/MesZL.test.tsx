@@ -37,7 +37,7 @@ describe('MesZl', () => {
   it('MesZl Content', async () => {
     const { container } = render(
       <Router history={history}>
-        <MesZlContent mesZl={mesZl} signName={'ALSK13'} />
+        <MesZlContent mesZl={mesZl} signName={'ALSK13'} cutOff={7} />
       </Router>
     )
     await screen.findByText(
