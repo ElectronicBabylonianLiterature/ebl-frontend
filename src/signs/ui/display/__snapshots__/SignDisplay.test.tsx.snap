@@ -167,9 +167,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
       <div
         class="col"
       >
-        <h1>
-          1. Sign Information
-        </h1>
+        <h3>
+          Ⅰ. Sign Information
+        </h3>
       </div>
     </div>
     <div
@@ -225,7 +225,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         class="col"
       >
         <h3>
-          Ⅰ. MesZL
+          Ⅱ. MesZL
         </h3>
       </div>
     </div>
