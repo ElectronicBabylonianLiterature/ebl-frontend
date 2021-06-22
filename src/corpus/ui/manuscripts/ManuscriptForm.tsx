@@ -3,11 +3,16 @@ import { Form, Col, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import produce, { castDraft, Draft } from 'immer'
-import { types, Manuscript } from 'corpus/domain/manuscript'
+import { ManuscriptTypes, Manuscript, types } from 'corpus/domain/manuscript'
 import ReferencesForm from 'bibliography/ui/ReferencesForm'
 import Reference from 'bibliography/domain/Reference'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
+import {
+  periodModifiers,
+  PeriodModifiers,
+  periods,
+  Periods,
+} from 'corpus/domain/period'
+import { provenances, Provenances } from 'corpus/domain/provenance'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import Editor from 'editor/Editor'
 
@@ -28,13 +33,13 @@ export default function ManuscriptForm({
         draft[property] = event.target.value
       })
     )
-  const handleMapChange = (
+  const handleEnumChange = (
     property: string,
-    values: ReadonlyMap<string, unknown>
+    values: Record<string, unknown>
   ) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     return onChange(
       produce(manuscript, (draft: Draft<Manuscript>) => {
-        draft[property] = values.get(event.target.value)
+        draft[property] = values[event.target.value]
       })
     )
   }
@@ -79,9 +84,9 @@ export default function ManuscriptForm({
           <Form.Control
             as="select"
             value={manuscript.provenance.name}
-            onChange={handleMapChange('provenance', provenances)}
+            onChange={handleEnumChange('provenance', Provenances)}
           >
-            {[...provenances.values()].map((provenance) =>
+            {provenances.map((provenance) =>
               _.isNil(provenance.parent) ? (
                 <option key={provenance.name} value={provenance.name}>
                   {provenance.name}
@@ -101,9 +106,9 @@ export default function ManuscriptForm({
               as="select"
               aria-label="Period modifier"
               value={manuscript.periodModifier.name}
-              onChange={handleMapChange('periodModifier', periodModifiers)}
+              onChange={handleEnumChange('periodModifier', PeriodModifiers)}
             >
-              {[...periodModifiers.values()].map((modifier) => (
+              {periodModifiers.map((modifier) => (
                 <option key={modifier.name} value={modifier.name}>
                   {modifier.displayName}
                 </option>
@@ -113,9 +118,9 @@ export default function ManuscriptForm({
               as="select"
               aria-label="Period"
               value={manuscript.period.name}
-              onChange={handleMapChange('period', periods)}
+              onChange={handleEnumChange('period', Periods)}
             >
-              {[...periods.values()].map((period) =>
+              {periods.map((period) =>
                 _.isNil(period.parent) ? (
                   <option key={period.name} value={period.name}>
                     {period.displayName ?? period.name} {period.description}
@@ -134,9 +139,9 @@ export default function ManuscriptForm({
           <Form.Control
             as="select"
             value={manuscript.type.name}
-            onChange={handleMapChange('type', types)}
+            onChange={handleEnumChange('type', ManuscriptTypes)}
           >
-            {[...types.values()].map((type) => (
+            {types.map((type) => (
               <option key={type.name} value={type.name}>
                 {type.displayName ?? type.name}
               </option>

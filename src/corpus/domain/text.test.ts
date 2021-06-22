@@ -9,20 +9,20 @@ import {
   LineVariant,
   ManuscriptLine,
 } from './line'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
+import { PeriodModifiers, Periods } from './period'
+import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
-import { createManuscript, Manuscript, types } from './manuscript'
+import { createManuscript, Manuscript, ManuscriptTypes } from './manuscript'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
   accession: 'X.1',
-  periodModifier: periodModifiers.values().next().value,
-  period: periods.values().next().value,
-  provenance: provenances.values().next().value,
-  type: types.values().next().value,
+  periodModifier: PeriodModifiers.None,
+  period: Periods['Old Babylonian'],
+  provenance: Provenances.Nineveh,
+  type: ManuscriptTypes.Library,
   notes: 'some notes',
   colophon: '1. kur',
   unplacedLines: '1. bu',

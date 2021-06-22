@@ -5,10 +5,10 @@ import {
   createManuscriptLine,
   createVariant,
 } from 'corpus/domain/line'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
+import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText } from 'corpus/domain/text'
-import { createManuscript, types } from 'corpus/domain/manuscript'
+import { createManuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
 
 const reconstructionTokens: Token[] = [
@@ -188,10 +188,10 @@ export const chapter = createChapter({
       siglumDisambiguator: '1',
       museumNumber: 'BM.X',
       accession: 'X.1',
-      periodModifier: periodModifiers.get('Early'),
-      period: periods.get('Ur III'),
-      provenance: provenances.get('Nippur'),
-      type: types.get('School'),
+      periodModifier: PeriodModifiers['Early'],
+      period: Periods['Ur III'],
+      provenance: Provenances.Nippur,
+      type: ManuscriptTypes.School,
       notes: 'a note',
       colophon: '1. kur',
       unplacedLines: '1. bu',

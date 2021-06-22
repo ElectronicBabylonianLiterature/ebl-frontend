@@ -11,10 +11,14 @@ import {
   Line,
   LineVariant,
 } from 'corpus/domain/line'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
+import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText, Text } from 'corpus/domain/text'
-import { createManuscript, Manuscript, types } from 'corpus/domain/manuscript'
+import {
+  createManuscript,
+  Manuscript,
+  ManuscriptTypes,
+} from 'corpus/domain/manuscript'
 
 function createReference(referenceDto): Reference {
   return new Reference(
@@ -44,10 +48,10 @@ export function fromChapterDto(chapterDto) {
 function fromManuscriptDto(manuscriptDto): Manuscript {
   return createManuscript({
     ...manuscriptDto,
-    periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
-    period: periods.get(manuscriptDto.period),
-    provenance: provenances.get(manuscriptDto.provenance),
-    type: types.get(manuscriptDto.type),
+    periodModifier: PeriodModifiers[manuscriptDto.periodModifier],
+    period: Periods[manuscriptDto.period],
+    provenance: Provenances[manuscriptDto.provenance],
+    type: ManuscriptTypes[manuscriptDto.type],
     references: manuscriptDto.references.map(createReference),
   })
 }

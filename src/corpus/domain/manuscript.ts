@@ -1,26 +1,45 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
-import { Period, PeriodModifier, periodModifiers, periods } from './period'
-import { Provenance, provenances } from './provenance'
+import { Period, PeriodModifier, PeriodModifiers, Periods } from './period'
+import { Provenance, Provenances } from './provenance'
 
-export interface ManuscriptType {
-  readonly name: string
-  readonly abbreviation: string
-  readonly displayName?: string
-  readonly order?: number
-}
-
-export const types: ReadonlyMap<string, ManuscriptType> = new Map([
-  ['None', { name: 'None', abbreviation: '', displayName: '-' }],
-  ['Library', { name: 'Library', abbreviation: '', order: 1 }],
-  ['School', { name: 'School', abbreviation: 'Sch', order: 2 }],
-  ['Varia', { name: 'Varia', abbreviation: 'Var' }],
-  ['Commentary', { name: 'Commentary', abbreviation: 'Com' }],
-  ['Quotation', { name: 'Quotation', abbreviation: 'Quo', order: 4 }],
-  ['Excerpt', { name: 'Excerpt', abbreviation: 'Ex', order: 3 }],
-  ['Parallel', { name: 'Parallel', abbreviation: 'Par', order: 5 }],
-])
+export const ManuscriptTypes = {
+  None: { name: 'None', abbreviation: '', displayName: '-', order: null },
+  Library: { name: 'Library', abbreviation: '', displayName: null, order: 1 },
+  School: { name: 'School', abbreviation: 'Sch', displayName: null, order: 2 },
+  Varia: { name: 'Varia', abbreviation: 'Var', displayName: null, order: null },
+  Commentary: {
+    name: 'Commentary',
+    abbreviation: 'Com',
+    displayName: null,
+    order: null,
+  },
+  Quotation: {
+    name: 'Quotation',
+    abbreviation: 'Quo',
+    displayName: null,
+    order: 4,
+  },
+  Excerpt: { name: 'Excerpt', abbreviation: 'Ex', displayName: null, order: 3 },
+  Parallel: {
+    name: 'Parallel',
+    abbreviation: 'Par',
+    displayName: null,
+    order: 5,
+  },
+} as const
+export type ManuscriptType = typeof ManuscriptTypes[keyof typeof ManuscriptTypes]
+export const types = [
+  ManuscriptTypes.None,
+  ManuscriptTypes.Library,
+  ManuscriptTypes.School,
+  ManuscriptTypes.Varia,
+  ManuscriptTypes.Commentary,
+  ManuscriptTypes.Quotation,
+  ManuscriptTypes.Excerpt,
+  ManuscriptTypes.Parallel,
+] as const
 
 export function compareManuscriptTypes(
   first: ManuscriptType,
@@ -43,24 +62,10 @@ export class Manuscript {
   readonly siglumDisambiguator: string = ''
   readonly museumNumber: string = ''
   readonly accession: string = ''
-  readonly periodModifier: PeriodModifier = periodModifiers.get('None') || {
-    name: 'None',
-    displayName: '-',
-  }
-  readonly period: Period = periods.get('Neo-Assyrian') || {
-    name: 'Neo-Assyrian',
-    abbreviation: 'NA',
-    description: '(ca. 1000–609 BCE)',
-  }
-  readonly provenance: Provenance = provenances.get('Nineveh') || {
-    name: 'Nineveh',
-    abbreviation: 'Nin',
-    parent: 'Assyria',
-  }
-  readonly type: ManuscriptType = types.get('Library') || {
-    name: 'Library',
-    abbreviation: '',
-  }
+  readonly periodModifier: PeriodModifier = PeriodModifiers.None
+  readonly period: Period = Periods['Neo-Assyrian']
+  readonly provenance: Provenance = Provenances.Nineveh
+  readonly type: ManuscriptType = ManuscriptTypes.Library
   readonly notes: string = ''
   readonly colophon: string = ''
   readonly unplacedLines: string = ''
