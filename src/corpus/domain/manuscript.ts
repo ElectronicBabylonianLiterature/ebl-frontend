@@ -8,18 +8,34 @@ export interface ManuscriptType {
   readonly name: string
   readonly abbreviation: string
   readonly displayName?: string
+  readonly order?: number
 }
 
 export const types: ReadonlyMap<string, ManuscriptType> = new Map([
   ['None', { name: 'None', abbreviation: '', displayName: '-' }],
-  ['Library', { name: 'Library', abbreviation: '' }],
-  ['School', { name: 'School', abbreviation: 'Sch' }],
+  ['Library', { name: 'Library', abbreviation: '', order: 1 }],
+  ['School', { name: 'School', abbreviation: 'Sch', order: 2 }],
   ['Varia', { name: 'Varia', abbreviation: 'Var' }],
   ['Commentary', { name: 'Commentary', abbreviation: 'Com' }],
-  ['Quotation', { name: 'Quotation', abbreviation: 'Quo' }],
-  ['Excerpt', { name: 'Excerpt', abbreviation: 'Ex' }],
-  ['Parallel', { name: 'Parallel', abbreviation: 'Par' }],
+  ['Quotation', { name: 'Quotation', abbreviation: 'Quo', order: 4 }],
+  ['Excerpt', { name: 'Excerpt', abbreviation: 'Ex', order: 3 }],
+  ['Parallel', { name: 'Parallel', abbreviation: 'Par', order: 5 }],
 ])
+
+export function compareManuscriptTypes(
+  first: ManuscriptType,
+  second: ManuscriptType
+): number {
+  if (_.isNil(first.order) && _.isNil(second.order)) {
+    return 0
+  } else if (_.isNil(first.order)) {
+    return 1
+  } else if (_.isNil(second.order)) {
+    return -1
+  } else {
+    return Math.sign(first.order - second.order)
+  }
+}
 
 export class Manuscript {
   readonly [immerable] = true
