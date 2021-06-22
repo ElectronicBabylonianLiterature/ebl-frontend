@@ -88,3 +88,28 @@ export function compareStandardText(
     return 0
   }
 }
+
+export function compareAssyriaAndBabylonia(
+  first: Provenance,
+  second: Provenance
+): number {
+  function isCity(provenance: Provenance): boolean {
+    const nonCities: Provenance[] = [
+      Provenances['Standard Text'],
+      Provenances.Assyria,
+      Provenances.Babylonia,
+    ]
+    return !nonCities.includes(provenance)
+  }
+  if (first === second) {
+    return 0
+  } else if (isCity(first) && isCity(second)) {
+    return 0
+  } else if (isCity(first)) {
+    return 1
+  } else if (isCity(second)) {
+    return -1
+  } else {
+    return 0
+  }
+}
