@@ -113,3 +113,7 @@ export function compareAssyriaAndBabylonia(
     return 0
   }
 }
+
+export function compareCity(first: Provenance, second: Provenance): number {
+  return first.name.localeCompare(second.name)
+}

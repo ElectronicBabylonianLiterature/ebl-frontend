@@ -1,10 +1,20 @@
 import {
   compareAssyriaAndBabylonia,
+  compareCity,
   compareStandardText,
   Provenance,
   provenances,
   Provenances,
 } from './provenance'
+
+const cities = Object.values(Provenances).filter(
+  (provenance) =>
+    !([
+      Provenances['Standard Text'],
+      Provenances.Assyria,
+      Provenances.Babylonia,
+    ] as Provenance[]).includes(provenance)
+)
 
 test.each(Object.values(Provenances))('%s is in periods', (provenance) => {
   expect(provenances).toContain(provenance)
@@ -46,15 +56,6 @@ describe('compareAssyriaAndBabylonia', () => {
     expect(compareAssyriaAndBabylonia(provenance, provenance)).toEqual(0)
   })
 
-  const cities = Object.values(Provenances).filter(
-    (provenance) =>
-      !([
-        Provenances['Standard Text'],
-        Provenances.Assyria,
-        Provenances.Babylonia,
-      ] as Provenance[]).includes(provenance)
-  )
-
   test.each(cities)('compareStandardText Assyria and %s', (provenance) => {
     expect(compareAssyriaAndBabylonia(Provenances.Assyria, provenance)).toEqual(
       -1
@@ -80,5 +81,17 @@ describe('compareAssyriaAndBabylonia', () => {
   )('compareStandardText %s and %s', (first, second) => {
     expect(compareAssyriaAndBabylonia(first, second)).toEqual(0)
     expect(compareAssyriaAndBabylonia(second, first)).toEqual(0)
+  })
+})
+
+describe('compareCity', () => {
+  test.each([
+    [Provenances.Babylon, Provenances.Babylon, 0],
+    [Provenances.Babylon, Provenances.Cutha, -1],
+    [Provenances.Cutha, Provenances.Babylon, 1],
+    [Provenances.Mari, Provenances.Larsa, 1],
+    [Provenances.Larsa, Provenances.Mari, -1],
+  ])('compareStandardText %s and %s', (first, second, expected) => {
+    expect(compareCity(first, second)).toEqual(expected)
   })
 })
