@@ -73,3 +73,18 @@ export const provenances = [
   Provenances.Ugarit,
   Provenances.Uncertain,
 ] as const
+
+export function compareStandardText(
+  first: Provenance,
+  second: Provenance
+): number {
+  if (first === second) {
+    return 0
+  } else if (first == Provenances['Standard Text']) {
+    return -1
+  } else if (second == Provenances['Standard Text']) {
+    return 1
+  } else {
+    return 0
+  }
+}
