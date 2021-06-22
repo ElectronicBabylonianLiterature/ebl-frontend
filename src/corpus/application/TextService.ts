@@ -7,7 +7,8 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, Manuscript, Text } from 'corpus/domain/text'
+import { Chapter, Text } from 'corpus/domain/text'
+import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'

@@ -11,15 +11,8 @@ import {
 } from './line'
 import { periodModifiers, periods } from './period'
 import { provenances } from './provenance'
-import {
-  Chapter,
-  createChapter,
-  createManuscript,
-  createText,
-  Manuscript,
-  Text,
-  types,
-} from './text'
+import { Chapter, createChapter, createText, Text } from './text'
+import { createManuscript, Manuscript, types } from './manuscript'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,

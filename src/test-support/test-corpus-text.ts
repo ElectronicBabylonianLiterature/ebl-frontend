@@ -7,12 +7,8 @@ import {
 } from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
-import {
-  createChapter,
-  createManuscript,
-  createText,
-  types,
-} from 'corpus/domain/text'
+import { createChapter, createText } from 'corpus/domain/text'
+import { createManuscript, types } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
 
 const reconstructionTokens: Token[] = [

@@ -13,14 +13,8 @@ import {
 } from 'corpus/domain/line'
 import { periodModifiers, periods } from 'corpus/domain/period'
 import { provenances } from 'corpus/domain/provenance'
-import {
-  createChapter,
-  createManuscript,
-  createText,
-  Manuscript,
-  Text,
-  types,
-} from 'corpus/domain/text'
+import { createChapter, createText, Text } from 'corpus/domain/text'
+import { createManuscript, Manuscript, types } from 'corpus/domain/manuscript'
 
 function createReference(referenceDto): Reference {
   return new Reference(
