@@ -12,7 +12,8 @@ import {
 import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
-import { createManuscript, Manuscript, ManuscriptTypes } from './manuscript'
+import { Manuscript, ManuscriptTypes } from './manuscript'
+import manuscriptFactory from 'test-support/manuscriptFactory'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -126,7 +127,7 @@ const chapterConfig: Partial<Chapter> = {
   version: 'A',
   name: name,
   order: -1,
-  manuscripts: [createManuscript(manuscriptConfig)],
+  manuscripts: manuscriptFactory.buildList(1),
   uncertainFragments: ['K.1'],
   lines: [createLine(lineConfig)],
 }
