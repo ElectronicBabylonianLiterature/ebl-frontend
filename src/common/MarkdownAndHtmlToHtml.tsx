@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import unified from 'unified'
 import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
@@ -39,25 +39,36 @@ async function convertMarkdownAndHtmlMixToSanitizedHtml(
 }
 
 type Container = 'div' | 'span'
-interface Props extends PropsWithChildren<any> {
+interface Props {
   container?: Container
-  html: string
+  htmlString: string
+  className?: string
 }
-function Html({
+function HtmlFromString({
   container = 'div',
-  html,
-  ...props
+  htmlString,
+  className = '',
 }: Props): JSX.Element | null {
   if (container === 'div') {
-    return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
+      />
+    )
   } else {
-    return <span {...props} dangerouslySetInnerHTML={{ __html: html }} />
+    return (
+      <span
+        className={className}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
+      />
+    )
   }
 }
 
-export default withData<Omit<Props, 'html'>, { markdownAndHtml }, string>(
+export default withData<Omit<Props, 'htmlString'>, { markdownAndHtml }, string>(
   ({ data, container, ...props }) => (
-    <Html html={data} container={container} {...props} />
+    <HtmlFromString htmlString={data} container={container} {...props} />
   ),
   (props) =>
     Bluebird.resolve(

@@ -21,7 +21,7 @@ export default function SignHeading({
     <Col xs={4}>
       <Row>
         <Col xs={3}>
-          <h2 className={font}>{cuneiformLetters}</h2>
+          <h3 className={font}>{cuneiformLetters}</h3>
         </Col>
         <Col>
           <span className={'text-secondary'}>{description}</span>

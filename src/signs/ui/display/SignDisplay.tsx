@@ -9,6 +9,10 @@ import WordService from 'dictionary/application/WordService'
 import SignInformation from 'signs/ui/display/SignInformation'
 import SignHeading from 'signs/ui/display/SignHeading'
 import MesZl from 'signs/ui/display/MesZl'
+import AppContent from 'common/AppContent'
+import { SectionCrumb } from 'common/Breadcrumbs'
+import SessionContext from 'auth/SessionContext'
+import { Session } from 'auth/Session'
 
 function SignDisplay({
   sign,
@@ -18,14 +22,24 @@ function SignDisplay({
   wordService: WordService
 }): JSX.Element {
   return (
-    <Container>
-      <SignHeading
-        signName={sign.name}
-        cuneiformLetters={sign.displayCuneiformSigns}
-      />
-      <SignInformation sign={sign} wordService={wordService} />
-      <MesZl signName={sign.name} mesZl={sign.mesZl} />
-    </Container>
+    <AppContent crumbs={[new SectionCrumb('Signs')]}>
+      <SessionContext.Consumer>
+        {(session: Session): JSX.Element =>
+          session.isAllowedToReadWords() ? (
+            <Container>
+              <SignHeading
+                signName={sign.name}
+                cuneiformLetters={sign.displayCuneiformSigns}
+              />
+              <SignInformation sign={sign} wordService={wordService} />
+              <MesZl signName={sign.name} mesZl={sign.mesZl} />
+            </Container>
+          ) : (
+            <p>Please log in to browse the Signs.</p>
+          )
+        }
+      </SessionContext.Consumer>
+    </AppContent>
   )
 }
 type Props = {
