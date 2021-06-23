@@ -18,8 +18,8 @@ function LogogramWord({ word }: { word: Word }): JSX.Element {
         <em>{`${attested}${lemma}`}</em>
       )}
       <span>
-        {word.homonym && ` ${word.homonym}`}
-        {word.guideWord && `, “${word.guideWord}”`}
+        {` ${word.homonym}`}
+        {`, “${word.guideWord}”`}
       </span>
     </Fragment>
   )

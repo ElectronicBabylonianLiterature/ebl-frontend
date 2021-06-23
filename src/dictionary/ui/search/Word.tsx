@@ -26,7 +26,7 @@ export function Lemma({
             </Link>
           )
         : React.createElement(container, {}, `${attested}${lemma}`)}
-      {word.homonym && ` ${word.homonym}`}
+      {` ${word.homonym}`}
     </Fragment>
   )
 }
