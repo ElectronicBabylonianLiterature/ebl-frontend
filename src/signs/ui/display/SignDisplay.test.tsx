@@ -7,11 +7,15 @@ import MemorySession from 'auth/Session'
 import SignsService from 'signs/application/SignsService'
 import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
+import WordService from 'dictionary/application/WordService'
+import Word from 'dictionary/domain/Word'
 
 jest.mock('signs/application/SignsService')
+jest.mock('dictionary/application/WordService')
 const signsService = new (SignsService as jest.Mock<
   jest.Mocked<SignsService>
 >)()
+const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const session = new MemorySession(['read:words'])
 const sign = new Sign({
   lists: [],
@@ -33,6 +37,15 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 `,
 })
 
+const word: Word = {
+  guideWord: '',
+  homonym: '',
+  lemma: [],
+  oraccWords: [],
+  pos: [],
+  _id: '',
+}
+
 let element: RenderResult
 
 function renderSignDisplay(signName: string): RenderResult {
@@ -42,7 +55,11 @@ function renderSignDisplay(signName: string): RenderResult {
         <Route
           path="/signs/:id"
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
-            <SignDisplay signsService={signsService} {...props} />
+            <SignDisplay
+              wordService={wordService}
+              signsService={signsService}
+              {...props}
+            />
           )}
         />
       </SessionContext.Provider>
@@ -53,6 +70,7 @@ function renderSignDisplay(signName: string): RenderResult {
 describe('Sign Display', () => {
   beforeEach(async () => {
     signsService.find.mockReturnValue(Bluebird.resolve(sign))
+    wordService.find.mockReturnValue(Bluebird.resolve(word))
     element = renderSignDisplay(sign.name)
     await element.findByText(sign.name)
     expect(signsService.find).toBeCalledWith(sign.name)

@@ -1,3 +1,7 @@
+.signDisplay__LogogramInfo {
+  min-width: 25%;
+}
+
 .CuneiformFonts__heading-old-babylonian-monumental {
   font-family: 'Old-Babylonian (Monumental)', Junicode, serif;
 }

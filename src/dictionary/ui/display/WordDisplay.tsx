@@ -14,10 +14,10 @@ import {
   Derivatives,
   Join,
   Logogram,
-  Markdown,
   OtherForm,
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
+import { Markdown } from 'common/Markdown'
 
 const LiteratureRedirectBox = (): JSX.Element => (
   <ExternalLink
@@ -47,7 +47,7 @@ const LiteratureRedirectBox = (): JSX.Element => (
 )
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
-  const guideWord = word.guideWord ? `[${word.guideWord}]` : ''
+  const guideWord = `[${word.guideWord}]`
   const pos = word.pos[0] ?? ''
 
   const copyableInformation = `+${word.lemma[0]}${guideWord}${pos}$`
