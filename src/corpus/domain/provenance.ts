@@ -101,19 +101,17 @@ export function compareAssyriaAndBabylonia(
     ]
     return !nonCities.includes(provenance)
   }
-  if (first === second) {
-    return 0
-  } else if (isCity(first) && isCity(second)) {
+  if (isCity(first) && isCity(second)) {
     return 0
   } else if (isCity(first)) {
     return 1
   } else if (isCity(second)) {
     return -1
   } else {
-    return 0
+    return compareName(first, second)
   }
 }
 
-export function compareCity(first: Provenance, second: Provenance): number {
+export function compareName(first: Provenance, second: Provenance): number {
   return first.name.localeCompare(second.name)
 }
