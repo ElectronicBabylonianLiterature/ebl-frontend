@@ -1,12 +1,14 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren } from 'react'
 import unified from 'unified'
 import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import raw from 'rehype-raw'
 import stringify from 'rehype-stringify'
 import DOMPurify from 'dompurify'
+import withData from 'http/withData'
+import Bluebird from 'bluebird'
 
-export default async function convertMarkdownToSanitizedHtml(
+async function convertMarkdownAndHtmlMixToSanitizedHtml(
   markdown: string
 ): Promise<string> {
   // remark supSuber library which we use in other places doesn't work with unified
@@ -39,29 +41,26 @@ export default async function convertMarkdownToSanitizedHtml(
 type Container = 'div' | 'span'
 interface Props extends PropsWithChildren<any> {
   container?: Container
-  markdown: string
+  html: string
 }
-export function ContainerWithInnerHtml({
+function Html({
   container = 'div',
-  markdown,
+  html,
   ...props
 }: Props): JSX.Element | null {
-  const [html, setHtml] = useState<string>('')
-  const [isReady, setIsReady] = useState(false)
-  useEffect(() => {
-    ;(async () => {
-      setHtml(await convertMarkdownToSanitizedHtml(markdown))
-      setIsReady(true)
-    })()
-  }, [html])
-
-  if (isReady) {
-    if (container === 'div') {
-      return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
-    } else {
-      return <span {...props} dangerouslySetInnerHTML={{ __html: html }} />
-    }
+  if (container === 'div') {
+    return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
   } else {
-    return null
+    return <span {...props} dangerouslySetInnerHTML={{ __html: html }} />
   }
 }
+
+export default withData<Omit<Props, 'html'>, { markdownAndHtml }, string>(
+  ({ data, container, ...props }) => (
+    <Html html={data} container={container} {...props} />
+  ),
+  (props) =>
+    Bluebird.resolve(
+      convertMarkdownAndHtmlMixToSanitizedHtml(props.markdownAndHtml)
+    )
+)

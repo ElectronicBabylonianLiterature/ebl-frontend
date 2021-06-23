@@ -34,7 +34,7 @@ type Props = {
   signsService: SignsService
 } & RouteComponentProps<{ id: string }>
 
-export default withData<WithoutData<Props>, { match; signsService }, Sign>(
+export default withData<WithoutData<Props>, { match }, Sign>(
   ({ data, wordService }) => (
     <SignDisplay sign={data} wordService={wordService} />
   ),

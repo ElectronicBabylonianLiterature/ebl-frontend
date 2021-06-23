@@ -3,7 +3,7 @@ import WordService from 'dictionary/application/WordService'
 import { Col, Popover, Row } from 'react-bootstrap'
 import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import LogogramWord from 'signs/ui/display/LogogramWord'
-import { ContainerWithInnerHtml } from 'common/markdownToHtml'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
@@ -68,9 +68,9 @@ function LogogramDisplay({
         {logogram.logogram && (
           <span>
             &nbsp;(
-            <ContainerWithInnerHtml
+            <MarkdownAndHtmlToHtml
               container={'span'}
-              markdown={logogram.logogram}
+              markdownAndHtml={logogram.logogram}
             />
             )
           </span>
@@ -99,9 +99,9 @@ function LogogramInfo(schrammLogogram: string): JSX.Element {
       className={'signDisplay__LogogramInfo'}
     >
       <Popover.Content>
-        <ContainerWithInnerHtml
+        <MarkdownAndHtmlToHtml
           className="text-center my-1"
-          markdown={schrammLogogram}
+          markdownAndHtml={schrammLogogram}
         />
         <div className="text-center mt-3">
           <small>

@@ -30,7 +30,7 @@ type Props = {
   wordService: WordService
 }
 
-export default withData<WithoutData<Props>, { wordId; wordService }, Word>(
+export default withData<WithoutData<Props>, { wordId }, Word>(
   ({ data }) => <LogogramWord word={data} />,
   (props) => props.wordService.find(props.wordId)
 )

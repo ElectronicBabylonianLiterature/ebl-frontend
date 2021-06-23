@@ -2,7 +2,7 @@ import React from 'react'
 import './Signs.css'
 import ExternalLink from 'common/ExternalLink'
 import { Link } from 'react-router-dom'
-import { ContainerWithInnerHtml } from 'common/markdownToHtml'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 
 function splitMesZl(
   mesZl: string,
@@ -31,13 +31,13 @@ export default function MesZlContent({
     <>
       <div>
         <pre>
-          <ContainerWithInnerHtml
+          <MarkdownAndHtmlToHtml
             className={'text-center'}
-            markdown={mesZlHeadMarkdown}
+            markdownAndHtml={mesZlHeadMarkdown}
           />
         </pre>
       </div>
-      <ContainerWithInnerHtml markdown={mesZlBodyMarkdown} />
+      <MarkdownAndHtmlToHtml markdownAndHtml={mesZlBodyMarkdown} />
 
       {mesZl.split('\n').length > cutOff && (
         <div className="text-center">
