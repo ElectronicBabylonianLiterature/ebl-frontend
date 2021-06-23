@@ -193,7 +193,24 @@ describe('Chapter', () => {
 })
 
 describe('Manuscript', () => {
-  testProperties(manuscriptConfig, createManuscript)
+  testProperties(
+    manuscriptConfig,
+    () =>
+      new Manuscript(
+        manuscriptConfig.id,
+        manuscriptConfig.siglumDisambiguator,
+        manuscriptConfig.museumNumber,
+        manuscriptConfig.accession,
+        manuscriptConfig.periodModifier,
+        manuscriptConfig.period,
+        manuscriptConfig.provenance,
+        manuscriptConfig.type,
+        manuscriptConfig.notes,
+        manuscriptConfig.colophon,
+        manuscriptConfig.unplacedLines,
+        manuscriptConfig.references
+      )
+  )
 })
 
 describe('Manuscript line', () => {

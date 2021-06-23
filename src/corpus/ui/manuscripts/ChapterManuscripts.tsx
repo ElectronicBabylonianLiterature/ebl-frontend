@@ -3,7 +3,7 @@ import React from 'react'
 import Promise from 'bluebird'
 import ListForm from 'common/List'
 import { Chapter } from 'corpus/domain/text'
-import { createManuscript, Manuscript } from 'corpus/domain/manuscript'
+import { Manuscript } from 'corpus/domain/manuscript'
 import ManuscriptForm from './ManuscriptForm'
 import populateIds from 'corpus/application/populateIds'
 import { castDraft, produce } from 'immer'
@@ -44,7 +44,7 @@ export default function ChapterManuscripts({
         <ListForm
           label="Manuscripts"
           noun="manuscript"
-          defaultValue={createManuscript({})}
+          defaultValue={() => new Manuscript()}
           value={chapter.manuscripts}
           onChange={handeManuscriptsChange}
         >

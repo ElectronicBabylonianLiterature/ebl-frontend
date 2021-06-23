@@ -1,5 +1,5 @@
 import Reference from 'bibliography/domain/Reference'
-import produce, { Draft, immerable } from 'immer'
+import { immerable } from 'immer'
 import _ from 'lodash'
 import { Period, PeriodModifier, PeriodModifiers, Periods } from './period'
 import { Provenance, Provenances } from './provenance'
@@ -58,18 +58,21 @@ export function compareManuscriptTypes(
 
 export class Manuscript {
   readonly [immerable] = true
-  readonly id: number | undefined | null = null
-  readonly siglumDisambiguator: string = ''
-  readonly museumNumber: string = ''
-  readonly accession: string = ''
-  readonly periodModifier: PeriodModifier = PeriodModifiers.None
-  readonly period: Period = Periods['Neo-Assyrian']
-  readonly provenance: Provenance = Provenances.Nineveh
-  readonly type: ManuscriptType = ManuscriptTypes.Library
-  readonly notes: string = ''
-  readonly colophon: string = ''
-  readonly unplacedLines: string = ''
-  readonly references: readonly Reference[] = []
+
+  constructor(
+    readonly id: number | null = null,
+    readonly siglumDisambiguator: string = '',
+    readonly museumNumber: string = '',
+    readonly accession: string = '',
+    readonly periodModifier: PeriodModifier = PeriodModifiers.None,
+    readonly period: Period = Periods['Neo-Assyrian'],
+    readonly provenance: Provenance = Provenances.Nineveh,
+    readonly type: ManuscriptType = ManuscriptTypes.Library,
+    readonly notes: string = '',
+    readonly colophon: string = '',
+    readonly unplacedLines: string = '',
+    readonly references: readonly Reference[] = []
+  ) {}
 
   get siglum(): string {
     return [
@@ -79,10 +82,4 @@ export class Manuscript {
       this.siglumDisambiguator,
     ].join('')
   }
-}
-
-export function createManuscript(data: Partial<Manuscript>): Manuscript {
-  return produce(new Manuscript(), (draft: Draft<Manuscript>) => {
-    _.assign(draft, data)
-  })
 }

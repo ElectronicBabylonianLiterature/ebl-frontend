@@ -8,7 +8,7 @@ import {
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText } from 'corpus/domain/text'
-import { createManuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
 
 const reconstructionTokens: Token[] = [
@@ -183,19 +183,19 @@ export const chapter = createChapter({
   order: 1,
   uncertainFragments: ['K.1'],
   manuscripts: [
-    createManuscript({
-      id: 1,
-      siglumDisambiguator: '1',
-      museumNumber: 'BM.X',
-      accession: 'X.1',
-      periodModifier: PeriodModifiers['Early'],
-      period: Periods['Ur III'],
-      provenance: Provenances.Nippur,
-      type: ManuscriptTypes.School,
-      notes: 'a note',
-      colophon: '1. kur',
-      unplacedLines: '1. bu',
-      references: [
+    new Manuscript(
+      1,
+      '1',
+      'BM.X',
+      'X.1',
+      PeriodModifiers['Early'],
+      Periods['Ur III'],
+      Provenances.Nippur,
+      ManuscriptTypes.School,
+      'a note',
+      '1. kur',
+      '1. bu',
+      [
         new Reference(
           'DISCUSSION',
           '34-54',
@@ -203,8 +203,8 @@ export const chapter = createChapter({
           [],
           new BibliographyEntry({ id: 'RN1853' })
         ),
-      ],
-    }),
+      ]
+    ),
   ],
   lines: [
     createLine({
