@@ -20,6 +20,12 @@ test.each(Object.values(Provenances))('%s is in periods', (provenance) => {
   expect(provenances).toContain(provenance)
 })
 
+function makePairs<T>(values: T[]): [T, T][] {
+  return values.flatMap((first, index) =>
+    values.slice(index + 1).map((second): [T, T] => [first, second])
+  )
+}
+
 describe('compareStandardText', () => {
   test.each([...provenances.values()])(
     'compareStandardText same type %s',
@@ -41,11 +47,7 @@ describe('compareStandardText', () => {
     ).toEqual(1)
   })
 
-  test.each(
-    realProvenances.flatMap((first, index) =>
-      realProvenances.slice(index + 1).map((second) => [first, second])
-    )
-  )('%s and %s', (first, second) => {
+  test.each(makePairs(realProvenances))('%s and %s', (first, second) => {
     expect(compareStandardText(first, second)).toEqual(0)
     expect(compareStandardText(second, first)).toEqual(0)
   })
@@ -89,14 +91,13 @@ describe('compareAssyriaAndBabylonia', () => {
     }
   )
 
-  test.each(
-    cities.flatMap((first, index) =>
-      cities.slice(index + 1).map((second) => [first, second])
-    )
-  )('compareAssyriaAndBabylonia %s and %s', (first, second) => {
-    expect(compareAssyriaAndBabylonia(first, second)).toEqual(0)
-    expect(compareAssyriaAndBabylonia(second, first)).toEqual(0)
-  })
+  test.each(makePairs(cities))(
+    'compareAssyriaAndBabylonia %s and %s',
+    (first, second) => {
+      expect(compareAssyriaAndBabylonia(first, second)).toEqual(0)
+      expect(compareAssyriaAndBabylonia(second, first)).toEqual(0)
+    }
+  )
 })
 
 describe('compareName', () => {
