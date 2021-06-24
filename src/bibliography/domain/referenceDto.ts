@@ -2,9 +2,15 @@ import { CslData } from './BibliographyEntry'
 
 export interface ReferenceDto {
   readonly id: string
-  readonly type: 'DISCUSSION'
+  readonly type:
+    | 'DISCUSSION'
+    | 'EDITION'
+    | 'DISCUSSION'
+    | 'COPY'
+    | 'PHOTO'
+    | 'TRANSLATION'
   readonly pages: string
-  readonly notes: ''
-  readonly linesCited: []
+  readonly notes: string
+  readonly linesCited: readonly string[]
   readonly document?: CslData | null
 }

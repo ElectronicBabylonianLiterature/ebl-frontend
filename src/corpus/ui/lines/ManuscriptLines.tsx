@@ -1,5 +1,5 @@
 import ListForm from 'common/List'
-import { Manuscript } from 'corpus/domain/text'
+import { Manuscript } from 'corpus/domain/manuscript'
 import React from 'react'
 import { castDraft, produce } from 'immer'
 import { Col, Form } from 'react-bootstrap'

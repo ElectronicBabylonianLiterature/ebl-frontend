@@ -11,16 +11,10 @@ import {
   Line,
   LineVariant,
 } from 'corpus/domain/line'
-import { periodModifiers, periods } from 'corpus/domain/period'
-import { provenances } from 'corpus/domain/provenance'
-import {
-  createChapter,
-  createManuscript,
-  createText,
-  Manuscript,
-  Text,
-  types,
-} from 'corpus/domain/text'
+import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { Provenances } from 'corpus/domain/provenance'
+import { createChapter, createText, Text } from 'corpus/domain/text'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 
 function createReference(referenceDto): Reference {
   return new Reference(
@@ -48,14 +42,20 @@ export function fromChapterDto(chapterDto) {
 }
 
 function fromManuscriptDto(manuscriptDto): Manuscript {
-  return createManuscript({
-    ...manuscriptDto,
-    periodModifier: periodModifiers.get(manuscriptDto.periodModifier),
-    period: periods.get(manuscriptDto.period),
-    provenance: provenances.get(manuscriptDto.provenance),
-    type: types.get(manuscriptDto.type),
-    references: manuscriptDto.references.map(createReference),
-  })
+  return new Manuscript(
+    manuscriptDto.id,
+    manuscriptDto.siglumDisambiguator,
+    manuscriptDto.museumNumber,
+    manuscriptDto.accession,
+    PeriodModifiers[manuscriptDto.periodModifier],
+    Periods[manuscriptDto.period],
+    Provenances[manuscriptDto.provenance],
+    ManuscriptTypes[manuscriptDto.type],
+    manuscriptDto.notes,
+    manuscriptDto.colophon,
+    manuscriptDto.unplacedLines,
+    manuscriptDto.references.map(createReference)
+  )
 }
 
 function fromLineVariantDto(variantDto): LineVariant {
