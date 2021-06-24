@@ -2,9 +2,13 @@ import _ from 'lodash'
 import Chance from 'chance'
 import { Factory } from 'fishery'
 
-import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
+import {
+  Manuscript,
+  ManuscriptType,
+  ManuscriptTypes,
+} from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
-import { Provenances } from 'corpus/domain/provenance'
+import { Provenance, Provenances } from 'corpus/domain/provenance'
 
 const chance = new Chance()
 
@@ -18,7 +22,7 @@ class ManuscriptFactory extends Factory<Manuscript> {
     })
   }
 
-  asyria() {
+  assyria() {
     return this.associations({
       provenance: Provenances.Assyria,
     })
@@ -40,6 +44,18 @@ class ManuscriptFactory extends Factory<Manuscript> {
           Provenances.Babylonia
         )
       ),
+    })
+  }
+
+  type(type: ManuscriptType) {
+    return this.associations({
+      type: type,
+    })
+  }
+
+  provenance(provenance: Provenance) {
+    return this.associations({
+      provenance: provenance,
     })
   }
 }

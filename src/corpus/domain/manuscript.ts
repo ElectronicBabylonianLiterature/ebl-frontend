@@ -2,7 +2,13 @@ import Reference from 'bibliography/domain/Reference'
 import { immerable } from 'immer'
 import _ from 'lodash'
 import { Period, PeriodModifier, PeriodModifiers, Periods } from './period'
-import { Provenance, Provenances } from './provenance'
+import {
+  compareAssyriaAndBabylonia,
+  compareName,
+  compareStandardText,
+  Provenance,
+  Provenances,
+} from './provenance'
 
 export const ManuscriptTypes = {
   None: { name: 'None', abbreviation: '', displayName: '-', order: null },
@@ -29,6 +35,7 @@ export const ManuscriptTypes = {
     order: 5,
   },
 } as const
+
 export type ManuscriptType = typeof ManuscriptTypes[keyof typeof ManuscriptTypes]
 export const types = [
   ManuscriptTypes.None,
@@ -82,4 +89,16 @@ export class Manuscript {
       this.siglumDisambiguator,
     ].join('')
   }
+}
+
+export function compareManuscripts(
+  first: Manuscript,
+  second: Manuscript
+): number {
+  return (
+    compareStandardText(first.provenance, second.provenance) ||
+    compareManuscriptTypes(first.type, second.type) ||
+    compareAssyriaAndBabylonia(first.provenance, second.provenance) ||
+    compareName(first.provenance, second.provenance)
+  )
 }
