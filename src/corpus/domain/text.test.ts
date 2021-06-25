@@ -9,27 +9,21 @@ import {
   LineVariant,
   ManuscriptLine,
 } from './line'
-import { periodModifiers, periods } from './period'
-import { provenances } from './provenance'
-import {
-  Chapter,
-  createChapter,
-  createManuscript,
-  createText,
-  Manuscript,
-  Text,
-  types,
-} from './text'
+import { PeriodModifiers, Periods } from './period'
+import { Provenances } from './provenance'
+import { Chapter, createChapter, createText, Text } from './text'
+import { Manuscript, ManuscriptTypes } from './manuscript'
+import manuscriptFactory from 'test-support/manuscriptFactory'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
   siglumDisambiguator: '1',
   museumNumber: 'BM.X',
   accession: 'X.1',
-  periodModifier: periodModifiers.values().next().value,
-  period: periods.values().next().value,
-  provenance: provenances.values().next().value,
-  type: types.values().next().value,
+  periodModifier: PeriodModifiers.None,
+  period: Periods['Old Babylonian'],
+  provenance: Provenances.Nineveh,
+  type: ManuscriptTypes.Library,
   notes: 'some notes',
   colophon: '1. kur',
   unplacedLines: '1. bu',
@@ -133,7 +127,7 @@ const chapterConfig: Partial<Chapter> = {
   version: 'A',
   name: name,
   order: -1,
-  manuscripts: [createManuscript(manuscriptConfig)],
+  manuscripts: manuscriptFactory.buildList(1),
   uncertainFragments: ['K.1'],
   lines: [createLine(lineConfig)],
 }
@@ -200,7 +194,24 @@ describe('Chapter', () => {
 })
 
 describe('Manuscript', () => {
-  testProperties(manuscriptConfig, createManuscript)
+  testProperties(
+    manuscriptConfig,
+    () =>
+      new Manuscript(
+        manuscriptConfig.id,
+        manuscriptConfig.siglumDisambiguator,
+        manuscriptConfig.museumNumber,
+        manuscriptConfig.accession,
+        manuscriptConfig.periodModifier,
+        manuscriptConfig.period,
+        manuscriptConfig.provenance,
+        manuscriptConfig.type,
+        manuscriptConfig.notes,
+        manuscriptConfig.colophon,
+        manuscriptConfig.unplacedLines,
+        manuscriptConfig.references
+      )
+  )
 })
 
 describe('Manuscript line', () => {
