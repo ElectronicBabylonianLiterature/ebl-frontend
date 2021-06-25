@@ -2,7 +2,7 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import Sign from 'signs/domain/Sign'
 import './signDisplay.css'
 import WordService from 'dictionary/application/WordService'
@@ -17,8 +17,10 @@ import { Session } from 'auth/Session'
 function SignDisplay({
   sign,
   wordService,
+  signService,
 }: {
   sign: Sign
+  signService: SignService
   wordService: WordService
 }): JSX.Element {
   return (
@@ -31,7 +33,11 @@ function SignDisplay({
                 signName={sign.name}
                 cuneiformLetters={sign.displayCuneiformSigns}
               />
-              <SignInformation sign={sign} wordService={wordService} />
+              <SignInformation
+                signService={signService}
+                sign={sign}
+                wordService={wordService}
+              />
               <MesZl signName={sign.name} mesZl={sign.mesZl} />
             </Container>
           ) : (
@@ -45,12 +51,16 @@ function SignDisplay({
 type Props = {
   data: Sign
   wordService: WordService
-  signsService: SignsService
+  signService: SignService
 } & RouteComponentProps<{ id: string }>
 
 export default withData<WithoutData<Props>, { match }, Sign>(
-  ({ data, wordService }) => (
-    <SignDisplay sign={data} wordService={wordService} />
+  ({ data, wordService, signService }) => (
+    <SignDisplay
+      sign={data}
+      wordService={wordService}
+      signService={signService}
+    />
   ),
-  (props) => props.signsService.find(props.match.params['id'])
+  (props) => props.signService.find(props.match.params['id'])
 )

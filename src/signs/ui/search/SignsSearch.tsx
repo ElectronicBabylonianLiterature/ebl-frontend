@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import Sign, { SignQuery } from 'signs/domain/Sign'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
@@ -89,7 +89,7 @@ export function DisplaySignValues({ sign }: { sign: Sign }): JSX.Element {
 
 export default withData<
   { signQuery: SignQuery },
-  { signsService: SignsService },
+  { signService: SignService },
   Sign[]
 >(
   ({ data, signQuery }) => (
@@ -98,7 +98,7 @@ export default withData<
       signs={data}
     />
   ),
-  (props) => props.signsService.search(props.signQuery),
+  (props) => props.signService.search(props.signQuery),
   {
     watch: (props) => [props.signQuery],
     filter: (props) => _.some(props.signQuery),

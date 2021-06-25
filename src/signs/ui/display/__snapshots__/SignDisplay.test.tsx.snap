@@ -261,6 +261,15 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         <div
           class="col"
         >
+          Composites: 
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
           <h3>
             Ⅱ. MesZL
           </h3>

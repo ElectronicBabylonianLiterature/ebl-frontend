@@ -7,9 +7,12 @@ import Word from 'dictionary/domain/Word'
 import SignInformation from 'signs/ui/display/SignInformation'
 import { MemoryRouter } from 'react-router'
 import _ from 'lodash'
+import SignService from 'signs/application/SignService'
 
+jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
 
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const sign = new Sign({
   lists: [
@@ -61,13 +64,18 @@ const wordLipu: Word = {
 function renderSignInformation(): RenderResult {
   return render(
     <MemoryRouter>
-      <SignInformation sign={sign} wordService={wordService} />
+      <SignInformation
+        sign={sign}
+        wordService={wordService}
+        signService={signService}
+      />
     </MemoryRouter>
   )
 }
 
 describe('Sign Information', () => {
   beforeEach(async () => {
+    signService.search.mockReturnValueOnce(Bluebird.resolve([]))
     wordService.find
       .mockReturnValueOnce(Bluebird.resolve(wordErimmatu))
       .mockReturnValueOnce(Bluebird.resolve(wordLipu))

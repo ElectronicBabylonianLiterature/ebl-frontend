@@ -8,13 +8,18 @@ import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
 import React from 'react'
+import CompositeSigns from 'signs/ui/display/CompositeSigns'
+import SignService from 'signs/application/SignService'
+import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 
 export default function SignInformation({
   sign,
   wordService,
+  signService,
 }: {
   sign: Sign
   wordService: WordService
+  signService: SignService
 }): JSX.Element {
   return (
     <>
@@ -43,6 +48,18 @@ export default function SignInformation({
         <Col xs={'auto'}>Words (as logogram):</Col>
         <Col>
           <Logograms logograms={sign.logograms} wordService={wordService} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <CompositeSigns
+            signService={signService}
+            query={{
+              isComposite: true,
+              value: replaceTransliteration(sign.name.toLowerCase()),
+              subIndex: 1,
+            }}
+          />
         </Col>
       </Row>
     </>

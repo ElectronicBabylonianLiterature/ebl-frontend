@@ -1,24 +1,24 @@
-import SignsRepository from 'signs/infrastructure/SignsRepository'
-import SignsService from 'signs/application/SignsService'
+import SignRepository from 'signs/infrastructure/SignRepository'
+import SignService from 'signs/application/SignService'
 import { TestData, testDelegation } from 'test-support/utils'
 
-jest.mock('signs/infrastructure/SignsRepository')
+jest.mock('signs/infrastructure/SignRepository')
 const resultStub = {}
-const signsRepository = new (SignsRepository as jest.Mock<
+const signRepository = new (SignRepository as jest.Mock<
   jest.Mocked<SignsRepository>
 >)()
 
-const signsService = new SignsService(signsRepository)
+const signService = new SignService(signRepository)
 
 const testData: TestData[] = [
-  ['find', ['signName'], signsRepository.find, resultStub],
+  ['find', ['signName'], signRepository.find, resultStub],
   [
     'search',
     [{ value: 'bar', subIndex: 1 }],
-    signsRepository.search,
+    signRepository.search,
     resultStub,
   ],
 ]
 describe('test word Service', () => {
-  testDelegation(signsService, testData)
+  testDelegation(signService, testData)
 })
