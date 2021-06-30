@@ -15,10 +15,8 @@ function CompositeSign({
       Composites:{' '}
       {signComposites.map((sign, index) => (
         <Link key={index} to={`/signs/${encodeURIComponent(sign.name)}`}>
-          <span>
-            {sign.displaySignName}
-            {index < signComposites.length - 1 ? ', ' : ''}
-          </span>
+          {sign.displaySignName}
+          {index < signComposites.length - 1 ? ', ' : ''}
         </Link>
       ))}
     </>
