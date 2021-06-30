@@ -7,11 +7,11 @@ import {
 } from '@testing-library/react'
 import Promise from 'bluebird'
 
-import { factory } from 'factory-girl'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
+import { signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('signs/application/SignService')
 
@@ -37,7 +37,7 @@ async function renderSignSearch(): Promise<void> {
 
 describe('Display Search Results', () => {
   beforeEach(async () => {
-    signs = await factory.buildMany('sign', 2)
+    signs = await signFactory.buildList(2)
     signService.search.mockReturnValue(Bluebird.resolve(signs))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)
