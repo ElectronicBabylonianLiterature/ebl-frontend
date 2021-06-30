@@ -1,16 +1,16 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
+import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
 import LuckyButton from './LuckyButton'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragmentSearchService
 let session
-let element
+let element: RenderResult
 let history
 
 beforeEach(async () => {
@@ -26,7 +26,7 @@ beforeEach(async () => {
 
 it('Redirects to interesting when clicked', async () => {
   renderLuckyButton(true)
-  const fragment = await factory.build('fragment')
+  const fragment = fragmentFactory.build()
   fragmentSearchService.random.mockReturnValueOnce(Promise.resolve(fragment))
   await whenClicked(element, "I'm feeling lucky")
     .expect(history.push)

@@ -1,18 +1,19 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import OrganizationLinks from './OrganizationLinks'
 
 import cdliLogo from './cdli.png'
-import { factory } from 'factory-girl'
 import Museum from 'fragmentarium/domain/museum'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 const cdliNumber = 'P 0000+q'
 const bmIdNumber = 'bm 00000+q'
-let fragment
-let element
+let fragment: Fragment
+let element: RenderResult
 
 beforeEach(async () => {
-  fragment = await factory.build('fragment', { cdliNumber, bmIdNumber })
+  fragment = fragmentFactory.build({ cdliNumber, bmIdNumber })
   element = render(<OrganizationLinks fragment={fragment} />)
 })
 

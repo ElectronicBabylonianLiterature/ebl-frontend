@@ -310,24 +310,23 @@ export const fragmentDto = {
   ],
 }
 
-export const fragment = new Fragment({
-  number: 'Test.Fragment',
-  accession: '',
-  cdliNumber: 'X0000',
-  bmIdNumber: '',
-  publication: 'Electronic Babylonian Literature',
-  description: 'A fragment to be used when testing the eBL application',
-  joins: [],
-  measures: {
+export const fragment = new Fragment(
+  'Test.Fragment',
+  'X0000',
+  '',
+  '',
+  'Electronic Babylonian Literature',
+  [],
+  'A fragment to be used when testing the eBL application',
+  {
     length: 3.14,
     width: 0.30282212,
     thickness: null,
   },
-  collection: '',
-  script: 'NB',
-  notes: '',
-  museum: Museum.of('The British Museum'),
-  record: [
+  '',
+  'NB',
+  [new Folio({ name: 'FWG', number: 'M134' })],
+  [
     new RecordEntry({
       user: 'Laasonen',
       date: '2019-02-01T14:22:40.201231',
@@ -339,9 +338,10 @@ export const fragment = new Fragment({
       type: 'Revision',
     }),
   ],
-  folios: [new Folio({ name: 'FWG', number: 'M134' })],
-  text: new Text({ lines: lines.map((lineDto) => new TextLine(lineDto)) }),
-  references: [
+  new Text({ lines: lines.map((lineDto) => new TextLine(lineDto)) }),
+  '',
+  Museum.of('The British Museum'),
+  [
     {
       id: 'RN52',
       type: 'DISCUSSION',
@@ -350,13 +350,13 @@ export const fragment = new Fragment({
       linesCited: [],
     },
   ],
-  atf:
-    '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
-  hasPhoto: true,
-  genres: Genres.fromJson([
+  null,
+  '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
+  true,
+  Genres.fromJson([
     {
       category: ['ARCHIVE', 'Administrative', 'Lists'],
       uncertain: false,
     },
-  ]),
-})
+  ])
+)

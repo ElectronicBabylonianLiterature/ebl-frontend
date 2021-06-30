@@ -1,13 +1,13 @@
-import factory from 'factory-girl'
 import * as TeiExport from './TeiExport'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import * as parser from 'fast-xml-parser'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragment: Fragment
 let teiExport: string
 
-beforeEach(async () => {
-  fragment = await factory.build('fragment')
+beforeEach(() => {
+  fragment = fragmentFactory.build()
   teiExport = TeiExport.teiExport(fragment)
 })
 

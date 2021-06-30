@@ -1,70 +1,35 @@
-import { factory } from 'factory-girl'
+import { Factory } from 'fishery'
 import { Chance } from 'chance'
-import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
+import {
+  Fragment,
+  FragmentInfo,
+  Measures,
+  RecordEntry,
+  UncuratedReference,
+} from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceDtoFactory } from './bibliography-fixtures'
+import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 
 const chance = new Chance()
 
 function date(): string {
-  return factory.chance('date')().toISOString()
+  return chance.date().toISOString()
 }
 
 function dateRange(): string {
   return `${date()}/${date()}`
 }
 
-async function description(): Promise<string> {
-  return `${await factory.chance('sentence')()}\n${await factory.chance(
-    'sentence'
-  )()}`
+function description(): string {
+  return `${chance.sentence()}\n${chance.sentence()}`
 }
 
-factory.define('statistics', Object, {
-  transliteratedFragments: factory.chance('natural'),
-  lines: factory.chance('natural'),
-})
-
-factory.define('record', RecordEntry, {
-  user: factory.chance('last'),
-  date: date,
-  type: factory.chance('pickone', ['Transliteration', 'Collation', 'Revision']),
-})
-
-factory.extend('record', 'historicalRecord', {
-  date: dateRange,
-  type: 'HistoricalTransliteration',
-})
-
-factory.define('measures', Object, {
-  length: factory.chance('floating', { min: 0, max: 100 }),
-  width: factory.chance('floating', { min: 0, max: 100 }),
-  thickness: factory.chance('floating', { min: 0, max: 100 }),
-})
-
-factory.define('folio', Folio, {
-  name: factory.chance('pickone', ['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-  number: factory.chance('string'),
-})
-
-factory.define('uncuratedReference', Object, {
-  document: factory.chance('sentence'),
-  lines: async () => await factory.chance('n', chance.natural, 5)(),
-})
-
-factory.define('fragment', Fragment, {
-  number: factory.chance('word'),
-  cdliNumber: factory.chance('word'),
-  bmIdNumber: factory.chance('word'),
-  accession: factory.chance('word'),
-  publication: factory.chance('sentence', { words: 4 }),
-  joins: async () => [await factory.chance('word')()],
-  description: description,
-  measures: factory.assocAttrs('measures'),
-  collection: factory.chance('pickone', [
+function collection(): string {
+  return chance.pickone([
     'Babylon',
     'Kuyunjik',
     'Nippur',
@@ -93,40 +58,116 @@ factory.define('fragment', Fragment, {
     'Lagash',
     'Assur',
     'Huzirina',
-  ]),
-  script: factory.chance('pickone', ['NA', 'NB']),
-  folios: async () => await factory.buildMany('folio', 2),
-  record: async () => await factory.buildMany('record', 2),
-  text: complexText,
-  notes: factory.chance('sentence'),
-  museum: Museum.of('The British Museum'),
-  references: () => referenceDtoFactory.buildList(2),
-  hasPhoto: factory.chance('bool'),
-  genres: factory.chance('pickone', [
-    new Genres([
-      new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
-      new Genre(['Other', 'Fake', 'Certain'], false),
-    ]),
-    new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
-  ]),
-})
+  ])
+}
 
-factory.define('fragmentInfo', Object, {
-  number: factory.chance('word'),
-  accession: factory.chance('word'),
-  description: description,
-  script: factory.chance('pickone', ['NA', 'NB']),
-  matchingLines: [['1. kur']],
-  editor: factory.chance('last'),
-  date: date,
-})
+function script(): string {
+  return chance.pickone(['NA', 'NB'])
+}
 
-factory.define('folioPagerEntry', Object, {
-  fragmentNumber: factory.chance('string'),
-  folioNumber: factory.chance('string'),
-})
+export const statisticsFactory = Factory.define<{
+  transliteratedFragments: number
+  lines: number
+}>(() => ({
+  transliteratedFragments: chance.natural(),
+  lines: chance.natural(),
+}))
 
-factory.define('folioPager', Object, {
-  previous: factory.assocAttrs('folioPagerEntry'),
-  next: factory.assocAttrs('folioPagerEntry'),
-})
+class RecordFactory extends Factory<RecordEntry> {
+  historical(date: string | null = null) {
+    return this.params({
+      date: date ?? dateRange(),
+      type: 'HistoricalTransliteration',
+    })
+  }
+}
+
+export const recordFactory = RecordFactory.define(
+  () =>
+    new RecordEntry({
+      user: chance.last(),
+      date: date(),
+      type: chance.pickone(['Transliteration', 'Collation', 'Revision']),
+    })
+)
+
+export const measuresFactory = Factory.define<Measures>(() => ({
+  length: chance.floating({ min: 0, max: 100 }),
+  width: chance.floating({ min: 0, max: 100 }),
+  thickness: chance.floating({ min: 0, max: 100 }),
+}))
+
+export const folioFactory = Factory.define<Folio>(
+  () =>
+    new Folio({
+      name: chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
+      number: chance.string(),
+    })
+)
+
+export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
+  () => ({
+    document: chance.sentence(),
+    pages: chance.n(chance.natural, 5),
+  })
+)
+
+export const fragmentFactory = Factory.define<Fragment>(
+  ({ associations }) =>
+    new Fragment(
+      chance.word(),
+      chance.word(),
+      chance.word(),
+      chance.word(),
+      chance.sentence({ words: 4 }),
+      associations.joins ?? chance.n(chance.word, 1),
+      description(),
+      associations.measures ?? measuresFactory.build(),
+      collection(),
+      script(),
+      associations.folios ?? folioFactory.buildList(2),
+      associations.record ?? recordFactory.buildList(2),
+      associations.text ?? complexText,
+      chance.sentence(),
+      associations.museum ?? Museum.of('The British Museum'),
+      associations.references ?? referenceDtoFactory.buildList(2),
+      associations.uncuratedReferences ?? null,
+      '',
+      chance.bool(),
+      associations.genres ??
+        chance.pickone([
+          new Genres([
+            new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
+            new Genre(['Other', 'Fake', 'Certain'], false),
+          ]),
+          new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
+        ])
+    )
+)
+
+export const fragmentInfoFactory = Factory.define<FragmentInfo>(
+  ({ associations }) => ({
+    number: chance.word(),
+    accession: chance.word(),
+    description: description(),
+    script: script(),
+    matchingLines: associations.matchingLines ?? [['1. kur']],
+    editor: chance.last(),
+    date: date(),
+    // eslint-disable-next-line camelcase
+    edition_date: date(),
+    references: associations.references ?? [],
+  })
+)
+
+export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
+  fragmentNumber: chance.string(),
+  folioNumber: chance.string(),
+}))
+
+export const folioPagerFactory = Factory.define<FolioPagerData>(
+  ({ associations }) => ({
+    previous: associations.previous ?? folioPagerEntryFactory.build(),
+    next: associations.next ?? folioPagerEntryFactory.build(),
+  })
+)

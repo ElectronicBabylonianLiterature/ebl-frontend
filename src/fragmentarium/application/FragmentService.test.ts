@@ -1,5 +1,4 @@
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
 import Folio from 'fragmentarium/domain/Folio'
 import { fragment } from 'test-support/test-fragment'
 import createLemmatizationTestText from 'test-support/test-text'
@@ -17,6 +16,7 @@ import Word from 'dictionary/domain/Word'
 import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 jest.mock('./LemmatizationFactory')
 
@@ -149,15 +149,21 @@ describe('methods returning hydrated fragment', () => {
     },
   ])
 
-  beforeEach(async () => {
-    const { entries, references, expectedReferences } = await setUpReferences(
+  beforeEach(() => {
+    const { entries, references, expectedReferences } = setUpReferences(
       bibliographyService
     )
-    fragment = await factory.build('fragment', {
-      number: number,
-      references: references,
-      genres: new Genres([]),
-    })
+    fragment = fragmentFactory.build(
+      {
+        number: number,
+      },
+      {
+        associations: {
+          references: references,
+          genres: new Genres([]),
+        },
+      }
+    )
     bibliographyService.find.mockImplementation((id) => {
       const entry = entries.find((entry) => entry.id === id)
       return entry

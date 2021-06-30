@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 import ApiImageRepository from './ImageRepository'
 import Folio from 'fragmentarium/domain/Folio'
-import { factory } from 'factory-girl'
+import { folioFactory } from 'test-support/fragment-fixtures'
 
 const image = new Blob([''], { type: 'image/jpeg' })
 
@@ -41,8 +41,8 @@ describe('find', () => {
 describe('findFolio', () => {
   let folio: Folio
 
-  beforeEach(async () => {
-    folio = await factory.build('folio')
+  beforeEach(() => {
+    folio = folioFactory.build()
     jest
       .spyOn(apiClient, 'fetchBlob')
       .mockReturnValueOnce(Promise.resolve(image))

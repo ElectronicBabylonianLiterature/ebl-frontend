@@ -1,23 +1,29 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { factory } from 'factory-girl'
 import { Promise } from 'bluebird'
 import FolioPager from './FolioPager'
+import {
+  folioPagerFactory,
+  fragmentFactory,
+} from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
+import Folio from 'fragmentarium/domain/Folio'
+import { FolioPagerData } from 'fragmentarium/domain/pager'
 
 let fragmentService
-let element
-let fragment
-let folio
-let pagerData
+let element: RenderResult
+let fragment: Fragment
+let folio: Folio
+let pagerData: FolioPagerData
 
 beforeEach(async () => {
   fragmentService = {
     folioPager: jest.fn(),
   }
-  pagerData = await factory.build('folioPager')
+  pagerData = folioPagerFactory.build()
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
-  fragment = await factory.build('fragment')
+  fragment = fragmentFactory.build()
   folio = fragment.folios[0]
   element = render(
     <MemoryRouter>

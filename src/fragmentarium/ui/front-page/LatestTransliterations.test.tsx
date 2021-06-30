@@ -1,10 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import LatestTransliterations from './LatestTransliterations'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 
 const numberOfFragments = 2
 const expectedColumns = {
@@ -14,12 +15,12 @@ const expectedColumns = {
   description: 'Description',
 }
 let fragmentSearchService
-let container
-let element
-let fragments
+let container: HTMLElement
+let element: RenderResult
+let fragments: FragmentInfo[]
 
 beforeEach(async () => {
-  fragments = await factory.buildMany('fragment', numberOfFragments)
+  fragments = fragmentInfoFactory.buildList(numberOfFragments)
   fragmentSearchService = {
     fetchLatestTransliterations: jest.fn(),
   }

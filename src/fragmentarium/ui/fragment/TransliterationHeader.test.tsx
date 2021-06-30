@@ -1,18 +1,19 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
 
 import TransliterationHeader from './TransliterationHeader'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 describe.each([
   ['', '(Publication: - )'],
   ['George, Gilgamesh II 047, d', '(Publication: George, Gilgamesh II 047, d)'],
 ])('Publication "%s"', (publication, expectedPublication) => {
-  let fragment
-  let container
+  let fragment: Fragment
+  let container: HTMLElement
 
-  beforeEach(async () => {
-    fragment = await factory.build('fragment', { publication: publication })
+  beforeEach(() => {
+    fragment = fragmentFactory.build({ publication: publication })
     container = render(<TransliterationHeader fragment={fragment} />).container
   })
 

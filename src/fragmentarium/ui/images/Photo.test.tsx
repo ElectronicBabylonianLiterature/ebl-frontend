@@ -1,14 +1,14 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import PhotoImage from './Photo'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 const number = 'K 1'
 const blob = new Blob([''], { type: 'image/jpeg' })
 const objectUrl = 'object URL mock'
 
-beforeEach(async () => {
-  const fragment = await factory.build('fragment', { number })
+beforeEach(() => {
+  const fragment = fragmentFactory.build({ number })
   ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce(objectUrl)
   render(<PhotoImage photo={blob} fragment={fragment} />)
 })

@@ -1,16 +1,17 @@
 import React from 'react'
-import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
+import { render, RenderResult } from '@testing-library/react'
 import Record from './Record'
 import moment from 'moment'
+import { recordFactory } from 'test-support/fragment-fixtures'
+import { RecordEntry } from 'fragmentarium/domain/fragment'
 
-let record
-let element
-let container
+let record: RecordEntry[]
+let element: RenderResult
+let container: HTMLElement
 
 describe('Record has entries', () => {
   beforeEach(async () => {
-    record = await factory.buildMany('record', 3)
+    record = recordFactory.buildList(3)
     element = render(<Record record={record} />)
     container = element.container
   })
@@ -19,7 +20,7 @@ describe('Record has entries', () => {
     for (const entry of record) {
       const expectedEntry = `${entry.user} (${
         entry.type
-      }, ${entry.moment.format('D/M/YYYY')})`
+      }, ${(entry.moment as moment.Moment).format('D/M/YYYY')})`
       expect(container).toHaveTextContent(expectedEntry)
     }
   })
@@ -27,8 +28,11 @@ describe('Record has entries', () => {
   it(`Entries have correct datetTime`, () => {
     for (const entry of record) {
       expect(
-        element.getByText(entry.moment.format('D/M/YYYY'))
-      ).toHaveAttribute('datetime', entry.moment.format('YYYY-MM-DD'))
+        element.getByText((entry.moment as moment.Moment).format('D/M/YYYY'))
+      ).toHaveAttribute(
+        'datetime',
+        (entry.moment as moment.Moment).format('YYYY-MM-DD')
+      )
     }
   })
 })
@@ -49,10 +53,10 @@ describe('Historical transliteration', () => {
   const years = [start, end].map((date) => date.format('YYYY'))
   let entry
 
-  beforeEach(async () => {
-    entry = await factory.build('historicalRecord', {
-      date: `${start.toISOString()}/${end.toISOString()}`,
-    })
+  beforeEach(() => {
+    entry = recordFactory
+      .historical(`${start.toISOString()}/${end.toISOString()}`)
+      .build()
     element = render(<Record record={[entry]} />)
     container = element.container
   })

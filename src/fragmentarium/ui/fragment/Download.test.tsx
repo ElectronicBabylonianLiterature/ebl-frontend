@@ -1,9 +1,9 @@
 import React from 'react'
 import { render, act, RenderResult, fireEvent } from '@testing-library/react'
-import factory from 'factory-girl'
 import Download from './Download'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 const atfUrl = 'ATF URL mock'
 const jsonUrl = 'JSON URL mock'
@@ -19,7 +19,7 @@ beforeEach(async () => {
     .mockReturnValueOnce(jsonUrl)
     .mockReturnValueOnce(atfUrl)
 
-  fragment = await factory.build('fragment')
+  fragment = fragmentFactory.build()
   await act(async () => {
     element = render(
       <Download fragment={fragment} wordService={wordServiceMock} />

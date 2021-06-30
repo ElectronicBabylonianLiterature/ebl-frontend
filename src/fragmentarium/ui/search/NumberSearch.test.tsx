@@ -1,18 +1,19 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import NumberSearch from './NumberSearch'
-import { factory } from 'factory-girl'
 import { act } from 'react-dom/test-utils'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 const number = 'K.003292'
-let fragments
+let fragments: Fragment[]
 let fragmentSearchService
-let element
+let element: RenderResult
 
 beforeEach(async () => {
-  fragments = await factory.buildMany('fragment', 2)
+  fragments = fragmentFactory.buildList(2)
   fragmentSearchService = {
     searchNumber: jest.fn(),
   }

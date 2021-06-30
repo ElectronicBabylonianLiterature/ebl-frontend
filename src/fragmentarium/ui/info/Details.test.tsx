@@ -5,12 +5,15 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
+import {
+  fragmentFactory,
+  measuresFactory,
+} from 'test-support/fragment-fixtures'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -36,11 +39,17 @@ describe('All details', () => {
     fragmentService.fetchGenres.mockReturnValue(
       Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
     )
-    fragment = await factory.build('fragment', {
-      museum: Museum.of('The British Museum'),
-      collection: 'The Collection',
-      genres: new Genres([]),
-    })
+    fragment = fragmentFactory.build(
+      {
+        collection: 'The Collection',
+      },
+      {
+        associations: {
+          museum: Museum.of('The British Museum'),
+          genres: new Genres([]),
+        },
+      }
+    )
     await renderDetails()
   })
 
@@ -103,16 +112,22 @@ describe('All details', () => {
 
 describe('Missing details', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', {
-      collection: '',
-      joins: [],
-      cdliNumber: '',
-      accession: '',
-      bmIdNumber: '',
-      measures: await factory.build('measures', {
-        width: null,
-      }),
-    })
+    fragment = fragmentFactory.build(
+      {
+        collection: '',
+        cdliNumber: '',
+        accession: '',
+        bmIdNumber: '',
+      },
+      {
+        associations: {
+          joins: [],
+          measures: measuresFactory.build({
+            width: null,
+          }),
+        },
+      }
+    )
     fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })
@@ -146,9 +161,14 @@ describe('Missing details', () => {
 
 describe('Unknown museum', () => {
   beforeEach(async () => {
-    fragment = await factory.build('fragment', {
-      museum: Museum.of('The Other Museum'),
-    })
+    fragment = fragmentFactory.build(
+      {},
+      {
+        associations: {
+          museum: Museum.of('The Other Museum'),
+        },
+      }
+    )
     fragmentService.fetchGenres.mockReturnValue(Promise.resolve([]))
     await renderDetails()
   })

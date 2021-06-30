@@ -1,24 +1,30 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
-import { factory } from 'factory-girl'
-import _ from 'lodash'
+import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 const transliteration = 'ma i-ra\nka li'
-let fragments
+let fragments: FragmentInfo[]
 let fragmentSearchService
-let element
+let element: RenderResult
 
 beforeEach(async () => {
   fragmentSearchService = {
     searchTransliteration: jest.fn(),
   }
-  fragments = await factory.buildMany('fragmentInfo', 2, [
-    { matchingLines: [['line 1', 'line 2']] },
-    { matchingLines: [['line 3'], ['line 4']] },
-  ])
+  fragments = [
+    fragmentInfoFactory.build(
+      {},
+      { associations: { matchingLines: [['line 1', 'line 2']] } }
+    ),
+    fragmentInfoFactory.build(
+      {},
+      { associations: { matchingLines: [['line 3'], ['line 4']] } }
+    ),
+  ]
   fragmentSearchService.searchTransliteration.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
@@ -55,9 +61,8 @@ it('Displays script', () => {
 })
 
 it('Displays matching lines', () => {
-  for (const line of _.flatMapDeep(
-    fragments,
-    (fragment) => fragment.matchingLines
+  for (const line of fragments.flatMap((fragment) =>
+    fragment.matchingLines.flat()
   )) {
     expect(element.getAllByText(line)).not.toEqual([])
   }

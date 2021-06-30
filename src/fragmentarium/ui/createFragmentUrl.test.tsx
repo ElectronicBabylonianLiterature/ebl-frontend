@@ -1,7 +1,7 @@
 import Chance from 'chance'
 import { createFragmentUrl, createFragmentUrlWithFolio } from './FragmentLink'
 import { parseUrl } from 'query-string'
-import { factory } from 'factory-girl'
+import { folioFactory } from 'test-support/fragment-fixtures'
 
 const chance = new Chance()
 
@@ -17,9 +17,9 @@ it('Creates double encoded URL', () => {
   )
 })
 
-it('Creates URL with folio query', async () => {
+it('Creates URL with folio query', () => {
   const number = chance.string()
-  const folio = await factory.build('folio')
+  const folio = folioFactory.build()
   expect(parseUrl(createFragmentUrlWithFolio(number, folio))).toEqual({
     url: `/fragmentarium/${doubleEncode(number)}`,
     query: {

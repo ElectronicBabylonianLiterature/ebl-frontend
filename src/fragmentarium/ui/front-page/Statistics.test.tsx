@@ -4,15 +4,15 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import Statistics from './Statistics'
+import { statisticsFactory } from 'test-support/fragment-fixtures'
 
 let fragmentService
 let statistics
 
 beforeEach(async () => {
-  statistics = await factory.build('statistics')
+  statistics = statisticsFactory.build()
   fragmentService = {
     statistics: jest.fn(),
   }

@@ -1,6 +1,6 @@
-import { factory } from 'factory-girl'
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
+import { statisticsFactory } from 'test-support/fragment-fixtures'
 
 test.each([
   '/',
@@ -16,8 +16,6 @@ test.each([
   '/fragmentarium/fragment_number',
   '/callback',
 ])('%s renders without crashing', async (route) => {
-  const fakeApi = new FakeApi().allowStatistics(
-    await factory.build('statistics')
-  )
+  const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
   await new AppDriver(fakeApi.client).withPath(route).render()
 })

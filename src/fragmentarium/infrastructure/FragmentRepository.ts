@@ -91,7 +91,7 @@ function createText(text): Text {
 }
 
 function createFragment(dto): Fragment {
-  return new Fragment({
+  return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     museum: Museum.of(dto.museum),
