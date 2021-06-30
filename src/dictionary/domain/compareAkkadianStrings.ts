@@ -40,6 +40,16 @@ function compareAlphabet(word: string, anotherWord: string): number {
   return alphabet.indexOf(word) - alphabet.indexOf(anotherWord)
 }
 
+export function compareCleanedAkkadianString(
+  word: string,
+  anotherWord: string
+): number {
+  return compareAkkadianStrings(
+    cleanAkkadianString(word),
+    cleanAkkadianString(anotherWord)
+  )
+}
+
 export default function compareAkkadianStrings(
   word: string,
   anotherWord: string

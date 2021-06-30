@@ -7,9 +7,7 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import compareAkkadianStrings, {
-  cleanAkkadianString,
-} from 'dictionary/domain/compareAkkadianStrings'
+import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.css'
 import MesZL from 'signs/ui/search/MesZL'
 
@@ -19,12 +17,9 @@ interface Props {
 }
 
 function sortSigns(signs: Sign[]): Sign[] {
-  return signs.sort((sign1, sign2) => {
-    return compareAkkadianStrings(
-      cleanAkkadianString(sign1.name),
-      cleanAkkadianString(sign2.name)
-    )
-  })
+  return signs.sort((sign1, sign2) =>
+    compareAkkadianStrings(sign1.name, sign2.name)
+  )
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {

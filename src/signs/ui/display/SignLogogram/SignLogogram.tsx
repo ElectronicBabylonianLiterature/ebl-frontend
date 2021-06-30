@@ -7,12 +7,13 @@ import HelpTrigger from 'common/HelpTrigger'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
 import React from 'react'
+import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 
 export default function SignLogograms({
   signLogograms,
   wordService,
 }: {
-  signLogograms: any
+  signLogograms: readonly Logogram[]
   wordService: WordService
 }): JSX.Element {
   return (
@@ -20,14 +21,21 @@ export default function SignLogograms({
       <Col xs={'auto'}>Words (as logogram):</Col>
       <Col>
         <ul>
-          {signLogograms.map((logogram, index) => (
-            <li key={index}>
-              <SignLogogramEntry
-                logogram={logogram}
-                wordService={wordService}
-              />
-            </li>
-          ))}
+          {[...signLogograms]
+            .sort((elem1, elem2) =>
+              compareCleanedAkkadianString(
+                elem1.wordId[0] || '',
+                elem2.wordId[0] || ''
+              )
+            )
+            .map((logogram, index) => (
+              <li key={index}>
+                <SignLogogramEntry
+                  logogram={logogram}
+                  wordService={wordService}
+                />
+              </li>
+            ))}
         </ul>
       </Col>
     </Row>
