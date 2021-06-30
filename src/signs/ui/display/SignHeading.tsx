@@ -24,7 +24,7 @@ export default function SignHeading({
           <h3 className={font}>{cuneiformLetters}</h3>
         </Col>
         <Col>
-          <span className={'text-secondary'}>{description}</span>
+          <h5 className={'text-secondary'}>{description}</h5>
         </Col>
       </Row>
     </Col>
@@ -33,17 +33,17 @@ export default function SignHeading({
   return (
     <Row>
       <Col xs={3}>
-        <h3>{signName}</h3>
+        <h2>{signName}</h2>
       </Col>
       <Col>
         <Row>
           <CuneiformFonts
             font={'CuneiformFonts__heading-old-babylonian-monumental'}
-            description={'Old-Babylonian (Monumental)'}
+            description={'Old Babylonian (Monumental)'}
           />
           <CuneiformFonts
             font={'CuneiformFonts__heading-old-babylonian-cursive'}
-            description={'Old-Babylonian Cursive'}
+            description={'Old Babylonian Cursive'}
           />
           <CuneiformFonts
             font={'CuneiformFonts__heading-hittite'}

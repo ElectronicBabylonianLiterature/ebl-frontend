@@ -63,7 +63,9 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
           </Link>
         </strong>
       </dfn>
-      <DisplaySignValues sign={sign} />
+      {sign.values.length > 0 ? (
+        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
+      ) : null}
 
       {mesZlDash}
       {sign.mesZl && (
@@ -74,16 +76,6 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
         />
       )}
     </div>
-  )
-}
-
-export function DisplaySignValues({ sign }: { sign: Sign }): JSX.Element {
-  return (
-    <>
-      {sign.values.length > 0 ? (
-        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
-      ) : null}
-    </>
   )
 }
 

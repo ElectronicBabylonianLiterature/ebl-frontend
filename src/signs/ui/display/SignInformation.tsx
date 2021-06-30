@@ -1,7 +1,6 @@
 import Sign, { Logogram } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import { Col, Popover, Row } from 'react-bootstrap'
-import { DisplaySignValues } from 'signs/ui/search/SignsSearch'
 import LogogramWord from 'signs/ui/display/LogogramWord'
 import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import HelpTrigger from 'common/HelpTrigger'
@@ -11,6 +10,7 @@ import React from 'react'
 import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import SignService from 'signs/application/SignService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
+import InlineMarkdown from 'common/InlineMarkdown'
 
 export default function SignInformation({
   sign,
@@ -32,17 +32,22 @@ export default function SignInformation({
         <Row>
           <Col>
             Sign Lists:{' '}
-            {sign.lists.map((signListRecord, index) => (
-              <span key={index}>
-                <em>{signListRecord.name}</em>&nbsp;{signListRecord.number}
-                {index < sign.lists.length - 1 ? ', ' : ''}
-              </span>
-            ))}
+            {_.sortBy(sign.lists, ['name', 'number']).map(
+              (signListRecord, index) => (
+                <span key={index}>
+                  <em>{signListRecord.name}</em>&nbsp;{signListRecord.number}
+                  {index < sign.lists.length - 1 ? ', ' : ''}
+                </span>
+              )
+            )}
           </Col>
         </Row>
         <Row>
           <Col>
-            Readings: <DisplaySignValues sign={sign} />
+            Readings:{' '}
+            {sign.values.length > 0 ? (
+              <InlineMarkdown source={sign.displayValuesMarkdown} />
+            ) : null}
           </Col>
         </Row>
         <Row>
@@ -80,7 +85,7 @@ function LogogramDisplay({
 }): JSX.Element {
   return (
     <Row>
-      <Col>
+      <Col xs={5}>
         {logogram.wordId.map((wordIdElem, index) => (
           <span key={index}>
             <LogogramWord wordId={wordIdElem} wordService={wordService} />
@@ -130,12 +135,12 @@ function LogogramInfo(schrammLogogram: string): JSX.Element {
             From W. Schramm,{' '}
             <em>Akkadische Logogramme. Zweite, revidierte Auflage.&nbsp;</em>
             Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
-            Göttingen,
+            Göttingen,&nbsp;
             <sup>2</sup>2010. (CC BY-ND 3.0).
             <br /> <br />
             <ExternalLink
               className="text-dark "
-              href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+              href="https://doi.org/10.17875/gup2010-511"
             >
               <i className="fas fa-external-link-square-alt fa-2x" />
             </ExternalLink>

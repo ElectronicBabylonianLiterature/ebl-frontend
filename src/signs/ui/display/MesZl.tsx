@@ -13,7 +13,7 @@ export default function MesZl({
     <div className={'my-5'}>
       <Row>
         <Col>
-          <h3>&#8545;. MesZL</h3>
+          <h3>&#8545;. Mesopotamisches Zeichenlexikon</h3>
         </Col>
       </Row>
       <Row>

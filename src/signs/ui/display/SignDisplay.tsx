@@ -25,7 +25,10 @@ function SignDisplay({
 }): JSX.Element {
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Signs'), new SectionCrumb(sign.name)]}
+      crumbs={[
+        new SectionCrumb('Signs'),
+        new SectionCrumb(sign.displaySignName),
+      ]}
       title={' '}
     >
       <SessionContext.Consumer>
@@ -33,7 +36,7 @@ function SignDisplay({
           session.isAllowedToReadWords() ? (
             <Container>
               <SignHeading
-                signName={sign.name}
+                signName={sign.displaySignName}
                 cuneiformLetters={sign.displayCuneiformSigns}
               />
               <SignInformation

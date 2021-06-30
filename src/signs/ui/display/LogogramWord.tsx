@@ -11,8 +11,11 @@ function LogogramWord({ word }: { word: Word }): JSX.Element {
     <Fragment>
       {word._id ? (
         <Link to={`/dictionary/${word._id}`}>
-          {attested}
-          {lemma}
+          <em>
+            {' '}
+            {attested}
+            {lemma}
+          </em>
         </Link>
       ) : (
         <em>{`${attested}${lemma}`}</em>
