@@ -34,8 +34,8 @@ async function convertMarkdownAndHtmlMixToSanitizedHtml(
     .process(markdown)
 
   const html = italic(subSup(String(file)))
-  //unified() outputs the HTML within a <p>...</p>, we remove it
-  return DOMPurify.sanitize(html.slice(3, html.length - 4))
+
+  return DOMPurify.sanitize(html)
 }
 
 type Container = 'div' | 'span'
@@ -43,24 +43,30 @@ interface Props {
   container?: Container
   htmlString: string
   className?: string
+  removeWrapper?: boolean
 }
 function HtmlFromString({
   container = 'div',
   htmlString,
   className = '',
+  removeWrapper = false,
 }: Props): JSX.Element | null {
+  //unified() outputs the HTML within a <p>...</p>, we remove it
+  const htmlContent = removeWrapper
+    ? htmlString.slice(3, htmlString.length - 4)
+    : htmlString
   if (container === 'div') {
     return (
       <div
         className={className}
-        dangerouslySetInnerHTML={{ __html: htmlString }}
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     )
   } else {
     return (
       <span
         className={className}
-        dangerouslySetInnerHTML={{ __html: htmlString }}
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     )
   }

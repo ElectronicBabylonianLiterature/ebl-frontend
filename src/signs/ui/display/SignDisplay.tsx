@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { RouteComponentProps } from 'react-router-dom'
 import withData, { WithoutData } from 'http/withData'
 import SignService from 'signs/application/SignService'
@@ -8,11 +8,11 @@ import './signDisplay.css'
 import WordService from 'dictionary/application/WordService'
 import SignInformation from 'signs/ui/display/SignInformation'
 import SignHeading from 'signs/ui/display/SignHeading'
-import MesZl from 'signs/ui/display/MesZl'
 import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
+import MesZlContent from 'signs/ui/search/MesZLContent'
 
 function SignDisplay({
   sign,
@@ -54,6 +54,32 @@ function SignDisplay({
     </AppContent>
   )
 }
+
+function MesZl({
+  signName,
+  mesZl,
+}: {
+  signName: string
+  mesZl: string
+}): JSX.Element | null {
+  return (
+    <Row className={'mt-5'}>
+      <Row>
+        <Col>
+          <h3>&#8545;. Mesopotamisches Zeichenlexikon</h3>
+        </Col>
+      </Row>
+      <div className={'ml-5'}>
+        <Row>
+          <Col className={'ml-4 mt-3'}>
+            <MesZlContent signName={signName} mesZl={mesZl} />
+          </Col>
+        </Row>
+      </div>
+    </Row>
+  )
+}
+
 type Props = {
   data: Sign
   wordService: WordService

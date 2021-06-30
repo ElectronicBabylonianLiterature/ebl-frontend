@@ -11,7 +11,7 @@ export default function SignHeading({
   signName: string
   cuneiformLetters: string
 }): JSX.Element {
-  const CuneiformFonts = ({
+  const CuneiformSign = ({
     font = '',
     description,
   }: {
@@ -37,25 +37,26 @@ export default function SignHeading({
       </Col>
       <Col>
         <Row>
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-old-babylonian-monumental'}
             description={'Old Babylonian (Monumental)'}
           />
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-old-babylonian-cursive'}
             description={'Old Babylonian Cursive'}
           />
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-hittite'}
             description={'Hittite'}
           />
-          <CuneiformFonts description={'Neo-Assyrian'} />
-          <CuneiformFonts
+          <CuneiformSign description={'Neo-Assyrian'} />
+          <CuneiformSign
             font={'CuneiformFonts__heading-neo-babylonian'}
             description={'Neo-Babylonian'}
           />
           <Col>
             <HelpTrigger
+              placement={'auto'}
               delay={{ show: 0, hide: 1200 }}
               overlay={CuneiformFontsHelpPopover()}
             />

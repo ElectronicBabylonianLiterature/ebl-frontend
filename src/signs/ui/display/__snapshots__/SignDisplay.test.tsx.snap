@@ -58,9 +58,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         <div
           class="col-3"
         >
-          <h3>
+          <h2>
             BU
-          </h3>
+          </h2>
         </div>
         <div
           class="col"
@@ -86,11 +86,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <span
+                  <h5
                     class="text-secondary"
                   >
-                    Old-Babylonian (Monumental)
-                  </span>
+                    Old Babylonian (Monumental)
+                  </h5>
                 </div>
               </div>
             </div>
@@ -112,11 +112,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <span
+                  <h5
                     class="text-secondary"
                   >
-                    Old-Babylonian Cursive
-                  </span>
+                    Old Babylonian Cursive
+                  </h5>
                 </div>
               </div>
             </div>
@@ -138,11 +138,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <span
+                  <h5
                     class="text-secondary"
                   >
                     Hittite
-                  </span>
+                  </h5>
                 </div>
               </div>
             </div>
@@ -164,11 +164,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <span
+                  <h5
                     class="text-secondary"
                   >
                     Neo-Assyrian
-                  </span>
+                  </h5>
                 </div>
               </div>
             </div>
@@ -190,11 +190,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <span
+                  <h5
                     class="text-secondary"
                   >
                     Neo-Babylonian
-                  </span>
+                  </h5>
                 </div>
               </div>
             </div>
@@ -238,8 +238,8 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           <div
             class="col"
           >
-            Readings: 
-            (
+            Readings:
+             
             <em>
               du
             </em>
@@ -251,7 +251,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             <em>
               gabu
             </em>
-            ~x~)
+            ~x~
           </div>
         </div>
         <div
@@ -305,7 +305,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             class="col"
           >
             <h3>
-              Ⅱ. MesZL
+              Ⅱ. Mesopotamisches Zeichenlexikon
             </h3>
           </div>
         </div>
@@ -315,7 +315,9 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           <div
             class="ml-4 mt-3 col"
           >
-            <div>
+            <div
+              class="mesZL__popover"
+            >
               <pre>
                 <div
                   class="text-center"
@@ -329,7 +331,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               </pre>
             </div>
             <div
-              class=""
+              class="text-align-justify"
             >
               Lorem ipsum dolor 
               <em>

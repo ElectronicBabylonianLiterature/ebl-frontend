@@ -6,7 +6,7 @@ import './compositeSigns.css'
 
 import { Link } from 'react-router-dom'
 import HelpTrigger from 'common/HelpTrigger'
-import { Popover } from 'react-bootstrap'
+import { Col, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
 
@@ -14,24 +14,29 @@ function CompositeSign({
   signComposites,
 }: {
   signComposites: readonly Sign[]
-}): JSX.Element {
-  return (
-    <div className={'compositeSigns__compositeSigns'}>
-      Composites:{' '}
-      {signComposites.map((sign, index) => (
-        <Link key={index} to={`/signs/${encodeURIComponent(sign.name)}`}>
-          {sign.displaySignName}
-          {index < signComposites.length - 1 ? ', ' : ''}
-        </Link>
-      ))}
-      <HelpTrigger
-        delay={{ show: 0, hide: 1200 }}
-        className={'compositeSigns__help'}
-        overlay={CompositeSignsInfo()}
-      />
-    </div>
-  )
+}): JSX.Element | null {
+  return signComposites.length > 0 ? (
+    <Row>
+      <Col xs={'auto'}>Composites: </Col>
+      <Col>
+        {signComposites.map((sign, index) => (
+          <Link key={index} to={`/signs/${encodeURIComponent(sign.name)}`}>
+            {sign.displaySignName}
+            {index < signComposites.length - 1 ? ', ' : ''}
+          </Link>
+        ))}
+      </Col>
+      <Col xs={1} className={'mt-auto'}>
+        <HelpTrigger
+          placement={'auto'}
+          delay={{ show: 0, hide: 1200 }}
+          overlay={CompositeSignsInfo()}
+        />
+      </Col>
+    </Row>
+  ) : null
 }
+
 function CompositeSignsInfo(): JSX.Element {
   return (
     <Popover
