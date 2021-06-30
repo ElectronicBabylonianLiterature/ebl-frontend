@@ -10,7 +10,7 @@ export default function MesZl({
   mesZl: string
 }): JSX.Element | null {
   return (
-    <>
+    <div className={'my-5'}>
       <Row>
         <Col>
           <h3>&#8545;. MesZL</h3>
@@ -21,6 +21,6 @@ export default function MesZl({
           <MesZlContent signName={signName} mesZl={mesZl} />
         </Col>
       </Row>
-    </>
+    </div>
   )
 }

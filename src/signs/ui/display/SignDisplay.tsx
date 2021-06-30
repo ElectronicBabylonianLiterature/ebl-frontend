@@ -24,7 +24,10 @@ function SignDisplay({
   wordService: WordService
 }): JSX.Element {
   return (
-    <AppContent crumbs={[new SectionCrumb('Signs')]}>
+    <AppContent
+      crumbs={[new SectionCrumb('Signs'), new SectionCrumb(sign.name)]}
+      title={' '}
+    >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadWords() ? (
@@ -33,15 +36,12 @@ function SignDisplay({
                 signName={sign.name}
                 cuneiformLetters={sign.displayCuneiformSigns}
               />
-              <br />
               <SignInformation
                 signService={signService}
                 sign={sign}
                 wordService={wordService}
               />
-              <br />
-              <MesZl signName={sign.name} mesZl={sign.mesZl} />
-              <br />
+              {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>

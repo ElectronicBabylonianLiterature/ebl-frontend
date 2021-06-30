@@ -20,7 +20,7 @@ export default function SignHeading({
   }): JSX.Element => (
     <Col xs={4}>
       <Row>
-        <Col xs={3}>
+        <Col xs="auto">
           <h3 className={font}>{cuneiformLetters}</h3>
         </Col>
         <Col>

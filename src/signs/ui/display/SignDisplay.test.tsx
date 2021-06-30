@@ -71,7 +71,7 @@ describe('Sign Display', () => {
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     element = renderSignDisplay(sign.name)
-    await element.findByText(sign.name)
+    await element.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
   })
   it('Sign Display Snapshot', async () => {
