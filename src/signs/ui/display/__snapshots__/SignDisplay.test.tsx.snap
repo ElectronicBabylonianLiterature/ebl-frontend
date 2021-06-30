@@ -198,6 +198,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
       </div>
+      <br />
       <div
         class="row"
       >
@@ -210,61 +211,82 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         </div>
       </div>
       <div
-        class="row"
+        class="ml-3 mt-3 col"
       >
         <div
-          class="col"
+          class="row"
         >
-          Sign Lists:
-           
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div
-          class="col"
-        >
-          Readings: 
-          (
-          <em>
-            du
-          </em>
-          , 
-          <em>
-            dul
-          </em>
-          ₁₀, 
-          <em>
-            gabu
-          </em>
-          ~x~)
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div
-          class="col-auto"
-        >
-          Words (as logogram):
+          <div
+            class="col"
+          >
+            Sign Lists:
+             
+          </div>
         </div>
         <div
-          class="col"
+          class="row"
         >
-          <ul />
+          <div
+            class="col"
+          >
+            Readings: 
+            (
+            <em>
+              du
+            </em>
+            , 
+            <em>
+              dul
+            </em>
+            ₁₀, 
+            <em>
+              gabu
+            </em>
+            ~x~)
+          </div>
         </div>
-      </div>
-      <div
-        class="row"
-      >
         <div
-          class="col"
+          class="row"
         >
-          Composites:
-           
+          <div
+            class="col-auto"
+          >
+            Words (as logogram):
+          </div>
+          <div
+            class="col"
+          >
+            <ul />
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="compositeSigns__compositeSigns"
+            >
+              Composites:
+               
+              <i
+                class="compositeSigns__help fas fa-info-circle"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            Bibliography: Owen, 1981: 40; Steinkeller, 1991: 72.
+          </div>
         </div>
       </div>
+      <br />
       <div
         class="row"
       >
@@ -280,7 +302,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         class="row"
       >
         <div
-          class="p-5 col"
+          class="ml-4 mt-3 col"
         >
           <div>
             <pre>
@@ -443,6 +465,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
       </div>
+      <br />
     </div>
   </section>
 </div>

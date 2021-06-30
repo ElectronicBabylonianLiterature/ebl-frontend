@@ -33,12 +33,15 @@ function SignDisplay({
                 signName={sign.name}
                 cuneiformLetters={sign.displayCuneiformSigns}
               />
+              <br />
               <SignInformation
                 signService={signService}
                 sign={sign}
                 wordService={wordService}
               />
+              <br />
               <MesZl signName={sign.name} mesZl={sign.mesZl} />
+              <br />
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>

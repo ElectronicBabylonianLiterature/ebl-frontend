@@ -5,7 +5,7 @@ import { TestData, testDelegation } from 'test-support/utils'
 jest.mock('signs/infrastructure/SignRepository')
 const resultStub = {}
 const signRepository = new (SignRepository as jest.Mock<
-  jest.Mocked<SignsRepository>
+  jest.Mocked<SignRepository>
 >)()
 
 const signService = new SignService(signRepository)

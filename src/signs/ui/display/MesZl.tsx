@@ -17,7 +17,7 @@ export default function MesZl({
         </Col>
       </Row>
       <Row>
-        <Col className={'p-5'}>
+        <Col className={'ml-4 mt-3'}>
           <MesZlContent signName={signName} mesZl={mesZl} />
         </Col>
       </Row>

@@ -28,40 +28,45 @@ export default function SignInformation({
           <h3>&#8544;. Sign Information</h3>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          Sign Lists:{' '}
-          {sign.lists.map((signListRecord, index) => (
-            <span key={index}>
-              <em>{signListRecord.name}</em>&nbsp;{signListRecord.number}
-              {index < sign.lists.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          Readings: <DisplaySignValues sign={sign} />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={'auto'}>Words (as logogram):</Col>
-        <Col>
-          <Logograms logograms={sign.logograms} wordService={wordService} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <CompositeSigns
-            signService={signService}
-            query={{
-              isComposite: true,
-              value: replaceTransliteration(sign.name.toLowerCase()),
-              subIndex: 1,
-            }}
-          />
-        </Col>
-      </Row>
+      <Col className={'ml-3 mt-3'}>
+        <Row>
+          <Col>
+            Sign Lists:{' '}
+            {sign.lists.map((signListRecord, index) => (
+              <span key={index}>
+                <em>{signListRecord.name}</em>&nbsp;{signListRecord.number}
+                {index < sign.lists.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            Readings: <DisplaySignValues sign={sign} />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={'auto'}>Words (as logogram):</Col>
+          <Col>
+            <Logograms logograms={sign.logograms} wordService={wordService} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <CompositeSigns
+              signService={signService}
+              query={{
+                isComposite: true,
+                value: replaceTransliteration(sign.name.toLowerCase()),
+                subIndex: 1,
+              }}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>Bibliography: Owen, 1981: 40; Steinkeller, 1991: 72.</Col>
+        </Row>
+      </Col>
     </>
   )
 }

@@ -1,0 +1,10 @@
+.compositeSigns__compositeSigns {
+  padding-left: 44px;
+  text-indent: -44px;
+}
+.compositeSigns__help {
+  position: absolute;
+  bottom: 0;
+  right: 4em;
+  margin-bottom: 0.3em;
+}
