@@ -55,7 +55,6 @@ function SignLogogramEntry({
             (
             <MarkdownAndHtmlToHtml
               className={'signInformation__LogogramLogogram'}
-              removeWrapper={true}
               container={'span'}
               markdownAndHtml={logogram.logogram}
             />

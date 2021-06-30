@@ -33,9 +33,15 @@ async function convertMarkdownAndHtmlMixToSanitizedHtml(
     .use(stringify)
     .process(markdown)
 
-  const html = italic(subSup(String(file)))
-
-  return DOMPurify.sanitize(html)
+  const html = DOMPurify.sanitize(italic(subSup(String(file))))
+  /*if there is no user defined wrapper (could be in markdown) unified defaults to
+    wrapping its output in <p>...</p> which is problematic for inline use
+   */
+  if (html.startsWith('<p>')) {
+    return html.slice(3, html.length - 4)
+  } else {
+    return html
+  }
 }
 
 type Container = 'div' | 'span'
@@ -43,30 +49,24 @@ interface Props {
   container?: Container
   htmlString: string
   className?: string
-  removeWrapper?: boolean
 }
 function HtmlFromString({
   container = 'div',
   htmlString,
   className = '',
-  removeWrapper = false,
 }: Props): JSX.Element | null {
-  //unified() outputs the HTML within a <p>...</p>, we remove it
-  const htmlContent = removeWrapper
-    ? htmlString.slice(3, htmlString.length - 4)
-    : htmlString
   if (container === 'div') {
     return (
       <div
         className={className}
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
       />
     )
   } else {
     return (
       <span
         className={className}
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        dangerouslySetInnerHTML={{ __html: htmlString }}
       />
     )
   }
