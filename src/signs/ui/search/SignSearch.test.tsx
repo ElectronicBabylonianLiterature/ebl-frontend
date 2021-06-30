@@ -37,7 +37,9 @@ async function renderSignSearch(): Promise<void> {
 
 describe('Display Search Results', () => {
   beforeEach(async () => {
-    signs = await signFactory.buildList(2)
+    signs = signFactory.buildList(2)
+    console.log(signs[0])
+    console.log(signs[1])
     signService.search.mockReturnValue(Bluebird.resolve(signs))
     await renderSignSearch()
     expect(signService.search).toBeCalledWith(query)

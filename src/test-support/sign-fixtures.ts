@@ -6,7 +6,7 @@ const chance = new Chance()
 
 export const signFactory = Factory.define<Sign>(() => {
   return new Sign({
-    name: chance.pickone(['BA', 'BAD', 'BAR', 'EZEN×BAD', 'PI']),
+    name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
     lists: chance.pickone([
       [{ name: 'MESZL', number: '1' }],
       [
