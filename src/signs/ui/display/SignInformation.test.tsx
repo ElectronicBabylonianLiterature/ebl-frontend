@@ -95,6 +95,15 @@ describe('Sign Information', () => {
     })
     expectWordPropertiesToBeInTheDocument(wordErimmatu)
     expectWordPropertiesToBeInTheDocument(wordLipu)
+
+    expect(screen.getAllByRole('link')[0]).toHaveAttribute(
+      'href',
+      `/dictionary/${wordErimmatu._id}`
+    )
+    expect(screen.getAllByRole('link')[1]).toHaveAttribute(
+      'href',
+      `/dictionary/${wordLipu._id}`
+    )
   })
 })
 
@@ -106,8 +115,4 @@ function expectWordPropertiesToBeInTheDocument(word: Word): void {
   expect(
     screen.getByText(escapedString2Regex(word.guideWord))
   ).toBeInTheDocument()
-  expect(screen.getByText(lemma)).toHaveAttribute(
-    'href',
-    `/dictionary/${word._id}`
-  )
 }

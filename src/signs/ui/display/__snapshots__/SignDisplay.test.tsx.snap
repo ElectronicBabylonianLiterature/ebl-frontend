@@ -214,89 +214,68 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         <div
           class="col"
         >
-          <h3>
-            Ⅰ. Sign Information
-          </h3>
-        </div>
-      </div>
-      <div
-        class="ml-3 mt-3 col"
-      >
-        <div
-          class="row"
-        >
           <div
-            class="col"
-          >
-            Sign Lists:
-             
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div
-            class="col"
-          >
-            Readings:
-             
-            <em>
-              du
-            </em>
-            , 
-            <em>
-              dul
-            </em>
-            ₁₀, 
-            <em>
-              gabu
-            </em>
-            ~x~
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div
-            class="col-auto"
-          >
-            Words (as logogram):
-          </div>
-          <div
-            class="col"
-          >
-            <ul />
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div
-            class="col"
+            class="row"
           >
             <div
-              class="compositeSigns__compositeSigns"
+              class="col"
             >
-              Composites:
-               
+              <h3>
+                Ⅰ. Sign Information
+              </h3>
+            </div>
+          </div>
+          <div
+            class="ml-5"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-auto"
+              >
+                Sign Lists:
+                 
+              </div>
               <i
-                class="compositeSigns__help fas fa-info-circle"
+                class="fas fa-info-circle"
               />
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col"
+              >
+                Readings: 
+                <em>
+                  du
+                </em>
+                , 
+                <em>
+                  dul
+                </em>
+                ₁₀, 
+                <em>
+                  gabu
+                </em>
+                ~x~
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col"
+              >
+                Bibliography: Owen, 1981: 40; Steinkeller, 1991: 72.
+              </div>
             </div>
           </div>
         </div>
-        <div
-          class="row"
-        >
-          <div
-            class="col"
-          >
-            Bibliography: Owen, 1981: 40; Steinkeller, 1991: 72.
-          </div>
-        </div>
       </div>
       <div
-        class="my-5"
+        class="mt-5 row"
       >
         <div
           class="row"
@@ -310,171 +289,175 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
           </div>
         </div>
         <div
-          class="row"
+          class="ml-5"
         >
           <div
-            class="ml-4 mt-3 col"
+            class="row"
           >
             <div
-              class="mesZL__popover"
+              class="ml-4 mt-3 col"
             >
-              <pre>
-                <div
-                  class="text-center"
-                >
-                  123	
-                  <strong>
-                    ALSK13
-                  </strong>
-                  	𒁇𒍴
-                </div>
-              </pre>
-            </div>
-            <div
-              class="text-align-justify"
-            >
-              Lorem ipsum dolor 
-              <em>
-                sit
-              </em>
-               amet, consetetur 
-              <span
-                style="color: #00610F;"
+              <div
+                class="mesZL__popover"
               >
+                <pre>
+                  <div
+                    class="text-center"
+                  >
+                    123	
+                    <strong>
+                      ALSK13
+                    </strong>
+                    	𒁇𒍴
+                  </div>
+                </pre>
+              </div>
+              <div
+                class="text-align-justify"
+              >
+                Lorem ipsum dolor 
                 <em>
-                  sadipscing
+                  sit
                 </em>
-                (
-                <em>
-                  l
-                </em>
-                )
-                <em>
-                  ubasd
-                </em>
-              </span>
-              sadipscing elitr, sed diam 
-              <em>
-                nonumy
-              </em>
-              <p />
-              
-
-              <p>
-                eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
-              </p>
-              
-
-              <p>
-                lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              </p>
-              
-
-              <p>
-                <sup>
-                  aba
-                </sup>
-                𒁇𒊩 = BAR-MUNUS = 
-                <em>
-                  parratu
-                </em>
-                , weibliches Lamm. CAD 
+                 amet, consetetur 
                 <span
                   style="color: #00610F;"
                 >
-                  P
+                  <em>
+                    sadipscing
+                  </em>
+                  (
+                  <em>
+                    l
+                  </em>
+                  )
+                  <em>
+                    ubasd
+                  </em>
                 </span>
-                 192b liest 
+                sadipscing elitr, sed diam 
                 <em>
-                  parsallu
+                  nonumy
                 </em>
-                .
-              </p>
-              
+                <p />
+                
 
-              <p>
-                <span
-                  style="color: #00610F;"
-                >
-                  P
-                </span>
-              </p>
-              
+                <p>
+                  eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
+                </p>
+                
 
-              <p>
-                <sup>
-                  aba
-                </sup>
-                𒁇𒋝
-              </p>
-              
+                <p>
+                  lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                </p>
+                
 
-              <p>
-                <sup>
-                  asdg
-                </sup>
-                𒋝
-              </p>
-              
+                <p>
+                  <sup>
+                    aba
+                  </sup>
+                  𒁇𒊩 = BAR-MUNUS = 
+                  <em>
+                    parratu
+                  </em>
+                  , weibliches Lamm. CAD 
+                  <span
+                    style="color: #00610F;"
+                  >
+                    P
+                  </span>
+                   192b liest 
+                  <em>
+                    parsallu
+                  </em>
+                  .
+                </p>
+                
 
-              <p>
-                <sup>
-                  ghas
-                </sup>
-                𒁈
-              </p>
-              
+                <p>
+                  <span
+                    style="color: #00610F;"
+                  >
+                    P
+                  </span>
+                </p>
+                
 
-              <p>
-                𒁖
-                <sup>
-                  asd
-                </sup>
-              </p>
-              
+                <p>
+                  <sup>
+                    aba
+                  </sup>
+                  𒁇𒋝
+                </p>
+                
 
-              <p>
-                𒍴
-                <sup>
-                  q12asd
-                </sup>
-              </p>
-            </div>
-            <div
-              class="text-center border border-dark"
-            >
-              <strong>
-                From
-              </strong>
-              <br />
-              R. Borger,
-               
-              <em>
-                Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
-              </em>
-              Alter Orient und Altes Testament 305.
-              <br />
-               Münster: Ugarit-Verlag, 
-              <sup>
-                2
-              </sup>
-              2010; Kapitel Ⅲ.
-              <br />
-              <br />
-              <strong>
-                By permission from Ugarit-Verlag.
-              </strong>
-              <br />
-              <a
-                class="text-dark "
-                href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
-                rel="noopener noreferrer"
-                target="_blank"
+                <p>
+                  <sup>
+                    asdg
+                  </sup>
+                  𒋝
+                </p>
+                
+
+                <p>
+                  <sup>
+                    ghas
+                  </sup>
+                  𒁈
+                </p>
+                
+
+                <p>
+                  𒁖
+                  <sup>
+                    asd
+                  </sup>
+                </p>
+                
+
+                <p>
+                  𒍴
+                  <sup>
+                    q12asd
+                  </sup>
+                </p>
+              </div>
+              <div
+                class="text-center border border-dark"
               >
-                <i
-                  class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-                />
-              </a>
+                <strong>
+                  From
+                </strong>
+                <br />
+                R. Borger,
+                 
+                <em>
+                  Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
+                </em>
+                Alter Orient und Altes Testament 305.
+                <br />
+                 Münster: Ugarit-Verlag, 
+                <sup>
+                  2
+                </sup>
+                2010; Kapitel Ⅲ.
+                <br />
+                <br />
+                <strong>
+                  By permission from Ugarit-Verlag.
+                </strong>
+                <br />
+                <a
+                  class="text-dark "
+                  href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </div>
