@@ -34,9 +34,11 @@ function Joins({ fragment }: Props) {
         '-'
       ) : (
         <ul className="Details-joins">
-          {fragment.joins.map((join) => (
-            <li className="Details-joins__join" key={join}>
-              <FragmentLink number={join}>{join}</FragmentLink>
+          {fragment.joins.flat().map((join, index) => (
+            <li className="Details-joins__join" key={index}>
+              <FragmentLink number={join.museumNumber}>
+                {join.museumNumber}
+              </FragmentLink>
             </li>
           ))}
         </ul>

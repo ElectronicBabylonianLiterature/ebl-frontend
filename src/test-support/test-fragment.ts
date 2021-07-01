@@ -281,7 +281,36 @@ export const fragmentDto = {
   bmIdNumber: '',
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',
-  joins: [],
+  joins: [
+    [
+      {
+        museumNumber: {
+          prefix: 'Test',
+          number: 'Fragment',
+          suffix: '',
+        },
+        isChecked: true,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+      },
+    ],
+    [
+      {
+        museumNumber: {
+          prefix: 'X',
+          number: '2',
+          suffix: 'b',
+        },
+        isChecked: false,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+      },
+    ],
+  ],
   length: { value: 3.14, note: '(complete)' },
   width: { value: 0.30282212, note: '' },
   thickness: {},
@@ -316,7 +345,28 @@ export const fragment = new Fragment(
   '',
   '',
   'Electronic Babylonian Literature',
-  [],
+  [
+    [
+      {
+        museumNumber: 'Test.Fragment',
+        isChecked: true,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+      },
+    ],
+    [
+      {
+        museumNumber: 'X.2.b',
+        isChecked: false,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+      },
+    ],
+  ],
   'A fragment to be used when testing the eBL application',
   {
     length: 3.14,

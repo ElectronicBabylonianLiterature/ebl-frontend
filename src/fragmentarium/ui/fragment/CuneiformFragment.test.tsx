@@ -114,8 +114,8 @@ it(`Renders museum`, () => {
 })
 
 it('Renders all joins', () => {
-  for (const item of fragment.joins) {
-    expect(container).toHaveTextContent(item)
+  for (const join of fragment.joins.flat()) {
+    expect(element.getByText(join.museumNumber)).toBeInTheDocument()
   }
 })
 
