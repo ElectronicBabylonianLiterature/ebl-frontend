@@ -90,15 +90,6 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
-export interface Join {
-  readonly museumNumber: string
-  readonly isChecked: boolean
-  readonly joinedBy: string
-  readonly date: string
-  readonly note: string
-  readonly legacyData: string
-}
-
 export class Fragment {
   readonly [immerable] = true
 
@@ -108,7 +99,7 @@ export class Fragment {
     readonly bmIdNumber: string,
     readonly accession: string,
     readonly publication: string,
-    readonly joins: ReadonlyArray<ReadonlyArray<Join>>,
+    readonly joins: ReadonlyArray<string>,
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
@@ -152,7 +143,7 @@ export class Fragment {
     bmIdNumber: string
     accession: string
     publication: string
-    joins: ReadonlyArray<ReadonlyArray<Join>>
+    joins: ReadonlyArray<string>
     description: string
     measures: Measures
     collection: string
