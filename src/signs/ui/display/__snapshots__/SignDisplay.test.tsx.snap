@@ -86,11 +86,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <h5
-                    class="text-secondary"
+                  <span
+                    class="text-secondary signHeading__cuneiformSign__description"
                   >
                     Old Babylonian (Monumental)
-                  </h5>
+                  </span>
                 </div>
               </div>
             </div>
@@ -112,11 +112,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <h5
-                    class="text-secondary"
+                  <span
+                    class="text-secondary signHeading__cuneiformSign__description"
                   >
                     Old Babylonian Cursive
-                  </h5>
+                  </span>
                 </div>
               </div>
             </div>
@@ -138,11 +138,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <h5
-                    class="text-secondary"
+                  <span
+                    class="text-secondary signHeading__cuneiformSign__description"
                   >
                     Hittite
-                  </h5>
+                  </span>
                 </div>
               </div>
             </div>
@@ -164,11 +164,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <h5
-                    class="text-secondary"
+                  <span
+                    class="text-secondary signHeading__cuneiformSign__description"
                   >
                     Neo-Assyrian
-                  </h5>
+                  </span>
                 </div>
               </div>
             </div>
@@ -190,11 +190,11 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 <div
                   class="col"
                 >
-                  <h5
-                    class="text-secondary"
+                  <span
+                    class="text-secondary signHeading__cuneiformSign__description"
                   >
                     Neo-Babylonian
-                  </h5>
+                  </span>
                 </div>
               </div>
             </div>

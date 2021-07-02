@@ -120,7 +120,13 @@ function SignLogogramInfo(schrammLogogram: string): JSX.Element {
             <em>Akkadische Logogramme. Zweite, revidierte Auflage.&nbsp;</em>
             Göttinger Beiträge zum Alten Orient 5. Göttingen: Universitätsverlag
             Göttingen,&nbsp;
-            <sup>2</sup>2010. (CC BY-ND 3.0).
+            <sup>2</sup>2010. (
+            <ExternalLink
+              href={'https://creativecommons.org/licenses/by-nd/3.0/de/'}
+            >
+              CC BY-ND 3.0
+            </ExternalLink>
+            ).
             <br /> <br />
             <ExternalLink
               className="text-dark "
