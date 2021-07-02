@@ -44,9 +44,6 @@ export default function SignInformation({
               subIndex: 1,
             }}
           />
-          <Row>
-            <Col>Bibliography: Owen, 1981: 40; Steinkeller, 1991: 72.</Col>
-          </Row>
         </div>
       </Col>
     </Row>

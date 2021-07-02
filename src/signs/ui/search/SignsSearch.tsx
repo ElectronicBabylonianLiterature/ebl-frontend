@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import compareAkkadianStrings from 'dictionary/domain/compareAkkadianStrings'
+import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.css'
 import MesZL from 'signs/ui/search/MesZL'
 
@@ -18,7 +18,7 @@ interface Props {
 
 function sortSigns(signs: Sign[]): Sign[] {
   return signs.sort((sign1, sign2) =>
-    compareAkkadianStrings(sign1.name, sign2.name)
+    compareCleanedAkkadianString(sign1.name, sign2.name)
   )
 }
 
