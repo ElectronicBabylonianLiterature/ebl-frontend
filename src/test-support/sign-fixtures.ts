@@ -14,7 +14,7 @@ export const signFactory = Factory.define<Sign>(() => {
         { name: 'LAK', number: '752' },
       ],
     ]),
-    values: chance.pickone([[new Value('war', 1)]]),
+    values: [[new Value('war', 1)]],
     unicode: chance.pickone([[73799], [74848, 73849]]),
     logograms: [
       {

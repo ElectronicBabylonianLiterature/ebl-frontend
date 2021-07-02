@@ -34,9 +34,10 @@ async function convertMarkdownAndHtmlMixToSanitizedHtml(
     .process(markdown)
 
   const html = DOMPurify.sanitize(italic(subSup(String(file))))
-  /*if there is no user defined wrapper (could be in markdown) unified defaults to
-    wrapping its output in <p>...</p> which is problematic for inline use
-   */
+  return removeParagraphHtmlTag(html)
+}
+
+function removeParagraphHtmlTag(html: string): string {
   if (html.startsWith('<p>')) {
     return html.slice(3, html.length - 4)
   } else {

@@ -3,6 +3,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import React from 'react'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
+import './signHeading.css'
 
 export default function SignHeading({
   signName,
@@ -24,7 +25,11 @@ export default function SignHeading({
           <h3 className={font}>{cuneiformLetters}</h3>
         </Col>
         <Col>
-          <h5 className={'text-secondary'}>{description}</h5>
+          <span
+            className={'text-secondary signHeading__cuneiformSign__description'}
+          >
+            {description}
+          </span>
         </Col>
       </Row>
     </Col>

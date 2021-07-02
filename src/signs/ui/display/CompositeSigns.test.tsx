@@ -27,15 +27,11 @@ describe('Composite Signs', () => {
     await screen.findByText('Composites:')
   })
   test('Composite Sign is link', () => {
-    expect(screen.getByText(new RegExp(sign1.name))).toBeInTheDocument()
-    expect(screen.getByText(new RegExp(sign2.name))).toBeInTheDocument()
-    expect(screen.getByText(new RegExp(sign1.name))).toHaveAttribute(
-      'href',
-      `/signs/${sign1.name}`
-    )
-    expect(screen.getByText(new RegExp(sign2.name))).toHaveAttribute(
-      'href',
-      `/signs/${sign2.name}`
-    )
+    expect(
+      screen.getByRole('link', { name: new RegExp(sign1.name) })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: new RegExp(sign2.name) })
+    ).toBeInTheDocument()
   })
 })

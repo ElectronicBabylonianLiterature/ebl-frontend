@@ -70,6 +70,6 @@ export default function compareAkkadianStrings(
 export function cleanAkkadianString(akkadianString: string): string {
   return akkadianString
     .split('')
-    .map((signChar) => (alphabet.indexOf(signChar) > 0 ? signChar : ''))
+    .map((signChar) => (alphabet.indexOf(signChar) >= 0 ? signChar : ''))
     .join('')
 }

@@ -22,10 +22,10 @@ export default function SignLogograms({
       <Col>
         <ul>
           {[...signLogograms]
-            .sort((elem1, elem2) =>
+            .sort((logogram2, logogram1) =>
               compareCleanedAkkadianString(
-                elem1.wordId[0] || '',
-                elem2.wordId[0] || ''
+                logogram1.wordId[0] || '',
+                logogram2.wordId[0] || ''
               )
             )
             .map((logogram, index) => (

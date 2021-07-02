@@ -9,7 +9,7 @@ import WordService from 'dictionary/application/WordService'
 import SignInformation from 'signs/ui/display/SignInformation'
 import SignHeading from 'signs/ui/display/SignHeading'
 import AppContent from 'common/AppContent'
-import { SectionCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import MesZlContent from 'signs/ui/search/MesZLContent'
@@ -25,10 +25,7 @@ function SignDisplay({
 }): JSX.Element {
   return (
     <AppContent
-      crumbs={[
-        new SectionCrumb('Signs'),
-        new SectionCrumb(sign.displaySignName),
-      ]}
+      crumbs={[new SectionCrumb('Signs'), new TextCrumb(sign.displaySignName)]}
       title={' '}
     >
       <SessionContext.Consumer>
