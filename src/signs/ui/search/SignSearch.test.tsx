@@ -7,18 +7,16 @@ import {
 } from '@testing-library/react'
 import Promise from 'bluebird'
 
-import { factory } from 'factory-girl'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import Sign from 'signs/domain/Sign'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
+import { signFactory } from 'test-support/sign-fixtures'
 
-jest.mock('signs/application/SignsService')
+jest.mock('signs/application/SignService')
 
 let signs: Sign[]
-const signsService = new (SignsService as jest.Mock<
-  jest.Mocked<SignsService>
->)()
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 
 const query = {
   value: 'bu',
@@ -31,7 +29,7 @@ const query = {
 async function renderSignSearch(): Promise<void> {
   render(
     <MemoryRouter>
-      <SignsSearch signQuery={query} signsService={signsService} />
+      <SignsSearch signQuery={query} signService={signService} />
     </MemoryRouter>
   )
   await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
@@ -39,10 +37,10 @@ async function renderSignSearch(): Promise<void> {
 
 describe('Display Search Results', () => {
   beforeEach(async () => {
-    signs = await factory.buildMany('sign', 2)
-    signsService.search.mockReturnValue(Bluebird.resolve(signs))
+    signs = signFactory.buildList(2)
+    signService.search.mockReturnValue(Bluebird.resolve(signs))
     await renderSignSearch()
-    expect(signsService.search).toBeCalledWith(query)
+    expect(signService.search).toBeCalledWith(query)
   })
   it('Displays results', async () => {
     expect(

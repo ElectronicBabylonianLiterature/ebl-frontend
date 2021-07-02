@@ -22,8 +22,8 @@ import createAuth0Config from 'auth/createAuth0Config'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString, useAuthentication } from 'auth/Auth'
-import SignsService from 'signs/application/SignsService'
-import SignsRepository from 'signs/infrastructure/SignsRepository'
+import SignService from 'signs/application/SignService'
+import SignRepository from 'signs/infrastructure/SignRepository'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
@@ -42,7 +42,7 @@ function InjectedApp(): JSX.Element {
   const authenticationService = useAuthentication()
   const apiClient = new ApiClient(authenticationService, errorReporter)
   const wordRepository = new WordRepository(apiClient)
-  const signsRepository = new SignsRepository(apiClient)
+  const signsRepository = new SignRepository(apiClient)
   const fragmentRepository = new FragmentRepository(apiClient)
   const imageRepository = new ApiImageRepository(apiClient)
   const bibliographyRepository = new BibliographyRepository(apiClient)
@@ -56,11 +56,11 @@ function InjectedApp(): JSX.Element {
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const wordService = new WordService(wordRepository)
   const textService = new TextService(apiClient, fragmentService, wordService)
-  const signsService = new SignsService(signsRepository)
+  const signService = new SignService(signsRepository)
   return (
     <App
       wordService={wordService}
-      signsService={signsService}
+      signService={signService}
       fragmentService={fragmentService}
       fragmentSearchService={fragmentSearchService}
       bibliographyService={bibliographyService}

@@ -29,7 +29,7 @@ export default function MesZlContent({
   const { mesZlHeadMarkdown, mesZlBodyMarkdown } = splitMesZl(mesZl, cutOff)
   return (
     <>
-      <div>
+      <div className={'mesZL__popover'}>
         <pre>
           <MarkdownAndHtmlToHtml
             className={'text-center'}
@@ -37,8 +37,10 @@ export default function MesZlContent({
           />
         </pre>
       </div>
-      <MarkdownAndHtmlToHtml markdownAndHtml={mesZlBodyMarkdown} />
-
+      <MarkdownAndHtmlToHtml
+        className="text-align-justify"
+        markdownAndHtml={mesZlBodyMarkdown}
+      />
       {mesZl.split('\n').length > cutOff && (
         <div className="text-center">
           <br />

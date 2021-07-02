@@ -29,6 +29,7 @@ import TextService from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
+import SignService from 'signs/application/SignService'
 
 function parseStringParam(
   location: Location,
@@ -107,14 +108,14 @@ function App({
   fragmentSearchService,
   bibliographyService,
   textService,
-  signsService,
+  signService,
 }: {
   wordService: WordService
   fragmentService: FragmentService
   fragmentSearchService: FragmentSearchService
   bibliographyService: BibliographyService
   textService: TextService
-  signsService
+  signService: SignService
 }): JSX.Element {
   const authenticationService = useAuthentication()
   return (
@@ -154,7 +155,7 @@ function App({
             path="/signs/:id"
             render={(props): ReactNode => (
               <SignDisplay
-                signsService={signsService}
+                signService={signService}
                 wordService={wordService}
                 {...props}
               />
@@ -163,7 +164,7 @@ function App({
           <Route
             path="/signs"
             render={(props): ReactNode => (
-              <Signs {...props} signsService={signsService} />
+              <Signs {...props} signService={signService} />
             )}
           />
           <Route

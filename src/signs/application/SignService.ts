@@ -1,11 +1,11 @@
 import Bluebird from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
-import SignsRepository from 'signs/infrastructure/SignsRepository'
+import SignRepository from 'signs/infrastructure/SignRepository'
 
-export default class SignsService {
-  private readonly signsRepository: SignsRepository
+export default class SignService {
+  private readonly signsRepository: SignRepository
 
-  constructor(signsRepository: SignsRepository) {
+  constructor(signsRepository: SignRepository) {
     this.signsRepository = signsRepository
   }
 

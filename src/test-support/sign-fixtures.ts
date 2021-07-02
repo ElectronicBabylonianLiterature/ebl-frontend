@@ -1,27 +1,10 @@
 import Sign, { Value } from 'signs/domain/Sign'
-import { factory } from 'factory-girl'
+import Chance from 'chance'
+import { Factory } from 'fishery'
 
-factory.define('sign', Sign, {
-  name: factory.chance('pickone', ['BA', 'BAD', 'BAR', 'EZEN×BAD', 'PI']),
-  lists: factory.chance('pickone', [
-    [{ name: 'MESZL', number: '1' }],
-    [
-      { name: 'HZL', number: '20' },
-      { name: 'LAK', number: '752' },
-    ],
-  ]),
-  values: factory.chance('pickone', [[new Value('war', 1)]]),
-  unicode: factory.chance('pickone', [[73799], [74848, 73849]]),
-  logograms: [
-    {
-      logogram: '<sup>giš</sup>BAR.KIN₂',
-      atf: '{giš}BAR-KIN₂',
-      wordId: ['sehpu I'],
-      schrammLogogramme:
-        '<sup>giš</sup>BAR-KIN₂; *seḫpu* (Bast, Rinde); ME 69 CD 320a',
-    },
-  ],
-  mesZl: `123	**ALSK13**	𒁇𒍴
+const chance = new Chance()
+
+const mesZL = `123	**ALSK13**	𒁇𒍴
 Lorem ipsum dolor *sit* amet, consetetur <span style="color: #00610F;">*sadipscing*(*l*)*ubasd*</span>sadipscing elitr, sed diam *nonumy*
 eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet c
 lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -32,5 +15,29 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 ^ghas^𒁈
 𒁖^asd^
 𒍴^q12asd^
-`,
+`
+
+export const signFactory = Factory.define<Sign>(() => {
+  return new Sign({
+    name: chance.pickone(['BA', 'BAD', 'BAR', 'PI']),
+    lists: chance.pickone([
+      [{ name: 'MESZL', number: '1' }],
+      [
+        { name: 'HZL', number: '20' },
+        { name: 'LAK', number: '752' },
+      ],
+    ]),
+    values: [new Value('war', 1)],
+    unicode: chance.pickone([[73799], [74848, 73849]]),
+    logograms: [
+      {
+        logogram: '<sup>giš</sup>BAR.KIN₂',
+        atf: '{giš}BAR-KIN₂',
+        wordId: ['sehpu I'],
+        schrammLogogramme:
+          '<sup>giš</sup>BAR-KIN₂; *seḫpu* (Bast, Rinde); ME 69 CD 320a',
+      },
+    ],
+    mesZl: mesZL,
+  })
 })

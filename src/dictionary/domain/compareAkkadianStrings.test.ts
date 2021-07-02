@@ -1,4 +1,6 @@
-import compareAkkadianStrings from './compareAkkadianStrings'
+import compareAkkadianStrings, {
+  compareCleanedAkkadianString,
+} from './compareAkkadianStrings'
 
 test.each([
   ['Abullu', 'abullu', -1],
@@ -38,6 +40,13 @@ test.each([
   if (expected !== 0) {
     expect(comparedWordsReversed).toBe(-expected)
   }
+})
+
+test.each([
+  ['5Abullu', '5abullu', -1],
+  ['9ab9ullu', 'Ab99ullu', 1],
+])('compare cleaned %s and %s', (word, anotherWord, expected) => {
+  expect(compareCleanedAkkadianString(word, anotherWord)).toBe(expected)
 })
 
 test.each([

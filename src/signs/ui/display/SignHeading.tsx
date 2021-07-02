@@ -3,6 +3,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import React from 'react'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
+import './signHeading.css'
 
 export default function SignHeading({
   signName,
@@ -11,7 +12,7 @@ export default function SignHeading({
   signName: string
   cuneiformLetters: string
 }): JSX.Element {
-  const CuneiformFonts = ({
+  const CuneiformSign = ({
     font = '',
     description,
   }: {
@@ -20,11 +21,15 @@ export default function SignHeading({
   }): JSX.Element => (
     <Col xs={4}>
       <Row>
-        <Col xs={3}>
+        <Col xs="auto">
           <h3 className={font}>{cuneiformLetters}</h3>
         </Col>
         <Col>
-          <span className={'text-secondary'}>{description}</span>
+          <span
+            className={'text-secondary signHeading__cuneiformSign__description'}
+          >
+            {description}
+          </span>
         </Col>
       </Row>
     </Col>
@@ -33,29 +38,30 @@ export default function SignHeading({
   return (
     <Row>
       <Col xs={3}>
-        <h3>{signName}</h3>
+        <h2>{signName}</h2>
       </Col>
       <Col>
         <Row>
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-old-babylonian-monumental'}
-            description={'Old-Babylonian (Monumental)'}
+            description={'Old Babylonian (Monumental)'}
           />
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-old-babylonian-cursive'}
-            description={'Old-Babylonian Cursive'}
+            description={'Old Babylonian Cursive'}
           />
-          <CuneiformFonts
+          <CuneiformSign
             font={'CuneiformFonts__heading-hittite'}
             description={'Hittite'}
           />
-          <CuneiformFonts description={'Neo-Assyrian'} />
-          <CuneiformFonts
+          <CuneiformSign description={'Neo-Assyrian'} />
+          <CuneiformSign
             font={'CuneiformFonts__heading-neo-babylonian'}
             description={'Neo-Babylonian'}
           />
           <Col>
             <HelpTrigger
+              placement={'auto'}
               delay={{ show: 0, hide: 1200 }}
               overlay={CuneiformFontsHelpPopover()}
             />

@@ -4,17 +4,15 @@ import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import MemorySession from 'auth/Session'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 
-jest.mock('signs/application/SignsService')
+jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
-const signsService = new (SignsService as jest.Mock<
-  jest.Mocked<SignsService>
->)()
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 const session = new MemorySession(['read:words'])
 const sign = new Sign({
@@ -57,7 +55,7 @@ function renderSignDisplay(signName: string): RenderResult {
           render={(props: RouteComponentProps<{ id: string }>): ReactNode => (
             <SignDisplay
               wordService={wordService}
-              signsService={signsService}
+              signService={signService}
               {...props}
             />
           )}
@@ -69,11 +67,12 @@ function renderSignDisplay(signName: string): RenderResult {
 
 describe('Sign Display', () => {
   beforeEach(async () => {
-    signsService.find.mockReturnValue(Bluebird.resolve(sign))
+    signService.search.mockReturnValue(Bluebird.resolve([]))
+    signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     element = renderSignDisplay(sign.name)
-    await element.findByText(sign.name)
-    expect(signsService.find).toBeCalledWith(sign.name)
+    await element.findAllByText(sign.name)
+    expect(signService.find).toBeCalledWith(sign.name)
   })
   it('Sign Display Snapshot', async () => {
     expect(element.container).toMatchSnapshot()

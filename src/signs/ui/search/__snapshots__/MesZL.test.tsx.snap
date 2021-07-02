@@ -2,7 +2,9 @@
 
 exports[`MesZl MesZl Content 1`] = `
 <div>
-  <div>
+  <div
+    class="mesZL__popover"
+  >
     <pre>
       <div
         class="text-center"
@@ -16,7 +18,7 @@ exports[`MesZl MesZl Content 1`] = `
     </pre>
   </div>
   <div
-    class=""
+    class="text-align-justify"
   >
     Lorem ipsum dolor 
     <em>

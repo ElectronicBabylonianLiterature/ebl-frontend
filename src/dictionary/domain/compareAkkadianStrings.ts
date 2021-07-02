@@ -40,6 +40,16 @@ function compareAlphabet(word: string, anotherWord: string): number {
   return alphabet.indexOf(word) - alphabet.indexOf(anotherWord)
 }
 
+export function compareCleanedAkkadianString(
+  word: string,
+  anotherWord: string
+): number {
+  return compareAkkadianStrings(
+    cleanAkkadianString(word),
+    cleanAkkadianString(anotherWord)
+  )
+}
+
 export default function compareAkkadianStrings(
   word: string,
   anotherWord: string
@@ -60,6 +70,6 @@ export default function compareAkkadianStrings(
 export function cleanAkkadianString(akkadianString: string): string {
   return akkadianString
     .split('')
-    .map((signChar) => (alphabet.indexOf(signChar) > 0 ? signChar : ''))
+    .map((signChar) => (alphabet.indexOf(signChar) >= 0 ? signChar : ''))
     .join('')
 }
