@@ -1,7 +1,7 @@
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
 import { factory } from 'factory-girl'
+import { MemoryRouter } from 'react-router-dom'
+import { render, RenderResult } from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
@@ -12,6 +12,12 @@ import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  folioFactory,
+  folioPagerFactory,
+  fragmentFactory,
+} from 'test-support/fragment-fixtures'
+import { FragmentPagerData } from 'fragmentarium/domain/pager'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -20,12 +26,12 @@ jest.mock('fragmentarium/application/FragmentSearchService')
 const message = 'message'
 const fragmentNumber = 'K,K.1'
 
-let fragmentService
-let fragmentSearchService
-let wordService
+let fragmentService: jest.Mocked<FragmentService>
+let fragmentSearchService: jest.Mocked<FragmentSearchService>
+let wordService: jest.Mocked<WordService>
 let session
-let container
-let element
+let container: HTMLElement
+let element: RenderResult
 
 async function renderFragmentView(
   number: string,
@@ -54,10 +60,10 @@ async function renderFragmentView(
 }
 
 beforeEach(async () => {
-  const folioPager = await factory.build('folioPager')
-  const fragmentPagerData = {
-    next: { fragmentNumber: 'K.00001' },
-    previous: { fragmentNumber: 'J.99999' },
+  const folioPager = folioPagerFactory.build()
+  const fragmentPagerData: FragmentPagerData = {
+    next: 'K.00001',
+    previous: 'J.99999',
   }
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
   const word = await factory.build('word')
@@ -101,18 +107,20 @@ describe('Fragment is loaded', () => {
   let selectedFolio
 
   beforeEach(async () => {
-    const folios = await factory.buildMany('folio', 2, {}, [
-      { name: 'WGL' },
-      { name: 'AKG' },
-    ])
-    fragment = (
-      await factory.build('fragment', {
-        number: fragmentNumber,
-        folios: folios,
-        atf: '1. ku',
-        hasPhoto: true,
-      })
-    ).setReferences(referenceFactory.buildList(2))
+    const folios = [
+      folioFactory.build({ name: 'WGL' }),
+      folioFactory.build({ name: 'AKG' }),
+    ]
+    fragment = fragmentFactory
+      .build(
+        {
+          number: fragmentNumber,
+          atf: '1. ku',
+          hasPhoto: true,
+        },
+        { associations: { folios: folios } }
+      )
+      .setReferences(referenceFactory.buildList(2))
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
@@ -152,13 +160,14 @@ describe('Fragment is loaded', () => {
 
 describe('Fragment without an image is loaded', () => {
   beforeEach(async () => {
-    const fragment = await factory.build('fragment', {
-      number: fragmentNumber,
-      folios: [],
-      atf: '1. ku',
-      hasPhoto: false,
-      references: [],
-    })
+    const fragment = fragmentFactory.build(
+      {
+        number: fragmentNumber,
+        atf: '1. ku',
+        hasPhoto: false,
+      },
+      { associations: { folios: [], references: [] } }
+    )
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     await renderFragmentView(fragment.number, null, null, null)
     await element.findByText('Display')

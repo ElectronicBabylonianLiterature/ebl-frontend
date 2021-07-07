@@ -92,28 +92,31 @@ export interface UncuratedReference {
 
 export class Fragment {
   readonly [immerable] = true
-  readonly number: string
-  readonly cdliNumber: string
-  readonly bmIdNumber: string
-  readonly accession: string
-  readonly publication: string
-  readonly joins: ReadonlyArray<string>
-  readonly description: string
-  readonly measures: Measures
-  readonly collection: string
-  readonly script: string
-  readonly folios: ReadonlyArray<Folio>
-  readonly record: ReadonlyArray<RecordEntry>
-  readonly text: Text
-  readonly notes: string
-  readonly museum: Museum
-  readonly references: ReadonlyArray<any>
-  readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null
-  readonly atf: string
-  readonly hasPhoto: boolean
-  readonly genres: Genres
 
-  constructor({
+  constructor(
+    readonly number: string,
+    readonly cdliNumber: string,
+    readonly bmIdNumber: string,
+    readonly accession: string,
+    readonly publication: string,
+    readonly joins: ReadonlyArray<string>,
+    readonly description: string,
+    readonly measures: Measures,
+    readonly collection: string,
+    readonly script: string,
+    readonly folios: ReadonlyArray<Folio>,
+    readonly record: ReadonlyArray<RecordEntry>,
+    readonly text: Text,
+    readonly notes: string,
+    readonly museum: Museum,
+    readonly references: ReadonlyArray<any>,
+    readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
+    readonly atf: string,
+    readonly hasPhoto: boolean,
+    readonly genres: Genres
+  ) {}
+
+  static create({
     number,
     cdliNumber,
     bmIdNumber,
@@ -155,27 +158,29 @@ export class Fragment {
     atf: string
     hasPhoto: boolean
     genres: Genres
-  }) {
-    this.number = number
-    this.cdliNumber = cdliNumber
-    this.bmIdNumber = bmIdNumber
-    this.accession = accession
-    this.publication = publication
-    this.joins = joins
-    this.description = description
-    this.measures = measures
-    this.collection = collection
-    this.script = script
-    this.folios = folios
-    this.record = record
-    this.text = text
-    this.notes = notes
-    this.museum = museum
-    this.references = references
-    this.uncuratedReferences = uncuratedReferences || null
-    this.atf = atf
-    this.hasPhoto = hasPhoto
-    this.genres = genres
+  }): Fragment {
+    return new Fragment(
+      number,
+      cdliNumber,
+      bmIdNumber,
+      accession,
+      publication,
+      joins,
+      description,
+      measures,
+      collection,
+      script,
+      folios,
+      record,
+      text,
+      notes,
+      museum,
+      references,
+      uncuratedReferences ?? null,
+      atf,
+      hasPhoto,
+      genres
+    )
   }
 
   get hasUncuratedReferences(): boolean {

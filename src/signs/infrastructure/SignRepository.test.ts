@@ -1,14 +1,14 @@
 import Promise from 'bluebird'
 import { testDelegation, TestData } from 'test-support/utils'
 import ApiClient from 'http/ApiClient'
-import SignsRepository from 'signs/infrastructure/SignsRepository'
+import SignRepository from 'signs/infrastructure/SignRepository'
 import Sign from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 
 jest.mock('http/ApiClient')
 
 const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
-const signsRepository = new SignsRepository(apiClient)
+const signsRepository = new SignRepository(apiClient)
 const signName = 'BAR'
 const query = { value: 'bar', subIndex: 1 }
 

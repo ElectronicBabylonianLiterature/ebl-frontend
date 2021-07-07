@@ -9,14 +9,14 @@ import { Session } from 'auth/Session'
 import SignsSearchForm from 'signs/ui/search/SignsSearchForm'
 import SignsSearch from 'signs/ui/search/SignsSearch'
 import _ from 'lodash'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import { RouteComponentProps } from 'react-router-dom'
 
 type Props = {
-  signsService: SignsService
+  signService: SignService
 } & RouteComponentProps
 
-export default function Signs({ location, signsService }: Props): JSX.Element {
+export default function Signs({ location, signService }: Props): JSX.Element {
   const query = parse(location.search, {
     parseBooleans: true,
     parseNumbers: true,
@@ -38,7 +38,7 @@ export default function Signs({ location, signsService }: Props): JSX.Element {
                   { ...query, sign: null },
                   (property) => _.identity(property) || property === ''
                 )}
-                signsService={signsService}
+                signService={signService}
               />
             </>
           ) : (

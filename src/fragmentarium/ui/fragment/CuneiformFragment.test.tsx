@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, act } from '@testing-library/react'
-import { factory } from 'factory-girl'
+import { render, act, RenderResult } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { submitFormByTestId, clickNth } from 'test-support/utils'
@@ -11,39 +10,45 @@ import Lemmatization from 'transliteration/domain/Lemmatization'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
-import MemorySession from 'auth/Session'
+import MemorySession, { Session } from 'auth/Session'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  folioPagerFactory,
+  fragmentFactory,
+} from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
+jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('auth/Session')
 
-let fragment
-let element
-let container
-let fragmentService
-let fragmentSearchService
-let wordService
-let session
-let updatedFragment
+let fragment: Fragment
+let element: RenderResult
+let container: HTMLElement
+let fragmentService: jest.Mocked<FragmentService>
+let fragmentSearchService: jest.Mocked<FragmentSearchService>
+let wordService: jest.Mocked<WordService>
+let session: jest.Mocked<Session>
+let updatedFragment: Fragment
 
 beforeEach(async () => {
-  const folioPager = await factory.build('folioPager')
+  const folioPager = folioPagerFactory.build()
   const references = referenceFactory.buildList(2)
-  wordService = new (WordService as jest.Mock<WordService>)()
-  fragment = (
-    await factory.build('fragment', {
+  wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
+  fragment = fragmentFactory
+    .build({
       atf: '1. ku',
       hasPhoto: true,
       collection: 'Sippar',
     })
-  ).setReferences(referenceFactory.buildList(2))
-  updatedFragment = (
-    await factory.build('fragment', {
+    .setReferences(referenceFactory.buildList(2))
+  updatedFragment = fragmentFactory
+    .build({
       number: fragment.number,
       atf: fragment.atf,
     })
-  ).setReferences(references)
+    .setReferences(references)
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>
   >)()
@@ -51,10 +56,14 @@ beforeEach(async () => {
     Promise.resolve(new Lemmatization([], []))
   )
   fragmentService.fetchCdliInfo.mockImplementation(() =>
-    Promise.resolve({ photoUrl: null })
+    Promise.resolve({
+      photoUrl: null,
+      lineArtUrl: null,
+      detailLineArtUrl: null,
+    })
   )
   fragmentSearchService = new (FragmentSearchService as jest.Mock<
-    FragmentSearchService
+    jest.Mocked<FragmentSearchService>
   >)()
   session = new (MemorySession as jest.Mock<jest.Mocked<MemorySession>>)()
 

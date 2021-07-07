@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 
-class SignsRepository {
+class SignRepository {
   private readonly apiClient
 
   constructor(apiClient: ApiClient) {
@@ -22,4 +22,4 @@ class SignsRepository {
   }
 }
 
-export default SignsRepository
+export default SignRepository

@@ -1,23 +1,24 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
+import { render, RenderResult } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
 import Edition from './Edition'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { Fragment } from 'fragmentarium/domain/fragment'
 
-let fragment
-let element
-let container
+let fragment: Fragment
+let element: RenderResult
+let container: HTMLElement
 let fragmentSearchService
 let updateTransliteration
 
-beforeEach(async () => {
+beforeEach(() => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
   fragmentSearchService = {}
-  fragment = await factory.build('fragment', { atf: '1. ku' })
+  fragment = fragmentFactory.build({ atf: '1. ku' })
   element = render(
     <MemoryRouter>
       <Edition
@@ -35,7 +36,9 @@ it(`Renders header`, () => {
 })
 
 xit('Renders transliteration field', () => {
-  expect(element.getByLabelText('Transliteration').value).toEqual(fragment.atf)
+  expect(
+    (element.getByLabelText('Transliteration') as HTMLInputElement).value
+  ).toEqual(fragment.atf)
 })
 
 xit('Renders notes field', () => {

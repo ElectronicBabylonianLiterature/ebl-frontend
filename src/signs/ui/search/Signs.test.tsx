@@ -2,31 +2,24 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import MemorySession from 'auth/Session'
-import Sign from 'signs/domain/Sign'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import Signs from 'signs/ui/search/Signs'
+import { signFactory } from 'test-support/sign-fixtures'
 
-jest.mock('signs/application/SignsService')
+jest.mock('signs/application/SignService')
 
 const SignsWithRouter = withRouter<any, typeof Signs>(Signs)
 
-let signs: Sign[]
-const signsService = new (SignsService as jest.Mock<
-  jest.Mocked<SignsService>
->)()
+const signs = signFactory.buildList(2)
+const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 let session: MemorySession
-
-beforeEach(async () => {
-  signs = await factory.buildMany('sign', 2)
-})
 
 describe('Searching for word', () => {
   beforeEach(() => {
     session = new MemorySession(['read:words'])
-    signsService.search.mockReturnValue(Promise.resolve(signs))
+    signService.search.mockReturnValue(Promise.resolve(signs))
   })
 
   it('displays result on successfull query', async () => {
@@ -59,7 +52,7 @@ async function renderSigns(path: string): Promise<void> {
   render(
     <MemoryRouter initialEntries={[path]}>
       <SessionContext.Provider value={session}>
-        <SignsWithRouter signsService={signsService} />
+        <SignsWithRouter signService={signService} />
       </SessionContext.Provider>
     </MemoryRouter>
   )

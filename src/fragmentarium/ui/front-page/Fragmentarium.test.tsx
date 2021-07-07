@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, RenderResult } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import SessionContext from 'auth/SessionContext'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession, { Session } from 'auth/Session'
@@ -9,6 +8,11 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import Fragmentarium from './Fragmentarium'
 import Promise from 'bluebird'
 import Bluebird from 'bluebird'
+import {
+  fragmentInfoFactory,
+  statisticsFactory,
+} from 'test-support/fragment-fixtures'
+import { FragmentInfo } from 'fragmentarium/domain/fragment'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -41,8 +45,8 @@ async function renderFragmentarium() {
   await element.findByText('Current size of the corpus:')
 }
 
-beforeEach(async () => {
-  statistics = await factory.build('statistics')
+beforeEach(() => {
+  statistics = statisticsFactory.build()
   fragmentService.statistics.mockReturnValue(Bluebird.resolve(statistics))
 })
 
@@ -62,16 +66,16 @@ describe('Statistics', () => {
 })
 
 describe('Fragment lists', () => {
-  let latest
-  let needsRevision
+  let latest: FragmentInfo
+  let needsRevision: FragmentInfo
 
   beforeEach(async () => {
-    latest = await factory.build('fragment')
+    latest = fragmentInfoFactory.build()
     session = new MemorySession(['read:fragments', 'transliterate:fragments'])
     fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
       Promise.resolve([latest])
     )
-    needsRevision = await factory.build('fragment')
+    needsRevision = fragmentInfoFactory.build()
     fragmentSearchService.fetchNeedsRevision.mockReturnValue(
       Promise.resolve([needsRevision])
     )

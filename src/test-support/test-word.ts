@@ -1,4 +1,6 @@
-export const wordDto = {
+import Word from 'dictionary/domain/Word'
+
+export const wordDto: Word = {
   _id: 'test I',
   lemma: ['test'],
   attested: true,

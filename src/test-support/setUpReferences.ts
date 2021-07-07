@@ -6,13 +6,13 @@ import {
   referenceDtoFactory,
 } from './bibliography-fixtures'
 
-export default async function setUpReferences(bibliographyService: {
+export default function setUpReferences(bibliographyService: {
   find: jest.Mock
-}): Promise<{
+}): {
   entries: readonly BibliographyEntry[]
   references: readonly ReferenceDto[]
   expectedReferences: Reference[]
-}> {
+} {
   const entries = bibliographyEntryFactory.buildList(2)
   const references = entries.map((entry: BibliographyEntry) =>
     referenceDtoFactory.build({ id: entry.id })

@@ -2,14 +2,12 @@ import React from 'react'
 import _ from 'lodash'
 import withData from 'http/withData'
 import Sign, { SignQuery } from 'signs/domain/Sign'
-import SignsService from 'signs/application/SignsService'
+import SignService from 'signs/application/SignService'
 import { Link } from 'react-router-dom'
 import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
-import compareAkkadianStrings, {
-  cleanAkkadianString,
-} from 'dictionary/domain/compareAkkadianStrings'
+import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import './Signs.css'
 import MesZL from 'signs/ui/search/MesZL'
 
@@ -19,12 +17,9 @@ interface Props {
 }
 
 function sortSigns(signs: Sign[]): Sign[] {
-  return signs.sort((sign1, sign2) => {
-    return compareAkkadianStrings(
-      cleanAkkadianString(sign1.name),
-      cleanAkkadianString(sign2.name)
-    )
-  })
+  return signs.sort((sign1, sign2) =>
+    compareCleanedAkkadianString(sign1.name, sign2.name)
+  )
 }
 
 function SignsSearch({ signs, isIncludeHomophones }: Props): JSX.Element {
@@ -63,7 +58,9 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
           </Link>
         </strong>
       </dfn>
-      <DisplaySignValues sign={sign} />
+      {sign.values.length > 0 ? (
+        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
+      ) : null}
 
       {mesZlDash}
       {sign.mesZl && (
@@ -77,19 +74,9 @@ function SignComponent({ sign }: { sign: Sign }): JSX.Element {
   )
 }
 
-export function DisplaySignValues({ sign }: { sign: Sign }): JSX.Element {
-  return (
-    <>
-      {sign.values.length > 0 ? (
-        <InlineMarkdown source={`(${sign.displayValuesMarkdown})`} />
-      ) : null}
-    </>
-  )
-}
-
 export default withData<
   { signQuery: SignQuery },
-  { signsService: SignsService },
+  { signService: SignService },
   Sign[]
 >(
   ({ data, signQuery }) => (
@@ -98,7 +85,7 @@ export default withData<
       signs={data}
     />
   ),
-  (props) => props.signsService.search(props.signQuery),
+  (props) => props.signService.search(props.signQuery),
   {
     watch: (props) => [props.signQuery],
     filter: (props) => _.some(props.signQuery),

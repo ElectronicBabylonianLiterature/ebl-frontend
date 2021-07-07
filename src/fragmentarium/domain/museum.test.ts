@@ -1,7 +1,7 @@
 import Museum from './museum'
-import { factory } from 'factory-girl'
 import bmLogo from './The_British_Museum.png'
 import ybcLogo from './YBC_small.jpg'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 describe.each([
   [
@@ -66,23 +66,23 @@ describe('BritishMuseum', () => {
   const britishMuseum = Museum.of(link.name)
 
   describe('hasFragmentLink', () => {
-    test('fragment has bmIdNumber', async () => {
-      const fragment = await factory.build('fragment', {
+    test('fragment has bmIdNumber', () => {
+      const fragment = fragmentFactory.build({
         bmIdNumber,
       })
       expect(britishMuseum.hasFragmentLink(fragment)).toEqual(true)
     })
 
-    test('fragment does not have bmIdNumber', async () => {
-      const fragment = await factory.build('fragment', {
+    test('fragment does not have bmIdNumber', () => {
+      const fragment = fragmentFactory.build({
         bmIdNumber: '',
       })
       expect(britishMuseum.hasFragmentLink(fragment)).toEqual(false)
     })
   })
 
-  test('fragmentlink', async () => {
-    const fragment = await factory.build('fragment', {
+  test('fragmentlink', () => {
+    const fragment = fragmentFactory.build({
       bmIdNumber,
     })
     expect(britishMuseum.createLinkFor(fragment)).toEqual(link)
@@ -103,23 +103,23 @@ describe('YaleBabylonianCollectionhMuseum', () => {
   const ybc = Museum.of(link.name)
 
   describe('hasFragmentLink', () => {
-    test('fragment has accession', async () => {
-      const fragment = await factory.build('fragment', {
+    test('fragment has accession', () => {
+      const fragment = fragmentFactory.build({
         accession,
       })
       expect(ybc.hasFragmentLink(fragment)).toEqual(true)
     })
 
-    test('fragment does not have accession', async () => {
-      const fragment = await factory.build('fragment', {
+    test('fragment does not have accession', () => {
+      const fragment = fragmentFactory.build({
         accession: '',
       })
       expect(ybc.hasFragmentLink(fragment)).toEqual(false)
     })
   })
 
-  test('fragmentlink', async () => {
-    const fragment = await factory.build('fragment', {
+  test('fragmentlink', () => {
+    const fragment = fragmentFactory.build({
       accession,
     })
     expect(ybc.createLinkFor(fragment)).toEqual(link)

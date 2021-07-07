@@ -9,14 +9,12 @@ function LogogramWord({ word }: { word: Word }): JSX.Element {
   const lemma = word.lemma.join(' ')
   return (
     <Fragment>
-      {word._id ? (
-        <Link to={`/dictionary/${word._id}`}>
+      <Link to={`/dictionary/${word._id}`}>
+        <em>
           {attested}
           {lemma}
-        </Link>
-      ) : (
-        <em>{`${attested}${lemma}`}</em>
-      )}
+        </em>
+      </Link>
       <span>
         {` ${word.homonym}`}
         {`, “${word.guideWord}”`}

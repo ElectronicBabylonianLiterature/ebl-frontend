@@ -1,9 +1,9 @@
-import { factory } from 'factory-girl'
 import ReferenceInjector from './ReferenceInjector'
 import setUpReferences from 'test-support/setUpReferences'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 const bibliographyService = {
   find: jest.fn(),
@@ -15,10 +15,15 @@ let promise: Promise<Fragment>
 let expectedReferences: Reference[]
 
 beforeEach(async () => {
-  const config = await setUpReferences(bibliographyService)
-  const fragment = await factory.build('fragment', {
-    references: config.references,
-  })
+  const config = setUpReferences(bibliographyService)
+  const fragment = fragmentFactory.build(
+    {},
+    {
+      associations: {
+        references: config.references,
+      },
+    }
+  )
 
   expectedReferences = config.expectedReferences
   promise = injector.injectReferences(fragment)

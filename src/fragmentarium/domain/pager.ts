@@ -2,7 +2,7 @@ export interface FragmentPagerData {
   readonly previous: string
   readonly next: string
 }
-interface FragmentAndFolio {
+export interface FragmentAndFolio {
   readonly fragmentNumber: string
   readonly folioNumber: string
 }

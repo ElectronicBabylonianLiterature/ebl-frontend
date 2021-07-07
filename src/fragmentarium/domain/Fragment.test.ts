@@ -91,7 +91,7 @@ const config = {
 }
 
 describe('Fragment', () => {
-  const fragment = new Fragment(config)
+  const fragment = Fragment.create(config)
 
   test.each(_.toPairs(config))('%s', (property, expected) => {
     expect(_.get(fragment, property)).toEqual(expected)
@@ -104,7 +104,7 @@ test.each([
 ] as [UncuratedReference[], boolean][])(
   'uncurated references: %s',
   (uncuratedReferences, expected) => {
-    const fragment = new Fragment({ ...config, uncuratedReferences })
+    const fragment = Fragment.create({ ...config, uncuratedReferences })
     expect(fragment.hasUncuratedReferences).toEqual(expected)
   }
 )
@@ -147,7 +147,7 @@ test.each([
     [historicalTransliteration, revision],
   ],
 ])('%s is filtered to %s', async (record, expected) => {
-  const fragment = new Fragment({ ...config, record: record })
+  const fragment = Fragment.create({ ...config, record: record })
   expect(fragment.uniqueRecord).toEqual(expected)
 })
 
@@ -155,7 +155,7 @@ test.each([
   ['P201033', 'P201033'],
   ['', 'X000001'],
 ])('ATF headind, cdli number: %s', (cdliNumber, expected) => {
-  const fragment = new Fragment({ ...config, cdliNumber })
+  const fragment = Fragment.create({ ...config, cdliNumber })
   expect(fragment.atfHeading).toEqual(`&${expected} = ${config.number}
 #project: eblo
 #atf: lang akk-x-stdbab

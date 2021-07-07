@@ -1,7 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import { render, RenderResult } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
@@ -10,6 +9,7 @@ import MemorySession, { Session } from 'auth/Session'
 import TextService from 'corpus/application/TextService'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
 import { fromLineDto } from 'corpus/application/dtos'
+import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 
 jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('corpus/application/TextService')
@@ -64,7 +64,7 @@ describe('Search', () => {
     const number = 'K.2'
 
     beforeEach(async () => {
-      fragments = await factory.buildMany('fragmentInfo', 2)
+      fragments = fragmentInfoFactory.buildList(2)
       fragmentSearchService.searchNumber.mockReturnValueOnce(
         Promise.resolve(fragments)
       )
@@ -120,10 +120,16 @@ describe('Search', () => {
     }
 
     beforeEach(async () => {
-      fragments = await factory.buildMany('fragmentInfo', 2, [
-        { matchingLines: [['line 1', 'line 2']] },
-        { matchingLines: [['line 3'], ['line 4']] },
-      ])
+      fragments = [
+        fragmentInfoFactory.build(
+          {},
+          { associations: { matchingLines: [['line 1', 'line 2']] } }
+        ),
+        fragmentInfoFactory.build(
+          {},
+          { associations: { matchingLines: [['line 3'], ['line 4']] } }
+        ),
+      ]
       fragmentSearchService.searchTransliteration.mockReturnValueOnce(
         Promise.resolve(fragments)
       )

@@ -16,3 +16,4 @@ vscode:
     - dbaeumer.vscode-eslint@2.1.8:02aHhbJ0Q4aGdjHXlTdVKg==
     - esbenp.prettier-vscode@5.5.0:xcEnHt0vYXkhJ8IkBmNAuA==
     - syler.sass-indented@1.8.11:ct8RQj0VKMLMB3AxMffWhg==
+    - esbenp.prettier-vscode

@@ -2,11 +2,11 @@ import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import { render } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import Promise from 'bluebird'
 import { whenClicked } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
 import PioneersButton from './PioneersButton'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 let fragmentSearchService
 let session
@@ -26,7 +26,7 @@ beforeEach(async () => {
 
 it('Redirects to interesting when clicked', async () => {
   renderPioneersButton(true)
-  const fragment = await factory.build('fragment')
+  const fragment = fragmentFactory.build()
   fragmentSearchService.interesting.mockReturnValueOnce(
     Promise.resolve(fragment)
   )

@@ -33,9 +33,16 @@ async function convertMarkdownAndHtmlMixToSanitizedHtml(
     .use(stringify)
     .process(markdown)
 
-  const html = italic(subSup(String(file)))
-  //unified() outputs the HTML within a <p>...</p>, we remove it
-  return DOMPurify.sanitize(html.slice(3, html.length - 4))
+  const html = DOMPurify.sanitize(italic(subSup(String(file))))
+  return removeParagraphHtmlTag(html)
+}
+
+function removeParagraphHtmlTag(html: string): string {
+  if (html.startsWith('<p>')) {
+    return html.slice(3, html.length - 4)
+  } else {
+    return html
+  }
 }
 
 type Container = 'div' | 'span'

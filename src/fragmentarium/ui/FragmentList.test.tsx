@@ -1,10 +1,10 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, RenderResult } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import _ from 'lodash'
 import FragmentList, { Columns } from './FragmentList'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
+import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
 
 const numberOfFragments = 2
 const expectedStringColumns: Columns = {
@@ -39,8 +39,8 @@ describe.each([
     expectedComputedColumns,
   ],
 ] as [string, Columns, Columns][])('%s', (name, columns, expectedColumns) => {
-  beforeEach(async () => {
-    fragments = await factory.buildMany('fragment', numberOfFragments)
+  beforeEach(() => {
+    fragments = fragmentInfoFactory.buildList(numberOfFragments)
     element = render(
       <MemoryRouter>
         <FragmentList fragments={fragments} columns={columns} />

@@ -5,7 +5,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
-import { factory } from 'factory-girl'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import selectEvent from 'react-select-event'
 import Promise from 'bluebird'
@@ -13,6 +12,7 @@ import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import userEvent from '@testing-library/user-event'
 import { Genres } from 'fragmentarium/domain/Genres'
 import SessionContext from 'auth/SessionContext'
+import { fragmentFactory } from 'test-support/fragment-fixtures'
 
 const updateGenres = jest.fn()
 const fragmentService = {
@@ -34,9 +34,14 @@ async function renderGenreSelection() {
   await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 beforeEach(async () => {
-  fragment = await factory.build('fragment', {
-    genres: new Genres([]),
-  })
+  fragment = fragmentFactory.build(
+    {},
+    {
+      associations: {
+        genres: new Genres([]),
+      },
+    }
+  )
   fragmentService.fetchGenres.mockReturnValue(
     Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
   )

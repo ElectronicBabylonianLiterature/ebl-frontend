@@ -1,7 +1,5 @@
 import produce, { immerable } from 'immer'
-import compareAkkadianStrings, {
-  cleanAkkadianString,
-} from 'dictionary/domain/compareAkkadianStrings'
+import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
 import { subscriptNumbers } from 'transliteration/ui/SubIndex'
 
 export interface Logogram {
@@ -89,12 +87,9 @@ export default class Sign {
 
   private sortedValues(): Value[] {
     return produce(this.values, (draftValues) => {
-      return draftValues.sort((value1, value2) => {
-        return compareAkkadianStrings(
-          cleanAkkadianString(value1.value),
-          cleanAkkadianString(value2.value)
-        )
-      })
+      return draftValues.sort((value1, value2) =>
+        compareCleanedAkkadianString(value1.value, value2.value)
+      )
     })
   }
   get displayValuesMarkdown(): string {

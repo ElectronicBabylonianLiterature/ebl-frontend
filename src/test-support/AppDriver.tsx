@@ -23,8 +23,8 @@ import FragmentSearchService from 'fragmentarium/application/FragmentSearchServi
 import { Promise } from 'bluebird'
 import { submitForm } from 'test-support/utils'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
-import SignsRepository from 'signs/infrastructure/SignsRepository'
-import SignsService from 'signs/application/SignsService'
+import SignRepository from 'signs/infrastructure/SignRepository'
+import SignService from 'signs/application/SignService'
 
 function createApp(api): JSX.Element {
   const wordRepository = new WordRepository(api)
@@ -41,11 +41,11 @@ function createApp(api): JSX.Element {
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
   const textService = new TextService(api, fragmentService, wordService)
-  const signsRepository = new SignsRepository(api)
-  const signsService = new SignsService(signsRepository)
+  const signsRepository = new SignRepository(api)
+  const signService = new SignService(signsRepository)
   return (
     <App
-      signsService={signsService}
+      signService={signService}
       wordService={wordService}
       fragmentService={fragmentService}
       fragmentSearchService={fragmentSearchService}
