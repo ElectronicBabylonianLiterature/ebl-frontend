@@ -58,9 +58,9 @@ describe('BritishMuseum', () => {
   const link = {
     name: 'The British Museum',
     logo: bmLogo,
-    url: `https://www.britishmuseum.org/research/collection_online/collection_object_details.aspx?objectId=${encodeURIComponent(
+    url: `https://www.britishmuseum.org/collection/object/${encodeURIComponent(
       bmIdNumber
-    )}&partId=1`,
+    )}`,
     label: `The British Museum object ${bmIdNumber}`,
   }
   const britishMuseum = Museum.of(link.name)
