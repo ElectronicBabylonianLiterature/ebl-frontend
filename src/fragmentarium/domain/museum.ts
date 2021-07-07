@@ -66,7 +66,7 @@ class BritishMuseum extends Museum {
         logo: this.logo,
         url: `https://www.britishmuseum.org/collection/object/${encodeURIComponent(
           bmIdNumber
-        )},
+        )}`,
         label: `The British Museum object ${bmIdNumber}`,
       }
     } else {
