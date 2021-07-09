@@ -8,6 +8,7 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
 type Props = {
   fragment: Fragment
@@ -34,11 +35,16 @@ function Joins({ fragment }: Props) {
         '-'
       ) : (
         <ul className="Details-joins">
-          {fragment.joins.map((join) => (
-            <li className="Details-joins__join" key={join}>
-              <FragmentLink number={join}>{join}</FragmentLink>
-            </li>
-          ))}
+          {fragment.joins.flat().map((join: any) => {
+            const number = _.isString(join)
+              ? join
+              : museumNumberToString(join.museumNumber)
+            return (
+              <li className="Details-joins__join" key={number}>
+                <FragmentLink number={number}>{number}</FragmentLink>
+              </li>
+            )
+          })}
         </ul>
       )}
     </>
