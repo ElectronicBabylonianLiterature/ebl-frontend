@@ -69,12 +69,24 @@ describe('All details', () => {
     ).toBeInTheDocument()
   })
 
-  it(`Links all joins`, () => {
-    for (const join of fragment.joins.flat()) {
-      expect(
-        screen.getByRole('link', { name: join.museumNumber })
-      ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
-    }
+  it('Does not link to self', () => {
+    fragment.joins
+      .flat()
+      .filter((join) => join.museumNumber === fragment.number)
+      .forEach((join) => {
+        expect(screen.getByText(join.museumNumber)).not.toHaveAttribute('href')
+      })
+  })
+
+  it('Links to other joins', () => {
+    fragment.joins
+      .flat()
+      .filter((join) => join.museumNumber !== fragment.number)
+      .forEach((join) => {
+        expect(
+          screen.getByRole('link', { name: join.museumNumber })
+        ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
+      })
   })
 
   it('Renders measures', () => {
@@ -132,7 +144,7 @@ describe('Missing details', () => {
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
-    expect(screen.getByText('Joins: -')).toBeInTheDocument()
+    expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
 
   it('Does not renders missing measures', () => {

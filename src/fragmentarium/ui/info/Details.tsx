@@ -25,24 +25,46 @@ function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   )
 }
 
-function Joins({ fragment: { joins } }: Props): JSX.Element {
+function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   return (
-    <>
-      Joins:{' '}
+    <div className="Details-joins">
+      Joins:
       {_.isEmpty(joins) ? (
         '-'
       ) : (
-        <ul className="Details-joins">
-          {joins.flat().map((join, index) => (
-            <li className="Details-joins__join" key={index}>
-              <FragmentLink number={join.museumNumber}>
-                {join.museumNumber}
-              </FragmentLink>
-            </li>
-          ))}
-        </ul>
+        <ol className="Details-joins__list">
+          {joins.map((group, groupIndex) =>
+            group.map((join, index) => (
+              <li
+                className="Details-joins__join"
+                key={`${groupIndex}-${index}`}
+              >
+                {index > 0 ? (
+                  <>
+                    <br />+
+                  </>
+                ) : groupIndex > 0 ? (
+                  <>
+                    <br />
+                    (+)
+                  </>
+                ) : (
+                  ''
+                )}{' '}
+                {number === join.museumNumber ? (
+                  join.museumNumber
+                ) : (
+                  <FragmentLink number={join.museumNumber}>
+                    {join.museumNumber}
+                  </FragmentLink>
+                )}
+                <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
+              </li>
+            ))
+          )}
+        </ol>
       )}
-    </>
+    </div>
   )
 }
 
