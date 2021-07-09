@@ -169,6 +169,9 @@ describe('methods returning fragment', () => {
         },
       }
     )
+    bibliographyService.find.mockImplementation((id: string) =>
+      Promise.reject(new Error(`${id} not found.`))
+    )
   })
 
   describe('find', () => {
