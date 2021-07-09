@@ -69,18 +69,11 @@ describe('All details', () => {
     ).toBeInTheDocument()
   })
 
-  it(`Renders all joins`, () => {
-    for (const item of fragment.joins) {
-      expect(screen.getByText(item)).toBeInTheDocument()
-    }
-  })
-
   it(`Links all joins`, () => {
-    for (const item of fragment.joins) {
-      expect(screen.getByText(item)).toHaveAttribute(
-        'href',
-        `/fragmentarium/${item}`
-      )
+    for (const join of fragment.joins.flat()) {
+      expect(
+        screen.getByRole('link', { name: join.museumNumber })
+      ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
     }
   })
 

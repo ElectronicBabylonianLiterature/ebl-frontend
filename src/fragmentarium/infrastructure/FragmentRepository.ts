@@ -95,7 +95,12 @@ function createFragment(dto): Fragment {
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     museum: Museum.of(dto.museum),
-    joins: dto.joins,
+    joins: dto.joins.map((group) =>
+      group.map((join) => ({
+        ...join,
+        museumNumber: museumNumberToString(join.museumNumber),
+      }))
+    ),
     measures: {
       length: dto.length.value || null,
       width: dto.width.value || null,
@@ -116,14 +121,12 @@ function createFragmentPath(number: string, ...subResources: string[]): string {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
-  readonly apiClient
-
-  constructor(apiClient: {
-    fetchJson: (url: string, authorize: boolean) => Promise<any>
-    postJson: (url: string, body: Record<string, unknown>) => Promise<any>
-  }) {
-    this.apiClient = apiClient
-  }
+  constructor(
+    private readonly apiClient: {
+      fetchJson: (url: string, authorize: boolean) => Promise<any>
+      postJson: (url: string, body: Record<string, unknown>) => Promise<any>
+    }
+  ) {}
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)
@@ -272,7 +275,7 @@ class ApiFragmentRepository
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/annotations`, true)
       .then((dto) =>
-        produce(dto.annotations, (annotations) =>
+        produce<Annotation[]>(dto.annotations, (annotations) =>
           annotations.map(
             ({ geometry, data }) =>
               new Annotation({ ...geometry, type: 'RECTANGLE' }, data)

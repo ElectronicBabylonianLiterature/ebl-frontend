@@ -33,9 +33,11 @@ function Joins({ fragment: { joins } }: Props): JSX.Element {
         '-'
       ) : (
         <ul className="Details-joins">
-          {joins.map((join) => (
-            <li className="Details-joins__join" key={join}>
-              <FragmentLink number={join}>{join}</FragmentLink>
+          {joins.flat().map((join, index) => (
+            <li className="Details-joins__join" key={index}>
+              <FragmentLink number={join.museumNumber}>
+                {join.museumNumber}
+              </FragmentLink>
             </li>
           ))}
         </ul>
