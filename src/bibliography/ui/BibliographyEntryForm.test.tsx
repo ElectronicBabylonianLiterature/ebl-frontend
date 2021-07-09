@@ -14,7 +14,7 @@ let onSubmit: () => void
 
 beforeEach(() => {
   entry = bibliographyEntryFactory.build()
-  json = JSON.stringify(entry.toJson(), null, 2)
+  json = JSON.stringify(entry.toCslData(), null, 2)
   onSubmit = jest.fn()
 })
 

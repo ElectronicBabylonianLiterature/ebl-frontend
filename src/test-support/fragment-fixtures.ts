@@ -12,7 +12,7 @@ import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
-import { referenceDtoFactory } from './bibliography-fixtures'
+import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 
 const chance = new Chance()
@@ -143,7 +143,7 @@ export const fragmentFactory = Factory.define<Fragment>(({ associations }) => {
     associations.text ?? complexText,
     chance.sentence(),
     associations.museum ?? Museum.of('The British Museum'),
-    associations.references ?? referenceDtoFactory.buildList(2),
+    associations.references ?? referenceFactory.buildList(2),
     associations.uncuratedReferences ?? null,
     '',
     chance.bool(),

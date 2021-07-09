@@ -1,7 +1,5 @@
 import { Draft, produce } from 'immer'
 import serializeReference from 'bibliography/application/serializeReference'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import Reference from 'bibliography/domain/Reference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
@@ -15,16 +13,7 @@ import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import { createChapter, createText, Text } from 'corpus/domain/text'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
-
-function createReference(referenceDto): Reference {
-  return new Reference(
-    referenceDto.type,
-    referenceDto.pages,
-    referenceDto.notes,
-    referenceDto.linesCited,
-    new BibliographyEntry(referenceDto.document)
-  )
-}
+import createReference from 'bibliography/application/createReference'
 
 export function fromDto(textDto): Text {
   return createText({

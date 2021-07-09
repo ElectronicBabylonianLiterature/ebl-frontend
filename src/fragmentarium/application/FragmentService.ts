@@ -11,7 +11,6 @@ import Lemmatization, {
   LemmatizationDto,
 } from 'transliteration/domain/Lemmatization'
 import { Text } from 'transliteration/domain/text'
-import ReferenceInjector from './ReferenceInjector'
 import { Genres } from 'fragmentarium/domain/Genres'
 import LemmatizationFactory from './LemmatizationFactory'
 import { LineToVecRanking } from '../domain/lineToVecRanking'
@@ -66,24 +65,13 @@ export interface AnnotationRepository {
   ): Promise<readonly Annotation[]>
 }
 export class FragmentService {
-  private readonly fragmentRepository
-  private readonly imageRepository
-  private readonly wordRepository
-  private readonly bibliographyService
-  private readonly referenceInjector: ReferenceInjector
-
   constructor(
-    fragmentRepository: FragmentRepository & AnnotationRepository,
-    imageRepository: ImageRepository,
-    wordRepository: WordRepository,
-    bibliographyService: BibliographyService
-  ) {
-    this.fragmentRepository = fragmentRepository
-    this.imageRepository = imageRepository
-    this.wordRepository = wordRepository
-    this.bibliographyService = bibliographyService
-    this.referenceInjector = new ReferenceInjector(bibliographyService)
-  }
+    private readonly fragmentRepository: FragmentRepository &
+      AnnotationRepository,
+    private readonly imageRepository: ImageRepository,
+    private readonly wordRepository: WordRepository,
+    private readonly bibliographyService: BibliographyService
+  ) {}
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.fragmentRepository.statistics()
@@ -94,18 +82,11 @@ export class FragmentService {
   }
 
   find(number: string): Promise<Fragment> {
-    return this.fragmentRepository
-      .find(number)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+    return this.fragmentRepository.find(number)
   }
+
   updateGenres(number: string, genres: Genres): Promise<Fragment> {
-    return this.fragmentRepository
-      .updateGenres(number, genres)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+    return this.fragmentRepository.updateGenres(number, genres)
   }
 
   fetchGenres(): Promise<string[][]> {
@@ -117,33 +98,25 @@ export class FragmentService {
     transliteration: string,
     notes: string
   ): Promise<Fragment> {
-    return this.fragmentRepository
-      .updateTransliteration(number, transliteration, notes)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+    return this.fragmentRepository.updateTransliteration(
+      number,
+      transliteration,
+      notes
+    )
   }
 
   updateLemmatization(
     number: string,
     lemmatization: LemmatizationDto
   ): Promise<Fragment> {
-    return this.fragmentRepository
-      .updateLemmatization(number, lemmatization)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+    return this.fragmentRepository.updateLemmatization(number, lemmatization)
   }
 
   updateReferences(
     number: string,
     references: ReadonlyArray<Reference>
   ): Promise<Fragment> {
-    return this.fragmentRepository
-      .updateReferences(number, references)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+    return this.fragmentRepository.updateReferences(number, references)
   }
 
   findFolio(folio: Folio): Promise<Blob> {

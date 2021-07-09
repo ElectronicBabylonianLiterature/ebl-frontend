@@ -51,6 +51,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import TranslationLine from 'transliteration/domain/translation-line'
+import createReference from 'bibliography/application/createReference'
 
 const lineClases = {
   TextLine: TextLine,
@@ -109,7 +110,7 @@ function createFragment(dto): Fragment {
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
     text: createText(dto.text),
-    references: dto.references,
+    references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
   })

@@ -6,7 +6,9 @@ import _ from 'lodash'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import BibliographyEditor from './BibliographyEditor'
-import { template } from 'bibliography/domain/BibliographyEntry'
+import BibliographyEntry, {
+  template,
+} from 'bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 
@@ -78,9 +80,12 @@ describe('Creating', () => {
   commonTests(true, createWaitFor)
 })
 
-function expectTextContentToContainCslJson(container, entry) {
+function expectTextContentToContainCslJson(
+  container: HTMLElement,
+  entry: BibliographyEntry
+) {
   expect(container).toHaveTextContent(
-    JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' ')
+    JSON.stringify(entry.toCslData(), null, 1).replace(/\s+/g, ' ')
   )
 }
 

@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import Cite from 'citation-js'
-import BibliographyEntry from './BibliographyEntry'
+import BibliographyEntry, { CslData } from './BibliographyEntry'
 import { cslDataFactory } from 'test-support/bibliography-fixtures'
 
-let cslData
-let entry
-let cite
+let cslData: CslData
+let entry: BibliographyEntry
+let cite: Cite
 
 beforeEach(() => {
   cslData = cslDataFactory.build({
@@ -96,10 +96,10 @@ test('toBibtex', () => {
   )
 })
 
-test('toJson', () => {
+test('toCslData', () => {
   const expectedCslData = cslDataFactory.build({
     ..._.omit(cslData, '_underscored'),
     author: [{ family: 'Family' }],
   })
-  expect(entry.toJson()).toEqual(expectedCslData)
+  expect(entry.toCslData()).toEqual(expectedCslData)
 })

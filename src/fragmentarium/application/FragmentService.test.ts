@@ -9,7 +9,6 @@ import Lemmatization, {
 } from 'transliteration/domain/Lemmatization'
 import FragmentService from './FragmentService'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import setUpReferences from 'test-support/setUpReferences'
 import produce, { castDraft, Draft } from 'immer'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
@@ -17,6 +16,11 @@ import LemmatizationFactory from './LemmatizationFactory'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import {
+  bibliographyEntryFactory,
+  referenceFactory,
+} from 'test-support/bibliography-fixtures'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 jest.mock('./LemmatizationFactory')
 
@@ -135,10 +139,9 @@ describe.each(['searchLemma'])('%s', (method) => {
   })
 })
 
-describe('methods returning hydrated fragment', () => {
+describe('methods returning fragment', () => {
   const number = 'K.1'
   let fragment: Fragment
-  let expectedFragment: Fragment
   let result: Fragment
   let genreResult: string[][]
   const genreOptions = [['ARCHIVE', 'Administrative']]
@@ -150,9 +153,11 @@ describe('methods returning hydrated fragment', () => {
   ])
 
   beforeEach(() => {
-    const { entries, references, expectedReferences } = setUpReferences(
-      bibliographyService
-    )
+    const references = bibliographyEntryFactory
+      .buildList(2)
+      .map((entry: BibliographyEntry) =>
+        referenceFactory.build({}, { associations: { document: entry } })
+      )
     fragment = fragmentFactory.build(
       {
         number: number,
@@ -164,24 +169,15 @@ describe('methods returning hydrated fragment', () => {
         },
       }
     )
-    bibliographyService.find.mockImplementation((id) => {
-      const entry = entries.find((entry) => entry.id === id)
-      return entry
-        ? Promise.resolve(entry)
-        : Promise.reject(new Error(`${id} not found.`))
-    })
-
-    expectedFragment = fragment.setReferences(expectedReferences)
   })
 
   describe('find', () => {
     beforeEach(async () => {
       fragmentRepository.find.mockReturnValue(Promise.resolve(fragment))
-      result = await fragmentService.find(fragment.number)
+      result = await fragmentService.find(number)
     })
 
-    test('Returns hydrated fragment', () =>
-      expect(result).toEqual(expectedFragment))
+    test('Returns fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () =>
       expect(fragmentRepository.find).toHaveBeenCalledWith(number))
   })
@@ -201,8 +197,7 @@ describe('methods returning hydrated fragment', () => {
       )
     })
 
-    test('Returns hydrated fragment', () =>
-      expect(result).toEqual(expectedFragment))
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateTransliteration).toHaveBeenCalledWith(
         fragment.number,
@@ -223,8 +218,10 @@ describe('methods returning hydrated fragment', () => {
   })
 
   describe('update genre', () => {
+    let expectedFragment: Fragment
+
     beforeEach(async () => {
-      expectedFragment = produce(expectedFragment, (draft: Draft<Fragment>) => {
+      expectedFragment = produce(fragment, (draft: Draft<Fragment>) => {
         draft.genres = castDraft(genres)
       })
       fragmentRepository.updateGenres.mockReturnValue(
@@ -257,8 +254,7 @@ describe('methods returning hydrated fragment', () => {
       )
     })
 
-    test('Returns hydrated fragment', () =>
-      expect(result).toEqual(expectedFragment))
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateLemmatization).toHaveBeenCalledWith(
         fragment.number,
@@ -277,8 +273,7 @@ describe('methods returning hydrated fragment', () => {
       )
     })
 
-    test('Returns hydrated fragment', () =>
-      expect(result).toEqual(expectedFragment))
+    test('Returns updated fragment', () => expect(result).toEqual(fragment))
     test('Finds correct fragment', () =>
       expect(fragmentRepository.updateReferences).toHaveBeenCalledWith(
         fragment.number,

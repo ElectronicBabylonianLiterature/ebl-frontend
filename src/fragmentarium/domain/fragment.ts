@@ -118,7 +118,7 @@ export class Fragment {
     readonly text: Text,
     readonly notes: string,
     readonly museum: Museum,
-    readonly references: ReadonlyArray<any>,
+    readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
     readonly atf: string,
     readonly hasPhoto: boolean,
@@ -162,7 +162,7 @@ export class Fragment {
     text: Text
     notes: string
     museum: Museum
-    references: ReadonlyArray<any>
+    references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean
