@@ -2,6 +2,7 @@ import {
   createLine,
   createVariant,
   createManuscriptLine,
+  EditStatus,
 } from 'corpus/domain/line'
 import { createDefaultLineFactory } from './line-factory'
 import { produce } from 'immer'
@@ -13,6 +14,7 @@ describe('createDefaultLineFactory', () => {
     expect(createDefaultLineFactory()()).toEqual(
       createLine({
         variants: [createVariant({ reconstruction: defaultReconstruction })],
+        status: EditStatus.NEW,
       })
     )
   })
@@ -47,6 +49,7 @@ describe('createDefaultLineFactory', () => {
                 reconstruction: defaultReconstruction,
               }),
             ],
+            status: EditStatus.NEW,
           })
         )
       })
@@ -78,6 +81,7 @@ describe('createDefaultLineFactory', () => {
                 ],
               }),
             ],
+            status: EditStatus.NEW,
           })
         )
       })
@@ -117,6 +121,7 @@ describe('createDefaultLineFactory', () => {
             }),
           }),
         ],
+        status: EditStatus.NEW,
       })
     )
   })

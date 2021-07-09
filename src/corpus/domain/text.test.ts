@@ -5,6 +5,7 @@ import { ChapterAlignment } from './alignment'
 import {
   createLine,
   createManuscriptLine,
+  EditStatus,
   Line,
   LineVariant,
   ManuscriptLine,
@@ -116,6 +117,7 @@ const lineConfig: Line = {
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
   translation: '',
+  status: EditStatus.CLEAN,
 }
 
 const stage = 'Old Babylonian'
