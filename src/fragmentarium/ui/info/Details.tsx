@@ -41,12 +41,12 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
               >
                 {index > 0 ? (
                   <>
-                    <br />+
+                    <br />+{!join.isChecked && <sup>?</sup>}
                   </>
                 ) : groupIndex > 0 ? (
                   <>
                     <br />
-                    (+)
+                    (+{!join.isChecked && <sup>?</sup>})
                   </>
                 ) : (
                   ''
@@ -57,7 +57,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                   <FragmentLink number={join.museumNumber}>
                     {join.museumNumber}
                   </FragmentLink>
-                )}
+                )}{' '}
                 <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
               </li>
             ))
