@@ -120,43 +120,46 @@ export const joinFactory = Factory.define<Join>(({ sequence }) => ({
   date: chance.sentence(),
   note: chance.sentence(),
   legacyData: chance.sentence(),
+  isInFragmentarium: chance.bool(),
 }))
 
-export const fragmentFactory = Factory.define<Fragment>(({ associations }) => {
-  const museumNumber = chance.word()
-  return new Fragment(
-    museumNumber,
-    chance.word(),
-    chance.word(),
-    chance.word(),
-    chance.sentence({ words: 4 }),
-    associations.joins ?? [
-      [joinFactory.build({ museumNumber })],
-      [joinFactory.build()],
-    ],
-    description(),
-    associations.measures ?? measuresFactory.build(),
-    collection(),
-    script(),
-    associations.folios ?? folioFactory.buildList(2),
-    associations.record ?? recordFactory.buildList(2),
-    associations.text ?? complexText,
-    chance.sentence(),
-    associations.museum ?? Museum.of('The British Museum'),
-    associations.references ?? referenceFactory.buildList(2),
-    associations.uncuratedReferences ?? null,
-    '',
-    chance.bool(),
-    associations.genres ??
-      chance.pickone([
-        new Genres([
-          new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
-          new Genre(['Other', 'Fake', 'Certain'], false),
-        ]),
-        new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
-      ])
-  )
-})
+export const fragmentFactory = Factory.define<Fragment>(
+  ({ associations, sequence }) => {
+    const museumNumber = `${chance.word()}.${sequence}`
+    return new Fragment(
+      museumNumber,
+      chance.word(),
+      chance.word(),
+      chance.word(),
+      chance.sentence({ words: 4 }),
+      associations.joins ?? [
+        [joinFactory.build({ museumNumber, isInFragmentarium: true })],
+        [joinFactory.build()],
+      ],
+      description(),
+      associations.measures ?? measuresFactory.build(),
+      collection(),
+      script(),
+      associations.folios ?? folioFactory.buildList(2),
+      associations.record ?? recordFactory.buildList(2),
+      associations.text ?? complexText,
+      chance.sentence(),
+      associations.museum ?? Museum.of('The British Museum'),
+      associations.references ?? referenceFactory.buildList(2),
+      associations.uncuratedReferences ?? null,
+      '',
+      chance.bool(),
+      associations.genres ??
+        chance.pickone([
+          new Genres([
+            new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
+            new Genre(['Other', 'Fake', 'Certain'], false),
+          ]),
+          new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
+        ])
+    )
+  }
+)
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
   ({ associations }) => ({

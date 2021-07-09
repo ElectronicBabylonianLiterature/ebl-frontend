@@ -97,6 +97,7 @@ export interface Join {
   readonly date: string
   readonly note: string
   readonly legacyData: string
+  readonly isInFragmentarium: boolean
 }
 
 export class Fragment {

@@ -51,7 +51,7 @@ function Joins({ fragment: { number, joins } }: Props): JSX.Element {
                 ) : (
                   ''
                 )}{' '}
-                {number === join.museumNumber ? (
+                {!join.isInFragmentarium || number === join.museumNumber ? (
                   join.museumNumber
                 ) : (
                   <FragmentLink number={join.museumNumber}>

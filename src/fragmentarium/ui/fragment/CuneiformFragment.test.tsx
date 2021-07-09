@@ -2,6 +2,7 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { render, act, RenderResult } from '@testing-library/react'
 import { Promise } from 'bluebird'
+import _ from 'lodash'
 
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
@@ -109,13 +110,15 @@ test.each(['collection', 'cdliNumber', 'accession'])(
   }
 )
 
-it(`Renders museum`, () => {
+it('Renders museum', () => {
   expect(container).toHaveTextContent(fragment.museum.name)
 })
 
 it('Renders all joins', () => {
   for (const join of fragment.joins.flat()) {
-    expect(element.getByText(join.museumNumber)).toBeInTheDocument()
+    expect(
+      element.getByText(new RegExp(_.escapeRegExp(join.museumNumber)))
+    ).toBeInTheDocument()
   }
 })
 

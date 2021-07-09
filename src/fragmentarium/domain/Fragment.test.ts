@@ -41,6 +41,7 @@ const config: Parameters<typeof Fragment['create']>[0] = {
         joinedBy: '',
         note: '',
         legacyData: '',
+        isInFragmentarium: true,
       },
     ],
   ],

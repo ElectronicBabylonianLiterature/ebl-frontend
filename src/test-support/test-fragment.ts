@@ -296,6 +296,7 @@ export const fragmentDto = {
         date: '',
         note: '',
         legacyData: '',
+        isInFragmentarium: true,
       },
     ],
     [
@@ -310,6 +311,7 @@ export const fragmentDto = {
         date: '',
         note: '',
         legacyData: '',
+        isInFragmentarium: false,
       },
     ],
   ],
@@ -363,6 +365,7 @@ export const fragment = new Fragment(
         date: '',
         note: '',
         legacyData: '',
+        isInFragmentarium: true,
       },
     ],
     [
@@ -373,6 +376,7 @@ export const fragment = new Fragment(
         date: '',
         note: '',
         legacyData: '',
+        isInFragmentarium: false,
       },
     ],
   ],
