@@ -21,7 +21,8 @@ function getName(author: unknown): string {
 }
 
 export type CslData = { readonly [key: string]: any }
-class BibliographyEntry {
+export default class BibliographyEntry {
+  readonly [immerable] = true
   private readonly cslData: CslData
 
   constructor(cslData?: CslData | null | undefined) {
@@ -91,12 +92,10 @@ class BibliographyEntry {
     })
   }
 
-  toJson(): CslData {
+  toCslData(): CslData {
     return this.cslData
   }
 }
-BibliographyEntry[immerable] = true
-export default BibliographyEntry
 
 export const template = new BibliographyEntry({
   id: '<id>',

@@ -5,6 +5,8 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from '@testing-library/react'
+import _ from 'lodash'
+
 import Details from './Details'
 import Museum from 'fragmentarium/domain/museum'
 import { Fragment } from 'fragmentarium/domain/fragment'
@@ -12,6 +14,7 @@ import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
 import {
   fragmentFactory,
+  joinFactory,
   measuresFactory,
 } from 'test-support/fragment-fixtures'
 
@@ -39,14 +42,29 @@ describe('All details', () => {
     fragmentService.fetchGenres.mockReturnValue(
       Promise.resolve([['ARCHIVAL'], ['ARCHIVAL', 'Administrative']])
     )
+    const number = 'X.1'
     fragment = fragmentFactory.build(
       {
+        number,
         collection: 'The Collection',
       },
       {
         associations: {
           museum: Museum.of('The British Museum'),
           genres: new Genres([]),
+          joins: [
+            [
+              joinFactory.build({
+                museumNumber: number,
+                isInFragmentarium: true,
+              }),
+              joinFactory.build({ isInFragmentarium: true }),
+            ],
+            [
+              joinFactory.build({ isInFragmentarium: false }),
+              joinFactory.build({ isInFragmentarium: true }),
+            ],
+          ],
         },
       }
     )
@@ -69,19 +87,36 @@ describe('All details', () => {
     ).toBeInTheDocument()
   })
 
-  it(`Renders all joins`, () => {
-    for (const item of fragment.joins) {
-      expect(screen.getByText(item)).toBeInTheDocument()
-    }
+  it('Does not link to self', () => {
+    fragment.joins
+      .flat()
+      .filter((join) => join.museumNumber === fragment.number)
+      .forEach((join) => {
+        expect(screen.getByText(join.museumNumber)).not.toHaveAttribute('href')
+      })
   })
 
-  it(`Links all joins`, () => {
-    for (const item of fragment.joins) {
-      expect(screen.getByText(item)).toHaveAttribute(
-        'href',
-        `/fragmentarium/${item}`
-      )
-    }
+  it('Does not link to missing joins', () => {
+    fragment.joins
+      .flat()
+      .filter((join) => !join.isInFragmentarium)
+      .forEach((join) => {
+        expect(
+          screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber)))
+        ).not.toHaveAttribute('href')
+      })
+  })
+
+  it('Links to other joins', () => {
+    fragment.joins
+      .flat()
+      .filter((join) => join.museumNumber !== fragment.number)
+      .filter((join) => join.isInFragmentarium)
+      .forEach((join) => {
+        expect(
+          screen.getByRole('link', { name: join.museumNumber })
+        ).toHaveAttribute('href', `/fragmentarium/${join.museumNumber}`)
+      })
   })
 
   it('Renders measures', () => {
@@ -139,7 +174,7 @@ describe('Missing details', () => {
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
-    expect(screen.getByText('Joins: -')).toBeInTheDocument()
+    expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
   })
 
   it('Does not renders missing measures', () => {

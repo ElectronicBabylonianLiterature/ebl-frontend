@@ -8,18 +8,16 @@ import ExternalLink from 'common/ExternalLink'
 import './Details.css'
 import GenreSelection from 'fragmentarium/ui/info/GenreSelection'
 import { Genres } from 'fragmentarium/domain/Genres'
-import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
-type Props = {
-  fragment: Fragment
+interface Props {
+  readonly fragment: Fragment
 }
 
-function Collection({ fragment }: Props) {
-  return <>{fragment.collection && `(${fragment.collection} Collection)`}</>
+function Collection({ fragment: { collection } }: Props): JSX.Element {
+  return <>{collection && `(${collection} Collection)`}</>
 }
 
-function MuseumName({ fragment }: Props) {
-  const museum = fragment.museum
+function MuseumName({ fragment: { museum } }: Props): JSX.Element {
   return museum.hasUrl ? (
     <ExternalLink href={museum.url}>{museum.name}</ExternalLink>
   ) : (
@@ -27,44 +25,58 @@ function MuseumName({ fragment }: Props) {
   )
 }
 
-function Joins({ fragment }: Props) {
+function Joins({ fragment: { number, joins } }: Props): JSX.Element {
   return (
-    <>
-      Joins:{' '}
-      {_.isEmpty(fragment.joins) ? (
+    <div className="Details-joins">
+      Joins:
+      {_.isEmpty(joins) ? (
         '-'
       ) : (
-        <ul className="Details-joins">
-          {fragment.joins.flat().map((join: any) => {
-            const number = _.isString(join)
-              ? join
-              : museumNumberToString(join.museumNumber)
-            return (
-              <li className="Details-joins__join" key={number}>
-                <FragmentLink number={number}>{number}</FragmentLink>
+        <ol className="Details-joins__list">
+          {joins.map((group, groupIndex) =>
+            group.map((join, index) => (
+              <li
+                className="Details-joins__join"
+                key={`${groupIndex}-${index}`}
+              >
+                {index > 0 ? (
+                  <>
+                    <br />+{!join.isChecked && <sup>?</sup>}
+                  </>
+                ) : groupIndex > 0 ? (
+                  <>
+                    <br />
+                    (+{!join.isChecked && <sup>?</sup>})
+                  </>
+                ) : (
+                  ''
+                )}{' '}
+                {!join.isInFragmentarium || number === join.museumNumber ? (
+                  join.museumNumber
+                ) : (
+                  <FragmentLink number={join.museumNumber}>
+                    {join.museumNumber}
+                  </FragmentLink>
+                )}{' '}
+                <sup>{_.compact([join.date, join.joinedBy]).join(', ')}</sup>
               </li>
-            )
-          })}
-        </ul>
+            ))
+          )}
+        </ol>
       )}
-    </>
+    </div>
   )
 }
 
-function Measurements({ fragment }: Props) {
-  const measurements = _([
-    fragment.measures.length,
-    fragment.measures.width,
-    fragment.measures.thickness,
-  ])
+function Measurements({ fragment: { measures } }: Props): JSX.Element {
+  const measurements = _([measures.length, measures.width, measures.thickness])
     .compact()
     .join(' × ')
 
-  return <>{`${measurements}${_.isEmpty(measurements) ? '' : ' cm'}`}</>
+  return <>{_.isEmpty(measurements) ? '' : `${measurements}  cm`}</>
 }
 
-function CdliNumber({ fragment }: Props) {
-  const cdliNumber = fragment.cdliNumber
+function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
   return (
     <>
       CDLI:{' '}
@@ -77,14 +89,14 @@ function CdliNumber({ fragment }: Props) {
   )
 }
 
-function Accession({ fragment }: Props) {
+function Accession({ fragment }: Props): JSX.Element {
   return <>Accession: {fragment.accession || '-'}</>
 }
 
-type DetailsProps = {
-  fragment: Fragment
-  updateGenres: (genres: Genres) => void
-  fragmentService
+interface DetailsProps {
+  readonly fragment: Fragment
+  readonly updateGenres: (genres: Genres) => void
+  readonly fragmentService: any
 }
 
 function Details({

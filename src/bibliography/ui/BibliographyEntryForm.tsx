@@ -53,8 +53,8 @@ export default class BibliographyEntryForm extends Component<Props, State> {
     this.state = props.value
       ? {
           citation: props.value.toHtml(),
-          cslData: [props.value.toJson()],
-          value: JSON.stringify(props.value.toJson(), null, 2),
+          cslData: [props.value.toCslData()],
+          value: JSON.stringify(props.value.toCslData(), null, 2),
           loading: false,
           isInvalid: false,
         }

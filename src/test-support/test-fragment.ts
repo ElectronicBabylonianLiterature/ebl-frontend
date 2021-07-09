@@ -4,6 +4,8 @@ import { Text } from 'transliteration/domain/text'
 import { TextLineDto, TextLine } from 'transliteration/domain/text-line'
 import Museum from 'fragmentarium/domain/museum'
 import { Genres } from 'fragmentarium/domain/Genres'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const lines: readonly TextLineDto[] = [
   {
@@ -281,7 +283,38 @@ export const fragmentDto = {
   bmIdNumber: '',
   publication: 'Electronic Babylonian Literature',
   description: 'A fragment to be used when testing the eBL application',
-  joins: [],
+  joins: [
+    [
+      {
+        museumNumber: {
+          prefix: 'Test',
+          number: 'Fragment',
+          suffix: '',
+        },
+        isChecked: true,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+        isInFragmentarium: true,
+      },
+    ],
+    [
+      {
+        museumNumber: {
+          prefix: 'X',
+          number: '2',
+          suffix: 'b',
+        },
+        isChecked: false,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+        isInFragmentarium: false,
+      },
+    ],
+  ],
   length: { value: 3.14, note: '(complete)' },
   width: { value: 0.30282212, note: '' },
   thickness: {},
@@ -297,7 +330,14 @@ export const fragmentDto = {
   folios: [{ name: 'FWG', number: 'M134' }],
   text: { lines },
   references: [
-    { id: 'RN52', type: 'DISCUSSION', pages: '', notes: '', linesCited: [] },
+    {
+      id: 'RN52',
+      type: 'DISCUSSION',
+      pages: '',
+      notes: '',
+      linesCited: [],
+      document: { id: 'RN52' },
+    },
   ],
   atf:
     '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',
@@ -316,7 +356,30 @@ export const fragment = new Fragment(
   '',
   '',
   'Electronic Babylonian Literature',
-  [],
+  [
+    [
+      {
+        museumNumber: 'Test.Fragment',
+        isChecked: true,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+        isInFragmentarium: true,
+      },
+    ],
+    [
+      {
+        museumNumber: 'X.2.b',
+        isChecked: false,
+        joinedBy: '',
+        date: '',
+        note: '',
+        legacyData: '',
+        isInFragmentarium: false,
+      },
+    ],
+  ],
   'A fragment to be used when testing the eBL application',
   {
     length: 3.14,
@@ -342,13 +405,13 @@ export const fragment = new Fragment(
   '',
   Museum.of('The British Museum'),
   [
-    {
-      id: 'RN52',
-      type: 'DISCUSSION',
-      pages: '',
-      notes: '',
-      linesCited: [],
-    },
+    new Reference(
+      'DISCUSSION',
+      '',
+      '',
+      [],
+      new BibliographyEntry({ id: 'RN52' })
+    ),
   ],
   null,
   '10. sal/: š[im {gu}[...].GA\n10. ::/sal ši]m\n10. šim | šim\n10. ...+ku {KA.G[A} ... ....ku x',

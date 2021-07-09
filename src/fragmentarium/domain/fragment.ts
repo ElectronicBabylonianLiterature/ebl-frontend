@@ -90,6 +90,16 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
+export interface Join {
+  readonly museumNumber: string
+  readonly isChecked: boolean
+  readonly joinedBy: string
+  readonly date: string
+  readonly note: string
+  readonly legacyData: string
+  readonly isInFragmentarium: boolean
+}
+
 export class Fragment {
   readonly [immerable] = true
 
@@ -99,7 +109,7 @@ export class Fragment {
     readonly bmIdNumber: string,
     readonly accession: string,
     readonly publication: string,
-    readonly joins: ReadonlyArray<string>,
+    readonly joins: ReadonlyArray<ReadonlyArray<Join>>,
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
@@ -109,7 +119,7 @@ export class Fragment {
     readonly text: Text,
     readonly notes: string,
     readonly museum: Museum,
-    readonly references: ReadonlyArray<any>,
+    readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
     readonly atf: string,
     readonly hasPhoto: boolean,
@@ -143,7 +153,7 @@ export class Fragment {
     bmIdNumber: string
     accession: string
     publication: string
-    joins: ReadonlyArray<string>
+    joins: ReadonlyArray<ReadonlyArray<Join>>
     description: string
     measures: Measures
     collection: string
@@ -153,7 +163,7 @@ export class Fragment {
     text: Text
     notes: string
     museum: Museum
-    references: ReadonlyArray<any>
+    references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean

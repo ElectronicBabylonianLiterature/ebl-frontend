@@ -12,14 +12,15 @@
 }
 
 .Details-joins {
+  padding-left: 0.8em;
+  text-indent: -0.8em;
+}
+
+.Details-joins__list {
   display: inline;
   padding: 0;
 }
 
 .Details-joins__join {
   display: inline;
-}
-
-.Details-joins__join + .Details-joins__join::before {
-  content: ', ';
 }

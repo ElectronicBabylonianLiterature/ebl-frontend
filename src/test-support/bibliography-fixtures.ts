@@ -12,6 +12,16 @@ function integer(min: number, max: number): number {
   return chance.integer({ min: min, max: max })
 }
 
+function type(): ReferenceType {
+  return chance.pickone([
+    'EDITION',
+    'DISCUSSION',
+    'COPY',
+    'PHOTO',
+    'TRANSLATION',
+  ])
+}
+
 const authorFactory = Factory.define<{ given: string; family: string }>(() => ({
   given: chance.first(),
   family: chance.last(),
@@ -61,28 +71,25 @@ export function buildBorger1957(): BibliographyEntry {
   )
 }
 
-export const referenceDtoFactory = Factory.define<ReferenceDto>(() => ({
-  id: chance.string(),
-  type: chance.pickone([
-    'EDITION',
-    'DISCUSSION',
-    'COPY',
-    'PHOTO',
-    'TRANSLATION',
-  ]),
-  pages: `${chance.natural()}-${chance.natural()}`,
-  notes: chance.sentence(),
-  linesCited: chance.pickset(['1.', '2.', "3'.", "4'.2."], 2),
-}))
+export const referenceDtoFactory = Factory.define<ReferenceDto>(
+  ({ associations }) => ({
+    id: chance.string(),
+    type: type(),
+    pages: `${chance.natural()}-${chance.natural()}`,
+    notes: chance.sentence(),
+    linesCited: chance.pickset(['1.', '2.', "3'.", "4'.2."], 2),
+    document: associations.document ?? null,
+  })
+)
 
 export const referenceFactory = Factory.define<Reference>(
-  () =>
+  ({ associations }) =>
     new Reference(
-      chance.pickone(['EDITION', 'DISCUSSION', 'COPY', 'PHOTO', 'TRANSLATION']),
+      type(),
       `${chance.natural()}-${chance.natural()}`,
       chance.sentence(),
       chance.pickset(['1.', '2.', "3'.", "4'.2."], 2),
-      bibliographyEntryFactory.build()
+      associations.document ?? bibliographyEntryFactory.build()
     )
 )
 

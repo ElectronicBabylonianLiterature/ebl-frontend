@@ -2,7 +2,6 @@ import produce, { Draft, castDraft } from 'immer'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
-import createReference from 'bibliography/application/createReference'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { BibliographyPart, MarkupPart } from 'transliteration/domain/markup'
@@ -18,9 +17,7 @@ export default class ReferenceInjector {
   }
 
   injectReferences(fragment: Fragment): Promise<Fragment> {
-    return this.createReferences(fragment.references)
-      .then((references) => fragment.setReferences(references))
-      .then((fragment) => this.injectReferencesToMarkup(fragment))
+    return this.injectReferencesToMarkup(fragment)
   }
 
   private injectReferencesToMarkup(fragment: Fragment): Promise<Fragment> {
@@ -44,10 +41,7 @@ export default class ReferenceInjector {
             .flatMap((line: Draft<NoteLine | TranslationLine>) => line.parts)
             .filter(isBibliographyPart)
             .map((part: Draft<BibliographyPart>) =>
-              createReference(
-                part.reference as ReferenceDto,
-                this.bibliographyService
-              )
+              this.createReference(part.reference as ReferenceDto)
                 .then((reference): void => {
                   part.reference = castDraft(reference)
                 })
@@ -60,13 +54,18 @@ export default class ReferenceInjector {
     })
   }
 
-  private createReferences(
-    referenceDtos: readonly ReferenceDto[]
-  ): Promise<Reference[]> {
-    return Promise.all<Reference>(
-      referenceDtos.map((reference) =>
-        createReference(reference, this.bibliographyService)
+  private createReference(data: ReferenceDto): Promise<Reference> {
+    return this.bibliographyService
+      .find(data.id)
+      .then(
+        (entry) =>
+          new Reference(
+            data.type,
+            data.pages,
+            data.notes,
+            data.linesCited,
+            entry
+          )
       )
-    )
   }
 }

@@ -23,14 +23,28 @@ import {
 import Museum from './museum'
 import { LooseDollarLine } from 'transliteration/domain/dollar-lines'
 import { Genres } from 'fragmentarium/domain/Genres'
+import Reference from 'bibliography/domain/Reference'
+import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-const config = {
+const config: Parameters<typeof Fragment['create']>[0] = {
   number: 'K.1',
   cdliNumber: 'cdli.1',
   bmIdNumber: 'bm.1',
   accession: '1',
   publication: 'A journal',
-  joins: ['K.2'],
+  joins: [
+    [
+      {
+        museumNumber: 'K.2',
+        isChecked: true,
+        date: '',
+        joinedBy: '',
+        note: '',
+        legacyData: '',
+        isInFragmentarium: true,
+      },
+    ],
+  ],
   description: 'A clay tabled',
   measures: {
     length: 3,
@@ -68,13 +82,13 @@ const config = {
   notes: 'Some notes',
   museum: Museum.of('The museum'),
   references: [
-    {
-      id: 'RN1853',
-      linesCited: [],
-      notes: '',
-      pages: '34-54',
-      type: 'DISCUSSION',
-    },
+    new Reference(
+      'DISCUSSION',
+      '34-54',
+      '',
+      [],
+      new BibliographyEntry({ id: 'RN1853' })
+    ),
   ],
   uncuratedReferences: [
     {

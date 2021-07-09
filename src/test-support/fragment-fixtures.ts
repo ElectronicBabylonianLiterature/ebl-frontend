@@ -3,6 +3,7 @@ import { Chance } from 'chance'
 import {
   Fragment,
   FragmentInfo,
+  Join,
   Measures,
   RecordEntry,
   UncuratedReference,
@@ -11,7 +12,7 @@ import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
-import { referenceDtoFactory } from './bibliography-fixtures'
+import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 
 const chance = new Chance()
@@ -112,15 +113,29 @@ export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   })
 )
 
+export const joinFactory = Factory.define<Join>(({ sequence }) => ({
+  museumNumber: `X.${sequence}`,
+  isChecked: chance.bool(),
+  joinedBy: chance.last(),
+  date: chance.sentence(),
+  note: chance.sentence(),
+  legacyData: chance.sentence(),
+  isInFragmentarium: chance.bool(),
+}))
+
 export const fragmentFactory = Factory.define<Fragment>(
-  ({ associations }) =>
-    new Fragment(
-      chance.word(),
+  ({ associations, sequence }) => {
+    const museumNumber = `${chance.word()}.${sequence}`
+    return new Fragment(
+      museumNumber,
       chance.word(),
       chance.word(),
       chance.word(),
       chance.sentence({ words: 4 }),
-      associations.joins ?? chance.n(chance.word, 1),
+      associations.joins ?? [
+        [joinFactory.build({ museumNumber, isInFragmentarium: true })],
+        [joinFactory.build()],
+      ],
       description(),
       associations.measures ?? measuresFactory.build(),
       collection(),
@@ -130,7 +145,7 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.text ?? complexText,
       chance.sentence(),
       associations.museum ?? Museum.of('The British Museum'),
-      associations.references ?? referenceDtoFactory.buildList(2),
+      associations.references ?? referenceFactory.buildList(2),
       associations.uncuratedReferences ?? null,
       '',
       chance.bool(),
@@ -143,6 +158,7 @@ export const fragmentFactory = Factory.define<Fragment>(
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
         ])
     )
+  }
 )
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
