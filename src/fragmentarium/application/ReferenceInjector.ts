@@ -2,7 +2,6 @@ import produce, { Draft, castDraft } from 'immer'
 import Promise from 'bluebird'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Reference from 'bibliography/domain/Reference'
-import createReference from 'bibliography/application/createReference'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { BibliographyPart, MarkupPart } from 'transliteration/domain/markup'
@@ -58,6 +57,15 @@ export default class ReferenceInjector {
   private createReference(data: ReferenceDto): Promise<Reference> {
     return this.bibliographyService
       .find(data.id)
-      .then((entry) => createReference({ ...data, document: entry }))
+      .then(
+        (entry) =>
+          new Reference(
+            data.type,
+            data.pages,
+            data.notes,
+            data.linesCited,
+            entry
+          )
+      )
   }
 }
