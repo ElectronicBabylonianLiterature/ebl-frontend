@@ -3,6 +3,7 @@ import {
   createVariant,
   createManuscriptLine,
   Line,
+  EditStatus,
 } from 'corpus/domain/line'
 
 function nextNumber(number: string): string {
@@ -37,9 +38,11 @@ export function createDefaultLineFactory(
               ),
             })
           ),
+          status: EditStatus.NEW,
         })
     : () =>
         createLine({
           variants: [createVariant({ reconstruction: defaultReconstruction })],
+          status: EditStatus.NEW,
         })
 }

@@ -1,4 +1,5 @@
 import Bluebird from 'bluebird'
+import _ from 'lodash'
 import { testDelegation, TestData } from 'test-support/utils'
 import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
@@ -14,6 +15,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import Word from 'dictionary/domain/Word'
 import ApiClient from 'http/ApiClient'
 import produce, { castDraft } from 'immer'
+import { createLine, EditStatus } from 'corpus/domain/line'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -151,31 +153,6 @@ const manuscriptsDto = {
   uncertainFragments: ['K.1'],
 }
 
-const linesDto = {
-  lines: [
-    {
-      number: '1',
-      isBeginningOfSection: true,
-      isSecondLineOfParallelism: true,
-      translation: '',
-      variants: [
-        {
-          reconstruction: '%n kur-kur',
-          manuscripts: [
-            {
-              manuscriptId: 1,
-              labels: ['o', 'iii'],
-              number: 'a+1',
-              atf: 'kur ra',
-              omittedWords: [],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-}
-
 const textsDto = [textDto]
 
 const searchDto = {
@@ -291,11 +268,24 @@ const testData: TestData[] = [
       chapter.textId.index,
       chapter.stage,
       chapter.name,
-      chapter.lines,
+      [
+        createLine({ number: '1', status: EditStatus.DELETED }),
+        createLine({ number: '2', status: EditStatus.EDITED }),
+        createLine({ number: '3', status: EditStatus.NEW }),
+      ],
     ],
     apiClient.postJson,
     chapter,
-    [`${chapterUrl}/lines`, linesDto],
+    [
+      `${chapterUrl}/lines`,
+      {
+        edited: [
+          { index: 1, line: _.omit(createLine({ number: '2' }), 'status') },
+        ],
+        deleted: [0],
+        new: [_.omit(createLine({ number: '3' }), 'status')],
+      },
+    ],
     Bluebird.resolve(chapterDto),
   ],
   [

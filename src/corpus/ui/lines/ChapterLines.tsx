@@ -1,10 +1,15 @@
-import produce, { castDraft } from 'immer'
+import produce, { castDraft, Draft } from 'immer'
 import _ from 'lodash'
 import React from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Button, Card, Col, Form, ListGroup } from 'react-bootstrap'
 import ListForm from 'common/List'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
-import { createVariant, LineVariant, Line } from 'corpus/domain/line'
+import {
+  createVariant,
+  LineVariant,
+  Line,
+  EditStatus,
+} from 'corpus/domain/line'
 import { Chapter } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import Editor from 'editor/Editor'
@@ -69,6 +74,9 @@ function ChapterLineForm({
   const handleChange = (property: string) => (propertyValue): void =>
     onChange(
       produce(value, (draft) => {
+        if (draft.status !== EditStatus.NEW) {
+          draft.status = EditStatus.EDITED
+        }
         draft[property] = propertyValue
       })
     )
@@ -79,6 +87,9 @@ function ChapterLineForm({
     onChange(
       produce(value, (draft) => {
         draft.number = event.target.value
+        if (draft.status !== EditStatus.NEW) {
+          draft.status = EditStatus.EDITED
+        }
       })
     )
   }
@@ -86,6 +97,9 @@ function ChapterLineForm({
     onChange(
       produce(value, (draft) => {
         draft.variants = castDraft(variants)
+        if (draft.status !== EditStatus.NEW) {
+          draft.status = EditStatus.EDITED
+        }
       })
     )
   return (
@@ -153,6 +167,15 @@ function ChapterLineForm({
           </ListForm>
         </Col>
       </Form.Row>
+      <Form.Row>
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => handleChange('status')(EditStatus.DELETED)}
+        >
+          Delete line
+        </Button>
+      </Form.Row>
     </>
   )
 }
@@ -170,7 +193,7 @@ export default function ChapterLines({
   onSave,
   disabled = false,
 }: ChapterLinesLinesProps): JSX.Element {
-  const handleChange = (lines: Line[]): void =>
+  const handleChange = (lines: readonly Line[]): void =>
     onChange(
       produce(chapter, (draft) => {
         draft.lines = castDraft(lines)
@@ -179,21 +202,47 @@ export default function ChapterLines({
   return (
     <Form>
       <fieldset disabled={disabled}>
-        <ListForm
-          noun="line"
-          defaultValue={createDefaultLineFactory(_.last(chapter.lines))}
-          value={chapter.lines}
-          onChange={handleChange}
-        >
-          {(line: Line, onChange: (line: Line) => void) => (
-            <ChapterLineForm
-              onChange={onChange}
-              value={line}
-              manuscripts={chapter.manuscripts}
-              disabled={disabled}
-            />
-          )}
-        </ListForm>
+        <Card className="mb-2">
+          <ListGroup as={'ol'} variant="flush">
+            {chapter.lines.map(
+              (line: Line, index: number) =>
+                line.status !== EditStatus.DELETED && (
+                  <ListGroup.Item as="li" key={index}>
+                    <ChapterLineForm
+                      onChange={(line) =>
+                        handleChange(
+                          produce(chapter.lines, (draft: Draft<Line[]>) => {
+                            draft[index] = castDraft(line)
+                          })
+                        )
+                      }
+                      value={line}
+                      manuscripts={chapter.manuscripts}
+                      disabled={disabled}
+                    />
+                  </ListGroup.Item>
+                )
+            )}
+          </ListGroup>
+          <Card.Body>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={() =>
+                handleChange([
+                  ...chapter.lines,
+                  createDefaultLineFactory(
+                    _(chapter.lines)
+                      .reject((line) => line.status == EditStatus.DELETED)
+                      .last()
+                  )(),
+                ])
+              }
+            >
+              Add line
+            </Button>
+          </Card.Body>
+        </Card>
         <Button onClick={onSave}>Save lines</Button>
       </fieldset>
     </Form>

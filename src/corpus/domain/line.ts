@@ -260,12 +260,20 @@ export function createVariant(config: Partial<LineVariant>): LineVariant {
   )
 }
 
+export enum EditStatus {
+  CLEAN,
+  EDITED,
+  DELETED,
+  NEW,
+}
+
 export interface Line {
   readonly number: string
   readonly variants: ReadonlyArray<LineVariant>
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
   readonly translation: string
+  readonly status: EditStatus
 }
 
 export const createLine: (config: Partial<Line>) => Line = produce(
@@ -275,6 +283,7 @@ export const createLine: (config: Partial<Line>) => Line = produce(
     isSecondLineOfParallelism: false,
     isBeginningOfSection: false,
     translation: '',
+    status: EditStatus.CLEAN,
     ...draft,
   })
 )

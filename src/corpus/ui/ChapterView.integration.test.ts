@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
@@ -206,15 +208,15 @@ describe('Diplay chapter', () => {
       ['Notes', 'notes', 'more notes'],
     ])('%s', async (label, property, newValue) => {
       fakeApi.expectUpdateManuscripts(
-        chapterDtos[0],
-        produce(chapterDtos[0].manuscripts, (draft) => ({
+        chapter,
+        produce(chapter.manuscripts, (draft) => ({
           manuscripts: [
             {
               ...draft[0],
               [property]: newValue,
             },
           ],
-          uncertainFragments: chapterDtos[0].uncertainFragments,
+          uncertainFragments: chapter.uncertainFragments,
         }))
       )
       const value = manuscript[property]
@@ -249,7 +251,7 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1,
     }
-    fakeApi.expectUpdateManuscripts(chapterDtos[1], {
+    fakeApi.expectUpdateManuscripts(chapter, {
       manuscripts: [manuscript],
       uncertainFragments: [],
     })
@@ -288,12 +290,17 @@ describe('Lines', () => {
   test.each([['Number', 'number', '2']])(
     '%s',
     async (label, property, newValue) => {
-      fakeApi.expectUpdateLines(chapterDtos[2], {
-        lines: [
-          produce(chapterDtos[2].lines[0], (draft) => {
-            draft[property] = newValue
-          }),
+      fakeApi.expectUpdateLines(chapter, {
+        edited: [
+          {
+            index: 0,
+            line: produce(chapter.lines[0], (draft) => {
+              draft[property] = newValue
+            }),
+          },
         ],
+        new: [],
+        deleted: [],
       })
       const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)
@@ -307,12 +314,17 @@ describe('Lines', () => {
     ['second line of parallelism', 'isSecondLineOfParallelism'],
     ['beginning of a section', 'isBeginningOfSection'],
   ])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(chapterDtos[2], {
-      lines: [
-        produce(chapterDtos[2].lines[0], (draft) => {
-          draft[property] = !draft[property]
-        }),
+    fakeApi.expectUpdateLines(chapter, {
+      edited: [
+        {
+          index: 0,
+          line: produce(chapter.lines[0], (draft) => {
+            draft[property] = !draft[property]
+          }),
+        },
       ],
+      new: [],
+      deleted: [],
     })
     const expectedValue = line[property]
     expectedValue
@@ -335,16 +347,35 @@ describe('Add line', () => {
   })
 
   test.each([['Number', 'number']])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(chapterDtos[0], { lines: [defaultLineDto] })
+    fakeApi.expectUpdateLines(chapter, {
+      new: [_.omit(defaultLineDto, 'status')],
+      edited: [],
+      deleted: [],
+    })
     await appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
     await appDriver.click('Save lines')
   })
 })
 
+test('Delete line', async () => {
+  const chapter = chapterDtos[2]
+  await setup(chapter)
+  await appDriver.click('Lines')
+  fakeApi.expectUpdateLines(chapter, {
+    new: [],
+    edited: [],
+    deleted: [0],
+  })
+
+  await appDriver.click('Delete line')
+  await appDriver.waitForTextToDisappear('Delete line')
+  await appDriver.click('Save lines')
+})
+
 test('Import chapter', async () => {
   const chapter = chapterDtos[0]
-  fakeApi.expectImportChapter(chapterDtos[0], '1. kur')
+  fakeApi.expectImportChapter(chapter, '1. kur')
   await setup(chapter)
   await appDriver.click('Import')
   await appDriver.click('Save')

@@ -6,6 +6,7 @@ import {
   act,
   Matcher,
   within,
+  waitFor,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -117,6 +118,12 @@ export default class AppDriver {
 
   async waitForText(text: Matcher): Promise<void> {
     await this.getElement().findByText(text)
+  }
+
+  async waitForTextToDisappear(text: Matcher): Promise<void> {
+    await waitFor(() => {
+      expect(this.getElement().queryByText(text)).not.toBeInTheDocument()
+    })
   }
 
   expectTextContent(text: string | RegExp): void {
