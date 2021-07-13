@@ -1,7 +1,7 @@
 import produce, { castDraft, Draft } from 'immer'
 import _ from 'lodash'
 import React from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Button, Card, Col, Form, ListGroup } from 'react-bootstrap'
 import ListForm from 'common/List'
 import { createDefaultLineFactory } from 'corpus/application/line-factory'
 import {
@@ -168,7 +168,11 @@ function ChapterLineForm({
         </Col>
       </Form.Row>
       <Form.Row>
-        <Button onClick={() => handleChange('status')(EditStatus.DELETED)}>
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => handleChange('status')(EditStatus.DELETED)}
+        >
           Delete line
         </Button>
       </Form.Row>
@@ -198,38 +202,47 @@ export default function ChapterLines({
   return (
     <Form>
       <fieldset disabled={disabled}>
-        {chapter.lines.map(
-          (line: Line, index: number) =>
-            line.status !== EditStatus.DELETED && (
-              <ChapterLineForm
-                key={index}
-                onChange={(line) =>
-                  handleChange(
-                    produce(chapter.lines, (draft: Draft<Line[]>) => {
-                      draft[index] = castDraft(line)
-                    })
-                  )
-                }
-                value={line}
-                manuscripts={chapter.manuscripts}
-                disabled={disabled}
-              />
-            )
-        )}
-        <Button
-          onClick={() =>
-            handleChange([
-              ...chapter.lines,
-              createDefaultLineFactory(
-                _(chapter.lines)
-                  .reject((line) => line.status == EditStatus.DELETED)
-                  .last()
-              )(),
-            ])
-          }
-        >
-          Add line
-        </Button>
+        <Card className="mb-2">
+          <ListGroup as={'ol'} variant="flush">
+            {chapter.lines.map(
+              (line: Line, index: number) =>
+                line.status !== EditStatus.DELETED && (
+                  <ListGroup.Item as="li" key={index}>
+                    <ChapterLineForm
+                      onChange={(line) =>
+                        handleChange(
+                          produce(chapter.lines, (draft: Draft<Line[]>) => {
+                            draft[index] = castDraft(line)
+                          })
+                        )
+                      }
+                      value={line}
+                      manuscripts={chapter.manuscripts}
+                      disabled={disabled}
+                    />
+                  </ListGroup.Item>
+                )
+            )}
+          </ListGroup>
+          <Card.Body>
+            <Button
+              variant="outline-secondary"
+              size="sm"
+              onClick={() =>
+                handleChange([
+                  ...chapter.lines,
+                  createDefaultLineFactory(
+                    _(chapter.lines)
+                      .reject((line) => line.status == EditStatus.DELETED)
+                      .last()
+                  )(),
+                ])
+              }
+            >
+              Add line
+            </Button>
+          </Card.Body>
+        </Card>
         <Button onClick={onSave}>Save lines</Button>
       </fieldset>
     </Form>
