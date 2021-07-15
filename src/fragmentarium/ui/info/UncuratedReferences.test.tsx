@@ -17,5 +17,5 @@ test.each([
       ? uncuratedReferenceFactory.buildList(numberOfReferences)
       : []
   element = render(<UncuratedReferences uncuratedReferences={references} />)
-  expect(element.getByText(expectedText)).toBeTruthy()
+  expect(element.getByText(expectedText)).toBeInTheDocument()
 })
