@@ -8,6 +8,7 @@ import 'ace-builds/src-noconflict/mode-plain_text'
 import 'ace-builds/src-noconflict/theme-kuroir'
 import specialCharacters from './SpecialCharacters.json'
 import AtfMode from './AtfMode'
+import ErrorBoundary from 'common/ErrorBoundary'
 
 function createAnnotations(compositeError): IAnnotation[] {
   return _.get(compositeError, 'data.errors', [])
@@ -59,33 +60,35 @@ class Editor extends Component<Props> {
     const { name, value, onChange, disabled, error } = this.props
     const annotations = createAnnotations(error)
     return (
-      <AceEditor
-        ref={this.aceEditor}
-        name={name}
-        width="100%"
-        heigth="auto"
-        minLines={2}
-        maxLines={2 * value.split('\n').length + 2}
-        mode="plain_text"
-        theme="kuroir" // AtfMode is designed to be used with kuroir theme
-        value={value}
-        onChange={onChange}
-        showPrintMargin={false}
-        showGutter={!_.isEmpty(annotations)}
-        wrapEnabled
-        fontSize="initial"
-        readOnly={disabled}
-        annotations={annotations}
-        editorProps={{
-          $blockScrolling: Infinity,
-        }}
-        setOptions={{
-          showLineNumbers: false,
-          // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
-          newLineMode: 'unix',
-        }}
-        commands={specialCharacterKeys}
-      />
+      <ErrorBoundary>
+        <AceEditor
+          ref={this.aceEditor}
+          name={name}
+          width="100%"
+          heigth="auto"
+          minLines={2}
+          maxLines={2 * value.split('\n').length + 2}
+          mode="plain_text"
+          theme="kuroir" // AtfMode is designed to be used with kuroir theme
+          value={value}
+          onChange={onChange}
+          showPrintMargin={false}
+          showGutter={!_.isEmpty(annotations)}
+          wrapEnabled
+          fontSize="initial"
+          readOnly={disabled}
+          annotations={annotations}
+          editorProps={{
+            $blockScrolling: Infinity,
+          }}
+          setOptions={{
+            showLineNumbers: false,
+            // @ts-ignore https://github.com/securingsincity/react-ace/issues/752
+            newLineMode: 'unix',
+          }}
+          commands={specialCharacterKeys}
+        />
+      </ErrorBoundary>
     )
   }
 }

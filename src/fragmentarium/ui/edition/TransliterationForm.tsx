@@ -14,6 +14,7 @@ import Editor from 'editor/Editor'
 import SpecialCharactersHelp from 'editor/SpecialCharactersHelp'
 import TemplateForm from './TemplateForm'
 import { Fragment } from 'fragmentarium/domain/fragment'
+import { ErrorBoundary } from '@sentry/react'
 
 type Props = {
   transliteration: string
@@ -98,43 +99,6 @@ class TransliteratioForm extends Component<Props, State> {
       )
   }
 
-  EditorFormGroup = ({
-    property,
-    error = null,
-    showHelp = false,
-  }: {
-    property: string
-    error?: Error | null
-    showHelp?: boolean
-  }): JSX.Element => (
-    <FormGroup controlId={`${this.formId}-${property}`}>
-      <FormLabel>{_.startCase(property)}</FormLabel>{' '}
-      {showHelp && <SpecialCharactersHelp />}
-      <Editor
-        name={property}
-        value={this.state[property]}
-        onChange={this.update(property)}
-        disabled={this.props.disabled}
-        error={error}
-      />
-    </FormGroup>
-  )
-
-  Form = (): JSX.Element => (
-    <form
-      onSubmit={this.submit}
-      id={this.formId}
-      data-testid="transliteration-form"
-    >
-      <this.EditorFormGroup
-        property="transliteration"
-        error={this.state.error}
-        showHelp
-      />
-      <this.EditorFormGroup property="notes" />
-    </form>
-  )
-
   SubmitButton = (): JSX.Element => (
     <Button
       type="submit"
@@ -151,7 +115,34 @@ class TransliteratioForm extends Component<Props, State> {
       <Container fluid>
         <Row>
           <Col>
-            <this.Form />
+            <ErrorBoundary>
+              <form
+                onSubmit={this.submit}
+                id={this.formId}
+                data-testid="transliteration-form"
+              >
+                <FormGroup controlId={`${this.formId}-transliteration`}>
+                  <FormLabel>Transliteration</FormLabel>{' '}
+                  <SpecialCharactersHelp />
+                  <Editor
+                    name="transliteration"
+                    value={this.state.transliteration}
+                    onChange={this.update('transliteration')}
+                    disabled={this.props.disabled}
+                    error={this.state.error}
+                  />
+                </FormGroup>
+                <FormGroup controlId={`${this.formId}-notes`}>
+                  <FormLabel>Notes</FormLabel>{' '}
+                  <Editor
+                    name="notes"
+                    value={this.state.notes}
+                    onChange={this.update('notes')}
+                    disabled={this.props.disabled}
+                  />
+                </FormGroup>
+              </form>
+            </ErrorBoundary>
           </Col>
         </Row>
         <Row>
@@ -159,7 +150,9 @@ class TransliteratioForm extends Component<Props, State> {
             <this.SubmitButton />
           </Col>
           <Col md="auto">
-            <TemplateForm onSubmit={this.onTemplate} />
+            <ErrorBoundary>
+              <TemplateForm onSubmit={this.onTemplate} />
+            </ErrorBoundary>
           </Col>
         </Row>
       </Container>

@@ -1,12 +1,11 @@
 import React from 'react'
 import FormInput from './FormInput'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 
 import { whenClicked, changeValueByLabel } from 'test-support/utils'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -16,16 +15,16 @@ beforeEach(() => {
 describe('Value is a derived form', () => {
   beforeEach(async () => {
     value = await factory.build('derived')
-    element = RendedFormInput()
+    renderFormInput()
   })
 
   it('Displays homonym', () => {
-    expect(element.getByLabelText('Homonym').value).toEqual(value.homonym)
+    expect(screen.getByLabelText('Homonym')).toHaveValue(value.homonym)
   })
 
   it('onChanged is called with updated homonym', () => {
     const newHomonym = value.homonym === 'IV' ? 'I' : 'IV'
-    changeValueByLabel(element, 'Homonym', newHomonym)
+    changeValueByLabel(screen, 'Homonym', newHomonym)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
@@ -40,11 +39,11 @@ describe('Value is a derived form', () => {
 describe('Value is a form', () => {
   beforeEach(async () => {
     value = await factory.build('form')
-    element = RendedFormInput()
+    renderFormInput()
   })
 
   it('Does not displays homonym', () => {
-    expect(element.container).not.toHaveTextContent('Homonym')
+    expect(screen.queryByText('Homonym')).not.toBeInTheDocument()
   })
 
   commonDisplayTests()
@@ -53,12 +52,12 @@ describe('Value is a form', () => {
 
 function commonDisplayTests() {
   it('Displays lemma', () => {
-    expect(element.getByLabelText('Lemma').value).toEqual(value.lemma.join(' '))
+    expect(screen.getByLabelText('Lemma')).toHaveValue(value.lemma.join(' '))
   })
 
   it('Displays all notes', () => {
     for (const note of value.notes) {
-      expect(element.getByDisplayValue(note)).toBeVisible()
+      expect(screen.getByDisplayValue(note)).toBeVisible()
     }
   })
 }
@@ -66,7 +65,7 @@ function commonDisplayTests() {
 function commonChangeTests() {
   it('onChanged is called with updated lemma', () => {
     const newLemma = 'new lemma'
-    changeValueByLabel(element, 'Lemma', newLemma)
+    changeValueByLabel(screen, 'Lemma', newLemma)
 
     expect(onChange).toHaveBeenCalledWith({
       ...value,
@@ -75,7 +74,7 @@ function commonChangeTests() {
   })
 
   it('onChanged is called with updated notes', async () => {
-    await whenClicked(element, 'Add')
+    await whenClicked(screen, 'Add')
       .expect(onChange)
       .toHaveBeenCalledWith({
         ...value,
@@ -84,6 +83,6 @@ function commonChangeTests() {
   })
 }
 
-function RendedFormInput() {
-  return render(<FormInput value={value} onChange={onChange} />)
+function renderFormInput() {
+  render(<FormInput value={value} onChange={onChange} />)
 }

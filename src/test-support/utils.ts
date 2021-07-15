@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/prefer-screen-queries */
 import {
   fireEvent,
   waitFor,
@@ -106,9 +107,10 @@ export function whenChangedByLabel<T>(
   return whenChangedBy(element, label, newValue, changeValueByLabel)
 }
 
-export async function submitForm(element: RenderResult): Promise<void> {
+export async function submitForm(container: HTMLElement): Promise<void> {
   await act(async () => {
-    const result = element.container.querySelector('form')
+    // eslint-disable-next-line testing-library/no-node-access
+    const result = container.querySelector('form')
     result && fireEvent.submit(result)
   })
 }

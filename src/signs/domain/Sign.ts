@@ -85,9 +85,9 @@ export default class Sign {
     this.unicode = unicode
   }
 
-  private sortedValues(): Value[] {
+  private sortedValues(): readonly Value[] {
     return produce(this.values, (draftValues) => {
-      return draftValues.sort((value1, value2) =>
+      draftValues.sort((value1, value2) =>
         compareCleanedAkkadianString(value1.value, value2.value)
       )
     })

@@ -233,7 +233,7 @@ export default function ChapterLines({
                   ...chapter.lines,
                   createDefaultLineFactory(
                     _(chapter.lines)
-                      .reject((line) => line.status == EditStatus.DELETED)
+                      .reject((line) => line.status === EditStatus.DELETED)
                       .last()
                   )(),
                 ])

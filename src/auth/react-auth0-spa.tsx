@@ -73,7 +73,6 @@ export const Auth0Provider = ({
       setAuthenticationService(authenticationService)
     }
     initAuth0()
-    // eslint-disable-next-line
   }, [])
 
   return autheticationService ? (

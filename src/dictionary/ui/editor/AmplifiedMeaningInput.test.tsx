@@ -1,12 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningInput from './AmplifiedMeaningInput'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenChangedByValue } from 'test-support/utils'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -16,7 +15,7 @@ beforeEach(() => {
 describe('Entry', () => {
   beforeEach(async () => {
     value = await factory.build('entry')
-    element = renderAmplifiedMeaningInput(true)
+    renderAmplifiedMeaningInput(true)
   })
 
   commonDisplayTests()
@@ -26,24 +25,22 @@ describe('Entry', () => {
 describe('Conjugation/Function', () => {
   beforeEach(async () => {
     value = await factory.build('amplifiedMeaning')
-    element = renderAmplifiedMeaningInput(false)
+    renderAmplifiedMeaningInput(false)
   })
 
   it('Displays key', () => {
-    expect(element.getByDisplayValue(value.key)).toBeVisible()
+    expect(screen.getByDisplayValue(value.key)).toBeVisible()
   })
 
   it('Displays entries', () => {
     value.entries
       .map((entry) => entry.meaning)
-      .forEach((entry) =>
-        expect(element.getByDisplayValue(entry)).toBeVisible()
-      )
+      .forEach((entry) => expect(screen.getByDisplayValue(entry)).toBeVisible())
   })
 
   it('Calls onChange with updated value on key', () => {
     const newValue = value.key === 'D' ? 'G' : 'D'
-    whenChangedByValue(element, value.key, newValue)
+    whenChangedByValue(screen, value.key, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         ...value,
@@ -52,7 +49,7 @@ describe('Conjugation/Function', () => {
   })
 
   it('Calls onChange with updated value on entry', async () => {
-    whenChangedByValue(element, value.entries[0].meaning, 'new entry')
+    whenChangedByValue(screen, value.entries[0].meaning, 'new entry')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         ...value,
@@ -72,19 +69,19 @@ describe('Conjugation/Function', () => {
 
 function commonDisplayTests() {
   it('Displays meaning', () => {
-    expect(element.getByDisplayValue(value.meaning)).toBeVisible()
+    expect(screen.getByDisplayValue(value.meaning)).toBeVisible()
   })
 
   it('Displays vowels', () => {
     expect(
-      element.getAllByDisplayValue(value.vowels[0].value.join('/'))[0]
+      screen.getAllByDisplayValue(value.vowels[0].value.join('/'))[0]
     ).toBeVisible()
   })
 }
 
 function commonUpdateTests() {
   it('Calls onChange with updated value on meaning chnage', () => {
-    whenChangedByValue(element, value.meaning, 'new meaning')
+    whenChangedByValue(screen, value.meaning, 'new meaning')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         ...value,
@@ -95,7 +92,7 @@ function commonUpdateTests() {
   it('Calls onChange with updated value on vowels change', () => {
     const oldValue = value.vowels[0].value.join('/')
     const newValue = oldValue === 'e/e' ? 'a/e' : 'e/e'
-    whenChangedByValue(element, oldValue, newValue)
+    whenChangedByValue(screen, oldValue, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         ...value,

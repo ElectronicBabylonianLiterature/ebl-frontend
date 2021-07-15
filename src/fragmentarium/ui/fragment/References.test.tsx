@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
@@ -14,9 +14,9 @@ import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 const defaultReference = new Reference()
 
+let container: HTMLElement
 let expectedReference: Reference
 let references: Reference[]
-let element: RenderResult
 let searchEntry: BibliographyEntry
 let searchBibliography
 let updateReferences
@@ -42,8 +42,8 @@ describe('Edit references', () => {
   })
 
   test('Add reference', async () => {
-    clickNth(element, 'Add Reference')
-    await submitForm(element)
+    clickNth(screen, 'Add Reference')
+    await submitForm(container)
 
     expect(updateReferences).toHaveBeenCalledWith([
       ...references,
@@ -52,15 +52,15 @@ describe('Edit references', () => {
   })
 
   test('Delete reference', async () => {
-    clickNth(element, 'Delete Reference')
-    await submitForm(element)
+    clickNth(screen, 'Delete Reference')
+    await submitForm(container)
 
     expect(updateReferences).toHaveBeenCalledWith(_.tail(references))
   })
 
   test('Edit reference', async () => {
     await inputReference()
-    await submitForm(element)
+    await submitForm(container)
 
     expect(updateReferences).toHaveBeenCalledWith([
       expectedReference,
@@ -73,32 +73,32 @@ it('Creates a default reference if none present', async () => {
   updateReferences.mockImplementationOnce(() => Promise.resolve())
   references = []
   await renderReferencesAndWait()
-  await submitForm(element)
+  await submitForm(container)
 
   expect(updateReferences).toHaveBeenCalledWith([defaultReference])
 })
 
 function renderReferences(): void {
-  element = render(
+  container = render(
     <References
       references={references}
       searchBibliography={searchBibliography}
       updateReferences={updateReferences}
     />
-  )
+  ).container
 }
 
 async function renderReferencesAndWait(): Promise<void> {
   renderReferences()
-  await element.findAllByText('Document')
+  await screen.findAllByText('Document')
 }
 
 async function inputReference(): Promise<void> {
-  changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
-  await element.findByText(/Borger 1957/)
-  clickNth(element, /Borger 1957/, 0)
-  changeValueByLabel(element, 'Type', 'COPY')
-  changeValueByLabel(element, 'Pages', '1-2')
-  changeValueByLabel(element, 'Notes', 'notes')
-  changeValueByLabel(element, 'Lines Cited', '1,2')
+  changeValueByLabel(screen, /ReferenceForm-Document-.*/, 'Borger')
+  await screen.findByText(/Borger 1957/)
+  clickNth(screen, /Borger 1957/, 0)
+  changeValueByLabel(screen, 'Type', 'COPY')
+  changeValueByLabel(screen, 'Pages', '1-2')
+  changeValueByLabel(screen, 'Notes', 'notes')
+  changeValueByLabel(screen, 'Lines Cited', '1,2')
 }

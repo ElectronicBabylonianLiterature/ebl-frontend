@@ -38,7 +38,7 @@ class TabController {
     this.history = history
   }
 
-  get defaultKey(): string | null {
+  get defaultKey(): string {
     return (
       _([
         this.fragment.hasPhoto && PHOTO,
@@ -49,14 +49,14 @@ class TabController {
     )
   }
 
-  get activeKey(): string | null {
+  get activeKey(): string {
     if (this.tab === FOLIO) {
       const index = this.fragment.folios.findIndex((folio) =>
         _.isEqual(folio, this.activeFolio)
       )
       return index >= 0 ? String(index) : '0'
     } else {
-      return this.tab || this.defaultKey
+      return this.tab ?? this.defaultKey
     }
   }
 

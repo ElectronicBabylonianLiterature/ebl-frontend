@@ -47,7 +47,7 @@ describe('Diplay annotate view', () => {
   })
 
   test('Snapshot', () => {
-    expect(appDriver.getElement().container).toMatchSnapshot()
+    expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('Save', async () => {

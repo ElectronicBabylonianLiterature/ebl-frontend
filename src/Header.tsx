@@ -35,7 +35,7 @@ function NavItem(props: { href: string; title: string }): JSX.Element {
 }
 
 export default function Header(): JSX.Element {
-  const [activeKey, setActiveKey] = useState<string | null>(null)
+  const [activeKey, setActiveKey] = useState<string>()
   const id = _.uniqueId('Header-')
   return (
     <header className="Header">
@@ -58,7 +58,7 @@ export default function Header(): JSX.Element {
           <Navbar.Collapse id={id}>
             <Nav
               activeKey={activeKey}
-              onSelect={(key) => setActiveKey(key)}
+              onSelect={(key) => setActiveKey(key ?? undefined)}
               className="mx-auto"
             >
               <NavItem href="/signs" title="Signs" />

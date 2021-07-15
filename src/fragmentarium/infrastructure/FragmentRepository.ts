@@ -1,12 +1,8 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import produce, { castDraft } from 'immer'
-import {
-  Fragment,
-  FragmentInfo,
-  RecordEntry,
-} from 'fragmentarium/domain/fragment'
+import produce from 'immer'
+import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
@@ -21,8 +17,6 @@ import {
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { Draft } from 'immer/dist/types/types-external'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
 import {
@@ -164,23 +158,11 @@ class ApiFragmentRepository
   }
 
   searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages }).then(
-      produce((draft: Draft<FragmentInfo[]>) => {
-        for (const fragInfo of draft) {
-          fragInfo.references = castDraft(
-            fragInfo.references.map(
-              (ref) =>
-                new Reference(
-                  ref.type || Reference.DEFAULT_TYPE,
-                  ref.pages || '',
-                  ref.notes || '',
-                  ref.linesCited || [],
-                  new BibliographyEntry(ref.document)
-                )
-            )
-          )
-        }
-      })
+    return this._fetch({ id, pages }).then((dto) =>
+      dto.map((fragmentInfo) => ({
+        ...fragmentInfo,
+        references: fragmentInfo.references.map(createReference),
+      }))
     )
   }
 
@@ -275,12 +257,10 @@ class ApiFragmentRepository
   findAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/annotations`, true)
-      .then((dto) =>
-        produce<Annotation[]>(dto.annotations, (annotations) =>
-          annotations.map(
-            ({ geometry, data }) =>
-              new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
-          )
+      .then(({ annotations }) =>
+        annotations.map(
+          ({ geometry, data }) =>
+            new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
         )
       )
   }

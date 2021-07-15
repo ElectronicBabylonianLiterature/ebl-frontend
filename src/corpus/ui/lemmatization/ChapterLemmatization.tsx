@@ -154,7 +154,7 @@ function LineVariantLemmatizater({
               token.alignment === index &&
               (_.isEmpty(lemmatizationToken.uniqueLemma) ||
                 lemmatizationToken.suggested)
-              ? lemmatizationToken.setUniqueLemma(uniqueLemma, true)
+              ? castDraft(lemmatizationToken.setUniqueLemma(uniqueLemma, true))
               : lemmatizationToken
           })
         )

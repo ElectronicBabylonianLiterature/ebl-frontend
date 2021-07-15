@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Promise } from 'bluebird'
 import FolioPager from './FolioPager'
@@ -12,7 +12,6 @@ import Folio from 'fragmentarium/domain/Folio'
 import { FolioPagerData } from 'fragmentarium/domain/pager'
 
 let fragmentService
-let element: RenderResult
 let fragment: Fragment
 let folio: Folio
 let pagerData: FolioPagerData
@@ -25,7 +24,7 @@ beforeEach(async () => {
   fragmentService.folioPager.mockReturnValueOnce(Promise.resolve(pagerData))
   fragment = fragmentFactory.build()
   folio = fragment.folios[0]
-  element = render(
+  render(
     <MemoryRouter>
       <FolioPager
         fragmentService={fragmentService}
@@ -34,25 +33,25 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await element.findByText(/Browse/)
+  await screen.findByText(/Browse/)
 })
 
 it('Previous links to the previous fragment', () => {
   expect(
-    element.getByLabelText(`Previous ${folio.humanizedName}'s Folio`)
+    screen.getByLabelText(`Previous ${folio.humanizedName}'s Folio`)
   ).toHaveAttribute('href', expectedLink(pagerData.previous))
 })
 
 it('Next links to the next fragment', () => {
   expect(
-    element.getByLabelText(`Next ${folio.humanizedName}'s Folio`)
+    screen.getByLabelText(`Next ${folio.humanizedName}'s Folio`)
   ).toHaveAttribute('href', expectedLink(pagerData.next))
 })
 
 it('Renders title', () => {
-  expect(element.container).toHaveTextContent(
-    `Browse ${folio.humanizedName}'s Folios`
-  )
+  expect(
+    screen.getByText(`Browse ${folio.humanizedName}'s Folios`)
+  ).toBeInTheDocument()
 })
 
 function expectedLink(pagerEntry) {

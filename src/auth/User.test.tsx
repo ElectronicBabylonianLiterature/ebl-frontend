@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, RenderResult } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react'
 import User from './User'
 import {
   AuthenticationContext,
@@ -30,20 +30,20 @@ beforeEach(() => {
 })
 
 it('Calls Auth0 logout if user is logged in', () => {
-  const { getByText } = renderUser(true)
-  fireEvent.click(getByText('Logout Test User'))
+  renderUser(true)
+  fireEvent.click(screen.getByText('Logout Test User'))
   expect(auth.logout).toHaveBeenCalled()
 })
 
 it('Calls Auth0 login if user is logged out', () => {
-  const { getByText } = renderUser(false)
-  fireEvent.click(getByText('Login'))
+  renderUser(false)
+  fireEvent.click(screen.getByText('Login'))
   expect(auth.login).toHaveBeenCalled()
 })
 
-function renderUser(isAuthenticated: boolean): RenderResult {
+function renderUser(isAuthenticated: boolean) {
   isAuthenticatedMock.mockReturnValueOnce(isAuthenticated)
-  return render(
+  render(
     <AuthenticationContext.Provider value={auth}>
       <User />
     </AuthenticationContext.Provider>

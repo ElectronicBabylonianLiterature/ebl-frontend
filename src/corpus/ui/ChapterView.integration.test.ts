@@ -207,18 +207,15 @@ describe('Diplay chapter', () => {
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes'],
     ])('%s', async (label, property, newValue) => {
-      fakeApi.expectUpdateManuscripts(
-        chapter,
-        produce(chapter.manuscripts, (draft) => ({
-          manuscripts: [
-            {
-              ...draft[0],
-              [property]: newValue,
-            },
-          ],
-          uncertainFragments: chapter.uncertainFragments,
-        }))
-      )
+      fakeApi.expectUpdateManuscripts(chapter, {
+        manuscripts: [
+          {
+            ...chapter.manuscripts[0],
+            [property]: newValue,
+          },
+        ],
+        uncertainFragments: chapter.uncertainFragments,
+      })
       const value = manuscript[property]
       const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)

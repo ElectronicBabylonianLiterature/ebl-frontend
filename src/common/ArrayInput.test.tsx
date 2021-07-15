@@ -1,44 +1,43 @@
 import React from 'react'
 import ArrayInput from './ArrayInput'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { whenChangedByValue } from 'test-support/utils'
 
 const label = 'Array'
 const value = ['array', 'input']
 const separator = ' '
-let element
-let onChange
+let onChange: jest.Mock<void, [readonly string[]]>
 
 beforeEach(() => {
   onChange = jest.fn()
 })
 
 test('Input element', () => {
-  element = renderArrayInput(value)
-  expect(element.getByLabelText(label).value).toEqual(value.join(separator))
+  renderArrayInput(value)
+  expect(screen.getByLabelText(label)).toHaveValue(value.join(separator))
 })
 
 test('Displays empty input on empty array', () => {
-  element = renderArrayInput([])
-  expect(element.getByLabelText(label).value).toEqual('')
+  renderArrayInput([])
+  expect(screen.getByLabelText(label)).toHaveValue('')
 })
 
 test('Calls onChange with updated value on change', () => {
-  element = renderArrayInput(value)
-  whenChangedByValue(element, value.join(separator), 'new value')
+  renderArrayInput(value)
+  whenChangedByValue(screen, value.join(separator), 'new value')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => newValue.split(separator))
+    .toHaveBeenCalledWith((newValue: string) => newValue.split(separator))
 })
 
 test('Calls onChange with empty array on empty value', () => {
-  element = renderArrayInput(value)
-  whenChangedByValue(element, value.join(separator), '')
+  renderArrayInput(value)
+  whenChangedByValue(screen, value.join(separator), '')
     .expect(onChange)
-    .toHaveBeenCalledWith((newValue) => [])
+    .toHaveBeenCalledWith(() => [])
 })
 
-function renderArrayInput(value) {
-  return render(
+function renderArrayInput(value: string[]) {
+  render(
     <ArrayInput value={value} separator={separator} onChange={onChange}>
       {label}
     </ArrayInput>

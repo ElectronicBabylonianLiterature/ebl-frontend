@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import {
   whenChangedByLabel,
@@ -14,7 +14,6 @@ import {
 import Reference from 'bibliography/domain/Reference'
 
 let reference: Reference
-let element: RenderResult
 let onChange
 let searchBibliography
 let entry
@@ -25,7 +24,7 @@ beforeEach(() => {
   onChange = jest.fn()
   searchBibliography = jest.fn()
   searchBibliography.mockReturnValue(Promise.resolve([entry]))
-  element = render(
+  render(
     <ReferenceForm
       value={reference}
       onChange={onChange}
@@ -35,9 +34,9 @@ beforeEach(() => {
 })
 
 test(`Changing document calls onChange with updated value`, async () => {
-  changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
-  await element.findByText(/Borger 1957/)
-  clickNth(element, /Borger 1957/, 0)
+  changeValueByLabel(screen, /ReferenceForm-Document-.*/, 'Borger')
+  await screen.findByText(/Borger 1957/)
+  clickNth(screen, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith(reference.setDocument(entry))
 })
@@ -50,29 +49,27 @@ describe.each([
   ['Notes', 'notes', 'setNotes', ''],
 ])('%s', (label, property, setter, newValue) => {
   it(`Has correct label and value`, () => {
-    expect((element.getByLabelText(label) as HTMLInputElement).value).toEqual(
-      reference[property]
-    )
+    expect(screen.getByLabelText(label)).toHaveValue(reference[property])
   })
 
   it(`Calls onChange with updated value`, () => {
-    whenChangedByLabel(element, label, newValue)
+    whenChangedByLabel(screen, label, newValue)
       .expect(onChange)
       .toHaveBeenCalledWith((updatedItem) => reference[setter](updatedItem))
   })
 })
 
 it('Displays Lines Cited', () => {
-  expect(
-    (element.getByLabelText('Lines Cited') as HTMLInputElement).value
-  ).toEqual(reference.linesCited.join(','))
+  expect(screen.getByLabelText('Lines Cited')).toHaveValue(
+    reference.linesCited.join(',')
+  )
 })
 
 test.each([
   ['3.1,2', ['3.1', '2']],
   ['', []],
 ])('Calls onChange with updated Lines Cited %s', (newValue, expectedValue) => {
-  whenChangedByLabel(element, 'Lines Cited', newValue)
+  whenChangedByLabel(screen, 'Lines Cited', newValue)
     .expect(onChange)
     .toHaveBeenCalledWith((updatedItem) =>
       reference.setLinesCited(expectedValue)

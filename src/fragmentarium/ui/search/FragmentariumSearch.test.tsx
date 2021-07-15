@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import FragmentariumSearch from './FragmentariumSearch'
 import SessionContext from 'auth/SessionContext'
@@ -18,7 +18,6 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let textService: jest.Mocked<TextService>
 let session: Session
 let container: HTMLElement
-let element: RenderResult
 
 async function renderFragmentariumSearch(
   waitFor: string,
@@ -33,7 +32,7 @@ async function renderFragmentariumSearch(
   const FragmentariumSearchWithRouter = withRouter<any, any>(
     FragmentariumSearch
   )
-  element = render(
+  container = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
         <FragmentariumSearchWithRouter
@@ -44,9 +43,8 @@ async function renderFragmentariumSearch(
         />
       </SessionContext.Provider>
     </MemoryRouter>
-  )
-  await element.findByText(waitFor)
-  container = element.container
+  ).container
+  await screen.findByText(waitFor)
 }
 
 beforeEach(async () => {
@@ -76,7 +74,7 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Number')).toHaveValue(number)
+      expect(screen.getByLabelText('Number')).toHaveValue(number)
     })
   })
 
@@ -140,7 +138,7 @@ describe('Search', () => {
     })
 
     it('Fills in search form query', () => {
-      expect(element.getByLabelText('Transliteration')).toHaveValue(
+      expect(screen.getByLabelText('Transliteration')).toHaveValue(
         transliteration
       )
     })
@@ -151,12 +149,12 @@ describe('Search', () => {
 
     describe('Corpus results', () => {
       it('Displays text id', async () => {
-        expect(await element.findByText('L I.2')).toBeVisible()
+        expect(await screen.findByText('L I.2')).toBeVisible()
       })
 
       it('Name links to chapter', async () => {
         expect(
-          await element.findByText(
+          await screen.findByText(
             `${corpusResult.id.stage} ${corpusResult.id.name}`
           )
         ).toHaveAttribute(
@@ -166,17 +164,15 @@ describe('Search', () => {
       })
 
       it('Displays matching reconstruction', async () => {
-        expect(await element.findByText(/1\. %n ra/)).toBeVisible()
+        expect(await screen.findByText(/1\. %n ra/)).toBeVisible()
       })
 
       it('Displays matching manuscript', async () => {
-        expect(
-          await element.findByText(/NinSchb o iii a\+1\. ra/)
-        ).toBeVisible()
+        expect(await screen.findByText(/NinSchb o iii a\+1\. ra/)).toBeVisible()
       })
 
       it('Displays matching colophon', async () => {
-        expect(await element.findByText(/1\. kur/)).toBeVisible()
+        expect(await screen.findByText(/1\. kur/)).toBeVisible()
       })
     })
   })

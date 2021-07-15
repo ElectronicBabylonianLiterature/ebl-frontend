@@ -1,4 +1,4 @@
-import { render, RenderResult, within } from '@testing-library/react'
+import { render, RenderResult, screen, within } from '@testing-library/react'
 import React from 'react'
 import { hydratedNote, note } from 'test-support/lines/note'
 import TransliterationNotes from './TransliterationNotes'
@@ -13,7 +13,7 @@ beforeEach(() => {
     [2, [note, hydratedNote]],
   ])
   element = render(<TransliterationNotes notes={notes} />)
-  lines = element.getAllByRole('listitem')
+  lines = screen.getAllByRole('listitem')
 })
 
 test('Snapshot', () => {

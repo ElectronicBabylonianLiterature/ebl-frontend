@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 import FragmentList, { Columns } from './FragmentList'
 import { FragmentInfo } from 'fragmentarium/domain/fragment'
@@ -18,7 +18,7 @@ const expectedComputedColumns: Columns = {
   Computed: (fragment: FragmentInfo) => fragment.description.toUpperCase(),
 }
 let fragments: FragmentInfo[]
-let element: RenderResult
+let container: HTMLElement
 
 describe.each([
   [
@@ -41,16 +41,16 @@ describe.each([
 ] as [string, Columns, Columns][])('%s', (name, columns, expectedColumns) => {
   beforeEach(() => {
     fragments = fragmentInfoFactory.buildList(numberOfFragments)
-    element = render(
+    container = render(
       <MemoryRouter>
         <FragmentList fragments={fragments} columns={columns} />
       </MemoryRouter>
-    )
+    ).container
   })
 
   test('Columns', () => {
     const expectedHeader = _.keys(expectedColumns).join('')
-    expect(element.container).toHaveTextContent(expectedHeader)
+    expect(container).toHaveTextContent(expectedHeader)
   })
 
   describe.each(_.range(numberOfFragments))('Fragment %i', (index) => {
@@ -69,11 +69,11 @@ describe.each([
         )
         .join('')
         .replace(/\n/g, ' ')
-      expect(element.container).toHaveTextContent(expectedRow)
+      expect(container).toHaveTextContent(expectedRow)
     })
 
     test('Links to the fragment', () => {
-      expect(element.getByText(fragment.number)).toHaveAttribute(
+      expect(screen.getByText(fragment.number)).toHaveAttribute(
         'href',
         `/fragmentarium/${fragment.number}`
       )

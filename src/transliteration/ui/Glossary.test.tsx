@@ -1,7 +1,7 @@
 import React from 'react'
 import { column, object, surface } from 'test-support/lines/at'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult, screen } from '@testing-library/react'
 import Glossary from './Glossary'
 import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
@@ -32,6 +32,6 @@ beforeEach(async () => {
 })
 
 test('Glossary snapshot', async () => {
-  await element.findByText('Glossary')
+  await screen.findByText('Glossary')
   expect(element.container).toMatchSnapshot()
 })
