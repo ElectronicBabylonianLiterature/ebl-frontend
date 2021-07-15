@@ -9,18 +9,22 @@ import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
 import ReferenceList from 'bibliography/ui/ReferenceList'
 
+import './TextView.sass'
+
 function TextView({ text }: { text: Text }): JSX.Element {
   const title = <InlineMarkdown source={text.name} />
 
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}>
-      <section>
+      <section className="text-view__introduction">
         <h3>Introduction</h3>
-        <ReactMarkdown source={text.intro} />
-        <h4>References</h4>
-        <ReferenceList references={text.references} />
+        <ReactMarkdown className="text-view__markdown" source={text.intro} />
+        <section className="text-view__references">
+          <h4>References</h4>
+          <ReferenceList references={text.references} />
+        </section>
       </section>
-      <section>
+      <section className="text-view__chapter-list">
         <h3>Chapters</h3>
         <ChapterNavigation text={text} />
       </section>
