@@ -1,17 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import Reference from 'bibliography/domain/Reference'
+import Reference, { typeOrder } from 'bibliography/domain/Reference'
 
 import './ReferenceList.css'
 import Citation from './Citation'
-
-const typeOrder: { readonly [key: string]: number } = {
-  COPY: 1,
-  PHOTO: 2,
-  EDITION: 3,
-  TRANSLATION: 4,
-  DISCUSSION: 5,
-}
 
 function ReferenceGroup({
   references,

@@ -10,6 +10,14 @@ export type ReferenceType =
   | 'PHOTO'
   | 'TRANSLATION'
 
+export const typeOrder: { readonly [key: string]: number } = {
+  COPY: 1,
+  PHOTO: 2,
+  EDITION: 3,
+  TRANSLATION: 4,
+  DISCUSSION: 5,
+}
+
 export default class Reference {
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
