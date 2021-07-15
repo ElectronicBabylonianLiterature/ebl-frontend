@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, waitFor, RenderResult, Matcher } from '@testing-library/react'
+import { render, waitFor, screen, Matcher } from '@testing-library/react'
 import Promise from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -11,7 +11,7 @@ import Word from 'dictionary/domain/Word'
 
 let searchWord: Word
 let onChange: (selected: readonly Lemma[]) => void
-let element: RenderResult
+let container: HTMLElement
 let fragmentService: {
   searchLemma: jest.Mock<Promise<readonly Word[]>, [string]>
 }
@@ -35,17 +35,17 @@ describe('Single lemma', () => {
   beforeEach(async () => {
     word = await factory.build('word')
     token = new LemmatizationToken('kur', true, [new Lemma(word)])
-    element = render(
+    container = render(
       <LemmatizationForm
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
       />
-    )
+    ).container
   })
 
   it('Complex is not checked', async () => {
-    expect(element.getByLabelText('Complex')).not.toBeChecked()
+    expect(screen.getByLabelText('Complex')).not.toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
@@ -68,17 +68,17 @@ describe('Complex lemma', () => {
       true,
       words.map((word: Word) => new Lemma(word))
     )
-    element = render(
+    container = render(
       <LemmatizationForm
         fragmentService={fragmentService}
         token={token}
         onChange={onChange}
       />
-    )
+    ).container
   })
 
   it('Complex is checked', async () => {
-    expect(element.getByLabelText('Complex')).toBeChecked()
+    expect(screen.getByLabelText('Complex')).toBeChecked()
   })
 
   it('Calls onChange when selecting word', async () => {
@@ -96,11 +96,11 @@ describe('Complex lemma', () => {
 
 function commonTests(lemmaLabel: Matcher): void {
   it('Displays the label', () => {
-    expect(element.getByLabelText(lemmaLabel)).toBeInTheDocument()
+    expect(screen.getByLabelText(lemmaLabel)).toBeInTheDocument()
   })
 
   it('Displays the word label', () => {
-    expect(element.container).toHaveTextContent(
+    expect(container).toHaveTextContent(
       token.uniqueLemma
         ?.map((lemma) => lemma.label.replace(/\*/g, ''))
         .join('') ?? ''
@@ -110,7 +110,7 @@ function commonTests(lemmaLabel: Matcher): void {
 
 async function lemmatize(lemmaLabel: Matcher): Promise<void> {
   const searchLemma = new Lemma(searchWord)
-  changeValueByLabel(element, lemmaLabel, 'waklu')
-  await element.findByText(searchLemma.lemma)
-  clickNth(element, searchLemma.lemma, 0)
+  changeValueByLabel(screen, lemmaLabel, 'waklu')
+  await screen.findByText(searchLemma.lemma)
+  clickNth(screen, searchLemma.lemma, 0)
 }

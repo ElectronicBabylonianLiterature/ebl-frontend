@@ -20,7 +20,7 @@ beforeEach(async () => {
 })
 
 test('Snapshot', () => {
-  expect(appDriver.getElement().container).toMatchSnapshot()
+  expect(appDriver.getView().container).toMatchSnapshot()
 })
 
 test('Edit', async () => {
@@ -28,5 +28,5 @@ test('Edit', async () => {
   fakeApi.expectUpdateWord({ ...word, legacyLemma: newLegacyLemma })
   await appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
   await appDriver.submitForm()
-  expect(appDriver.getElement().container).toMatchSnapshot()
+  expect(appDriver.getView().container).toMatchSnapshot()
 })

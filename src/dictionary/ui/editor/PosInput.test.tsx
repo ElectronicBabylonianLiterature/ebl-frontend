@@ -1,12 +1,11 @@
 import React from 'react'
 import PosInput from './PosInput'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
 import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
 
 let value
-let element
 let onChange
 
 const positionsOfScpeech = {
@@ -37,17 +36,17 @@ beforeEach(() => {
 describe('Verb', () => {
   beforeEach(async () => {
     value = await factory.build('verb')
-    element = renderPosInput()
+    renderPosInput()
   })
 
   it('Displays all roots', () => {
     value.roots.forEach((root) =>
-      expect(element.getByDisplayValue(root)).toBeVisible()
+      expect(screen.getByDisplayValue(root)).toBeVisible()
     )
   })
 
   it('Calls onChange with updated value on root change', () => {
-    whenChangedByValue(element, value.roots[0], 'rtr')
+    whenChangedByValue(screen, value.roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         roots: [newValue, ..._.tail(value.roots)],
@@ -60,7 +59,7 @@ describe('Verb', () => {
 describe('Not verb', () => {
   beforeEach(async () => {
     value = await factory.build('word')
-    element = renderPosInput()
+    renderPosInput()
   })
 
   commonTests()
@@ -69,18 +68,21 @@ describe('Not verb', () => {
 function commonTests() {
   it('Word POS are selected', () => {
     for (const pos of value.pos) {
-      expect(element.getByText(positionsOfScpeech[pos]).selected).toBe(true)
+      expect(
+        (screen.getByText(positionsOfScpeech[pos]) as HTMLOptionElement)
+          .selected
+      ).toBe(true)
     }
   })
 
   it('Other POS are not selected', () => {
     for (const pos of _(positionsOfScpeech).omit(value.pos).values().value()) {
-      expect(element.getByText(pos).selected).toBe(false)
+      expect((screen.getByText(pos) as HTMLOptionElement).selected).toBe(false)
     }
   })
 
   it('Calls onChange with updated value on pos change', () => {
-    whenChangedByLabel(element, 'Position of speech', 'AJ')
+    whenChangedByLabel(screen, 'Position of speech', 'AJ')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         pos: [newValue],
@@ -89,5 +91,5 @@ function commonTests() {
 }
 
 function renderPosInput() {
-  return render(<PosInput value={value} onChange={onChange} />)
+  render(<PosInput value={value} onChange={onChange} />)
 }

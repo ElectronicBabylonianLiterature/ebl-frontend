@@ -80,9 +80,9 @@ export function compareStandardText(
 ): number {
   if (first === second) {
     return 0
-  } else if (first == Provenances['Standard Text']) {
+  } else if (first === Provenances['Standard Text']) {
     return -1
-  } else if (second == Provenances['Standard Text']) {
+  } else if (second === Provenances['Standard Text']) {
     return 1
   } else {
     return 0

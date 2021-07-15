@@ -1,11 +1,11 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import Word from './Word'
 import Lemma from 'transliteration/domain/Lemma'
 import _ from 'lodash'
 
-let element
+let container: HTMLElement
 let token
 let lemmas
 
@@ -31,16 +31,16 @@ describe.each([
         alignable: true,
         suggested: suggested,
       }
-      element = render(<Word token={token} />)
+      container = render(<Word token={token} />).container
     })
 
     it('Displays the value', () => {
-      expect(element.container).toHaveTextContent(token.value)
+      expect(container).toHaveTextContent(token.value)
     })
 
     if (hasLemma) {
       it('Displays the lemma', () => {
-        expect(element.container).toHaveTextContent(
+        expect(container).toHaveTextContent(
           lemmas.map((lemma) => `${lemma.lemma}${lemma.homonym}`).join(', ')
         )
       })
@@ -48,7 +48,7 @@ describe.each([
 
     if (!_.isEmpty(expectedClasses)) {
       test.each(expectedClasses)('Has class %s', (expectedClass) => {
-        expect(element.getByText(token.value)).toHaveClass(expectedClass)
+        expect(screen.getByText(token.value)).toHaveClass(expectedClass)
       })
     }
 
@@ -56,7 +56,7 @@ describe.each([
       test.each(notExpectedClasses)(
         'Does not have class %s',
         (notExpectedClass) => {
-          expect(element.getByText(token.value)).not.toHaveClass(
+          expect(screen.getByText(token.value)).not.toHaveClass(
             notExpectedClass
           )
         }

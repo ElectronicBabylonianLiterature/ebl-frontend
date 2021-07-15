@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import NeedsRevision from './NeedsRevision'
@@ -16,7 +16,6 @@ const expectedColumns = {
 }
 let fragmentSearchService
 let container: HTMLElement
-let element: RenderResult
 let fragments: FragmentInfo[]
 
 beforeEach(async () => {
@@ -27,13 +26,12 @@ beforeEach(async () => {
   fragmentSearchService.fetchNeedsRevision.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
-  element = render(
+  container = render(
     <MemoryRouter>
       <NeedsRevision fragmentSearchService={fragmentSearchService} />
     </MemoryRouter>
-  )
-  container = element.container
-  await element.findByText('Needs revision:')
+  ).container
+  await screen.findByText('Needs revision:')
 })
 
 test('Columns', () => {

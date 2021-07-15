@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 
@@ -13,7 +13,6 @@ import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import { lemmatizeWord } from 'test-support/lemmatization'
 
-let element
 let fragmentService
 let updateLemmatization
 let text
@@ -91,43 +90,43 @@ beforeEach(async () => {
       )
     )
   )
-  element = render(
+  render(
     <Lemmatizer
       fragmentService={fragmentService}
       updateLemmatization={updateLemmatization}
       text={text}
     />
   )
-  await element.findByText('1.')
+  await screen.findByText('1.')
 })
 
 it('Displays the line prefixes', () => {
   text.lines.forEach((row) =>
-    expect(element.container).toHaveTextContent(row.prefix)
+    expect(screen.getByText(row.prefix)).toBeInTheDocument()
   )
 })
 
 it('Displays the transliteration', () => {
   text.lines.forEach((row) =>
-    expect(element.container).toHaveTextContent(
-      row.content.map((token) => token.value).join(' ')
-    )
+    expect(
+      screen.getByText(row.content.map((token) => token.value).join(' '))
+    ).toBeInTheDocument()
   )
 })
 
 it('Clicking word shows form', async () => {
-  clickNth(element, 'kur', 0)
-  await element.findByLabelText('Lemma')
+  clickNth(screen, 'kur', 0)
+  await screen.findByLabelText('Lemma')
 })
 
 it('Clicking save calls fragmentService', async () => {
-  await lemmatizeWord(element, 'kur', lemma)
+  await lemmatizeWord('kur', lemma)
 
   const expected = new Lemmatization(
     ['1.'],
     [[new LemmatizationToken('kur', true, [lemma], [])]]
   )
-  await whenClicked(element, 'Save')
+  await whenClicked(screen, 'Save')
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(expected)
 })

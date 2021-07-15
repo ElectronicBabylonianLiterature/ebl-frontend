@@ -30,15 +30,11 @@ describe('Searching for word', () => {
     expect(
       screen.getAllByText(new RegExp(`${value.value}`))[0]
     ).toBeInTheDocument()
-    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      value.value
-    )
+    expect(screen.getByLabelText('Query')).toHaveValue(value.value)
   })
   it('displays empty search if no query', async () => {
     await renderSigns('/signs')
-    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      ''
-    )
+    expect(screen.getByLabelText('Query')).toHaveValue('')
   })
 })
 

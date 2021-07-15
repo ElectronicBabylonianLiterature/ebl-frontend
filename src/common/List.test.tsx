@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { FormControl } from 'react-bootstrap'
 import List from './List'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'List'
@@ -10,7 +10,6 @@ const id = 'list'
 const noun = 'text'
 const items = ['text1', 'text2', 'text3']
 let defaultValue
-let element
 let onChange
 
 beforeEach(() => {
@@ -20,11 +19,11 @@ beforeEach(() => {
 describe('Default is not a function', () => {
   beforeEach(async () => {
     defaultValue = ''
-    element = renderList()
+    renderList()
   })
 
   it('New entry has the default value', async () => {
-    await whenClicked(element, `Add ${noun}`)
+    await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...items, defaultValue])
   })
@@ -35,11 +34,11 @@ describe('Default is not a function', () => {
 describe('Default is a function', () => {
   beforeEach(async () => {
     defaultValue = () => ''
-    element = renderList()
+    renderList()
   })
 
   it('New entry has the default value', async () => {
-    await whenClicked(element, `Add ${noun}`)
+    await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...items, defaultValue()])
   })
@@ -49,18 +48,18 @@ describe('Default is a function', () => {
 
 function commonTests() {
   it('Displays the label', () => {
-    expect(element.getByText(label)).toBeVisible()
+    expect(screen.getByText(label)).toBeVisible()
   })
 
   describe.each(items)('Item %#', (item) => {
     const index = items.indexOf(item)
 
     it(`Displays the item`, () => {
-      expect(element.getByDisplayValue(item)).toBeVisible()
+      expect(screen.getByDisplayValue(item)).toBeVisible()
     })
 
     it(`Removes the item when Delete is clicked`, async () => {
-      await whenClicked(element, `Delete ${noun}`, index)
+      await whenClicked(screen, `Delete ${noun}`, index)
         .expect(onChange)
         .toHaveBeenCalledWith(
           _.reject(items, (value, itemIndex) => itemIndex === index)
@@ -68,7 +67,7 @@ function commonTests() {
     })
 
     it(`Calls onChange with updated value on item change`, () => {
-      whenChangedByValue(element, item, 'new')
+      whenChangedByValue(screen, item, 'new')
         .expect(onChange)
         .toHaveBeenCalledWith((updatedItem) =>
           items.map((item, itemIndex) =>
@@ -95,7 +94,7 @@ function renderList() {
       />
     )
   }
-  return render(
+  render(
     <List
       id={id}
       value={items}

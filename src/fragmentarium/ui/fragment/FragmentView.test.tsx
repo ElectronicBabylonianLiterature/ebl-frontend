@@ -1,13 +1,12 @@
 import React from 'react'
 import { factory } from 'factory-girl'
 import { MemoryRouter } from 'react-router-dom'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import SessionContext from 'auth/SessionContext'
 import FragmentView from './FragmentView'
 import Lemmatization from 'transliteration/domain/Lemmatization'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import { act } from 'react-dom/test-utils'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import MemorySession from 'auth/Session'
@@ -31,32 +30,28 @@ let fragmentSearchService: jest.Mocked<FragmentSearchService>
 let wordService: jest.Mocked<WordService>
 let session
 let container: HTMLElement
-let element: RenderResult
 
-async function renderFragmentView(
+function renderFragmentView(
   number: string,
   folioName: string | null,
   folioNumber: string | null,
   tab: string | null
-): Promise<void> {
-  await act(async () => {
-    element = render(
-      <MemoryRouter>
-        <SessionContext.Provider value={session}>
-          <FragmentView
-            number={number}
-            folioName={folioName}
-            folioNumber={folioNumber}
-            tab={tab}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-    container = element.container
-  })
+) {
+  container = render(
+    <MemoryRouter>
+      <SessionContext.Provider value={session}>
+        <FragmentView
+          number={number}
+          folioName={folioName}
+          folioNumber={folioNumber}
+          tab={tab}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+          wordService={wordService}
+        />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  ).container
 }
 
 beforeEach(async () => {
@@ -124,13 +119,13 @@ describe('Fragment is loaded', () => {
     selectedFolio = fragment.folios[0]
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
     fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
-    await renderFragmentView(
+    renderFragmentView(
       fragmentNumber,
       selectedFolio.name,
       selectedFolio.number,
       'folio'
     )
-    await element.findByText('Display')
+    await screen.findByText('Display')
   })
 
   it('Queries the Fragmenatrium API with given parameters', async () => {
@@ -142,16 +137,16 @@ describe('Fragment is loaded', () => {
   })
 
   it('Shows pager', () => {
-    expect(element.getByLabelText('Next')).toBeVisible()
+    expect(screen.getByLabelText('Next')).toBeVisible()
   })
 
   it('Shows annotate button', () => {
-    expect(element.getByText('Tag signs')).not.toHaveAttribute('aria-disabled')
+    expect(screen.getByText('Tag signs')).not.toHaveAttribute('aria-disabled')
   })
 
   it('Selects active folio', () => {
     expect(
-      element.getByText(
+      screen.getByText(
         `${selectedFolio.humanizedName} Folio ${selectedFolio.number}`
       )
     ).toHaveAttribute('aria-selected', 'true')
@@ -169,12 +164,12 @@ describe('Fragment without an image is loaded', () => {
       { associations: { folios: [], references: [] } }
     )
     fragmentService.find.mockReturnValueOnce(Promise.resolve(fragment))
-    await renderFragmentView(fragment.number, null, null, null)
-    await element.findByText('Display')
+    renderFragmentView(fragment.number, null, null, null)
+    await screen.findByText('Display')
   })
 
   it('Tag signs button is disabled', () => {
-    expect(element.getByText('Tag signs')).toHaveAttribute(
+    expect(screen.getByText('Tag signs')).toHaveAttribute(
       'aria-disabled',
       'true'
     )
@@ -182,12 +177,12 @@ describe('Fragment without an image is loaded', () => {
 })
 
 describe('On error', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     fragmentService.find.mockReturnValueOnce(Promise.reject(new Error(message)))
-    await renderFragmentView(fragmentNumber, null, null, null)
+    renderFragmentView(fragmentNumber, null, null, null)
   })
 
   it('Shows the error message', async () => {
-    await element.findByText(message)
+    await screen.findByText(message)
   })
 })

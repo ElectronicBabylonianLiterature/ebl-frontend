@@ -59,16 +59,16 @@ function createApp(api): JSX.Element {
 export default class AppDriver {
   private readonly api
   private initialEntries: string[] = []
-  private element: RenderResult | null = null
+  private view: RenderResult | null = null
   private session: Session | null = null
 
   constructor(api) {
     this.api = api
   }
 
-  getElement(): RenderResult {
-    if (this.element) {
-      return this.element
+  getView(): RenderResult {
+    if (this.view) {
+      return this.view
     } else {
       throw new Error('getElement called before render.')
     }
@@ -91,7 +91,7 @@ export default class AppDriver {
 
   async render(): Promise<AppDriver> {
     await act(async () => {
-      this.element = render(
+      this.view = render(
         <MemoryRouter initialEntries={this.initialEntries}>
           <AuthenticationContext.Provider
             value={{
@@ -117,28 +117,25 @@ export default class AppDriver {
   }
 
   async waitForText(text: Matcher): Promise<void> {
-    await this.getElement().findByText(text)
+    await this.getView().findByText(text)
   }
 
   async waitForTextToDisappear(text: Matcher): Promise<void> {
     await waitFor(() => {
-      expect(this.getElement().queryByText(text)).not.toBeInTheDocument()
+      expect(this.getView().queryByText(text)).not.toBeInTheDocument()
     })
   }
 
   expectTextContent(text: string | RegExp): void {
-    expect(this.getElement().container).toHaveTextContent(text)
+    expect(this.getView().container).toHaveTextContent(text)
   }
 
   expectNotInContent(text: Matcher): void {
-    expect(this.getElement().queryByText(text)).not.toBeInTheDocument()
+    expect(this.getView().queryByText(text)).not.toBeInTheDocument()
   }
 
   expectLink(text: Matcher, expectedHref: string): void {
-    expect(this.getElement().getByText(text)).toHaveAttribute(
-      'href',
-      expectedHref
-    )
+    expect(this.getView().getByText(text)).toHaveAttribute('href', expectedHref)
   }
 
   expectBreadcrumbs(crumbs: readonly string[]): void {
@@ -147,37 +144,37 @@ export default class AppDriver {
 
   expectBreadcrumb(crumb: string, link: string): void {
     expect(
-      within(this.getElement().getByLabelText('breadcrumb')).getByText(crumb)
+      within(this.getView().getByLabelText('breadcrumb')).getByText(crumb)
     ).toHaveAttribute('href', link)
   }
 
   expectInputElement(label: Matcher, expectedValue: unknown): void {
-    expect(
-      (this.getElement().getByLabelText(label) as HTMLInputElement).value
-    ).toEqual(String(expectedValue))
+    expect(this.getView().getByLabelText(label)).toHaveValue(
+      String(expectedValue)
+    )
   }
 
   expectChecked(label: Matcher): void {
-    expect(this.getElement().getByLabelText(label)).toBeChecked()
+    expect(this.getView().getByLabelText(label)).toBeChecked()
   }
 
   expectNotChecked(label: Matcher): void {
-    expect(this.getElement().getByLabelText(label)).not.toBeChecked()
+    expect(this.getView().getByLabelText(label)).not.toBeChecked()
   }
 
   async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {
-    const input = this.getElement().getByLabelText(label)
+    const input = this.getView().getByLabelText(label)
     await act(async () => {
       fireEvent.change(input, { target: { value: newValue } })
     })
   }
 
   async submitForm(): Promise<void> {
-    await submitForm(this.getElement())
+    await submitForm(this.getView().container)
   }
 
   async click(text: Matcher, n = 0): Promise<void> {
-    const clickable = this.getElement().getAllByText(text)[n]
+    const clickable = this.getView().getAllByText(text)[n]
     await act(async () => {
       fireEvent.click(clickable)
     })

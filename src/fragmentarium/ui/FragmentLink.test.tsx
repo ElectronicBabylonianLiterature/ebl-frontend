@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Chance from 'chance'
 import FragmentLink from './FragmentLink'
@@ -9,11 +9,10 @@ const chance = new Chance()
 const children = 'A link'
 const label = 'Link label'
 const number = chance.string()
-let element
 
 describe('Without folio', () => {
   beforeEach(() => {
-    element = render(
+    render(
       <MemoryRouter>
         <FragmentLink number={number} aria-label={label}>
           {children}
@@ -23,7 +22,7 @@ describe('Without folio', () => {
   })
 
   it('Links to the fragment', () => {
-    expect(element.getByLabelText(label)).toHaveAttribute(
+    expect(screen.getByLabelText(label)).toHaveAttribute(
       'href',
       `/fragmentarium/${encodeURIComponent(number)}`
     )
@@ -39,7 +38,7 @@ describe('With folio', () => {
   })
 
   beforeEach(() => {
-    element = render(
+    render(
       <MemoryRouter>
         <FragmentLink number={number} folio={folio} aria-label={label}>
           {children}
@@ -52,7 +51,7 @@ describe('With folio', () => {
     const encodedNumber = encodeURIComponent(number)
     const encodedFolioName = encodeURIComponent(folio.name)
     const encodedFolioNumber = encodeURIComponent(folio.number)
-    expect(element.getByLabelText(label)).toHaveAttribute(
+    expect(screen.getByLabelText(label)).toHaveAttribute(
       'href',
       `/fragmentarium/${encodedNumber}?folioName=${encodedFolioName}&folioNumber=${encodedFolioNumber}&tab=folio`
     )
@@ -63,6 +62,6 @@ describe('With folio', () => {
 
 function expectToRenderChildren() {
   it('Renders children', () => {
-    expect(element.container).toHaveTextContent(children)
+    expect(screen.getByText(children)).toBeInTheDocument()
   })
 }

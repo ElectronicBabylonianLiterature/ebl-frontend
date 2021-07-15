@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -44,10 +44,10 @@ const word: Word = {
   _id: '',
 }
 
-let element: RenderResult
+let container: HTMLElement
 
-function renderSignDisplay(signName: string): RenderResult {
-  return render(
+function renderSignDisplay(signName: string) {
+  container = render(
     <MemoryRouter initialEntries={[`/signs/${signName}`]}>
       <SessionContext.Provider value={session}>
         <Route
@@ -62,7 +62,7 @@ function renderSignDisplay(signName: string): RenderResult {
         />
       </SessionContext.Provider>
     </MemoryRouter>
-  )
+  ).container
 }
 
 describe('Sign Display', () => {
@@ -70,11 +70,11 @@ describe('Sign Display', () => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
-    element = renderSignDisplay(sign.name)
-    await element.findAllByText(sign.name)
+    renderSignDisplay(sign.name)
+    await screen.findAllByText(sign.name)
     expect(signService.find).toBeCalledWith(sign.name)
   })
   it('Sign Display Snapshot', async () => {
-    expect(element.container).toMatchSnapshot()
+    expect(container).toMatchSnapshot()
   })
 })

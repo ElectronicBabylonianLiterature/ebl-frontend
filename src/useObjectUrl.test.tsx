@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, act, RenderResult } from '@testing-library/react'
+import { render, act, RenderResult, screen } from '@testing-library/react'
 import useObjectUrl from './common/useObjectUrl'
 
 const objectUrl = 'object URL mock'
@@ -20,7 +20,7 @@ beforeEach(async () => {
 })
 
 test('Returns the object URL', () => {
-  expect(element.getByText(objectUrl)).toBeVisible()
+  expect(screen.getByText(objectUrl)).toBeVisible()
 })
 
 test('Creates the object URL with data', () => {

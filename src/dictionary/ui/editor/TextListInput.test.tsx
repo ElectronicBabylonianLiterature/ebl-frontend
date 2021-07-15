@@ -1,13 +1,12 @@
 import React from 'react'
 import _ from 'lodash'
 import TextListInput from './TextListInput'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'List'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -16,27 +15,27 @@ beforeEach(() => {
 
 beforeEach(() => {
   value = ['first', 'second']
-  element = renderListInput()
+  renderListInput()
 })
 
 it('Displays all elements', () => {
   for (const item of value) {
-    expect(element.getByDisplayValue(item)).toBeVisible()
+    expect(screen.getByDisplayValue(item)).toBeVisible()
   }
 })
 
 it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
+  expect(screen.getByText(label)).toBeVisible()
 })
 
 it('Adds emtpy item when Add is clicked', async () => {
-  await whenClicked(element, 'Add')
+  await whenClicked(screen, 'Add')
     .expect(onChange)
     .toHaveBeenCalledWith([...value, ''])
 })
 
 it('Calls onChange with updated value on change', () => {
-  whenChangedByValue(element, value[0], 'new')
+  whenChangedByValue(screen, value[0], 'new')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [newValue, ..._.tail(value)])
 })

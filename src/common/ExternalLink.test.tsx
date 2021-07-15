@@ -1,19 +1,19 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import ExternalLink from './ExternalLink'
 
 const href = 'http://example.com'
 const title = 'The Title'
 const children = 'The Link'
-let link
+let link: HTMLElement
 
 beforeEach(() => {
-  const { getByText } = render(
+  render(
     <ExternalLink href={href} title={title}>
       {children}
     </ExternalLink>
   )
-  link = getByText(children)
+  link = screen.getByText(children)
 })
 
 it('Is an anchor', () => {

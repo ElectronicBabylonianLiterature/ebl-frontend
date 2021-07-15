@@ -12,7 +12,7 @@ import {
 } from 'corpus/domain/line'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
-import { createChapter, createText, Text } from 'corpus/domain/text'
+import { Chapter, createChapter, createText, Text } from 'corpus/domain/text'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import createReference from 'bibliography/application/createReference'
 
@@ -23,7 +23,7 @@ export function fromDto(textDto): Text {
   })
 }
 
-export function fromChapterDto(chapterDto) {
+export function fromChapterDto(chapterDto): Chapter {
   return createChapter({
     ...chapterDto,
     manuscripts: chapterDto.manuscripts.map(fromManuscriptDto),
@@ -165,18 +165,18 @@ export const toLinesDto = (lines: readonly Line[]) =>
   ({
     edited: _(lines)
       .map((line, index) =>
-        line.status == EditStatus.EDITED
+        line.status === EditStatus.EDITED
           ? { line: toLineDto(line), index: index }
           : null
       )
       .reject(_.isNil)
       .value(),
     deleted: _(lines)
-      .map((line, index) => (line.status == EditStatus.DELETED ? index : null))
+      .map((line, index) => (line.status === EditStatus.DELETED ? index : null))
       .reject(_.isNil)
       .value(),
     new: _(lines)
-      .filter((line) => line.status == EditStatus.NEW)
+      .filter((line) => line.status === EditStatus.NEW)
       .map(toLineDto)
       .value(),
   } as const)

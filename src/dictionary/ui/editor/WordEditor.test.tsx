@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen, RenderResult } from '@testing-library/react'
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { factory } from 'factory-girl'
@@ -34,18 +34,18 @@ describe('Fecth word', () => {
   })
 
   it('Displays result on successfull query', async () => {
-    const { getByText } = await renderWithRouter()
+    await renderWithRouter()
 
-    expect(getByText(result.lemma.join(' '))).toBeInTheDocument()
+    expect(screen.getByText(result.lemma.join(' '))).toBeInTheDocument()
   })
 })
 
 describe('Update word', () => {
   it('Posts to API on submit', async () => {
-    wordService.update.mockReturnValueOnce(Bluebird.resolve())
-    const element = await renderWithRouter()
+    wordService.update.mockReturnValueOnce(Bluebird.resolve(result))
+    const { container } = await renderWithRouter()
 
-    await submitForm(element)
+    await submitForm(container)
 
     expect(wordService.update).toHaveBeenCalledWith(result)
   })
@@ -54,35 +54,35 @@ describe('Update word', () => {
     wordService.update.mockImplementationOnce(() =>
       Bluebird.reject(new Error(errorMessage))
     )
-    const element = await renderWithRouter()
+    const { container } = await renderWithRouter()
 
-    await submitForm(element)
+    await submitForm(container)
 
-    await element.findByText(errorMessage)
+    await screen.findByText(errorMessage)
   })
 
   it('Cancels promise on unmount', async () => {
     const promise = new Bluebird(_.noop)
     jest.spyOn(promise, 'cancel')
     wordService.update.mockReturnValueOnce(promise)
-    const element = await renderWithRouter()
-    await submitForm(element)
-    element.unmount()
+    const { unmount, container } = await renderWithRouter()
+    await submitForm(container)
+    unmount()
     expect(promise.isCancelled()).toBe(true)
   })
 })
 
 describe('User is not allowed to write:words', () => {
   it('The form is disabled', async () => {
-    const { getByRole } = await renderWithRouter(false)
-    expect(getByRole('group')).toBeDisabled()
+    await renderWithRouter(false)
+    expect(screen.getByRole('group')).toBeDisabled()
   })
 })
 
 async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
   session.isAllowedToWriteWords.mockReturnValueOnce(isAllowedTo)
 
-  const element = render(
+  const view = render(
     <MemoryRouter initialEntries={['/dictionary/id']}>
       <SessionContext.Provider value={session}>
         <Route
@@ -94,6 +94,6 @@ async function renderWithRouter(isAllowedTo = true): Promise<RenderResult> {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await element.findByText(result.lemma.join(' '))
-  return element
+  await screen.findByText(result.lemma.join(' '))
+  return view
 }

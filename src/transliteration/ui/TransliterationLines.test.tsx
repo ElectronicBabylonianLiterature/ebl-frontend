@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, within, RenderResult } from '@testing-library/react'
+import { render, within, RenderResult, screen } from '@testing-library/react'
 import noteLine from 'test-support/lines/note'
 import { singleRuling } from 'test-support/lines/dollar'
 import TransliterationLines from './TransliterationLines'
@@ -39,7 +39,7 @@ describe.each([
 ])('%#', (text, noteOnFirstLine, lineCases: [number, number[]][]) => {
   beforeEach(() => {
     element = render(<TransliterationLines text={text} />)
-    lines = element.getAllByRole('row')
+    lines = screen.getAllByRole('row')
   })
 
   test('Snapshot', () => {
