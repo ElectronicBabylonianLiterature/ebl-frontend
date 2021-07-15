@@ -20,7 +20,7 @@ const Citation = referencePopover(({ reference }) => (
 ))
 
 function TextView({ text }: { text: Text }): JSX.Element {
-  const title = <InlineMarkdown source={text.name} />
+  const title = <InlineMarkdown source={text.title} />
 
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}>

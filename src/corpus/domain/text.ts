@@ -1,6 +1,7 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
+import { numberToRoman } from 'big-roman'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
@@ -78,6 +79,12 @@ export class Text implements TextInfo {
   intro = ''
   chapters: ReadonlyArray<{ name: string; stage: string }> = []
   references: ReadonlyArray<Reference> = []
+
+  get title(): string {
+    return `${this.category && numberToRoman(this.category)}. ${this.index} ${
+      this.name
+    }`
+  }
 }
 
 export function createText(data: Partial<Text>): Text {
