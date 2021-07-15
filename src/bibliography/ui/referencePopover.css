@@ -1,0 +1,8 @@
+.reference-popover__citation {
+  cursor: pointer;
+}
+
+.reference-popover__popover {
+  font-family: inherit;
+  max-width: 32em;
+}

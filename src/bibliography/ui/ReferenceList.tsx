@@ -1,9 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import Reference, { typeOrder } from 'bibliography/domain/Reference'
+import Reference, { groupReferences } from 'bibliography/domain/Reference'
+import Citation from './Citation'
 
 import './ReferenceList.css'
-import Citation from './Citation'
 
 function ReferenceGroup({
   references,
@@ -31,15 +31,13 @@ export default function ReferenceList({
 }): JSX.Element {
   return (
     <>
-      {_.chain(references)
-        .groupBy((reference) => reference.type)
-        .toPairs()
-        .sortBy(([type, group]) => _.get(typeOrder, type, 5))
-        .map(([type, group]) => (
+      {_.isEmpty(references) ? (
+        <p>No references</p>
+      ) : (
+        groupReferences(references).map(([type, group]) => (
           <ReferenceGroup key={type} references={group} />
         ))
-        .value()}
-      {_.isEmpty(references) && <p>No references</p>}
+      )}
     </>
   )
 }

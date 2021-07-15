@@ -244,7 +244,7 @@ exports[`Snapshot 1`] = `
           }
         </span>
         <span
-          class="ReferenceList__citation"
+          class="reference-popover__citation"
         >
           Bob, 2020: 3 (D)
         </span>

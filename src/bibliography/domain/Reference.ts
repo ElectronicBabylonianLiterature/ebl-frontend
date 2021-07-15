@@ -10,7 +10,7 @@ export type ReferenceType =
   | 'PHOTO'
   | 'TRANSLATION'
 
-export const typeOrder: { readonly [key: string]: number } = {
+const typeOrder: { readonly [key: string]: number } = {
   COPY: 1,
   PHOTO: 2,
   EDITION: 3,
@@ -18,7 +18,18 @@ export const typeOrder: { readonly [key: string]: number } = {
   DISCUSSION: 5,
 }
 
+export function groupReferences(
+  references: readonly Reference[]
+): [string, Reference[]][] {
+  return _.chain(references)
+    .groupBy((reference) => reference.type)
+    .toPairs()
+    .sortBy(([type]) => _.get(typeOrder, type, 5))
+    .value()
+}
+
 export default class Reference {
+  readonly [immerable] = true
   static readonly DEFAULT_TYPE: ReferenceType = 'DISCUSSION'
 
   constructor(
@@ -103,4 +114,3 @@ export default class Reference {
     return this.document ? this.document.toHtml() : ''
   }
 }
-Reference[immerable] = true
