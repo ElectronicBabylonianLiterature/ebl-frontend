@@ -12,7 +12,7 @@ import {
   ManuscriptAlignment,
   AlignmentToken,
 } from './alignment'
-import produce, { immerable } from 'immer'
+import { immerable } from 'immer'
 
 function isLacuna(token: Token | undefined) {
   const lacunaTypes: readonly string[] = ['UnclearSign', 'UnknownNumberOfSigns']
@@ -276,14 +276,14 @@ export interface Line {
   readonly status: EditStatus
 }
 
-export const createLine: (config: Partial<Line>) => Line = produce(
-  (draft): Line => ({
+export function createLine(config: Partial<Line>): Line {
+  return {
     number: '',
     variants: [],
     isSecondLineOfParallelism: false,
     isBeginningOfSection: false,
     translation: '',
     status: EditStatus.CLEAN,
-    ...draft,
-  })
-)
+    ...config,
+  }
+}
