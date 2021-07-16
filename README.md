@@ -81,8 +81,8 @@ yarn lighthouse <url>
 
 ## CSS Convention
 
-File names have lower camel case and the same name as the TSX File they are used.
-Classes have bem convention (all lower case).
+File names have lower camel case and the same name as the TSX File they are used in.
+Css classes have bem conventions (all lower case).
 
 ## Acknowledgements
 
