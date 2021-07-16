@@ -182,7 +182,7 @@ describe('Diplay chapter', () => {
   })
 
   test('Breadcrumbs', () => {
-    appDriver.expectBreadcrumbs([
+    appDriver.breadcrumbs.expectCrumbs([
       'eBL',
       'Corpus',
       `I.1 ${textName}`,

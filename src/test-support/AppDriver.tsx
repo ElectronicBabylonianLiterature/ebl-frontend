@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   RenderResult,
+  screen,
   act,
   Matcher,
   within,
@@ -56,15 +57,35 @@ function createApp(api): JSX.Element {
   )
 }
 
+const breadcrumbs = {
+  getBreadcrumbs(): HTMLElement {
+    return screen.getByRole('navigation', {
+      name: 'breadcrumb',
+    })
+  },
+
+  expectCrumbs(crumbs: readonly string[]): void {
+    const crumbsElement = this.getBreadcrumbs()
+    for (const crumb of crumbs) {
+      expect(within(crumbsElement).getByText(crumb)).toBeInTheDocument()
+    }
+  },
+
+  expectCrumb(crumb: string, link: string): void {
+    expect(
+      within(this.getBreadcrumbs()).getByRole('link', { name: crumb })
+    ).toHaveAttribute('href', link)
+  },
+} as const
+
 export default class AppDriver {
-  private readonly api
+  readonly breadcrumbs = breadcrumbs
+
   private initialEntries: string[] = []
   private view: RenderResult | null = null
   private session: Session | null = null
 
-  constructor(api) {
-    this.api = api
-  }
+  constructor(private readonly api) {}
 
   getView(): RenderResult {
     if (this.view) {
@@ -136,16 +157,6 @@ export default class AppDriver {
 
   expectLink(text: Matcher, expectedHref: string): void {
     expect(this.getView().getByText(text)).toHaveAttribute('href', expectedHref)
-  }
-
-  expectBreadcrumbs(crumbs: readonly string[]): void {
-    this.expectTextContent(crumbs.join(''))
-  }
-
-  expectBreadcrumb(crumb: string, link: string): void {
-    expect(
-      within(this.getView().getByLabelText('breadcrumb')).getByText(crumb)
-    ).toHaveAttribute('href', link)
   }
 
   expectInputElement(label: Matcher, expectedValue: unknown): void {

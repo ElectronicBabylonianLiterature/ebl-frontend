@@ -31,7 +31,7 @@ describe('Diplay annotate view', () => {
   })
 
   test('Breadcrumbs', () => {
-    appDriver.expectBreadcrumbs([
+    appDriver.breadcrumbs.expectCrumbs([
       'eBL',
       'Fragmentarium',
       fragmentNumber,
@@ -40,7 +40,7 @@ describe('Diplay annotate view', () => {
   })
 
   test('Fragment crumb', () => {
-    appDriver.expectBreadcrumb(
+    appDriver.breadcrumbs.expectCrumb(
       fragmentNumber,
       `/fragmentarium/${fragmentNumber}`
     )
