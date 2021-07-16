@@ -81,11 +81,14 @@ yarn lighthouse <url>
 
 ## Coding Conventions
 
-- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882). Use linters and analysers to find code smells.
-- Write tests for your code. Test Driven Development is recommended but not mandatory. There is no hard requirement for code coverage but it should improve over time.
+- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+  Use linters and analysers to find code smells.
+- Write tests for your code. Test Driven Development is recommended but not mandatory.
+  There is no hard requirement for code coverage but it should improve over time.
 - Use [GitHub Flow](https://guides.github.com/introduction/flow/) for branches..
 - Implement a proper domain model. Avoid passing data around in dictionaries.
-- Prefer immutable value objects. Use [Immer](https://immerjs.github.io/immer/).
+- Prefer immutable value objects.
+  Use [Immer](https://immerjs.github.io/immer/) to update objects.
 - Use [Prettier](https://prettier.io) code style.
 - Always use TypeScript files .ts, .tsx.
 - Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
@@ -94,12 +97,17 @@ yarn lighthouse <url>
 ### HTML/CSS
 
 - Try to use semantic HTML.
-- Use [BEM](http://getbem.com/) naming convention for CSS.
+- Use [BEM](http://getbem.com/) naming convention for CSS classes.
 - Use lowercase names for CSS classes.
 
 ### Filenames
 
-File names have lower camel case and the same name as the TSX File they are used in.
+- TypeScript files with default import should have the same name as the default import.
+  E.g. `MyComponent.tsx`, `myFunction.tsx`.
+- CSS/Sass files for components should have the same name as the TSX File they are used in.
+  E.g. `MyComponent.css`
+- Other files and folders should have kebab case names.
+  E.g. `test-helpers.ts`
 
 ## Acknowledgements
 
