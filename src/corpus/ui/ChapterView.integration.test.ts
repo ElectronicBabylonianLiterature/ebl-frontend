@@ -7,11 +7,12 @@ import { produce } from 'immer'
 const genre = 'L'
 const category = 1
 const index = 1
+const textName = 'Palm and Vine'
 const textDto = {
   genre: genre,
   category: category,
   index: index,
-  name: 'Palm and Vine',
+  name: textName,
   numberOfVerses: 99,
   approximateVerses: false,
   intro: '**Test**',
@@ -175,14 +176,18 @@ afterEach(() => {
 
 describe('Diplay chapter', () => {
   const chapter = chapterDtos[0]
-  const chapterTitle = createChapterTitle(chapter)
 
   beforeEach(async () => {
     await setup(chapter)
   })
 
   test('Breadcrumbs', () => {
-    appDriver.expectBreadcrumbs(['eBL', 'Corpus', chapterTitle])
+    appDriver.expectBreadcrumbs([
+      'eBL',
+      'Corpus',
+      `I.1 ${textName}`,
+      `${chapter.stage} ${chapter.name}`,
+    ])
   })
 
   test.each([

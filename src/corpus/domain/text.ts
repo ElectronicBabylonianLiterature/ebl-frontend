@@ -81,7 +81,7 @@ export class Text implements TextInfo {
   references: ReadonlyArray<Reference> = []
 
   get title(): string {
-    return `${this.category && numberToRoman(this.category)}. ${this.index} ${
+    return `${this.category && numberToRoman(this.category)}.${this.index} ${
       this.name
     }`
   }

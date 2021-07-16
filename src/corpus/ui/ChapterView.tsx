@@ -17,6 +17,7 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import CorpusTextCrumb from './CorpusTextCrumb'
 
 function ChapterTitle({
   text,
@@ -27,7 +28,7 @@ function ChapterTitle({
 }): JSX.Element {
   return (
     <>
-      <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
+      Edit <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
     </>
   )
 }
@@ -144,12 +145,15 @@ function ChapterView({
     setChapter(chapter)
     setIsDirty(true)
   }
-  const title = <ChapterTitle text={text} chapter={chapter} />
 
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}
-      title={<>Edit {title}</>}
+      crumbs={[
+        new SectionCrumb('Corpus'),
+        new CorpusTextCrumb(text),
+        new TextCrumb(`${chapter.stage} ${chapter.name}`),
+      ]}
+      title={<ChapterTitle text={text} chapter={chapter} />}
     >
       <ChapterNavigation text={text} />
       <ChapterEditor

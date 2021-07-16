@@ -148,6 +148,10 @@ const textConfig: Partial<Text> = {
 
 describe('Text', () => {
   testProperties(textConfig, createText)
+
+  test('title', () => {
+    expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
+  })
 })
 
 describe('Chapter', () => {
