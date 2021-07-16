@@ -3,8 +3,7 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import ReactMarkdown from 'react-markdown'
 import AppContent from 'common/AppContent'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
-import InlineMarkdown from 'common/InlineMarkdown'
+import { SectionCrumb } from 'common/Breadcrumbs'
 import { Text } from 'corpus/domain/text'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
@@ -12,6 +11,7 @@ import ChapterNavigation from './ChapterNavigation'
 import './TextView.sass'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import referencePopover from 'bibliography/ui/referencePopover'
+import CorpusTextCrumb from './CorpusTextCrumb'
 
 const Citation = referencePopover(({ reference }) => (
   <>
@@ -46,10 +46,10 @@ function References({
 }
 
 function TextView({ text }: { text: Text }): JSX.Element {
-  const title = <InlineMarkdown source={text.title} />
-
   return (
-    <AppContent crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}>
+    <AppContent
+      crumbs={[new SectionCrumb('Corpus'), new CorpusTextCrumb(text)]}
+    >
       <section className="text-view__introduction">
         <h3>Introduction</h3>
         <ReactMarkdown className="text-view__markdown" source={text.intro} />

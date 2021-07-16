@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 export interface Crumb {
   readonly text: React.ReactNode
-  readonly link: string | null | undefined
+  readonly link: string | null
 }
 
 export class SectionCrumb implements Crumb {
@@ -23,8 +23,8 @@ export class SectionCrumb implements Crumb {
     this.text = section
   }
 
-  get link(): string | undefined {
-    return SectionCrumb.SECTIONS.get(this.text)
+  get link(): string | null {
+    return SectionCrumb.SECTIONS.get(this.text) ?? null
   }
 }
 
