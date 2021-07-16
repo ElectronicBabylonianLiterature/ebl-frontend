@@ -12,14 +12,11 @@ function ReferenceGroup({
 }): JSX.Element {
   return (
     <ol className="ReferenceList__list">
-      {_.chain(references)
-        .sortBy((reference) => `${reference.primaryAuthor} # ${reference.year}`)
-        .map((reference, index) => (
-          <li key={index}>
-            <Citation reference={reference} />
-          </li>
-        ))
-        .value()}
+      {references.map((reference, index) => (
+        <li key={index}>
+          <Citation reference={reference} />
+        </li>
+      ))}
     </ol>
   )
 }

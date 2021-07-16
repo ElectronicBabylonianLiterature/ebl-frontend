@@ -22,9 +22,11 @@ export function groupReferences(
   references: readonly Reference[]
 ): [string, Reference[]][] {
   return _.chain(references)
-    .groupBy((reference) => reference.type)
+    .sortBy('primaryAuthor', 'year')
+    .groupBy('type')
     .toPairs()
     .sortBy(([type]) => _.get(typeOrder, type, 5))
+    .map()
     .value()
 }
 
@@ -111,6 +113,6 @@ export default class Reference {
   }
 
   toHtml(): string {
-    return this.document ? this.document.toHtml() : ''
+    return this.document?.toHtml() ?? ''
   }
 }

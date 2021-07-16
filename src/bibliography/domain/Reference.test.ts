@@ -4,7 +4,7 @@ import {
   buildReferenceWithContainerTitle,
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
-import Reference from './Reference'
+import Reference, { groupReferences, ReferenceType } from './Reference'
 import BibliographyEntry from './BibliographyEntry'
 
 test('default reference', () => {
@@ -13,8 +13,8 @@ test('default reference', () => {
   )
 })
 
-describe('Reference', () => {
-  let reference
+describe('getters', () => {
+  let reference: Reference
 
   beforeEach(() => {
     reference = referenceFactory.build()
@@ -23,7 +23,7 @@ describe('Reference', () => {
   test.each([
     ['typeAbbreviation', 'type.0'],
     ['primaryAuthor', 'document.primaryAuthor'],
-  ])('%s', async (property, path) =>
+  ])('%s', (property, path) =>
     expect(reference[property]).toEqual(_.get(reference, path))
   )
 })
@@ -46,4 +46,55 @@ test.each([
   [buildReferenceWithContainerTitle('PHOTO'), true],
 ])('hasShortContainerTitle %#', (reference, expected) => {
   expect(reference.hasShortContainerTitle).toEqual(expected)
+})
+
+test('groupReferences sorts groups', () => {
+  const copy = referenceFactory.build({ type: 'COPY' })
+  const discussion = referenceFactory.build({ type: 'DISCUSSION' })
+  const edition = referenceFactory.build({ type: 'EDITION' })
+  const photo = referenceFactory.build({ type: 'PHOTO' })
+  const translation = referenceFactory.build({ type: 'TRANSLATION' })
+
+  expect(
+    groupReferences([copy, discussion, edition, photo, translation])
+  ).toEqual([
+    ['COPY', [copy]],
+    ['PHOTO', [photo]],
+    ['EDITION', [edition]],
+    ['TRANSLATION', [translation]],
+    ['DISCUSSION', [discussion]],
+  ])
+})
+
+test('groupReferences sorts references', () => {
+  const type: ReferenceType = 'COPY'
+
+  function buildReference(authors: string[], year: number): Reference {
+    return referenceFactory.build(
+      { type },
+      {
+        associations: {
+          document: bibliographyEntryFactory.build(
+            {},
+            {
+              transient: {
+                author: authors.map((author) => ({
+                  family: author,
+                })),
+                issued: { 'date-parts': [[year]] },
+              },
+            }
+          ),
+        },
+      }
+    )
+  }
+
+  const first = buildReference(['Ba'], 1950)
+  const second = buildReference(['Ba'], 2000)
+  const third = buildReference(['Ca', 'Aa'], 1900)
+
+  expect(groupReferences([third, second, first])).toEqual([
+    [type, [first, second, third]],
+  ])
 })
