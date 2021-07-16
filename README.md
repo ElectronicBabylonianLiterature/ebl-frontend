@@ -79,10 +79,27 @@ yarn lighthouse <url>
 
 [bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
 
-## CSS Convention
+## Coding Conventions
+
+- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882). Use linters and analysers to find code smells.
+- Write tests for your code. Test Driven Development is recommended but not mandatory. There is no hard requirement for code coverage but it should improve over time.
+- Use [GitHub Flow](https://guides.github.com/introduction/flow/) for branches..
+- Implement a proper domain model. Avoid passing data around in dictionaries.
+- Prefer immutable value objects. Use [Immer](https://immerjs.github.io/immer/).
+- Use [Prettier](https://prettier.io) code style.
+- Always use TypeScript files .ts, .tsx.
+- Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
+- Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
+
+### HTML/CSS
+
+- Try to use semantic HTML.
+- Use [BEM](http://getbem.com/) naming convention for CSS.
+- Use lowercase names for CSS classes.
+
+### Filenames
 
 File names have lower camel case and the same name as the TSX File they are used in.
-Css classes have bem conventions (all lower case).
 
 ## Acknowledgements
 
