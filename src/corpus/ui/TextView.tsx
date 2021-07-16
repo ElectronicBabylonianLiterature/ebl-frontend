@@ -31,15 +31,18 @@ function TextView({ text }: { text: Text }): JSX.Element {
           <section className="text-view__references">
             <h4>References</h4>
             {groupReferences(text.references).map(([type, group]) => (
-              <article key={type}>
-                {_.startCase(type.toLowerCase())}:{' '}
+              <p key={type} className="text-view__reference-group">
+                <b className="text-view__reference-group-title">
+                  {_.startCase(type.toLowerCase())}
+                </b>
+                :{' '}
                 {group.map((reference, index) => (
                   <React.Fragment key={index}>
                     {index > 0 && ', '}
                     <Citation reference={reference} />
                   </React.Fragment>
                 ))}
-              </article>
+              </p>
             ))}
           </section>
         )}
