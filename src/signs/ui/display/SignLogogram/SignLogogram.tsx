@@ -22,11 +22,12 @@ export default function SignLogograms({
       <Col>
         <ul>
           {[...signLogograms]
-            .sort((logogram2, logogram1) =>
-              compareCleanedAkkadianString(
-                logogram1.wordId[0] || '',
-                logogram2.wordId[0] || ''
-              )
+            .sort(
+              (logogram2, logogram1) =>
+                -compareCleanedAkkadianString(
+                  logogram1.wordId[0] || '',
+                  logogram2.wordId[0] || ''
+                )
             )
             .map((logogram, index) => (
               <li key={index}>
@@ -62,7 +63,6 @@ function SignLogogramEntry({
           <span>
             (
             <MarkdownAndHtmlToHtml
-              className={'signInformation__LogogramLogogram'}
               container={'span'}
               markdownAndHtml={logogram.logogram}
             />
