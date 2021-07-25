@@ -19,7 +19,10 @@ describe('Composite Signs', () => {
       <MemoryRouter>
         <Route
           render={(): ReactNode => (
-            <CompositeSigns signService={signService} query={{}} />
+            <CompositeSigns
+              signService={signService}
+              query={{ value: 'test', subIndex: 1, isComposite: true }}
+            />
           )}
         />
       </MemoryRouter>
