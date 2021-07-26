@@ -24,13 +24,16 @@ function SignDisplay({
   wordService: WordService
 }): JSX.Element {
   return (
-    <AppContent
-      crumbs={[new SectionCrumb('Signs'), new TextCrumb(sign.displaySignName)]}
-      title={' '}
-    >
-      <SessionContext.Consumer>
-        {(session: Session): JSX.Element =>
-          session.isAllowedToReadWords() ? (
+    <SessionContext.Consumer>
+      {(session: Session): JSX.Element => (
+        <AppContent
+          crumbs={[
+            new SectionCrumb('Signs'),
+            new TextCrumb(sign.displaySignName),
+          ]}
+          title={' '}
+        >
+          {session.isAllowedToReadWords() ? (
             <Container>
               <SignHeading
                 signName={sign.displaySignName}
@@ -45,10 +48,10 @@ function SignDisplay({
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>
-          )
-        }
-      </SessionContext.Consumer>
-    </AppContent>
+          )}
+        </AppContent>
+      )}
+    </SessionContext.Consumer>
   )
 }
 
@@ -91,5 +94,6 @@ export default withData<WithoutData<Props>, { match }, Sign>(
       signService={signService}
     />
   ),
-  (props) => props.signService.find(props.match.params['id'])
+  (props) =>
+    props.signService.find(decodeURIComponent(props.match.params['id']))
 )

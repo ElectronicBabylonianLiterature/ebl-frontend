@@ -8,7 +8,6 @@ import CompositeSigns from 'signs/ui/display/CompositeSigns'
 import SignService from 'signs/application/SignService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import InlineMarkdown from 'common/InlineMarkdown'
-import './signInformation.css'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
 import SignLogograms from 'signs/ui/display/SignLogogram/SignLogogram'
 

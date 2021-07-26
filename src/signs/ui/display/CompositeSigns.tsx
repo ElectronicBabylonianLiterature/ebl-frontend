@@ -1,10 +1,9 @@
-import Sign, { SignQuery } from 'signs/domain/Sign'
+import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import withData, { WithoutData } from 'http/withData'
 import React from 'react'
 import './compositeSigns.css'
 
-import { Link } from 'react-router-dom'
 import HelpTrigger from 'common/HelpTrigger'
 import { Col, Popover, Row } from 'react-bootstrap'
 import _ from 'lodash'
@@ -12,18 +11,28 @@ import ExternalLink from 'common/ExternalLink'
 
 function CompositeSign({
   signComposites,
+  mainSign,
 }: {
   signComposites: readonly Sign[]
+  mainSign: string
 }): JSX.Element | null {
-  return signComposites.length > 0 ? (
+  const signCompositesWithoutMainSign = [...signComposites].filter(
+    (sign) => sign.displaySignName !== mainSign?.toUpperCase()
+  )
+  return signCompositesWithoutMainSign.length > 0 ? (
     <Row>
       <Col xs={'auto'}>Composites: </Col>
-      <Col>
-        {signComposites.map((sign, index) => (
-          <Link key={index} to={`/signs/${encodeURIComponent(sign.name)}`}>
-            {sign.displaySignName}
-            {index < signComposites.length - 1 ? ', ' : ''}
-          </Link>
+      <Col
+        xs={'auto'}
+        className={'compositeSigns__compositeSigns__compositeSigns'}
+      >
+        {signCompositesWithoutMainSign.map((sign, index) => (
+          <span key={index}>
+            <a href={`/signs/${encodeURIComponent(sign.name)}`}>
+              {sign.displaySignName}
+            </a>
+            {index < signCompositesWithoutMainSign.length - 1 ? ', ' : ''}
+          </span>
         ))}
       </Col>
       <Col xs={1} className={'mt-auto'}>
@@ -56,7 +65,13 @@ function CompositeSignsInfo(): JSX.Element {
 
 type Props = {
   data: readonly Sign[]
+  query: SignQuery
   signService: SignService
+}
+interface SignQuery {
+  isComposite: boolean
+  value: string
+  subIndex: number
 }
 
 export default withData<
@@ -64,6 +79,8 @@ export default withData<
   { query: SignQuery },
   readonly Sign[]
 >(
-  ({ data }) => <CompositeSign signComposites={data} />,
+  ({ data, query }) => (
+    <CompositeSign signComposites={data} mainSign={query.value} />
+  ),
   (props) => props.signService.search(props.query)
 )
