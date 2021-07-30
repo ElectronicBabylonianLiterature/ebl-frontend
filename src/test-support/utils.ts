@@ -109,7 +109,7 @@ export function whenChangedByLabel<T>(
 
 export async function submitForm(container: HTMLElement): Promise<void> {
   await act(async () => {
-    // eslint-disable-next-line testing-library/no-node-access
+    // eslint-disable-next-line
     const result = container.querySelector('form')
     result && fireEvent.submit(result)
   })
