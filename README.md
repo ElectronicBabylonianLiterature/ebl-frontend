@@ -104,8 +104,8 @@ yarn lighthouse <url>
 
 - TypeScript files with default import should have the same name as the default import.
   E.g. `MyComponent.tsx`, `myFunction.tsx`.
-- CSS/Sass files for components should have the same name as the TSX File they are 
-  used in. E.g. `MyComponent.css`
+- CSS/Sass files for components should have the same name as
+  the TSX File they are used in. E.g. `MyComponent.css`
 - Other files and folders should have kebab case names.
   E.g. `test-helpers.ts`
 
