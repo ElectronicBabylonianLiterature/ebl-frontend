@@ -79,6 +79,36 @@ yarn lighthouse <url>
 
 [bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
 
+## Coding Conventions
+
+- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+  Use linters and analysers to find code smells.
+- Write tests for your code. Test Driven Development is recommended but not mandatory.
+  There is no hard requirement for code coverage but it should improve over time.
+- Use [GitHub Flow](https://guides.github.com/introduction/flow/) for branches..
+- Implement a proper domain model. Avoid passing data around in dictionaries.
+- Prefer immutable value objects.
+  Use [Immer](https://immerjs.github.io/immer/) to update objects.
+- Use [Prettier](https://prettier.io) code style.
+- Always use TypeScript files .ts, .tsx.
+- Stick to the [good parts](https://smile.amazon.de/JavaScript-Parts-Working-Shallow-Grain/dp/0596517742).
+- Avoid [Common mistakes with React Testing Library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library).
+
+### HTML/CSS
+
+- Try to use semantic HTML.
+- Use [BEM](http://getbem.com/) naming convention for CSS classes.
+- Use lowercase names for CSS classes.
+
+### Filenames
+
+- TypeScript files with default import should have the same name as the default import.
+  E.g. `MyComponent.tsx`, `myFunction.tsx`.
+- CSS/Sass files for components should have the same name as
+  the TSX File they are used in. E.g. `MyComponent.css`
+- Other files and folders should have kebab case names.
+  E.g. `test-helpers.ts`
+
 ## Acknowledgements
 
 [Junicode](http://junicode.sourceforge.net/) webfont by [psb1558](http://sourceforge.net/users/psb1558) is licensed under the [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL). You can get the full distribution from [Junicode download page](http://sourceforge.net/projects/junicode/?source=typ_redirect).
