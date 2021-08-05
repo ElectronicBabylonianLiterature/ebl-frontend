@@ -7,16 +7,16 @@ import { SectionCrumb } from 'common/Breadcrumbs'
 import { Text } from 'corpus/domain/text'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
-
-import './TextView.sass'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
 import referencePopover from 'bibliography/ui/referencePopover'
 import CorpusTextCrumb from './CorpusTextCrumb'
+import InlineMarkdown from 'common/InlineMarkdown'
+import Citation from 'bibliography/domain/Citation'
 
-const Citation = referencePopover(({ reference }) => (
-  <>
-    {reference.primaryAuthor} {reference.year}
-  </>
+import './TextView.sass'
+
+const TextCitation = referencePopover(({ reference }) => (
+  <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
 ))
 
 function References({
@@ -36,7 +36,7 @@ function References({
           {group.map((reference, index) => (
             <React.Fragment key={index}>
               {index > 0 && ', '}
-              <Citation reference={reference} />
+              <TextCitation reference={reference} />
             </React.Fragment>
           ))}
         </p>

@@ -24,6 +24,10 @@ export default abstract class Citation {
   constructor(readonly reference: Reference) {}
 
   abstract getMarkdown(): string
+
+  getMarkdownWithTypeAbbreviation(): string {
+    return `${this.getMarkdown()} (${this.reference.typeAbbreviation})`
+  }
 }
 
 export class ContainerCitation extends Citation {
@@ -31,14 +35,11 @@ export class ContainerCitation extends Citation {
     const reference = this.reference
     return [
       `*${reference.shortContainerTitle}*`,
-      ' ',
-      reference.collectionNumber ? `${reference.collectionNumber}, ` : '',
-      reference.pages,
-      ' ',
+      reference.collectionNumber ? ` ${reference.collectionNumber},` : '',
+      reference.pages ? ` ${reference.pages}` : '',
       reference.hasLinesCited
-        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
+        ? ` \\[l. ${reference.linesCited.join(', ')}\\]`
         : '',
-      `(${reference.typeAbbreviation})`,
     ].join('')
   }
 }
@@ -50,11 +51,10 @@ export class CompactCitation extends Citation {
       this.getAuthor(),
       ', ',
       reference.year,
-      reference.pages ? `: ${reference.pages} ` : ' ',
+      reference.pages ? `: ${reference.pages}` : '',
       reference.hasLinesCited
-        ? `\\[l. ${reference.linesCited.join(', ')}\\] `
+        ? ` \\[l. ${reference.linesCited.join(', ')}\\]`
         : '',
-      `(${reference.typeAbbreviation})`,
     ].join('')
   }
 
