@@ -19,6 +19,7 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromChapterDto,
+  fromColophonsDto,
   fromDto,
   fromLineDto,
   toAlignmentDto,
@@ -144,6 +145,21 @@ export default class TextService {
     return this.apiClient
       .fetchJson(createChapterUrl(genre, category, index, stage, name), true)
       .then(fromChapterDto)
+  }
+
+  findManuscripts(
+    genre: string,
+    category: string,
+    index: string,
+    stage: string,
+    name: string
+  ): Bluebird<any> {
+    return this.apiClient
+      .fetchJson(
+        `${createChapterUrl(genre, category, index, stage, name)}/colophons`,
+        true
+      )
+      .then(fromColophonsDto)
   }
 
   list(): Bluebird<Text[]> {

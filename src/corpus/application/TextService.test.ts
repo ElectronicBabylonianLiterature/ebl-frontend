@@ -16,6 +16,7 @@ import Word from 'dictionary/domain/Word'
 import ApiClient from 'http/ApiClient'
 import produce, { castDraft } from 'immer'
 import { createLine, EditStatus } from 'corpus/domain/line'
+import { fragment, fragmentDto } from 'test-support/test-fragment'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -201,6 +202,36 @@ const testData: TestData[] = [
     [text],
     ['/texts', false],
     Bluebird.resolve(textsDto),
+  ],
+  [
+    'findChapter',
+    [text.genre, text.category, text.index, chapter.stage, chapter.name],
+    apiClient.fetchJson,
+    chapter,
+    [
+      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
+        text.category
+      )}/${encodeURIComponent(text.index)}/chapters/${encodeURIComponent(
+        chapter.stage
+      )}/${encodeURIComponent(chapter.name)}`,
+      true,
+    ],
+    Bluebird.resolve(chapterDto),
+  ],
+  [
+    'findManuscripts',
+    [text.genre, text.category, text.index, chapter.stage, chapter.name],
+    apiClient.fetchJson,
+    [{ siglum: 'NinNA1a', text: fragment.text }],
+    [
+      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
+        text.category
+      )}/${encodeURIComponent(text.index)}/chapters/${encodeURIComponent(
+        chapter.stage
+      )}/${encodeURIComponent(chapter.name)}/colophons`,
+      true,
+    ],
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ],
   [
     'searchTransliteration',
