@@ -1,6 +1,6 @@
 import Reference, { ReferenceType } from './Reference'
 
-export default class Citation {
+export default abstract class Citation {
   static readonly CONTAINER_CITATION_TYPES: ReadonlyArray<ReferenceType> = [
     'COPY',
     'EDITION',
@@ -21,15 +21,9 @@ export default class Citation {
       : new CompactCitation(reference)
   }
 
-  readonly reference: Reference
+  constructor(readonly reference: Reference) {}
 
-  constructor(reference: Reference) {
-    this.reference = reference
-  }
-
-  getMarkdown(): string {
-    return ''
-  }
+  abstract getMarkdown(): string
 }
 
 export class ContainerCitation extends Citation {
