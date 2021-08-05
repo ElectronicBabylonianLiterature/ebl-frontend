@@ -4,7 +4,7 @@ import Promise from 'bluebird'
 import ReactMarkdown from 'react-markdown'
 import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import { Chapter, Text } from 'corpus/domain/text'
+import { Text } from 'corpus/domain/text'
 import withData from 'http/withData'
 import ChapterNavigation from './ChapterNavigation'
 import Reference, { groupReferences } from 'bibliography/domain/Reference'
@@ -14,6 +14,9 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import Citation from 'bibliography/domain/Citation'
 
 import './TextView.sass'
+import { Transliteration } from 'transliteration/ui/Transliteration'
+import Colophon from 'corpus/domain/Colophon'
+import { Col, Container, Row } from 'react-bootstrap'
 
 const TextCitation = referencePopover(({ reference }) => (
   <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
@@ -46,29 +49,36 @@ function References({
 }
 
 const ChapterColophons = withData<
-  unknown,
+  { name: string },
   {
     genre: string
     category: string
     index: string
     stage: string
-    name: string
     textService
   },
-  Chapter
+  readonly Colophon[]
 >(
-  ({ data: chapter }) => (
-    <>
-      {chapter.manuscripts.map((manuscript) => (
-        <article key={manuscript.siglum}>
-          <h5>{manuscript.siglum}</h5>
-          <pre>{manuscript.colophon}</pre>
-        </article>
-      ))}
-    </>
-  ),
+  ({ data: colophons, name }) =>
+    _.isEmpty(colophons) ? null : (
+      <section>
+        <h4>{name}</h4>
+        <Container>
+          {colophons.map(({ siglum, text }) => (
+            <Row key={siglum}>
+              <Col md={2}>
+                <h5>{siglum}</h5>
+              </Col>
+              <Col md={10}>
+                <Transliteration text={text} />
+              </Col>
+            </Row>
+          ))}
+        </Container>
+      </section>
+    ),
   ({ genre, category, index, stage, name, textService }) =>
-    textService.findChapter(genre, category, index, stage, name),
+    textService.findManuscripts(genre, category, index, stage, name),
   {
     watch: (props) => [
       props.genre,
@@ -90,17 +100,15 @@ function Colophons({
   return (
     <>
       {text.chapters.map((chapter, index) => (
-        <section key={index}>
-          <h4>{chapter.name}</h4>
-          <ChapterColophons
-            genre={text.genre}
-            category={text.category.toString()}
-            index={text.index.toString()}
-            stage={chapter.stage}
-            name={chapter.name}
-            textService={textService}
-          />
-        </section>
+        <ChapterColophons
+          key={index}
+          genre={text.genre}
+          category={text.category.toString()}
+          index={text.index.toString()}
+          stage={chapter.stage}
+          name={chapter.name}
+          textService={textService}
+        />
       ))}
     </>
   )
@@ -128,7 +136,7 @@ function TextView({
         <h3>Chapters</h3>
         <ChapterNavigation text={text} />
       </section>
-      <section className="text-view__chapter-list">
+      <section>
         <h3>Colophons</h3>
         <Colophons text={text} textService={textService} />
       </section>
