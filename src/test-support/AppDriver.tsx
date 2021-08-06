@@ -42,7 +42,12 @@ function createApp(api): JSX.Element {
     bibliographyService
   )
   const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-  const textService = new TextService(api, fragmentService, wordService)
+  const textService = new TextService(
+    api,
+    fragmentService,
+    wordService,
+    bibliographyService
+  )
   const signsRepository = new SignRepository(api)
   const signService = new SignService(signsRepository)
   return (

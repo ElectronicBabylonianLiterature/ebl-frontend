@@ -18,7 +18,7 @@ import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import Colophon from 'corpus/domain/Colophon'
 
-export function fromColophonsDto(dto): Colophon {
+export function fromColophonsDto(dto): Colophon[] {
   return dto.map(({ siglum, text }) => ({
     siglum,
     text: createTransliteration(text),

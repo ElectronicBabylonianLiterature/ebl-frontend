@@ -17,12 +17,18 @@ import ApiClient from 'http/ApiClient'
 import produce, { castDraft } from 'immer'
 import { createLine, EditStatus } from 'corpus/domain/line'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
+import BibliographyService from 'bibliography/application/BibliographyService'
 
+jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
 
 const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+const MockBibliographyService = BibliographyService as jest.Mock<
+  jest.Mocked<BibliographyService>
+>
+const bibliographyServiceMock = new MockBibliographyService()
 const MockFragmentService = FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >
@@ -32,7 +38,8 @@ const wordServiceMock = new MockWordService()
 const testService = new TextService(
   apiClient,
   fragmentServiceMock,
-  wordServiceMock
+  wordServiceMock,
+  bibliographyServiceMock
 )
 
 const alignmentDto = {
@@ -219,7 +226,7 @@ const testData: TestData[] = [
     Bluebird.resolve(chapterDto),
   ],
   [
-    'findManuscripts',
+    'findColophons',
     [text.genre, text.category, text.index, chapter.stage, chapter.name],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],

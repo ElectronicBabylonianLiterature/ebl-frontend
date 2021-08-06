@@ -29,6 +29,9 @@ import {
 } from './dtos'
 import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
+import BibliographyService from 'bibliography/application/BibliographyService'
+import Colophon from 'corpus/domain/Colophon'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -115,18 +118,18 @@ function createChapterUrl(
 }
 
 export default class TextService {
-  private readonly apiClient: ApiClient
-  private readonly wordService: WordService
-  private readonly fragmentService: FragmentService
+  private readonly referenceInjector: ReferenceInjector
 
   constructor(
-    apiClient: ApiClient,
-    fragmentService: FragmentService,
-    wordService: WordService
+    private readonly apiClient: ApiClient,
+    private readonly fragmentService: FragmentService,
+    private readonly wordService: WordService,
+    bibliographyService: BibliographyService
   ) {
     this.apiClient = apiClient
     this.fragmentService = fragmentService
     this.wordService = wordService
+    this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
   find(genre: string, category: string, index: string): Bluebird<Text> {
@@ -147,19 +150,29 @@ export default class TextService {
       .then(fromChapterDto)
   }
 
-  findManuscripts(
+  findColophons(
     genre: string,
     category: string,
     index: string,
     stage: string,
     name: string
-  ): Bluebird<any> {
+  ): Bluebird<Colophon[]> {
     return this.apiClient
       .fetchJson(
         `${createChapterUrl(genre, category, index, stage, name)}/colophons`,
         true
       )
       .then(fromColophonsDto)
+      .then((colophons) =>
+        Bluebird.all(
+          colophons.map(({ siglum, text }) =>
+            this.referenceInjector.injectReferences(text).then((text) => ({
+              siglum,
+              text,
+            }))
+          )
+        )
+      )
   }
 
   list(): Bluebird<Text[]> {

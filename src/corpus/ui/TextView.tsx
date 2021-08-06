@@ -78,7 +78,7 @@ const ChapterColophons = withData<
       </section>
     ),
   ({ genre, category, index, stage, name, textService }) =>
-    textService.findManuscripts(genre, category, index, stage, name),
+    textService.findColophons(genre, category, index, stage, name),
   {
     watch: (props) => [
       props.genre,
