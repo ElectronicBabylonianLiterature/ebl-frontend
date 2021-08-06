@@ -4,7 +4,6 @@ import { stringify } from 'query-string'
 import produce from 'immer'
 import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
 import {
   FragmentRepository,
@@ -17,73 +16,14 @@ import {
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
-import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine } from 'transliteration/domain/text-line'
-import {
-  LooseDollarLine,
-  ImageDollarLine,
-  RulingDollarLine,
-  SealDollarLine,
-  StateDollarLine,
-} from 'transliteration/domain/dollar-lines'
-import {
-  SealAtLine,
-  HeadingAtLine,
-  ColumnAtLine,
-  DiscourseAtLine,
-  SurfaceAtLine,
-  ObjectAtLine,
-  DivisionAtLine,
-  CompositeAtLine,
-} from 'transliteration/domain/at-lines'
-import { NoteLine } from 'transliteration/domain/note-line'
-import { ControlLine } from 'transliteration/domain/line'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
-import TranslationLine from 'transliteration/domain/translation-line'
 import createReference from 'bibliography/application/createReference'
-
-const lineClases = {
-  TextLine: TextLine,
-  ControlLine: ControlLine,
-  EmptyLine: EmptyLine,
-  NoteLine: NoteLine,
-  LooseDollarLine: LooseDollarLine,
-  ImageDollarLine: ImageDollarLine,
-  RulingDollarLine: RulingDollarLine,
-  SealDollarLine: SealDollarLine,
-  StateDollarLine: StateDollarLine,
-  SealAtLine: SealAtLine,
-  HeadingAtLine: HeadingAtLine,
-  ColumnAtLine: ColumnAtLine,
-  DiscourseAtLine: DiscourseAtLine,
-  SurfaceAtLine: SurfaceAtLine,
-  ObjectAtLine: ObjectAtLine,
-  DivisionAtLine: DivisionAtLine,
-  CompositeAtLine: CompositeAtLine,
-  ParallelFragment: ControlLine,
-  ParallelText: ControlLine,
-  ParallelComposition: ControlLine,
-  TranslationLine: TranslationLine,
-}
-
-function createText(text): Text {
-  return new Text({
-    lines: text.lines.map((lineDto) => {
-      const LineClass = lineClases[lineDto.type]
-      if (LineClass) {
-        return new LineClass(lineDto)
-      } else {
-        console.error(`Unknown line type "${lineDto.type}.`)
-        return new ControlLine(lineDto)
-      }
-    }),
-  })
-}
+import { createTransliteration } from 'transliteration/application/dtos'
 
 function createFragment(dto): Fragment {
   return Fragment.create({
@@ -103,7 +43,7 @@ function createFragment(dto): Fragment {
     },
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
-    text: createText(dto.text),
+    text: createTransliteration(dto.text),
     references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),

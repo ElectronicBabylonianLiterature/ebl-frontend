@@ -13,13 +13,14 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import { Genres } from 'fragmentarium/domain/Genres'
 import LemmatizationFactory from './LemmatizationFactory'
-import { LineToVecRanking } from '../domain/lineToVecRanking'
+import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
-import ReferenceInjector from './ReferenceInjector'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
+import produce, { castDraft } from 'immer'
 
 export interface CdliInfo {
   readonly photoUrl: string | null
@@ -89,17 +90,13 @@ export class FragmentService {
   find(number: string): Bluebird<Fragment> {
     return this.fragmentRepository
       .find(number)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateGenres(number: string, genres: Genres): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateGenres(number, genres)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   fetchGenres(): Bluebird<string[][]> {
@@ -113,9 +110,7 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateTransliteration(number, transliteration, notes)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateLemmatization(
@@ -124,9 +119,7 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateLemmatization(number, lemmatization)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   updateReferences(
@@ -135,9 +128,7 @@ export class FragmentService {
   ): Bluebird<Fragment> {
     return this.fragmentRepository
       .updateReferences(number, references)
-      .then((fragment: Fragment) =>
-        this.referenceInjector.injectReferences(fragment)
-      )
+      .then((fragment: Fragment) => this.injectReferences(fragment))
   }
 
   findFolio(folio: Folio): Bluebird<Blob> {
@@ -213,6 +204,14 @@ export class FragmentService {
           complexLemma.map((word: DictionaryWord) => new Lemma(word))
         )
       )
+  }
+
+  private injectReferences(fragment: Fragment): Bluebird<Fragment> {
+    return this.referenceInjector.injectReferences(fragment.text).then((text) =>
+      produce(fragment, (draft) => {
+        draft.text = castDraft(text)
+      })
+    )
   }
 }
 
