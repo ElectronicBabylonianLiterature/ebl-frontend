@@ -125,19 +125,19 @@ function TextView({
     <AppContent
       crumbs={[new SectionCrumb('Corpus'), new CorpusTextCrumb(text)]}
     >
-      <section className="text-view__introduction">
-        <h3>Introduction</h3>
+      <section className="text-view__section">
+        <h3 className="text-view__section-heading">Introduction</h3>
         <ReactMarkdown className="text-view__markdown" source={text.intro} />
         {!_.isEmpty(text.references) && (
           <References references={text.references} />
         )}
       </section>
-      <section className="text-view__chapter-list">
-        <h3>Chapters</h3>
+      <section className="text-view__section">
+        <h3 className="text-view__section-heading">Chapters</h3>
         <ChapterNavigation text={text} />
       </section>
-      <section>
-        <h3>Colophons</h3>
+      <section className="text-view__section">
+        <h3 className="text-view__section-heading">Colophons</h3>
         <Colophons text={text} textService={textService} />
       </section>
     </AppContent>
