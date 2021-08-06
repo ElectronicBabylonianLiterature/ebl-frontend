@@ -61,13 +61,13 @@ const ChapterColophons = withData<
 >(
   ({ data: colophons, name }) =>
     _.isEmpty(colophons) ? null : (
-      <section>
-        <h4>{name}</h4>
+      <section className="text-view__colophon-chapter">
+        <h4 className="text-view__colophon-chapter-heading">Chapter {name}</h4>
         <Container>
           {colophons.map(({ siglum, text }) => (
             <Row key={siglum}>
               <Col md={2}>
-                <h5>{siglum}</h5>
+                <h5 className="text-view__colophon-siglum">{siglum}</h5>
               </Col>
               <Col md={10}>
                 <Transliteration text={text} />
