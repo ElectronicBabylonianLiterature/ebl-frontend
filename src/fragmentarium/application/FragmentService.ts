@@ -13,13 +13,13 @@ import Lemmatization, {
 import { Text } from 'transliteration/domain/text'
 import { Genres } from 'fragmentarium/domain/Genres'
 import LemmatizationFactory from './LemmatizationFactory'
-import { LineToVecRanking } from '../domain/lineToVecRanking'
+import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import WordRepository from 'dictionary/infrastructure/WordRepository'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import Word from 'dictionary/domain/Word'
-import ReferenceInjector from './ReferenceInjector'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import produce, { castDraft } from 'immer'
 
 export interface CdliInfo {
