@@ -126,9 +126,6 @@ export default class TextService {
     private readonly wordService: WordService,
     bibliographyService: BibliographyService
   ) {
-    this.apiClient = apiClient
-    this.fragmentService = fragmentService
-    this.wordService = wordService
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
