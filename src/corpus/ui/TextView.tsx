@@ -18,6 +18,7 @@ import './TextView.sass'
 import { Transliteration } from 'transliteration/ui/Transliteration'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Collapse, Container, Row } from 'react-bootstrap'
+import { ChapterId } from 'corpus/application/TextService'
 
 const TextCitation = referencePopover(({ reference }) => (
   <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
@@ -90,31 +91,20 @@ function SiglumsAndTanslirationsSection({
 }
 
 const ChapterSiglumsAndTransliterations = withData<
-  { name: string },
+  { id: ChapterId },
   {
-    genre: string
-    category: string
-    index: string
-    stage: string
     textService
     method: 'findColophons' | 'findUnplacedLines'
   },
   readonly SiglumAndTransliteration[]
 >(
-  ({ data, name }) =>
+  ({ data, id }) =>
     _.isEmpty(data) ? null : (
-      <SiglumsAndTanslirationsSection name={name} data={data} />
+      <SiglumsAndTanslirationsSection name={id.name} data={data} />
     ),
-  ({ genre, category, index, stage, name, textService, method }) =>
-    textService[method](genre, category, index, stage, name),
+  ({ id, textService, method }) => textService[method](id),
   {
-    watch: (props) => [
-      props.genre,
-      props.category,
-      props.index,
-      props.stage,
-      props.name,
-    ],
+    watch: (props) => [props.id],
   }
 )
 
@@ -172,11 +162,7 @@ function TextView({
         {text.chapters.map((chapter, index) => (
           <ChapterSiglumsAndTransliterations
             key={index}
-            genre={text.genre}
-            category={text.category.toString()}
-            index={text.index.toString()}
-            stage={chapter.stage}
-            name={chapter.name}
+            id={ChapterId.fromText(text, chapter)}
             textService={textService}
             method="findColophons"
           />
@@ -186,11 +172,7 @@ function TextView({
         {text.chapters.map((chapter, index) => (
           <ChapterSiglumsAndTransliterations
             key={index}
-            genre={text.genre}
-            category={text.category.toString()}
-            index={text.index.toString()}
-            stage={chapter.stage}
-            name={chapter.name}
+            id={ChapterId.fromText(text, chapter)}
             textService={textService}
             method="findUnplacedLines"
           />

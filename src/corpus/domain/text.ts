@@ -68,6 +68,11 @@ export interface TextInfo {
   approximateVerses: boolean
 }
 
+export interface ChapterInfo {
+  readonly name: string
+  readonly stage: string
+}
+
 export class Text implements TextInfo {
   readonly [immerable] = true
   genre = 'L'
@@ -77,7 +82,7 @@ export class Text implements TextInfo {
   numberOfVerses = 0
   approximateVerses = false
   intro = ''
-  chapters: ReadonlyArray<{ name: string; stage: string }> = []
+  chapters: ReadonlyArray<ChapterInfo> = []
   references: ReadonlyArray<Reference> = []
 
   get title(): string {
