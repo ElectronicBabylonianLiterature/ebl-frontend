@@ -19,7 +19,7 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromChapterDto,
-  fromColophonsDto,
+  fromSiglumAndTransliterationDto,
   fromDto,
   fromLineDto,
   toAlignmentDto,
@@ -31,7 +31,7 @@ import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import Colophon from 'corpus/domain/Colophon'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -153,16 +153,47 @@ export default class TextService {
     index: string,
     stage: string,
     name: string
-  ): Bluebird<Colophon[]> {
+  ): Bluebird<SiglumAndTransliteration[]> {
     return this.apiClient
       .fetchJson(
         `${createChapterUrl(genre, category, index, stage, name)}/colophons`,
         true
       )
-      .then(fromColophonsDto)
+      .then(fromSiglumAndTransliterationDto)
       .then((colophons) =>
         Bluebird.all(
           colophons.map(({ siglum, text }) =>
+            this.referenceInjector.injectReferences(text).then((text) => ({
+              siglum,
+              text,
+            }))
+          )
+        )
+      )
+  }
+
+  findUnplacedLines(
+    genre: string,
+    category: string,
+    index: string,
+    stage: string,
+    name: string
+  ): Bluebird<SiglumAndTransliteration[]> {
+    return this.apiClient
+      .fetchJson(
+        `${createChapterUrl(
+          genre,
+          category,
+          index,
+          stage,
+          name
+        )}/unplaced_lines`,
+        true
+      )
+      .then(fromSiglumAndTransliterationDto)
+      .then((unplacedLines) =>
+        Bluebird.all(
+          unplacedLines.map(({ siglum, text }) =>
             this.referenceInjector.injectReferences(text).then((text) => ({
               siglum,
               text,

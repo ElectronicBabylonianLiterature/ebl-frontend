@@ -16,7 +16,7 @@ import Citation from 'bibliography/domain/Citation'
 
 import './TextView.sass'
 import { Transliteration } from 'transliteration/ui/Transliteration'
-import Colophon from 'corpus/domain/Colophon'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Collapse, Container, Row } from 'react-bootstrap'
 
 const TextCitation = referencePopover(({ reference }) => (
@@ -72,7 +72,7 @@ const ChapterColophons = withData<
     stage: string
     textService
   },
-  readonly Colophon[]
+  readonly SiglumAndTransliteration[]
 >(
   ({ data: colophons, name }) =>
     _.isEmpty(colophons) ? null : (

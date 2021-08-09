@@ -241,6 +241,21 @@ const testData: TestData[] = [
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ],
   [
+    'findUnplacedLines',
+    [text.genre, text.category, text.index, chapter.stage, chapter.name],
+    apiClient.fetchJson,
+    [{ siglum: 'NinNA1a', text: fragment.text }],
+    [
+      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
+        text.category
+      )}/${encodeURIComponent(text.index)}/chapters/${encodeURIComponent(
+        chapter.stage
+      )}/${encodeURIComponent(chapter.name)}/unplaced_lines`,
+      true,
+    ],
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+  ],
+  [
     'searchTransliteration',
     ['kur'],
     apiClient.fetchJson,
