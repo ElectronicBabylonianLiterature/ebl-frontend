@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Promise from 'bluebird'
@@ -105,15 +105,15 @@ const ChapterColophons = withData<
   }
 )
 
-function Colophons({
-  text,
-  textService,
+function CollapsibleSection({
+  heading,
+  children,
 }: {
-  text: Text
-  textService
+  heading: ReactNode
+  children: ReactNode
 }): JSX.Element {
   const [isOpen, setOpen] = useState(false)
-  const id = _.uniqueId('colophons-')
+  const id = _.uniqueId('collapse-')
   return (
     <section className="text-view__section">
       <h3
@@ -121,7 +121,7 @@ function Colophons({
         onClick={() => setOpen(!isOpen)}
         aria-controls={id}
       >
-        Colophons{' '}
+        {heading}{' '}
         <i
           className={classNames({
             'text-view__collapse-indicator': true,
@@ -133,19 +133,7 @@ function Colophons({
         ></i>
       </h3>
       <Collapse in={isOpen} mountOnEnter={true}>
-        <div id={id}>
-          {text.chapters.map((chapter, index) => (
-            <ChapterColophons
-              key={index}
-              genre={text.genre}
-              category={text.category.toString()}
-              index={text.index.toString()}
-              stage={chapter.stage}
-              name={chapter.name}
-              textService={textService}
-            />
-          ))}
-        </div>
+        <div id={id}>{children}</div>
       </Collapse>
     </section>
   )
@@ -167,7 +155,19 @@ function TextView({
         <h3 className="text-view__section-heading">Chapters</h3>
         <ChapterNavigation text={text} />
       </section>
-      <Colophons text={text} textService={textService} />
+      <CollapsibleSection heading="Colophons">
+        {text.chapters.map((chapter, index) => (
+          <ChapterColophons
+            key={index}
+            genre={text.genre}
+            category={text.category.toString()}
+            index={text.index.toString()}
+            stage={chapter.stage}
+            name={chapter.name}
+            textService={textService}
+          />
+        ))}
+      </CollapsibleSection>
     </AppContent>
   )
 }
