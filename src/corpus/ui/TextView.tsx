@@ -63,7 +63,33 @@ function Introduction({
   )
 }
 
-const ChapterColophons = withData<
+function SiglumsAndTanslirationsSection({
+  name,
+  data,
+}: {
+  name: ReactNode
+  data: readonly SiglumAndTransliteration[]
+}): JSX.Element {
+  return (
+    <section className="text-view__colophon-chapter">
+      <h4 className="text-view__colophon-chapter-heading">Chapter {name}</h4>
+      <Container bsPrefix="text-view__chapter-colophons">
+        {data.map(({ siglum, text }) => (
+          <Row key={siglum}>
+            <Col md={2}>
+              <h5 className="text-view__colophon-siglum">{siglum}</h5>
+            </Col>
+            <Col md={10}>
+              <Transliteration text={text} />
+            </Col>
+          </Row>
+        ))}
+      </Container>
+    </section>
+  )
+}
+
+const ChapterSiglumsAndTransliterations = withData<
   { name: string },
   {
     genre: string
@@ -71,29 +97,16 @@ const ChapterColophons = withData<
     index: string
     stage: string
     textService
+    method: 'findColophons' | 'findUnplacedLines'
   },
   readonly SiglumAndTransliteration[]
 >(
-  ({ data: colophons, name }) =>
-    _.isEmpty(colophons) ? null : (
-      <section className="text-view__colophon-chapter">
-        <h4 className="text-view__colophon-chapter-heading">Chapter {name}</h4>
-        <Container bsPrefix="text-view__chapter-colophons">
-          {colophons.map(({ siglum, text }) => (
-            <Row key={siglum}>
-              <Col md={2}>
-                <h5 className="text-view__colophon-siglum">{siglum}</h5>
-              </Col>
-              <Col md={10}>
-                <Transliteration text={text} />
-              </Col>
-            </Row>
-          ))}
-        </Container>
-      </section>
+  ({ data, name }) =>
+    _.isEmpty(data) ? null : (
+      <SiglumsAndTanslirationsSection name={name} data={data} />
     ),
-  ({ genre, category, index, stage, name, textService }) =>
-    textService.findColophons(genre, category, index, stage, name),
+  ({ genre, category, index, stage, name, textService, method }) =>
+    textService[method](genre, category, index, stage, name),
   {
     watch: (props) => [
       props.genre,
@@ -157,7 +170,7 @@ function TextView({
       </section>
       <CollapsibleSection heading="Colophons">
         {text.chapters.map((chapter, index) => (
-          <ChapterColophons
+          <ChapterSiglumsAndTransliterations
             key={index}
             genre={text.genre}
             category={text.category.toString()}
@@ -165,6 +178,21 @@ function TextView({
             stage={chapter.stage}
             name={chapter.name}
             textService={textService}
+            method="findColophons"
+          />
+        ))}
+      </CollapsibleSection>
+      <CollapsibleSection heading="Unplaced Lines">
+        {text.chapters.map((chapter, index) => (
+          <ChapterSiglumsAndTransliterations
+            key={index}
+            genre={text.genre}
+            category={text.category.toString()}
+            index={text.index.toString()}
+            stage={chapter.stage}
+            name={chapter.name}
+            textService={textService}
+            method="findUnplacedLines"
           />
         ))}
       </CollapsibleSection>
