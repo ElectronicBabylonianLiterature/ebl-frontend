@@ -16,9 +16,11 @@ import { Chapter, createChapter, createText, Text } from 'corpus/domain/text'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
-import Colophon from 'corpus/domain/Colophon'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 
-export function fromColophonsDto(dto): Colophon[] {
+export function fromSiglumAndTransliterationDto(
+  dto
+): SiglumAndTransliteration[] {
   return dto.map(({ siglum, text }) => ({
     siglum,
     text: createTransliteration(text),

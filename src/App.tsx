@@ -25,7 +25,7 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import TextService from 'corpus/application/TextService'
+import TextService, { ChapterId } from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
@@ -53,14 +53,15 @@ function parseTextParams(params): TextParams {
   }
 }
 
-function parseChapterParams(
-  params
-): TextParams & { stage: string; name: string } {
-  return {
-    ...parseTextParams(params),
-    stage: decodeURIComponent(params.stage),
-    name: decodeURIComponent(params.chapter),
-  }
+function parseChapterId(params): ChapterId {
+  const textId = parseTextParams(params)
+  return new ChapterId(
+    textId.genre,
+    textId.category,
+    textId.index,
+    decodeURIComponent(params.stage),
+    decodeURIComponent(params.chapter)
+  )
 }
 
 function parseFragmentSearchParams(
@@ -193,7 +194,7 @@ function App({
                 bibliographyService={bibliographyService}
                 fragmentService={fragmentService}
                 wordService={wordService}
-                {...parseChapterParams(match.params)}
+                id={parseChapterId(match.params)}
               />
             )}
           />

@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, Text } from 'corpus/domain/text'
+import { Chapter, ChapterInfo, Text } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -19,7 +19,7 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromChapterDto,
-  fromColophonsDto,
+  fromSiglumAndTransliterationDto,
   fromDto,
   fromLineDto,
   toAlignmentDto,
@@ -31,7 +31,7 @@ import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import Colophon from 'corpus/domain/Colophon'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -103,18 +103,48 @@ function createTextUrl(
   )}/${encodeURIComponent(index)}`
 }
 
-function createChapterUrl(
-  genre: string,
-  category: string | number,
-  index: string | number,
-  stage: string,
-  name: string
-): string {
+function createChapterUrl({
+  genre,
+  category,
+  index,
+  stage,
+  name,
+}: ChapterId): string {
   return `${createTextUrl(
     genre,
     category,
     index
   )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
+}
+
+export class ChapterId {
+  constructor(
+    readonly genre: string,
+    readonly category: string | number,
+    readonly index: string | number,
+    readonly stage: string,
+    readonly name: string
+  ) {}
+
+  static fromChapter(chapter: Chapter): ChapterId {
+    return new ChapterId(
+      chapter.textId.genre,
+      chapter.textId.category,
+      chapter.textId.index,
+      chapter.stage,
+      chapter.name
+    )
+  }
+
+  static fromText(text: Text, chapter: ChapterInfo): ChapterId {
+    return new ChapterId(
+      text.genre,
+      text.category,
+      text.index,
+      chapter.stage,
+      chapter.name
+    )
+  }
 }
 
 export default class TextService {
@@ -135,34 +165,35 @@ export default class TextService {
       .then(fromDto)
   }
 
-  findChapter(
-    genre: string,
-    category: string,
-    index: string,
-    stage: string,
-    name: string
-  ): Bluebird<Chapter> {
+  findChapter(id: ChapterId): Bluebird<Chapter> {
     return this.apiClient
-      .fetchJson(createChapterUrl(genre, category, index, stage, name), true)
+      .fetchJson(createChapterUrl(id), true)
       .then(fromChapterDto)
   }
 
-  findColophons(
-    genre: string,
-    category: string,
-    index: string,
-    stage: string,
-    name: string
-  ): Bluebird<Colophon[]> {
+  findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
     return this.apiClient
-      .fetchJson(
-        `${createChapterUrl(genre, category, index, stage, name)}/colophons`,
-        true
-      )
-      .then(fromColophonsDto)
+      .fetchJson(`${createChapterUrl(id)}/colophons`, true)
+      .then(fromSiglumAndTransliterationDto)
       .then((colophons) =>
         Bluebird.all(
           colophons.map(({ siglum, text }) =>
+            this.referenceInjector.injectReferences(text).then((text) => ({
+              siglum,
+              text,
+            }))
+          )
+        )
+      )
+  }
+
+  findUnplacedLines(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/unplaced_lines`, true)
+      .then(fromSiglumAndTransliterationDto)
+      .then((unplacedLines) =>
+        Bluebird.all(
+          unplacedLines.map(({ siglum, text }) =>
             this.referenceInjector.injectReferences(text).then((text) => ({
               siglum,
               text,
@@ -192,89 +223,48 @@ export default class TextService {
   }
 
   updateAlignment(
-    genre: string,
-    category: number,
-    index: number,
-    stage: string,
-    name: string,
+    id: ChapterId,
     alignment: ChapterAlignment
   ): Bluebird<Chapter> {
     return this.apiClient
-      .postJson(
-        `${createChapterUrl(genre, category, index, stage, name)}/alignment`,
-        toAlignmentDto(alignment)
-      )
+      .postJson(`${createChapterUrl(id)}/alignment`, toAlignmentDto(alignment))
       .then(fromChapterDto)
   }
 
   updateLemmatization(
-    genre: string,
-    category: number,
-    index: number,
-    stage: string,
-    name: string,
+    id: ChapterId,
     lemmatization: ChapterLemmatization
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `${createChapterUrl(
-          genre,
-          category,
-          index,
-          stage,
-          name
-        )}/lemmatization`,
+        `${createChapterUrl(id)}/lemmatization`,
         toLemmatizationDto(lemmatization)
       )
       .then(fromChapterDto)
   }
 
   updateManuscripts(
-    genre: string,
-    category: number,
-    index: number,
-    stage: string,
-    name: string,
+    id: ChapterId,
     manuscripts: readonly Manuscript[],
     uncertainChapters: readonly string[]
   ): Bluebird<Chapter> {
     return this.apiClient
       .postJson(
-        `${createChapterUrl(genre, category, index, stage, name)}/manuscripts`,
+        `${createChapterUrl(id)}/manuscripts`,
         toManuscriptsDto(manuscripts, uncertainChapters)
       )
       .then(fromChapterDto)
   }
 
-  updateLines(
-    genre: string,
-    category: number,
-    index: number,
-    stage: string,
-    name: string,
-    lines: readonly Line[]
-  ): Bluebird<Chapter> {
+  updateLines(id: ChapterId, lines: readonly Line[]): Bluebird<Chapter> {
     return this.apiClient
-      .postJson(
-        `${createChapterUrl(genre, category, index, stage, name)}/lines`,
-        toLinesDto(lines)
-      )
+      .postJson(`${createChapterUrl(id)}/lines`, toLinesDto(lines))
       .then(fromChapterDto)
   }
 
-  importChapter(
-    genre: string,
-    category: number,
-    index: number,
-    stage: string,
-    name: string,
-    atf: string
-  ): Bluebird<Chapter> {
+  importChapter(id: ChapterId, atf: string): Bluebird<Chapter> {
     return this.apiClient
-      .postJson(
-        `${createChapterUrl(genre, category, index, stage, name)}/import`,
-        { atf }
-      )
+      .postJson(`${createChapterUrl(id)}/import`, { atf })
       .then(fromChapterDto)
   }
 

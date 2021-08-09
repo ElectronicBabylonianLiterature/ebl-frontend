@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { testDelegation, TestData } from 'test-support/utils'
-import TextService from './TextService'
+import TextService, { ChapterId } from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import {
@@ -180,6 +180,7 @@ const searchDto = {
   },
 }
 
+const chapterId = ChapterId.fromChapter(chapter)
 const chapterUrl = `/texts/${encodeURIComponent(
   chapter.textId.genre
 )}/${encodeURIComponent(chapter.textId.category)}/${encodeURIComponent(
@@ -212,32 +213,26 @@ const testData: TestData[] = [
   ],
   [
     'findChapter',
-    [text.genre, text.category, text.index, chapter.stage, chapter.name],
+    [chapterId],
     apiClient.fetchJson,
     chapter,
-    [
-      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
-        text.category
-      )}/${encodeURIComponent(text.index)}/chapters/${encodeURIComponent(
-        chapter.stage
-      )}/${encodeURIComponent(chapter.name)}`,
-      true,
-    ],
+    [chapterUrl, true],
     Bluebird.resolve(chapterDto),
   ],
   [
     'findColophons',
-    [text.genre, text.category, text.index, chapter.stage, chapter.name],
+    [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
-    [
-      `/texts/${encodeURIComponent(text.genre)}/${encodeURIComponent(
-        text.category
-      )}/${encodeURIComponent(text.index)}/chapters/${encodeURIComponent(
-        chapter.stage
-      )}/${encodeURIComponent(chapter.name)}/colophons`,
-      true,
-    ],
+    [`${chapterUrl}/colophons`, true],
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+  ],
+  [
+    'findUnplacedLines',
+    [chapterId],
+    apiClient.fetchJson,
+    [{ siglum: 'NinNA1a', text: fragment.text }],
+    [`${chapterUrl}/unplaced_lines`, true],
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ],
   [
@@ -254,14 +249,7 @@ const testData: TestData[] = [
   ],
   [
     'updateAlignment',
-    [
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name,
-      chapter.alignment,
-    ],
+    [chapterId, chapter.alignment],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/alignment`, alignmentDto],
@@ -269,14 +257,7 @@ const testData: TestData[] = [
   ],
   [
     'updateLemmatization',
-    [
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name,
-      lemmatization,
-    ],
+    [chapterId, lemmatization],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/lemmatization`, lemmatizationDto],
@@ -284,15 +265,7 @@ const testData: TestData[] = [
   ],
   [
     'updateManuscripts',
-    [
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name,
-      chapter.manuscripts,
-      chapter.uncertainFragments,
-    ],
+    [chapterId, chapter.manuscripts, chapter.uncertainFragments],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/manuscripts`, manuscriptsDto],
@@ -301,11 +274,7 @@ const testData: TestData[] = [
   [
     'updateLines',
     [
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name,
+      chapterId,
       [
         createLine({ number: '1', status: EditStatus.DELETED }),
         createLine({ number: '2', status: EditStatus.EDITED }),
@@ -328,14 +297,7 @@ const testData: TestData[] = [
   ],
   [
     'importChapter',
-    [
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name,
-      '1. kur',
-    ],
+    [chapterId, '1. kur'],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],

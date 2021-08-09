@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Promise from 'bluebird'
@@ -16,8 +16,9 @@ import Citation from 'bibliography/domain/Citation'
 
 import './TextView.sass'
 import { Transliteration } from 'transliteration/ui/Transliteration'
-import Colophon from 'corpus/domain/Colophon'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Collapse, Container, Row } from 'react-bootstrap'
+import { ChapterId } from 'corpus/application/TextService'
 
 const TextCitation = referencePopover(({ reference }) => (
   <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
@@ -63,57 +64,59 @@ function Introduction({
   )
 }
 
-const ChapterColophons = withData<
-  { name: string },
+function SiglumsAndTanslirationsSection({
+  name,
+  data,
+}: {
+  name: ReactNode
+  data: readonly SiglumAndTransliteration[]
+}): JSX.Element {
+  return (
+    <section className="text-view__colophon-chapter">
+      <h4 className="text-view__colophon-chapter-heading">Chapter {name}</h4>
+      <Container bsPrefix="text-view__chapter-colophons">
+        {data.map(({ siglum, text }) => (
+          <Row key={siglum}>
+            <Col md={2}>
+              <h5 className="text-view__colophon-siglum">{siglum}</h5>
+            </Col>
+            <Col md={10}>
+              <Transliteration text={text} />
+            </Col>
+          </Row>
+        ))}
+      </Container>
+    </section>
+  )
+}
+
+const ChapterSiglumsAndTransliterations = withData<
+  { id: ChapterId },
   {
-    genre: string
-    category: string
-    index: string
-    stage: string
     textService
+    method: 'findColophons' | 'findUnplacedLines'
   },
-  readonly Colophon[]
+  readonly SiglumAndTransliteration[]
 >(
-  ({ data: colophons, name }) =>
-    _.isEmpty(colophons) ? null : (
-      <section className="text-view__colophon-chapter">
-        <h4 className="text-view__colophon-chapter-heading">Chapter {name}</h4>
-        <Container bsPrefix="text-view__chapter-colophons">
-          {colophons.map(({ siglum, text }) => (
-            <Row key={siglum}>
-              <Col md={2}>
-                <h5 className="text-view__colophon-siglum">{siglum}</h5>
-              </Col>
-              <Col md={10}>
-                <Transliteration text={text} />
-              </Col>
-            </Row>
-          ))}
-        </Container>
-      </section>
+  ({ data, id }) =>
+    _.isEmpty(data) ? null : (
+      <SiglumsAndTanslirationsSection name={id.name} data={data} />
     ),
-  ({ genre, category, index, stage, name, textService }) =>
-    textService.findColophons(genre, category, index, stage, name),
+  ({ id, textService, method }) => textService[method](id),
   {
-    watch: (props) => [
-      props.genre,
-      props.category,
-      props.index,
-      props.stage,
-      props.name,
-    ],
+    watch: (props) => [props.id],
   }
 )
 
-function Colophons({
-  text,
-  textService,
+function CollapsibleSection({
+  heading,
+  children,
 }: {
-  text: Text
-  textService
+  heading: ReactNode
+  children: ReactNode
 }): JSX.Element {
   const [isOpen, setOpen] = useState(false)
-  const id = _.uniqueId('colophons-')
+  const id = _.uniqueId('collapse-')
   return (
     <section className="text-view__section">
       <h3
@@ -121,7 +124,7 @@ function Colophons({
         onClick={() => setOpen(!isOpen)}
         aria-controls={id}
       >
-        Colophons{' '}
+        {heading}{' '}
         <i
           className={classNames({
             'text-view__collapse-indicator': true,
@@ -133,19 +136,7 @@ function Colophons({
         ></i>
       </h3>
       <Collapse in={isOpen} mountOnEnter={true}>
-        <div id={id}>
-          {text.chapters.map((chapter, index) => (
-            <ChapterColophons
-              key={index}
-              genre={text.genre}
-              category={text.category.toString()}
-              index={text.index.toString()}
-              stage={chapter.stage}
-              name={chapter.name}
-              textService={textService}
-            />
-          ))}
-        </div>
+        <div id={id}>{children}</div>
       </Collapse>
     </section>
   )
@@ -167,7 +158,26 @@ function TextView({
         <h3 className="text-view__section-heading">Chapters</h3>
         <ChapterNavigation text={text} />
       </section>
-      <Colophons text={text} textService={textService} />
+      <CollapsibleSection heading="Colophons">
+        {text.chapters.map((chapter, index) => (
+          <ChapterSiglumsAndTransliterations
+            key={index}
+            id={ChapterId.fromText(text, chapter)}
+            textService={textService}
+            method="findColophons"
+          />
+        ))}
+      </CollapsibleSection>
+      <CollapsibleSection heading="Unplaced Lines">
+        {text.chapters.map((chapter, index) => (
+          <ChapterSiglumsAndTransliterations
+            key={index}
+            id={ChapterId.fromText(text, chapter)}
+            textService={textService}
+            method="findUnplacedLines"
+          />
+        ))}
+      </CollapsibleSection>
     </AppContent>
   )
 }
