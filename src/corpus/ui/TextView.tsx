@@ -45,6 +45,7 @@ function References({
               <TextCitation reference={reference} />
             </React.Fragment>
           ))}
+          .
         </p>
       ))}
     </section>
