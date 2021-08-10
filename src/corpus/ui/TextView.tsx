@@ -29,6 +29,7 @@ function References({
 }: {
   references: readonly Reference[]
 }): JSX.Element {
+  const separator = '; '
   return (
     <section className="text-view__references">
       <h4>References</h4>
@@ -40,7 +41,7 @@ function References({
           :{' '}
           {group.map((reference, index) => (
             <React.Fragment key={index}>
-              {index > 0 && ', '}
+              {index > 0 && separator}
               <TextCitation reference={reference} />
             </React.Fragment>
           ))}
