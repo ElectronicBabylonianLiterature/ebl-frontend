@@ -22,3 +22,9 @@ test('With session', async () => {
   await appDriver.waitForText(/This is a/)
   expect(appDriver.getView().container).toMatchSnapshot()
 })
+
+test('Without session', async () => {
+  await appDriver.render()
+  await appDriver.waitForText('Please log in to view the text.')
+  expect(appDriver.getView().container).toMatchSnapshot()
+})

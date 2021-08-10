@@ -8,6 +8,7 @@ describe.each([
   ['annotate:fragments', 'isAllowedToAnnotateFragments'],
   ['lemmatize:fragments', 'isAllowedToLemmatizeFragments'],
   ['write:bibliography', 'isAllowedToWriteBibliography'],
+  ['read:texts', 'isAllowedToReadTexts'],
   ['write:texts', 'isAllowedToWriteTexts'],
   ['read:bibliography', 'isAllowedToReadBibliography'],
   ['access:beta', 'hasBetaAccess'],

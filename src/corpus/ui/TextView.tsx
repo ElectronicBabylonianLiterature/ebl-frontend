@@ -19,6 +19,8 @@ import { Transliteration } from 'transliteration/ui/Transliteration'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Col, Collapse, Container, Row } from 'react-bootstrap'
 import { ChapterId } from 'corpus/application/TextService'
+import SessionContext from 'auth/SessionContext'
+import { Session } from 'auth/Session'
 
 const TextCitation = referencePopover(({ reference }) => (
   <InlineMarkdown source={Citation.for(reference).getMarkdown()} />
@@ -155,31 +157,41 @@ function TextView({
     <AppContent
       crumbs={[new SectionCrumb('Corpus'), new CorpusTextCrumb(text)]}
     >
-      <Introduction text={text} />
-      <section className="text-view__section">
-        <h3 className="text-view__section-heading">Chapters</h3>
-        <ChapterNavigation text={text} />
-      </section>
-      <CollapsibleSection heading="Colophons">
-        {text.chapters.map((chapter, index) => (
-          <ChapterSiglumsAndTransliterations
-            key={index}
-            id={ChapterId.fromText(text, chapter)}
-            textService={textService}
-            method="findColophons"
-          />
-        ))}
-      </CollapsibleSection>
-      <CollapsibleSection heading="Unplaced Lines">
-        {text.chapters.map((chapter, index) => (
-          <ChapterSiglumsAndTransliterations
-            key={index}
-            id={ChapterId.fromText(text, chapter)}
-            textService={textService}
-            method="findUnplacedLines"
-          />
-        ))}
-      </CollapsibleSection>
+      <SessionContext.Consumer>
+        {(session: Session): JSX.Element =>
+          session.isAllowedToReadTexts() ? (
+            <>
+              <Introduction text={text} />
+              <section className="text-view__section">
+                <h3 className="text-view__section-heading">Chapters</h3>
+                <ChapterNavigation text={text} />
+              </section>
+              <CollapsibleSection heading="Colophons">
+                {text.chapters.map((chapter, index) => (
+                  <ChapterSiglumsAndTransliterations
+                    key={index}
+                    id={ChapterId.fromText(text, chapter)}
+                    textService={textService}
+                    method="findColophons"
+                  />
+                ))}
+              </CollapsibleSection>
+              <CollapsibleSection heading="Unplaced Lines">
+                {text.chapters.map((chapter, index) => (
+                  <ChapterSiglumsAndTransliterations
+                    key={index}
+                    id={ChapterId.fromText(text, chapter)}
+                    textService={textService}
+                    method="findUnplacedLines"
+                  />
+                ))}
+              </CollapsibleSection>
+            </>
+          ) : (
+            <p>Please log in to view the text.</p>
+          )
+        }
+      </SessionContext.Consumer>
     </AppContent>
   )
 }
