@@ -4,7 +4,6 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import { Text } from 'corpus/domain/text'
 import withData from 'http/withData'
-import ChapterNavigation from './ChapterNavigation'
 import CorpusTextCrumb from './CorpusTextCrumb'
 
 import './TextView.sass'
@@ -14,6 +13,7 @@ import { Session } from 'auth/Session'
 import { CollapsibleSection } from './CollapsibleSection'
 import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
+import { Link } from 'react-router-dom'
 
 function TextView({
   text,
@@ -31,10 +31,19 @@ function TextView({
           session.isAllowedToReadTexts() ? (
             <>
               <Introduction text={text} />
-              <section className="text-view__section">
-                <h3 className="text-view__section-heading">Chapters</h3>
-                <ChapterNavigation text={text} />
-              </section>
+              <CollapsibleSection heading="Chapters">
+                {text.chapters.map((chapter, index) => (
+                  <section key={index}>
+                    <h4>
+                      <Link
+                        to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
+                      >
+                        {chapter.name}
+                      </Link>
+                    </h4>
+                  </section>
+                ))}
+              </CollapsibleSection>
               <CollapsibleSection heading="Colophons">
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations

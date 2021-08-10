@@ -19,7 +19,14 @@ beforeEach(() => {
 
 test('With session', async () => {
   await appDriver.withSession().render()
-  await appDriver.waitForText(/This is a/)
+  await appDriver.waitForText('Introduction')
+  expect(appDriver.getView().container).toMatchSnapshot()
+})
+
+test('Show chapter', async () => {
+  await appDriver.withSession().render()
+  await appDriver.waitForText(/Chapters/)
+  await appDriver.click(/Chapters/)
   expect(appDriver.getView().container).toMatchSnapshot()
 })
 
