@@ -17,7 +17,7 @@ export default function TransliterationNotes({
           return (
             <li key={`${lineNumber}-${index}`} id={`note-${number}`}>
               <LinkToLine lineNumber={lineNumber} number={number} />
-              <Markup container="span" line={line} />
+              <Markup container="span" parts={line.parts} />
             </li>
           )
         })

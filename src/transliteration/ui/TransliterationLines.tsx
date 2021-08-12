@@ -60,7 +60,7 @@ function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
         colSpan={columns}
         className={classNames([`Transliteration__${line.type}`])}
       >
-        <Markup line={translationLine} />
+        <Markup parts={translationLine.parts} />
       </td>
     </>
   )

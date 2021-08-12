@@ -14,6 +14,7 @@ import { CollapsibleSection } from './CollapsibleSection'
 import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
 import { Link } from 'react-router-dom'
+import Markup from 'transliteration/ui/markup'
 
 function TextView({
   text,
@@ -38,13 +39,15 @@ function TextView({
                       <Link
                         to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
                       >
-                        {chapter.name}
+                        {chapter.name}{' '}
+                        <Markup container="span" parts={chapter.title} />
                       </Link>
                     </h4>
                   </section>
                 ))}
               </CollapsibleSection>
               <CollapsibleSection heading="Colophons">
+                F
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}

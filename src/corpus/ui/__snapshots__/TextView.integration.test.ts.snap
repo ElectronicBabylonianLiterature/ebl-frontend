@@ -228,6 +228,8 @@ exports[`Show chapter 1`] = `
               href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
             >
               The Only Chapter
+               
+              <span />
             </a>
           </h4>
         </section>

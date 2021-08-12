@@ -142,7 +142,7 @@ const textConfig: Partial<Text> = {
   numberOfVerses: 930,
   approximateVerses: true,
   intro: 'Introduction',
-  chapters: [{ stage: stage, name: name }],
+  chapters: [{ stage: stage, name: name, title: [] }],
   references: [new Reference()],
 }
 
