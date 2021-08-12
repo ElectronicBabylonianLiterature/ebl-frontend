@@ -5,6 +5,7 @@ import { numberToRoman } from 'big-roman'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
+import { MarkupPart } from 'transliteration/domain/markup'
 
 export class Chapter {
   readonly [immerable] = true
@@ -68,9 +69,10 @@ export interface TextInfo {
   approximateVerses: boolean
 }
 
-export interface ChapterInfo {
+export interface ChapterListing {
   readonly name: string
   readonly stage: string
+  readonly title: readonly MarkupPart[]
 }
 
 export class Text implements TextInfo {
@@ -82,7 +84,7 @@ export class Text implements TextInfo {
   numberOfVerses = 0
   approximateVerses = false
   intro = ''
-  chapters: ReadonlyArray<ChapterInfo> = []
+  chapters: ReadonlyArray<ChapterListing> = []
   references: ReadonlyArray<Reference> = []
 
   get title(): string {

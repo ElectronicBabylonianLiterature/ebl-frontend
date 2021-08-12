@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterInfo, Text } from 'corpus/domain/text'
+import { Chapter, ChapterListing, Text } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -32,6 +32,7 @@ import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResu
 import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
+import produce, { castDraft } from 'immer'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -136,7 +137,7 @@ export class ChapterId {
     )
   }
 
-  static fromText(text: Text, chapter: ChapterInfo): ChapterId {
+  static fromText(text: Text, chapter: ChapterListing): ChapterId {
     return new ChapterId(
       text.genre,
       text.category,
@@ -163,6 +164,22 @@ export default class TextService {
     return this.apiClient
       .fetchJson(createTextUrl(genre, category, index), true)
       .then(fromDto)
+      .then((text) =>
+        Bluebird.all(
+          text.chapters.map((chapter) =>
+            this.referenceInjector
+              .injectReferencesToMarkup(chapter.title)
+              .then((title) => ({
+                ...chapter,
+                title,
+              }))
+          )
+        ).then((chapters) =>
+          produce(text, (draft) => {
+            draft.chapters = castDraft(chapters)
+          })
+        )
+      )
   }
 
   findChapter(id: ChapterId): Bluebird<Chapter> {
@@ -178,10 +195,12 @@ export default class TextService {
       .then((colophons) =>
         Bluebird.all(
           colophons.map(({ siglum, text }) =>
-            this.referenceInjector.injectReferences(text).then((text) => ({
-              siglum,
-              text,
-            }))
+            this.referenceInjector
+              .injectReferencesToText(text)
+              .then((text) => ({
+                siglum,
+                text,
+              }))
           )
         )
       )
@@ -194,10 +213,12 @@ export default class TextService {
       .then((unplacedLines) =>
         Bluebird.all(
           unplacedLines.map(({ siglum, text }) =>
-            this.referenceInjector.injectReferences(text).then((text) => ({
-              siglum,
-              text,
-            }))
+            this.referenceInjector
+              .injectReferencesToText(text)
+              .then((text) => ({
+                siglum,
+                text,
+              }))
           )
         )
       )

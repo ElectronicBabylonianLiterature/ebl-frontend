@@ -170,6 +170,7 @@ export const textDto = {
     {
       stage: 'Old Babylonian',
       name: 'The Only Chapter',
+      title: [],
     },
   ],
   references: [],
@@ -238,5 +239,5 @@ export const text = createText({
   numberOfVerses: 10,
   approximateVerses: true,
   intro: 'This is a *test text*.',
-  chapters: [{ stage: chapter.stage, name: chapter.name }],
+  chapters: [{ stage: chapter.stage, name: chapter.name, title: [] }],
 })

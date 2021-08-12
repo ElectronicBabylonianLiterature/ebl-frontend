@@ -107,6 +107,7 @@ export default class AppDriver {
 
   withSession(): AppDriver {
     this.session = new MemorySession([
+      'read:texts',
       'write:texts',
       'read:fragments',
       'annotate:fragments',

@@ -5998,9 +5998,7 @@ exports[`Snapshot 1`] = `
           1
         </a>
          
-        <span
-          class="Transliteration__NoteLine"
-        >
+        <span>
           <span>
             this is a note 
           </span>

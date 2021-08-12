@@ -17,6 +17,8 @@ export interface Session {
 
   isAllowedToWriteBibliography(): boolean
 
+  isAllowedToReadTexts(): boolean
+
   isAllowedToWriteTexts(): boolean
 
   hasBetaAccess(): boolean
@@ -52,6 +54,10 @@ class GuestSession implements Session {
   }
 
   isAllowedToWriteBibliography(): boolean {
+    return false
+  }
+
+  isAllowedToReadTexts(): boolean {
     return false
   }
 
@@ -103,6 +109,10 @@ export default class MemorySession implements Session {
 
   isAllowedToWriteBibliography(): boolean {
     return this.hasApplicationScope('writeBibliography')
+  }
+
+  isAllowedToReadTexts(): boolean {
+    return this.hasApplicationScope('readTexts')
   }
 
   isAllowedToWriteTexts(): boolean {

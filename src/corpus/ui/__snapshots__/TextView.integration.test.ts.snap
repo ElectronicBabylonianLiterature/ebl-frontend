@@ -1,0 +1,711 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Show chapter 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-5"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout 
+              Test
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-5"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <section
+    class="App-content"
+  >
+    <header
+      class="App-content__header"
+    >
+      <nav
+        aria-label="breadcrumb"
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/"
+            >
+              eBL
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus"
+            >
+              Corpus
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="breadcrumb-item active"
+          >
+            I.1 Palm and Vine
+          </li>
+        </ol>
+      </nav>
+      <div
+        class="float-right btn-toolbar"
+        role="toolbar"
+      />
+      <h2>
+        I.1 Palm and Vine
+      </h2>
+    </header>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        class="text-view__section-heading"
+      >
+        Introduction
+      </h3>
+      <div
+        class="text-view__markdown"
+      >
+        <p>
+          This is a 
+          <em>
+            test text
+          </em>
+          .
+        </p>
+      </div>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-9"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Chapters
+         
+        <i
+          aria-expanded="true"
+          class="text-view__collapse-indicator fas fa-caret-down"
+        />
+      </h3>
+      <div
+        class="collapse show"
+        id="collapse-9"
+        style=""
+      >
+        <section>
+          <h4>
+            <a
+              href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+            >
+              The Only Chapter
+               
+              <span />
+            </a>
+          </h4>
+        </section>
+      </div>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-7"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Colophons
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-8"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Unplaced Lines
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+  </section>
+</div>
+`;
+
+exports[`With session 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-1"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout 
+              Test
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-1"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <section
+    class="App-content"
+  >
+    <header
+      class="App-content__header"
+    >
+      <nav
+        aria-label="breadcrumb"
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/"
+            >
+              eBL
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus"
+            >
+              Corpus
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="breadcrumb-item active"
+          >
+            I.1 Palm and Vine
+          </li>
+        </ol>
+      </nav>
+      <div
+        class="float-right btn-toolbar"
+        role="toolbar"
+      />
+      <h2>
+        I.1 Palm and Vine
+      </h2>
+    </header>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        class="text-view__section-heading"
+      >
+        Introduction
+      </h3>
+      <div
+        class="text-view__markdown"
+      >
+        <p>
+          This is a 
+          <em>
+            test text
+          </em>
+          .
+        </p>
+      </div>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-2"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Chapters
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-3"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Colophons
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-4"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Unplaced Lines
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+  </section>
+</div>
+`;
+
+exports[`Without session 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-10"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Login
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-10"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <section
+    class="App-content"
+  >
+    <header
+      class="App-content__header"
+    >
+      <nav
+        aria-label="breadcrumb"
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/"
+            >
+              eBL
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus"
+            >
+              Corpus
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="breadcrumb-item active"
+          >
+            I.1 Palm and Vine
+          </li>
+        </ol>
+      </nav>
+      <div
+        class="float-right btn-toolbar"
+        role="toolbar"
+      />
+      <h2>
+        I.1 Palm and Vine
+      </h2>
+    </header>
+    <p>
+      Please log in to view the text.
+    </p>
+  </section>
+</div>
+`;
