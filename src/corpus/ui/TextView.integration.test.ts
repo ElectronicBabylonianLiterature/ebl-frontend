@@ -27,6 +27,7 @@ test('Show chapter', async () => {
   await appDriver.withSession().render()
   await appDriver.waitForText(/Chapters/)
   await appDriver.click(/Chapters/)
+  await appDriver.waitForText(textDto.chapters[0].name)
   expect(appDriver.getView().container).toMatchSnapshot()
 })
 

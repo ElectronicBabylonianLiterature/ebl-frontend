@@ -8,17 +8,12 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { ReferenceDto } from 'bibliography/domain/referenceDto'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { Text } from 'transliteration/domain/text'
+import { isBibliographyPart } from 'transliteration/domain/type-guards'
 
 function isMarkupLine(
   line: Draft<AbstractLine>
 ): line is Draft<NoteLine | TranslationLine> {
   return ['NoteLine', 'TranslationLine'].includes(line.type)
-}
-
-function isBibliographyPart(
-  part: Draft<MarkupPart>
-): part is Draft<BibliographyPart> {
-  return part.type === 'BibliographyPart'
 }
 
 export default class ReferenceInjector {
@@ -28,26 +23,45 @@ export default class ReferenceInjector {
     this.bibliographyService = bibliographyService
   }
 
-  injectReferences(text: Text): Promise<Text> {
+  injectReferencesToText(text: Text): Promise<Text> {
     return new Promise((resolve, reject) => {
       produce(text, async (draft: Draft<Text>) => {
         await Promise.all(
           draft.allLines
             .filter(isMarkupLine)
-            .flatMap((line: Draft<NoteLine | TranslationLine>) => line.parts)
-            .filter(isBibliographyPart)
-            .map((part: Draft<BibliographyPart>) =>
-              this.createReference(part.reference as ReferenceDto)
-                .then((reference): void => {
-                  part.reference = castDraft(reference)
-                })
-                .catch(console.error)
+            .map((line: Draft<NoteLine | TranslationLine>) =>
+              this.injectReferencesToMarkup(line.parts).then((parts) => {
+                line.parts = castDraft(parts)
+              })
             )
         )
       })
         .then(resolve)
         .catch(reject)
     })
+  }
+
+  injectReferencesToMarkup(
+    parts: readonly MarkupPart[]
+  ): Promise<MarkupPart[]> {
+    return Promise.all(
+      parts.map(
+        (part): Promise<MarkupPart> =>
+          isBibliographyPart(part)
+            ? this.createReference(part.reference as ReferenceDto)
+                .then(
+                  (reference): BibliographyPart => ({
+                    ...part,
+                    reference,
+                  })
+                )
+                .catch((error) => {
+                  console.error(error)
+                  return part
+                })
+            : Promise.resolve(part)
+      )
+    )
   }
 
   private createReference(data: ReferenceDto): Promise<Reference> {

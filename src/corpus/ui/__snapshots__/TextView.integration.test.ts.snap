@@ -218,9 +218,9 @@ exports[`Show chapter 1`] = `
         />
       </h3>
       <div
-        class="collapsing"
+        class="collapse show"
         id="collapse-9"
-        style="height: 0px;"
+        style=""
       >
         <section>
           <h4>

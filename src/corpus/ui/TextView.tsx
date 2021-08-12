@@ -47,7 +47,6 @@ function TextView({
                 ))}
               </CollapsibleSection>
               <CollapsibleSection heading="Colophons">
-                F
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}

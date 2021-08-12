@@ -207,11 +207,13 @@ export class FragmentService {
   }
 
   private injectReferences(fragment: Fragment): Bluebird<Fragment> {
-    return this.referenceInjector.injectReferences(fragment.text).then((text) =>
-      produce(fragment, (draft) => {
-        draft.text = castDraft(text)
-      })
-    )
+    return this.referenceInjector
+      .injectReferencesToText(fragment.text)
+      .then((text) =>
+        produce(fragment, (draft) => {
+          draft.text = castDraft(text)
+        })
+      )
   }
 }
 

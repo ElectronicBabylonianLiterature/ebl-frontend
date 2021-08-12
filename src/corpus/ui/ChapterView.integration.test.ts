@@ -20,14 +20,17 @@ const textDto = {
     {
       stage: 'Old Babylonian',
       name: 'The First Chapter',
+      title: [],
     },
     {
       stage: 'Neo-Babylonian',
       name: 'III',
+      title: [],
     },
     {
       stage: 'Old Babylonian',
       name: 'The Second Chapter',
+      title: [],
     },
   ],
   references: [],
