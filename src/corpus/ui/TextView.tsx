@@ -32,7 +32,7 @@ function TextView({
             <>
               <Introduction text={text} />
               <CollapsibleSection heading="Chapters">
-                <Chapters text={text} />
+                <Chapters text={text} textService={textService} />
               </CollapsibleSection>
               <CollapsibleSection heading="Colophons">
                 {text.chapters.map((chapter, index) => (

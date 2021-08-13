@@ -232,6 +232,21 @@ exports[`Show chapter 1`] = `
               <span />
             </a>
           </h4>
+          <section
+            class="text-view__section"
+          >
+            <h5
+              aria-controls="collapse-10"
+              class="text-view__section-heading text-view__section-heading--collapse"
+            >
+              List of Manuscripts
+               
+              <i
+                aria-expanded="false"
+                class="text-view__collapse-indicator fas fa-caret-right"
+              />
+            </h5>
+          </section>
         </section>
       </div>
     </section>
@@ -572,7 +587,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-10"
+          id="Header-11"
         >
           <div
             class="mx-auto navbar-nav"
@@ -645,7 +660,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-10"
+          aria-controls="Header-11"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
