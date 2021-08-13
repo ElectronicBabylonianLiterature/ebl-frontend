@@ -26,6 +26,7 @@ import {
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
+  fromManuscriptDto,
 } from './dtos'
 import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
@@ -222,6 +223,12 @@ export default class TextService {
           )
         )
       )
+  }
+
+  findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/manuscripts`, true)
+      .then((manuscripts) => manuscripts.map(fromManuscriptDto))
   }
 
   list(): Bluebird<Text[]> {
