@@ -36,18 +36,21 @@ export type EditorProps = {
   annotation: RawAnnotation
   onChange(annotation: RawAnnotation): void
   onSubmit(): void
+  zoom: number
 }
 export default function Editor({
   annotation,
   onChange,
   onSubmit,
   tokens,
+  zoom = 1,
 }: EditorProps): ReactElement | null {
   const { geometry } = annotation
   if (geometry) {
     return (
       <div
         style={{
+          zoom: `${zoom * 100}%`,
           position: 'absolute',
           left: `${geometry.x}%`,
           top: `${geometry.y + geometry.height}%`,
