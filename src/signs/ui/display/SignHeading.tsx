@@ -3,7 +3,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import React from 'react'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
-import './signHeading.css'
+import 'signs/ui/display/SignHeading.css'
 
 export default function SignHeading({
   signName,
