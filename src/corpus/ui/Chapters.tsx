@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import classNames from 'classnames'
 import { Text } from 'corpus/domain/text'
 import { Link } from 'react-router-dom'
 import Markup from 'transliteration/ui/markup'
@@ -8,6 +9,8 @@ import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
 import { CollapsibleSection } from './CollapsibleSection'
+
+import './Chapters.sass'
 
 const Manuscripts = withData<
   unknown,
@@ -20,23 +23,41 @@ const Manuscripts = withData<
     return (
       <table>
         <colgroup span={2}></colgroup>
-        <tr>
-          <th id={siglumId} scope="col">
+        <tr className="list-of-manuscripts__header">
+          <th
+            id={siglumId}
+            scope="col"
+            className="list-of-manuscripts__column-heading"
+          >
             Siglum
           </th>
-          <th id={museumNumberId} scope="col">
+          <th
+            id={museumNumberId}
+            scope="col"
+            className="list-of-manuscripts__column-heading"
+          >
             Museum Number
           </th>
         </tr>
         {_(manuscripts)
           .sort(compareManuscripts)
           .groupBy((manuscript) => manuscript.provenance.name)
-          .map((manuscripts, provenance) => {
+          .toPairs()
+          .map(([provenance, manuscripts], index) => {
             const provenanceId = _.uniqueId('provenace-')
             return (
               <>
                 <tr key={provenance}>
-                  <th id={provenanceId} colSpan={2} scope="colgroup">
+                  <th
+                    id={provenanceId}
+                    colSpan={2}
+                    scope="colgroup"
+                    className={classNames({
+                      'list-of-manuscripts__provenance-heading': true,
+                      'list-of-manuscripts__provenance-heading--first':
+                        index === 0,
+                    })}
+                  >
                     {provenance}
                   </th>
                 </tr>
@@ -48,6 +69,7 @@ const Manuscripts = withData<
                         id={rowId}
                         headers={[provenanceId, siglumId].join(' ')}
                         scope="row"
+                        className="list-of-manuscripts__siglum-heading"
                       >
                         {manuscript.siglum}
                       </th>
@@ -57,7 +79,7 @@ const Manuscripts = withData<
                         )}
                       >
                         {manuscript.museumNumber}
-                        <ul>
+                        <ul className="list-of-manuscripts__references">
                           {manuscript.references.map((reference, index) => (
                             <li key={index}>
                               <Citation reference={reference} />
