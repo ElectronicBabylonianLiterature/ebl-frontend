@@ -9,6 +9,7 @@ import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
 import { CollapsibleSection } from './CollapsibleSection'
+import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 
 import './Chapters.sass'
 
@@ -37,6 +38,7 @@ const Manuscripts = withData<
             className="list-of-manuscripts__column-heading"
           >
             Museum Number
+            <ReferencesHelp />
           </th>
         </tr>
         {_(manuscripts)
