@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterListing, Text } from 'corpus/domain/text'
+import { Chapter, ChapterListing, Text, TextInfo } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -138,7 +138,7 @@ export class ChapterId {
     )
   }
 
-  static fromText(text: Text, chapter: ChapterListing): ChapterId {
+  static fromText(text: TextInfo, chapter: ChapterListing): ChapterId {
     return new ChapterId(
       text.genre,
       text.category,
