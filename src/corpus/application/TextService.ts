@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterListing, Text } from 'corpus/domain/text'
+import { Chapter, ChapterListing, Text, TextInfo } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -26,6 +26,7 @@ import {
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
+  fromManuscriptDto,
 } from './dtos'
 import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
@@ -137,7 +138,7 @@ export class ChapterId {
     )
   }
 
-  static fromText(text: Text, chapter: ChapterListing): ChapterId {
+  static fromText(text: TextInfo, chapter: ChapterListing): ChapterId {
     return new ChapterId(
       text.genre,
       text.category,
@@ -222,6 +223,12 @@ export default class TextService {
           )
         )
       )
+  }
+
+  findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/manuscripts`, true)
+      .then((manuscripts) => manuscripts.map(fromManuscriptDto))
   }
 
   list(): Bluebird<Text[]> {
