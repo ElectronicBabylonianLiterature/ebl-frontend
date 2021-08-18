@@ -947,7 +947,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-24"
+          id="Header-23"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1020,7 +1020,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-24"
+          aria-controls="Header-23"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
