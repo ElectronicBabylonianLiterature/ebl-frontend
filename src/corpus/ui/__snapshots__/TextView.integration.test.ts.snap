@@ -566,7 +566,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 </tr>
                 <tr>
                   <th
-                    class="list-of-manuscripts__provenance-heading list-of-manuscripts__provenance-heading--first"
+                    class="list-of-manuscripts__provenance-heading"
                     colspan="2"
                     id="provenace-20"
                     scope="colgroup"

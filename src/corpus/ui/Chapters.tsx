@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import classNames from 'classnames'
 import { Text } from 'corpus/domain/text'
 import { Link } from 'react-router-dom'
 import Markup from 'transliteration/ui/markup'
@@ -44,8 +43,7 @@ const Manuscripts = withData<
         {_(manuscripts)
           .sort(compareManuscripts)
           .groupBy((manuscript) => manuscript.provenance.name)
-          .toPairs()
-          .map(([provenance, manuscripts], index) => {
+          .map((manuscripts, provenance) => {
             const provenanceId = _.uniqueId('provenace-')
             return (
               <>
@@ -54,11 +52,7 @@ const Manuscripts = withData<
                     id={provenanceId}
                     colSpan={2}
                     scope="colgroup"
-                    className={classNames({
-                      'list-of-manuscripts__provenance-heading': true,
-                      'list-of-manuscripts__provenance-heading--first':
-                        index === 0,
-                    })}
+                    className="list-of-manuscripts__provenance-heading"
                   >
                     {provenance}
                   </th>
