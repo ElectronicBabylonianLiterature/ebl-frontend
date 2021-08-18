@@ -3,16 +3,18 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import { Collapse } from 'react-bootstrap'
 
-export function CollapsibleSection({
+export default function CollapsibleSection({
   heading,
   element = 'h3',
+  open = false,
   children,
 }: {
   heading: ReactNode
   element?: string
+  open?: boolean
   children: ReactNode
 }): JSX.Element {
-  const [isOpen, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(open)
   const id = _.uniqueId('collapse-')
   return (
     <section className="text-view__section">

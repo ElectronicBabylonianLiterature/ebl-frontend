@@ -10,7 +10,7 @@ import './TextView.sass'
 import { ChapterId } from 'corpus/application/TextService'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
-import { CollapsibleSection } from './CollapsibleSection'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
 import Chapters from './Chapters'
@@ -31,7 +31,7 @@ function TextView({
           session.isAllowedToReadTexts() ? (
             <>
               <Introduction text={text} />
-              <CollapsibleSection heading="Chapters">
+              <CollapsibleSection heading="Chapters" open>
                 <Chapters text={text} textService={textService} />
               </CollapsibleSection>
               <CollapsibleSection heading="Colophons">

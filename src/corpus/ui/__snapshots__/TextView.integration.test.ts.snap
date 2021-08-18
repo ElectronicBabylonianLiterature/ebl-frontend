@@ -51,7 +51,7 @@ exports[`Chapter Show chapter 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-5"
+          id="Header-6"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Chapter Show chapter 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-5"
+          aria-controls="Header-6"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -207,20 +207,19 @@ exports[`Chapter Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-9"
+        aria-controls="collapse-11"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Chapters
          
         <i
-          aria-expanded="true"
-          class="text-view__collapse-indicator fas fa-caret-down"
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
         />
       </h3>
       <div
-        class="collapse show"
-        id="collapse-9"
-        style=""
+        class="collapse"
+        id="collapse-11"
       >
         <section>
           <h4>
@@ -236,7 +235,7 @@ exports[`Chapter Show chapter 1`] = `
             class="text-view__section"
           >
             <h5
-              aria-controls="collapse-10"
+              aria-controls="collapse-8"
               class="text-view__section-heading text-view__section-heading--collapse"
             >
               List of Manuscripts
@@ -254,7 +253,7 @@ exports[`Chapter Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-7"
+        aria-controls="collapse-9"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Colophons
@@ -269,7 +268,7 @@ exports[`Chapter Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-8"
+        aria-controls="collapse-10"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Unplaced Lines
@@ -335,7 +334,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-11"
+          id="Header-12"
         >
           <div
             class="mx-auto navbar-nav"
@@ -409,7 +408,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-11"
+          aria-controls="Header-12"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -491,20 +490,19 @@ exports[`Chapter Show list of manuscripts 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-15"
+        aria-controls="collapse-17"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Chapters
          
         <i
-          aria-expanded="true"
-          class="text-view__collapse-indicator fas fa-caret-down"
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
         />
       </h3>
       <div
-        class="collapse show"
-        id="collapse-15"
-        style=""
+        class="collapse"
+        id="collapse-17"
       >
         <section>
           <h4>
@@ -520,7 +518,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             class="text-view__section"
           >
             <h5
-              aria-controls="collapse-17"
+              aria-controls="collapse-18"
               class="text-view__section-heading text-view__section-heading--collapse"
             >
               List of Manuscripts
@@ -532,7 +530,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
             </h5>
             <div
               class="collapse show"
-              id="collapse-17"
+              id="collapse-18"
               style=""
             >
               <table>
@@ -544,14 +542,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 >
                   <th
                     class="list-of-manuscripts__column-heading"
-                    id="siglum-18"
+                    id="siglum-19"
                     scope="col"
                   >
                     Siglum
                   </th>
                   <th
                     class="list-of-manuscripts__column-heading"
-                    id="musuemumber-19"
+                    id="musuemumber-20"
                     scope="col"
                   >
                     Museum Number
@@ -568,7 +566,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   <th
                     class="list-of-manuscripts__provenance-heading"
                     colspan="2"
-                    id="provenace-20"
+                    id="provenace-21"
                     scope="colgroup"
                   >
                     Assyria
@@ -577,14 +575,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 <tr>
                   <th
                     class="list-of-manuscripts__siglum-heading"
-                    headers="provenace-20 siglum-18"
-                    id="row-21"
+                    headers="provenace-21 siglum-19"
+                    id="row-22"
                     scope="row"
                   >
                     AssaOBSch1
                   </th>
                   <td
-                    headers="provenace-20 row-21 musuemumber-19"
+                    headers="provenace-21 row-22 musuemumber-20"
                   >
                     BM.X
                     <ul
@@ -614,7 +612,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-13"
+        aria-controls="collapse-15"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Colophons
@@ -629,7 +627,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-14"
+        aria-controls="collapse-16"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Unplaced Lines
@@ -857,16 +855,47 @@ exports[`With session 1`] = `
         Chapters
          
         <i
-          aria-expanded="false"
-          class="text-view__collapse-indicator fas fa-caret-right"
+          aria-expanded="true"
+          class="text-view__collapse-indicator fas fa-caret-down"
         />
       </h3>
+      <div
+        class="collapse show"
+        id="collapse-2"
+      >
+        <section>
+          <h4>
+            <a
+              href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+            >
+              The Only Chapter
+               
+              <span />
+            </a>
+          </h4>
+          <section
+            class="text-view__section"
+          >
+            <h5
+              aria-controls="collapse-3"
+              class="text-view__section-heading text-view__section-heading--collapse"
+            >
+              List of Manuscripts
+               
+              <i
+                aria-expanded="false"
+                class="text-view__collapse-indicator fas fa-caret-right"
+              />
+            </h5>
+          </section>
+        </section>
+      </div>
     </section>
     <section
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-3"
+        aria-controls="collapse-4"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Colophons
@@ -881,7 +910,7 @@ exports[`With session 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-4"
+        aria-controls="collapse-5"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Unplaced Lines
@@ -947,7 +976,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-23"
+          id="Header-24"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1020,7 +1049,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-23"
+          aria-controls="Header-24"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"

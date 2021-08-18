@@ -7,7 +7,7 @@ import withData from 'http/withData'
 import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
-import { CollapsibleSection } from './CollapsibleSection'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 
 import './Chapters.sass'
@@ -46,8 +46,8 @@ const Manuscripts = withData<
           .map((manuscripts, provenance) => {
             const provenanceId = _.uniqueId('provenace-')
             return (
-              <>
-                <tr key={provenance}>
+              <React.Fragment key={provenance}>
+                <tr>
                   <th
                     id={provenanceId}
                     colSpan={2}
@@ -86,7 +86,7 @@ const Manuscripts = withData<
                     </tr>
                   )
                 })}
-              </>
+              </React.Fragment>
             )
           })
           .value()}
