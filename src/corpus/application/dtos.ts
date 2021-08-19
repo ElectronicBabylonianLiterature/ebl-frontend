@@ -42,7 +42,7 @@ export function fromChapterDto(chapterDto): Chapter {
   })
 }
 
-function fromManuscriptDto(manuscriptDto): Manuscript {
+export function fromManuscriptDto(manuscriptDto): Manuscript {
   return new Manuscript(
     manuscriptDto.id,
     manuscriptDto.siglumDisambiguator,

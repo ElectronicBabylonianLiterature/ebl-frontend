@@ -236,6 +236,14 @@ const testData: TestData[] = [
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
   ],
   [
+    'findManuscripts',
+    [chapterId],
+    apiClient.fetchJson,
+    chapter.manuscripts,
+    [`${chapterUrl}/manuscripts`, true],
+    Bluebird.resolve(chapterDto.manuscripts),
+  ],
+  [
     'searchTransliteration',
     ['kur'],
     apiClient.fetchJson,
