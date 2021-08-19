@@ -17,7 +17,7 @@ function HelpEntry({
       <dt className="references-help__abbreviation">
         <code>{abbreviation}</code>
       </dt>
-      <dd className="references-help__type">{definition}</dd>)
+      <dd className="references-help__type">{definition}</dd>
     </>
   )
 }
@@ -37,10 +37,11 @@ function HelpOverlay(): JSX.Element {
     </Popover>
   )
 }
+
 export function ReferencesHelp(): JSX.Element {
   return (
     <span className="references-help">
-      <HelpTrigger overlay={<HelpOverlay />} />
+      <HelpTrigger overlay={HelpOverlay()} />
     </span>
   )
 }
