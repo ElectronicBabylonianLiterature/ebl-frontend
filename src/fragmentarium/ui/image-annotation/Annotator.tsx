@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AnnotationComponent from 'react-image-annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
@@ -9,14 +9,14 @@ import { Button, ButtonGroup, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AnnotationToken, createAnnotationTokens } from './annotation-token'
-import SessionContext from 'auth/SessionContext'
-import { Session } from 'auth/Session'
 import produce from 'immer'
 import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
 import useObjectUrl from 'common/useObjectUrl'
 import Bluebird from 'bluebird'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { usePrevious } from 'common/usePrevious'
+import SignService from 'signs/application/SignService'
 
 const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) =>
   function ContentWithOnDelete({
@@ -27,12 +27,25 @@ const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) =>
 
 const editorWithTokens = (
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
-  zoom: number
+  zoom: number,
+  handleSelection: any,
+  signService: SignService
 ) =>
   function EditorWithTokens(
-    props: Omit<EditorProps, 'tokens' | 'zoom'>
+    props: Omit<
+      EditorProps,
+      'tokens' | 'zoom' | 'handleSelection' | 'signService'
+    >
   ): JSX.Element {
-    return <Editor zoom={zoom} tokens={tokens} {...props} />
+    return (
+      <Editor
+        zoom={zoom}
+        handleSelection={handleSelection}
+        signService={signService}
+        tokens={tokens}
+        {...props}
+      />
+    )
   }
 
 interface Props {
@@ -40,12 +53,14 @@ interface Props {
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
+  signService: SignService
 }
 function FragmentAnnotation({
   fragment,
   image,
   initialAnnotations,
   fragmentService,
+  signService,
 }: Props): React.ReactElement {
   const [zoom, setZoom] = useState(1)
   const tokens = createAnnotationTokens(fragment)
@@ -67,6 +82,16 @@ function FragmentAnnotation({
           })
     })
   )
+  const prevAnnotations = usePrevious(annotations)
+
+  useEffect(() => {
+    if (
+      !_.isEqual(prevAnnotations, annotations) &&
+      prevAnnotations !== undefined
+    ) {
+      onSave()
+    }
+  }, [annotations, prevAnnotations])
 
   const onDelete = (annotation: Annotation): void => {
     setAnnotations(
@@ -81,9 +106,8 @@ function FragmentAnnotation({
     setAnnotation(annotation)
   }
 
-  const onSubmit = (annotation: Annotation): void => {
+  const handleSelection = (annotation): void => {
     const { geometry, data } = annotation
-    console.log(geometry)
     const newAnnotation = new Annotation(geometry, {
       ...data,
       id: uuid4(),
@@ -103,11 +127,10 @@ function FragmentAnnotation({
       setIsDisableSelector(false)
     }
   }
+
   const onZoom = (onZoomEvent) => {
-    console.log(onZoomEvent.state.scale)
     setZoom(1 / onZoomEvent.state.scale)
   }
-
   return (
     <>
       <Row>
@@ -135,19 +158,6 @@ function FragmentAnnotation({
                       </Button>
                     </ButtonGroup>
                   </Col>
-                  <Col xs={'auto'}>
-                    <SessionContext.Consumer>
-                      {(session: Session): ReactElement => (
-                        <Button
-                          variant="success"
-                          onClick={onSave}
-                          disabled={!session.isAllowedToAnnotateFragments()}
-                        >
-                          Save
-                        </Button>
-                      )}
-                    </SessionContext.Consumer>
-                  </Col>
                   <Col className={'text-center my-auto'}>
                     Zoom with Mouse wheel. Pan while holding shift
                   </Col>
@@ -163,8 +173,12 @@ function FragmentAnnotation({
                     type={RectangleSelector.TYPE}
                     value={annotation}
                     onChange={onChange}
-                    onSubmit={onSubmit}
-                    renderEditor={editorWithTokens(tokens, zoom)}
+                    renderEditor={editorWithTokens(
+                      tokens,
+                      zoom,
+                      handleSelection,
+                      signService
+                    )}
                     renderContent={contentWithOnDelete(onDelete)}
                     onClick={onClick}
                   />
@@ -186,11 +200,13 @@ function AnnotatorDisplay({
   fragment,
   annotations,
   fragmentService,
+  signService,
 }: {
   image: Blob
   fragment: Fragment
   annotations: readonly Annotation[]
   fragmentService: FragmentService
+  signService: SignService
 }): JSX.Element {
   const objectUrl = useObjectUrl(image as Blob)
   return (
@@ -201,6 +217,7 @@ function AnnotatorDisplay({
           fragment={fragment}
           initialAnnotations={annotations}
           fragmentService={fragmentService}
+          signService={signService}
         />
       )}
     </>
@@ -212,11 +229,13 @@ function Annotator({
   fragment,
   annotations,
   fragmentService,
+  signService,
 }: {
   image: Blob | Record<string, never>
   fragment: Fragment
   annotations: readonly Annotation[]
   fragmentService: FragmentService
+  signService: SignService
 }): JSX.Element {
   if (isBlob(image)) {
     return (
@@ -225,6 +244,7 @@ function Annotator({
         fragment={fragment}
         annotations={annotations}
         fragmentService={fragmentService}
+        signService={signService}
       />
     )
   } else {
@@ -243,6 +263,7 @@ const WithAnnotations = withData<
     fragment: Fragment
     image: Blob | Record<string, never>
     fragmentService: FragmentService
+    signService: SignService
   },
   unknown,
   readonly Annotation[]
@@ -253,7 +274,11 @@ const WithAnnotations = withData<
 )
 
 const WithPhoto = withData<
-  { fragment: Fragment; fragmentService: FragmentService },
+  {
+    fragment: Fragment
+    fragmentService: FragmentService
+    signService: SignService
+  },
   unknown,
   Blob | Record<string, never>
 >(
@@ -270,6 +295,7 @@ const WithPhoto = withData<
 export default withData<
   {
     fragmentService: FragmentService
+    signService: SignService
   },
   { number: string },
   Fragment

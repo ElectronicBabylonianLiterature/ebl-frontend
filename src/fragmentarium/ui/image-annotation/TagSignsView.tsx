@@ -9,6 +9,7 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import { Container } from 'react-bootstrap'
 import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
+import SignService from 'signs/application/SignService'
 
 const createAnnotationUrl = (number: string): string => {
   // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
@@ -18,9 +19,11 @@ const createAnnotationUrl = (number: string): string => {
 }
 
 export default function TagSignsView({
+  signService,
   fragmentService,
   number,
 }: {
+  signService: SignService
   fragmentService: FragmentService
   number: string
 }): JSX.Element {
@@ -44,7 +47,11 @@ export default function TagSignsView({
         <SessionContext.Consumer>
           {(session: Session): ReactNode =>
             session.isAllowedToReadFragments() ? (
-              <Annotator number={number} fragmentService={fragmentService} />
+              <Annotator
+                number={number}
+                fragmentService={fragmentService}
+                signService={signService}
+              />
             ) : (
               'Please log in to tag signs.'
             )

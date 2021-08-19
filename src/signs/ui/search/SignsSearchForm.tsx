@@ -11,7 +11,7 @@ interface Props extends RouteComponentProps {
   signQuery: Partial<SignQuery>
   sign: string | undefined
 }
-function parseValue(sign: string): { value: string; subIndex: number } {
+export function parseValue(sign: string): { value: string; subIndex: number } {
   const match = sign.match(/^([^\d]+)(\d*)$/)
   return {
     value: match ? replaceTransliteration(match[1].toLowerCase()) : '',

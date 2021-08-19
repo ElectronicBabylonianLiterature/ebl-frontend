@@ -1,56 +1,36 @@
-import React, { ReactElement } from 'react'
-import { Button, Card } from 'react-bootstrap'
+import React, { ReactElement, useState } from 'react'
+import { Card, Col, Row } from 'react-bootstrap'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { AnnotationToken } from './annotation-token'
-type SubmitAnnotationButtonProps = {
-  token: AnnotationToken
-  annotation: RawAnnotation
-  onClick(annotation: RawAnnotation): void
-}
-function SubmitAnnotationButton({
-  token,
-  annotation,
-  onClick,
-}: SubmitAnnotationButtonProps): ReactElement {
-  return (
-    <Button
-      size="sm"
-      variant={token.hasMatchingPath(annotation) ? 'dark' : 'outline-dark'}
-      onClick={(): void => {
-        onClick({
-          ...annotation,
-          data: {
-            ...annotation.data,
-            value: `${token.value}`,
-            path: token.path,
-          },
-        })
-      }}
-    >
-      {token.value}
-    </Button>
-  )
-}
+import SignService from 'signs/application/SignService'
+import SubmitAnnotationButton, {
+  SubmitAnnotationButton as BlankAnnotationButton,
+} from 'fragmentarium/ui/image-annotation/SubmitAnnotationButton'
+import Sign from 'signs/domain/Sign'
+
 export type EditorProps = {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
-  onChange(annotation: RawAnnotation): void
-  onSubmit(): void
   zoom: number
+  onChange(annotation: RawAnnotation): void
+  handleSelection(annotation: any): void
+  signService: SignService
 }
 export default function Editor({
   annotation,
   onChange,
-  onSubmit,
+  handleSelection,
   tokens,
-  zoom = 1,
+  signService,
 }: EditorProps): ReactElement | null {
+  const [hoveringReading, setHoveringReading] = useState<Sign | undefined>(
+    undefined
+  )
   const { geometry } = annotation
   if (geometry) {
     return (
       <div
         style={{
-          zoom: `${zoom * 100}%`,
           position: 'absolute',
           left: `${geometry.x}%`,
           top: `${geometry.y + geometry.height}%`,
@@ -58,12 +38,33 @@ export default function Editor({
       >
         <Card>
           <Card.Body>
+            <Row>
+              <Col>
+                <BlankAnnotationButton
+                  setHoveringReading={setHoveringReading}
+                  sign={undefined}
+                  token={new AnnotationToken('blank', [-1], '', true)}
+                  annotation={annotation}
+                  onClick={onChange}
+                  handleSelection={handleSelection}
+                />
+              </Col>
+              <Col>
+                {hoveringReading && (
+                  <div>{hoveringReading.displayCuneiformSigns}</div>
+                )}
+              </Col>
+            </Row>
+            <hr />
             {tokens.map((line, index) => (
               <div key={index}>
                 {line.map((token) => (
                   <span key={token.path.join(',')}>
                     {token.enabled ? (
                       <SubmitAnnotationButton
+                        setHoveringReading={setHoveringReading}
+                        signService={signService}
+                        handleSelection={handleSelection}
                         token={token}
                         annotation={annotation}
                         onClick={onChange}
@@ -76,9 +77,6 @@ export default function Editor({
               </div>
             ))}
           </Card.Body>
-          <Card.Footer>
-            <Button onClick={onSubmit}>Submit</Button>
-          </Card.Footer>
         </Card>
       </div>
     )

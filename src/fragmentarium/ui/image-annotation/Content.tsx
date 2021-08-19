@@ -14,6 +14,7 @@ export default function Content({
   const { geometry, data, outdated } = annotation
   const cardStyle = outdated ? 'warning' : 'light'
   const textStyle = outdated ? 'white' : undefined
+  const sign = data.sign ? data.sign : ''
   return (
     <div
       key={data.id}
@@ -25,6 +26,7 @@ export default function Content({
     >
       <Card bg={cardStyle} text={textStyle}>
         <Card.Body>{data.value}</Card.Body>
+        {sign && <Card.Body>{sign}</Card.Body>}
         <Card.Footer>
           <Button onClick={(): void => onDelete(annotation)}>Delete</Button>
         </Card.Footer>

@@ -245,6 +245,7 @@ function App({
               match: Match<{ id: string }>
             }): ReactNode => (
               <TagSignsView
+                signService={signService}
                 fragmentService={fragmentService}
                 number={decodeURIComponent(match.params.id)}
               />
