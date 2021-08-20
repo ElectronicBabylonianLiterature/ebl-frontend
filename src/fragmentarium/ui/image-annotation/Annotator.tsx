@@ -18,36 +18,6 @@ import Bluebird from 'bluebird'
 import { usePrevious } from 'common/usePrevious'
 import SignService from 'signs/application/SignService'
 
-const Box = ({ children, geometry, style }) => (
-  <div
-    style={{
-      ...style,
-      position: 'absolute',
-      left: `${geometry.x}%`,
-      top: `${geometry.y}%`,
-      height: `${geometry.height}%`,
-      width: `${geometry.width}%`,
-    }}
-  >
-    {children}
-  </div>
-)
-
-function renderHighlight({ annotation, active }) {
-  const { geometry } = annotation
-  if (!geometry) return null
-  return (
-    <Box
-      key={annotation.data.id}
-      geometry={geometry}
-      style={{
-        border: 'solid 0.5px red',
-        boxShadow: active && '0 0 20px 20px rgba(255, 255, 255, 0.3) inset',
-      }}
-    ></Box>
-  )
-}
-
 const contentWithOnDelete = (onDelete, setHovering) =>
   function ContentWithOnDelete({
     annotation,
@@ -190,7 +160,6 @@ function FragmentAnnotation({
         signService
       )}
       renderContent={contentWithOnDelete(onDelete, setHovering)}
-      renderHighlight={renderHighlight}
       onClick={onClick}
     />
   )
