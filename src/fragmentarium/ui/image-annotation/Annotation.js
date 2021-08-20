@@ -10,6 +10,8 @@ import Overlay from 'react-image-annotation/lib/components/Overlay'
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
+export { defaultProps }
+
 const Container = styled.div`
   clear: both;
   position: relative;
