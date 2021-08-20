@@ -3,15 +3,18 @@ import { Button, Card } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 
 export type ContentProps = {
+  setHovering: any
   annotation: Annotation
   onDelete: (annotation: Annotation) => void
 }
 
 export default function Content({
+  setHovering,
   annotation,
   onDelete,
 }: ContentProps): ReactElement {
   const { geometry, data, outdated } = annotation
+  setHovering(annotation)
   const cardStyle = outdated ? 'warning' : 'light'
   const textStyle = outdated ? 'white' : undefined
   const sign = data.sign ? data.sign : ''

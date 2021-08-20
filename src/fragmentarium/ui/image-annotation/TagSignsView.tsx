@@ -7,7 +7,6 @@ import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
-import { Container } from 'react-bootstrap'
 import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 import SignService from 'signs/application/SignService'
 
@@ -28,36 +27,34 @@ export default function TagSignsView({
   number: string
 }): JSX.Element {
   return (
-    <Container>
-      <AppContent
-        crumbs={[
-          new SectionCrumb('Fragmentarium'),
-          new FragmentCrumb(number),
-          new TextCrumb('Tag signs'),
-        ]}
-        title={
-          <FragmentPager
-            createUrl={createAnnotationUrl}
-            fragmentNumber={number}
-            fragmentService={fragmentService}
-          />
+    <AppContent
+      crumbs={[
+        new SectionCrumb('Fragmentarium'),
+        new FragmentCrumb(number),
+        new TextCrumb('Tag signs'),
+      ]}
+      title={
+        <FragmentPager
+          createUrl={createAnnotationUrl}
+          fragmentNumber={number}
+          fragmentService={fragmentService}
+        />
+      }
+      wide
+    >
+      <SessionContext.Consumer>
+        {(session: Session): ReactNode =>
+          session.isAllowedToReadFragments() ? (
+            <Annotator
+              number={number}
+              fragmentService={fragmentService}
+              signService={signService}
+            />
+          ) : (
+            'Please log in to tag signs.'
+          )
         }
-        wide
-      >
-        <SessionContext.Consumer>
-          {(session: Session): ReactNode =>
-            session.isAllowedToReadFragments() ? (
-              <Annotator
-                number={number}
-                fragmentService={fragmentService}
-                signService={signService}
-              />
-            ) : (
-              'Please log in to tag signs.'
-            )
-          }
-        </SessionContext.Consumer>
-      </AppContent>
-    </Container>
+      </SessionContext.Consumer>
+    </AppContent>
   )
 }

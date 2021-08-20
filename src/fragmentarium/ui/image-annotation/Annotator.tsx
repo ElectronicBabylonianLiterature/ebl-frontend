@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import AnnotationComponent from 'react-image-annotation'
+
+import AnnotationComponent from './Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import { uuid4 } from '@sentry/utils'
 import _ from 'lodash'
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AnnotationToken, createAnnotationTokens } from './annotation-token'
@@ -14,32 +15,73 @@ import Editor, { EditorProps } from './Editor'
 import Content, { ContentProps } from './Content'
 import useObjectUrl from 'common/useObjectUrl'
 import Bluebird from 'bluebird'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { usePrevious } from 'common/usePrevious'
 import SignService from 'signs/application/SignService'
 
-const contentWithOnDelete = (onDelete: (annotation: Annotation) => void) =>
+const Box = ({ children, geometry, style }) => (
+  <div
+    style={{
+      ...style,
+      position: 'absolute',
+      left: `${geometry.x}%`,
+      top: `${geometry.y}%`,
+      height: `${geometry.height}%`,
+      width: `${geometry.width}%`,
+    }}
+  >
+    {children}
+  </div>
+)
+
+function renderHighlight({ annotation, active }) {
+  const { geometry } = annotation
+  if (!geometry) return null
+  return (
+    <Box
+      key={annotation.data.id}
+      geometry={geometry}
+      style={{
+        border: 'solid 0.5px red',
+        boxShadow: active && '0 0 20px 20px rgba(255, 255, 255, 0.3) inset',
+      }}
+    ></Box>
+  )
+}
+
+const contentWithOnDelete = (onDelete, setHovering) =>
   function ContentWithOnDelete({
     annotation,
-  }: Omit<ContentProps, 'onDelete'>): JSX.Element {
-    return <Content annotation={annotation} onDelete={onDelete} />
+  }: Omit<ContentProps, 'onDelete' | 'setHovering'>): JSX.Element {
+    return (
+      <Content
+        setHovering={setHovering}
+        annotation={annotation}
+        onDelete={onDelete}
+      />
+    )
   }
 
 const editorWithTokens = (
+  hoveredAnnotation: any,
+  annotations: any,
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
-  zoom: number,
   handleSelection: any,
   signService: SignService
 ) =>
   function EditorWithTokens(
     props: Omit<
       EditorProps,
-      'tokens' | 'zoom' | 'handleSelection' | 'signService'
+      | 'tokens'
+      | 'handleSelection'
+      | 'signService'
+      | 'annotations'
+      | 'hoveredAnnotation'
     >
   ): JSX.Element {
     return (
       <Editor
-        zoom={zoom}
+        hoveredAnnotation={hoveredAnnotation}
+        annotations={annotations}
         handleSelection={handleSelection}
         signService={signService}
         tokens={tokens}
@@ -55,6 +97,7 @@ interface Props {
   fragmentService: FragmentService
   signService: SignService
 }
+
 function FragmentAnnotation({
   fragment,
   image,
@@ -62,7 +105,7 @@ function FragmentAnnotation({
   fragmentService,
   signService,
 }: Props): React.ReactElement {
-  const [zoom, setZoom] = useState(1)
+  const [hovering, setHovering] = useState(undefined)
   const tokens = createAnnotationTokens(fragment)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
@@ -128,69 +171,31 @@ function FragmentAnnotation({
     }
   }
 
-  const onZoom = (onZoomEvent) => {
-    setZoom(1 / onZoomEvent.state.scale)
-  }
   return (
-    <>
-      <Row>
-        <Col>
-          <TransformWrapper
-            onZoom={(onZoomEvent) => onZoom(onZoomEvent)}
-            panning={{ activationKeys: ['Shift'] }}
-          >
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <React.Fragment>
-                <Row className={'my-3'}>
-                  <Col xs={'auto'}>
-                    <ButtonGroup>
-                      <Button variant="outline-dark" onClick={() => zoomIn()}>
-                        ZOOM IN +
-                      </Button>
-                      <Button variant="outline-dark" onClick={() => zoomOut()}>
-                        ZOOM OUT -
-                      </Button>
-                      <Button
-                        variant="outline-dark"
-                        onClick={() => resetTransform()}
-                      >
-                        RESET
-                      </Button>
-                    </ButtonGroup>
-                  </Col>
-                  <Col className={'text-center my-auto'}>
-                    Zoom with Mouse wheel. Pan while holding shift
-                  </Col>
-                </Row>
-                <TransformComponent>
-                  <AnnotationComponent
-                    disableSelector={isDisableSelector}
-                    disableEditor={isDisableSelector}
-                    disableOverlay={isDisableSelector}
-                    src={image}
-                    alt={fragment.number}
-                    annotations={annotations}
-                    type={RectangleSelector.TYPE}
-                    value={annotation}
-                    onChange={onChange}
-                    renderEditor={editorWithTokens(
-                      tokens,
-                      zoom,
-                      handleSelection,
-                      signService
-                    )}
-                    renderContent={contentWithOnDelete(onDelete)}
-                    onClick={onClick}
-                  />
-                </TransformComponent>
-              </React.Fragment>
-            )}
-          </TransformWrapper>
-        </Col>
-      </Row>
-    </>
+    <AnnotationComponent
+      disableSelector={isDisableSelector}
+      disableEditor={isDisableSelector}
+      disableOverlay={isDisableSelector}
+      src={image}
+      alt={fragment.number}
+      annotations={annotations}
+      type={RectangleSelector.TYPE}
+      value={annotation}
+      onChange={onChange}
+      renderEditor={editorWithTokens(
+        hovering,
+        annotations,
+        tokens,
+        handleSelection,
+        signService
+      )}
+      renderContent={contentWithOnDelete(onDelete, setHovering)}
+      renderHighlight={renderHighlight}
+      onClick={onClick}
+    />
   )
 }
+
 function isBlob(image: Blob | Record<string, never>): image is Blob {
   return (image as Blob).size !== undefined
 }

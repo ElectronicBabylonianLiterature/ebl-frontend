@@ -7,6 +7,8 @@ import withData, { WithData } from 'http/withData'
 import { parseValue } from 'signs/ui/search/SignsSearchForm'
 
 type SubmitAnnotationButtonProps = {
+  hoveringOverAnnotation?: boolean
+  alreadySelected?: boolean
   setHoveringReading: (sign: Sign | undefined) => void
   sign: Sign | undefined
   token: AnnotationToken
@@ -16,6 +18,8 @@ type SubmitAnnotationButtonProps = {
 }
 
 export function SubmitAnnotationButton({
+  hoveringOverAnnotation = false,
+  alreadySelected = false,
   setHoveringReading,
   sign,
   token,
@@ -25,17 +29,22 @@ export function SubmitAnnotationButton({
 }: SubmitAnnotationButtonProps): ReactElement {
   const [inHover, setHover] = useState(false)
   useEffect(() => {
-    if (inHover) {
+    if (inHover || hoveringOverAnnotation) {
       setHoveringReading(sign)
     }
-  }, [inHover])
+  }, [inHover, hoveringOverAnnotation])
 
   return (
     <Button
+      disabled={alreadySelected}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       size="sm"
-      variant={token.hasMatchingPath(annotation) ? 'dark' : 'outline-dark'}
+      variant={
+        token.hasMatchingPath(annotation) || hoveringOverAnnotation
+          ? 'dark'
+          : 'outline-dark'
+      }
       onClick={(): void => {
         const newAnnotation = {
           ...annotation,
@@ -60,6 +69,8 @@ export default withData<
   Sign[]
 >(
   ({
+    hoveringOverAnnotation,
+    alreadySelected,
     setHoveringReading,
     data,
     token,
@@ -68,6 +79,8 @@ export default withData<
     handleSelection,
   }) => (
     <SubmitAnnotationButton
+      hoveringOverAnnotation={hoveringOverAnnotation}
+      alreadySelected={alreadySelected}
       setHoveringReading={setHoveringReading}
       sign={data.length ? data[0] : undefined}
       handleSelection={handleSelection}
