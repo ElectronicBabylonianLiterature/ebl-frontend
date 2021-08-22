@@ -36,7 +36,6 @@ function mapToken(
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
   if (token.type == 'Reading' || token.type == 'Logogram') {
-    console.log(token)
     return new AnnotationToken(token.value, path, true, {
       name: token.name.toLowerCase(),
       subIndex: token.subIndex,

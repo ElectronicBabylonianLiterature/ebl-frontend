@@ -3,6 +3,7 @@ import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
   museumNumberToString,
 } from 'fragmentarium/domain/MuseumNumber'
+import { FragmentPagerData } from 'fragmentarium/domain/pager'
 
 type Dto = Record<string, unknown>
 
@@ -242,11 +243,15 @@ export default class FakeApi {
     return this
   }
 
-  expectPhoto(number: string): FakeApi {
+  expectPhoto(
+    number: string,
+    photo: { blobParts: string[]; options: { type: string } }
+  ): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
         path: `/fragments/${number}/photo`,
+        response: photo,
         authenticate: true,
         isBlob: true,
         verify: true,
@@ -274,6 +279,21 @@ export default class FakeApi {
         method: 'GET',
         path: `/words/${encodeURIComponent(word._id)}`,
         response: word,
+        authenticate: true,
+        verify: true,
+      })
+    )
+    return this
+  }
+  expectPager(
+    fragmentNumber: string,
+    fragmentPagerData: Dto & FragmentPagerData
+  ): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/fragments/${encodeURIComponent(fragmentNumber)}/pager`,
+        response: fragmentPagerData,
         authenticate: true,
         verify: true,
       })

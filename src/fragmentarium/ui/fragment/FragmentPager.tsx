@@ -49,6 +49,7 @@ const FragmentPager: FunctionComponent<Props> = ({
   )
 }
 FragmentPager.defaultProps = { createUrl: createFragmentUrl }
+
 export default withData<
   WithoutData<Props>,
   { fragmentService },
