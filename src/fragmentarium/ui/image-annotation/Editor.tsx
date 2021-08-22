@@ -42,7 +42,7 @@ export default function Editor({
                 }
                 setHoveringReading={setHoveringReading}
                 sign={undefined}
-                token={new AnnotationToken('blank', [-1], '', true)}
+                token={new AnnotationToken('blank', [-1], true)}
                 annotation={annotation}
                 onClick={onChange}
                 handleSelection={handleSelection}

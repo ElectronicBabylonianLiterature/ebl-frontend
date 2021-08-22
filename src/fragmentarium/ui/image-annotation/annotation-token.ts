@@ -3,21 +3,26 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { Token } from 'transliteration/domain/token'
 
+interface Reading {
+  name: string
+  subIndex: number | null | undefined
+}
+
 export class AnnotationToken {
   readonly value: string
   readonly path: readonly number[]
-  readonly cleanValue: string
+  readonly reading: Reading | undefined
   readonly enabled: boolean
 
   constructor(
     value: string,
     path: readonly number[],
-    cleanValue: string,
-    enabled: boolean
+    enabled: boolean,
+    reading: Reading | undefined = undefined
   ) {
     this.value = value
     this.path = path
-    this.cleanValue = cleanValue
+    this.reading = reading
     this.enabled = enabled
   }
 
@@ -28,17 +33,22 @@ export class AnnotationToken {
 
 function mapToken(
   token: Token,
-  path: readonly number[],
-  cleanValue: string
+  path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
-  if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return new AnnotationToken(token.value, path, cleanValue, true)
+  if (token.type == 'Reading' || token.type == 'Logogram') {
+    console.log(token)
+    return new AnnotationToken(token.value, path, true, {
+      name: token.name.toLowerCase(),
+      subIndex: token.subIndex,
+    })
+  } else if (token.type == 'CompoundGrapheme') {
+    return new AnnotationToken(token.value, path, true)
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
-      mapToken(part, [...path, index], part.cleanValue)
+      mapToken(part, [...path, index])
     )
   } else {
-    return new AnnotationToken(token.value, path, cleanValue, false)
+    return new AnnotationToken(token.value, path, false)
   }
 }
 
@@ -46,9 +56,9 @@ export function createAnnotationTokens(
   fragment: Fragment
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
   return fragment.text.lines.map((line, lineNumber) => [
-    new AnnotationToken(line.prefix, [lineNumber], '', false),
+    new AnnotationToken(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
-      mapToken(token, [lineNumber, index], token.cleanValue)
+      mapToken(token, [lineNumber, index])
     ),
   ])
 }

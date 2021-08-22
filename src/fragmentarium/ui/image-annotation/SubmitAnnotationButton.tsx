@@ -4,7 +4,6 @@ import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import withData, { WithData } from 'http/withData'
-import { parseValue } from 'signs/ui/search/SignsSearchForm'
 
 type SubmitAnnotationButtonProps = {
   hoveringOverAnnotation?: boolean
@@ -89,5 +88,9 @@ export default withData<
       onClick={onClick}
     />
   ),
-  (props) => props.signService.search(parseValue(props.token.cleanValue))
+  (props) =>
+    props.signService.search({
+      value: props.token.reading.name,
+      subIndex: props.token.reading.subIndex,
+    })
 )
