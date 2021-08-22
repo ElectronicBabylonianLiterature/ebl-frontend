@@ -1,5 +1,5 @@
 import Sign from 'signs/domain/Sign'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
@@ -16,7 +16,27 @@ type SubmitAnnotationButtonProps = {
   handleSelection(annotation: any): void
 }
 
-export function SubmitAnnotationButton({
+export function SubmitBlankAnnotationButton({
+  hoveringOverAnnotation,
+  setHoveringReading,
+  annotation,
+  onClick,
+  handleSelection,
+}: Omit<SubmitAnnotationButtonProps, 'sign' | 'token'>): ReactElement {
+  return (
+    <SubmitAnnotationButton
+      hoveringOverAnnotation={hoveringOverAnnotation}
+      setHoveringReading={setHoveringReading}
+      sign={undefined}
+      token={new AnnotationToken('blank', [-1], true)}
+      annotation={annotation}
+      onClick={onClick}
+      handleSelection={handleSelection}
+    />
+  )
+}
+
+function SubmitAnnotationButton({
   hoveringOverAnnotation = false,
   alreadySelected = false,
   setHoveringReading,

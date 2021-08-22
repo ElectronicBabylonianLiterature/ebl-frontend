@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from 'react'
 import { Card, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
-import { AnnotationToken } from './annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import SignService from 'signs/application/SignService'
 import SubmitAnnotationButton, {
-  SubmitAnnotationButton as BlankAnnotationButton,
-} from 'fragmentarium/ui/image-annotation/SubmitAnnotationButton'
+  SubmitBlankAnnotationButton,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
 import Sign from 'signs/domain/Sign'
 import _ from 'lodash'
 
@@ -36,13 +36,11 @@ export default function Editor({
         <Card.Body>
           <Row>
             <Col>
-              <BlankAnnotationButton
+              <SubmitBlankAnnotationButton
                 hoveringOverAnnotation={
                   hoveredAnnotation?.data.value === 'blank'
                 }
                 setHoveringReading={setHoveringReading}
-                sign={undefined}
-                token={new AnnotationToken('blank', [-1], true)}
                 annotation={annotation}
                 onClick={onChange}
                 handleSelection={handleSelection}

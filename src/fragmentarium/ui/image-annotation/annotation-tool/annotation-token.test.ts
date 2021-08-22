@@ -1,4 +1,4 @@
-import { AnnotationToken } from './annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import Annotation from 'fragmentarium/domain/annotation'
 
 test.each([

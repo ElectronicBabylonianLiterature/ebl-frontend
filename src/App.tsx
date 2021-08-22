@@ -18,7 +18,7 @@ import Corpus from 'corpus/ui/Corpus'
 import ChapterView from 'corpus/ui/ChapterView'
 import TextView from 'corpus/ui/TextView'
 import { Location } from 'history'
-import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
+import AnnotationsView from 'fragmentarium/ui/image-annotation/AnnotationsView'
 import { useAuthentication } from 'auth/Auth'
 import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 import WordService from 'dictionary/application/WordService'
@@ -244,7 +244,7 @@ function App({
             }: {
               match: Match<{ id: string }>
             }): ReactNode => (
-              <TagSignsView
+              <AnnotationsView
                 signService={signService}
                 fragmentService={fragmentService}
                 number={decodeURIComponent(match.params.id)}

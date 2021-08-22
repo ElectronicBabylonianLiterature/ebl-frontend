@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import AppContent from 'common/AppContent'
 import SessionContext from 'auth/SessionContext'
-import Annotator from './Annotator'
+import Annotator from 'fragmentarium/ui/image-annotation/Annotator'
 import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
@@ -17,7 +17,7 @@ const createAnnotationUrl = (number: string): string => {
   )}/annotate`
 }
 
-export default function TagSignsView({
+export default function AnnotationsView({
   signService,
   fragmentService,
   number,
@@ -31,7 +31,7 @@ export default function TagSignsView({
       crumbs={[
         new SectionCrumb('Fragmentarium'),
         new FragmentCrumb(number),
-        new TextCrumb('Tag signs'),
+        new TextCrumb('Annotations'),
       ]}
       title={
         <FragmentPager
