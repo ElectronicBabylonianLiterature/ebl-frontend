@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 import _ from 'lodash'
@@ -20,10 +20,17 @@ export default function Content({
 }: ContentProps): ReactElement {
   const [toggle, setToggle] = useState(_.isEqual(toggled, annotation))
   const { geometry, data, outdated } = annotation
-  setHovering(annotation)
+
   const cardStyle = outdated ? 'warning' : 'light'
   const textStyle = outdated ? 'white' : undefined
   const sign = data.sign ? data.sign : ''
+
+  useEffect(() => {
+    setHovering(annotation)
+    return () => {
+      setHovering(undefined)
+    }
+  }, [])
 
   const onClick = () => {
     if (toggle) {

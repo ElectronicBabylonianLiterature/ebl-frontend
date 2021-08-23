@@ -27,9 +27,9 @@ export default function Editor({
   tokens,
   signService,
 }: EditorProps): ReactElement | null {
-  const [hoveringReading, setHoveringReading] = useState<Sign | undefined>(
-    undefined
-  )
+  const [signOfHoveringButton, setSignOfHoveringButton] = useState<
+    Sign | undefined
+  >(undefined)
   return (
     <div>
       <Card>
@@ -40,15 +40,15 @@ export default function Editor({
                 hoveringOverAnnotation={
                   hoveredAnnotation?.data.value === 'blank'
                 }
-                setHoveringReading={setHoveringReading}
+                setSignOfHoveringButton={setSignOfHoveringButton}
                 annotation={annotation}
                 onClick={onChange}
                 handleSelection={handleSelection}
               />
             </Col>
             <Col>
-              {hoveringReading && (
-                <div>{hoveringReading.displayCuneiformSigns}</div>
+              {signOfHoveringButton && (
+                <div>{signOfHoveringButton.displayCuneiformSigns}</div>
               )}
             </Col>
           </Row>
@@ -63,14 +63,10 @@ export default function Editor({
                         hoveredAnnotation?.data.path,
                         token.path
                       )}
-                      setHoveringReading={setHoveringReading}
+                      setSignOfHoveringButton={setSignOfHoveringButton}
                       signService={signService}
                       handleSelection={handleSelection}
-                      alreadySelected={Boolean(
-                        _.find(annotations, (annotation) =>
-                          _.isEqual(annotation.data.path, token.path)
-                        )
-                      )}
+                      alreadySelected={token.hasMatchingPath(annotations)}
                       token={token}
                       annotation={annotation}
                       onClick={onChange}

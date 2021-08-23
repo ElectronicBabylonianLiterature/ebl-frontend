@@ -8,7 +8,7 @@ import withData, { WithData } from 'http/withData'
 type SubmitAnnotationButtonProps = {
   hoveringOverAnnotation?: boolean
   alreadySelected?: boolean
-  setHoveringReading: (sign: Sign | undefined) => void
+  setSignOfHoveringButton: (sign: Sign | undefined) => void
   sign: Sign | undefined
   token: AnnotationToken
   annotation: RawAnnotation
@@ -18,7 +18,7 @@ type SubmitAnnotationButtonProps = {
 
 export function SubmitBlankAnnotationButton({
   hoveringOverAnnotation,
-  setHoveringReading,
+  setSignOfHoveringButton,
   annotation,
   onClick,
   handleSelection,
@@ -26,7 +26,7 @@ export function SubmitBlankAnnotationButton({
   return (
     <SubmitAnnotationButton
       hoveringOverAnnotation={hoveringOverAnnotation}
-      setHoveringReading={setHoveringReading}
+      setSignOfHoveringButton={setSignOfHoveringButton}
       sign={undefined}
       token={new AnnotationToken('blank', [-1], true)}
       annotation={annotation}
@@ -39,31 +39,28 @@ export function SubmitBlankAnnotationButton({
 function SubmitAnnotationButton({
   hoveringOverAnnotation = false,
   alreadySelected = false,
-  setHoveringReading,
+  setSignOfHoveringButton,
   sign,
   token,
   annotation,
   onClick,
   handleSelection,
 }: SubmitAnnotationButtonProps): ReactElement {
-  const [inHover, setHover] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+
   useEffect(() => {
-    if (inHover || hoveringOverAnnotation) {
-      setHoveringReading(sign)
+    if (isHovering || hoveringOverAnnotation) {
+      setSignOfHoveringButton(sign)
     }
-  }, [inHover, hoveringOverAnnotation])
+  }, [isHovering, hoveringOverAnnotation])
 
   return (
     <Button
       disabled={alreadySelected}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       size="sm"
-      variant={
-        token.hasMatchingPath(annotation) || hoveringOverAnnotation
-          ? 'dark'
-          : 'outline-dark'
-      }
+      variant={hoveringOverAnnotation ? 'dark' : 'outline-dark'}
       onClick={(): void => {
         const newAnnotation = {
           ...annotation,
@@ -90,7 +87,7 @@ export default withData<
   ({
     hoveringOverAnnotation,
     alreadySelected,
-    setHoveringReading,
+    setSignOfHoveringButton,
     data,
     token,
     annotation,
@@ -100,7 +97,7 @@ export default withData<
     <SubmitAnnotationButton
       hoveringOverAnnotation={hoveringOverAnnotation}
       alreadySelected={alreadySelected}
-      setHoveringReading={setHoveringReading}
+      setSignOfHoveringButton={setSignOfHoveringButton}
       sign={data.length ? data[0] : undefined}
       handleSelection={handleSelection}
       token={token}

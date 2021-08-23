@@ -1,14 +1,13 @@
-import _ from 'lodash'
 import React from 'react'
 
-export default function Highlight({ annotation, active, toggled }) {
+export default function Highlight({ annotation, active, isChecked }) {
   const { geometry } = annotation
   if (!geometry) return null
   return (
     <input
       disabled
       type={'checkbox'}
-      checked={_.isEqual(toggled, annotation)}
+      checked={isChecked}
       data-testid="annotation__box"
       key={annotation.data.id}
       style={{

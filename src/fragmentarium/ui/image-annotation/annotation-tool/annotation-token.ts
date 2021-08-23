@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { RawAnnotation } from 'fragmentarium/domain/annotation'
+import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { Token } from 'transliteration/domain/token'
 
 interface Reading {
@@ -26,8 +26,16 @@ export class AnnotationToken {
     this.enabled = enabled
   }
 
-  hasMatchingPath(annotation: RawAnnotation): boolean {
-    return _.isEqual(this.path, annotation.data?.path)
+  hasMatchingPath(annotation: RawAnnotation | readonly Annotation[]): boolean {
+    if (Array.isArray(annotation)) {
+      return Boolean(
+        _.find(annotation, (singleAnnotation) =>
+          _.isEqual(singleAnnotation.data.path, this.path)
+        )
+      )
+    } else {
+      return _.isEqual(this.path, (annotation as RawAnnotation).data?.path)
+    }
   }
 }
 
