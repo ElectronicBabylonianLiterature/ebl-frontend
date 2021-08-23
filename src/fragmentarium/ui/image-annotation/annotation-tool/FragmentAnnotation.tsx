@@ -1,16 +1,9 @@
-import Content, {
-  ContentProps,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import Content from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import SignService from 'signs/application/SignService'
 import AnnotationComponent from 'fragmentarium/ui/image-annotation/annotation-tool/Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
-import Editor, {
-  EditorProps,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/Editor'
+import Editor from 'fragmentarium/ui/image-annotation/annotation-tool/Editor'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -19,48 +12,7 @@ import _ from 'lodash'
 import produce from 'immer'
 import { usePrevious } from 'common/usePrevious'
 import { uuid4 } from '@sentry/utils'
-
-const contentWithOnDelete = (onDelete, setHovering) =>
-  function ContentWithOnDelete({
-    annotation,
-  }: Omit<ContentProps, 'onDelete' | 'setHovering'>): JSX.Element {
-    return (
-      <Content
-        setHovering={setHovering}
-        annotation={annotation}
-        onDelete={onDelete}
-      />
-    )
-  }
-
-const editorWithTokens = (
-  hoveredAnnotation: any,
-  annotations: any,
-  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>,
-  handleSelection: any,
-  signService: SignService
-) =>
-  function EditorWithTokens(
-    props: Omit<
-      EditorProps,
-      | 'tokens'
-      | 'handleSelection'
-      | 'signService'
-      | 'annotations'
-      | 'hoveredAnnotation'
-    >
-  ): JSX.Element {
-    return (
-      <Editor
-        hoveredAnnotation={hoveredAnnotation}
-        annotations={annotations}
-        handleSelection={handleSelection}
-        signService={signService}
-        tokens={tokens}
-        {...props}
-      />
-    )
-  }
+import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 
 interface Props {
   image: URL | string
@@ -77,6 +29,7 @@ export default function FragmentAnnotation({
   fragmentService,
   signService,
 }: Props): React.ReactElement {
+  const [toggled, setToggled] = useState<Annotation | undefined>(undefined)
   const [hovering, setHovering] = useState(undefined)
   const tokens = createAnnotationTokens(fragment)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
@@ -122,13 +75,33 @@ export default function FragmentAnnotation({
   }
 
   const handleSelection = (annotation): void => {
-    const { geometry, data } = annotation
-    const newAnnotation = new Annotation(geometry, {
-      ...data,
-      id: uuid4(),
-    })
-    setAnnotation({})
-    setAnnotations([...annotations, newAnnotation])
+    if (toggled) {
+      const { data } = annotation
+      setAnnotation({})
+      const toggledAnnotation = annotations.filter(
+        (annotation) => annotation.data.id == toggled.data.id
+      )[0]
+      const newAnnotation = new Annotation(toggledAnnotation.geometry, {
+        id: toggledAnnotation.data.id,
+        ...data,
+      })
+
+      setAnnotations([
+        ...annotations.filter(
+          (annotation) => annotation.data.id !== newAnnotation.data.id
+        ),
+        newAnnotation,
+      ])
+    }
+    if (annotation.geometry) {
+      const { geometry, data } = annotation
+      const newAnnotation = new Annotation(geometry, {
+        ...data,
+        id: uuid4(),
+      })
+      setAnnotation({})
+      setAnnotations([...annotations, newAnnotation])
+    }
   }
 
   const onSave = (): void => {
@@ -142,7 +115,6 @@ export default function FragmentAnnotation({
       setIsDisableSelector(false)
     }
   }
-
   return (
     <AnnotationComponent
       disableSelector={isDisableSelector}
@@ -154,14 +126,26 @@ export default function FragmentAnnotation({
       type={RectangleSelector.TYPE}
       value={annotation}
       onChange={onChange}
-      renderEditor={editorWithTokens(
-        hovering,
-        annotations,
-        tokens,
-        handleSelection,
-        signService
+      renderEditor={(props) => (
+        <Editor
+          {...props}
+          handleSelection={handleSelection}
+          hoveredAnnotation={hovering}
+          annotations={annotations}
+          tokens={tokens}
+          signService={signService}
+        />
       )}
-      renderContent={contentWithOnDelete(onDelete, setHovering)}
+      renderHighlight={(props) => <Highlight {...props} toggled={toggled} />}
+      renderContent={(props) => (
+        <Content
+          {...props}
+          toggled={toggled}
+          setToggled={setToggled}
+          setHovering={setHovering}
+          onDelete={onDelete}
+        />
+      )}
       onClick={onClick}
     />
   )
