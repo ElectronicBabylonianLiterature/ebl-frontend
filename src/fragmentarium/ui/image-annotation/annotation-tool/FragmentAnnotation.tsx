@@ -29,6 +29,8 @@ export default function FragmentAnnotation({
   fragmentService,
   signService,
 }: Props): React.ReactElement {
+  const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
+  const [contentScale, setContentScale] = useState(1)
   const [toggled, setToggled] = useState<Annotation | undefined>(undefined)
   const [hovering, setHovering] = useState(undefined)
   const tokens = createAnnotationTokens(fragment)
@@ -73,9 +75,10 @@ export default function FragmentAnnotation({
   }
 
   const onChange = (annotation: any): void => {
-    if (annotation.selection) {
-      setToggled(undefined)
+    if (isChangeExistingMode && annotation.selection) {
       setHovering(undefined)
+      setToggled(undefined)
+      setIsChangeExistingMode(false)
     }
     setAnnotation(annotation)
   }
@@ -98,6 +101,8 @@ export default function FragmentAnnotation({
         newAnnotation,
       ])
       setHovering(undefined)
+      setToggled(undefined)
+      setIsChangeExistingMode(false)
     } else if (geometry) {
       const newAnnotation = new Annotation(geometry, {
         ...data,
@@ -107,53 +112,62 @@ export default function FragmentAnnotation({
       setAnnotations([...annotations, newAnnotation])
     }
   }
+  const onZoom = (onZoomEvent) => {
+    setContentScale(1 / onZoomEvent.state.scale)
+  }
 
   const onClick = (event) => {
-    if (event.shiftKey) {
-      setIsDisableSelector(true)
+    if (event.ctrlKey) {
+      setToggled(hovering)
+      setIsChangeExistingMode(true)
     } else {
-      setIsDisableSelector(false)
+      if (event.shiftKey) {
+        setIsDisableSelector(true)
+      } else {
+        setIsDisableSelector(false)
+      }
     }
   }
   return (
-    <AnnotationTool
-      disableSelector={isDisableSelector}
-      disableEditor={isDisableSelector}
-      disableOverlay={isDisableSelector}
-      src={image}
-      alt={fragment.number}
-      annotations={annotations}
-      type={RectangleSelector.TYPE}
-      value={annotation}
-      onChange={onChange}
-      renderEditor={(props) => (
-        <Editor
-          {...props}
-          annotation={toggled ? toggled : props.annotation}
-          handleSelection={handleSelection}
-          hoveredAnnotation={hovering}
-          annotations={annotations}
-          tokens={tokens}
-          signService={signService}
-        />
-      )}
-      renderHighlight={(props) => {
-        const isChecked = _.isEqual(toggled, props.annotation)
-        isChecked && setHovering(props.annotation)
-        return <Highlight {...props} isChecked={isChecked} />
-      }}
-      renderContent={(props) => {
-        return (
-          <Content
+    <>
+      <div>Mode: {isChangeExistingMode ? 'change existing' : 'default'}</div>
+      <AnnotationTool
+        onZoom={onZoom}
+        disableSelector={isDisableSelector}
+        src={image}
+        alt={fragment.number}
+        annotations={annotations}
+        type={RectangleSelector.TYPE}
+        value={annotation}
+        onChange={onChange}
+        renderEditor={(props) => (
+          <Editor
             {...props}
-            toggled={toggled}
-            setToggled={setToggled}
-            setHovering={setHovering}
-            onDelete={onDelete}
+            annotation={toggled ? toggled : props.annotation}
+            handleSelection={handleSelection}
+            hoveredAnnotation={hovering}
+            annotations={annotations}
+            tokens={tokens}
+            signService={signService}
           />
-        )
-      }}
-      onClick={onClick}
-    />
+        )}
+        renderHighlight={(props) => {
+          const isChecked = _.isEqual(toggled, props.annotation)
+          isChecked && setHovering(props.annotation)
+          return <Highlight {...props} isChecked={isChecked} />
+        }}
+        renderContent={(props) => {
+          return (
+            <Content
+              {...props}
+              setHovering={setHovering}
+              contentScale={contentScale}
+              onDelete={onDelete}
+            />
+          )
+        }}
+        onClick={onClick}
+      />
+    </>
   )
 }

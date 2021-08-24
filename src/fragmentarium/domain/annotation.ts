@@ -10,7 +10,7 @@ export interface Geometry {
 
 export interface AnnotationData {
   readonly id?: string
-  readonly sign?: string
+  readonly signName?: string | undefined
   readonly value: string
   readonly path: readonly number[]
 }

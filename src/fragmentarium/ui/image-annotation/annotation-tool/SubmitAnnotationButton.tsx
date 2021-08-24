@@ -68,6 +68,7 @@ function SubmitAnnotationButton({
             ...annotation.data,
             value: `${token.value}`,
             path: token.path,
+            //signName: sign ? sign.name : undefined
           },
         }
         onClick(newAnnotation)

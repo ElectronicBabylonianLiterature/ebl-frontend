@@ -263,7 +263,10 @@ export default compose(
               })}
           </Col>
           <Col>
-            <TransformWrapper panning={{ activationKeys: ['Shift'] }}>
+            <TransformWrapper
+              onZoom={props.onZoom}
+              panning={{ activationKeys: ['Shift'] }}
+            >
               {({ zoomIn, zoomOut, resetTransform }) => (
                 <React.Fragment>
                   <Row className={'my-3'}>
