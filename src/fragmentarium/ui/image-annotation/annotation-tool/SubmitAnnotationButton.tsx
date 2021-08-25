@@ -4,6 +4,7 @@ import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import withData, { WithData } from 'http/withData'
+import Promise from 'bluebird'
 
 type SubmitAnnotationButtonProps = {
   hoveringOverAnnotation?: boolean
@@ -83,7 +84,7 @@ function SubmitAnnotationButton({
 export default withData<
   WithData<SubmitAnnotationButtonProps, Sign[]>,
   any,
-  Sign[]
+  Sign[] | never[]
 >(
   ({
     hoveringOverAnnotation,
@@ -106,9 +107,14 @@ export default withData<
       onClick={onClick}
     />
   ),
-  (props) =>
-    props.signService.search({
-      value: props.token.reading.name,
-      subIndex: props.token.reading.subIndex,
-    })
+  (props) => {
+    if (props.token.reading) {
+      return props.signService.search({
+        value: props.token.reading.name,
+        subIndex: props.token.reading.subIndex,
+      })
+    } else {
+      return Promise.all([])
+    }
+  }
 )

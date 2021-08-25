@@ -28,6 +28,7 @@ export default function Content({
 
   return (
     <div
+      data-testid={'content'}
       key={data.id}
       style={{
         transform: `scale(${contentScale})`,

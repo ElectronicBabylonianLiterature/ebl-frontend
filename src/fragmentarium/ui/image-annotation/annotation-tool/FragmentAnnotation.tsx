@@ -75,8 +75,7 @@ export default function FragmentAnnotation({
   }
 
   const onChange = (annotation: any): void => {
-    if (isChangeExistingMode && annotation.selection) {
-      setHovering(undefined)
+    if (isChangeExistingMode && annotation.selection && !hovering) {
       setToggled(undefined)
       setIsChangeExistingMode(false)
     }
@@ -100,7 +99,6 @@ export default function FragmentAnnotation({
         ),
         newAnnotation,
       ])
-      setHovering(undefined)
       setToggled(undefined)
       setIsChangeExistingMode(false)
     } else if (geometry) {
@@ -117,6 +115,10 @@ export default function FragmentAnnotation({
   }
 
   const onClick = (event) => {
+    console.log('hey')
+    if (event.ctrlKey && isChangeExistingMode) {
+      setToggled(hovering)
+    }
     if (event.ctrlKey) {
       setToggled(hovering)
       setIsChangeExistingMode(true)
@@ -153,7 +155,6 @@ export default function FragmentAnnotation({
         )}
         renderHighlight={(props) => {
           const isChecked = _.isEqual(toggled, props.annotation)
-          isChecked && setHovering(props.annotation)
           return <Highlight {...props} isChecked={isChecked} />
         }}
         renderContent={(props) => {

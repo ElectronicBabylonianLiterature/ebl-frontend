@@ -190,7 +190,10 @@ export default compose(
     onTouchStart = (e) => this.callSelectorMethod('onTouchStart', e)
     onTouchEnd = (e) => this.callSelectorMethod('onTouchEnd', e)
     onTouchMove = (e) => this.callSelectorMethod('onTouchMove', e)
-    onClick = (e) => this.callSelectorMethod('onClick', e)
+    onClick = (e) => {
+      console.log('hey')
+      this.callSelectorMethod('onClick', e)
+    }
 
     onSubmit = () => {
       this.props.onSubmit(this.props.value)
