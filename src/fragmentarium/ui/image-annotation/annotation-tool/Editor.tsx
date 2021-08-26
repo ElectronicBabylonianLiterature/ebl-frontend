@@ -2,7 +2,6 @@ import React, { ReactElement, useState } from 'react'
 import { Card, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
-import SignService from 'signs/application/SignService'
 import SubmitAnnotationButton, {
   SubmitBlankAnnotationButton,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
@@ -16,7 +15,6 @@ export type EditorProps = {
   annotation: RawAnnotation
   onChange(annotation: RawAnnotation): void
   handleSelection(annotation: Annotation): void
-  signService: SignService
 }
 
 export default function Editor({
@@ -26,7 +24,6 @@ export default function Editor({
   onChange,
   handleSelection,
   tokens,
-  signService,
 }: EditorProps): ReactElement | null {
   const [signOfHoveringButton, setSignOfHoveringButton] = useState<
     Sign | undefined
@@ -65,7 +62,6 @@ export default function Editor({
                         token.path
                       )}
                       setSignOfHoveringButton={setSignOfHoveringButton}
-                      signService={signService}
                       handleSelection={handleSelection}
                       alreadySelected={token.hasMatchingPath(annotations)}
                       token={token}

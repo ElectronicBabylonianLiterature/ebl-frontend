@@ -8,7 +8,10 @@ import { signFactory } from 'test-support/sign-fixtures'
 import Promise from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
-import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import {
+  AnnotationToken,
+  createAnnotationTokens,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { line2 } from 'test-support/complexTestText'
 import { Text } from 'transliteration/domain/text'
 
@@ -18,11 +21,13 @@ const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
+const sign = signFactory.build()
+signService.search.mockReturnValue(Promise.resolve([sign]))
 
 const text = new Text({ lines: [line2] })
 const fragment = fragmentFactory.build({ number: 'Test.Fragment', text: text })
-const tokens = createAnnotationTokens(fragment)
-const sign = signFactory.build()
+let tokens: readonly AnnotationToken[][]
+
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
   { id: 'id_1', value: 'erin₂', path: [0, 0, 0] }
@@ -30,7 +35,7 @@ const initialAnnotation = new Annotation(
 
 beforeEach(async () => {
   signService.search.mockReturnValue(Promise.all([sign]))
-
+  tokens = await createAnnotationTokens(fragment.text, signService)
   render(
     <FragmentAnnotation
       image={''}

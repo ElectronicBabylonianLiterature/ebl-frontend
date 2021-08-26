@@ -1,5 +1,8 @@
 import Content from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
-import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import {
+  AnnotationToken,
+  createAnnotationTokens,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import SignService from 'signs/application/SignService'
 import AnnotationTool from 'fragmentarium/ui/image-annotation/annotation-tool/Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
@@ -13,27 +16,37 @@ import produce from 'immer'
 import { usePrevious } from 'common/usePrevious'
 import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
+import withData from 'http/withData'
 
 interface Props {
+  tokens: readonly AnnotationToken[][]
   image: URL | string
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
   signService: SignService
 }
-
-export default function FragmentAnnotation({
+export default withData<
+  Omit<Props, 'tokens'>,
+  { fragment: Fragment; signService: SignService },
+  readonly AnnotationToken[][]
+>(
+  ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
+  ({ fragment, signService }) =>
+    createAnnotationTokens(fragment.text, signService)
+)
+function FragmentAnnotation({
+  tokens,
   fragment,
   image,
   initialAnnotations,
   fragmentService,
-  signService,
 }: Props): React.ReactElement {
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [contentScale, setContentScale] = useState(1)
   const [toggled, setToggled] = useState<Annotation | undefined>(undefined)
   const [hovering, setHovering] = useState<Annotation | undefined>(undefined)
-  const tokens = createAnnotationTokens(fragment.text)
+
   const [isDisableSelector, setIsDisableSelector] = useState(false)
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
@@ -99,7 +112,7 @@ export default function FragmentAnnotation({
 
   const handleSelection = (annotation: RawAnnotation): void => {
     const { geometry, data } = annotation
-    if (data?.id) {
+    if (data) {
       const toggledAnnotation = annotations.filter(
         (annotation) => annotation.data.id === data.id
       )[0]
@@ -170,7 +183,6 @@ export default function FragmentAnnotation({
             hoveredAnnotation={hovering}
             annotations={annotations}
             tokens={tokens}
-            signService={signService}
           />
         )}
         renderHighlight={(props: {

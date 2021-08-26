@@ -3,14 +3,11 @@ import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-to
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import withData, { WithData } from 'http/withData'
-import Promise from 'bluebird'
 
 type SubmitAnnotationButtonProps = {
   hoveringOverAnnotation?: boolean
   alreadySelected?: boolean
   setSignOfHoveringButton: (sign: Sign | undefined) => void
-  sign: Sign | undefined
   token: AnnotationToken
   annotation: RawAnnotation
   onClick(annotation: RawAnnotation): void
@@ -28,7 +25,6 @@ export function SubmitBlankAnnotationButton({
     <SubmitAnnotationButton
       hoveringOverAnnotation={hoveringOverAnnotation}
       setSignOfHoveringButton={setSignOfHoveringButton}
-      sign={undefined}
       token={new AnnotationToken('blank', [-1], true)}
       annotation={annotation}
       onClick={onClick}
@@ -37,11 +33,10 @@ export function SubmitBlankAnnotationButton({
   )
 }
 
-function SubmitAnnotationButton({
+export default function SubmitAnnotationButton({
   hoveringOverAnnotation = false,
   alreadySelected = false,
   setSignOfHoveringButton,
-  sign,
   token,
   annotation,
   onClick,
@@ -51,9 +46,9 @@ function SubmitAnnotationButton({
 
   useEffect(() => {
     if (isHovering || hoveringOverAnnotation) {
-      setSignOfHoveringButton(sign)
+      setSignOfHoveringButton(token.sign)
     }
-  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton, sign])
+  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton])
 
   return (
     <Button
@@ -80,41 +75,3 @@ function SubmitAnnotationButton({
     </Button>
   )
 }
-
-export default withData<
-  WithData<SubmitAnnotationButtonProps, Sign[]>,
-  any,
-  Sign[] | never[]
->(
-  ({
-    hoveringOverAnnotation,
-    alreadySelected,
-    setSignOfHoveringButton,
-    data,
-    token,
-    annotation,
-    onClick,
-    handleSelection,
-  }) => (
-    <SubmitAnnotationButton
-      hoveringOverAnnotation={hoveringOverAnnotation}
-      alreadySelected={alreadySelected}
-      setSignOfHoveringButton={setSignOfHoveringButton}
-      sign={data.length ? data[0] : undefined}
-      handleSelection={handleSelection}
-      token={token}
-      annotation={annotation}
-      onClick={onClick}
-    />
-  ),
-  (props) => {
-    if (props.token.reading) {
-      return props.signService.search({
-        value: props.token.reading.name,
-        subIndex: props.token.reading.subIndex,
-      })
-    } else {
-      return Promise.resolve([])
-    }
-  }
-)
