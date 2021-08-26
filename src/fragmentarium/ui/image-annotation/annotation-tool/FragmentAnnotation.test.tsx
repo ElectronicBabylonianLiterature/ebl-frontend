@@ -30,7 +30,7 @@ let tokens: readonly AnnotationToken[][]
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-  { id: 'id_1', value: 'erin₂', path: [0, 0, 0] }
+  { id: 'id_1', value: 'erin₂', path: [0, 0, 0], signName: 'EREN₂' }
 )
 
 beforeEach(async () => {
@@ -59,20 +59,20 @@ it('hover makes editor button dark', async () => {
 })
 
 it('Change existing annotation', async () => {
-  expect(screen.getAllByText('erin₂').length).toBe(1)
+  expect(screen.getAllByText(/erin₂/).length).toBe(1)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
   userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
-  await waitFor(() => expect(screen.getAllByText('ŠA₂').length).toBe(2))
-  const expectedPath = tokens.flat().filter((token) => token.value === 'ŠA₂')[0]
-    .path
+  await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(2))
+  const expectedData = tokens.flat().filter((token) => token.value === 'ŠA₂')[0]
   const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
     id: initialAnnotation.data.id,
     value: 'ŠA₂',
-    path: expectedPath,
+    path: expectedData.path,
+    signName: expectedData.sign!.name,
   })
   expect(
     fragmentService.updateAnnotations
