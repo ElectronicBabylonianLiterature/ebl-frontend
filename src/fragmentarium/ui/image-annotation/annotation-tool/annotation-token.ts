@@ -41,7 +41,7 @@ async function mapToken(
   token: Token,
   path: readonly number[],
   signService: SignService
-): Promise<AnnotationToken | AnnotationToken[]> {
+): Bluebird<AnnotationToken | AnnotationToken[]> {
   async function findSignName(value, subIndex): Bluebird<Sign> {
     const signs = await Bluebird.all(
       signService.search({ value: value, subIndex: subIndex })
@@ -66,11 +66,11 @@ async function mapToken(
     } else if (token.type === 'CompoundGrapheme') {
       return new AnnotationToken(token.value, path, true)
     } else if (token.parts) {
-      const u = token.parts.flatMap(
-        async (part: Token, index: number) =>
-          await _mapToken(part, [...path, index])
+      return Bluebird.all(
+        token.parts.flatMap((part: Token, index: number) =>
+          _mapToken(part, [...path, index])
+        )
       )
-      return Bluebird.all(u)
     } else {
       return new AnnotationToken(token.value, path, false)
     }
@@ -82,14 +82,15 @@ export async function createAnnotationTokens(
   text: Text,
   signService: SignService
 ): Bluebird<readonly AnnotationToken[][]> {
-  const tokens = text.lines.map(async (line, lineNumber) => [
-    new AnnotationToken(line.prefix, [lineNumber], false),
-    ...(await Promise.all(
-      line.content.flatMap((token, index) =>
-        mapToken(token, [lineNumber, index], signService)
-      )
-    )),
-  ])
-
-  return Bluebird.all(Bluebird.map(tokens, (token) => _.flattenDeep(token)))
+  const tokens = await Bluebird.all(
+    text.lines.map(async (line, lineNumber) => [
+      new AnnotationToken(line.prefix, [lineNumber], false),
+      ...(await Bluebird.all(
+        line.content.flatMap((token, index) =>
+          mapToken(token, [lineNumber, index], signService)
+        )
+      )),
+    ])
+  )
+  return Bluebird.map(tokens, (token) => _.flattenDeep(token))
 }

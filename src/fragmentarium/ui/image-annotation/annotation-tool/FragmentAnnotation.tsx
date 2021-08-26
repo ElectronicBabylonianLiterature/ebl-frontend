@@ -42,6 +42,7 @@ function FragmentAnnotation({
   initialAnnotations,
   fragmentService,
 }: Props): React.ReactElement {
+  console.log(tokens)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [contentScale, setContentScale] = useState(1)
   const [toggled, setToggled] = useState<Annotation | undefined>(undefined)

@@ -48,7 +48,7 @@ export default function SubmitAnnotationButton({
     if (isHovering || hoveringOverAnnotation) {
       setSignOfHoveringButton(token.sign)
     }
-  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton])
+  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton, token.sign])
 
   return (
     <Button
@@ -64,7 +64,7 @@ export default function SubmitAnnotationButton({
             ...annotation.data,
             value: `${token.value}`,
             path: token.path,
-            //signName: sign ? sign.name : undefined
+            signName: token.sign ? token.sign.name : token.value,
           },
         }
         onClick(newAnnotation)
