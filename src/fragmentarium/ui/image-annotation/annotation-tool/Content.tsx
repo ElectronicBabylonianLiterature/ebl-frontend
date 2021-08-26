@@ -6,7 +6,7 @@ export type ContentProps = {
   annotation: Annotation
   onDelete: (annotation: Annotation) => void
   contentScale: number
-  setHovering: any
+  setHovering: (annotation: Annotation | undefined) => void
 }
 
 export default function Content({
@@ -24,7 +24,7 @@ export default function Content({
   useEffect(() => {
     setHovering(annotation)
     return () => setHovering(undefined)
-  }, [])
+  }, [annotation, setHovering])
 
   return (
     <div

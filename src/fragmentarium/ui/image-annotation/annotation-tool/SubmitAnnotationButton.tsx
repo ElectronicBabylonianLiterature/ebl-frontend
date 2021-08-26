@@ -53,7 +53,7 @@ function SubmitAnnotationButton({
     if (isHovering || hoveringOverAnnotation) {
       setSignOfHoveringButton(sign)
     }
-  }, [isHovering, hoveringOverAnnotation])
+  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton, sign])
 
   return (
     <Button
@@ -114,7 +114,7 @@ export default withData<
         subIndex: props.token.reading.subIndex,
       })
     } else {
-      return Promise.all([])
+      return Promise.resolve([])
     }
   }
 )

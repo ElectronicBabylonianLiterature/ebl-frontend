@@ -16,6 +16,7 @@ export interface AnnotationData {
 }
 
 export interface RawAnnotation {
+  readonly selection?
   readonly geometry?: Geometry
   readonly data?: AnnotationData
 }

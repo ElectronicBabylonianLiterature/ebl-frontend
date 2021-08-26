@@ -7,7 +7,7 @@ import Editor from 'fragmentarium/ui/image-annotation/annotation-tool/Editor'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
 import produce from 'immer'
 import { usePrevious } from 'common/usePrevious'
@@ -54,7 +54,15 @@ export default function FragmentAnnotation({
   )
   const prevAnnotations = usePrevious(annotations)
 
+  const onPressingEsc = useCallback((event) => {
+    if (event.keyCode === 27) {
+      setToggled(undefined)
+      setIsChangeExistingMode(false)
+    }
+  }, [])
+
   useEffect(() => {
+    document.addEventListener('keydown', onPressingEsc, false)
     if (
       !_.isEqual(prevAnnotations, annotations) &&
       prevAnnotations !== undefined
@@ -63,7 +71,14 @@ export default function FragmentAnnotation({
         await fragmentService.updateAnnotations(fragment.number, annotations)
       })()
     }
-  }, [annotations, prevAnnotations])
+    return () => document.removeEventListener('keydown', onPressingEsc, false)
+  }, [
+    annotations,
+    prevAnnotations,
+    fragment.number,
+    fragmentService,
+    onPressingEsc,
+  ])
 
   const onDelete = (annotation: Annotation): void => {
     setAnnotations(
@@ -85,7 +100,7 @@ export default function FragmentAnnotation({
   const handleSelection = (annotation): void => {
     const { geometry, data } = annotation
     const toggledAnnotation = annotations.filter(
-      (annotation) => annotation.data.id == data.id
+      (annotation) => annotation.data.id === data.id
     )[0]
     if (toggledAnnotation) {
       const newAnnotation = new Annotation(toggledAnnotation.geometry, {
@@ -115,7 +130,6 @@ export default function FragmentAnnotation({
   }
 
   const onClick = (event) => {
-    console.log('hey')
     if (event.ctrlKey && isChangeExistingMode) {
       setToggled(hovering)
     }
@@ -130,6 +144,7 @@ export default function FragmentAnnotation({
       }
     }
   }
+
   return (
     <>
       <div>Mode: {isChangeExistingMode ? 'change existing' : 'default'}</div>
@@ -154,8 +169,12 @@ export default function FragmentAnnotation({
           />
         )}
         renderHighlight={(props) => {
-          const isChecked = _.isEqual(toggled, props.annotation)
-          return <Highlight {...props} isChecked={isChecked} />
+          return (
+            <Highlight
+              {...props}
+              isToggled={_.isEqual(toggled, props.annotation)}
+            />
+          )
         }}
         renderContent={(props) => {
           return (

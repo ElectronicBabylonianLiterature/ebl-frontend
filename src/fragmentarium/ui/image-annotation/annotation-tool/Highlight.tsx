@@ -1,11 +1,20 @@
 import React from 'react'
-
-export default function Highlight({ annotation, active, isChecked }) {
+import { RawAnnotation } from 'fragmentarium/domain/annotation'
+interface Props {
+  annotation: RawAnnotation
+  active: boolean
+  isToggled: boolean
+}
+export default function Highlight({
+  annotation,
+  active,
+  isToggled,
+}: Props): JSX.Element {
   // scale object to make boarder look thinner than 1px
   const { geometry } = annotation
   if (!geometry) return null
 
-  if (isChecked) {
+  if (isToggled) {
     return (
       <div
         data-testid="annotation__box"

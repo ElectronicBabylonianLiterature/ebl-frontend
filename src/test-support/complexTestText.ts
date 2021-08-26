@@ -11,7 +11,7 @@ import * as dollar from 'test-support/lines/dollar'
 import empty from 'test-support/lines/empty'
 import note from 'test-support/lines/note'
 
-const line2 = new TextLine({
+export const line2 = new TextLine({
   prefix: '1.',
   content: [
     {

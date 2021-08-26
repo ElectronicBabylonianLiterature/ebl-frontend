@@ -186,12 +186,13 @@ export default compose(
 
     onMouseUp = (e) => this.callSelectorMethod('onMouseUp', e)
     onMouseDown = (e) => this.callSelectorMethod('onMouseDown', e)
-    onMouseMove = (e) => this.callSelectorMethod('onMouseMove', e)
+    onMouseMove = (e) => {
+      this.callSelectorMethod('onMouseMove', e)
+    }
     onTouchStart = (e) => this.callSelectorMethod('onTouchStart', e)
     onTouchEnd = (e) => this.callSelectorMethod('onTouchEnd', e)
     onTouchMove = (e) => this.callSelectorMethod('onTouchMove', e)
     onClick = (e) => {
-      console.log('hey')
       this.callSelectorMethod('onClick', e)
     }
 
@@ -254,7 +255,6 @@ export default compose(
         this.props.relativeMousePos.x,
         this.props.relativeMousePos.y
       )
-
       return (
         <Row>
           <Col>
@@ -331,6 +331,7 @@ export default compose(
                           })}
                       </Items>
                       <Target
+                        data-testid={'annotation__target'}
                         innerRef={this.targetRef}
                         onClick={this.onClick}
                         onMouseUp={this.onMouseUp}
