@@ -1,7 +1,7 @@
 import React from 'react'
-import { RawAnnotation } from 'fragmentarium/domain/annotation'
+
 interface Props {
-  annotation: RawAnnotation
+  annotation
   active: boolean
   isToggled: boolean
 }

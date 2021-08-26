@@ -14,7 +14,7 @@ type SubmitAnnotationButtonProps = {
   token: AnnotationToken
   annotation: RawAnnotation
   onClick(annotation: RawAnnotation): void
-  handleSelection(annotation: any): void
+  handleSelection(annotation: RawAnnotation): void
 }
 
 export function SubmitBlankAnnotationButton({

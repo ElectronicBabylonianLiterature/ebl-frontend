@@ -89,7 +89,7 @@ export default function FragmentAnnotation({
     setAnnotation({})
   }
 
-  const onChange = (annotation: any): void => {
+  const onChange = (annotation: RawAnnotation): void => {
     if (isChangeExistingMode && annotation.selection && !hovering) {
       setToggled(undefined)
       setIsChangeExistingMode(false)
@@ -168,24 +168,20 @@ export default function FragmentAnnotation({
             signService={signService}
           />
         )}
-        renderHighlight={(props) => {
-          return (
-            <Highlight
-              {...props}
-              isToggled={_.isEqual(toggled, props.annotation)}
-            />
-          )
-        }}
-        renderContent={(props) => {
-          return (
-            <Content
-              {...props}
-              setHovering={setHovering}
-              contentScale={contentScale}
-              onDelete={onDelete}
-            />
-          )
-        }}
+        renderHighlight={(props) => (
+          <Highlight
+            {...props}
+            isToggled={_.isEqual(toggled, props.annotation)}
+          />
+        )}
+        renderContent={(props) => (
+          <Content
+            {...props}
+            setHovering={setHovering}
+            contentScale={contentScale}
+            onDelete={onDelete}
+          />
+        )}
         onClick={onClick}
       />
     </>

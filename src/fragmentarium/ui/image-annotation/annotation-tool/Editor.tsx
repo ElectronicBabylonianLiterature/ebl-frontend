@@ -10,7 +10,7 @@ import Sign from 'signs/domain/Sign'
 import _ from 'lodash'
 
 export type EditorProps = {
-  hoveredAnnotation: any
+  hoveredAnnotation: Annotation
   annotations: readonly Annotation[]
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
