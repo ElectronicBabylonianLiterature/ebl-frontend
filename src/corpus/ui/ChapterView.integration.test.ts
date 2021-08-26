@@ -63,6 +63,8 @@ const chapterDtos = [
         colophon: '1. kur',
         unplacedLines: '1. bu',
         references: [],
+        joins: [],
+        isInFragmentarium: false,
       },
     ],
     uncertainFragments: [],
@@ -100,6 +102,8 @@ const chapterDtos = [
         colophon: '',
         unplacedLines: '',
         references: [],
+        joins: [],
+        isInFragmentarium: false,
       },
       {
         id: 2,
@@ -114,6 +118,8 @@ const chapterDtos = [
         colophon: '',
         unplacedLines: '',
         references: [],
+        joins: [],
+        isInFragmentarium: false,
       },
     ],
     uncertainFragments: [],
@@ -218,7 +224,7 @@ describe('Diplay chapter', () => {
       fakeApi.expectUpdateManuscripts(chapter, {
         manuscripts: [
           {
-            ...chapter.manuscripts[0],
+            ..._.omit(chapter.manuscripts[0], ['joins', 'isInFragmentarium']),
             [property]: newValue,
           },
         ],

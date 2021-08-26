@@ -27,6 +27,8 @@ const manuscriptsDto = [
       {},
       { transient: { chance: chance } }
     ),
+    joins: [],
+    isInFragmentarium: false,
   },
 ]
 

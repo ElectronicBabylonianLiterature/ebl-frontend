@@ -29,6 +29,8 @@ const manuscriptConfig: Partial<Manuscript> = {
   colophon: '1. kur',
   unplacedLines: '1. bu',
   references: [],
+  joins: [],
+  isInFragmentarium: true,
 }
 
 const manuscrpitLineConfig: Partial<ManuscriptLine> = {
@@ -215,7 +217,9 @@ describe('Manuscript', () => {
         manuscriptConfig.notes,
         manuscriptConfig.colophon,
         manuscriptConfig.unplacedLines,
-        manuscriptConfig.references
+        manuscriptConfig.references,
+        manuscriptConfig.joins,
+        manuscriptConfig.isInFragmentarium
       )
   )
 })
