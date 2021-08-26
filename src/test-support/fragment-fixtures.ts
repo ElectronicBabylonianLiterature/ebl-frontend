@@ -3,11 +3,11 @@ import { Chance } from 'chance'
 import {
   Fragment,
   FragmentInfo,
-  Join,
   Measures,
   RecordEntry,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
+import { Join } from 'fragmentarium/domain/join'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import complexText from './complexTestText'
