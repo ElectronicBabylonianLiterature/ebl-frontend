@@ -10,12 +10,12 @@ import Sign from 'signs/domain/Sign'
 import _ from 'lodash'
 
 export type EditorProps = {
-  hoveredAnnotation: Annotation
+  hoveredAnnotation: Annotation | undefined
   annotations: readonly Annotation[]
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
   onChange(annotation: RawAnnotation): void
-  handleSelection(annotation: any): void
+  handleSelection(annotation: Annotation): void
   signService: SignService
 }
 export default function Editor({

@@ -9,7 +9,7 @@ export default function Highlight({
   annotation,
   active,
   isToggled,
-}: Props): JSX.Element {
+}: Props): React.ReactNode {
   // scale object to make boarder look thinner than 1px
   const { geometry } = annotation
   if (!geometry) return null
@@ -27,7 +27,9 @@ export default function Highlight({
           top: `${geometry.y}%`,
           height: `${geometry.height * 2}%`,
           width: `${geometry.width * 2}%`,
-          boxShadow: active && '0 0 20px 20px rgba(255, 255, 255, 0.3) inset',
+          boxShadow: active
+            ? '0 0 20px 20px rgba(255, 255, 255, 0.3) inset'
+            : undefined,
           background: 'rgba(0,0,0,0.3)',
           border: 'dashed 2px white',
         }}
@@ -46,7 +48,9 @@ export default function Highlight({
           top: `${geometry.y}%`,
           height: `${geometry.height * 2}%`,
           width: `${geometry.width * 2}%`,
-          boxShadow: active && '0 0 20px 20px rgba(255, 255, 255, 0.3) inset',
+          boxShadow: active
+            ? '0 0 20px 20px rgba(255, 255, 255, 0.3) inset'
+            : undefined,
           border: 'solid 1px aliceblue',
         }}
       />

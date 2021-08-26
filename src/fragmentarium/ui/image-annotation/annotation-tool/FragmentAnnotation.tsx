@@ -157,7 +157,7 @@ export default function FragmentAnnotation({
         type={RectangleSelector.TYPE}
         value={annotation}
         onChange={onChange}
-        renderEditor={(props) => (
+        renderEditor={(props: { annotation: RawAnnotation }) => (
           <Editor
             {...props}
             annotation={toggled ? toggled : props.annotation}
@@ -168,7 +168,10 @@ export default function FragmentAnnotation({
             signService={signService}
           />
         )}
-        renderHighlight={(props) => (
+        renderHighlight={(props: {
+          annotation: RawAnnotation
+          active: boolean
+        }) => (
           <Highlight
             {...props}
             isToggled={_.isEqual(toggled, props.annotation)}

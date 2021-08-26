@@ -43,12 +43,12 @@ function mapToken(
   token: Token,
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
-  if (token.type == 'Reading' || token.type == 'Logogram') {
+  if (token.type === 'Reading' || token.type === 'Logogram') {
     return new AnnotationToken(token.value, path, true, {
       name: token.name.toLowerCase(),
       subIndex: token.subIndex,
     })
-  } else if (token.type == 'CompoundGrapheme') {
+  } else if (token.type === 'CompoundGrapheme') {
     return new AnnotationToken(token.value, path, true)
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
