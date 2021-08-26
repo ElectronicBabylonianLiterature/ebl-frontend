@@ -157,7 +157,10 @@ export default function FragmentAnnotation({
         type={RectangleSelector.TYPE}
         value={annotation}
         onChange={onChange}
-        renderEditor={(props: { annotation: RawAnnotation }) => (
+        renderEditor={(props: {
+          annotation: RawAnnotation
+          onChange: (annotation: RawAnnotation) => void
+        }) => (
           <Editor
             {...props}
             annotation={toggled ? toggled : props.annotation}

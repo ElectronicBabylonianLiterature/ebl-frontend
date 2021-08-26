@@ -9,7 +9,7 @@ export default function Highlight({
   annotation,
   active,
   isToggled,
-}: Props): React.ReactNode {
+}: Props): JSX.Element | null {
   // scale object to make boarder look thinner than 1px
   const { geometry } = annotation
   if (!geometry) return null
