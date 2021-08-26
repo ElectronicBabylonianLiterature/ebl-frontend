@@ -18,6 +18,7 @@ export type EditorProps = {
   handleSelection(annotation: Annotation): void
   signService: SignService
 }
+
 export default function Editor({
   hoveredAnnotation,
   annotations,

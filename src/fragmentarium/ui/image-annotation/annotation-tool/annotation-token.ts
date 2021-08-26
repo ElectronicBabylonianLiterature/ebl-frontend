@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { Fragment } from 'fragmentarium/domain/fragment'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
 import { Token } from 'transliteration/domain/token'
+import { Text } from 'transliteration/domain/text'
 
 interface Reading {
   name: string
@@ -60,9 +60,9 @@ function mapToken(
 }
 
 export function createAnnotationTokens(
-  fragment: Fragment
+  text: Text
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
-  return fragment.text.lines.map((line, lineNumber) => [
+  return text.lines.map((line, lineNumber) => [
     new AnnotationToken(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
       mapToken(token, [lineNumber, index])

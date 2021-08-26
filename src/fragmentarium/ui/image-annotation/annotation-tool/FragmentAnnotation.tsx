@@ -32,8 +32,8 @@ export default function FragmentAnnotation({
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [contentScale, setContentScale] = useState(1)
   const [toggled, setToggled] = useState<Annotation | undefined>(undefined)
-  const [hovering, setHovering] = useState(undefined)
-  const tokens = createAnnotationTokens(fragment)
+  const [hovering, setHovering] = useState<Annotation | undefined>(undefined)
+  const tokens = createAnnotationTokens(fragment.text)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
@@ -97,39 +97,41 @@ export default function FragmentAnnotation({
     setAnnotation(annotation)
   }
 
-  const handleSelection = (annotation): void => {
+  const handleSelection = (annotation: RawAnnotation): void => {
     const { geometry, data } = annotation
-    const toggledAnnotation = annotations.filter(
-      (annotation) => annotation.data.id === data.id
-    )[0]
-    if (toggledAnnotation) {
-      const newAnnotation = new Annotation(toggledAnnotation.geometry, {
-        id: toggledAnnotation.data.id,
-        ...data,
-      })
-      setAnnotation({})
-      setAnnotations([
-        ...annotations.filter(
-          (annotation) => annotation.data.id !== newAnnotation.data.id
-        ),
-        newAnnotation,
-      ])
-      setToggled(undefined)
-      setIsChangeExistingMode(false)
-    } else if (geometry) {
-      const newAnnotation = new Annotation(geometry, {
-        ...data,
-        id: uuid4(),
-      })
-      setAnnotation({})
-      setAnnotations([...annotations, newAnnotation])
+    if (data?.id) {
+      const toggledAnnotation = annotations.filter(
+        (annotation) => annotation.data.id === data.id
+      )[0]
+      if (toggledAnnotation) {
+        const newAnnotation = new Annotation(toggledAnnotation.geometry, {
+          id: toggledAnnotation.data.id,
+          ...data,
+        })
+        setAnnotation({})
+        setAnnotations([
+          ...annotations.filter(
+            (annotation) => annotation.data.id !== newAnnotation.data.id
+          ),
+          newAnnotation,
+        ])
+        setToggled(undefined)
+        setIsChangeExistingMode(false)
+      } else if (geometry) {
+        const newAnnotation = new Annotation(geometry, {
+          ...data,
+          id: uuid4(),
+        })
+        setAnnotation({})
+        setAnnotations([...annotations, newAnnotation])
+      }
     }
   }
-  const onZoom = (onZoomEvent) => {
-    setContentScale(1 / onZoomEvent.state.scale)
+  const onZoom = (event) => {
+    setContentScale(1 / event.state.scale)
   }
 
-  const onClick = (event) => {
+  const onClick = (event: MouseEvent) => {
     if (event.ctrlKey && isChangeExistingMode) {
       setToggled(hovering)
     }
