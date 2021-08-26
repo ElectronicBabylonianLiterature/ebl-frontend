@@ -27,7 +27,39 @@ const manuscriptsDto = [
       {},
       { transient: { chance: chance } }
     ),
-    joins: [],
+    joins: [
+      [
+        {
+          museumNumber: { prefix: 'X', number: '1', suffix: '' },
+          isChecked: false,
+          joinedBy: '',
+          date: '',
+          note: '',
+          legacyData: '',
+          isInFragmentarium: true,
+        },
+        {
+          museumNumber: { prefix: 'X', number: '2', suffix: '' },
+          isChecked: false,
+          joinedBy: '',
+          date: '',
+          note: '',
+          legacyData: '',
+          isInFragmentarium: true,
+        },
+      ],
+      [
+        {
+          museumNumber: { prefix: 'Y', number: '1', suffix: '' },
+          isChecked: true,
+          joinedBy: '',
+          date: '',
+          note: '',
+          legacyData: '',
+          isInFragmentarium: true,
+        },
+      ],
+    ],
     isInFragmentarium: false,
   },
 ]

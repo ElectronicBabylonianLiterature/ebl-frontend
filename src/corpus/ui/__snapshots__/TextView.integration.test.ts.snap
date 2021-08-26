@@ -584,7 +584,26 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   <td
                     headers="provenace-21 row-22 musuemumber-20"
                   >
-                    BM.X
+                    <a
+                      href="/fragmentarium/X.1"
+                    >
+                      X.1
+                    </a>
+                     +
+                    <sup>
+                      ?
+                    </sup>
+                     
+                    <a
+                      href="/fragmentarium/X.2"
+                    >
+                      X.2
+                    </a>
+                    <a
+                      href="/fragmentarium/Y.1"
+                    >
+                      Y.1
+                    </a>
                     <ul
                       class="list-of-manuscripts__references"
                     >
