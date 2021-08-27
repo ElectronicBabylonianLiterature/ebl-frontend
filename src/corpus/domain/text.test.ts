@@ -14,7 +14,7 @@ import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
 import { Manuscript, ManuscriptTypes } from './manuscript'
-import manuscriptFactory from 'test-support/manuscriptFactory'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,

@@ -60,31 +60,33 @@ class ManuscriptFactory extends Factory<Manuscript> {
   }
 }
 
-export default ManuscriptFactory.define(({ sequence, associations }) => {
-  const hasMuseumNumber = defaultChance.bool()
-  return new Manuscript(
-    defaultChance.natural(),
-    defaultChance.string(),
-    hasMuseumNumber ? `X.${sequence}` : '',
-    !hasMuseumNumber ? `A ${sequence}` : '',
-    associations.periodModifier ??
-      defaultChance.pickone(Object.values(PeriodModifiers)),
-    associations.period ??
-      defaultChance.pickone(_.without(Object.values(Periods), Periods.None)),
-    associations.provenance ??
-      defaultChance.pickone(
-        _.without(Object.values(Provenances), Provenances['Standard Text'])
-      ),
-    associations.type ??
-      defaultChance.pickone(
-        _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
-      ),
-    defaultChance.sentence(),
-    '',
-    '',
-    []
-  )
-})
+export const manuscriptFactory = ManuscriptFactory.define(
+  ({ sequence, associations }) => {
+    const hasMuseumNumber = defaultChance.bool()
+    return new Manuscript(
+      defaultChance.natural(),
+      defaultChance.string(),
+      hasMuseumNumber ? `X.${sequence}` : '',
+      !hasMuseumNumber ? `A ${sequence}` : '',
+      associations.periodModifier ??
+        defaultChance.pickone(Object.values(PeriodModifiers)),
+      associations.period ??
+        defaultChance.pickone(_.without(Object.values(Periods), Periods.None)),
+      associations.provenance ??
+        defaultChance.pickone(
+          _.without(Object.values(Provenances), Provenances['Standard Text'])
+        ),
+      associations.type ??
+        defaultChance.pickone(
+          _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
+        ),
+      defaultChance.sentence(),
+      '',
+      '',
+      []
+    )
+  }
+)
 
 export const manuscriptDtoFactory = Factory.define<
   {
