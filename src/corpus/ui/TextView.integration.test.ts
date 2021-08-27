@@ -6,9 +6,10 @@ import { Provenances } from 'corpus/domain/provenance'
 import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import FakeApi from 'test-support/FakeApi'
+import { joinDtoFactory } from 'test-support/join-fixtures'
 import { textDto } from 'test-support/test-corpus-text'
 
-const chance = new Chance('chapter view integration test')
+const chance = new Chance('text view integration test')
 const manuscriptsDto = [
   {
     id: 1,
@@ -27,6 +28,41 @@ const manuscriptsDto = [
       {},
       { transient: { chance: chance } }
     ),
+    joins: [
+      [
+        joinDtoFactory.build(
+          {
+            isChecked: false,
+            isInFragmentarium: true,
+          },
+          { transient: { chance: chance } }
+        ),
+        joinDtoFactory.build(
+          {
+            isChecked: false,
+            isInFragmentarium: false,
+          },
+          { transient: { chance: chance } }
+        ),
+      ],
+      [
+        joinDtoFactory.build(
+          {
+            isChecked: true,
+            isInFragmentarium: true,
+          },
+          { transient: { chance: chance } }
+        ),
+        joinDtoFactory.build(
+          {
+            isChecked: true,
+            isInFragmentarium: false,
+          },
+          { transient: { chance: chance } }
+        ),
+      ],
+    ],
+    isInFragmentarium: false,
   },
 ]
 

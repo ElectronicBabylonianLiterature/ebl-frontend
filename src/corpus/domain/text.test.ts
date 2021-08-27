@@ -14,7 +14,7 @@ import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
 import { Manuscript, ManuscriptTypes } from './manuscript'
-import manuscriptFactory from 'test-support/manuscriptFactory'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -29,6 +29,8 @@ const manuscriptConfig: Partial<Manuscript> = {
   colophon: '1. kur',
   unplacedLines: '1. bu',
   references: [],
+  joins: [],
+  isInFragmentarium: true,
 }
 
 const manuscrpitLineConfig: Partial<ManuscriptLine> = {
@@ -215,7 +217,9 @@ describe('Manuscript', () => {
         manuscriptConfig.notes,
         manuscriptConfig.colophon,
         manuscriptConfig.unplacedLines,
-        manuscriptConfig.references
+        manuscriptConfig.references,
+        manuscriptConfig.joins,
+        manuscriptConfig.isInFragmentarium
       )
   )
 })

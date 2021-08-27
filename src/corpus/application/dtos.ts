@@ -17,6 +17,7 @@ import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
+import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
 
 export function fromSiglumAndTransliterationDto(
   dto
@@ -55,7 +56,9 @@ export function fromManuscriptDto(manuscriptDto): Manuscript {
     manuscriptDto.notes,
     manuscriptDto.colophon,
     manuscriptDto.unplacedLines,
-    manuscriptDto.references.map(createReference)
+    manuscriptDto.references.map(createReference),
+    createJoins(manuscriptDto.joins),
+    manuscriptDto.isInFragmentarium
   )
 }
 

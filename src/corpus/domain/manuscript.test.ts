@@ -1,4 +1,4 @@
-import manuscriptFactory from 'test-support/manuscriptFactory'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 import {
   compareManuscripts,
   compareManuscriptTypes,

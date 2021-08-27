@@ -130,6 +130,8 @@ export const chapterDto = {
           document: { id: 'RN1853' },
         },
       ],
+      joins: [],
+      isInFragmentarium: false,
     },
   ],
   uncertainFragments: ['K.1'],
@@ -204,7 +206,9 @@ export const chapter = createChapter({
           [],
           new BibliographyEntry({ id: 'RN1853' })
         ),
-      ]
+      ],
+      [],
+      false
     ),
   ],
   lines: [

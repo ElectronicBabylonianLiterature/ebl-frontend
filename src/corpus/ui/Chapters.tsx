@@ -11,6 +11,19 @@ import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
 
 import './Chapters.sass'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
+
+function FragmentariumLink({
+  item,
+}: {
+  item: { museumNumber: string; isInFragmentarium: boolean }
+}): JSX.Element {
+  return item.isInFragmentarium ? (
+    <FragmentLink number={item.museumNumber}>{item.museumNumber}</FragmentLink>
+  ) : (
+    <>{item.museumNumber}</>
+  )
+}
 
 const Manuscripts = withData<
   unknown,
@@ -74,7 +87,24 @@ const Manuscripts = withData<
                           ' '
                         )}
                       >
-                        {manuscript.museumNumber}
+                        {_.isEmpty(manuscript.joins) ? (
+                          <FragmentariumLink item={manuscript} />
+                        ) : (
+                          manuscript.joins.map((group, groupIndex) =>
+                            group.map((join, index) => (
+                              <React.Fragment key={index}>
+                                {index > 0 ? (
+                                  <> +{!join.isChecked && <sup>?</sup>} </>
+                                ) : (
+                                  groupIndex > 0 ?? (
+                                    <> (+{!join.isChecked && <sup>?</sup>}) </>
+                                  )
+                                )}
+                                <FragmentariumLink item={join} />
+                              </React.Fragment>
+                            ))
+                          )
+                        )}
                         <ul className="list-of-manuscripts__references">
                           {manuscript.references.map((reference, index) => (
                             <li key={index}>

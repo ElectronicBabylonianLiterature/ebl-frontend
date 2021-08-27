@@ -14,9 +14,9 @@ import Promise from 'bluebird'
 import { Genres } from 'fragmentarium/domain/Genres'
 import {
   fragmentFactory,
-  joinFactory,
   measuresFactory,
 } from 'test-support/fragment-fixtures'
+import { joinFactory } from 'test-support/join-fixtures'
 
 const updateGenres = jest.fn()
 const fragmentService = {
