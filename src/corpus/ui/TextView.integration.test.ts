@@ -6,9 +6,10 @@ import { Provenances } from 'corpus/domain/provenance'
 import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import FakeApi from 'test-support/FakeApi'
+import { joinDtoFactory } from 'test-support/fragment-fixtures'
 import { textDto } from 'test-support/test-corpus-text'
 
-const chance = new Chance('chapter view integration test')
+const chance = new Chance('text view integration test')
 const manuscriptsDto = [
   {
     id: 1,
@@ -29,35 +30,36 @@ const manuscriptsDto = [
     ),
     joins: [
       [
-        {
-          museumNumber: { prefix: 'X', number: '1', suffix: '' },
-          isChecked: false,
-          joinedBy: '',
-          date: '',
-          note: '',
-          legacyData: '',
-          isInFragmentarium: true,
-        },
-        {
-          museumNumber: { prefix: 'X', number: '2', suffix: '' },
-          isChecked: false,
-          joinedBy: '',
-          date: '',
-          note: '',
-          legacyData: '',
-          isInFragmentarium: true,
-        },
+        joinDtoFactory.build(
+          {
+            isChecked: false,
+            isInFragmentarium: true,
+          },
+          { transient: { chance: chance } }
+        ),
+        joinDtoFactory.build(
+          {
+            isChecked: false,
+            isInFragmentarium: false,
+          },
+          { transient: { chance: chance } }
+        ),
       ],
       [
-        {
-          museumNumber: { prefix: 'Y', number: '1', suffix: '' },
-          isChecked: true,
-          joinedBy: '',
-          date: '',
-          note: '',
-          legacyData: '',
-          isInFragmentarium: true,
-        },
+        joinDtoFactory.build(
+          {
+            isChecked: true,
+            isInFragmentarium: true,
+          },
+          { transient: { chance: chance } }
+        ),
+        joinDtoFactory.build(
+          {
+            isChecked: true,
+            isInFragmentarium: false,
+          },
+          { transient: { chance: chance } }
+        ),
       ],
     ],
     isInFragmentarium: false,

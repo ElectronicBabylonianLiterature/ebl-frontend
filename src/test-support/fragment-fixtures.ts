@@ -15,10 +15,10 @@ import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
 
-const chance = new Chance()
+const defaultChance = new Chance()
 
 function date(): string {
-  return chance.date().toISOString()
+  return defaultChance.date().toISOString()
 }
 
 function dateRange(): string {
@@ -26,11 +26,11 @@ function dateRange(): string {
 }
 
 function description(): string {
-  return `${chance.sentence()}\n${chance.sentence()}`
+  return `${defaultChance.sentence()}\n${defaultChance.sentence()}`
 }
 
 function collection(): string {
-  return chance.pickone([
+  return defaultChance.pickone([
     'Babylon',
     'Kuyunjik',
     'Nippur',
@@ -63,15 +63,15 @@ function collection(): string {
 }
 
 function script(): string {
-  return chance.pickone(['NA', 'NB'])
+  return defaultChance.pickone(['NA', 'NB'])
 }
 
 export const statisticsFactory = Factory.define<{
   transliteratedFragments: number
   lines: number
 }>(() => ({
-  transliteratedFragments: chance.natural(),
-  lines: chance.natural(),
+  transliteratedFragments: defaultChance.natural(),
+  lines: defaultChance.natural(),
 }))
 
 class RecordFactory extends Factory<RecordEntry> {
@@ -86,52 +86,69 @@ class RecordFactory extends Factory<RecordEntry> {
 export const recordFactory = RecordFactory.define(
   () =>
     new RecordEntry({
-      user: chance.last(),
+      user: defaultChance.last(),
       date: date(),
-      type: chance.pickone(['Transliteration', 'Collation', 'Revision']),
+      type: defaultChance.pickone(['Transliteration', 'Collation', 'Revision']),
     })
 )
 
 export const measuresFactory = Factory.define<Measures>(() => ({
-  length: chance.floating({ min: 0, max: 100 }),
-  width: chance.floating({ min: 0, max: 100 }),
-  thickness: chance.floating({ min: 0, max: 100 }),
+  length: defaultChance.floating({ min: 0, max: 100 }),
+  width: defaultChance.floating({ min: 0, max: 100 }),
+  thickness: defaultChance.floating({ min: 0, max: 100 }),
 }))
 
 export const folioFactory = Factory.define<Folio>(
   () =>
     new Folio({
-      name: chance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
-      number: chance.string(),
+      name: defaultChance.pickone(['WGL', 'FWG', 'EL', 'AKG', 'MJG']),
+      number: defaultChance.string(),
     })
 )
 
 export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
   () => ({
-    document: chance.sentence(),
-    pages: chance.n(chance.natural, 5),
+    document: defaultChance.sentence(),
+    pages: defaultChance.n(defaultChance.natural, 5),
   })
 )
 
+export const joinDtoFactory = Factory.define<
+  | Omit<Join, 'museumNumber'>
+  | { museumNumber: { prefix: string; number: string; suffix: string } },
+  { chance: Chance.Chance }
+>(({ sequence, transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+  return {
+    museumNumber: { prefix: 'X', number: `${sequence}`, suffix: '' },
+    isChecked: chance.bool(),
+    joinedBy: chance.last(),
+    date: chance.sentence(),
+    note: chance.sentence(),
+    legacyData: chance.sentence(),
+    isInFragmentarium: chance.bool(),
+  }
+})
+
 export const joinFactory = Factory.define<Join>(({ sequence }) => ({
   museumNumber: `X.${sequence}`,
-  isChecked: chance.bool(),
-  joinedBy: chance.last(),
-  date: chance.sentence(),
-  note: chance.sentence(),
-  legacyData: chance.sentence(),
-  isInFragmentarium: chance.bool(),
+  isChecked: defaultChance.bool(),
+  joinedBy: defaultChance.last(),
+  date: defaultChance.sentence(),
+  note: defaultChance.sentence(),
+  legacyData: defaultChance.sentence(),
+  isInFragmentarium: defaultChance.bool(),
 }))
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence }) => {
-    const museumNumber = `${chance.word()}.${sequence}`
+    const museumNumber = `${defaultChance.word()}.${sequence}`
     return new Fragment(
       museumNumber,
-      chance.word(),
-      chance.word(),
-      chance.word(),
-      chance.sentence({ words: 4 }),
+      defaultChance.word(),
+      defaultChance.word(),
+      defaultChance.word(),
+      defaultChance.sentence({ words: 4 }),
       associations.joins ?? [
         [joinFactory.build({ museumNumber, isInFragmentarium: true })],
         [joinFactory.build()],
@@ -143,14 +160,14 @@ export const fragmentFactory = Factory.define<Fragment>(
       associations.folios ?? folioFactory.buildList(2),
       associations.record ?? recordFactory.buildList(2),
       associations.text ?? complexText,
-      chance.sentence(),
+      defaultChance.sentence(),
       associations.museum ?? Museum.of('The British Museum'),
       associations.references ?? referenceFactory.buildList(2),
       associations.uncuratedReferences ?? null,
       '',
-      chance.bool(),
+      defaultChance.bool(),
       associations.genres ??
-        chance.pickone([
+        defaultChance.pickone([
           new Genres([
             new Genre(['ARCHIVE', 'Administrative', 'Lists'], false),
             new Genre(['Other', 'Fake', 'Certain'], false),
@@ -163,12 +180,12 @@ export const fragmentFactory = Factory.define<Fragment>(
 
 export const fragmentInfoFactory = Factory.define<FragmentInfo>(
   ({ associations }) => ({
-    number: chance.word(),
-    accession: chance.word(),
+    number: defaultChance.word(),
+    accession: defaultChance.word(),
     description: description(),
     script: script(),
     matchingLines: associations.matchingLines ?? [['1. kur']],
-    editor: chance.last(),
+    editor: defaultChance.last(),
     date: date(),
     // eslint-disable-next-line camelcase
     edition_date: date(),
@@ -177,8 +194,8 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
 )
 
 export const folioPagerEntryFactory = Factory.define<FragmentAndFolio>(() => ({
-  fragmentNumber: chance.string(),
-  folioNumber: chance.string(),
+  fragmentNumber: defaultChance.string(),
+  folioNumber: defaultChance.string(),
 }))
 
 export const folioPagerFactory = Factory.define<FolioPagerData>(
