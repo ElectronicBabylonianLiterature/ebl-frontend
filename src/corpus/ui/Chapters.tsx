@@ -155,3 +155,65 @@ export default function Chapters({
     </>
   )
 }
+
+export enum detailsDataTypes {
+  MACHINE = 'MACHINE',
+  USER = 'USER',
+  ABSTRACT = 'ABSTRACT',
+}
+
+export type sharedTypes = {
+  name?: string
+  OEECategory?: string
+  OAECategory?: string
+  color?: string
+}
+
+export type AbstractData = sharedTypes & {
+  layer: string
+  type: detailsDataTypes.ABSTRACT
+}
+
+export type UserData = sharedTypes & {
+  defaultTimeout: number
+  stateAfterTimeout: string
+  accessCanChoose: string
+  accessCanOverwrite: string
+  type: detailsDataTypes.USER
+}
+
+export type MachineData = Omit<UserData, 'type'> & {
+  stateCategory: string
+  canOverwriteOnlyByStates: boolean
+  machineType: string
+  type: detailsDataTypes.MACHINE
+}
+
+const sharedHeaders: sharedTypes = {
+  name: 'Name',
+  OEECategory: 'OEE category',
+  OAECategory: 'OAE category',
+  color: 'Color',
+}
+
+export const AbstractHeaders: Omit<AbstractData, 'type'> = {
+  ...sharedHeaders,
+  layer: 'Layer',
+}
+
+export const UserHeaders:
+  | Omit<UserData, 'type'>
+  | { defaultTimeout: string } = {
+  ...sharedHeaders,
+  defaultTimeout: 'Default timeout',
+  stateAfterTimeout: 'State after timeout',
+  accessCanChoose: 'Access - can choose',
+  accessCanOverwrite: 'Access - can overwrite',
+}
+
+export const MachineHeaders: Omit<MachineData, 'type'> = {
+  ...UserHeaders,
+  stateCategory: 'State category',
+  machineType: 'Machine type',
+  canOverwriteOnlyByStates: 'Can overwrite only by states',
+}

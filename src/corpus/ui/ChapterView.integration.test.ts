@@ -1,8 +1,12 @@
 import _ from 'lodash'
+import Chance from 'chance'
 
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
+import { manuscriptDtoFactory } from 'test-support/manuscriptFactory'
+
+const chance = new Chance()
 
 const genre = 'L'
 const category = 1
@@ -50,22 +54,21 @@ const chapterDtos = [
     name: 'The First Chapter',
     order: 1,
     manuscripts: [
-      {
-        id: 1,
-        siglumDisambiguator: '1c',
-        museumNumber: 'BM.X',
-        accession: 'X.1',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: 'some notes',
-        colophon: '1. kur',
-        unplacedLines: '1. bu',
-        references: [],
-        joins: [],
-        isInFragmentarium: false,
-      },
+      manuscriptDtoFactory.build(
+        {
+          siglumDisambiguator: '1c',
+          museumNumber: 'BM.X',
+          accession: 'X.1',
+          periodModifier: 'Late',
+          period: 'Ur III',
+          provenance: 'Nippur',
+          type: 'School',
+          notes: 'some notes',
+          colophon: '1. kur',
+          unplacedLines: '1. bu',
+        },
+        { transient: { chance } }
+      ),
     ],
     uncertainFragments: [],
     lines: [],
@@ -88,40 +91,9 @@ const chapterDtos = [
     version: '',
     name: 'The Second Chapter',
     order: 5,
-    manuscripts: [
-      {
-        id: 1,
-        siglumDisambiguator: 'A',
-        museumNumber: '',
-        accession: '',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: '',
-        colophon: '',
-        unplacedLines: '',
-        references: [],
-        joins: [],
-        isInFragmentarium: false,
-      },
-      {
-        id: 2,
-        siglumDisambiguator: 'B',
-        museumNumber: '',
-        accession: '',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: '',
-        colophon: '',
-        unplacedLines: '',
-        references: [],
-        joins: [],
-        isInFragmentarium: false,
-      },
-    ],
+    manuscripts: [1, 2].map((id) =>
+      manuscriptDtoFactory.build({ id }, { transient: { chance } })
+    ),
     uncertainFragments: [],
     lines: [
       {

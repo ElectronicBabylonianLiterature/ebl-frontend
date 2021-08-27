@@ -10,7 +10,7 @@ import {
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenance, Provenances } from 'corpus/domain/provenance'
 
-const chance = new Chance()
+const defaultChance = new Chance()
 
 class ManuscriptFactory extends Factory<Manuscript> {
   standardText() {
@@ -36,7 +36,7 @@ class ManuscriptFactory extends Factory<Manuscript> {
 
   city() {
     return this.associations({
-      provenance: chance.pickone(
+      provenance: defaultChance.pickone(
         _.without(
           Object.values(Provenances),
           Provenances['Standard Text'],
@@ -61,27 +61,71 @@ class ManuscriptFactory extends Factory<Manuscript> {
 }
 
 export default ManuscriptFactory.define(({ sequence, associations }) => {
-  const hasMuseumNumber = chance.bool()
+  const hasMuseumNumber = defaultChance.bool()
   return new Manuscript(
-    chance.natural(),
-    chance.string(),
+    defaultChance.natural(),
+    defaultChance.string(),
     hasMuseumNumber ? `X.${sequence}` : '',
     !hasMuseumNumber ? `A ${sequence}` : '',
     associations.periodModifier ??
-      chance.pickone(Object.values(PeriodModifiers)),
+      defaultChance.pickone(Object.values(PeriodModifiers)),
     associations.period ??
-      chance.pickone(_.without(Object.values(Periods), Periods.None)),
+      defaultChance.pickone(_.without(Object.values(Periods), Periods.None)),
     associations.provenance ??
-      chance.pickone(
+      defaultChance.pickone(
         _.without(Object.values(Provenances), Provenances['Standard Text'])
       ),
     associations.type ??
-      chance.pickone(
+      defaultChance.pickone(
         _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
       ),
-    chance.sentence(),
+    defaultChance.sentence(),
     '',
     '',
     []
   )
+})
+
+export const manuscriptDtoFactory = Factory.define<
+  {
+    id: number | null
+    siglumDisambiguator: string
+    museumNumber: string
+    accession: string
+    periodModifier: string
+    period: string
+    provenance: string
+    type: string
+    notes: string
+    colophon: string
+    unplacedLines: string
+    references: []
+    joins: []
+    isInFragmentarium: boolean
+  },
+  { hasMuseumNumber: boolean; chance: Chance.Chance }
+>(({ sequence, transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+  const hasMuseumNumber = transientParams.hasMuseumNumber ?? chance.bool()
+  return {
+    id: sequence,
+    siglumDisambiguator: chance.string(),
+    museumNumber: hasMuseumNumber ? `X.${sequence}` : '',
+    accession: !hasMuseumNumber ? `A ${sequence}` : '',
+    periodModifier: chance.pickone(Object.values(PeriodModifiers)).name,
+    period: chance.pickone(_.without(Object.values(Periods), Periods.None))
+      .name,
+    provenance: chance.pickone(
+      _.without(Object.values(Provenances), Provenances['Standard Text'])
+    ).name,
+    type: chance.pickone(
+      _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
+    ).name,
+    notes: chance.sentence(),
+    colophon: '',
+    unplacedLines: '',
+    references: [],
+    joins: [],
+    isInFragmentarium: false,
+  }
 })
