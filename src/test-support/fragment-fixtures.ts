@@ -7,13 +7,13 @@ import {
   RecordEntry,
   UncuratedReference,
 } from 'fragmentarium/domain/fragment'
-import { Join } from 'fragmentarium/domain/join'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
-import complexText from './complexTestText'
 import { Genre, Genres } from 'fragmentarium/domain/Genres'
 import { referenceFactory } from './bibliography-fixtures'
 import { FolioPagerData, FragmentAndFolio } from 'fragmentarium/domain/pager'
+import complexText from './complexTestText'
+import { joinFactory } from './join-fixtures'
 
 const defaultChance = new Chance()
 
@@ -112,33 +112,6 @@ export const uncuratedReferenceFactory = Factory.define<UncuratedReference>(
     pages: defaultChance.n(defaultChance.natural, 5),
   })
 )
-
-export const joinDtoFactory = Factory.define<
-  | Omit<Join, 'museumNumber'>
-  | { museumNumber: { prefix: string; number: string; suffix: string } },
-  { chance: Chance.Chance }
->(({ sequence, transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return {
-    museumNumber: { prefix: 'X', number: `${sequence}`, suffix: '' },
-    isChecked: chance.bool(),
-    joinedBy: chance.last(),
-    date: chance.sentence(),
-    note: chance.sentence(),
-    legacyData: chance.sentence(),
-    isInFragmentarium: chance.bool(),
-  }
-})
-
-export const joinFactory = Factory.define<Join>(({ sequence }) => ({
-  museumNumber: `X.${sequence}`,
-  isChecked: defaultChance.bool(),
-  joinedBy: defaultChance.last(),
-  date: defaultChance.sentence(),
-  note: defaultChance.sentence(),
-  legacyData: defaultChance.sentence(),
-  isInFragmentarium: defaultChance.bool(),
-}))
 
 export const fragmentFactory = Factory.define<Fragment>(
   ({ associations, sequence }) => {

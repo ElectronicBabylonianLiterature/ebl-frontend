@@ -6,7 +6,7 @@ import { Provenances } from 'corpus/domain/provenance'
 import AppDriver from 'test-support/AppDriver'
 import { referenceDtoFactory } from 'test-support/bibliography-fixtures'
 import FakeApi from 'test-support/FakeApi'
-import { joinDtoFactory } from 'test-support/fragment-fixtures'
+import { joinDtoFactory } from 'test-support/join-fixtures'
 import { textDto } from 'test-support/test-corpus-text'
 
 const chance = new Chance('text view integration test')
