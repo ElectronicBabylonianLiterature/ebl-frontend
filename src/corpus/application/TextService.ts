@@ -138,7 +138,10 @@ export class ChapterId {
     )
   }
 
-  static fromText(text: TextInfo, chapter: ChapterListing): ChapterId {
+  static fromText(
+    text: TextInfo,
+    chapter: Pick<ChapterListing, 'stage' | 'name'>
+  ): ChapterId {
     return new ChapterId(
       text.genre,
       text.category,

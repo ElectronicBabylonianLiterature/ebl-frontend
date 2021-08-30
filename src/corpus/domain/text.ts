@@ -69,10 +69,16 @@ export interface TextInfo {
   approximateVerses: boolean
 }
 
+export interface UncertainFragment {
+  readonly museumNumber: string
+  readonly isInFragmentarium: boolean
+}
+
 export interface ChapterListing {
   readonly name: string
   readonly stage: string
   readonly title: readonly MarkupPart[]
+  readonly uncertainFragments: readonly UncertainFragment[]
 }
 
 export class Text implements TextInfo {
