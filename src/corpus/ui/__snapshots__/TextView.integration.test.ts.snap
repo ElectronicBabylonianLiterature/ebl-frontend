@@ -549,7 +549,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   </th>
                   <th
                     class="list-of-manuscripts__column-heading"
-                    id="musuemumber-20"
+                    id="museumNumber-20"
                     scope="col"
                   >
                     Museum Number
@@ -566,7 +566,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   <th
                     class="list-of-manuscripts__provenance-heading"
                     colspan="2"
-                    id="provenace-21"
+                    id="provenace-22"
                     scope="colgroup"
                   >
                     Assyria
@@ -575,14 +575,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                 <tr>
                   <th
                     class="list-of-manuscripts__siglum-heading"
-                    headers="provenace-21 siglum-19"
-                    id="row-22"
+                    headers="provenace-22 siglum-19"
+                    id="row-23"
                     scope="row"
                   >
                     AssaOBSch1
                   </th>
                   <td
-                    headers="provenace-21 row-22 musuemumber-20"
+                    headers="provenace-22 row-23 museumNumber-20"
                   >
                     <a
                       href="/fragmentarium/X.1"
@@ -616,6 +616,35 @@ exports[`Chapter Show list of manuscripts 1`] = `
                           ]
                            (E)
                         </span>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    class="list-of-manuscripts__provenance-heading"
+                    colspan="2"
+                    id="uncertainFragmets-21"
+                    scope="colgroup"
+                  >
+                    Uncertain Fragments
+                  </th>
+                </tr>
+                <tr>
+                  <td />
+                  <td>
+                    <ul
+                      class="list-of-manuscripts__uncertain-fragments"
+                    >
+                      <li>
+                        <a
+                          href="/fragmentarium/X.1"
+                        >
+                          X.1
+                        </a>
+                      </li>
+                      <li>
+                        X.2
                       </li>
                     </ul>
                   </td>
@@ -994,7 +1023,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-25"
+          id="Header-26"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1067,7 +1096,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-25"
+          aria-controls="Header-26"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"

@@ -25,16 +25,36 @@ const textDto = {
       stage: 'Old Babylonian',
       name: 'The First Chapter',
       title: [],
+      uncertainFragments: [
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '1',
+            suffix: '',
+          },
+          isInFragmentarium: true,
+        },
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '2',
+            suffix: '',
+          },
+          isInFragmentarium: false,
+        },
+      ],
     },
     {
       stage: 'Neo-Babylonian',
       name: 'III',
       title: [],
+      uncertainFragments: [],
     },
     {
       stage: 'Old Babylonian',
       name: 'The Second Chapter',
       title: [],
+      uncertainFragments: [],
     },
   ],
   references: [],
@@ -45,6 +65,7 @@ const textId = {
   category: category,
   index: index,
 }
+
 const chapterDtos = [
   {
     textId: textId,

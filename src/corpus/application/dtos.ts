@@ -12,12 +12,19 @@ import {
 } from 'corpus/domain/line'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
-import { Chapter, createChapter, createText, Text } from 'corpus/domain/text'
+import {
+  Chapter,
+  ChapterListing,
+  createChapter,
+  createText,
+  Text,
+} from 'corpus/domain/text'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 
 export function fromSiglumAndTransliterationDto(
   dto
@@ -28,10 +35,23 @@ export function fromSiglumAndTransliterationDto(
   }))
 }
 
+export function fromChapterListingDto(chapterListingDto): ChapterListing {
+  return {
+    ...chapterListingDto,
+    uncertainFragments: chapterListingDto.uncertainFragments.map(
+      ({ museumNumber, isInFragmentarium }) => ({
+        museumNumber: museumNumberToString(museumNumber),
+        isInFragmentarium,
+      })
+    ),
+  }
+}
+
 export function fromDto(textDto): Text {
   return createText({
     ...textDto,
     references: textDto.references.map(createReference),
+    chapters: textDto.chapters.map(fromChapterListingDto),
   })
 }
 

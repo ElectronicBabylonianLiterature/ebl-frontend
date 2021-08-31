@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import _ from 'lodash'
-import { Text } from 'corpus/domain/text'
+import { Text, UncertainFragment } from 'corpus/domain/text'
 import { Link } from 'react-router-dom'
 import Markup from 'transliteration/ui/markup'
 import withData from 'http/withData'
@@ -25,14 +25,36 @@ function FragmentariumLink({
   )
 }
 
+function ProvenanceHeading({
+  id,
+  children,
+}: {
+  id: string
+  children: ReactNode
+}): JSX.Element {
+  return (
+    <tr>
+      <th
+        id={id}
+        colSpan={2}
+        scope="colgroup"
+        className="list-of-manuscripts__provenance-heading"
+      >
+        {children}
+      </th>
+    </tr>
+  )
+}
+
 const Manuscripts = withData<
-  unknown,
+  { uncertainFragments: readonly UncertainFragment[] },
   { id: ChapterId; textService },
   Manuscript[]
 >(
-  ({ data: manuscripts }) => {
+  ({ data: manuscripts, uncertainFragments }) => {
     const siglumId = _.uniqueId('siglum-')
-    const museumNumberId = _.uniqueId('musuemumber-')
+    const museumNumberId = _.uniqueId('museumNumber-')
+    const uncertainFragmentsId = _.uniqueId('uncertainFragmets-')
     return (
       <table>
         <colgroup span={2}></colgroup>
@@ -60,16 +82,9 @@ const Manuscripts = withData<
             const provenanceId = _.uniqueId('provenace-')
             return (
               <React.Fragment key={provenance}>
-                <tr>
-                  <th
-                    id={provenanceId}
-                    colSpan={2}
-                    scope="colgroup"
-                    className="list-of-manuscripts__provenance-heading"
-                  >
-                    {provenance}
-                  </th>
-                </tr>
+                <ProvenanceHeading id={provenanceId}>
+                  {provenance}
+                </ProvenanceHeading>
                 {manuscripts.map((manuscript, index) => {
                   const rowId = _.uniqueId('row-')
                   return (
@@ -120,6 +135,25 @@ const Manuscripts = withData<
             )
           })
           .value()}
+        {!_.isEmpty(uncertainFragments) && (
+          <>
+            <ProvenanceHeading id={uncertainFragmentsId}>
+              Uncertain Fragments
+            </ProvenanceHeading>
+            <tr>
+              <td></td>
+              <td>
+                <ul className="list-of-manuscripts__uncertain-fragments">
+                  {uncertainFragments.map((fragment, index) => (
+                    <li key={index}>
+                      <FragmentariumLink item={fragment} />
+                    </li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          </>
+        )}
       </table>
     )
   },
@@ -148,6 +182,7 @@ export default function Chapters({
             <Manuscripts
               id={ChapterId.fromText(text, chapter)}
               textService={textService}
+              uncertainFragments={chapter.uncertainFragments}
             />
           </CollapsibleSection>
         </section>
