@@ -58,10 +58,18 @@ export default function BibliographySelect({
     }
   }, [value, prevValue])
 
-  const loadOptions = async (inputValue, callback) => {
-    const entries = await searchBibliography(inputValue)
-    callback(entries.map(createOption))
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: SelectedOption[]) => void
+  ) => {
+    searchBibliography(inputValue).then((entries) => {
+      const options = entries
+        .map(createOption)
+        .filter((option) => option !== null) as SelectedOption[]
+      callback(options)
+    })
   }
+
   const handleChange = (selectedOption) => {
     if (selectedOption) {
       setSelectedOption(selectedOption)

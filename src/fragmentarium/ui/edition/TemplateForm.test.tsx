@@ -1,20 +1,20 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { changeValueByLabel, submitForm } from 'test-support/utils'
 
 import TemplateForm from './TemplateForm'
 
 let onSubmit
-let element
+let container: HTMLElement
 
 async function submit(value) {
-  changeValueByLabel(element, 'Template', value)
-  await submitForm(element)
+  changeValueByLabel(screen, 'Template', value)
+  await submitForm(container)
 }
 
 beforeEach(() => {
   onSubmit = jest.fn()
-  element = render(<TemplateForm onSubmit={onSubmit} />)
+  container = render(<TemplateForm onSubmit={onSubmit} />).container
 })
 
 it('Creates specified number of rows on observe', async () => {
@@ -57,6 +57,6 @@ it('Does not call onSubmit if template is empty', async () => {
 
 it('Update correctly', () => {
   const value = '5,5'
-  changeValueByLabel(element, 'Template', value)
-  expect(element.getByLabelText('Template').value).toEqual(value)
+  changeValueByLabel(screen, 'Template', value)
+  expect(screen.getByLabelText('Template')).toHaveValue(value)
 })

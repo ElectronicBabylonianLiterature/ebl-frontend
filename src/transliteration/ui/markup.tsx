@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 import {
   TextPart,
   LanguagePart,
@@ -55,16 +54,16 @@ export function DisplayBibliographyPart({
 }
 
 export default function Markup({
-  line,
+  parts,
   container = 'div',
 }: {
-  line: { type: string; parts: readonly MarkupPart[] }
+  parts: readonly MarkupPart[]
   container?: string
 }): JSX.Element {
   return React.createElement(
     container,
-    { className: classNames([`Transliteration__${line.type}`]) },
-    line.parts.map((part: MarkupPart, index: number) => {
+    {},
+    parts.map((part: MarkupPart, index: number) => {
       if (isLanguagePart(part)) {
         return <DisplayLaguagePart key={index} part={part} />
       } else if (isBibliographyPart(part)) {

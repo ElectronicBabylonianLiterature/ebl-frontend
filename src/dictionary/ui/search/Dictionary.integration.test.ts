@@ -21,7 +21,7 @@ beforeEach(async () => {
 })
 
 test('Snapshot', () => {
-  expect(appDriver.getElement().container).toMatchSnapshot()
+  expect(appDriver.getView().container).toMatchSnapshot()
 })
 
 test('Query', async () => {
@@ -29,5 +29,5 @@ test('Query', async () => {
   await appDriver.changeValueByLabel('Query', query)
   await appDriver.submitForm()
   await appDriver.waitForText(words[0].lemma.join(' '))
-  expect(appDriver.getElement().container).toMatchSnapshot()
+  expect(appDriver.getView().container).toMatchSnapshot()
 })

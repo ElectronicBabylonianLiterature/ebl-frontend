@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import Promise from 'bluebird'
 import LatestTransliterations from './LatestTransliterations'
@@ -16,7 +16,6 @@ const expectedColumns = {
 }
 let fragmentSearchService
 let container: HTMLElement
-let element: RenderResult
 let fragments: FragmentInfo[]
 
 beforeEach(async () => {
@@ -27,13 +26,12 @@ beforeEach(async () => {
   fragmentSearchService.fetchLatestTransliterations.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
-  element = render(
+  container = render(
     <MemoryRouter>
       <LatestTransliterations fragmentSearchService={fragmentSearchService} />
     </MemoryRouter>
-  )
-  container = element.container
-  await element.findByText('Latest additions:')
+  ).container
+  await screen.findByText('Latest additions:')
 })
 
 test('Columns', () => {

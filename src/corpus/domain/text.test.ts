@@ -5,6 +5,7 @@ import { ChapterAlignment } from './alignment'
 import {
   createLine,
   createManuscriptLine,
+  EditStatus,
   Line,
   LineVariant,
   ManuscriptLine,
@@ -13,7 +14,7 @@ import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
 import { Manuscript, ManuscriptTypes } from './manuscript'
-import manuscriptFactory from 'test-support/manuscriptFactory'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -28,6 +29,8 @@ const manuscriptConfig: Partial<Manuscript> = {
   colophon: '1. kur',
   unplacedLines: '1. bu',
   references: [],
+  joins: [],
+  isInFragmentarium: true,
 }
 
 const manuscrpitLineConfig: Partial<ManuscriptLine> = {
@@ -116,6 +119,7 @@ const lineConfig: Line = {
   isSecondLineOfParallelism: true,
   isBeginningOfSection: true,
   translation: '',
+  status: EditStatus.CLEAN,
 }
 
 const stage = 'Old Babylonian'
@@ -140,12 +144,16 @@ const textConfig: Partial<Text> = {
   numberOfVerses: 930,
   approximateVerses: true,
   intro: 'Introduction',
-  chapters: [{ stage: stage, name: name }],
+  chapters: [{ stage: stage, name: name, title: [], uncertainFragments: [] }],
   references: [new Reference()],
 }
 
 describe('Text', () => {
   testProperties(textConfig, createText)
+
+  test('title', () => {
+    expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
+  })
 })
 
 describe('Chapter', () => {
@@ -209,7 +217,9 @@ describe('Manuscript', () => {
         manuscriptConfig.notes,
         manuscriptConfig.colophon,
         manuscriptConfig.unplacedLines,
-        manuscriptConfig.references
+        manuscriptConfig.references,
+        manuscriptConfig.joins,
+        manuscriptConfig.isInFragmentarium
       )
   )
 })

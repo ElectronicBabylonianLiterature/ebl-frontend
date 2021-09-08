@@ -20,11 +20,14 @@ import Folio from 'fragmentarium/domain/Folio'
 import WordService from 'dictionary/application/WordService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import FragmentService from 'fragmentarium/application/FragmentService'
+import ErrorBoundary from 'common/ErrorBoundary'
 
 const ContentSection: FunctionComponent = ({
   children,
 }: PropsWithChildren<unknown>) => (
-  <section className="CuneiformFragment__content">{children}</section>
+  <section className="CuneiformFragment__content">
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </section>
 )
 
 type TabsProps = {
@@ -160,31 +163,37 @@ const CuneiformFragment: FunctionComponent<CuneiformFragmentProps> = ({
     <Container fluid>
       <Row>
         <Col md={2}>
-          <Info
-            fragment={fragment}
-            fragmentService={fragmentService}
-            onSave={onSave}
-          />
+          <ErrorBoundary>
+            <Info
+              fragment={fragment}
+              fragmentService={fragmentService}
+              onSave={onSave}
+            />
+          </ErrorBoundary>
         </Col>
         <Col md={5}>
-          <EditorTabs
-            fragment={fragment}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-            onSave={onSave}
-            disabled={saving}
-          />
-          <Spinner loading={saving}>Saving...</Spinner>
-          <ErrorAlert error={error} />
+          <ErrorBoundary>
+            <EditorTabs
+              fragment={fragment}
+              fragmentService={fragmentService}
+              fragmentSearchService={fragmentSearchService}
+              wordService={wordService}
+              onSave={onSave}
+              disabled={saving}
+            />
+            <Spinner loading={saving}>Saving...</Spinner>
+            <ErrorAlert error={error} />
+          </ErrorBoundary>
         </Col>
         <Col md={5}>
-          <Images
-            fragment={fragment}
-            fragmentService={fragmentService}
-            activeFolio={activeFolio}
-            tab={tab}
-          />
+          <ErrorBoundary>
+            <Images
+              fragment={fragment}
+              fragmentService={fragmentService}
+              activeFolio={activeFolio}
+              tab={tab}
+            />
+          </ErrorBoundary>
         </Col>
       </Row>
     </Container>

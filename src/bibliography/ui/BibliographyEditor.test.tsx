@@ -1,12 +1,14 @@
 import React from 'react'
 import { matchPath, MemoryRouter, match } from 'react-router'
-import { render, Matcher } from '@testing-library/react'
+import { render, Matcher, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 import SessionContext from 'auth/SessionContext'
 import { submitForm } from 'test-support/utils'
 import BibliographyEditor from './BibliographyEditor'
-import { template } from 'bibliography/domain/BibliographyEntry'
+import BibliographyEntry, {
+  template,
+} from 'bibliography/domain/BibliographyEntry'
 import { createMemoryHistory } from 'history'
 import { bibliographyEntryFactory } from 'test-support/bibliography-fixtures'
 
@@ -49,9 +51,9 @@ describe('Editing', () => {
 
   test('Posts on submit', async () => {
     bibliographyService.update.mockReturnValueOnce(Promise.resolve())
-    const element = await renderWithRouter(true, false, resultId)
+    const { container } = await renderWithRouter(true, false, resultId)
 
-    await submitForm(element)
+    await submitForm(container)
 
     expect(bibliographyService.update).toHaveBeenCalledWith(result)
   })
@@ -68,9 +70,9 @@ describe('Creating', () => {
 
   test('Puts on submit', async () => {
     bibliographyService.create.mockReturnValueOnce(Promise.resolve())
-    const element = await renderWithRouter(true, true, createWaitFor)
+    const { container } = await renderWithRouter(true, true, createWaitFor)
 
-    await submitForm(element)
+    await submitForm(container)
 
     expect(bibliographyService.create).toHaveBeenCalledWith(template)
   })
@@ -78,9 +80,12 @@ describe('Creating', () => {
   commonTests(true, createWaitFor)
 })
 
-function expectTextContentToContainCslJson(container, entry) {
+function expectTextContentToContainCslJson(
+  container: HTMLElement,
+  entry: BibliographyEntry
+) {
   expect(container).toHaveTextContent(
-    JSON.stringify(entry.toJson(), null, 1).replace(/\s+/g, ' ')
+    JSON.stringify(entry.toCslData(), null, 1).replace(/\s+/g, ' ')
   )
 }
 
@@ -92,11 +97,11 @@ function commonTests(create, waitFor): void {
     bibliographyService.create.mockImplementationOnce(() =>
       Promise.reject(new Error(errorMessage))
     )
-    const element = await renderWithRouter(true, create, waitFor)
+    const { container } = await renderWithRouter(true, create, waitFor)
 
-    await submitForm(element)
+    await submitForm(container)
 
-    await element.findByText(errorMessage)
+    await screen.findByText(errorMessage)
   })
 
   test('Cancels promise on unmount', async () => {
@@ -104,15 +109,15 @@ function commonTests(create, waitFor): void {
     jest.spyOn(promise, 'cancel')
     bibliographyService.update.mockReturnValueOnce(promise)
     bibliographyService.create.mockReturnValueOnce(promise)
-    const element = await renderWithRouter(true, create, waitFor)
-    await submitForm(element)
-    element.unmount()
+    const { unmount, container } = await renderWithRouter(true, create, waitFor)
+    await submitForm(container)
+    unmount()
     expect(promise.isCancelled()).toBe(true)
   })
 
   test('Saving is disabled when not allowed to write:bibliography', async () => {
-    const { getByText } = await renderWithRouter(false, create, waitFor)
-    expect(getByText('Save')).toBeDisabled()
+    await renderWithRouter(false, create, waitFor)
+    expect(screen.getByText('Save')).toBeDisabled()
   })
 }
 
@@ -130,7 +135,7 @@ async function renderWithRouter(
       }) as match)
   session.isAllowedToWriteBibliography.mockReturnValue(isAllowedTo)
 
-  const element = render(
+  const view = render(
     <MemoryRouter>
       <SessionContext.Provider value={session}>
         <BibliographyEditor
@@ -142,6 +147,6 @@ async function renderWithRouter(
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await element.findAllByText(waitFor)
-  return element
+  await screen.findAllByText(waitFor)
+  return view
 }

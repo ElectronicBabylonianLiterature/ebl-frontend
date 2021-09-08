@@ -1,11 +1,10 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Promise } from 'bluebird'
 import FragmentPager from './FragmentPager'
 
 const number = 'K.00000'
-let element
 let fragmentService
 let fragmentPagerData
 
@@ -20,7 +19,7 @@ beforeEach(async () => {
   fragmentService.fragmentPager.mockReturnValue(
     Promise.resolve(fragmentPagerData)
   )
-  element = render(
+  render(
     <MemoryRouter>
       <FragmentPager
         fragmentNumber={number}
@@ -28,18 +27,18 @@ beforeEach(async () => {
       ></FragmentPager>
     </MemoryRouter>
   )
-  await element.findByText('K.00000')
+  await screen.findByText('K.00000')
 })
 it.each([
   ['Previous', 'previous'],
   ['Next', 'next'],
 ])('Test Links to %s Button', (label, expected) => {
-  expect(element.getByLabelText(label)).toHaveAttribute(
+  expect(screen.getByLabelText(label)).toHaveAttribute(
     'href',
     `/fragmentarium/${encodeURIComponent(fragmentPagerData[expected])}`
   )
 })
 
 it('Renders children', () => {
-  expect(element.container).toHaveTextContent(number)
+  expect(screen.getByText(number)).toBeInTheDocument()
 })

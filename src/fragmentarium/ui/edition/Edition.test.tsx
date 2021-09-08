@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 
 import { submitFormByTestId } from 'test-support/utils'
@@ -9,17 +9,16 @@ import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { Fragment } from 'fragmentarium/domain/fragment'
 
 let fragment: Fragment
-let element: RenderResult
-let container: HTMLElement
 let fragmentSearchService
 let updateTransliteration
+let container: HTMLElement
 
 beforeEach(() => {
   updateTransliteration = jest.fn()
   updateTransliteration.mockReturnValue(Promise.resolve())
   fragmentSearchService = {}
   fragment = fragmentFactory.build({ atf: '1. ku' })
-  element = render(
+  container = render(
     <MemoryRouter>
       <Edition
         fragment={fragment}
@@ -27,25 +26,22 @@ beforeEach(() => {
         updateTransliteration={updateTransliteration}
       />
     </MemoryRouter>
-  )
-  container = element.container
+  ).container
 })
 
-it(`Renders header`, () => {
+it('Renders header', () => {
   expect(container).toHaveTextContent(fragment.publication)
 })
 
 xit('Renders transliteration field', () => {
-  expect(
-    (element.getByLabelText('Transliteration') as HTMLInputElement).value
-  ).toEqual(fragment.atf)
+  expect(screen.getByLabelText('Transliteration')).toHaveValue(fragment.atf)
 })
 
 xit('Renders notes field', () => {
-  expect(element.getByLabelText('Notes')).toEqual(fragment.notes)
+  expect(screen.getByLabelText('Notes')).toEqual(fragment.notes)
 })
 
 it('Calls updateTransliteration on save', () => {
-  submitFormByTestId(element, 'transliteration-form')
+  submitFormByTestId(screen, 'transliteration-form')
   expect(updateTransliteration).toHaveBeenCalled()
 })

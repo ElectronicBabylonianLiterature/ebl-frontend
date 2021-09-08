@@ -1,4 +1,5 @@
 import Reference from 'bibliography/domain/Reference'
+import { Joins } from 'fragmentarium/domain/join'
 import { immerable } from 'immer'
 import _ from 'lodash'
 import { Period, PeriodModifier, PeriodModifiers, Periods } from './period'
@@ -78,7 +79,9 @@ export class Manuscript {
     readonly notes: string = '',
     readonly colophon: string = '',
     readonly unplacedLines: string = '',
-    readonly references: readonly Reference[] = []
+    readonly references: readonly Reference[] = [],
+    readonly joins: Joins = [],
+    readonly isInFragmentarium: boolean = false
   ) {}
 
   get siglum(): string {

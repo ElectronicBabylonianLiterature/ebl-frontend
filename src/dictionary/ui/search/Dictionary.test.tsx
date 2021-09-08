@@ -30,16 +30,12 @@ describe('Searching for word', () => {
   it('displays result on successfull query', async () => {
     await renderDictionary('/dictionary?query=lemma')
     expect(screen.getByText(words[1].meaning)).toBeInTheDocument()
-    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      'lemma'
-    )
+    expect(screen.getByLabelText('Query')).toHaveValue('lemma')
   })
 
   it('displays empty search if no query', async () => {
     await renderDictionary('/dictionary')
-    expect((screen.getByLabelText('Query') as HTMLInputElement).value).toEqual(
-      ''
-    )
+    expect(screen.getByLabelText('Query')).toHaveValue('')
   })
 })
 

@@ -1,14 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'Amplified Meanings'
 
 let value
-let element
 let onChange
 let noun
 
@@ -20,11 +19,11 @@ describe('Entries', () => {
   beforeEach(async () => {
     noun = 'entry'
     value = await factory.buildMany('entry', 2)
-    element = renderAmplifiedMeaningList(true)
+    renderAmplifiedMeaningList(true)
   })
 
   it('New entry has entry fields', async () => {
-    await whenClicked(element, `Add ${noun}`)
+    await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([...value, { meaning: '', vowels: [] }])
   })
@@ -36,12 +35,12 @@ describe('Conjugations/Functions', () => {
   beforeEach(async () => {
     noun = 'amplified meaning'
     value = await factory.buildMany('amplifiedMeaning', 2)
-    element = renderAmplifiedMeaningList(false)
+    renderAmplifiedMeaningList(false)
   })
 
   it('Displays all keys', () => {
     for (const item of value) {
-      expect(element.getAllByDisplayValue(item.key)[0]).toBeVisible()
+      expect(screen.getAllByDisplayValue(item.key)[0]).toBeVisible()
     }
   })
 
@@ -49,13 +48,11 @@ describe('Conjugations/Functions', () => {
     _(value)
       .flatMap('entries')
       .map('meaning')
-      .forEach((entry) =>
-        expect(element.getByDisplayValue(entry)).toBeVisible()
-      )
+      .forEach((entry) => expect(screen.getByDisplayValue(entry)).toBeVisible())
   })
 
   it('New entry has top level fields', async () => {
-    await whenClicked(element, `Add ${noun}`)
+    await whenClicked(screen, `Add ${noun}`)
       .expect(onChange)
       .toHaveBeenCalledWith([
         ...value,
@@ -69,16 +66,16 @@ describe('Conjugations/Functions', () => {
 function commonTests() {
   it('Displays all amplified meanings', () => {
     for (const item of value) {
-      expect(element.getByDisplayValue(item.meaning)).toBeVisible()
+      expect(screen.getByDisplayValue(item.meaning)).toBeVisible()
     }
   })
 
   it('Displays label', () => {
-    expect(element.getByText(label)).toBeVisible()
+    expect(screen.getByText(label)).toBeVisible()
   })
 
   it('Calls onChange with updated value on change', () => {
-    whenChangedByValue(element, value[0].meaning, 'new')
+    whenChangedByValue(screen, value[0].meaning, 'new')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => [
         {
@@ -91,7 +88,7 @@ function commonTests() {
 }
 
 function renderAmplifiedMeaningList(entry) {
-  return render(
+  render(
     <AmplifiedMeaningList value={value} onChange={onChange} entry={entry}>
       {label}
     </AmplifiedMeaningList>

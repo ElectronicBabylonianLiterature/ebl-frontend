@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import _ from 'lodash'
 
@@ -16,7 +16,6 @@ const defaultReference = new Reference()
 
 let expectedReference: Reference
 let references: Reference[]
-let element: RenderResult
 let searchEntry: BibliographyEntry
 let searchBibliography
 let onChange: (references: readonly Reference[]) => void
@@ -28,7 +27,7 @@ beforeEach(async () => {
   searchBibliography = (): Promise<BibliographyEntry[]> =>
     Promise.resolve([searchEntry])
   onChange = jest.fn()
-  element = render(
+  render(
     <ReferencesForm
       value={references}
       onChange={onChange}
@@ -38,21 +37,21 @@ beforeEach(async () => {
 })
 
 test('Add reference', async () => {
-  clickNth(element, 'Add Reference')
+  clickNth(screen, 'Add Reference')
 
   expect(onChange).toHaveBeenCalledWith([...references, defaultReference])
 })
 
 test('Delete reference', async () => {
-  clickNth(element, 'Delete Reference')
+  clickNth(screen, 'Delete Reference')
 
   expect(onChange).toHaveBeenCalledWith(_.tail(references))
 })
 
 test('Edit reference', async () => {
-  changeValueByLabel(element, /ReferenceForm-Document-.*/, 'Borger')
-  await element.findByText(/Borger 1957/)
-  clickNth(element, /Borger 1957/, 0)
+  changeValueByLabel(screen, /ReferenceForm-Document-.*/, 'Borger')
+  await screen.findByText(/Borger 1957/)
+  clickNth(screen, /Borger 1957/, 0)
 
   expect(onChange).toHaveBeenCalledWith([
     expectedReference,

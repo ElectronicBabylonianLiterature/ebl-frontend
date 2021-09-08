@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import withData, { Config, WithData } from './withData'
@@ -19,7 +19,6 @@ const propValue = 'passed value'
 const newPropValue = 'new value'
 const errorMessage = 'error'
 
-let element: RenderResult
 let filter: jest.Mock<boolean, [Props]>
 let config: Config<Props, string>
 let getter: jest.Mock<Promise<string>, [Props]>
@@ -28,18 +27,10 @@ let InnerComponent: jest.Mock<JSX.Element, [WithData<Props, string>]>
 
 const errorReportingService: ErrorReporter = new ConsoleErrorReporter()
 
-function renderWithData(): void {
-  element = render(
+function renderWithData(): RenderResult {
+  return render(
     <ErrorReporterContext.Provider value={errorReportingService}>
       <ComponentWithData prop={propValue} />{' '}
-    </ErrorReporterContext.Provider>
-  )
-}
-
-function rerender(prop: string): void {
-  element.rerender(
-    <ErrorReporterContext.Provider value={errorReportingService}>
-      <ComponentWithData prop={prop} />{' '}
     </ErrorReporterContext.Provider>
   )
 }
@@ -60,9 +51,9 @@ function expectWrappedComponentToBeRendered(
   expectedData: string
 ): void {
   it('Renders the wrapped component', () => {
-    expect(element.container).toHaveTextContent(
-      `${expectedPropValue} ${expectedData}`
-    )
+    expect(
+      screen.getByText(`${expectedPropValue} ${expectedData}`)
+    ).toBeInTheDocument()
   })
 
   it('Passes properties to inner component', () => {
@@ -100,10 +91,22 @@ beforeEach(async () => {
 })
 
 describe('On successful get', () => {
+  let rerender: (
+    ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  ) => void
+
+  function rerenderView(prop: string): void {
+    rerender(
+      <ErrorReporterContext.Provider value={errorReportingService}>
+        <ComponentWithData prop={prop} />{' '}
+      </ErrorReporterContext.Provider>
+    )
+  }
+
   beforeEach(async () => {
     getter.mockReturnValueOnce(Promise.resolve(data))
-    renderWithData()
-    await element.findByText(RegExp(propValue))
+    rerender = renderWithData().rerender
+    await screen.findByText(RegExp(propValue))
   })
 
   expectGetterToBeCalled(propValue)
@@ -117,8 +120,8 @@ describe('On successful get', () => {
 
     describe('Prop updated', () => {
       beforeEach(async () => {
-        rerender(newPropValue)
-        await element.findByText(RegExp(newPropValue))
+        rerenderView(newPropValue)
+        await screen.findByText(RegExp(newPropValue))
       })
 
       expectGetterToBeCalled(newPropValue)
@@ -127,7 +130,7 @@ describe('On successful get', () => {
 
     describe('Prop did not update', () => {
       beforeEach(() => {
-        rerender(propValue)
+        rerenderView(propValue)
       })
 
       it('Does not query the API', () => {
@@ -145,7 +148,7 @@ describe('On failed request', () => {
   beforeEach(async () => {
     getter.mockImplementationOnce(() => Promise.reject(new Error(errorMessage)))
     renderWithData()
-    await element.findByText(errorMessage)
+    await screen.findByText(errorMessage)
   })
 
   it('Does not render wrapped component', () => {
@@ -159,8 +162,8 @@ describe('When unmounting', () => {
   beforeEach(async () => {
     promise = new Promise(_.noop)
     getter.mockReturnValueOnce(promise)
-    renderWithData()
-    element.unmount()
+    const { unmount } = renderWithData()
+    unmount()
   })
 
   it('Cancels the promise', () => {
@@ -168,7 +171,7 @@ describe('When unmounting', () => {
   })
 
   it('Does not show error', () => {
-    expect(element.container).not.toHaveTextContent(errorMessage)
+    expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
   })
 
   it('Does not render wrapped component', () => {
@@ -203,11 +206,11 @@ describe('Child component crash', () => {
       },
       () => Promise.resolve(data)
     )
-    element = render(
+    render(
       <ErrorReporterContext.Provider value={errorReportingService}>
         <CrashingComponent />
       </ErrorReporterContext.Provider>
     )
-    await element.findByText("Something's gone wrong.")
+    await screen.findByText("Something's gone wrong.")
   })
 })

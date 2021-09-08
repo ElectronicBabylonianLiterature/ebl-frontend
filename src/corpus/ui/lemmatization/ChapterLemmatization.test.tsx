@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
 import { factory } from 'factory-girl'
 import produce, { castDraft } from 'immer'
@@ -15,7 +15,6 @@ import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import ChapterLemmatizer from './ChapterLemmatization'
 import { chapter as chapter_ } from 'test-support/test-corpus-text'
 
-let element: RenderResult
 let fragmentService
 let textService
 let updateLemmatization: jest.Mock<void, [ChapterLemmatization]>
@@ -114,7 +113,7 @@ beforeEach(async () => {
     ]
   })
 
-  element = render(
+  render(
     <ChapterLemmatizer
       chapter={chapter}
       onSave={updateLemmatization}
@@ -123,15 +122,15 @@ beforeEach(async () => {
       textService={textService}
     />
   )
-  await element.findByText(
+  await screen.findByText(
     chapter.getSiglum(chapter.lines[0].variants[0].manuscripts[0])
   )
 })
 
 test('Lemmatize manuscript', async () => {
-  await lemmatizeWord(element, 'kur', lemma)
+  await lemmatizeWord('kur', lemma)
 
-  await whenClicked(element, 'Save lemmatization')
+  await whenClicked(screen, 'Save lemmatization')
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {
@@ -143,9 +142,9 @@ test('Lemmatize manuscript', async () => {
 })
 
 test('Lemmatize reconstruction', async () => {
-  await lemmatizeWord(element, 'kur-kur', lemma)
+  await lemmatizeWord('kur-kur', lemma)
 
-  await whenClicked(element, 'Save lemmatization')
+  await whenClicked(screen, 'Save lemmatization')
     .expect(updateLemmatization)
     .toHaveBeenCalledWith(
       produce(lemmatization, (draft) => {

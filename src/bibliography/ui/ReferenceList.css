@@ -1,14 +1,5 @@
-.ReferenceList__citation {
-  cursor: pointer;
-}
-
 .ReferenceList__list {
   list-style: none;
   margin-bottom: 0.5em;
   padding: 0;
-}
-
-.ReferenceList__popover {
-  font-family: inherit;
-  max-width: 32em;
 }

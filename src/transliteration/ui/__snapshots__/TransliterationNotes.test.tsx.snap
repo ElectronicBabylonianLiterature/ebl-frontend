@@ -15,9 +15,7 @@ exports[`Snapshot 1`] = `
         1
       </a>
        
-      <span
-        class="Transliteration__NoteLine"
-      >
+      <span>
         <span>
           this is a note 
         </span>
@@ -123,9 +121,7 @@ exports[`Snapshot 1`] = `
         2
       </a>
        
-      <span
-        class="Transliteration__NoteLine"
-      >
+      <span>
         <span>
           this is a note 
         </span>
@@ -231,9 +227,7 @@ exports[`Snapshot 1`] = `
         3
       </a>
        
-      <span
-        class="Transliteration__NoteLine"
-      >
+      <span>
         <span
           class="badge badge-danger"
         >
@@ -244,7 +238,7 @@ exports[`Snapshot 1`] = `
           }
         </span>
         <span
-          class="ReferenceList__citation"
+          class="reference-popover__citation"
         >
           Bob, 2020: 3 (D)
         </span>

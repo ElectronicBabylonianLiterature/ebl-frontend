@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, RouteComponentProps } from 'react-router-dom'
 import SessionContext from 'auth/SessionContext'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
@@ -11,7 +11,6 @@ jest.mock('dictionary/application/WordService')
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 
 const session = new MemorySession(['read:words'])
-let element: RenderResult
 
 const word = {
   lemma: ['oheto', 'ofobuv'],
@@ -181,20 +180,23 @@ const word = {
   ],
 }
 
+let container: HTMLElement
+
 describe('Fetch word', () => {
   beforeEach(async () => {
     wordService.find.mockReturnValue(Bluebird.resolve(word))
-    element = renderWordInformationDisplay()
-    await element.findByText(word.meaning)
+    renderWordInformationDisplay()
+    await screen.findByText(word.meaning)
     expect(wordService.find).toBeCalledWith('id')
   })
   it('Word parts are displayed correctly', async () => {
-    await element.findAllByText(new RegExp(word.guideWord))
-    expect(element.container).toMatchSnapshot()
+    await screen.findAllByText(new RegExp(word.guideWord))
+    expect(container).toMatchSnapshot()
   })
 })
-function renderWordInformationDisplay(): RenderResult {
-  return render(
+
+function renderWordInformationDisplay() {
+  container = render(
     <MemoryRouter initialEntries={['/dictionary/id']}>
       <SessionContext.Provider value={session}>
         <Route
@@ -205,5 +207,5 @@ function renderWordInformationDisplay(): RenderResult {
         />
       </SessionContext.Provider>
     </MemoryRouter>
-  )
+  ).container
 }

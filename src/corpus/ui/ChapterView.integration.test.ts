@@ -1,15 +1,22 @@
+import _ from 'lodash'
+import Chance from 'chance'
+
 import AppDriver from 'test-support/AppDriver'
 import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
+import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
+
+const chance = new Chance('chapter-view-integration-test')
 
 const genre = 'L'
 const category = 1
 const index = 1
+const textName = 'Palm and Vine'
 const textDto = {
   genre: genre,
   category: category,
   index: index,
-  name: 'Palm and Vine',
+  name: textName,
   numberOfVerses: 99,
   approximateVerses: false,
   intro: '**Test**',
@@ -17,14 +24,37 @@ const textDto = {
     {
       stage: 'Old Babylonian',
       name: 'The First Chapter',
+      title: [],
+      uncertainFragments: [
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '1',
+            suffix: '',
+          },
+          isInFragmentarium: true,
+        },
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '2',
+            suffix: '',
+          },
+          isInFragmentarium: false,
+        },
+      ],
     },
     {
       stage: 'Neo-Babylonian',
       name: 'III',
+      title: [],
+      uncertainFragments: [],
     },
     {
       stage: 'Old Babylonian',
       name: 'The Second Chapter',
+      title: [],
+      uncertainFragments: [],
     },
   ],
   references: [],
@@ -35,6 +65,7 @@ const textId = {
   category: category,
   index: index,
 }
+
 const chapterDtos = [
   {
     textId: textId,
@@ -44,20 +75,21 @@ const chapterDtos = [
     name: 'The First Chapter',
     order: 1,
     manuscripts: [
-      {
-        id: 1,
-        siglumDisambiguator: '1c',
-        museumNumber: 'BM.X',
-        accession: 'X.1',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: 'some notes',
-        colophon: '1. kur',
-        unplacedLines: '1. bu',
-        references: [],
-      },
+      manuscriptDtoFactory.build(
+        {
+          siglumDisambiguator: '1c',
+          museumNumber: 'BM.X',
+          accession: 'X.1',
+          periodModifier: 'Late',
+          period: 'Ur III',
+          provenance: 'Nippur',
+          type: 'School',
+          notes: 'some notes',
+          colophon: '1. kur',
+          unplacedLines: '1. bu',
+        },
+        { transient: { chance } }
+      ),
     ],
     uncertainFragments: [],
     lines: [],
@@ -80,36 +112,9 @@ const chapterDtos = [
     version: '',
     name: 'The Second Chapter',
     order: 5,
-    manuscripts: [
-      {
-        id: 1,
-        siglumDisambiguator: 'A',
-        museumNumber: '',
-        accession: '',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: '',
-        colophon: '',
-        unplacedLines: '',
-        references: [],
-      },
-      {
-        id: 2,
-        siglumDisambiguator: 'B',
-        museumNumber: '',
-        accession: '',
-        periodModifier: 'Late',
-        period: 'Ur III',
-        provenance: 'Nippur',
-        type: 'School',
-        notes: '',
-        colophon: '',
-        unplacedLines: '',
-        references: [],
-      },
-    ],
+    manuscripts: [1, 2].map((id) =>
+      manuscriptDtoFactory.build({ id }, { transient: { chance } })
+    ),
     uncertainFragments: [],
     lines: [
       {
@@ -173,14 +178,18 @@ afterEach(() => {
 
 describe('Diplay chapter', () => {
   const chapter = chapterDtos[0]
-  const chapterTitle = createChapterTitle(chapter)
 
   beforeEach(async () => {
     await setup(chapter)
   })
 
   test('Breadcrumbs', () => {
-    appDriver.expectBreadcrumbs(['eBL', 'Corpus', chapterTitle])
+    appDriver.breadcrumbs.expectCrumbs([
+      'eBL',
+      'Corpus',
+      `I.1 ${textName}`,
+      `${chapter.stage} ${chapter.name}`,
+    ])
   })
 
   test.each([
@@ -205,18 +214,15 @@ describe('Diplay chapter', () => {
       ['Type', 'type', 'Commentary'],
       ['Notes', 'notes', 'more notes'],
     ])('%s', async (label, property, newValue) => {
-      fakeApi.expectUpdateManuscripts(
-        chapterDtos[0],
-        produce(chapterDtos[0].manuscripts, (draft) => ({
-          manuscripts: [
-            {
-              ...draft[0],
-              [property]: newValue,
-            },
-          ],
-          uncertainFragments: chapterDtos[0].uncertainFragments,
-        }))
-      )
+      fakeApi.expectUpdateManuscripts(chapter, {
+        manuscripts: [
+          {
+            ..._.omit(chapter.manuscripts[0], ['joins', 'isInFragmentarium']),
+            [property]: newValue,
+          },
+        ],
+        uncertainFragments: chapter.uncertainFragments,
+      })
       const value = manuscript[property]
       const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
@@ -249,7 +255,7 @@ describe('Add manuscript', () => {
       [property]: expectedValue,
       id: 1,
     }
-    fakeApi.expectUpdateManuscripts(chapterDtos[1], {
+    fakeApi.expectUpdateManuscripts(chapter, {
       manuscripts: [manuscript],
       uncertainFragments: [],
     })
@@ -288,12 +294,17 @@ describe('Lines', () => {
   test.each([['Number', 'number', '2']])(
     '%s',
     async (label, property, newValue) => {
-      fakeApi.expectUpdateLines(chapterDtos[2], {
-        lines: [
-          produce(chapterDtos[2].lines[0], (draft) => {
-            draft[property] = newValue
-          }),
+      fakeApi.expectUpdateLines(chapter, {
+        edited: [
+          {
+            index: 0,
+            line: produce(chapter.lines[0], (draft) => {
+              draft[property] = newValue
+            }),
+          },
         ],
+        new: [],
+        deleted: [],
       })
       const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)
@@ -307,12 +318,17 @@ describe('Lines', () => {
     ['second line of parallelism', 'isSecondLineOfParallelism'],
     ['beginning of a section', 'isBeginningOfSection'],
   ])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(chapterDtos[2], {
-      lines: [
-        produce(chapterDtos[2].lines[0], (draft) => {
-          draft[property] = !draft[property]
-        }),
+    fakeApi.expectUpdateLines(chapter, {
+      edited: [
+        {
+          index: 0,
+          line: produce(chapter.lines[0], (draft) => {
+            draft[property] = !draft[property]
+          }),
+        },
       ],
+      new: [],
+      deleted: [],
     })
     const expectedValue = line[property]
     expectedValue
@@ -335,16 +351,35 @@ describe('Add line', () => {
   })
 
   test.each([['Number', 'number']])('%s', async (label, property) => {
-    fakeApi.expectUpdateLines(chapterDtos[0], { lines: [defaultLineDto] })
+    fakeApi.expectUpdateLines(chapter, {
+      new: [_.omit(defaultLineDto, 'status')],
+      edited: [],
+      deleted: [],
+    })
     await appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
     await appDriver.click('Save lines')
   })
 })
 
+test('Delete line', async () => {
+  const chapter = chapterDtos[2]
+  await setup(chapter)
+  await appDriver.click('Lines')
+  fakeApi.expectUpdateLines(chapter, {
+    new: [],
+    edited: [],
+    deleted: [0],
+  })
+
+  await appDriver.click('Delete line')
+  await appDriver.waitForTextToDisappear('Delete line')
+  await appDriver.click('Save lines')
+})
+
 test('Import chapter', async () => {
   const chapter = chapterDtos[0]
-  fakeApi.expectImportChapter(chapterDtos[0], '1. kur')
+  fakeApi.expectImportChapter(chapter, '1. kur')
   await setup(chapter)
   await appDriver.click('Import')
   await appDriver.click('Save')

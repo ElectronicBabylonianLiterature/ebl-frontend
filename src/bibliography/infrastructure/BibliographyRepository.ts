@@ -27,13 +27,16 @@ export default class BibliographyRepository {
 
   update(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
-      .postJson(`/bibliography/${encodeURIComponent(entry.id)}`, entry.toJson())
+      .postJson(
+        `/bibliography/${encodeURIComponent(entry.id)}`,
+        entry.toCslData()
+      )
       .then(createEntry)
   }
 
   create(entry: BibliographyEntry): Promise<BibliographyEntry> {
     return this.apiClient
-      .postJson(`/bibliography`, entry.toJson())
+      .postJson(`/bibliography`, entry.toCslData())
       .then(createEntry)
   }
 }

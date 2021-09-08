@@ -1,7 +1,8 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, act, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Promise } from 'bluebird'
+import _ from 'lodash'
 
 import { submitFormByTestId, clickNth } from 'test-support/utils'
 import SessionContext from 'auth/SessionContext'
@@ -24,7 +25,6 @@ jest.mock('fragmentarium/application/FragmentSearchService')
 jest.mock('auth/Session')
 
 let fragment: Fragment
-let element: RenderResult
 let container: HTMLElement
 let fragmentService: jest.Mocked<FragmentService>
 let fragmentSearchService: jest.Mocked<FragmentSearchService>
@@ -84,22 +84,19 @@ beforeEach(async () => {
   )
   fragmentService.updateGenres.mockReturnValue(Promise.resolve(fragment))
 
-  await act(async () => {
-    element = render(
-      <MemoryRouter>
-        <SessionContext.Provider value={session}>
-          <CuneiformFragment
-            fragment={fragment}
-            fragmentService={fragmentService}
-            fragmentSearchService={fragmentSearchService}
-            wordService={wordService}
-          />
-        </SessionContext.Provider>
-      </MemoryRouter>
-    )
-  })
-  container = element.container
-  await element.findAllByText('Photo')
+  container = render(
+    <MemoryRouter>
+      <SessionContext.Provider value={session}>
+        <CuneiformFragment
+          fragment={fragment}
+          fragmentService={fragmentService}
+          fragmentSearchService={fragmentSearchService}
+          wordService={wordService}
+        />
+      </SessionContext.Provider>
+    </MemoryRouter>
+  ).container
+  await screen.findAllByText('Photo')
 })
 
 test.each(['collection', 'cdliNumber', 'accession'])(
@@ -109,13 +106,15 @@ test.each(['collection', 'cdliNumber', 'accession'])(
   }
 )
 
-it(`Renders museum`, () => {
+it('Renders museum', () => {
   expect(container).toHaveTextContent(fragment.museum.name)
 })
 
 it('Renders all joins', () => {
-  for (const item of fragment.joins) {
-    expect(container).toHaveTextContent(item)
+  for (const join of fragment.joins.flat()) {
+    expect(
+      screen.getByText(new RegExp(_.escapeRegExp(join.museumNumber)))
+    ).toBeInTheDocument()
   }
 })
 
@@ -145,7 +144,7 @@ it('Renders all folios', () => {
 
 it('Links museum record', () => {
   expect(
-    element.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`)
+    screen.getByLabelText(`The British Museum object ${fragment.bmIdNumber}`)
   ).toHaveAttribute(
     'href',
     `https://www.britishmuseum.org/collection/object/${fragment.bmIdNumber}`
@@ -157,18 +156,18 @@ it('Updates view on Edition save', async () => {
     Promise.resolve(updatedFragment)
   )
 
-  submitFormByTestId(element, 'transliteration-form')
+  submitFormByTestId(screen, 'transliteration-form')
 
-  await element.findAllByText(updatedFragment.cdliNumber)
+  await screen.findAllByText(updatedFragment.cdliNumber)
 })
 
 it('Updates view on References save', async () => {
   fragmentService.updateReferences.mockReturnValueOnce(
     Promise.resolve(updatedFragment)
   )
-  clickNth(element, 'References', 1)
-  await element.findAllByText('Document')
-  submitFormByTestId(element, 'references-form')
+  clickNth(screen, 'References', 1)
+  await screen.findAllByText('Document')
+  submitFormByTestId(screen, 'references-form')
 
-  await element.findByText(updatedFragment.cdliNumber)
+  await screen.findByText(updatedFragment.cdliNumber)
 })

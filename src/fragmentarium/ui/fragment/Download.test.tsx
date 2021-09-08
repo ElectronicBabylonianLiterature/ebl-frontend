@@ -1,5 +1,11 @@
 import React from 'react'
-import { render, act, RenderResult, fireEvent } from '@testing-library/react'
+import {
+  render,
+  act,
+  screen,
+  fireEvent,
+  RenderResult,
+} from '@testing-library/react'
 import Download from './Download'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import WordService from 'dictionary/application/WordService'
@@ -26,7 +32,7 @@ beforeEach(async () => {
     )
   })
   await act(async () => {
-    fireEvent.click(element.getByRole('button'))
+    fireEvent.click(screen.getByRole('button'))
   })
 })
 
@@ -36,14 +42,14 @@ describe.each([
   ['Download as TEI XML File', 'xml', teiUrl],
 ])('%s download link', (name, type, url) => {
   test('href', () => {
-    expect(element.getByRole('link', { name: `${name}` })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'href',
       url
     )
   })
 
   test('download', () => {
-    expect(element.getByRole('link', { name: `${name}` })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: `${name}` })).toHaveAttribute(
       'download',
       `${fragment.number}.${type}`
     )

@@ -11,8 +11,8 @@ test('Cancels the promise on unmount', async () => {
     setPromise(promise)
     return <>Test</>
   }
-  const element = render(<TestComponent />)
-  element.unmount()
+  const { unmount } = render(<TestComponent />)
+  unmount()
   expect((await promise.reflect()).isCancelled()).toBe(true)
 })
 

@@ -1,14 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
 import DerivedList from './DerivedList'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'Derived'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -17,30 +16,30 @@ beforeEach(() => {
 
 beforeEach(async () => {
   value = [[await factory.build('derived')], [await factory.build('derived')]]
-  element = renderDerivedList()
+  renderDerivedList()
 })
 
 it('Displays all forms', () => {
   _(value)
     .flatten()
     .forEach((item) =>
-      expect(element.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
+      expect(screen.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
     )
 })
 
 it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
+  expect(screen.getByText(label)).toBeVisible()
 })
 
 it('Adds new group when Add is cliked', async () => {
-  await whenClicked(element, 'Add group')
+  await whenClicked(screen, 'Add group')
     .expect(onChange)
     .toHaveBeenCalledWith([...value, []])
 })
 
 it('Calls onChange with updated value on change', () => {
   const newValue = value[0][0].homonym === 'IV' ? 'V' : 'IV'
-  whenChangedByValue(element, value[0][0].homonym, newValue)
+  whenChangedByValue(screen, value[0][0].homonym, newValue)
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [
       [
@@ -54,7 +53,7 @@ it('Calls onChange with updated value on change', () => {
 })
 
 function renderDerivedList() {
-  return render(
+  render(
     <DerivedList value={value} onChange={onChange}>
       {label}
     </DerivedList>

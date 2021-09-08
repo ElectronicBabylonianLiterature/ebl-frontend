@@ -12,11 +12,12 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
-import TextService from 'corpus/application/TextService'
+import TextService, { ChapterId } from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import CorpusTextCrumb from './CorpusTextCrumb'
 
 function ChapterTitle({
   text,
@@ -27,7 +28,7 @@ function ChapterTitle({
 }): JSX.Element {
   return (
     <>
-      <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
+      Edit <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
     </>
   )
 }
@@ -76,25 +77,14 @@ function ChapterView({
 
   const updateAlignment = (alignment: ChapterAlignment): void => {
     update(() =>
-      textService.updateAlignment(
-        currentChapter.textId.genre,
-        currentChapter.textId.category,
-        currentChapter.textId.index,
-        currentChapter.stage,
-        currentChapter.name,
-        alignment
-      )
+      textService.updateAlignment(ChapterId.fromChapter(chapter), alignment)
     )
   }
 
   const updateManuscripts = (): void => {
     update(() =>
       textService.updateManuscripts(
-        currentChapter.textId.genre,
-        currentChapter.textId.category,
-        currentChapter.textId.index,
-        currentChapter.stage,
-        currentChapter.name,
+        ChapterId.fromChapter(chapter),
         currentChapter.manuscripts,
         currentChapter.uncertainFragments
       )
@@ -104,11 +94,7 @@ function ChapterView({
   const updateLines = (): void => {
     update(() =>
       textService.updateLines(
-        currentChapter.textId.genre,
-        currentChapter.textId.category,
-        currentChapter.textId.index,
-        currentChapter.stage,
-        currentChapter.name,
+        ChapterId.fromChapter(chapter),
         currentChapter.lines
       )
     )
@@ -117,39 +103,29 @@ function ChapterView({
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
     update(() =>
       textService.updateLemmatization(
-        currentChapter.textId.genre,
-        currentChapter.textId.category,
-        currentChapter.textId.index,
-        currentChapter.stage,
-        currentChapter.name,
+        ChapterId.fromChapter(chapter),
         lemmatization
       )
     )
   }
 
   const importChapter = (atf: string): void => {
-    update(() =>
-      textService.importChapter(
-        currentChapter.textId.genre,
-        currentChapter.textId.category,
-        currentChapter.textId.index,
-        currentChapter.stage,
-        currentChapter.name,
-        atf
-      )
-    )
+    update(() => textService.importChapter(ChapterId.fromChapter(chapter), atf))
   }
 
   const handleChange = (chapter: Chapter): void => {
     setChapter(chapter)
     setIsDirty(true)
   }
-  const title = <ChapterTitle text={text} chapter={chapter} />
 
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Corpus'), new TextCrumb(title)]}
-      title={<>Edit {title}</>}
+      crumbs={[
+        new SectionCrumb('Corpus'),
+        new CorpusTextCrumb(text),
+        new TextCrumb(`${chapter.stage} ${chapter.name}`),
+      ]}
+      title={<ChapterTitle text={text} chapter={chapter} />}
     >
       <ChapterNavigation text={text} />
       <ChapterEditor
@@ -178,34 +154,23 @@ function ChapterView({
 
 export default withData<
   {
-    genre: string
-    category: string
-    index: string
-    stage: string
-    name: string
     textService
     bibliographyService: BibliographySearch
     fragmentService: FragmentService
     wordService: WordService
   },
-  { genre: string; category: string; index: string },
+  { id: ChapterId },
   [Text, Chapter]
 >(
-  ({ data, ...props }) => (
-    <ChapterView text={data[0]} chapter={data[1]} {...props} />
+  ({ data: [text, chapter], ...props }) => (
+    <ChapterView text={text} chapter={chapter} {...props} />
   ),
-  ({ genre, category, index, stage, name, textService }) =>
+  ({ id, textService }) =>
     Promise.all([
-      textService.find(genre, category, index),
-      textService.findChapter(genre, category, index, stage, name),
+      textService.find(id.genre, id.category, id.index),
+      textService.findChapter(id),
     ]),
   {
-    watch: (props) => [
-      props.genre,
-      props.category,
-      props.index,
-      props.stage,
-      props.name,
-    ],
+    watch: (props) => [props.id],
   }
 )

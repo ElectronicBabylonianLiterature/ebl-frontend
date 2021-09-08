@@ -1,9 +1,11 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
+import { numberToRoman } from 'big-roman'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
+import { MarkupPart } from 'transliteration/domain/markup'
 
 export class Chapter {
   readonly [immerable] = true
@@ -67,6 +69,18 @@ export interface TextInfo {
   approximateVerses: boolean
 }
 
+export interface UncertainFragment {
+  readonly museumNumber: string
+  readonly isInFragmentarium: boolean
+}
+
+export interface ChapterListing {
+  readonly name: string
+  readonly stage: string
+  readonly title: readonly MarkupPart[]
+  readonly uncertainFragments: readonly UncertainFragment[]
+}
+
 export class Text implements TextInfo {
   readonly [immerable] = true
   genre = 'L'
@@ -76,8 +90,14 @@ export class Text implements TextInfo {
   numberOfVerses = 0
   approximateVerses = false
   intro = ''
-  chapters: ReadonlyArray<{ name: string; stage: string }> = []
+  chapters: ReadonlyArray<ChapterListing> = []
   references: ReadonlyArray<Reference> = []
+
+  get title(): string {
+    return `${this.category && numberToRoman(this.category)}.${this.index} ${
+      this.name
+    }`
+  }
 }
 
 export function createText(data: Partial<Text>): Text {

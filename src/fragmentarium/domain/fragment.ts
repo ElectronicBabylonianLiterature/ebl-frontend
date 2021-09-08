@@ -8,6 +8,7 @@ import { Text } from 'transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { Joins } from './join'
 
 const moment = extendMoment(Moment)
 
@@ -99,7 +100,7 @@ export class Fragment {
     readonly bmIdNumber: string,
     readonly accession: string,
     readonly publication: string,
-    readonly joins: ReadonlyArray<string>,
+    readonly joins: Joins,
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
@@ -109,7 +110,7 @@ export class Fragment {
     readonly text: Text,
     readonly notes: string,
     readonly museum: Museum,
-    readonly references: ReadonlyArray<any>,
+    readonly references: ReadonlyArray<Reference>,
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
     readonly atf: string,
     readonly hasPhoto: boolean,
@@ -143,7 +144,7 @@ export class Fragment {
     bmIdNumber: string
     accession: string
     publication: string
-    joins: ReadonlyArray<string>
+    joins: Joins
     description: string
     measures: Measures
     collection: string
@@ -153,7 +154,7 @@ export class Fragment {
     text: Text
     notes: string
     museum: Museum
-    references: ReadonlyArray<any>
+    references: ReadonlyArray<Reference>
     uncuratedReferences?: ReadonlyArray<UncuratedReference> | null
     atf: string
     hasPhoto: boolean

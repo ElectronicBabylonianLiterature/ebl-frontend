@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import ArrayWithNotes from './ArrayWithNotes'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const noun = 'item'
@@ -9,7 +9,6 @@ const property = 'value'
 const separator = ' '
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -18,27 +17,27 @@ beforeEach(() => {
     [property]: ['LOG1', 'LOG2'],
     notes: ['note1'],
   }
-  element = renderArrayWithNotes()
+  renderArrayWithNotes()
 })
 
 it('Displays all array items', () => {
   expect(
-    element.getByDisplayValue(value[property].join(separator))
+    screen.getByDisplayValue(value[property].join(separator))
   ).toBeVisible()
 })
 
 it('Displays all notes', () => {
   value.notes.forEach((note) =>
-    expect(element.getByDisplayValue(note)).toBeVisible()
+    expect(screen.getByDisplayValue(note)).toBeVisible()
   )
 })
 
 it('Displays label', () => {
-  expect(element.getByText(_.startCase(noun))).toBeVisible()
+  expect(screen.getByText(_.startCase(noun))).toBeVisible()
 })
 
 it('Calls onChange with updated property on change', () => {
-  whenChangedByValue(element, value[property].join(separator), 'NEW LOG')
+  whenChangedByValue(screen, value[property].join(separator), 'NEW LOG')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => ({
       ...value,
@@ -47,7 +46,7 @@ it('Calls onChange with updated property on change', () => {
 })
 
 it('Calls onChange with updated notes on change', async () => {
-  await whenClicked(element, 'Add')
+  await whenClicked(screen, 'Add')
     .expect(onChange)
     .toHaveBeenCalledWith({
       ...value,
@@ -56,7 +55,7 @@ it('Calls onChange with updated notes on change', async () => {
 })
 
 function renderArrayWithNotes() {
-  return render(
+  render(
     <ArrayWithNotes
       property={property}
       noun={noun}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { render, RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import TransliterationSearch from './TransliterationSearch'
 import { fragmentInfoFactory } from 'test-support/fragment-fixtures'
@@ -9,7 +9,6 @@ import { FragmentInfo } from 'fragmentarium/domain/fragment'
 const transliteration = 'ma i-ra\nka li'
 let fragments: FragmentInfo[]
 let fragmentSearchService
-let element: RenderResult
 
 beforeEach(async () => {
   fragmentSearchService = {
@@ -28,7 +27,7 @@ beforeEach(async () => {
   fragmentSearchService.searchTransliteration.mockReturnValueOnce(
     Promise.resolve(fragments)
   )
-  element = render(
+  render(
     <MemoryRouter>
       <TransliterationSearch
         transliteration={transliteration}
@@ -36,7 +35,7 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await element.findByText(fragments[0].number)
+  await screen.findByText(fragments[0].number)
 })
 
 it('Queries the API with given parameters', () => {
@@ -47,7 +46,7 @@ it('Queries the API with given parameters', () => {
 
 it('Links results', () => {
   for (const fragment of fragments) {
-    expect(element.getByText(fragment.number)).toHaveAttribute(
+    expect(screen.getByText(fragment.number)).toHaveAttribute(
       'href',
       `/fragmentarium/${fragment.number}`
     )
@@ -56,7 +55,7 @@ it('Links results', () => {
 
 it('Displays script', () => {
   for (const fragment of fragments) {
-    expect(element.getAllByText(fragment.script)).not.toEqual([])
+    expect(screen.getAllByText(fragment.script)).not.toEqual([])
   }
 })
 
@@ -64,6 +63,6 @@ it('Displays matching lines', () => {
   for (const line of fragments.flatMap((fragment) =>
     fragment.matchingLines.flat()
   )) {
-    expect(element.getAllByText(line)).not.toEqual([])
+    expect(screen.getAllByText(line)).not.toEqual([])
   }
 })

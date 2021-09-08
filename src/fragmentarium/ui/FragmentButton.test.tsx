@@ -1,7 +1,7 @@
 import React from 'react'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
-import { render, act } from '@testing-library/react'
+import { render, RenderResult, screen } from '@testing-library/react'
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { whenClicked, clickNth } from 'test-support/utils'
@@ -14,19 +14,17 @@ const message = 'Error'
 
 let history
 let query
-let element
+let element: RenderResult
 
 beforeEach(() => {
   history = createMemoryHistory()
   jest.spyOn(history, 'push')
   query = jest.fn()
-  act(() => {
-    element = render(
-      <Router history={history}>
-        <FragmentButton query={query}>{buttonText}</FragmentButton>
-      </Router>
-    )
-  })
+  element = render(
+    <Router history={history}>
+      <FragmentButton query={query}>{buttonText}</FragmentButton>
+    </Router>
+  )
 })
 
 describe('On successful request', () => {
@@ -38,7 +36,7 @@ describe('On successful request', () => {
   })
 
   it('Redirects to the fragment when clicked', async () => {
-    await whenClicked(element, buttonText)
+    await whenClicked(screen, buttonText)
       .expect(history.push)
       .toHaveBeenCalledWith(`/fragmentarium/${fragment.number}`)
   })
@@ -47,8 +45,8 @@ describe('On successful request', () => {
 describe('On failed request', () => {
   beforeEach(async () => {
     query.mockReturnValueOnce(Promise.reject(new Error(message)))
-    clickNth(element, buttonText, 0)
-    await element.findByText(message)
+    clickNth(screen, buttonText, 0)
+    await screen.findByText(message)
   })
 
   it('Does not redirect', async () => {
@@ -60,7 +58,7 @@ describe('When unmounting', () => {
   it('Cancels fetch', async () => {
     const promise = new Promise(_.noop)
     query.mockReturnValueOnce(promise)
-    clickNth(element, buttonText, 0)
+    clickNth(screen, buttonText, 0)
     element.unmount()
     expect(promise.isCancelled()).toBe(true)
   })

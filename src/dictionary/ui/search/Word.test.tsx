@@ -1,27 +1,27 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { factory } from 'factory-girl'
 import Word from './Word'
 
 let word
-let textContent
-let element
+let textContent: string | null
 
 describe('word display', () => {
   beforeEach(async () => {
     word = await factory.build('word')
-    element = render(
+    const { container } = render(
       <MemoryRouter>
         <Word value={word} />
       </MemoryRouter>
     )
-    textContent = element.container.textContent
+    textContent = container.textContent
   })
 
   it('lemma links to editor', () => {
-    expect(element.getByText(word.lemma.join(' ')).href).toEqual(
-      `http://localhost/dictionary/${word._id}`
+    expect(screen.getByText(word.lemma.join(' '))).toHaveAttribute(
+      'href',
+      `/dictionary/${word._id}`
     )
   })
 

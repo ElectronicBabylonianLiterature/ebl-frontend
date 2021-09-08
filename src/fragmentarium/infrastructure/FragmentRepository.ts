@@ -1,14 +1,9 @@
 import Promise from 'bluebird'
 import _ from 'lodash'
 import { stringify } from 'query-string'
-import produce, { castDraft } from 'immer'
-import {
-  Fragment,
-  FragmentInfo,
-  RecordEntry,
-} from 'fragmentarium/domain/fragment'
+import produce from 'immer'
+import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
-import { Text } from 'transliteration/domain/text'
 import Museum from 'fragmentarium/domain/museum'
 import {
   FragmentRepository,
@@ -21,73 +16,23 @@ import {
   FragmentInfoRepository,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { Draft } from 'immer/dist/types/types-external'
-import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine } from 'transliteration/domain/text-line'
-import {
-  LooseDollarLine,
-  ImageDollarLine,
-  RulingDollarLine,
-  SealDollarLine,
-  StateDollarLine,
-} from 'transliteration/domain/dollar-lines'
-import {
-  SealAtLine,
-  HeadingAtLine,
-  ColumnAtLine,
-  DiscourseAtLine,
-  SurfaceAtLine,
-  ObjectAtLine,
-  DivisionAtLine,
-  CompositeAtLine,
-} from 'transliteration/domain/at-lines'
-import { NoteLine } from 'transliteration/domain/note-line'
-import { ControlLine } from 'transliteration/domain/line'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'
 import { FolioPagerData, FragmentPagerData } from 'fragmentarium/domain/pager'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import { Genres } from 'fragmentarium/domain/Genres'
 import Word from 'dictionary/domain/Word'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
-import TranslationLine from 'transliteration/domain/translation-line'
+import createReference from 'bibliography/application/createReference'
+import { createTransliteration } from 'transliteration/application/dtos'
+import { Joins } from 'fragmentarium/domain/join'
 
-const lineClases = {
-  TextLine: TextLine,
-  ControlLine: ControlLine,
-  EmptyLine: EmptyLine,
-  NoteLine: NoteLine,
-  LooseDollarLine: LooseDollarLine,
-  ImageDollarLine: ImageDollarLine,
-  RulingDollarLine: RulingDollarLine,
-  SealDollarLine: SealDollarLine,
-  StateDollarLine: StateDollarLine,
-  SealAtLine: SealAtLine,
-  HeadingAtLine: HeadingAtLine,
-  ColumnAtLine: ColumnAtLine,
-  DiscourseAtLine: DiscourseAtLine,
-  SurfaceAtLine: SurfaceAtLine,
-  ObjectAtLine: ObjectAtLine,
-  DivisionAtLine: DivisionAtLine,
-  CompositeAtLine: CompositeAtLine,
-  ParallelFragment: ControlLine,
-  ParallelText: ControlLine,
-  ParallelComposition: ControlLine,
-  TranslationLine: TranslationLine,
-}
-
-function createText(text): Text {
-  return new Text({
-    lines: text.lines.map((lineDto) => {
-      const LineClass = lineClases[lineDto.type]
-      if (LineClass) {
-        return new LineClass(lineDto)
-      } else {
-        console.error(`Unknown line type "${lineDto.type}.`)
-        return new ControlLine(lineDto)
-      }
-    }),
-  })
+export function createJoins(joins): Joins {
+  return joins.map((group) =>
+    group.map((join) => ({
+      ...join,
+      museumNumber: museumNumberToString(join.museumNumber),
+    }))
+  )
 }
 
 function createFragment(dto): Fragment {
@@ -95,7 +40,7 @@ function createFragment(dto): Fragment {
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     museum: Museum.of(dto.museum),
-    joins: dto.joins,
+    joins: createJoins(dto.joins),
     measures: {
       length: dto.length.value || null,
       width: dto.width.value || null,
@@ -103,8 +48,8 @@ function createFragment(dto): Fragment {
     },
     folios: dto.folios.map((folioDto) => new Folio(folioDto)),
     record: dto.record.map((recordDto) => new RecordEntry(recordDto)),
-    text: createText(dto.text),
-    references: dto.references,
+    text: createTransliteration(dto.text),
+    references: dto.references.map(createReference),
     uncuratedReferences: dto.uncuratedReferences,
     genres: Genres.fromJson(dto.genres),
   })
@@ -116,14 +61,12 @@ function createFragmentPath(number: string, ...subResources: string[]): string {
 
 class ApiFragmentRepository
   implements FragmentInfoRepository, FragmentRepository, AnnotationRepository {
-  readonly apiClient
-
-  constructor(apiClient: {
-    fetchJson: (url: string, authorize: boolean) => Promise<any>
-    postJson: (url: string, body: Record<string, unknown>) => Promise<any>
-  }) {
-    this.apiClient = apiClient
-  }
+  constructor(
+    private readonly apiClient: {
+      fetchJson: (url: string, authorize: boolean) => Promise<any>
+      postJson: (url: string, body: Record<string, unknown>) => Promise<any>
+    }
+  ) {}
 
   statistics(): Promise<{ transliteratedFragments: number; lines: number }> {
     return this.apiClient.fetchJson(`/statistics`, false)
@@ -160,23 +103,11 @@ class ApiFragmentRepository
   }
 
   searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages }).then(
-      produce((draft: Draft<FragmentInfo[]>) => {
-        for (const fragInfo of draft) {
-          fragInfo.references = castDraft(
-            fragInfo.references.map(
-              (ref) =>
-                new Reference(
-                  ref.type || Reference.DEFAULT_TYPE,
-                  ref.pages || '',
-                  ref.notes || '',
-                  ref.linesCited || [],
-                  new BibliographyEntry(ref.document)
-                )
-            )
-          )
-        }
-      })
+    return this._fetch({ id, pages }).then((dto) =>
+      dto.map((fragmentInfo) => ({
+        ...fragmentInfo,
+        references: fragmentInfo.references.map(createReference),
+      }))
     )
   }
 
@@ -271,12 +202,10 @@ class ApiFragmentRepository
   findAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(`${createFragmentPath(number)}/annotations`, true)
-      .then((dto) =>
-        produce(dto.annotations, (annotations) =>
-          annotations.map(
-            ({ geometry, data }) =>
-              new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
-          )
+      .then(({ annotations }) =>
+        annotations.map(
+          ({ geometry, data }) =>
+            new Annotation({ ...geometry, type: 'RECTANGLE' }, data)
         )
       )
   }

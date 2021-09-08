@@ -1,14 +1,13 @@
 import React from 'react'
 import _ from 'lodash'
 import FormList from './FormList'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { factory } from 'factory-girl'
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
 
 const label = 'List'
 
 let value
-let element
 let onChange
 
 beforeEach(() => {
@@ -17,21 +16,21 @@ beforeEach(() => {
 
 beforeEach(async () => {
   value = await factory.buildMany('form', 2)
-  element = renderForms()
+  renderForms()
 })
 
 it('Displays all forms', () => {
   for (const item of value) {
-    expect(element.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
+    expect(screen.getByDisplayValue(item.lemma.join(' '))).toBeVisible()
   }
 })
 
 it('Displays label', () => {
-  expect(element.getByText(label)).toBeVisible()
+  expect(screen.getByText(label)).toBeVisible()
 })
 
 it('New entry has given fields', async () => {
-  await whenClicked(element, 'Add form')
+  await whenClicked(screen, 'Add form')
     .expect(onChange)
     .toHaveBeenCalledWith([
       ...value,
@@ -45,7 +44,7 @@ it('New entry has given fields', async () => {
 })
 
 it('Calls onChange with updated value on change', () => {
-  whenChangedByValue(element, value[0].lemma.join(' '), 'new')
+  whenChangedByValue(screen, value[0].lemma.join(' '), 'new')
     .expect(onChange)
     .toHaveBeenCalledWith((newValue) => [
       {
@@ -57,7 +56,7 @@ it('Calls onChange with updated value on change', () => {
 })
 
 function renderForms() {
-  return render(
+  render(
     <FormList
       value={value}
       onChange={onChange}

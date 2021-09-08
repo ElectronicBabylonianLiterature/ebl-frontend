@@ -1,5 +1,6 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import _ from 'lodash'
 
 import FullCitation from './FullCitation'
 import {
@@ -11,19 +12,18 @@ import Reference from 'bibliography/domain/Reference'
 
 let entry: BibliographyEntry
 let reference: Reference
-let container: HTMLElement
 
 describe('With link', () => {
   beforeEach(() => {
     entry = bibliographyEntryFactory.build()
     reference = referenceFactory.build({ document: entry })
-    container = render(<FullCitation reference={reference} />).container
+    render(<FullCitation reference={reference} />)
   })
 
   commomTests()
 
   test('A', async () => {
-    expect(container.querySelector('a')).toHaveAttribute('href', entry.link)
+    expect(screen.getByRole('link')).toHaveAttribute('href', entry.link)
   })
 })
 
@@ -31,22 +31,24 @@ describe('Without link', () => {
   beforeEach(() => {
     entry = bibliographyEntryFactory.build({}, { transient: { URL: null } })
     reference = referenceFactory.build({ document: entry })
-    container = render(<FullCitation reference={reference} />).container
+    render(<FullCitation reference={reference} />)
   })
 
   commomTests()
 
   test('No A', () => {
-    expect(container.querySelector('a')).toBeNull()
+    expect(screen.queryByRole('a')).not.toBeInTheDocument()
   })
 })
 
 function commomTests() {
   test('Formatted citation', () => {
-    expect(container).toHaveTextContent(entry.title)
+    expect(
+      screen.getByText(RegExp(_.escapeRegExp(entry.title)))
+    ).toBeInTheDocument()
   })
 
   test('Notes', () => {
-    expect(container).toHaveTextContent(reference.notes)
+    expect(screen.getByText(`[${reference.notes}]`)).toBeInTheDocument()
   })
 }
