@@ -228,6 +228,13 @@ export default class TextService {
       )
   }
 
+  findExtantLines(id: ChapterId): Bluebird<any[]> {
+    return this.apiClient.fetchJson(
+      `${createChapterUrl(id)}/extant_lines`,
+      true
+    )
+  }
+
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/manuscripts`, true)
