@@ -191,7 +191,7 @@ const extantLines: ExtantLines = {
           suffixModifier: null,
           prefixModifier: null,
         },
-        isBeginningOfSide: false,
+        isSideBoundary: false,
       },
     ],
   },
