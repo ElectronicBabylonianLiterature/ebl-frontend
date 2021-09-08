@@ -11,3 +11,17 @@ export interface LineNumberRange {
   end: LineNumber
   type: 'LineNumberRange'
 }
+
+export function isNext(
+  number: LineNumber | LineNumberRange,
+  other: LineNumber | LineNumberRange
+): boolean {
+  const first = number.type === 'LineNumberRange' ? number.end : number
+  const second = other.type === 'LineNumberRange' ? other.start : other
+  return (
+    first.number + 1 === second.number &&
+    first.hasPrime === second.hasPrime &&
+    first.prefixModifier === second.prefixModifier &&
+    first.suffixModifier === second.suffixModifier
+  )
+}
