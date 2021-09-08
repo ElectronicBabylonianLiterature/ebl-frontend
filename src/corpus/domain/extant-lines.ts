@@ -10,10 +10,12 @@ export interface ExtantLine {
   readonly isSideBoundary: boolean
 }
 
+export interface ManuscriptExtantLines {
+  readonly [label: string]: readonly ExtantLine[]
+}
+
 export interface ExtantLines {
-  readonly [siglum: string]: {
-    readonly [label: string]: readonly ExtantLine[]
-  }
+  readonly [siglum: string]: ManuscriptExtantLines
 }
 
 export interface ExtantLineRange {
