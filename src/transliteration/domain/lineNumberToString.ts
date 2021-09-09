@@ -16,15 +16,10 @@ function formatLineNumber({
   return `${prefix}${number}${prime}${suffix}`
 }
 
-const lineNumberTypeToFunction = {
-  LineNumber: formatLineNumber,
-  LineNumberRange: formatLineNumberRange,
-}
-
 export default function lineNumberToString(
   lineNumber: LineNumber | LineNumberRange
 ): string {
-  const createFormattedLineNumbers =
-    lineNumberTypeToFunction[lineNumber.type as string]
-  return createFormattedLineNumbers(lineNumber)
+  return lineNumber.type === 'LineNumberRange'
+    ? formatLineNumberRange(lineNumber)
+    : formatLineNumber(lineNumber)
 }
