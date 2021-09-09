@@ -49,6 +49,47 @@ function ProvenanceHeading({
   )
 }
 
+function ManuscriptJoins({
+  manuscript,
+}: {
+  manuscript: Manuscript
+}): JSX.Element {
+  return _.isEmpty(manuscript.joins) ? (
+    <FragmentariumLink item={manuscript} />
+  ) : (
+    <>
+      {manuscript.joins.map((group, groupIndex) =>
+        group.map((join, index) => (
+          <React.Fragment key={index}>
+            {index > 0 ? (
+              <> +{!join.isChecked && <sup>?</sup>} </>
+            ) : (
+              groupIndex > 0 ?? <> (+{!join.isChecked && <sup>?</sup>}) </>
+            )}
+            <FragmentariumLink item={join} />
+          </React.Fragment>
+        ))
+      )}
+    </>
+  )
+}
+
+function ManuscriptReferences({
+  manuscript,
+}: {
+  manuscript: Manuscript
+}): JSX.Element {
+  return (
+    <ul className="list-of-manuscripts__references">
+      {manuscript.references.map((reference, index) => (
+        <li key={index}>
+          <Citation reference={reference} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 const Manuscripts = withData<
   {
     uncertainFragments: readonly UncertainFragment[]
@@ -128,36 +169,8 @@ const Manuscripts = withData<
                             ' '
                           )}
                         >
-                          {_.isEmpty(manuscript.joins) ? (
-                            <FragmentariumLink item={manuscript} />
-                          ) : (
-                            manuscript.joins.map((group, groupIndex) =>
-                              group.map((join, index) => (
-                                <React.Fragment key={index}>
-                                  {index > 0 ? (
-                                    <> +{!join.isChecked && <sup>?</sup>} </>
-                                  ) : (
-                                    groupIndex > 0 ?? (
-                                      <>
-                                        {' '}
-                                        (+{!join.isChecked && (
-                                          <sup>?</sup>
-                                        )}){' '}
-                                      </>
-                                    )
-                                  )}
-                                  <FragmentariumLink item={join} />
-                                </React.Fragment>
-                              ))
-                            )
-                          )}
-                          <ul className="list-of-manuscripts__references">
-                            {manuscript.references.map((reference, index) => (
-                              <li key={index}>
-                                <Citation reference={reference} />
-                              </li>
-                            ))}
-                          </ul>
+                          <ManuscriptJoins manuscript={manuscript} />
+                          <ManuscriptReferences manuscript={manuscript} />
                         </td>
                         <td
                           headers={[extantLinesId, rowId, museumNumberId].join(
