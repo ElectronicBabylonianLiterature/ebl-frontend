@@ -64,7 +64,7 @@ function ManuscriptJoins({
             {index > 0 ? (
               <> +{!join.isChecked && <sup>?</sup>} </>
             ) : (
-              groupIndex > 0 ?? <> (+{!join.isChecked && <sup>?</sup>}) </>
+              groupIndex > 0 && <> (+{!join.isChecked && <sup>?</sup>}) </>
             )}
             <FragmentariumLink item={join} />
           </React.Fragment>
