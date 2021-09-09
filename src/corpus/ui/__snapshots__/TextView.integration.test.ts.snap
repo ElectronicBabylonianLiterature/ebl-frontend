@@ -535,120 +535,155 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <table>
                 <colgroup
-                  span="2"
+                  span="3"
                 />
-                <tr
-                  class="list-of-manuscripts__header"
-                >
-                  <th
-                    class="list-of-manuscripts__column-heading"
-                    id="siglum-19"
-                    scope="col"
+                <thead>
+                  <tr
+                    class="list-of-manuscripts__header"
                   >
-                    Siglum
-                  </th>
-                  <th
-                    class="list-of-manuscripts__column-heading"
-                    id="museumNumber-20"
-                    scope="col"
-                  >
-                    Museum Number
-                    <span
-                      class="references-help"
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="siglum-27"
+                      scope="col"
                     >
-                      <i
-                        class="fas fa-info-circle"
-                      />
-                    </span>
-                  </th>
-                </tr>
-                <tr>
-                  <th
-                    class="list-of-manuscripts__provenance-heading"
-                    colspan="2"
-                    id="provenace-22"
-                    scope="colgroup"
-                  >
-                    Assyria
-                  </th>
-                </tr>
-                <tr>
-                  <th
-                    class="list-of-manuscripts__siglum-heading"
-                    headers="provenace-22 siglum-19"
-                    id="row-23"
-                    scope="row"
-                  >
-                    AssaOBSch1
-                  </th>
-                  <td
-                    headers="provenace-22 row-23 museumNumber-20"
-                  >
-                    <a
-                      href="/fragmentarium/X.1"
+                      Siglum
+                    </th>
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="museumNumber-28"
+                      scope="col"
                     >
-                      X.1
-                    </a>
-                     +
-                    <sup>
-                      ?
-                    </sup>
-                     
-                    X.2
-                    <a
-                      href="/fragmentarium/X.3"
+                      Museum Number
+                      <span
+                        class="references-help"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </span>
+                    </th>
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="extantLines-30"
+                      scope="col"
                     >
-                      X.3
-                    </a>
-                     +
-                     
-                    X.4
-                    <ul
-                      class="list-of-manuscripts__references"
+                      Extant Lines
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__provenance-heading"
+                      colspan="3"
+                      id="provenace-31"
+                      scope="colgroup"
                     >
-                      <li>
-                        <span
-                          class="reference-popover__citation"
-                        >
-                          , : 3106269388865536-2803041484931072 
-                          [
-                          l. 4'.2., 2.
-                          ]
-                           (E)
-                        </span>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-                <tr>
-                  <th
-                    class="list-of-manuscripts__provenance-heading"
-                    colspan="2"
-                    id="uncertainFragmets-21"
-                    scope="colgroup"
-                  >
-                    Uncertain Fragments
-                  </th>
-                </tr>
-                <tr>
-                  <td />
-                  <td>
-                    <ul
-                      class="list-of-manuscripts__uncertain-fragments"
+                      Assyria
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__siglum-heading"
+                      headers="provenace-31 siglum-27"
+                      id="row-32"
+                      scope="row"
                     >
-                      <li>
-                        <a
-                          href="/fragmentarium/X.1"
-                        >
-                          X.1
-                        </a>
-                      </li>
-                      <li>
-                        X.2
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
+                      AssaOBSch1
+                    </th>
+                    <td
+                      headers="provenace-31 row-32 museumNumber-28"
+                    >
+                      <a
+                        href="/fragmentarium/X.1"
+                      >
+                        X.1
+                      </a>
+                       +
+                      <sup>
+                        ?
+                      </sup>
+                       
+                      X.2
+                      <a
+                        href="/fragmentarium/X.3"
+                      >
+                        X.3
+                      </a>
+                       +
+                       
+                      X.4
+                      <ul
+                        class="list-of-manuscripts__references"
+                      >
+                        <li>
+                          <span
+                            class="reference-popover__citation"
+                          >
+                            , : 3106269388865536-2803041484931072 
+                            [
+                            l. 4'.2., 2.
+                            ]
+                             (E)
+                          </span>
+                        </li>
+                      </ul>
+                    </td>
+                    <td
+                      class="list-of-manuscripts__extant-lines"
+                      headers="extantLines-30 row-32 museumNumber-28"
+                    >
+                      <ol
+                        class="extant-lines"
+                      >
+                        <li>
+                          o iii
+                           
+                          <span
+                            class="extant-lines__line-number extant-lines__line-number--boundary"
+                          >
+                            1
+                          </span>
+                          –
+                          <span
+                            class="extant-lines__line-number"
+                          >
+                            2
+                          </span>
+                        </li>
+                      </ol>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__provenance-heading"
+                      colspan="3"
+                      id="uncertainFragmets-29"
+                      scope="colgroup"
+                    >
+                      Uncertain Fragments
+                    </th>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
+                      <ul
+                        class="list-of-manuscripts__uncertain-fragments"
+                      >
+                        <li>
+                          <a
+                            href="/fragmentarium/X.1"
+                          >
+                            X.1
+                          </a>
+                        </li>
+                        <li>
+                          X.2
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </section>
@@ -1023,7 +1058,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-26"
+          id="Header-35"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1096,7 +1131,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-26"
+          aria-controls="Header-35"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"

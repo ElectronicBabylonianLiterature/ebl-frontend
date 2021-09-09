@@ -34,6 +34,7 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import produce, { castDraft } from 'immer'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -226,6 +227,13 @@ export default class TextService {
           )
         )
       )
+  }
+
+  findExtantLines(id: ChapterId): Bluebird<ExtantLines> {
+    return this.apiClient.fetchJson(
+      `${createChapterUrl(id)}/extant_lines`,
+      true
+    )
   }
 
   findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {

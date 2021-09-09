@@ -18,6 +18,7 @@ import produce, { castDraft } from 'immer'
 import { createLine, EditStatus } from 'corpus/domain/line'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -180,6 +181,22 @@ const searchDto = {
   },
 }
 
+const extantLines: ExtantLines = {
+  NinNA1a: {
+    o: [
+      {
+        lineNumber: {
+          number: 1,
+          hasPrime: false,
+          suffixModifier: null,
+          prefixModifier: null,
+        },
+        isSideBoundary: false,
+      },
+    ],
+  },
+}
+
 const chapterId = ChapterId.fromChapter(chapter)
 const chapterUrl = `/texts/${encodeURIComponent(
   chapter.textId.genre
@@ -234,6 +251,14 @@ const testData: TestData[] = [
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/unplaced_lines`, true],
     Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
+  ],
+  [
+    'findExtantLines',
+    [chapterId],
+    apiClient.fetchJson,
+    extantLines,
+    [`${chapterUrl}/extant_lines`, true],
+    Bluebird.resolve(extantLines),
   ],
   [
     'findManuscripts',
