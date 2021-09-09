@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import _ from 'lodash'
 import { Text, UncertainFragment } from 'corpus/domain/text'
 import { Link } from 'react-router-dom'
@@ -9,9 +9,12 @@ import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
-
-import './Chapters.sass'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
+import usePromiseEffect from 'common/usePromiseEffect'
+import { ExtantLines } from 'corpus/domain/extant-lines'
+import Spinner from 'common/Spinner'
+import ExtantLinesList from './ExtantLinesList'
+import './Chapters.sass'
 
 function FragmentariumLink({
   item,
@@ -36,7 +39,7 @@ function ProvenanceHeading({
     <tr>
       <th
         id={id}
-        colSpan={2}
+        colSpan={3}
         scope="colgroup"
         className="list-of-manuscripts__provenance-heading"
       >
@@ -47,17 +50,30 @@ function ProvenanceHeading({
 }
 
 const Manuscripts = withData<
-  { uncertainFragments: readonly UncertainFragment[] },
-  { id: ChapterId; textService },
+  {
+    uncertainFragments: readonly UncertainFragment[]
+    textService
+    id: ChapterId
+  },
+  unknown,
   Manuscript[]
 >(
-  ({ data: manuscripts, uncertainFragments }) => {
+  ({ data: manuscripts, id, uncertainFragments, textService }) => {
+    const [setExtantLinesPromise] = usePromiseEffect<ExtantLines>()
+    const [extantLines, setExtantLines] = useState<ExtantLines>()
+    if (_.isNil(extantLines)) {
+      setExtantLinesPromise(
+        textService.findExtantLines(id).then(setExtantLines)
+      )
+    }
+
     const siglumId = _.uniqueId('siglum-')
     const museumNumberId = _.uniqueId('museumNumber-')
     const uncertainFragmentsId = _.uniqueId('uncertainFragmets-')
+    const extantLinesId = _.uniqueId('extantLines-')
     return (
       <table>
-        <colgroup span={2}></colgroup>
+        <colgroup span={3}></colgroup>
         <tr className="list-of-manuscripts__header">
           <th
             id={siglumId}
@@ -73,6 +89,13 @@ const Manuscripts = withData<
           >
             Museum Number
             <ReferencesHelp />
+          </th>
+          <th
+            id={extantLinesId}
+            scope="col"
+            className="list-of-manuscripts__column-heading"
+          >
+            Extant Lines
           </th>
         </tr>
         {_(manuscripts)
@@ -127,6 +150,20 @@ const Manuscripts = withData<
                             </li>
                           ))}
                         </ul>
+                      </td>
+                      <td
+                        headers={[extantLinesId, rowId, museumNumberId].join(
+                          ' '
+                        )}
+                        className="list-of-manuscripts__extant-lines"
+                      >
+                        {extantLines ? (
+                          <ExtantLinesList
+                            extantLines={extantLines[manuscript.siglum]}
+                          />
+                        ) : (
+                          <Spinner />
+                        )}
                       </td>
                     </tr>
                   )

@@ -100,11 +100,35 @@ describe('Chapter', () => {
   })
 
   test('Show list of manuscripts', async () => {
-    fakeApi.expectManuscripts(
-      ChapterId.fromText(textDto, textDto.chapters[0]),
-      manuscriptsDto
-    )
+    const chapterId = ChapterId.fromText(textDto, textDto.chapters[0])
+    fakeApi
+      .expectManuscripts(chapterId, manuscriptsDto)
+      .expectExtantLines(chapterId, {
+        AssaOBSch1: {
+          'o iii': [
+            {
+              lineNumber: {
+                number: 1,
+                hasPrime: false,
+                prefixModifier: null,
+                suffixModifier: null,
+              },
+              isSideBoundary: true,
+            },
+            {
+              lineNumber: {
+                number: 2,
+                hasPrime: false,
+                prefixModifier: null,
+                suffixModifier: null,
+              },
+              isSideBoundary: false,
+            },
+          ],
+        },
+      })
     await appDriver.click(/List of Manuscripts/)
+    await appDriver.waitForText(/^o iii/)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
