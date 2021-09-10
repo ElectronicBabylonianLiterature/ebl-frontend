@@ -9,7 +9,6 @@ import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
-import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Spinner from 'common/Spinner'
@@ -17,18 +16,7 @@ import ExtantLinesList from './ExtantLinesList'
 import './Chapters.sass'
 import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
-
-function FragmentariumLink({
-  item,
-}: {
-  item: { museumNumber: string; isInFragmentarium: boolean }
-}): JSX.Element {
-  return item.isInFragmentarium ? (
-    <FragmentLink number={item.museumNumber}>{item.museumNumber}</FragmentLink>
-  ) : (
-    <>{item.museumNumber}</>
-  )
-}
+import FragmentariumLink from './FragmentariumLink'
 
 function ProvenanceHeading({
   id,
