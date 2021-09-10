@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import classnames from 'classnames'
 import { Popover } from 'react-bootstrap'
 import HelpTrigger from 'common/HelpTrigger'
 
@@ -38,9 +39,13 @@ function HelpOverlay(): JSX.Element {
   )
 }
 
-export function ReferencesHelp(): JSX.Element {
+export function ReferencesHelp({
+  className,
+}: {
+  className?: string
+}): JSX.Element {
   return (
-    <span className="references-help">
+    <span className={classnames('references-help', className)}>
       <HelpTrigger overlay={HelpOverlay()} />
     </span>
   )

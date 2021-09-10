@@ -543,19 +543,19 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   >
                     <th
                       class="list-of-manuscripts__column-heading"
-                      id="siglum-27"
+                      id="siglum-28"
                       scope="col"
                     >
                       Siglum
                     </th>
                     <th
                       class="list-of-manuscripts__column-heading"
-                      id="museumNumber-28"
+                      id="museumNumber-29"
                       scope="col"
                     >
                       Museum Number
                       <span
-                        class="references-help"
+                        class="references-help list-of-manuscripts__help"
                       >
                         <i
                           class="fas fa-info-circle"
@@ -564,10 +564,17 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     </th>
                     <th
                       class="list-of-manuscripts__column-heading"
-                      id="extantLines-30"
+                      id="extantLines-31"
                       scope="col"
                     >
                       Extant Lines
+                      <span
+                        class="list-of-manuscripts__help"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </span>
                     </th>
                   </tr>
                 </thead>
@@ -576,7 +583,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     <th
                       class="list-of-manuscripts__provenance-heading"
                       colspan="3"
-                      id="provenace-31"
+                      id="provenace-33"
                       scope="colgroup"
                     >
                       Assyria
@@ -585,14 +592,14 @@ exports[`Chapter Show list of manuscripts 1`] = `
                   <tr>
                     <th
                       class="list-of-manuscripts__siglum-heading"
-                      headers="provenace-31 siglum-27"
-                      id="row-32"
+                      headers="provenace-33 siglum-28"
+                      id="row-34"
                       scope="row"
                     >
                       AssaOBSch1
                     </th>
                     <td
-                      headers="provenace-31 row-32 museumNumber-28"
+                      headers="provenace-33 row-34 museumNumber-29"
                     >
                       <a
                         href="/fragmentarium/X.1"
@@ -633,7 +640,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     </td>
                     <td
                       class="list-of-manuscripts__extant-lines"
-                      headers="extantLines-30 row-32 museumNumber-28"
+                      headers="extantLines-31 row-34 museumNumber-29"
                     >
                       <ol
                         class="extant-lines"
@@ -660,7 +667,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                     <th
                       class="list-of-manuscripts__provenance-heading"
                       colspan="3"
-                      id="uncertainFragmets-29"
+                      id="uncertainFragmets-30"
                       scope="colgroup"
                     >
                       Uncertain Fragments
@@ -1060,7 +1067,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-35"
+          id="Header-37"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1133,7 +1140,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-35"
+          aria-controls="Header-37"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"

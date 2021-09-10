@@ -15,6 +15,8 @@ import { ExtantLines } from 'corpus/domain/extant-lines'
 import Spinner from 'common/Spinner'
 import ExtantLinesList from './ExtantLinesList'
 import './Chapters.sass'
+import HelpTrigger from 'common/HelpTrigger'
+import { Popover } from 'react-bootstrap'
 
 function FragmentariumLink({
   item,
@@ -130,7 +132,7 @@ const Manuscripts = withData<
               className="list-of-manuscripts__column-heading"
             >
               Museum Number
-              <ReferencesHelp />
+              <ReferencesHelp className="list-of-manuscripts__help" />
             </th>
             <th
               id={extantLinesId}
@@ -138,6 +140,18 @@ const Manuscripts = withData<
               className="list-of-manuscripts__column-heading"
             >
               Extant Lines
+              <span className="list-of-manuscripts__help">
+                <HelpTrigger
+                  overlay={
+                    <Popover id={_.uniqueId('ExtantLinesHelp-')}>
+                      <Popover.Content>
+                        Bold figures indicate lines at the beginning or end of
+                        columns or sides.
+                      </Popover.Content>
+                    </Popover>
+                  }
+                />
+              </span>
             </th>
           </tr>
         </thead>
