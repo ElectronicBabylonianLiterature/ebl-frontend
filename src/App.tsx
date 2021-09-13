@@ -208,10 +208,14 @@ function App({
             )}
           />
           <Route
-            path="/corpus"
-            render={(props): ReactNode => (
-              <Corpus textService={textService} {...props} />
+            path="/corpus/:genre"
+            render={({ match }): ReactNode => (
+              <Corpus textService={textService} genre={match.params.genre} />
             )}
+          />
+          <Route
+            path="/corpus"
+            render={(): ReactNode => <Corpus textService={textService} />}
           />
           <Route
             path="/fragmentarium/search"

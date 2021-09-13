@@ -100,13 +100,19 @@ const genres: readonly {
   },
 ]
 
-function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
+function Corpus({
+  texts,
+  genre = 'L',
+}: {
+  texts: readonly TextInfo[]
+  genre?: string
+}): JSX.Element {
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
           <Col md={5}>
-            <Tabs defaultActiveKey="L" id={_.uniqueId('CorpusTab-')}>
+            <Tabs defaultActiveKey={genre} id={_.uniqueId('CorpusTab-')}>
               {genres.map(({ genre, name, categories }) => (
                 <Tab eventKey={genre} title={name} key={genre}>
                   <Texts
@@ -127,12 +133,12 @@ function Corpus({ texts }: { texts: readonly TextInfo[] }): JSX.Element {
 }
 
 export default withData<
-  unknown,
+  { genre?: string },
   {
     textService: { list(): Promise<readonly TextInfo[]> }
   },
   readonly TextInfo[]
 >(
-  ({ data }) => <Corpus texts={data} />,
+  ({ data, genre }) => <Corpus texts={data} genre={genre} />,
   ({ textService }) => textService.list()
 )
