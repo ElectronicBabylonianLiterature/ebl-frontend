@@ -154,6 +154,37 @@ describe('Text', () => {
   test('title', () => {
     expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
   })
+
+  test.each([
+    [[], false],
+    [[{ stage: stage, name: name, title: [], uncertainFragments: [] }], false],
+    [
+      [
+        { stage: stage, name: name, title: [], uncertainFragments: [] },
+        { stage: stage, name: name, title: [], uncertainFragments: [] },
+      ],
+      false,
+    ],
+    [
+      [
+        {
+          stage: 'Old Assyrian',
+          name: name,
+          title: [],
+          uncertainFragments: [],
+        },
+        {
+          stage: 'Neo Babylonian',
+          name: name,
+          title: [],
+          uncertainFragments: [],
+        },
+      ],
+      true,
+    ],
+  ])('hasMultipleStages %o', (chapters, expected) => {
+    expect(createText({ chapters }).hasMultipleStages).toEqual(expected)
+  })
 })
 
 describe('Chapter', () => {
