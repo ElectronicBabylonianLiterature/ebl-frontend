@@ -12,6 +12,7 @@ import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import { SelectCallback } from 'react-bootstrap/esm/helpers'
+import createGenreLink from './createGenreLink'
 
 function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const title = (
@@ -113,7 +114,7 @@ function Corpus({
 }): JSX.Element {
   const openTab: SelectCallback = (eventKey: string | null): void => {
     if (eventKey !== null) {
-      const url = `/corpus/${eventKey}`
+      const url = createGenreLink(eventKey)
       history.push(url)
     }
   }
