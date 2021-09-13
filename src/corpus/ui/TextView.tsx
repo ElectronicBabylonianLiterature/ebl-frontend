@@ -14,6 +14,7 @@ import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
 import Chapters from './Chapters'
+import GenreCrumb from './GenreCrumb'
 
 function TextView({
   text,
@@ -24,7 +25,11 @@ function TextView({
 }): JSX.Element {
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Corpus'), new CorpusTextCrumb(text)]}
+      crumbs={[
+        new SectionCrumb('Corpus'),
+        new GenreCrumb(text.genre),
+        new CorpusTextCrumb(text),
+      ]}
     >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>

@@ -168,6 +168,15 @@ exports[`Chapter Show chapter 1`] = `
             </a>
           </li>
           <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
+            </a>
+          </li>
+          <li
             aria-current="page"
             class="breadcrumb-item active"
           >
@@ -448,6 +457,15 @@ exports[`Chapter Show list of manuscripts 1`] = `
               href="/corpus"
             >
               Corpus
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
             </a>
           </li>
           <li
@@ -901,6 +919,15 @@ exports[`With session 1`] = `
             </a>
           </li>
           <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
+            </a>
+          </li>
+          <li
             aria-current="page"
             class="breadcrumb-item active"
           >
@@ -1180,6 +1207,15 @@ exports[`Without session 1`] = `
               href="/corpus"
             >
               Corpus
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
             </a>
           </li>
           <li
