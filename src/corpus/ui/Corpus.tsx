@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import _ from 'lodash'
+import { History } from 'history'
 import { Container, Row, Col, Tab, Tabs } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ApiImage from 'common/ApiImage'
@@ -10,6 +11,7 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import { TextInfo } from 'corpus/domain/text'
 import { SectionCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
+import { SelectCallback } from 'react-bootstrap/esm/helpers'
 
 function TextLine({ text }: { text: TextInfo }): JSX.Element {
   const title = (
@@ -103,16 +105,29 @@ const genres: readonly {
 function Corpus({
   texts,
   genre = 'L',
+  history,
 }: {
   texts: readonly TextInfo[]
   genre?: string
+  history: History
 }): JSX.Element {
+  const openTab: SelectCallback = (eventKey: string | null): void => {
+    if (eventKey !== null) {
+      const url = `/corpus/${eventKey}`
+      history.push(url)
+    }
+  }
+
   return (
     <AppContent crumbs={[new SectionCrumb('Corpus')]}>
       <Container fluid>
         <Row>
           <Col md={5}>
-            <Tabs defaultActiveKey={genre} id={_.uniqueId('CorpusTab-')}>
+            <Tabs
+              activeKey={genre}
+              onSelect={openTab}
+              id={_.uniqueId('CorpusTab-')}
+            >
               {genres.map(({ genre, name, categories }) => (
                 <Tab eventKey={genre} title={name} key={genre}>
                   <Texts
@@ -133,12 +148,12 @@ function Corpus({
 }
 
 export default withData<
-  { genre?: string },
+  { genre?: string; history: History },
   {
     textService: { list(): Promise<readonly TextInfo[]> }
   },
   readonly TextInfo[]
 >(
-  ({ data, genre }) => <Corpus texts={data} genre={genre} />,
+  ({ data, ...props }) => <Corpus texts={data} {...props} />,
   ({ textService }) => textService.list()
 )
