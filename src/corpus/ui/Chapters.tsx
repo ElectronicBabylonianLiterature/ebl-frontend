@@ -15,6 +15,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
 import ChapterTitle from './ChapterTitle'
+import { groupReferences } from 'bibliography/domain/Reference'
 
 import './Chapters.sass'
 
@@ -71,11 +72,13 @@ function ManuscriptReferences({
 }): JSX.Element {
   return (
     <ul className="list-of-manuscripts__references">
-      {manuscript.references.map((reference, index) => (
-        <li key={index}>
-          <Citation reference={reference} />
-        </li>
-      ))}
+      {groupReferences(manuscript.references)
+        .flatMap(([type, group]) => group)
+        .map((reference, index) => (
+          <li key={index}>
+            <Citation reference={reference} />
+          </li>
+        ))}
     </ul>
   )
 }
