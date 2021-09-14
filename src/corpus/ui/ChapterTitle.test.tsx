@@ -1,9 +1,8 @@
-import { render, screen } from '@testing-library/react'
-import { createText } from 'corpus/domain/text'
-import _ from 'lodash'
 import React from 'react'
+import { render, screen } from '@testing-library/react'
+import _ from 'lodash'
 import { MemoryRouter } from 'react-router-dom'
-import { Text } from 'corpus/domain/text'
+import { createText, Text } from 'corpus/domain/text'
 import ChapterTitle from './ChapterTitle'
 
 const stage = 'Old Babyloian'
@@ -58,6 +57,7 @@ test('Does not show stage', () => {
       <ChapterTitle text={text} chapter={text.chapters[0]} />
     </MemoryRouter>
   )
+
   expect(
     screen.queryByText(new RegExp(_.escapeRegExp(stage)))
   ).not.toBeInTheDocument()
@@ -73,3 +73,41 @@ function commonTests(text: Text) {
     `/corpus/${text.genre}/${text.category}/${text.index}/${stage}/${name}`
   )
 }
+
+test('Does not show dummy name', () => {
+  const text = createText({
+    chapters: [
+      {
+        stage: stage,
+        name: '-',
+        title: [{ type: 'StringPart', text: line }],
+        uncertainFragments: [],
+      },
+    ],
+  })
+  render(
+    <MemoryRouter>
+      <ChapterTitle text={text} chapter={text.chapters[0]} />
+    </MemoryRouter>
+  )
+  expect(screen.queryByText(/-/)).not.toBeInTheDocument()
+})
+
+test('Show dummy name', () => {
+  const text = createText({
+    chapters: [
+      {
+        stage: stage,
+        name: '-',
+        title: [],
+        uncertainFragments: [],
+      },
+    ],
+  })
+  render(
+    <MemoryRouter>
+      <ChapterTitle text={text} chapter={text.chapters[0]} />
+    </MemoryRouter>
+  )
+  expect(screen.queryByText(/-/)).toBeVisible()
+})
