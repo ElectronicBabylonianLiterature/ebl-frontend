@@ -61,12 +61,12 @@ export function createChapter(data: Partial<Chapter>): Chapter {
 }
 
 export interface TextInfo {
-  genre: string
-  category: number
-  index: number
-  name: string
-  numberOfVerses: number
-  approximateVerses: boolean
+  readonly genre: string
+  readonly category: number
+  readonly index: number
+  readonly name: string
+  readonly numberOfVerses: number
+  readonly approximateVerses: boolean
 }
 
 export interface UncertainFragment {
@@ -83,20 +83,24 @@ export interface ChapterListing {
 
 export class Text implements TextInfo {
   readonly [immerable] = true
-  genre = 'L'
-  category = 0
-  index = 0
-  name = ''
-  numberOfVerses = 0
-  approximateVerses = false
-  intro = ''
-  chapters: ReadonlyArray<ChapterListing> = []
-  references: ReadonlyArray<Reference> = []
+  readonly genre: string = 'L'
+  readonly category: number = 0
+  readonly index: number = 0
+  readonly name: string = ''
+  readonly numberOfVerses: number = 0
+  readonly approximateVerses: boolean = false
+  readonly intro: string = ''
+  readonly chapters: ReadonlyArray<ChapterListing> = []
+  readonly references: ReadonlyArray<Reference> = []
 
   get title(): string {
     return `${this.category && numberToRoman(this.category)}.${this.index} ${
       this.name
     }`
+  }
+
+  get hasMultipleStages(): boolean {
+    return _(this.chapters).map('stage').uniq().size() > 1
   }
 }
 

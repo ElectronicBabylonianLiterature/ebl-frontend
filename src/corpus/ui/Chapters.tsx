@@ -1,8 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 import _ from 'lodash'
 import { Text, UncertainFragment } from 'corpus/domain/text'
-import { Link } from 'react-router-dom'
-import Markup from 'transliteration/ui/markup'
 import withData from 'http/withData'
 import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
@@ -13,10 +11,12 @@ import usePromiseEffect from 'common/usePromiseEffect'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Spinner from 'common/Spinner'
 import ExtantLinesList from './ExtantLinesList'
-import './Chapters.sass'
 import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
+import ChapterTitle from './ChapterTitle'
+
+import './Chapters.sass'
 
 function ProvenanceHeading({
   id,
@@ -232,13 +232,7 @@ export default function Chapters({
     <>
       {text.chapters.map((chapter, index) => (
         <section key={index}>
-          <h4>
-            <Link
-              to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
-            >
-              {chapter.name} <Markup container="span" parts={chapter.title} />
-            </Link>
-          </h4>
+          <ChapterTitle text={text} chapter={chapter} />
           <CollapsibleSection element="h5" heading="List of Manuscripts">
             <Manuscripts
               id={ChapterId.fromText(text, chapter)}
