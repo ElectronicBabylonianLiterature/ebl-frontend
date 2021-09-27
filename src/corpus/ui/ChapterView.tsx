@@ -18,6 +18,7 @@ import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import CorpusTextCrumb from './CorpusTextCrumb'
+import GenreCrumb from './GenreCrumb'
 
 function ChapterTitle({
   text,
@@ -122,6 +123,7 @@ function ChapterView({
     <AppContent
       crumbs={[
         new SectionCrumb('Corpus'),
+        new GenreCrumb(text.genre),
         new CorpusTextCrumb(text),
         new TextCrumb(`${chapter.stage} ${chapter.name}`),
       ]}

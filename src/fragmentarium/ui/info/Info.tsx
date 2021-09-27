@@ -8,6 +8,7 @@ import { Fragment, UncuratedReference } from 'fragmentarium/domain/fragment'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { Row } from 'react-bootstrap'
 import { ReferencesHelp } from 'bibliography/ui/ReferencesHelp'
+import './info.sass'
 
 interface Props {
   fragment: Fragment
@@ -33,7 +34,7 @@ export default function Info({
       <section>
         <Row>
           <h3>References</h3>
-          <ReferencesHelp />
+          <ReferencesHelp className="info__help" />
         </Row>
         <ReferenceList references={fragment.references} />
         {fragment.hasUncuratedReferences && (
