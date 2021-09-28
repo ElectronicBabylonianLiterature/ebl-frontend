@@ -65,7 +65,7 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
 
-`yarn start` starts the development server. The envoronment variables are read from `.env.local`.
+`yarn start` starts the development server. The environment variables are read from `.env.local`.
 
 ## Lighthouse
 
