@@ -20,30 +20,26 @@ import {
 import { Markdown } from 'common/Markdown'
 
 const LiteratureRedirectBox = (): JSX.Element => (
-  <ExternalLink
-    className="text-dark"
+  <div className="text-center border border-dark">
+    <strong>From</strong>
+    <br />
+    Black, J.; George, A.R.; Postgate, N.,{' '}
+    <em>
+    A Concise Dictionary of Akkadian. 2nd (corrected) printing.&nbsp;
+    </em>
+    SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
+    Wiesbaden: Harrassowitz, ²2000.
+    <br />
+    <br />
+    <strong>By permission from Harrassowitz.</strong>
+    <br />
+    <ExternalLink
+    className="text-dark "
     href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-    title="A Concise Dictionary of Akkadian, Harrassowitz Verlag"
   >
-    <Row>
-      <Col xs={11} className="mx-auto">
-        <Row className="m-3 py-2 border border-dark">
-          <Col xs="auto">
-            <i className="pointer__hover mt-2 fas fa-shopping-cart" />
-          </Col>
-          <Col className="pointer__hover my-auto">
-            <h5>
-              {' '}
-              From Black, J.; George, A.R.; Postgate, N., A Concise Dictionary
-              of Akkadian. 2nd (corrected) printing. SANTAG Arbeiten und
-              Untersuchungen zur Keilschriftkunde, Band 5. Wiesbaden:
-              Harrassowitz, 2000
-            </h5>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
+    <i className="pointer__hover my-2 fas fa-shopping-cart fa-2x" />
   </ExternalLink>
+</div>
 )
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
@@ -56,11 +52,6 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
       title={
         <>
-          <Row>
-            <Col>
-              <LiteratureRedirectBox />
-            </Col>
-          </Row>
           <Row>
             <Col>
               <strong>
@@ -97,6 +88,14 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
     </AppContent>
   )
 }
+
+const Heading = (): JSX.Element => (
+  <Row>
+    <Col>
+      <h3>&#8544;. Concise Dictionary of Akkadian</h3>
+    </Col>
+  </Row>
+)
 
 function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
   return (
@@ -180,6 +179,11 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
             />
           </Col>
         </Row>
+        <Row>
+            <Col>
+              <LiteratureRedirectBox />
+            </Col>
+          </Row>
       </Col>
     </Row>
   )
