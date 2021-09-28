@@ -24,22 +24,28 @@ const LiteratureRedirectBox = (): JSX.Element => (
     <strong>From</strong>
     <br />
     Black, J.; George, A.R.; Postgate, N.,{' '}
-    <em>
-    A Concise Dictionary of Akkadian. 2nd (corrected) printing.&nbsp;
-    </em>
-    SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
-    Wiesbaden: Harrassowitz, ²2000.
+    <em>A Concise Dictionary of Akkadian. 2nd (corrected) printing.&nbsp;</em>
+    SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden:
+    Harrassowitz, ²2000.
     <br />
     <br />
     <strong>By permission from Harrassowitz.</strong>
     <br />
     <ExternalLink
-    className="text-dark "
-    href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-  >
-    <i className="pointer__hover my-2 fas fa-shopping-cart fa-2x" />
-  </ExternalLink>
-</div>
+      className="text-dark "
+      href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+    >
+      <i className="pointer__hover my-2 fas fa-shopping-cart fa-2x" />
+    </ExternalLink>
+  </div>
+)
+
+const Heading = (): JSX.Element => (
+  <Row>
+    <Col>
+      <h3>&#8544;. Concise Dictionary of Akkadian</h3>
+    </Col>
+  </Row>
 )
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
@@ -84,18 +90,11 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       }
     >
+      <Heading />
       <WordDisplayDetails word={word} />
     </AppContent>
   )
 }
-
-const Heading = (): JSX.Element => (
-  <Row>
-    <Col>
-      <h3>&#8544;. Concise Dictionary of Akkadian</h3>
-    </Col>
-  </Row>
-)
 
 function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
   return (
@@ -180,10 +179,10 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
           </Col>
         </Row>
         <Row>
-            <Col>
-              <LiteratureRedirectBox />
-            </Col>
-          </Row>
+          <Col>
+            <LiteratureRedirectBox />
+          </Col>
+        </Row>
       </Col>
     </Row>
   )
