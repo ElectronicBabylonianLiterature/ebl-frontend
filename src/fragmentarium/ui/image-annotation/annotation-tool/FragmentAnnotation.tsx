@@ -17,10 +17,16 @@ import { usePrevious } from 'common/usePrevious'
 import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 import withData from 'http/withData'
+import { Button, ButtonGroup } from 'react-bootstrap'
+import Bluebird from 'bluebird'
+import useObjectUrl from 'common/useObjectUrl'
+import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
+import HelpTrigger from 'common/HelpTrigger'
+import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 
 interface Props {
-  tokens: readonly AnnotationToken[][]
-  image: URL | string
+  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+  image: Blob
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
   fragmentService: FragmentService
@@ -29,12 +35,32 @@ interface Props {
 export default withData<
   Omit<Props, 'tokens'>,
   { fragment: Fragment; signService: SignService },
-  readonly AnnotationToken[][]
+  ReadonlyArray<ReadonlyArray<AnnotationToken>>
 >(
   ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
-  ({ fragment, signService }) =>
-    createAnnotationTokens(fragment.text, signService)
+  ({ fragment }) => Bluebird.resolve(createAnnotationTokens(fragment.text))
 )
+
+function initializeAnnotations(
+  initialAnnotations: readonly Annotation[],
+  tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+): readonly Annotation[] {
+  return initialAnnotations.map((annotation) => {
+    const token = tokens
+      .flat()
+      .find(
+        (token) =>
+          _.isEqual(token.path, annotation.data.path) &&
+          token.value === annotation.data.value
+      )
+    return token
+      ? annotation
+      : produce(annotation, (draft): void => {
+          draft.outdated = true
+        })
+  })
+}
+
 function FragmentAnnotation({
   tokens,
   fragment,
@@ -42,44 +68,39 @@ function FragmentAnnotation({
   initialAnnotations,
   fragmentService,
 }: Props): React.ReactElement {
-  const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
-  const [contentScale, setContentScale] = useState(1)
-  const [toggled, setToggled] = useState<Annotation | undefined>(undefined)
-  const [hovering, setHovering] = useState<Annotation | undefined>(undefined)
+  const imageUrl = useObjectUrl(image)
 
+  const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
+  const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
+
+  const [contentScale, setContentScale] = useState(1)
+
+  const [toggled, setToggled] = useState<Annotation | null>(null)
+  const [hovering, setHovering] = useState<Annotation | null>(null)
+
   const [annotation, setAnnotation] = useState<RawAnnotation>({})
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
-    initialAnnotations.map((annotation) => {
-      const token = tokens
-        .flat()
-        .find(
-          (token) =>
-            _.isEqual(token.path, annotation.data.path) &&
-            token.value === annotation.data.value
-        )
-      return token
-        ? annotation
-        : produce(annotation, (draft): void => {
-            draft.outdated = true
-          })
-    })
+    initializeAnnotations(initialAnnotations, tokens)
   )
   const prevAnnotations = usePrevious(annotations)
 
-  const onPressingEsc = useCallback((event) => {
-    if (event.keyCode === 27) {
-      setToggled(undefined)
-      setIsChangeExistingMode(false)
-    }
-  }, [])
+  const onPressingEsc = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        setToggled(null)
+        setIsChangeExistingMode(false)
+      }
+    },
+    [toggled, isChangeExistingMode]
+  )
 
   useEffect(() => {
-    document.addEventListener('keydown', onPressingEsc, false)
-    if (
-      !_.isEqual(prevAnnotations, annotations) &&
-      prevAnnotations !== undefined
-    ) {
+    document.addEventListener('keydown', onPressingEsc, {
+      once: true,
+      capture: false,
+    })
+    if (!_.isEqual(prevAnnotations, annotations) && !_.isNil(prevAnnotations)) {
       ;(async () => {
         await fragmentService.updateAnnotations(fragment.number, annotations)
       })()
@@ -99,26 +120,39 @@ function FragmentAnnotation({
         (other: Annotation) => annotation.data.id !== other.data.id
       )
     )
-    setAnnotation({})
   }
 
   const onChange = (annotation: RawAnnotation): void => {
     if (isChangeExistingMode && annotation.selection && !hovering) {
-      setToggled(undefined)
+      setToggled(null)
       setIsChangeExistingMode(false)
+    } else if (annotation.selection && hovering && isAutomaticSelected) {
+      setAnnotations(automaticAlignment(tokens, hovering, annotations))
     }
     setAnnotation(annotation)
+  }
+
+  const getSelectionById = (
+    id: string | undefined,
+    annotations: readonly Annotation[]
+  ): Annotation | null => {
+    const toggledAnnotation = annotations.filter(
+      (annotation) => annotation.data.id === id
+    )[0]
+    if (toggledAnnotation) {
+      return toggledAnnotation
+    } else {
+      return null
+    }
   }
 
   const handleSelection = (annotation: RawAnnotation): void => {
     const { geometry, data } = annotation
     if (data) {
-      const toggledAnnotation = annotations.filter(
-        (annotation) => annotation.data.id === data.id
-      )[0]
-      if (toggledAnnotation) {
-        const newAnnotation = new Annotation(toggledAnnotation.geometry, {
-          id: toggledAnnotation.data.id,
+      const selectedAnnotation = getSelectionById(data.id, annotations)
+      if (selectedAnnotation) {
+        const newAnnotation = new Annotation(selectedAnnotation.geometry, {
+          id: selectedAnnotation.data.id,
           ...data,
         })
         setAnnotation({})
@@ -128,7 +162,7 @@ function FragmentAnnotation({
           ),
           newAnnotation,
         ])
-        setToggled(undefined)
+        setToggled(null)
         setIsChangeExistingMode(false)
       } else if (geometry) {
         const newAnnotation = new Annotation(geometry, {
@@ -140,6 +174,7 @@ function FragmentAnnotation({
       }
     }
   }
+
   const onZoom = (event) => {
     setContentScale(1 / event.state.scale)
   }
@@ -159,14 +194,42 @@ function FragmentAnnotation({
       }
     }
   }
+  const generateAnnotations = async () => {
+    const generatedAnnotations = await fragmentService.generateAnnotations(
+      fragment.number
+    )
+    setAnnotations([...annotations, ...generatedAnnotations])
+  }
 
   return (
     <>
-      <div>Mode: {isChangeExistingMode ? 'change existing' : 'default'}</div>
+      <ButtonGroup>
+        <Button
+          variant="outline-dark"
+          onClick={async () => await generateAnnotations()}
+        >
+          Generate
+        </Button>
+        <Button
+          variant="outline-dark"
+          active={isAutomaticSelected}
+          onClick={() => setIsAutomaticSelected(!isAutomaticSelected)}
+        >
+          Automatic Selection
+        </Button>
+        <Button variant="outline-dark" onClick={() => setAnnotations([])}>
+          Delete everything
+        </Button>
+        <Button variant="outline-dark" disabled>
+          Mode: {isChangeExistingMode ? 'change existing' : 'default'}
+        </Button>
+      </ButtonGroup>
+      <HelpTrigger overlay={Help()} className={'m-2'} />
       <AnnotationTool
+        allowTouch
         onZoom={onZoom}
         disableSelector={isDisableSelector}
-        src={image}
+        src={imageUrl}
         alt={fragment.number}
         annotations={annotations}
         type={RectangleSelector.TYPE}

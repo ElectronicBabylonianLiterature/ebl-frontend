@@ -12,7 +12,7 @@ import {
   AnnotationToken,
   createAnnotationTokens,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
-import { line2 } from 'test-support/complexTestText'
+import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
 
 jest.mock('fragmentarium/application/FragmentService')
@@ -24,9 +24,9 @@ const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const sign = signFactory.build()
 signService.search.mockReturnValue(Promise.resolve([sign]))
 
-const text = new Text({ lines: [line2] })
+const text = new Text({ lines: [textLine] })
 const fragment = fragmentFactory.build({ number: 'Test.Fragment', text: text })
-let tokens: readonly AnnotationToken[][]
+let tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
@@ -35,10 +35,10 @@ const initialAnnotation = new Annotation(
 
 beforeEach(async () => {
   signService.search.mockReturnValue(Promise.all([sign]))
-  tokens = await createAnnotationTokens(fragment.text, signService)
+  tokens = createAnnotationTokens(fragment.text)
   render(
     <FragmentAnnotation
-      image={''}
+      image={new Blob()}
       fragment={fragment}
       initialAnnotations={[initialAnnotation]}
       fragmentService={fragmentService}

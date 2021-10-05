@@ -9,7 +9,7 @@ import Sign from 'signs/domain/Sign'
 import _ from 'lodash'
 
 export type EditorProps = {
-  hoveredAnnotation: Annotation | undefined
+  hoveredAnnotation: Annotation | null
   annotations: readonly Annotation[]
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
@@ -25,9 +25,9 @@ export default function Editor({
   handleSelection,
   tokens,
 }: EditorProps): ReactElement | null {
-  const [signOfHoveringButton, setSignOfHoveringButton] = useState<
-    Sign | undefined
-  >(undefined)
+  const [signOfHoveringButton, setSignOfHoveringButton] = useState<Sign | null>(
+    null
+  )
   return (
     <div>
       <Card>
@@ -35,9 +35,7 @@ export default function Editor({
           <Row>
             <Col>
               <SubmitBlankAnnotationButton
-                hoveringOverAnnotation={
-                  hoveredAnnotation?.data.value === 'blank'
-                }
+                hoveringOverAnnotation={hoveredAnnotation?.data.value === null}
                 setSignOfHoveringButton={setSignOfHoveringButton}
                 annotation={annotation}
                 onClick={onChange}
@@ -63,7 +61,7 @@ export default function Editor({
                       )}
                       setSignOfHoveringButton={setSignOfHoveringButton}
                       handleSelection={handleSelection}
-                      alreadySelected={token.hasMatchingPath(annotations)}
+                      alreadySelected={token.isInAnnotationTokens(annotations)}
                       token={token}
                       annotation={annotation}
                       onClick={onChange}

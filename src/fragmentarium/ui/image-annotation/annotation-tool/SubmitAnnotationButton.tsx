@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap'
 type SubmitAnnotationButtonProps = {
   hoveringOverAnnotation?: boolean
   alreadySelected?: boolean
-  setSignOfHoveringButton: (sign: Sign | undefined) => void
+  setSignOfHoveringButton: (sign: Sign | null) => void
   token: AnnotationToken
   annotation: RawAnnotation
   onClick(annotation: RawAnnotation): void
@@ -46,7 +46,7 @@ export default function SubmitAnnotationButton({
 
   useEffect(() => {
     if (isHovering || hoveringOverAnnotation) {
-      setSignOfHoveringButton(token.sign)
+      setSignOfHoveringButton(token.sign!)
     }
   }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton, token.sign])
 

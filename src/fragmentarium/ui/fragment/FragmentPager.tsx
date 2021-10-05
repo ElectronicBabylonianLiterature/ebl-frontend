@@ -2,20 +2,19 @@ import React, { Fragment, FunctionComponent } from 'react'
 import classNames from 'classnames'
 
 import withData, { WithoutData } from 'http/withData'
-
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
-import FragmentLink, { createFragmentUrl } from 'fragmentarium/ui/FragmentLink'
 
 type Props = {
   data: FragmentPagerData
   fragmentNumber: string
-  createUrl?: (number: string) => string
+  suffix?: string
 }
 
 const FragmentPager: FunctionComponent<Props> = ({
   data,
   fragmentNumber,
-  createUrl,
+  suffix = '',
 }: Props): JSX.Element => {
   const PagerLink = ({
     nextFragmentNumber,
@@ -25,7 +24,7 @@ const FragmentPager: FunctionComponent<Props> = ({
     direction: string
   }) => (
     <FragmentLink
-      createUrl={createUrl}
+      suffix={suffix}
       number={nextFragmentNumber}
       aria-label={direction}
       folio={null}
@@ -48,7 +47,6 @@ const FragmentPager: FunctionComponent<Props> = ({
     </Fragment>
   )
 }
-FragmentPager.defaultProps = { createUrl: createFragmentUrl }
 
 export default withData<
   WithoutData<Props>,

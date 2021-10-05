@@ -18,7 +18,7 @@ import Corpus from 'corpus/ui/Corpus'
 import ChapterView from 'corpus/ui/ChapterView'
 import TextView from 'corpus/ui/TextView'
 import { Location } from 'history'
-import AnnotationsView from 'fragmentarium/ui/image-annotation/AnnotationsView'
+
 import { useAuthentication } from 'auth/Auth'
 import FragmentLineToVecRanking from 'fragmentarium/ui/line-to-vec/FragmentLineToVecRanking'
 import WordService from 'dictionary/application/WordService'
@@ -30,6 +30,7 @@ import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import SignService from 'signs/application/SignService'
+import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
 
 function parseStringParam(
   location: Location,
@@ -244,7 +245,7 @@ function App({
             }: {
               match: Match<{ id: string }>
             }): ReactNode => (
-              <AnnotationsView
+              <TagSignsView
                 signService={signService}
                 fragmentService={fragmentService}
                 number={decodeURIComponent(match.params.id)}

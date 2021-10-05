@@ -10,14 +10,7 @@ import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
 import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 import SignService from 'signs/application/SignService'
 
-const createAnnotationUrl = (number: string): string => {
-  // Double encoding is needed due to https://github.com/ReactTraining/history/issues/505
-  return `/fragmentarium/${encodeURIComponent(
-    encodeURIComponent(number)
-  )}/annotate`
-}
-
-export default function AnnotationsView({
+export default function TagSignsView({
   signService,
   fragmentService,
   number,
@@ -35,7 +28,7 @@ export default function AnnotationsView({
       ]}
       title={
         <FragmentPager
-          createUrl={createAnnotationUrl}
+          suffix={'/annotate'}
           fragmentNumber={number}
           fragmentService={fragmentService}
         />

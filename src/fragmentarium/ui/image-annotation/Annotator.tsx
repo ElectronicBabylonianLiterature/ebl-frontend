@@ -4,7 +4,6 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { Col, Row } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import useObjectUrl from 'common/useObjectUrl'
 import Bluebird from 'bluebird'
 import SignService from 'signs/application/SignService'
 import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation'
@@ -26,19 +25,14 @@ function AnnotatorDisplay({
   fragmentService: FragmentService
   signService: SignService
 }): JSX.Element {
-  const objectUrl = useObjectUrl(image as Blob)
   return (
-    <>
-      {objectUrl && (
-        <FragmentAnnotation
-          image={objectUrl}
-          fragment={fragment}
-          initialAnnotations={annotations}
-          fragmentService={fragmentService}
-          signService={signService}
-        />
-      )}
-    </>
+    <FragmentAnnotation
+      image={image}
+      fragment={fragment}
+      initialAnnotations={annotations}
+      fragmentService={fragmentService}
+      signService={signService}
+    />
   )
 }
 

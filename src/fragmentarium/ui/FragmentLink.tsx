@@ -10,45 +10,39 @@ export function createFragmentUrl(number: string): string {
 
 export function createFragmentUrlWithFolio(
   number: string,
-  folio: Folio,
-  createUrl: (number: string) => string = createFragmentUrl
+  folio: Folio
 ): string {
   const query = stringify(
     { tab: 'folio', folioName: folio.name, folioNumber: folio.number },
     { strict: false }
   )
-  return `${createUrl(number)}?${query}`
+  return `${createFragmentUrl(number)}?${query}`
 }
 
-export function createFragmentUrlWithTab(
-  number: string,
-  tab: string,
-  createUrl: (number: string) => string = createFragmentUrl
-): string {
+export function createFragmentUrlWithTab(number: string, tab: string): string {
   const query = stringify({ tab }, { strict: false })
-  return `${createUrl(number)}?${query}`
+  return `${createFragmentUrl(number)}?${query}`
 }
 
 export default function FragmentLink({
-  createUrl,
   number,
   children,
   folio,
+  suffix = '',
   ...props
 }: PropsWithChildren<{
-  createUrl: (number: string) => string
   number: string
   children: ReactNode
   folio: Folio | null
+  suffix?: string
 }>): JSX.Element {
   const link = folio
-    ? createFragmentUrlWithFolio(number, folio, createUrl)
-    : createUrl(number)
+    ? createFragmentUrlWithFolio(number, folio)
+    : createFragmentUrl(number)
   return (
-    <Link to={link} {...props}>
+    <Link to={link + suffix} {...props}>
       {children}
     </Link>
   )
 }
-
-FragmentLink.defaultProps = { createUrl: createFragmentUrl, folio: null }
+FragmentLink.defaultProps = { folio: null }
