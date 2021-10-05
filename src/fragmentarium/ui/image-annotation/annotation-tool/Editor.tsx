@@ -9,6 +9,7 @@ import Sign from 'signs/domain/Sign'
 import _ from 'lodash'
 
 export type EditorProps = {
+  disabled: boolean
   hoveredAnnotation: Annotation | null
   annotations: readonly Annotation[]
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -18,6 +19,7 @@ export type EditorProps = {
 }
 
 export default function Editor({
+  disabled,
   hoveredAnnotation,
   annotations,
   annotation,
@@ -29,12 +31,13 @@ export default function Editor({
     null
   )
   return (
-    <div>
+    <div className="mt-5 pt-4">
       <Card>
         <Card.Body>
           <Row>
             <Col>
               <SubmitBlankAnnotationButton
+                disabled={disabled}
                 hoveringOverAnnotation={hoveredAnnotation?.data.value === null}
                 setSignOfHoveringButton={setSignOfHoveringButton}
                 annotation={annotation}
@@ -55,6 +58,7 @@ export default function Editor({
                 <span key={token.path.join(',')}>
                   {token.enabled ? (
                     <SubmitAnnotationButton
+                      disabled={disabled}
                       hoveringOverAnnotation={_.isEqual(
                         hoveredAnnotation?.data.path,
                         token.path

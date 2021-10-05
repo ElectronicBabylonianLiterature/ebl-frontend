@@ -18,7 +18,6 @@ import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 import withData from 'http/withData'
 import { Button, ButtonGroup } from 'react-bootstrap'
-import Bluebird from 'bluebird'
 import useObjectUrl from 'common/useObjectUrl'
 import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
 import HelpTrigger from 'common/HelpTrigger'
@@ -38,7 +37,8 @@ export default withData<
   ReadonlyArray<ReadonlyArray<AnnotationToken>>
 >(
   ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
-  ({ fragment }) => Bluebird.resolve(createAnnotationTokens(fragment.text))
+  ({ fragment, signService }) =>
+    signService.associateSigns(createAnnotationTokens(fragment.text))
 )
 
 function initializeAnnotations(
@@ -68,6 +68,7 @@ function FragmentAnnotation({
   initialAnnotations,
   fragmentService,
 }: Props): React.ReactElement {
+  console.log(tokens)
   const imageUrl = useObjectUrl(image)
 
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
@@ -96,6 +97,7 @@ function FragmentAnnotation({
   )
 
   useEffect(() => {
+    console.log(tokens)
     document.addEventListener('keydown', onPressingEsc, {
       once: true,
       capture: false,
@@ -146,7 +148,7 @@ function FragmentAnnotation({
     }
   }
 
-  const handleSelection = (annotation: RawAnnotation): void => {
+  const handleSelection = (annotation: RawAnnotation | Annotation): void => {
     const { geometry, data } = annotation
     if (data) {
       const selectedAnnotation = getSelectionById(data.id, annotations)
@@ -241,6 +243,7 @@ function FragmentAnnotation({
         }) => (
           <Editor
             {...props}
+            disabled={annotation && annotation.geometry ? false : true}
             annotation={toggled ? toggled : props.annotation}
             handleSelection={handleSelection}
             hoveredAnnotation={hovering}

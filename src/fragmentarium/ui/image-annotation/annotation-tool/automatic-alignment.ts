@@ -1,5 +1,6 @@
 import Annotation, { Geometry } from 'fragmentarium/domain/annotation'
 import _ from 'lodash'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 interface Point {
   x: number
@@ -37,25 +38,14 @@ export default function automaticAlignment(
     tokensFirst.filter((tokenSecond) => tokenSecond.enabled)
   )
 
-  let indexes
-  const neighbouringTokens: any[] = []
-  for (let rowIndex = 0; rowIndex < enabledTokens.length; rowIndex++) {
+  const neighbouringTokens: AnnotationToken[] = []
+
+  for (const row of enabledTokens) {
     let isAnnotationFound = false
-    for (
-      let columnIndex = 0;
-      columnIndex < enabledTokens[rowIndex].length;
-      columnIndex++
-    ) {
+    for (const columnElement of row) {
       if (isAnnotationFound) {
-        neighbouringTokens.push(enabledTokens[rowIndex][columnIndex])
-      }
-      if (
-        _.isEqual(
-          annotation.data.path,
-          enabledTokens[rowIndex][columnIndex].path
-        )
-      ) {
-        indexes = [rowIndex, columnIndex]
+        neighbouringTokens.push(columnElement)
+      } else if (_.isEqual(annotation.data.path, columnElement.path)) {
         isAnnotationFound = true
       }
     }
@@ -63,8 +53,6 @@ export default function automaticAlignment(
       break
     }
   }
-  console.log(indexes)
-
   const neighbouringAnnotations = getNeighbouringAnnotations(
     getCenterPoint(annotation.geometry),
     annotations
@@ -81,6 +69,7 @@ export default function automaticAlignment(
         signName: '',
       })
     })
+
   let filteredAnnotations = annotations
   for (const mergedAnnotation of mergedAnnotations) {
     filteredAnnotations = filteredAnnotations.filter(

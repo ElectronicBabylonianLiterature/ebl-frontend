@@ -2,12 +2,44 @@ import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
+import {
+  AnnotationToken,
+  AnnotationToken_,
+} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 class SignRepository {
   private readonly apiClient
 
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
+  }
+
+  associateSigns(
+    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken_>>
+  ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> | Promise<any> {
+    const tokensWithSigns = tokens.map((tokensRow) =>
+      Promise.all(
+        tokensRow.map((token) => {
+          if (token.enabled) {
+            return this.search({
+              value: token.name,
+              subIndex: token.subIndex || undefined,
+            }).then(
+              (results) =>
+                new AnnotationToken(
+                  token.value,
+                  token.path,
+                  token.enabled,
+                  results.length ? results[0] : null
+                )
+            )
+          } else {
+            return new AnnotationToken(token.value, token.path, token.enabled)
+          }
+        })
+      )
+    )
+    return Promise.all(tokensWithSigns)
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {

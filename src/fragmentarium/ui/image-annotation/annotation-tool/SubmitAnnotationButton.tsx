@@ -5,6 +5,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 
 type SubmitAnnotationButtonProps = {
+  disabled: boolean
   hoveringOverAnnotation?: boolean
   alreadySelected?: boolean
   setSignOfHoveringButton: (sign: Sign | null) => void
@@ -15,6 +16,7 @@ type SubmitAnnotationButtonProps = {
 }
 
 export function SubmitBlankAnnotationButton({
+  disabled,
   hoveringOverAnnotation,
   setSignOfHoveringButton,
   annotation,
@@ -23,6 +25,7 @@ export function SubmitBlankAnnotationButton({
 }: Omit<SubmitAnnotationButtonProps, 'sign' | 'token'>): ReactElement {
   return (
     <SubmitAnnotationButton
+      disabled={disabled}
       hoveringOverAnnotation={hoveringOverAnnotation}
       setSignOfHoveringButton={setSignOfHoveringButton}
       token={new AnnotationToken('blank', [-1], true)}
@@ -34,6 +37,7 @@ export function SubmitBlankAnnotationButton({
 }
 
 export default function SubmitAnnotationButton({
+  disabled,
   hoveringOverAnnotation = false,
   alreadySelected = false,
   setSignOfHoveringButton,
@@ -52,7 +56,7 @@ export default function SubmitAnnotationButton({
 
   return (
     <Button
-      disabled={alreadySelected}
+      disabled={alreadySelected || disabled}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       size="sm"
