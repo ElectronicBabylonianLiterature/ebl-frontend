@@ -18,13 +18,13 @@ export default function Highlight({
         key={annotation.data.id}
         style={{
           // scale object to make boarder look thinner than 1px
-          transform: 'scale(0.5)',
+          transform: 'scale(0.75)',
           transformOrigin: 'top left',
           position: 'absolute',
           left: `${annotation.geometry.x}%`,
           top: `${annotation.geometry.y}%`,
-          height: `${annotation.geometry.height * 2}%`,
-          width: `${annotation.geometry.width * 2}%`,
+          height: `${(annotation.geometry.height * 4) / 3}%`,
+          width: `${(annotation.geometry.width * 4) / 3}%`,
           boxShadow: active
             ? '0 0 20px 20px rgba(255, 255, 255, 0.3) inset'
             : undefined,

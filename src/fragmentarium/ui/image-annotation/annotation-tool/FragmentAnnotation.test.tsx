@@ -8,25 +8,27 @@ import { signFactory } from 'test-support/sign-fixtures'
 import Promise from 'bluebird'
 import Annotation from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
+import ApiClient from 'http/ApiClient'
+import SignRepository from 'signs/infrastructure/SignRepository'
 
 jest.mock('fragmentarium/application/FragmentService')
-jest.mock('signs/application/SignService')
+jest.mock('http/ApiClient')
+
 const fragmentService = new (FragmentService as jest.Mock<
   jest.Mocked<FragmentService>
 >)()
-const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
+const apiClient = new (ApiClient as jest.Mock<jest.Mocked<ApiClient>>)()
+const signsRepository = new SignRepository(apiClient)
+const signService = new SignService(signsRepository)
+
 const sign = signFactory.build()
-signService.search.mockReturnValue(Promise.resolve([sign]))
 
 const text = new Text({ lines: [textLine] })
 const fragment = fragmentFactory.build({ number: 'Test.Fragment', text: text })
-let tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
+const tokens = createAnnotationTokens(fragment.text)
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
@@ -34,8 +36,7 @@ const initialAnnotation = new Annotation(
 )
 
 beforeEach(async () => {
-  signService.search.mockReturnValue(Promise.all([sign]))
-  tokens = createAnnotationTokens(fragment.text)
+  jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
   render(
     <FragmentAnnotation
       image={new Blob()}
@@ -72,7 +73,7 @@ it('Change existing annotation', async () => {
     id: initialAnnotation.data.id,
     value: 'ŠA₂',
     path: expectedData.path,
-    signName: expectedData.sign!.name,
+    signName: sign.name,
   })
   expect(
     fragmentService.updateAnnotations

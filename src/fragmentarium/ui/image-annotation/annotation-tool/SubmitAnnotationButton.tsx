@@ -1,4 +1,3 @@
-import Sign from 'signs/domain/Sign'
 import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { RawAnnotation } from 'fragmentarium/domain/annotation'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -6,9 +5,9 @@ import { Button } from 'react-bootstrap'
 
 type SubmitAnnotationButtonProps = {
   disabled: boolean
-  hoveringOverAnnotation?: boolean
+  isHoveringOverAnnotation?: boolean
   alreadySelected?: boolean
-  setSignOfHoveringButton: (sign: Sign | null) => void
+  setSignOfHoveringButton: (sign: string | null) => void
   token: AnnotationToken
   annotation: RawAnnotation
   onClick(annotation: RawAnnotation): void
@@ -17,7 +16,7 @@ type SubmitAnnotationButtonProps = {
 
 export function SubmitBlankAnnotationButton({
   disabled,
-  hoveringOverAnnotation,
+  isHoveringOverAnnotation,
   setSignOfHoveringButton,
   annotation,
   onClick,
@@ -26,7 +25,8 @@ export function SubmitBlankAnnotationButton({
   return (
     <SubmitAnnotationButton
       disabled={disabled}
-      hoveringOverAnnotation={hoveringOverAnnotation}
+      isHoveringOverAnnotation={isHoveringOverAnnotation}
+      alreadySelected={false}
       setSignOfHoveringButton={setSignOfHoveringButton}
       token={new AnnotationToken('blank', [-1], true)}
       annotation={annotation}
@@ -38,8 +38,8 @@ export function SubmitBlankAnnotationButton({
 
 export default function SubmitAnnotationButton({
   disabled,
-  hoveringOverAnnotation = false,
-  alreadySelected = false,
+  isHoveringOverAnnotation,
+  alreadySelected,
   setSignOfHoveringButton,
   token,
   annotation,
@@ -49,10 +49,17 @@ export default function SubmitAnnotationButton({
   const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
-    if (isHovering || hoveringOverAnnotation) {
-      setSignOfHoveringButton(token.sign!)
+    if (isHovering || isHoveringOverAnnotation) {
+      token.sign
+        ? setSignOfHoveringButton(token.sign.displayCuneiformSigns)
+        : setSignOfHoveringButton('No sign')
     }
-  }, [isHovering, hoveringOverAnnotation, setSignOfHoveringButton, token.sign])
+  }, [
+    isHovering,
+    isHoveringOverAnnotation,
+    setSignOfHoveringButton,
+    token.sign,
+  ])
 
   return (
     <Button
@@ -60,7 +67,7 @@ export default function SubmitAnnotationButton({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       size="sm"
-      variant={hoveringOverAnnotation ? 'dark' : 'outline-dark'}
+      variant={isHoveringOverAnnotation ? 'dark' : 'outline-dark'}
       onClick={(): void => {
         const newAnnotation = {
           ...annotation,

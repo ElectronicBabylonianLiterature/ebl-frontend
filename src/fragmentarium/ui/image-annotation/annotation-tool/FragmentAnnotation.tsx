@@ -68,7 +68,6 @@ function FragmentAnnotation({
   initialAnnotations,
   fragmentService,
 }: Props): React.ReactElement {
-  console.log(tokens)
   const imageUrl = useObjectUrl(image)
 
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
@@ -86,18 +85,14 @@ function FragmentAnnotation({
   )
   const prevAnnotations = usePrevious(annotations)
 
-  const onPressingEsc = useCallback(
-    (event) => {
-      if (event.keyCode === 27) {
-        setToggled(null)
-        setIsChangeExistingMode(false)
-      }
-    },
-    [toggled, isChangeExistingMode]
-  )
+  const onPressingEsc = useCallback((event) => {
+    if (event.keyCode === 27) {
+      setToggled(null)
+      setIsChangeExistingMode(false)
+    }
+  }, [])
 
   useEffect(() => {
-    console.log(tokens)
     document.addEventListener('keydown', onPressingEsc, {
       once: true,
       capture: false,
@@ -207,6 +202,7 @@ function FragmentAnnotation({
     <>
       <ButtonGroup>
         <Button
+          disabled
           variant="outline-dark"
           onClick={async () => await generateAnnotations()}
         >
@@ -243,10 +239,12 @@ function FragmentAnnotation({
         }) => (
           <Editor
             {...props}
-            disabled={annotation && annotation.geometry ? false : true}
+            disabled={
+              !((annotation && annotation.geometry) || isChangeExistingMode)
+            }
             annotation={toggled ? toggled : props.annotation}
             handleSelection={handleSelection}
-            hoveredAnnotation={hovering}
+            hoveringAnnotation={hovering}
             annotations={annotations}
             tokens={tokens}
           />

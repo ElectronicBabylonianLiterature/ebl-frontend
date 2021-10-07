@@ -12,7 +12,7 @@ export class AnnotationToken {
     readonly sign: Sign | null = null
   ) {}
 
-  isInAnnotationTokens(annotation: readonly Annotation[]): boolean {
+  isPathInAnnotations(annotation: readonly Annotation[]): boolean {
     return Boolean(
       _.find(annotation, (singleAnnotation) =>
         _.isEqual(singleAnnotation.data.path, this.path)
@@ -20,8 +20,8 @@ export class AnnotationToken {
     )
   }
 
-  hasMatchingPath(annotation: RawAnnotation | readonly Annotation[]): boolean {
-    return _.isEqual(this.path, (annotation as RawAnnotation).data?.path)
+  isEqualPath(annotation: RawAnnotation | null): boolean {
+    return _.isEqual(this.path, annotation?.data?.path)
   }
 }
 

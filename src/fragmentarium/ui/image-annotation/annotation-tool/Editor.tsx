@@ -5,12 +5,10 @@ import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-to
 import SubmitAnnotationButton, {
   SubmitBlankAnnotationButton,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'
-import Sign from 'signs/domain/Sign'
-import _ from 'lodash'
 
 export type EditorProps = {
   disabled: boolean
-  hoveredAnnotation: Annotation | null
+  hoveringAnnotation: Annotation | null
   annotations: readonly Annotation[]
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   annotation: RawAnnotation
@@ -20,16 +18,16 @@ export type EditorProps = {
 
 export default function Editor({
   disabled,
-  hoveredAnnotation,
+  hoveringAnnotation,
   annotations,
   annotation,
   onChange,
   handleSelection,
   tokens,
 }: EditorProps): ReactElement | null {
-  const [signOfHoveringButton, setSignOfHoveringButton] = useState<Sign | null>(
-    null
-  )
+  const [signOfHoveringButton, setSignOfHoveringButton] = useState<
+    string | null
+  >(null)
   return (
     <div className="mt-5 pt-4">
       <Card>
@@ -38,7 +36,9 @@ export default function Editor({
             <Col>
               <SubmitBlankAnnotationButton
                 disabled={disabled}
-                hoveringOverAnnotation={hoveredAnnotation?.data.value === null}
+                isHoveringOverAnnotation={
+                  hoveringAnnotation?.data.value === null
+                }
                 setSignOfHoveringButton={setSignOfHoveringButton}
                 annotation={annotation}
                 onClick={onChange}
@@ -46,9 +46,7 @@ export default function Editor({
               />
             </Col>
             <Col>
-              {signOfHoveringButton && (
-                <div>{signOfHoveringButton.displayCuneiformSigns}</div>
-              )}
+              {signOfHoveringButton && <div>{signOfHoveringButton}</div>}
             </Col>
           </Row>
           <hr />
@@ -59,13 +57,12 @@ export default function Editor({
                   {token.enabled ? (
                     <SubmitAnnotationButton
                       disabled={disabled}
-                      hoveringOverAnnotation={_.isEqual(
-                        hoveredAnnotation?.data.path,
-                        token.path
+                      isHoveringOverAnnotation={token.isEqualPath(
+                        hoveringAnnotation
                       )}
                       setSignOfHoveringButton={setSignOfHoveringButton}
                       handleSelection={handleSelection}
-                      alreadySelected={token.isInAnnotationTokens(annotations)}
+                      alreadySelected={token.isPathInAnnotations(annotations)}
                       token={token}
                       annotation={annotation}
                       onClick={onChange}
