@@ -201,7 +201,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/fragments/${number}/annotations`,
+        path: `/fragments/${number}/annotations?generateAnnotations=false`,
         authenticate: true,
         response: { annotations: annotationDtos },
         verify: true,

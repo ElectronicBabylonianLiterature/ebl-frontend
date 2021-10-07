@@ -24,7 +24,7 @@ export default function TagSignsView({
       crumbs={[
         new SectionCrumb('Fragmentarium'),
         new FragmentCrumb(number),
-        new TextCrumb('Annotations'),
+        new TextCrumb('Tag Signs'),
       ]}
       title={
         <FragmentPager
