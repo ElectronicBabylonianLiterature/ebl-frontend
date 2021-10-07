@@ -86,17 +86,16 @@ function FragmentAnnotation({
   const prevAnnotations = usePrevious(annotations)
 
   const onPressingEsc = useCallback((event) => {
+    console.log('wtf')
     if (event.keyCode === 27) {
       setToggled(null)
       setIsChangeExistingMode(false)
+      setIsAutomaticSelected(false)
     }
   }, [])
 
   useEffect(() => {
-    document.addEventListener('keydown', onPressingEsc, {
-      once: true,
-      capture: false,
-    })
+    document.addEventListener('keydown', onPressingEsc, false)
     if (!_.isEqual(prevAnnotations, annotations) && !_.isNil(prevAnnotations)) {
       ;(async () => {
         await fragmentService.updateAnnotations(fragment.number, annotations)

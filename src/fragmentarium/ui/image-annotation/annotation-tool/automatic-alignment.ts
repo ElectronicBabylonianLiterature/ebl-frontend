@@ -30,12 +30,12 @@ function getNeighbouringAnnotations(
 }
 
 export default function automaticAlignment(
-  tokens,
+  tokens: readonly (readonly AnnotationToken[])[],
   annotation: Annotation,
   annotations: readonly Annotation[]
 ): readonly Annotation[] {
-  const enabledTokens = tokens.map((tokensFirst) =>
-    tokensFirst.filter((tokenSecond) => tokenSecond.enabled)
+  const enabledTokens = tokens.map((tokensRow) =>
+    tokensRow.filter((tokenSecond) => tokenSecond.enabled)
   )
 
   const neighbouringTokens: AnnotationToken[] = []
