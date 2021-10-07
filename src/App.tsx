@@ -209,6 +209,16 @@ function App({
             )}
           />
           <Route
+            path="/corpus/:genre"
+            render={({ match, ...props }): ReactNode => (
+              <Corpus
+                textService={textService}
+                genre={match.params.genre}
+                {...props}
+              />
+            )}
+          />
+          <Route
             path="/corpus"
             render={(props): ReactNode => (
               <Corpus textService={textService} {...props} />

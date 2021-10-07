@@ -116,7 +116,7 @@ const museums: ReadonlyMap<string, MuseumConfig> = new Map([
     },
   ],
   [
-    'National Museum of Iraq',
+    'The Iraq Museum, Baghdad',
     {
       copyright:
         'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',

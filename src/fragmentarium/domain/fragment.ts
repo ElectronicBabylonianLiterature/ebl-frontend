@@ -8,6 +8,7 @@ import { Text } from 'transliteration/domain/text'
 import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
+import { Joins } from './join'
 
 const moment = extendMoment(Moment)
 
@@ -90,16 +91,6 @@ export interface UncuratedReference {
   readonly pages: ReadonlyArray<number>
 }
 
-export interface Join {
-  readonly museumNumber: string
-  readonly isChecked: boolean
-  readonly joinedBy: string
-  readonly date: string
-  readonly note: string
-  readonly legacyData: string
-  readonly isInFragmentarium: boolean
-}
-
 export class Fragment {
   readonly [immerable] = true
 
@@ -109,7 +100,7 @@ export class Fragment {
     readonly bmIdNumber: string,
     readonly accession: string,
     readonly publication: string,
-    readonly joins: ReadonlyArray<ReadonlyArray<Join>>,
+    readonly joins: Joins,
     readonly description: string,
     readonly measures: Measures,
     readonly collection: string,
@@ -153,7 +144,7 @@ export class Fragment {
     bmIdNumber: string
     accession: string
     publication: string
-    joins: ReadonlyArray<ReadonlyArray<Join>>
+    joins: Joins
     description: string
     measures: Measures
     collection: string

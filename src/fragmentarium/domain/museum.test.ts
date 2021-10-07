@@ -11,7 +11,7 @@ describe.each([
     'Courtesy of the [Trustees of The British Museum](https://www.britishmuseum.org/about_this_site/terms_of_use/copyright_and_permissions.aspx)',
   ],
   [
-    'National Museum of Iraq',
+    'The Iraq Museum, Baghdad',
     '',
     '',
     'By Permission of the State Board of Antiquities and Heritage and The Iraq Museum',

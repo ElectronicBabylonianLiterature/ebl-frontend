@@ -3,21 +3,25 @@
 }
 
 .CuneiformFonts__heading-old-babylonian-monumental {
-  font-family: 'Old-Babylonian (Monumental)', Junicode, serif;
+  font-family: 'Old-Babylonian (Monumental)', 'Adobe Blank', Junicode, serif;
 }
 
 .CuneiformFonts__heading-old-babylonian-cursive {
-  font-family: 'Old-Babylonian Cursive', Junicode, serif;
+  font-family: 'Old-Babylonian Cursive', 'Adobe Blank', Junicode, serif;
 }
 
 .CuneiformFonts__heading-hittite {
-  font-family: 'Hittite', Junicode, serif;
+  font-family: 'Hittite', 'Adobe Blank', Junicode, serif;
 }
 
 .CuneiformFonts__heading-neo-babylonian {
-  font-family: 'Neo-Babylonian', Junicode, serif;
+  font-family: 'Neo-Babylonian', 'Adobe Blank', Junicode, serif;
 }
-
+@font-face {
+  font-display: swap;
+  font-family: 'Adobe Blank';
+  src: url('fonts/AdobeBlank.otf.woff') format('woff');
+}
 @font-face {
   font-display: swap;
   font-family: 'Old-Babylonian (Monumental)';

@@ -130,6 +130,8 @@ export const chapterDto = {
           document: { id: 'RN1853' },
         },
       ],
+      joins: [],
+      isInFragmentarium: false,
     },
   ],
   uncertainFragments: ['K.1'],
@@ -171,6 +173,24 @@ export const textDto = {
       stage: 'Old Babylonian',
       name: 'The Only Chapter',
       title: [],
+      uncertainFragments: [
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '1',
+            suffix: '',
+          },
+          isInFragmentarium: true,
+        },
+        {
+          museumNumber: {
+            prefix: 'X',
+            number: '2',
+            suffix: '',
+          },
+          isInFragmentarium: false,
+        },
+      ],
     },
   ],
   references: [],
@@ -204,7 +224,9 @@ export const chapter = createChapter({
           [],
           new BibliographyEntry({ id: 'RN1853' })
         ),
-      ]
+      ],
+      [],
+      false
     ),
   ],
   lines: [
@@ -239,5 +261,21 @@ export const text = createText({
   numberOfVerses: 10,
   approximateVerses: true,
   intro: 'This is a *test text*.',
-  chapters: [{ stage: chapter.stage, name: chapter.name, title: [] }],
+  chapters: [
+    {
+      stage: chapter.stage,
+      name: chapter.name,
+      title: [],
+      uncertainFragments: [
+        {
+          museumNumber: 'X.1',
+          isInFragmentarium: true,
+        },
+        {
+          museumNumber: 'X.2',
+          isInFragmentarium: false,
+        },
+      ],
+    },
+  ],
 })

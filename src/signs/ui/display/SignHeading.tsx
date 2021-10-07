@@ -3,7 +3,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import React from 'react'
 import _ from 'lodash'
 import ExternalLink from 'common/ExternalLink'
-import './signHeading.css'
+import 'signs/ui/display/SignHeading.css'
 
 export default function SignHeading({
   signName,
@@ -80,7 +80,7 @@ function CuneiformFontsHelpPopover(): JSX.Element {
       className={'mb-2'}
     >
       <Popover.Content>
-        Cuneiform fonts by S. Vanserveren{' '}
+        Cuneiform fonts by S. Vanseveren{' '}
         <ExternalLink
           href={'https://www.hethport.uni-wuerzburg.de/cuneifont/'}
           className={'text-dark'}

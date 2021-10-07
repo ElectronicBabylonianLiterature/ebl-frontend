@@ -10,11 +10,11 @@ import './TextView.sass'
 import { ChapterId } from 'corpus/application/TextService'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
-import { CollapsibleSection } from './CollapsibleSection'
+import CollapsibleSection from 'corpus/ui/CollapsibleSection'
 import Introduction from './Introduction'
 import ChapterSiglumsAndTransliterations from './ChapterSiglumsAndTransliterations'
-import { Link } from 'react-router-dom'
-import Markup from 'transliteration/ui/markup'
+import Chapters from './Chapters'
+import GenreCrumb from './GenreCrumb'
 
 function TextView({
   text,
@@ -25,26 +25,19 @@ function TextView({
 }): JSX.Element {
   return (
     <AppContent
-      crumbs={[new SectionCrumb('Corpus'), new CorpusTextCrumb(text)]}
+      crumbs={[
+        new SectionCrumb('Corpus'),
+        new GenreCrumb(text.genre),
+        new CorpusTextCrumb(text),
+      ]}
     >
       <SessionContext.Consumer>
         {(session: Session): JSX.Element =>
           session.isAllowedToReadTexts() ? (
             <>
               <Introduction text={text} />
-              <CollapsibleSection heading="Chapters">
-                {text.chapters.map((chapter, index) => (
-                  <section key={index}>
-                    <h4>
-                      <Link
-                        to={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
-                      >
-                        {chapter.name}{' '}
-                        <Markup container="span" parts={chapter.title} />
-                      </Link>
-                    </h4>
-                  </section>
-                ))}
+              <CollapsibleSection heading="Chapters" open>
+                <Chapters text={text} textService={textService} />
               </CollapsibleSection>
               <CollapsibleSection heading="Colophons">
                 {text.chapters.map((chapter, index) => (

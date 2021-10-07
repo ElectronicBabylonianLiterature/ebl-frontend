@@ -6,7 +6,7 @@
 [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4)](https://prettier.io)
 [![Mozilla HTTP Observatory Grade](https://img.shields.io/mozilla-observatory/grade/www.ebl.lmu.de?publish)](https://observatory.mozilla.org/analyze/www.ebl.lmu.de)
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent version of the guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find the most recent version of the guide [here](https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md).
 
 ## Requirements
 
@@ -65,7 +65,7 @@ REACT_APP_SENTRY_DSN=<Sentry DSN>
 
 In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/docs/advanced-configuration) must be set to `false` due to Content Security Policy.
 
-`yarn start` starts the development server. The envoronment variables are read from `.env.local`.
+`yarn start` starts the development server. The environment variables are read from `.env.local`.
 
 ## Updating dependencies
 

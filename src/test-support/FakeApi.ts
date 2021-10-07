@@ -1,4 +1,6 @@
 import Promise from 'bluebird'
+import { ChapterId } from 'corpus/application/TextService'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
   museumNumberToString,
@@ -140,6 +142,38 @@ export default class FakeApi {
         )}`,
         authenticate: true,
         response: chapter,
+        verify: true,
+      })
+    )
+    return this
+  }
+
+  expectManuscripts(id: ChapterId, manuscriptsDto: Dto[]): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/texts/${id.genre}/${id.category}/${
+          id.index
+        }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
+          id.name
+        )}/manuscripts`,
+        response: manuscriptsDto,
+        verify: true,
+      })
+    )
+    return this
+  }
+
+  expectExtantLines(id: ChapterId, extantLines: ExtantLines): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/texts/${id.genre}/${id.category}/${
+          id.index
+        }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
+          id.name
+        )}/extant_lines`,
+        response: extantLines,
         verify: true,
       })
     )

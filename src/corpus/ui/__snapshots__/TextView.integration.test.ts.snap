@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Show chapter 1`] = `
+exports[`Chapter Show chapter 1`] = `
 <div>
   <header
     class="Header"
@@ -51,7 +51,7 @@ exports[`Show chapter 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-5"
+          id="Header-6"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Show chapter 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-5"
+          aria-controls="Header-6"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -168,6 +168,15 @@ exports[`Show chapter 1`] = `
             </a>
           </li>
           <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
+            </a>
+          </li>
+          <li
             aria-current="page"
             class="breadcrumb-item active"
           >
@@ -207,20 +216,19 @@ exports[`Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-9"
+        aria-controls="collapse-11"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Chapters
          
         <i
-          aria-expanded="true"
-          class="text-view__collapse-indicator fas fa-caret-down"
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
         />
       </h3>
       <div
-        class="collapse show"
-        id="collapse-9"
-        style=""
+        class="collapse"
+        id="collapse-11"
       >
         <section>
           <h4>
@@ -232,6 +240,21 @@ exports[`Show chapter 1`] = `
               <span />
             </a>
           </h4>
+          <section
+            class="text-view__section"
+          >
+            <h5
+              aria-controls="collapse-8"
+              class="text-view__section-heading text-view__section-heading--collapse"
+            >
+              List of Manuscripts
+               
+              <i
+                aria-expanded="false"
+                class="text-view__collapse-indicator fas fa-caret-right"
+              />
+            </h5>
+          </section>
         </section>
       </div>
     </section>
@@ -239,7 +262,7 @@ exports[`Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-7"
+        aria-controls="collapse-9"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Colophons
@@ -254,7 +277,466 @@ exports[`Show chapter 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-8"
+        aria-controls="collapse-10"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Unplaced Lines
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+  </section>
+</div>
+`;
+
+exports[`Chapter Show list of manuscripts 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-12"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout 
+              Test
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-12"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <section
+    class="App-content"
+  >
+    <header
+      class="App-content__header"
+    >
+      <nav
+        aria-label="breadcrumb"
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/"
+            >
+              eBL
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus"
+            >
+              Corpus
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="breadcrumb-item active"
+          >
+            I.1 Palm and Vine
+          </li>
+        </ol>
+      </nav>
+      <div
+        class="float-right btn-toolbar"
+        role="toolbar"
+      />
+      <h2>
+        I.1 Palm and Vine
+      </h2>
+    </header>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        class="text-view__section-heading"
+      >
+        Introduction
+      </h3>
+      <div
+        class="text-view__markdown"
+      >
+        <p>
+          This is a 
+          <em>
+            test text
+          </em>
+          .
+        </p>
+      </div>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-17"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Chapters
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+      <div
+        class="collapse"
+        id="collapse-17"
+      >
+        <section>
+          <h4>
+            <a
+              href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+            >
+              The Only Chapter
+               
+              <span />
+            </a>
+          </h4>
+          <section
+            class="text-view__section"
+          >
+            <h5
+              aria-controls="collapse-18"
+              class="text-view__section-heading text-view__section-heading--collapse"
+            >
+              List of Manuscripts
+               
+              <i
+                aria-expanded="true"
+                class="text-view__collapse-indicator fas fa-caret-down"
+              />
+            </h5>
+            <div
+              class="collapse show"
+              id="collapse-18"
+              style=""
+            >
+              <table>
+                <colgroup
+                  span="3"
+                />
+                <thead>
+                  <tr
+                    class="list-of-manuscripts__header"
+                  >
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="siglum-28"
+                      scope="col"
+                    >
+                      Siglum
+                    </th>
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="museumNumber-29"
+                      scope="col"
+                    >
+                      Museum Number
+                      <span
+                        class="references-help list-of-manuscripts__help"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </span>
+                    </th>
+                    <th
+                      class="list-of-manuscripts__column-heading"
+                      id="extantLines-31"
+                      scope="col"
+                    >
+                      Extant Lines
+                      <span
+                        class="list-of-manuscripts__help"
+                      >
+                        <i
+                          class="fas fa-info-circle"
+                        />
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__provenance-heading"
+                      colspan="3"
+                      id="provenace-33"
+                      scope="colgroup"
+                    >
+                      Assyria
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__siglum-heading"
+                      headers="provenace-33 siglum-28"
+                      id="row-34"
+                      scope="row"
+                    >
+                      AssaOBSch1
+                    </th>
+                    <td
+                      headers="provenace-33 row-34 museumNumber-29"
+                    >
+                      <a
+                        href="/fragmentarium/X.1"
+                      >
+                        X.1
+                      </a>
+                       +
+                      <sup>
+                        ?
+                      </sup>
+                       
+                      X.2
+                       (+
+                      ) 
+                      <a
+                        href="/fragmentarium/X.3"
+                      >
+                        X.3
+                      </a>
+                       +
+                       
+                      X.4
+                      <ul
+                        class="list-of-manuscripts__references"
+                      >
+                        <li>
+                          <span
+                            class="reference-popover__citation"
+                          >
+                            , : 3106269388865536-2803041484931072 
+                            [
+                            l. 4'.2., 2.
+                            ]
+                             (E)
+                          </span>
+                        </li>
+                      </ul>
+                    </td>
+                    <td
+                      class="list-of-manuscripts__extant-lines"
+                      headers="extantLines-31 row-34 museumNumber-29"
+                    >
+                      <ol
+                        class="extant-lines"
+                      >
+                        <li>
+                          o iii
+                           
+                          <span
+                            class="extant-lines__line-number extant-lines__line-number--boundary"
+                          >
+                            1
+                          </span>
+                          –
+                          <span
+                            class="extant-lines__line-number"
+                          >
+                            2
+                          </span>
+                        </li>
+                      </ol>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="list-of-manuscripts__provenance-heading"
+                      colspan="3"
+                      id="uncertainFragmets-30"
+                      scope="colgroup"
+                    >
+                      Uncertain Fragments
+                    </th>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
+                      <ul
+                        class="list-of-manuscripts__uncertain-fragments"
+                      >
+                        <li>
+                          <a
+                            href="/fragmentarium/X.1"
+                          >
+                            X.1
+                          </a>
+                        </li>
+                        <li>
+                          X.2
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </div>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-15"
+        class="text-view__section-heading text-view__section-heading--collapse"
+      >
+        Colophons
+         
+        <i
+          aria-expanded="false"
+          class="text-view__collapse-indicator fas fa-caret-right"
+        />
+      </h3>
+    </section>
+    <section
+      class="text-view__section"
+    >
+      <h3
+        aria-controls="collapse-16"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Unplaced Lines
@@ -437,6 +919,15 @@ exports[`With session 1`] = `
             </a>
           </li>
           <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
+            </a>
+          </li>
+          <li
             aria-current="page"
             class="breadcrumb-item active"
           >
@@ -482,16 +973,47 @@ exports[`With session 1`] = `
         Chapters
          
         <i
-          aria-expanded="false"
-          class="text-view__collapse-indicator fas fa-caret-right"
+          aria-expanded="true"
+          class="text-view__collapse-indicator fas fa-caret-down"
         />
       </h3>
+      <div
+        class="collapse show"
+        id="collapse-2"
+      >
+        <section>
+          <h4>
+            <a
+              href="/corpus/L/1/1/Old Babylonian/The Only Chapter"
+            >
+              The Only Chapter
+               
+              <span />
+            </a>
+          </h4>
+          <section
+            class="text-view__section"
+          >
+            <h5
+              aria-controls="collapse-3"
+              class="text-view__section-heading text-view__section-heading--collapse"
+            >
+              List of Manuscripts
+               
+              <i
+                aria-expanded="false"
+                class="text-view__collapse-indicator fas fa-caret-right"
+              />
+            </h5>
+          </section>
+        </section>
+      </div>
     </section>
     <section
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-3"
+        aria-controls="collapse-4"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Colophons
@@ -506,7 +1028,7 @@ exports[`With session 1`] = `
       class="text-view__section"
     >
       <h3
-        aria-controls="collapse-4"
+        aria-controls="collapse-5"
         class="text-view__section-heading text-view__section-heading--collapse"
       >
         Unplaced Lines
@@ -572,7 +1094,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-10"
+          id="Header-37"
         >
           <div
             class="mx-auto navbar-nav"
@@ -645,7 +1167,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-10"
+          aria-controls="Header-37"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -685,6 +1207,15 @@ exports[`Without session 1`] = `
               href="/corpus"
             >
               Corpus
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+          >
+            <a
+              href="/corpus/L"
+            >
+              L
             </a>
           </li>
           <li

@@ -24,18 +24,23 @@ import Word from 'dictionary/domain/Word'
 import { LineToVecRanking } from 'fragmentarium/domain/lineToVecRanking'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'
+import { Joins } from 'fragmentarium/domain/join'
+
+export function createJoins(joins): Joins {
+  return joins.map((group) =>
+    group.map((join) => ({
+      ...join,
+      museumNumber: museumNumberToString(join.museumNumber),
+    }))
+  )
+}
 
 function createFragment(dto): Fragment {
   return Fragment.create({
     ...dto,
     number: museumNumberToString(dto.museumNumber),
     museum: Museum.of(dto.museum),
-    joins: dto.joins.map((group) =>
-      group.map((join) => ({
-        ...join,
-        museumNumber: museumNumberToString(join.museumNumber),
-      }))
-    ),
+    joins: createJoins(dto.joins),
     measures: {
       length: dto.length.value || null,
       width: dto.width.value || null,

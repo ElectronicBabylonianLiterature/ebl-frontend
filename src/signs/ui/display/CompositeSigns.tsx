@@ -2,7 +2,7 @@ import Sign from 'signs/domain/Sign'
 import SignService from 'signs/application/SignService'
 import withData, { WithoutData } from 'http/withData'
 import React from 'react'
-import './compositeSigns.css'
+import 'signs/ui/display/CompositeSigns.css'
 
 import HelpTrigger from 'common/HelpTrigger'
 import { Col, Popover, Row } from 'react-bootstrap'

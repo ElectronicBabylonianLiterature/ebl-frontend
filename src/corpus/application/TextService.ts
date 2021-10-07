@@ -7,7 +7,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterListing, Text } from 'corpus/domain/text'
+import { Chapter, ChapterListing, Text, TextInfo } from 'corpus/domain/text'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -26,6 +26,7 @@ import {
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
+  fromManuscriptDto,
 } from './dtos'
 import ApiClient from 'http/ApiClient'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
@@ -33,6 +34,7 @@ import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import produce, { castDraft } from 'immer'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -137,7 +139,10 @@ export class ChapterId {
     )
   }
 
-  static fromText(text: Text, chapter: ChapterListing): ChapterId {
+  static fromText(
+    text: TextInfo,
+    chapter: Pick<ChapterListing, 'stage' | 'name'>
+  ): ChapterId {
     return new ChapterId(
       text.genre,
       text.category,
@@ -222,6 +227,19 @@ export default class TextService {
           )
         )
       )
+  }
+
+  findExtantLines(id: ChapterId): Bluebird<ExtantLines> {
+    return this.apiClient.fetchJson(
+      `${createChapterUrl(id)}/extant_lines`,
+      true
+    )
+  }
+
+  findManuscripts(id: ChapterId): Bluebird<Manuscript[]> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/manuscripts`, true)
+      .then((manuscripts) => manuscripts.map(fromManuscriptDto))
   }
 
   list(): Bluebird<Text[]> {

@@ -542,7 +542,7 @@ exports[`Without session 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-3"
+          id="Header-4"
         >
           <div
             class="mx-auto navbar-nav"
@@ -615,7 +615,7 @@ exports[`Without session 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-3"
+          aria-controls="Header-4"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -678,34 +678,34 @@ exports[`Without session 1`] = `
             role="tablist"
           >
             <a
-              aria-controls="CorpusTab-4-tabpane-L"
+              aria-controls="CorpusTab-5-tabpane-L"
               aria-selected="true"
               class="nav-item nav-link active"
               data-rb-event-key="L"
               href="#"
-              id="CorpusTab-4-tab-L"
+              id="CorpusTab-5-tab-L"
               role="tab"
             >
               Literature
             </a>
             <a
-              aria-controls="CorpusTab-4-tabpane-D"
+              aria-controls="CorpusTab-5-tabpane-D"
               aria-selected="false"
               class="nav-item nav-link"
               data-rb-event-key="D"
               href="#"
-              id="CorpusTab-4-tab-D"
+              id="CorpusTab-5-tab-D"
               role="tab"
             >
               Divination
             </a>
             <a
-              aria-controls="CorpusTab-4-tabpane-Lex"
+              aria-controls="CorpusTab-5-tabpane-Lex"
               aria-selected="false"
               class="nav-item nav-link"
               data-rb-event-key="Lex"
               href="#"
-              id="CorpusTab-4-tab-Lex"
+              id="CorpusTab-5-tab-Lex"
               role="tab"
             >
               Lexicography
@@ -716,9 +716,9 @@ exports[`Without session 1`] = `
           >
             <div
               aria-hidden="false"
-              aria-labelledby="CorpusTab-4-tab-L"
+              aria-labelledby="CorpusTab-5-tab-L"
               class="fade tab-pane active show"
-              id="CorpusTab-4-tabpane-L"
+              id="CorpusTab-5-tabpane-L"
               role="tabpanel"
             >
               <section>
@@ -829,9 +829,9 @@ exports[`Without session 1`] = `
             </div>
             <div
               aria-hidden="true"
-              aria-labelledby="CorpusTab-4-tab-D"
+              aria-labelledby="CorpusTab-5-tab-D"
               class="fade tab-pane"
-              id="CorpusTab-4-tabpane-D"
+              id="CorpusTab-5-tabpane-D"
               role="tabpanel"
             >
               <section>
@@ -898,9 +898,9 @@ exports[`Without session 1`] = `
             </div>
             <div
               aria-hidden="true"
-              aria-labelledby="CorpusTab-4-tab-Lex"
+              aria-labelledby="CorpusTab-5-tab-Lex"
               class="fade tab-pane"
-              id="CorpusTab-4-tabpane-Lex"
+              id="CorpusTab-5-tabpane-Lex"
               role="tabpanel"
             >
               <section>

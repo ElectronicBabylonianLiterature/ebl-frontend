@@ -14,7 +14,7 @@ import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import { Chapter, createChapter, createText, Text } from './text'
 import { Manuscript, ManuscriptTypes } from './manuscript'
-import manuscriptFactory from 'test-support/manuscriptFactory'
+import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
 const manuscriptConfig: Partial<Manuscript> = {
   id: 1,
@@ -29,6 +29,8 @@ const manuscriptConfig: Partial<Manuscript> = {
   colophon: '1. kur',
   unplacedLines: '1. bu',
   references: [],
+  joins: [],
+  isInFragmentarium: true,
 }
 
 const manuscrpitLineConfig: Partial<ManuscriptLine> = {
@@ -142,7 +144,7 @@ const textConfig: Partial<Text> = {
   numberOfVerses: 930,
   approximateVerses: true,
   intro: 'Introduction',
-  chapters: [{ stage: stage, name: name, title: [] }],
+  chapters: [{ stage: stage, name: name, title: [], uncertainFragments: [] }],
   references: [new Reference()],
 }
 
@@ -151,6 +153,37 @@ describe('Text', () => {
 
   test('title', () => {
     expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
+  })
+
+  test.each([
+    [[], false],
+    [[{ stage: stage, name: name, title: [], uncertainFragments: [] }], false],
+    [
+      [
+        { stage: stage, name: name, title: [], uncertainFragments: [] },
+        { stage: stage, name: name, title: [], uncertainFragments: [] },
+      ],
+      false,
+    ],
+    [
+      [
+        {
+          stage: 'Old Assyrian',
+          name: name,
+          title: [],
+          uncertainFragments: [],
+        },
+        {
+          stage: 'Neo Babylonian',
+          name: name,
+          title: [],
+          uncertainFragments: [],
+        },
+      ],
+      true,
+    ],
+  ])('hasMultipleStages %o', (chapters, expected) => {
+    expect(createText({ chapters }).hasMultipleStages).toEqual(expected)
   })
 })
 
@@ -215,7 +248,9 @@ describe('Manuscript', () => {
         manuscriptConfig.notes,
         manuscriptConfig.colophon,
         manuscriptConfig.unplacedLines,
-        manuscriptConfig.references
+        manuscriptConfig.references,
+        manuscriptConfig.joins,
+        manuscriptConfig.isInFragmentarium
       )
   )
 })
