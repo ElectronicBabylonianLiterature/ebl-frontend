@@ -6,6 +6,7 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button, Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.css'
+import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
 import {
@@ -19,15 +20,14 @@ import {
 } from 'dictionary/ui/display/WordDisplayParts'
 import { Markdown } from 'common/Markdown'
 
-const LiteratureRedirectBox = (): JSX.Element => (
-  <div className="text-center border border-dark">
+const LiteratureRedirectBoxCDA = (): JSX.Element => (
+  <div className="text-center border border-dark m-3">
     <strong>From</strong>
     <br />
     Black, J.; George, A.R.; Postgate, N.,{' '}
-    <em>A Concise Dictionary of Akkadian. 2nd (corrected) printing.&nbsp;</em>
-    SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden:
-    Harrassowitz, ²2000.
-    <br />
+    <em>A Concise Dictionary of Akkadian</em>. 2<sup>nd</sup> (corrected)
+    printing.&nbsp; SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
+    Wiesbaden: Harrassowitz, ²2000.
     <br />
     <strong>By permission from Harrassowitz.</strong>
     <br />
@@ -40,10 +40,41 @@ const LiteratureRedirectBox = (): JSX.Element => (
   </div>
 )
 
-const Heading = (): JSX.Element => (
+const LiteratureRedirectBoxAGI = (): JSX.Element => (
+  <div className="text-center border border-dark m-3">
+    <strong>From</strong>
+    <br />
+    Sommerfeld, W., <em>Akkadische Glossare und Indizes.&nbsp;</em>
+    Version 1.1 (26. Mai 2021). (
+    <ExternalLink
+      className="text-dark "
+      href="https://creativecommons.org/licenses/by-nd/4.0/"
+    >
+      CC BY-ND 4.0
+    </ExternalLink>
+    ).
+    <br />
+    <ExternalLink
+      className="text-dark "
+      href="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
+    >
+      <i className="pointer__hover my-2 fas fa-external-link-square-alt" />
+    </ExternalLink>
+  </div>
+)
+
+const HeadingCDA = (): JSX.Element => (
   <Row>
     <Col>
       <h3>&#8544;. Concise Dictionary of Akkadian</h3>
+    </Col>
+  </Row>
+)
+
+const HeadingAGI = (): JSX.Element => (
+  <Row>
+    <Col>
+      <h3>&#8545;. Akkadische Glossare und Indizes</h3>
     </Col>
   </Row>
 )
@@ -90,8 +121,50 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       }
     >
-      <Heading />
+      <HeadingCDA />
       <WordDisplayDetails word={word} />
+      <LiteratureRedirectBoxCDA />
+      <HeadingAGI />
+      {word.akkadischeGlossareUndIndices
+        .sort((a, b) => (a.AfO > b.AfO ? 1 : -1))
+        .map((akkadischeGlossareUndIndice) => (
+          <>
+            <Col className="offset-md-1">
+              {akkadischeGlossareUndIndice.mainWord.length > 0 && (
+                <Row className="small text-black-50">
+                  (
+                  <MarkdownAndHtmlToHtml
+                    markdownAndHtml={akkadischeGlossareUndIndice.mainWord}
+                  />
+                  )
+                </Row>
+              )}
+              {akkadischeGlossareUndIndice.note.length > 0 && (
+                <Row>
+                  <MarkdownAndHtmlToHtml
+                    markdownAndHtml={akkadischeGlossareUndIndice.note}
+                  />
+                </Row>
+              )}
+              {akkadischeGlossareUndIndice.reference.length > 0 && (
+                <Row>
+                  <MarkdownAndHtmlToHtml
+                    markdownAndHtml={akkadischeGlossareUndIndice.reference}
+                  />
+                </Row>
+              )}
+              <Row className="mb-3">
+                <div
+                  className="small text-black-50 ml-3"
+                  key={akkadischeGlossareUndIndice.AfO}
+                >
+                  [{akkadischeGlossareUndIndice.AfO}]
+                </div>
+              </Row>
+            </Col>
+          </>
+        ))}
+      <LiteratureRedirectBoxAGI />
     </AppContent>
   )
 }
@@ -179,9 +252,7 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <LiteratureRedirectBox />
-          </Col>
+          <Col></Col>
         </Row>
       </Col>
     </Row>
