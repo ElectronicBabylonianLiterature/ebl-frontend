@@ -4,11 +4,11 @@ export interface OraccWord {
 }
 
 export interface AkkadischeGlossareUndIndex {
-  mainWord: string
-  note: string
-  reference: string
-  AfO: string
-  agiID: string
+  readonly mainWord: string
+  readonly note: string
+  readonly reference: string
+  readonly AfO: string
+  readonly agiID: string
 }
 
 export default interface Word {
