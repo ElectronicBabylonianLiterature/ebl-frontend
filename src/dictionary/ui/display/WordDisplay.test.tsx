@@ -86,7 +86,7 @@ const word = {
     notes: ['muvi', 'panum'],
     homonym: 'III',
   },
-  akkadischeGlossareUndIndex: [
+  akkadischeGlossareUndIndices: [
     {
       mainWord: 'serbig',
       note: 'jaruw',
