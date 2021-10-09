@@ -124,45 +124,49 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       <HeadingCDA />
       <WordDisplayDetails word={word} />
       <LiteratureRedirectBoxCDA />
-      <HeadingAGI />
-      {word.akkadischeGlossareUndIndices.map((akkadischeGlossareUndIndex) => (
-        <>
-          <Col className="offset-md-1">
-            {akkadischeGlossareUndIndex.mainWord.length > 0 && (
-              <Row className="small text-black-50">
-                (
-                <MarkdownAndHtmlToHtml
-                  markdownAndHtml={akkadischeGlossareUndIndex.mainWord}
-                />
-                )
-              </Row>
-            )}
-            {akkadischeGlossareUndIndex.note.length > 0 && (
-              <Row>
-                <MarkdownAndHtmlToHtml
-                  markdownAndHtml={akkadischeGlossareUndIndex.note}
-                />
-              </Row>
-            )}
-            {akkadischeGlossareUndIndex.reference.length > 0 && (
-              <Row>
-                <MarkdownAndHtmlToHtml
-                  markdownAndHtml={akkadischeGlossareUndIndex.reference}
-                />
-              </Row>
-            )}
-            <Row className="mb-3">
-              <div
-                className="small text-black-50 ml-3"
-                key={akkadischeGlossareUndIndex.AfO}
-              >
-                [{akkadischeGlossareUndIndex.AfO}]
-              </div>
-            </Row>
-          </Col>
-        </>
-      ))}
-      <LiteratureRedirectBoxAGI />
+      {word.akkadischeGlossareUndIndices && <HeadingAGI />}
+      {word.akkadischeGlossareUndIndices &&
+        word.akkadischeGlossareUndIndices
+          .slice()
+          .sort((a, b) => (a.AfO > b.AfO ? 1 : -1))
+          .map((akkadischeGlossareUndIndex) => (
+            <>
+              <Col className="offset-md-1">
+                {akkadischeGlossareUndIndex.mainWord.length > 0 && (
+                  <Row className="small text-black-50">
+                    (
+                    <MarkdownAndHtmlToHtml
+                      markdownAndHtml={akkadischeGlossareUndIndex.mainWord}
+                    />
+                    )
+                  </Row>
+                )}
+                {akkadischeGlossareUndIndex.note.length > 0 && (
+                  <Row>
+                    <MarkdownAndHtmlToHtml
+                      markdownAndHtml={akkadischeGlossareUndIndex.note}
+                    />
+                  </Row>
+                )}
+                {akkadischeGlossareUndIndex.reference.length > 0 && (
+                  <Row>
+                    <MarkdownAndHtmlToHtml
+                      markdownAndHtml={akkadischeGlossareUndIndex.reference}
+                    />
+                  </Row>
+                )}
+                <Row className="mb-3">
+                  <div
+                    className="small text-black-50 ml-3"
+                    key={akkadischeGlossareUndIndex.AfO}
+                  >
+                    [{akkadischeGlossareUndIndex.AfO}]
+                  </div>
+                </Row>
+              </Col>
+            </>
+          ))}
+      {word.akkadischeGlossareUndIndices && <LiteratureRedirectBoxAGI />}
     </AppContent>
   )
 }
