@@ -6,9 +6,9 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button, Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.css'
-import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
 import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
+import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import {
   AmplifiedMeanings,
   AmplifiedMeaningsDetails,
@@ -19,26 +19,6 @@ import {
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
 import { Markdown } from 'common/Markdown'
-
-const LiteratureRedirectBox = ({
-  authors,
-  book,
-  note,
-  link,
-  icon,
-}): JSX.Element => (
-  <div className="text-center border border-dark m-3 p-3">
-    <strong>From</strong>
-    <br />
-    {authors}, {book}.
-    <br />
-    <strong>{note}</strong>
-    <br />
-    <ExternalLink className="text-dark " href={link}>
-      <i className={icon} />`
-    </ExternalLink>
-  </div>
-)
 
 const Heading = ({ number, title }): JSX.Element => (
   <Row>
@@ -51,7 +31,7 @@ const Heading = ({ number, title }): JSX.Element => (
 )
 
 const Sections = [
-  { number: 'Ⅰ', title: 'Concise Dictionary of Akkadian' },
+  { number: 'Ⅰ', title: 'A Concise Dictionary of Akkadian' },
   { number: 'Ⅱ', title: 'Akkadische Glossare und Indizes' },
 ]
 
@@ -101,13 +81,8 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       <WordDisplayDetails word={word} />
       <LiteratureRedirectBox
         authors="Black, J.; George, A.R.; Postgate, N."
-        book={
-          <>
-            <em>A Concise Dictionary of Akkadian</em>. Second (corrected)
-            printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
-            Wiesbaden: Harrassowitz, ²2000.
-          </>
-        }
+        book={Sections[0].title}
+        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000."
         note="By permission from Harrassowitz."
         link={'https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml'}
         icon={'pointer__hover my-2 fas fa-shopping-cart fa-2x'}
@@ -122,34 +97,29 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           .map((akkadischeGlossareUndIndex) => (
             <>
               <Col className="offset-md-1">
-                {akkadischeGlossareUndIndex.mainWord.length > 0 && (
-                  <Row className="small text-black-50">
-                    (
-                    <MarkdownAndHtmlToHtml
-                      markdownAndHtml={akkadischeGlossareUndIndex.mainWord}
-                    />
-                    )
-                  </Row>
-                )}
-                {akkadischeGlossareUndIndex.note.length > 0 && (
-                  <Row>
-                    <MarkdownAndHtmlToHtml
-                      markdownAndHtml={akkadischeGlossareUndIndex.note}
-                    />
-                  </Row>
-                )}
-                {akkadischeGlossareUndIndex.reference.length > 0 && (
-                  <Row>
-                    <MarkdownAndHtmlToHtml
-                      markdownAndHtml={akkadischeGlossareUndIndex.reference}
-                    />
-                  </Row>
-                )}
-                <Row className="mb-3">
+                <Row className="small text-black-50">
                   <div
-                    className="small text-black-50 ml-3"
-                    key={akkadischeGlossareUndIndex.AfO}
-                  >
+                    dangerouslySetInnerHTML={{
+                      __html: akkadischeGlossareUndIndex.mainWord,
+                    }}
+                  />
+                </Row>
+                <Row>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: akkadischeGlossareUndIndex.note,
+                    }}
+                  />
+                </Row>
+                <Row>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: akkadischeGlossareUndIndex.reference,
+                    }}
+                  />
+                </Row>
+                <Row className="mb-3">
+                  <div className="small text-black-50 ml-3">
                     [{akkadischeGlossareUndIndex.AfO}]
                   </div>
                 </Row>
@@ -159,12 +129,8 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       {word.akkadischeGlossareUndIndices && (
         <LiteratureRedirectBox
           authors="Sommerfeld, W."
-          book={
-            <>
-              <em>Akkadische Glossare und Indizes</em>. Version 1.1 (26. Mai
-              2021).
-            </>
-          }
+          book={Sections[1].title}
+          subtitle="Version 1.1 (26. Mai 2021)."
           note={
             <>
               <ExternalLink

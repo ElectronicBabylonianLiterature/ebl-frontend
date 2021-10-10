@@ -1,8 +1,8 @@
 import React from 'react'
 import './Signs.css'
-import ExternalLink from 'common/ExternalLink'
 import { Link } from 'react-router-dom'
 import MarkdownAndHtmlToHtml from 'common/MarkdownAndHtmlToHtml'
+import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 
 function splitMesZl(
   mesZl: string,
@@ -58,27 +58,16 @@ export default function MesZlContent({
           <br />
         </div>
       )}
-      <div className="text-center border border-dark">
-        <strong>From</strong>
-        <br />
-        R. Borger,{' '}
-        <em>
-          Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte
-          Auflage.&nbsp;
-        </em>
-        Alter Orient und Altes Testament 305.
-        <br /> Münster: Ugarit-Verlag, <sup>2</sup>2010; Kapitel &#8546;.
-        <br />
-        <br />
-        <strong>By permission from Ugarit-Verlag.</strong>
-        <br />
-        <ExternalLink
-          className="text-dark "
-          href="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
-        >
-          <i className="pointer__hover my-2 fas fa-shopping-cart fa-2x" />
-        </ExternalLink>
-      </div>
+      <LiteratureRedirectBox
+        authors="Borger, R."
+        book="Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
+        subtitle="Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel &#8546;."
+        note="By permission from Ugarit-Verlag."
+        link={
+          'https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514'
+        }
+        icon={'pointer__hover my-2 fas fa-shopping-cart fa-2x'}
+      />
     </>
   )
 }
