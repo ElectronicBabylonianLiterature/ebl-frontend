@@ -20,64 +20,40 @@ import {
 } from 'dictionary/ui/display/WordDisplayParts'
 import { Markdown } from 'common/Markdown'
 
-const LiteratureRedirectBoxCDA = (): JSX.Element => (
-  <div className="text-center border border-dark m-3">
+const LiteratureRedirectBox = ({
+  authors,
+  book,
+  note,
+  link,
+  icon,
+}): JSX.Element => (
+  <div className="text-center border border-dark m-3 p-3">
     <strong>From</strong>
     <br />
-    Black, J.; George, A.R.; Postgate, N.,{' '}
-    <em>A Concise Dictionary of Akkadian</em>. 2<sup>nd</sup> (corrected)
-    printing.&nbsp; SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
-    Wiesbaden: Harrassowitz, ²2000.
+    {authors}, {book}.
     <br />
-    <strong>By permission from Harrassowitz.</strong>
+    <strong>{note}</strong>
     <br />
-    <ExternalLink
-      className="text-dark "
-      href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-    >
-      <i className="pointer__hover my-2 fas fa-shopping-cart fa-2x" />
+    <ExternalLink className="text-dark " href={link}>
+      <i className={icon} />`
     </ExternalLink>
   </div>
 )
 
-const LiteratureRedirectBoxAGI = (): JSX.Element => (
-  <div className="text-center border border-dark m-3">
-    <strong>From</strong>
-    <br />
-    Sommerfeld, W., <em>Akkadische Glossare und Indizes.&nbsp;</em>
-    Version 1.1 (26. Mai 2021). (
-    <ExternalLink
-      className="text-dark "
-      href="https://creativecommons.org/licenses/by-nd/4.0/"
-    >
-      CC BY-ND 4.0
-    </ExternalLink>
-    ).
-    <br />
-    <ExternalLink
-      className="text-dark "
-      href="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
-    >
-      <i className="pointer__hover my-2 fas fa-external-link-square-alt" />
-    </ExternalLink>
-  </div>
-)
-
-const HeadingCDA = (): JSX.Element => (
+const Heading = ({ number, title }): JSX.Element => (
   <Row>
     <Col>
-      <h3>&#8544;. Concise Dictionary of Akkadian</h3>
+      <h3 id={number}>
+        {number}. {title}
+      </h3>
     </Col>
   </Row>
 )
 
-const HeadingAGI = (): JSX.Element => (
-  <Row>
-    <Col>
-      <h3>&#8545;. Akkadische Glossare und Indizes</h3>
-    </Col>
-  </Row>
-)
+const Sections = [
+  { number: 'Ⅰ', title: 'Concise Dictionary of Akkadian' },
+  { number: 'Ⅱ', title: 'Akkadische Glossare und Indizes' },
+]
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
   const guideWord = `[${word.guideWord}]`
@@ -121,10 +97,24 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       }
     >
-      <HeadingCDA />
+      <Heading number={Sections[0].number} title={Sections[0].title} />
       <WordDisplayDetails word={word} />
-      <LiteratureRedirectBoxCDA />
-      {word.akkadischeGlossareUndIndices && <HeadingAGI />}
+      <LiteratureRedirectBox
+        authors="Black, J.; George, A.R.; Postgate, N."
+        book={
+          <>
+            <em>A Concise Dictionary of Akkadian</em>. Second (corrected)
+            printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5.
+            Wiesbaden: Harrassowitz, ²2000.
+          </>
+        }
+        note="By permission from Harrassowitz."
+        link={'https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml'}
+        icon={'pointer__hover my-2 fas fa-shopping-cart fa-2x'}
+      />
+      {word.akkadischeGlossareUndIndices && (
+        <Heading number={Sections[1].number} title={Sections[1].title} />
+      )}
       {word.akkadischeGlossareUndIndices &&
         word.akkadischeGlossareUndIndices
           .slice()
@@ -166,7 +156,29 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
               </Col>
             </>
           ))}
-      {word.akkadischeGlossareUndIndices && <LiteratureRedirectBoxAGI />}
+      {word.akkadischeGlossareUndIndices && (
+        <LiteratureRedirectBox
+          authors="Sommerfeld, W."
+          book={
+            <>
+              <em>Akkadische Glossare und Indizes</em>. Version 1.1 (26. Mai
+              2021).
+            </>
+          }
+          note={
+            <>
+              <ExternalLink
+                className="text-dark"
+                href="https://creativecommons.org/licenses/by-nd/4.0/"
+              >
+                CC BY-ND 4.0
+              </ExternalLink>
+            </>
+          }
+          link={'https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi'}
+          icon={'pointer__hover my-2 fas fa-external-link-square-alt'}
+        />
+      )}
     </AppContent>
   )
 }
