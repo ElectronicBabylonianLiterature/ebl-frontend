@@ -52,6 +52,18 @@ const wordErimmatu: Word = {
   akkadischeGlossareUndIndices: [],
 }
 
+const wordLipu: Word = {
+  _id: 'līpu I',
+  lemma: ['līpu'],
+  attested: true,
+  homonym: 'I',
+  logograms: [],
+  guideWord: 'descendent',
+  pos: [],
+  oraccWords: [],
+  akkadischeGlossareUndIndices: [],
+}
+
 function renderSignInformation(): RenderResult {
   return render(
     <MemoryRouter>
