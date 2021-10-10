@@ -31,7 +31,7 @@ describe('MesZl', () => {
     await screen.findByText('MesZL 131')
     userEvent.click(screen.getByRole('button'))
     await screen.findByText(
-      'Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage.'
+      'Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage'
     )
   })
   it('MesZl Content', async () => {
@@ -41,7 +41,7 @@ describe('MesZl', () => {
       </Router>
     )
     await screen.findByText(
-      'Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage.'
+      'Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage'
     )
     expect(container).toMatchSnapshot()
   })

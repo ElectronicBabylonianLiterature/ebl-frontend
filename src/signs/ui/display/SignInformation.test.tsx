@@ -51,7 +51,6 @@ const wordErimmatu: Word = {
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
 }
-
 const wordLipu: Word = {
   _id: 'līpu I',
   lemma: ['līpu'],
