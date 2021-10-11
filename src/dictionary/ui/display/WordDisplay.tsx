@@ -88,8 +88,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       <LiteratureRedirectBox
         authors="Black, J.; George, A.R.; Postgate, N."
         book={Sections[0].title}
-        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen
-        zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
         notelink=""
         note="By permission from Harrassowitz"
         link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
