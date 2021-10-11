@@ -7,7 +7,6 @@ import { Session } from 'auth/Session'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import FragmentCrumb from 'fragmentarium/ui/FragmentCrumb'
-import FragmentPager from 'fragmentarium/ui/fragment/FragmentPager'
 import SignService from 'signs/application/SignService'
 
 export default function TagSignsView({
@@ -26,13 +25,6 @@ export default function TagSignsView({
         new FragmentCrumb(number),
         new TextCrumb('Tag Signs'),
       ]}
-      title={
-        <FragmentPager
-          suffix={'/annotate'}
-          fragmentNumber={number}
-          fragmentService={fragmentService}
-        />
-      }
       wide
     >
       <SessionContext.Consumer>

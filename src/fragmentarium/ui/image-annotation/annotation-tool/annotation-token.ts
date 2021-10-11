@@ -12,6 +12,10 @@ export class AnnotationToken {
     readonly sign: Sign | null = null
   ) {}
 
+  static blank(): AnnotationToken {
+    return new AnnotationToken('blank', [], true, null)
+  }
+
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
     return Boolean(
       _.find(annotation, (singleAnnotation) =>

@@ -189,44 +189,13 @@ exports[`Diplay annotate view Snapshot 1`] = `
         role="toolbar"
       />
       <h2>
-        <a
-          aria-label="Previous"
-          href="/fragmentarium/X.0/annotate"
-        >
-          <i
-            aria-hidden="true"
-            class="fas fa-angle-left"
-          />
-        </a>
-        Test.Fragment
-        <a
-          aria-label="Next"
-          href="/fragmentarium/X.1/annotate"
-        >
-          <i
-            aria-hidden="true"
-            class="fas fa-angle-right"
-          />
-        </a>
+        Tag Signs
       </h2>
     </header>
     <div
       class="btn-group"
       role="group"
     >
-      <button
-        class="btn btn-outline-dark"
-        disabled=""
-        type="button"
-      >
-        Generate
-      </button>
-      <button
-        class="btn btn-outline-dark"
-        type="button"
-      >
-        Automatic Selection
-      </button>
       <button
         class="btn btn-outline-dark"
         type="button"

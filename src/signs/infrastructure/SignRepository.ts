@@ -16,14 +16,14 @@ class SignRepository {
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken_>>
-  ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> | Promise<any> {
+  ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
       Promise.all(
         tokensRow.map((token) => {
           if (token.enabled) {
             return this.search({
               value: token.name,
-              subIndex: token.subIndex || undefined,
+              subIndex: token.subIndex || 1,
             }).then(
               (results) =>
                 new AnnotationToken(

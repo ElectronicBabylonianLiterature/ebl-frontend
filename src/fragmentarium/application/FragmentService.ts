@@ -60,10 +60,7 @@ export interface FragmentRepository {
 }
 
 export interface AnnotationRepository {
-  findAnnotations(
-    number: string,
-    generateAnnotations: boolean
-  ): Bluebird<readonly Annotation[]>
+  findAnnotations(number: string): Bluebird<readonly Annotation[]>
   updateAnnotations(
     number: string,
     annotations: readonly Annotation[]
@@ -179,10 +176,7 @@ export class FragmentService {
   }
 
   findAnnotations(number: string): Bluebird<readonly Annotation[]> {
-    return this.fragmentRepository.findAnnotations(number, false)
-  }
-  generateAnnotations(number: string): Bluebird<readonly Annotation[]> {
-    return this.fragmentRepository.findAnnotations(number, true)
+    return this.fragmentRepository.findAnnotations(number)
   }
 
   updateAnnotations(

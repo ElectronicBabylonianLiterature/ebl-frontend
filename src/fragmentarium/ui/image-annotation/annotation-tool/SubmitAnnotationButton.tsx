@@ -28,7 +28,7 @@ export function SubmitBlankAnnotationButton({
       isHoveringOverAnnotation={isHoveringOverAnnotation}
       alreadySelected={false}
       setSignOfHoveringButton={setSignOfHoveringButton}
-      token={new AnnotationToken('blank', [-1], true)}
+      token={AnnotationToken.blank()}
       annotation={annotation}
       onClick={onClick}
       handleSelection={handleSelection}

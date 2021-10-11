@@ -4,7 +4,6 @@ import { Fragment } from 'fragmentarium/domain/fragment'
 import { Col, Row } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
-import Bluebird from 'bluebird'
 import SignService from 'signs/application/SignService'
 import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation'
 
@@ -95,13 +94,8 @@ const WithPhoto = withData<
   Blob | Record<string, never>
 >(
   ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
-  ({ fragment, fragmentService }) => {
-    try {
-      return fragmentService.findPhoto(fragment)
-    } catch (e) {
-      return Bluebird.resolve({})
-    }
-  }
+  ({ fragment, fragmentService }) =>
+    fragmentService.findPhoto(fragment).catch(() => ({}))
 )
 
 export default withData<

@@ -199,15 +199,12 @@ class ApiFragmentRepository
       })
   }
 
-  findAnnotations(
-    number: string,
-    generateAnnotations = false
-  ): Promise<readonly Annotation[]> {
+  findAnnotations(number: string): Promise<readonly Annotation[]> {
     return this.apiClient
       .fetchJson(
         `${createFragmentPath(
           number
-        )}/annotations?generateAnnotations=${generateAnnotations}`,
+        )}/annotations?generateAnnotations=${false}`,
         true
       )
       .then(({ annotations }) =>

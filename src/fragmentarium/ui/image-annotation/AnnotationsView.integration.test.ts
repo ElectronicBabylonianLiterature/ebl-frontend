@@ -20,7 +20,6 @@ describe('Diplay annotate view', () => {
   beforeEach(async () => {
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
-      .expectPager(fragmentNumber, { previous: 'X.0', next: 'X.1' })
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber, photo)
       .expectAnnotations(fragmentNumber, annotationsDto)
