@@ -570,14 +570,19 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         class="row"
       >
         <div>
-          hauz
+          aasad asas 
+          <em>
+            itiparu
+          </em>
         </div>
       </div>
       <div
         class="row"
       >
         <div>
-          huzl
+          <i>
+            širkū
+          </i>
         </div>
       </div>
       <div
@@ -599,21 +604,31 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         class="small text-black-50 row"
       >
         <div>
-          serbig
+          <sup
+            style="font-style: normal;"
+          >
+            serbig
+          </sup>
         </div>
       </div>
       <div
         class="row"
       >
         <div>
-          jaruw
+          <sup
+            style="font-style: normal;"
+          >
+            jaruw
+          </sup>
         </div>
       </div>
       <div
         class="row"
       >
         <div>
-          itiparu
+          <em>
+            itiparu
+          </em>
         </div>
       </div>
       <div
