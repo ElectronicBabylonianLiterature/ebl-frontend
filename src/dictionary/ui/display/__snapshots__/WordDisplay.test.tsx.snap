@@ -511,7 +511,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
       </div>
     </div>
     <div
-      class="text-center border border-dark m-3 p-3"
+      class="text-center border border-dark m-2 p-2"
     >
       <strong>
         From
@@ -523,10 +523,11 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         A Concise Dictionary of Akkadian
       </em>
       . 
-      Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000.
+      Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000
+      .
       <br />
       <strong>
-        By permission from Harrassowitz.
+        By permission from Harrassowitz
       </strong>
       <br />
       <a
@@ -644,7 +645,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
       </div>
     </div>
     <div
-      class="text-center border border-dark m-3 p-3"
+      class="text-center border border-dark m-2 p-2"
     >
       <strong>
         From
@@ -656,18 +657,19 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         Akkadische Glossare und Indizes
       </em>
       . 
-      Version 1.1 (26. Mai 2021).
+      Version 1.1 (26. Mai 2021)
+      .
       <br />
-      <strong>
-        <a
-          class="text-dark"
-          href="https://creativecommons.org/licenses/by-nd/4.0/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+      <a
+        class="text-dark "
+        href="https://creativecommons.org/licenses/by-nd/4.0/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <strong>
           CC BY-ND 4.0
-        </a>
-      </strong>
+        </strong>
+      </a>
       <br />
       <a
         class="text-dark "
