@@ -88,7 +88,8 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       <LiteratureRedirectBox
         authors="Black, J.; George, A.R.; Postgate, N."
         book={Sections[0].title}
-        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen
+        zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
         notelink=""
         note="By permission from Harrassowitz"
         link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
@@ -104,8 +105,8 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         <LiteratureRedirectBox
           authors="Sommerfeld, W."
           book={Sections[1].title}
-          subtitle="Version 1.1 (26. Mai 2021)"
           notelink="https://creativecommons.org/licenses/by-nd/4.0/"
+          subtitle="Version 1.1 (26. Mai 2021)"
           note="CC BY-ND 4.0"
           link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
           icon="pointer__hover my-2 fas fa-external-link-square-alt"
