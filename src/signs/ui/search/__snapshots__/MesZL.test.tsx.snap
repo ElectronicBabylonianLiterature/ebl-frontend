@@ -110,7 +110,7 @@ exports[`MesZl MesZl Content 1`] = `
     <br />
   </div>
   <div
-    class="text-center border border-dark m-3 p-3"
+    class="text-center border border-dark m-2 p-2"
   >
     <strong>
       From
@@ -122,10 +122,11 @@ exports[`MesZl MesZl Content 1`] = `
       Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
     </em>
     . 
-    Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel Ⅲ.
+    Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel Ⅲ
+    .
     <br />
     <strong>
-      By permission from Ugarit-Verlag.
+      By permission from Ugarit-Verlag
     </strong>
     <br />
     <a
