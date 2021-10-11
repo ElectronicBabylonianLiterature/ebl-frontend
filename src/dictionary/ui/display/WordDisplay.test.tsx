@@ -88,16 +88,16 @@ const word = {
   },
   akkadischeGlossareUndIndices: [
     {
-      mainWord: 'serbig',
-      note: 'jaruw',
-      reference: 'itiparu',
+      mainWord: '<sup style="font-style: normal;">serbig</sup>',
+      note: '<sup style="font-style: normal;">jaruw</sup>',
+      reference: '<em>itiparu</em>',
       AfO: 'panum',
       agiID: '17865',
     },
     {
       mainWord: 'puul',
-      note: 'hauz',
-      reference: 'huzl',
+      note: 'aasad asas <em>itiparu</em>',
+      reference: '<i>širkū</i>',
       AfO: 'juzz',
       agiID: '87161',
     },

@@ -8,6 +8,13 @@ export const LiteratureRedirectBox = ({
   note,
   link,
   icon,
+}: {
+  authors: string
+  book: string
+  subtitle: string
+  note: any
+  link: any
+  icon: any
 }): JSX.Element => (
   <div className="text-center border border-dark m-3 p-3">
     <strong>From</strong>

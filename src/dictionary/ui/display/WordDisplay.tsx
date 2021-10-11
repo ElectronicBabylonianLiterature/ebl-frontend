@@ -18,9 +18,16 @@ import {
   OtherForm,
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
+import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import { Markdown } from 'common/Markdown'
 
-const Heading = ({ number, title }): JSX.Element => (
+const Heading = ({
+  number,
+  title,
+}: {
+  number: string
+  title: string
+}): JSX.Element => (
   <Row>
     <Col>
       <h3 id={number}>
@@ -90,42 +97,9 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       {word.akkadischeGlossareUndIndices && (
         <Heading number={Sections[1].number} title={Sections[1].title} />
       )}
-      {word.akkadischeGlossareUndIndices &&
-        word.akkadischeGlossareUndIndices
-          .slice()
-          .sort((a, b) => (a.AfO > b.AfO ? 1 : -1))
-          .map((akkadischeGlossareUndIndex) => (
-            <>
-              <Col className="offset-md-1">
-                <Row className="small text-black-50">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: akkadischeGlossareUndIndex.mainWord,
-                    }}
-                  />
-                </Row>
-                <Row>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: akkadischeGlossareUndIndex.note,
-                    }}
-                  />
-                </Row>
-                <Row>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: akkadischeGlossareUndIndex.reference,
-                    }}
-                  />
-                </Row>
-                <Row className="mb-3">
-                  <div className="small text-black-50 ml-3">
-                    [{akkadischeGlossareUndIndex.AfO}]
-                  </div>
-                </Row>
-              </Col>
-            </>
-          ))}
+      {word.akkadischeGlossareUndIndices && (
+        <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
+      )}
       {word.akkadischeGlossareUndIndices && (
         <LiteratureRedirectBox
           authors="Sommerfeld, W."
