@@ -28,19 +28,17 @@ export default function FragmentLink({
   number,
   children,
   folio,
-  suffix = '',
   ...props
 }: PropsWithChildren<{
   number: string
   children: ReactNode
   folio: Folio | null
-  suffix?: string
 }>): JSX.Element {
   const link = folio
     ? createFragmentUrlWithFolio(number, folio)
     : createFragmentUrl(number)
   return (
-    <Link to={link + suffix} {...props}>
+    <Link to={link} {...props}>
       {children}
     </Link>
   )

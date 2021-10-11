@@ -8,13 +8,11 @@ import { FragmentPagerData } from 'fragmentarium/domain/pager'
 type Props = {
   data: FragmentPagerData
   fragmentNumber: string
-  suffix?: string
 }
 
 const FragmentPager: FunctionComponent<Props> = ({
   data,
   fragmentNumber,
-  suffix = '',
 }: Props): JSX.Element => {
   const PagerLink = ({
     nextFragmentNumber,
@@ -24,7 +22,6 @@ const FragmentPager: FunctionComponent<Props> = ({
     direction: string
   }) => (
     <FragmentLink
-      suffix={suffix}
       number={nextFragmentNumber}
       aria-label={direction}
       folio={null}
