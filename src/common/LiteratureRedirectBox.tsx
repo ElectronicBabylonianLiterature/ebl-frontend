@@ -5,6 +5,7 @@ export const LiteratureRedirectBox = ({
   authors,
   book,
   subtitle,
+  notelink,
   note,
   link,
   icon,
@@ -12,16 +13,23 @@ export const LiteratureRedirectBox = ({
   authors: string
   book: string
   subtitle: string
-  note: any
-  link: any
-  icon: any
+  notelink: string | null
+  note: string
+  link: string
+  icon: string
 }): JSX.Element => (
-  <div className="text-center border border-dark m-3 p-3">
+  <div className="text-center border border-dark m-2 p-2">
     <strong>From</strong>
     <br />
-    {authors}, <em>{book}</em>. {subtitle}
+    {authors}, <em>{book}</em>. {subtitle}.
     <br />
-    <strong>{note}</strong>
+    {(notelink && (
+      <>
+        <ExternalLink className="text-dark " href={notelink}>
+          <strong>{note}</strong>
+        </ExternalLink>
+      </>
+    )) || <strong>{note}</strong>}
     <br />
     <ExternalLink className="text-dark " href={link}>
       <i className={icon} />`

@@ -61,12 +61,11 @@ export default function MesZlContent({
       <LiteratureRedirectBox
         authors="Borger, R."
         book="Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage"
-        subtitle="Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel &#8546;."
-        note="By permission from Ugarit-Verlag."
-        link={
-          'https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514'
-        }
-        icon={'pointer__hover my-2 fas fa-shopping-cart fa-2x'}
+        subtitle="Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel &#8546;"
+        notelink=""
+        note="By permission from Ugarit-Verlag"
+        link="https://ugarit-verlag.com/en/products/0e8e7ca5d1f5493aa351e3ebc42fb514"
+        icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
       />
     </>
   )
