@@ -564,47 +564,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         class="small text-black-50 row"
       >
         <div>
-          puul
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          aasad asas 
-          <em>
-            itiparu
-          </em>
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          <i>
-            širkū
-          </i>
-        </div>
-      </div>
-      <div
-        class="mb-3 row"
-      >
-        <div
-          class="small text-black-50 ml-3"
-        >
-          [
-          juzz
-          ]
-        </div>
-      </div>
-    </div>
-    <div
-      class="offset-md-1 col"
-    >
-      <div
-        class="small text-black-50 row"
-      >
-        <div>
           <sup
             style="font-style: normal;"
           >
@@ -640,6 +599,47 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         >
           [
           panum
+          ]
+        </div>
+      </div>
+    </div>
+    <div
+      class="offset-md-1 col"
+    >
+      <div
+        class="small text-black-50 row"
+      >
+        <div>
+          puul
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div>
+          aasad asas 
+          <em>
+            itiparu
+          </em>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div>
+          <i>
+            širkū
+          </i>
+        </div>
+      </div>
+      <div
+        class="mb-3 row"
+      >
+        <div
+          class="small text-black-50 ml-3"
+        >
+          [
+          juzz
           ]
         </div>
       </div>
