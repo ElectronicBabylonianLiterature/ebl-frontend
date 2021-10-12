@@ -44,6 +44,7 @@ const word: Word = {
   homonym: 'I',
   guideWord: 'test',
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
   pos: [],
 }
 const fragmentRepository = {

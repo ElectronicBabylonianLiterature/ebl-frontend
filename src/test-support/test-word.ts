@@ -67,4 +67,5 @@ export const wordDto: Word = {
   pos: ['V'],
   guideWord: 'weed',
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
 }

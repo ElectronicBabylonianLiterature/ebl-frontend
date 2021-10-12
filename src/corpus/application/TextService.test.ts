@@ -81,6 +81,7 @@ const word: Word = {
   homonym: 'I',
   guideWord: '',
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
 }
 
 const lemmatization = [
