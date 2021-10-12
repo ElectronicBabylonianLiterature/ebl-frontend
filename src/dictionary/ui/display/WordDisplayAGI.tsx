@@ -10,7 +10,7 @@ export function AGI({
   AkkadischeGlossareUndIndices: any
 }): JSX.Element {
   return AkkadischeGlossareUndIndices.slice()
-    .sort((a, b) => (a.AfO > b.AfO ? 1 : -1))
+    .sort(compareAfO)
     .map((InstanceOfAkkadischeGlossareUndIndices) => (
       <>
         <Col className="offset-md-1">
@@ -47,4 +47,20 @@ export function AGI({
         </Col>
       </>
     ))
+}
+
+function compareAfO(a, b) {
+  if (a.AfO === b.AfO) {
+    return 0
+  } else if (a.AfO.includes('Beih')) {
+    return 1
+  } else if (b.AfO.includes('Beih')) {
+    return -1
+  } else if (a.AfO > b.AfO) {
+    return -1
+  } else if (b.AfO > a.AfO) {
+    return 1
+  } else {
+    return 0
+  }
 }
