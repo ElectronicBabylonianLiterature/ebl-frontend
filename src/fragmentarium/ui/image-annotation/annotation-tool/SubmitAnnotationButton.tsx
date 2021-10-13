@@ -75,7 +75,7 @@ export default function SubmitAnnotationButton({
             ...annotation.data,
             value: `${token.value}`,
             path: token.path,
-            signName: token.sign ? token.sign.name : token.value,
+            signName: token.sign ? token.sign.name : '',
           },
         }
         onClick(newAnnotation)
