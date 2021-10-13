@@ -110,28 +110,23 @@ exports[`MesZl MesZl Content 1`] = `
     <br />
   </div>
   <div
-    class="text-center border border-dark"
+    class="text-center border border-dark m-2 p-2"
   >
     <strong>
       From
     </strong>
     <br />
-    R. Borger,
-     
+    Borger, R.
+    , 
     <em>
-      Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage. 
+      Mesopotamisches Zeichenlexikon. Zweite, revidierte und aktualisierte Auflage
     </em>
-    Alter Orient und Altes Testament 305.
-    <br />
-     Münster: Ugarit-Verlag, 
-    <sup>
-      2
-    </sup>
-    2010; Kapitel Ⅲ.
-    <br />
+    . 
+    Alter Orient und Altes Testament 305. Münster: Ugarit-Verlag, ²2010; Kapitel Ⅲ
+    .
     <br />
     <strong>
-      By permission from Ugarit-Verlag.
+      By permission from Ugarit-Verlag
     </strong>
     <br />
     <a
@@ -143,6 +138,7 @@ exports[`MesZl MesZl Content 1`] = `
       <i
         class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
       />
+      \`
     </a>
   </div>
 </div>

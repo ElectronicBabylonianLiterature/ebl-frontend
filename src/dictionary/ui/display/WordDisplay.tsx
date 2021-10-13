@@ -6,8 +6,8 @@ import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button, Col, Row } from 'react-bootstrap'
 import './wordInformationDisplay.css'
-import ExternalLink from 'common/ExternalLink'
 import WordService from 'dictionary/application/WordService'
+import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import {
   AmplifiedMeanings,
   AmplifiedMeaningsDetails,
@@ -17,34 +17,29 @@ import {
   OtherForm,
   SingleDerivative,
 } from 'dictionary/ui/display/WordDisplayParts'
+import { AGI } from 'dictionary/ui/display/WordDisplayAGI'
 import { Markdown } from 'common/Markdown'
 
-const LiteratureRedirectBox = (): JSX.Element => (
-  <ExternalLink
-    className="text-dark"
-    href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-    title="A Concise Dictionary of Akkadian, Harrassowitz Verlag"
-  >
-    <Row>
-      <Col xs={11} className="mx-auto">
-        <Row className="m-3 py-2 border border-dark">
-          <Col xs="auto">
-            <i className="pointer__hover mt-2 fas fa-shopping-cart" />
-          </Col>
-          <Col className="pointer__hover my-auto">
-            <h5>
-              {' '}
-              From Black, J.; George, A.R.; Postgate, N., A Concise Dictionary
-              of Akkadian. 2nd (corrected) printing. SANTAG Arbeiten und
-              Untersuchungen zur Keilschriftkunde, Band 5. Wiesbaden:
-              Harrassowitz, 2000
-            </h5>
-          </Col>
-        </Row>
-      </Col>
-    </Row>
-  </ExternalLink>
+const Heading = ({
+  number,
+  title,
+}: {
+  number: string
+  title: string
+}): JSX.Element => (
+  <Row>
+    <Col>
+      <h3 id={number}>
+        {number}. {title}
+      </h3>
+    </Col>
+  </Row>
 )
+
+const Sections = [
+  { number: 'Ⅰ', title: 'A Concise Dictionary of Akkadian' },
+  { number: 'Ⅱ', title: 'Akkadische Glossare und Indizes' },
+]
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
   const guideWord = `[${word.guideWord}]`
@@ -56,11 +51,6 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       crumbs={[new SectionCrumb('Dictionary'), new TextCrumb(word._id)]}
       title={
         <>
-          <Row>
-            <Col>
-              <LiteratureRedirectBox />
-            </Col>
-          </Row>
           <Row>
             <Col>
               <strong>
@@ -93,7 +83,34 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       }
     >
+      <Heading number={Sections[0].number} title={Sections[0].title} />
       <WordDisplayDetails word={word} />
+      <LiteratureRedirectBox
+        authors="Black, J.; George, A.R.; Postgate, N."
+        book={Sections[0].title}
+        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+        notelink=""
+        note="By permission from Harrassowitz"
+        link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+        icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+      />
+      {word.akkadischeGlossareUndIndices && (
+        <Heading number={Sections[1].number} title={Sections[1].title} />
+      )}
+      {word.akkadischeGlossareUndIndices && (
+        <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
+      )}
+      {word.akkadischeGlossareUndIndices && (
+        <LiteratureRedirectBox
+          authors="Sommerfeld, W."
+          book={Sections[1].title}
+          notelink="https://creativecommons.org/licenses/by-nd/4.0/"
+          subtitle="Version 1.1 (26. Mai 2021)"
+          note="CC BY-ND 4.0"
+          link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
+          icon="pointer__hover my-2 fas fa-external-link-square-alt"
+        />
+      )}
     </AppContent>
   )
 }
@@ -179,6 +196,9 @@ function WordDisplayDetails({ word }: { word: Word }): JSX.Element {
               amplifiedMeanings={word.amplifiedMeanings}
             />
           </Col>
+        </Row>
+        <Row>
+          <Col></Col>
         </Row>
       </Col>
     </Row>

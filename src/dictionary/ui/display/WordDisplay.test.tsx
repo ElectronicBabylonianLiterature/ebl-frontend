@@ -86,6 +86,22 @@ const word = {
     notes: ['muvi', 'panum'],
     homonym: 'III',
   },
+  akkadischeGlossareUndIndices: [
+    {
+      mainWord: '<sup style="font-style: normal;">serbig</sup>',
+      note: '<sup style="font-style: normal;">jaruw</sup>',
+      reference: '<em>itiparu</em>',
+      AfO: 'panum',
+      agiID: '17865',
+    },
+    {
+      mainWord: 'puul',
+      note: 'aasad asas <em>itiparu</em>',
+      reference: '<i>širkū</i>',
+      AfO: 'juzz',
+      agiID: '87161',
+    },
+  ],
   amplifiedMeanings: [
     {
       meaning:

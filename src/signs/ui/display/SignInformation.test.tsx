@@ -49,6 +49,7 @@ const wordErimmatu: Word = {
   guideWord: '(egg-shaped) bead',
   pos: [],
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
 }
 const wordLipu: Word = {
   _id: 'līpu I',
@@ -59,6 +60,7 @@ const wordLipu: Word = {
   guideWord: 'descendent',
   pos: [],
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
 }
 
 function renderSignInformation(): RenderResult {

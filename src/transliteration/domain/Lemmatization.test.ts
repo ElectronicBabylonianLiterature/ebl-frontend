@@ -137,6 +137,7 @@ test.each([
         pos: [],
         guideWord: '',
         oraccWords: [],
+        akkadischeGlossareUndIndices: [],
       }),
     ]),
     true,

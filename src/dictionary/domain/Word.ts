@@ -3,6 +3,14 @@ export interface OraccWord {
   guideWord: string
 }
 
+export interface AkkadischeGlossareUndIndex {
+  readonly mainWord: string
+  readonly note: string
+  readonly reference: string
+  readonly AfO: string
+  readonly agiID: string
+}
+
 export default interface Word {
   readonly _id: string
   readonly lemma: readonly string[]
@@ -10,5 +18,6 @@ export default interface Word {
   readonly pos: readonly string[]
   readonly guideWord: string
   readonly oraccWords: readonly OraccWord[]
+  readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
   readonly [key: string]: any
 }

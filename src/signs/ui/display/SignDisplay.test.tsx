@@ -40,6 +40,7 @@ const word: Word = {
   homonym: '',
   lemma: [],
   oraccWords: [],
+  akkadischeGlossareUndIndices: [],
   pos: [],
   _id: '',
 }
