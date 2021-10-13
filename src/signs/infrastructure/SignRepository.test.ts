@@ -4,10 +4,7 @@ import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import Sign from 'signs/domain/Sign'
 import { stringify } from 'query-string'
-import {
-  AnnotationToken,
-  AnnotationTokenWithNameAndSubIndex,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { signFactory } from 'test-support/sign-fixtures'
 
 jest.mock('http/ApiClient')
@@ -56,8 +53,8 @@ it('test associate Signs', async () => {
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
     [
-      new AnnotationTokenWithNameAndSubIndex('kur1', [0], true, 'kur1', 1),
-      new AnnotationTokenWithNameAndSubIndex('kur2', [0], true, 'kur2', 1),
+      new AnnotationToken('kur1', [0], true, 'kur1', 1),
+      new AnnotationToken('kur2', [0], true, 'kur2', 1),
     ],
   ]
 

@@ -2,10 +2,7 @@ import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
-import {
-  AnnotationToken,
-  AnnotationTokenWithNameAndSubIndex,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 class SignRepository {
   private readonly apiClient
@@ -15,7 +12,7 @@ class SignRepository {
   }
 
   associateSigns(
-    tokens: ReadonlyArray<ReadonlyArray<AnnotationTokenWithNameAndSubIndex>>
+    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
       Promise.all(

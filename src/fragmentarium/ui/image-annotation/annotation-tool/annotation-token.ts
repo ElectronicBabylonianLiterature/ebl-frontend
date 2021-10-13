@@ -9,11 +9,13 @@ export class AnnotationToken {
     readonly value: string,
     readonly path: readonly number[],
     readonly enabled: boolean,
-    readonly sign: Sign | null = null
+    readonly sign: Sign | null = null,
+    readonly name: string = '',
+    readonly subIndex: number | null = null
   ) {}
 
   static blank(): AnnotationToken {
-    return new AnnotationToken('blank', [], true, null)
+    return new AnnotationToken('blank', [], true)
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
@@ -29,30 +31,16 @@ export class AnnotationToken {
   }
 }
 
-export class AnnotationTokenWithNameAndSubIndex extends AnnotationToken {
-  constructor(
-    readonly value: string,
-    readonly path: readonly number[],
-    readonly enabled: boolean,
-    readonly name: string = '',
-    readonly subIndex: number | null = null,
-    readonly sign: Sign | null = null
-  ) {
-    super(value, path, enabled, sign)
-    this.name = name
-    this.subIndex = subIndex
-  }
-}
-
 function mapToken(
   token: Token,
   path: readonly number[]
-): AnnotationTokenWithNameAndSubIndex | AnnotationTokenWithNameAndSubIndex[] {
+): AnnotationToken | AnnotationToken[] {
   if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return new AnnotationTokenWithNameAndSubIndex(
+    return new AnnotationToken(
       token.value,
       path,
       true,
+      null,
       'name' in token ? token.name : '',
       'subIndex' in token ? token.subIndex : null
     )
@@ -61,10 +49,11 @@ function mapToken(
       mapToken(part, [...path, index])
     )
   } else {
-    return new AnnotationTokenWithNameAndSubIndex(
+    return new AnnotationToken(
       token.value,
       path,
       false,
+      null,
       'name' in token ? token.name : '',
       'subIndex' in token ? token.subIndex : null
     )
@@ -73,9 +62,9 @@ function mapToken(
 
 export function createAnnotationTokens(
   text: Text
-): ReadonlyArray<ReadonlyArray<AnnotationTokenWithNameAndSubIndex>> {
+): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
   return text.lines.map((line, lineNumber) => [
-    new AnnotationTokenWithNameAndSubIndex(line.prefix, [lineNumber], false),
+    new AnnotationToken(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
       mapToken(token, [lineNumber, index])
     ),
