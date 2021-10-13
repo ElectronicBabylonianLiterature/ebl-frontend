@@ -511,7 +511,7 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
       </div>
     </div>
     <div
-      class="text-center border border-dark m-2 p-2"
+      class="text-center border border-dark mx-5 m-3 p-2"
     >
       <strong>
         From
@@ -564,47 +564,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         class="small text-black-50 row"
       >
         <div>
-          puul
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          aasad asas 
-          <em>
-            itiparu
-          </em>
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          <i>
-            širkū
-          </i>
-        </div>
-      </div>
-      <div
-        class="mb-3 row"
-      >
-        <div
-          class="small text-black-50 ml-3"
-        >
-          [
-          juzz
-          ]
-        </div>
-      </div>
-    </div>
-    <div
-      class="offset-md-1 col"
-    >
-      <div
-        class="small text-black-50 row"
-      >
-        <div>
           <sup
             style="font-style: normal;"
           >
@@ -645,7 +604,48 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
       </div>
     </div>
     <div
-      class="text-center border border-dark m-2 p-2"
+      class="offset-md-1 col"
+    >
+      <div
+        class="small text-black-50 row"
+      >
+        <div>
+          puul
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div>
+          aasad asas 
+          <em>
+            itiparu
+          </em>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div>
+          <i>
+            širkū
+          </i>
+        </div>
+      </div>
+      <div
+        class="mb-3 row"
+      >
+        <div
+          class="small text-black-50 ml-3"
+        >
+          [
+          juzz
+          ]
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-center border border-dark mx-5 m-3 p-2"
     >
       <strong>
         From
