@@ -125,9 +125,6 @@ function FragmentAnnotation({
       setAnnotations(automaticAlignment(tokens, hovering, annotations))
     }
     setAnnotation(annotation)
-    if (annotation.selection) {
-      console.log(annotation)
-    }
   }
 
   const getSelectionById = (
@@ -178,7 +175,6 @@ function FragmentAnnotation({
   }
 
   const onClick = (event: MouseEvent) => {
-    console.log(event)
     if (event.ctrlKey && isChangeExistingMode) {
       setToggled(hovering)
     }
