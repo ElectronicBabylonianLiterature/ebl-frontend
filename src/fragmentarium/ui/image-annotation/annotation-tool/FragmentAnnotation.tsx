@@ -121,8 +121,6 @@ function FragmentAnnotation({
     if (isChangeExistingMode && annotation.selection && !hovering) {
       setToggled(null)
       setIsChangeExistingMode(false)
-    } else if (annotation.selection && hovering && isAutomaticSelected) {
-      setAnnotations(automaticAlignment(tokens, hovering, annotations))
     }
     setAnnotation(annotation)
   }
@@ -157,6 +155,9 @@ function FragmentAnnotation({
           ),
           newAnnotation,
         ])
+        if (isChangeExistingMode) {
+          setAnnotations(automaticAlignment(tokens, newAnnotation, annotations))
+        }
         setToggled(null)
         setIsChangeExistingMode(false)
       } else if (geometry) {
@@ -188,6 +189,19 @@ function FragmentAnnotation({
         setIsDisableSelector(false)
       }
     }
+    if (isAutomaticSelected && annotation.selection && annotation.geometry) {
+      const token = AnnotationToken.blank()
+      const automaticAnnotation = {
+        ...annotation,
+        data: {
+          ...annotation.data,
+          value: `${token.value}`,
+          path: token.path,
+          signName: '',
+        },
+      }
+      handleSelection(automaticAnnotation)
+    }
   }
 
   return (
@@ -200,7 +214,14 @@ function FragmentAnnotation({
         >
           Automatic Selection
         </Button>
-        <Button variant="outline-dark" onClick={() => setAnnotations([])}>
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            setAnnotations([])
+            setIsAutomaticSelected(false)
+            setIsChangeExistingMode(false)
+          }}
+        >
           Delete everything
         </Button>
         <Button variant="outline-dark" disabled>
