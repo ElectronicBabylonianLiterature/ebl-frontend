@@ -211,7 +211,12 @@ const testData: TestData[] = [
     [fragmentId],
     apiClient.fetchJson,
     annotations,
-    [`/fragments/${encodeURIComponent(fragmentId)}/annotations`, true],
+    [
+      `/fragments/${encodeURIComponent(
+        fragmentId
+      )}/annotations?generateAnnotations=false`,
+      true,
+    ],
     Promise.resolve({ annotations: annotationsDto }),
   ],
   [

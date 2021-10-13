@@ -10,11 +10,20 @@ export interface Geometry {
 
 export interface AnnotationData {
   readonly id?: string
+  readonly signName: string
   readonly value: string
   readonly path: readonly number[]
 }
 
+interface Selection {
+  mode: 'SELECTING' | 'EDITING'
+  anchorX: number
+  anchorY: number
+  showEditor?: boolean
+}
+
 export interface RawAnnotation {
+  readonly selection?: Selection
   readonly geometry?: Geometry
   readonly data?: AnnotationData
 }

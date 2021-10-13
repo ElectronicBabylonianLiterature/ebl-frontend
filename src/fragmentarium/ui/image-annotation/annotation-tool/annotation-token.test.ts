@@ -1,4 +1,4 @@
-import { AnnotationToken } from './annotation-token'
+import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import Annotation from 'fragmentarium/domain/annotation'
 
 test.each([
@@ -15,6 +15,7 @@ test.each([
       {
         value: 'ruk',
         path: [2, 0, 1],
+        signName: 'RUK',
       }
     ),
     true,
@@ -32,6 +33,7 @@ test.each([
       {
         value: 'ruk',
         path: [2, 0, 4],
+        signName: 'RUK',
       }
     ),
     false,
@@ -49,6 +51,7 @@ test.each([
       data: {
         value: 'ruk',
         path: [2, 0, 1],
+        signName: 'RUK',
       },
     },
     true,
@@ -66,11 +69,12 @@ test.each([
       data: {
         value: 'ruk',
         path: [2, 0, 4],
+        signName: 'RUK',
       },
     },
     false,
   ],
   [new AnnotationToken('kur', [2, 0, 1], true), {}, false],
 ])('hasMatchingPath %#', (token, annotation, expected) => {
-  expect(token.hasMatchingPath(annotation)).toEqual(expected)
+  expect(token.isEqualPath(annotation)).toEqual(expected)
 })

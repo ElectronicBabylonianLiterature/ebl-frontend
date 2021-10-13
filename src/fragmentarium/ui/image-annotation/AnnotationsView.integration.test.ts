@@ -8,7 +8,7 @@ const fragmentWithoutReferences = produce(fragmentDto, (draft) => {
   draft.references = []
 })
 const fragmentNumber = 'Test.Fragment'
-
+const photo = { blobParts: [''], options: { type: 'image/jpeg' }, size: 1 }
 let fakeApi: FakeApi
 let appDriver: AppDriver
 
@@ -21,13 +21,13 @@ describe('Diplay annotate view', () => {
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()
       .expectFragment(fragmentWithoutReferences)
-      .expectPhoto(fragmentNumber)
+      .expectPhoto(fragmentNumber, photo)
       .expectAnnotations(fragmentNumber, annotationsDto)
     appDriver = await new AppDriver(fakeApi.client)
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()
-    await appDriver.waitForText('Save')
+    await appDriver.waitForText('blank')
   })
 
   test('Breadcrumbs', () => {
@@ -35,7 +35,7 @@ describe('Diplay annotate view', () => {
       'eBL',
       'Fragmentarium',
       fragmentNumber,
-      'Tag signs',
+      'Tag Signs',
     ])
   })
 
@@ -48,10 +48,5 @@ describe('Diplay annotate view', () => {
 
   test('Snapshot', () => {
     expect(appDriver.getView().container).toMatchSnapshot()
-  })
-
-  test('Save', async () => {
-    fakeApi.expectUpdateAnnotations(fragmentNumber, annotationsDto)
-    await appDriver.click('Save')
   })
 })

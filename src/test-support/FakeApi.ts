@@ -234,7 +234,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/fragments/${number}/annotations`,
+        path: `/fragments/${number}/annotations?generateAnnotations=false`,
         authenticate: true,
         response: { annotations: annotationDtos },
         verify: true,
@@ -276,11 +276,15 @@ export default class FakeApi {
     return this
   }
 
-  expectPhoto(number: string): FakeApi {
+  expectPhoto(
+    number: string,
+    photo: { blobParts: string[]; options: { type: string } }
+  ): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
         path: `/fragments/${number}/photo`,
+        response: photo,
         authenticate: true,
         isBlob: true,
         verify: true,

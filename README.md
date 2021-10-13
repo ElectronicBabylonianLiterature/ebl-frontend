@@ -67,6 +67,11 @@ In production environments [INLINE_RUNTIME_CHUNK](https://create-react-app.dev/d
 
 `yarn start` starts the development server. The environment variables are read from `.env.local`.
 
+## Updating dependencies
+
+Updating [react-image-annotation](https://github.com/Secretmapper/react-image-annotation) could break `Annotation.js`
+in the annotation-tool.
+
 ## Lighthouse
 
 Google [Lighthouse](https://developers.google.com/web/tools/lighthouse/) is installed as a development dependency and can be run via yarn:
@@ -116,3 +121,5 @@ yarn lighthouse <url>
 [Assurbanipal, Esagil, Santakku, SantakkuM, UllikummiA](https://www.hethport.uni-wuerzburg.de/cuneifont//) webfonts by
 [Sylvie Vanséveren](https://www.hethport.uni-wuerzburg.de/cuneifont/) are freely available for the scientific community.
 You can get the full distributions from [Download page](https://www.hethport.uni-wuerzburg.de/cuneifont/).
+
+`Annotation.js` in the annotation-tool is from [Arian Allenson Valdez](https://github.com/Secretmapper/react-image-annotation)

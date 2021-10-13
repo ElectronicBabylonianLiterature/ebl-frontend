@@ -41,7 +41,7 @@ function GenreSelection({
   }
 
   useEffect(() => {
-    if (!_.isEqual(genres, prevGenres) && prevGenres !== undefined) {
+    if (!_.isEqual(genres, prevGenres) && !_.isNil(prevGenres)) {
       updateGenres(genres)
     }
   }, [genres, prevGenres, updateGenres])

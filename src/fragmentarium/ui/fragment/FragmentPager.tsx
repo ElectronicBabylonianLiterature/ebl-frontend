@@ -9,6 +9,7 @@ type Props = {
   data: FragmentPagerData
   fragmentNumber: string
 }
+
 const FragmentPager: FunctionComponent<Props> = ({
   data,
   fragmentNumber,
