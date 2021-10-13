@@ -6,7 +6,7 @@ import Sign from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import {
   AnnotationToken,
-  AnnotationToken_,
+  AnnotationTokenWithNameAndSubIndex,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { signFactory } from 'test-support/sign-fixtures'
 
@@ -56,8 +56,8 @@ it('test associate Signs', async () => {
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
     [
-      new AnnotationToken_('kur1', [0], true, 'kur1', 1),
-      new AnnotationToken_('kur2', [0], true, 'kur2', 1),
+      new AnnotationTokenWithNameAndSubIndex('kur1', [0], true, 'kur1', 1),
+      new AnnotationTokenWithNameAndSubIndex('kur2', [0], true, 'kur2', 1),
     ],
   ]
 

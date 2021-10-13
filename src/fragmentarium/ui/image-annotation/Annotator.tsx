@@ -1,15 +1,10 @@
 import React from 'react'
 import withData from 'http/withData'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import { Col, Row } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SignService from 'signs/application/SignService'
 import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation'
-
-function isBlob(image: Blob | Record<string, never>): image is Blob {
-  return (image as Blob).size !== undefined
-}
 
 function AnnotatorDisplay({
   image,
@@ -42,37 +37,27 @@ function Annotator({
   fragmentService,
   signService,
 }: {
-  image: Blob | Record<string, never>
+  image: Blob
   fragment: Fragment
   annotations: readonly Annotation[]
   fragmentService: FragmentService
   signService: SignService
 }): JSX.Element {
-  if (isBlob(image)) {
-    return (
-      <AnnotatorDisplay
-        image={image}
-        fragment={fragment}
-        annotations={annotations}
-        fragmentService={fragmentService}
-        signService={signService}
-      />
-    )
-  } else {
-    return (
-      <Row>
-        <Col className={'text-center mt-5'}>
-          <h3>{`Fragment ${fragment.number} doesn't have a Photo`}</h3>
-        </Col>
-      </Row>
-    )
-  }
+  return (
+    <AnnotatorDisplay
+      image={image}
+      fragment={fragment}
+      annotations={annotations}
+      fragmentService={fragmentService}
+      signService={signService}
+    />
+  )
 }
 
 const WithAnnotations = withData<
   {
     fragment: Fragment
-    image: Blob | Record<string, never>
+    image: Blob
     fragmentService: FragmentService
     signService: SignService
   },
@@ -91,11 +76,10 @@ const WithPhoto = withData<
     signService: SignService
   },
   unknown,
-  Blob | Record<string, never>
+  Blob
 >(
   ({ data, ...props }) => <WithAnnotations {...props} image={data} />,
-  ({ fragment, fragmentService }) =>
-    fragmentService.findPhoto(fragment).catch(() => ({}))
+  ({ fragment, fragmentService }) => fragmentService.findPhoto(fragment)
 )
 
 export default withData<

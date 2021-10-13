@@ -3,7 +3,7 @@ import Sign, { SignQuery } from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import {
   AnnotationToken,
-  AnnotationToken_,
+  AnnotationTokenWithNameAndSubIndex,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 export default class SignService {
@@ -14,7 +14,7 @@ export default class SignService {
   }
 
   associateSigns(
-    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken_>>
+    tokens: ReadonlyArray<ReadonlyArray<AnnotationTokenWithNameAndSubIndex>>
   ): Bluebird<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     return this.signsRepository.associateSigns(tokens)
   }

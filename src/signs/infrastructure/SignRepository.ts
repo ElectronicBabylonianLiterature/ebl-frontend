@@ -4,7 +4,7 @@ import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import {
   AnnotationToken,
-  AnnotationToken_,
+  AnnotationTokenWithNameAndSubIndex,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 class SignRepository {
@@ -15,7 +15,7 @@ class SignRepository {
   }
 
   associateSigns(
-    tokens: ReadonlyArray<ReadonlyArray<AnnotationToken_>>
+    tokens: ReadonlyArray<ReadonlyArray<AnnotationTokenWithNameAndSubIndex>>
   ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
       Promise.all(
@@ -23,7 +23,7 @@ class SignRepository {
           if (token.enabled) {
             return this.search({
               value: token.name,
-              subIndex: token.subIndex || 1,
+              subIndex: token.subIndex ?? 1,
             }).then(
               (results) =>
                 new AnnotationToken(

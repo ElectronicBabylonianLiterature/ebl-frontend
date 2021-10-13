@@ -29,7 +29,7 @@ export class AnnotationToken {
   }
 }
 
-export class AnnotationToken_ extends AnnotationToken {
+export class AnnotationTokenWithNameAndSubIndex extends AnnotationToken {
   constructor(
     readonly value: string,
     readonly path: readonly number[],
@@ -47,9 +47,9 @@ export class AnnotationToken_ extends AnnotationToken {
 function mapToken(
   token: Token,
   path: readonly number[]
-): AnnotationToken_ | AnnotationToken_[] {
+): AnnotationTokenWithNameAndSubIndex | AnnotationTokenWithNameAndSubIndex[] {
   if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return new AnnotationToken_(
+    return new AnnotationTokenWithNameAndSubIndex(
       token.value,
       path,
       true,
@@ -61,7 +61,7 @@ function mapToken(
       mapToken(part, [...path, index])
     )
   } else {
-    return new AnnotationToken_(
+    return new AnnotationTokenWithNameAndSubIndex(
       token.value,
       path,
       false,
@@ -73,9 +73,9 @@ function mapToken(
 
 export function createAnnotationTokens(
   text: Text
-): ReadonlyArray<ReadonlyArray<AnnotationToken_>> {
+): ReadonlyArray<ReadonlyArray<AnnotationTokenWithNameAndSubIndex>> {
   return text.lines.map((line, lineNumber) => [
-    new AnnotationToken_(line.prefix, [lineNumber], false),
+    new AnnotationTokenWithNameAndSubIndex(line.prefix, [lineNumber], false),
     ...line.content.flatMap((token, index) =>
       mapToken(token, [lineNumber, index])
     ),
