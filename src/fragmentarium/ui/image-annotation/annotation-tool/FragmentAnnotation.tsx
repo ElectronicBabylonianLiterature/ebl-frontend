@@ -175,6 +175,7 @@ function FragmentAnnotation({
   }
 
   const onClick = (event: MouseEvent) => {
+    console.log(event)
     if (event.ctrlKey && isChangeExistingMode) {
       setToggled(hovering)
     }
@@ -188,6 +189,9 @@ function FragmentAnnotation({
         setIsDisableSelector(false)
       }
     }
+  }
+  const onSubmit = (event) => {
+    console.log(event)
   }
 
   return (
@@ -209,6 +213,7 @@ function FragmentAnnotation({
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
       <AnnotationTool
+        onSubmit={onSubmit}
         allowTouch
         onZoom={onZoom}
         disableSelector={isDisableSelector}
