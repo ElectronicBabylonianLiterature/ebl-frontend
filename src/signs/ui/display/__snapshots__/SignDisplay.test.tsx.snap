@@ -413,7 +413,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 </p>
               </div>
               <div
-                class="text-center border border-dark m-2 p-2"
+                class="text-center border border-dark mx-5 m-3 p-2"
               >
                 <strong>
                   From
