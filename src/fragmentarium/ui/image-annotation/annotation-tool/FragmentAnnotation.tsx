@@ -125,6 +125,9 @@ function FragmentAnnotation({
       setAnnotations(automaticAlignment(tokens, hovering, annotations))
     }
     setAnnotation(annotation)
+    if (annotation.selection) {
+      console.log(annotation)
+    }
   }
 
   const getSelectionById = (
