@@ -19,6 +19,7 @@ import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlig
 import withData from 'http/withData'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import useObjectUrl from 'common/useObjectUrl'
+import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
 import HelpTrigger from 'common/HelpTrigger'
 import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 
@@ -71,6 +72,7 @@ function FragmentAnnotation({
 
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
+  const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
 
   const [contentScale, setContentScale] = useState(1)
 
@@ -87,6 +89,7 @@ function FragmentAnnotation({
     if (event.keyCode === 27) {
       setToggled(null)
       setIsChangeExistingMode(false)
+      setIsAutomaticSelected(false)
     }
   }, [])
 
@@ -118,6 +121,8 @@ function FragmentAnnotation({
     if (isChangeExistingMode && annotation.selection && !hovering) {
       setToggled(null)
       setIsChangeExistingMode(false)
+    } else if (annotation.selection && hovering && isAutomaticSelected) {
+      setAnnotations(automaticAlignment(tokens, hovering, annotations))
     }
     setAnnotation(annotation)
   }
@@ -188,6 +193,13 @@ function FragmentAnnotation({
   return (
     <>
       <ButtonGroup>
+        <Button
+          variant="outline-dark"
+          active={isAutomaticSelected}
+          onClick={() => setIsAutomaticSelected(!isAutomaticSelected)}
+        >
+          Automatic Selection
+        </Button>
         <Button variant="outline-dark" onClick={() => setAnnotations([])}>
           Delete everything
         </Button>
