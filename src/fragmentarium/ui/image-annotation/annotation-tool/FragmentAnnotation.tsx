@@ -190,9 +190,6 @@ function FragmentAnnotation({
       }
     }
   }
-  const onSubmit = (event) => {
-    console.log(event)
-  }
 
   return (
     <>
@@ -213,7 +210,6 @@ function FragmentAnnotation({
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
       <AnnotationTool
-        onSubmit={onSubmit}
         allowTouch
         onZoom={onZoom}
         disableSelector={isDisableSelector}
