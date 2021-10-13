@@ -36,11 +36,11 @@ const annotations = [
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 2, y: 2, width: 5, height: 5 },
-    { id: '5', value: 'blank', signName: '', path: [6] }
+    { id: '5', value: 'blank', signName: '', path: [-1] }
   ),
   new Annotation(
     { type: 'RECTANGLE', x: 3, y: 2, width: 1, height: 1 },
-    { id: '6', value: 'blank', signName: '', path: [7] }
+    { id: '6', value: 'blank', signName: '', path: [-1] }
   ),
 ]
 
