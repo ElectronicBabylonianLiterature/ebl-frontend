@@ -53,8 +53,8 @@ it('test associate Signs', async () => {
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
     [
-      new AnnotationToken('kur1', [0], true, 'kur1', 1),
-      new AnnotationToken('kur2', [0], true, 'kur2', 1),
+      new AnnotationToken('kur1', [0], true, null, 'kur1', 1),
+      new AnnotationToken('kur2', [0], true, null, 'kur2', 1),
     ],
   ]
 
