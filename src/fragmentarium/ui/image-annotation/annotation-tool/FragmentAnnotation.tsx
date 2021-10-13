@@ -86,7 +86,6 @@ function FragmentAnnotation({
   const prevAnnotations = usePrevious(annotations)
 
   const onPressingEsc = useCallback((event) => {
-    console.log('wtf')
     if (event.keyCode === 27) {
       setToggled(null)
       setIsChangeExistingMode(false)
