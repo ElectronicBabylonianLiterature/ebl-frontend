@@ -50,14 +50,10 @@ export function AGI({
 }
 
 function compareAfO(a, b) {
-  if (a.AfO.includes('Beih')) {
+  if (a.AfO.includes('Beih') || b.AfO > a.AfO) {
     return 1
-  } else if (b.AfO.includes('Beih')) {
+  } else if (b.AfO.includes('Beih') || a.AfO > b.AfO) {
     return -1
-  } else if (a.AfO > b.AfO) {
-    return -1
-  } else if (b.AfO > a.AfO) {
-    return 1
   } else {
     return 0
   }
