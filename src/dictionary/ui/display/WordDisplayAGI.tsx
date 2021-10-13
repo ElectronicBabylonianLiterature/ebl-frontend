@@ -49,7 +49,7 @@ export function AGI({
     ))
 }
 
-function compareAfO(a, b) {
+function compareAfO(a, b): 1 | -1 | 0 {
   if (a.AfO.includes('Beih') || b.AfO > a.AfO) {
     return 1
   } else if (b.AfO.includes('Beih') || a.AfO > b.AfO) {
