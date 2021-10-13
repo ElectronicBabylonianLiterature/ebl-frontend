@@ -23,9 +23,7 @@ function getNeighbouringAnnotations(
       annotation.geometry.y < point.y &&
       point.y < annotation.geometry.y + annotation.geometry.height
     const isNeighbouring = point.x < annotation.geometry.x
-    if (isHeightInRange && isNeighbouring) {
-      return annotation
-    }
+    return isHeightInRange && isNeighbouring
   })
 }
 
@@ -76,6 +74,5 @@ export default function automaticAlignment(
       (annotation) => annotation.data.id !== mergedAnnotation.data.id
     )
   }
-
   return [...filteredAnnotations, ...mergedAnnotations]
 }

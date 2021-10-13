@@ -21,13 +21,12 @@ export default function Help(): JSX.Element {
             <b>Shift + Panning:</b> Disable Selection and perform Panning
           </li>
           <li>
-            <b>Automatic Selection</b> To perform Automatic Selection annotate
-            one Sign with it&apos;s corresponding reading from the left and then
-            annotate right neighbouring signs with <b>blank</b>. Then click on
-            Automatic Selection and select the first annotated Sign (the one
-            which has a proper reading not blank) neighbouring annotations with
-            blank will be automatically linked to their corresponding readings
-            on the left.
+            <b>Automatic Selection</b> If Automatic Selection is active,
+            annotations will automatically become blank. Once multiple readings
+            are annotated with blank one can select an Annotation while
+            clickling ctrl. Now in <b>change existing mode</b> one can select a
+            reading. All Annotations to the right of this selection will have a
+            reading assigned automatically.
           </li>
         </ul>
       </Popover.Content>

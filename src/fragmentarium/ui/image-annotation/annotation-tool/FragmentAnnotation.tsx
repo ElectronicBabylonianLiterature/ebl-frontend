@@ -85,11 +85,16 @@ function FragmentAnnotation({
   )
   const prevAnnotations = usePrevious(annotations)
 
+  const reset = () => {
+    setToggled(null)
+    setIsChangeExistingMode(false)
+    setIsAutomaticSelected(false)
+    setAnnotation({})
+  }
+
   const onPressingEsc = useCallback((event) => {
     if (event.keyCode === 27) {
-      setToggled(null)
-      setIsChangeExistingMode(false)
-      setIsAutomaticSelected(false)
+      reset()
     }
   }, [])
 
@@ -149,14 +154,17 @@ function FragmentAnnotation({
           ...data,
         })
         setAnnotation({})
-        setAnnotations([
+        const newAnnotations = [
           ...annotations.filter(
             (annotation) => annotation.data.id !== newAnnotation.data.id
           ),
           newAnnotation,
-        ])
-        if (isChangeExistingMode) {
-          setAnnotations(automaticAlignment(tokens, newAnnotation, annotations))
+        ]
+        setAnnotations(newAnnotations)
+        if (isAutomaticSelected && isChangeExistingMode) {
+          setAnnotations(
+            automaticAlignment(tokens, newAnnotation, newAnnotations)
+          )
         }
         setToggled(null)
         setIsChangeExistingMode(false)
@@ -218,8 +226,7 @@ function FragmentAnnotation({
           variant="outline-dark"
           onClick={() => {
             setAnnotations([])
-            setIsAutomaticSelected(false)
-            setIsChangeExistingMode(false)
+            reset()
           }}
         >
           Delete everything
