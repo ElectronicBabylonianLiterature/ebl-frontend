@@ -49,14 +49,10 @@ export function AGI({
     ))
 }
 
+function compareBeih(a, b) {
+  return Number(b.AfO.includes('Beih')) - Number(a.AfO.includes('Beih'))
+}
+
 function compareAfO(a, b) {
-  if (a.AfO.includes('Beih')) {
-    return 1
-  } else if (b.AfO.includes('Beih') || a.AfO > b.AfO) {
-    return -1
-  } else if (b.AfO > a.AfO) {
-    return 1
-  } else {
-    return 0
-  }
+  return compareBeih(b, a) || b.AfO.localeCompare(a.AfO)
 }
