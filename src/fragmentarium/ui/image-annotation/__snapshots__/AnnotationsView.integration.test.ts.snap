@@ -200,6 +200,12 @@ exports[`Diplay annotate view Snapshot 1`] = `
         class="btn btn-outline-dark"
         type="button"
       >
+        Automatic Selection
+      </button>
+      <button
+        class="btn btn-outline-dark"
+        type="button"
+      >
         Delete everything
       </button>
       <button
