@@ -216,6 +216,12 @@ exports[`Diplay annotate view Snapshot 1`] = `
         Mode: 
         default
       </button>
+      <button
+        class="btn btn-danger"
+        type="button"
+      >
+        Save
+      </button>
     </div>
     <i
       class="m-2 fas fa-info-circle"

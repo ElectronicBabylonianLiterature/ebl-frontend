@@ -13,7 +13,6 @@ import FragmentService from 'fragmentarium/application/FragmentService'
 import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
 import produce from 'immer'
-import { usePrevious } from 'common/usePrevious'
 import { uuid4 } from '@sentry/utils'
 import Highlight from 'fragmentarium/ui/image-annotation/annotation-tool/Highlight'
 import withData from 'http/withData'
@@ -83,7 +82,6 @@ function FragmentAnnotation({
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
     initializeAnnotations(initialAnnotations, tokens)
   )
-  const prevAnnotations = usePrevious(annotations)
 
   const reset = () => {
     setToggled(null)
@@ -100,26 +98,15 @@ function FragmentAnnotation({
 
   useEffect(() => {
     document.addEventListener('keydown', onPressingEsc, false)
-    if (!_.isEqual(prevAnnotations, annotations) && !_.isNil(prevAnnotations)) {
-      ;(async () => {
-        await fragmentService.updateAnnotations(fragment.number, annotations)
-      })()
-    }
     return () => document.removeEventListener('keydown', onPressingEsc, false)
-  }, [
-    annotations,
-    prevAnnotations,
-    fragment.number,
-    fragmentService,
-    onPressingEsc,
-  ])
+  }, [annotations, fragment.number, fragmentService, onPressingEsc])
 
-  const onDelete = (annotation: Annotation): void => {
-    setAnnotations(
-      annotations.filter(
-        (other: Annotation) => annotation.data.id !== other.data.id
-      )
+  const onDelete = async (annotation: Annotation): Promise<void> => {
+    const updatedAnnotations = annotations.filter(
+      (other: Annotation) => annotation.data.id !== other.data.id
     )
+    setAnnotations(updatedAnnotations)
+    fragmentService.updateAnnotations(fragment.number, updatedAnnotations)
   }
 
   const onChange = (annotation: RawAnnotation): void => {
@@ -224,8 +211,9 @@ function FragmentAnnotation({
         </Button>
         <Button
           variant="outline-dark"
-          onClick={() => {
+          onClick={async () => {
             setAnnotations([])
+            fragmentService.updateAnnotations(fragment.number, [])
             reset()
           }}
         >
@@ -233,6 +221,14 @@ function FragmentAnnotation({
         </Button>
         <Button variant="outline-dark" disabled>
           Mode: {isChangeExistingMode ? 'change existing' : 'default'}
+        </Button>
+        <Button
+          variant="danger"
+          onClick={async () =>
+            fragmentService.updateAnnotations(fragment.number, annotations)
+          }
+        >
+          Save
         </Button>
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
