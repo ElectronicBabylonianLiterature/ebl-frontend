@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import DOMPurify from 'dompurify'
+import compareAfO from 'dictionary/domain/compareWordAGI'
 
 const cleanse = DOMPurify.sanitize
 
@@ -47,12 +48,4 @@ export function AGI({
         </Col>
       </>
     ))
-}
-
-function compareBeih(a, b) {
-  return Number(b.AfO.includes('Beih')) - Number(a.AfO.includes('Beih'))
-}
-
-function compareAfO(a, b) {
-  return compareBeih(b, a) || b.AfO.localeCompare(a.AfO)
 }
