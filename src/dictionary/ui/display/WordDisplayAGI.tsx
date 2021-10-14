@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import DOMPurify from 'dompurify'
+import compareAfO from 'dictionary/domain/compareWordAGI'
 
 const cleanse = DOMPurify.sanitize
 
@@ -10,7 +11,7 @@ export function AGI({
   AkkadischeGlossareUndIndices: any
 }): JSX.Element {
   return AkkadischeGlossareUndIndices.slice()
-    .sort((a, b) => (a.AfO > b.AfO ? 1 : -1))
+    .sort(compareAfO)
     .map((InstanceOfAkkadischeGlossareUndIndices) => (
       <>
         <Col className="offset-md-1">
