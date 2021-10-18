@@ -73,7 +73,8 @@ export default function SubmitAnnotationButton({
           ...annotation,
           data: {
             ...annotation.data,
-            value: `${token.value}`,
+            value: token.value,
+            type: token.type,
             path: token.path,
             signName: token.sign ? token.sign.name : '',
           },
@@ -82,7 +83,7 @@ export default function SubmitAnnotationButton({
         handleSelection(newAnnotation)
       }}
     >
-      {token.value}
+      {token.displayValue}
     </Button>
   )
 }

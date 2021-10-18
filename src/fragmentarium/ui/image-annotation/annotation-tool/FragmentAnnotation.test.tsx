@@ -32,7 +32,13 @@ const tokens = createAnnotationTokens(fragment.text)
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-  { id: 'id_1', value: 'erin₂', path: [0, 0, 0], signName: 'EREN₂' }
+  {
+    id: 'id_1',
+    type: 'Reading',
+    value: 'erin₂',
+    path: [0, 0, 0],
+    signName: 'EREN₂',
+  }
 )
 
 beforeEach(async () => {
@@ -75,6 +81,7 @@ it('Change existing annotation', async () => {
   const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
     id: initialAnnotation.data.id,
     value: 'ŠA₂',
+    type: 'Logogram',
     path: expectedData.path,
     signName: sign.name,
   })

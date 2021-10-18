@@ -1,4 +1,5 @@
 import { immerable } from 'immer'
+import { AnnotationTokenType } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 
 export interface Geometry {
   readonly x: number
@@ -10,6 +11,7 @@ export interface Geometry {
 
 export interface AnnotationData {
   readonly id?: string
+  readonly type: AnnotationTokenType
   readonly signName: string
   readonly value: string
   readonly path: readonly number[]

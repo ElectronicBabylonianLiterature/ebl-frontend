@@ -53,15 +53,33 @@ it('test associate Signs', async () => {
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
     [
-      new AnnotationToken('kur1', [0], true, null, 'kur1', 1),
-      new AnnotationToken('kur2', [0], true, null, 'kur2', 1),
+      new AnnotationToken(
+        'kur1',
+        'Reading',
+        'kur1',
+        [0],
+        true,
+        null,
+        'kur1',
+        1
+      ),
+      new AnnotationToken(
+        'kur2',
+        'Reading',
+        'kur1',
+        [0],
+        true,
+        null,
+        'kur2',
+        1
+      ),
     ],
   ]
 
   await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual([
     [
-      new AnnotationToken('kur1', [0], true, sign1),
-      new AnnotationToken('kur2', [0], true, null),
+      new AnnotationToken('kur1', 'Reading', 'kur1', [0], true, sign1),
+      new AnnotationToken('kur2', 'Reading', 'kur1', [0], true, null),
     ],
   ])
 })

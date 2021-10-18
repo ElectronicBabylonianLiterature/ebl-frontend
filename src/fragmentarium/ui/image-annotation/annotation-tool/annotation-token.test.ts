@@ -3,7 +3,7 @@ import Annotation from 'fragmentarium/domain/annotation'
 
 test.each([
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'Reading', 'kur', [2, 0, 1], true),
     new Annotation(
       {
         x: 1,
@@ -14,6 +14,7 @@ test.each([
       },
       {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 1],
         signName: 'RUK',
       }
@@ -21,7 +22,7 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'Reading', 'kur', [2, 0, 1], true),
     new Annotation(
       {
         x: 1,
@@ -32,6 +33,7 @@ test.each([
       },
       {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 4],
         signName: 'RUK',
       }
@@ -39,7 +41,7 @@ test.each([
     false,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'Reading', 'kur', [2, 0, 1], true),
     {
       geometry: {
         x: 1,
@@ -50,6 +52,7 @@ test.each([
       },
       data: {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 1],
         signName: 'RUK',
       },
@@ -57,7 +60,7 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'Reading', 'kur', [2, 0, 1], true),
     {
       geometry: {
         x: 1,
@@ -68,13 +71,17 @@ test.each([
       },
       data: {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 4],
         signName: 'RUK',
       },
     },
     false,
   ],
-  [new AnnotationToken('kur', [2, 0, 1], true), {}, false],
-])('hasMatchingPath %#', (token, annotation, expected) => {
-  expect(token.isEqualPath(annotation)).toEqual(expected)
-})
+  [new AnnotationToken('kur', 'Reading', 'kur', [2, 0, 1], true), null, false],
+])(
+  'isEqualPath %#',
+  (token: AnnotationToken, annotation: any, expected: boolean) => {
+    expect(token.isEqualPath(annotation)).toEqual(expected)
+  }
+)
