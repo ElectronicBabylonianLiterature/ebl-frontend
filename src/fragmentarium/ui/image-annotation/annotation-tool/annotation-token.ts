@@ -16,7 +16,7 @@ export type AnnotationTokenType =
   | 'RulingDollarLine'
   | 'Blank'
   | 'Disabled'
-  | 'Broken'
+  | 'BrokenAway'
   | 'Predicted'
 export class AnnotationToken {
   constructor(
@@ -35,6 +35,9 @@ export class AnnotationToken {
   }
   static disabled(value, path): AnnotationToken {
     return new AnnotationToken(value, 'Disabled', value, path, false)
+  }
+  static brokenAway(value, path): AnnotationToken {
+    return new AnnotationToken(value, 'BrokenAway', '', path, false)
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
@@ -55,19 +58,29 @@ function mapToken(
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
   if (
-    ['Reading', 'Logogram', 'CompoundGrapheme', 'Number'].includes(token.type)
+    [
+      'Reading',
+      'Logogram',
+      'CompoundGrapheme',
+      'Number',
+      'BrokenAway',
+    ].includes(token.type)
   ) {
-    return new AnnotationToken(
-      token.value,
-      // @ts-ignore
-      token.type,
-      token.value,
-      path,
-      true,
-      null,
-      'name' in token ? token.name : '',
-      'subIndex' in token ? token.subIndex : null
-    )
+    if ('BrokenAway' == token.type) {
+      return AnnotationToken.brokenAway(token.value, path)
+    } else {
+      return new AnnotationToken(
+        token.value,
+        // @ts-ignore
+        token.type,
+        token.value,
+        path,
+        true,
+        null,
+        'name' in token ? token.name : '',
+        'subIndex' in token ? token.subIndex : null
+      )
+    }
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
       mapToken(part, [...path, index])
