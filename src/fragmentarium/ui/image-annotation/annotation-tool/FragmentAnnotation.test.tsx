@@ -37,6 +37,9 @@ const initialAnnotation = new Annotation(
 
 beforeEach(async () => {
   jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
+  jest
+    .spyOn(fragmentService, 'updateAnnotations')
+    .mockReturnValue(Promise.resolve([]))
   render(
     <FragmentAnnotation
       image={new Blob()}
@@ -76,6 +79,7 @@ it('Change existing annotation', async () => {
     signName: sign.name,
   })
   userEvent.click(screen.getByRole('button', { name: 'Save' }))
+  await screen.findByRole('button', { name: 'Save' })
   expect(
     fragmentService.updateAnnotations
   ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])

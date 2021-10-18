@@ -21,6 +21,8 @@ import useObjectUrl from 'common/useObjectUrl'
 import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-tool/automatic-alignment'
 import HelpTrigger from 'common/HelpTrigger'
 import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
+import Spinner from 'common/Spinner'
+import Bluebird from 'bluebird'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -69,6 +71,8 @@ function FragmentAnnotation({
 }: Props): React.ReactElement {
   const imageUrl = useObjectUrl(image)
 
+  const [isSaving, setIsSaving] = useState(false)
+
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
@@ -96,17 +100,38 @@ function FragmentAnnotation({
     }
   }, [])
 
-  useEffect(() => {
-    document.addEventListener('keydown', onPressingEsc, false)
-    return () => document.removeEventListener('keydown', onPressingEsc, false)
-  }, [annotations, fragment.number, fragmentService, onPressingEsc])
+  const automaticSave = (e): Bluebird<readonly Annotation[]> => {
+    e.preventDefault()
+    return fragmentService.updateAnnotations(fragment.number, annotations)
+  }
 
-  const onDelete = async (annotation: Annotation): Promise<void> => {
+  useEffect(() => {
+    window.addEventListener('beforeunload', automaticSave)
+    document.addEventListener('keydown', onPressingEsc, false)
+
+    return () => {
+      window.removeEventListener('beforeunload', automaticSave)
+      document.removeEventListener('keydown', onPressingEsc, false)
+    }
+  }, [
+    annotations,
+    fragment.number,
+    fragmentService,
+    onPressingEsc,
+    automaticSave,
+  ])
+
+  const onDelete = (
+    annotation: Annotation
+  ): Bluebird<readonly Annotation[]> => {
     const updatedAnnotations = annotations.filter(
       (other: Annotation) => annotation.data.id !== other.data.id
     )
     setAnnotations(updatedAnnotations)
-    fragmentService.updateAnnotations(fragment.number, updatedAnnotations)
+    return fragmentService.updateAnnotations(
+      fragment.number,
+      updatedAnnotations
+    )
   }
 
   const onChange = (annotation: RawAnnotation): void => {
@@ -211,10 +236,16 @@ function FragmentAnnotation({
         </Button>
         <Button
           variant="outline-dark"
-          onClick={async () => {
-            setAnnotations([])
-            fragmentService.updateAnnotations(fragment.number, [])
-            reset()
+          onClick={() => {
+            const confirmation = window.confirm(
+              'Sure you want to delete everything'
+            )
+            if (confirmation) {
+              setAnnotations([])
+              fragmentService
+                .updateAnnotations(fragment.number, [])
+                .then(() => reset())
+            }
           }}
         >
           Delete everything
@@ -223,12 +254,17 @@ function FragmentAnnotation({
           Mode: {isChangeExistingMode ? 'change existing' : 'default'}
         </Button>
         <Button
-          variant="danger"
-          onClick={async () =>
-            fragmentService.updateAnnotations(fragment.number, annotations)
-          }
+          variant="outline-dark"
+          onClick={() => {
+            setIsSaving(true)
+            fragmentService
+              .updateAnnotations(fragment.number, annotations)
+              .then(() => {
+                setIsSaving(false)
+              })
+          }}
         >
-          Save
+          {isSaving ? <Spinner loading={true} /> : 'Save'}
         </Button>
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />

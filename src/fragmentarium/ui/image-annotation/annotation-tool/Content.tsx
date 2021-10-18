@@ -1,10 +1,11 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import Annotation from 'fragmentarium/domain/annotation'
+import Bluebird from 'bluebird'
 
 export type ContentProps = {
   annotation: Annotation
-  onDelete: (annotation: Annotation) => void
+  onDelete: (annotation: Annotation) => Bluebird<readonly Annotation[]>
   contentScale: number
   setHovering: (annotation: Annotation | null) => void
 }
@@ -47,7 +48,7 @@ export default function Content({
           <Button
             size={'sm'}
             variant="danger"
-            onClick={(): void => onDelete(annotation)}
+            onClick={() => onDelete(annotation)}
           >
             Delete
           </Button>

@@ -217,7 +217,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
         default
       </button>
       <button
-        class="btn btn-danger"
+        class="btn btn-outline-dark"
         type="button"
       >
         Save
