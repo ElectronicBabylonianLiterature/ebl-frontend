@@ -238,7 +238,7 @@ function FragmentAnnotation({
           variant="outline-dark"
           onClick={() => {
             const confirmation = window.confirm(
-              'Sure you want to delete everything'
+              'Sure you want to delete everything ?'
             )
             if (confirmation) {
               setAnnotations([])
