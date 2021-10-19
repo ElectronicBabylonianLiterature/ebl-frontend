@@ -85,8 +85,6 @@ it('Change existing annotation', async () => {
     path: expectedData.path,
     signName: sign.name,
   })
-  userEvent.click(screen.getByRole('button', { name: 'Save' }))
-  await screen.findByRole('button', { name: 'Save' })
   expect(
     fragmentService.updateAnnotations
   ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])

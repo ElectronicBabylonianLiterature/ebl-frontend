@@ -1,5 +1,8 @@
 import _ from 'lodash'
-import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
+import Annotation, {
+  AnnotationTokenType,
+  RawAnnotation,
+} from 'fragmentarium/domain/annotation'
 import { Token } from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
 import Sign from 'signs/domain/Sign'
@@ -7,17 +10,6 @@ import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { SurfaceAtLine } from 'transliteration/domain/at-lines'
 
-export type AnnotationTokenType =
-  | 'Reading'
-  | 'Logogram'
-  | 'CompoundGrapheme'
-  | 'Number'
-  | 'SurfaceAtLine'
-  | 'RulingDollarLine'
-  | 'Blank'
-  | 'Disabled'
-  | 'BrokenAway'
-  | 'Predicted'
 export class AnnotationToken {
   constructor(
     readonly value: string,
@@ -129,6 +121,5 @@ function structureTokens(
 export function createAnnotationTokens(
   text: Text
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
-  console.log(text.lines)
   return text.lines.map((line, lineNumber) => structureTokens(line, lineNumber))
 }
