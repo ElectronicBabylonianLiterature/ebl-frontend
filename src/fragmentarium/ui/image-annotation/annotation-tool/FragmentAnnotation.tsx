@@ -23,6 +23,7 @@ import HelpTrigger from 'common/HelpTrigger'
 import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 import Spinner from 'common/Spinner'
 import Bluebird from 'bluebird'
+import ErrorAlert from 'common/ErrorAlert'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -72,7 +73,8 @@ function FragmentAnnotation({
   const imageUrl = useObjectUrl(image)
 
   const [isSaving, setIsSaving] = useState(false)
-
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isError, setIsError] = useState(false)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
@@ -226,6 +228,15 @@ function FragmentAnnotation({
 
   return (
     <>
+      {isError && (
+        <ErrorAlert
+          error={
+            new Error(
+              'There was an issue with the server. Your changes could not be saved.'
+            )
+          }
+        />
+      )}
       <ButtonGroup>
         <Button
           variant="outline-dark"
@@ -241,14 +252,17 @@ function FragmentAnnotation({
               'Sure you want to delete everything ?'
             )
             if (confirmation) {
+              setIsDeleting(true)
               setAnnotations([])
               fragmentService
                 .updateAnnotations(fragment.number, [])
                 .then(() => reset())
+                .catch(() => setIsError(true))
+                .finally(() => setIsDeleting(false))
             }
           }}
         >
-          Delete everything
+          {isDeleting ? <Spinner loading={true} /> : 'Delete everything'}
         </Button>
         <Button variant="outline-dark" disabled>
           Mode: {isChangeExistingMode ? 'change existing' : 'default'}
@@ -259,9 +273,8 @@ function FragmentAnnotation({
             setIsSaving(true)
             fragmentService
               .updateAnnotations(fragment.number, annotations)
-              .then(() => {
-                setIsSaving(false)
-              })
+              .catch(() => setIsError(true))
+              .finally(() => setIsSaving(false))
           }}
         >
           {isSaving ? <Spinner loading={true} /> : 'Save'}
