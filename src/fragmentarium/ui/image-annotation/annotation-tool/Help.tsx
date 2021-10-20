@@ -8,6 +8,9 @@ export default function Help(): JSX.Element {
       <Popover.Content>
         <ul>
           <li>
+            <b>Automatic Saving</b> On refresh or closing window
+          </li>
+          <li>
             <b>Esc</b> Reset
           </li>
           <li>
