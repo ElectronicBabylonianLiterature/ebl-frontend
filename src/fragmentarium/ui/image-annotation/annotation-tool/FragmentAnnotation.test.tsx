@@ -91,8 +91,7 @@ it('Change existing annotation mode and then back to default mode', async () => 
   userEvent.keyboard('{Escape}')
   await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
 })
-
-it('delete annotation', async () => {
+it('delete all', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
@@ -100,6 +99,21 @@ it('delete annotation', async () => {
   await waitFor(() =>
     expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
   )
+  expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
+    'Test.Fragment',
+    []
+  )
+})
+it('delete everything', async () => {
+  const confirmMock = jest
+    .spyOn(window, 'confirm')
+    .mockImplementation(() => true)
+  expect(screen.getByTestId('annotation__box')).toBeVisible()
+  userEvent.click(screen.getByText('Delete everything'))
+  expect(confirmMock).toHaveBeenCalledTimes(1)
+  await waitFor(() => {
+    expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
+  })
   expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
     'Test.Fragment',
     []
