@@ -89,7 +89,7 @@ function structureLineToTokens(
     return [
       AnnotationToken.disabled(line.prefix, [lineNumber]),
       new AnnotationToken(
-        line.label.surface.toLowerCase(),
+        line.label.surface,
         'SurfaceAtLine',
         line.label.surface.toLowerCase(),
         [lineNumber, 0],
@@ -100,7 +100,7 @@ function structureLineToTokens(
     return [
       AnnotationToken.disabled(line.prefix, [lineNumber]),
       new AnnotationToken(
-        line.number.toLowerCase(),
+        line.number,
         'RulingDollarLine',
         `${line.number.toLowerCase()} ruling`,
         [lineNumber, 0],

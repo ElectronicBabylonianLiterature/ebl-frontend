@@ -136,7 +136,7 @@ it('', () => {
   const tokens = [
     [
       new AnnotationToken('@', 'Disabled', '@', [0], false),
-      new AnnotationToken('obverse', 'SurfaceAtLine', 'obverse', [0, 0], true),
+      new AnnotationToken('OBVERSE', 'SurfaceAtLine', 'obverse', [0, 0], true),
     ],
     [
       new AnnotationToken('1.', 'Disabled', '1.', [1], false),
@@ -151,7 +151,7 @@ it('', () => {
     [
       new AnnotationToken('$', 'Disabled', '$', [2], false),
       new AnnotationToken(
-        'single',
+        'SINGLE',
         'RulingDollarLine',
         'single ruling',
         [2, 0],
