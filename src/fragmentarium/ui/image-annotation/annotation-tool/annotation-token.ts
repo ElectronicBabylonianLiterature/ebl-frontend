@@ -63,8 +63,7 @@ function mapToken(
     } else {
       return new AnnotationToken(
         token.value,
-        // @ts-ignore
-        token.type,
+        token.type as AnnotationTokenType,
         token.value,
         path,
         true,
