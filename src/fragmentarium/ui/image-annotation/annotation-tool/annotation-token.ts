@@ -81,7 +81,7 @@ function mapToken(
   }
 }
 
-function structureTokens(
+function structureLineToTokens(
   line: AbstractLine,
   lineNumber: number
 ): readonly AnnotationToken[] {
@@ -92,7 +92,7 @@ function structureTokens(
         line.label.surface.toLowerCase(),
         'SurfaceAtLine',
         line.label.surface.toLowerCase(),
-        [lineNumber],
+        [lineNumber, 0],
         true
       ),
     ]
@@ -103,7 +103,7 @@ function structureTokens(
         line.number.toLowerCase(),
         'RulingDollarLine',
         `${line.number.toLowerCase()} ruling`,
-        [lineNumber],
+        [lineNumber, 0],
         true
       ),
     ]
@@ -120,5 +120,7 @@ function structureTokens(
 export function createAnnotationTokens(
   text: Text
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
-  return text.lines.map((line, lineNumber) => structureTokens(line, lineNumber))
+  return text.lines.map((line, lineNumber) => [
+    ...structureLineToTokens(line, lineNumber),
+  ])
 }
