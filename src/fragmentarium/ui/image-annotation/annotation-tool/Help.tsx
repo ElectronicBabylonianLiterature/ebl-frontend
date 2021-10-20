@@ -8,17 +8,11 @@ export default function Help(): JSX.Element {
       <Popover.Content>
         <ul>
           <li>
-            <b>Automatic Saving</b> On refresh or closing window
-          </li>
-          <li>
             <b>Esc</b> Reset
           </li>
           <li>
             <b>Ctrl + Select Annotation:</b> Change Reading on existing
             Annotation
-          </li>
-          <li>
-            <b>Shift + Panning:</b> Disable Selection and perform Panning
           </li>
           <li>
             <b>Shift + Panning:</b> Disable Selection and perform Panning

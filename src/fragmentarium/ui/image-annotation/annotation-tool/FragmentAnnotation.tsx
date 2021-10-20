@@ -102,26 +102,12 @@ function FragmentAnnotation({
     }
   }, [])
 
-  const automaticSave = (e): Bluebird<readonly Annotation[]> => {
-    e.preventDefault()
-    return fragmentService.updateAnnotations(fragment.number, annotations)
-  }
-
   useEffect(() => {
-    window.addEventListener('beforeunload', automaticSave)
     document.addEventListener('keydown', onPressingEsc, false)
-
     return () => {
-      window.removeEventListener('beforeunload', automaticSave)
       document.removeEventListener('keydown', onPressingEsc, false)
     }
-  }, [
-    annotations,
-    fragment.number,
-    fragmentService,
-    onPressingEsc,
-    automaticSave,
-  ])
+  }, [annotations, fragment.number, fragmentService, onPressingEsc])
 
   const onDelete = (
     annotation: Annotation
