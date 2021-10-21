@@ -63,7 +63,7 @@ function mapToken(
     } else {
       return new AnnotationToken(
         token.value,
-        token.type as AnnotationTokenType,
+        'hasSign',
         token.value,
         path,
         true,

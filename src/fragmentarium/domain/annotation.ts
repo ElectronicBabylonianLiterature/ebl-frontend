@@ -9,9 +9,7 @@ export interface Geometry {
 }
 
 export type AnnotationTokenType =
-  | 'Reading'
-  | 'Logogram'
-  | 'CompoundGrapheme'
+  | 'hasSign'
   | 'Number'
   | 'SurfaceAtLine'
   | 'RulingDollarLine'
