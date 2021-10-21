@@ -18,6 +18,7 @@ const session = new MemorySession(['read:words'])
 const sign = new Sign({
   lists: [],
   logograms: [],
+  fossey: [],
   name: 'BU',
   unicode: [74127],
   values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],

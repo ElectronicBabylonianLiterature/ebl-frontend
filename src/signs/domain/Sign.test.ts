@@ -3,6 +3,7 @@ import Sign, { Value } from 'signs/domain/Sign'
 const signDto = {
   lists: [],
   logograms: [],
+  fossey: [],
   mesZl: '',
   LaBaSi: '',
   name: 'BU',
@@ -16,6 +17,7 @@ const signDto = {
 const sign = new Sign({
   lists: [],
   logograms: [],
+  fossey: [],
   mesZl: '',
   LaBaSi: '',
   name: 'BU',
