@@ -27,7 +27,7 @@ export default function SignInformation({
         <Heading />
         <div className={'ml-5'}>
           <SignList signList={sign.lists} />
-          {sign.LaBaSi.length > 0 && <Labasi LaBaSi={sign.LaBaSi} />}
+          {sign.LaBaSi && <Labasi LaBaSi={sign.LaBaSi} />}
           {sign.values.length > 0 && (
             <Readings readings={sign.displayValuesMarkdown} />
           )}
@@ -80,13 +80,17 @@ const SignList = ({
 const Labasi = ({ LaBaSi }: { LaBaSi: string }): JSX.Element => (
   <Row>
     <Col>
-      <strong>La</strong>te<strong>Ba</strong>bylonian<strong>Si</strong>gns:{' '}
-      {LaBaSi}{' '}
+      <span className="mr-3">
+        <strong>La</strong>te<strong> Ba</strong>bylonian<strong> Si</strong>
+        gns: {LaBaSi}
+      </span>
       <ExternalLink
         className="text-dark "
-        href="https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/ {LaBaSi}"
+        href={`https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/${encodeURIComponent(
+          LaBaSi
+        )}`}
       >
-        <i className="fas fa-external-link-square-alt fa-2x" />
+        <i className="fas fa-external-link-square-alt fa-1x" />
       </ExternalLink>
     </Col>
   </Row>
