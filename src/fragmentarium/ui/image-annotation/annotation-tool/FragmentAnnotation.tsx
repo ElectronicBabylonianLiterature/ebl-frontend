@@ -221,7 +221,7 @@ function FragmentAnnotation({
         ...annotation,
         data: {
           ...annotation.data,
-          value: `${token.value}`,
+          value: token.value,
           path: token.path,
           signName: '',
         },

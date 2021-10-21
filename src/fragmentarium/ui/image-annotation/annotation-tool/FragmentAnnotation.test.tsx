@@ -13,6 +13,7 @@ import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
@@ -41,13 +42,15 @@ beforeEach(async () => {
     .spyOn(fragmentService, 'updateAnnotations')
     .mockReturnValue(Promise.resolve([]))
   render(
-    <FragmentAnnotation
-      image={new Blob()}
-      fragment={fragment}
-      initialAnnotations={[initialAnnotation]}
-      fragmentService={fragmentService}
-      signService={signService}
-    />
+    <MemoryRouter>
+      <FragmentAnnotation
+        image={new Blob()}
+        fragment={fragment}
+        initialAnnotations={[initialAnnotation]}
+        fragmentService={fragmentService}
+        signService={signService}
+      />
+    </MemoryRouter>
   )
   await screen.findByText('Click and Drag to Annotate')
 })
