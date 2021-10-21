@@ -6,7 +6,7 @@ export const annotations: readonly Annotation[] = [
     {
       id: 'abc123',
       value: 'kur',
-      type: 'Reading',
+      type: 'hasSign',
       path: [2, 3, 0],
       signName: '',
     }
@@ -19,7 +19,7 @@ export const annotationsDto: readonly any[] = [
     data: {
       id: 'abc123',
       value: 'kur',
-      type: 'Reading',
+      type: 'hasSign',
       path: [2, 3, 0],
       signName: '',
     },
