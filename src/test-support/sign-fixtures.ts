@@ -16,6 +16,7 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 𒁖^asd^
 𒍴^q12asd^
 `
+const LaBaSi = `123`
 
 export const signFactory = Factory.define<Sign>(() => {
   return new Sign({
@@ -39,5 +40,6 @@ export const signFactory = Factory.define<Sign>(() => {
       },
     ],
     mesZl: mesZL,
+    LaBaSi: LaBaSi,
   })
 })

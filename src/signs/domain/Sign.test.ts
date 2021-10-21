@@ -4,6 +4,7 @@ const signDto = {
   lists: [],
   logograms: [],
   mesZl: '',
+  LaBaSi: '',
   name: 'BU',
   unicode: [74127, 73805],
   values: [
@@ -16,6 +17,7 @@ const sign = new Sign({
   lists: [],
   logograms: [],
   mesZl: '',
+  LaBaSi: '',
   name: 'BU',
   unicode: [74127, 73805],
   values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],
