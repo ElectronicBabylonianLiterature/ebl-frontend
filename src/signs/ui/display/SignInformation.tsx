@@ -9,6 +9,7 @@ import SignService from 'signs/application/SignService'
 import replaceTransliteration from 'fragmentarium/domain/replaceTransliteration'
 import InlineMarkdown from 'common/InlineMarkdown'
 import SignsSearchHelpPopover from 'signs/ui/search/SignsSearchHelpPopover'
+import ExternalLink from 'common/ExternalLink'
 import SignLogograms from 'signs/ui/display/SignLogogram/SignLogogram'
 
 export default function SignInformation({
@@ -26,6 +27,7 @@ export default function SignInformation({
         <Heading />
         <div className={'ml-5'}>
           <SignList signList={sign.lists} />
+          {sign.LaBaSi.length > 0 && <Labasi LaBaSi={sign.LaBaSi} />}
           {sign.values.length > 0 && (
             <Readings readings={sign.displayValuesMarkdown} />
           )}
@@ -73,6 +75,20 @@ const SignList = ({
       ))}
     </Col>
     <HelpTrigger overlay={SignsSearchHelpPopover()} />
+  </Row>
+)
+const Labasi = ({ LaBaSi }: { LaBaSi: string }): JSX.Element => (
+  <Row>
+    <Col>
+      <strong>La</strong>te<strong>Ba</strong>bylonian<strong>Si</strong>gns:{' '}
+      {LaBaSi}{' '}
+      <ExternalLink
+        className="text-dark "
+        href="https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/ {LaBaSi}"
+      >
+        <i className="fas fa-external-link-square-alt fa-2x" />
+      </ExternalLink>
+    </Col>
   </Row>
 )
 const Readings = ({ readings }: { readings: string }): JSX.Element => (
