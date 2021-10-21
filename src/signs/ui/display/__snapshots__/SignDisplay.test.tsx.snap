@@ -246,29 +246,31 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               <div
                 class="col"
               >
-                <strong>
-                  La
-                </strong>
-                te
-                <strong>
-                  Ba
-                </strong>
-                bylonian
-                <strong>
-                  Si
-                </strong>
-                gns:
-                 
-                123
-                 
+                <span
+                  class="mr-3"
+                >
+                  <strong>
+                    La
+                  </strong>
+                  te
+                  <strong>
+                     Ba
+                  </strong>
+                  bylonian
+                  <strong>
+                     Si
+                  </strong>
+                  gns: 
+                  123
+                </span>
                 <a
                   class="text-dark "
-                  href="https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/ {LaBaSi}"
+                  href="https://labasi.acdh.oeaw.ac.at/tablets/sign/detail/123"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <i
-                    class="fas fa-external-link-square-alt fa-2x"
+                    class="fas fa-external-link-square-alt fa-1x"
                   />
                 </a>
               </div>
