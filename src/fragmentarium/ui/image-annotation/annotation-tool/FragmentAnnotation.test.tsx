@@ -94,7 +94,7 @@ it('Change existing annotation mode and then back to default mode', async () => 
   userEvent.keyboard('{Escape}')
   await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
 })
-it('delete all', async () => {
+it('delete specific annotation', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
