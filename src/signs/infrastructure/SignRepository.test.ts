@@ -55,7 +55,7 @@ it('test associate Signs', async () => {
     [
       new AnnotationToken(
         'kur1',
-        'hasSign',
+        'HasSign',
         'kur1',
         [0],
         true,
@@ -65,7 +65,7 @@ it('test associate Signs', async () => {
       ),
       new AnnotationToken(
         'kur2',
-        'hasSign',
+        'HasSign',
         'kur1',
         [0],
         true,
@@ -78,8 +78,8 @@ it('test associate Signs', async () => {
 
   await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual([
     [
-      new AnnotationToken('kur1', 'hasSign', 'kur1', [0], true, sign1),
-      new AnnotationToken('kur2', 'hasSign', 'kur1', [0], true, null),
+      new AnnotationToken('kur1', 'HasSign', 'kur1', [0], true, sign1),
+      new AnnotationToken('kur2', 'HasSign', 'kur1', [0], true, null),
     ],
   ])
 })

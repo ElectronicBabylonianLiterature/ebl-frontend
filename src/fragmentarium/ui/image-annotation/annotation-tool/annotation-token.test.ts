@@ -10,7 +10,7 @@ import { TextLine } from 'transliteration/domain/text-line'
 
 test.each([
   [
-    new AnnotationToken('kur', 'hasSign', 'kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'HasSign', 'kur', [2, 0, 1], true),
     new Annotation(
       {
         x: 1,
@@ -21,7 +21,7 @@ test.each([
       },
       {
         value: 'ruk',
-        type: 'hasSign',
+        type: 'HasSign',
         path: [2, 0, 1],
         signName: 'RUK',
       }
@@ -29,7 +29,7 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', 'hasSign', 'kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'HasSign', 'kur', [2, 0, 1], true),
     new Annotation(
       {
         x: 1,
@@ -40,7 +40,7 @@ test.each([
       },
       {
         value: 'ruk',
-        type: 'hasSign',
+        type: 'HasSign',
         path: [2, 0, 4],
         signName: 'RUK',
       }
@@ -48,7 +48,7 @@ test.each([
     false,
   ],
   [
-    new AnnotationToken('kur', 'hasSign', 'kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'HasSign', 'kur', [2, 0, 1], true),
     {
       geometry: {
         x: 1,
@@ -67,7 +67,7 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', 'hasSign', 'kur', [2, 0, 1], true),
+    new AnnotationToken('kur', 'HasSign', 'kur', [2, 0, 1], true),
     {
       geometry: {
         x: 1,
@@ -85,7 +85,7 @@ test.each([
     },
     false,
   ],
-  [new AnnotationToken('kur', 'hasSign', 'kur', [2, 0, 1], true), null, false],
+  [new AnnotationToken('kur', 'HasSign', 'kur', [2, 0, 1], true), null, false],
 ])(
   'isEqualPath %#',
   (token: AnnotationToken, annotation: any, expected: boolean) => {
@@ -142,7 +142,7 @@ it('', () => {
       new AnnotationToken('1.', 'Disabled', '1.', [1], false),
       new AnnotationToken(
         '|KUR₂.KUR|',
-        'hasSign',
+        'HasSign',
         '|KUR₂.KUR|',
         [1, 0, 0],
         true

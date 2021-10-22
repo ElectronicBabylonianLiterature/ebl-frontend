@@ -9,7 +9,7 @@ export interface Geometry {
 }
 
 export type AnnotationTokenType =
-  | 'hasSign'
+  | 'HasSign'
   | 'Number'
   | 'SurfaceAtLine'
   | 'RulingDollarLine'
