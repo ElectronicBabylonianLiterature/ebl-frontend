@@ -200,7 +200,6 @@ function FragmentAnnotation({
     <>
       <ButtonGroup>
         <Button
-          disabled
           variant="outline-dark"
           onClick={async () => await generateAnnotations()}
         >
