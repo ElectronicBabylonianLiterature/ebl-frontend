@@ -24,6 +24,7 @@ import Help from 'fragmentarium/ui/image-annotation/annotation-tool/Help'
 import Spinner from 'common/Spinner'
 import Bluebird from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
+import { Prompt } from 'react-router-dom'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
@@ -88,6 +89,7 @@ function FragmentAnnotation({
   const [annotations, setAnnotations] = useState<readonly Annotation[]>(
     initializeAnnotations(initialAnnotations, tokens)
   )
+  const [savedAnnotations, setSavedAnnotations] = useState(annotations)
 
   const reset = () => {
     setToggled(null)
@@ -102,38 +104,40 @@ function FragmentAnnotation({
     }
   }, [])
 
-  const automaticSave = (e): Bluebird<readonly Annotation[]> => {
-    e.preventDefault()
-    return fragmentService.updateAnnotations(fragment.number, annotations)
+  const alertUser = (event) => {
+    if (!_.isEqual(savedAnnotations, annotations)) {
+      event.preventDefault()
+      return (event.returnValue = false)
+    } else {
+      return null
+    }
   }
 
   useEffect(() => {
-    window.addEventListener('beforeunload', automaticSave)
+    window.addEventListener('beforeunload', alertUser, {
+      capture: true,
+      once: true,
+    })
     document.addEventListener('keydown', onPressingEsc, false)
-
     return () => {
-      window.removeEventListener('beforeunload', automaticSave)
       document.removeEventListener('keydown', onPressingEsc, false)
+      window.removeEventListener('beforeunload', alertUser)
     }
-  }, [
-    annotations,
-    fragment.number,
-    fragmentService,
-    onPressingEsc,
-    automaticSave,
-  ])
+  }, [annotations, fragment.number, fragmentService, onPressingEsc])
 
-  const onDelete = (
-    annotation: Annotation
-  ): Bluebird<readonly Annotation[]> => {
+  const saveAnnotations = async (annotations: readonly Annotation[]) => {
+    setAnnotations(annotations)
+    return fragmentService
+      .updateAnnotations(fragment.number, annotations)
+      .then(() => setSavedAnnotations(annotations))
+      .catch(() => setIsError(true))
+  }
+
+  const onDelete = async (annotation: Annotation): Bluebird<void> => {
     const updatedAnnotations = annotations.filter(
       (other: Annotation) => annotation.data.id !== other.data.id
     )
-    setAnnotations(updatedAnnotations)
-    return fragmentService.updateAnnotations(
-      fragment.number,
-      updatedAnnotations
-    )
+    return saveAnnotations(updatedAnnotations)
   }
 
   const onChange = (annotation: RawAnnotation): void => {
@@ -218,7 +222,6 @@ function FragmentAnnotation({
         data: {
           ...annotation.data,
           value: token.value,
-          type: token.type,
           path: token.path,
           signName: '',
         },
@@ -229,6 +232,10 @@ function FragmentAnnotation({
 
   return (
     <>
+      <Prompt
+        when={!_.isEqual(savedAnnotations, annotations)}
+        message={'Changes you made may not be saved.'}
+      />
       {isError && (
         <ErrorAlert
           error={
@@ -254,11 +261,8 @@ function FragmentAnnotation({
             )
             if (confirmation) {
               setIsDeleting(true)
-              setAnnotations([])
-              fragmentService
-                .updateAnnotations(fragment.number, [])
+              saveAnnotations([])
                 .then(() => reset())
-                .catch(() => setIsError(true))
                 .finally(() => setIsDeleting(false))
             }
           }}
@@ -272,10 +276,7 @@ function FragmentAnnotation({
           variant="outline-dark"
           onClick={() => {
             setIsSaving(true)
-            fragmentService
-              .updateAnnotations(fragment.number, annotations)
-              .catch(() => setIsError(true))
-              .finally(() => setIsSaving(false))
+            saveAnnotations(annotations).finally(() => setIsSaving(false))
           }}
         >
           {isSaving ? <Spinner loading={true} /> : 'Save'}

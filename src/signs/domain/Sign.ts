@@ -28,6 +28,7 @@ export interface SignDto {
   values: readonly { value: string; subIndex?: number | undefined }[]
   logograms: readonly Logogram[]
   mesZl: string
+  LaBaSi: string
   unicode: readonly number[]
 }
 export class Value {
@@ -60,6 +61,7 @@ export default class Sign {
   readonly values: readonly Value[]
   readonly logograms: readonly Logogram[]
   readonly mesZl: string
+  readonly LaBaSi: string
   readonly unicode: readonly number[]
 
   constructor({
@@ -68,6 +70,7 @@ export default class Sign {
     values,
     logograms,
     mesZl,
+    LaBaSi,
     unicode,
   }: {
     name: string
@@ -75,6 +78,7 @@ export default class Sign {
     values: readonly Value[]
     logograms: readonly Logogram[]
     mesZl: string
+    LaBaSi: string
     unicode: readonly number[]
   }) {
     this.name = name
@@ -82,6 +86,7 @@ export default class Sign {
     this.values = values
     this.logograms = logograms
     this.mesZl = mesZl
+    this.LaBaSi = LaBaSi
     this.unicode = unicode
   }
 

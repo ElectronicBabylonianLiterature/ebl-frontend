@@ -20,6 +20,7 @@ const resultStub = Sign.fromDto({
   values: [{ value: 'saŋŋa' }],
   logograms: [],
   mesZl: '',
+  LaBaSi: '',
   unicode: [],
 })
 

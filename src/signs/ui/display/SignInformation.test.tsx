@@ -38,6 +38,7 @@ const sign = new Sign({
   unicode: [74127],
   values: [new Value('gabu'), new Value('dul', 10), new Value('du', 1)],
   mesZl: '',
+  LaBaSi: '',
 })
 
 const wordErimmatu: Word = {

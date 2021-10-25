@@ -33,6 +33,7 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 𒁖^asd^
 𒍴^q12asd^
 `,
+  LaBaSi: '123',
 })
 
 const word: Word = {
