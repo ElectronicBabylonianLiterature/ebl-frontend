@@ -13,7 +13,7 @@ export default function Highlight({
   active,
   isToggled,
 }: Props): JSX.Element | null {
-  console.log(annotation)
+  console.log(scale)
   if (annotation.geometry && annotation.data) {
     return (
       <div
@@ -21,7 +21,7 @@ export default function Highlight({
         key={annotation.data.id}
         style={{
           // scale object to make boarder look thinner than 1px
-          transform: `scale(${scale == 1 ? 0.75 : scale})`,
+          transform: `scale(${scale})`,
           transformOrigin: 'top left',
           position: 'absolute',
           left: `${annotation.geometry.x}%`,
@@ -44,10 +44,10 @@ export default function Highlight({
             margin: 0,
             padding: 0,
             background: 'white',
-            fontSize: '1em',
+            fontSize: `${scale > 0.7 ? '0.5em' : '.8em'}`,
           }}
         >
-          {annotation.data.value ?? annotation.data.value}
+          {annotation.data.value !== 'blank' ? annotation.data.value : ''}
         </span>
       </div>
     )
