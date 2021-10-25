@@ -316,6 +316,7 @@ function FragmentAnnotation({
         }) => (
           <Highlight
             {...props}
+            scale={contentScale}
             isToggled={_.isEqual(toggled, props.annotation)}
           />
         )}

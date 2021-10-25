@@ -74,14 +74,14 @@ it('hover makes editor button dark', async () => {
 })
 
 it('Change existing annotation', async () => {
-  expect(screen.getAllByText(/erin₂/).length).toBe(1)
+  expect(screen.getAllByText(/erin₂/).length).toBe(2)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
   userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
-  await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(2))
+  await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(3))
   const expectedData = tokens.flat().filter((token) => token.value === 'ŠA₂')[0]
   const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
     id: initialAnnotation.data.id,
