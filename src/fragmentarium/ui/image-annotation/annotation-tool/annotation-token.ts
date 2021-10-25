@@ -1,12 +1,20 @@
 import _ from 'lodash'
-import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
+import Annotation, {
+  AnnotationTokenType,
+  RawAnnotation,
+} from 'fragmentarium/domain/annotation'
 import { Token } from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
 import Sign from 'signs/domain/Sign'
+import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { SurfaceAtLine } from 'transliteration/domain/at-lines'
 
 export class AnnotationToken {
   constructor(
     readonly value: string,
+    readonly type: AnnotationTokenType,
+    readonly displayValue: string,
     readonly path: readonly number[],
     readonly enabled: boolean,
     readonly sign: Sign | null = null,
@@ -15,7 +23,25 @@ export class AnnotationToken {
   ) {}
 
   static blank(): AnnotationToken {
-    return new AnnotationToken('blank', [], true)
+    return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
+  }
+  static disabled(value, path): AnnotationToken {
+    return new AnnotationToken(
+      value,
+      AnnotationTokenType.Disabled,
+      value,
+      path,
+      false
+    )
+  }
+  static brokenAway(value, path): AnnotationToken {
+    return new AnnotationToken(
+      value,
+      AnnotationTokenType.BrokenAway,
+      '',
+      path,
+      false
+    )
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
@@ -35,28 +61,71 @@ function mapToken(
   token: Token,
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
-  if (['Reading', 'Logogram', 'CompoundGrapheme'].includes(token.type)) {
-    return new AnnotationToken(
-      token.value,
-      path,
-      true,
-      null,
-      'name' in token ? token.name : '',
-      'subIndex' in token ? token.subIndex : null
-    )
+  if (
+    [
+      'Reading',
+      'Logogram',
+      'CompoundGrapheme',
+      'Number',
+      'BrokenAway',
+    ].includes(token.type)
+  ) {
+    if (token.type === AnnotationTokenType.BrokenAway) {
+      return AnnotationToken.brokenAway(token.value, path)
+    } else {
+      return new AnnotationToken(
+        token.value,
+        AnnotationTokenType.HasSign,
+        token.value,
+        path,
+        true,
+        null,
+        'name' in token ? token.name : '',
+        'subIndex' in token ? token.subIndex : null
+      )
+    }
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
       mapToken(part, [...path, index])
     )
   } else {
-    return new AnnotationToken(
-      token.value,
-      path,
-      false,
-      null,
-      'name' in token ? token.name : '',
-      'subIndex' in token ? token.subIndex : null
-    )
+    return AnnotationToken.disabled(token.value, path)
+  }
+}
+
+function structureLineToTokens(
+  line: AbstractLine,
+  lineNumber: number
+): readonly AnnotationToken[] {
+  if (line instanceof SurfaceAtLine) {
+    return [
+      AnnotationToken.disabled(line.prefix, [lineNumber]),
+      new AnnotationToken(
+        line.label.surface,
+        AnnotationTokenType.SurfaceAtLine,
+        line.label.surface.toLowerCase(),
+        [lineNumber, 0],
+        true
+      ),
+    ]
+  } else if (line instanceof RulingDollarLine) {
+    return [
+      AnnotationToken.disabled(line.prefix, [lineNumber]),
+      new AnnotationToken(
+        line.number,
+        AnnotationTokenType.RulingDollarLine,
+        `${line.number.toLowerCase()} ruling`,
+        [lineNumber, 0],
+        true
+      ),
+    ]
+  } else {
+    return [
+      AnnotationToken.disabled(line.prefix, [lineNumber]),
+      ...line.content.flatMap((token, index) =>
+        mapToken(token, [lineNumber, index])
+      ),
+    ]
   }
 }
 
@@ -64,9 +133,6 @@ export function createAnnotationTokens(
   text: Text
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
   return text.lines.map((line, lineNumber) => [
-    new AnnotationToken(line.prefix, [lineNumber], false),
-    ...line.content.flatMap((token, index) =>
-      mapToken(token, [lineNumber, index])
-    ),
+    ...structureLineToTokens(line, lineNumber),
   ])
 }

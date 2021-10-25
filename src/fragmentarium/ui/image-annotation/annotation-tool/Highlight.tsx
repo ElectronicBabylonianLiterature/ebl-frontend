@@ -46,7 +46,7 @@ export default function Highlight({
             fontSize: `${scale > 0.7 ? '0.5em' : '.8em'}`,
           }}
         >
-          {annotation.data.value !== 'blank' ? annotation.data.value : ''}
+          {annotation.data.value}
         </span>
       </div>
     )

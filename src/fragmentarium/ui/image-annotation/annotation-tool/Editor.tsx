@@ -68,7 +68,7 @@ export default function Editor({
                       onClick={onChange}
                     />
                   ) : (
-                    token.value
+                    token.displayValue
                   )}{' '}
                 </span>
               ))}

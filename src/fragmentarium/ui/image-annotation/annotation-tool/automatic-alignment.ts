@@ -63,6 +63,7 @@ export default function automaticAlignment(
       return new Annotation(annotation.geometry, {
         id: annotation.data.id,
         value: token.value,
+        type: token.type,
         path: token.path,
         signName: '',
       })

@@ -2,7 +2,9 @@ import {
   AnnotationToken,
   createAnnotationTokens,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
-import Annotation from 'fragmentarium/domain/annotation'
+import Annotation, {
+  AnnotationTokenType,
+} from 'fragmentarium/domain/annotation'
 import { Text } from 'transliteration/domain/text'
 import * as at from 'test-support/lines/at'
 import * as dollar from 'test-support/lines/dollar'
@@ -10,7 +12,13 @@ import { TextLine } from 'transliteration/domain/text-line'
 
 test.each([
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken(
+      'kur',
+      AnnotationTokenType.HasSign,
+      'kur',
+      [2, 0, 1],
+      true
+    ),
     new Annotation(
       {
         x: 1,
@@ -21,6 +29,7 @@ test.each([
       },
       {
         value: 'ruk',
+        type: AnnotationTokenType.HasSign,
         path: [2, 0, 1],
         signName: 'RUK',
       }
@@ -28,7 +37,13 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken(
+      'kur',
+      AnnotationTokenType.HasSign,
+      'kur',
+      [2, 0, 1],
+      true
+    ),
     new Annotation(
       {
         x: 1,
@@ -39,6 +54,7 @@ test.each([
       },
       {
         value: 'ruk',
+        type: AnnotationTokenType.HasSign,
         path: [2, 0, 4],
         signName: 'RUK',
       }
@@ -46,7 +62,13 @@ test.each([
     false,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken(
+      'kur',
+      AnnotationTokenType.HasSign,
+      'kur',
+      [2, 0, 1],
+      true
+    ),
     {
       geometry: {
         x: 1,
@@ -57,6 +79,7 @@ test.each([
       },
       data: {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 1],
         signName: 'RUK',
       },
@@ -64,7 +87,13 @@ test.each([
     true,
   ],
   [
-    new AnnotationToken('kur', [2, 0, 1], true),
+    new AnnotationToken(
+      'kur',
+      AnnotationTokenType.HasSign,
+      'kur',
+      [2, 0, 1],
+      true
+    ),
     {
       geometry: {
         x: 1,
@@ -75,16 +104,30 @@ test.each([
       },
       data: {
         value: 'ruk',
+        type: 'Reading',
         path: [2, 0, 4],
         signName: 'RUK',
       },
     },
     false,
   ],
-  [new AnnotationToken('kur', [2, 0, 1], true), {}, false],
-])('hasMatchingPath %#', (token, annotation, expected) => {
-  expect(token.isEqualPath(annotation)).toEqual(expected)
-})
+  [
+    new AnnotationToken(
+      'kur',
+      AnnotationTokenType.HasSign,
+      'kur',
+      [2, 0, 1],
+      true
+    ),
+    null,
+    false,
+  ],
+])(
+  'isEqualPath %#',
+  (token: AnnotationToken, annotation: any, expected: boolean) => {
+    expect(token.isEqualPath(annotation)).toEqual(expected)
+  }
+)
 
 it('', () => {
   const textLine = new TextLine({
@@ -128,16 +171,34 @@ it('', () => {
 
   const tokens = [
     [
-      new AnnotationToken('@', [0], false),
-      new AnnotationToken('obverse?!', [0, 0], false),
+      new AnnotationToken('@', AnnotationTokenType.Disabled, '@', [0], false),
+      new AnnotationToken(
+        'OBVERSE',
+        AnnotationTokenType.SurfaceAtLine,
+        'obverse',
+        [0, 0],
+        true
+      ),
     ],
     [
-      new AnnotationToken('1.', [1], false),
-      new AnnotationToken('|KUR₂.KUR|', [1, 0, 0], true),
+      new AnnotationToken('1.', AnnotationTokenType.Disabled, '1.', [1], false),
+      new AnnotationToken(
+        '|KUR₂.KUR|',
+        AnnotationTokenType.HasSign,
+        '|KUR₂.KUR|',
+        [1, 0, 0],
+        true
+      ),
     ],
     [
-      new AnnotationToken('$', [2], false),
-      new AnnotationToken(' single ruling', [2, 0], false),
+      new AnnotationToken('$', AnnotationTokenType.Disabled, '$', [2], false),
+      new AnnotationToken(
+        'SINGLE',
+        AnnotationTokenType.RulingDollarLine,
+        'single ruling',
+        [2, 0],
+        true
+      ),
     ],
   ]
   expect(createAnnotationTokens(text)).toStrictEqual(tokens)

@@ -6,7 +6,9 @@ import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-too
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { signFactory } from 'test-support/sign-fixtures'
 import Promise from 'bluebird'
-import Annotation from 'fragmentarium/domain/annotation'
+import Annotation, {
+  AnnotationTokenType,
+} from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
 import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import textLine from 'test-support/lines/text-line'
@@ -33,7 +35,13 @@ const tokens = createAnnotationTokens(fragment.text)
 
 const initialAnnotation = new Annotation(
   { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-  { id: 'id_1', value: 'erin₂', path: [0, 0, 0], signName: 'EREN₂' }
+  {
+    id: 'id_1',
+    type: AnnotationTokenType.HasSign,
+    value: 'erin₂',
+    path: [0, 0, 0],
+    signName: 'EREN₂',
+  }
 )
 
 beforeEach(async () => {
@@ -79,6 +87,7 @@ it('Change existing annotation', async () => {
   const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
     id: initialAnnotation.data.id,
     value: 'ŠA₂',
+    type: AnnotationTokenType.HasSign,
     path: expectedData.path,
     signName: sign.name,
   })
@@ -90,16 +99,20 @@ it('Change existing annotation', async () => {
 })
 
 it('Generate Annotations', async () => {
-  jest
-    .spyOn(fragmentService, 'generateAnnotations')
-    .mockReturnValue(
-      Promise.resolve([
-        new Annotation(
-          { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-          { id: 'id_2', value: '', path: [-1], signName: '' }
-        ),
-      ])
-    )
+  jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
+    Promise.resolve([
+      new Annotation(
+        { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
+        {
+          id: 'id_2',
+          value: '',
+          type: AnnotationTokenType.Blank,
+          path: [-1],
+          signName: '',
+        }
+      ),
+    ])
+  )
   userEvent.click(screen.getByRole('button', { name: 'Generate Annotations' }))
   expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
   await waitFor(() =>

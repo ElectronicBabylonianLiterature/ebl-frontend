@@ -6,6 +6,7 @@ import Sign from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
 import { signFactory } from 'test-support/sign-fixtures'
+import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 
 jest.mock('http/ApiClient')
 
@@ -54,15 +55,47 @@ it('test associate Signs', async () => {
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
     [
-      new AnnotationToken('kur1', [0], true, null, 'kur1', 1),
-      new AnnotationToken('kur2', [0], true, null, 'kur2', 1),
+      new AnnotationToken(
+        'kur1',
+        AnnotationTokenType.HasSign,
+        'kur1',
+        [0],
+        true,
+        null,
+        'kur1',
+        1
+      ),
+      new AnnotationToken(
+        'kur2',
+        AnnotationTokenType.HasSign,
+        'kur1',
+        [0],
+        true,
+        null,
+        'kur2',
+        1
+      ),
     ],
   ]
 
   await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual([
     [
-      new AnnotationToken('kur1', [0], true, sign1),
-      new AnnotationToken('kur2', [0], true, null),
+      new AnnotationToken(
+        'kur1',
+        AnnotationTokenType.HasSign,
+        'kur1',
+        [0],
+        true,
+        sign1
+      ),
+      new AnnotationToken(
+        'kur2',
+        AnnotationTokenType.HasSign,
+        'kur1',
+        [0],
+        true,
+        null
+      ),
     ],
   ])
 })

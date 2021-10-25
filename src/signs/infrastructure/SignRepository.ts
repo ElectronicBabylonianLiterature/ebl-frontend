@@ -25,13 +25,15 @@ class SignRepository {
               (results) =>
                 new AnnotationToken(
                   token.value,
+                  token.type,
+                  token.displayValue,
                   token.path,
                   token.enabled,
                   results.length ? results[0] : null
                 )
             )
           } else {
-            return new AnnotationToken(token.value, token.path, token.enabled)
+            return token
           }
         })
       )
