@@ -99,16 +99,20 @@ it('Change existing annotation', async () => {
 })
 
 it('Generate Annotations', async () => {
-  jest
-    .spyOn(fragmentService, 'generateAnnotations')
-    .mockReturnValue(
-      Promise.resolve([
-        new Annotation(
-          { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-          { id: 'id_2', value: '', path: [-1], signName: '' }
-        ),
-      ])
-    )
+  jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
+    Promise.resolve([
+      new Annotation(
+        { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
+        {
+          id: 'id_2',
+          value: '',
+          type: AnnotationTokenType.Blank,
+          path: [-1],
+          signName: '',
+        }
+      ),
+    ])
+  )
   userEvent.click(screen.getByRole('button', { name: 'Generate Annotations' }))
   expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
   await waitFor(() =>
