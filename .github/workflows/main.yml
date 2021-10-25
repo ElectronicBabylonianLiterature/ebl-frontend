@@ -104,7 +104,7 @@ jobs:
              {"title": "Action URL", "value": "${env.GITHUB_SERVER_URL}/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}"}]
 
   docker-test: 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/test-deployment'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -126,6 +126,7 @@ jobs:
             REACT_APP_AUTH0_AUDIENCE=${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
             REACT_APP_DICTIONARY_API_URL=/test/api
             REACT_APP_SENTRY_DSN=${{ secrets.REACT_APP_SENTRY_DSN }}
+            REACT_APP_BASENAME=/test/www/
           context: .
           file: ./Dockerfile
           push: true
