@@ -208,6 +208,19 @@ const testData: TestData[] = [
   ],
   [
     'findAnnotations',
+    [fragmentId, true],
+    apiClient.fetchJson,
+    annotations,
+    [
+      `/fragments/${encodeURIComponent(
+        fragmentId
+      )}/annotations?generateAnnotations=true`,
+      true,
+    ],
+    Promise.resolve({ annotations: annotationsDto }),
+  ],
+  [
+    'findAnnotations',
     [fragmentId],
     apiClient.fetchJson,
     annotations,

@@ -112,7 +112,13 @@ const testData: TestData[] = [
   ],
   [
     'findAnnotations',
-    [fragment.number],
+    [fragment.number, false],
+    fragmentRepository.findAnnotations,
+    resultStub,
+  ],
+  [
+    'generateAnnotations',
+    [fragment.number, true],
     fragmentRepository.findAnnotations,
     resultStub,
   ],

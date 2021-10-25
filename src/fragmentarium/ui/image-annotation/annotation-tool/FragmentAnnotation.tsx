@@ -75,6 +75,10 @@ function FragmentAnnotation({
 
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [
+    isGenerateAnnotationsLoading,
+    setIsGenerateAnnotationsLoading,
+  ] = useState(false)
   const [isError, setIsError] = useState(false)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
@@ -247,6 +251,25 @@ function FragmentAnnotation({
         />
       )}
       <ButtonGroup>
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            setIsGenerateAnnotationsLoading(true)
+            fragmentService
+              .generateAnnotations(fragment.number)
+              .then((generatedAnnotations) =>
+                setAnnotations([...annotations, ...generatedAnnotations])
+              )
+              .catch(() => setIsError(true))
+              .finally(() => setIsGenerateAnnotationsLoading(false))
+          }}
+        >
+          {isGenerateAnnotationsLoading ? (
+            <Spinner loading={true} />
+          ) : (
+            'Generate Annotations'
+          )}
+        </Button>
         <Button
           variant="outline-dark"
           active={isAutomaticSelected}
