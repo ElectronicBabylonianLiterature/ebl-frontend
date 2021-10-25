@@ -222,6 +222,7 @@ function FragmentAnnotation({
         data: {
           ...annotation.data,
           value: token.value,
+          type: token.type,
           path: token.path,
           signName: '',
         },
