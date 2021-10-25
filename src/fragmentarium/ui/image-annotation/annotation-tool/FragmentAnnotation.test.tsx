@@ -41,6 +41,7 @@ beforeEach(async () => {
   jest
     .spyOn(fragmentService, 'updateAnnotations')
     .mockReturnValue(Promise.resolve([]))
+
   render(
     <MemoryRouter>
       <FragmentAnnotation
@@ -86,6 +87,24 @@ it('Change existing annotation', async () => {
   expect(
     fragmentService.updateAnnotations
   ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])
+})
+
+it('Generate Annotations', async () => {
+  jest
+    .spyOn(fragmentService, 'generateAnnotations')
+    .mockReturnValue(
+      Promise.resolve([
+        new Annotation(
+          { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
+          { id: 'id_2', value: '', path: [-1], signName: '' }
+        ),
+      ])
+    )
+  userEvent.click(screen.getByRole('button', { name: 'Generate Annotations' }))
+  expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
+  await waitFor(() =>
+    expect(screen.getAllByTestId('annotation__box').length).toBe(2)
+  )
 })
 it('Change existing annotation mode and then back to default mode', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
