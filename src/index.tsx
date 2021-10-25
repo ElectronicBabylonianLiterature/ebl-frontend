@@ -37,6 +37,7 @@ Promise.config({
 })
 
 const errorReporter = new SentryErrorReporter()
+const basename = process.env.REACT_APP_BASENAME
 
 function InjectedApp(): JSX.Element {
   const authenticationService = useAuthentication()
@@ -104,7 +105,7 @@ function InjectedAuth0Provider({
 ReactDOM.render(
   <ErrorReporterContext.Provider value={errorReporter}>
     <ErrorBoundary>
-      <Router>
+      <Router basename={basename}>
         <div className="mh-100">
           <div>
             <InjectedAuth0Provider>
