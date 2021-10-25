@@ -7,16 +7,16 @@ export interface Geometry {
   readonly width: number
   readonly type: string
 }
-
-export type AnnotationTokenType =
-  | 'HasSign'
-  | 'Number'
-  | 'SurfaceAtLine'
-  | 'RulingDollarLine'
-  | 'Blank'
-  | 'Disabled'
-  | 'BrokenAway'
-  | 'Predicted'
+export enum AnnotationTokenType {
+  HasSign = 'HasSign',
+  Number = 'Number',
+  SurfaceAtLine = 'SurfaceAtLine',
+  RulingDollarLine = 'RulingDollarLine',
+  Blank = 'Blank',
+  Disabled = 'Disabled',
+  BrokenAway = 'BrokenAway',
+  Predicted = 'Predicted',
+}
 
 export interface AnnotationData {
   readonly id?: string

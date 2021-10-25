@@ -23,13 +23,25 @@ export class AnnotationToken {
   ) {}
 
   static blank(): AnnotationToken {
-    return new AnnotationToken('', 'Blank', 'blank', [], true)
+    return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
   }
   static disabled(value, path): AnnotationToken {
-    return new AnnotationToken(value, 'Disabled', value, path, false)
+    return new AnnotationToken(
+      value,
+      AnnotationTokenType.Disabled,
+      value,
+      path,
+      false
+    )
   }
   static brokenAway(value, path): AnnotationToken {
-    return new AnnotationToken(value, 'BrokenAway', '', path, false)
+    return new AnnotationToken(
+      value,
+      AnnotationTokenType.BrokenAway,
+      '',
+      path,
+      false
+    )
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
@@ -58,12 +70,12 @@ function mapToken(
       'BrokenAway',
     ].includes(token.type)
   ) {
-    if ('BrokenAway' == token.type) {
+    if (token.type === AnnotationTokenType.BrokenAway) {
       return AnnotationToken.brokenAway(token.value, path)
     } else {
       return new AnnotationToken(
         token.value,
-        'HasSign',
+        AnnotationTokenType.HasSign,
         token.value,
         path,
         true,
@@ -90,7 +102,7 @@ function structureLineToTokens(
       AnnotationToken.disabled(line.prefix, [lineNumber]),
       new AnnotationToken(
         line.label.surface,
-        'SurfaceAtLine',
+        AnnotationTokenType.SurfaceAtLine,
         line.label.surface.toLowerCase(),
         [lineNumber, 0],
         true
@@ -101,7 +113,7 @@ function structureLineToTokens(
       AnnotationToken.disabled(line.prefix, [lineNumber]),
       new AnnotationToken(
         line.number,
-        'RulingDollarLine',
+        AnnotationTokenType.RulingDollarLine,
         `${line.number.toLowerCase()} ruling`,
         [lineNumber, 0],
         true

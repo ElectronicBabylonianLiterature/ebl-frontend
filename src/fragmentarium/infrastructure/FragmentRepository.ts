@@ -6,14 +6,14 @@ import { Fragment, RecordEntry } from 'fragmentarium/domain/fragment'
 import Folio from 'fragmentarium/domain/Folio'
 import Museum from 'fragmentarium/domain/museum'
 import {
-  FragmentRepository,
-  CdliInfo,
   AnnotationRepository,
+  CdliInfo,
+  FragmentRepository,
 } from 'fragmentarium/application/FragmentService'
 import Annotation from 'fragmentarium/domain/annotation'
 import {
-  FragmentInfosPromise,
   FragmentInfoRepository,
+  FragmentInfosPromise,
 } from 'fragmentarium/application/FragmentSearchService'
 import Reference from 'bibliography/domain/Reference'
 import { LemmatizationDto } from 'transliteration/domain/Lemmatization'

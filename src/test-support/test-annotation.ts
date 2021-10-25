@@ -1,4 +1,6 @@
-import Annotation from 'fragmentarium/domain/annotation'
+import Annotation, {
+  AnnotationTokenType,
+} from 'fragmentarium/domain/annotation'
 
 export const annotations: readonly Annotation[] = [
   new Annotation(
@@ -6,9 +8,9 @@ export const annotations: readonly Annotation[] = [
     {
       id: 'abc123',
       value: 'kur',
-      type: 'HasSign',
+      type: AnnotationTokenType.HasSign,
       path: [2, 3, 0],
-      signName: '',
+      signName: 'KUR',
     }
   ),
 ]
@@ -21,7 +23,7 @@ export const annotationsDto: readonly any[] = [
       value: 'kur',
       type: 'HasSign',
       path: [2, 3, 0],
-      signName: '',
+      signName: 'KUR',
     },
   },
 ]
