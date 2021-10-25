@@ -13,7 +13,6 @@ export default function Highlight({
   active,
   isToggled,
 }: Props): JSX.Element | null {
-  console.log(scale)
   if (annotation.geometry && annotation.data) {
     return (
       <div
