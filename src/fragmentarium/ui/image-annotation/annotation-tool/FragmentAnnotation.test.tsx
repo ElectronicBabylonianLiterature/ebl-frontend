@@ -169,25 +169,3 @@ describe('Annotations manipulation', () => {
     )
   })
 })
-
-describe('Display Reading has no sign error', () => {
-  beforeEach(async () => {
-    jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([]))
-    jest
-      .spyOn(fragmentService, 'updateAnnotations')
-      .mockReturnValue(Promise.resolve([]))
-
-    renderFragmentAnnotation()
-    await screen.findByText('Click and Drag to Annotate')
-  })
-  it('Display alert message Reading has no sign on top of annotation tool', async () => {
-    expect(screen.getByTestId('annotation__box')).toBeVisible()
-    expect(
-      screen.getAllByText(
-        (text) =>
-          text.search('Reading') !== -1 &&
-          text.search('has no corresponding Sign.') !== -1
-      ).length
-    ).toBeGreaterThan(0)
-  })
-})

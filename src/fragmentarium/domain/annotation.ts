@@ -8,6 +8,7 @@ export interface Geometry {
   readonly type: string
 }
 export enum AnnotationTokenType {
+  CompoundGrapheme = 'CompoundGrapheme',
   HasSign = 'HasSign',
   Number = 'Number',
   SurfaceAtLine = 'SurfaceAtLine',

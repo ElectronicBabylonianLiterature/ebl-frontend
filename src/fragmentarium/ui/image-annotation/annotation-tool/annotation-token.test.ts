@@ -184,7 +184,7 @@ it('', () => {
       new AnnotationToken('1.', AnnotationTokenType.Disabled, '1.', [1], false),
       new AnnotationToken(
         '|KUR₂.KUR|',
-        AnnotationTokenType.HasSign,
+        AnnotationTokenType.CompoundGrapheme,
         '|KUR₂.KUR|',
         [1, 0, 0],
         true

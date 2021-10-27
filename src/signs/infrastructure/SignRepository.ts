@@ -11,54 +11,46 @@ class SignRepository {
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
   }
+  private attachSignToToken(token: AnnotationToken): Promise<AnnotationToken> {
+    if (
+      [
+        AnnotationTokenType.HasSign,
+        AnnotationTokenType.CompoundGrapheme,
+        AnnotationTokenType.Number,
+      ].includes(token.type)
+    ) {
+      return this.search({
+        value: token.name,
+        subIndex: token.subIndex ?? undefined,
+      }).then((results) => {
+        const isValidResult = results.length > 0
+        if (
+          [
+            AnnotationTokenType.Number,
+            AnnotationTokenType.CompoundGrapheme,
+          ].includes(token.type) ||
+          isValidResult
+        ) {
+          return isValidResult
+            ? token.attachSign(results[0])
+            : Promise.resolve(token)
+        } else {
+          throw Error(
+            `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign.`
+          )
+        }
+      })
+    }
+    return Promise.resolve(token)
+  }
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-  ): Promise<[ReadonlyArray<ReadonlyArray<AnnotationToken>>, string[]]> {
+  ): Promise<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
     const tokensWithSigns = tokens.map((tokensRow) =>
-      tokensRow.map((token) => {
-        if (token.type === AnnotationTokenType.HasSign) {
-          return this.search({
-            value: token.name,
-            subIndex: token.subIndex ?? undefined,
-          }).then((results) => {
-            const annotationToken = new AnnotationToken(
-              token.value,
-              token.type,
-              token.displayValue,
-              token.path,
-              token.enabled,
-              results.length > 0 ? results[0] : null
-            )
-            return results.length > 0
-              ? annotationToken
-              : Promise.reject({
-                  annotationToken: annotationToken,
-                  error: `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign. Please notfiy eBL.`,
-                })
-          })
-        } else {
-          return Promise.resolve(token)
-        }
-      })
+      tokensRow.map((token) => this.attachSignToToken(token))
     )
-    const errors: string[] = []
-    const annotationTokens = Promise.all(
-      tokensWithSigns.map((promises) =>
-        Promise.all(promises.map((promise) => promise.reflect())).map(
-          (inspection) => {
-            if (!inspection.isFulfilled()) {
-              const result = inspection.reason()
-              errors.push(result.error)
-              return result.annotationToken
-            } else {
-              return inspection.value()
-            }
-          }
-        )
-      )
-    )
-    return Promise.all([annotationTokens, errors])
+    return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {

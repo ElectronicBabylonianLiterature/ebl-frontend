@@ -28,7 +28,6 @@ import { Prompt } from 'react-router-dom'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-  readingHasNoSignErrors: string[]
   image: Blob
   fragment: Fragment
   initialAnnotations: readonly Annotation[]
@@ -36,17 +35,11 @@ interface Props {
   signService: SignService
 }
 export default withData<
-  Omit<Props, 'tokens' | 'readingHasNoSignErrors'>,
+  Omit<Props, 'tokens'>,
   { fragment: Fragment; signService: SignService },
-  [ReadonlyArray<ReadonlyArray<AnnotationToken>>, string[]]
+  ReadonlyArray<ReadonlyArray<AnnotationToken>>
 >(
-  ({ data, ...props }) => (
-    <FragmentAnnotation
-      {...props}
-      tokens={data[0]}
-      readingHasNoSignErrors={data[1]}
-    />
-  ),
+  ({ data, ...props }) => <FragmentAnnotation {...props} tokens={data} />,
   ({ fragment, signService }) =>
     signService.associateSigns(createAnnotationTokens(fragment.text))
 )
@@ -72,7 +65,6 @@ function initializeAnnotations(
 }
 
 function FragmentAnnotation({
-  readingHasNoSignErrors,
   tokens,
   fragment,
   image,
@@ -243,27 +235,12 @@ function FragmentAnnotation({
     }
   }
 
-  const ReadingHasNoSignErrors = () => {
-    if (readingHasNoSignErrors.length > 0) {
-      return (
-        <ul>
-          {readingHasNoSignErrors.map((error, index) => (
-            <li key={index}>{error}</li>
-          ))}
-        </ul>
-      )
-    } else {
-      return null
-    }
-  }
-
   return (
     <>
       <Prompt
         when={!_.isEqual(savedAnnotations, annotations)}
         message={'Changes you made may not be saved.'}
       />
-      <ReadingHasNoSignErrors />
       {isError && (
         <ErrorAlert
           error={

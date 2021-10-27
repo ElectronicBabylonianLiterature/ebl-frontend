@@ -22,6 +22,19 @@ export class AnnotationToken {
     readonly subIndex: number | null = null
   ) {}
 
+  attachSign(sign: Sign): AnnotationToken {
+    return new AnnotationToken(
+      this.value,
+      this.type,
+      this.displayValue,
+      this.path,
+      this.enabled,
+      sign,
+      this.name,
+      this.subIndex
+    )
+  }
+
   static blank(): AnnotationToken {
     return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
   }
@@ -57,6 +70,23 @@ export class AnnotationToken {
   }
 }
 
+function matchTokenType(tokenType: string): AnnotationTokenType {
+  switch (tokenType) {
+    case 'Reading':
+    case 'Logogram':
+      return AnnotationTokenType.HasSign
+    case 'Number':
+      return AnnotationTokenType.Number
+    case 'CompoundGrapheme':
+      return AnnotationTokenType.CompoundGrapheme
+    default:
+      throw Error(`'${tokenType}' has to be: 'Reading',
+      'Logogram',
+      'CompoundGrapheme' or
+      'Number'`)
+  }
+}
+
 function mapToken(
   token: Token,
   path: readonly number[]
@@ -80,7 +110,7 @@ function mapToken(
 
       return new AnnotationToken(
         token.value,
-        AnnotationTokenType.HasSign,
+        matchTokenType(token.type),
         token.value,
         path,
         true,
