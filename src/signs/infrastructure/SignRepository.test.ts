@@ -51,6 +51,7 @@ it('test associate Signs', async () => {
   const sign1 = signFactory.build({ name: 'BAR' })
   jest
     .spyOn(signsRepository, 'search')
+    .mockImplementationOnce(() => Promise.resolve([sign1, signFactory.build()]))
     .mockImplementationOnce(() => Promise.resolve([sign1]))
     .mockImplementationOnce(() => Promise.resolve([]))
   const tokens = [
@@ -75,27 +76,50 @@ it('test associate Signs', async () => {
         'kur2',
         1
       ),
-    ],
-  ]
-
-  await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual([
-    [
-      new AnnotationToken(
-        'kur1',
-        AnnotationTokenType.HasSign,
-        'kur1',
-        [0],
-        true,
-        sign1
-      ),
       new AnnotationToken(
         'kur2',
         AnnotationTokenType.HasSign,
         'kur1',
         [0],
         true,
-        null
+        null,
+        'kur2',
+        1
       ),
+    ],
+  ]
+
+  await expect(signsRepository.associateSigns(tokens)).resolves.toStrictEqual([
+    [
+      [
+        new AnnotationToken(
+          'kur1',
+          AnnotationTokenType.HasSign,
+          'kur1',
+          [0],
+          true,
+          sign1
+        ),
+        new AnnotationToken(
+          'kur2',
+          AnnotationTokenType.HasSign,
+          'kur1',
+          [0],
+          true,
+          sign1
+        ),
+        new AnnotationToken(
+          'kur2',
+          AnnotationTokenType.HasSign,
+          'kur1',
+          [0],
+          true,
+          null
+        ),
+      ],
+    ],
+    [
+      "Reading 'kur2' with subIndex '1' has no corresponding Sign. Please notfiy eBL.",
     ],
   ])
 })

@@ -43,14 +43,8 @@ const initialAnnotation = new Annotation(
     signName: 'EREN₂',
   }
 )
-
-beforeEach(async () => {
-  jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([sign]))
-  jest
-    .spyOn(fragmentService, 'updateAnnotations')
-    .mockReturnValue(Promise.resolve([]))
-
-  render(
+function renderFragmentAnnotation() {
+  return render(
     <MemoryRouter>
       <FragmentAnnotation
         image={new Blob()}
@@ -61,96 +55,139 @@ beforeEach(async () => {
       />
     </MemoryRouter>
   )
-  await screen.findByText('Click and Drag to Annotate')
-})
-it('hover makes editor button dark', async () => {
-  expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.hover(screen.getByTestId('annotation__target'))
-  await screen.findByText('Delete')
-  await waitFor(() =>
-    expect(screen.getByRole('button', { name: 'erin₂' })).toHaveClass(
-      'btn-dark'
+}
+describe('Annotations manipulation', () => {
+  beforeEach(async () => {
+    jest
+      .spyOn(signsRepository, 'search')
+      .mockReturnValue(Promise.resolve([sign]))
+    jest
+      .spyOn(fragmentService, 'updateAnnotations')
+      .mockReturnValue(Promise.resolve([]))
+
+    renderFragmentAnnotation()
+    await screen.findByText('Click and Drag to Annotate')
+  })
+
+  it('hover makes editor button dark', async () => {
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    userEvent.hover(screen.getByTestId('annotation__target'))
+    await screen.findByText('Delete')
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'erin₂' })).toHaveClass(
+        'btn-dark'
+      )
     )
-  )
+  })
+
+  it('Change existing annotation', async () => {
+    expect(screen.getAllByText(/erin₂/).length).toBe(2)
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
+    await waitFor(() =>
+      expect(screen.getByText(/change existing/)).toBeVisible()
+    )
+    userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
+    userEvent.hover(screen.getByTestId('annotation__target'))
+    await screen.findByText('Delete')
+    await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(3))
+    const expectedData = tokens
+      .flat()
+      .filter((token) => token.value === 'ŠA₂')[0]
+    const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
+      id: initialAnnotation.data.id,
+      value: 'ŠA₂',
+      type: AnnotationTokenType.HasSign,
+      path: expectedData.path,
+      signName: sign.name,
+    })
+    userEvent.click(screen.getByRole('button', { name: 'Save' }))
+    await screen.findByRole('button', { name: 'Save' })
+    expect(
+      fragmentService.updateAnnotations
+    ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])
+  })
+
+  it('Generate Annotations', async () => {
+    jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
+      Promise.resolve([
+        new Annotation(
+          { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
+          {
+            id: 'id_2',
+            value: '',
+            type: AnnotationTokenType.Blank,
+            path: [-1],
+            signName: '',
+          }
+        ),
+      ])
+    )
+    userEvent.click(
+      screen.getByRole('button', { name: 'Generate Annotations' })
+    )
+    expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
+    await waitFor(() =>
+      expect(screen.getAllByTestId('annotation__box').length).toBe(2)
+    )
+  })
+  it('Change existing annotation mode and then back to default mode', async () => {
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
+    await waitFor(() =>
+      expect(screen.getByText(/change existing/)).toBeVisible()
+    )
+    userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
+  })
+  it('delete specific annotation', async () => {
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    userEvent.hover(screen.getByTestId('annotation__target'))
+    await screen.findByText('Delete')
+    userEvent.click(screen.getByText('Delete'))
+    await waitFor(() =>
+      expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
+    )
+    expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
+      'Test.Fragment',
+      []
+    )
+  })
+  it('delete everything', async () => {
+    const confirmMock = jest
+      .spyOn(window, 'confirm')
+      .mockImplementation(() => true)
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    userEvent.click(screen.getByText('Delete everything'))
+    expect(confirmMock).toHaveBeenCalledTimes(1)
+    await waitFor(() => {
+      expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
+    })
+    expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
+      'Test.Fragment',
+      []
+    )
+  })
 })
 
-it('Change existing annotation', async () => {
-  expect(screen.getAllByText(/erin₂/).length).toBe(2)
-  expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
-  await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
-  userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
-  userEvent.hover(screen.getByTestId('annotation__target'))
-  await screen.findByText('Delete')
-  await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(3))
-  const expectedData = tokens.flat().filter((token) => token.value === 'ŠA₂')[0]
-  const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
-    id: initialAnnotation.data.id,
-    value: 'ŠA₂',
-    type: AnnotationTokenType.HasSign,
-    path: expectedData.path,
-    signName: sign.name,
-  })
-  userEvent.click(screen.getByRole('button', { name: 'Save' }))
-  await screen.findByRole('button', { name: 'Save' })
-  expect(
-    fragmentService.updateAnnotations
-  ).toHaveBeenCalledWith('Test.Fragment', [expectedAnnotation])
-})
+describe('Display Reading has no sign error', () => {
+  beforeEach(async () => {
+    jest.spyOn(signsRepository, 'search').mockReturnValue(Promise.resolve([]))
+    jest
+      .spyOn(fragmentService, 'updateAnnotations')
+      .mockReturnValue(Promise.resolve([]))
 
-it('Generate Annotations', async () => {
-  jest.spyOn(fragmentService, 'generateAnnotations').mockReturnValue(
-    Promise.resolve([
-      new Annotation(
-        { x: 50, y: 50, width: 10, height: 10, type: 'RECTANGLE' },
-        {
-          id: 'id_2',
-          value: '',
-          type: AnnotationTokenType.Blank,
-          path: [-1],
-          signName: '',
-        }
-      ),
-    ])
-  )
-  userEvent.click(screen.getByRole('button', { name: 'Generate Annotations' }))
-  expect(fragmentService.generateAnnotations).toHaveBeenCalledTimes(1)
-  await waitFor(() =>
-    expect(screen.getAllByTestId('annotation__box').length).toBe(2)
-  )
-})
-it('Change existing annotation mode and then back to default mode', async () => {
-  expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
-  await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
-  userEvent.keyboard('{Escape}')
-  await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
-})
-it('delete specific annotation', async () => {
-  expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.hover(screen.getByTestId('annotation__target'))
-  await screen.findByText('Delete')
-  userEvent.click(screen.getByText('Delete'))
-  await waitFor(() =>
-    expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
-  )
-  expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
-    'Test.Fragment',
-    []
-  )
-})
-it('delete everything', async () => {
-  const confirmMock = jest
-    .spyOn(window, 'confirm')
-    .mockImplementation(() => true)
-  expect(screen.getByTestId('annotation__box')).toBeVisible()
-  userEvent.click(screen.getByText('Delete everything'))
-  expect(confirmMock).toHaveBeenCalledTimes(1)
-  await waitFor(() => {
-    expect(screen.queryByTestId('annotation__box')).not.toBeInTheDocument()
+    renderFragmentAnnotation()
+    await screen.findByText('Click and Drag to Annotate')
   })
-  expect(fragmentService.updateAnnotations).toHaveBeenCalledWith(
-    'Test.Fragment',
-    []
-  )
+  it('Display alert message Reading has no sign on top of annotation tool', async () => {
+    expect(screen.getByTestId('annotation__box')).toBeVisible()
+    expect(
+      screen.getAllByText(
+        (text) =>
+          text.search('Reading') !== -1 &&
+          text.search('has no corresponding Sign.') !== -1
+      ).length
+    ).toBeGreaterThan(0)
+  })
 })

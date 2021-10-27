@@ -73,6 +73,11 @@ function mapToken(
     if (token.type === AnnotationTokenType.BrokenAway) {
       return AnnotationToken.brokenAway(token.value, path)
     } else {
+      const tokenName = 'name' in token ? token.name.toLowerCase() : ''
+      const subIndex = tokenName
+        ? ('subIndex' in token && token.subIndex) || 1
+        : null
+
       return new AnnotationToken(
         token.value,
         AnnotationTokenType.HasSign,
@@ -80,8 +85,8 @@ function mapToken(
         path,
         true,
         null,
-        'name' in token ? token.name : '',
-        'subIndex' in token ? token.subIndex : null
+        tokenName,
+        subIndex
       )
     }
   } else if (token.parts) {

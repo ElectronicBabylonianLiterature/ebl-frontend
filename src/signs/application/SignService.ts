@@ -12,7 +12,7 @@ export default class SignService {
 
   associateSigns(
     tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>
-  ): Bluebird<ReadonlyArray<ReadonlyArray<AnnotationToken>>> {
+  ): Bluebird<[ReadonlyArray<ReadonlyArray<AnnotationToken>>, string[]]> {
     return this.signsRepository.associateSigns(tokens)
   }
 
