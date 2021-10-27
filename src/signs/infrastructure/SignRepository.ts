@@ -11,7 +11,9 @@ class SignRepository {
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
   }
-  private attachSignToToken(token: AnnotationToken): Promise<AnnotationToken> {
+  private attachSignToToken(
+    token: AnnotationToken
+  ): Promise<AnnotationToken> | AnnotationToken {
     if (
       [
         AnnotationTokenType.HasSign,
@@ -31,9 +33,7 @@ class SignRepository {
           ].includes(token.type) ||
           isValidResult
         ) {
-          return isValidResult
-            ? token.attachSign(results[0])
-            : Promise.resolve(token)
+          return isValidResult ? token.attachSign(results[0]) : token
         } else {
           throw Error(
             `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign.`
@@ -41,7 +41,7 @@ class SignRepository {
         }
       })
     }
-    return Promise.resolve(token)
+    return token
   }
 
   associateSigns(
