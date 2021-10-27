@@ -21,7 +21,7 @@ class SignRepository {
     ) {
       return this.search({
         value: token.name,
-        subIndex: token.subIndex ?? undefined,
+        ...(token.subIndex && { subIndex: token.subIndex }),
       }).then((results) => {
         const isValidResult = results.length > 0
         if (
