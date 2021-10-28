@@ -80,7 +80,7 @@ function mapToken(
         path,
         true,
         null,
-        'name' in token ? token.name : '',
+        'name' in token ? token.name.toLowerCase() : '',
         'subIndex' in token ? token.subIndex : null
       )
     }
