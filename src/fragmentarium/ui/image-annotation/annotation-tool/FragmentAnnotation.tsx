@@ -73,6 +73,10 @@ function FragmentAnnotation({
 }: Props): React.ReactElement {
   const imageUrl = useObjectUrl(image)
 
+  const [
+    isChangeExistingModeButtonPressed,
+    setIsChangeExistingModeButtonPressed,
+  ] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [
@@ -102,11 +106,27 @@ function FragmentAnnotation({
     setAnnotation({})
   }
 
-  const onPressingEsc = useCallback((event) => {
-    if (event.keyCode === 27) {
-      reset()
-    }
-  }, [])
+  const onPressingDown = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        reset()
+      } else {
+        if (event.keyCode === 89) {
+          setIsChangeExistingModeButtonPressed(true)
+        }
+      }
+    },
+    [setIsChangeExistingModeButtonPressed]
+  )
+
+  const onReleaseButton = useCallback(
+    (event) => {
+      if (event.keyCode === 89) {
+        setIsChangeExistingModeButtonPressed(false)
+      }
+    },
+    [setIsChangeExistingModeButtonPressed]
+  )
 
   const alertUser = (event) => {
     if (!_.isEqual(savedAnnotations, annotations)) {
@@ -122,12 +142,20 @@ function FragmentAnnotation({
       capture: true,
       once: true,
     })
-    document.addEventListener('keydown', onPressingEsc, false)
+    document.addEventListener('keydown', onPressingDown, false)
+    document.addEventListener('keyup', onReleaseButton, false)
     return () => {
-      document.removeEventListener('keydown', onPressingEsc, false)
+      document.removeEventListener('keydown', onPressingDown, false)
       window.removeEventListener('beforeunload', alertUser)
+      document.addEventListener('keyup', onReleaseButton, false)
     }
-  }, [annotations, fragment.number, fragmentService, onPressingEsc])
+  }, [
+    annotations,
+    fragment.number,
+    fragmentService,
+    onPressingDown,
+    onReleaseButton,
+  ])
 
   const saveAnnotations = async (annotations: readonly Annotation[]) => {
     setAnnotations(annotations)
@@ -206,10 +234,10 @@ function FragmentAnnotation({
   }
 
   const onClick = (event: MouseEvent) => {
-    if (event.ctrlKey && isChangeExistingMode) {
+    if (isChangeExistingModeButtonPressed && isChangeExistingMode) {
       setToggled(hovering)
     }
-    if (event.ctrlKey) {
+    if (isChangeExistingModeButtonPressed) {
       setToggled(hovering)
       setIsChangeExistingMode(true)
     } else {
