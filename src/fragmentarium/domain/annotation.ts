@@ -15,7 +15,8 @@ export enum AnnotationTokenType {
   RulingDollarLine = 'RulingDollarLine',
   Blank = 'Blank',
   Disabled = 'Disabled',
-  BrokenAway = 'BrokenAway',
+  PartiallyBroken = 'PartiallyBroken',
+  CompletelyBroken = 'CompletelyBroken',
   Predicted = 'Predicted',
 }
 

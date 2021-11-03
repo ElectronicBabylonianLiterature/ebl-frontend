@@ -3,7 +3,11 @@ import Annotation, {
   AnnotationTokenType,
   RawAnnotation,
 } from 'fragmentarium/domain/annotation'
-import { Token } from 'transliteration/domain/token'
+import {
+  CompoundGrapheme,
+  NamedSign,
+  Token,
+} from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
 import Sign from 'signs/domain/Sign'
 import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
@@ -38,19 +42,22 @@ export class AnnotationToken {
   static blank(): AnnotationToken {
     return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
   }
-  static disabled(value, path): AnnotationToken {
+  static disabled(
+    displayValue: string,
+    path: readonly number[]
+  ): AnnotationToken {
     return new AnnotationToken(
-      value,
+      '',
       AnnotationTokenType.Disabled,
-      value,
+      displayValue,
       path,
       false
     )
   }
-  static brokenAway(value, path): AnnotationToken {
+  static completelyBroken(path: readonly number[]): AnnotationToken {
     return new AnnotationToken(
-      value,
-      AnnotationTokenType.BrokenAway,
+      '',
+      AnnotationTokenType.CompletelyBroken,
       '',
       path,
       false
@@ -70,20 +77,61 @@ export class AnnotationToken {
   }
 }
 
-function matchTokenType(tokenType: string): AnnotationTokenType {
-  switch (tokenType) {
-    case 'Reading':
-    case 'Logogram':
-      return AnnotationTokenType.HasSign
-    case 'Number':
-      return AnnotationTokenType.Number
-    case 'CompoundGrapheme':
-      return AnnotationTokenType.CompoundGrapheme
-    default:
-      throw Error(`'${tokenType}' has to be: 'Reading',
-      'Logogram',
-      'CompoundGrapheme' or
-      'Number'`)
+function tokenToAnnotationToken(
+  token: Token,
+  path: readonly number[]
+): AnnotationToken {
+  if (['Reading', 'Logogram', 'Number'].includes(token.type)) {
+    const namedSign = token as NamedSign
+    const partEnclosures = namedSign.nameParts.map((part) => part.enclosureType)
+    const completelyBroken = _.intersection(...partEnclosures).includes(
+      'BROKEN_AWAY'
+    )
+    const partiallyBroken =
+      _.union(...partEnclosures).includes('BROKEN_AWAY') && !completelyBroken
+    if (completelyBroken) {
+      return AnnotationToken.completelyBroken(path)
+    } else if (partiallyBroken) {
+      return new AnnotationToken(
+        token.cleanValue,
+        AnnotationTokenType.PartiallyBroken,
+        token.value,
+        path,
+        true,
+        null,
+        namedSign.name,
+        namedSign.subIndex
+      )
+    } else {
+      return new AnnotationToken(
+        token.cleanValue,
+        token.type === 'Number'
+          ? AnnotationTokenType.Number
+          : AnnotationTokenType.HasSign,
+        token.value,
+        path,
+        true,
+        null,
+        namedSign.name,
+        namedSign.subIndex
+      )
+    }
+  } else {
+    const compoundGrapheme = token as CompoundGrapheme
+    if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
+      return AnnotationToken.completelyBroken(path)
+    } else {
+      return new AnnotationToken(
+        token.cleanValue,
+        AnnotationTokenType.CompoundGrapheme,
+        token.value,
+        path,
+        true,
+        null,
+        token.cleanValue,
+        1
+      )
+    }
   }
 }
 
@@ -92,39 +140,19 @@ function mapToken(
   path: readonly number[]
 ): AnnotationToken | AnnotationToken[] {
   if (
-    [
-      'Reading',
-      'Logogram',
-      'CompoundGrapheme',
-      'Number',
-      'BrokenAway',
-    ].includes(token.type)
+    ['Reading', 'Logogram', 'CompoundGrapheme', 'Number'].includes(token.type)
   ) {
-    if (token.type === AnnotationTokenType.BrokenAway) {
-      return AnnotationToken.brokenAway(token.value, path)
-    } else {
-      const tokenName = 'name' in token ? token.name.toLowerCase() : ''
-      const subIndex = tokenName
-        ? ('subIndex' in token && token.subIndex) || 1
-        : null
-
-      return new AnnotationToken(
-        token.value,
-        matchTokenType(token.type),
-        token.value,
-        path,
-        true,
-        null,
-        tokenName,
-        subIndex
-      )
-    }
+    return tokenToAnnotationToken(token, path)
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
       mapToken(part, [...path, index])
     )
   } else {
-    return AnnotationToken.disabled(token.value, path)
+    if (token.enclosureType.includes('BROKEN_AWAY')) {
+      return AnnotationToken.completelyBroken(path)
+    } else {
+      return AnnotationToken.disabled(token.value, path)
+    }
   }
 }
 

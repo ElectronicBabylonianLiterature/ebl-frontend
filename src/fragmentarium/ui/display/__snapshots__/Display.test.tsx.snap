@@ -248,13 +248,13 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__Logogram"
                 >
                   <span
-                    class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
+                    class=""
                   >
                     <span
                       class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                        class=""
                       >
                         ŠÁ
                       </span>

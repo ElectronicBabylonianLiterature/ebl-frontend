@@ -11,35 +11,36 @@ class SignRepository {
   constructor(apiClient: ApiClient) {
     this.apiClient = apiClient
   }
+
+  private handleEmptySignSearchResults(
+    token: AnnotationToken,
+    signSearchResults: Sign[]
+  ) {
+    const isValidResult = signSearchResults.length > 0
+    if (token.type === AnnotationTokenType.HasSign && !isValidResult) {
+      throw Error(
+        `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign.`
+      )
+    } else {
+      return isValidResult ? token.attachSign(signSearchResults[0]) : token
+    }
+  }
+
   private attachSignToToken(
     token: AnnotationToken
   ): Promise<AnnotationToken> | AnnotationToken {
     if (
       [
         AnnotationTokenType.HasSign,
-        AnnotationTokenType.CompoundGrapheme,
         AnnotationTokenType.Number,
+        AnnotationTokenType.CompoundGrapheme,
+        AnnotationTokenType.PartiallyBroken,
       ].includes(token.type)
     ) {
       return this.search({
         value: token.name,
-        ...(token.subIndex && { subIndex: token.subIndex }),
-      }).then((results) => {
-        const isValidResult = results.length > 0
-        if (
-          [
-            AnnotationTokenType.Number,
-            AnnotationTokenType.CompoundGrapheme,
-          ].includes(token.type) ||
-          isValidResult
-        ) {
-          return isValidResult ? token.attachSign(results[0]) : token
-        } else {
-          throw Error(
-            `Reading '${token.name}' with subIndex '${token.subIndex}' has no corresponding Sign.`
-          )
-        }
-      })
+        subIndex: token.subIndex as number,
+      }).then((results) => this.handleEmptySignSearchResults(token, results))
     }
     return token
   }

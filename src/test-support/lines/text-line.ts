@@ -56,13 +56,13 @@ export default new TextLine({
           type: 'PerhapsBrokenAway',
         },
         {
-          enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+          enclosureType: [],
           cleanValue: 'ŠA₂',
           value: 'ŠA₂',
           name: 'ŠA',
           nameParts: [
             {
-              enclosureType: ['BROKEN_AWAY', 'PERHAPS_BROKEN_AWAY'],
+              enclosureType: [],
               cleanValue: 'ŠA',
               value: 'ŠA',
               type: 'ValueToken',
