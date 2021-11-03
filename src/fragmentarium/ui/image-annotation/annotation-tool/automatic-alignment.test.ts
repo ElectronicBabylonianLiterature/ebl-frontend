@@ -6,7 +6,7 @@ import automaticAlignment from 'fragmentarium/ui/image-annotation/annotation-too
 
 const tokens = [
   [
-    AnnotationToken.disabled('1.', [0]),
+    AnnotationToken.initDeactive('1.', AnnotationTokenType.Disabled, [0]),
     new AnnotationToken(
       'one-one',
       AnnotationTokenType.HasSign,
@@ -23,7 +23,7 @@ const tokens = [
     ),
   ],
   [
-    AnnotationToken.disabled('2.', [3]),
+    AnnotationToken.initDeactive('2.', AnnotationTokenType.Disabled, [3]),
     new AnnotationToken(
       'two-one',
       AnnotationTokenType.HasSign,

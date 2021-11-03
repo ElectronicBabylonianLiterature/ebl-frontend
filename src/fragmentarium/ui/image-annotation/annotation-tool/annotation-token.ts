@@ -38,30 +38,43 @@ export class AnnotationToken {
       this.subIndex
     )
   }
-
-  static blank(): AnnotationToken {
-    return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
-  }
-  static disabled(
+  static initActive(
+    value: string,
+    type:
+      | AnnotationTokenType.HasSign
+      | AnnotationTokenType.Number
+      | AnnotationTokenType.PartiallyBroken
+      | AnnotationTokenType.CompoundGrapheme
+      | AnnotationTokenType.SurfaceAtLine
+      | AnnotationTokenType.RulingDollarLine,
     displayValue: string,
-    path: readonly number[]
+    path: readonly number[],
+    name = '',
+    subIndex: number | null = null
   ): AnnotationToken {
     return new AnnotationToken(
-      '',
-      AnnotationTokenType.Disabled,
+      value,
+      type,
       displayValue,
       path,
-      false
+      true,
+      null,
+      name,
+      subIndex
     )
   }
-  static completelyBroken(path: readonly number[]): AnnotationToken {
-    return new AnnotationToken(
-      '',
-      AnnotationTokenType.CompletelyBroken,
-      '',
-      path,
-      false
-    )
+  static initDeactive(
+    displayValue: string,
+    type:
+      | AnnotationTokenType.CompletelyBroken
+      | AnnotationTokenType.Blank
+      | AnnotationTokenType.Disabled,
+    path: readonly number[]
+  ): AnnotationToken {
+    return new AnnotationToken('', type, displayValue, path, false)
+  }
+  static blank(): AnnotationToken {
+    return new AnnotationToken('', AnnotationTokenType.Blank, 'blank', [], true)
   }
 
   isPathInAnnotations(annotation: readonly Annotation[]): boolean {
@@ -81,56 +94,59 @@ function tokenToAnnotationToken(
   token: Token,
   path: readonly number[]
 ): AnnotationToken {
-  if (['Reading', 'Logogram', 'Number'].includes(token.type)) {
-    const namedSign = token as NamedSign
-    const partEnclosures = namedSign.nameParts.map((part) => part.enclosureType)
-    const completelyBroken = _.intersection(...partEnclosures).includes(
-      'BROKEN_AWAY'
-    )
-    const partiallyBroken =
-      _.union(...partEnclosures).includes('BROKEN_AWAY') && !completelyBroken
-    if (completelyBroken) {
-      return AnnotationToken.completelyBroken(path)
-    } else if (partiallyBroken) {
-      return new AnnotationToken(
-        token.cleanValue,
-        AnnotationTokenType.PartiallyBroken,
-        token.value,
-        path,
-        true,
-        null,
-        namedSign.name,
-        namedSign.subIndex
+  switch (token.type) {
+    case 'Reading':
+    case 'Logogram':
+    case 'Number': {
+      const namedSign = token as NamedSign
+      const partEnclosures = namedSign.nameParts.map(
+        (part) => part.enclosureType
       )
-    } else {
-      return new AnnotationToken(
-        token.cleanValue,
-        token.type === 'Number'
-          ? AnnotationTokenType.Number
-          : AnnotationTokenType.HasSign,
-        token.value,
-        path,
-        true,
-        null,
-        namedSign.name,
-        namedSign.subIndex
+      const completelyBroken = _.intersection(...partEnclosures).includes(
+        'BROKEN_AWAY'
       )
+      const partiallyBroken =
+        _.union(...partEnclosures).includes('BROKEN_AWAY') && !completelyBroken
+
+      if (completelyBroken) {
+        return AnnotationToken.initDeactive(
+          '',
+          AnnotationTokenType.CompletelyBroken,
+          path
+        )
+      } else {
+        return AnnotationToken.initActive(
+          token.cleanValue,
+          partiallyBroken
+            ? AnnotationTokenType.PartiallyBroken
+            : token.type === 'Number'
+            ? AnnotationTokenType.Number
+            : AnnotationTokenType.HasSign,
+          token.value,
+          path,
+          namedSign.name,
+          namedSign.subIndex
+        )
+      }
     }
-  } else {
-    const compoundGrapheme = token as CompoundGrapheme
-    if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
-      return AnnotationToken.completelyBroken(path)
-    } else {
-      return new AnnotationToken(
-        token.cleanValue,
-        AnnotationTokenType.CompoundGrapheme,
-        token.value,
-        path,
-        true,
-        null,
-        token.cleanValue,
-        1
-      )
+    default: {
+      const compoundGrapheme = token as CompoundGrapheme
+      if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
+        return AnnotationToken.initDeactive(
+          '',
+          AnnotationTokenType.CompletelyBroken,
+          path
+        )
+      } else {
+        return AnnotationToken.initActive(
+          token.cleanValue,
+          AnnotationTokenType.CompoundGrapheme,
+          token.value,
+          path,
+          token.cleanValue,
+          1
+        )
+      }
     }
   }
 }
@@ -149,9 +165,17 @@ function mapToken(
     )
   } else {
     if (token.enclosureType.includes('BROKEN_AWAY')) {
-      return AnnotationToken.completelyBroken(path)
+      return AnnotationToken.initDeactive(
+        '',
+        AnnotationTokenType.CompletelyBroken,
+        path
+      )
     } else {
-      return AnnotationToken.disabled(token.value, path)
+      return AnnotationToken.initDeactive(
+        token.value,
+        AnnotationTokenType.Disabled,
+        path
+      )
     }
   }
 }
@@ -160,36 +184,38 @@ function structureLineToTokens(
   line: AbstractLine,
   lineNumber: number
 ): readonly AnnotationToken[] {
+  const results: AnnotationToken[] = [
+    AnnotationToken.initDeactive(line.prefix, AnnotationTokenType.Disabled, [
+      lineNumber,
+    ]),
+  ]
   if (line instanceof SurfaceAtLine) {
-    return [
-      AnnotationToken.disabled(line.prefix, [lineNumber]),
-      new AnnotationToken(
+    results.push(
+      AnnotationToken.initActive(
         line.label.surface,
         AnnotationTokenType.SurfaceAtLine,
         line.label.surface.toLowerCase(),
-        [lineNumber, 0],
-        true
-      ),
-    ]
+        [lineNumber, 0]
+      )
+    )
   } else if (line instanceof RulingDollarLine) {
-    return [
-      AnnotationToken.disabled(line.prefix, [lineNumber]),
+    results.push(
       new AnnotationToken(
         line.number,
         AnnotationTokenType.RulingDollarLine,
         `${line.number.toLowerCase()} ruling`,
         [lineNumber, 0],
         true
-      ),
-    ]
+      )
+    )
   } else {
-    return [
-      AnnotationToken.disabled(line.prefix, [lineNumber]),
+    results.push(
       ...line.content.flatMap((token, index) =>
         mapToken(token, [lineNumber, index])
-      ),
-    ]
+      )
+    )
   }
+  return results
 }
 
 export function createAnnotationTokens(
