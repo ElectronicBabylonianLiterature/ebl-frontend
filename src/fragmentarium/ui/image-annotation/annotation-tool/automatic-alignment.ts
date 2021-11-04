@@ -1,6 +1,6 @@
 import Annotation, { Geometry } from 'fragmentarium/domain/annotation'
 import _ from 'lodash'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 
 interface Point {
   x: number

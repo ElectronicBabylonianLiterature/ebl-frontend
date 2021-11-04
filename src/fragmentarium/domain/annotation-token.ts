@@ -5,7 +5,8 @@ import Annotation, {
 } from 'fragmentarium/domain/annotation'
 import {
   CompoundGrapheme,
-  NamedSign,
+  effectiveEnclosure,
+  isStrictlyPartiallyEnclosed,
   Token,
 } from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
@@ -13,6 +14,7 @@ import Sign from 'signs/domain/Sign'
 import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { SurfaceAtLine } from 'transliteration/domain/at-lines'
+import { isNamedSign } from 'transliteration/domain/type-guards'
 
 export class AnnotationToken {
   constructor(
@@ -88,65 +90,58 @@ export class AnnotationToken {
   isEqualPath(annotation: RawAnnotation | null): boolean {
     return _.isEqual(this.path, annotation?.data?.path)
   }
+  isSignPossiblyExisting(): boolean {
+    return [
+      AnnotationTokenType.HasSign,
+      AnnotationTokenType.Number,
+      AnnotationTokenType.CompoundGrapheme,
+      AnnotationTokenType.PartiallyBroken,
+    ].includes(this.type)
+  }
 }
 
 function tokenToAnnotationToken(
   token: Token,
   path: readonly number[]
 ): AnnotationToken {
-  switch (token.type) {
-    case 'Reading':
-    case 'Logogram':
-    case 'Number': {
-      const namedSign = token as NamedSign
-      const partEnclosures = namedSign.nameParts.map(
-        (part) => part.enclosureType
+  if (isNamedSign(token)) {
+    if (effectiveEnclosure(token).includes('BROKEN_AWAY')) {
+      return AnnotationToken.initDeactive(
+        '',
+        AnnotationTokenType.CompletelyBroken,
+        path
       )
-      const completelyBroken = _.intersection(...partEnclosures).includes(
-        'BROKEN_AWAY'
+    } else {
+      return AnnotationToken.initActive(
+        token.cleanValue,
+        isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
+          ? AnnotationTokenType.PartiallyBroken
+          : token.type === 'Number'
+          ? AnnotationTokenType.Number
+          : AnnotationTokenType.HasSign,
+        token.value,
+        path,
+        token.name,
+        token.subIndex
       )
-      const partiallyBroken =
-        _.union(...partEnclosures).includes('BROKEN_AWAY') && !completelyBroken
-
-      if (completelyBroken) {
-        return AnnotationToken.initDeactive(
-          '',
-          AnnotationTokenType.CompletelyBroken,
-          path
-        )
-      } else {
-        return AnnotationToken.initActive(
-          token.cleanValue,
-          partiallyBroken
-            ? AnnotationTokenType.PartiallyBroken
-            : token.type === 'Number'
-            ? AnnotationTokenType.Number
-            : AnnotationTokenType.HasSign,
-          token.value,
-          path,
-          namedSign.name,
-          namedSign.subIndex
-        )
-      }
     }
-    default: {
-      const compoundGrapheme = token as CompoundGrapheme
-      if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
-        return AnnotationToken.initDeactive(
-          '',
-          AnnotationTokenType.CompletelyBroken,
-          path
-        )
-      } else {
-        return AnnotationToken.initActive(
-          token.cleanValue,
-          AnnotationTokenType.CompoundGrapheme,
-          token.value,
-          path,
-          token.cleanValue,
-          1
-        )
-      }
+  } else {
+    const compoundGrapheme = token as CompoundGrapheme
+    if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
+      return AnnotationToken.initDeactive(
+        '',
+        AnnotationTokenType.CompletelyBroken,
+        path
+      )
+    } else {
+      return AnnotationToken.initActive(
+        compoundGrapheme.cleanValue,
+        AnnotationTokenType.CompoundGrapheme,
+        compoundGrapheme.value,
+        path,
+        compoundGrapheme.cleanValue,
+        1
+      )
     }
   }
 }

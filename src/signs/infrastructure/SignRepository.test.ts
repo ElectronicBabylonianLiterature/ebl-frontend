@@ -4,7 +4,7 @@ import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import Sign from 'signs/domain/Sign'
 import { stringify } from 'query-string'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { signFactory } from 'test-support/sign-fixtures'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 

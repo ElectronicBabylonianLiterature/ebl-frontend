@@ -2,7 +2,7 @@ import ApiClient from 'http/ApiClient'
 import Promise from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
 
 class SignRepository {
@@ -12,7 +12,7 @@ class SignRepository {
     this.apiClient = apiClient
   }
 
-  private handleEmptySignSearchResults(
+  private static handleEmptySignSearchResults(
     token: AnnotationToken,
     signSearchResults: Sign[]
   ) {
@@ -29,18 +29,13 @@ class SignRepository {
   private attachSignToToken(
     token: AnnotationToken
   ): Promise<AnnotationToken> | AnnotationToken {
-    if (
-      [
-        AnnotationTokenType.HasSign,
-        AnnotationTokenType.Number,
-        AnnotationTokenType.CompoundGrapheme,
-        AnnotationTokenType.PartiallyBroken,
-      ].includes(token.type)
-    ) {
+    if (token.isSignPossiblyExisting()) {
       return this.search({
         value: token.name,
         subIndex: token.subIndex as number,
-      }).then((results) => this.handleEmptySignSearchResults(token, results))
+      }).then((results) =>
+        SignRepository.handleEmptySignSearchResults(token, results)
+      )
     }
     return token
   }

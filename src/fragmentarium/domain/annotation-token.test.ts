@@ -1,7 +1,7 @@
 import {
   AnnotationToken,
   createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+} from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
