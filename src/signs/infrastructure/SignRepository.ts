@@ -12,7 +12,7 @@ class SignRepository {
     this.apiClient = apiClient
   }
 
-  private static handleEmptySignSearchResults(
+  private handleEmptySignSearchResults(
     token: AnnotationToken,
     signSearchResults: Sign[]
   ) {
@@ -33,9 +33,7 @@ class SignRepository {
       return this.search({
         value: token.name,
         subIndex: token.subIndex as number,
-      }).then((results) =>
-        SignRepository.handleEmptySignSearchResults(token, results)
-      )
+      }).then((results) => this.handleEmptySignSearchResults(token, results))
     }
     return token
   }
