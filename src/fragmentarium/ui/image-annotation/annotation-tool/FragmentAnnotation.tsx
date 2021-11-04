@@ -99,6 +99,9 @@ function FragmentAnnotation({
   )
   const [savedAnnotations, setSavedAnnotations] = useState(annotations)
 
+  const buttonY = 89
+  const buttonEscape = 27
+
   const reset = () => {
     setToggled(null)
     setIsChangeExistingMode(false)
@@ -108,12 +111,15 @@ function FragmentAnnotation({
 
   const onPressingDown = useCallback(
     (event) => {
-      if (event.keyCode === 27) {
-        reset()
-      } else {
-        if (event.keyCode === 89) {
+      switch (event.keyCode) {
+        case buttonEscape:
+          reset()
+          break
+        case buttonY:
           setIsChangeExistingModeButtonPressed(true)
-        }
+          break
+        default:
+          break
       }
     },
     [setIsChangeExistingModeButtonPressed]
@@ -121,7 +127,7 @@ function FragmentAnnotation({
 
   const onReleaseButton = useCallback(
     (event) => {
-      if (event.keyCode === 89) {
+      if (event.keyCode === buttonY) {
         setIsChangeExistingModeButtonPressed(false)
       }
     },
