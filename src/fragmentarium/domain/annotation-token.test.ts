@@ -189,7 +189,7 @@ it('', () => {
         [1, 0, 0],
         true,
         null,
-        '|KUR₂.KUR|'.toLowerCase(),
+        '|KUR₂.KUR|',
         1
       ),
     ],

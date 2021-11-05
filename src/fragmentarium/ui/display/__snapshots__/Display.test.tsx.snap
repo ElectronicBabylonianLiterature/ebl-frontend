@@ -248,13 +248,13 @@ exports[`Snapshot 1`] = `
                   class="Transliteration__Logogram"
                 >
                   <span
-                    class=""
+                    class="Transliteration__Logogram--BROKEN_AWAY Transliteration__Logogram--PERHAPS_BROKEN_AWAY"
                   >
                     <span
                       class="Transliteration__ValueToken"
                     >
                       <span
-                        class=""
+                        class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
                       >
                         ŠÁ
                       </span>
@@ -334,6 +334,42 @@ exports[`Snapshot 1`] = `
                     class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
                   >
                     )
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__Word Transliteration__Word--AKKADIAN"
+            >
+              <span
+                class=""
+              >
+                <span
+                  class="Transliteration__Reading"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__modifier"
+                    />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </span>

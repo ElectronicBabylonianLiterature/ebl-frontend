@@ -62,7 +62,7 @@ export class AnnotationToken {
       path,
       true,
       null,
-      name.toLowerCase(),
+      name,
       subIndex
     )
   }

@@ -31,7 +31,7 @@ class SignRepository {
   ): Promise<AnnotationToken> | AnnotationToken {
     if (token.isSignPossiblyExisting()) {
       return this.search({
-        value: token.name,
+        value: token.name.toLowerCase(),
         subIndex: token.subIndex as number,
       }).then((results) => this.handleEmptySignSearchResults(token, results))
     }
