@@ -10,7 +10,7 @@ import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
-import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { createAnnotationTokens } from 'fragmentarium/domain/annotation-token'
 import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
 import ApiClient from 'http/ApiClient'
@@ -85,14 +85,14 @@ it('Change existing annotation', async () => {
   })
   userEvent.click(screen.getByTestId('annotation__target'))
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
-  userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
+  userEvent.click(screen.getByRole('button', { name: 'kur' }))
   userEvent.hover(screen.getByTestId('annotation__target'))
   await screen.findByText('Delete')
-  await waitFor(() => expect(screen.getAllByText(/ŠA₂/).length).toBe(3))
-  const expectedData = tokens.flat().filter((token) => token.value === 'ŠA₂')[0]
+  await waitFor(() => expect(screen.getAllByText(/kur/).length).toBe(3))
+  const expectedData = tokens.flat().filter((token) => token.value === 'kur')[0]
   const expectedAnnotation = new Annotation(initialAnnotation.geometry, {
     id: initialAnnotation.data.id,
-    value: 'ŠA₂',
+    value: 'kur',
     type: AnnotationTokenType.HasSign,
     path: expectedData.path,
     signName: sign.name,

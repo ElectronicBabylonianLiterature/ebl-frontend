@@ -2,7 +2,7 @@ import Content from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
 import {
   AnnotationToken,
   createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+} from 'fragmentarium/domain/annotation-token'
 import SignService from 'signs/application/SignService'
 import AnnotationTool from 'fragmentarium/ui/image-annotation/annotation-tool/Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'

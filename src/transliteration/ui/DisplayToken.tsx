@@ -2,15 +2,16 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
-  Token,
-  Variant,
-  NamedSign,
-  UnknownSign,
-  Gloss,
-  Sign,
-  EnclosureType,
+  effectiveEnclosure,
   EgyptianMetricalFeetSeparator,
+  EnclosureType,
+  Gloss,
   GreekLetter,
+  NamedSign,
+  Sign,
+  Token,
+  UnknownSign,
+  Variant,
 } from 'transliteration/domain/token'
 import addAccents from './addAccents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -164,10 +165,7 @@ function signComponent(nameProperty: string) {
 
 function NamedSignComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const namedSign = token as NamedSign
-  const partEnclosures: (readonly EnclosureType[])[] = namedSign.nameParts.map(
-    (part: Token): readonly EnclosureType[] => part.enclosureType
-  )
-  const effectiveEnclosures: EnclosureType[] = _.intersection(...partEnclosures)
+  const effectiveEnclosures: EnclosureType[] = effectiveEnclosure(namedSign)
   const [parts, isSubIndexConverted] = addAccents(namedSign)
   const omitSubindex = namedSign.subIndex === 1 || isSubIndexConverted
   return (
