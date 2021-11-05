@@ -7,6 +7,7 @@ import {
   CompoundGrapheme,
   effectiveEnclosure,
   isStrictlyPartiallyEnclosed,
+  NamedSign,
   Token,
 } from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
@@ -100,49 +101,83 @@ export class AnnotationToken {
   }
 }
 
+function namedSignTokenToAnnotationToken(
+  token: NamedSign,
+  path: readonly number[]
+): AnnotationToken {
+  if (effectiveEnclosure(token).includes('BROKEN_AWAY')) {
+    return AnnotationToken.initDeactive(
+      '',
+      AnnotationTokenType.CompletelyBroken,
+      path
+    )
+  } else {
+    return AnnotationToken.initActive(
+      token.cleanValue,
+      isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
+        ? AnnotationTokenType.PartiallyBroken
+        : token.type === 'Number'
+        ? AnnotationTokenType.Number
+        : AnnotationTokenType.HasSign,
+      token.value,
+      path,
+      token.name,
+      token.subIndex
+    )
+  }
+}
+
+function compoundGraphemeToAnnotationToken(
+  token: CompoundGrapheme,
+  path: readonly number[]
+): AnnotationToken {
+  const compoundGrapheme = token as CompoundGrapheme
+  if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
+    return AnnotationToken.initDeactive(
+      '',
+      AnnotationTokenType.CompletelyBroken,
+      path
+    )
+  } else {
+    return AnnotationToken.initActive(
+      compoundGrapheme.cleanValue,
+      AnnotationTokenType.CompoundGrapheme,
+      compoundGrapheme.value,
+      path,
+      compoundGrapheme.cleanValue,
+      1
+    )
+  }
+}
+
 function tokenToAnnotationToken(
   token: Token,
   path: readonly number[]
 ): AnnotationToken {
   if (isNamedSign(token)) {
-    if (effectiveEnclosure(token).includes('BROKEN_AWAY')) {
-      return AnnotationToken.initDeactive(
-        '',
-        AnnotationTokenType.CompletelyBroken,
-        path
-      )
-    } else {
-      return AnnotationToken.initActive(
-        token.cleanValue,
-        isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
-          ? AnnotationTokenType.PartiallyBroken
-          : token.type === 'Number'
-          ? AnnotationTokenType.Number
-          : AnnotationTokenType.HasSign,
-        token.value,
-        path,
-        token.name,
-        token.subIndex
-      )
-    }
+    return namedSignTokenToAnnotationToken(token, path)
   } else {
     const compoundGrapheme = token as CompoundGrapheme
-    if (compoundGrapheme.enclosureType.includes('BROKEN_AWAY')) {
-      return AnnotationToken.initDeactive(
-        '',
-        AnnotationTokenType.CompletelyBroken,
-        path
-      )
-    } else {
-      return AnnotationToken.initActive(
-        compoundGrapheme.cleanValue,
-        AnnotationTokenType.CompoundGrapheme,
-        compoundGrapheme.value,
-        path,
-        compoundGrapheme.cleanValue,
-        1
-      )
-    }
+    return compoundGraphemeToAnnotationToken(compoundGrapheme, path)
+  }
+}
+
+function unannotatableTokenToAnnotationToken(
+  token: Token,
+  path: readonly number[]
+): AnnotationToken {
+  if (token.enclosureType.includes('BROKEN_AWAY')) {
+    return AnnotationToken.initDeactive(
+      '',
+      AnnotationTokenType.CompletelyBroken,
+      path
+    )
+  } else {
+    return AnnotationToken.initDeactive(
+      token.value,
+      AnnotationTokenType.Disabled,
+      path
+    )
   }
 }
 
@@ -159,19 +194,7 @@ function mapToken(
       mapToken(part, [...path, index])
     )
   } else {
-    if (token.enclosureType.includes('BROKEN_AWAY')) {
-      return AnnotationToken.initDeactive(
-        '',
-        AnnotationTokenType.CompletelyBroken,
-        path
-      )
-    } else {
-      return AnnotationToken.initDeactive(
-        token.value,
-        AnnotationTokenType.Disabled,
-        path
-      )
-    }
+    return unannotatableTokenToAnnotationToken(token, path)
   }
 }
 
