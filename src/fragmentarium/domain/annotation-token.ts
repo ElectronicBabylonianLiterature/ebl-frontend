@@ -112,13 +112,14 @@ function namedSignTokenToAnnotationToken(
       path
     )
   } else {
+    const type = isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
+      ? AnnotationTokenType.PartiallyBroken
+      : token.type === 'Number'
+      ? AnnotationTokenType.Number
+      : AnnotationTokenType.HasSign
     return AnnotationToken.initActive(
       token.cleanValue,
-      isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
-        ? AnnotationTokenType.PartiallyBroken
-        : token.type === 'Number'
-        ? AnnotationTokenType.Number
-        : AnnotationTokenType.HasSign,
+      type,
       token.value,
       path,
       token.name,
