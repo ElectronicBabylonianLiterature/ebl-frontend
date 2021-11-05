@@ -1,7 +1,7 @@
 import React from 'react'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import SignService from 'signs/application/SignService'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import FragmentAnnotation from 'fragmentarium/ui/image-annotation/annotation-tool/FragmentAnnotation'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
 import { signFactory } from 'test-support/sign-fixtures'
@@ -77,13 +77,7 @@ it('hover makes editor button dark', async () => {
 it('Change existing annotation', async () => {
   expect(screen.getAllByText(/erin₂/).length).toBe(2)
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  fireEvent.keyDown(screen.getByTestId('annotation__box'), {
-    key: 'y',
-    code: 'y',
-    keyCode: 89,
-    charCode: 89,
-  })
-  userEvent.click(screen.getByTestId('annotation__target'))
+  userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
   userEvent.click(screen.getByRole('button', { name: 'ŠA₂' }))
   userEvent.hover(screen.getByTestId('annotation__target'))
@@ -127,13 +121,7 @@ it('Generate Annotations', async () => {
 })
 it('Change existing annotation mode and then back to default mode', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
-  fireEvent.keyDown(screen.getByTestId('annotation__box'), {
-    key: 'y',
-    code: 'y',
-    keyCode: 89,
-    charCode: 89,
-  })
-  userEvent.click(screen.getByTestId('annotation__target'))
+  userEvent.click(screen.getByTestId('annotation__target'), { ctrlKey: true })
   await waitFor(() => expect(screen.getByText(/change existing/)).toBeVisible())
   userEvent.keyboard('{Escape}')
   await waitFor(() => expect(screen.getByText(/default/)).toBeVisible())
