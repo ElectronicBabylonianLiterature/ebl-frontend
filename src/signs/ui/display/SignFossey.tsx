@@ -8,7 +8,7 @@ export default function FosseyContent({
   fossey: any
 }): JSX.Element {
   return (
-    <table className="table table-bordered">
+    <table className="table">
       {fossey
         .slice()
         .sort((a, b) => (a.number < b.number ? -1 : 1))
@@ -21,12 +21,7 @@ export default function FosseyContent({
               <td className="align-middle ml1">
                 {InstanceOfFossey.sign && (
                   <>
-                    <svg
-                      height="100"
-                      width="100%"
-                      viewBox="0 0 100 100"
-                      preserveAspectRatio="none"
-                    >
+                    <svg>
                       <path d={InstanceOfFossey.sign} />
                     </svg>
                   </>
