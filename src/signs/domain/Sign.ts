@@ -15,12 +15,12 @@ export interface SignListRecord {
 }
 
 export interface SignQuery {
-  value?: string
-  subIndex?: number
-  listsName?: string
-  listsNumber?: string
-  isIncludeHomophones?: boolean
-  isComposite?: boolean
+  value?: string | null
+  subIndex?: number | null
+  listsName?: string | null
+  listsNumber?: string | null
+  isIncludeHomophones?: boolean | null
+  isComposite?: boolean | null
 }
 export interface SignDto {
   name: string

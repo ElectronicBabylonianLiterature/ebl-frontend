@@ -1,7 +1,7 @@
 import {
   AnnotationToken,
   createAnnotationTokens,
-} from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+} from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
@@ -171,7 +171,7 @@ it('', () => {
 
   const tokens = [
     [
-      new AnnotationToken('@', AnnotationTokenType.Disabled, '@', [0], false),
+      new AnnotationToken('', AnnotationTokenType.Disabled, '@', [0], false),
       new AnnotationToken(
         'OBVERSE',
         AnnotationTokenType.SurfaceAtLine,
@@ -181,17 +181,20 @@ it('', () => {
       ),
     ],
     [
-      new AnnotationToken('1.', AnnotationTokenType.Disabled, '1.', [1], false),
+      new AnnotationToken('', AnnotationTokenType.Disabled, '1.', [1], false),
       new AnnotationToken(
         '|KUR₂.KUR|',
-        AnnotationTokenType.HasSign,
+        AnnotationTokenType.CompoundGrapheme,
         '|KUR₂.KUR|',
         [1, 0, 0],
-        true
+        true,
+        null,
+        '|KUR₂.KUR|',
+        1
       ),
     ],
     [
-      new AnnotationToken('$', AnnotationTokenType.Disabled, '$', [2], false),
+      new AnnotationToken('', AnnotationTokenType.Disabled, '$', [2], false),
       new AnnotationToken(
         'SINGLE',
         AnnotationTokenType.RulingDollarLine,

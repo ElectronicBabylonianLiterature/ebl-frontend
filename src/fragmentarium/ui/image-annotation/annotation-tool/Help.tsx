@@ -11,8 +11,7 @@ export default function Help(): JSX.Element {
             <b>Esc</b> Reset
           </li>
           <li>
-            <b>Ctrl + Select Annotation:</b> Change Reading on existing
-            Annotation
+            <b>y + Select Annotation:</b> Change Reading on existing Annotation
           </li>
           <li>
             <b>Shift + Panning:</b> Disable Selection and perform Panning

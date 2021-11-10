@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird'
 import Sign, { SignQuery } from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 
 export default class SignService {
   private readonly signsRepository: SignRepository

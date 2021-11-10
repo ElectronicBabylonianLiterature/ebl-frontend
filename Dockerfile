@@ -27,6 +27,6 @@ RUN yarn build
 FROM node:14-alpine
 
 EXPOSE 5000
-RUN yarn global add serve
+RUN yarn global add serve@13.0.2
 COPY --from=build /usr/src/ebl-frontend /usr/src/ebl-frontend
-CMD ["serve", "-s", "/usr/src/ebl-frontend/build"]
+CMD ["serve", "-s", "/usr/src/ebl-frontend/build", "--listen", "5000"]

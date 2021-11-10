@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 import { Card, Col, Row } from 'react-bootstrap'
 import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
-import { AnnotationToken } from 'fragmentarium/ui/image-annotation/annotation-tool/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import SubmitAnnotationButton, {
   SubmitBlankAnnotationButton,
 } from 'fragmentarium/ui/image-annotation/annotation-tool/SubmitAnnotationButton'

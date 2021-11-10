@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export type EnclosureType =
   | 'ACCIDENTAL_OMISSION'
   | 'INTENTIONAL_OMISSION'
@@ -193,3 +195,23 @@ export type Token =
   | EgyptianMetricalFeetSeparator
   | GreekLetter
   | AnyWord
+
+function extractEnclosureTypes(
+  namedSign: NamedSign
+): readonly (readonly EnclosureType[])[] {
+  return namedSign.nameParts.map((part) => part.enclosureType)
+}
+
+export function effectiveEnclosure(namedSign: NamedSign): EnclosureType[] {
+  return _.intersection(...extractEnclosureTypes(namedSign))
+}
+
+export function isStrictlyPartiallyEnclosed(
+  namedSign: NamedSign,
+  enclosure: EnclosureType
+): boolean {
+  return (
+    _.union(...extractEnclosureTypes(namedSign)).includes(enclosure) &&
+    !effectiveEnclosure(namedSign).includes(enclosure)
+  )
+}
