@@ -19,5 +19,6 @@
   "readIlfFolios": "read:ILF-folios",
   "readArgFolios": "read:ARG-folios",
   "readUgFolios": "read:UG-folios",
-  "readErFolios": "read:ER-folios"
+  "readErFolios": "read:ER-folios",
+  "readGsFolios": "read:GS-folios"
 }
