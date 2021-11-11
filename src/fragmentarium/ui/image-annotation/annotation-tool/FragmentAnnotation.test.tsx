@@ -69,9 +69,7 @@ it('hover with disabled content', async () => {
   await screen.findByText('Show Content: no')
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
-  await waitFor(() => {
-    expect(screen.getByText('Delete')).not.toBeInTheDocument()
-  })
+  expect(screen.queryByText('Delete')).not.toBeInTheDocument()
 })
 
 it('hover makes editor button dark', async () => {

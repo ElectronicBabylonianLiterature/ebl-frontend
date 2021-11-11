@@ -350,12 +350,11 @@ function FragmentAnnotation({
           Mode: {isChangeExistingMode ? 'change existing' : 'default'}
         </Button>
         <Button variant="outline-dark" disabled>
-          Show Content: {isDisableContent ? 'yes' : 'no'}
+          Show Content: {isDisableContent ? 'no' : 'yes'}
         </Button>
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
       <AnnotationTool
-        disableOverlay={true}
         allowTouch
         onZoom={onZoom}
         disableSelector={isDisableSelector}
