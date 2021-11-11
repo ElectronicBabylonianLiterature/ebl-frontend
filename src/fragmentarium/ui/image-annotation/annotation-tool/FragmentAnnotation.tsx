@@ -1,8 +1,5 @@
 import Content from 'fragmentarium/ui/image-annotation/annotation-tool/Content'
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/domain/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import SignService from 'signs/application/SignService'
 import AnnotationTool from 'fragmentarium/ui/image-annotation/annotation-tool/Annotation'
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
@@ -25,6 +22,7 @@ import Spinner from 'common/Spinner'
 import Bluebird from 'bluebird'
 import ErrorAlert from 'common/ErrorAlert'
 import { Prompt } from 'react-router-dom'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 interface Props {
   tokens: ReadonlyArray<ReadonlyArray<AnnotationToken>>

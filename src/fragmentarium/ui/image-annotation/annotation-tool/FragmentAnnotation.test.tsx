@@ -10,12 +10,13 @@ import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
-import { createAnnotationTokens } from 'fragmentarium/domain/annotation-token'
+
 import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { MemoryRouter } from 'react-router-dom'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
