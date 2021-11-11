@@ -216,6 +216,17 @@ exports[`Diplay annotate view Snapshot 1`] = `
       </button>
       <button
         class="btn btn-outline-dark"
+        type="button"
+      >
+        Save
+      </button>
+    </div>
+    <div
+      class="ml-3  btn-group-vertical btn-group-sm"
+      role="group"
+    >
+      <button
+        class="btn btn-outline-dark"
         disabled=""
         type="button"
       >
@@ -224,9 +235,11 @@ exports[`Diplay annotate view Snapshot 1`] = `
       </button>
       <button
         class="btn btn-outline-dark"
+        disabled=""
         type="button"
       >
-        Save
+        Show Content: 
+        yes
       </button>
     </div>
     <i
