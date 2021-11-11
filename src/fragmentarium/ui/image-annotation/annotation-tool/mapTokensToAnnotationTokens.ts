@@ -13,6 +13,14 @@ import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { Text } from 'transliteration/domain/text'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 
+function typeToAnnotationTokenType(
+  tokenType: string
+): AnnotationTokenType.HasSign | AnnotationTokenType.Number {
+  return tokenType === 'Number'
+    ? AnnotationTokenType.Number
+    : AnnotationTokenType.HasSign
+}
+
 function namedSignTokenToAnnotationToken(
   token: NamedSign,
   path: readonly number[]
@@ -26,9 +34,7 @@ function namedSignTokenToAnnotationToken(
   } else {
     const type = isStrictlyPartiallyEnclosed(token, 'BROKEN_AWAY')
       ? AnnotationTokenType.PartiallyBroken
-      : token.type === 'Number'
-      ? AnnotationTokenType.Number
-      : AnnotationTokenType.HasSign
+      : typeToAnnotationTokenType(token.type)
     return AnnotationToken.initActive(
       token.cleanValue,
       type,
@@ -117,6 +123,29 @@ function mapToken(
     return unannotatableTokenToAnnotationToken(token, path)
   }
 }
+function surfaceAtLineToAnnotationToken(
+  line: SurfaceAtLine,
+  path: readonly number[]
+): AnnotationToken {
+  return AnnotationToken.initActive(
+    line.label.surface,
+    AnnotationTokenType.SurfaceAtLine,
+    line.label.surface.toLowerCase(),
+    path
+  )
+}
+
+function rulingDollarLineToAnnotationToken(
+  line: RulingDollarLine,
+  path: readonly number[]
+): AnnotationToken {
+  return AnnotationToken.initActive(
+    line.number,
+    AnnotationTokenType.RulingDollarLine,
+    `${line.number.toLowerCase()} ruling`,
+    path
+  )
+}
 
 function structureLineToTokens(
   line: AbstractLine,
@@ -128,24 +157,9 @@ function structureLineToTokens(
     ]),
   ]
   if (line instanceof SurfaceAtLine) {
-    results.push(
-      AnnotationToken.initActive(
-        line.label.surface,
-        AnnotationTokenType.SurfaceAtLine,
-        line.label.surface.toLowerCase(),
-        [lineNumber, 0]
-      )
-    )
+    results.push(surfaceAtLineToAnnotationToken(line, [lineNumber, 0]))
   } else if (line instanceof RulingDollarLine) {
-    results.push(
-      new AnnotationToken(
-        line.number,
-        AnnotationTokenType.RulingDollarLine,
-        `${line.number.toLowerCase()} ruling`,
-        [lineNumber, 0],
-        true
-      )
-    )
+    results.push(rulingDollarLineToAnnotationToken(line, [lineNumber, 0]))
   } else {
     results.push(
       ...line.content.flatMap((token, index) =>
