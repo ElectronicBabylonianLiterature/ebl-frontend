@@ -86,6 +86,7 @@ function FragmentAnnotation({
   const [isError, setIsError] = useState(false)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
   const [isDisableSelector, setIsDisableSelector] = useState(false)
+  const [isDisableContent, setIsDisableContent] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
 
   const [contentScale, setContentScale] = useState(1)
@@ -101,6 +102,7 @@ function FragmentAnnotation({
 
   const buttonY = 89
   const buttonEscape = 27
+  const buttonD = 68
 
   const reset = () => {
     setToggled(null)
@@ -117,6 +119,9 @@ function FragmentAnnotation({
           break
         case buttonY:
           setIsChangeExistingModeButtonPressed(true)
+          break
+        case buttonD:
+          setIsDisableContent(!isDisableContent)
           break
         default:
           break
@@ -342,6 +347,7 @@ function FragmentAnnotation({
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
       <AnnotationTool
+        disableOverlay={true}
         allowTouch
         onZoom={onZoom}
         disableSelector={isDisableSelector}
