@@ -29,7 +29,7 @@ class SignRepository {
   private attachSignToToken(
     token: AnnotationToken
   ): Promise<AnnotationToken> | AnnotationToken {
-    if (token.isSignInDatabase() && !token.hasSign) {
+    if (token.couldCorrespondingSignExist() && !token.hasSign) {
       return this.search({
         value: token.name.toLowerCase(),
         subIndex: token.subIndex as number,

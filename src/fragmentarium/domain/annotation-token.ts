@@ -110,7 +110,7 @@ export class AnnotationToken {
   isEqualPath(annotation: RawAnnotation | null): boolean {
     return _.isEqual(this.path, annotation?.data?.path)
   }
-  isSignInDatabase(): boolean {
+  couldCorrespondingSignExist(): boolean {
     return [
       AnnotationTokenType.HasSign,
       AnnotationTokenType.Number,
