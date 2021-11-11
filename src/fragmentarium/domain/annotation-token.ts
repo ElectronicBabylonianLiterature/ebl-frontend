@@ -23,6 +23,10 @@ export class AnnotationToken {
     readonly subIndex: number | null = null
   ) {}
 
+  get hasSign(): boolean {
+    return Boolean(this.sign)
+  }
+
   attachSign(sign: SignStripped): AnnotationToken {
     return new AnnotationToken(
       this.value,
@@ -106,7 +110,7 @@ export class AnnotationToken {
   isEqualPath(annotation: RawAnnotation | null): boolean {
     return _.isEqual(this.path, annotation?.data?.path)
   }
-  isSignPossiblyExisting(): boolean {
+  isSignInDatabase(): boolean {
     return [
       AnnotationTokenType.HasSign,
       AnnotationTokenType.Number,
