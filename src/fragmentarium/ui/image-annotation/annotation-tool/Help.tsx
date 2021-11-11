@@ -17,6 +17,10 @@ export default function Help(): JSX.Element {
             <b>Shift + Panning:</b> Disable Selection and perform Panning
           </li>
           <li>
+            <b>d:</b> Disable/Enable content which is needed if you want to
+            delete an annotation
+          </li>
+          <li>
             <b>Automatic Selection</b> If Automatic Selection is active,
             annotations will automatically become blank. Once multiple readings
             are annotated with blank one can select an Annotation while
