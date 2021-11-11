@@ -11,11 +11,17 @@ import {
   Token,
 } from 'transliteration/domain/token'
 import { Text } from 'transliteration/domain/text'
-import Sign from 'signs/domain/Sign'
 import { RulingDollarLine } from 'transliteration/domain/dollar-lines'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { SurfaceAtLine } from 'transliteration/domain/at-lines'
 import { isNamedSign } from 'transliteration/domain/type-guards'
+import Sign from 'signs/domain/Sign'
+
+interface SignStripped extends Partial<Sign> {
+  name: string
+  displayCuneiformSigns: string
+  unicode: readonly number[]
+}
 
 export class AnnotationToken {
   constructor(
@@ -24,12 +30,12 @@ export class AnnotationToken {
     readonly displayValue: string,
     readonly path: readonly number[],
     readonly enabled: boolean,
-    readonly sign: Sign | null = null,
+    readonly sign: SignStripped | null = null,
     readonly name: string = '',
     readonly subIndex: number | null = null
   ) {}
 
-  attachSign(sign: Sign): AnnotationToken {
+  attachSign(sign: SignStripped): AnnotationToken {
     return new AnnotationToken(
       this.value,
       this.type,
@@ -189,7 +195,25 @@ function mapToken(
   if (
     ['Reading', 'Logogram', 'CompoundGrapheme', 'Number'].includes(token.type)
   ) {
-    return tokenToAnnotationToken(token, path)
+    if ('sign' in token && token.sign) {
+      const sign = {
+        unicode: [],
+        name: token.sign.cleanValue,
+        get displayCuneiformSigns(): string {
+          return this.name
+        },
+      }
+      return new AnnotationToken(
+        token.cleanValue,
+        AnnotationTokenType.HasSign,
+        token.value,
+        path,
+        true,
+        sign
+      )
+    } else {
+      return tokenToAnnotationToken(token, path)
+    }
   } else if (token.parts) {
     return token.parts.flatMap((part: Token, index: number) =>
       mapToken(part, [...path, index])
@@ -240,6 +264,7 @@ function structureLineToTokens(
 export function createAnnotationTokens(
   text: Text
 ): ReadonlyArray<ReadonlyArray<AnnotationToken>> {
+  console.log(text)
   return text.lines.map((line, lineNumber) => [
     ...structureLineToTokens(line, lineNumber),
   ])

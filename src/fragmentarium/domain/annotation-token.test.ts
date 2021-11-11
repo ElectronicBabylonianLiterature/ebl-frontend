@@ -130,7 +130,7 @@ test.each([
 )
 
 it('', () => {
-  const textLine = new TextLine({
+  const textLine = {
     type: 'TextLine',
     prefix: '1.',
     content: [
@@ -156,6 +156,36 @@ it('', () => {
         ],
         type: 'Word',
       },
+      {
+        enclosureType: [],
+        cleanValue: 'šaₓ(|GA×GU|)',
+        value: 'šaₓ(|GA×GU|)',
+        language: 'SUMERIAN',
+        normalized: false,
+        lemmatizable: false,
+        alignable: false,
+        uniqueLemma: [],
+        erasure: 'NONE',
+        alignment: null,
+        variant: null,
+        parts: [
+          {
+            enclosureType: [],
+            cleanValue: 'šaₓ(|GA×GU|)',
+            value: 'šaₓ(|GA×GU|)',
+            type: 'Reading',
+            subIndex: null,
+            sign: {
+              value: '|GA×GU|',
+              cleanValue: '|GA×GU|',
+              enclosureType: [],
+              erasure: 'NONE',
+              type: 'CompoundGrapheme',
+            },
+          },
+        ],
+        type: 'Word',
+      },
     ],
     lineNumber: {
       number: 2,
@@ -164,9 +194,9 @@ it('', () => {
       suffixModifier: null,
       type: 'LineNumber',
     },
-  })
+  }
   const text = new Text({
-    lines: [at.surface, textLine, dollar.singleRuling],
+    lines: [at.surface, (textLine as unknown) as TextLine, dollar.singleRuling],
   })
 
   const tokens = [
@@ -191,6 +221,18 @@ it('', () => {
         null,
         '|KUR₂.KUR|',
         1
+      ),
+      new AnnotationToken(
+        'šaₓ(|GA×GU|)',
+        AnnotationTokenType.HasSign,
+        'šaₓ(|GA×GU|)',
+        [1, 1, 0],
+        true,
+        {
+          displayCuneiformSigns: '|GA×GU|',
+          name: '|GA×GU|',
+          unicode: [],
+        }
       ),
     ],
     [
