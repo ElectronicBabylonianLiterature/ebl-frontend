@@ -85,7 +85,7 @@ function FragmentAnnotation({
   ] = useState(false)
   const [isError, setIsError] = useState(false)
   const [isChangeExistingMode, setIsChangeExistingMode] = useState(false)
-  const [isDisableSelector, setIsDisableSelector] = useState(false)
+  const [isDisableAnnotating, setIsDisableAnnotating] = useState(false)
   const [isAutomaticSelected, setIsAutomaticSelected] = useState(false)
 
   const [contentScale, setContentScale] = useState(1)
@@ -101,6 +101,7 @@ function FragmentAnnotation({
 
   const buttonY = 89
   const buttonEscape = 27
+  const buttonShift = 16
 
   const reset = () => {
     setToggled(null)
@@ -118,17 +119,23 @@ function FragmentAnnotation({
         case buttonY:
           setIsChangeExistingModeButtonPressed(true)
           break
+        case buttonShift:
+          setIsDisableAnnotating(true)
+          console.log(isDisableAnnotating)
+          break
         default:
           break
       }
     },
-    [setIsChangeExistingModeButtonPressed]
+    [setIsChangeExistingModeButtonPressed, setIsDisableAnnotating]
   )
 
   const onReleaseButton = useCallback(
     (event) => {
       if (event.keyCode === buttonY) {
         setIsChangeExistingModeButtonPressed(false)
+      } else if (event.keyCode === buttonShift) {
+        setIsDisableAnnotating(false)
       }
     },
     [setIsChangeExistingModeButtonPressed]
@@ -246,12 +253,6 @@ function FragmentAnnotation({
     if (isChangeExistingModeButtonPressed) {
       setToggled(hovering)
       setIsChangeExistingMode(true)
-    } else {
-      if (event.shiftKey) {
-        setIsDisableSelector(true)
-      } else {
-        setIsDisableSelector(false)
-      }
     }
     if (isAutomaticSelected && annotation.selection && annotation.geometry) {
       const token = AnnotationToken.blank()
@@ -344,7 +345,7 @@ function FragmentAnnotation({
       <AnnotationTool
         allowTouch
         onZoom={onZoom}
-        disableSelector={isDisableSelector}
+        disableAnnotation={isDisableAnnotating}
         src={imageUrl}
         alt={fragment.number}
         annotations={annotations}

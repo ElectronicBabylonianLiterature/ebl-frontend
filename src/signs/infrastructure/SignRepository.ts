@@ -32,7 +32,7 @@ class SignRepository {
     if (token.isSignPossiblyExisting()) {
       return this.search({
         value: token.name.toLowerCase(),
-        subIndex: token.subIndex as number,
+        subIndex: token.subIndex || 1,
       }).then((results) => this.handleEmptySignSearchResults(token, results))
     }
     return token
