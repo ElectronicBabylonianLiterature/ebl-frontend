@@ -1,7 +1,4 @@
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/domain/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
@@ -9,6 +6,7 @@ import { Text } from 'transliteration/domain/text'
 import * as at from 'test-support/lines/at'
 import * as dollar from 'test-support/lines/dollar'
 import { TextLine } from 'transliteration/domain/text-line'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 test.each([
   [
