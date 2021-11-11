@@ -102,7 +102,6 @@ function FragmentAnnotation({
 
   const buttonY = 89
   const buttonEscape = 27
-  const buttonD = 68
 
   const reset = () => {
     setToggled(null)
@@ -119,9 +118,6 @@ function FragmentAnnotation({
           break
         case buttonY:
           setIsChangeExistingModeButtonPressed(true)
-          break
-        case buttonD:
-          setIsDisableContent(!isDisableContent)
           break
         default:
           break
@@ -147,25 +143,31 @@ function FragmentAnnotation({
       return null
     }
   }
+  const disableContent = (event) =>
+    event.code === 'KeyD' && setIsDisableContent(!isDisableContent)
 
   useEffect(() => {
     window.addEventListener('beforeunload', alertUser, {
       capture: true,
       once: true,
     })
+    document.addEventListener('keypress', disableContent, false)
     document.addEventListener('keydown', onPressingDown, false)
     document.addEventListener('keyup', onReleaseButton, false)
     return () => {
+      document.removeEventListener('keypress', disableContent, false)
       document.removeEventListener('keydown', onPressingDown, false)
       window.removeEventListener('beforeunload', alertUser)
       document.addEventListener('keyup', onReleaseButton, false)
     }
   }, [
+    alertUser,
     annotations,
     fragment.number,
     fragmentService,
     onPressingDown,
     onReleaseButton,
+    disableContent,
   ])
 
   const saveAnnotations = async (annotations: readonly Annotation[]) => {
@@ -332,9 +334,6 @@ function FragmentAnnotation({
         >
           {isDeleting ? <Spinner loading={true} /> : 'Delete everything'}
         </Button>
-        <Button variant="outline-dark" disabled>
-          Mode: {isChangeExistingMode ? 'change existing' : 'default'}
-        </Button>
         <Button
           variant="outline-dark"
           onClick={() => {
@@ -343,6 +342,15 @@ function FragmentAnnotation({
           }}
         >
           {isSaving ? <Spinner loading={true} /> : 'Save'}
+        </Button>
+      </ButtonGroup>
+
+      <ButtonGroup className={'ml-3 '} vertical size={'sm'}>
+        <Button variant="outline-dark" disabled>
+          Mode: {isChangeExistingMode ? 'change existing' : 'default'}
+        </Button>
+        <Button variant="outline-dark" disabled>
+          Show Content: {isDisableContent ? 'yes' : 'no'}
         </Button>
       </ButtonGroup>
       <HelpTrigger overlay={Help()} className={'m-2'} />
@@ -383,14 +391,16 @@ function FragmentAnnotation({
             isToggled={_.isEqual(toggled, props.annotation)}
           />
         )}
-        renderContent={(props) => (
-          <Content
-            {...props}
-            setHovering={setHovering}
-            contentScale={contentScale}
-            onDelete={onDelete}
-          />
-        )}
+        renderContent={(props) =>
+          !isDisableContent && (
+            <Content
+              {...props}
+              setHovering={setHovering}
+              contentScale={contentScale}
+              onDelete={onDelete}
+            />
+          )
+        }
         onClick={onClick}
       />
     </>
