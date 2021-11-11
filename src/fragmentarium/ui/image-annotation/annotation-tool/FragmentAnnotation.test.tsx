@@ -63,6 +63,15 @@ beforeEach(async () => {
   )
   await screen.findByText('Click and Drag to Annotate')
 })
+it('hover with disabled content', async () => {
+  await screen.findByText('Show Content: yes')
+  userEvent.keyboard('d')
+  await screen.findByText('Show Content: no')
+  expect(screen.getByTestId('annotation__box')).toBeVisible()
+  userEvent.hover(screen.getByTestId('annotation__target'))
+  expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+})
+
 it('hover makes editor button dark', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
@@ -151,6 +160,7 @@ it('delete specific annotation', async () => {
     []
   )
 })
+
 it('delete everything', async () => {
   const confirmMock = jest
     .spyOn(window, 'confirm')
