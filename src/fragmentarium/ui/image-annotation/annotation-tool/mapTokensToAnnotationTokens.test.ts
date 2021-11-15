@@ -128,7 +128,7 @@ test.each([
 )
 
 it('', () => {
-  const textLine = {
+  const textLine = new TextLine({
     type: 'TextLine',
     prefix: '1.',
     content: [
@@ -168,18 +168,33 @@ it('', () => {
         variant: null,
         parts: [
           {
-            enclosureType: [],
-            cleanValue: 'šaₓ(|GA×GU|)',
             value: 'šaₓ(|GA×GU|)',
-            type: 'Reading',
+            cleanValue: 'šaₓ(|GA×GU|)',
+            enclosureType: [],
+            erasure: 'NONE',
+            name: 'ša',
+            nameParts: [
+              {
+                value: 'ša',
+                cleanValue: 'ša',
+                enclosureType: [],
+                erasure: 'NONE',
+                type: 'ValueToken',
+              },
+            ],
             subIndex: null,
+            modifiers: [],
+            flags: [],
             sign: {
               value: '|GA×GU|',
               cleanValue: '|GA×GU|',
               enclosureType: [],
               erasure: 'NONE',
+              // eslint-disable-next-line camelcase
+              compound_parts: ['GA×GU'],
               type: 'CompoundGrapheme',
             },
+            type: 'Reading',
           },
         ],
         type: 'Word',
@@ -192,9 +207,9 @@ it('', () => {
       suffixModifier: null,
       type: 'LineNumber',
     },
-  }
+  })
   const text = new Text({
-    lines: [at.surface, (textLine as unknown) as TextLine, dollar.singleRuling],
+    lines: [at.surface, textLine, dollar.singleRuling],
   })
 
   const tokens = [

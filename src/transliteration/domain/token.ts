@@ -111,8 +111,13 @@ export interface NamedSign extends Sign {
   readonly name: string
   readonly nameParts: readonly (ValueToken | Enclosure)[]
   readonly subIndex?: number | null
-  readonly sign?: Token | null
+  readonly sign?: Token | null | CompoundGraphemeSign
   readonly surrogate?: readonly Token[] | null
+}
+
+interface CompoundGraphemeSign extends BaseToken {
+  // eslint-disable-next-line camelcase
+  compound_parts: string[]
 }
 
 export interface Divider extends Sign {
