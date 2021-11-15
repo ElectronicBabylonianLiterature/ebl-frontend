@@ -1,7 +1,4 @@
-import {
-  AnnotationToken,
-  createAnnotationTokens,
-} from 'fragmentarium/domain/annotation-token'
+import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
@@ -9,6 +6,7 @@ import { Text } from 'transliteration/domain/text'
 import * as at from 'test-support/lines/at'
 import * as dollar from 'test-support/lines/dollar'
 import { TextLine } from 'transliteration/domain/text-line'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 test.each([
   [
@@ -156,6 +154,51 @@ it('', () => {
         ],
         type: 'Word',
       },
+      {
+        enclosureType: [],
+        cleanValue: 'šaₓ(|GA×GU|)',
+        value: 'šaₓ(|GA×GU|)',
+        language: 'SUMERIAN',
+        normalized: false,
+        lemmatizable: false,
+        alignable: false,
+        uniqueLemma: [],
+        erasure: 'NONE',
+        alignment: null,
+        variant: null,
+        parts: [
+          {
+            value: 'šaₓ(|GA×GU|)',
+            cleanValue: 'šaₓ(|GA×GU|)',
+            enclosureType: [],
+            erasure: 'NONE',
+            name: 'ša',
+            nameParts: [
+              {
+                value: 'ša',
+                cleanValue: 'ša',
+                enclosureType: [],
+                erasure: 'NONE',
+                type: 'ValueToken',
+              },
+            ],
+            subIndex: null,
+            modifiers: [],
+            flags: [],
+            sign: {
+              value: '|GA×GU|',
+              cleanValue: '|GA×GU|',
+              enclosureType: [],
+              erasure: 'NONE',
+              // eslint-disable-next-line camelcase
+              compound_parts: ['GA×GU'],
+              type: 'CompoundGrapheme',
+            },
+            type: 'Reading',
+          },
+        ],
+        type: 'Word',
+      },
     ],
     lineNumber: {
       number: 2,
@@ -191,6 +234,18 @@ it('', () => {
         null,
         '|KUR₂.KUR|',
         1
+      ),
+      new AnnotationToken(
+        'šaₓ(|GA×GU|)',
+        AnnotationTokenType.HasSign,
+        'šaₓ(|GA×GU|)',
+        [1, 1, 0],
+        true,
+        {
+          displayCuneiformSigns: '|GA×GU|',
+          name: '|GA×GU|',
+          unicode: [],
+        }
       ),
     ],
     [
