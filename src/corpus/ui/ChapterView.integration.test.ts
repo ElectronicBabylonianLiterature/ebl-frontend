@@ -125,6 +125,7 @@ const chapterDtos = [
         variants: [
           {
             reconstruction: 'ideal',
+            intertext: 'this is intertext',
             manuscripts: [
               {
                 manuscriptId: 1,
@@ -164,6 +165,7 @@ const defaultLineDto = {
   variants: [
     {
       reconstruction: '%n ',
+      intertext: '',
       manuscripts: [],
     },
   ],
