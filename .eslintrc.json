@@ -41,7 +41,9 @@
         "react-hooks/exhaustive-deps": "warn",
         "@typescript-eslint/ban-ts-comment": "warn",
         "@typescript-eslint/no-unused-vars": "error",
-        "react/prop-types": "warn"
+        "react/prop-types": "warn",
+        "testing-library/no-render-in-setup": "warn",
+        "testing-library/no-unnecessary-act": "warn"
     },
     "settings": {
         "import/resolver": {

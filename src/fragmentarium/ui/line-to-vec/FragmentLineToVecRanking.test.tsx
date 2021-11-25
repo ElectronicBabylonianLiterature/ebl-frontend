@@ -41,7 +41,7 @@ beforeEach(async () => {
       </SessionContext.Provider>
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
 })
 
 it('Shows the number of transliterated tablets', async () => {

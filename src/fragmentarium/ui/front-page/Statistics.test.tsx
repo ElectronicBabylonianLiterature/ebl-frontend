@@ -18,7 +18,7 @@ beforeEach(async () => {
   }
   fragmentService.statistics.mockReturnValueOnce(Promise.resolve(statistics))
   render(<Statistics fragmentService={fragmentService} />)
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
 })
 
 it('Shows the number of transliterated tablets', async () => {

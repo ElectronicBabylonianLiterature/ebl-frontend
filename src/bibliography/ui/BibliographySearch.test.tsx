@@ -24,7 +24,7 @@ async function renderWordSearch(): Promise<void> {
       />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
 }
 
 beforeEach(async () => {

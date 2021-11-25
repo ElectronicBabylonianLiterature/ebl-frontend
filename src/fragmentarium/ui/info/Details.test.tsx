@@ -34,7 +34,7 @@ async function renderDetails() {
       />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
 }
 
 describe('All details', () => {

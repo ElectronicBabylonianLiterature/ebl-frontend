@@ -32,7 +32,7 @@ async function renderSignSearch(): Promise<void> {
       <SignsSearch signQuery={query} signService={signService} />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
 }
 
 describe('Display Search Results', () => {
