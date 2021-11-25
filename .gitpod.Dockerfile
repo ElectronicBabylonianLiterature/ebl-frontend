@@ -13,9 +13,9 @@ RUN brew install heroku
 # More information: https://www.gitpod.io/docs/42_config_docker/
 
 RUN bash -c ". .nvm/nvm.sh \
-    && nvm install 14 \
-    && nvm use 14 \
-    && nvm alias default 14"
+    && nvm install 16 \
+    && nvm use 16 \
+    && nvm alias default 16"
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
 
