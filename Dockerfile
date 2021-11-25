@@ -1,4 +1,4 @@
-FROM node:14-alpine as build
+FROM node:16-alpine as build
 
 ENV NODE_ENV production
 WORKDIR /usr/src/ebl-frontend
@@ -24,7 +24,7 @@ ARG REACT_APP_SENTRY_DSN
 RUN yarn build
 
 
-FROM node:14-alpine
+FROM node:16-alpine
 
 EXPOSE 5000
 RUN yarn global add serve@13.0.2
