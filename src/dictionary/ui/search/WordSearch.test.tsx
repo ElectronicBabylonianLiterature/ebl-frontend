@@ -19,7 +19,7 @@ async function renderWordSearch(): Promise<void> {
       <WordSearch query={query} wordService={wordService} />
     </MemoryRouter>
   )
-  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 
 beforeEach(async () => {

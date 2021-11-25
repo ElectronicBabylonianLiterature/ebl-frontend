@@ -31,7 +31,7 @@ async function renderGenreSelection() {
       />
     </SessionContext.Provider>
   )
-  await waitForElementToBeRemoved(() => screen.queryByLabelText('Spinner'))
+  await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
 }
 beforeEach(async () => {
   fragment = fragmentFactory.build(
