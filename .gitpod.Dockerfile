@@ -19,5 +19,5 @@ RUN bash -c ". .nvm/nvm.sh \
 
 RUN echo "nvm use default &>/dev/null" >> ~/.bashrc.d/51-nvm-fix
 
-RUN export PATH="$(yarn global bin):$PATH"
+ENV PATH="/home/gitpod/.yarn/bin:$PATH"
 RUN yarn global add serve
