@@ -115,7 +115,7 @@
     "jest-date-mock": "^1.0.2",
     "jest-fetch-mock": "^3.0.1",
     "lighthouse": "^6.1.1",
-    "lint-staged": "^11.0.1",
+    "lint-staged": "^12.1.2",
     "react-select-event": "^5.0.0",
     "stylelint": "^14.1.0",
     "stylelint-config-prettier": "^9.0.3"
