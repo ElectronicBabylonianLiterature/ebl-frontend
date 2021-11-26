@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 import { MemoryRouter } from 'react-router-dom'
 import { createText, Text } from 'corpus/domain/text'
-import ChapterTitle from './ChapterTitle'
+import { ChapterTitle, ChapterTitleLink } from './ChapterTitle'
 
 const stage = 'Old Babyloian'
 const name = 'I'
@@ -26,11 +26,7 @@ test('Shows stage', () => {
       },
     ],
   })
-  render(
-    <MemoryRouter>
-      <ChapterTitle text={text} chapter={text.chapters[0]} />
-    </MemoryRouter>
-  )
+  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
   expect(screen.getByText(new RegExp(_.escapeRegExp(stage)))).toBeVisible()
   commonTests(text)
 })
@@ -52,11 +48,7 @@ test('Does not show stage', () => {
       },
     ],
   })
-  render(
-    <MemoryRouter>
-      <ChapterTitle text={text} chapter={text.chapters[0]} />
-    </MemoryRouter>
-  )
+  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
 
   expect(
     screen.queryByText(new RegExp(_.escapeRegExp(stage)))
@@ -64,15 +56,6 @@ test('Does not show stage', () => {
 
   commonTests(text)
 })
-
-function commonTests(text: Text) {
-  expect(screen.getByText(new RegExp(_.escapeRegExp(name)))).toBeVisible()
-  expect(screen.getByText(new RegExp(_.escapeRegExp(line)))).toBeVisible()
-  expect(screen.getByRole('link')).toHaveAttribute(
-    'href',
-    `/corpus/${text.genre}/${text.category}/${text.index}/${stage}/${name}`
-  )
-}
 
 test('Does not show dummy name', () => {
   const text = createText({
@@ -85,11 +68,7 @@ test('Does not show dummy name', () => {
       },
     ],
   })
-  render(
-    <MemoryRouter>
-      <ChapterTitle text={text} chapter={text.chapters[0]} />
-    </MemoryRouter>
-  )
+  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
   expect(screen.queryByText(/-/)).not.toBeInTheDocument()
 })
 
@@ -104,10 +83,34 @@ test('Show dummy name', () => {
       },
     ],
   })
-  render(
-    <MemoryRouter>
-      <ChapterTitle text={text} chapter={text.chapters[0]} />
-    </MemoryRouter>
-  )
+  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
   expect(screen.queryByText(/-/)).toBeVisible()
 })
+
+test('ChapterTitleLink', () => {
+  const text = createText({
+    chapters: [
+      {
+        stage: stage,
+        name: name,
+        title: [{ type: 'StringPart', text: line }],
+        uncertainFragments: [],
+      },
+    ],
+  })
+  render(
+    <MemoryRouter>
+      <ChapterTitleLink text={text} chapter={text.chapters[0]} />
+    </MemoryRouter>
+  )
+  expect(screen.getByRole('link')).toHaveAttribute(
+    'href',
+    `/corpus/${text.genre}/${text.category}/${text.index}/${stage}/${name}`
+  )
+  commonTests(text)
+})
+
+function commonTests(text: Text) {
+  expect(screen.getByText(new RegExp(_.escapeRegExp(name)))).toBeVisible()
+  expect(screen.getByText(new RegExp(_.escapeRegExp(line)))).toBeVisible()
+}

@@ -14,7 +14,7 @@ import ExtantLinesList from './ExtantLinesList'
 import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
-import ChapterTitle from './ChapterTitle'
+import { ChapterTitleLink } from './ChapterTitle'
 import { groupReferences } from 'bibliography/domain/Reference'
 
 import './Chapters.sass'
@@ -235,7 +235,9 @@ export default function Chapters({
     <>
       {text.chapters.map((chapter, index) => (
         <section key={index}>
-          <ChapterTitle text={text} chapter={chapter} />
+          <h4>
+            <ChapterTitleLink text={text} chapter={chapter} />
+          </h4>
           <CollapsibleSection element="h5" heading="List of Manuscripts">
             <Manuscripts
               id={ChapterId.fromText(text, chapter)}
