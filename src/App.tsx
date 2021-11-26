@@ -31,6 +31,7 @@ import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import SignService from 'signs/application/SignService'
 import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
+import ChapterDisplay from 'corpus/ui/ChapterDisplay'
 
 function parseStringParam(
   location: Location,
@@ -202,11 +203,8 @@ function App({
           <Route
             path="/corpus/:genre/:category/:index/:stage/:chapter"
             render={({ match }): ReactNode => (
-              <ChapterView
+              <ChapterDisplay
                 textService={textService}
-                bibliographyService={bibliographyService}
-                fragmentService={fragmentService}
-                wordService={wordService}
                 id={parseChapterId(match.params)}
               />
             )}

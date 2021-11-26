@@ -401,7 +401,7 @@ function createChapterPath(stage: string, name: string) {
     category
   )}/${encodeURIComponent(index)}/${encodeURIComponent(
     stage
-  )}/${encodeURIComponent(name)}`
+  )}/${encodeURIComponent(name)}/edit`
 }
 
 function createChapterTitle(chapter) {
