@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
 import { MemoryRouter } from 'react-router-dom'
 import { createText, Text } from 'corpus/domain/text'
-import { ChapterTitle, ChapterTitleLink } from './ChapterTitle'
+import { ChapterTitle, ChapterTitleLink } from './chapter-title'
 
 const stage = 'Old Babyloian'
 const name = 'I'

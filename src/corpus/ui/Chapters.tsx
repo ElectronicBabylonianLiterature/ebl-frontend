@@ -14,7 +14,7 @@ import ExtantLinesList from './ExtantLinesList'
 import HelpTrigger from 'common/HelpTrigger'
 import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
-import { ChapterTitleLink } from './ChapterTitle'
+import { ChapterTitleLink } from './chapter-title'
 import { groupReferences } from 'bibliography/domain/Reference'
 
 import './Chapters.sass'
