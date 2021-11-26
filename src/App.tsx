@@ -188,6 +188,18 @@ function App({
             )}
           />
           <Route
+            path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
+            render={({ match }): ReactNode => (
+              <ChapterView
+                textService={textService}
+                bibliographyService={bibliographyService}
+                fragmentService={fragmentService}
+                wordService={wordService}
+                id={parseChapterId(match.params)}
+              />
+            )}
+          />
+          <Route
             path="/corpus/:genre/:category/:index/:stage/:chapter"
             render={({ match }): ReactNode => (
               <ChapterView
