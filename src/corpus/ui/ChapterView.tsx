@@ -20,7 +20,7 @@ import { ChapterAlignment } from 'corpus/domain/alignment'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
 
-function ChapterTitle({
+function EditChapterTitle({
   text,
   chapter,
 }: {
@@ -33,6 +33,7 @@ function ChapterTitle({
     </>
   )
 }
+
 interface Props {
   text: Text
   chapter: Chapter
@@ -40,6 +41,7 @@ interface Props {
   bibliographyService: BibliographySearch
   fragmentService: FragmentService
 }
+
 function ChapterView({
   text,
   chapter,
@@ -127,7 +129,7 @@ function ChapterView({
         new CorpusTextCrumb(text),
         new TextCrumb(`${chapter.stage} ${chapter.name}`),
       ]}
-      title={<ChapterTitle text={text} chapter={chapter} />}
+      title={<EditChapterTitle text={text} chapter={chapter} />}
     >
       <ChapterNavigation text={text} />
       <ChapterEditor
