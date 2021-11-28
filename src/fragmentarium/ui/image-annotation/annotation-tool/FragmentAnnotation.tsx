@@ -236,12 +236,15 @@ function FragmentAnnotation({
         setToggled(null)
         setIsChangeExistingMode(false)
       } else if (geometry) {
-        const newAnnotation = new Annotation(geometry, {
-          ...data,
-          id: uuid4(),
-        })
-        setAnnotation({})
-        setAnnotations([...annotations, newAnnotation])
+        const minSize = Math.min(geometry.height, geometry.width)
+        if (minSize >= 0.3) {
+          const newAnnotation = new Annotation(geometry, {
+            ...data,
+            id: uuid4(),
+          })
+          setAnnotation({})
+          setAnnotations([...annotations, newAnnotation])
+        }
       }
     }
   }
