@@ -9,6 +9,8 @@ import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
 import { ChapterTitle } from './chapter-title'
 import InlineMarkdown from 'common/InlineMarkdown'
+import { LineColumns } from 'transliteration/ui/line-tokens'
+import _ from 'lodash'
 
 interface Props {
   text: Text
@@ -42,7 +44,27 @@ function ChapterView({ text, chapter }: Props): JSX.Element {
         </>
       }
     >
-      ...
+      <table>
+        {chapter.lines.map((line, index) => {
+          const defaultVariant = line.variants[0]
+          return (
+            <tr key={index}>
+              <td>{line.number}</td>
+              <LineColumns
+                columns={[
+                  {
+                    span: null,
+                    content: defaultVariant.reconstructionTokens,
+                  },
+                ]}
+                maxColumns={1}
+              />
+              <td>{line.number}</td>
+              <td>{_.head(line.translation.split('\n'))}</td>
+            </tr>
+          )
+        })}
+      </table>
     </AppContent>
   )
 }
