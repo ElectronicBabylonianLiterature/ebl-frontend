@@ -39,6 +39,17 @@ function LineVariantForm({
     <>
       <Form.Row>
         <Col>
+          <label>Intertext</label>
+          <Editor
+            name={_.uniqueId('Intertext-')}
+            value={value.intertext}
+            onChange={handleChange('intertext')}
+            disabled={disabled}
+          />
+        </Col>
+      </Form.Row>
+      <Form.Row>
+        <Col>
           <label>Ideal reconstruction</label>
           <Editor
             name={_.uniqueId('IdealReconstruction-')}

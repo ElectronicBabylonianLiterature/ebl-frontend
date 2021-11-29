@@ -113,7 +113,8 @@ const lineConfig: Line = {
           type: 'AkkadianWord',
         },
       ],
-      [createManuscriptLine(manuscrpitLineConfig)]
+      [createManuscriptLine(manuscrpitLineConfig)],
+      'intertext'
     ),
   ],
   isSecondLineOfParallelism: true,

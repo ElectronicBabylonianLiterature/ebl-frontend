@@ -132,6 +132,7 @@ function toLineDto(line: Line) {
     ..._.omit(line, 'status'),
     variants: line.variants.map((variant) => ({
       reconstruction: variant.reconstruction,
+      intertext: variant.intertext,
       manuscripts: variant.manuscripts.map((manuscript) => ({
         manuscriptId: manuscript.manuscriptId,
         labels: manuscript.labels,

@@ -11,11 +11,11 @@
 }
 
 .CuneiformFonts__heading-hittite {
-  font-family: 'Hittite', 'Adobe Blank', Junicode, serif;
+  font-family: Hittite, 'Adobe Blank', Junicode, serif;
 }
 
 .CuneiformFonts__heading-neo-babylonian {
-  font-family: 'Neo-Babylonian', 'Adobe Blank', Junicode, serif;
+  font-family: Neo-Babylonian, 'Adobe Blank', Junicode, serif;
 }
 @font-face {
   font-display: swap;
@@ -36,12 +36,12 @@
 
 @font-face {
   font-display: swap;
-  font-family: 'Hittite';
+  font-family: Hittite;
   src: url('fonts/UllikummiA.woff') format('woff');
 }
 
 @font-face {
   font-display: swap;
-  font-family: 'Neo-Babylonian';
+  font-family: Neo-Babylonian;
   src: url('fonts/Esagil.woff') format('woff');
 }

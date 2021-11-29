@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Requirements
 
 - yarn
-- Node
+- Node 16
 - Chrome (for Lighthouse)
 
 The following services are needed to run application:

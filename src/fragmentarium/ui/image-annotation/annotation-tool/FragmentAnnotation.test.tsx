@@ -10,12 +10,13 @@ import Annotation, {
   AnnotationTokenType,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
-import { createAnnotationTokens } from 'fragmentarium/domain/annotation-token'
+
 import textLine from 'test-support/lines/text-line'
 import { Text } from 'transliteration/domain/text'
 import ApiClient from 'http/ApiClient'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { MemoryRouter } from 'react-router-dom'
+import { createAnnotationTokens } from 'fragmentarium/ui/image-annotation/annotation-tool/mapTokensToAnnotationTokens'
 
 jest.mock('fragmentarium/application/FragmentService')
 jest.mock('http/ApiClient')
@@ -63,6 +64,15 @@ beforeEach(async () => {
   )
   await screen.findByText('Click and Drag to Annotate')
 })
+it('hover with disabled content', async () => {
+  await screen.findByText('Show Content: yes')
+  userEvent.keyboard('d')
+  await screen.findByText('Show Content: no')
+  expect(screen.getByTestId('annotation__box')).toBeVisible()
+  userEvent.hover(screen.getByTestId('annotation__target'))
+  expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+})
+
 it('hover makes editor button dark', async () => {
   expect(screen.getByTestId('annotation__box')).toBeVisible()
   userEvent.hover(screen.getByTestId('annotation__target'))
@@ -151,6 +161,7 @@ it('delete specific annotation', async () => {
     []
   )
 })
+
 it('delete everything', async () => {
   const confirmMock = jest
     .spyOn(window, 'confirm')

@@ -38,7 +38,7 @@ export const cslDataFactory = Factory.define<CslData>(() => {
         [issuedDate.getFullYear(), issuedDate.getMonth(), issuedDate.getDate()],
       ],
     },
-    volume: integer(1, 99).toString(),
+    volume: integer(1, 99),
     page: `${integer(1, 99)}-${integer(100, 999)}`,
     issue: integer(1, 99),
     'container-title': defaultChance.sentence(),

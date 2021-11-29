@@ -1,5 +1,5 @@
 .signs__form {
-  margin: 0 auto 2em auto;
+  margin: 0 auto 2em;
   max-width: 45em;
 }
 
@@ -24,7 +24,7 @@
 .mesZL__popover hr {
   border-color: black;
   border-style: solid;
-  border-width: 0 0 0.5px 0;
+  border-width: 0 0 0.5px;
 }
 
 .signs__sign {

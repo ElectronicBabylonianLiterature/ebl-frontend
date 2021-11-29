@@ -15,17 +15,8 @@ fetchMock.enableMocks()
 const abort = jest.fn()
 const onAbort = jest.fn()
 
-interface CustomGlobal extends NodeJS.Global {
-  URL: any
-  document: Document
-}
-
-const customGlobal: CustomGlobal = global as CustomGlobal
-
-customGlobal.URL = {
-  createObjectURL: jest.fn(),
-  revokeObjectURL: jest.fn(),
-}
+global.URL.createObjectURL = jest.fn()
+global.URL.revokeObjectURL = jest.fn()
 
 afterEach(() => {
   abort.mockReset()
@@ -38,7 +29,7 @@ Promise.config({
 
 afterEach(() => localStorage.clear())
 
-if (customGlobal.document) {
+if (global.document) {
   // Fixes "TypeError: document.createRange is not a function" with Popover.
   // See: https://github.com/FezVrasta/popper.js/issues/478
   document.createRange = () => ({

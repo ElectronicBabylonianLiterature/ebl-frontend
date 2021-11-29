@@ -168,7 +168,8 @@ export class LineVariant {
   constructor(
     readonly reconstruction: string,
     readonly reconstructionTokens: ReadonlyArray<Token>,
-    readonly manuscripts: ReadonlyArray<ManuscriptLine>
+    readonly manuscripts: ReadonlyArray<ManuscriptLine>,
+    readonly intertext: string
   ) {}
 
   get alignment(): ManuscriptAlignment[] {
@@ -256,7 +257,8 @@ export function createVariant(config: Partial<LineVariant>): LineVariant {
   return new LineVariant(
     config.reconstruction ?? '',
     config.reconstructionTokens ?? [],
-    config.manuscripts ?? []
+    config.manuscripts ?? [],
+    config.intertext ?? ''
   )
 }
 
