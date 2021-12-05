@@ -128,9 +128,9 @@ export default class ApiClient {
   }
 
   fetchJson(path: string, authenticate: boolean): Bluebird<any> {
-    return this.fetch(path, authenticate, {}).then((response) =>
-      response.json()
-    )
+    return this.fetch(path, authenticate, {}).then((response) => {
+      return response.json()
+    })
   }
 
   fetchBlob(path: string, authenticate: boolean): Bluebird<Blob> {

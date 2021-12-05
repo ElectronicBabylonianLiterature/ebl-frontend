@@ -47,6 +47,13 @@ class SignRepository {
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
   }
 
+  getImages(signName: string): Promise<{ images: Blob[] }> {
+    return this.apiClient.fetchJson(
+      `/signs/${encodeURIComponent(signName)}/images`,
+      true
+    )
+  }
+
   search(signQuery: SignQuery): Promise<Sign[]> {
     return this.apiClient
       .fetchJson(`/signs?${stringify(signQuery)}`, true)
