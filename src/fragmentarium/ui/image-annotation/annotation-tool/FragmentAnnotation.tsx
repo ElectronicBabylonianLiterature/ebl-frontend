@@ -168,13 +168,11 @@ function FragmentAnnotation({
       document.addEventListener('keyup', onReleaseButton, false)
     }
   }, [
-    alertUser,
     annotations,
     fragment.number,
     fragmentService,
     onPressingDown,
     onReleaseButton,
-    disableContent,
   ])
 
   const saveAnnotations = async (annotations: readonly Annotation[]) => {
