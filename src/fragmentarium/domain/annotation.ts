@@ -7,6 +7,11 @@ export interface Geometry {
   readonly width: number
   readonly type: string
 }
+
+export function isBoundingBoxTooSmall(geometry: Geometry): boolean {
+  const minSize = Math.min(geometry.height, geometry.width)
+  return minSize >= 0.3
+}
 export enum AnnotationTokenType {
   CompoundGrapheme = 'CompoundGrapheme',
   HasSign = 'HasSign',

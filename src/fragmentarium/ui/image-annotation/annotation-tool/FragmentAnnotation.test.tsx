@@ -8,6 +8,7 @@ import { signFactory } from 'test-support/sign-fixtures'
 import Promise from 'bluebird'
 import Annotation, {
   AnnotationTokenType,
+  isBoundingBoxTooSmall,
 } from 'fragmentarium/domain/annotation'
 import userEvent from '@testing-library/user-event'
 
@@ -176,4 +177,23 @@ it('delete everything', async () => {
     'Test.Fragment',
     []
   )
+})
+
+it('isBoundingBoxTooSmall', () => {
+  const geometryTooSmall = {
+    x: 0,
+    y: 0,
+    height: 0,
+    width: 0,
+    type: 'RECTANGLE',
+  }
+  const geometryValid = {
+    x: 0,
+    y: 0,
+    height: 0.35,
+    width: 0.35,
+    type: 'RECTANGLE',
+  }
+  expect(isBoundingBoxTooSmall(geometryTooSmall)).toBe(false)
+  expect(isBoundingBoxTooSmall(geometryValid)).toBe(true)
 })
