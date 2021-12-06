@@ -11,7 +11,7 @@ export default class SignService {
     this.signsRepository = signsRepository
   }
 
-  getImages(signName: string): Promise<{ images: Blob[] }> {
+  getImages(signName: string): Promise<Blob[]> {
     return this.signsRepository.getImages(signName)
   }
 
