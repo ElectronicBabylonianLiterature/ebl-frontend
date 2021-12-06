@@ -5,7 +5,10 @@ import AnnotationTool from 'fragmentarium/ui/image-annotation/annotation-tool/An
 import { RectangleSelector } from 'react-image-annotation/lib/selectors'
 import Editor from 'fragmentarium/ui/image-annotation/annotation-tool/Editor'
 import { Fragment } from 'fragmentarium/domain/fragment'
-import Annotation, { RawAnnotation } from 'fragmentarium/domain/annotation'
+import Annotation, {
+  isBoundingBoxTooSmall,
+  RawAnnotation,
+} from 'fragmentarium/domain/annotation'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
@@ -139,18 +142,18 @@ function FragmentAnnotation({
     [setIsChangeExistingModeButtonPressed]
   )
 
-  const alertUser = (event) => {
-    if (!_.isEqual(savedAnnotations, annotations)) {
-      event.preventDefault()
-      return (event.returnValue = false)
-    } else {
-      return null
-    }
-  }
-  const disableContent = (event) =>
-    event.code === 'KeyD' && setIsDisableContent(!isDisableContent)
-
   useEffect(() => {
+    const alertUser = (event) => {
+      if (!_.isEqual(savedAnnotations, annotations)) {
+        event.preventDefault()
+        return (event.returnValue = false)
+      } else {
+        return null
+      }
+    }
+    const disableContent = (event) =>
+      event.code === 'KeyD' && setIsDisableContent(!isDisableContent)
+
     window.addEventListener('beforeunload', alertUser, {
       capture: true,
       once: true,
@@ -165,13 +168,11 @@ function FragmentAnnotation({
       document.addEventListener('keyup', onReleaseButton, false)
     }
   }, [
-    alertUser,
     annotations,
     fragment.number,
     fragmentService,
     onPressingDown,
     onReleaseButton,
-    disableContent,
   ])
 
   const saveAnnotations = async (annotations: readonly Annotation[]) => {
@@ -236,12 +237,14 @@ function FragmentAnnotation({
         setToggled(null)
         setIsChangeExistingMode(false)
       } else if (geometry) {
-        const newAnnotation = new Annotation(geometry, {
-          ...data,
-          id: uuid4(),
-        })
-        setAnnotation({})
-        setAnnotations([...annotations, newAnnotation])
+        if (isBoundingBoxTooSmall(geometry)) {
+          const newAnnotation = new Annotation(geometry, {
+            ...data,
+            id: uuid4(),
+          })
+          setAnnotation({})
+          setAnnotations([...annotations, newAnnotation])
+        }
       }
     }
   }
