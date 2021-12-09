@@ -19,6 +19,7 @@ import { createLine, EditStatus } from 'corpus/domain/line'
 import { fragment, fragmentDto } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
+import { ChapterDisplay } from 'corpus/domain/chapter'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -198,6 +199,32 @@ const extantLines: ExtantLines = {
   },
 }
 
+const chapterDisplay: ChapterDisplay = {
+  id: {
+    textId: {
+      genre: textDto.genre,
+      category: textDto.category,
+      index: textDto.index,
+    },
+    stage: chapterDto.stage,
+    name: chapterDto.name,
+  },
+  textName: textDto.name,
+  lines: [
+    {
+      number: {
+        number: 1,
+        hasPrime: false,
+        prefixModifier: null,
+        suffixModifier: null,
+        type: 'LineNumber',
+      },
+      reconstruction: chapterDto.lines[0].variants[0].reconstructionTokens,
+      translation: [],
+    },
+  ],
+}
+
 const chapterId = ChapterId.fromChapter(chapter)
 const chapterUrl = `/texts/${encodeURIComponent(
   chapter.textId.genre
@@ -236,6 +263,14 @@ const testData: TestData[] = [
     chapter,
     [chapterUrl, true],
     Bluebird.resolve(chapterDto),
+  ],
+  [
+    'findChapterDisplay',
+    [chapterId],
+    apiClient.fetchJson,
+    chapterDisplay,
+    [`${chapterUrl}/display`, true],
+    Bluebird.resolve(chapterDisplay),
   ],
   [
     'findColophons',

@@ -8,7 +8,7 @@ import {
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { ChapterListing, Text, TextInfo } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
+import { Chapter, ChapterDisplay } from 'corpus/domain/chapter'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -192,6 +192,10 @@ export default class TextService {
     return this.apiClient
       .fetchJson(createChapterUrl(id), true)
       .then(fromChapterDto)
+  }
+
+  findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
+    return this.apiClient.fetchJson(`${createChapterUrl(id)}/display`, true)
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
