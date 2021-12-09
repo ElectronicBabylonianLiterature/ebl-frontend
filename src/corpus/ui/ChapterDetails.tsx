@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import { Chapter } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
 
 export default function ChapterDetails({
   chapter,

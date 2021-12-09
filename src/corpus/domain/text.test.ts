@@ -12,7 +12,8 @@ import {
 } from './line'
 import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
-import { Chapter, createChapter, createText, Text } from './text'
+import { createChapter, createText, Text } from './text'
+import { Chapter } from './chapter'
 import { Manuscript, ManuscriptTypes } from './manuscript'
 import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
