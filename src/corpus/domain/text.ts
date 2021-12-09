@@ -19,6 +19,12 @@ export function createChapter(data: Partial<Chapter>): Chapter {
   )
 }
 
+export interface TextId {
+  readonly genre: string
+  readonly category: number
+  readonly index: number
+}
+
 export interface TextInfo {
   readonly genre: string
   readonly category: number

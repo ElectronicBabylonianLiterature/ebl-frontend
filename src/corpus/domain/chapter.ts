@@ -1,17 +1,23 @@
 import { immerable } from 'immer'
+import { LineNumber } from 'transliteration/domain/line-number'
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Token } from 'transliteration/domain/token'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
+import { TextId } from './text'
+
+export interface ChapterId {
+  readonly textId: TextId
+  readonly stage: string
+  readonly name: string
+}
 
 export class Chapter {
   readonly [immerable] = true
 
   constructor(
-    readonly textId: {
-      readonly genre: string
-      readonly category: number
-      readonly index: number
-    },
+    readonly textId: TextId,
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -40,4 +46,16 @@ export class Chapter {
       return `<unknown ID: ${manuscriptLine.manuscriptId}>`
     }
   }
+}
+
+export interface LineDisplay {
+  readonly number: LineNumber
+  readonly reconstruction: ReadonlyArray<Token>
+  readonly translation: ReadonlyArray<MarkupPart>
+}
+
+export interface ChapterDisplay {
+  readonly id: ChapterId
+  readonly textName: string
+  readonly lines: ReadonlyArray<LineDisplay>
 }
