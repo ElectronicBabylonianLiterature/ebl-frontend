@@ -15,7 +15,7 @@ import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import Bibliography from 'bibliography/ui/Bibliography'
 import Corpus from 'corpus/ui/Corpus'
-import ChapterView from 'corpus/ui/ChapterView'
+import ChapterEditView from 'corpus/ui/ChapterEditView'
 import TextView from 'corpus/ui/TextView'
 import { Location } from 'history'
 
@@ -31,7 +31,7 @@ import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import SignService from 'signs/application/SignService'
 import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
-import ChapterDisplay from 'corpus/ui/ChapterDisplay'
+import ChapterView from 'corpus/ui/ChapterView'
 
 function parseStringParam(
   location: Location,
@@ -191,7 +191,7 @@ function App({
           <Route
             path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
             render={({ match }): ReactNode => (
-              <ChapterView
+              <ChapterEditView
                 textService={textService}
                 bibliographyService={bibliographyService}
                 fragmentService={fragmentService}
@@ -203,7 +203,7 @@ function App({
           <Route
             path="/corpus/:genre/:category/:index/:stage/:chapter"
             render={({ match }): ReactNode => (
-              <ChapterDisplay
+              <ChapterView
                 textService={textService}
                 id={parseChapterId(match.params)}
               />

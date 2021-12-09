@@ -1,158 +1,71 @@
-import React, { useState } from 'react'
-import AppContent from 'common/AppContent'
-import withData from 'http/withData'
-import InlineMarkdown from 'common/InlineMarkdown'
-import Spinner from 'common/Spinner'
-import ErrorAlert from 'common/ErrorAlert'
-import ChapterEditor from './ChapterEditor'
-import ChapterNavigation from './ChapterNavigation'
-import usePromiseEffect from 'common/usePromiseEffect'
-import { Text } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import React from 'react'
 import Promise from 'bluebird'
-import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
-import { BibliographySearch } from 'bibliography/application/BibliographyService'
-import TextService, { ChapterId } from 'corpus/application/TextService'
-import FragmentService from 'fragmentarium/application/FragmentService'
-import WordService from 'dictionary/application/WordService'
-import { ChapterLemmatization } from 'corpus/domain/lemmatization'
-import { ChapterAlignment } from 'corpus/domain/alignment'
+import AppContent from 'common/AppContent'
+import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { ChapterId } from 'corpus/application/TextService'
+import { ChapterListing, Text } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
+import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
-
-function EditChapterTitle({
-  text,
-  chapter,
-}: {
-  text: Text
-  chapter: Chapter
-}): JSX.Element {
-  return (
-    <>
-      Edit <InlineMarkdown source={text.name} /> {chapter.stage} {chapter.name}
-    </>
-  )
-}
+import { ChapterTitle } from './chapter-title'
+import InlineMarkdown from 'common/InlineMarkdown'
+import { LineColumns } from 'transliteration/ui/line-tokens'
+import _ from 'lodash'
 
 interface Props {
   text: Text
   chapter: Chapter
-  textService: TextService
-  bibliographyService: BibliographySearch
-  fragmentService: FragmentService
 }
 
-function ChapterView({
-  text,
-  chapter,
-  textService,
-  bibliographyService,
-  fragmentService,
-}: Props): JSX.Element {
-  const [currentChapter, setChapter] = useState(chapter)
-  const [isDirty, setIsDirty] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
-  const [setUpdatePromise, cancelUpdatePromise] = usePromiseEffect<void>()
-
-  const setStateUpdating = (): void => {
-    setIsSaving(true)
-    setError(null)
-  }
-
-  const setStateError = (error: Error): void => {
-    setIsSaving(false)
-    setError(error)
-  }
-
-  const setStateUpdated = (updatedChapter: Chapter): void => {
-    setChapter(updatedChapter)
-    setIsSaving(false)
-    setIsDirty(false)
-    setError(null)
-  }
-
-  const update = (updater: () => Promise<Chapter>): void => {
-    cancelUpdatePromise()
-    setStateUpdating()
-    setUpdatePromise(updater().then(setStateUpdated).catch(setStateError))
-  }
-
-  const updateAlignment = (alignment: ChapterAlignment): void => {
-    update(() =>
-      textService.updateAlignment(ChapterId.fromChapter(chapter), alignment)
-    )
-  }
-
-  const updateManuscripts = (): void => {
-    update(() =>
-      textService.updateManuscripts(
-        ChapterId.fromChapter(chapter),
-        currentChapter.manuscripts,
-        currentChapter.uncertainFragments
-      )
-    )
-  }
-
-  const updateLines = (): void => {
-    update(() =>
-      textService.updateLines(
-        ChapterId.fromChapter(chapter),
-        currentChapter.lines
-      )
-    )
-  }
-
-  const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
-    update(() =>
-      textService.updateLemmatization(
-        ChapterId.fromChapter(chapter),
-        lemmatization
-      )
-    )
-  }
-
-  const importChapter = (atf: string): void => {
-    update(() => textService.importChapter(ChapterId.fromChapter(chapter), atf))
-  }
-
-  const handleChange = (chapter: Chapter): void => {
-    setChapter(chapter)
-    setIsDirty(true)
-  }
-
+function ChapterView({ text, chapter }: Props): JSX.Element {
+  const listing: ChapterListing | undefined = text.chapters.find(
+    (listing) =>
+      listing.name === chapter.name && listing.stage === chapter.stage
+  )
   return (
     <AppContent
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
         new CorpusTextCrumb(text),
-        new TextCrumb(`${chapter.stage} ${chapter.name}`),
+        new TextCrumb(`Chapter ${chapter.stage} ${chapter.name}`),
       ]}
-      title={<EditChapterTitle text={text} chapter={chapter} />}
+      title={
+        <>
+          <InlineMarkdown source={text.title} />
+          {listing && (
+            <>
+              <br />
+              <small>
+                Chapter <ChapterTitle text={text} chapter={listing} />
+              </small>
+            </>
+          )}
+        </>
+      }
     >
-      <ChapterNavigation text={text} />
-      <ChapterEditor
-        chapter={currentChapter}
-        disabled={isSaving}
-        dirty={isDirty}
-        searchBibliography={(
-          query: string
-        ): Promise<readonly BibliographyEntry[]> =>
-          bibliographyService.search(query)
-        }
-        fragmentService={fragmentService}
-        textService={textService}
-        onChange={handleChange}
-        onSaveLines={updateLines}
-        onSaveManuscripts={updateManuscripts}
-        onSaveAlignment={updateAlignment}
-        onSaveLemmatization={updateLemmatization}
-        onImport={importChapter}
-      />
-      <Spinner loading={isSaving}>Saving...</Spinner>
-      <ErrorAlert error={error} />
+      <table>
+        {chapter.lines.map((line, index) => {
+          const defaultVariant = line.variants[0]
+          return (
+            <tr key={index}>
+              <td>{line.number}</td>
+              <LineColumns
+                columns={[
+                  {
+                    span: null,
+                    content: defaultVariant.reconstructionTokens,
+                  },
+                ]}
+                maxColumns={1}
+              />
+              <td>{line.number}</td>
+              <td>{_.head(line.translation.split('\n'))}</td>
+            </tr>
+          )
+        })}
+      </table>
     </AppContent>
   )
 }
@@ -160,9 +73,6 @@ function ChapterView({
 export default withData<
   {
     textService
-    bibliographyService: BibliographySearch
-    fragmentService: FragmentService
-    wordService: WordService
   },
   { id: ChapterId },
   [Text, Chapter]
