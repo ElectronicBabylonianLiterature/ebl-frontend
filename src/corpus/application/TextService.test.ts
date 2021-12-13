@@ -20,6 +20,7 @@ import { fragment, fragmentDto } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
+import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -199,31 +200,7 @@ const extantLines: ExtantLines = {
   },
 }
 
-const chapterDisplay: ChapterDisplay = {
-  id: {
-    textId: {
-      genre: textDto.genre,
-      category: textDto.category,
-      index: textDto.index,
-    },
-    stage: chapterDto.stage,
-    name: chapterDto.name,
-  },
-  textName: textDto.name,
-  lines: [
-    {
-      number: {
-        number: 1,
-        hasPrime: false,
-        prefixModifier: null,
-        suffixModifier: null,
-        type: 'LineNumber',
-      },
-      reconstruction: chapterDto.lines[0].variants[0].reconstructionTokens,
-      translation: [],
-    },
-  ],
-}
+const chapterDisplay: ChapterDisplay = chapterDisplayFactory.build()
 
 const chapterId = ChapterId.fromChapter(chapter)
 const chapterUrl = `/texts/${encodeURIComponent(

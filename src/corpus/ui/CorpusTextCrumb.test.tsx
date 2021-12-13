@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { chapterDto, text, textDto } from 'test-support/test-corpus-text'
+import { text } from 'test-support/test-corpus-text'
 import CorpusTextCrumb from './CorpusTextCrumb'
-import { ChapterDisplay } from 'corpus/domain/chapter'
+import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 
 describe('ofText', () => {
   const crumb = CorpusTextCrumb.ofText(text)
@@ -20,31 +20,7 @@ describe('ofText', () => {
 })
 
 describe('ofChapterDisplay', () => {
-  const chapterDisplay: ChapterDisplay = {
-    id: {
-      textId: {
-        genre: textDto.genre,
-        category: textDto.category,
-        index: textDto.index,
-      },
-      stage: chapterDto.stage,
-      name: chapterDto.name,
-    },
-    textName: textDto.name,
-    lines: [
-      {
-        number: {
-          number: 1,
-          hasPrime: false,
-          prefixModifier: null,
-          suffixModifier: null,
-          type: 'LineNumber',
-        },
-        reconstruction: chapterDto.lines[0].variants[0].reconstructionTokens,
-        translation: [],
-      },
-    ],
-  }
+  const chapterDisplay = chapterDisplayFactory.build()
   const crumb = CorpusTextCrumb.ofChapterDisplay(chapterDisplay)
 
   test('text', () => {
