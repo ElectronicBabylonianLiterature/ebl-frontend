@@ -3,6 +3,7 @@ import Sign, { SignQuery } from 'signs/domain/Sign'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import Promise from 'bluebird'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 export default class SignService {
   private readonly signsRepository: SignRepository
@@ -11,7 +12,7 @@ export default class SignService {
     this.signsRepository = signsRepository
   }
 
-  getImages(signName: string): Promise<Blob[]> {
+  getImages(signName: string): Promise<CroppedAnnotation[]> {
     return this.signsRepository.getImages(signName)
   }
 

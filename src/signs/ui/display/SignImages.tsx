@@ -4,27 +4,32 @@ import withData, { WithoutData } from 'http/withData'
 import { Col, Container, Image, Pagination, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 type Props = {
   signName: string
-  data: Blob[]
+  data: CroppedAnnotation[]
   signService: SignService
 }
 
 export default withData<
   WithoutData<Props>,
   { signName: string; signService: SignService },
-  Blob[]
+  CroppedAnnotation[]
 >(
   ({ data }) => {
-    return <SignImages images={data} />
+    return <SignImages croppedAnnotations={data} />
   },
   (props) => props.signService.getImages(decodeURIComponent(props.signName))
 )
 
-function SignImages({ images }: { images: any }): JSX.Element {
+function SignImages({
+  croppedAnnotations,
+}: {
+  croppedAnnotations: CroppedAnnotation[]
+}): JSX.Element {
   const [activePage, setActivePage] = useState(1)
-  const chunks = _.chunk(images, 15)
+  const chunks = _.chunk(croppedAnnotations, 15)
   const items = chunks.map((_, index) => {
     const paginationIndex = index + 1
     return (
@@ -39,35 +44,36 @@ function SignImages({ images }: { images: any }): JSX.Element {
   })
 
   const SignImage = ({
-    base64,
-    fragmentNumber = 'K.19461',
-    description = "3' (NB)",
+    croppedAnnotation,
   }: {
-    base64: string
-    fragmentNumber?: string
-    description?: string
+    croppedAnnotation: CroppedAnnotation
   }) => (
     <Col>
       <Col>
-        <Image src={`data:image/png;base64, ${base64}`} fluid />
+        <Image
+          src={`data:image/png;base64, ${croppedAnnotation.image}`}
+          fluid
+        />
       </Col>
       <Col>
-        <Link to={`/fragmentarium/${fragmentNumber}`}>{fragmentNumber}</Link>
-        &nbsp;{description}
+        <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
+          {croppedAnnotation.fragmentNumber}
+        </Link>
+        {`${croppedAnnotation.label} ${croppedAnnotation.label}`}
       </Col>
     </Col>
   )
-  const Total = ({ chunk }: { chunk: any }) => (
+  const SignImagePage = ({ chunk }: { chunk: CroppedAnnotation[] }) => (
     <Row>
-      {chunk.map((image, index) => (
-        <SignImage key={index} base64={image} />
+      {chunk.map((croppedAnnotation, index) => (
+        <SignImage key={index} croppedAnnotation={croppedAnnotation} />
       ))}
     </Row>
   )
 
   return (
     <Container>
-      <Total chunk={chunks[activePage - 1]} />
+      <SignImagePage chunk={chunks[activePage - 1]} />
       <Row>
         <Col xs={{ offset: 5 }}>
           {' '}
