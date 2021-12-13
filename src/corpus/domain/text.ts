@@ -58,6 +58,14 @@ export class Text implements TextInfo {
   readonly chapters: ReadonlyArray<ChapterListing> = []
   readonly references: ReadonlyArray<Reference> = []
 
+  get id(): TextId {
+    return {
+      genre: this.genre,
+      category: this.category,
+      index: this.index,
+    }
+  }
+
   get title(): string {
     return `${this.category && numberToRoman(this.category)}.${this.index} ${
       this.name

@@ -1,20 +1,25 @@
 import React from 'react'
 import { Crumb } from 'common/Breadcrumbs'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { Text } from 'corpus/domain/text'
+import { Text, TextId } from 'corpus/domain/text'
+import { ChapterDisplay } from 'corpus/domain/chapter'
 
 export default class CorpusTextCrumb implements Crumb {
-  constructor(readonly corpusText: Text) {}
+  constructor(readonly id: TextId, readonly title: string) {}
 
   get text(): React.ReactNode {
-    return <InlineMarkdown source={this.corpusText.title} />
+    return <InlineMarkdown source={this.title} />
   }
 
   get link(): string {
-    return `/corpus/${this.corpusText.genre}/${this.corpusText.category}/${this.corpusText.index}`
+    return `/corpus/${this.id.genre}/${this.id.category}/${this.id.index}`
   }
 
-  static ofText(corpusText: Text): CorpusTextCrumb {
-    return new CorpusTextCrumb(corpusText)
+  static ofText(text: Text): CorpusTextCrumb {
+    return new CorpusTextCrumb(text.id, text.title)
+  }
+
+  static ofChapterDisplay(chapter: ChapterDisplay): CorpusTextCrumb {
+    return new CorpusTextCrumb(chapter.id.textId, chapter.textName)
   }
 }
