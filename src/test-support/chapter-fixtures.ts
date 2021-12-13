@@ -43,5 +43,11 @@ export const lineDisplayFactory = Factory.define<LineDisplay>(() => ({
 export const chapterDisplayFactory = Factory.define<ChapterDisplay>(() => ({
   id: chapterIdFactory.build(),
   textName: defaultChance.sentence(),
+  title: [
+    {
+      text: defaultChance.sentence(),
+      type: 'StringPart',
+    },
+  ],
   lines: lineDisplayFactory.buildList(2),
 }))
