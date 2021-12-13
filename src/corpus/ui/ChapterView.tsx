@@ -28,7 +28,7 @@ function ChapterView({ text, chapter }: Props): JSX.Element {
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
+        CorpusTextCrumb.ofText(text),
         new TextCrumb(`Chapter ${chapter.stage} ${chapter.name}`),
       ]}
       title={

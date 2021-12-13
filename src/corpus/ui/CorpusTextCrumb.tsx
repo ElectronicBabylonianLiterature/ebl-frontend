@@ -13,4 +13,8 @@ export default class CorpusTextCrumb implements Crumb {
   get link(): string {
     return `/corpus/${this.corpusText.genre}/${this.corpusText.category}/${this.corpusText.index}`
   }
+
+  static ofText(corpusText: Text): CorpusTextCrumb {
+    return new CorpusTextCrumb(corpusText)
+  }
 }

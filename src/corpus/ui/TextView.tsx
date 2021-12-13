@@ -28,7 +28,7 @@ function TextView({
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
+        CorpusTextCrumb.ofText(text),
       ]}
     >
       <SessionContext.Consumer>

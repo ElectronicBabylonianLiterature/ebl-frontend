@@ -127,7 +127,7 @@ function ChapterEditView({
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
+        CorpusTextCrumb.ofText(text),
         new TextCrumb(`${chapter.stage} ${chapter.name}`),
       ]}
       title={<EditChapterTitle text={text} chapter={chapter} />}
