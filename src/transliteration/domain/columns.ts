@@ -15,6 +15,10 @@ export function numberOfColumns(columns: readonly TextLineColumn[]): number {
     .sum()
 }
 
+export function maxColumns(lines: readonly TextLineColumn[][]): number {
+  return _(lines).map(numberOfColumns).max() ?? 1
+}
+
 export function containsColumns(tokens: readonly Token[]): boolean {
   return tokens.some(isColumn)
 }

@@ -5,7 +5,12 @@ import {
   span,
 } from 'test-support/lines/text-columns'
 import { lemmatized } from 'test-support/lines/text-lemmatization'
-import { containsColumns, createColumns, numberOfColumns } from './columns'
+import {
+  containsColumns,
+  createColumns,
+  maxColumns,
+  numberOfColumns,
+} from './columns'
 
 test.each([
   [lemmatized[0], false],
@@ -99,4 +104,12 @@ test.each([
   [span, 3],
 ])('numberOfColumns', (line, expected) => {
   expect(numberOfColumns(createColumns(line.content))).toEqual(expected)
+})
+
+test('maxColumns', () => {
+  const columns = [
+    createColumns(emptyFirstColumn.content),
+    createColumns(implicitFirstColumn.content),
+  ]
+  expect(maxColumns(columns)).toEqual(4)
 })
