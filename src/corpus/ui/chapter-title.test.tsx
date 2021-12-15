@@ -26,7 +26,12 @@ test('Shows stage', () => {
       },
     ],
   })
-  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
+  render(
+    <ChapterTitle
+      showStage={text.hasMultipleStages}
+      chapter={text.chapters[0]}
+    />
+  )
   expect(screen.getByText(new RegExp(_.escapeRegExp(stage)))).toBeVisible()
   commonTests(text)
 })
@@ -48,7 +53,12 @@ test('Does not show stage', () => {
       },
     ],
   })
-  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
+  render(
+    <ChapterTitle
+      showStage={text.hasMultipleStages}
+      chapter={text.chapters[0]}
+    />
+  )
 
   expect(
     screen.queryByText(new RegExp(_.escapeRegExp(stage)))
@@ -68,7 +78,12 @@ test('Does not show dummy name', () => {
       },
     ],
   })
-  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
+  render(
+    <ChapterTitle
+      showStage={text.hasMultipleStages}
+      chapter={text.chapters[0]}
+    />
+  )
   expect(screen.queryByText(/-/)).not.toBeInTheDocument()
 })
 
@@ -83,7 +98,12 @@ test('Show dummy name', () => {
       },
     ],
   })
-  render(<ChapterTitle text={text} chapter={text.chapters[0]} />)
+  render(
+    <ChapterTitle
+      showStage={text.hasMultipleStages}
+      chapter={text.chapters[0]}
+    />
+  )
   expect(screen.queryByText(/-/)).toBeVisible()
 })
 

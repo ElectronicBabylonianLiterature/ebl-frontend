@@ -44,7 +44,7 @@ function ChapterView({ text, chapter }: Props): JSX.Element {
           <small>
             Chapter{' '}
             <ChapterTitle
-              text={text}
+              showStage={text.hasMultipleStages}
               chapter={{
                 ...chapter.id,
                 title: chapter.title,
