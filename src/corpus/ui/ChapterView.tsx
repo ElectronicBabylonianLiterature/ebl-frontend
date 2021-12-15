@@ -59,15 +59,27 @@ function ChapterView({ text, chapter }: Props): JSX.Element {
         {chapter.lines.map((line, index) => {
           const emptyColumns = maxColumns_ - numberOfColumns(columns[index])
           return (
-            <tr key={index}>
-              <td>{lineNumberToString(line.number)}</td>
-              <LineColumns columns={columns[index]} maxColumns={maxColumns_} />
-              {emptyColumns > 0 && <td colSpan={emptyColumns} />}
-              <td>{lineNumberToString(line.number)}</td>
-              <td>
-                <Markup parts={line.translation} />
-              </td>
-            </tr>
+            <React.Fragment key={index}>
+              {line.intertext.length > 0 && (
+                <tr>
+                  <td colSpan={maxColumns_ + 3}>
+                    (<Markup container="span" parts={line.intertext} />)
+                  </td>
+                </tr>
+              )}
+              <tr>
+                <td>{lineNumberToString(line.number)}</td>
+                <LineColumns
+                  columns={columns[index]}
+                  maxColumns={maxColumns_}
+                />
+                {emptyColumns > 0 && <td colSpan={emptyColumns} />}
+                <td>{lineNumberToString(line.number)}</td>
+                <td>
+                  <Markup parts={line.translation} />
+                </td>
+              </tr>
+            </React.Fragment>
           )
         })}
       </table>
