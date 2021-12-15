@@ -2,7 +2,7 @@ import React from 'react'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { ChapterId } from 'corpus/application/TextService'
-import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
@@ -15,10 +15,71 @@ import {
   createColumns,
   maxColumns,
   numberOfColumns,
+  TextLineColumn,
 } from 'transliteration/domain/columns'
 
 interface Props {
   chapter: ChapterDisplay
+}
+
+function Title({ chapter }: Props): JSX.Element {
+  return (
+    <>
+      <InlineMarkdown source={chapter.textName} />
+      <br />
+      <small>
+        Chapter{' '}
+        <ChapterTitle
+          showStage={!chapter.isSingleStage}
+          chapter={{
+            ...chapter.id,
+            title: chapter.title,
+            uncertainFragments: [],
+          }}
+        />
+      </small>
+    </>
+  )
+}
+
+function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
+  return (
+    <td className="chapter-display__line-number">
+      {lineNumberToString(line.number)}
+    </td>
+  )
+}
+
+function Line({
+  line,
+  columns,
+  maxColumns,
+}: {
+  line: LineDisplay
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+}): JSX.Element {
+  const emptyColumns = maxColumns - numberOfColumns(columns)
+  return (
+    <>
+      {line.intertext.length > 0 && (
+        <tr className="chapter-display__intertext">
+          <td colSpan={maxColumns + 3}>
+            (<Markup container="span" parts={line.intertext} />)
+          </td>
+        </tr>
+      )}
+      <tr>
+        <LineNumber line={line} />
+        <LineColumns columns={columns} maxColumns={maxColumns} />
+        {emptyColumns > 0 && <td colSpan={emptyColumns} />}
+        <LineNumber line={line} />
+        <td className="chapter-display__translation">
+          <Markup parts={line.translation} />
+        </td>
+      </tr>
+    </>
+  )
 }
 
 function ChapterView({ chapter }: Props): JSX.Element {
@@ -34,51 +95,17 @@ function ChapterView({ chapter }: Props): JSX.Element {
         CorpusTextCrumb.ofChapterDisplay(chapter),
         new TextCrumb(`Chapter ${chapter.id.stage} ${chapter.id.name}`),
       ]}
-      title={
-        <>
-          <InlineMarkdown source={chapter.textName} />
-          <br />
-          <small>
-            Chapter{' '}
-            <ChapterTitle
-              showStage={!chapter.isSingleStage}
-              chapter={{
-                ...chapter.id,
-                title: chapter.title,
-                uncertainFragments: [],
-              }}
-            />
-          </small>
-        </>
-      }
+      title={<Title chapter={chapter} />}
     >
-      <table>
-        {chapter.lines.map((line, index) => {
-          const emptyColumns = maxColumns_ - numberOfColumns(columns[index])
-          return (
-            <React.Fragment key={index}>
-              {line.intertext.length > 0 && (
-                <tr>
-                  <td colSpan={maxColumns_ + 3}>
-                    (<Markup container="span" parts={line.intertext} />)
-                  </td>
-                </tr>
-              )}
-              <tr>
-                <td>{lineNumberToString(line.number)}</td>
-                <LineColumns
-                  columns={columns[index]}
-                  maxColumns={maxColumns_}
-                />
-                {emptyColumns > 0 && <td colSpan={emptyColumns} />}
-                <td>{lineNumberToString(line.number)}</td>
-                <td>
-                  <Markup parts={line.translation} />
-                </td>
-              </tr>
-            </React.Fragment>
-          )
-        })}
+      <table className="chapter-display">
+        {chapter.lines.map((line, index) => (
+          <Line
+            key={index}
+            line={line}
+            columns={columns[index]}
+            maxColumns={maxColumns_}
+          />
+        ))}
       </table>
     </AppContent>
   )
