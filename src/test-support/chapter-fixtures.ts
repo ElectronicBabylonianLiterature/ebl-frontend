@@ -31,6 +31,12 @@ export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
 
 export const lineDisplayFactory = Factory.define<LineDisplay>(() => ({
   number: lineNumberFactory.build(),
+  intertext: [
+    {
+      text: defaultChance.sentence(),
+      type: 'StringPart',
+    },
+  ],
   reconstruction: _.cloneDeep(reconstructionTokens),
   translation: [
     {

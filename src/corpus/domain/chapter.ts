@@ -50,6 +50,7 @@ export class Chapter {
 
 export interface LineDisplay {
   readonly number: LineNumber
+  readonly intertext: ReadonlyArray<MarkupPart>
   readonly reconstruction: ReadonlyArray<Token>
   readonly translation: ReadonlyArray<MarkupPart>
 }
