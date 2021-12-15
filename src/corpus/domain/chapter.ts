@@ -58,6 +58,7 @@ export interface LineDisplay {
 export interface ChapterDisplay {
   readonly id: ChapterId
   readonly textName: string
+  readonly isSingleStage: boolean
   readonly title: ReadonlyArray<MarkupPart>
   readonly lines: ReadonlyArray<LineDisplay>
 }

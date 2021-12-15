@@ -1,5 +1,4 @@
 import React from 'react'
-import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { ChapterId } from 'corpus/application/TextService'
@@ -11,7 +10,6 @@ import { ChapterTitle } from './chapter-title'
 import InlineMarkdown from 'common/InlineMarkdown'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import { Text } from 'corpus/domain/text'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   createColumns,
@@ -20,11 +18,10 @@ import {
 } from 'transliteration/domain/columns'
 
 interface Props {
-  text: Text
   chapter: ChapterDisplay
 }
 
-function ChapterView({ text, chapter }: Props): JSX.Element {
+function ChapterView({ chapter }: Props): JSX.Element {
   const columns = chapter.lines.map((line) =>
     createColumns(line.reconstruction)
   )
@@ -44,7 +41,7 @@ function ChapterView({ text, chapter }: Props): JSX.Element {
           <small>
             Chapter{' '}
             <ChapterTitle
-              showStage={text.hasMultipleStages}
+              showStage={!chapter.isSingleStage}
               chapter={{
                 ...chapter.id,
                 title: chapter.title,
@@ -92,16 +89,10 @@ export default withData<
     textService
   },
   { id: ChapterId },
-  [Text, ChapterDisplay]
+  ChapterDisplay
 >(
-  ({ data: [text, chapter], ...props }) => (
-    <ChapterView text={text} chapter={chapter} {...props} />
-  ),
-  ({ id, textService }) =>
-    Promise.all([
-      textService.find(id.genre, id.category, id.index),
-      textService.findChapterDisplay(id),
-    ]),
+  ({ data, ...props }) => <ChapterView chapter={data} {...props} />,
+  ({ id, textService }) => textService.findChapterDisplay(id),
   {
     watch: (props) => [props.id],
   }
