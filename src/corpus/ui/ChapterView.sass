@@ -11,3 +11,12 @@
         color: #808080
         font-size: 80%
         padding: 1em 0 
+
+    &__line
+        &--is-second-line-of-parallelism
+            .chapter-display__line-number + td
+                padding-left: 0.75em
+
+        &--is-beginning-of-section
+            td
+                padding-top: 1em

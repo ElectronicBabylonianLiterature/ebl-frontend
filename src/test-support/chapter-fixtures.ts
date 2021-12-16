@@ -31,6 +31,8 @@ export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
 
 export const lineDisplayFactory = Factory.define<LineDisplay>(() => ({
   number: lineNumberFactory.build(),
+  isSecondLineOfParallelism: defaultChance.bool(),
+  isBeginningOfSection: defaultChance.bool(),
   intertext: [
     {
       text: defaultChance.sentence(),

@@ -58,6 +58,8 @@ export class Chapter {
 
 export interface LineDisplay {
   readonly number: LineNumber
+  readonly isSecondLineOfParallelism: boolean
+  readonly isBeginningOfSection: boolean
   readonly intertext: ReadonlyArray<MarkupPart>
   readonly reconstruction: ReadonlyArray<Token>
   readonly translation: ReadonlyArray<MarkupPart>

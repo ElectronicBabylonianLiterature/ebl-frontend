@@ -20,6 +20,7 @@ import {
 import './ChapterView.sass'
 import { Button } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
+import classNames from 'classnames'
 
 interface Props {
   chapter: ChapterDisplay
@@ -98,7 +99,15 @@ function Line({
   return (
     <>
       <InterText line={line} colSpan={maxColumns + 3} />
-      <tr>
+      <tr
+        className={classNames({
+          'chapter-display__line': true,
+          'chapter-display__line--is-second-line-of-parallelism':
+            line.isSecondLineOfParallelism,
+          'chapter-display__line--is-beginning-of-section':
+            line.isBeginningOfSection,
+        })}
+      >
         <LineNumber line={line} />
         <LineColumns columns={columns} maxColumns={maxColumns} />
         <Translation line={line} />
