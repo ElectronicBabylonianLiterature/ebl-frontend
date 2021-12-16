@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import AppContent from 'common/AppContent'
+import { LinkContainer } from 'react-router-bootstrap'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { ChapterId } from 'corpus/application/TextService'
 import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
@@ -18,6 +19,8 @@ import {
 } from 'transliteration/domain/columns'
 
 import './ChapterView.sass'
+import { Button } from 'react-bootstrap'
+import SessionContext from 'auth/SessionContext'
 
 interface Props {
   chapter: ChapterDisplay
@@ -105,6 +108,33 @@ function Line({
   )
 }
 
+function EditChapterButton({
+  chapter,
+}: {
+  chapter: ChapterDisplay
+}): JSX.Element {
+  const session = useContext(SessionContext)
+  return (
+    <LinkContainer
+      to={`/corpus/${encodeURIComponent(
+        chapter.id.textId.genre
+      )}/${encodeURIComponent(chapter.id.textId.category)}/${encodeURIComponent(
+        chapter.id.textId.index
+      )}/${encodeURIComponent(chapter.id.stage)}/${encodeURIComponent(
+        chapter.id.name
+      )}/edit`}
+    >
+      <Button
+        variant="outline-primary"
+        aria-label="Edit chapter"
+        disabled={!session.isAllowedToWriteTexts()}
+      >
+        <i className="fas fa-edit"></i>
+      </Button>
+    </LinkContainer>
+  )
+}
+
 function ChapterView({ chapter }: Props): JSX.Element {
   const columns = chapter.lines.map((line) =>
     createColumns(line.reconstruction)
@@ -119,6 +149,7 @@ function ChapterView({ chapter }: Props): JSX.Element {
         new TextCrumb(`Chapter ${chapter.id.stage} ${chapter.id.name}`),
       ]}
       title={<Title chapter={chapter} />}
+      actions={<EditChapterButton chapter={chapter} />}
     >
       <table className="chapter-display">
         {chapter.lines.map((line, index) => (
