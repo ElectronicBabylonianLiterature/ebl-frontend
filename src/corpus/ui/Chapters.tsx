@@ -1,8 +1,7 @@
 import React, { ReactNode, useState } from 'react'
 import _ from 'lodash'
-import { Text, UncertainFragment } from 'corpus/domain/text'
+import { createChapterId, Text, UncertainFragment } from 'corpus/domain/text'
 import withData from 'http/withData'
-import { ChapterId } from 'corpus/application/TextService'
 import { compareManuscripts, Manuscript } from 'corpus/domain/manuscript'
 import Citation from 'bibliography/ui/Citation'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
@@ -18,6 +17,7 @@ import { ChapterTitleLink } from './chapter-title'
 import { groupReferences } from 'bibliography/domain/Reference'
 
 import './Chapters.sass'
+import { ChapterId } from 'corpus/domain/chapter'
 
 function ProvenanceHeading({
   id,
@@ -240,7 +240,7 @@ export default function Chapters({
           </h4>
           <CollapsibleSection element="h5" heading="List of Manuscripts">
             <Manuscripts
-              id={ChapterId.fromText(text, chapter)}
+              id={createChapterId(text, chapter)}
               textService={textService}
               uncertainFragments={chapter.uncertainFragments}
             />

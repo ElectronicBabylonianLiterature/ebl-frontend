@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { ChapterId } from 'corpus/application/TextService'
+import { ChapterId } from 'corpus/domain/chapter'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
@@ -151,8 +151,8 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${id.genre}/${id.category}/${
-          id.index
+        path: `/texts/${id.textId.genre}/${id.textId.category}/${
+          id.textId.index
         }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
           id.name
         )}/manuscripts`,
@@ -167,8 +167,8 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${id.genre}/${id.category}/${
-          id.index
+        path: `/texts/${id.textId.genre}/${id.textId.category}/${
+          id.textId.index
         }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
           id.name
         )}/extant_lines`,

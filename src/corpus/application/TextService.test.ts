@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird'
 import _ from 'lodash'
 import { testDelegation, TestData } from 'test-support/utils'
-import TextService, { ChapterId } from './TextService'
+import TextService from './TextService'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Lemma from 'transliteration/domain/Lemma'
 import {
@@ -202,7 +202,7 @@ const extantLines: ExtantLines = {
 
 const chapterDisplay: ChapterDisplay = chapterDisplayFactory.build()
 
-const chapterId = ChapterId.fromChapter(chapter)
+const chapterId = chapter.id
 const chapterUrl = `/texts/${encodeURIComponent(
   chapter.textId.genre
 )}/${encodeURIComponent(chapter.textId.category)}/${encodeURIComponent(
@@ -214,7 +214,7 @@ const chapterUrl = `/texts/${encodeURIComponent(
 const testData: TestData[] = [
   [
     'find',
-    [text.genre, text.category, text.index],
+    [text.id],
     apiClient.fetchJson,
     text,
     [

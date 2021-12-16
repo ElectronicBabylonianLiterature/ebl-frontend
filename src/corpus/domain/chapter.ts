@@ -28,6 +28,14 @@ export class Chapter {
     readonly lines: ReadonlyArray<Line>
   ) {}
 
+  get id(): ChapterId {
+    return {
+      textId: this.textId,
+      stage: this.stage,
+      name: this.name,
+    }
+  }
+
   get alignment(): ChapterAlignment {
     return new ChapterAlignment(
       this.lines.map((line) =>

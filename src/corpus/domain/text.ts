@@ -3,7 +3,7 @@ import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
 import { numberToRoman } from 'big-roman'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { Chapter } from './chapter'
+import { Chapter, ChapterId } from './chapter'
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
@@ -74,6 +74,17 @@ export class Text implements TextInfo {
 
   get hasMultipleStages(): boolean {
     return _(this.chapters).map('stage').uniq().size() > 1
+  }
+}
+
+export function createChapterId(
+  text: Text,
+  chapter: Pick<ChapterListing, 'stage' | 'name'>
+): ChapterId {
+  return {
+    textId: text.id,
+    stage: chapter.stage,
+    name: chapter.name,
   }
 }
 

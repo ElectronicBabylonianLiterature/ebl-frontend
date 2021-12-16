@@ -8,12 +8,12 @@ import ChapterEditor from './ChapterEditor'
 import ChapterNavigation from './ChapterNavigation'
 import usePromiseEffect from 'common/usePromiseEffect'
 import { Text } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
+import { Chapter, ChapterId } from 'corpus/domain/chapter'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import Promise from 'bluebird'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 import { BibliographySearch } from 'bibliography/application/BibliographyService'
-import TextService, { ChapterId } from 'corpus/application/TextService'
+import TextService from 'corpus/application/TextService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import WordService from 'dictionary/application/WordService'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
@@ -80,15 +80,13 @@ function ChapterEditView({
   }
 
   const updateAlignment = (alignment: ChapterAlignment): void => {
-    update(() =>
-      textService.updateAlignment(ChapterId.fromChapter(chapter), alignment)
-    )
+    update(() => textService.updateAlignment(chapter.id, alignment))
   }
 
   const updateManuscripts = (): void => {
     update(() =>
       textService.updateManuscripts(
-        ChapterId.fromChapter(chapter),
+        chapter.id,
         currentChapter.manuscripts,
         currentChapter.uncertainFragments
       )
@@ -96,25 +94,15 @@ function ChapterEditView({
   }
 
   const updateLines = (): void => {
-    update(() =>
-      textService.updateLines(
-        ChapterId.fromChapter(chapter),
-        currentChapter.lines
-      )
-    )
+    update(() => textService.updateLines(chapter.id, currentChapter.lines))
   }
 
   const updateLemmatization = (lemmatization: ChapterLemmatization): void => {
-    update(() =>
-      textService.updateLemmatization(
-        ChapterId.fromChapter(chapter),
-        lemmatization
-      )
-    )
+    update(() => textService.updateLemmatization(chapter.id, lemmatization))
   }
 
   const importChapter = (atf: string): void => {
-    update(() => textService.importChapter(ChapterId.fromChapter(chapter), atf))
+    update(() => textService.importChapter(chapter.id, atf))
   }
 
   const handleChange = (chapter: Chapter): void => {
@@ -129,6 +117,7 @@ function ChapterEditView({
         new GenreCrumb(text.genre),
         CorpusTextCrumb.ofText(text),
         new TextCrumb(`${chapter.stage} ${chapter.name}`),
+        new TextCrumb('Edit'),
       ]}
       title={<EditChapterTitle text={text} chapter={chapter} />}
     >
@@ -171,10 +160,7 @@ export default withData<
     <ChapterEditView text={text} chapter={chapter} {...props} />
   ),
   ({ id, textService }) =>
-    Promise.all([
-      textService.find(id.genre, id.category, id.index),
-      textService.findChapter(id),
-    ]),
+    Promise.all([textService.find(id.textId), textService.findChapter(id)]),
   {
     watch: (props) => [props.id],
   }
