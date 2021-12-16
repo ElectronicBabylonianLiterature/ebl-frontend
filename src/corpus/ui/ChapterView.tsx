@@ -14,9 +14,10 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   createColumns,
   maxColumns,
-  numberOfColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
+
+import './ChapterView.sass'
 
 interface Props {
   chapter: ChapterDisplay
@@ -42,11 +43,44 @@ function Title({ chapter }: Props): JSX.Element {
   )
 }
 
+function InterText({
+  line,
+  colSpan,
+}: {
+  line: LineDisplay
+  colSpan: number
+}): JSX.Element {
+  return (
+    <>
+      {line.intertext.length > 0 && (
+        <tr>
+          <td colSpan={colSpan} className="chapter-display__intertext">
+            (<Markup container="span" parts={line.intertext} />)
+          </td>
+        </tr>
+      )}
+    </>
+  )
+}
+
 function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
   return (
     <td className="chapter-display__line-number">
       {lineNumberToString(line.number)}
     </td>
+  )
+}
+
+function Translation({ line }: { line: LineDisplay }): JSX.Element {
+  return line.translation.length > 0 ? (
+    <>
+      <LineNumber line={line} />
+      <td className="chapter-display__translation">
+        <Markup parts={line.translation} />
+      </td>
+    </>
+  ) : (
+    <td colSpan={2} />
   )
 }
 
@@ -59,24 +93,13 @@ function Line({
   columns: readonly TextLineColumn[]
   maxColumns: number
 }): JSX.Element {
-  const emptyColumns = maxColumns - numberOfColumns(columns)
   return (
     <>
-      {line.intertext.length > 0 && (
-        <tr className="chapter-display__intertext">
-          <td colSpan={maxColumns + 3}>
-            (<Markup container="span" parts={line.intertext} />)
-          </td>
-        </tr>
-      )}
+      <InterText line={line} colSpan={maxColumns + 3} />
       <tr>
         <LineNumber line={line} />
         <LineColumns columns={columns} maxColumns={maxColumns} />
-        {emptyColumns > 0 && <td colSpan={emptyColumns} />}
-        <LineNumber line={line} />
-        <td className="chapter-display__translation">
-          <Markup parts={line.translation} />
-        </td>
+        <Translation line={line} />
       </tr>
     </>
   )
