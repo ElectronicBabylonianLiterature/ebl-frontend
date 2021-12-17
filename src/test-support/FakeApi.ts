@@ -147,6 +147,23 @@ export default class FakeApi {
     return this
   }
 
+  expectChapterDisplay(chapter): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `/texts/${chapter.id.textId.genre}/${
+          chapter.id.textId.category
+        }/${chapter.id.textId.index}/chapters/${encodeURIComponent(
+          chapter.id.stage
+        )}/${encodeURIComponent(chapter.id.name)}/display`,
+        authenticate: true,
+        response: chapter,
+        verify: true,
+      })
+    )
+    return this
+  }
+
   expectManuscripts(id: ChapterId, manuscriptsDto: Dto[]): FakeApi {
     this.expectations.push(
       new Expectation({

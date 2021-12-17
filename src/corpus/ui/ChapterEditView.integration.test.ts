@@ -6,7 +6,7 @@ import FakeApi from 'test-support/FakeApi'
 import { produce } from 'immer'
 import { manuscriptDtoFactory } from 'test-support/manuscript-fixtures'
 
-const chance = new Chance('chapter-view-integration-test')
+const chance = new Chance('chapter-edit-view-integration-test')
 
 const genre = 'L'
 const category = 1

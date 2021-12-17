@@ -25,6 +25,10 @@ export interface TextId {
   readonly index: number
 }
 
+export function textIdToString(id: TextId): string {
+  return `${id.category && numberToRoman(id.category)}.${id.index}`
+}
+
 export interface TextInfo {
   readonly genre: string
   readonly category: number
@@ -64,12 +68,6 @@ export class Text implements TextInfo {
       category: this.category,
       index: this.index,
     }
-  }
-
-  get title(): string {
-    return `${this.category && numberToRoman(this.category)}.${this.index} ${
-      this.name
-    }`
   }
 
   get hasMultipleStages(): boolean {
