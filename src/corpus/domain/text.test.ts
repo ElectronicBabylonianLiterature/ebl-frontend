@@ -12,7 +12,8 @@ import {
 } from './line'
 import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
-import { Chapter, createChapter, createText, Text } from './text'
+import { createChapter, createText, Text, textIdToString } from './text'
+import { Chapter } from './chapter'
 import { Manuscript, ManuscriptTypes } from './manuscript'
 import { manuscriptFactory } from 'test-support/manuscript-fixtures'
 
@@ -149,11 +150,22 @@ const textConfig: Partial<Text> = {
   references: [new Reference()],
 }
 
+test.each([
+  [{ genre: 'L', category: 0, index: 2 }, '0.2'],
+  [{ genre: 'D', category: 1, index: 0 }, 'I.0'],
+])('textIdtoString', (id, expected) => {
+  expect(textIdToString(id)).toEqual(expected)
+})
+
 describe('Text', () => {
   testProperties(textConfig, createText)
 
-  test('title', () => {
-    expect(createText(textConfig).title).toEqual('I.1 Palm and Vine')
+  test('id', () => {
+    expect(createText(textConfig).id).toEqual({
+      genre: textConfig.genre,
+      category: textConfig.category,
+      index: textConfig.index,
+    })
   })
 
   test.each([

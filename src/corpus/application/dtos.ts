@@ -13,12 +13,12 @@ import {
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import {
-  Chapter,
   ChapterListing,
   createChapter,
   createText,
   Text,
 } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import createReference from 'bibliography/application/createReference'
 import { createTransliteration } from 'transliteration/application/dtos'

@@ -15,7 +15,7 @@ import FragmentariumSearch from 'fragmentarium/ui/search/FragmentariumSearch'
 import BibliographyEditor from 'bibliography/ui/BibliographyEditor'
 import Bibliography from 'bibliography/ui/Bibliography'
 import Corpus from 'corpus/ui/Corpus'
-import ChapterView from 'corpus/ui/ChapterView'
+import ChapterEditView from 'corpus/ui/ChapterEditView'
 import TextView from 'corpus/ui/TextView'
 import { Location } from 'history'
 
@@ -25,12 +25,15 @@ import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import BibliographyService from 'bibliography/application/BibliographyService'
-import TextService, { ChapterId } from 'corpus/application/TextService'
+import TextService from 'corpus/application/TextService'
 import WordDisplay from 'dictionary/ui/display/WordDisplay'
 import Signs from 'signs/ui/search/Signs'
 import SignDisplay from 'signs/ui/display/SignDisplay'
 import SignService from 'signs/application/SignService'
 import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
+import ChapterView from 'corpus/ui/ChapterView'
+import { ChapterId } from 'corpus/domain/chapter'
+import { TextId } from 'corpus/domain/text'
 
 function parseStringParam(
   location: Location,
@@ -40,29 +43,20 @@ function parseStringParam(
   return _.isArray(value) ? value.join('') : value
 }
 
-interface TextParams {
-  genre: string
-  category: string
-  index: string
-}
-
-function parseTextParams(params): TextParams {
+function parseTextId(params): TextId {
   return {
     genre: decodeURIComponent(params.genre),
-    category: decodeURIComponent(params.category),
-    index: decodeURIComponent(params.index),
+    category: parseInt(decodeURIComponent(params.category)),
+    index: parseInt(decodeURIComponent(params.index)),
   }
 }
 
 function parseChapterId(params): ChapterId {
-  const textId = parseTextParams(params)
-  return new ChapterId(
-    textId.genre,
-    textId.category,
-    textId.index,
-    decodeURIComponent(params.stage),
-    decodeURIComponent(params.chapter)
-  )
+  return {
+    textId: parseTextId(params),
+    stage: decodeURIComponent(params.stage),
+    name: decodeURIComponent(params.chapter),
+  }
 }
 
 function parseFragmentSearchParams(
@@ -188,9 +182,9 @@ function App({
             )}
           />
           <Route
-            path="/corpus/:genre/:category/:index/:stage/:chapter"
+            path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
             render={({ match }): ReactNode => (
-              <ChapterView
+              <ChapterEditView
                 textService={textService}
                 bibliographyService={bibliographyService}
                 fragmentService={fragmentService}
@@ -200,11 +194,20 @@ function App({
             )}
           />
           <Route
+            path="/corpus/:genre/:category/:index/:stage/:chapter"
+            render={({ match }): ReactNode => (
+              <ChapterView
+                textService={textService}
+                id={parseChapterId(match.params)}
+              />
+            )}
+          />
+          <Route
             path="/corpus/:genre/:category/:index"
             render={({ match }): ReactNode => (
               <TextView
                 textService={textService}
-                {...parseTextParams(match.params)}
+                id={parseTextId(match.params)}
               />
             )}
           />

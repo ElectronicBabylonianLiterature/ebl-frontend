@@ -1,0 +1,22 @@
+.chapter-display
+    width: 100%
+
+    &__line-number
+        padding-right: 1em
+
+        & ~ &
+            padding-left: 2em
+            
+    &__intertext
+        color: #808080
+        font-size: 80%
+        padding: 1em 0 
+
+    &__line
+        &--is-second-line-of-parallelism
+            .chapter-display__line-number + td
+                padding-left: 0.75em
+
+        &--is-beginning-of-section
+            td
+                padding-top: 1em

@@ -11,7 +11,7 @@ import { createChapter, createText } from 'corpus/domain/text'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { Token } from 'transliteration/domain/token'
 
-const reconstructionTokens: Token[] = [
+export const reconstructionTokens: Token[] = [
   {
     value: '%n',
     cleanValue: '%n',
