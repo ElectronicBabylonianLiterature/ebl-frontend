@@ -93,7 +93,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${text.genre}/${text.category}/${text.index}`,
+        path: createTextUrl(text),
         authenticate: true,
         response: text,
       })
@@ -105,11 +105,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
-          chapter.textId.index
-        }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-          chapter.name
-        )}`,
+        path: `${createChapterUrl(chapter)}`,
         authenticate: true,
         response: chapter,
       })
@@ -121,7 +117,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${text.genre}/${text.category}/${text.index}`,
+        path: createTextUrl(text),
         authenticate: true,
         response: text,
         verify: true,
@@ -134,11 +130,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
-          chapter.textId.index
-        }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-          chapter.name
-        )}`,
+        path: `${createChapterUrl(chapter)}`,
         authenticate: true,
         response: chapter,
         verify: true,
@@ -151,11 +143,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${chapter.id.textId.genre}/${
-          chapter.id.textId.category
-        }/${chapter.id.textId.index}/chapters/${encodeURIComponent(
-          chapter.id.stage
-        )}/${encodeURIComponent(chapter.id.name)}/display`,
+        path: `${createChapterUrl(chapter.id)}/display`,
         authenticate: true,
         response: chapter,
         verify: true,
@@ -168,11 +156,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${id.textId.genre}/${id.textId.category}/${
-          id.textId.index
-        }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
-          id.name
-        )}/manuscripts`,
+        path: `${createChapterUrl(id)}/manuscripts`,
         response: manuscriptsDto,
         verify: true,
       })
@@ -184,11 +168,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
-        path: `/texts/${id.textId.genre}/${id.textId.category}/${
-          id.textId.index
-        }/chapters/${encodeURIComponent(id.stage)}/${encodeURIComponent(
-          id.name
-        )}/extant_lines`,
+        path: `${createChapterUrl(id)}/extant_lines`,
         response: extantLines,
         verify: true,
       })
@@ -200,11 +180,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
-          chapter.textId.index
-        }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-          chapter.name
-        )}/manuscripts`,
+        path: `${createChapterUrl(chapter)}/manuscripts`,
         response: chapter,
         verify: true,
         body: manuscripts,
@@ -217,11 +193,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
-          chapter.textId.index
-        }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-          chapter.name
-        )}/lines`,
+        path: `${createChapterUrl(chapter)}/lines`,
         response: chapter,
         verify: true,
         body: lines,
@@ -234,11 +206,7 @@ export default class FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'POST',
-        path: `/texts/${chapter.textId.genre}/${chapter.textId.category}/${
-          chapter.textId.index
-        }/chapters/${encodeURIComponent(chapter.stage)}/${encodeURIComponent(
-          chapter.name
-        )}/import`,
+        path: `${createChapterUrl(chapter)}/import`,
         response: chapter,
         verify: true,
         body: { atf },
@@ -390,4 +358,13 @@ export default class FakeApi {
       .filter((expectation) => expectation.verify)
       .forEach((expectation) => methods[expectation.method](expectation))
   }
+}
+function createTextUrl(id): string {
+  return `/texts/${id.genre}/${id.category}/${id.index}`
+}
+
+function createChapterUrl(id): string {
+  return `${createTextUrl(id.textId)}/chapters/${encodeURIComponent(
+    id.stage
+  )}/${encodeURIComponent(id.name)}`
 }
