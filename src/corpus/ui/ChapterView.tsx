@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
-import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
+import { SectionCrumb } from 'common/Breadcrumbs'
 import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
@@ -21,6 +21,7 @@ import './ChapterView.sass'
 import { Button } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import classNames from 'classnames'
+import ChapterCrumb from './ChapterCrumb'
 
 interface Props {
   chapter: ChapterDisplay
@@ -134,10 +135,9 @@ function EditChapterButton({
     >
       <Button
         variant="outline-primary"
-        aria-label="Edit chapter"
         disabled={!session.isAllowedToWriteTexts()}
       >
-        <i className="fas fa-edit"></i>
+        <i className="fas fa-edit"></i> Edit
       </Button>
     </LinkContainer>
   )
@@ -154,7 +154,7 @@ function ChapterView({ chapter }: Props): JSX.Element {
         new SectionCrumb('Corpus'),
         new GenreCrumb(chapter.id.textId.genre),
         CorpusTextCrumb.ofChapterDisplay(chapter),
-        new TextCrumb(`Chapter ${chapter.id.stage} ${chapter.id.name}`),
+        new ChapterCrumb(chapter.id),
       ]}
       title={<Title chapter={chapter} />}
       actions={<EditChapterButton chapter={chapter} />}

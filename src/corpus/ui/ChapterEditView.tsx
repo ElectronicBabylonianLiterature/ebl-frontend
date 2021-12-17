@@ -20,6 +20,7 @@ import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import { ChapterAlignment } from 'corpus/domain/alignment'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
+import ChapterCrumb from './ChapterCrumb'
 
 function EditChapterTitle({
   text,
@@ -116,7 +117,7 @@ function ChapterEditView({
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
         CorpusTextCrumb.ofText(text),
-        new TextCrumb(`${chapter.stage} ${chapter.name}`),
+        new ChapterCrumb(chapter.id),
         new TextCrumb('Edit'),
       ]}
       title={<EditChapterTitle text={text} chapter={chapter} />}

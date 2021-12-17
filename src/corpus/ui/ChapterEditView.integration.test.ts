@@ -190,7 +190,8 @@ describe('Diplay chapter', () => {
       'eBL',
       'Corpus',
       `I.1 ${textName}`,
-      `${chapter.stage} ${chapter.name}`,
+      `Chapter ${chapter.stage} ${chapter.name}`,
+      'Edit',
     ])
   })
 
