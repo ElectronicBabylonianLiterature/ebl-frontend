@@ -50,16 +50,13 @@ function SignImages({
   }) => (
     <Col>
       <Col>
-        <Image
-          src={`data:image/png;base64, ${croppedAnnotation.image}`}
-          fluid
-        />
+        <Image src={`data:image/png;base64, ${croppedAnnotation.image}`} />
       </Col>
       <Col>
         <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
           {croppedAnnotation.fragmentNumber}
         </Link>
-        {`${croppedAnnotation.label} ${croppedAnnotation.label}`}
+        &nbsp;{croppedAnnotation.label}
       </Col>
     </Col>
   )

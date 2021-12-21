@@ -7,30 +7,35 @@ import {
 import SignService from 'signs/application/SignService'
 import Bluebird from 'bluebird'
 import SignImages from 'signs/ui/display/SignImages'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('signs/application/SignService')
 
 const signService = new (SignService as jest.Mock<jest.Mocked<SignService>>)()
 const signName = 'signName'
-const image =
+const imageString =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII='
 const croppedAnnotations = [
   {
     fragmentNumber: 'K.6400',
-    image: image,
+    image: imageString,
     script: 'script-1',
     label: 'label-1',
   },
   {
     fragmentNumber: 'K.6401',
-    image: image,
+    image: imageString,
     script: 'script-2',
     label: 'label-2',
   },
 ]
 
 function renderSignImages() {
-  render(<SignImages signName={signName} signService={signService} />)
+  render(
+    <MemoryRouter>
+      <SignImages signName={signName} signService={signService} />
+    </MemoryRouter>
+  )
 }
 
 describe('Sign Images', () => {
