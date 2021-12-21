@@ -29,7 +29,7 @@ function SignImages({
   croppedAnnotations: CroppedAnnotation[]
 }): JSX.Element {
   const [activePage, setActivePage] = useState(1)
-  const chunks = _.chunk(croppedAnnotations, 15)
+  const chunks = _.chunk(croppedAnnotations, 13)
   const items = chunks.map((_, index) => {
     const paginationIndex = index + 1
     return (
@@ -50,13 +50,18 @@ function SignImages({
   }) => (
     <Col>
       <Col>
-        <Image src={`data:image/png;base64, ${croppedAnnotation.image}`} />
+        <Image
+          style={{ minWidth: '80px', maxHeight: '100px' }}
+          src={`data:image/png;base64, ${croppedAnnotation.image}`}
+        />
       </Col>
       <Col>
         <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
           {croppedAnnotation.fragmentNumber}
         </Link>
-        &nbsp;{croppedAnnotation.label}
+        <div>
+          {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
+        </div>
       </Col>
     </Col>
   )
