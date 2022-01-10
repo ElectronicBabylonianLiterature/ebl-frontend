@@ -73,7 +73,7 @@ export const akkadianWords: TextLine = new TextLine({
           type: 'Emendation',
         },
       ],
-      modifiers: [],
+      modifiers: ['!'],
       type: 'AkkadianWord',
     },
     {
@@ -150,7 +150,7 @@ export const akkadianWords: TextLine = new TextLine({
           type: 'BrokenAway',
         },
       ],
-      modifiers: [],
+      modifiers: ['?'],
       type: 'AkkadianWord',
     },
     {

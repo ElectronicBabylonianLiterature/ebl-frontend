@@ -2,6 +2,7 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
+  AkkadianWord,
   effectiveEnclosure,
   EgyptianMetricalFeetSeparator,
   EnclosureType,
@@ -230,8 +231,22 @@ function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
+function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  const word = token as AkkadianWord
+  return (
+    <EnclosureFlags token={word}>
+      {word.parts.map((token, index) => (
+        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+      ))}
+      <Wrapper>
+        <sup>{word.modifiers.join('')}</sup>
+      </Wrapper>
+    </EnclosureFlags>
+  )
+}
+
 const tokens: ReadonlyMap<
-  string,
+  Token['type'],
   FunctionComponent<{
     token: Token
     Wrapper: TokenWrapper
@@ -253,6 +268,7 @@ const tokens: ReadonlyMap<
   ['Tabulation', TabulationComponent],
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
+  ['AkkadianWord', AkkadianWordComponent],
 ])
 
 export default function DisplayToken({

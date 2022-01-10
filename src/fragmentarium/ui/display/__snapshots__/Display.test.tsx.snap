@@ -5453,6 +5453,7 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
+                <sup />
               </span>
             </span>
             <span
@@ -5493,6 +5494,9 @@ exports[`Snapshot 1`] = `
                     &gt;
                   </span>
                 </span>
+                <sup>
+                  !
+                </sup>
               </span>
             </span>
             <span
@@ -5574,6 +5578,9 @@ exports[`Snapshot 1`] = `
                     ]
                   </span>
                 </span>
+                <sup>
+                  ?
+                </sup>
               </span>
             </span>
             <span
@@ -5614,6 +5621,7 @@ exports[`Snapshot 1`] = `
                     )
                   </span>
                 </span>
+                <sup />
               </span>
             </span>
             <span
@@ -5659,6 +5667,7 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
+                <sup />
               </span>
             </span>
           </td>
