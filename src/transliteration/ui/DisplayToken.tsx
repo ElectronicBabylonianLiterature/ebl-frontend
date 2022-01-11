@@ -2,6 +2,7 @@ import React, { FunctionComponent, PropsWithChildren } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import {
+  AkkadianWord,
   effectiveEnclosure,
   EgyptianMetricalFeetSeparator,
   EnclosureType,
@@ -13,7 +14,7 @@ import {
   UnknownSign,
   Variant,
 } from 'transliteration/domain/token'
-import addAccents from './addAccents'
+import { addAccents, addBreves } from 'transliteration/domain/accents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
@@ -230,8 +231,27 @@ function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
+function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  const word = addBreves(token as AkkadianWord)
+  const lastParts = _.takeRightWhile(word.parts, isEnclosure)
+  const parts = _.dropRight(word.parts, lastParts.length)
+  return (
+    <EnclosureFlags token={word}>
+      {parts.map((token, index) => (
+        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+      ))}
+      <Wrapper>
+        <sup>{word.modifiers.join('')}</sup>
+      </Wrapper>
+      {lastParts.map((token, index) => (
+        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+      ))}
+    </EnclosureFlags>
+  )
+}
+
 const tokens: ReadonlyMap<
-  string,
+  Token['type'],
   FunctionComponent<{
     token: Token
     Wrapper: TokenWrapper
@@ -253,6 +273,7 @@ const tokens: ReadonlyMap<
   ['Tabulation', TabulationComponent],
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
+  ['AkkadianWord', AkkadianWordComponent],
 ])
 
 export default function DisplayToken({

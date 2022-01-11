@@ -271,6 +271,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                   kur-kur
                 </span>
               </span>
+              <sup />
             </span>
           </span>
         </td>
@@ -334,6 +335,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                   kur-kur
                 </span>
               </span>
+              <sup />
             </span>
           </span>
         </td>

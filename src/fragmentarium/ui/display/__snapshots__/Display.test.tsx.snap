@@ -5453,6 +5453,9 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
+                <sup>
+                  ?
+                </sup>
               </span>
             </span>
             <span
@@ -5481,9 +5484,12 @@ exports[`Snapshot 1`] = `
                   <span
                     class="Transliteration__ValueToken--EMENDATION"
                   >
-                    kur
+                    ḫur
                   </span>
                 </span>
+                <sup>
+                  !
+                </sup>
                 <span
                   class="Transliteration__Emendation"
                 >
@@ -5565,6 +5571,7 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
+                <sup />
                 <span
                   class="Transliteration__BrokenAway"
                 >
@@ -5605,6 +5612,7 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
+                <sup />
                 <span
                   class="Transliteration__PerhapsBrokenAway"
                 >
@@ -5659,6 +5667,7 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
+                <sup />
               </span>
             </span>
           </td>
