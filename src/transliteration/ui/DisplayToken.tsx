@@ -233,14 +233,19 @@ function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
 
 function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
+  const lastParts = _.takeRightWhile(word.parts, isEnclosure)
+  const parts = _.dropRight(word.parts, lastParts.length)
   return (
     <EnclosureFlags token={word}>
-      {word.parts.map((token, index) => (
+      {parts.map((token, index) => (
         <DisplayToken key={index} token={token} Wrapper={Wrapper} />
       ))}
       <Wrapper>
         <sup>{word.modifiers.join('')}</sup>
       </Wrapper>
+      {lastParts.map((token, index) => (
+        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+      ))}
     </EnclosureFlags>
   )
 }
