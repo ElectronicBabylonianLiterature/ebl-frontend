@@ -14,7 +14,7 @@ import {
   UnknownSign,
   Variant,
 } from 'transliteration/domain/token'
-import addAccents from './addAccents'
+import addAccents from '../domain/addAccents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
