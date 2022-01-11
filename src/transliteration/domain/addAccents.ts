@@ -1,4 +1,9 @@
-import { NamedSign, Token, ValueToken } from 'transliteration/domain/token'
+import {
+  AkkadianWord,
+  NamedSign,
+  Token,
+  ValueToken,
+} from 'transliteration/domain/token'
 
 const vowels: ReadonlySet<string> = new Set([
   'a',
@@ -34,6 +39,7 @@ const graveAccents: ReadonlyMap<string, string> = new Map([
   ['o', '\u00F2'],
   ['u', '\u00F9'],
 ])
+const h = 'h'
 const hBreve = '\u1E2B'
 
 function isValueToken(token: Token): token is ValueToken {
@@ -53,13 +59,14 @@ function addAcuteAccent(letter: string): string {
 }
 
 class Accumulator {
-  isSubIndexConverted = false
-  isFirstWovel = true
-  tokens: Token[] = []
-  private subIndex: number | null | undefined
+  private isSubIndexConverted = false
+  private isFirstWovel = true
+  private tokens: Token[] = []
 
-  constructor(subIndex: number | null | undefined) {
-    this.subIndex = subIndex
+  constructor(private subIndex: number | null | undefined) {}
+
+  get result(): [Token[], boolean] {
+    return [this.tokens, this.isSubIndexConverted]
   }
 
   addToken(token: Token): Accumulator {
@@ -84,7 +91,7 @@ class Accumulator {
   private visitLetter(letter: string): string {
     if (this.isFirstWovel && isVowel(letter)) {
       return this.visitVowel(letter)
-    } else if (letter === 'h') {
+    } else if (letter === h) {
       return hBreve
     } else {
       return letter
@@ -106,13 +113,25 @@ class Accumulator {
   }
 }
 
-export default function addAccents(
+export function addAccents(
   namedSign: NamedSign
 ): readonly [readonly Token[], boolean] {
-  const { tokens, isSubIndexConverted } = namedSign.nameParts.reduce(
+  return namedSign.nameParts.reduce(
     (acc, token) => acc.addToken(token),
     new Accumulator(namedSign.subIndex)
-  )
+  ).result
+}
 
-  return [tokens, isSubIndexConverted]
+export function addBreves(word: AkkadianWord): AkkadianWord {
+  return {
+    ...word,
+    parts: word.parts.map((part) =>
+      isValueToken(part)
+        ? {
+            ...part,
+            value: part.value.replace(h, hBreve),
+          }
+        : part
+    ),
+  }
 }

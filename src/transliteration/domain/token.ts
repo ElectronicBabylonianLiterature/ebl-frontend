@@ -29,6 +29,7 @@ export interface NotLemmatizableToken extends BaseToken {
 }
 
 export interface LemmatizableToken extends BaseToken {
+  readonly parts: readonly Token[]
   readonly language: string
   readonly normalized: boolean
   readonly lemmatizable: boolean
@@ -45,13 +46,11 @@ export interface ValueToken extends NotLemmatizableToken {
 export interface Word extends LemmatizableToken {
   readonly type: 'Word' | 'LoneDeterminative'
   readonly erasure: ErasureType
-  readonly parts: readonly Token[]
   readonly normalized: false
 }
 
 export interface AkkadianWord extends LemmatizableToken {
   readonly type: 'AkkadianWord'
-  readonly parts: readonly Token[]
   readonly modifiers: readonly string[]
   readonly normalized: true
   readonly language: 'AKKADIAN'
@@ -59,7 +58,6 @@ export interface AkkadianWord extends LemmatizableToken {
 
 export interface GreekWord extends LemmatizableToken {
   readonly type: 'GreekWord'
-  readonly parts: readonly Token[]
   readonly normalized: false
   readonly language: 'GREEK' | 'AKKADIAN' | 'SUMERIAN'
 }

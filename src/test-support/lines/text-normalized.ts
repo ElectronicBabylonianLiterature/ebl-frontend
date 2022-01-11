@@ -37,8 +37,8 @@ export const akkadianWords: TextLine = new TextLine({
       type: 'AkkadianWord',
     },
     {
-      value: '<kur>',
-      cleanValue: '<kur>',
+      value: '<hur>',
+      cleanValue: '<hur>',
       enclosureType: [],
       erasure: 'NONE',
       lemmatizable: true,
@@ -58,8 +58,8 @@ export const akkadianWords: TextLine = new TextLine({
           type: 'Emendation',
         },
         {
-          value: 'kur',
-          cleanValue: 'kur',
+          value: 'hur',
+          cleanValue: 'hur',
           enclosureType: ['EMENDATION'],
           erasure: 'NONE',
           type: 'ValueToken',

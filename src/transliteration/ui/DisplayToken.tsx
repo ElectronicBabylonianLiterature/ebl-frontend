@@ -14,7 +14,7 @@ import {
   UnknownSign,
   Variant,
 } from 'transliteration/domain/token'
-import addAccents from '../domain/addAccents'
+import { addAccents, addBreves } from 'transliteration/domain/addAccents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
 import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
@@ -232,7 +232,7 @@ function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
 }
 
 function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
-  const word = token as AkkadianWord
+  const word = addBreves(token as AkkadianWord)
   return (
     <EnclosureFlags token={word}>
       {word.parts.map((token, index) => (
