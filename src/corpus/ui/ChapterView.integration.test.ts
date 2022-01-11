@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import Chance from 'chance'
 
 import AppDriver from 'test-support/AppDriver'
@@ -5,11 +7,20 @@ import FakeApi from 'test-support/FakeApi'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'corpus/domain/text'
+import { textDto } from 'test-support/test-corpus-text'
 
 const chance = new Chance('chapter-view-integration-test')
 
 chapterDisplayFactory.rewindSequence()
-const chapter = chapterDisplayFactory.build({}, { transient: { chance } })
+const chapter = chapterDisplayFactory.build(
+  {
+    id: {
+      textId: _.pick(textDto, 'genre', 'category', 'index'),
+      ..._.pick(textDto.chapters[0], 'stage', 'name'),
+    },
+  },
+  { transient: { chance } }
+)
 
 let fakeApi: FakeApi
 let appDriver: AppDriver
@@ -23,7 +34,7 @@ describe('Diplay chapter', () => {
     await setup(chapter)
   })
 
-  test('Breadcrumbs__', () => {
+  test('Breadcrumbs', () => {
     appDriver.breadcrumbs.expectCrumbs([
       'eBL',
       'Corpus',
@@ -38,7 +49,7 @@ describe('Diplay chapter', () => {
 })
 
 async function setup(chapter: ChapterDisplay) {
-  fakeApi = new FakeApi().expectChapterDisplay(chapter)
+  fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
   appDriver = await new AppDriver(fakeApi.client)
     .withSession()
     .withPath(
