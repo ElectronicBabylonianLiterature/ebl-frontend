@@ -17,19 +17,14 @@ import {
   maxColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
-
-import './ChapterView.sass'
-import {
-  Button,
-  ButtonGroup,
-  Dropdown,
-  DropdownButton,
-  DropdownButtonProps,
-} from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import classNames from 'classnames'
 import ChapterCrumb from './ChapterCrumb'
-import { ChapterListing, Text } from 'corpus/domain/text'
+import { Text } from 'corpus/domain/text'
+import { GotoButton } from './GotoButton'
+
+import './ChapterView.sass'
 
 interface Props {
   chapter: ChapterDisplay
@@ -122,44 +117,6 @@ function Line({
         <Translation line={line} />
       </tr>
     </>
-  )
-}
-
-function GotoItem({
-  text,
-  chapter,
-}: {
-  text: Text
-  chapter: ChapterListing
-}): JSX.Element {
-  const stage = text.hasMultipleStages ? `${chapter.stage} ` : ''
-  const name =
-    chapter.name !== '-' || !text.hasMultipleStages ? chapter.name : ''
-  return (
-    <Dropdown.Item
-      href={`/corpus/${text.genre}/${text.category}/${text.index}/${chapter.stage}/${chapter.name}`}
-    >
-      {stage}
-      {name}
-    </Dropdown.Item>
-  )
-}
-
-function GotoButton({
-  text,
-  ...props
-}: { text: Text } & DropdownButtonProps): JSX.Element {
-  return (
-    <DropdownButton {...props}>
-      {text.chapters.map((chapter, index) => (
-        <GotoItem key={index} text={text} chapter={chapter} />
-      ))}
-      <Dropdown.Item
-        href={`/corpus/${text.genre}/${text.category}/${text.index}`}
-      >
-        Introduction
-      </Dropdown.Item>
-    </DropdownButton>
   )
 }
 
