@@ -160,7 +160,25 @@ export default class TextService {
   }
 
   findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
-    return this.apiClient.fetchJson(`${createChapterUrl(id)}/display`, true)
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/display`, true)
+      .then((chapter: ChapterDisplay) =>
+        Bluebird.all(
+          chapter.lines.map((line) =>
+            Bluebird.all([
+              this.referenceInjector.injectReferencesToMarkup(line.translation),
+              this.referenceInjector.injectReferencesToMarkup(line.intertext),
+            ]).then(([translation, intertext]) => ({
+              ...line,
+              translation,
+              intertext,
+            }))
+          )
+        ).then((lines) => ({
+          ...chapter,
+          lines,
+        }))
+      )
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
