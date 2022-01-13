@@ -22,7 +22,7 @@ import SessionContext from 'auth/SessionContext'
 import classNames from 'classnames'
 import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
-import { GotoButton } from './GotoButton'
+import GotoButton from './GotoButton'
 
 import './ChapterView.sass'
 
@@ -173,14 +173,16 @@ function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
       }
     >
       <table className="chapter-display">
-        {chapter.lines.map((line, index) => (
-          <Line
-            key={index}
-            line={line}
-            columns={columns[index]}
-            maxColumns={maxColumns_}
-          />
-        ))}
+        <tbody>
+          {chapter.lines.map((line, index) => (
+            <Line
+              key={index}
+              line={line}
+              columns={columns[index]}
+              maxColumns={maxColumns_}
+            />
+          ))}
+        </tbody>
       </table>
     </AppContent>
   )
