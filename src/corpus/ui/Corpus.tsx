@@ -24,7 +24,7 @@ function TextLine({ text }: { text: TextInfo }): JSX.Element {
   return (
     <Row as="li">
       <Col md={8}>
-        {session.isAllowedToWriteTexts() ? (
+        {session.isAllowedToReadTexts() ? (
           <Link to={`/corpus/${text.genre}/${text.category}/${text.index}`}>
             {title}
           </Link>

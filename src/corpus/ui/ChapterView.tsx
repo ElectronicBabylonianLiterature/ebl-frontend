@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
 import { SectionCrumb } from 'common/Breadcrumbs'
@@ -16,12 +17,14 @@ import {
   maxColumns,
   TextLineColumn,
 } from 'transliteration/domain/columns'
-
-import './ChapterView.sass'
-import { Button } from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
 import classNames from 'classnames'
 import ChapterCrumb from './ChapterCrumb'
+import { Text } from 'corpus/domain/text'
+import GotoButton from './GotoButton'
+
+import './ChapterView.sass'
 
 interface Props {
   chapter: ChapterDisplay
@@ -143,7 +146,7 @@ function EditChapterButton({
   )
 }
 
-function ChapterView({ chapter }: Props): JSX.Element {
+function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
   const columns = chapter.lines.map((line) =>
     createColumns(line.reconstruction)
   )
@@ -157,17 +160,29 @@ function ChapterView({ chapter }: Props): JSX.Element {
         new ChapterCrumb(chapter.id),
       ]}
       title={<Title chapter={chapter} />}
-      actions={<EditChapterButton chapter={chapter} />}
+      actions={
+        <ButtonGroup>
+          <GotoButton
+            text={text}
+            as={ButtonGroup}
+            title="Go to"
+            variant="outline-primary"
+          />
+          <EditChapterButton chapter={chapter} />
+        </ButtonGroup>
+      }
     >
       <table className="chapter-display">
-        {chapter.lines.map((line, index) => (
-          <Line
-            key={index}
-            line={line}
-            columns={columns[index]}
-            maxColumns={maxColumns_}
-          />
-        ))}
+        <tbody>
+          {chapter.lines.map((line, index) => (
+            <Line
+              key={index}
+              line={line}
+              columns={columns[index]}
+              maxColumns={maxColumns_}
+            />
+          ))}
+        </tbody>
       </table>
     </AppContent>
   )
@@ -178,10 +193,16 @@ export default withData<
     textService
   },
   { id: ChapterId },
-  ChapterDisplay
+  [ChapterDisplay, Text]
 >(
-  ({ data, ...props }) => <ChapterView chapter={data} {...props} />,
-  ({ id, textService }) => textService.findChapterDisplay(id),
+  ({ data: [chapter, text], ...props }) => (
+    <ChapterView chapter={chapter} text={text} {...props} />
+  ),
+  ({ id, textService }) =>
+    Bluebird.all([
+      textService.findChapterDisplay(id),
+      textService.find(id.textId),
+    ]),
   {
     watch: (props) => [props.id],
   }
