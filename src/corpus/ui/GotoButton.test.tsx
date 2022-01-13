@@ -10,9 +10,9 @@ test('Go to dropdown', () => {
   render(<GotoButton title={title} text={text} />)
   userEvent.click(screen.getByRole('button', { name: title }))
   expect(
-    screen.getByRole('button', { name: text.chapters[0].name })
+    screen.getByRole('link', { name: text.chapters[0].name })
   ).toHaveAttribute('href', '/corpus/L/1/1/Old Babylonian/The Only Chapter')
-  expect(screen.getByRole('button', { name: 'Introduction' })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: 'Introduction' })).toHaveAttribute(
     'href',
     '/corpus/L/1/1'
   )
