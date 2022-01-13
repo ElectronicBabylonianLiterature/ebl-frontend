@@ -21,7 +21,8 @@ function GotoItem({
     </Dropdown.Item>
   )
 }
-export function GotoButton({
+
+export default function GotoButton({
   text,
   ...props
 }: { text: Text } & DropdownButtonProps): JSX.Element {
