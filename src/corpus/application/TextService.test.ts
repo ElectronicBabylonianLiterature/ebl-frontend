@@ -21,6 +21,7 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
+import { referenceFactory } from 'test-support/bibliography-fixtures'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -358,5 +359,70 @@ test('findSuggestions', async () => {
   fragmentServiceMock.findSuggestions.mockReturnValue(Bluebird.resolve([]))
   await expect(testService.findSuggestions(chapter)).resolves.toEqual(
     lemmatization
+  )
+})
+
+test('inject ChapterDisplay', async () => {
+  const translationReference = referenceFactory.build()
+  const intertextReference = referenceFactory.build()
+  const chapterWithReferences = produce(chapterDisplay, (draft) => {
+    draft.lines[0].translation = [
+      {
+        reference: {
+          id: translationReference.id,
+          type: translationReference.type,
+          pages: translationReference.pages,
+          notes: translationReference.notes,
+          linesCited: castDraft(translationReference.linesCited),
+        },
+        type: 'BibliographyPart',
+      },
+    ]
+    draft.lines[0].intertext = [
+      {
+        reference: {
+          id: intertextReference.id,
+          type: intertextReference.type,
+          pages: intertextReference.pages,
+          notes: intertextReference.notes,
+          linesCited: castDraft(intertextReference.linesCited),
+        },
+        type: 'BibliographyPart',
+      },
+    ]
+  })
+  const injectedChapter = produce(chapterDisplay, (draft) => {
+    draft.lines[0].translation = [
+      {
+        reference: castDraft(translationReference),
+        type: 'BibliographyPart',
+      },
+    ]
+    draft.lines[0].intertext = [
+      {
+        reference: castDraft(intertextReference),
+        type: 'BibliographyPart',
+      },
+    ]
+  })
+  apiClient.fetchJson.mockReturnValue(Bluebird.resolve(chapterWithReferences))
+  bibliographyServiceMock.find.mockReturnValueOnce(
+    Bluebird.resolve(translationReference.document)
+  )
+  bibliographyServiceMock.find.mockReturnValueOnce(
+    Bluebird.resolve(intertextReference.document)
+  )
+  await expect(testService.findChapterDisplay(chapterId)).resolves.toEqual(
+    injectedChapter
+  )
+  expect(apiClient.fetchJson).toHaveBeenCalledWith(
+    `${chapterUrl}/display`,
+    true
+  )
+  expect(bibliographyServiceMock.find).toHaveBeenCalledWith(
+    translationReference.id
+  )
+  expect(bibliographyServiceMock.find).toHaveBeenCalledWith(
+    intertextReference.id
   )
 })
