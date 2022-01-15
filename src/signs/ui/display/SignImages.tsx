@@ -19,12 +19,34 @@ export default withData<
   CroppedAnnotation[]
 >(
   ({ data }) => {
-    return <SignImages croppedAnnotations={data} />
+    return <SignImagePagination croppedAnnotations={data} />
   },
   (props) => props.signService.getImages(decodeURIComponent(props.signName))
 )
+function SignImage({
+  croppedAnnotation,
+}: {
+  croppedAnnotation: CroppedAnnotation
+}): JSX.Element {
+  return (
+    <Col>
+      <Figure>
+        <Figure.Image
+          className={'SignImages__signImage '}
+          src={`data:image/png;base64, ${croppedAnnotation.image}`}
+        />
+        <Figure.Caption>
+          <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
+            {croppedAnnotation.fragmentNumber}
+          </Link>
+          {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
+        </Figure.Caption>
+      </Figure>
+    </Col>
+  )
+}
 
-function SignImages({
+function SignImagePagination({
   croppedAnnotations,
 }: {
   croppedAnnotations: CroppedAnnotation[]
@@ -44,38 +66,13 @@ function SignImages({
     )
   })
 
-  const SignImage = ({
-    croppedAnnotation,
-  }: {
-    croppedAnnotation: CroppedAnnotation
-  }) => (
-    <Col>
-      <Figure>
-        <Figure.Image
-          className={'SignImages__signImage '}
-          src={`data:image/png;base64, ${croppedAnnotation.image}`}
-        />
-        <Figure.Caption>
-          <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
-            {croppedAnnotation.fragmentNumber}
-          </Link>
-          {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
-        </Figure.Caption>
-      </Figure>
-    </Col>
-  )
-
-  const SignImagePage = ({ chunk }: { chunk: CroppedAnnotation[] }) => (
-    <Row>
-      {chunk.map((croppedAnnotation, index) => (
-        <SignImage key={index} croppedAnnotation={croppedAnnotation} />
-      ))}
-    </Row>
-  )
-
   return (
     <Container>
-      <SignImagePage chunk={chunks[activePage - 1]} />
+      <Row>
+        {chunks[activePage - 1].map((croppedAnnotation, index) => (
+          <SignImage key={index} croppedAnnotation={croppedAnnotation} />
+        ))}
+      </Row>
       <Row>
         <Col xs={{ offset: 5 }}>
           <Pagination>{items}</Pagination>
