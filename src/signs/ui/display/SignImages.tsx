@@ -1,10 +1,11 @@
 import SignService from 'signs/application/SignService'
 import React, { useState } from 'react'
 import withData, { WithoutData } from 'http/withData'
-import { Col, Container, Image, Pagination, Row } from 'react-bootstrap'
+import { Col, Container, Figure, Pagination, Row } from 'react-bootstrap'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import './SignImages.css'
 
 type Props = {
   signName: string
@@ -29,7 +30,7 @@ function SignImages({
   croppedAnnotations: CroppedAnnotation[]
 }): JSX.Element {
   const [activePage, setActivePage] = useState(1)
-  const chunks = _.chunk(croppedAnnotations, 13)
+  const chunks = _.chunk(croppedAnnotations, 16)
   const items = chunks.map((_, index) => {
     const paginationIndex = index + 1
     return (
@@ -49,22 +50,21 @@ function SignImages({
     croppedAnnotation: CroppedAnnotation
   }) => (
     <Col>
-      <Col>
-        <Image
-          style={{ minWidth: '80px', maxHeight: '100px' }}
+      <Figure>
+        <Figure.Image
+          className={'SignImages__signImage '}
           src={`data:image/png;base64, ${croppedAnnotation.image}`}
         />
-      </Col>
-      <Col>
-        <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
-          {croppedAnnotation.fragmentNumber}
-        </Link>
-        <div>
+        <Figure.Caption>
+          <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
+            {croppedAnnotation.fragmentNumber}
+          </Link>
           {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
-        </div>
-      </Col>
+        </Figure.Caption>
+      </Figure>
     </Col>
   )
+
   const SignImagePage = ({ chunk }: { chunk: CroppedAnnotation[] }) => (
     <Row>
       {chunk.map((croppedAnnotation, index) => (
@@ -78,7 +78,6 @@ function SignImages({
       <SignImagePage chunk={chunks[activePage - 1]} />
       <Row>
         <Col xs={{ offset: 5 }}>
-          {' '}
           <Pagination>{items}</Pagination>
         </Col>
       </Row>

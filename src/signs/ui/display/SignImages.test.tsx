@@ -45,8 +45,8 @@ describe('Sign Images', () => {
     await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
     expect(signService.getImages).toBeCalledWith(signName)
   })
-  it('Check Images', async () => {
-    croppedAnnotations.map((croppedAnnotation) => {
+  it('Check Images', () => {
+    croppedAnnotations.forEach((croppedAnnotation) => {
       expect(screen.getByText(croppedAnnotation.fragmentNumber)).toBeVisible()
     })
   })
