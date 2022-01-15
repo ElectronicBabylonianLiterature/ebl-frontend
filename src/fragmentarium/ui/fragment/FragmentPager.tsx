@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import withData, { WithoutData } from 'http/withData'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
+import FragmentService from 'fragmentarium/application/FragmentService'
 
 type Props = {
   data: FragmentPagerData
@@ -47,7 +48,7 @@ const FragmentPager: FunctionComponent<Props> = ({
 
 export default withData<
   WithoutData<Props>,
-  { fragmentService },
+  { fragmentService: FragmentService },
   FragmentPagerData
 >(
   ({ data, ...props }) => <FragmentPager data={data} {...props} />,
