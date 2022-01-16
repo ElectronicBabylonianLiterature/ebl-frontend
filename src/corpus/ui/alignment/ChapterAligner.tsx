@@ -7,7 +7,7 @@ import {
   ManuscriptAlignment,
 } from 'corpus/domain/alignment'
 import { LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter } from 'corpus/domain/text'
+import { Chapter } from 'corpus/domain/chapter'
 import Reconstruction from 'corpus/ui/Reconstruction'
 import OmittedWordsSelect from './OmittedWordsSelect'
 import WordAligner from './WordAligner'

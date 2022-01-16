@@ -1,5 +1,5 @@
 import Chance from 'chance'
-import { ChapterId } from 'corpus/application/TextService'
+import { ChapterId } from 'corpus/domain/chapter'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
@@ -100,7 +100,15 @@ describe('Chapter', () => {
   })
 
   test('Show list of manuscripts', async () => {
-    const chapterId = ChapterId.fromText(textDto, textDto.chapters[0])
+    const chapterId: ChapterId = {
+      textId: {
+        genre: textDto.genre,
+        category: textDto.category,
+        index: textDto.index,
+      },
+      stage: textDto.chapters[0].stage,
+      name: textDto.chapters[0].name,
+    }
     fakeApi
       .expectManuscripts(chapterId, manuscriptsDto)
       .expectExtantLines(chapterId, {

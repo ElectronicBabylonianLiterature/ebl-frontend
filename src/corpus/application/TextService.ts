@@ -7,7 +7,8 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Chapter, ChapterListing, Text, TextInfo } from 'corpus/domain/text'
+import { Text, TextId } from 'corpus/domain/text'
+import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
 import { Manuscript } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
@@ -107,9 +108,7 @@ function createTextUrl(
 }
 
 function createChapterUrl({
-  genre,
-  category,
-  index,
+  textId: { genre, category, index },
   stage,
   name,
 }: ChapterId): string {
@@ -118,39 +117,6 @@ function createChapterUrl({
     category,
     index
   )}/chapters/${encodeURIComponent(stage)}/${encodeURIComponent(name)}`
-}
-
-export class ChapterId {
-  constructor(
-    readonly genre: string,
-    readonly category: string | number,
-    readonly index: string | number,
-    readonly stage: string,
-    readonly name: string
-  ) {}
-
-  static fromChapter(chapter: Chapter): ChapterId {
-    return new ChapterId(
-      chapter.textId.genre,
-      chapter.textId.category,
-      chapter.textId.index,
-      chapter.stage,
-      chapter.name
-    )
-  }
-
-  static fromText(
-    text: TextInfo,
-    chapter: Pick<ChapterListing, 'stage' | 'name'>
-  ): ChapterId {
-    return new ChapterId(
-      text.genre,
-      text.category,
-      text.index,
-      chapter.stage,
-      chapter.name
-    )
-  }
 }
 
 export default class TextService {
@@ -165,7 +131,7 @@ export default class TextService {
     this.referenceInjector = new ReferenceInjector(bibliographyService)
   }
 
-  find(genre: string, category: string, index: string): Bluebird<Text> {
+  find({ genre, category, index }: TextId): Bluebird<Text> {
     return this.apiClient
       .fetchJson(createTextUrl(genre, category, index), true)
       .then(fromDto)
@@ -191,6 +157,10 @@ export default class TextService {
     return this.apiClient
       .fetchJson(createChapterUrl(id), true)
       .then(fromChapterDto)
+  }
+
+  findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
+    return this.apiClient.fetchJson(`${createChapterUrl(id)}/display`, true)
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {

@@ -12,6 +12,7 @@ test.each([
   '/corpus',
   '/corpus/L/1/1',
   '/corpus/L/1/1/stage/name',
+  '/corpus/L/1/1/stage/name/edit',
   '/fragmentarium',
   '/fragmentarium/fragment_number',
   '/callback',

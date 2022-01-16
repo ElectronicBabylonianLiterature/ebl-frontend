@@ -138,17 +138,18 @@ export default function TransliterationLines({
 }: {
   text: Text
 }): JSX.Element {
+  const numberOfColumns = text.numberOfColumns
   return (
     <table className="Transliteration__lines">
       <tbody>
-        <FirstLineNotes notes={text.notes} columns={text.numberOfColumns} />
+        <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
         {text.lines.map((line: AbstractLine, index: number) => (
           <TransliterationLine
             key={index}
             line={line}
             notes={text.notes}
             index={index}
-            columns={text.numberOfColumns}
+            columns={numberOfColumns}
           />
         ))}
       </tbody>

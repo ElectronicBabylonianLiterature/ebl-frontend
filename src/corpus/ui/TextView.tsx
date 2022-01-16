@@ -2,12 +2,11 @@ import React from 'react'
 import Promise from 'bluebird'
 import AppContent from 'common/AppContent'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import { Text } from 'corpus/domain/text'
+import { createChapterId, Text, TextId } from 'corpus/domain/text'
 import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
 
 import './TextView.sass'
-import { ChapterId } from 'corpus/application/TextService'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import CollapsibleSection from 'corpus/ui/CollapsibleSection'
@@ -28,7 +27,7 @@ function TextView({
       crumbs={[
         new SectionCrumb('Corpus'),
         new GenreCrumb(text.genre),
-        new CorpusTextCrumb(text),
+        CorpusTextCrumb.ofText(text),
       ]}
     >
       <SessionContext.Consumer>
@@ -43,7 +42,7 @@ function TextView({
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}
-                    id={ChapterId.fromText(text, chapter)}
+                    id={createChapterId(text, chapter)}
                     textService={textService}
                     method="findColophons"
                   />
@@ -53,7 +52,7 @@ function TextView({
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}
-                    id={ChapterId.fromText(text, chapter)}
+                    id={createChapterId(text, chapter)}
                     textService={textService}
                     method="findUnplacedLines"
                   />
@@ -72,17 +71,14 @@ function TextView({
 export default withData<
   {
     textService: {
-      find(genre: string, category: string, index: string): Promise<Text>
+      find(id: TextId): Promise<Text>
     }
   },
   {
-    genre: string
-    category: string
-    index: string
+    id: TextId
   },
   Text
 >(
   ({ data, textService }) => <TextView text={data} textService={textService} />,
-  ({ genre, category, index, textService }) =>
-    textService.find(genre, category, index)
+  ({ id, textService }) => textService.find(id)
 )
