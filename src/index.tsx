@@ -95,6 +95,7 @@ function InjectedAuth0Provider({
       audience={auth0Config.audience}
       returnTo={window.location.origin}
       useRefreshTokens={true}
+      useCookiesForTransactions={true}
     >
       {children}
     </Auth0Provider>
