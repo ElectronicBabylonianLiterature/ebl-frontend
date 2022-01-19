@@ -496,7 +496,7 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
               class="figure"
             >
               <img
-                class="SignImages__signImage  figure-img img-fluid"
+                class="signImages__signImage  figure-img img-fluid"
                 src="data:image/png;base64, test-base64-string"
               />
               <figcaption
