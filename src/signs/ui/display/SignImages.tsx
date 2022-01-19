@@ -32,7 +32,7 @@ function SignImage({
     <Col>
       <Figure>
         <Figure.Image
-          className={'signImages__signImage '}
+          className={'sign-images__sign-image'}
           src={`data:image/png;base64, ${croppedAnnotation.image}`}
         />
         <Figure.Caption>
