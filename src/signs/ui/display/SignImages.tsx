@@ -38,7 +38,8 @@ function SignImage({
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}
           </Link>
-          {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
+          {croppedAnnotation.label && `${croppedAnnotation.label} `}&nbsp;(
+          {croppedAnnotation.script})
         </Figure.Caption>
       </Figure>
     </Col>
