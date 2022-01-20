@@ -13,6 +13,7 @@ import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import SessionContext from 'auth/SessionContext'
 import { Session } from 'auth/Session'
 import MesZlContent from 'signs/ui/search/MesZLContent'
+import SignImages from 'signs/ui/display/SignImages'
 
 function SignDisplay({
   sign,
@@ -45,6 +46,7 @@ function SignDisplay({
                 wordService={wordService}
               />
               {sign.mesZl && <MesZl signName={sign.name} mesZl={sign.mesZl} />}
+              <SignImages signName={sign.name} signService={signService} />
             </Container>
           ) : (
             <p>Please log in to browse the Signs.</p>

@@ -4,6 +4,7 @@ import Sign, { SignQuery } from 'signs/domain/Sign'
 import { stringify } from 'query-string'
 import { AnnotationToken } from 'fragmentarium/domain/annotation-token'
 import { AnnotationTokenType } from 'fragmentarium/domain/annotation'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 class SignRepository {
   private readonly apiClient
@@ -45,6 +46,13 @@ class SignRepository {
       tokensRow.map((token) => this.attachSignToToken(token))
     )
     return Promise.all(tokensWithSigns.map((token) => Promise.all(token)))
+  }
+
+  getImages(signName: string): Promise<CroppedAnnotation[]> {
+    return this.apiClient.fetchJson(
+      `/signs/${encodeURIComponent(signName)}/images`,
+      true
+    )
   }
 
   search(signQuery: SignQuery): Promise<Sign[]> {

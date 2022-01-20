@@ -24,6 +24,12 @@ const resultStub = Sign.fromDto({
   LaBaSi: '',
   unicode: [],
 })
+const getImagesResult = {
+  fragmentNumber: 'K.6400',
+  image: 'test-image',
+  label: 'test-label',
+  script: 'script-label',
+}
 
 const testData: TestData[] = [
   [
@@ -41,6 +47,14 @@ const testData: TestData[] = [
     [resultStub],
     [`/signs?${stringify(query)}`, true],
     Promise.resolve([resultStub]),
+  ],
+  [
+    'getImages',
+    [signName],
+    apiClient.fetchJson,
+    [getImagesResult],
+    [`/signs/${encodeURIComponent(signName)}/images`, true],
+    Promise.resolve([getImagesResult]),
   ],
 ]
 describe('test word repository', () => {

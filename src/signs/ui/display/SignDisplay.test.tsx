@@ -9,6 +9,7 @@ import Bluebird from 'bluebird'
 import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
+import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -46,6 +47,13 @@ const word: Word = {
   _id: '',
 }
 
+const croppedAnnotation: CroppedAnnotation = {
+  image: 'test-base64-string',
+  fragmentNumber: '',
+  script: 'NA',
+  label: "i stone wig 1'",
+}
+
 let container: HTMLElement
 
 function renderSignDisplay(signName: string) {
@@ -70,6 +78,7 @@ function renderSignDisplay(signName: string) {
 describe('Sign Display', () => {
   beforeEach(async () => {
     signService.search.mockReturnValue(Bluebird.resolve([]))
+    signService.getImages.mockReturnValue(Bluebird.resolve([croppedAnnotation]))
     signService.find.mockReturnValue(Bluebird.resolve(sign))
     wordService.find.mockReturnValue(Bluebird.resolve(word))
     renderSignDisplay(sign.name)
