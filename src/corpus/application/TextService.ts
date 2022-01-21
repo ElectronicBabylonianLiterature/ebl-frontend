@@ -181,6 +181,12 @@ export default class TextService {
       )
   }
 
+  findChapterLine(id: ChapterId, number: number): Bluebird<Line> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
+      .then(fromLineDto)
+  }
+
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/colophons`, true)

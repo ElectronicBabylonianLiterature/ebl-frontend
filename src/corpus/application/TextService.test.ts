@@ -251,6 +251,14 @@ const testData: TestData[] = [
     Bluebird.resolve(chapterDisplay),
   ],
   [
+    'findChapterLine',
+    [chapterId, 0],
+    apiClient.fetchJson,
+    chapter.lines[0],
+    [`${chapterUrl}/lines/0`, true],
+    Bluebird.resolve(chapterDto.lines[0]),
+  ],
+  [
     'findColophons',
     [chapterId],
     apiClient.fetchJson,
