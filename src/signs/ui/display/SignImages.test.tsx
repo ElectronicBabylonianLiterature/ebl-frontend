@@ -51,3 +51,19 @@ describe('Sign Images', () => {
     })
   })
 })
+
+describe('Sign Images Empty', () => {
+  beforeEach(async () => {
+    signService.getImages.mockReturnValue(Bluebird.resolve([]))
+    renderSignImages()
+    await waitForElementToBeRemoved(() => screen.getByLabelText('Spinner'))
+    expect(signService.getImages).toBeCalledWith(signName)
+  })
+  it('Check there are no Images', () => {
+    croppedAnnotations.forEach((croppedAnnotation) => {
+      expect(
+        screen.queryByText(croppedAnnotation.fragmentNumber)
+      ).not.toBeInTheDocument()
+    })
+  })
+})

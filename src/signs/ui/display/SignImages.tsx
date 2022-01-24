@@ -18,9 +18,8 @@ export default withData<
   { signName: string; signService: SignService },
   CroppedAnnotation[]
 >(
-  ({ data }) => {
-    return <SignImagePagination croppedAnnotations={data} />
-  },
+  ({ data }) =>
+    data.length ? <SignImagePagination croppedAnnotations={data} /> : null,
   (props) => props.signService.getImages(decodeURIComponent(props.signName))
 )
 function SignImage({
@@ -39,7 +38,8 @@ function SignImage({
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
             {croppedAnnotation.fragmentNumber}
           </Link>
-          {croppedAnnotation.label}&nbsp;({croppedAnnotation.script})
+          {croppedAnnotation.label && `${croppedAnnotation.label} `}&nbsp;(
+          {croppedAnnotation.script})
         </Figure.Caption>
       </Figure>
     </Col>
