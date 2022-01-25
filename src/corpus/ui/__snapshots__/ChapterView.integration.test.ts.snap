@@ -309,6 +309,12 @@ exports[`Diplay chapter Snapshot 1`] = `
             </div>
           </td>
         </tr>
+        <div
+          class="fade alert alert-danger show"
+          role="alert"
+        >
+          Unexpected authenticated fetchJson: /texts/L/1/1/chapters/Old%20Babylonian/The%20Only%20Chapter/lines/0
+        </div>
         <tr>
           <td
             class="chapter-display__intertext"
@@ -373,6 +379,12 @@ exports[`Diplay chapter Snapshot 1`] = `
             </div>
           </td>
         </tr>
+        <div
+          class="fade alert alert-danger show"
+          role="alert"
+        >
+          Unexpected authenticated fetchJson: /texts/L/1/1/chapters/Old%20Babylonian/The%20Only%20Chapter/lines/1
+        </div>
       </tbody>
     </table>
   </section>
