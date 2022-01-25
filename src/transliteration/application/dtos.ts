@@ -1,3 +1,4 @@
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 import {
   ColumnAtLine,
   CompositeAtLine,
@@ -21,7 +22,7 @@ import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import TranslationLine from 'transliteration/domain/translation-line'
 
-const lineClases = {
+const lineClasses = {
   TextLine: TextLine,
   ControlLine: ControlLine,
   EmptyLine: EmptyLine,
@@ -45,16 +46,18 @@ const lineClases = {
   TranslationLine: TranslationLine,
 } as const
 
-export function createTransliteration(text): Text {
+export function fromTransliterationLineDto(lineDto): AbstractLine {
+  const LineClass = lineClasses[lineDto.type]
+  if (LineClass) {
+    return new LineClass(lineDto)
+  } else {
+    console.error(`Unknown line type "${lineDto.type}.`)
+    return new ControlLine(lineDto)
+  }
+}
+
+export function createTransliteration(textDto): Text {
   return new Text({
-    lines: text.lines.map((lineDto) => {
-      const LineClass = lineClases[lineDto.type]
-      if (LineClass) {
-        return new LineClass(lineDto)
-      } else {
-        console.error(`Unknown line type "${lineDto.type}.`)
-        return new ControlLine(lineDto)
-      }
-    }),
+    lines: textDto.lines.map(fromTransliterationLineDto),
   })
 }
