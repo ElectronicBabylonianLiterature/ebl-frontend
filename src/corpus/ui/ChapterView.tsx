@@ -9,7 +9,7 @@ import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
 import { ChapterTitle } from './chapter-title'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { LineColumns } from 'transliteration/ui/line-tokens'
+import { LineColumns, LineTokens } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
@@ -23,6 +23,8 @@ import classNames from 'classnames'
 import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
+import TextService from 'corpus/application/TextService'
+import { LineDetails } from 'corpus/domain/line-details'
 
 import './ChapterView.sass'
 
@@ -91,6 +93,48 @@ function Translation({ line }: { line: LineDisplay }): JSX.Element {
   )
 }
 
+const Manuscripts = withData<
+  { colSpan: number },
+  {
+    id: ChapterId
+    lineNumber: number
+    textService: TextService
+  },
+  LineDetails
+>(
+  ({ colSpan, data: line }): JSX.Element => (
+    <tr>
+      <td colSpan={colSpan}>
+        <table className="chapter-display__manuscripts">
+          {line.variants
+            .flatMap((variant) => variant.manuscripts)
+            .map((manuscript, index) => (
+              <tr key={index}>
+                <td>
+                  <span className="chapter-display__manuscripts-siglum">
+                    {manuscript.siglum}
+                  </span>
+                </td>
+                <td>
+                  <span className="chapter-display__manuscripts-labels">
+                    {manuscript.labels.join(' ')}{' '}
+                    {manuscript.number !== null &&
+                      `${lineNumberToString(manuscript.number)}.`}
+                  </span>
+                </td>
+                <td>
+                  <LineTokens content={manuscript.line.content} />
+                </td>
+              </tr>
+            ))}
+        </table>
+      </td>
+    </tr>
+  ),
+  ({ id, lineNumber, textService }) =>
+    textService.findChapterLine(id, lineNumber)
+)
+
 function Line({
   line,
   columns,
@@ -146,7 +190,11 @@ function EditChapterButton({
   )
 }
 
-function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
+function ChapterView({
+  chapter,
+  text,
+  textService,
+}: Props & { text: Text; textService: TextService }): JSX.Element {
   const columns = chapter.lines.map((line) =>
     createColumns(line.reconstruction)
   )
@@ -175,12 +223,20 @@ function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
       <table className="chapter-display">
         <tbody>
           {chapter.lines.map((line, index) => (
-            <Line
-              key={index}
-              line={line}
-              columns={columns[index]}
-              maxColumns={maxColumns_}
-            />
+            <>
+              <Line
+                key={index}
+                line={line}
+                columns={columns[index]}
+                maxColumns={maxColumns_}
+              />
+              <Manuscripts
+                colSpan={maxColumns_ + 3}
+                id={chapter.id}
+                lineNumber={index}
+                textService={textService}
+              />
+            </>
           ))}
         </tbody>
       </table>

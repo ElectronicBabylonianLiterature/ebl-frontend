@@ -9,7 +9,7 @@ import {
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
 import { Text, TextId } from 'corpus/domain/text'
 import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
-import { Manuscript } from 'corpus/domain/manuscript'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
@@ -36,6 +36,16 @@ import BibliographyService from 'bibliography/application/BibliographyService'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import produce, { castDraft } from 'immer'
 import { ExtantLines } from 'corpus/domain/extant-lines'
+import {
+  LineDetails,
+  LineVariantDisplay,
+  ManuscriptLineDisplay,
+} from 'corpus/domain/line-details'
+import { Provenances } from 'corpus/domain/provenance'
+import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { EmptyLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
+import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -181,10 +191,34 @@ export default class TextService {
       )
   }
 
-  findChapterLine(id: ChapterId, number: number): Bluebird<Line> {
+  findChapterLine(id: ChapterId, number: number): Bluebird<LineDetails> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
-      .then(fromLineDto)
+      .then(
+        (line) =>
+          new LineDetails(
+            line.variants.map(
+              (variant) =>
+                new LineVariantDisplay(
+                  variant.manuscripts.map(
+                    (manuscript) =>
+                      new ManuscriptLineDisplay(
+                        Provenances[manuscript.provenance],
+                        PeriodModifiers[manuscript.periodModifier],
+                        Periods[manuscript.period],
+                        ManuscriptTypes[manuscript.type],
+                        manuscript.siglumDisambiguator,
+                        manuscript.labels,
+                        (fromTransliterationLineDto(
+                          manuscript.line
+                        ) as unknown) as TextLine | EmptyLine,
+                        manuscript.paratext.map(fromTransliterationLineDto)
+                      )
+                  )
+                )
+            )
+          )
+      )
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
