@@ -136,6 +136,7 @@ test.each([
         homonym: 'I',
         pos: [],
         guideWord: '',
+        arabicGuideWord: '',
         oraccWords: [],
         akkadischeGlossareUndIndices: [],
       }),
