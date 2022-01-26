@@ -50,8 +50,7 @@ function LineNumberRanges({
 }): JSX.Element {
   return (
     <>
-      {label}
-      {':'}
+      {label}:{' '}
       {groupExtantLines(lines).map((range, index: number) => (
         <React.Fragment key={index}>
           {index > 0 && ', '}
