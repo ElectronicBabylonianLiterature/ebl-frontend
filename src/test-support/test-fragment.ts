@@ -7,7 +7,7 @@ import { Genres } from 'fragmentarium/domain/Genres'
 import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
-const lines: readonly TextLineDto[] = [
+export const lines: readonly TextLineDto[] = [
   {
     type: 'TextLine',
     lineNumber: {
