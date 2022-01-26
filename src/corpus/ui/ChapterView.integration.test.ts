@@ -8,6 +8,7 @@ import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'corpus/domain/text'
 import { textDto } from 'test-support/test-corpus-text'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -44,6 +45,11 @@ describe('Diplay chapter', () => {
   })
 
   test('Snapshot', () => {
+    expect(appDriver.getView().container).toMatchSnapshot()
+  })
+
+  test('Show manuscripts', () => {
+    appDriver.click(lineNumberToString(chapter.lines[0].number))
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
