@@ -1,18 +1,27 @@
 import Bluebird from 'bluebird'
+import produce, { castDraft } from 'immer'
 import _ from 'lodash'
 import { stringify } from 'query-string'
+
+import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 import {
   ChapterLemmatization,
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
+import { LineDetails } from 'corpus/domain/line-details'
+import { Manuscript } from 'corpus/domain/manuscript'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text, TextId } from 'corpus/domain/text'
-import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
-import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
+import ApiClient from 'http/ApiClient'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import {
   LemmatizationToken,
   UniqueLemma,
@@ -20,32 +29,16 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromChapterDto,
-  fromSiglumAndTransliterationDto,
   fromDto,
+  fromLineDetailsDto,
   fromLineDto,
+  fromManuscriptDto,
+  fromSiglumAndTransliterationDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
-  fromManuscriptDto,
 } from './dtos'
-import ApiClient from 'http/ApiClient'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
-import ReferenceInjector from 'transliteration/application/ReferenceInjector'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import produce, { castDraft } from 'immer'
-import { ExtantLines } from 'corpus/domain/extant-lines'
-import {
-  LineDetails,
-  LineVariantDisplay,
-  ManuscriptLineDisplay,
-} from 'corpus/domain/line-details'
-import { Provenances } from 'corpus/domain/provenance'
-import { PeriodModifiers, Periods } from 'corpus/domain/period'
-import { EmptyLine } from 'transliteration/domain/line'
-import { TextLine } from 'transliteration/domain/text-line'
-import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -194,31 +187,7 @@ export default class TextService {
   findChapterLine(id: ChapterId, number: number): Bluebird<LineDetails> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
-      .then(
-        (line) =>
-          new LineDetails(
-            line.variants.map(
-              (variant) =>
-                new LineVariantDisplay(
-                  variant.manuscripts.map(
-                    (manuscript) =>
-                      new ManuscriptLineDisplay(
-                        Provenances[manuscript.provenance],
-                        PeriodModifiers[manuscript.periodModifier],
-                        Periods[manuscript.period],
-                        ManuscriptTypes[manuscript.type],
-                        manuscript.siglumDisambiguator,
-                        manuscript.labels,
-                        (fromTransliterationLineDto(
-                          manuscript.line
-                        ) as unknown) as TextLine | EmptyLine,
-                        manuscript.paratext.map(fromTransliterationLineDto)
-                      )
-                  )
-                )
-            )
-          )
-      )
+      .then(fromLineDetailsDto)
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
