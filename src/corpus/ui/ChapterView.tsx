@@ -24,7 +24,7 @@ import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
-import { LineDetails } from 'corpus/domain/line-details'
+import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 
 import './ChapterView.sass'
 
@@ -93,6 +93,32 @@ function Translation({ line }: { line: LineDisplay }): JSX.Element {
   )
 }
 
+function Manuscript({
+  manuscript,
+}: {
+  manuscript: ManuscriptLineDisplay
+}): JSX.Element {
+  return (
+    <tr>
+      <td>
+        <span className="chapter-display__manuscripts-siglum">
+          {manuscript.siglum}
+        </span>
+      </td>
+      <td>
+        <span className="chapter-display__manuscripts-labels">
+          {manuscript.labels.join(' ')}{' '}
+          {manuscript.number !== null &&
+            `${lineNumberToString(manuscript.number)}.`}
+        </span>
+      </td>
+      <td>
+        <LineTokens content={manuscript.line.content} />
+      </td>
+    </tr>
+  )
+}
+
 const Manuscripts = withData<
   { colSpan: number },
   {
@@ -109,23 +135,7 @@ const Manuscripts = withData<
           {line.variants
             .flatMap((variant) => variant.manuscripts)
             .map((manuscript, index) => (
-              <tr key={index}>
-                <td>
-                  <span className="chapter-display__manuscripts-siglum">
-                    {manuscript.siglum}
-                  </span>
-                </td>
-                <td>
-                  <span className="chapter-display__manuscripts-labels">
-                    {manuscript.labels.join(' ')}{' '}
-                    {manuscript.number !== null &&
-                      `${lineNumberToString(manuscript.number)}.`}
-                  </span>
-                </td>
-                <td>
-                  <LineTokens content={manuscript.line.content} />
-                </td>
-              </tr>
+              <Manuscript manuscript={manuscript} key={index} />
             ))}
         </table>
       </td>
