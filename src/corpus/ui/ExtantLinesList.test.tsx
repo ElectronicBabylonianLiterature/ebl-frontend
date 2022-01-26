@@ -32,7 +32,7 @@ beforeEach(() => {
 })
 
 test('Shows label.', () => {
-  expect(screen.getByText(/^o /)).toBeVisible()
+  expect(screen.getByText(/^o: /)).toBeVisible()
 })
 
 test('Uses long dash for ranges.', () => {
