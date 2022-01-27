@@ -6,8 +6,8 @@ import { Provenance } from './provenance'
 import { Period, PeriodModifier } from './period'
 import { ManuscriptType } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
-import { NoteLine } from 'transliteration/domain/note-line'
-import { isTextLine } from 'transliteration/domain/type-guards'
+import { isDollarLine, isTextLine } from 'transliteration/domain/type-guards'
+import { AbstractLine } from 'transliteration/domain/abstract-line'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -20,7 +20,7 @@ export class ManuscriptLineDisplay {
     readonly siglumDisambiguator: string,
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
-    readonly paratext: readonly (DollarLine | NoteLine)[]
+    private readonly paratext: readonly AbstractLine[]
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {
@@ -34,6 +34,10 @@ export class ManuscriptLineDisplay {
       this.type.abbreviation,
       this.siglumDisambiguator,
     ].join('')
+  }
+
+  get dollarLines(): DollarLine[] {
+    return this.paratext.filter(isDollarLine)
   }
 }
 
