@@ -39,6 +39,7 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
 
 const word: Word = {
   guideWord: '',
+  arabicGuideWord: '',
   homonym: '',
   lemma: [],
   oraccWords: [],

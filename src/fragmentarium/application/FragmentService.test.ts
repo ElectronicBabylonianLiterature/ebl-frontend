@@ -43,6 +43,7 @@ const word: Word = {
   lemma: ['aklu'],
   homonym: 'I',
   guideWord: 'test',
+  arabicGuideWord: 'test',
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
   pos: [],

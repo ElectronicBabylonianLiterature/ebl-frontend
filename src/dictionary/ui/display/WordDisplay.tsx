@@ -58,6 +58,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
                 {word.attested === false && '*'} {word.homonym}
               </strong>
               , &ldquo;{word.guideWord}&rdquo;
+              {word.arabicGuideWord.length > 0 && <> {word.arabicGuideWord}</>}
             </Col>
 
             {word.pos.length > 0 && (

@@ -49,6 +49,7 @@ const word = {
   pos: ['MOD', 'PRP'],
   source: '**source**',
   guideWord: 'fe',
+  arabicGuideWord: 'fe',
   oraccWords: [
     {
       lemma: 'serbig',
