@@ -152,6 +152,19 @@ export default class FakeApi {
     return this
   }
 
+  expectLineDetails(id: ChapterId, line: number, lineDetails: Dto): FakeApi {
+    this.expectations.push(
+      new Expectation({
+        method: 'GET',
+        path: `${createChapterUrl(id)}/lines/${line}`,
+        authenticate: true,
+        response: lineDetails,
+        verify: true,
+      })
+    )
+    return this
+  }
+
   expectManuscripts(id: ChapterId, manuscriptsDto: Dto[]): FakeApi {
     this.expectations.push(
       new Expectation({

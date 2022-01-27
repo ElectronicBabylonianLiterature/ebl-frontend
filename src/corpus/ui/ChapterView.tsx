@@ -115,6 +115,13 @@ function Manuscript({
       <td>
         <LineTokens content={manuscript.line.content} />
       </td>
+      <td>
+        <span className="chapter-display__manuscripts-paratext">
+          {manuscript.dollarLines
+            .map((dollarLine) => dollarLine.displayValue)
+            .join(' ')}
+        </span>
+      </td>
     </tr>
   )
 }

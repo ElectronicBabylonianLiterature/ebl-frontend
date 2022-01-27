@@ -321,17 +321,95 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           <td
             colspan="4"
           >
-            <div
-              class="text-center my-5"
+            <table
+              class="chapter-display__manuscripts"
             >
-              <span
-                aria-hidden="true"
-                aria-label="Spinner"
-                class="mr-2 spinner-border spinner-border-sm"
-                role="status"
-              />
-               Loading...
-            </div>
+              <tr>
+                <td>
+                  <span
+                    class="chapter-display__manuscripts-siglum"
+                  >
+                    NipUr3Sch1
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="chapter-display__manuscripts-labels"
+                  >
+                    o
+                     
+                    10.
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                  >
+                    …
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="chapter-display__manuscripts-paratext"
+                  >
+                    (single ruling)
+                  </span>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>

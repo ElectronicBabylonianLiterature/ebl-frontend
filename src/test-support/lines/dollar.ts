@@ -2,11 +2,12 @@ import {
   ImageDollarLine,
   LooseDollarLine,
   RulingDollarLine,
+  RulingDollarLineDto,
   SealDollarLine,
   StateDollarLine,
 } from 'transliteration/domain/dollar-lines'
 
-export const singleRuling: RulingDollarLine = new RulingDollarLine({
+export const singleRulingDto: RulingDollarLineDto = {
   prefix: '$',
   content: [
     {
@@ -21,7 +22,11 @@ export const singleRuling: RulingDollarLine = new RulingDollarLine({
   status: null,
   displayValue: 'single ruling',
   type: 'RulingDollarLine',
-})
+}
+
+export const singleRuling: RulingDollarLine = new RulingDollarLine(
+  singleRulingDto
+)
 
 export const doubleRuling: RulingDollarLine = new RulingDollarLine({
   prefix: '$',

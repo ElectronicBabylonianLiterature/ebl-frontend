@@ -9,6 +9,8 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'corpus/domain/text'
 import { textDto } from 'test-support/test-corpus-text'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { lines } from 'test-support/test-fragment'
+import { singleRulingDto } from 'test-support/lines/dollar'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -48,8 +50,27 @@ describe('Diplay chapter', () => {
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
-  test('Show manuscripts', () => {
+  test('Show manuscripts', async () => {
+    fakeApi.expectLineDetails(chapter.id, 0, {
+      variants: [
+        {
+          manuscripts: [
+            {
+              provenance: 'Nippur',
+              periodModifier: 'Early',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              type: 'School',
+              labels: ['o'],
+              line: lines[0],
+              paratext: [singleRulingDto],
+            },
+          ],
+        },
+      ],
+    })
     appDriver.click(lineNumberToString(chapter.lines[0].number))
+    await appDriver.waitForText(/single ruling/)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
