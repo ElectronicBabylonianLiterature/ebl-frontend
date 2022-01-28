@@ -46,6 +46,13 @@ test.each([
 })
 
 test.each([
+  [manuscriptLineDisplay.build(), false],
+  [manuscriptLineDisplay.parallelText().build(), true],
+])('isStandardText', (line, expected) => {
+  expect(line.isParallelText).toEqual(expected)
+})
+
+test.each([
   [[], []],
   [[note], []],
   [[singleRuling], [singleRuling]],

@@ -4,7 +4,7 @@ import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Provenance, Provenances } from './provenance'
 import { Period, PeriodModifier } from './period'
-import { ManuscriptType } from './manuscript'
+import { ManuscriptType, ManuscriptTypes } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import { isDollarLine, isTextLine } from 'transliteration/domain/type-guards'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
@@ -38,6 +38,10 @@ export class ManuscriptLineDisplay {
 
   get isStandardText(): boolean {
     return this.provenance === Provenances['Standard Text']
+  }
+
+  get isParallelText(): boolean {
+    return this.type === ManuscriptTypes.Parallel
   }
 
   get dollarLines(): DollarLine[] {

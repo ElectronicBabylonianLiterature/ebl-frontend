@@ -108,6 +108,7 @@ function Manuscript({
     >
       <td>
         <span className="chapter-display__manuscript-siglum">
+          {manuscript.isParallelText && '// '}
           {manuscript.siglum}
         </span>
       </td>

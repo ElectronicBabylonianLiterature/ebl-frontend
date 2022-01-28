@@ -24,6 +24,12 @@ class ManuscriptLineDisplayFactory extends Factory<
       type: ManuscriptTypes.None,
     })
   }
+
+  parallelText() {
+    return this.associations({
+      type: ManuscriptTypes.Parallel,
+    })
+  }
 }
 
 export const manuscriptLineDisplay = ManuscriptLineDisplayFactory.define(
@@ -40,7 +46,11 @@ export const manuscriptLineDisplay = ManuscriptLineDisplayFactory.define(
         chance.pickone(_.without(Object.values(Periods), Periods.None)),
       associations.type ??
         chance.pickone(
-          _.without(Object.values(ManuscriptTypes), ManuscriptTypes.None)
+          _.without(
+            Object.values(ManuscriptTypes),
+            ManuscriptTypes.None,
+            ManuscriptTypes.Parallel
+          )
         ),
       chance.word(),
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
