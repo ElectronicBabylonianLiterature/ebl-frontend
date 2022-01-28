@@ -1,14 +1,15 @@
-import _ from 'lodash'
 import Chance from 'chance'
-import { Factory } from 'fishery'
+import _ from 'lodash'
 
+import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
-import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
-import textLine from './lines/text-line'
-import note from './lines/note'
+import { Factory } from 'fishery'
+import { EmptyLine } from 'transliteration/domain/line'
 import { singleRuling } from './lines/dollar'
+import note from './lines/note'
+import textLine from './lines/text-line'
 
 const defaultChance = new Chance()
 
@@ -30,9 +31,15 @@ class ManuscriptLineDisplayFactory extends Factory<
       type: ManuscriptTypes.Parallel,
     })
   }
+
+  empty() {
+    return this.associations({
+      line: new EmptyLine(),
+    })
+  }
 }
 
-export const manuscriptLineDisplay = ManuscriptLineDisplayFactory.define(
+export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
   ({ associations, transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return new ManuscriptLineDisplay(

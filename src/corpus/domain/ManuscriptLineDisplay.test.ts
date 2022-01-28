@@ -5,7 +5,7 @@ import { ManuscriptTypes } from './manuscript'
 import { PeriodModifiers, Periods } from './period'
 import { Provenances } from './provenance'
 import textLine from 'test-support/lines/text-line'
-import { manuscriptLineDisplay } from 'test-support/line-details-fixtures'
+import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures'
 
 test('constructor', () => {
   const provenance = Provenances.Assyria
@@ -39,15 +39,15 @@ test('constructor', () => {
 })
 
 test.each([
-  [manuscriptLineDisplay.build(), false],
-  [manuscriptLineDisplay.standardText().build(), true],
+  [manuscriptLineDisplayFactory.build(), false],
+  [manuscriptLineDisplayFactory.standardText().build(), true],
 ])('isStandardText', (line, expected) => {
   expect(line.isStandardText).toEqual(expected)
 })
 
 test.each([
-  [manuscriptLineDisplay.build(), false],
-  [manuscriptLineDisplay.parallelText().build(), true],
+  [manuscriptLineDisplayFactory.build(), false],
+  [manuscriptLineDisplayFactory.parallelText().build(), true],
 ])('isStandardText', (line, expected) => {
   expect(line.isParallelText).toEqual(expected)
 })
@@ -62,6 +62,9 @@ test.each([
     [singleRuling, singleRuling],
   ],
 ])('dollarLines %s', (paratext, expected) => {
-  const line = manuscriptLineDisplay.build({}, { associations: { paratext } })
+  const line = manuscriptLineDisplayFactory.build(
+    {},
+    { associations: { paratext } }
+  )
   expect(line.dollarLines).toEqual(expected)
 })

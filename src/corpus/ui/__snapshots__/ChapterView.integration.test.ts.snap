@@ -325,13 +325,13 @@ exports[`Diplay chapter Show manuscripts 1`] = `
               class="chapter-display__manuscripts"
             >
               <tr
-                class="chapter-display__manuscript"
+                class="chapter-display__manuscript chapter-display__manuscript--standard"
               >
                 <td>
                   <span
                     class="chapter-display__manuscript-siglum"
                   >
-                    NipUr3Sch1
+                    Std1
                   </span>
                 </td>
                 <td>
@@ -409,6 +409,117 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                   >
                     (single ruling)
                   </span>
+                </td>
+              </tr>
+              <tr
+                class="chapter-display__manuscript"
+              >
+                <td>
+                  <span
+                    class="chapter-display__manuscript-siglum"
+                  >
+                    // 
+                    NipUr3Par1
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="chapter-display__manuscript-labels"
+                  >
+                    
+                     
+                    10.
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                  >
+                    …
+                  </span>
+                  <span
+                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                  >
+                     
+                  </span>
+                  <span
+                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  >
+                    <span
+                      class=""
+                    />
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="chapter-display__manuscript-paratext"
+                  />
+                </td>
+              </tr>
+              <tr
+                class="chapter-display__manuscript"
+              >
+                <td>
+                  <span
+                    class="chapter-display__manuscript-siglum"
+                  >
+                    NipUr3Sch1
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="chapter-display__manuscript-labels"
+                  >
+                    
+                     
+                  </span>
+                </td>
+                <td />
+                <td>
+                  <span
+                    class="chapter-display__manuscript-paratext"
+                  />
                 </td>
               </tr>
             </table>

@@ -15,6 +15,7 @@ import { singleRulingDto } from 'test-support/lines/dollar'
 const chance = new Chance('chapter-view-integration-test')
 
 chapterDisplayFactory.rewindSequence()
+
 const chapter = chapterDisplayFactory.build(
   {
     id: {
@@ -56,14 +57,34 @@ describe('Diplay chapter', () => {
         {
           manuscripts: [
             {
+              provenance: 'Standard Text',
+              periodModifier: 'None',
+              period: 'None',
+              siglumDisambiguator: '1',
+              type: 'None',
+              labels: ['o'],
+              line: lines[0],
+              paratext: [singleRulingDto],
+            },
+            {
               provenance: 'Nippur',
               periodModifier: 'Early',
               period: 'Ur III',
               siglumDisambiguator: '1',
-              type: 'School',
-              labels: ['o'],
+              type: 'Parallel',
+              labels: [''],
               line: lines[0],
-              paratext: [singleRulingDto],
+              paratext: [],
+            },
+            {
+              provenance: 'Nippur',
+              periodModifier: 'None',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              type: 'School',
+              labels: [''],
+              line: { type: 'EmptyLine', content: [], prefix: '' },
+              paratext: [],
             },
           ],
         },
