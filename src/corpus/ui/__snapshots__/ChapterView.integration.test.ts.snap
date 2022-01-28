@@ -324,17 +324,19 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             <table
               class="chapter-display__manuscripts"
             >
-              <tr>
+              <tr
+                class="chapter-display__manuscript"
+              >
                 <td>
                   <span
-                    class="chapter-display__manuscripts-siglum"
+                    class="chapter-display__manuscript-siglum"
                   >
                     NipUr3Sch1
                   </span>
                 </td>
                 <td>
                   <span
-                    class="chapter-display__manuscripts-labels"
+                    class="chapter-display__manuscript-labels"
                   >
                     o
                      
@@ -403,7 +405,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 </td>
                 <td>
                   <span
-                    class="chapter-display__manuscripts-paratext"
+                    class="chapter-display__manuscript-paratext"
                   >
                     (single ruling)
                   </span>

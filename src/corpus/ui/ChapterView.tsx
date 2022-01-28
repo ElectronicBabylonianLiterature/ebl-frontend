@@ -27,6 +27,7 @@ import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 
 import './ChapterView.sass'
+import classnames from 'classnames'
 
 interface Props {
   chapter: ChapterDisplay
@@ -99,14 +100,19 @@ function Manuscript({
   manuscript: ManuscriptLineDisplay
 }): JSX.Element {
   return (
-    <tr>
+    <tr
+      className={classnames({
+        'chapter-display__manuscript': true,
+        'chapter-display__manuscript--standard': manuscript.isStandardText,
+      })}
+    >
       <td>
-        <span className="chapter-display__manuscripts-siglum">
+        <span className="chapter-display__manuscript-siglum">
           {manuscript.siglum}
         </span>
       </td>
       <td>
-        <span className="chapter-display__manuscripts-labels">
+        <span className="chapter-display__manuscript-labels">
           {manuscript.labels.join(' ')}{' '}
           {manuscript.number !== null &&
             `${lineNumberToString(manuscript.number)}.`}
@@ -116,7 +122,7 @@ function Manuscript({
         <LineTokens content={manuscript.line.content} />
       </td>
       <td>
-        <span className="chapter-display__manuscripts-paratext">
+        <span className="chapter-display__manuscript-paratext">
           {manuscript.dollarLines
             .map((dollarLine) => dollarLine.displayValue)
             .join(' ')}

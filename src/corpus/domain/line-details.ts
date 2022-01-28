@@ -2,7 +2,7 @@ import { immerable } from 'immer'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
-import { Provenance } from './provenance'
+import { Provenance, Provenances } from './provenance'
 import { Period, PeriodModifier } from './period'
 import { ManuscriptType } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
@@ -20,7 +20,7 @@ export class ManuscriptLineDisplay {
     readonly siglumDisambiguator: string,
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
-    private readonly paratext: readonly AbstractLine[]
+    readonly paratext: readonly AbstractLine[]
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {
@@ -34,6 +34,10 @@ export class ManuscriptLineDisplay {
       this.type.abbreviation,
       this.siglumDisambiguator,
     ].join('')
+  }
+
+  get isStandardText(): boolean {
+    return this.provenance === Provenances['Standard Text']
   }
 
   get dollarLines(): DollarLine[] {
