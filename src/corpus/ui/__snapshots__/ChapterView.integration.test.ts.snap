@@ -324,213 +324,215 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             <table
               class="chapter-display__manuscripts"
             >
-              <tr
-                class="chapter-display__manuscript chapter-display__manuscript--standard"
-              >
-                <td>
-                  <span
-                    class="chapter-display__manuscript-siglum"
-                  >
-                    Std1
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class="chapter-display__manuscript-labels"
-                  >
-                    o
-                     
-                    10.
-                  </span>
-                </td>
-                <td
-                  colspan="1"
+              <tbody>
+                <tr
+                  class="chapter-display__manuscript chapter-display__manuscript--standard"
                 >
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-siglum"
+                    >
+                      Std1
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-labels"
+                    >
+                      o
+                       
+                      10.
+                    </span>
+                  </td>
+                  <td
+                    colspan="1"
                   >
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
-                  >
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
-                  >
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
-                  >
-                    …
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
-                  >
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
                     <span
-                      class=""
-                    />
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class="chapter-display__manuscript-paratext"
-                  >
-                    (single ruling)
-                  </span>
-                </td>
-                <td />
-              </tr>
-              <tr
-                class="chapter-display__manuscript"
-              >
-                <td>
-                  <span
-                    class="chapter-display__manuscript-siglum"
-                  >
-                    // 
-                    NipUr3Par1
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class="chapter-display__manuscript-labels"
-                  >
-                    
-                     
-                    10.
-                  </span>
-                </td>
-                <td
-                  colspan="1"
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                    >
+                      …
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-paratext"
+                    >
+                      (single ruling)
+                    </span>
+                  </td>
+                  <td />
+                </tr>
+                <tr
+                  class="chapter-display__manuscript"
                 >
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-siglum"
+                    >
+                      // 
+                      NipUr3Par1
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-labels"
+                    >
+                      
+                       
+                      10.
+                    </span>
+                  </td>
+                  <td
+                    colspan="1"
                   >
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
-                  >
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
-                  >
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
                     <span
-                      class=""
-                    />
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
-                  >
-                    …
-                  </span>
-                  <span
-                    class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                  >
-                     
-                  </span>
-                  <span
-                    class="Transliteration__Word Transliteration__Word--AKKADIAN"
-                  >
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
                     <span
-                      class=""
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                    >
+                      …
+                    </span>
+                    <span
+                      class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                    >
+                       
+                    </span>
+                    <span
+                      class="Transliteration__Word Transliteration__Word--AKKADIAN"
+                    >
+                      <span
+                        class=""
+                      />
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-paratext"
                     />
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class="chapter-display__manuscript-paratext"
+                  </td>
+                  <td />
+                </tr>
+                <tr
+                  class="chapter-display__manuscript"
+                >
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-siglum"
+                    >
+                      NipUr3Sch1
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-labels"
+                    >
+                      
+                       
+                    </span>
+                  </td>
+                  <td
+                    colspan="1"
                   />
-                </td>
-                <td />
-              </tr>
-              <tr
-                class="chapter-display__manuscript"
-              >
-                <td>
-                  <span
-                    class="chapter-display__manuscript-siglum"
-                  >
-                    NipUr3Sch1
-                  </span>
-                </td>
-                <td>
-                  <span
-                    class="chapter-display__manuscript-labels"
-                  >
-                    
-                     
-                  </span>
-                </td>
-                <td
-                  colspan="1"
-                />
-                <td>
-                  <span
-                    class="chapter-display__manuscript-paratext"
-                  />
-                </td>
-                <td />
-              </tr>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-paratext"
+                    />
+                  </td>
+                  <td />
+                </tr>
+              </tbody>
             </table>
           </td>
         </tr>

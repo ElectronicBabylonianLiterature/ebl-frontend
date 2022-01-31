@@ -136,15 +136,17 @@ const Manuscripts = withData<
 >(
   ({ data: line }): JSX.Element => (
     <table className="chapter-display__manuscripts">
-      {line.variants
-        .flatMap((variant) => variant.manuscripts)
-        .map((manuscript, index) => (
-          <Manuscript
-            manuscript={manuscript}
-            key={index}
-            maxColumns={line.numberOfColumns}
-          />
-        ))}
+      <tbody>
+        {line.variants
+          .flatMap((variant) => variant.manuscripts)
+          .map((manuscript, index) => (
+            <Manuscript
+              manuscript={manuscript}
+              key={index}
+              maxColumns={line.numberOfColumns}
+            />
+          ))}
+      </tbody>
     </table>
   ),
   ({ id, lineNumber, textService }) =>
