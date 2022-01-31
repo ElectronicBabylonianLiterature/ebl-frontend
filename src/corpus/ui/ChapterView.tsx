@@ -103,17 +103,15 @@ function ChapterView({
       <table className="chapter-display">
         <tbody>
           {chapter.lines.map((line, index) => (
-            <>
-              <ChapterViewLine
-                key={index}
-                line={line}
-                columns={columns[index]}
-                maxColumns={maxColumns_}
-                chapter={chapter}
-                lineNumber={index}
-                textService={textService}
-              />
-            </>
+            <ChapterViewLine
+              key={index}
+              line={line}
+              columns={columns[index]}
+              maxColumns={maxColumns_}
+              chapter={chapter}
+              lineNumber={index}
+              textService={textService}
+            />
           ))}
         </tbody>
       </table>

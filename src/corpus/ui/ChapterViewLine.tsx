@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import _ from 'lodash'
 import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
 import { LineColumns, LineTokens } from 'transliteration/ui/line-tokens'
@@ -9,6 +10,7 @@ import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
 
 function InterText({
   line,
@@ -85,6 +87,31 @@ function Manuscript({
             .map((dollarLine) => dollarLine.displayValue)
             .join(' ')}
         </span>
+      </td>
+      <td>
+        {manuscript.hasNotes && (
+          <OverlayTrigger
+            rootClose
+            overlay={
+              <Popover
+                id={_.uniqueId('ManuscriptLineNotesPopOver-')}
+                className=""
+              >
+                <Popover.Content>
+                  <ol className="chapter-display__manuscript-notes">
+                    {manuscript.noteLines.map((note, index) => (
+                      <Markup key={index} container="li" parts={note.parts} />
+                    ))}
+                  </ol>
+                </Popover.Content>
+              </Popover>
+            }
+            trigger={['click']}
+            placement="top"
+          >
+            <i className="fas fa-info-circle chapter-display__manuscript-info-toggle"></i>
+          </OverlayTrigger>
+        )}
       </td>
     </tr>
   )

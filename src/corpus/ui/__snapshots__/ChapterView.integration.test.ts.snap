@@ -410,6 +410,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     (single ruling)
                   </span>
                 </td>
+                <td />
               </tr>
               <tr
                 class="chapter-display__manuscript"
@@ -496,6 +497,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     class="chapter-display__manuscript-paratext"
                   />
                 </td>
+                <td />
               </tr>
               <tr
                 class="chapter-display__manuscript"
@@ -521,6 +523,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     class="chapter-display__manuscript-paratext"
                   />
                 </td>
+                <td />
               </tr>
             </table>
           </td>
