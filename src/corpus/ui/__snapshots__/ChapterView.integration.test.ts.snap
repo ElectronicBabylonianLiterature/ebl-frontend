@@ -343,7 +343,9 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     10.
                   </span>
                 </td>
-                <td>
+                <td
+                  colspan="1"
+                >
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                   >
@@ -432,7 +434,9 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     10.
                   </span>
                 </td>
-                <td>
+                <td
+                  colspan="1"
+                >
                   <span
                     class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
                   >
@@ -517,7 +521,9 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                      
                   </span>
                 </td>
-                <td />
+                <td
+                  colspan="1"
+                />
                 <td>
                   <span
                     class="chapter-display__manuscript-paratext"

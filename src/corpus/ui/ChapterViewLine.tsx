@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
-import { LineColumns, LineTokens } from 'transliteration/ui/line-tokens'
+import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
@@ -11,6 +11,7 @@ import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { isTextLine } from 'transliteration/domain/type-guards'
 
 function InterText({
   line,
@@ -55,8 +56,10 @@ function Translation({ line }: { line: LineDisplay }): JSX.Element {
 
 function Manuscript({
   manuscript,
+  maxColumns,
 }: {
   manuscript: ManuscriptLineDisplay
+  maxColumns: number
 }): JSX.Element {
   return (
     <tr
@@ -78,9 +81,14 @@ function Manuscript({
             `${lineNumberToString(manuscript.number)}.`}
         </span>
       </td>
-      <td>
-        <LineTokens content={manuscript.line.content} />
-      </td>
+      {isTextLine(manuscript.line) ? (
+        <LineColumns
+          columns={manuscript.line.columns}
+          maxColumns={maxColumns}
+        />
+      ) : (
+        <td colSpan={maxColumns}></td>
+      )}
       <td>
         <span className="chapter-display__manuscript-paratext">
           {manuscript.dollarLines
@@ -131,7 +139,11 @@ const Manuscripts = withData<
       {line.variants
         .flatMap((variant) => variant.manuscripts)
         .map((manuscript, index) => (
-          <Manuscript manuscript={manuscript} key={index} />
+          <Manuscript
+            manuscript={manuscript}
+            key={index}
+            maxColumns={line.numberOfColumns}
+          />
         ))}
     </table>
   ),
