@@ -72,4 +72,15 @@ export class LineDetails {
   readonly [immerable] = true
 
   constructor(readonly variants: readonly LineVariantDisplay[]) {}
+
+  get numberOfColumns(): number {
+    return Math.max(
+      1,
+      ...this.variants
+        .flatMap((variant) => variant.manuscripts)
+        .map((manuscript) => manuscript.line)
+        .filter(isTextLine)
+        .map((line) => line.numberOfColumns)
+    )
+  }
 }
