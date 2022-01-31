@@ -6,8 +6,13 @@ import { Provenance, Provenances } from './provenance'
 import { Period, PeriodModifier } from './period'
 import { ManuscriptType, ManuscriptTypes } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
-import { isDollarLine, isTextLine } from 'transliteration/domain/type-guards'
+import {
+  isDollarLine,
+  isNoteLine,
+  isTextLine,
+} from 'transliteration/domain/type-guards'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -46,6 +51,14 @@ export class ManuscriptLineDisplay {
 
   get dollarLines(): DollarLine[] {
     return this.paratext.filter(isDollarLine)
+  }
+
+  get noteLines(): NoteLine[] {
+    return this.paratext.filter(isNoteLine)
+  }
+
+  get hasNotes(): boolean {
+    return this.noteLines.length > 0
   }
 }
 

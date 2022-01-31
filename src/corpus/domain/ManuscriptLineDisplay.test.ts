@@ -52,19 +52,20 @@ test.each([
   expect(line.isParallelText).toEqual(expected)
 })
 
-test.each([
+describe.each([
   [[], []],
-  [[note], []],
-  [[singleRuling], [singleRuling]],
-  [[note, singleRuling], [singleRuling]],
-  [
-    [singleRuling, singleRuling],
-    [singleRuling, singleRuling],
-  ],
-])('dollarLines %s', (paratext, expected) => {
+  [[], [note]],
+  [[singleRuling], []],
+  [[singleRuling], [note]],
+  [[singleRuling, singleRuling], []],
+  [[], [note, note]],
+])('paratext %s', (dollarLines, noteLines) => {
   const line = manuscriptLineDisplayFactory.build(
     {},
-    { associations: { paratext } }
+    { associations: { paratext: [...dollarLines, ...noteLines] } }
   )
-  expect(line.dollarLines).toEqual(expected)
+  test('dollarLines', () => expect(line.dollarLines).toEqual(dollarLines))
+  test('hasNotelines', () =>
+    expect(line.hasNotes).toEqual(noteLines.length > 0))
+  test('noteLines', () => expect(line.noteLines).toEqual(noteLines))
 })
