@@ -3,26 +3,20 @@ import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
 import { SectionCrumb } from 'common/Breadcrumbs'
-import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
+import { ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
 import withData from 'http/withData'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import GenreCrumb from './GenreCrumb'
 import { ChapterTitle } from './chapter-title'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { LineColumns } from 'transliteration/ui/line-tokens'
-import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
-import {
-  createColumns,
-  maxColumns,
-  TextLineColumn,
-} from 'transliteration/domain/columns'
+import { createColumns, maxColumns } from 'transliteration/domain/columns'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import SessionContext from 'auth/SessionContext'
-import classNames from 'classnames'
 import ChapterCrumb from './ChapterCrumb'
 import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
+import TextService from 'corpus/application/TextService'
+import { ChapterViewLine } from './ChapterViewLine'
 
 import './ChapterView.sass'
 
@@ -46,76 +40,6 @@ function Title({ chapter }: Props): JSX.Element {
           }}
         />
       </small>
-    </>
-  )
-}
-
-function InterText({
-  line,
-  colSpan,
-}: {
-  line: LineDisplay
-  colSpan: number
-}): JSX.Element {
-  return (
-    <>
-      {line.intertext.length > 0 && (
-        <tr>
-          <td colSpan={colSpan} className="chapter-display__intertext">
-            (<Markup container="span" parts={line.intertext} />)
-          </td>
-        </tr>
-      )}
-    </>
-  )
-}
-
-function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
-  return (
-    <td className="chapter-display__line-number">
-      {lineNumberToString(line.number)}
-    </td>
-  )
-}
-
-function Translation({ line }: { line: LineDisplay }): JSX.Element {
-  return line.translation.length > 0 ? (
-    <>
-      <LineNumber line={line} />
-      <td className="chapter-display__translation">
-        <Markup parts={line.translation} />
-      </td>
-    </>
-  ) : (
-    <td colSpan={2} />
-  )
-}
-
-function Line({
-  line,
-  columns,
-  maxColumns,
-}: {
-  line: LineDisplay
-  columns: readonly TextLineColumn[]
-  maxColumns: number
-}): JSX.Element {
-  return (
-    <>
-      <InterText line={line} colSpan={maxColumns + 3} />
-      <tr
-        className={classNames({
-          'chapter-display__line': true,
-          'chapter-display__line--is-second-line-of-parallelism':
-            line.isSecondLineOfParallelism,
-          'chapter-display__line--is-beginning-of-section':
-            line.isBeginningOfSection,
-        })}
-      >
-        <LineNumber line={line} />
-        <LineColumns columns={columns} maxColumns={maxColumns} />
-        <Translation line={line} />
-      </tr>
     </>
   )
 }
@@ -146,7 +70,11 @@ function EditChapterButton({
   )
 }
 
-function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
+function ChapterView({
+  chapter,
+  text,
+  textService,
+}: Props & { text: Text; textService: TextService }): JSX.Element {
   const columns = chapter.lines.map((line) =>
     createColumns(line.reconstruction)
   )
@@ -175,11 +103,14 @@ function ChapterView({ chapter, text }: Props & { text: Text }): JSX.Element {
       <table className="chapter-display">
         <tbody>
           {chapter.lines.map((line, index) => (
-            <Line
+            <ChapterViewLine
               key={index}
               line={line}
               columns={columns[index]}
               maxColumns={maxColumns_}
+              chapter={chapter}
+              lineNumber={index}
+              textService={textService}
             />
           ))}
         </tbody>

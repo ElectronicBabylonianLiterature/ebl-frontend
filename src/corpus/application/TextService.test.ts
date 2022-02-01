@@ -16,12 +16,21 @@ import Word from 'dictionary/domain/Word'
 import ApiClient from 'http/ApiClient'
 import produce, { castDraft } from 'immer'
 import { createLine, EditStatus } from 'corpus/domain/line'
-import { fragment, fragmentDto } from 'test-support/test-fragment'
+import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
+import {
+  LineDetails,
+  LineVariantDisplay,
+  ManuscriptLineDisplay,
+} from 'corpus/domain/line-details'
+import { TextLine } from 'transliteration/domain/text-line'
+import { ManuscriptTypes } from 'corpus/domain/manuscript'
+import { PeriodModifiers, Periods } from 'corpus/domain/period'
+import { Provenances } from 'corpus/domain/provenance'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -250,6 +259,44 @@ const testData: TestData[] = [
     chapterDisplay,
     [`${chapterUrl}/display`, true],
     Bluebird.resolve(chapterDisplay),
+  ],
+  [
+    'findChapterLine',
+    [chapterId, 0],
+    apiClient.fetchJson,
+    new LineDetails([
+      new LineVariantDisplay([
+        new ManuscriptLineDisplay(
+          Provenances.Nippur,
+          PeriodModifiers['Early'],
+          Periods['Ur III'],
+          ManuscriptTypes.School,
+          '1',
+          ['o'],
+          new TextLine(lines[0]),
+          []
+        ),
+      ]),
+    ]),
+    [`${chapterUrl}/lines/0`, true],
+    Bluebird.resolve({
+      variants: [
+        {
+          manuscripts: [
+            {
+              provenance: 'Nippur',
+              periodModifier: 'Early',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              type: 'School',
+              labels: ['o'],
+              line: lines[0],
+              paratext: [],
+            },
+          ],
+        },
+      ],
+    }),
   ],
   [
     'findColophons',

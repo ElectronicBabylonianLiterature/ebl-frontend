@@ -1,18 +1,27 @@
 import Bluebird from 'bluebird'
+import produce, { castDraft } from 'immer'
 import _ from 'lodash'
 import { stringify } from 'query-string'
+
+import BibliographyService from 'bibliography/application/BibliographyService'
 import { ChapterAlignment } from 'corpus/domain/alignment'
+import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
+import { ExtantLines } from 'corpus/domain/extant-lines'
 import {
   ChapterLemmatization,
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { Text, TextId } from 'corpus/domain/text'
-import { Chapter, ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
+import { LineDetails, LineVariantDisplay } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
+import { Text, TextId } from 'corpus/domain/text'
+import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import WordService from 'dictionary/application/WordService'
 import FragmentService from 'fragmentarium/application/FragmentService'
 import { AbstractLemmatizationFactory } from 'fragmentarium/application/LemmatizationFactory'
+import ApiClient from 'http/ApiClient'
+import ReferenceInjector from 'transliteration/application/ReferenceInjector'
 import {
   LemmatizationToken,
   UniqueLemma,
@@ -20,22 +29,17 @@ import {
 import { Token } from 'transliteration/domain/token'
 import {
   fromChapterDto,
-  fromSiglumAndTransliterationDto,
   fromDto,
+  fromLineDetailsDto,
   fromLineDto,
+  fromManuscriptDto,
+  fromSiglumAndTransliterationDto,
   toAlignmentDto,
   toLemmatizationDto,
   toLinesDto,
   toManuscriptsDto,
-  fromManuscriptDto,
 } from './dtos'
-import ApiClient from 'http/ApiClient'
-import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
-import ReferenceInjector from 'transliteration/application/ReferenceInjector'
-import BibliographyService from 'bibliography/application/BibliographyService'
-import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import produce, { castDraft } from 'immer'
-import { ExtantLines } from 'corpus/domain/extant-lines'
+import { isNoteLine } from 'transliteration/domain/type-guards'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -178,6 +182,41 @@ export default class TextService {
           ...chapter,
           lines,
         }))
+      )
+  }
+
+  findChapterLine(id: ChapterId, number: number): Bluebird<LineDetails> {
+    return this.apiClient
+      .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
+      .then(fromLineDetailsDto)
+      .then((line) =>
+        Bluebird.all(
+          line.variants.map((variant) =>
+            Bluebird.all(
+              variant.manuscripts.map((manuscript) =>
+                Bluebird.all(
+                  manuscript.paratext.map((line) => {
+                    if (isNoteLine(line)) {
+                      return this.referenceInjector
+                        .injectReferencesToMarkup(line.parts)
+                        .then((parts) =>
+                          produce(line, (draft) => {
+                            draft.parts = castDraft(parts)
+                          })
+                        )
+                    } else {
+                      return line
+                    }
+                  })
+                ).then((paratext) =>
+                  produce(manuscript, (draft) => {
+                    draft.paratext = castDraft(paratext)
+                  })
+                )
+              )
+            ).then((manuscripts) => new LineVariantDisplay(manuscripts))
+          )
+        ).then((variants) => new LineDetails(variants))
       )
   }
 

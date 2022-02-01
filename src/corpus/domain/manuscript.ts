@@ -95,8 +95,8 @@ export class Manuscript {
 }
 
 export function compareManuscripts(
-  first: Manuscript,
-  second: Manuscript
+  first: Pick<Manuscript, 'provenance' | 'type'>,
+  second: Pick<Manuscript, 'provenance' | 'type'>
 ): number {
   return (
     compareStandardText(first.provenance, second.provenance) ||

@@ -8,10 +8,14 @@ import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'corpus/domain/text'
 import { textDto } from 'test-support/test-corpus-text'
+import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { lines } from 'test-support/test-fragment'
+import { singleRulingDto } from 'test-support/lines/dollar'
 
 const chance = new Chance('chapter-view-integration-test')
 
 chapterDisplayFactory.rewindSequence()
+
 const chapter = chapterDisplayFactory.build(
   {
     id: {
@@ -44,6 +48,50 @@ describe('Diplay chapter', () => {
   })
 
   test('Snapshot', () => {
+    expect(appDriver.getView().container).toMatchSnapshot()
+  })
+
+  test('Show manuscripts', async () => {
+    fakeApi.expectLineDetails(chapter.id, 0, {
+      variants: [
+        {
+          manuscripts: [
+            {
+              provenance: 'Standard Text',
+              periodModifier: 'None',
+              period: 'None',
+              siglumDisambiguator: '1',
+              type: 'None',
+              labels: ['o'],
+              line: lines[0],
+              paratext: [singleRulingDto],
+            },
+            {
+              provenance: 'Nippur',
+              periodModifier: 'Early',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              type: 'Parallel',
+              labels: [''],
+              line: lines[0],
+              paratext: [],
+            },
+            {
+              provenance: 'Nippur',
+              periodModifier: 'None',
+              period: 'Ur III',
+              siglumDisambiguator: '1',
+              type: 'School',
+              labels: [''],
+              line: { type: 'EmptyLine', content: [], prefix: '' },
+              paratext: [],
+            },
+          ],
+        },
+      ],
+    })
+    appDriver.click(lineNumberToString(chapter.lines[0].number))
+    await appDriver.waitForText(/single ruling/)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })

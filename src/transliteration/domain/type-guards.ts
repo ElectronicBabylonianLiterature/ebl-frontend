@@ -26,6 +26,7 @@ import {
 } from 'transliteration/domain/token'
 import { AbstractLine } from './abstract-line'
 import { EmptyLine } from 'transliteration/domain/line'
+import { DollarLine } from './dollar-lines'
 
 export function isEnclosure(token: Token): token is Enclosure {
   return [
@@ -117,4 +118,8 @@ export function isSurfaceAtLine(line: AbstractLine): line is SurfaceAtLine {
 
 export function isColumnAtLine(line: AbstractLine): line is ColumnAtLine {
   return line instanceof ColumnAtLine
+}
+
+export function isDollarLine(line: AbstractLine): line is DollarLine {
+  return line instanceof DollarLine
 }

@@ -1,6 +1,9 @@
 import _ from 'lodash'
+
+import createReference from 'bibliography/application/createReference'
 import serializeReference from 'bibliography/application/serializeReference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
+import { Chapter } from 'corpus/domain/chapter'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
@@ -10,21 +13,29 @@ import {
   Line,
   LineVariant,
 } from 'corpus/domain/line'
+import {
+  LineDetails,
+  LineVariantDisplay,
+  ManuscriptLineDisplay,
+} from 'corpus/domain/line-details'
+import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
+import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import {
   ChapterListing,
   createChapter,
   createText,
   Text,
 } from 'corpus/domain/text'
-import { Chapter } from 'corpus/domain/chapter'
-import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
-import createReference from 'bibliography/application/createReference'
-import { createTransliteration } from 'transliteration/application/dtos'
-import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
-import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import { createJoins } from 'fragmentarium/infrastructure/FragmentRepository'
+import {
+  createTransliteration,
+  fromTransliterationLineDto,
+} from 'transliteration/application/dtos'
+import { EmptyLine } from 'transliteration/domain/line'
+import { TextLine } from 'transliteration/domain/text-line'
 
 export function fromSiglumAndTransliterationDto(
   dto
@@ -104,6 +115,31 @@ export function fromLineDto(lineDto): Line {
     variants: lineDto.variants?.map(fromLineVariantDto) ?? [],
     status: EditStatus.CLEAN,
   })
+}
+
+export function fromLineDetailsDto(line): LineDetails {
+  return new LineDetails(
+    line.variants.map(
+      (variant) =>
+        new LineVariantDisplay(
+          variant.manuscripts.map(
+            (manuscript) =>
+              new ManuscriptLineDisplay(
+                Provenances[manuscript.provenance],
+                PeriodModifiers[manuscript.periodModifier],
+                Periods[manuscript.period],
+                ManuscriptTypes[manuscript.type],
+                manuscript.siglumDisambiguator,
+                manuscript.labels,
+                (fromTransliterationLineDto(manuscript.line) as unknown) as
+                  | TextLine
+                  | EmptyLine,
+                manuscript.paratext.map(fromTransliterationLineDto)
+              )
+          )
+        )
+    )
+  )
 }
 
 function toName(record: { name: string }): string {
