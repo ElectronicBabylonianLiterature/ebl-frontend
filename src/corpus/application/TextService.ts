@@ -12,7 +12,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { LineDetails } from 'corpus/domain/line-details'
+import { LineDetails, LineVariantDisplay } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text, TextId } from 'corpus/domain/text'
@@ -39,6 +39,7 @@ import {
   toLinesDto,
   toManuscriptsDto,
 } from './dtos'
+import { isNoteLine } from 'transliteration/domain/type-guards'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -188,6 +189,35 @@ export default class TextService {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
       .then(fromLineDetailsDto)
+      .then((line) =>
+        Bluebird.all(
+          line.variants.map((variant) =>
+            Bluebird.all(
+              variant.manuscripts.map((manuscript) =>
+                Bluebird.all(
+                  manuscript.paratext.map((line) => {
+                    if (isNoteLine(line)) {
+                      return this.referenceInjector
+                        .injectReferencesToMarkup(line.parts)
+                        .then((parts) =>
+                          produce(line, (draft) => {
+                            draft.parts = castDraft(parts)
+                          })
+                        )
+                    } else {
+                      return line
+                    }
+                  })
+                ).then((paratext) =>
+                  produce(manuscript, (draft) => {
+                    draft.paratext = castDraft(paratext)
+                  })
+                )
+              )
+            ).then((manuscripts) => new LineVariantDisplay(manuscripts))
+          )
+        ).then((variants) => new LineDetails(variants))
+      )
   }
 
   findColophons(id: ChapterId): Bluebird<SiglumAndTransliteration[]> {
