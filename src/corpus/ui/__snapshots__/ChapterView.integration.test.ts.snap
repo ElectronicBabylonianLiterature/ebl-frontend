@@ -248,7 +248,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         <tr>
           <td
             class="chapter-display__intertext"
-            colspan="4"
+            colspan="5"
           >
             (
             <span>
@@ -319,7 +319,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         </tr>
         <tr>
           <td
-            colspan="4"
+            colspan="5"
           >
             <table
               class="chapter-display__manuscripts"
@@ -539,7 +539,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         <tr>
           <td
             class="chapter-display__intertext"
-            colspan="4"
+            colspan="5"
           >
             (
             <span>
@@ -862,7 +862,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         <tr>
           <td
             class="chapter-display__intertext"
-            colspan="4"
+            colspan="5"
           >
             (
             <span>
@@ -934,7 +934,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         <tr>
           <td
             class="chapter-display__intertext"
-            colspan="4"
+            colspan="5"
           >
             (
             <span>
