@@ -117,7 +117,7 @@ function Manuscript({
             trigger={['click']}
             placement="top"
           >
-            <i className="fas fa-info-circle chapter-display__manuscript-info-toggle"></i>
+            <i className="fas fa-book chapter-display__manuscript-info-toggle"></i>
           </OverlayTrigger>
         )}
       </td>
@@ -169,7 +169,7 @@ export function ChapterViewLine({
   const [showManuscripts, setShowManuscripts] = useState(false)
   return (
     <>
-      <InterText line={line} colSpan={maxColumns + 3} />
+      <InterText line={line} colSpan={maxColumns + 4} />
       <tr
         onClick={() => setShowManuscripts(!showManuscripts)}
         className={classNames({
@@ -196,7 +196,7 @@ export function ChapterViewLine({
       </tr>
       {showManuscripts && (
         <tr>
-          <td colSpan={maxColumns + 3}>
+          <td colSpan={maxColumns + 4}>
             <Manuscripts
               id={chapter.id}
               lineNumber={lineNumber}
