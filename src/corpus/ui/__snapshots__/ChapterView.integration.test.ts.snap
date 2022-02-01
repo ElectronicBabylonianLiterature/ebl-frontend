@@ -263,7 +263,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
         >
           <td
-            class="chapter-display__line-toggle"
+            class="chapter-display__manuscripts-toggle"
           >
             <i
               aria-expanded="true"
@@ -554,7 +554,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           class="chapter-display__line"
         >
           <td
-            class="chapter-display__line-toggle"
+            class="chapter-display__manuscripts-toggle"
           >
             <i
               aria-expanded="false"
@@ -877,7 +877,7 @@ exports[`Diplay chapter Snapshot 1`] = `
           class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
         >
           <td
-            class="chapter-display__line-toggle"
+            class="chapter-display__manuscripts-toggle"
           >
             <i
               aria-expanded="false"
@@ -949,7 +949,7 @@ exports[`Diplay chapter Snapshot 1`] = `
           class="chapter-display__line"
         >
           <td
-            class="chapter-display__line-toggle"
+            class="chapter-display__manuscripts-toggle"
           >
             <i
               aria-expanded="false"

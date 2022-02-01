@@ -180,7 +180,7 @@ export function ChapterViewLine({
             line.isBeginningOfSection,
         })}
       >
-        <td className="chapter-display__line-toggle">
+        <td className="chapter-display__manuscripts-toggle">
           <i
             className={classNames({
               fas: true,
