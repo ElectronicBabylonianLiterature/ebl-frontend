@@ -4,7 +4,11 @@ import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
 import { Provenance, Provenances } from './provenance'
 import { Period, PeriodModifier } from './period'
-import { ManuscriptType, ManuscriptTypes } from './manuscript'
+import {
+  compareManuscripts,
+  ManuscriptType,
+  ManuscriptTypes,
+} from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import {
   isDollarLine,
@@ -82,5 +86,11 @@ export class LineDetails {
         .filter(isTextLine)
         .map((line) => line.numberOfColumns)
     )
+  }
+
+  get sortedManuscripts(): ManuscriptLineDisplay[] {
+    return this.variants
+      .flatMap((variant) => variant.manuscripts)
+      .sort(compareManuscripts)
   }
 }

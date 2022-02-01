@@ -422,6 +422,34 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                     <span
                       class="chapter-display__manuscript-siglum"
                     >
+                      NipUr3Sch1
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-labels"
+                    >
+                      
+                       
+                    </span>
+                  </td>
+                  <td
+                    colspan="1"
+                  />
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-paratext"
+                    />
+                  </td>
+                  <td />
+                </tr>
+                <tr
+                  class="chapter-display__manuscript"
+                >
+                  <td>
+                    <span
+                      class="chapter-display__manuscript-siglum"
+                    >
                       // 
                       NipUr3Par1
                     </span>
@@ -497,34 +525,6 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                       />
                     </span>
                   </td>
-                  <td>
-                    <span
-                      class="chapter-display__manuscript-paratext"
-                    />
-                  </td>
-                  <td />
-                </tr>
-                <tr
-                  class="chapter-display__manuscript"
-                >
-                  <td>
-                    <span
-                      class="chapter-display__manuscript-siglum"
-                    >
-                      NipUr3Sch1
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      class="chapter-display__manuscript-labels"
-                    >
-                      
-                       
-                    </span>
-                  </td>
-                  <td
-                    colspan="1"
-                  />
                   <td>
                     <span
                       class="chapter-display__manuscript-paratext"

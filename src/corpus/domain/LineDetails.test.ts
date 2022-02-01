@@ -3,6 +3,7 @@ import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import textLine from 'test-support/lines/text-line'
 import { EmptyLine } from 'transliteration/domain/line'
 import { LineDetails, LineVariantDisplay } from './line-details'
+import { compareManuscripts } from './manuscript'
 
 const empty = manuscriptLineDisplayFactory.build(
   {},
@@ -42,4 +43,15 @@ test.each([
   ],
 ])('numberOfColumns %s', (line, expected) => {
   expect(line.numberOfColumns).toEqual(expected)
+})
+
+test('sortedManuscripts', () => {
+  const lineDetails = new LineDetails([
+    new LineVariantDisplay([manyColumns]),
+    new LineVariantDisplay([oneColumn]),
+  ])
+
+  expect(lineDetails.sortedManuscripts).toEqual(
+    [manyColumns, oneColumn].sort(compareManuscripts)
+  )
 })
