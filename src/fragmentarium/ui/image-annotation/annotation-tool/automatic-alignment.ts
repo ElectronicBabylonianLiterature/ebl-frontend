@@ -65,7 +65,7 @@ export default function automaticAlignment(
         value: token.value,
         type: token.type,
         path: token.path,
-        signName: '',
+        signName: token.sign?.name || '',
       })
     })
 
