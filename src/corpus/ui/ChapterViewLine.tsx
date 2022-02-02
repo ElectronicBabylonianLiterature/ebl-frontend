@@ -167,9 +167,10 @@ export function ChapterViewLine({
   textService: TextService
 }): JSX.Element {
   const [showManuscripts, setShowManuscripts] = useState(false)
+  const totalColumns = maxColumns + 4
   return (
     <>
-      <InterText line={line} colSpan={maxColumns + 3} />
+      <InterText line={line} colSpan={totalColumns} />
       <tr
         onClick={() => setShowManuscripts(!showManuscripts)}
         className={classNames({
@@ -196,7 +197,7 @@ export function ChapterViewLine({
       </tr>
       {showManuscripts && (
         <tr>
-          <td colSpan={maxColumns + 3}>
+          <td colSpan={totalColumns}>
             <Manuscripts
               id={chapter.id}
               lineNumber={lineNumber}
