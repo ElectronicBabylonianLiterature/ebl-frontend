@@ -36,21 +36,36 @@ const tokens = [
       AnnotationTokenType.HasSign,
       'two-three',
       [5],
-      true
+      true,
+      {
+        name: 'testname-2-3',
+        displayCuneiformSigns: 'testsign-2-3',
+        unicode: [],
+      }
     ),
     new AnnotationToken(
       'two-four',
       AnnotationTokenType.HasSign,
       'two-four',
       [6],
-      true
+      true,
+      {
+        name: 'testname-2-4',
+        displayCuneiformSigns: 'testsign-2-4',
+        unicode: [],
+      }
     ),
     new AnnotationToken(
       'two-five',
       AnnotationTokenType.HasSign,
       'two-five',
       [7],
-      true
+      true,
+      {
+        name: 'testname-2-5',
+        displayCuneiformSigns: 'testsign-2-5',
+        unicode: [],
+      }
     ),
   ],
 ]
@@ -82,7 +97,7 @@ const annotations = [
       id: '3',
       value: 'two-one',
       type: AnnotationTokenType.HasSign,
-      signName: '',
+      signName: 'testname-2-1',
       path: [4],
     }
   ),
@@ -92,7 +107,7 @@ const annotations = [
       id: '4',
       value: 'two-three',
       type: AnnotationTokenType.HasSign,
-      signName: '',
+      signName: 'testname-2-3',
       path: [5],
     }
   ),
@@ -146,7 +161,7 @@ it('automaticAlignment', () => {
         id: '3',
         value: 'two-one',
         type: AnnotationTokenType.HasSign,
-        signName: '',
+        signName: 'testname-2-1',
         path: [4],
       }
     ),
@@ -156,7 +171,7 @@ it('automaticAlignment', () => {
         id: '4',
         value: 'two-three',
         type: AnnotationTokenType.HasSign,
-        signName: '',
+        signName: 'testname-2-3',
         path: [5],
       }
     ),
@@ -166,7 +181,7 @@ it('automaticAlignment', () => {
         id: '5',
         value: 'two-four',
         type: AnnotationTokenType.HasSign,
-        signName: '',
+        signName: 'testname-2-4',
         path: [6],
       }
     ),
@@ -176,7 +191,7 @@ it('automaticAlignment', () => {
         id: '6',
         value: 'two-five',
         type: AnnotationTokenType.HasSign,
-        signName: '',
+        signName: 'testname-2-5',
         path: [7],
       }
     ),
@@ -187,7 +202,7 @@ it('automaticAlignment', () => {
       id: '4',
       value: 'two-three',
       type: AnnotationTokenType.HasSign,
-      signName: '',
+      signName: 'testname-2-3',
       path: [5],
     }
   )
