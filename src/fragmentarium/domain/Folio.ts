@@ -24,6 +24,7 @@ const folioTypes: {
   ER: { name: 'Reiner', hasImage: true },
   UG: { name: 'Gabbay', hasImage: true },
   GS: { name: 'Smith', hasImage: true },
+  SJL: { name: 'Lieberman', hasImage: true },
 }
 
 export default class Folio {
