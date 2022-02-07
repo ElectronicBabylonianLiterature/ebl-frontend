@@ -11,6 +11,7 @@ import { textDto } from 'test-support/test-corpus-text'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { lines } from 'test-support/test-fragment'
 import { singleRulingDto } from 'test-support/lines/dollar'
+import { waitFor } from '@testing-library/react'
 
 const chance = new Chance('chapter-view-integration-test')
 
@@ -92,6 +93,38 @@ describe('Diplay chapter', () => {
     })
     appDriver.click(lineNumberToString(chapter.lines[0].number))
     await appDriver.waitForText(/single ruling/)
+    expect(appDriver.getView().container).toMatchSnapshot()
+  })
+
+  test('Sidebar', async () => {
+    chapter.lines.forEach((line, index) => {
+      fakeApi.expectLineDetails(chapter.id, index, {
+        variants: [
+          {
+            manuscripts: [
+              {
+                provenance: 'Standard Text',
+                periodModifier: 'None',
+                period: 'None',
+                siglumDisambiguator: '',
+                type: 'None',
+                labels: [],
+                line: lines[index],
+                paratext: [singleRulingDto],
+              },
+            ],
+          },
+        ],
+      })
+    })
+    await appDriver.click('Settings')
+    await appDriver.click('Score')
+    await waitFor(() => {
+      expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
+    })
+    expect(appDriver.getView().container).toMatchSnapshot()
+    await appDriver.click('Close')
+    await appDriver.waitForTextToDisappear('Close')
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })

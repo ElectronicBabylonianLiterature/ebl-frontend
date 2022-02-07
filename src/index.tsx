@@ -2,7 +2,6 @@ import React, { PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import Promise from 'bluebird'
-import './index.css'
 import App from './App'
 import ErrorBoundary from 'common/ErrorBoundary'
 import * as serviceWorker from './serviceWorker'
@@ -24,6 +23,8 @@ import { Auth0Provider } from 'auth/react-auth0-spa'
 import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
+
+import './index.css'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(

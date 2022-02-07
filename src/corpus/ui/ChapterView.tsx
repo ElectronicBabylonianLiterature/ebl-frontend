@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo, useReducer } from 'react'
+import _ from 'lodash'
 import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -17,8 +18,10 @@ import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
+import ChapterViewContext, { reducer } from './ChapterViewContext'
 
 import './ChapterView.sass'
+import { SideBar } from './ChapterViewSideBar'
 
 interface Props {
   chapter: ChapterDisplay
@@ -75,48 +78,59 @@ function ChapterView({
   text,
   textService,
 }: Props & { text: Text; textService: TextService }): JSX.Element {
-  const columns = chapter.lines.map((line) =>
-    createColumns(line.reconstruction)
+  const columns = useMemo(
+    () => chapter.lines.map((line) => createColumns(line.reconstruction)),
+    [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
+  const context = useReducer(
+    reducer,
+    _(chapter.lines.length)
+      .range()
+      .map((row) => [row, false])
+      .fromPairs()
+      .value()
+  )
   return (
-    <AppContent
-      crumbs={[
-        new SectionCrumb('Corpus'),
-        new GenreCrumb(chapter.id.textId.genre),
-        CorpusTextCrumb.ofChapterDisplay(chapter),
-        new ChapterCrumb(chapter.id),
-      ]}
-      title={<Title chapter={chapter} />}
-      actions={
-        <ButtonGroup>
-          <GotoButton
-            text={text}
-            as={ButtonGroup}
-            title="Go to"
-            variant="outline-primary"
-          />
-          <EditChapterButton chapter={chapter} />
-        </ButtonGroup>
-      }
-      sidebar={'Sidebar'}
-    >
-      <table className="chapter-display">
-        <tbody>
-          {chapter.lines.map((line, index) => (
-            <ChapterViewLine
-              key={index}
-              line={line}
-              columns={columns[index]}
-              maxColumns={maxColumns_}
-              chapter={chapter}
-              lineNumber={index}
-              textService={textService}
+    <ChapterViewContext.Provider value={context}>
+      <AppContent
+        crumbs={[
+          new SectionCrumb('Corpus'),
+          new GenreCrumb(chapter.id.textId.genre),
+          CorpusTextCrumb.ofChapterDisplay(chapter),
+          new ChapterCrumb(chapter.id),
+        ]}
+        title={<Title chapter={chapter} />}
+        actions={
+          <ButtonGroup>
+            <GotoButton
+              text={text}
+              as={ButtonGroup}
+              title="Go to"
+              variant="outline-primary"
             />
-          ))}
-        </tbody>
-      </table>
-    </AppContent>
+            <EditChapterButton chapter={chapter} />
+          </ButtonGroup>
+        }
+        sidebar={<SideBar />}
+      >
+        <table className="chapter-display">
+          <tbody>
+            {chapter.lines.map((line, index) => (
+              <ChapterViewLine
+                key={index}
+                line={line}
+                columns={columns[index]}
+                maxColumns={maxColumns_}
+                chapter={chapter}
+                lineNumber={index}
+                textService={textService}
+              />
+            ))}
+          </tbody>
+        </table>
+      </AppContent>
+    </ChapterViewContext.Provider>
   )
 }
 
