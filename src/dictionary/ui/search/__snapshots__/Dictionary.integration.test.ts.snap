@@ -137,201 +137,205 @@ exports[`Query 1`] = `
       </div>
     </nav>
   </header>
-  <section
-    class="App-content"
+  <main
+    class="main"
   >
-    <header
-      class="App-content__header"
-    >
-      <nav
-        aria-label="breadcrumb"
-      >
-        <ol
-          class="breadcrumb"
-        >
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/"
-            >
-              eBL
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            Dictionary
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
-        Dictionary
-      </h2>
-    </header>
     <div
-      class="Dictionary-search"
+      class="main__content"
     >
-      <form
-        class=""
+      <header
+        class="main__header"
       >
-        <div
-          class="form-group row"
+        <nav
+          aria-label="breadcrumb"
         >
-          <label
-            class="form-label col-form-label col-sm-2"
-            for="query"
+          <ol
+            class="breadcrumb"
           >
-            Query
-          </label>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Dictionary
+            </li>
+          </ol>
+        </nav>
+        <div
+          class="float-right btn-toolbar"
+          role="toolbar"
+        />
+        <h2>
+          Dictionary
+        </h2>
+      </header>
+      <div
+        class="Dictionary-search"
+      >
+        <form
+          class=""
+        >
           <div
-            class="col-sm-6"
+            class="form-group row"
           >
-            <input
-              class="form-control"
-              id="query"
-              placeholder="lemma or meaning"
-              type="text"
-              value="lem[ma?]"
-            />
-          </div>
-          <div
-            class="col-sm-4"
-          >
-            <button
-              class="btn btn-primary"
-              type="submit"
+            <label
+              class="form-label col-form-label col-sm-2"
+              for="query"
             >
               Query
-            </button>
+            </label>
+            <div
+              class="col-sm-6"
+            >
+              <input
+                class="form-control"
+                id="query"
+                placeholder="lemma or meaning"
+                type="text"
+                value="lem[ma?]"
+              />
+            </div>
+            <div
+              class="col-sm-4"
+            >
+              <button
+                class="btn btn-primary"
+                type="submit"
+              >
+                Query
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-    <ul
-      class="WordSearch-results"
-    >
-      <li
-        class="WordSearch-results__result"
+        </form>
+      </div>
+      <ul
+        class="WordSearch-results"
       >
-        <div
-          class="Word"
+        <li
+          class="WordSearch-results__result"
         >
-          <a
-            class="BibliographySearch__edit"
-            href="/dictionary/test I/edit"
+          <div
+            class="Word"
           >
-            <i
-              class="fas fa-edit"
-            />
-          </a>
-          <dfn
-            title="test I"
-          >
-            <strong>
-              <a
-                href="/dictionary/test I"
-              >
-                
-                test
-              </a>
-            </strong>
-             I
-          </dfn>
-          <ul
-            class="Word__forms"
-          >
-            <li
-              class="Word__form"
+            <a
+              class="BibliographySearch__edit"
+              href="/dictionary/test I/edit"
             >
-              <span
-                class="Notes-note"
-              >
-                dsdsds
-                 
-              </span>
-              <em />
-            </li>
-            <li
-              class="Word__form"
+              <i
+                class="fas fa-edit"
+              />
+            </a>
+            <dfn
+              title="test I"
             >
-              <span
-                class="Notes-note"
-              >
-                <strong>
-                  BOLD
-                </strong>
-                 
-              </span>
-              <em>
-                abā'um
-              </em>
-            </li>
-          </ul>
-           
-          ~
-           "to weed" O/jB
-           
-          <ul>
-            <li>
               <strong>
-                G
+                <a
+                  href="/dictionary/test I"
+                >
+                  
+                  test
+                </a>
               </strong>
-               
-              (
-              <em>
-                i/i
-              </em>
-              ) field
-               
-              <ul>
-                <li
-                  class="AmplifiedMeanings__entry"
+               I
+            </dfn>
+            <ul
+              class="Word__forms"
+            >
+              <li
+                class="Word__form"
+              >
+                <span
+                  class="Notes-note"
+                >
+                  dsdsds
+                   
+                </span>
+                <em />
+              </li>
+              <li
+                class="Word__form"
+              >
+                <span
+                  class="Notes-note"
                 >
                   <strong>
-                    1.
+                    BOLD
                   </strong>
                    
-                  mmkkk
-                </li>
-              </ul>
-            </li>
-          </ul>
-           
-          <ul>
-            <li>
-              <ul
-                class="Derived__group"
-              >
-                <li
-                  class="Derived__entry"
+                </span>
+                <em>
+                  abā'um
+                </em>
+              </li>
+            </ul>
+             
+            ~
+             "to weed" O/jB
+             
+            <ul>
+              <li>
+                <strong>
+                  G
+                </strong>
+                 
+                (
+                <em>
+                  i/i
+                </em>
+                ) field
+                 
+                <ul>
+                  <li
+                    class="AmplifiedMeanings__entry"
+                  >
+                    <strong>
+                      1.
+                    </strong>
+                     
+                    mmkkk
+                  </li>
+                </ul>
+              </li>
+            </ul>
+             
+            <ul>
+              <li>
+                <ul
+                  class="Derived__group"
                 >
-                  <em>
-                    wabûtu
-                  </em>
-                   I
-                </li>
-              </ul>
-            </li>
-          </ul>
-           
-          <span
-            class="Word__derivedFrom"
-          >
-            <em>
-              sadasd
-            </em>
-            
-          </span>
-        </div>
-      </li>
-    </ul>
-  </section>
+                  <li
+                    class="Derived__entry"
+                  >
+                    <em>
+                      wabûtu
+                    </em>
+                     I
+                  </li>
+                </ul>
+              </li>
+            </ul>
+             
+            <span
+              class="Word__derivedFrom"
+            >
+              <em>
+                sadasd
+              </em>
+              
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
 </div>
 `;
 
@@ -472,85 +476,89 @@ exports[`Snapshot 1`] = `
       </div>
     </nav>
   </header>
-  <section
-    class="App-content"
+  <main
+    class="main"
   >
-    <header
-      class="App-content__header"
-    >
-      <nav
-        aria-label="breadcrumb"
-      >
-        <ol
-          class="breadcrumb"
-        >
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/"
-            >
-              eBL
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            Dictionary
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
-        Dictionary
-      </h2>
-    </header>
     <div
-      class="Dictionary-search"
+      class="main__content"
     >
-      <form
-        class=""
+      <header
+        class="main__header"
       >
-        <div
-          class="form-group row"
+        <nav
+          aria-label="breadcrumb"
         >
-          <label
-            class="form-label col-form-label col-sm-2"
-            for="query"
+          <ol
+            class="breadcrumb"
           >
-            Query
-          </label>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Dictionary
+            </li>
+          </ol>
+        </nav>
+        <div
+          class="float-right btn-toolbar"
+          role="toolbar"
+        />
+        <h2>
+          Dictionary
+        </h2>
+      </header>
+      <div
+        class="Dictionary-search"
+      >
+        <form
+          class=""
+        >
           <div
-            class="col-sm-6"
+            class="form-group row"
           >
-            <input
-              class="form-control"
-              id="query"
-              placeholder="lemma or meaning"
-              type="text"
-              value=""
-            />
-          </div>
-          <div
-            class="col-sm-4"
-          >
-            <button
-              class="btn btn-primary"
-              type="submit"
+            <label
+              class="form-label col-form-label col-sm-2"
+              for="query"
             >
               Query
-            </button>
+            </label>
+            <div
+              class="col-sm-6"
+            >
+              <input
+                class="form-control"
+                id="query"
+                placeholder="lemma or meaning"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="col-sm-4"
+            >
+              <button
+                class="btn btn-primary"
+                type="submit"
+              >
+                Query
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+      <ul
+        class="WordSearch-results"
+      />
     </div>
-    <ul
-      class="WordSearch-results"
-    />
-  </section>
+  </main>
 </div>
 `;

@@ -2,690 +2,694 @@
 
 exports[`Fetch word Word parts are displayed correctly 1`] = `
 <div>
-  <section
-    class="App-content"
+  <main
+    class="main"
   >
-    <header
-      class="App-content__header"
+    <div
+      class="main__content"
     >
-      <nav
-        aria-label="breadcrumb"
+      <header
+        class="main__header"
       >
-        <ol
-          class="breadcrumb"
+        <nav
+          aria-label="breadcrumb"
         >
-          <li
-            class="breadcrumb-item active"
+          <ol
+            class="breadcrumb"
           >
-            <a
-              href="/"
+            <li
+              class="breadcrumb-item active"
             >
-              eBL
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/dictionary"
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
             >
-              Dictionary
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            c49ca1a96f9ce4d45bdc9962307a703eba53c0a8
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
+              <a
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              c49ca1a96f9ce4d45bdc9962307a703eba53c0a8
+            </li>
+          </ol>
+        </nav>
         <div
-          class="row"
-        >
+          class="float-right btn-toolbar"
+          role="toolbar"
+        />
+        <h2>
           <div
-            class="col"
+            class="row"
           >
-            <strong>
-              oheto ofobuv
-               
-              IV
-            </strong>
-            , “
-            fe
-            ”
-             (
-            fe
-            )
-          </div>
-          <div
-            class="col"
-          >
-            <h5
-              class="text-secondary"
+            <div
+              class="col"
             >
-              (
-              MOD, PRP
+              <strong>
+                oheto ofobuv
+                 
+                IV
+              </strong>
+              , “
+              fe
+              ”
+               (
+              fe
               )
-            </h5>
-          </div>
-          <div
-            class="pr-5 mr-5 col-auto"
-          >
+            </div>
             <div
-              class="border border-dark p-1 text-secondary h6"
+              class="col"
             >
-              +oheto[fe]MOD$
-              <button
-                class="ml-2 copyIcon btn btn-primary"
-                type="button"
+              <h5
+                class="text-secondary"
               >
-                <i
-                  class="fas fa-copy"
-                />
-              </button>
+                (
+                MOD, PRP
+                )
+              </h5>
+            </div>
+            <div
+              class="pr-5 mr-5 col-auto"
+            >
+              <div
+                class="border border-dark p-1 text-secondary h6"
+              >
+                +oheto[fe]MOD$
+                <button
+                  class="ml-2 copyIcon btn btn-primary"
+                  type="button"
+                >
+                  <i
+                    class="fas fa-copy"
+                  />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </h2>
-    </header>
-    <div
-      class="row"
-    >
+        </h2>
+      </header>
       <div
-        class="col"
-      >
-        <h3
-          id="Ⅰ"
-        >
-          Ⅰ
-          . 
-          A Concise Dictionary of Akkadian
-        </h3>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col"
+        class="row"
       >
         <div
-          class="row"
+          class="col"
+        >
+          <h3
+            id="Ⅰ"
+          >
+            Ⅰ
+            . 
+            A Concise Dictionary of Akkadian
+          </h3>
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
         >
           <div
-            class="col offset-1"
+            class="row"
           >
             <div
-              class="row"
+              class="col offset-1"
             >
               <div
-                class="col"
+                class="row"
               >
-                Other forms: 
-                 
-                <span>
-                  <span>
-                    pe 
-                  </span>
-                  <span>
-                    <em>
-                      gajremdac** 
-                    </em>
-                    la**
-                  </span>
-                   
+                <div
+                  class="col"
+                >
+                  Other forms: 
                    
                   <span>
-                    usrew
-                  </span>
-                  
-                </span>
-                , 
-                <span>
-                  <span>
-                    gi 
-                  </span>
-                  <span>
-                    <em>
-                      rap** 
-                    </em>
-                    oneun**
-                  </span>
-                   
-                   
-                  <span>
-                    sobkuva
-                  </span>
-                  
-                </span>
-                
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="col"
-              >
-                Attested stems: 
-                <span>
-                  <a
-                    href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-0"
-                  >
-                    Dtt
-                  </a>
-                  , 
-                </span>
-                <span>
-                  <a
-                    href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-1"
-                  >
-                    N
-                  </a>
-                </span>
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="col"
-              >
-                Derivatives: 
-                 
-                <span>
-                  <span>
-                    tin 
-                  </span>
-                  <a
-                    href="/dictionary/pabemiiwu%20pa%20II"
-                  >
-                    <em>
-                      pabemiiwu pa
-                    </em>
-                  </a>
-                   
-                  II
-                   
-                   
-                  <span>
-                    mi
-                  </span>
-                  
-                </span>
-                , 
-                <span>
-                  <span>
-                    cujuwibi 
-                  </span>
-                  <a
-                    href="/dictionary/tesbu%20pi%20IV"
-                  >
-                    <em>
-                      tesbu pi
-                    </em>
-                  </a>
-                   
-                  IV
-                   
-                   
-                  <span>
-                    vu
-                  </span>
-                  
-                </span>
-                
-                ; 
-                 
-                <span>
-                  <span>
-                    sulhe 
-                  </span>
-                  <a
-                    href="/dictionary/utgibhev%20ra%20II"
-                  >
-                    <em>
-                      utgibhev ra
-                    </em>
-                  </a>
-                   
-                  II
-                   
-                   
-                  <span>
-                    ulkil
-                  </span>
-                  
-                </span>
-                , 
-                <span>
-                  <span>
-                    ziwaini 
-                  </span>
-                  <a
-                    href="/dictionary/tokteuf%20nowu%20I"
-                  >
-                    <em>
-                      tokteuf nowu
-                    </em>
-                  </a>
-                   
-                  I
-                   
-                   
-                  <span>
-                    reguwza
-                  </span>
-                  
-                </span>
-                
-                ; 
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="col"
-              >
-                Derived from: 
-                <span>
-                  <span>
-                    muvi 
-                  </span>
-                  <a
-                    href="/dictionary/jaruw%20itiparu%20III"
-                  >
-                    <em>
-                      jaruw itiparu
-                    </em>
-                  </a>
-                   
-                  III
-                   
-                   
-                  <span>
-                    panum
-                  </span>
-                  
-                </span>
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="col"
-              >
-                Logograms: 
-                 
-                <span>
-                  <span>
-                    zuisi 
-                  </span>
-                  <span>
-                    echo
-                  </span>
-                   
-                  <span>
+                    <span>
+                      pe 
+                    </span>
+                    <span>
+                      <em>
+                        gajremdac** 
+                      </em>
+                      la**
+                    </span>
+                     
                      
+                    <span>
+                      usrew
+                    </span>
+                    
+                  </span>
+                  , 
+                  <span>
+                    <span>
+                      gi 
+                    </span>
+                    <span>
+                      <em>
+                        rap** 
+                      </em>
+                      oneun**
+                    </span>
+                     
+                     
+                    <span>
+                      sobkuva
+                    </span>
+                    
+                  </span>
+                  
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  Attested stems: 
+                  <span>
+                    <a
+                      href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-0"
+                    >
+                      Dtt
+                    </a>
+                    , 
+                  </span>
+                  <span>
+                    <a
+                      href="/dictionary/c49ca1a96f9ce4d45bdc9962307a703eba53c0a8#attested-stem-1"
+                    >
+                      N
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  Derivatives: 
+                   
+                  <span>
+                    <span>
+                      tin 
+                    </span>
+                    <a
+                      href="/dictionary/pabemiiwu%20pa%20II"
+                    >
+                      <em>
+                        pabemiiwu pa
+                      </em>
+                    </a>
+                     
+                    II
+                     
+                     
+                    <span>
+                      mi
+                    </span>
+                    
+                  </span>
+                  , 
+                  <span>
+                    <span>
+                      cujuwibi 
+                    </span>
+                    <a
+                      href="/dictionary/tesbu%20pi%20IV"
+                    >
+                      <em>
+                        tesbu pi
+                      </em>
+                    </a>
+                     
+                    IV
+                     
+                     
+                    <span>
+                      vu
+                    </span>
+                    
+                  </span>
+                  
+                  ; 
+                   
+                  <span>
+                    <span>
+                      sulhe 
+                    </span>
+                    <a
+                      href="/dictionary/utgibhev%20ra%20II"
+                    >
+                      <em>
+                        utgibhev ra
+                      </em>
+                    </a>
+                     
+                    II
+                     
+                     
+                    <span>
+                      ulkil
+                    </span>
+                    
+                  </span>
+                  , 
+                  <span>
+                    <span>
+                      ziwaini 
+                    </span>
+                    <a
+                      href="/dictionary/tokteuf%20nowu%20I"
+                    >
+                      <em>
+                        tokteuf nowu
+                      </em>
+                    </a>
+                     
+                    I
+                     
+                     
+                    <span>
+                      reguwza
+                    </span>
+                    
+                  </span>
+                  
+                  ; 
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  Derived from: 
+                  <span>
+                    <span>
+                      muvi 
+                    </span>
+                    <a
+                      href="/dictionary/jaruw%20itiparu%20III"
+                    >
+                      <em>
+                        jaruw itiparu
+                      </em>
+                    </a>
+                     
+                    III
+                     
+                     
+                    <span>
+                      panum
+                    </span>
+                    
+                  </span>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  Logograms: 
+                   
+                  <span>
+                    <span>
+                      zuisi 
+                    </span>
+                    <span>
+                      echo
+                    </span>
+                     
+                    <span>
+                       
+                      <span>
+                        bravo
+                      </span>
+                      
+                       
+                    </span>
+                     
+                     
+                    <span>
+                      lan
+                    </span>
+                    
+                  </span>
+                  , 
+                  <span>
+                    <span>
+                      ofinijvef 
+                    </span>
                     <span>
                       bravo
                     </span>
-                    
                      
-                  </span>
-                   
-                   
-                  <span>
-                    lan
-                  </span>
-                  
-                </span>
-                , 
-                <span>
-                  <span>
-                    ofinijvef 
-                  </span>
-                  <span>
-                    bravo
-                  </span>
-                   
-                  <span>
+                    <span>
+                       
+                      <span>
+                        charlie
+                      </span>
+                      
+                       
+                    </span>
+                     
                      
                     <span>
-                      charlie
+                      lo
                     </span>
                     
-                     
-                  </span>
-                   
-                   
-                  <span>
-                    lo
                   </span>
                   
-                </span>
-                
+                </div>
               </div>
-            </div>
-            <div
-              class="row"
-            >
               <div
-                class="col"
-              />
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="col"
+                class="row"
               >
-                <br />
-                <span>
-                  Bo hafe jed egeragpo viwidih zutu we ijcegwoj opuziw agse wad eksorep edzu tuum za.
-                </span>
+                <div
+                  class="col"
+                />
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <br />
+                  <span>
+                    Bo hafe jed egeragpo viwidih zutu we ijcegwoj opuziw agse wad eksorep edzu tuum za.
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="row"
-        >
           <div
-            class="col"
+            class="row"
           >
             <div
               class="col"
             >
               <div
-                class="row"
+                class="col"
               >
                 <div
-                  class="col"
+                  class="row"
                 >
                   <div
-                    class="row"
+                    class="col"
                   >
-                    <strong>
-                      Dtt
-                    </strong>
-                       
-                     
-                    <p>
-                      La gumib not ukugub niruhi majiv aruha ro zar zi adiazku tiwom wezil.
-                    </p>
-                  </div>
-                  <div
-                    class="row"
-                  >
-                    <ol>
-                      <li
-                        id="attested-stem-0"
-                      >
-                        <div
-                          class="ml-3"
+                    <div
+                      class="row"
+                    >
+                      <strong>
+                        Dtt
+                      </strong>
+                         
+                       
+                      <p>
+                        La gumib not ukugub niruhi majiv aruha ro zar zi adiazku tiwom wezil.
+                      </p>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <ol>
+                        <li
+                          id="attested-stem-0"
                         >
-                          <span>
-                            Mu efobizro cafofiri mub kes dovlulle gow tojovdad kiogfuz mupasa viegsif rogo tep aku resbeju wop ubro luez.
-                          </span>
-                        </div>
-                      </li>
-                      <li
-                        id="attested-stem-1"
-                      >
-                        <div
-                          class="ml-3"
+                          <div
+                            class="ml-3"
+                          >
+                            <span>
+                              Mu efobizro cafofiri mub kes dovlulle gow tojovdad kiogfuz mupasa viegsif rogo tep aku resbeju wop ubro luez.
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          id="attested-stem-1"
                         >
-                          <span>
-                            Lahwev memzubam nusoge ebcem nifta wojfobop mikgu nus fohom cifa safezot wuot va ebo widmoc.
-                          </span>
-                        </div>
-                      </li>
-                    </ol>
+                          <div
+                            class="ml-3"
+                          >
+                            <span>
+                              Lahwev memzubam nusoge ebcem nifta wojfobop mikgu nus fohom cifa safezot wuot va ebo widmoc.
+                            </span>
+                          </div>
+                        </li>
+                      </ol>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="row"
-              >
                 <div
-                  class="col"
+                  class="row"
                 >
                   <div
-                    class="row"
+                    class="col"
                   >
-                    <strong>
-                      N
-                    </strong>
-                       
-                     
-                    <p>
-                      Cafheejo juud ulzi we udubu odejibviz uhciw ge citmi hi uphowge tiri tatwovef hi dowuile dih wacbus najab.
-                    </p>
-                  </div>
-                  <div
-                    class="row"
-                  >
-                    <ol>
-                      <li
-                        id="attested-stem-0"
-                      >
-                        <div
-                          class="ml-3"
+                    <div
+                      class="row"
+                    >
+                      <strong>
+                        N
+                      </strong>
+                         
+                       
+                      <p>
+                        Cafheejo juud ulzi we udubu odejibviz uhciw ge citmi hi uphowge tiri tatwovef hi dowuile dih wacbus najab.
+                      </p>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <ol>
+                        <li
+                          id="attested-stem-0"
                         >
-                          <span>
-                            Levnevse irizob tetah radjic nagcir biiv ragow tu wit wiahahi miw pa kobjawib hol ilobelhon of soh.
-                          </span>
-                        </div>
-                      </li>
-                      <li
-                        id="attested-stem-1"
-                      >
-                        <div
-                          class="ml-3"
+                          <div
+                            class="ml-3"
+                          >
+                            <span>
+                              Levnevse irizob tetah radjic nagcir biiv ragow tu wit wiahahi miw pa kobjawib hol ilobelhon of soh.
+                            </span>
+                          </div>
+                        </li>
+                        <li
+                          id="attested-stem-1"
                         >
-                          <span>
-                            Cuttegav alo oluusute era esudoj futasuj ugha ecosu bueciri was jahi mozoscu ditniv vorun.
-                          </span>
-                        </div>
-                      </li>
-                    </ol>
+                          <div
+                            class="ml-3"
+                          >
+                            <span>
+                              Cuttegav alo oluusute era esudoj futasuj ugha ecosu bueciri was jahi mozoscu ditniv vorun.
+                            </span>
+                          </div>
+                        </li>
+                      </ol>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Black, J.; George, A.R.; Postgate, N.
+        , 
+        <em>
+          A Concise Dictionary of Akkadian
+        </em>
+        . 
+        Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000
+        .
+        <br />
+        <strong>
+          By permission from Harrassowitz
+        </strong>
+        <br />
+        <a
+          class="text-dark "
+          href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+          />
+          \`
+        </a>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            id="Ⅱ"
+          >
+            Ⅱ
+            . 
+            Akkadische Glossare und Indizes
+          </h3>
+        </div>
+      </div>
+      <div
+        class="offset-md-1 col"
+      >
+        <div
+          class="small text-black-50 row"
+        >
+          <div>
+            <sup
+              style="font-style: normal;"
+            >
+              serbig
+            </sup>
+          </div>
         </div>
         <div
           class="row"
         >
+          <div>
+            <sup
+              style="font-style: normal;"
+            >
+              jaruw
+            </sup>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div>
+            <em>
+              itiparu
+            </em>
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
           <div
-            class="col"
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="text-center border border-dark mx-5 m-3 p-2"
-    >
-      <strong>
-        From
-      </strong>
-      <br />
-      Black, J.; George, A.R.; Postgate, N.
-      , 
-      <em>
-        A Concise Dictionary of Akkadian
-      </em>
-      . 
-      Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000
-      .
-      <br />
-      <strong>
-        By permission from Harrassowitz
-      </strong>
-      <br />
-      <a
-        class="text-dark "
-        href="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <i
-          class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-        />
-        \`
-      </a>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col"
-      >
-        <h3
-          id="Ⅱ"
-        >
-          Ⅱ
-          . 
-          Akkadische Glossare und Indizes
-        </h3>
-      </div>
-    </div>
-    <div
-      class="offset-md-1 col"
-    >
-      <div
-        class="small text-black-50 row"
-      >
-        <div>
-          <sup
-            style="font-style: normal;"
+            class="small text-black-50 ml-3"
           >
-            serbig
-          </sup>
+            [
+            panum
+            ]
+          </div>
         </div>
       </div>
       <div
-        class="row"
-      >
-        <div>
-          <sup
-            style="font-style: normal;"
-          >
-            jaruw
-          </sup>
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          <em>
-            itiparu
-          </em>
-        </div>
-      </div>
-      <div
-        class="mb-3 row"
+        class="offset-md-1 col"
       >
         <div
-          class="small text-black-50 ml-3"
+          class="small text-black-50 row"
         >
-          [
-          panum
-          ]
+          <div>
+            puul
+          </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="offset-md-1 col"
-    >
-      <div
-        class="small text-black-50 row"
-      >
-        <div>
-          puul
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          aasad asas 
-          <em>
-            itiparu
-          </em>
-        </div>
-      </div>
-      <div
-        class="row"
-      >
-        <div>
-          <i>
-            širkū
-          </i>
-        </div>
-      </div>
-      <div
-        class="mb-3 row"
-      >
         <div
-          class="small text-black-50 ml-3"
+          class="row"
         >
-          [
-          juzz
-          ]
+          <div>
+            aasad asas 
+            <em>
+              itiparu
+            </em>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div>
+            <i>
+              širkū
+            </i>
+          </div>
+        </div>
+        <div
+          class="mb-3 row"
+        >
+          <div
+            class="small text-black-50 ml-3"
+          >
+            [
+            juzz
+            ]
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      class="text-center border border-dark mx-5 m-3 p-2"
-    >
-      <strong>
-        From
-      </strong>
-      <br />
-      Sommerfeld, W.
-      , 
-      <em>
-        Akkadische Glossare und Indizes
-      </em>
-      . 
-      Version 1.1 (26. Mai 2021)
-      .
-      <br />
-      <a
-        class="text-dark "
-        href="https://creativecommons.org/licenses/by-nd/4.0/"
-        rel="noopener noreferrer"
-        target="_blank"
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
       >
         <strong>
-          CC BY-ND 4.0
+          From
         </strong>
-      </a>
-      <br />
-      <a
-        class="text-dark "
-        href="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <i
-          class="pointer__hover my-2 fas fa-external-link-square-alt"
-        />
-        \`
-      </a>
+        <br />
+        Sommerfeld, W.
+        , 
+        <em>
+          Akkadische Glossare und Indizes
+        </em>
+        . 
+        Version 1.1 (26. Mai 2021)
+        .
+        <br />
+        <a
+          class="text-dark "
+          href="https://creativecommons.org/licenses/by-nd/4.0/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <strong>
+            CC BY-ND 4.0
+          </strong>
+        </a>
+        <br />
+        <a
+          class="text-dark "
+          href="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+          \`
+        </a>
+      </div>
     </div>
-  </section>
+  </main>
 </div>
 `;

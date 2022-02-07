@@ -99,6 +99,7 @@ function ChapterView({
           <EditChapterButton chapter={chapter} />
         </ButtonGroup>
       }
+      sidebar={'Sidebar'}
     >
       <table className="chapter-display">
         <tbody>

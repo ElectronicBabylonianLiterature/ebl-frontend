@@ -137,357 +137,361 @@ exports[`With session 1`] = `
       </div>
     </nav>
   </header>
-  <section
-    class="App-content"
+  <main
+    class="main"
   >
-    <header
-      class="App-content__header"
-    >
-      <nav
-        aria-label="breadcrumb"
-      >
-        <ol
-          class="breadcrumb"
-        >
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/"
-            >
-              eBL
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            Corpus
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
-        Corpus
-      </h2>
-    </header>
     <div
-      class="container-fluid"
+      class="main__content"
     >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Corpus
+            </li>
+          </ol>
+        </nav>
+        <div
+          class="float-right btn-toolbar"
+          role="toolbar"
+        />
+        <h2>
+          Corpus
+        </h2>
+      </header>
       <div
-        class="row"
+        class="container-fluid"
       >
         <div
-          class="col-md-5"
+          class="row"
         >
-          <nav
-            class="nav nav-tabs"
-            role="tablist"
-          >
-            <a
-              aria-controls="CorpusTab-2-tabpane-L"
-              aria-selected="true"
-              class="nav-item nav-link active"
-              data-rb-event-key="L"
-              href="#"
-              id="CorpusTab-2-tab-L"
-              role="tab"
-            >
-              Literature
-            </a>
-            <a
-              aria-controls="CorpusTab-2-tabpane-D"
-              aria-selected="false"
-              class="nav-item nav-link"
-              data-rb-event-key="D"
-              href="#"
-              id="CorpusTab-2-tab-D"
-              role="tab"
-            >
-              Divination
-            </a>
-            <a
-              aria-controls="CorpusTab-2-tabpane-Lex"
-              aria-selected="false"
-              class="nav-item nav-link"
-              data-rb-event-key="Lex"
-              href="#"
-              id="CorpusTab-2-tab-Lex"
-              role="tab"
-            >
-              Lexicography
-            </a>
-          </nav>
           <div
-            class="tab-content"
+            class="col-md-5"
           >
-            <div
-              aria-hidden="false"
-              aria-labelledby="CorpusTab-2-tab-L"
-              class="fade tab-pane active show"
-              id="CorpusTab-2-tabpane-L"
-              role="tabpanel"
+            <nav
+              class="nav nav-tabs"
+              role="tablist"
             >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I. Narrative Poetry
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+              <a
+                aria-controls="CorpusTab-2-tabpane-L"
+                aria-selected="true"
+                class="nav-item nav-link active"
+                data-rb-event-key="L"
+                href="#"
+                id="CorpusTab-2-tab-L"
+                role="tab"
+              >
+                Literature
+              </a>
+              <a
+                aria-controls="CorpusTab-2-tabpane-D"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="D"
+                href="#"
+                id="CorpusTab-2-tab-D"
+                role="tab"
+              >
+                Divination
+              </a>
+              <a
+                aria-controls="CorpusTab-2-tabpane-Lex"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Lex"
+                href="#"
+                id="CorpusTab-2-tab-Lex"
+                role="tab"
+              >
+                Lexicography
+              </a>
+            </nav>
+            <div
+              class="tab-content"
+            >
+              <div
+                aria-hidden="false"
+                aria-labelledby="CorpusTab-2-tab-L"
+                class="fade tab-pane active show"
+                id="CorpusTab-2-tabpane-L"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Narrative Poetry
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      <a
-                        href="/corpus/L/1/1"
+                      <div
+                        class="col-md-8"
                       >
-                        1
-                        . 
-                        First Category 1
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
+                        <a
+                          href="/corpus/L/1/1"
+                        >
+                          1
+                          . 
+                          First Category 1
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        99
+                         vv.
+                      </div>
+                    </li>
+                    <li
+                      class="row"
                     >
-                      
-                      99
-                       vv.
-                    </div>
-                  </li>
-                  <li
-                    class="row"
+                      <div
+                        class="col-md-8"
+                      >
+                        <a
+                          href="/corpus/L/1/2"
+                        >
+                          2
+                          . 
+                          First Category 2
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        99
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+                <section>
+                  <h3>
+                    II. Monologue and dialogue literature
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      <a
-                        href="/corpus/L/1/2"
+                      <div
+                        class="col-md-8"
                       >
+                        <a
+                          href="/corpus/L/2/1"
+                        >
+                          1
+                          . 
+                          Second Category
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
                         2
-                        . 
-                        First Category 2
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      99
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-              <section>
-                <h3>
-                  II. Monologue and dialogue literature
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+                <section>
+                  <h3>
+                    III. Literary Hymns and Prayers
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      <a
-                        href="/corpus/L/2/1"
+                      <div
+                        class="col-md-8"
                       >
-                        1
-                        . 
-                        Second Category
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      2
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-              <section>
-                <h3>
-                  III. Literary Hymns and Prayers
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+                        <a
+                          href="/corpus/L/3/1"
+                        >
+                          1
+                          . 
+                          Third Category
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        ±
+                        45
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-2-tab-D"
+                class="fade tab-pane"
+                id="CorpusTab-2-tabpane-D"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Celestial Divination (
+                    <em>
+                      Enūma Anu Enlil
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    II. Terrestrial Divination (
+                    <em>
+                      Šumma Ālu
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    III. Extispicy (
+                    <em>
+                      Bārûtu
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      <a
-                        href="/corpus/L/3/1"
+                      <div
+                        class="col-md-8"
                       >
-                        1
-                        . 
-                        Third Category
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      ±
-                      45
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-            </div>
-            <div
-              aria-hidden="true"
-              aria-labelledby="CorpusTab-2-tab-D"
-              class="fade tab-pane"
-              id="CorpusTab-2-tabpane-D"
-              role="tabpanel"
-            >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I. Celestial Divination (
-                  <em>
-                    Enūma Anu Enlil
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  II. Terrestrial Divination (
-                  <em>
-                    Šumma Ālu
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  III. Extispicy (
-                  <em>
-                    Bārûtu
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+                        <a
+                          href="/corpus/D/3/1"
+                        >
+                          1
+                          . 
+                          Divination Third Category
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        ±
+                        674
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-2-tab-Lex"
+                class="fade tab-pane"
+                id="CorpusTab-2-tabpane-Lex"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I.  Urra = 
+                    <em>
+                      ḫubullu
+                    </em>
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      <a
-                        href="/corpus/D/3/1"
+                      <div
+                        class="col-md-8"
                       >
-                        1
-                        . 
-                        Divination Third Category
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      ±
-                      674
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-            </div>
-            <div
-              aria-hidden="true"
-              aria-labelledby="CorpusTab-2-tab-Lex"
-              class="fade tab-pane"
-              id="CorpusTab-2-tabpane-Lex"
-              role="tabpanel"
-            >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I.  Urra = 
-                  <em>
-                    ḫubullu
-                  </em>
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
-                  >
-                    <div
-                      class="col-md-8"
-                    >
-                      <a
-                        href="/corpus/Lex/1/1"
+                        <a
+                          href="/corpus/Lex/1/1"
+                        >
+                          1
+                          . 
+                          Lexicography First Category
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
                       >
-                        1
-                        . 
-                        Lexicography First Category
-                      </a>
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      3
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
+                        
+                        3
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          class="col-md-7"
-        >
-          <img
-            alt="LibraryCropped.svg"
-            class="img-fluid"
-            src="http://example.com/images/LibraryCropped.svg"
-          />
+          <div
+            class="col-md-7"
+          >
+            <img
+              alt="LibraryCropped.svg"
+              class="img-fluid"
+              src="http://example.com/images/LibraryCropped.svg"
+            />
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </main>
 </div>
 `;
 
@@ -627,332 +631,336 @@ exports[`Without session 1`] = `
       </div>
     </nav>
   </header>
-  <section
-    class="App-content"
+  <main
+    class="main"
   >
-    <header
-      class="App-content__header"
-    >
-      <nav
-        aria-label="breadcrumb"
-      >
-        <ol
-          class="breadcrumb"
-        >
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/"
-            >
-              eBL
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            Corpus
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
-        Corpus
-      </h2>
-    </header>
     <div
-      class="container-fluid"
+      class="main__content"
     >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Corpus
+            </li>
+          </ol>
+        </nav>
+        <div
+          class="float-right btn-toolbar"
+          role="toolbar"
+        />
+        <h2>
+          Corpus
+        </h2>
+      </header>
       <div
-        class="row"
+        class="container-fluid"
       >
         <div
-          class="col-md-5"
+          class="row"
         >
-          <nav
-            class="nav nav-tabs"
-            role="tablist"
-          >
-            <a
-              aria-controls="CorpusTab-5-tabpane-L"
-              aria-selected="true"
-              class="nav-item nav-link active"
-              data-rb-event-key="L"
-              href="#"
-              id="CorpusTab-5-tab-L"
-              role="tab"
-            >
-              Literature
-            </a>
-            <a
-              aria-controls="CorpusTab-5-tabpane-D"
-              aria-selected="false"
-              class="nav-item nav-link"
-              data-rb-event-key="D"
-              href="#"
-              id="CorpusTab-5-tab-D"
-              role="tab"
-            >
-              Divination
-            </a>
-            <a
-              aria-controls="CorpusTab-5-tabpane-Lex"
-              aria-selected="false"
-              class="nav-item nav-link"
-              data-rb-event-key="Lex"
-              href="#"
-              id="CorpusTab-5-tab-Lex"
-              role="tab"
-            >
-              Lexicography
-            </a>
-          </nav>
           <div
-            class="tab-content"
+            class="col-md-5"
           >
-            <div
-              aria-hidden="false"
-              aria-labelledby="CorpusTab-5-tab-L"
-              class="fade tab-pane active show"
-              id="CorpusTab-5-tabpane-L"
-              role="tabpanel"
+            <nav
+              class="nav nav-tabs"
+              role="tablist"
             >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I. Narrative Poetry
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
-                  >
-                    <div
-                      class="col-md-8"
-                    >
-                      1
-                      . 
-                      First Category 1
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      99
-                       vv.
-                    </div>
-                  </li>
-                  <li
-                    class="row"
-                  >
-                    <div
-                      class="col-md-8"
-                    >
-                      2
-                      . 
-                      First Category 2
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      99
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-              <section>
-                <h3>
-                  II. Monologue and dialogue literature
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
-                  >
-                    <div
-                      class="col-md-8"
-                    >
-                      1
-                      . 
-                      Second Category
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      
-                      2
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-              <section>
-                <h3>
-                  III. Literary Hymns and Prayers
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
-                  >
-                    <div
-                      class="col-md-8"
-                    >
-                      1
-                      . 
-                      Third Category
-                    </div>
-                    <div
-                      class="col-md-4"
-                    >
-                      ±
-                      45
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-            </div>
+              <a
+                aria-controls="CorpusTab-5-tabpane-L"
+                aria-selected="true"
+                class="nav-item nav-link active"
+                data-rb-event-key="L"
+                href="#"
+                id="CorpusTab-5-tab-L"
+                role="tab"
+              >
+                Literature
+              </a>
+              <a
+                aria-controls="CorpusTab-5-tabpane-D"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="D"
+                href="#"
+                id="CorpusTab-5-tab-D"
+                role="tab"
+              >
+                Divination
+              </a>
+              <a
+                aria-controls="CorpusTab-5-tabpane-Lex"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Lex"
+                href="#"
+                id="CorpusTab-5-tab-Lex"
+                role="tab"
+              >
+                Lexicography
+              </a>
+            </nav>
             <div
-              aria-hidden="true"
-              aria-labelledby="CorpusTab-5-tab-D"
-              class="fade tab-pane"
-              id="CorpusTab-5-tabpane-D"
-              role="tabpanel"
+              class="tab-content"
             >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I. Celestial Divination (
-                  <em>
-                    Enūma Anu Enlil
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  II. Terrestrial Divination (
-                  <em>
-                    Šumma Ālu
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  III. Extispicy (
-                  <em>
-                    Bārûtu
-                  </em>
-                  )
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+              <div
+                aria-hidden="false"
+                aria-labelledby="CorpusTab-5-tab-L"
+                class="fade tab-pane active show"
+                id="CorpusTab-5-tabpane-L"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Narrative Poetry
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      1
-                      . 
-                      Divination Third Category
-                    </div>
-                    <div
-                      class="col-md-4"
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        First Category 1
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        99
+                         vv.
+                      </div>
+                    </li>
+                    <li
+                      class="row"
                     >
-                      ±
-                      674
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
-            </div>
-            <div
-              aria-hidden="true"
-              aria-labelledby="CorpusTab-5-tab-Lex"
-              class="fade tab-pane"
-              id="CorpusTab-5-tabpane-Lex"
-              role="tabpanel"
-            >
-              <section>
-                <h3 />
-                <ol
-                  class="container-fluid"
-                />
-              </section>
-              <section>
-                <h3>
-                  I.  Urra = 
-                  <em>
-                    ḫubullu
-                  </em>
-                </h3>
-                <ol
-                  class="container-fluid"
-                >
-                  <li
-                    class="row"
+                      <div
+                        class="col-md-8"
+                      >
+                        2
+                        . 
+                        First Category 2
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        99
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+                <section>
+                  <h3>
+                    II. Monologue and dialogue literature
+                  </h3>
+                  <ol
+                    class="container-fluid"
                   >
-                    <div
-                      class="col-md-8"
+                    <li
+                      class="row"
                     >
-                      1
-                      . 
-                      Lexicography First Category
-                    </div>
-                    <div
-                      class="col-md-4"
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        Second Category
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        2
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+                <section>
+                  <h3>
+                    III. Literary Hymns and Prayers
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  >
+                    <li
+                      class="row"
                     >
-                      
-                      3
-                       vv.
-                    </div>
-                  </li>
-                </ol>
-              </section>
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        Third Category
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        ±
+                        45
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-5-tab-D"
+                class="fade tab-pane"
+                id="CorpusTab-5-tabpane-D"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Celestial Divination (
+                    <em>
+                      Enūma Anu Enlil
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    II. Terrestrial Divination (
+                    <em>
+                      Šumma Ālu
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    III. Extispicy (
+                    <em>
+                      Bārûtu
+                    </em>
+                    )
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  >
+                    <li
+                      class="row"
+                    >
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        Divination Third Category
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        ±
+                        674
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-5-tab-Lex"
+                class="fade tab-pane"
+                id="CorpusTab-5-tabpane-Lex"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I.  Urra = 
+                    <em>
+                      ḫubullu
+                    </em>
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  >
+                    <li
+                      class="row"
+                    >
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        Lexicography First Category
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        3
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          class="col-md-7"
-        >
-          <img
-            alt="LibraryCropped.svg"
-            class="img-fluid"
-            src="http://example.com/images/LibraryCropped.svg"
-          />
+          <div
+            class="col-md-7"
+          >
+            <img
+              alt="LibraryCropped.svg"
+              class="img-fluid"
+              src="http://example.com/images/LibraryCropped.svg"
+            />
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </main>
 </div>
 `;
