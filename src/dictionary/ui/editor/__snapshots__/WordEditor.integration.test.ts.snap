@@ -148,6 +148,7 @@ exports[`Edit 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -178,11 +179,9 @@ exports[`Edit 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           Edit
            
           <strong>
@@ -191,6 +190,10 @@ exports[`Edit 1`] = `
            
           I
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <p>
         This is a test word!
@@ -1985,6 +1988,7 @@ exports[`Snapshot 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -2015,11 +2019,9 @@ exports[`Snapshot 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           Edit
            
           <strong>
@@ -2028,6 +2030,10 @@ exports[`Snapshot 1`] = `
            
           I
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <p>
         This is a test word!

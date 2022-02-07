@@ -148,6 +148,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -196,8 +197,25 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </li>
           </ol>
         </nav>
+        <h2
+          class="main__heading"
+        >
+          Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
+          <br />
+          <small>
+            Chapter
+             
+            The Only Chapter
+             
+            <span>
+              <span>
+                Pofo jarikat vowhukod voawka pigiz jato milatas sik desit ronvojjiw ga muvcaeni ke.
+              </span>
+            </span>
+          </small>
+        </h2>
         <div
-          class="float-right btn-toolbar"
+          class="main__toolbar btn-toolbar"
           role="toolbar"
         >
           <div
@@ -228,21 +246,6 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </a>
           </div>
         </div>
-        <h2>
-          Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
-          <br />
-          <small>
-            Chapter
-             
-            The Only Chapter
-             
-            <span>
-              <span>
-                Pofo jarikat vowhukod voawka pigiz jato milatas sik desit ronvojjiw ga muvcaeni ke.
-              </span>
-            </span>
-          </small>
-        </h2>
       </header>
       <table
         class="chapter-display"
@@ -771,6 +774,7 @@ exports[`Diplay chapter Snapshot 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -819,8 +823,25 @@ exports[`Diplay chapter Snapshot 1`] = `
             </li>
           </ol>
         </nav>
+        <h2
+          class="main__heading"
+        >
+          Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
+          <br />
+          <small>
+            Chapter
+             
+            The Only Chapter
+             
+            <span>
+              <span>
+                Pofo jarikat vowhukod voawka pigiz jato milatas sik desit ronvojjiw ga muvcaeni ke.
+              </span>
+            </span>
+          </small>
+        </h2>
         <div
-          class="float-right btn-toolbar"
+          class="main__toolbar btn-toolbar"
           role="toolbar"
         >
           <div
@@ -851,21 +872,6 @@ exports[`Diplay chapter Snapshot 1`] = `
             </a>
           </div>
         </div>
-        <h2>
-          Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
-          <br />
-          <small>
-            Chapter
-             
-            The Only Chapter
-             
-            <span>
-              <span>
-                Pofo jarikat vowhukod voawka pigiz jato milatas sik desit ronvojjiw ga muvcaeni ke.
-              </span>
-            </span>
-          </small>
-        </h2>
       </header>
       <table
         class="chapter-display"

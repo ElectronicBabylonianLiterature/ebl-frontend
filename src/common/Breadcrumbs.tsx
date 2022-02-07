@@ -52,13 +52,15 @@ function CrumbComponent({ crumb }: { crumb: Crumb }): JSX.Element {
 
 export default function Breadcrumbs({
   crumbs,
+  className,
 }: {
   crumbs: ReadonlyArray<Crumb>
+  className?: string
 }): JSX.Element {
   const initial = [new SectionCrumb('eBL'), ..._.initial(crumbs)]
   const last = _.last(crumbs)
   return (
-    <Breadcrumb>
+    <Breadcrumb className={className}>
       {initial.map((crumb, index) => (
         <CrumbComponent key={index} crumb={crumb} />
       ))}

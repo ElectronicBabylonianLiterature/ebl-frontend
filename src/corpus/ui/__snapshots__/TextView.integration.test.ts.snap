@@ -148,6 +148,7 @@ exports[`Chapter Show chapter 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -187,13 +188,15 @@ exports[`Chapter Show chapter 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           I.1 Palm and Vine
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <section
         class="text-view__section"
@@ -444,6 +447,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -483,13 +487,15 @@ exports[`Chapter Show list of manuscripts 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           I.1 Palm and Vine
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <section
         class="text-view__section"
@@ -908,6 +914,7 @@ exports[`With session 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -947,13 +954,15 @@ exports[`With session 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           I.1 Palm and Vine
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <section
         class="text-view__section"
@@ -1203,6 +1212,7 @@ exports[`Without session 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -1242,13 +1252,15 @@ exports[`Without session 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           I.1 Palm and Vine
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <p>
         Please log in to view the text.

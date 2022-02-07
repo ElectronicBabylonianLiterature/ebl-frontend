@@ -32,9 +32,9 @@ export default function AppContent({
     >
       <div className="main__content">
         <header className="main__header">
-          <Breadcrumbs crumbs={crumbs} />
-          <ButtonToolbar className="float-right">{actions}</ButtonToolbar>
-          <h2>{title || _.last(crumbs)?.text}</h2>
+          <Breadcrumbs className="main__breadcrumbs" crumbs={crumbs} />
+          <h2 className="main__heading">{title || _.last(crumbs)?.text}</h2>
+          <ButtonToolbar className="main__toolbar">{actions}</ButtonToolbar>
         </header>
         {children}
       </div>

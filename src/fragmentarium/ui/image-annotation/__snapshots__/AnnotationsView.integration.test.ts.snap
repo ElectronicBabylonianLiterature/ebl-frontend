@@ -148,6 +148,7 @@ exports[`Diplay annotate view Snapshot 1`] = `
       >
         <nav
           aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
           <ol
             class="breadcrumb"
@@ -187,13 +188,15 @@ exports[`Diplay annotate view Snapshot 1`] = `
             </li>
           </ol>
         </nav>
-        <div
-          class="float-right btn-toolbar"
-          role="toolbar"
-        />
-        <h2>
+        <h2
+          class="main__heading"
+        >
           Tag Signs
         </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
       </header>
       <div
         class="btn-group"
