@@ -126,7 +126,7 @@ function Manuscript({
   )
 }
 
-const Manuscripts = withData<
+const Score = withData<
   Record<string, unknown>,
   {
     id: ChapterId
@@ -204,7 +204,7 @@ export function ChapterViewLine({
         <Collapse in={showScore} mountOnEnter>
           <tr id={scoreId}>
             <td colSpan={totalColumns}>
-              <Manuscripts
+              <Score
                 id={chapter.id}
                 lineNumber={lineNumber}
                 textService={textService}
