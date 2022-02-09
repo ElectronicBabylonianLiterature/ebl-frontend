@@ -51,7 +51,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-11"
+          id="Header-9"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-11"
+          aria-controls="Header-9"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -272,7 +272,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-16"
+                aria-controls="score-13"
                 aria-expanded="true"
                 class="fas fa-caret-down"
               />
@@ -326,7 +326,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           </tr>
           <tr
             class="collapse show"
-            id="score-16"
+            id="score-13"
             style=""
           >
             <td
@@ -568,7 +568,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-13"
+                aria-controls="score-11"
                 aria-expanded="false"
                 class="fas fa-caret-right"
               />
@@ -630,7 +630,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-17"
+          aria-controls="settings-14"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -697,7 +697,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-19"
+          id="Header-15"
         >
           <div
             class="mx-auto navbar-nav"
@@ -771,7 +771,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-19"
+          aria-controls="Header-15"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -918,7 +918,7 @@ exports[`Diplay chapter Sidebar 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-26"
+                aria-controls="score-21"
                 aria-expanded="true"
                 class="fas fa-caret-down"
               />
@@ -972,7 +972,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </tr>
           <tr
             class="collapse show"
-            id="score-26"
+            id="score-21"
             style=""
           >
             <td
@@ -1097,7 +1097,7 @@ exports[`Diplay chapter Sidebar 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-27"
+                aria-controls="score-22"
                 aria-expanded="true"
                 class="fas fa-caret-down"
               />
@@ -1151,7 +1151,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </tr>
           <tr
             class="collapse show"
-            id="score-27"
+            id="score-22"
             style=""
           >
             <td
@@ -1231,7 +1231,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-28"
+          aria-controls="settings-23"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -1241,45 +1241,49 @@ exports[`Diplay chapter Sidebar 1`] = `
           />
            Settings
         </h3>
-        <form
-          class="settings__section"
-          id="settings-28"
+        <div
+          class="fade show"
+          id="settings-23"
         >
-          <h4
-            class="settings__subheading"
+          <form
+            class="settings__section"
           >
-            Text
-          </h4>
-          <div
-            class="settings__switch custom-control custom-switch"
-          >
-            <input
-              class="custom-control-input"
-              id="sidebar-text-toggle-29"
-              type="checkbox"
-            />
-            <label
-              class="custom-control-label"
-              for="sidebar-text-toggle-29"
-              title=""
+            <h4
+              class="settings__subheading"
             >
-              Score
-            </label>
-          </div>
-        </form>
-        <footer
-          class="settings__footer"
-        >
-          <span
-            class="settings__close-button"
-            role="button"
+              Text
+            </h4>
+            <div
+              class="settings__switch custom-control custom-switch"
+            >
+              <input
+                class="custom-control-input"
+                id="sidebar-text-toggle-24"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="sidebar-text-toggle-24"
+                title=""
+              >
+                Score
+              </label>
+            </div>
+          </form>
+          <footer
+            class="settings__footer"
           >
-            <i
-              class="far fa-times-circle"
-            />
-             Close
-          </span>
-        </footer>
+            <span
+              class="settings__close-button"
+              role="button"
+            >
+              <i
+                class="far fa-times-circle"
+              />
+               Close
+            </span>
+          </footer>
+        </div>
       </section>
     </aside>
   </main>
@@ -1337,7 +1341,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-19"
+          id="Header-15"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1411,7 +1415,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-19"
+          aria-controls="Header-15"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1558,7 +1562,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-26"
+                aria-controls="score-21"
                 aria-expanded="true"
                 class="fas fa-caret-down"
               />
@@ -1612,7 +1616,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </tr>
           <tr
             class="collapse show"
-            id="score-26"
+            id="score-21"
             style=""
           >
             <td
@@ -1737,7 +1741,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-27"
+                aria-controls="score-22"
                 aria-expanded="true"
                 class="fas fa-caret-down"
               />
@@ -1791,7 +1795,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </tr>
           <tr
             class="collapse show"
-            id="score-27"
+            id="score-22"
             style=""
           >
             <td
@@ -1871,7 +1875,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-30"
+          aria-controls="settings-25"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1938,7 +1942,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-6"
+          id="Header-5"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2012,7 +2016,7 @@ exports[`Diplay chapter Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-6"
+          aria-controls="Header-5"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2159,7 +2163,7 @@ exports[`Diplay chapter Snapshot 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-7"
+                aria-controls="score-6"
                 aria-expanded="false"
                 class="fas fa-caret-right"
               />
@@ -2232,7 +2236,7 @@ exports[`Diplay chapter Snapshot 1`] = `
               class="chapter-display__manuscripts-toggle"
             >
               <i
-                aria-controls="score-8"
+                aria-controls="score-7"
                 aria-expanded="false"
                 class="fas fa-caret-right"
               />
@@ -2294,7 +2298,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-9"
+          aria-controls="settings-8"
           aria-expanded="false"
           class="settings__heading"
           role="button"
