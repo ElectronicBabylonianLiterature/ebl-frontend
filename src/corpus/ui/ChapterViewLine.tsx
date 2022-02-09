@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useMemo } from 'react'
 import _ from 'lodash'
 import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
@@ -10,8 +10,9 @@ import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
 import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import { Collapse, OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
+import ChapterViewContext from './ChapterViewContext'
 
 function InterText({
   line,
@@ -125,7 +126,7 @@ function Manuscript({
   )
 }
 
-const Manuscripts = withData<
+const Score = withData<
   Record<string, unknown>,
   {
     id: ChapterId
@@ -166,46 +167,61 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
 }): JSX.Element {
-  const [showManuscripts, setShowManuscripts] = useState(false)
-  const totalColumns = maxColumns + 4
-  return (
-    <>
-      <InterText line={line} colSpan={totalColumns} />
-      <tr
-        onClick={() => setShowManuscripts(!showManuscripts)}
-        className={classNames({
-          'chapter-display__line': true,
-          'chapter-display__line--is-second-line-of-parallelism':
-            line.isSecondLineOfParallelism,
-          'chapter-display__line--is-beginning-of-section':
-            line.isBeginningOfSection,
-        })}
-      >
-        <td className="chapter-display__manuscripts-toggle">
-          <i
-            className={classNames({
-              fas: true,
-              'fa-caret-right': !showManuscripts,
-              'fa-caret-down': showManuscripts,
-            })}
-            aria-expanded={showManuscripts}
-          ></i>
-        </td>
-        <LineNumber line={line} />
-        <LineColumns columns={columns} maxColumns={maxColumns} />
-        <Translation line={line} />
-      </tr>
-      {showManuscripts && (
-        <tr>
-          <td colSpan={totalColumns}>
-            <Manuscripts
-              id={chapter.id}
-              lineNumber={lineNumber}
-              textService={textService}
-            />
+  const [state, dispatch] = useContext(ChapterViewContext)
+  const showScore = state[lineNumber]
+
+  return useMemo(() => {
+    const scoreId = _.uniqueId('score-')
+    const totalColumns = maxColumns + 4
+    return (
+      <>
+        <InterText line={line} colSpan={totalColumns} />
+        <tr
+          onClick={() => dispatch({ type: 'toggleRow', row: lineNumber })}
+          className={classNames({
+            'chapter-display__line': true,
+            'chapter-display__line--is-second-line-of-parallelism':
+              line.isSecondLineOfParallelism,
+            'chapter-display__line--is-beginning-of-section':
+              line.isBeginningOfSection,
+          })}
+        >
+          <td className="chapter-display__manuscripts-toggle">
+            <i
+              className={classNames({
+                fas: true,
+                'fa-caret-right': !showScore,
+                'fa-caret-down': showScore,
+              })}
+              aria-expanded={showScore}
+              aria-controls={scoreId}
+            ></i>
           </td>
+          <LineNumber line={line} />
+          <LineColumns columns={columns} maxColumns={maxColumns} />
+          <Translation line={line} />
         </tr>
-      )}
-    </>
-  )
+        <Collapse in={showScore} mountOnEnter>
+          <tr id={scoreId}>
+            <td colSpan={totalColumns}>
+              <Score
+                id={chapter.id}
+                lineNumber={lineNumber}
+                textService={textService}
+              />
+            </td>
+          </tr>
+        </Collapse>
+      </>
+    )
+  }, [
+    line,
+    showScore,
+    columns,
+    maxColumns,
+    chapter.id,
+    lineNumber,
+    textService,
+    dispatch,
+  ])
 }

@@ -149,7 +149,7 @@ export default class AppDriver {
 
   async waitForTextToDisappear(text: Matcher): Promise<void> {
     await waitFor(() => {
-      expect(this.getView().queryByText(text)).not.toBeInTheDocument()
+      this.expectNotInContent(text)
     })
   }
 

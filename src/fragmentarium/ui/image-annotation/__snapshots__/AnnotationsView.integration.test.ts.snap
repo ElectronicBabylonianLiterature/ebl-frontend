@@ -137,280 +137,287 @@ exports[`Diplay annotate view Snapshot 1`] = `
       </div>
     </nav>
   </header>
-  <section
-    class="App-content App-content--wide"
+  <main
+    class="main main--wide"
   >
-    <header
-      class="App-content__header"
+    <div
+      class="main__content"
     >
-      <nav
-        aria-label="breadcrumb"
+      <header
+        class="main__header"
       >
-        <ol
-          class="breadcrumb"
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
         >
-          <li
-            class="breadcrumb-item active"
+          <ol
+            class="breadcrumb"
           >
-            <a
-              href="/"
+            <li
+              class="breadcrumb-item active"
             >
-              eBL
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/fragmentarium"
-            >
-              Fragmentarium
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item active"
-          >
-            <a
-              href="/fragmentarium/Test.Fragment"
-            >
-              Test.Fragment
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="breadcrumb-item active"
-          >
-            Tag Signs
-          </li>
-        </ol>
-      </nav>
-      <div
-        class="float-right btn-toolbar"
-        role="toolbar"
-      />
-      <h2>
-        Tag Signs
-      </h2>
-    </header>
-    <div
-      class="btn-group"
-      role="group"
-    >
-      <button
-        class="btn btn-outline-dark"
-        type="button"
-      >
-        Generate Annotations
-      </button>
-      <button
-        class="btn btn-outline-dark"
-        type="button"
-      >
-        Automatic Selection
-      </button>
-      <button
-        class="btn btn-outline-dark"
-        type="button"
-      >
-        Delete everything
-      </button>
-      <button
-        class="btn btn-outline-dark"
-        type="button"
-      >
-        Save
-      </button>
-    </div>
-    <div
-      class="ml-3  btn-group-vertical btn-group-sm"
-      role="group"
-    >
-      <button
-        class="btn btn-outline-dark"
-        disabled=""
-        type="button"
-      >
-        Mode: 
-        default
-      </button>
-      <button
-        class="btn btn-outline-dark"
-        disabled=""
-        type="button"
-      >
-        Show Content: 
-        yes
-      </button>
-    </div>
-    <i
-      class="m-2 fas fa-info-circle"
-    />
-    <div
-      class="row"
-    >
-      <div
-        class="col"
-      >
-        <div
-          class="mt-5 pt-4"
-        >
-          <div
-            class="card"
-          >
-            <div
-              class="card-body"
-            >
-              <div
-                class="row"
+              <a
+                href="/"
               >
-                <div
-                  class="col"
-                >
-                  <button
-                    class="btn btn-outline-dark btn-sm"
-                    disabled=""
-                    type="button"
-                  >
-                    blank
-                  </button>
-                </div>
-                <div
-                  class="col"
-                />
-              </div>
-              <hr />
-              <div>
-                <span>
-                  10.
-                   
-                </span>
-                <span>
-                  [...]
-                   
-                </span>
-              </div>
-              <div>
-                <span>
-                  10.
-                   
-                </span>
-              </div>
-              <div>
-                <span>
-                  10.
-                   
-                </span>
-                <span>
-                  |
-                   
-                </span>
-              </div>
-              <div>
-                <span>
-                  10.
-                   
-                </span>
-                <span>
-                  ...
-                   
-                </span>
-                <span>
-                  ...
-                   
-                </span>
-                <span>
-                  ...
-                   
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/fragmentarium/Test.Fragment"
+              >
+                Test.Fragment
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Tag Signs
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Tag Signs
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        />
+      </header>
+      <div
+        class="btn-group"
+        role="group"
+      >
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+        >
+          Generate Annotations
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+        >
+          Automatic Selection
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+        >
+          Delete everything
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          type="button"
+        >
+          Save
+        </button>
       </div>
       <div
-        class="col"
+        class="ml-3  btn-group-vertical btn-group-sm"
+        role="group"
+      >
+        <button
+          class="btn btn-outline-dark"
+          disabled=""
+          type="button"
+        >
+          Mode: 
+          default
+        </button>
+        <button
+          class="btn btn-outline-dark"
+          disabled=""
+          type="button"
+        >
+          Show Content: 
+          yes
+        </button>
+      </div>
+      <i
+        class="m-2 fas fa-info-circle"
+      />
+      <div
+        class="row"
       >
         <div
-          class="my-3 row"
+          class="col"
         >
           <div
-            class="col-auto"
+            class="mt-5 pt-4"
           >
             <div
-              class="btn-group"
-              role="group"
+              class="card"
             >
-              <button
-                class="btn btn-outline-dark"
-                type="button"
-              >
-                Zoom In +
-              </button>
-              <button
-                class="btn btn-outline-dark"
-                type="button"
-              >
-                Zoom Out -
-              </button>
-              <button
-                class="btn btn-outline-dark"
-                type="button"
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-          <div
-            class="text-center my-auto col"
-          >
-            Zoom with Mouse wheel. Pan while holding shift
-          </div>
-        </div>
-        <div
-          class="react-transform-wrapper transform-component-module_wrapper__1_Fgj "
-        >
-          <div
-            class="react-transform-component transform-component-module_content__2jYgh "
-            style="transform: translate3d(0px, 0px, 0) scale(1);"
-          >
-            <div
-              class="sc-iwsKbI bNCCdn"
-            >
-              <img
-                alt="Test.Fragment"
-                class="sc-gZMcBi gVmiLs"
-                draggable="false"
-                src="mock url"
-              />
               <div
-                class="sc-gqjmRU inYJUn"
+                class="card-body"
               >
                 <div
-                  data-testid="annotation__box"
-                  style="transform: scale(1); transform-origin: top left; position: absolute; left: 100%; top: 45.7%; height: 4%; width: 0.02%; border: 1px solid aliceblue; padding: 0px;"
+                  class="row"
                 >
-                  <span
-                    style="position: absolute; top: -1px; left: -1px; margin: 0px; padding: 0px; background: white; font-size: 0.5em;"
+                  <div
+                    class="col"
                   >
-                    kur
+                    <button
+                      class="btn btn-outline-dark btn-sm"
+                      disabled=""
+                      type="button"
+                    >
+                      blank
+                    </button>
+                  </div>
+                  <div
+                    class="col"
+                  />
+                </div>
+                <hr />
+                <div>
+                  <span>
+                    10.
+                     
+                  </span>
+                  <span>
+                    [...]
+                     
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    10.
+                     
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    10.
+                     
+                  </span>
+                  <span>
+                    |
+                     
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    10.
+                     
+                  </span>
+                  <span>
+                    ...
+                     
+                  </span>
+                  <span>
+                    ...
+                     
+                  </span>
+                  <span>
+                    ...
+                     
                   </span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="my-3 row"
+          >
+            <div
+              class="col-auto"
+            >
               <div
-                class="sc-gqjmRU inYJUn"
-                data-testid="annotation__target"
-              />
-              <div
-                class="sc-dnqmqq ixSjBM"
+                class="btn-group"
+                role="group"
               >
-                Click and Drag to Annotate
+                <button
+                  class="btn btn-outline-dark"
+                  type="button"
+                >
+                  Zoom In +
+                </button>
+                <button
+                  class="btn btn-outline-dark"
+                  type="button"
+                >
+                  Zoom Out -
+                </button>
+                <button
+                  class="btn btn-outline-dark"
+                  type="button"
+                >
+                  Reset
+                </button>
               </div>
-              <div />
+            </div>
+            <div
+              class="text-center my-auto col"
+            >
+              Zoom with Mouse wheel. Pan while holding shift
+            </div>
+          </div>
+          <div
+            class="react-transform-wrapper transform-component-module_wrapper__1_Fgj "
+          >
+            <div
+              class="react-transform-component transform-component-module_content__2jYgh "
+              style="transform: translate3d(0px, 0px, 0) scale(1);"
+            >
+              <div
+                class="sc-iwsKbI bNCCdn"
+              >
+                <img
+                  alt="Test.Fragment"
+                  class="sc-gZMcBi gVmiLs"
+                  draggable="false"
+                  src="mock url"
+                />
+                <div
+                  class="sc-gqjmRU inYJUn"
+                >
+                  <div
+                    data-testid="annotation__box"
+                    style="transform: scale(1); transform-origin: top left; position: absolute; left: 100%; top: 45.7%; height: 4%; width: 0.02%; border: 1px solid aliceblue; padding: 0px;"
+                  >
+                    <span
+                      style="position: absolute; top: -1px; left: -1px; margin: 0px; padding: 0px; background: white; font-size: 0.5em;"
+                    >
+                      kur
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="sc-gqjmRU inYJUn"
+                  data-testid="annotation__target"
+                />
+                <div
+                  class="sc-dnqmqq ixSjBM"
+                >
+                  Click and Drag to Annotate
+                </div>
+                <div />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </main>
 </div>
 `;
