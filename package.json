@@ -73,7 +73,7 @@
     "lodash": "^4.17.19",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "prettier": "2.1.1",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
