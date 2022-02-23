@@ -65,10 +65,31 @@ export interface LineDisplay {
   readonly translation: ReadonlyArray<MarkupPart>
 }
 
+export interface Author {
+  readonly name: string
+  readonly prefix: string
+  readonly role: 'EDITOR' | 'REVISION'
+  readonly orcidNumber: string
+}
+
+export interface Translator {
+  readonly name: string
+  readonly prefix: string
+  readonly orcidNumber: string
+  readonly language: string
+}
+
+export interface Record {
+  readonly authors: ReadonlyArray<Author>
+  readonly translators: ReadonlyArray<Translator>
+  readonly publicationDate: string
+}
+
 export interface ChapterDisplay {
   readonly id: ChapterId
   readonly textName: string
   readonly isSingleStage: boolean
   readonly title: ReadonlyArray<MarkupPart>
   readonly lines: ReadonlyArray<LineDisplay>
+  readonly record: Record
 }

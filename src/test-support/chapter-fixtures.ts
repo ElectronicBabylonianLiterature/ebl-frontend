@@ -82,5 +82,6 @@ export const chapterDisplayFactory = Factory.define<
       },
     ],
     lines: lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
+    record: { authors: [], translators: [], publicationDate: '' },
   }
 })
