@@ -1,3 +1,4 @@
+import { DateTime, Interval } from 'luxon'
 import {
   atEleven,
   atTen,
@@ -14,10 +15,6 @@ import {
   year2018,
 } from 'test-support/record-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
-import * as Moment from 'moment'
-import { extendMoment, DateRange } from 'moment-range'
-
-const moment = extendMoment(Moment)
 
 describe('RecordEntry', () => {
   test.each([
@@ -73,10 +70,13 @@ describe('RecordEntry', () => {
   )
 
   test.each([
-    [transliteration, moment.default(transliteration.date)],
-    [revision, moment.default(revision.date)],
-    [historicalTransliteration, moment.range(historicalTransliteration.date)],
-  ] as [RecordEntry, Moment.Moment | DateRange][])(
+    [transliteration, DateTime.fromISO(transliteration.date)],
+    [revision, DateTime.fromISO(revision.date)],
+    [
+      historicalTransliteration,
+      Interval.fromISO(historicalTransliteration.date),
+    ],
+  ] as [RecordEntry, DateTime | Interval][])(
     '%s.moment is %s',
     (recordEntry, expected) => {
       expect(recordEntry.moment).toEqual(expected)

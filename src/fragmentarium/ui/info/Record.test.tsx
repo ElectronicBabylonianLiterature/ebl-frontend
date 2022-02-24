@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import { DateTime } from 'luxon'
 import Record from './Record'
-import moment from 'moment'
 import { recordFactory } from 'test-support/fragment-fixtures'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
 
@@ -18,7 +18,7 @@ describe('Record has entries', () => {
     for (const entry of record) {
       const expectedEntry = `${entry.user} (${
         entry.type
-      }, ${(entry.moment as moment.Moment).format('D/M/YYYY')})`
+      }, ${(entry.moment as DateTime).toFormat('d/M/yyyy')})`
       expect(container).toHaveTextContent(expectedEntry)
     }
   })
@@ -26,10 +26,10 @@ describe('Record has entries', () => {
   it(`Entries have correct datetTime`, () => {
     for (const entry of record) {
       expect(
-        screen.getByText((entry.moment as moment.Moment).format('D/M/YYYY'))
+        screen.getByText((entry.moment as DateTime).toFormat('d/M/yyyy'))
       ).toHaveAttribute(
         'datetime',
-        (entry.moment as moment.Moment).format('YYYY-MM-DD')
+        (entry.moment as DateTime).toFormat('yyyy-MM-dd')
       )
     }
   })
@@ -46,15 +46,13 @@ describe('Record is empty', () => {
 })
 
 describe('Historical transliteration', () => {
-  const start = moment('1975-02-09')
-  const end = moment('1981-10-28')
-  const years = [start, end].map((date) => date.format('YYYY'))
+  const start = DateTime.fromISO('1975-02-09')
+  const end = DateTime.fromISO('1981-10-28')
+  const years = [start, end].map((date) => date.toFormat('yyyy'))
   let entry: RecordEntry
 
   beforeEach(() => {
-    entry = recordFactory
-      .historical(`${start.toISOString()}/${end.toISOString()}`)
-      .build()
+    entry = recordFactory.historical(`${start.toISO()}/${end.toISO()}`).build()
     container = render(<Record record={[entry]} />).container
   })
 
