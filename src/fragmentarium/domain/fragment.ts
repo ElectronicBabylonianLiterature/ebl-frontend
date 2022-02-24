@@ -1,6 +1,5 @@
 import _ from 'lodash'
-import * as Moment from 'moment'
-import { extendMoment, DateRange } from 'moment-range'
+import { DateTime, Interval } from 'luxon'
 import produce, { castDraft, Draft, immerable } from 'immer'
 
 import Reference from 'bibliography/domain/Reference'
@@ -9,8 +8,6 @@ import Museum, { FragmentLink } from './museum'
 import Folio from './Folio'
 import { Genres } from 'fragmentarium/domain/Genres'
 import { Joins } from './join'
-
-const moment = extendMoment(Moment)
 
 export interface FragmentInfo {
   readonly number: string
@@ -27,7 +24,7 @@ export interface FragmentInfo {
 const historicalTransliteration = 'HistoricalTransliteration'
 
 type RecordType =
-  | 'HistoricalTransliteration'
+  | typeof historicalTransliteration
   | 'Revision'
   | 'Transliteration'
   | 'Collation'
@@ -51,10 +48,10 @@ export class RecordEntry {
     this.type = type
   }
 
-  get moment(): DateRange | Moment.Moment {
+  get moment(): DateTime | Interval {
     return this.isHistorical
-      ? moment.range(this.date)
-      : Moment.default(this.date)
+      ? Interval.fromISO(this.date)
+      : DateTime.fromISO(this.date)
   }
 
   get isHistorical(): boolean {
@@ -62,12 +59,9 @@ export class RecordEntry {
   }
 
   dateEquals(other: RecordEntry): boolean {
-    const onSameDate = (
-      first: Moment.Moment,
-      second: Moment.Moment
-    ): boolean => {
-      const sameYear = first.year() === second.year()
-      const sameDayOfYear = first.dayOfYear() === second.dayOfYear()
+    const onSameDate = (first: DateTime, second: DateTime): boolean => {
+      const sameYear = first.year === second.year
+      const sameDayOfYear = first.ordinal === second.ordinal
       return sameYear && sameDayOfYear
     }
     const differentUser = this.user !== other.user
@@ -75,7 +69,7 @@ export class RecordEntry {
 
     return differentUser || differentType || this.isHistorical
       ? false
-      : onSameDate(this.moment as Moment.Moment, other.moment as Moment.Moment)
+      : onSameDate(this.moment as DateTime, other.moment as DateTime)
   }
 }
 RecordEntry[immerable] = true

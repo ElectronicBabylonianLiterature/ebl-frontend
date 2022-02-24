@@ -1,28 +1,27 @@
 import React from 'react'
 
 import _ from 'lodash'
-import { DateRange } from 'moment-range'
+import { DateTime, Interval } from 'luxon'
 import './Record.css'
 import { RecordEntry } from 'fragmentarium/domain/fragment'
-import * as Moment from 'moment'
 
 type EntryProps = {
   entry: RecordEntry
 }
 
 interface DateProps {
-  date: Moment.Moment
+  date: DateTime
   humanFormat: string
   machineFormat: string
 }
 function Date({ date, humanFormat, machineFormat }: DateProps): JSX.Element {
-  const humanDate = date.format(humanFormat)
-  const machineDate = date.format(machineFormat)
+  const humanDate = date.toFormat(humanFormat)
+  const machineDate = date.toFormat(machineFormat)
   return <time dateTime={machineDate}>{humanDate}</time>
 }
 
-function Year({ date }: { date: Moment.Moment }) {
-  return <Date date={date} humanFormat="YYYY" machineFormat="YYYY" />
+function Year({ date }: { date: DateTime }) {
+  return <Date date={date} humanFormat="yyyy" machineFormat="yyyy" />
 }
 
 function BasicEntry({ entry }: EntryProps) {
@@ -30,9 +29,9 @@ function BasicEntry({ entry }: EntryProps) {
     <>
       {entry.user} ({entry.type},{' '}
       <Date
-        date={entry.moment as Moment.Moment}
-        humanFormat="D/M/YYYY"
-        machineFormat="YYYY-MM-DD"
+        date={entry.moment as DateTime}
+        humanFormat="d/M/yyyy"
+        machineFormat="yyyy-MM-dd"
       />
       )
     </>
@@ -40,7 +39,7 @@ function BasicEntry({ entry }: EntryProps) {
 }
 
 function HistoricalTransliteration({ entry }: EntryProps) {
-  const range = entry.moment as DateRange
+  const range = entry.moment as Interval
   return (
     <>
       {entry.user} (Transliteration, <Year date={range.start} />–
