@@ -1,5 +1,5 @@
 import Promise from 'bluebird'
-import { ChapterId } from 'corpus/domain/chapter'
+import { ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
 import MuseumNumber, {
@@ -139,13 +139,20 @@ export default class FakeApi {
     return this
   }
 
-  expectChapterDisplay(chapter): FakeApi {
+  expectChapterDisplay(chapter: ChapterDisplay): FakeApi {
     this.expectations.push(
       new Expectation({
         method: 'GET',
         path: `${createChapterUrl(chapter.id)}/display`,
         authenticate: true,
-        response: chapter,
+        response: {
+          id: chapter.id,
+          textName: chapter.textName,
+          isSingleStage: chapter.isSingleStage,
+          title: chapter.title,
+          lines: chapter.lines,
+          record: chapter.record,
+        },
         verify: true,
       })
     )

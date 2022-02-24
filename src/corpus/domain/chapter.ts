@@ -85,11 +85,15 @@ export interface Record {
   readonly publicationDate: string
 }
 
-export interface ChapterDisplay {
-  readonly id: ChapterId
-  readonly textName: string
-  readonly isSingleStage: boolean
-  readonly title: ReadonlyArray<MarkupPart>
-  readonly lines: ReadonlyArray<LineDisplay>
-  readonly record: Record
+export class ChapterDisplay {
+  readonly [immerable] = true
+
+  constructor(
+    readonly id: ChapterId,
+    readonly textName: string,
+    readonly isSingleStage: boolean,
+    readonly title: ReadonlyArray<MarkupPart>,
+    readonly lines: ReadonlyArray<LineDisplay>,
+    readonly record: Record
+  ) {}
 }

@@ -66,8 +66,11 @@ export const lineDisplayFactory = Factory.define<
   }
 })
 
-export const chapterDisplayFactory = Factory.define<
-  ChapterDisplay,
+export const chapterDisplayDtoFactory = Factory.define<
+  Pick<
+    ChapterDisplay,
+    'id' | 'textName' | 'isSingleStage' | 'title' | 'lines' | 'record'
+  >,
   { chance: Chance.Chance }
 >(({ transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
@@ -84,4 +87,24 @@ export const chapterDisplayFactory = Factory.define<
     lines: lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
     record: { authors: [], translators: [], publicationDate: '' },
   }
+})
+
+export const chapterDisplayFactory = Factory.define<
+  ChapterDisplay,
+  { chance: Chance.Chance }
+>(({ transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+  return new ChapterDisplay(
+    chapterIdFactory.build({}, { transient: { chance } }),
+    chance.sentence(),
+    chance.bool(),
+    [
+      {
+        text: chance.sentence(),
+        type: 'StringPart',
+      },
+    ],
+    lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
+    { authors: [], translators: [], publicationDate: '' }
+  )
 })
