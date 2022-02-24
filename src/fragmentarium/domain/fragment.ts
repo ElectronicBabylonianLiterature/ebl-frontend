@@ -59,17 +59,12 @@ export class RecordEntry {
   }
 
   dateEquals(other: RecordEntry): boolean {
-    const onSameDate = (first: DateTime, second: DateTime): boolean => {
-      const sameYear = first.year === second.year
-      const sameDayOfYear = first.ordinal === second.ordinal
-      return sameYear && sameDayOfYear
-    }
     const differentUser = this.user !== other.user
     const differentType = this.type !== other.type
 
     return differentUser || differentType || this.isHistorical
       ? false
-      : onSameDate(this.moment as DateTime, other.moment as DateTime)
+      : (this.moment as DateTime).hasSame(other.moment as DateTime, 'day')
   }
 }
 RecordEntry[immerable] = true
