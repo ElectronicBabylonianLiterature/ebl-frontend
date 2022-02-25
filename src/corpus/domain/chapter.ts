@@ -106,13 +106,7 @@ export class ChapterDisplay {
   }
 
   get uniqueIdentifier(): string {
-    return [
-      this.id.textId.genre,
-      this.id.textId.category,
-      this.id.textId.index,
-      this.id.stage,
-      this.id.name,
-    ].join(' ')
+    return this.idParts.join(' ')
   }
 
   get fullName(): string {
@@ -128,13 +122,7 @@ export class ChapterDisplay {
   }
 
   get url(): string {
-    return `https://www.ebl.lmu.de/corpus/${[
-      this.id.textId.genre,
-      this.id.textId.category,
-      this.id.textId.index,
-      this.id.stage,
-      this.id.name,
-    ]
+    return `https://www.ebl.lmu.de/corpus/${this.idParts
       .map(encodeURIComponent)
       .join('/')}`
   }
@@ -161,5 +149,15 @@ export class ChapterDisplay {
       'container-title': 'electronic Babylonian Literature',
       URL: this.url,
     })
+  }
+
+  private get idParts(): (string | number)[] {
+    return [
+      this.id.textId.genre,
+      this.id.textId.category,
+      this.id.textId.index,
+      this.id.stage,
+      this.id.name,
+    ]
   }
 }
