@@ -1,4 +1,6 @@
+import _ from 'lodash'
 import { immerable } from 'immer'
+import Cite from 'citation-js'
 import { LineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
@@ -96,4 +98,68 @@ export class ChapterDisplay {
     readonly lines: ReadonlyArray<LineDisplay>,
     readonly record: Record
   ) {}
+
+  get isPublished(): boolean {
+    return (
+      !_.isEmpty(this.record.publicationDate) && !_.isEmpty(this.record.authors)
+    )
+  }
+
+  get uniqueIdentifier(): string {
+    return [
+      this.id.textId.genre,
+      this.id.textId.category,
+      this.id.textId.index,
+      this.id.stage,
+      this.id.name,
+    ].join(' ')
+  }
+
+  get fullName(): string {
+    const showName = this.id.name !== '-' || this.isSingleStage
+    return [
+      this.textName,
+      'Chapter',
+      !this.isSingleStage ? this.id.stage : '',
+      showName ? this.id.name : '',
+    ]
+      .filter(_.negate(_.isEmpty))
+      .join(' ')
+  }
+
+  get url(): string {
+    return `https://www.ebl.lmu.de/corpus/${[
+      this.id.textId.genre,
+      this.id.textId.category,
+      this.id.textId.index,
+      this.id.stage,
+      this.id.name,
+    ]
+      .map(encodeURIComponent)
+      .join('/')}`
+  }
+
+  get citation(): Cite {
+    const issued = new Date(this.record.publicationDate)
+    const now = new Date()
+    return new Cite({
+      id: this.uniqueIdentifier,
+      type: 'article-journal',
+      author: this.record.authors.map((author) => ({
+        family: author.name,
+        given: author.prefix,
+      })),
+      accessed: {
+        'date-parts': [[now.getFullYear(), now.getMonth() + 1, now.getDate()]],
+      },
+      issued: {
+        'date-parts': [
+          [issued.getFullYear(), issued.getMonth() + 1, now.getDate()],
+        ],
+      },
+      title: this.fullName,
+      'container-title': 'electronic Babylonian Literature',
+      URL: this.url,
+    })
+  }
 }

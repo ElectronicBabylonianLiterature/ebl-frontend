@@ -211,7 +211,7 @@ const extantLines: ExtantLines = {
   },
 }
 
-const chapterDisplayDto: ChapterDisplay = chapterDisplayDtoFactory.build()
+const chapterDisplayDto = chapterDisplayDtoFactory.build()
 const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.id,
   chapterDisplayDto.textName,
