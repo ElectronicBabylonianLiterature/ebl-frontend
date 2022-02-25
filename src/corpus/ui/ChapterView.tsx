@@ -22,6 +22,7 @@ import ChapterViewContext, { reducer } from './ChapterViewContext'
 
 import './ChapterView.sass'
 import { SideBar } from './ChapterViewSideBar'
+import { HowToCite } from './HowToCite'
 
 interface Props {
   chapter: ChapterDisplay
@@ -114,21 +115,25 @@ function ChapterView({
         }
         sidebar={<SideBar />}
       >
-        <table className="chapter-display">
-          <tbody>
-            {chapter.lines.map((line, index) => (
-              <ChapterViewLine
-                key={index}
-                line={line}
-                columns={columns[index]}
-                maxColumns={maxColumns_}
-                chapter={chapter}
-                lineNumber={index}
-                textService={textService}
-              />
-            ))}
-          </tbody>
-        </table>
+        {chapter.isPublished && <HowToCite chapter={chapter} />}
+        <section>
+          <h3>Edition</h3>
+          <table className="chapter-display">
+            <tbody>
+              {chapter.lines.map((line, index) => (
+                <ChapterViewLine
+                  key={index}
+                  line={line}
+                  columns={columns[index]}
+                  maxColumns={maxColumns_}
+                  chapter={chapter}
+                  lineNumber={index}
+                  textService={textService}
+                />
+              ))}
+            </tbody>
+          </table>
+        </section>
       </AppContent>
     </ChapterViewContext.Provider>
   )

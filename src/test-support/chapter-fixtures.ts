@@ -89,22 +89,43 @@ export const chapterDisplayDtoFactory = Factory.define<
   }
 })
 
-export const chapterDisplayFactory = Factory.define<
+class ChapterDisplayFactory extends Factory<
   ChapterDisplay,
   { chance: Chance.Chance }
->(({ transientParams }) => {
-  const chance = transientParams.chance ?? defaultChance
-  return new ChapterDisplay(
-    chapterIdFactory.build({}, { transient: { chance } }),
-    chance.sentence(),
-    chance.bool(),
-    [
-      {
-        text: chance.sentence(),
-        type: 'StringPart',
+> {
+  published() {
+    return this.params({
+      record: {
+        authors: [
+          {
+            name: 'Test',
+            prefix: 'A.',
+            role: 'EDITOR',
+            orcidNumber: '',
+          },
+        ],
+        translators: [],
+        publicationDate: '2020-02-25',
       },
-    ],
-    lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
-    { authors: [], translators: [], publicationDate: '' }
-  )
-})
+    })
+  }
+}
+
+export const chapterDisplayFactory = ChapterDisplayFactory.define(
+  ({ transientParams }) => {
+    const chance = transientParams.chance ?? defaultChance
+    return new ChapterDisplay(
+      chapterIdFactory.build({}, { transient: { chance } }),
+      chance.sentence(),
+      chance.bool(),
+      [
+        {
+          text: chance.sentence(),
+          type: 'StringPart',
+        },
+      ],
+      lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
+      { authors: [], translators: [], publicationDate: '' }
+    )
+  }
+)
