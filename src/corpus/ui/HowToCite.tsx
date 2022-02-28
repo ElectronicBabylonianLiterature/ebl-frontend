@@ -1,47 +1,45 @@
-import React, { PropsWithChildren, useRef, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
 import _ from 'lodash'
 import { Parser } from 'html-to-react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import {
-  Button,
-  ButtonToolbar,
-  ButtonGroup,
-  Overlay,
-  Popover,
-} from 'react-bootstrap'
+import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
 
 function ExportButton({
   data,
   children,
-}: PropsWithChildren<{ data: string }>): JSX.Element {
-  const [show, setShow] = useState(false)
-  const target = useRef(null)
+  fileName,
+  fileExtension = 'txt',
+  contentType = 'text/plain',
+}: PropsWithChildren<{
+  data: string
+  fileName: string
+  fileExtension?: string
+  contentType?: string
+}>): JSX.Element {
+  const [url, setUrl] = useState<string>()
+
+  useEffect(() => {
+    const url = URL.createObjectURL(
+      new Blob([data], {
+        type: `${contentType};charset=UTF-8`,
+      })
+    )
+    setUrl(url)
+
+    return (): void => {
+      URL.revokeObjectURL(url)
+    }
+  }, [data, contentType])
 
   return (
     <>
-      <Button
-        variant="outline-secondary"
-        size="sm"
-        ref={target}
-        onClick={() => setShow(!show)}
-      >
-        {children}
-      </Button>
-      <Overlay
-        target={target.current}
-        show={show}
-        placement="bottom"
-        onHide={() => setShow(false)}
-        rootClose
-      >
-        <Popover
-          id={_.uniqueId('how-to-cite-export-')}
-          className={'mw-100'}
-          content
-        >
-          <pre>{data}</pre>
-        </Popover>
-      </Overlay>
+      {url && (
+        <a href={url} download={`${fileName}.${fileExtension}`}>
+          <Button variant="outline-secondary" size="sm">
+            {children}
+          </Button>
+        </a>
+      )}
     </>
   )
 }
@@ -78,13 +76,32 @@ export function HowToCite({
       <p>{parsed}</p>
       <ButtonToolbar className="justify-content-center">
         <ButtonGroup className="mr-2">
-          <ExportButton data={bibtex}>Bibtex</ExportButton>
+          <ExportButton
+            data={bibtex}
+            fileName={chapter.uniqueIdentifier}
+            fileExtension="bibtex"
+          >
+            Bibtex
+          </ExportButton>
         </ButtonGroup>
         <ButtonGroup className="mr-2">
-          <ExportButton data={ris}>RIS</ExportButton>
+          <ExportButton
+            data={ris}
+            fileName={chapter.uniqueIdentifier}
+            fileExtension="ris"
+          >
+            RIS
+          </ExportButton>
         </ButtonGroup>
         <ButtonGroup className="mr-2">
-          <ExportButton data={csl}>CSL-JSON</ExportButton>
+          <ExportButton
+            data={csl}
+            fileName={chapter.uniqueIdentifier}
+            fileExtension="json"
+            contentType="application/json"
+          >
+            CSL-JSON
+          </ExportButton>
         </ButtonGroup>
       </ButtonToolbar>
     </section>

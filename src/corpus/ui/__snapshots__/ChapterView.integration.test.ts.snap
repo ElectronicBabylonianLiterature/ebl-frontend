@@ -51,7 +51,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-15"
+          id="Header-9"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-15"
+          aria-controls="Header-9"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -278,36 +278,15 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Bibtex
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              RIS
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              CSL-JSON
-            </button>
-          </div>
+          />
         </div>
       </section>
       <section>
@@ -339,7 +318,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-25"
+                  aria-controls="score-13"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -393,7 +372,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-25"
+              id="score-13"
               style=""
             >
               <td
@@ -635,7 +614,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-20"
+                  aria-controls="score-11"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -698,7 +677,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-26"
+          aria-controls="settings-14"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -765,7 +744,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-27"
+          id="Header-15"
         >
           <div
             class="mx-auto navbar-nav"
@@ -839,7 +818,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-27"
+          aria-controls="Header-15"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -992,36 +971,15 @@ exports[`Diplay chapter Sidebar 1`] = `
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Bibtex
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              RIS
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              CSL-JSON
-            </button>
-          </div>
+          />
         </div>
       </section>
       <section>
@@ -1053,7 +1011,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-39"
+                  aria-controls="score-21"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1107,7 +1065,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-39"
+              id="score-21"
               style=""
             >
               <td
@@ -1232,7 +1190,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-40"
+                  aria-controls="score-22"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1286,7 +1244,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-40"
+              id="score-22"
               style=""
             >
               <td
@@ -1367,7 +1325,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-41"
+          aria-controls="settings-23"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -1379,7 +1337,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-41"
+          id="settings-23"
         >
           <form
             class="settings__section"
@@ -1394,12 +1352,12 @@ exports[`Diplay chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-42"
+                id="sidebar-text-toggle-24"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-42"
+                for="sidebar-text-toggle-24"
                 title=""
               >
                 Score
@@ -1477,7 +1435,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-27"
+          id="Header-15"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1551,7 +1509,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-27"
+          aria-controls="Header-15"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1704,36 +1662,15 @@ exports[`Diplay chapter Sidebar 2`] = `
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Bibtex
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              RIS
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              CSL-JSON
-            </button>
-          </div>
+          />
         </div>
       </section>
       <section>
@@ -1765,7 +1702,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-39"
+                  aria-controls="score-21"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1819,7 +1756,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-39"
+              id="score-21"
               style=""
             >
               <td
@@ -1944,7 +1881,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-40"
+                  aria-controls="score-22"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1998,7 +1935,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-40"
+              id="score-22"
               style=""
             >
               <td
@@ -2079,7 +2016,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-43"
+          aria-controls="settings-25"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -2146,7 +2083,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-8"
+          id="Header-5"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2220,7 +2157,7 @@ exports[`Diplay chapter Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-8"
+          aria-controls="Header-5"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2373,36 +2310,15 @@ exports[`Diplay chapter Snapshot 1`] = `
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Bibtex
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              RIS
-            </button>
-          </div>
+          />
           <div
             class="mr-2 btn-group"
             role="group"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              CSL-JSON
-            </button>
-          </div>
+          />
         </div>
       </section>
       <section>
@@ -2434,7 +2350,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-12"
+                  aria-controls="score-6"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -2507,7 +2423,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-13"
+                  aria-controls="score-7"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -2570,7 +2486,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-14"
+          aria-controls="settings-8"
           aria-expanded="false"
           class="settings__heading"
           role="button"
