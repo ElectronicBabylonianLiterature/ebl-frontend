@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Table } from 'react-bootstrap'
 import _ from 'lodash'
-import { numberToRoman } from 'big-roman'
+import romans from 'romans'
 import withData from 'http/withData'
 import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
@@ -19,7 +19,7 @@ function TextId({
 }): JSX.Element {
   return (
     <>
-      {textId.genre} {textId.category && numberToRoman(textId.category)}.
+      {textId.genre} {textId.category && romans.romanize(textId.category)}.
       {textId.index}
     </>
   )

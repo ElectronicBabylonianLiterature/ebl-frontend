@@ -1,7 +1,7 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
-import { numberToRoman } from 'big-roman'
+import romans from 'romans'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Chapter, ChapterId } from './chapter'
 
@@ -26,7 +26,7 @@ export interface TextId {
 }
 
 export function textIdToString(id: TextId): string {
-  return `${id.category && numberToRoman(id.category)}.${id.index}`
+  return `${id.category && romans.romanize(id.category)}.${id.index}`
 }
 
 export interface TextInfo {
