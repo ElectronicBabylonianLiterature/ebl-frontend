@@ -36,15 +36,12 @@ jobs:
 
       - name: Unit Tests
         id: unit_tests
-        if: success() || steps.install.outcome == 'success'
+        if: success() || steps.install.outcome == 'success'  
+        uses: paambaati/codeclimate-action@v2.7.4
         env:
-          CI: true
-        run: yarn test --coverage --forceExit --detectOpenHandles
-          
-      - uses: paambaati/codeclimate-action@v2.7.4
-        if: success() || steps.unit_tests.outcome == 'failure'
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: yarn test --coverage --forceExit --detectOpenHandles
 
       - uses: edge/simple-slack-notify@v1.1.1
         if: failure()
