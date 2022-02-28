@@ -20,7 +20,7 @@ import { fragment, fragmentDto, lines } from 'test-support/test-fragment'
 import BibliographyService from 'bibliography/application/BibliographyService'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import { ChapterDisplay } from 'corpus/domain/chapter'
-import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
+import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   LineDetails,
@@ -211,7 +211,15 @@ const extantLines: ExtantLines = {
   },
 }
 
-const chapterDisplay: ChapterDisplay = chapterDisplayFactory.build()
+const chapterDisplayDto = chapterDisplayDtoFactory.build()
+const chapterDisplay = new ChapterDisplay(
+  chapterDisplayDto.id,
+  chapterDisplayDto.textName,
+  chapterDisplayDto.isSingleStage,
+  chapterDisplayDto.title,
+  chapterDisplayDto.lines,
+  chapterDisplayDto.record
+)
 
 const chapterId = chapter.id
 const chapterUrl = `/texts/${encodeURIComponent(

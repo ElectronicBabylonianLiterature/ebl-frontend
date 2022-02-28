@@ -178,10 +178,17 @@ export default class TextService {
               intertext,
             }))
           )
-        ).then((lines) => ({
-          ...chapter,
-          lines,
-        }))
+        ).then(
+          (lines) =>
+            new ChapterDisplay(
+              chapter.id,
+              chapter.textName,
+              chapter.isSingleStage,
+              chapter.title,
+              lines,
+              chapter.record
+            )
+        )
       )
   }
 

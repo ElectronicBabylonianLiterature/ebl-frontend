@@ -17,7 +17,7 @@ const chance = new Chance('chapter-view-integration-test')
 
 chapterDisplayFactory.rewindSequence()
 
-const chapter = chapterDisplayFactory.build(
+const chapter = chapterDisplayFactory.published().build(
   {
     id: {
       textId: _.pick(textDto, 'genre', 'category', 'index'),
