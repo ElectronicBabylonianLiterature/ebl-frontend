@@ -236,17 +236,19 @@ function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <EnclosureFlags token={word}>
-      {parts.map((token, index) => (
-        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-      ))}
-      <Wrapper>
-        <sup>{word.modifiers.join('')}</sup>
-      </Wrapper>
-      {lastParts.map((token, index) => (
-        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-      ))}
-    </EnclosureFlags>
+    <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
+      <EnclosureFlags token={word}>
+        {parts.map((token, index) => (
+          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+        ))}
+        <Wrapper>
+          <Flags flags={word.modifiers} />
+        </Wrapper>
+        {lastParts.map((token, index) => (
+          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+        ))}
+      </EnclosureFlags>
+    </DamagedFlag>
   )
 }
 
