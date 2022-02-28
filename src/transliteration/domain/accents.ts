@@ -129,7 +129,7 @@ export function addBreves(word: AkkadianWord): AkkadianWord {
       isValueToken(part)
         ? {
             ...part,
-            value: part.value.replace(h, hBreve),
+            value: part.value.replaceAll(h, hBreve),
           }
         : part
     ),
