@@ -5453,7 +5453,9 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
-                <sup>
+                <sup
+                  class="Transliteration__flag"
+                >
                   ?
                 </sup>
               </span>
@@ -5487,7 +5489,9 @@ exports[`Snapshot 1`] = `
                     ḫur
                   </span>
                 </span>
-                <sup>
+                <sup
+                  class="Transliteration__flag"
+                >
                   !
                 </sup>
                 <span
@@ -5571,7 +5575,9 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
-                <sup />
+                <sup
+                  class="Transliteration__flag"
+                />
                 <span
                   class="Transliteration__BrokenAway"
                 >
@@ -5612,7 +5618,9 @@ exports[`Snapshot 1`] = `
                     kur
                   </span>
                 </span>
-                <sup />
+                <sup
+                  class="Transliteration__flag"
+                />
                 <span
                   class="Transliteration__PerhapsBrokenAway"
                 >
@@ -5667,7 +5675,9 @@ exports[`Snapshot 1`] = `
                 >
                   …
                 </span>
-                <sup />
+                <sup
+                  class="Transliteration__flag"
+                />
               </span>
             </span>
           </td>

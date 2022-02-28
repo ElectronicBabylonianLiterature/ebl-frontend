@@ -351,7 +351,9 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -647,7 +649,9 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1044,7 +1048,9 @@ exports[`Diplay chapter Sidebar 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1223,7 +1229,9 @@ exports[`Diplay chapter Sidebar 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1735,7 +1743,9 @@ exports[`Diplay chapter Sidebar 2`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1914,7 +1924,9 @@ exports[`Diplay chapter Sidebar 2`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2383,7 +2395,9 @@ exports[`Diplay chapter Snapshot 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2456,7 +2470,9 @@ exports[`Diplay chapter Snapshot 1`] = `
                         kur-kur
                       </span>
                     </span>
-                    <sup />
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
