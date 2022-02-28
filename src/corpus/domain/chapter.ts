@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { immerable } from 'immer'
 import Cite from 'citation-js'
+import removeMd from 'remove-markdown'
 import { LineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
@@ -112,7 +113,7 @@ export class ChapterDisplay {
   get fullName(): string {
     const showName = this.id.name !== '-' || this.isSingleStage
     return [
-      this.textName,
+      removeMd(this.textName),
       'Chapter',
       !this.isSingleStage ? this.id.stage : '',
       showName ? this.id.name : '',
@@ -142,7 +143,7 @@ export class ChapterDisplay {
       },
       issued: {
         'date-parts': [
-          [issued.getFullYear(), issued.getMonth() + 1, now.getDate()],
+          [issued.getFullYear(), issued.getMonth() + 1, issued.getDate()],
         ],
       },
       title: this.fullName,

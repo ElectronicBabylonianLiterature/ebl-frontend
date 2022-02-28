@@ -38,11 +38,13 @@ test.each([
   [true, false, '-', true],
 ])('fullName', (isSingleStage, expectStage, name, expectName) => {
   const id = chapterIdFactory.build({ name })
-  const chapter = chapterDisplayFactory.build({ id, isSingleStage })
+  const expectedTextName = 'markdown'
+  const textName = `*${expectedTextName}*`
+  const chapter = chapterDisplayFactory.build({ id, isSingleStage, textName })
   const expectedStage = expectStage ? ` ${id.stage}` : ''
   const expectedName = expectName ? ` ${id.name}` : ''
   expect(chapter.fullName).toEqual(
-    `${chapter.textName} Chapter${expectedStage}${expectedName}`
+    `${expectedTextName} Chapter${expectedStage}${expectedName}`
   )
 })
 

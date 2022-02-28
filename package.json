@@ -94,6 +94,7 @@
     "remark-parse": "^9.0.0",
     "remark-rehype": "^8.1.0",
     "remark-sub-super": "^1.0.20",
+    "remove-markdown": "^0.3.0",
     "rgb-hex": "^3.0.0",
     "romans": "^2.0.4",
     "stylelint-config-standard": "^24.0.0",
