@@ -8,13 +8,14 @@ import { reconstructionTokens } from './test-corpus-text'
 import { LineNumber } from 'transliteration/domain/line-number'
 
 const defaultChance = new Chance()
+const maxRoman = 3999
 
 export const textIdFactory = Factory.define<TextId, { chance: Chance.Chance }>(
   ({ transientParams }) => {
     const chance = transientParams.chance ?? defaultChance
     return {
       genre: chance.pickone(['L', 'D', 'Lex']),
-      category: chance.integer({ min: 0 }),
+      category: chance.integer({ min: 0, max: maxRoman }),
       index: chance.integer({ min: 0 }),
     }
   }
