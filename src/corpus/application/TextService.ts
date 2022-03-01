@@ -40,6 +40,7 @@ import {
   toManuscriptsDto,
 } from './dtos'
 import { isNoteLine } from 'transliteration/domain/type-guards'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -170,7 +171,19 @@ export default class TextService {
         Bluebird.all(
           chapter.lines.map((line) =>
             Bluebird.all([
-              this.referenceInjector.injectReferencesToMarkup(line.translation),
+              Bluebird.all(
+                line.translation.map((translation) =>
+                  this.referenceInjector
+                    .injectReferencesToMarkup(translation.parts)
+                    .then(
+                      (parts) =>
+                        new TranslationLine({
+                          ...castDraft(translation),
+                          parts,
+                        })
+                    )
+                )
+              ),
               this.referenceInjector.injectReferencesToMarkup(line.intertext),
             ]).then(([translation, intertext]) => ({
               ...line,

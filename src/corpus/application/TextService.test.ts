@@ -31,6 +31,7 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -217,7 +218,12 @@ const chapterDisplay = new ChapterDisplay(
   chapterDisplayDto.textName,
   chapterDisplayDto.isSingleStage,
   chapterDisplayDto.title,
-  chapterDisplayDto.lines,
+  chapterDisplayDto.lines.map((dto) => ({
+    ...dto,
+    translation: dto.translation.map(
+      (translation) => new TranslationLine(translation)
+    ),
+  })),
   chapterDisplayDto.record
 )
 
@@ -422,7 +428,7 @@ test('inject ChapterDisplay', async () => {
   const translationReference = referenceFactory.build()
   const intertextReference = referenceFactory.build()
   const chapterWithReferences = produce(chapterDisplay, (draft) => {
-    draft.lines[0].translation = [
+    draft.lines[0].translation[0].parts = [
       {
         reference: {
           id: translationReference.id,
@@ -448,7 +454,7 @@ test('inject ChapterDisplay', async () => {
     ]
   })
   const injectedChapter = produce(chapterDisplay, (draft) => {
-    draft.lines[0].translation = [
+    draft.lines[0].translation[0].parts = [
       {
         reference: castDraft(translationReference),
         type: 'BibliographyPart',

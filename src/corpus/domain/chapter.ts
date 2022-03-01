@@ -9,6 +9,7 @@ import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
 import { TextId } from './text'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 export interface ChapterId {
   readonly textId: TextId
@@ -65,7 +66,7 @@ export interface LineDisplay {
   readonly isBeginningOfSection: boolean
   readonly intertext: ReadonlyArray<MarkupPart>
   readonly reconstruction: ReadonlyArray<Token>
-  readonly translation: ReadonlyArray<MarkupPart>
+  readonly translation: ReadonlyArray<TranslationLine>
 }
 
 export interface Author {

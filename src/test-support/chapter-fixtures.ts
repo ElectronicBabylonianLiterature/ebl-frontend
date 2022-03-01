@@ -6,6 +6,11 @@ import { periods } from 'corpus/domain/period'
 import _ from 'lodash'
 import { reconstructionTokens } from './test-corpus-text'
 import { LineNumber } from 'transliteration/domain/line-number'
+import TranslationLine, {
+  Extent,
+} from 'transliteration/domain/translation-line'
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Token } from 'transliteration/domain/token'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -41,6 +46,54 @@ export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
   type: 'LineNumber',
 }))
 
+type LineDisplayDto = Pick<
+  LineDisplay,
+  | 'number'
+  | 'isSecondLineOfParallelism'
+  | 'isBeginningOfSection'
+  | 'intertext'
+  | 'reconstruction'
+> & {
+  translation: {
+    language: string
+    extent: Extent | null
+    parts: MarkupPart[]
+    content: Token[]
+  }[]
+}
+
+export const lineDisplayDtoFactory = Factory.define<
+  LineDisplayDto,
+  { chance: Chance.Chance }
+>(({ transientParams }) => {
+  const chance = transientParams.chance ?? defaultChance
+  return {
+    number: lineNumberFactory.build(),
+    isSecondLineOfParallelism: chance.bool(),
+    isBeginningOfSection: chance.bool(),
+    intertext: [
+      {
+        text: chance.sentence(),
+        type: 'StringPart',
+      },
+    ],
+    reconstruction: _.cloneDeep(reconstructionTokens),
+    translation: [
+      {
+        language: 'en',
+        extent: null,
+        parts: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        content: [],
+      },
+    ],
+  }
+})
+
 export const lineDisplayFactory = Factory.define<
   LineDisplay,
   { chance: Chance.Chance }
@@ -58,19 +111,28 @@ export const lineDisplayFactory = Factory.define<
     ],
     reconstruction: _.cloneDeep(reconstructionTokens),
     translation: [
-      {
-        text: chance.sentence(),
-        type: 'StringPart',
-      },
+      new TranslationLine({
+        language: 'en',
+        extent: null,
+        parts: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        content: [],
+      }),
     ],
   }
 })
 
+type ChapterDisplayDto = Pick<
+  ChapterDisplay,
+  'id' | 'textName' | 'isSingleStage' | 'title' | 'record'
+> & { lines: LineDisplayDto[] }
+
 export const chapterDisplayDtoFactory = Factory.define<
-  Pick<
-    ChapterDisplay,
-    'id' | 'textName' | 'isSingleStage' | 'title' | 'lines' | 'record'
-  >,
+  ChapterDisplayDto,
   { chance: Chance.Chance }
 >(({ transientParams }) => {
   const chance = transientParams.chance ?? defaultChance
@@ -84,7 +146,7 @@ export const chapterDisplayDtoFactory = Factory.define<
         type: 'StringPart',
       },
     ],
-    lines: lineDisplayFactory.buildList(2, {}, { transient: { chance } }),
+    lines: lineDisplayDtoFactory.buildList(2, {}, { transient: { chance } }),
     record: { authors: [], translators: [], publicationDate: '' },
   }
 })

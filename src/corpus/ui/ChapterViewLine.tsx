@@ -47,7 +47,7 @@ function Translation({ line }: { line: LineDisplay }): JSX.Element {
     <>
       <LineNumber line={line} />
       <td className="chapter-display__translation">
-        <Markup parts={line.translation} />
+        <Markup parts={line.translation[0].parts} />
       </td>
     </>
   ) : (

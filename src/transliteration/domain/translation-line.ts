@@ -4,6 +4,7 @@ import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { LineNumber, LineNumberRange } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { Token } from './token'
 
 export interface Extent {
   readonly number: LineNumber | LineNumberRange
@@ -26,7 +27,12 @@ export default class TranslationLine extends AbstractLine {
   readonly language: string
   readonly extent: Extent | null
 
-  constructor(data) {
+  constructor(data: {
+    parts: MarkupPart[]
+    language: string
+    extent: Extent | null
+    content: Token[]
+  }) {
     super(`#tr.${data.language}${exentToString(data.extent)}: `, data.content)
     this.language = data.language
     this.parts = data.parts
