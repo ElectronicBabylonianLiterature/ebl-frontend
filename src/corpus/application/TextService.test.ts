@@ -349,7 +349,7 @@ const testData: TestData[] = [
     ['kur'],
     apiClient.fetchJson,
     [
-      produce(searchDto, (draft: any) => {
+      produce(searchDto, (draft) => {
         draft.matchingLines = castDraft(chapter.lines)
       }),
     ],
