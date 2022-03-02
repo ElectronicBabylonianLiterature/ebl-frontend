@@ -7,7 +7,7 @@ type Action =
   | { type: 'toggleRow'; row: number }
   | { type: 'expandAll' | 'closeAll' }
 
-const ChapterViewContext = React.createContext<[State, Dispatch<Action>]>([
+const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   (action: Action) => {},
@@ -26,4 +26,4 @@ export function reducer(state: State, action: Action): State {
   }
 }
 
-export default ChapterViewContext
+export default RowsContext

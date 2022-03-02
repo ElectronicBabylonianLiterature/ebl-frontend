@@ -12,7 +12,7 @@ import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
 import classnames from 'classnames'
 import { Collapse, OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
-import ChapterViewContext from './ChapterViewContext'
+import RowsContext from './RowsContext'
 
 function InterText({
   line,
@@ -167,7 +167,7 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
 }): JSX.Element {
-  const [state, dispatch] = useContext(ChapterViewContext)
+  const [state, dispatch] = useContext(RowsContext)
   const showScore = state[lineNumber]
 
   return useMemo(() => {

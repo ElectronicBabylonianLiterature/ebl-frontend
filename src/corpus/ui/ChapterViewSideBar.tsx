@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react'
 import _ from 'lodash'
 import { Fade, Form } from 'react-bootstrap'
-import ChapterViewContext from './ChapterViewContext'
+import RowsContext from './RowsContext'
 
 function TextSettings(): JSX.Element {
-  const [, dispatch] = useContext(ChapterViewContext)
+  const [, dispatch] = useContext(RowsContext)
   const [isExpandAll, setExpandAll] = useState(false)
 
   return (

@@ -18,7 +18,7 @@ import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
-import ChapterViewContext, { reducer } from './ChapterViewContext'
+import RowsContext, { reducer } from './RowsContext'
 
 import './ChapterView.sass'
 import { SideBar } from './ChapterViewSideBar'
@@ -93,7 +93,7 @@ function ChapterView({
       .value()
   )
   return (
-    <ChapterViewContext.Provider value={context}>
+    <RowsContext.Provider value={context}>
       <AppContent
         crumbs={[
           new SectionCrumb('Corpus'),
@@ -135,7 +135,7 @@ function ChapterView({
           </table>
         </section>
       </AppContent>
-    </ChapterViewContext.Provider>
+    </RowsContext.Provider>
   )
 }
 
