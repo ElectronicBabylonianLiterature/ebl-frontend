@@ -18,10 +18,11 @@ import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
 import RowsContext, { useRowsContext } from './RowsContext'
-
-import './ChapterView.sass'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
+import TranslationContext, { useTranslationContext } from './TranslationContext'
+
+import './ChapterView.sass'
 
 interface Props {
   chapter: ChapterDisplay
@@ -83,51 +84,54 @@ function ChapterView({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
-  const context = useRowsContext(chapter.lines.length)
+  const rowsContext = useRowsContext(chapter.lines.length)
+  const translationContext = useTranslationContext()
 
   return (
-    <RowsContext.Provider value={context}>
-      <AppContent
-        crumbs={[
-          new SectionCrumb('Corpus'),
-          new GenreCrumb(chapter.id.textId.genre),
-          CorpusTextCrumb.ofChapterDisplay(chapter),
-          new ChapterCrumb(chapter.id),
-        ]}
-        title={<Title chapter={chapter} />}
-        actions={
-          <ButtonGroup>
-            <GotoButton
-              text={text}
-              as={ButtonGroup}
-              title="Go to"
-              variant="outline-primary"
-            />
-            <EditChapterButton chapter={chapter} />
-          </ButtonGroup>
-        }
-        sidebar={<SideBar />}
-      >
-        {chapter.isPublished && <HowToCite chapter={chapter} />}
-        <section>
-          <h3>Edition</h3>
-          <table className="chapter-display">
-            <tbody>
-              {chapter.lines.map((line, index) => (
-                <ChapterViewLine
-                  key={index}
-                  line={line}
-                  columns={columns[index]}
-                  maxColumns={maxColumns_}
-                  chapter={chapter}
-                  lineNumber={index}
-                  textService={textService}
-                />
-              ))}
-            </tbody>
-          </table>
-        </section>
-      </AppContent>
+    <RowsContext.Provider value={rowsContext}>
+      <TranslationContext.Provider value={translationContext}>
+        <AppContent
+          crumbs={[
+            new SectionCrumb('Corpus'),
+            new GenreCrumb(chapter.id.textId.genre),
+            CorpusTextCrumb.ofChapterDisplay(chapter),
+            new ChapterCrumb(chapter.id),
+          ]}
+          title={<Title chapter={chapter} />}
+          actions={
+            <ButtonGroup>
+              <GotoButton
+                text={text}
+                as={ButtonGroup}
+                title="Go to"
+                variant="outline-primary"
+              />
+              <EditChapterButton chapter={chapter} />
+            </ButtonGroup>
+          }
+          sidebar={<SideBar chapter={chapter} />}
+        >
+          {chapter.isPublished && <HowToCite chapter={chapter} />}
+          <section>
+            <h3>Edition</h3>
+            <table className="chapter-display">
+              <tbody>
+                {chapter.lines.map((line, index) => (
+                  <ChapterViewLine
+                    key={index}
+                    line={line}
+                    columns={columns[index]}
+                    maxColumns={maxColumns_}
+                    chapter={chapter}
+                    lineNumber={index}
+                    textService={textService}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </section>
+        </AppContent>
+      </TranslationContext.Provider>
     </RowsContext.Provider>
   )
 }

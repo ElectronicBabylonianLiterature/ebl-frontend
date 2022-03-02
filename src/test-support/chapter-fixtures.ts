@@ -90,6 +90,17 @@ export const lineDisplayDtoFactory = Factory.define<
         ],
         content: [],
       },
+      {
+        language: 'de',
+        extent: null,
+        parts: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        content: [],
+      },
     ],
   }
 })
@@ -113,6 +124,17 @@ export const lineDisplayFactory = Factory.define<
     translation: [
       new TranslationLine({
         language: 'en',
+        extent: null,
+        parts: [
+          {
+            text: chance.sentence(),
+            type: 'StringPart',
+          },
+        ],
+        content: [],
+      }),
+      new TranslationLine({
+        language: 'de',
         extent: null,
         parts: [
           {

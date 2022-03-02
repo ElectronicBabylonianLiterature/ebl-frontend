@@ -13,6 +13,10 @@ import classnames from 'classnames'
 import { Collapse, OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import RowsContext from './RowsContext'
+import TranslationContext from './TranslationContext'
+
+const lineNumberColumns = 1
+const translationColumns = lineNumberColumns + 1
 
 function InterText({
   line,
@@ -42,16 +46,25 @@ function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
   )
 }
 
-function Translation({ line }: { line: LineDisplay }): JSX.Element {
-  return line.translation.length > 0 ? (
+function Translation({
+  line,
+  language,
+}: {
+  line: LineDisplay
+  language: string
+}): JSX.Element {
+  const translation = line.translation.filter(
+    (translation) => translation.language === language
+  )
+  return translation.length > 0 ? (
     <>
       <LineNumber line={line} />
       <td className="chapter-display__translation">
-        <Markup parts={line.translation[0].parts} />
+        <Markup parts={translation[0].parts} />
       </td>
     </>
   ) : (
-    <td colSpan={2} />
+    <td colSpan={translationColumns} />
   )
 }
 
@@ -167,17 +180,17 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
 }): JSX.Element {
-  const [state, dispatch] = useContext(RowsContext)
-  const showScore = state[lineNumber]
+  const [{ [lineNumber]: showScore }, dispatchRows] = useContext(RowsContext)
+  const [{ language }] = useContext(TranslationContext)
 
   return useMemo(() => {
     const scoreId = _.uniqueId('score-')
-    const totalColumns = maxColumns + 4
+    const totalColumns = 1 + lineNumberColumns + maxColumns + translationColumns
     return (
       <>
         <InterText line={line} colSpan={totalColumns} />
         <tr
-          onClick={() => dispatch({ type: 'toggleRow', row: lineNumber })}
+          onClick={() => dispatchRows({ type: 'toggleRow', row: lineNumber })}
           className={classNames({
             'chapter-display__line': true,
             'chapter-display__line--is-second-line-of-parallelism':
@@ -199,7 +212,7 @@ export function ChapterViewLine({
           </td>
           <LineNumber line={line} />
           <LineColumns columns={columns} maxColumns={maxColumns} />
-          <Translation line={line} />
+          <Translation line={line} language={language} />
         </tr>
         <Collapse in={showScore} mountOnEnter>
           <tr id={scoreId}>
@@ -215,13 +228,14 @@ export function ChapterViewLine({
       </>
     )
   }, [
+    maxColumns,
     line,
     showScore,
     columns,
-    maxColumns,
+    language,
     chapter.id,
     lineNumber,
     textService,
-    dispatch,
+    dispatchRows,
   ])
 }

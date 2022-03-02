@@ -1,5 +1,8 @@
 import _ from 'lodash'
 import { immerable } from 'immer'
+import flow from 'lodash/fp/flow'
+import flatMap from 'lodash/fp/flatMap'
+import map from 'lodash/fp/map'
 import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
 import { LineNumber } from 'transliteration/domain/line-number'
@@ -101,6 +104,14 @@ export class ChapterDisplay {
     readonly record: Record
   ) {}
 
+  get languages(): Set<string> {
+    return flow(
+      flatMap<LineDisplay, TranslationLine>((line) => line.translation),
+      map((translation) => translation.language),
+      (languages) => new Set(languages)
+    )(this.lines)
+  }
+
   get isPublished(): boolean {
     return (
       !_.isEmpty(this.record.publicationDate) && !_.isEmpty(this.record.authors)
@@ -161,5 +172,11 @@ export class ChapterDisplay {
       this.id.stage,
       this.id.name,
     ]
+  }
+
+  getTranslatorsOf(language: string): Translator[] {
+    return this.record.translators.filter(
+      (translator) => translator.language === language
+    )
   }
 }

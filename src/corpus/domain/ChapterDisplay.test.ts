@@ -2,15 +2,32 @@ import {
   chapterDisplayFactory,
   chapterIdFactory,
 } from 'test-support/chapter-fixtures'
-import { Author } from 'corpus/domain/chapter'
+import { Author, Translator } from 'corpus/domain/chapter'
 
 const author: Author = {
-  name: 'name',
+  name: 'name 1',
   prefix: '',
   role: 'EDITOR',
   orcidNumber: '',
 }
+const enTranslator: Translator = {
+  name: 'name 2',
+  prefix: '',
+  orcidNumber: '',
+  language: 'en',
+}
+const deTranslator: Translator = {
+  name: 'name 3',
+  prefix: '',
+  orcidNumber: '',
+  language: 'de',
+}
 const publicationDate = '2022-02-25'
+
+test('languages', () => {
+  const chapter = chapterDisplayFactory.build()
+  expect(chapter.languages).toEqual(new Set(['en', 'de']))
+})
 
 test.each([
   [[], '', false],
@@ -93,4 +110,17 @@ describe('citation', () => {
     }))
 
   test('URL', () => expect(data.URL).toEqual(chapter.url))
+})
+
+test('getTranslatorsFor', () => {
+  const chapter = chapterDisplayFactory.build({
+    record: {
+      authors: [],
+      translators: [deTranslator, enTranslator],
+      publicationDate,
+    },
+  })
+  expect(chapter.getTranslatorsOf(enTranslator.language)).toEqual([
+    enTranslator,
+  ])
 })
