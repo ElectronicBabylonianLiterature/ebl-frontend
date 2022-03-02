@@ -1,5 +1,4 @@
-import React, { useContext, useMemo, useReducer } from 'react'
-import _ from 'lodash'
+import React, { useContext, useMemo } from 'react'
 import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -18,7 +17,7 @@ import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
-import RowsContext, { reducer } from './RowsContext'
+import RowsContext, { useRowsContext } from './RowsContext'
 
 import './ChapterView.sass'
 import { SideBar } from './ChapterViewSideBar'
@@ -84,14 +83,8 @@ function ChapterView({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
-  const context = useReducer(
-    reducer,
-    _(chapter.lines.length)
-      .range()
-      .map((row) => [row, false])
-      .fromPairs()
-      .value()
-  )
+  const context = useRowsContext(chapter.lines.length)
+
   return (
     <RowsContext.Provider value={context}>
       <AppContent
