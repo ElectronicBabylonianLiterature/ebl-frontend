@@ -27,6 +27,9 @@ select extensions. Click the button below, configure the environment variables a
 It might be necessary to use `.env.local` instead of [the facilities provided
 in Gitpod](https://www.gitpod.io/docs/environment-variables/) as they override `.env.test`.
 
+Gitpod uses too many domains to feasibly whitelist it Auth0. Use [local companian app](https://www.gitpod.io/blog/local-app) to
+access the running application via localhost.
+
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ElectronicBabylonianLiterature/ebl-frontend)
 
 ## Running tests
