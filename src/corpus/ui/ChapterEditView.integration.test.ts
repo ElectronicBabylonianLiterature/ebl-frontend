@@ -231,7 +231,8 @@ describe('Diplay chapter', () => {
       appDriver.expectInputElement(label, expectedValue)
       await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
-      await appDriver.click('Save manuscripts')
+      appDriver.click('Save manuscripts')
+      await appDriver.waitForTextToDisappear('Saving...')
     })
   })
 })
@@ -262,9 +263,10 @@ describe('Add manuscript', () => {
       manuscripts: [manuscript],
       uncertainFragments: [],
     })
-    await appDriver.click('Add manuscript')
+    appDriver.click('Add manuscript')
     appDriver.expectInputElement(label, expectedValue)
-    await appDriver.click('Save manuscripts')
+    appDriver.click('Save manuscripts')
+    await appDriver.waitForTextToDisappear('Saving...')
   })
 })
 
@@ -274,10 +276,11 @@ test('Uncertain Fragments', async () => {
   const label = 'Museum Number'
 
   await setup(chapter)
-  await appDriver.click('Add fragment')
+  appDriver.click('Add fragment')
   await appDriver.changeValueByLabel(label, museumNumber)
   appDriver.expectInputElement(label, museumNumber)
-  await appDriver.click('Save manuscripts')
+  appDriver.click('Save manuscripts')
+  await appDriver.waitForTextToDisappear('Saving...')
 
   fakeApi.expectUpdateManuscripts(chapterDtos[1], {
     manuscripts: chapter.manuscripts,
@@ -291,7 +294,7 @@ describe('Lines', () => {
 
   beforeEach(async () => {
     await setup(chapter)
-    await appDriver.click('Lines')
+    appDriver.click('Lines')
   })
 
   test.each([['Number', 'number', '2']])(
@@ -313,7 +316,8 @@ describe('Lines', () => {
       appDriver.expectInputElement(label, expectedValue)
       await appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
-      await appDriver.click('Save lines')
+      appDriver.click('Save lines')
+      await appDriver.waitForTextToDisappear('Saving...')
     }
   )
 
@@ -337,11 +341,12 @@ describe('Lines', () => {
     expectedValue
       ? appDriver.expectChecked(label)
       : appDriver.expectNotChecked(label)
-    await appDriver.click(label)
+    appDriver.click(label)
     expectedValue
       ? appDriver.expectNotChecked(label)
       : appDriver.expectChecked(label)
-    await appDriver.click('Save lines')
+    appDriver.click('Save lines')
+    await appDriver.waitForTextToDisappear('Saving...')
   })
 })
 
@@ -350,7 +355,7 @@ describe('Add line', () => {
 
   beforeEach(async () => {
     await setup(chapter)
-    await appDriver.click('Lines')
+    appDriver.click('Lines')
   })
 
   test.each([['Number', 'number']])('%s', async (label, property) => {
@@ -359,33 +364,36 @@ describe('Add line', () => {
       edited: [],
       deleted: [],
     })
-    await appDriver.click('Add line')
+    appDriver.click('Add line')
     appDriver.expectInputElement(label, defaultLineDto[property])
-    await appDriver.click('Save lines')
+    appDriver.click('Save lines')
+    await appDriver.waitForTextToDisappear('Saving...')
   })
 })
 
 test('Delete line', async () => {
   const chapter = chapterDtos[2]
   await setup(chapter)
-  await appDriver.click('Lines')
+  appDriver.click('Lines')
   fakeApi.expectUpdateLines(chapter, {
     new: [],
     edited: [],
     deleted: [0],
   })
 
-  await appDriver.click('Delete line')
+  appDriver.click('Delete line')
   await appDriver.waitForTextToDisappear('Delete line')
-  await appDriver.click('Save lines')
+  appDriver.click('Save lines')
+  await appDriver.waitForTextToDisappear('Saving...')
 })
 
 test('Import chapter', async () => {
   const chapter = chapterDtos[0]
   fakeApi.expectImportChapter(chapter, '1. kur')
   await setup(chapter)
-  await appDriver.click('Import')
-  await appDriver.click('Save')
+  appDriver.click('Import')
+  appDriver.click('Save')
+  await appDriver.waitForTextToDisappear('Saving...')
 })
 
 async function setup(chapter) {

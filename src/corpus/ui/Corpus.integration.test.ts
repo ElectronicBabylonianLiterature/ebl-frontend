@@ -93,7 +93,7 @@ test('With session', async () => {
   await appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
-  await appDriver.click('Divination')
+  appDriver.click('Divination')
   appDriver.waitForText('Divination Third Category')
 })
 

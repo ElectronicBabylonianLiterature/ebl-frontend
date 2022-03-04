@@ -9,6 +9,7 @@ import {
   within,
   waitFor,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import _ from 'lodash'
 import App from 'App'
@@ -190,10 +191,8 @@ export default class AppDriver {
     await submitForm(this.getView().container)
   }
 
-  async click(text: Matcher, n = 0): Promise<void> {
+  click(text: Matcher, n = 0): void {
     const clickable = this.getView().getAllByText(text)[n]
-    await act(async () => {
-      fireEvent.click(clickable)
-    })
+    userEvent.click(clickable)
   }
 }
