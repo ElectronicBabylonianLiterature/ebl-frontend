@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Diplay chapter Show manuscripts 1`] = `
+exports[`Diplay chapter How to cite 1`] = `
 <div>
   <header
     class="Header"
@@ -51,7 +51,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-9"
+          id="Header-33"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-9"
+          aria-controls="Header-33"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -247,46 +247,61 @@ exports[`Diplay chapter Show manuscripts 1`] = `
           </div>
         </div>
       </header>
-      <section>
-        <h3>
-          How to cite
-        </h3>
-        <p>
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-            >
-              Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
-        </p>
-        <div
-          class="justify-content-center btn-toolbar"
-          role="toolbar"
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-38"
+          class="chapter-view__section-heading collapsible_section__heading"
         >
-          <div
-            class="mr-2 btn-group"
-            role="group"
+          How to cite
+           
+          <i
+            aria-expanded="false"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
+        </h3>
+        <div
+          class="collapse"
+          id="collapse-38"
+        >
+          <p>
+            <div
+              class="csl-bib-body"
+            >
+              
+  
+              <div
+                class="csl-entry"
+                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+              >
+                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+                <i>
+                  Electronic Babylonian Literature
+                </i>
+                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+              </div>
+              
+
+            </div>
+          </p>
           <div
-            class="mr-2 btn-group"
-            role="group"
-          />
-          <div
-            class="mr-2 btn-group"
-            role="group"
-          />
+            class="justify-content-center btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
         </div>
       </section>
       <section>
@@ -318,7 +333,496 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-13"
+                  aria-controls="score-35"
+                  aria-expanded="false"
+                  class="fas fa-caret-right"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                1
+              </td>
+              <td
+                colspan="1"
+              >
+                <span
+                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                >
+                   
+                </span>
+                <span
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur-kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                1
+              </td>
+              <td
+                class="chapter-display__translation"
+              >
+                <div>
+                  <span>
+                    Weg bocuvaor fite vanupu zopab sun rofu wapzelaf uc uhoev ficdogpih wujfoj komtedzi ver.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="chapter-display__intertext"
+                colspan="5"
+              >
+                (
+                <span>
+                  <span>
+                    Zenkitu kuklot lohid etoek geezu ve diluwgar ki zopvonfe beb ki alpemhi cucvugkez cir ujbi ude.
+                  </span>
+                </span>
+                )
+              </td>
+            </tr>
+            <tr
+              class="chapter-display__line"
+            >
+              <td
+                class="chapter-display__manuscripts-toggle"
+              >
+                <i
+                  aria-controls="score-36"
+                  aria-expanded="false"
+                  class="fas fa-caret-right"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                2
+              </td>
+              <td
+                colspan="1"
+              >
+                <span
+                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                >
+                   
+                </span>
+                <span
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur-kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                2
+              </td>
+              <td
+                class="chapter-display__translation"
+              >
+                <div>
+                  <span>
+                    Wijada pacopavi lepoaze ahawa ezis nofa ihelvok imaesu zu paduis zocuzmev oc.
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <aside
+      class="main__sidebar"
+    >
+      <section
+        class="settings"
+      >
+        <h3
+          aria-controls="settings-37"
+          aria-expanded="false"
+          class="settings__heading"
+          role="button"
+        >
+          <i
+            class="fas fa-cog"
+          />
+           Settings
+        </h3>
+      </section>
+    </aside>
+  </main>
+</div>
+`;
+
+exports[`Diplay chapter Show manuscripts 1`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-11"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout 
+              Test
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-11"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <main
+    class="main"
+  >
+    <div
+      class="main__content"
+    >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus/L"
+              >
+                L
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus/L/1/1"
+              >
+                I.1 Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Chapter Old Babylonian The Only Chapter
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh.
+          <br />
+          <small>
+            Chapter
+             
+            The Only Chapter
+             
+            <span>
+              <span>
+                Pofo jarikat vowhukod voawka pigiz jato milatas sik desit ronvojjiw ga muvcaeni ke.
+              </span>
+            </span>
+          </small>
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        >
+          <div
+            class="btn-group"
+            role="group"
+          >
+            <div
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                type="button"
+              >
+                Go to
+              </button>
+            </div>
+            <a
+              class="btn btn-outline-primary"
+              href="/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter/edit"
+            >
+              <i
+                class="fas fa-edit"
+              />
+               Edit
+            </a>
+          </div>
+        </div>
+      </header>
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-16"
+          class="chapter-view__section-heading collapsible_section__heading"
+        >
+          How to cite
+           
+          <i
+            aria-expanded="true"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
+          />
+        </h3>
+        <div
+          class="collapse show"
+          id="collapse-16"
+        >
+          <p>
+            <div
+              class="csl-bib-body"
+            >
+              
+  
+              <div
+                class="csl-entry"
+                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+              >
+                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+                <i>
+                  Electronic Babylonian Literature
+                </i>
+                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+              </div>
+              
+
+            </div>
+          </p>
+          <div
+            class="justify-content-center btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3>
+          Edition
+        </h3>
+        <table
+          class="chapter-display"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="chapter-display__intertext"
+                colspan="5"
+              >
+                (
+                <span>
+                  <span>
+                    Na pur gi tufse lero hel patedofo hiusiwal otlucvi fac vokifel umihineni mi gepzor puji famih.
+                  </span>
+                </span>
+                )
+              </td>
+            </tr>
+            <tr
+              class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
+            >
+              <td
+                class="chapter-display__manuscripts-toggle"
+              >
+                <i
+                  aria-controls="score-17"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -374,7 +878,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-13"
+              id="score-17"
               style=""
             >
               <td
@@ -616,7 +1120,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-11"
+                  aria-controls="score-14"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -681,7 +1185,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-14"
+          aria-controls="settings-18"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -748,7 +1252,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-15"
+          id="Header-19"
         >
           <div
             class="mx-auto navbar-nav"
@@ -822,7 +1326,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-15"
+          aria-controls="Header-19"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -944,46 +1448,61 @@ exports[`Diplay chapter Sidebar 1`] = `
           </div>
         </div>
       </header>
-      <section>
-        <h3>
-          How to cite
-        </h3>
-        <p>
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-            >
-              Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
-        </p>
-        <div
-          class="justify-content-center btn-toolbar"
-          role="toolbar"
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-26"
+          class="chapter-view__section-heading collapsible_section__heading"
         >
-          <div
-            class="mr-2 btn-group"
-            role="group"
+          How to cite
+           
+          <i
+            aria-expanded="true"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
           />
+        </h3>
+        <div
+          class="collapse show"
+          id="collapse-26"
+        >
+          <p>
+            <div
+              class="csl-bib-body"
+            >
+              
+  
+              <div
+                class="csl-entry"
+                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+              >
+                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+                <i>
+                  Electronic Babylonian Literature
+                </i>
+                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+              </div>
+              
+
+            </div>
+          </p>
           <div
-            class="mr-2 btn-group"
-            role="group"
-          />
-          <div
-            class="mr-2 btn-group"
-            role="group"
-          />
+            class="justify-content-center btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
         </div>
       </section>
       <section>
@@ -1015,7 +1534,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-21"
+                  aria-controls="score-27"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1071,7 +1590,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-21"
+              id="score-27"
               style=""
             >
               <td
@@ -1196,7 +1715,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-22"
+                  aria-controls="score-28"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1252,7 +1771,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-22"
+              id="score-28"
               style=""
             >
               <td
@@ -1333,7 +1852,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-23"
+          aria-controls="settings-29"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -1345,7 +1864,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-23"
+          id="settings-29"
         >
           <form
             class="settings__section"
@@ -1360,12 +1879,12 @@ exports[`Diplay chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-24"
+                id="sidebar-text-toggle-30"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-24"
+                for="sidebar-text-toggle-30"
                 title=""
               >
                 Score
@@ -1443,7 +1962,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-15"
+          id="Header-19"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1517,7 +2036,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-15"
+          aria-controls="Header-19"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1639,46 +2158,61 @@ exports[`Diplay chapter Sidebar 2`] = `
           </div>
         </div>
       </header>
-      <section>
-        <h3>
-          How to cite
-        </h3>
-        <p>
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-            >
-              Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
-        </p>
-        <div
-          class="justify-content-center btn-toolbar"
-          role="toolbar"
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-26"
+          class="chapter-view__section-heading collapsible_section__heading"
         >
-          <div
-            class="mr-2 btn-group"
-            role="group"
+          How to cite
+           
+          <i
+            aria-expanded="true"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
           />
+        </h3>
+        <div
+          class="collapse show"
+          id="collapse-26"
+        >
+          <p>
+            <div
+              class="csl-bib-body"
+            >
+              
+  
+              <div
+                class="csl-entry"
+                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+              >
+                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+                <i>
+                  Electronic Babylonian Literature
+                </i>
+                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+              </div>
+              
+
+            </div>
+          </p>
           <div
-            class="mr-2 btn-group"
-            role="group"
-          />
-          <div
-            class="mr-2 btn-group"
-            role="group"
-          />
+            class="justify-content-center btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
         </div>
       </section>
       <section>
@@ -1710,7 +2244,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-21"
+                  aria-controls="score-27"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1766,7 +2300,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-21"
+              id="score-27"
               style=""
             >
               <td
@@ -1891,7 +2425,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-22"
+                  aria-controls="score-28"
                   aria-expanded="true"
                   class="fas fa-caret-down"
                 />
@@ -1947,7 +2481,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-22"
+              id="score-28"
               style=""
             >
               <td
@@ -2028,7 +2562,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-25"
+          aria-controls="settings-31"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -2095,7 +2629,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-5"
+          id="Header-6"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2169,7 +2703,7 @@ exports[`Diplay chapter Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-5"
+          aria-controls="Header-6"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2291,46 +2825,61 @@ exports[`Diplay chapter Snapshot 1`] = `
           </div>
         </div>
       </header>
-      <section>
-        <h3>
-          How to cite
-        </h3>
-        <p>
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-            >
-              Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
-        </p>
-        <div
-          class="justify-content-center btn-toolbar"
-          role="toolbar"
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-7"
+          class="chapter-view__section-heading collapsible_section__heading"
         >
-          <div
-            class="mr-2 btn-group"
-            role="group"
+          How to cite
+           
+          <i
+            aria-expanded="true"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
           />
+        </h3>
+        <div
+          class="collapse show"
+          id="collapse-7"
+        >
+          <p>
+            <div
+              class="csl-bib-body"
+            >
+              
+  
+              <div
+                class="csl-entry"
+                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+              >
+                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+                <i>
+                  Electronic Babylonian Literature
+                </i>
+                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+              </div>
+              
+
+            </div>
+          </p>
           <div
-            class="mr-2 btn-group"
-            role="group"
-          />
-          <div
-            class="mr-2 btn-group"
-            role="group"
-          />
+            class="justify-content-center btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
         </div>
       </section>
       <section>
@@ -2362,7 +2911,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-6"
+                  aria-controls="score-8"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -2437,7 +2986,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__manuscripts-toggle"
               >
                 <i
-                  aria-controls="score-7"
+                  aria-controls="score-9"
                   aria-expanded="false"
                   class="fas fa-caret-right"
                 />
@@ -2502,7 +3051,7 @@ exports[`Diplay chapter Snapshot 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-8"
+          aria-controls="settings-10"
           aria-expanded="false"
           class="settings__heading"
           role="button"
