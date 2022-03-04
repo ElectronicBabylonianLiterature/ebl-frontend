@@ -24,7 +24,6 @@ import BibliographyRepository from 'bibliography/infrastructure/BibliographyRepo
 import BibliographyService from 'bibliography/application/BibliographyService'
 import FragmentSearchService from 'fragmentarium/application/FragmentSearchService'
 import { Promise } from 'bluebird'
-import { submitForm } from 'test-support/utils'
 import { eblNameProperty, AuthenticationContext } from 'auth/Auth'
 import SignRepository from 'signs/infrastructure/SignRepository'
 import SignService from 'signs/application/SignService'
@@ -183,10 +182,6 @@ export default class AppDriver {
   changeValueByLabel(label: Matcher, newValue: string): void {
     const input = this.getView().getByLabelText(label)
     fireEvent.change(input, { target: { value: newValue } })
-  }
-
-  async submitForm(): Promise<void> {
-    await submitForm(this.getView().container)
   }
 
   click(text: Matcher, n = 0): void {

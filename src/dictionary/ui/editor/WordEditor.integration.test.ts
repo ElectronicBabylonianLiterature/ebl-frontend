@@ -1,6 +1,7 @@
 import FakeApi from 'test-support/FakeApi'
 import AppDriver from 'test-support/AppDriver'
 import { wordDto } from 'test-support/test-word'
+import { submitForm } from 'test-support/utils'
 
 const word = wordDto
 
@@ -27,6 +28,7 @@ test('Edit', async () => {
   const newLegacyLemma = 'new lemma'
   fakeApi.expectUpdateWord({ ...word, legacyLemma: newLegacyLemma })
   appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
-  await appDriver.submitForm()
+  submitForm(appDriver.getView().container)
+  await appDriver.waitForTextToDisappear('Saving...')
   expect(appDriver.getView().container).toMatchSnapshot()
 })
