@@ -1,5 +1,8 @@
 import _ from 'lodash'
 import { immerable } from 'immer'
+import flow from 'lodash/fp/flow'
+import flatMap from 'lodash/fp/flatMap'
+import map from 'lodash/fp/map'
 import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
 import { LineNumber } from 'transliteration/domain/line-number'
@@ -9,6 +12,7 @@ import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
 import { TextId } from './text'
+import TranslationLine from 'transliteration/domain/translation-line'
 
 export interface ChapterId {
   readonly textId: TextId
@@ -65,7 +69,7 @@ export interface LineDisplay {
   readonly isBeginningOfSection: boolean
   readonly intertext: ReadonlyArray<MarkupPart>
   readonly reconstruction: ReadonlyArray<Token>
-  readonly translation: ReadonlyArray<MarkupPart>
+  readonly translation: ReadonlyArray<TranslationLine>
 }
 
 export interface Author {
@@ -99,6 +103,14 @@ export class ChapterDisplay {
     readonly lines: ReadonlyArray<LineDisplay>,
     readonly record: Record
   ) {}
+
+  get languages(): Set<string> {
+    return flow(
+      flatMap<LineDisplay, TranslationLine>((line) => line.translation),
+      map((translation) => translation.language),
+      (languages) => new Set(languages)
+    )(this.lines)
+  }
 
   get isPublished(): boolean {
     return (
@@ -160,5 +172,11 @@ export class ChapterDisplay {
       this.id.stage,
       this.id.name,
     ]
+  }
+
+  getTranslatorsOf(language: string): Translator[] {
+    return this.record.translators.filter(
+      (translator) => translator.language === language
+    )
   }
 }

@@ -124,6 +124,8 @@ describe('Diplay chapter', () => {
       expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
     })
     expect(appDriver.getView().container).toMatchSnapshot()
+    appDriver.click('Deutsch')
+    expect(appDriver.getView().container).toMatchSnapshot()
     appDriver.click('Close')
     await appDriver.waitForTextToDisappear('Close')
     expect(appDriver.getView().container).toMatchSnapshot()

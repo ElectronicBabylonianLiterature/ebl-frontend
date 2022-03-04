@@ -1,5 +1,4 @@
-import React, { useContext, useMemo, useReducer } from 'react'
-import _ from 'lodash'
+import React, { useContext, useMemo } from 'react'
 import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -18,11 +17,12 @@ import { Text } from 'corpus/domain/text'
 import GotoButton from './GotoButton'
 import TextService from 'corpus/application/TextService'
 import { ChapterViewLine } from './ChapterViewLine'
-import ChapterViewContext, { reducer } from './ChapterViewContext'
-
-import './ChapterView.sass'
+import RowsContext, { useRowsContext } from './RowsContext'
 import { SideBar } from './ChapterViewSideBar'
 import { HowToCite } from './HowToCite'
+import TranslationContext, { useTranslationContext } from './TranslationContext'
+
+import './ChapterView.sass'
 
 interface Props {
   chapter: ChapterDisplay
@@ -84,58 +84,55 @@ function ChapterView({
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)
-  const context = useReducer(
-    reducer,
-    _(chapter.lines.length)
-      .range()
-      .map((row) => [row, false])
-      .fromPairs()
-      .value()
-  )
+  const rowsContext = useRowsContext(chapter.lines.length)
+  const translationContext = useTranslationContext()
+
   return (
-    <ChapterViewContext.Provider value={context}>
-      <AppContent
-        crumbs={[
-          new SectionCrumb('Corpus'),
-          new GenreCrumb(chapter.id.textId.genre),
-          CorpusTextCrumb.ofChapterDisplay(chapter),
-          new ChapterCrumb(chapter.id),
-        ]}
-        title={<Title chapter={chapter} />}
-        actions={
-          <ButtonGroup>
-            <GotoButton
-              text={text}
-              as={ButtonGroup}
-              title="Go to"
-              variant="outline-primary"
-            />
-            <EditChapterButton chapter={chapter} />
-          </ButtonGroup>
-        }
-        sidebar={<SideBar />}
-      >
-        {chapter.isPublished && <HowToCite chapter={chapter} />}
-        <section>
-          <h3>Edition</h3>
-          <table className="chapter-display">
-            <tbody>
-              {chapter.lines.map((line, index) => (
-                <ChapterViewLine
-                  key={index}
-                  line={line}
-                  columns={columns[index]}
-                  maxColumns={maxColumns_}
-                  chapter={chapter}
-                  lineNumber={index}
-                  textService={textService}
-                />
-              ))}
-            </tbody>
-          </table>
-        </section>
-      </AppContent>
-    </ChapterViewContext.Provider>
+    <RowsContext.Provider value={rowsContext}>
+      <TranslationContext.Provider value={translationContext}>
+        <AppContent
+          crumbs={[
+            new SectionCrumb('Corpus'),
+            new GenreCrumb(chapter.id.textId.genre),
+            CorpusTextCrumb.ofChapterDisplay(chapter),
+            new ChapterCrumb(chapter.id),
+          ]}
+          title={<Title chapter={chapter} />}
+          actions={
+            <ButtonGroup>
+              <GotoButton
+                text={text}
+                as={ButtonGroup}
+                title="Go to"
+                variant="outline-primary"
+              />
+              <EditChapterButton chapter={chapter} />
+            </ButtonGroup>
+          }
+          sidebar={<SideBar chapter={chapter} />}
+        >
+          {chapter.isPublished && <HowToCite chapter={chapter} />}
+          <section>
+            <h3>Edition</h3>
+            <table className="chapter-display">
+              <tbody>
+                {chapter.lines.map((line, index) => (
+                  <ChapterViewLine
+                    key={index}
+                    line={line}
+                    columns={columns[index]}
+                    maxColumns={maxColumns_}
+                    chapter={chapter}
+                    lineNumber={index}
+                    textService={textService}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </section>
+        </AppContent>
+      </TranslationContext.Provider>
+    </RowsContext.Provider>
   )
 }
 
