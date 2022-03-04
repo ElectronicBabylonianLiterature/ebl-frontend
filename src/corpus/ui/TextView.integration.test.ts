@@ -82,16 +82,16 @@ beforeEach(() => {
 })
 
 test('With session', async () => {
-  await appDriver.withSession().render()
+  appDriver.withSession().render()
   await appDriver.waitForText('Introduction')
   expect(appDriver.getView().container).toMatchSnapshot()
 })
 
 describe('Chapter', () => {
   beforeEach(async () => {
-    await appDriver.withSession().render()
+    appDriver.withSession().render()
     await appDriver.waitForText(/Chapters/)
-    await appDriver.click(/Chapters/)
+    appDriver.click(/Chapters/)
     await appDriver.waitForText(textDto.chapters[0].name)
   })
 
@@ -135,14 +135,14 @@ describe('Chapter', () => {
           ],
         },
       })
-    await appDriver.click(/List of Manuscripts/)
+    appDriver.click(/List of Manuscripts/)
     await appDriver.waitForText(/^o iii/)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 })
 
 test('Without session', async () => {
-  await appDriver.render()
+  appDriver.render()
   await appDriver.waitForText('Please log in to view the text.')
   expect(appDriver.getView().container).toMatchSnapshot()
 })

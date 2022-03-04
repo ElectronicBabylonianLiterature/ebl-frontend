@@ -14,7 +14,7 @@ afterEach(() => {
 
 beforeEach(async () => {
   fakeApi = new FakeApi()
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(`/dictionary`)
     .render()
@@ -26,8 +26,8 @@ test('Snapshot', () => {
 
 test('Query', async () => {
   fakeApi.expectSearchWords(query, words)
-  await appDriver.changeValueByLabel('Query', query)
-  await appDriver.submitForm()
+  appDriver.changeValueByLabel('Query', query)
+  appDriver.click('Query', 1)
   await appDriver.waitForText(words[0].lemma.join(' '))
   expect(appDriver.getView().container).toMatchSnapshot()
 })

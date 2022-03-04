@@ -117,20 +117,20 @@ describe('Diplay chapter', () => {
         ],
       })
     })
-    await appDriver.click('Settings')
+    appDriver.click('Settings')
     await appDriver.waitForText('Score')
-    await appDriver.click('Score')
+    appDriver.click('Score')
     await waitFor(() => {
       expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
     })
     expect(appDriver.getView().container).toMatchSnapshot()
-    await appDriver.click('Close')
+    appDriver.click('Close')
     await appDriver.waitForTextToDisappear('Close')
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
   test('How to cite', async () => {
-    await appDriver.click('How to cite')
+    appDriver.click('How to cite')
     await appDriver.waitForTextToDisappear('Bibtex')
     expect(appDriver.getView().container).toMatchSnapshot()
   })
@@ -138,7 +138,7 @@ describe('Diplay chapter', () => {
 
 async function setup(chapter: ChapterDisplay) {
   fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(
       `/corpus/${encodeURIComponent(

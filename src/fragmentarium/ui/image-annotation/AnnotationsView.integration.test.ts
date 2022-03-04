@@ -23,7 +23,7 @@ describe('Diplay annotate view', () => {
       .expectFragment(fragmentWithoutReferences)
       .expectPhoto(fragmentNumber, photo)
       .expectAnnotations(fragmentNumber, annotationsDto)
-    appDriver = await new AppDriver(fakeApi.client)
+    appDriver = new AppDriver(fakeApi.client)
       .withSession()
       .withPath(`/fragmentarium/${fragmentNumber}/annotate`)
       .render()
