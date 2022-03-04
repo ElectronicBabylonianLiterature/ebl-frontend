@@ -32,6 +32,9 @@ import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
 import TranslationLine from 'transliteration/domain/translation-line'
+import { WritableDraft } from 'immer/dist/internal'
+import Reference from 'bibliography/domain/Reference'
+import { BibliographyPart } from 'transliteration/domain/markup'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -425,33 +428,28 @@ test('findSuggestions', async () => {
 })
 
 test('inject ChapterDisplay', async () => {
+  function createInjectedPart(
+    reference: Reference
+  ): WritableDraft<BibliographyPart> {
+    return {
+      reference: {
+        id: reference.id,
+        type: reference.type,
+        pages: reference.pages,
+        notes: reference.notes,
+        linesCited: castDraft(reference.linesCited),
+      },
+      type: 'BibliographyPart',
+    }
+  }
+
   const translationReference = referenceFactory.build()
   const intertextReference = referenceFactory.build()
   const chapterWithReferences = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
-      {
-        reference: {
-          id: translationReference.id,
-          type: translationReference.type,
-          pages: translationReference.pages,
-          notes: translationReference.notes,
-          linesCited: castDraft(translationReference.linesCited),
-        },
-        type: 'BibliographyPart',
-      },
+      createInjectedPart(translationReference),
     ]
-    draft.lines[0].intertext = [
-      {
-        reference: {
-          id: intertextReference.id,
-          type: intertextReference.type,
-          pages: intertextReference.pages,
-          notes: intertextReference.notes,
-          linesCited: castDraft(intertextReference.linesCited),
-        },
-        type: 'BibliographyPart',
-      },
-    ]
+    draft.lines[0].intertext = [createInjectedPart(intertextReference)]
   })
   const injectedChapter = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
