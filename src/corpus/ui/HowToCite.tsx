@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Parser } from 'html-to-react'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
+import CollapsibleSection from './CollapsibleSection'
 
 function ExportButton({
   data,
@@ -71,8 +72,11 @@ export function HowToCite({
     2
   )
   return (
-    <section>
-      <h3>How to cite</h3>
+    <CollapsibleSection
+      classNameBlock="chapter-view"
+      heading="How to cite"
+      open
+    >
       <p>{parsed}</p>
       <ButtonToolbar className="justify-content-center">
         <ButtonGroup className="mr-2">
@@ -104,6 +108,6 @@ export function HowToCite({
           </ExportButton>
         </ButtonGroup>
       </ButtonToolbar>
-    </section>
+    </CollapsibleSection>
   )
 }

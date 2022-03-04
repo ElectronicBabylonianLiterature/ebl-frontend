@@ -238,7 +238,11 @@ export default function Chapters({
           <h4>
             <ChapterTitleLink text={text} chapter={chapter} />
           </h4>
-          <CollapsibleSection element="h5" heading="List of Manuscripts">
+          <CollapsibleSection
+            classNameBlock="text-view"
+            element="h5"
+            heading="List of Manuscripts"
+          >
             <Manuscripts
               id={createChapterId(text, chapter)}
               textService={textService}

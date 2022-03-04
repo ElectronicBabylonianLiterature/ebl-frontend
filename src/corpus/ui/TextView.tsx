@@ -35,10 +35,17 @@ function TextView({
           session.isAllowedToReadTexts() ? (
             <>
               <Introduction text={text} />
-              <CollapsibleSection heading="Chapters" open>
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Chapters"
+                open
+              >
                 <Chapters text={text} textService={textService} />
               </CollapsibleSection>
-              <CollapsibleSection heading="Colophons">
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Colophons"
+              >
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}
@@ -48,7 +55,10 @@ function TextView({
                   />
                 ))}
               </CollapsibleSection>
-              <CollapsibleSection heading="Unplaced Lines">
+              <CollapsibleSection
+                classNameBlock="text-view"
+                heading="Unplaced Lines"
+              >
                 {text.chapters.map((chapter, index) => (
                   <ChapterSiglumsAndTransliterations
                     key={index}

@@ -223,13 +223,13 @@ exports[`Chapter Show chapter 1`] = `
       >
         <h3
           aria-controls="collapse-11"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Chapters
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
         <div
@@ -251,13 +251,13 @@ exports[`Chapter Show chapter 1`] = `
             >
               <h5
                 aria-controls="collapse-8"
-                class="text-view__section-heading text-view__section-heading--collapse"
+                class="text-view__section-heading collapsible_section__heading"
               >
                 List of Manuscripts
                  
                 <i
                   aria-expanded="false"
-                  class="text-view__collapse-indicator fas fa-caret-right"
+                  class="collapsible_section__collapse-indicator fas fa-caret-right"
                 />
               </h5>
             </section>
@@ -269,13 +269,13 @@ exports[`Chapter Show chapter 1`] = `
       >
         <h3
           aria-controls="collapse-9"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Colophons
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
@@ -284,13 +284,13 @@ exports[`Chapter Show chapter 1`] = `
       >
         <h3
           aria-controls="collapse-10"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Unplaced Lines
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
@@ -522,13 +522,13 @@ exports[`Chapter Show list of manuscripts 1`] = `
       >
         <h3
           aria-controls="collapse-17"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Chapters
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
         <div
@@ -550,13 +550,13 @@ exports[`Chapter Show list of manuscripts 1`] = `
             >
               <h5
                 aria-controls="collapse-18"
-                class="text-view__section-heading text-view__section-heading--collapse"
+                class="text-view__section-heading collapsible_section__heading"
               >
                 List of Manuscripts
                  
                 <i
                   aria-expanded="true"
-                  class="text-view__collapse-indicator fas fa-caret-down"
+                  class="collapsible_section__collapse-indicator fas fa-caret-down"
                 />
               </h5>
               <div
@@ -736,13 +736,13 @@ exports[`Chapter Show list of manuscripts 1`] = `
       >
         <h3
           aria-controls="collapse-15"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Colophons
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
@@ -751,13 +751,13 @@ exports[`Chapter Show list of manuscripts 1`] = `
       >
         <h3
           aria-controls="collapse-16"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Unplaced Lines
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
@@ -989,13 +989,13 @@ exports[`With session 1`] = `
       >
         <h3
           aria-controls="collapse-2"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Chapters
            
           <i
             aria-expanded="true"
-            class="text-view__collapse-indicator fas fa-caret-down"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
           />
         </h3>
         <div
@@ -1017,13 +1017,13 @@ exports[`With session 1`] = `
             >
               <h5
                 aria-controls="collapse-3"
-                class="text-view__section-heading text-view__section-heading--collapse"
+                class="text-view__section-heading collapsible_section__heading"
               >
                 List of Manuscripts
                  
                 <i
                   aria-expanded="false"
-                  class="text-view__collapse-indicator fas fa-caret-right"
+                  class="collapsible_section__collapse-indicator fas fa-caret-right"
                 />
               </h5>
             </section>
@@ -1035,13 +1035,13 @@ exports[`With session 1`] = `
       >
         <h3
           aria-controls="collapse-4"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Colophons
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
@@ -1050,13 +1050,13 @@ exports[`With session 1`] = `
       >
         <h3
           aria-controls="collapse-5"
-          class="text-view__section-heading text-view__section-heading--collapse"
+          class="text-view__section-heading collapsible_section__heading"
         >
           Unplaced Lines
            
           <i
             aria-expanded="false"
-            class="text-view__collapse-indicator fas fa-caret-right"
+            class="collapsible_section__collapse-indicator fas fa-caret-right"
           />
         </h3>
       </section>
