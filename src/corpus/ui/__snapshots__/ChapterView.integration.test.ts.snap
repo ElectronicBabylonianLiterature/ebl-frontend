@@ -2952,28 +2952,26 @@ exports[`Diplay chapter Sidebar 3`] = `
           class="collapse show"
           id="collapse-31"
         >
-          <p>
-            <div
-              class="csl-bib-body"
-            >
-              
-  
-              <div
-                class="csl-entry"
-                data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-              >
-                Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
-                <i>
-                  Electronic Babylonian Literature
-                </i>
-                . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-              </div>
-              
-
-            </div>
-          </p>
           <div
-            class="justify-content-center btn-toolbar"
+            class="csl-bib-body"
+          >
+            
+  
+            <div
+              class="csl-entry"
+              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+            >
+              Test, A. (2020). Lo sikfagdeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki wugob coh bowko iz owaofoece zuh. Chapter The Only Chapter. 
+              <i>
+                Electronic Babylonian Literature
+              </i>
+              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+            </div>
+            
+
+          </div>
+          <div
+            class="justify-content-center mt-3 btn-toolbar"
             role="toolbar"
           >
             <div
