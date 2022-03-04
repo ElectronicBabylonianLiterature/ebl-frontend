@@ -229,7 +229,7 @@ describe('Diplay chapter', () => {
       const value = manuscript[property]
       const expectedValue = value.name ? value.name : value
       appDriver.expectInputElement(label, expectedValue)
-      await appDriver.changeValueByLabel(label, newValue)
+      appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
       appDriver.click('Save manuscripts')
       await appDriver.waitForTextToDisappear('Saving...')
@@ -277,7 +277,7 @@ test('Uncertain Fragments', async () => {
 
   await setup(chapter)
   appDriver.click('Add fragment')
-  await appDriver.changeValueByLabel(label, museumNumber)
+  appDriver.changeValueByLabel(label, museumNumber)
   appDriver.expectInputElement(label, museumNumber)
   appDriver.click('Save manuscripts')
   await appDriver.waitForTextToDisappear('Saving...')
@@ -314,7 +314,7 @@ describe('Lines', () => {
       })
       const expectedValue = line[property]
       appDriver.expectInputElement(label, expectedValue)
-      await appDriver.changeValueByLabel(label, newValue)
+      appDriver.changeValueByLabel(label, newValue)
       appDriver.expectInputElement(label, newValue)
       appDriver.click('Save lines')
       await appDriver.waitForTextToDisappear('Saving...')

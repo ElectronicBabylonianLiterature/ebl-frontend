@@ -180,11 +180,9 @@ export default class AppDriver {
     expect(this.getView().getByLabelText(label)).not.toBeChecked()
   }
 
-  async changeValueByLabel(label: Matcher, newValue: unknown): Promise<void> {
+  changeValueByLabel(label: Matcher, newValue: string): void {
     const input = this.getView().getByLabelText(label)
-    await act(async () => {
-      fireEvent.change(input, { target: { value: newValue } })
-    })
+    fireEvent.change(input, { target: { value: newValue } })
   }
 
   async submitForm(): Promise<void> {

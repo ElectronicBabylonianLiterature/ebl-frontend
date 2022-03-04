@@ -26,7 +26,7 @@ test('Snapshot', () => {
 test('Edit', async () => {
   const newLegacyLemma = 'new lemma'
   fakeApi.expectUpdateWord({ ...word, legacyLemma: newLegacyLemma })
-  await appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
+  appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
   await appDriver.submitForm()
   expect(appDriver.getView().container).toMatchSnapshot()
 })
