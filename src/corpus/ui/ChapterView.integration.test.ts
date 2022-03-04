@@ -138,7 +138,7 @@ describe('Diplay chapter', () => {
 
 async function setup(chapter: ChapterDisplay) {
   fakeApi = new FakeApi().expectChapterDisplay(chapter).expectText(textDto)
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(
       `/corpus/${encodeURIComponent(

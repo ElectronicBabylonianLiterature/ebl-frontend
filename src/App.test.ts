@@ -18,5 +18,6 @@ test.each([
   '/callback',
 ])('%s renders without crashing', async (route) => {
   const fakeApi = new FakeApi().allowStatistics(statisticsFactory.build())
-  await new AppDriver(fakeApi.client).withPath(route).render()
+  const appDriver = new AppDriver(fakeApi.client).withPath(route).render()
+  await appDriver.waitForTextToDisappear('Loading...')
 })

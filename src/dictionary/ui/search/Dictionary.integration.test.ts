@@ -14,7 +14,7 @@ afterEach(() => {
 
 beforeEach(async () => {
   fakeApi = new FakeApi()
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(`/dictionary`)
     .render()

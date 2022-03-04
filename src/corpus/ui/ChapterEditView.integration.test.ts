@@ -398,7 +398,7 @@ test('Import chapter', async () => {
 
 async function setup(chapter) {
   fakeApi = new FakeApi().expectText(textDto).expectChapter(chapter)
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(createChapterPath(chapter.stage, chapter.name))
     .render()

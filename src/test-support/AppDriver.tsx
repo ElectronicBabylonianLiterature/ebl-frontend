@@ -4,7 +4,6 @@ import {
   render,
   RenderResult,
   screen,
-  act,
   Matcher,
   within,
   waitFor,
@@ -116,29 +115,27 @@ export default class AppDriver {
     return this
   }
 
-  async render(): Promise<AppDriver> {
-    await act(async () => {
-      this.view = render(
-        <MemoryRouter initialEntries={this.initialEntries}>
-          <AuthenticationContext.Provider
-            value={{
-              login: _.noop,
-              logout: _.noop,
-              getSession: (): Session => this.session ?? guestSession,
-              isAuthenticated: (): boolean => this.session !== null,
-              getAccessToken(): Promise<string> {
-                throw new Error('Not implemented')
-              },
-              getUser(): { [eblNameProperty]: string } {
-                return { [eblNameProperty]: 'Test' }
-              },
-            }}
-          >
-            {createApp(this.api)}
-          </AuthenticationContext.Provider>
-        </MemoryRouter>
-      )
-    })
+  render(): AppDriver {
+    this.view = render(
+      <MemoryRouter initialEntries={this.initialEntries}>
+        <AuthenticationContext.Provider
+          value={{
+            login: _.noop,
+            logout: _.noop,
+            getSession: (): Session => this.session ?? guestSession,
+            isAuthenticated: (): boolean => this.session !== null,
+            getAccessToken(): Promise<string> {
+              throw new Error('Not implemented')
+            },
+            getUser(): { [eblNameProperty]: string } {
+              return { [eblNameProperty]: 'Test' }
+            },
+          }}
+        >
+          {createApp(this.api)}
+        </AuthenticationContext.Provider>
+      </MemoryRouter>
+    )
 
     return this
   }

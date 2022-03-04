@@ -90,7 +90,7 @@ beforeEach(() => {
 })
 
 test('With session', async () => {
-  await appDriver.withSession().render()
+  appDriver.withSession().render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
   appDriver.click('Divination')
@@ -98,7 +98,7 @@ test('With session', async () => {
 })
 
 test('Without session', async () => {
-  await appDriver.render()
+  appDriver.render()
   await appDriver.waitForText(RegExp(_.escapeRegExp('Narrative Poetry')))
   expect(appDriver.getView().container).toMatchSnapshot()
 })

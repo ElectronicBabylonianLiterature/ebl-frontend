@@ -14,10 +14,11 @@ afterEach(() => {
 
 beforeEach(async () => {
   fakeApi = new FakeApi().expectWord(word)
-  appDriver = await new AppDriver(fakeApi.client)
+  appDriver = new AppDriver(fakeApi.client)
     .withSession()
     .withPath(`/dictionary/${encodeURIComponent(word._id)}/edit`)
     .render()
+  await appDriver.waitForText('Save')
 })
 
 test('Snapshot', () => {
@@ -28,7 +29,7 @@ test('Edit', async () => {
   const newLegacyLemma = 'new lemma'
   fakeApi.expectUpdateWord({ ...word, legacyLemma: newLegacyLemma })
   appDriver.changeValueByLabel('Legacy Lemma', newLegacyLemma)
-  submitForm(appDriver.getView().container)
+  await submitForm(appDriver.getView().container)
   await appDriver.waitForTextToDisappear('Saving...')
   expect(appDriver.getView().container).toMatchSnapshot()
 })
