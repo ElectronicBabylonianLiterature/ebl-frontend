@@ -77,8 +77,8 @@ export function HowToCite({
       heading="How to cite"
       open
     >
-      <p>{parsed}</p>
-      <ButtonToolbar className="justify-content-center">
+      {parsed}
+      <ButtonToolbar className="justify-content-center mt-3">
         <ButtonGroup className="mr-2">
           <ExportButton
             data={bibtex}
