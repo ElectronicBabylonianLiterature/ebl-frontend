@@ -352,9 +352,10 @@ const testData: TestData[] = [
     ['kur'],
     apiClient.fetchJson,
     [
-      produce(searchDto, (draft) => {
-        draft.matchingLines = castDraft(chapter.lines)
-      }),
+      {
+        ...searchDto,
+        matchingLines: chapter.lines,
+      },
     ],
     ['/textsearch?transliteration=kur', true],
     Bluebird.resolve([searchDto]),
