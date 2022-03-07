@@ -1,0 +1,14 @@
+.Notes__header {
+  text-align: center;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.Notes__notes {
+  margin: 0.5em 2em;
+  padding: 0.5em;
+  font-size: 90%;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: lightgrey;
+}

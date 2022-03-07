@@ -21,6 +21,20 @@ exports[`Snapshot 1`] = `
       )
     </p>
   </header>
+  <div
+    class="Notes__notes"
+  >
+    <p
+      class="Notes__header"
+    >
+      eBL Notes
+    </p>
+    <span
+      class="Notes__note"
+    >
+      Jufbuf veh punamsuk wizuli vil opeinuni di za wiwafov ah digsi udzus okuene mutuhref doczin ravobsec.
+    </span>
+  </div>
   <section
     class="Transliteration"
   >
