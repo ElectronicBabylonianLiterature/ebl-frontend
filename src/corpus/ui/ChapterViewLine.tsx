@@ -180,7 +180,12 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
 }): JSX.Element {
-  const [{ [lineNumber]: showScore }, dispatchRows] = useContext(RowsContext)
+  const [
+    {
+      [lineNumber]: { score: showScore },
+    },
+    dispatchRows,
+  ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
 
   return useMemo(() => {
@@ -190,7 +195,7 @@ export function ChapterViewLine({
       <>
         <InterText line={line} colSpan={totalColumns} />
         <tr
-          onClick={() => dispatchRows({ type: 'toggleRow', row: lineNumber })}
+          onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
           className={classNames({
             'chapter-display__line': true,
             'chapter-display__line--is-second-line-of-parallelism':

@@ -6,10 +6,15 @@ import map from 'lodash/fp/map'
 import fromPairs from 'lodash/fp/fromPairs'
 import mapValues from 'lodash/fp/mapValues'
 
-type State = { readonly [key: number]: boolean }
+interface RowState {
+  readonly score: boolean
+  readonly note: boolean
+}
+type State = { readonly [key: number]: RowState }
 type Action =
-  | { type: 'toggleRow'; row: number }
-  | { type: 'expandAll' | 'closeAll' }
+  | { type: 'toggleScore'; row: number }
+  | { type: 'toggleNote'; row: number }
+  | { type: 'expandScores' | 'closeScores' | 'expandNotes' | 'closeNotes' }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   {},
@@ -19,14 +24,22 @@ const RowsContext = React.createContext<[State, Dispatch<Action>]>([
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'toggleRow':
+    case 'toggleScore':
       return produce(state, (draft) => {
-        draft[action.row] = !draft[action.row]
+        draft[action.row].score = !draft[action.row].score
       })
-    case 'expandAll':
-      return mapValues(() => true)(state)
-    case 'closeAll':
-      return mapValues(() => false)(state)
+    case 'expandScores':
+      return mapValues<RowState, RowState>(({ note }) => ({
+        score: true,
+        note,
+      }))(state)
+    case 'closeScores':
+      return mapValues<RowState, RowState>(({ note }) => ({
+        score: false,
+        note,
+      }))(state)
+    default:
+      return state
   }
 }
 
@@ -37,7 +50,7 @@ export function useRowsContext(
     reducer,
     flow(
       range,
-      map((row) => [row, false]),
+      map((row) => [row, { score: false, note: false }]),
       fromPairs
     )(0, numberOfRows)
   )

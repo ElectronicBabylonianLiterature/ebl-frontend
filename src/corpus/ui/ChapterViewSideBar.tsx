@@ -21,9 +21,9 @@ function TextSettings(): JSX.Element {
         id={_.uniqueId('sidebar-text-toggle-')}
         onClick={() => {
           if (isExpandAll) {
-            dispatchRows({ type: 'closeAll' })
+            dispatchRows({ type: 'closeScores' })
           } else {
-            dispatchRows({ type: 'expandAll' })
+            dispatchRows({ type: 'expandScores' })
           }
           setExpandAll(!isExpandAll)
         }}
