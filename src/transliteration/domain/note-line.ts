@@ -11,7 +11,7 @@ export class NoteLine extends AbstractLine {
   readonly type = 'NoteLine'
   readonly parts: readonly MarkupPart[]
 
-  constructor(data: NoteLineDto) {
+  constructor(data: Pick<NoteLineDto, 'content' | 'parts'>) {
     super('#note: ', data.content)
     this.parts = data.parts
   }

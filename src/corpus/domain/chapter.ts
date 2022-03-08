@@ -13,6 +13,7 @@ import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
 import { TextId } from './text'
 import TranslationLine from 'transliteration/domain/translation-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 
 export interface ChapterId {
   readonly textId: TextId
@@ -70,6 +71,7 @@ export interface LineDisplay {
   readonly intertext: ReadonlyArray<MarkupPart>
   readonly reconstruction: ReadonlyArray<Token>
   readonly translation: ReadonlyArray<TranslationLine>
+  readonly note: NoteLine | null
 }
 
 export interface Author {

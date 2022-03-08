@@ -8,26 +8,28 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
-function TextSettings(): JSX.Element {
+function Switch({ type }: { type: 'Notes' | 'Score' }): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
-  const [isExpandAll, setExpandAll] = useState(false)
+  const [isExpanded, setExpanded] = useState(false)
+  return (
+    <Form.Switch
+      className="settings__switch"
+      label={type}
+      id={_.uniqueId('sidebar-text-toggle-')}
+      onClick={() => {
+        dispatchRows({ type: isExpanded ? `close${type}` : `expand${type}` })
+        setExpanded(!isExpanded)
+      }}
+    />
+  )
+}
 
+function TextSettings(): JSX.Element {
   return (
     <Form className="settings__section">
       <h4 className="settings__subheading">Text</h4>
-      <Form.Switch
-        className="settings__switch"
-        label="Score"
-        id={_.uniqueId('sidebar-text-toggle-')}
-        onClick={() => {
-          if (isExpandAll) {
-            dispatchRows({ type: 'closeAll' })
-          } else {
-            dispatchRows({ type: 'expandAll' })
-          }
-          setExpandAll(!isExpandAll)
-        }}
-      />
+      <Switch type="Score"></Switch>
+      <Switch type="Notes"></Switch>
     </Form>
   )
 }

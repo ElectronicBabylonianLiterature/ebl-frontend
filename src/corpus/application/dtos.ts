@@ -3,7 +3,7 @@ import _ from 'lodash'
 import createReference from 'bibliography/application/createReference'
 import serializeReference from 'bibliography/application/serializeReference'
 import { AlignmentToken, ChapterAlignment } from 'corpus/domain/alignment'
-import { Chapter } from 'corpus/domain/chapter'
+import { Chapter, ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
 import { ChapterLemmatization } from 'corpus/domain/lemmatization'
 import {
   createLine,
@@ -36,6 +36,32 @@ import {
 } from 'transliteration/application/dtos'
 import { EmptyLine } from 'transliteration/domain/line'
 import { TextLine } from 'transliteration/domain/text-line'
+import { Extent } from 'transliteration/domain/translation-line'
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Token } from 'transliteration/domain/token'
+import { NoteLineDto } from 'transliteration/domain/note-line'
+
+export type LineDisplayDto = Pick<
+  LineDisplay,
+  | 'number'
+  | 'isSecondLineOfParallelism'
+  | 'isBeginningOfSection'
+  | 'intertext'
+  | 'reconstruction'
+> & {
+  translation: {
+    language: string
+    extent: Extent | null
+    parts: MarkupPart[]
+    content: Token[]
+  }[]
+  note: Omit<NoteLineDto, 'type'> | null
+}
+
+export type ChapterDisplayDto = Pick<
+  ChapterDisplay,
+  'id' | 'textName' | 'isSingleStage' | 'title' | 'record'
+> & { lines: LineDisplayDto[] }
 
 export function fromSiglumAndTransliterationDto(
   dto

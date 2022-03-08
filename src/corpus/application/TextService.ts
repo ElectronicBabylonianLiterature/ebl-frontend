@@ -28,6 +28,7 @@ import {
 } from 'transliteration/domain/Lemmatization'
 import { Token } from 'transliteration/domain/token'
 import {
+  ChapterDisplayDto,
   fromChapterDto,
   fromDto,
   fromLineDetailsDto,
@@ -41,6 +42,7 @@ import {
 } from './dtos'
 import { isNoteLine } from 'transliteration/domain/type-guards'
 import TranslationLine from 'transliteration/domain/translation-line'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -167,7 +169,7 @@ export default class TextService {
   findChapterDisplay(id: ChapterId): Bluebird<ChapterDisplay> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/display`, true)
-      .then((chapter: ChapterDisplay) =>
+      .then((chapter: ChapterDisplayDto) =>
         Bluebird.all(
           chapter.lines.map((line) =>
             Bluebird.all([
@@ -185,10 +187,21 @@ export default class TextService {
                 )
               ),
               this.referenceInjector.injectReferencesToMarkup(line.intertext),
-            ]).then(([translation, intertext]) => ({
+              line.note &&
+                this.referenceInjector
+                  .injectReferencesToMarkup(line.note.parts)
+                  .then(
+                    (parts) =>
+                      new NoteLine({
+                        ...(line.note as NoteLineDto),
+                        parts,
+                      })
+                  ),
+            ]).then(([translation, intertext, note]) => ({
               ...line,
               translation,
               intertext,
+              note,
             }))
           )
         ).then(

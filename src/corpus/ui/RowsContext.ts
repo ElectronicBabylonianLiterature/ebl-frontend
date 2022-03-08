@@ -6,10 +6,17 @@ import map from 'lodash/fp/map'
 import fromPairs from 'lodash/fp/fromPairs'
 import mapValues from 'lodash/fp/mapValues'
 
-type State = { readonly [key: number]: boolean }
+interface RowState {
+  readonly score: boolean
+  readonly note: boolean
+}
+
+type State = { readonly [key: number]: RowState }
+
 type Action =
-  | { type: 'toggleRow'; row: number }
-  | { type: 'expandAll' | 'closeAll' }
+  | { type: 'toggleScore'; row: number }
+  | { type: 'toggleNote'; row: number }
+  | { type: 'expandScore' | 'closeScore' | 'expandNotes' | 'closeNotes' }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   {},
@@ -17,16 +24,33 @@ const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   (action: Action) => {},
 ])
 
+function toggle(state: State, row: number, key: keyof RowState): State {
+  return produce(state, (draft) => {
+    draft[row][key] = !state[row][key]
+  })
+}
+
+function setAll(state: State, key: keyof RowState, value: boolean): State {
+  return mapValues<RowState, RowState>((rowState) => ({
+    ...rowState,
+    [key]: value,
+  }))(state)
+}
+
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'toggleRow':
-      return produce(state, (draft) => {
-        draft[action.row] = !draft[action.row]
-      })
-    case 'expandAll':
-      return mapValues(() => true)(state)
-    case 'closeAll':
-      return mapValues(() => false)(state)
+    case 'toggleScore':
+      return toggle(state, action.row, 'score')
+    case 'expandScore':
+      return setAll(state, 'score', true)
+    case 'closeScore':
+      return setAll(state, 'score', false)
+    case 'toggleNote':
+      return toggle(state, action.row, 'note')
+    case 'expandNotes':
+      return setAll(state, 'note', true)
+    case 'closeNotes':
+      return setAll(state, 'note', false)
   }
 }
 
@@ -37,7 +61,7 @@ export function useRowsContext(
     reducer,
     flow(
       range,
-      map((row) => [row, false]),
+      map((row) => [row, { score: false, note: false }]),
       fromPairs
     )(0, numberOfRows)
   )
