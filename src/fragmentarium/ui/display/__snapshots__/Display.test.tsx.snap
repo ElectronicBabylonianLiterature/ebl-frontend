@@ -21,6 +21,20 @@ exports[`Snapshot 1`] = `
       )
     </p>
   </header>
+  <div
+    class="notes__notes"
+  >
+    <p
+      class="notes__header"
+    >
+      eBL Notes
+    </p>
+    <span
+      class="notes__note"
+    >
+      lorem ipsum quia dolor sit amet
+    </span>
+  </div>
   <section
     class="Transliteration"
   >
