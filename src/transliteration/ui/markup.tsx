@@ -56,13 +56,15 @@ export function DisplayBibliographyPart({
 export default function Markup({
   parts,
   container = 'div',
+  className,
 }: {
   parts: readonly MarkupPart[]
   container?: string
+  className?: string
 }): JSX.Element {
   return React.createElement(
     container,
-    {},
+    { className },
     parts.map((part: MarkupPart, index: number) => {
       if (isLanguagePart(part)) {
         return <DisplayLaguagePart key={index} part={part} />

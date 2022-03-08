@@ -214,6 +214,17 @@ export function ChapterViewLine({
           <LineColumns columns={columns} maxColumns={maxColumns} />
           <Translation line={line} language={language} />
         </tr>
+        {line.note && (
+          <tr>
+            <td colSpan={totalColumns}>
+              <Markup
+                container="span"
+                className="chapter-display__note"
+                parts={line.note.parts}
+              />
+            </td>
+          </tr>
+        )}
         <Collapse in={showScore} mountOnEnter>
           <tr id={scoreId}>
             <td colSpan={totalColumns}>
