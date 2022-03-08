@@ -9,10 +9,10 @@ export default function Notes({
   fragment: Fragment
 }): JSX.Element {
   return (
-    <div className="Notes__notes">
-      <p className="Notes__header">eBL Notes</p>
+    <div className="notes__notes">
+      <p className="notes__header">eBL Notes</p>
       {fragment.notes.split('\n').map((paragraph, index) => (
-        <span key={index} className="Notes__note">
+        <span key={index} className="notes__note">
           {paragraph}
         </span>
       ))}

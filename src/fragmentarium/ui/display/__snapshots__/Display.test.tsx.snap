@@ -22,15 +22,15 @@ exports[`Snapshot 1`] = `
     </p>
   </header>
   <div
-    class="Notes__notes"
+    class="notes__notes"
   >
     <p
-      class="Notes__header"
+      class="notes__header"
     >
       eBL Notes
     </p>
     <span
-      class="Notes__note"
+      class="notes__note"
     >
       lorem ipsum quia dolor sit amet
     </span>
