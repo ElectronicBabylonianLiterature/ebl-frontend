@@ -8,7 +8,6 @@ import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 import { textIdToString } from 'corpus/domain/text'
 import { textDto } from 'test-support/test-corpus-text'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { lines } from 'test-support/test-fragment'
 import { singleRulingDto } from 'test-support/lines/dollar'
 import { waitFor } from '@testing-library/react'
@@ -91,8 +90,13 @@ describe('Diplay chapter', () => {
         },
       ],
     })
-    appDriver.click(lineNumberToString(chapter.lines[0].number))
+    appDriver.clickByRole('button', 'Show score', 0)
     await appDriver.waitForText(/single ruling/)
+    expect(appDriver.getView().container).toMatchSnapshot()
+  })
+
+  test('Show note', async () => {
+    appDriver.clickByRole('button', 'Show note', 0)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
@@ -123,6 +127,8 @@ describe('Diplay chapter', () => {
     await waitFor(() => {
       expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
     })
+    expect(appDriver.getView().container).toMatchSnapshot()
+    appDriver.click('Notes')
     expect(appDriver.getView().container).toMatchSnapshot()
     appDriver.click('Deutsch')
     expect(appDriver.getView().container).toMatchSnapshot()

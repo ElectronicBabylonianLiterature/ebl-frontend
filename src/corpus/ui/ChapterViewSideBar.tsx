@@ -10,7 +10,8 @@ import './ChapterViewSideBar.sass'
 
 function TextSettings(): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
-  const [isExpandAll, setExpandAll] = useState(false)
+  const [isExpandScore, setExpandScore] = useState(false)
+  const [isExpandNotes, setExpandNotes] = useState(false)
 
   return (
     <Form className="settings__section">
@@ -20,12 +21,25 @@ function TextSettings(): JSX.Element {
         label="Score"
         id={_.uniqueId('sidebar-text-toggle-')}
         onClick={() => {
-          if (isExpandAll) {
+          if (isExpandScore) {
             dispatchRows({ type: 'closeScores' })
           } else {
             dispatchRows({ type: 'expandScores' })
           }
-          setExpandAll(!isExpandAll)
+          setExpandScore(!isExpandScore)
+        }}
+      />
+      <Form.Switch
+        className="settings__switch"
+        label="Notes"
+        id={_.uniqueId('sidebar-text-toggle-')}
+        onClick={() => {
+          if (isExpandNotes) {
+            dispatchRows({ type: 'closeNotes' })
+          } else {
+            dispatchRows({ type: 'expandNotes' })
+          }
+          setExpandNotes(!isExpandNotes)
         }}
       />
     </Form>

@@ -38,8 +38,20 @@ function reducer(state: State, action: Action): State {
         score: false,
         note,
       }))(state)
-    default:
-      return state
+    case 'toggleNote':
+      return produce(state, (draft) => {
+        draft[action.row].note = !draft[action.row].note
+      })
+    case 'expandNotes':
+      return mapValues<RowState, RowState>(({ score }) => ({
+        score,
+        note: true,
+      }))(state)
+    case 'closeNotes':
+      return mapValues<RowState, RowState>(({ score }) => ({
+        score,
+        note: false,
+      }))(state)
   }
 }
 

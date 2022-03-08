@@ -16,6 +16,7 @@ import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
 
 const lineNumberColumns = 1
+const toggleColumns = 2
 const translationColumns = lineNumberColumns + 1
 
 function InterText({
@@ -182,7 +183,7 @@ export function ChapterViewLine({
 }): JSX.Element {
   const [
     {
-      [lineNumber]: { score: showScore },
+      [lineNumber]: { score: showScore, note: showNote },
     },
     dispatchRows,
   ] = useContext(RowsContext)
@@ -190,12 +191,13 @@ export function ChapterViewLine({
 
   return useMemo(() => {
     const scoreId = _.uniqueId('score-')
-    const totalColumns = 1 + lineNumberColumns + maxColumns + translationColumns
+    const noteId = _.uniqueId('score-')
+    const totalColumns =
+      toggleColumns + lineNumberColumns + maxColumns + translationColumns
     return (
       <>
         <InterText line={line} colSpan={totalColumns} />
         <tr
-          onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
           className={classNames({
             'chapter-display__line': true,
             'chapter-display__line--is-second-line-of-parallelism':
@@ -204,7 +206,12 @@ export function ChapterViewLine({
               line.isBeginningOfSection,
           })}
         >
-          <td className="chapter-display__manuscripts-toggle">
+          <td
+            className="chapter-display__toggle"
+            onClick={() =>
+              dispatchRows({ type: 'toggleScore', row: lineNumber })
+            }
+          >
             <i
               className={classNames({
                 fas: true,
@@ -213,22 +220,45 @@ export function ChapterViewLine({
               })}
               aria-expanded={showScore}
               aria-controls={scoreId}
+              aria-label="Show score"
+              role="button"
             ></i>
           </td>
           <LineNumber line={line} />
           <LineColumns columns={columns} maxColumns={maxColumns} />
+          <td
+            className="chapter-display__toggle"
+            onClick={() =>
+              dispatchRows({ type: 'toggleNote', row: lineNumber })
+            }
+          >
+            {line.note && (
+              <i
+                className={classNames({
+                  fas: true,
+                  'fa-book': !showNote,
+                  'fa-book-open': showNote,
+                })}
+                aria-expanded={showNote}
+                aria-controls={noteId}
+                aria-label="Show note"
+                role="button"
+              ></i>
+            )}
+          </td>
           <Translation line={line} language={language} />
         </tr>
         {line.note && (
-          <tr>
-            <td colSpan={totalColumns}>
-              <Markup
-                container="span"
-                className="chapter-display__note"
-                parts={line.note.parts}
-              />
-            </td>
-          </tr>
+          <Collapse in={showNote} mountOnEnter>
+            <tr id={noteId}>
+              <td colSpan={totalColumns}>
+                <Markup
+                  className="chapter-display__note"
+                  parts={line.note.parts}
+                />
+              </td>
+            </tr>
+          </Collapse>
         )}
         <Collapse in={showScore} mountOnEnter>
           <tr id={scoreId}>
@@ -247,6 +277,7 @@ export function ChapterViewLine({
     maxColumns,
     line,
     showScore,
+    showNote,
     columns,
     language,
     chapter.id,

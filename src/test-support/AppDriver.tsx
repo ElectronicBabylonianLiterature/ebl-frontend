@@ -7,6 +7,7 @@ import {
   Matcher,
   within,
   waitFor,
+  ByRoleMatcher,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -183,6 +184,11 @@ export default class AppDriver {
 
   click(text: Matcher, n = 0): void {
     const clickable = this.getView().getAllByText(text)[n]
+    userEvent.click(clickable)
+  }
+
+  clickByRole(role: ByRoleMatcher, name: string | RegExp, n = 0): void {
+    const clickable = this.getView().getAllByRole(role, { name })[n]
     userEvent.click(clickable)
   }
 }
