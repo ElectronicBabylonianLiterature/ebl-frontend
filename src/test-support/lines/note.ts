@@ -3,7 +3,6 @@ import Reference from 'bibliography/domain/Reference'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
 
 export const note: NoteLine = new NoteLine({
-  prefix: '#note: ',
   content: [
     {
       enclosureType: [],
@@ -169,11 +168,9 @@ export const note: NoteLine = new NoteLine({
       type: 'BibliographyPart',
     },
   ],
-  type: 'NoteLine',
 })
 
 export const hydratedNote: NoteLine = new NoteLine({
-  prefix: '#note: ',
   content: [
     {
       enclosureType: [],
@@ -225,7 +222,6 @@ export const hydratedNote: NoteLine = new NoteLine({
       type: 'BibliographyPart',
     },
   ],
-  type: 'NoteLine',
 })
 
 export default note

@@ -35,6 +35,7 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { WritableDraft } from 'immer/dist/internal'
 import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart } from 'transliteration/domain/markup'
+import { NoteLine } from 'transliteration/domain/note-line'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -226,6 +227,7 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
+    note: dto.note && new NoteLine(dto.note),
   })),
   chapterDisplayDto.record
 )

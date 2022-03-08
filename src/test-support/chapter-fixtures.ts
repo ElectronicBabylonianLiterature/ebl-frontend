@@ -6,11 +6,9 @@ import { periods } from 'corpus/domain/period'
 import _ from 'lodash'
 import { reconstructionTokens } from './test-corpus-text'
 import { LineNumber } from 'transliteration/domain/line-number'
-import TranslationLine, {
-  Extent,
-} from 'transliteration/domain/translation-line'
-import { MarkupPart } from 'transliteration/domain/markup'
-import { Token } from 'transliteration/domain/token'
+import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
+import TranslationLine from 'transliteration/domain/translation-line'
+import { NoteLine } from 'transliteration/domain/note-line'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -45,22 +43,6 @@ export const lineNumberFactory = Factory.define<LineNumber>(({ sequence }) => ({
   suffixModifier: null,
   type: 'LineNumber',
 }))
-
-type LineDisplayDto = Pick<
-  LineDisplay,
-  | 'number'
-  | 'isSecondLineOfParallelism'
-  | 'isBeginningOfSection'
-  | 'intertext'
-  | 'reconstruction'
-> & {
-  translation: {
-    language: string
-    extent: Extent | null
-    parts: MarkupPart[]
-    content: Token[]
-  }[]
-}
 
 export const lineDisplayDtoFactory = Factory.define<
   LineDisplayDto,
@@ -102,6 +84,16 @@ export const lineDisplayDtoFactory = Factory.define<
         content: [],
       },
     ],
+    note: {
+      prefix: '#note: ',
+      content: [],
+      parts: [
+        {
+          text: chance.sentence(),
+          type: 'StringPart',
+        },
+      ],
+    },
   }
 })
 
@@ -145,13 +137,17 @@ export const lineDisplayFactory = Factory.define<
         content: [],
       }),
     ],
+    note: new NoteLine({
+      content: [],
+      parts: [
+        {
+          text: chance.sentence(),
+          type: 'StringPart',
+        },
+      ],
+    }),
   }
 })
-
-type ChapterDisplayDto = Pick<
-  ChapterDisplay,
-  'id' | 'textName' | 'isSingleStage' | 'title' | 'record'
-> & { lines: LineDisplayDto[] }
 
 export const chapterDisplayDtoFactory = Factory.define<
   ChapterDisplayDto,
