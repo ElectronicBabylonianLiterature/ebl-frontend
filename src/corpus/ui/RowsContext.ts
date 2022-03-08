@@ -10,7 +10,9 @@ interface RowState {
   readonly score: boolean
   readonly note: boolean
 }
+
 type State = { readonly [key: number]: RowState }
+
 type Action =
   | { type: 'toggleScore'; row: number }
   | { type: 'toggleNote'; row: number }
@@ -22,36 +24,33 @@ const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   (action: Action) => {},
 ])
 
+function toggle(state: State, row: number, key: keyof RowState): State {
+  return produce(state, (draft) => {
+    draft[row][key] = !state[row][key]
+  })
+}
+
+function setAll(state: State, key: keyof RowState, value: boolean): State {
+  return mapValues<RowState, RowState>((rowState) => ({
+    ...rowState,
+    [key]: value,
+  }))(state)
+}
+
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'toggleScore':
-      return produce(state, (draft) => {
-        draft[action.row].score = !draft[action.row].score
-      })
+      return toggle(state, action.row, 'score')
     case 'expandScore':
-      return mapValues<RowState, RowState>(({ note }) => ({
-        score: true,
-        note,
-      }))(state)
+      return setAll(state, 'score', true)
     case 'closeScore':
-      return mapValues<RowState, RowState>(({ note }) => ({
-        score: false,
-        note,
-      }))(state)
+      return setAll(state, 'score', false)
     case 'toggleNote':
-      return produce(state, (draft) => {
-        draft[action.row].note = !draft[action.row].note
-      })
+      return toggle(state, action.row, 'note')
     case 'expandNotes':
-      return mapValues<RowState, RowState>(({ score }) => ({
-        score,
-        note: true,
-      }))(state)
+      return setAll(state, 'note', true)
     case 'closeNotes':
-      return mapValues<RowState, RowState>(({ score }) => ({
-        score,
-        note: false,
-      }))(state)
+      return setAll(state, 'note', false)
   }
 }
 
