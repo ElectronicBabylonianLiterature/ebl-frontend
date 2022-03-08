@@ -14,7 +14,7 @@ type State = { readonly [key: number]: RowState }
 type Action =
   | { type: 'toggleScore'; row: number }
   | { type: 'toggleNote'; row: number }
-  | { type: 'expandScores' | 'closeScores' | 'expandNotes' | 'closeNotes' }
+  | { type: 'expandScore' | 'closeScore' | 'expandNotes' | 'closeNotes' }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   {},
@@ -28,12 +28,12 @@ function reducer(state: State, action: Action): State {
       return produce(state, (draft) => {
         draft[action.row].score = !draft[action.row].score
       })
-    case 'expandScores':
+    case 'expandScore':
       return mapValues<RowState, RowState>(({ note }) => ({
         score: true,
         note,
       }))(state)
-    case 'closeScores':
+    case 'closeScore':
       return mapValues<RowState, RowState>(({ note }) => ({
         score: false,
         note,
