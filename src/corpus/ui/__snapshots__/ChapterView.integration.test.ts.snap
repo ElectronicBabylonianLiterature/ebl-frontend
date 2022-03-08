@@ -51,7 +51,7 @@ exports[`Diplay chapter How to cite 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-74"
+          id="Header-78"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Diplay chapter How to cite 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-74"
+          aria-controls="Header-78"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -251,7 +251,7 @@ exports[`Diplay chapter How to cite 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-81"
+          aria-controls="collapse-85"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -263,7 +263,7 @@ exports[`Diplay chapter How to cite 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-81"
+          id="collapse-85"
         >
           <div
             class="csl-bib-body"
@@ -331,7 +331,7 @@ exports[`Diplay chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-76"
+                  aria-controls="score-80"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -376,7 +376,7 @@ exports[`Diplay chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-77"
+                  aria-controls="note-81"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -419,7 +419,7 @@ exports[`Diplay chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-78"
+                  aria-controls="score-82"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -464,7 +464,7 @@ exports[`Diplay chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-79"
+                  aria-controls="note-83"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -497,7 +497,7 @@ exports[`Diplay chapter How to cite 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-80"
+          aria-controls="settings-84"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -889,7 +889,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-24"
+                  aria-controls="note-24"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1155,7 +1155,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-19"
+                  aria-controls="score-25"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1200,7 +1200,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-20"
+                  aria-controls="note-26"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1233,7 +1233,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-25"
+          aria-controls="settings-27"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1300,7 +1300,7 @@ exports[`Diplay chapter Show note 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-26"
+          id="Header-28"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1374,7 +1374,7 @@ exports[`Diplay chapter Show note 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-26"
+          aria-controls="Header-28"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1500,7 +1500,7 @@ exports[`Diplay chapter Show note 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-33"
+          aria-controls="collapse-35"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -1512,7 +1512,7 @@ exports[`Diplay chapter Show note 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-33"
+          id="collapse-35"
         >
           <div
             class="csl-bib-body"
@@ -1580,7 +1580,7 @@ exports[`Diplay chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-34"
+                  aria-controls="score-36"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1625,7 +1625,7 @@ exports[`Diplay chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-35"
+                  aria-controls="note-37"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -1649,7 +1649,7 @@ exports[`Diplay chapter Show note 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="score-35"
+              id="note-37"
               style="height: 0px;"
             >
               <td
@@ -1685,7 +1685,7 @@ exports[`Diplay chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-30"
+                  aria-controls="score-38"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1730,7 +1730,7 @@ exports[`Diplay chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-31"
+                  aria-controls="note-39"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1763,7 +1763,7 @@ exports[`Diplay chapter Show note 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-36"
+          aria-controls="settings-40"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1830,7 +1830,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-37"
+          id="Header-41"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1904,7 +1904,7 @@ exports[`Diplay chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-37"
+          aria-controls="Header-41"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2030,7 +2030,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-47"
+          aria-controls="collapse-51"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2042,7 +2042,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-47"
+          id="collapse-51"
         >
           <div
             class="csl-bib-body"
@@ -2110,7 +2110,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-48"
+                  aria-controls="score-52"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2155,7 +2155,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-49"
+                  aria-controls="note-53"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2179,7 +2179,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-48"
+              id="score-52"
               style=""
             >
               <td
@@ -2304,7 +2304,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-50"
+                  aria-controls="score-54"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2349,7 +2349,7 @@ exports[`Diplay chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-51"
+                  aria-controls="note-55"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2373,7 +2373,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-50"
+              id="score-54"
               style=""
             >
               <td
@@ -2454,7 +2454,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-52"
+          aria-controls="settings-56"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -2466,7 +2466,7 @@ exports[`Diplay chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-52"
+          id="settings-56"
         >
           <form
             class="settings__section"
@@ -2481,12 +2481,12 @@ exports[`Diplay chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-53"
+                id="sidebar-text-toggle-57"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-53"
+                for="sidebar-text-toggle-57"
                 title=""
               >
                 Score
@@ -2497,12 +2497,12 @@ exports[`Diplay chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-54"
+                id="sidebar-text-toggle-58"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-54"
+                for="sidebar-text-toggle-58"
                 title=""
               >
                 Notes
@@ -2617,7 +2617,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-37"
+          id="Header-41"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2691,7 +2691,7 @@ exports[`Diplay chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-37"
+          aria-controls="Header-41"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2817,7 +2817,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-55"
+          aria-controls="collapse-59"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2829,7 +2829,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-55"
+          id="collapse-59"
         >
           <div
             class="csl-bib-body"
@@ -2897,7 +2897,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-56"
+                  aria-controls="score-60"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2942,7 +2942,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-57"
+                  aria-controls="note-61"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -2966,7 +2966,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapsing"
-              id="score-57"
+              id="note-61"
               style="height: 0px;"
             >
               <td
@@ -2983,7 +2983,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-56"
+              id="score-60"
               style=""
             >
               <td
@@ -3108,7 +3108,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-58"
+                  aria-controls="score-62"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3153,7 +3153,7 @@ exports[`Diplay chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-59"
+                  aria-controls="note-63"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -3177,7 +3177,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapsing"
-              id="score-59"
+              id="note-63"
               style="height: 0px;"
             >
               <td
@@ -3194,7 +3194,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-58"
+              id="score-62"
               style=""
             >
               <td
@@ -3275,7 +3275,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-60"
+          aria-controls="settings-64"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -3287,7 +3287,7 @@ exports[`Diplay chapter Sidebar 2`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-60"
+          id="settings-64"
         >
           <form
             class="settings__section"
@@ -3302,12 +3302,12 @@ exports[`Diplay chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-61"
+                id="sidebar-text-toggle-65"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-61"
+                for="sidebar-text-toggle-65"
                 title=""
               >
                 Score
@@ -3318,12 +3318,12 @@ exports[`Diplay chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-62"
+                id="sidebar-text-toggle-66"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-62"
+                for="sidebar-text-toggle-66"
                 title=""
               >
                 Notes
@@ -3438,7 +3438,7 @@ exports[`Diplay chapter Sidebar 3`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-37"
+          id="Header-41"
         >
           <div
             class="mx-auto navbar-nav"
@@ -3512,7 +3512,7 @@ exports[`Diplay chapter Sidebar 3`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-37"
+          aria-controls="Header-41"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -3638,7 +3638,7 @@ exports[`Diplay chapter Sidebar 3`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-63"
+          aria-controls="collapse-67"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -3650,7 +3650,7 @@ exports[`Diplay chapter Sidebar 3`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-63"
+          id="collapse-67"
         >
           <div
             class="csl-bib-body"
@@ -3718,7 +3718,7 @@ exports[`Diplay chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-64"
+                  aria-controls="score-68"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3763,7 +3763,7 @@ exports[`Diplay chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-65"
+                  aria-controls="note-69"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -3787,7 +3787,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="score-65"
+              id="note-69"
               style="height: 0px;"
             >
               <td
@@ -3804,7 +3804,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-64"
+              id="score-68"
               style=""
             >
               <td
@@ -3929,7 +3929,7 @@ exports[`Diplay chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-66"
+                  aria-controls="score-70"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3974,7 +3974,7 @@ exports[`Diplay chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-67"
+                  aria-controls="note-71"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -3998,7 +3998,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="score-67"
+              id="note-71"
               style="height: 0px;"
             >
               <td
@@ -4015,7 +4015,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-66"
+              id="score-70"
               style=""
             >
               <td
@@ -4096,7 +4096,7 @@ exports[`Diplay chapter Sidebar 3`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-68"
+          aria-controls="settings-72"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -4108,7 +4108,7 @@ exports[`Diplay chapter Sidebar 3`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-68"
+          id="settings-72"
         >
           <form
             class="settings__section"
@@ -4123,12 +4123,12 @@ exports[`Diplay chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-69"
+                id="sidebar-text-toggle-73"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-69"
+                for="sidebar-text-toggle-73"
                 title=""
               >
                 Score
@@ -4139,12 +4139,12 @@ exports[`Diplay chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-70"
+                id="sidebar-text-toggle-74"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-70"
+                for="sidebar-text-toggle-74"
                 title=""
               >
                 Notes
@@ -4259,7 +4259,7 @@ exports[`Diplay chapter Sidebar 4`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-37"
+          id="Header-41"
         >
           <div
             class="mx-auto navbar-nav"
@@ -4333,7 +4333,7 @@ exports[`Diplay chapter Sidebar 4`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-37"
+          aria-controls="Header-41"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -4459,7 +4459,7 @@ exports[`Diplay chapter Sidebar 4`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-63"
+          aria-controls="collapse-67"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -4471,7 +4471,7 @@ exports[`Diplay chapter Sidebar 4`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-63"
+          id="collapse-67"
         >
           <div
             class="csl-bib-body"
@@ -4539,7 +4539,7 @@ exports[`Diplay chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-64"
+                  aria-controls="score-68"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4584,7 +4584,7 @@ exports[`Diplay chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-65"
+                  aria-controls="note-69"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -4608,7 +4608,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-65"
+              id="note-69"
               style=""
             >
               <td
@@ -4625,7 +4625,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-64"
+              id="score-68"
               style=""
             >
               <td
@@ -4750,7 +4750,7 @@ exports[`Diplay chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-66"
+                  aria-controls="score-70"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4795,7 +4795,7 @@ exports[`Diplay chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-67"
+                  aria-controls="note-71"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -4819,7 +4819,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-67"
+              id="note-71"
               style=""
             >
               <td
@@ -4836,7 +4836,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-66"
+              id="score-70"
               style=""
             >
               <td
@@ -4917,7 +4917,7 @@ exports[`Diplay chapter Sidebar 4`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-71"
+          aria-controls="settings-75"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -5309,7 +5309,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-11"
+                  aria-controls="note-11"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -5397,7 +5397,7 @@ exports[`Diplay chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-13"
+                  aria-controls="note-13"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"

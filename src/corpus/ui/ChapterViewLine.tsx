@@ -181,6 +181,10 @@ export function ChapterViewLine({
   maxColumns: number
   textService: TextService
 }): JSX.Element {
+  const scoreId = _.uniqueId('score-')
+  const noteId = _.uniqueId('note-')
+  const totalColumns =
+    toggleColumns + lineNumberColumns + maxColumns + translationColumns
   const [
     {
       [lineNumber]: { score: showScore, note: showNote },
@@ -189,100 +193,99 @@ export function ChapterViewLine({
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
 
-  return useMemo(() => {
-    const scoreId = _.uniqueId('score-')
-    const noteId = _.uniqueId('score-')
-    const totalColumns =
-      toggleColumns + lineNumberColumns + maxColumns + translationColumns
-    return (
+  const transliteration = useMemo(
+    () => (
       <>
-        <InterText line={line} colSpan={totalColumns} />
-        <tr
-          className={classNames({
-            'chapter-display__line': true,
-            'chapter-display__line--is-second-line-of-parallelism':
-              line.isSecondLineOfParallelism,
-            'chapter-display__line--is-beginning-of-section':
-              line.isBeginningOfSection,
-          })}
-        >
-          <td
-            className="chapter-display__toggle"
-            onClick={() =>
-              dispatchRows({ type: 'toggleScore', row: lineNumber })
-            }
-          >
-            <i
-              className={classNames({
-                fas: true,
-                'fa-caret-right': !showScore,
-                'fa-caret-down': showScore,
-              })}
-              aria-expanded={showScore}
-              aria-controls={scoreId}
-              aria-label="Show score"
-              role="button"
-            ></i>
+        <LineNumber line={line} />
+        <LineColumns columns={columns} maxColumns={maxColumns} />
+      </>
+    ),
+    [columns, line, maxColumns]
+  )
+  const score = useMemo(
+    () => (
+      <Collapse in={showScore} mountOnEnter>
+        <tr id={scoreId}>
+          <td colSpan={totalColumns}>
+            <Score
+              id={chapter.id}
+              lineNumber={lineNumber}
+              textService={textService}
+            />
           </td>
-          <LineNumber line={line} />
-          <LineColumns columns={columns} maxColumns={maxColumns} />
-          <td
-            className="chapter-display__toggle"
-            onClick={() =>
-              dispatchRows({ type: 'toggleNote', row: lineNumber })
-            }
-          >
-            {line.note && (
-              <i
-                className={classNames({
-                  fas: true,
-                  'fa-book': !showNote,
-                  'fa-book-open': showNote,
-                })}
-                aria-expanded={showNote}
-                aria-controls={noteId}
-                aria-label="Show note"
-                role="button"
-              ></i>
-            )}
-          </td>
-          <Translation line={line} language={language} />
         </tr>
-        {line.note && (
-          <Collapse in={showNote} mountOnEnter>
-            <tr id={noteId}>
-              <td colSpan={totalColumns}>
-                <Markup
-                  className="chapter-display__note"
-                  parts={line.note.parts}
-                />
-              </td>
-            </tr>
-          </Collapse>
-        )}
-        <Collapse in={showScore} mountOnEnter>
-          <tr id={scoreId}>
+      </Collapse>
+    ),
+    [chapter.id, lineNumber, scoreId, showScore, textService, totalColumns]
+  )
+  const note = useMemo(
+    () =>
+      line.note && (
+        <Collapse in={showNote} mountOnEnter>
+          <tr id={noteId}>
             <td colSpan={totalColumns}>
-              <Score
-                id={chapter.id}
-                lineNumber={lineNumber}
-                textService={textService}
+              <Markup
+                className="chapter-display__note"
+                parts={line.note.parts}
               />
             </td>
           </tr>
         </Collapse>
-      </>
-    )
-  }, [
-    maxColumns,
-    line,
-    showScore,
-    showNote,
-    columns,
-    language,
-    chapter.id,
-    lineNumber,
-    textService,
-    dispatchRows,
-  ])
+      ),
+    [line.note, noteId, showNote, totalColumns]
+  )
+
+  return (
+    <>
+      <InterText line={line} colSpan={totalColumns} />
+      <tr
+        className={classNames({
+          'chapter-display__line': true,
+          'chapter-display__line--is-second-line-of-parallelism':
+            line.isSecondLineOfParallelism,
+          'chapter-display__line--is-beginning-of-section':
+            line.isBeginningOfSection,
+        })}
+      >
+        <td
+          className="chapter-display__toggle"
+          onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
+        >
+          <i
+            className={classNames({
+              fas: true,
+              'fa-caret-right': !showScore,
+              'fa-caret-down': showScore,
+            })}
+            aria-expanded={showScore}
+            aria-controls={scoreId}
+            aria-label="Show score"
+            role="button"
+          ></i>
+        </td>
+        {transliteration}
+        <td
+          className="chapter-display__toggle"
+          onClick={() => dispatchRows({ type: 'toggleNote', row: lineNumber })}
+        >
+          {line.note && (
+            <i
+              className={classNames({
+                fas: true,
+                'fa-book': !showNote,
+                'fa-book-open': showNote,
+              })}
+              aria-expanded={showNote}
+              aria-controls={noteId}
+              aria-label="Show note"
+              role="button"
+            ></i>
+          )}
+        </td>
+        <Translation line={line} language={language} />
+      </tr>
+      {note}
+      {score}
+    </>
+  )
 }
