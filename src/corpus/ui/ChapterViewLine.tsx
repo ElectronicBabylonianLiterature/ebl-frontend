@@ -183,11 +183,16 @@ export function ChapterViewLine({
 }): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
+  const parallelsId = _.uniqueId('parallels-')
   const totalColumns =
     toggleColumns + lineNumberColumns + maxColumns + translationColumns
   const [
     {
-      [lineNumber]: { score: showScore, note: showNote },
+      [lineNumber]: {
+        score: showScore,
+        note: showNote,
+        parallels: showParallels,
+      },
     },
     dispatchRows,
   ] = useContext(RowsContext)
@@ -233,6 +238,26 @@ export function ChapterViewLine({
         </Collapse>
       ),
     [line.note, noteId, showNote, totalColumns]
+  )
+  const parallels = useMemo(
+    () =>
+      line.parallelLines.length > 0 && (
+        <Collapse in={showParallels} mountOnEnter>
+          <tr id={parallelsId}>
+            <td colSpan={totalColumns}>
+              <ul className="chapter-display__parallels">
+                {line.parallelLines.map((parallelLine, index) => (
+                  <li key="value">
+                    {'// '}
+                    {parallelLine.content.map(({ value }) => value).join('')}
+                  </li>
+                ))}
+              </ul>
+            </td>
+          </tr>
+        </Collapse>
+      ),
+    [line.parallelLines, parallelsId, showParallels, totalColumns]
   )
 
   return (
@@ -282,9 +307,29 @@ export function ChapterViewLine({
             ></i>
           )}
         </td>
+        <td
+          className="chapter-display__toggle"
+          onClick={() =>
+            dispatchRows({ type: 'toggleParallels', row: lineNumber })
+          }
+        >
+          {line.parallelLines.length > 0 && (
+            <i
+              className={classNames({
+                fas: true,
+                'fa-quote-right': true,
+              })}
+              aria-expanded={showParallels}
+              aria-controls={parallelsId}
+              aria-label="Show parallels"
+              role="button"
+            ></i>
+          )}
+        </td>
         <Translation line={line} language={language} />
       </tr>
       {note}
+      {parallels}
       {score}
     </>
   )

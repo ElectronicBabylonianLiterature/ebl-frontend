@@ -8,7 +8,11 @@ import { ChapterDisplay } from 'corpus/domain/chapter'
 
 import './ChapterViewSideBar.sass'
 
-function Switch({ type }: { type: 'Notes' | 'Score' }): JSX.Element {
+function Switch({
+  type,
+}: {
+  type: 'Notes' | 'Score' | 'Parallels'
+}): JSX.Element {
   const [, dispatchRows] = useContext(RowsContext)
   const [isExpanded, setExpanded] = useState(false)
   return (
@@ -29,6 +33,15 @@ function TextSettings(): JSX.Element {
     <Form className="settings__section">
       <h4 className="settings__subheading">Text</h4>
       <Switch type="Score"></Switch>
+    </Form>
+  )
+}
+
+function ScholiaSettings(): JSX.Element {
+  return (
+    <Form className="settings__section">
+      <h4 className="settings__subheading">Scholia</h4>
+      <Switch type="Parallels"></Switch>
       <Switch type="Notes"></Switch>
     </Form>
   )
@@ -94,6 +107,7 @@ export function SideBar({ chapter }: { chapter: ChapterDisplay }): JSX.Element {
       <Fade in={showSettings} mountOnEnter unmountOnExit>
         <div id={settingsId}>
           <TextSettings />
+          <ScholiaSettings />
           <TranslationSettings chapter={chapter} />
           <footer className="settings__footer">
             <span

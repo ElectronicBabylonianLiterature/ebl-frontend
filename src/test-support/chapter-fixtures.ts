@@ -9,6 +9,7 @@ import { LineNumber } from 'transliteration/domain/line-number'
 import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
+import { ControlLine } from 'transliteration/domain/line'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -94,6 +95,20 @@ export const lineDisplayDtoFactory = Factory.define<
         },
       ],
     },
+    parallelLines: [
+      {
+        type: 'ParallelComposition',
+        prefix: '// ',
+        content: [
+          {
+            type: 'ValueToken',
+            value: '(A Composition 1-2)',
+            cleanValue: '(A Composition 1-2)',
+            enclosureType: [],
+          },
+        ],
+      },
+    ],
   }
 })
 
@@ -146,6 +161,20 @@ export const lineDisplayFactory = Factory.define<
         },
       ],
     }),
+    parallelLines: [
+      new ControlLine({
+        type: 'ParallelComposition',
+        prefix: '// ',
+        content: [
+          {
+            type: 'ValueToken',
+            value: '(A Composition 1-2)',
+            cleanValue: '(A Composition 1-2)',
+            enclosureType: [],
+          },
+        ],
+      }),
+    ],
   }
 })
 

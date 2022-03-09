@@ -43,6 +43,7 @@ import {
 import { isNoteLine } from 'transliteration/domain/type-guards'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
+import { ControlLine } from 'transliteration/domain/line'
 
 class CorpusLemmatizationFactory extends AbstractLemmatizationFactory<
   Chapter,
@@ -202,6 +203,9 @@ export default class TextService {
               translation,
               intertext,
               note,
+              parallelLines: line.parallelLines.map(
+                (parallel) => new ControlLine(parallel)
+              ),
             }))
           )
         ).then(

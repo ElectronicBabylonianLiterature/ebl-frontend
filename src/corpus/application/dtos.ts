@@ -56,6 +56,11 @@ export type LineDisplayDto = Pick<
     content: Token[]
   }[]
   note: Omit<NoteLineDto, 'type'> | null
+  parallelLines: {
+    type: string
+    prefix: string
+    content: Token[]
+  }[]
 }
 
 export type ChapterDisplayDto = Pick<
