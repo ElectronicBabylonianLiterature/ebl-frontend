@@ -12,9 +12,9 @@ import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
-import getJunicodeRegular from './pdf_fonts/Junicode'
-import getJunicodeBold from './pdf_fonts/JunicodeBold'
-import getJunicodeItalic from './pdf_fonts/JunicodeItalic'
+import getJunicodeRegular from './pdf-fonts/Junicode'
+import getJunicodeBold from './pdf-fonts/JunicodeBold'
+import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
 
@@ -22,7 +22,7 @@ export async function pdfExport(
   fragment: Fragment,
   wordService: WordService,
   jQueryRef: JQuery
-) {
+): Promise<jsPDF> {
   const tableHtml: JQuery = $(
     renderToString(TransliterationLines({ text: fragment.text }))
   )
@@ -147,7 +147,7 @@ function centerText(doc: jsPDF, text: string): number {
   return textOffset
 }
 
-function getTextWidth(doc: any, text: string): number {
+function getTextWidth(doc, text: string): number {
   return (
     (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
     doc.internal.scaleFactor
@@ -158,7 +158,7 @@ function getTextHeight(doc: jsPDF, text: string): number {
   return doc.getTextDimensions(text).h
 }
 
-function getPdfHeadline(fragment: Fragment): any {
+function getPdfHeadline(fragment: Fragment): [string, string, string] {
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
   )
