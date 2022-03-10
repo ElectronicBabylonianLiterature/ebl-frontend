@@ -20,7 +20,7 @@ export default function DisplayTextLine({
 }: LineProps): JSX.Element {
   const textLine = line as TextLine
   const id = createId(surface, textLine)
-  const lineRef = useRef<HTMLTableCellElement>(null)
+  const lineRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
     if (id === activeLine) {
@@ -30,11 +30,15 @@ export default function DisplayTextLine({
 
   return (
     <>
-      <td
-        ref={lineRef}
-        className={classNames([`Transliteration__${textLine.type}`])}
-      >
-        <LineNumber line={textLine} />
+      <td className={classNames([`Transliteration__${textLine.type}`])}>
+        <a
+          className="Transliteration__anchor"
+          id={id}
+          href={`#${id}`}
+          ref={lineRef}
+        >
+          <LineNumber line={textLine} />
+        </a>
       </td>
       <LineColumns columns={textLine.columns} maxColumns={columns} />
     </>
