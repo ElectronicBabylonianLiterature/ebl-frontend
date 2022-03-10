@@ -264,6 +264,7 @@ export function ChapterViewLine({
     <>
       <InterText line={line} colSpan={totalColumns} />
       <tr
+        id={lineNumberToString(line.number)}
         className={classNames({
           'chapter-display__line': true,
           'chapter-display__line--is-second-line-of-parallelism':
