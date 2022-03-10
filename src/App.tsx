@@ -35,10 +35,7 @@ import ChapterView from 'corpus/ui/ChapterView'
 import { ChapterId } from 'corpus/domain/chapter'
 import { TextId } from 'corpus/domain/text'
 
-function parseStringParam(
-  location: Location,
-  param: string
-): string | null | undefined {
+function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
   return _.isArray(value) ? value.join('') : value
 }
@@ -62,13 +59,13 @@ function parseChapterId(params): ChapterId {
 function parseFragmentSearchParams(
   location: Location
 ): {
-  number: string | null | undefined
-  id: string | null | undefined
-  primaryAuthor: string | null | undefined
-  year: string | null | undefined
-  title: string | null | undefined
-  pages: string | null | undefined
-  transliteration: string | null | undefined
+  number: string | null
+  id: string | null
+  primaryAuthor: string | null
+  year: string | null
+  title: string | null
+  pages: string | null
+  transliteration: string | null
 } {
   return {
     number: parseStringParam(location, 'number'),
@@ -86,15 +83,17 @@ function parseFargmentParams(
   location: Location
 ): {
   number: string
-  folioName: string | undefined | null
-  folioNumber: string | undefined | null
-  tab: string | undefined | null
+  folioName: string | null
+  folioNumber: string | null
+  tab: string | null
+  activeLine: string
 } {
   return {
     number: decodeURIComponent(match.params['id']),
     folioName: parseStringParam(location, 'folioName'),
     folioNumber: parseStringParam(location, 'folioNumber'),
     tab: parseStringParam(location, 'tab'),
+    activeLine: decodeURIComponent(location.hash.replace(/^#/, '')),
   }
 }
 

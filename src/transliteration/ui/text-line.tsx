@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { LineNumber } from './LineNumber'
 import { LineColumns } from './line-tokens'
@@ -16,12 +16,24 @@ export default function DisplayTextLine({
   line,
   columns,
   surface,
+  activeLine = '',
 }: LineProps): JSX.Element {
   const textLine = line as TextLine
   const id = createId(surface, textLine)
+  const ref = useRef<HTMLTableCellElement>(null)
+
+  useEffect(() => {
+    if (id === activeLine) {
+      ref.current?.scrollIntoView()
+    }
+  }, [id, activeLine])
+
   return (
     <>
-      <td id={id} className={classNames([`Transliteration__${textLine.type}`])}>
+      <td
+        ref={ref}
+        className={classNames([`Transliteration__${textLine.type}`])}
+      >
         <LineNumber line={textLine} />
       </td>
       <LineColumns columns={textLine.columns} maxColumns={columns} />

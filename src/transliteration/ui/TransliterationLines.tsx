@@ -118,18 +118,25 @@ function TransliterationLine({
   index,
   columns,
   surface,
+  activeLine,
 }: {
   line: AbstractLine
   notes: Notes
   index: number
   columns: number
   surface: SurfaceLabel | null
+  activeLine: string
 }): JSX.Element {
   const LineComponent = lineComponents.get(line.type) || DisplayControlLine
   const lineNumber = index + 1
   return (
     <tr id={createLineId(lineNumber)}>
-      <LineComponent line={line} columns={columns} surface={surface} />
+      <LineComponent
+        line={line}
+        columns={columns}
+        surface={surface}
+        activeLine={activeLine}
+      />
       <td>
         <NoteLinks notes={notes} lineNumber={lineNumber} />
       </td>
@@ -139,8 +146,10 @@ function TransliterationLine({
 
 export default function TransliterationLines({
   text,
+  activeLine = '',
 }: {
   text: Text
+  activeLine?: string
 }): JSX.Element {
   const numberOfColumns = text.numberOfColumns
   return (
@@ -167,6 +176,7 @@ export default function TransliterationLines({
                     index={index}
                     columns={numberOfColumns}
                     surface={currentSurface}
+                    activeLine={activeLine}
                   />,
                 ],
                 currentSurface,

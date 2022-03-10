@@ -5,4 +5,5 @@ export interface LineProps {
   line: AbstractLine
   columns: number
   surface?: SurfaceLabel | null
+  activeLine?: string
 }
