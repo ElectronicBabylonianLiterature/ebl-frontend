@@ -13,6 +13,8 @@ import TranslationLine, {
 } from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { SurfaceLabel } from 'transliteration/domain/labels'
+import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
 
 function DisplayControlLine({
   line: { type, prefix, content },
@@ -115,17 +117,19 @@ function TransliterationLine({
   notes,
   index,
   columns,
+  surface,
 }: {
   line: AbstractLine
   notes: Notes
   index: number
   columns: number
+  surface: SurfaceLabel | null
 }): JSX.Element {
   const LineComponent = lineComponents.get(line.type) || DisplayControlLine
   const lineNumber = index + 1
   return (
     <tr id={createLineId(lineNumber)}>
-      <LineComponent line={line} columns={columns} />
+      <LineComponent line={line} columns={columns} surface={surface} />
       <td>
         <NoteLinks notes={notes} lineNumber={lineNumber} />
       </td>
@@ -143,15 +147,34 @@ export default function TransliterationLines({
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
-        {text.lines.map((line: AbstractLine, index: number) => (
-          <TransliterationLine
-            key={index}
-            line={line}
-            notes={text.notes}
-            index={index}
-            columns={numberOfColumns}
-          />
-        ))}
+        {
+          text.lines.reduce<[JSX.Element[], SurfaceLabel | null]>(
+            (
+              [elements, surface]: [JSX.Element[], SurfaceLabel | null],
+              line: AbstractLine,
+              index: number
+            ) => {
+              const currentSurface = isSurfaceAtLine(line)
+                ? line.label
+                : surface
+              return [
+                [
+                  ...elements,
+                  <TransliterationLine
+                    key={index}
+                    line={line}
+                    notes={text.notes}
+                    index={index}
+                    columns={numberOfColumns}
+                    surface={currentSurface}
+                  />,
+                ],
+                currentSurface,
+              ]
+            },
+            [[], null]
+          )[0]
+        }
       </tbody>
     </table>
   )
