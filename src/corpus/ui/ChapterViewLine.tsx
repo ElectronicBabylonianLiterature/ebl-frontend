@@ -166,21 +166,20 @@ const Score = withData<
     textService.findChapterLine(id, lineNumber)
 )
 
-export function ChapterViewLine({
-  chapter,
-  lineNumber,
-  line,
-  columns,
-  maxColumns,
-  textService,
-}: {
-  chapter: ChapterDisplay
-  lineNumber: number
-  line: LineDisplay
-  columns: readonly TextLineColumn[]
-  maxColumns: number
-  textService: TextService
-}): JSX.Element {
+export const ChapterViewLine = React.forwardRef<
+  HTMLTableRowElement,
+  {
+    chapter: ChapterDisplay
+    lineNumber: number
+    line: LineDisplay
+    columns: readonly TextLineColumn[]
+    maxColumns: number
+    textService: TextService
+  }
+>(function ChapterViewLine(
+  { chapter, lineNumber, line, columns, maxColumns, textService },
+  ref
+): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
   const parallelsId = _.uniqueId('parallels-')
@@ -265,6 +264,7 @@ export function ChapterViewLine({
       <InterText line={line} colSpan={totalColumns} />
       <tr
         id={lineNumberToString(line.number)}
+        ref={ref}
         className={classNames({
           'chapter-display__line': true,
           'chapter-display__line--is-second-line-of-parallelism':
@@ -334,4 +334,4 @@ export function ChapterViewLine({
       {score}
     </>
   )
-}
+})

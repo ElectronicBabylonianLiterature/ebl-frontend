@@ -195,10 +195,11 @@ function App({
           />
           <Route
             path="/corpus/:genre/:category/:index/:stage/:chapter"
-            render={({ match }): ReactNode => (
+            render={({ match, location }): ReactNode => (
               <ChapterView
                 textService={textService}
                 id={parseChapterId(match.params)}
+                activeLine={location.hash.replace(/^#/, '')}
               />
             )}
           />
