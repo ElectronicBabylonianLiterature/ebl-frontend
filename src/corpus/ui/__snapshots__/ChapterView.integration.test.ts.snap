@@ -326,7 +326,6 @@ exports[`Diplay chapter How to cite 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -425,7 +424,6 @@ exports[`Diplay chapter How to cite 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -861,7 +859,6 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -1183,7 +1180,6 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -1619,7 +1615,6 @@ exports[`Diplay chapter Show note 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -1735,7 +1730,6 @@ exports[`Diplay chapter Show note 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -2171,7 +2165,6 @@ exports[`Diplay chapter Show parallels 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -2289,7 +2282,6 @@ exports[`Diplay chapter Show parallels 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -2725,7 +2717,6 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -2930,7 +2921,6 @@ exports[`Diplay chapter Sidebar 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -3559,7 +3549,6 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -3783,7 +3772,6 @@ exports[`Diplay chapter Sidebar 2`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -4431,7 +4419,6 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -4672,7 +4659,6 @@ exports[`Diplay chapter Sidebar 3`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -5337,7 +5323,6 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -5578,7 +5563,6 @@ exports[`Diplay chapter Sidebar 4`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -6243,7 +6227,6 @@ exports[`Diplay chapter Sidebar 5`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -6484,7 +6467,6 @@ exports[`Diplay chapter Sidebar 5`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"
@@ -7028,7 +7010,6 @@ exports[`Diplay chapter Snapshot 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="1"
             >
               <td
                 class="chapter-display__toggle"
@@ -7127,7 +7108,6 @@ exports[`Diplay chapter Snapshot 1`] = `
             </tr>
             <tr
               class="chapter-display__line chapter-display__line--is-second-line-of-parallelism chapter-display__line--is-beginning-of-section"
-              id="2"
             >
               <td
                 class="chapter-display__toggle"

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import _ from 'lodash'
 import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
 import withData from 'http/withData'
@@ -166,20 +166,23 @@ const Score = withData<
     textService.findChapterLine(id, lineNumber)
 )
 
-export const ChapterViewLine = React.forwardRef<
-  HTMLTableRowElement,
-  {
-    chapter: ChapterDisplay
-    lineNumber: number
-    line: LineDisplay
-    columns: readonly TextLineColumn[]
-    maxColumns: number
-    textService: TextService
-  }
->(function ChapterViewLine(
-  { chapter, lineNumber, line, columns, maxColumns, textService },
-  ref
-): JSX.Element {
+export function ChapterViewLine({
+  chapter,
+  lineNumber,
+  line,
+  columns,
+  maxColumns,
+  textService,
+  activeLine,
+}: {
+  chapter: ChapterDisplay
+  lineNumber: number
+  line: LineDisplay
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+  textService: TextService
+  activeLine: string
+}): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
   const parallelsId = _.uniqueId('parallels-')
@@ -196,6 +199,13 @@ export const ChapterViewLine = React.forwardRef<
     dispatchRows,
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
+  const lineRef = useRef<HTMLTableRowElement>(null)
+
+  useEffect(() => {
+    if (lineNumberToString(line.number) === activeLine) {
+      lineRef.current?.scrollIntoView()
+    }
+  }, [activeLine, line.number])
 
   const transliteration = useMemo(
     () => (
@@ -263,8 +273,7 @@ export const ChapterViewLine = React.forwardRef<
     <>
       <InterText line={line} colSpan={totalColumns} />
       <tr
-        id={lineNumberToString(line.number)}
-        ref={ref}
+        ref={lineRef}
         className={classNames({
           'chapter-display__line': true,
           'chapter-display__line--is-second-line-of-parallelism':
@@ -334,4 +343,4 @@ export const ChapterViewLine = React.forwardRef<
       {score}
     </>
   )
-})
+}

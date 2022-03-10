@@ -20,18 +20,18 @@ export default function DisplayTextLine({
 }: LineProps): JSX.Element {
   const textLine = line as TextLine
   const id = createId(surface, textLine)
-  const ref = useRef<HTMLTableCellElement>(null)
+  const lineRef = useRef<HTMLTableCellElement>(null)
 
   useEffect(() => {
     if (id === activeLine) {
-      ref.current?.scrollIntoView()
+      lineRef.current?.scrollIntoView()
     }
   }, [id, activeLine])
 
   return (
     <>
       <td
-        ref={ref}
+        ref={lineRef}
         className={classNames([`Transliteration__${textLine.type}`])}
       >
         <LineNumber line={textLine} />

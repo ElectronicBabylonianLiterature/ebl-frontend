@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import React, { useContext, useMemo } from 'react'
 import Bluebird from 'bluebird'
 import AppContent from 'common/AppContent'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -23,7 +23,6 @@ import { HowToCite } from './HowToCite'
 import TranslationContext, { useTranslationContext } from './TranslationContext'
 
 import './ChapterView.sass'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
 interface Props {
   chapter: ChapterDisplay
@@ -92,9 +91,6 @@ function ChapterView({
   const maxColumns_ = maxColumns(columns)
   const rowsContext = useRowsContext(chapter.lines.length)
   const translationContext = useTranslationContext()
-  const lineRef = useRef<HTMLTableRowElement>(null)
-
-  useEffect(() => lineRef.current?.scrollIntoView())
 
   return (
     <RowsContext.Provider value={rowsContext}>
@@ -128,9 +124,7 @@ function ChapterView({
                 {chapter.lines.map((line, index) => (
                   <ChapterViewLine
                     key={index}
-                    {...(lineNumberToString(line.number) === activeLine
-                      ? { ref: lineRef }
-                      : {})}
+                    activeLine={activeLine}
                     line={line}
                     columns={columns[index]}
                     maxColumns={maxColumns_}
