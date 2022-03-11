@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
@@ -8,65 +7,15 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import TranslationLine, {
-  Extent,
-} from 'transliteration/domain/translation-line'
-import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import { SurfaceLabel } from 'transliteration/domain/labels'
 import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
-
-function DisplayControlLine({
-  line: { type, prefix, content },
-  columns,
-}: LineProps): JSX.Element {
-  return (
-    <>
-      <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${type}`])}
-      >
-        {content.map(({ value }) => value).join('')}
-      </td>
-    </>
-  )
-}
-
-function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
-  const labels = extent.labels.join(' ')
-  return (
-    <>
-      ({labels}
-      {!_.isEmpty(labels) && ' '}
-      {lineNumberToString(extent.number)})
-    </>
-  )
-}
-
-function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
-  const translationLine = line as TranslationLine
-  return (
-    <>
-      <td className={classNames([`Transliteration__${line.type}`])}>
-        {translationLine.language}
-        {translationLine.extent && (
-          <>
-            {' '}
-            <DispalyExtent extent={translationLine.extent} />
-          </>
-        )}
-        :
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${line.type}`])}
-      >
-        <Markup parts={translationLine.parts} />
-      </td>
-    </>
-  )
-}
+import DisplayTranslationLine from './DisplayTranslationLine'
+import DisplayControlLine from './DisplayControlLine'
+import {
+  DisplayParallelComposition,
+  DisplayParallelFragment,
+  DisplayParallelText,
+} from './parallel-line'
 
 const lineComponents: ReadonlyMap<
   string,
@@ -87,6 +36,9 @@ const lineComponents: ReadonlyMap<
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
   ['TranslationLine', DisplayTranslationLine],
+  ['ParallelFragment', DisplayParallelFragment],
+  ['ParallelText', DisplayParallelText],
+  ['ParallelComposition', DisplayParallelComposition],
 ])
 
 function FirstLineNotes({

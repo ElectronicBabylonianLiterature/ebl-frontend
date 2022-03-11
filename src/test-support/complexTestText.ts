@@ -11,6 +11,7 @@ import * as dollar from 'test-support/lines/dollar'
 import empty from 'test-support/lines/empty'
 import note from 'test-support/lines/note'
 import line2 from 'test-support/lines/text-line'
+import * as parallel from './lines/parallel'
 
 const line4 = new TextLine({
   prefix: '2.',
@@ -3390,5 +3391,8 @@ export default new Text({
     greek.greek,
     greek.akkadian,
     greek.sumerian,
+    parallel.fragment,
+    parallel.text,
+    parallel.composition,
   ],
 })

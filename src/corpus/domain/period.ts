@@ -127,3 +127,16 @@ export const periods = [
   Periods.Parthian,
   Periods.Uncertain,
 ] as const
+
+export const Stages = {
+  ...Periods,
+  Standard: {
+    name: 'Standard',
+    abbreviation: 'Std',
+    description: '',
+    displayName: null,
+    parent: null,
+  },
+} as const
+export type Stage = typeof Stages[keyof typeof Stages]
+export const stages = [...periods, Stages.Standard] as const
