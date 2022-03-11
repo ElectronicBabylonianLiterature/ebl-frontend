@@ -10,6 +10,7 @@ import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ControlLine } from 'transliteration/domain/line'
+import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -98,7 +99,7 @@ export const lineDisplayDtoFactory = Factory.define<
     parallelLines: [
       {
         type: 'ParallelComposition',
-        prefix: '// ',
+        prefix: parallelLinePrefix,
         content: [
           {
             type: 'ValueToken',
@@ -164,7 +165,7 @@ export const lineDisplayFactory = Factory.define<
     parallelLines: [
       new ControlLine({
         type: 'ParallelComposition',
-        prefix: '// ',
+        prefix: parallelLinePrefix,
         content: [
           {
             type: 'ValueToken',

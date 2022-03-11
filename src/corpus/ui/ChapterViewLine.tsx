@@ -15,6 +15,7 @@ import { isTextLine } from 'transliteration/domain/type-guards'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
 import { Anchor } from 'transliteration/ui/LineNumber'
+import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 
 const lineNumberColumns = 1
 const toggleColumns = 2
@@ -105,7 +106,7 @@ function Manuscript({
     >
       <td>
         <span className="chapter-display__manuscript-siglum">
-          {manuscript.isParallelText && '// '}
+          {manuscript.isParallelText && parallelLinePrefix}
           {manuscript.siglum}
         </span>
       </td>
@@ -270,7 +271,7 @@ export function ChapterViewLine({
               <ul className="chapter-display__parallels">
                 {line.parallelLines.map((parallelLine, index) => (
                   <li key="value">
-                    {'// '}
+                    {parallelLinePrefix}
                     {parallelLine.content.map(({ value }) => value).join('')}
                   </li>
                 ))}
