@@ -14,6 +14,7 @@ import { Collapse, OverlayTrigger, Popover } from 'react-bootstrap'
 import { isTextLine } from 'transliteration/domain/type-guards'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
+import { Anchor } from 'transliteration/ui/LineNumber'
 
 const lineNumberColumns = 1
 const toggleColumns = 2
@@ -39,10 +40,27 @@ function InterText({
   )
 }
 
-function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
+function LineNumber({
+  line,
+  activeLine,
+}: {
+  line: LineDisplay
+  activeLine: string
+}): JSX.Element {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const number = lineNumberToString(line.number)
+
+  useEffect(() => {
+    if (number === activeLine) {
+      ref.current?.scrollIntoView()
+    }
+  }, [activeLine, number])
+
   return (
     <td className="chapter-display__line-number">
-      {lineNumberToString(line.number)}
+      <Anchor className="chapter-display__anchor" id={number} ref={ref}>
+        {number}
+      </Anchor>
     </td>
   )
 }
@@ -59,7 +77,9 @@ function Translation({
   )
   return translation.length > 0 ? (
     <>
-      <LineNumber line={line} />
+      <td className="chapter-display__line-number">
+        {lineNumberToString(line.number)}
+      </td>
       <td className="chapter-display__translation">
         <Markup parts={translation[0].parts} />
       </td>
@@ -199,22 +219,15 @@ export function ChapterViewLine({
     dispatchRows,
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
-  const lineRef = useRef<HTMLTableRowElement>(null)
-
-  useEffect(() => {
-    if (lineNumberToString(line.number) === activeLine) {
-      lineRef.current?.scrollIntoView()
-    }
-  }, [activeLine, line.number])
 
   const transliteration = useMemo(
     () => (
       <>
-        <LineNumber line={line} />
+        <LineNumber line={line} activeLine={activeLine} />
         <LineColumns columns={columns} maxColumns={maxColumns} />
       </>
     ),
-    [columns, line, maxColumns]
+    [activeLine, columns, line, maxColumns]
   )
   const score = useMemo(
     () => (
@@ -273,7 +286,6 @@ export function ChapterViewLine({
     <>
       <InterText line={line} colSpan={totalColumns} />
       <tr
-        ref={lineRef}
         className={classNames({
           'chapter-display__line': true,
           'chapter-display__line--is-second-line-of-parallelism':

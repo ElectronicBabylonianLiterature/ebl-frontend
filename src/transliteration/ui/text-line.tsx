@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import classNames from 'classnames'
-import { LineNumber } from './LineNumber'
+import { Anchor, LineNumber } from './LineNumber'
 import { LineColumns } from './line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
@@ -31,14 +31,9 @@ export default function DisplayTextLine({
   return (
     <>
       <td className={classNames([`Transliteration__${textLine.type}`])}>
-        <a
-          className="Transliteration__anchor"
-          id={id}
-          href={`#${id}`}
-          ref={lineRef}
-        >
+        <Anchor className="Transliteration__anchor" id={id} ref={lineRef}>
           <LineNumber line={textLine} />
-        </a>
+        </Anchor>
       </td>
       <LineColumns columns={textLine.columns} maxColumns={columns} />
     </>
