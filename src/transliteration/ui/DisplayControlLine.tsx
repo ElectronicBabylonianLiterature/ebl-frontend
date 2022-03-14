@@ -1,6 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
 import { LineProps } from './LineProps'
+import TransliterationTd from './TransliterationTd'
 
 export default function DisplayControlLine({
   line: { type, prefix, content },
@@ -8,13 +8,10 @@ export default function DisplayControlLine({
 }: LineProps): JSX.Element {
   return (
     <>
-      <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${type}`])}
-      >
+      <TransliterationTd type={type}>{prefix}</TransliterationTd>
+      <TransliterationTd colSpan={columns} type={type}>
         {content.map(({ value }) => value).join('')}
-      </td>
+      </TransliterationTd>
     </>
   )
 }

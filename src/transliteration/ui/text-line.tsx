@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react'
-import classNames from 'classnames'
 import { Anchor, LineNumber } from './LineNumber'
 import { LineColumns } from './line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import TransliterationTd from './TransliterationTd'
 
 function createId(surface: LineProps['surface'], textLine: TextLine) {
   const surfaceAbbreviation = surface ? `${surface.abbreviation} ` : ''
@@ -30,11 +30,11 @@ export default function DisplayTextLine({
 
   return (
     <>
-      <td className={classNames([`Transliteration__${textLine.type}`])}>
+      <TransliterationTd type={textLine.type}>
         <Anchor className="Transliteration__anchor" id={id} ref={lineRef}>
           <LineNumber line={textLine} />
         </Anchor>
-      </td>
+      </TransliterationTd>
       <LineColumns columns={textLine.columns} maxColumns={columns} />
     </>
   )

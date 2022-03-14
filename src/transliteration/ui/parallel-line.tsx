@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { Stages } from 'corpus/domain/period'
 import React from 'react'
 import romans from 'romans'
@@ -10,6 +9,7 @@ import {
   ParallelText,
 } from 'transliteration/domain/parallel-line'
 import { LineProps } from './LineProps'
+import TransliterationTd from './TransliterationTd'
 
 function Cf({
   parallel: { hasCf },
@@ -26,20 +26,17 @@ export function DisplayParallelFragment({
   const fragment = line as ParallelFragment
   return (
     <>
-      <td className={classNames([`Transliteration__${fragment.type}`])}>
+      <TransliterationTd type={fragment.type}>
         {fragment.prefix}
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${fragment.type}`])}
-      >
+      </TransliterationTd>
+      <TransliterationTd colSpan={columns} type={fragment.type}>
         <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
         {fragment.surface &&
           `${fragment.surface.abbreviation}${fragment.surface.status
             .map(statusAbbreviation)
             .join('')} `}
         {lineNumberToString(fragment.lineNumber)}
-      </td>
+      </TransliterationTd>
     </>
   )
 }
@@ -48,13 +45,8 @@ export function DisplayParallelText({ line, columns }: LineProps): JSX.Element {
   const text = line as ParallelText
   return (
     <>
-      <td className={classNames([`Transliteration__${text.type}`])}>
-        {text.prefix}
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${text.type}`])}
-      >
+      <TransliterationTd type={text.type}>{text.prefix}</TransliterationTd>
+      <TransliterationTd colSpan={columns} type={text.type}>
         <Cf parallel={text} />
         {text.text.genre} {romans.romanize(text.text.category)}.
         {text.text.index}{' '}
@@ -62,7 +54,7 @@ export function DisplayParallelText({ line, columns }: LineProps): JSX.Element {
         {text.chapter?.version && `${text.chapter.version} `}
         {text.chapter?.name && `${text.chapter.name} `}
         {lineNumberToString(text.lineNumber)}
-      </td>
+      </TransliterationTd>
     </>
   )
 }
@@ -74,16 +66,13 @@ export function DisplayParallelComposition({
   const composition = line as ParallelComposition
   return (
     <>
-      <td className={classNames([`Transliteration__${composition.type}`])}>
+      <TransliterationTd type={composition.type}>
         {composition.prefix}
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${composition.type}`])}
-      >
+      </TransliterationTd>
+      <TransliterationTd colSpan={columns} type={composition.type}>
         <Cf parallel={composition} /> ({composition.name}{' '}
         {lineNumberToString(composition.lineNumber)})
-      </td>
+      </TransliterationTd>
     </>
   )
 }

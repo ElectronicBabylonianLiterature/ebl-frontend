@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import React from 'react'
 import _ from 'lodash'
 import { LineProps } from './LineProps'
@@ -7,6 +6,7 @@ import TranslationLine, {
 } from 'transliteration/domain/translation-line'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import TransliterationTd from './TransliterationTd'
 
 function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
   const labels = extent.labels.join(' ')
@@ -26,7 +26,7 @@ export default function DisplayTranslationLine({
   const translationLine = line as TranslationLine
   return (
     <>
-      <td className={classNames([`Transliteration__${line.type}`])}>
+      <TransliterationTd type={line.type}>
         {translationLine.language}
         {translationLine.extent && (
           <>
@@ -35,13 +35,10 @@ export default function DisplayTranslationLine({
           </>
         )}
         :
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${line.type}`])}
-      >
+      </TransliterationTd>
+      <TransliterationTd colSpan={columns} type={line.type}>
         <Markup parts={translationLine.parts} />
-      </td>
+      </TransliterationTd>
     </>
   )
 }

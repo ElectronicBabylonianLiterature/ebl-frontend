@@ -2,6 +2,7 @@ import React from 'react'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import { AtLine } from 'transliteration/domain/at-lines'
 import { LineProps } from './LineProps'
+import TransliterationTd from './TransliterationTd'
 
 export function DisplayDollarAndAtLine({
   line,
@@ -11,9 +12,9 @@ export function DisplayDollarAndAtLine({
   return (
     <>
       <td></td>
-      <td colSpan={columns} className="Transliteration__DollarAndAtLine">
+      <TransliterationTd colSpan={columns} type="DollarAndAtLine">
         {dollarAndAtLine.displayValue}
-      </td>
+      </TransliterationTd>
     </>
   )
 }
