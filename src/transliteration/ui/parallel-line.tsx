@@ -24,22 +24,49 @@ function Cf({
   return <>{hasCf ? <span className="Transliteration__cf">cf. </span> : null}</>
 }
 
+export function DisplayParallelFragment({
+  fragment,
+}: {
+  fragment: ParallelFragment
+}): JSX.Element {
+  return (
+    <>
+      <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
+      {fragment.surface &&
+        `${fragment.surface.abbreviation}${fragment.surface.status
+          .map(statusAbbreviation)
+          .join('')} `}
+      {lineNumberToString(fragment.lineNumber)}
+    </>
+  )
+}
 export function DisplayParallelFragmentLine({
   line,
   columns,
 }: LineProps): JSX.Element {
-  const fragment = line as ParallelFragment
   return (
     <>
-      <Prefix type={fragment.type} />
-      <TransliterationTd colSpan={columns} type={fragment.type}>
-        <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
-        {fragment.surface &&
-          `${fragment.surface.abbreviation}${fragment.surface.status
-            .map(statusAbbreviation)
-            .join('')} `}
-        {lineNumberToString(fragment.lineNumber)}
+      <Prefix type={line.type} />
+      <TransliterationTd colSpan={columns} type={line.type}>
+        <DisplayParallelFragment fragment={line as ParallelFragment} />
       </TransliterationTd>
+    </>
+  )
+}
+
+export function DisplayParallelText({
+  text,
+}: {
+  text: ParallelText
+}): JSX.Element {
+  return (
+    <>
+      <Cf parallel={text} />
+      {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
+      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
+      {text.chapter?.version && `${text.chapter.version} `}
+      {text.chapter?.name && `${text.chapter.name} `}
+      {lineNumberToString(text.lineNumber)}
     </>
   )
 }
@@ -48,19 +75,25 @@ export function DisplayParallelTextLine({
   line,
   columns,
 }: LineProps): JSX.Element {
-  const text = line as ParallelText
   return (
     <>
-      <Prefix type={text.type} />
-      <TransliterationTd colSpan={columns} type={text.type}>
-        <Cf parallel={text} />
-        {text.text.genre} {romans.romanize(text.text.category)}.
-        {text.text.index}{' '}
-        {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
-        {text.chapter?.version && `${text.chapter.version} `}
-        {text.chapter?.name && `${text.chapter.name} `}
-        {lineNumberToString(text.lineNumber)}
+      <Prefix type={line.type} />
+      <TransliterationTd colSpan={columns} type={line.type}>
+        <DisplayParallelText text={line as ParallelText} />
       </TransliterationTd>
+    </>
+  )
+}
+
+export function DisplayParallelComposition({
+  composition,
+}: {
+  composition: ParallelComposition
+}): JSX.Element {
+  return (
+    <>
+      <Cf parallel={composition} /> ({composition.name}{' '}
+      {lineNumberToString(composition.lineNumber)})
     </>
   )
 }
@@ -69,13 +102,11 @@ export function DisplayParallelCompositionLine({
   line,
   columns,
 }: LineProps): JSX.Element {
-  const composition = line as ParallelComposition
   return (
     <>
-      <Prefix type={composition.type} />
-      <TransliterationTd colSpan={columns} type={composition.type}>
-        <Cf parallel={composition} /> ({composition.name}{' '}
-        {lineNumberToString(composition.lineNumber)})
+      <Prefix type={line.type} />
+      <TransliterationTd colSpan={columns} type={line.type}>
+        <DisplayParallelComposition composition={line as ParallelComposition} />
       </TransliterationTd>
     </>
   )
