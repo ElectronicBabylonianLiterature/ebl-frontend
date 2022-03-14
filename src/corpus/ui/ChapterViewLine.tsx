@@ -11,8 +11,8 @@ import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
 import { Anchor } from 'transliteration/ui/LineNumber'
-import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
 import Score from './Score'
+import Parallels from './Parallels'
 
 const lineNumberColumns = 1
 const toggleColumns = 2
@@ -168,14 +168,7 @@ export function ChapterViewLine({
         <Collapse in={showParallels} mountOnEnter>
           <tr id={parallelsId}>
             <td colSpan={totalColumns}>
-              <ul className="chapter-display__parallels">
-                {line.parallelLines.map((parallelLine, index) => (
-                  <li key="value">
-                    {parallelLinePrefix}
-                    {parallelLine.content.map(({ value }) => value).join('')}
-                  </li>
-                ))}
-              </ul>
+              <Parallels lines={line.parallelLines} />
             </td>
           </tr>
         </Collapse>
