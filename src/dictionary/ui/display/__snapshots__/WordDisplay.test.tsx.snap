@@ -567,89 +567,97 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         </div>
       </div>
       <div
-        class="offset-md-1 col"
+        class="ml-5 row"
       >
         <div
-          class="small text-black-50 row"
-        >
-          <div>
-            <sup
-              style="font-style: normal;"
-            >
-              serbig
-            </sup>
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div>
-            <sup
-              style="font-style: normal;"
-            >
-              jaruw
-            </sup>
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div>
-            <em>
-              itiparu
-            </em>
-          </div>
-        </div>
-        <div
-          class="mb-3 row"
+          class="col"
         >
           <div
-            class="small text-black-50 ml-3"
+            class="small text-black-50 row"
           >
-            [
-            panum
-            ]
+            <div>
+              <sup
+                style="font-style: normal;"
+              >
+                serbig
+              </sup>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div>
+              <sup
+                style="font-style: normal;"
+              >
+                jaruw
+              </sup>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div>
+              <em>
+                itiparu
+              </em>
+            </div>
+          </div>
+          <div
+            class="mb-3 row"
+          >
+            <div
+              class="small text-black-50 ml-3"
+            >
+              [
+              panum
+              ]
+            </div>
           </div>
         </div>
       </div>
       <div
-        class="offset-md-1 col"
+        class="ml-5 row"
       >
         <div
-          class="small text-black-50 row"
-        >
-          <div>
-            puul
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div>
-            aasad asas 
-            <em>
-              itiparu
-            </em>
-          </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div>
-            <i>
-              širkū
-            </i>
-          </div>
-        </div>
-        <div
-          class="mb-3 row"
+          class="col"
         >
           <div
-            class="small text-black-50 ml-3"
+            class="small text-black-50 row"
           >
-            [
-            juzz
-            ]
+            <div>
+              puul
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div>
+              aasad asas 
+              <em>
+                itiparu
+              </em>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div>
+              <i>
+                širkū
+              </i>
+            </div>
+          </div>
+          <div
+            class="mb-3 row"
+          >
+            <div
+              class="small text-black-50 ml-3"
+            >
+              [
+              juzz
+              ]
+            </div>
           </div>
         </div>
       </div>
