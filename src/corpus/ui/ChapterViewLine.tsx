@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useMemo, useRef } from 'react'
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import _ from 'lodash'
 import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
@@ -87,6 +93,25 @@ function Translation({
   )
 }
 
+function CollapsibleRow({
+  show,
+  id,
+  totalColumns,
+  children,
+}: PropsWithChildren<{
+  show: boolean
+  id: string
+  totalColumns: number
+}>): JSX.Element {
+  return (
+    <Collapse in={show} mountOnEnter>
+      <tr id={id}>
+        <td colSpan={totalColumns}>{children}</td>
+      </tr>
+    </Collapse>
+  )
+}
+
 export function ChapterViewLine({
   chapter,
   lineNumber,
@@ -132,46 +157,35 @@ export function ChapterViewLine({
   )
   const score = useMemo(
     () => (
-      <Collapse in={showScore} mountOnEnter>
-        <tr id={scoreId}>
-          <td colSpan={totalColumns}>
-            <Score
-              id={chapter.id}
-              lineNumber={lineNumber}
-              textService={textService}
-            />
-          </td>
-        </tr>
-      </Collapse>
+      <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
+        <Score
+          id={chapter.id}
+          lineNumber={lineNumber}
+          textService={textService}
+        />
+      </CollapsibleRow>
     ),
     [chapter.id, lineNumber, scoreId, showScore, textService, totalColumns]
   )
   const note = useMemo(
     () =>
       line.note && (
-        <Collapse in={showNote} mountOnEnter>
-          <tr id={noteId}>
-            <td colSpan={totalColumns}>
-              <Markup
-                className="chapter-display__note"
-                parts={line.note.parts}
-              />
-            </td>
-          </tr>
-        </Collapse>
+        <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
+          <Markup className="chapter-display__note" parts={line.note.parts} />
+        </CollapsibleRow>
       ),
     [line.note, noteId, showNote, totalColumns]
   )
   const parallels = useMemo(
     () =>
       line.parallelLines.length > 0 && (
-        <Collapse in={showParallels} mountOnEnter>
-          <tr id={parallelsId}>
-            <td colSpan={totalColumns}>
-              <Parallels lines={line.parallelLines} />
-            </td>
-          </tr>
-        </Collapse>
+        <CollapsibleRow
+          show={showParallels}
+          id={parallelsId}
+          totalColumns={totalColumns}
+        >
+          <Parallels lines={line.parallelLines} />
+        </CollapsibleRow>
       ),
     [line.parallelLines, parallelsId, showParallels, totalColumns]
   )
