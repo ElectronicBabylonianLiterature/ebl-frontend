@@ -47,7 +47,15 @@ export default function Introduction({
   return (
     <section className="text-view__section">
       <h3 className="text-view__section-heading">Introduction</h3>
-      <ReactMarkdown className="text-view__markdown" source={intro} />
+      {intro.split('\n').map((paragraph, index) => (
+        <ReactMarkdown
+          className="text-view__markdown"
+          source={paragraph}
+          key={index}
+        >
+          {paragraph}
+        </ReactMarkdown>
+      ))}
       {!_.isEmpty(references) && <References references={references} />}
     </section>
   )
