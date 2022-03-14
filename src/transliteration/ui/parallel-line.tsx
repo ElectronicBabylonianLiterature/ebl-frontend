@@ -6,10 +6,15 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   ParallelComposition,
   ParallelFragment,
+  parallelLinePrefix,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
 import { LineProps } from './LineProps'
 import TransliterationTd from './TransliterationTd'
+
+function Prefix({ type }: { type: string }): JSX.Element {
+  return <TransliterationTd type={type}>{parallelLinePrefix}</TransliterationTd>
+}
 
 function Cf({
   parallel: { hasCf },
@@ -26,9 +31,7 @@ export function DisplayParallelFragment({
   const fragment = line as ParallelFragment
   return (
     <>
-      <TransliterationTd type={fragment.type}>
-        {fragment.prefix}
-      </TransliterationTd>
+      <Prefix type={fragment.type} />
       <TransliterationTd colSpan={columns} type={fragment.type}>
         <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
         {fragment.surface &&
@@ -45,7 +48,7 @@ export function DisplayParallelText({ line, columns }: LineProps): JSX.Element {
   const text = line as ParallelText
   return (
     <>
-      <TransliterationTd type={text.type}>{text.prefix}</TransliterationTd>
+      <Prefix type={text.type} />
       <TransliterationTd colSpan={columns} type={text.type}>
         <Cf parallel={text} />
         {text.text.genre} {romans.romanize(text.text.category)}.
@@ -66,9 +69,7 @@ export function DisplayParallelComposition({
   const composition = line as ParallelComposition
   return (
     <>
-      <TransliterationTd type={composition.type}>
-        {composition.prefix}
-      </TransliterationTd>
+      <Prefix type={composition.type} />
       <TransliterationTd colSpan={columns} type={composition.type}>
         <Cf parallel={composition} /> ({composition.name}{' '}
         {lineNumberToString(composition.lineNumber)})
