@@ -6,6 +6,7 @@ import lineNumberToString from 'transliteration/domain/lineNumberToString'
 import {
   ParallelComposition,
   ParallelFragment,
+  ParallelLine,
   parallelLinePrefix,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
@@ -40,19 +41,6 @@ export function DisplayParallelFragment({
     </>
   )
 }
-export function DisplayParallelFragmentLine({
-  line,
-  columns,
-}: LineProps): JSX.Element {
-  return (
-    <>
-      <Prefix type={line.type} />
-      <TransliterationTd colSpan={columns} type={line.type}>
-        <DisplayParallelFragment fragment={line as ParallelFragment} />
-      </TransliterationTd>
-    </>
-  )
-}
 
 export function DisplayParallelText({
   text,
@@ -71,20 +59,6 @@ export function DisplayParallelText({
   )
 }
 
-export function DisplayParallelTextLine({
-  line,
-  columns,
-}: LineProps): JSX.Element {
-  return (
-    <>
-      <Prefix type={line.type} />
-      <TransliterationTd colSpan={columns} type={line.type}>
-        <DisplayParallelText text={line as ParallelText} />
-      </TransliterationTd>
-    </>
-  )
-}
-
 export function DisplayParallelComposition({
   composition,
 }: {
@@ -98,15 +72,24 @@ export function DisplayParallelComposition({
   )
 }
 
-export function DisplayParallelCompositionLine({
-  line,
-  columns,
-}: LineProps): JSX.Element {
+export function DisplayParallel({ line }: { line: ParallelLine }): JSX.Element {
+  if (line instanceof ParallelFragment) {
+    return <DisplayParallelFragment fragment={line} />
+  } else if (line instanceof ParallelText) {
+    return <DisplayParallelText text={line} />
+  } else if (line instanceof ParallelComposition) {
+    return <DisplayParallelComposition composition={line} />
+  } else {
+    throw new Error(`Invalid type of line ${typeof line}.`)
+  }
+}
+
+export function DisplayParallelLine({ line, columns }: LineProps): JSX.Element {
   return (
     <>
       <Prefix type={line.type} />
       <TransliterationTd colSpan={columns} type={line.type}>
-        <DisplayParallelComposition composition={line as ParallelComposition} />
+        <DisplayParallel line={line as ParallelLine} />
       </TransliterationTd>
     </>
   )

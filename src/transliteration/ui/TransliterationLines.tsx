@@ -11,11 +11,7 @@ import { SurfaceLabel } from 'transliteration/domain/labels'
 import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
-import {
-  DisplayParallelCompositionLine,
-  DisplayParallelFragmentLine,
-  DisplayParallelTextLine,
-} from './parallel-line'
+import { DisplayParallelLine } from './parallel-line'
 
 const lineComponents: ReadonlyMap<
   string,
@@ -36,9 +32,9 @@ const lineComponents: ReadonlyMap<
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
   ['TranslationLine', DisplayTranslationLine],
-  ['ParallelFragment', DisplayParallelFragmentLine],
-  ['ParallelText', DisplayParallelTextLine],
-  ['ParallelComposition', DisplayParallelCompositionLine],
+  ['ParallelFragment', DisplayParallelLine],
+  ['ParallelText', DisplayParallelLine],
+  ['ParallelComposition', DisplayParallelLine],
 ])
 
 function FirstLineNotes({

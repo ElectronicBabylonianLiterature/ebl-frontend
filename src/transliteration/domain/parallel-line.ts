@@ -6,14 +6,14 @@ import { TextId } from 'corpus/domain/text'
 
 export const parallelLinePrefix = '// '
 
-export interface ParallelLineDto extends LineBaseDto {
+interface ParallelLineBaseDto extends LineBaseDto {
   readonly type: 'ParallelFragment' | 'ParallelText' | 'ParallelComposition'
   readonly prefix: typeof parallelLinePrefix
   readonly hasCf: boolean
   readonly lineNumber: LineNumber | LineNumberRange
 }
 
-export interface ParallelFragmentDto extends ParallelLineDto {
+export interface ParallelFragmentDto extends ParallelLineBaseDto {
   readonly type: 'ParallelFragment'
   readonly museumNumber: MuseumNumber
   readonly hasDuplicates: boolean
@@ -54,7 +54,7 @@ interface ChapterName {
   name: string
 }
 
-export interface ParallelTextDto extends ParallelLineDto {
+export interface ParallelTextDto extends ParallelLineBaseDto {
   readonly type: 'ParallelText'
   readonly text: TextId
   readonly chapter: ChapterName | null
@@ -81,7 +81,7 @@ export class ParallelText extends AbstractLine {
   }
 }
 
-export interface ParallelCompositionDto extends ParallelLineDto {
+export interface ParallelCompositionDto extends ParallelLineBaseDto {
   readonly type: 'ParallelComposition'
   readonly name: string
 }
@@ -104,3 +104,9 @@ export class ParallelComposition extends AbstractLine {
     this.lineNumber = data.lineNumber
   }
 }
+
+export type ParallelLineDto =
+  | ParallelFragmentDto
+  | ParallelTextDto
+  | ParallelCompositionDto
+export type ParallelLine = ParallelFragment | ParallelText | ParallelComposition

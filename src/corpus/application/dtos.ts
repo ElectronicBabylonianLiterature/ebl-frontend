@@ -40,6 +40,7 @@ import { Extent } from 'transliteration/domain/translation-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
 import { NoteLineDto } from 'transliteration/domain/note-line'
+import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 
 export type LineDisplayDto = Pick<
   LineDisplay,
@@ -56,11 +57,7 @@ export type LineDisplayDto = Pick<
     content: Token[]
   }[]
   note: Omit<NoteLineDto, 'type'> | null
-  parallelLines: {
-    type: string
-    prefix: string
-    content: Token[]
-  }[]
+  parallelLines: ParallelLineDto[]
 }
 
 export type ChapterDisplayDto = Pick<

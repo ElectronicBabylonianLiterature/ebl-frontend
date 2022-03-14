@@ -1,18 +1,17 @@
 import React from 'react'
-import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
-import { ControlLine } from 'transliteration/domain/line'
+import { ParallelLine } from 'transliteration/domain/parallel-line'
+import { DisplayParallel } from 'transliteration/ui/parallel-line'
 
 export default function Parallels({
   lines: parallelLines,
 }: {
-  lines: readonly ControlLine[]
+  lines: readonly ParallelLine[]
 }): JSX.Element {
   return (
     <ul className="chapter-display__parallels">
-      {parallelLines.map((parallelLine) => (
-        <li key="value">
-          {parallelLinePrefix}
-          {parallelLine.content.map(({ value }) => value).join('')}
+      {parallelLines.map((parallelLine, index) => (
+        <li key={index}>
+          <DisplayParallel line={parallelLine} />
         </li>
       ))}
     </ul>

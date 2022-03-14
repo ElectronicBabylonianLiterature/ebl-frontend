@@ -36,7 +36,8 @@ import { WritableDraft } from 'immer/dist/internal'
 import Reference from 'bibliography/domain/Reference'
 import { BibliographyPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { ControlLine } from 'transliteration/domain/line'
+import { ParallelLine } from 'transliteration/domain/parallel-line'
+import { fromTransliterationLineDto } from 'transliteration/application/dtos'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -230,7 +231,7 @@ const chapterDisplay = new ChapterDisplay(
     ),
     note: dto.note && new NoteLine(dto.note),
     parallelLines: dto.parallelLines.map(
-      (parallel) => new ControlLine(parallel)
+      (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
     ),
   })),
   chapterDisplayDto.record

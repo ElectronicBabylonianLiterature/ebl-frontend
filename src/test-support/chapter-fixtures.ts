@@ -9,8 +9,10 @@ import { LineNumber } from 'transliteration/domain/line-number'
 import { ChapterDisplayDto, LineDisplayDto } from 'corpus/application/dtos'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
-import { ControlLine } from 'transliteration/domain/line'
-import { parallelLinePrefix } from 'transliteration/domain/parallel-line'
+import {
+  ParallelComposition,
+  parallelLinePrefix,
+} from 'transliteration/domain/parallel-line'
 
 const defaultChance = new Chance()
 const maxRoman = 3999
@@ -100,14 +102,15 @@ export const lineDisplayDtoFactory = Factory.define<
       {
         type: 'ParallelComposition',
         prefix: parallelLinePrefix,
-        content: [
-          {
-            type: 'ValueToken',
-            value: '(A Composition 1-2)',
-            cleanValue: '(A Composition 1-2)',
-            enclosureType: [],
-          },
-        ],
+        hasCf: false,
+        name: 'A Composition',
+        lineNumber: {
+          prefixModifier: '',
+          number: 2,
+          hasPrime: false,
+          suffixModifier: '',
+        },
+        content: [],
       },
     ],
   }
@@ -163,17 +166,16 @@ export const lineDisplayFactory = Factory.define<
       ],
     }),
     parallelLines: [
-      new ControlLine({
-        type: 'ParallelComposition',
-        prefix: parallelLinePrefix,
-        content: [
-          {
-            type: 'ValueToken',
-            value: '(A Composition 1-2)',
-            cleanValue: '(A Composition 1-2)',
-            enclosureType: [],
-          },
-        ],
+      new ParallelComposition({
+        hasCf: false,
+        name: 'A Composition',
+        lineNumber: {
+          prefixModifier: '',
+          number: 2,
+          hasPrime: false,
+          suffixModifier: '',
+        },
+        content: [],
       }),
     ],
   }
