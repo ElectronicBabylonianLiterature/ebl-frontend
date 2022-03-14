@@ -14,38 +14,40 @@ export function AGI({
     .sort(compareAfO)
     .map((InstanceOfAkkadischeGlossareUndIndices) => (
       <>
-        <Col className="offset-md-1">
-          <Row className="small text-black-50">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: cleanse(
-                  InstanceOfAkkadischeGlossareUndIndices.mainWord
-                ),
-              }}
-            />
-          </Row>
-          <Row>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: cleanse(InstanceOfAkkadischeGlossareUndIndices.note),
-              }}
-            />
-          </Row>
-          <Row>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: cleanse(
-                  InstanceOfAkkadischeGlossareUndIndices.reference
-                ),
-              }}
-            />
-          </Row>
-          <Row className="mb-3">
-            <div className="small text-black-50 ml-3">
-              [{InstanceOfAkkadischeGlossareUndIndices.AfO}]
-            </div>
-          </Row>
-        </Col>
+        <Row className="ml-5">
+          <Col>
+            <Row className="small text-black-50">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: cleanse(
+                    InstanceOfAkkadischeGlossareUndIndices.mainWord
+                  ),
+                }}
+              />
+            </Row>
+            <Row>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: cleanse(InstanceOfAkkadischeGlossareUndIndices.note),
+                }}
+              />
+            </Row>
+            <Row>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: cleanse(
+                    InstanceOfAkkadischeGlossareUndIndices.reference
+                  ),
+                }}
+              />
+            </Row>
+            <Row className="mb-3">
+              <div className="small text-black-50 ml-3">
+                [{InstanceOfAkkadischeGlossareUndIndices.AfO}]
+              </div>
+            </Row>
+          </Col>
+        </Row>
       </>
     ))
 }
