@@ -24,7 +24,7 @@ function Cf({
   return <>{hasCf ? <span className="Transliteration__cf">cf. </span> : null}</>
 }
 
-export function DisplayParallelFragment({
+export function DisplayParallelFragmentLine({
   line,
   columns,
 }: LineProps): JSX.Element {
@@ -44,7 +44,10 @@ export function DisplayParallelFragment({
   )
 }
 
-export function DisplayParallelText({ line, columns }: LineProps): JSX.Element {
+export function DisplayParallelTextLine({
+  line,
+  columns,
+}: LineProps): JSX.Element {
   const text = line as ParallelText
   return (
     <>
@@ -62,7 +65,7 @@ export function DisplayParallelText({ line, columns }: LineProps): JSX.Element {
   )
 }
 
-export function DisplayParallelComposition({
+export function DisplayParallelCompositionLine({
   line,
   columns,
 }: LineProps): JSX.Element {

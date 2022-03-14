@@ -12,9 +12,9 @@ import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
 import {
-  DisplayParallelComposition,
-  DisplayParallelFragment,
-  DisplayParallelText,
+  DisplayParallelCompositionLine,
+  DisplayParallelFragmentLine,
+  DisplayParallelTextLine,
 } from './parallel-line'
 
 const lineComponents: ReadonlyMap<
@@ -36,9 +36,9 @@ const lineComponents: ReadonlyMap<
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
   ['TranslationLine', DisplayTranslationLine],
-  ['ParallelFragment', DisplayParallelFragment],
-  ['ParallelText', DisplayParallelText],
-  ['ParallelComposition', DisplayParallelComposition],
+  ['ParallelFragment', DisplayParallelFragmentLine],
+  ['ParallelText', DisplayParallelTextLine],
+  ['ParallelComposition', DisplayParallelCompositionLine],
 ])
 
 function FirstLineNotes({
