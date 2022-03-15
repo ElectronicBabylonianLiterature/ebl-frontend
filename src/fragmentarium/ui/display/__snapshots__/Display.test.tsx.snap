@@ -190,7 +190,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 1"
+              href="#o%201"
               id="o 1"
             >
               <sup>
@@ -510,7 +510,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 2"
+              href="#o%202"
               id="o 2"
             >
               <sup>
@@ -675,7 +675,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 3"
+              href="#o%203"
               id="o 3"
             >
               <sup>
@@ -962,7 +962,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 4"
+              href="#o%204"
               id="o 4"
             >
               <sup>
@@ -1203,7 +1203,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 5"
+              href="#o%205"
               id="o 5"
             >
               <sup>
@@ -1495,7 +1495,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 6"
+              href="#o%206"
               id="o 6"
             >
               <sup>
@@ -2295,7 +2295,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 1"
+              href="#o%201"
               id="o 1"
             >
               <sup>
@@ -2575,7 +2575,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 2"
+              href="#o%202"
               id="o 2"
             >
               <sup>
@@ -2949,7 +2949,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 3"
+              href="#o%203"
               id="o 3"
             >
               <sup>
@@ -3311,7 +3311,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 4"
+              href="#o%204"
               id="o 4"
             >
               <sup>
@@ -3673,7 +3673,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 5"
+              href="#o%205"
               id="o 5"
             >
               <sup>
@@ -4521,7 +4521,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 6"
+              href="#o%206"
               id="o 6"
             >
               <sup>
@@ -4632,7 +4632,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 7"
+              href="#o%207"
               id="o 7"
             >
               <sup>
@@ -4791,7 +4791,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o D+3′a–4b"
+              href="#o%20D%2B3%E2%80%B2a%E2%80%934b"
               id="o D+3′a–4b"
             >
               <sup>
@@ -4905,7 +4905,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o c+1"
+              href="#o%20c%2B1"
               id="o c+1"
             >
               <sup>
@@ -5050,7 +5050,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o c+2"
+              href="#o%20c%2B2"
               id="o c+2"
             >
               <sup>
@@ -5152,7 +5152,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o c+3"
+              href="#o%20c%2B3"
               id="o c+3"
             >
               <sup>
@@ -5268,7 +5268,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o 9"
+              href="#o%209"
               id="o 9"
             >
               <sup>
@@ -5548,7 +5548,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o n+1"
+              href="#o%20n%2B1"
               id="o n+1"
             >
               <sup>
@@ -5821,7 +5821,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o n+2"
+              href="#o%20n%2B2"
               id="o n+2"
             >
               <sup>
@@ -5953,7 +5953,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o g+1"
+              href="#o%20g%2B1"
               id="o g+1"
             >
               <sup>
@@ -6004,7 +6004,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o g+1"
+              href="#o%20g%2B1"
               id="o g+1"
             >
               <sup>
@@ -6097,7 +6097,7 @@ exports[`Snapshot 1`] = `
           >
             <a
               class="Transliteration__anchor"
-              href="#o g+1"
+              href="#o%20g%2B1"
               id="o g+1"
             >
               <sup>
@@ -6202,9 +6202,15 @@ exports[`Snapshot 1`] = `
             class="Transliteration__ParallelFragment"
             colspan="4"
           >
-            F 
-            
-            1′
+            <a
+              href="/fragmentarium/X.1#1′"
+            >
+              F 
+              
+              X.1
+               
+              1′
+            </a>
           </td>
           <td>
              
@@ -6222,21 +6228,25 @@ exports[`Snapshot 1`] = `
             class="Transliteration__ParallelText"
             colspan="4"
           >
-            <span
-              class="Transliteration__cf"
+            <a
+              href="/corpus/L/1/1/Old%20Babylonian/II#2"
             >
-              cf. 
-            </span>
-            L
-             
-            I
-            .
-            1
-             
-            OB 
-            
-            II 
-            2
+              <span
+                class="Transliteration__cf"
+              >
+                cf. 
+              </span>
+              L
+               
+              I
+              .
+              1
+               
+              OB 
+              
+              II 
+              2
+            </a>
           </td>
           <td>
              

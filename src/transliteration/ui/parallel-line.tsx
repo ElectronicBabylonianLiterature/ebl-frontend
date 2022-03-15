@@ -1,4 +1,5 @@
 import { Stages } from 'corpus/domain/period'
+import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import React from 'react'
 import romans from 'romans'
 import { statusAbbreviation } from 'transliteration/domain/labels'
@@ -30,15 +31,24 @@ export function DisplayParallelFragment({
 }: {
   fragment: ParallelFragment
 }): JSX.Element {
+  const lineNumber = lineNumberToString(fragment.lineNumber)
+  const hash = fragment.surface
+    ? encodeURIComponent(`${fragment.surface.abbreviation} ${lineNumber}`)
+    : lineNumber
   return (
-    <>
+    <a
+      href={`/fragmentarium/${encodeURIComponent(
+        museumNumberToString(fragment.museumNumber)
+      )}#${hash}`}
+    >
       <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
+      {museumNumberToString(fragment.museumNumber)}{' '}
       {fragment.surface &&
         `${fragment.surface.abbreviation}${fragment.surface.status
           .map(statusAbbreviation)
           .join('')} `}
-      {lineNumberToString(fragment.lineNumber)}
-    </>
+      {lineNumber}
+    </a>
   )
 }
 
@@ -47,15 +57,26 @@ export function DisplayParallelText({
 }: {
   text: ParallelText
 }): JSX.Element {
+  const chapterPath = text.chapter
+    ? `/${encodeURIComponent(text.chapter.stage)}/${encodeURIComponent(
+        text.chapter.name
+      )}#${encodeURIComponent(lineNumberToString(text.lineNumber))}`
+    : ''
   return (
-    <>
+    <a
+      href={`/corpus/${encodeURIComponent(
+        text.text.genre
+      )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
+        text.text.index
+      )}${chapterPath}`}
+    >
       <Cf parallel={text} />
       {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
       {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
       {text.chapter?.version && `${text.chapter.version} `}
       {text.chapter?.name && `${text.chapter.name} `}
       {lineNumberToString(text.lineNumber)}
-    </>
+    </a>
   )
 }
 

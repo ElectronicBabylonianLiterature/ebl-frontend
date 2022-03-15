@@ -11,7 +11,12 @@ export const Anchor = forwardRef<
   PropsWithChildren<{ id: string; className: string }>
 >(function Anchor({ id, children, className }, ref): JSX.Element {
   return (
-    <a className={className} id={id} href={`#${id}`} ref={ref}>
+    <a
+      className={className}
+      id={id}
+      href={`#${encodeURIComponent(id)}`}
+      ref={ref}
+    >
       {children}
     </a>
   )
