@@ -1,18 +1,36 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { composition, fragment, text } from 'test-support/lines/parallel'
+import * as parallel from 'test-support/lines/parallel'
 import { DisplayParallel } from './parallel-line'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import {
+  ParallelFragment,
+  ParallelText,
+} from 'transliteration/domain/parallel-line'
 
-test('parallel fragment', () => {
+test.each([
+  [parallel.fragment, 'F X.1 1′', "1'"],
+  [
+    new ParallelFragment({
+      ...parallel.fragment,
+      hasCf: true,
+      surface: {
+        status: [],
+        surface: 'OBVERSE',
+        text: '',
+        abbreviation: 'o',
+      },
+    }),
+    'cf. F X.1 o 1′',
+    "o 1'",
+  ],
+])('parallel fragment %#', (fragment, content, hash) => {
   render(<DisplayParallel line={fragment} />)
 
   const museumNumber = museumNumberToString(fragment.museumNumber)
-  const hash = lineNumberToAtf(fragment.lineNumber)
-  const content = `F ${museumNumber} ${lineNumberToString(fragment.lineNumber)}`
 
   expect(screen.getByRole('link', { name: content })).toHaveAttribute(
     'href',
@@ -22,11 +40,22 @@ test('parallel fragment', () => {
   )
 })
 
-test('parallel text', () => {
-  render(<DisplayParallel line={text} />)
-
+test.each([
+  [new ParallelText({ ...parallel.text, hasCf: false }), 'L I.1 OB II 2'],
+  [
+    new ParallelText({
+      ...parallel.text,
+      chapter: parallel.text.chapter && {
+        ...parallel.text.chapter,
+        version: 'version',
+      },
+    }),
+    'cf. L I.1 OB version II 2',
+  ],
+])('parallel text %#', (text, content) => {
   const hash = lineNumberToAtf(text.lineNumber)
-  const content = `cf. L I.1 OB II ${lineNumberToString(text.lineNumber)}`
+
+  render(<DisplayParallel line={text} />)
 
   expect(screen.getByRole('link', { name: content })).toHaveAttribute(
     'href',
@@ -39,10 +68,10 @@ test('parallel text', () => {
 })
 
 test('parallel composition', () => {
-  render(<DisplayParallel line={composition} />)
+  render(<DisplayParallel line={parallel.composition} />)
 
-  const content = `(${composition.name} ${lineNumberToString(
-    composition.lineNumber
+  const content = `(${parallel.composition.name} ${lineNumberToString(
+    parallel.composition.lineNumber
   )})`
 
   expect(screen.getByText(content)).not.toHaveAttribute('href')
