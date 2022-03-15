@@ -9,7 +9,9 @@ import _ from 'lodash'
 import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import lineNumberToString, {
+  lineNumberToAtf,
+} from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
@@ -52,18 +54,18 @@ function LineNumber({
   activeLine: string
 }): JSX.Element {
   const ref = useRef<HTMLAnchorElement>(null)
-  const number = lineNumberToString(line.number)
+  const id = lineNumberToAtf(line.number)
 
   useEffect(() => {
-    if (number === activeLine) {
+    if (id === activeLine) {
       ref.current?.scrollIntoView()
     }
-  }, [activeLine, number])
+  }, [id, activeLine])
 
   return (
     <td className="chapter-display__line-number">
-      <Anchor className="chapter-display__anchor" id={number} ref={ref}>
-        {number}
+      <Anchor className="chapter-display__anchor" id={id} ref={ref}>
+        {lineNumberToString(line.number)}
       </Anchor>
     </td>
   )

@@ -3,7 +3,9 @@ import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import React from 'react'
 import romans from 'romans'
 import { statusAbbreviation } from 'transliteration/domain/labels'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import lineNumberToString, {
+  lineNumberToAtf,
+} from 'transliteration/domain/lineNumberToString'
 import {
   ParallelComposition,
   ParallelFragment,
@@ -31,10 +33,10 @@ export function DisplayParallelFragment({
 }: {
   fragment: ParallelFragment
 }): JSX.Element {
-  const lineNumber = lineNumberToString(fragment.lineNumber)
+  const atfLineNumber = lineNumberToAtf(fragment.lineNumber)
   const hash = fragment.surface
-    ? encodeURIComponent(`${fragment.surface.abbreviation} ${lineNumber}`)
-    : lineNumber
+    ? encodeURIComponent(`${fragment.surface.abbreviation} ${atfLineNumber}`)
+    : atfLineNumber
   return (
     <a
       href={`/fragmentarium/${encodeURIComponent(
@@ -47,7 +49,7 @@ export function DisplayParallelFragment({
         `${fragment.surface.abbreviation}${fragment.surface.status
           .map(statusAbbreviation)
           .join('')} `}
-      {lineNumber}
+      {lineNumberToString(fragment.lineNumber)}
     </a>
   )
 }
@@ -60,7 +62,7 @@ export function DisplayParallelText({
   const chapterPath = text.chapter
     ? `/${encodeURIComponent(text.chapter.stage)}/${encodeURIComponent(
         text.chapter.name
-      )}#${encodeURIComponent(lineNumberToString(text.lineNumber))}`
+      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`
     : ''
   return (
     <a

@@ -3,12 +3,12 @@ import { Anchor, LineNumber } from './LineNumber'
 import { LineColumns } from './line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
 
 function createId(surface: LineProps['surface'], textLine: TextLine) {
   const surfaceAbbreviation = surface ? `${surface.abbreviation} ` : ''
-  const id = `${surfaceAbbreviation}${lineNumberToString(textLine.lineNumber)}`
+  const id = `${surfaceAbbreviation}${lineNumberToAtf(textLine.lineNumber)}`
   return id
 }
 
