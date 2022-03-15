@@ -18,7 +18,7 @@ import TextService from 'corpus/application/TextService'
 import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
-import { Anchor } from 'transliteration/ui/LineNumber'
+import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Anchor, LineNumber } from './LineNumber'
+import { Anchor, LineNumber } from './line-number'
 import { LineColumns } from './line-tokens'
 import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
