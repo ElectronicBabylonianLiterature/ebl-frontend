@@ -18,3 +18,16 @@ export interface ObjectLabel extends Label {
   readonly object: string
   readonly text: string
 }
+
+export function statusAbbreviation(status: Status): string {
+  switch (status) {
+    case 'PRIME':
+      return "'"
+    case 'UNCERTAIN':
+      return '?'
+    case 'CORRECTION':
+      return '!'
+    case 'COLLATION':
+      return '*'
+  }
+}

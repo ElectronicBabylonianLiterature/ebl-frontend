@@ -9,14 +9,22 @@ import mapValues from 'lodash/fp/mapValues'
 interface RowState {
   readonly score: boolean
   readonly note: boolean
+  readonly parallels: boolean
 }
 
 type State = { readonly [key: number]: RowState }
 
 type Action =
-  | { type: 'toggleScore'; row: number }
-  | { type: 'toggleNote'; row: number }
-  | { type: 'expandScore' | 'closeScore' | 'expandNotes' | 'closeNotes' }
+  | { type: 'toggleScore' | 'toggleNote' | 'toggleParallels'; row: number }
+  | {
+      type:
+        | 'expandScore'
+        | 'closeScore'
+        | 'expandNotes'
+        | 'closeNotes'
+        | 'expandParallels'
+        | 'closeParallels'
+    }
 
 const RowsContext = React.createContext<[State, Dispatch<Action>]>([
   {},
@@ -51,6 +59,12 @@ function reducer(state: State, action: Action): State {
       return setAll(state, 'note', true)
     case 'closeNotes':
       return setAll(state, 'note', false)
+    case 'toggleParallels':
+      return toggle(state, action.row, 'parallels')
+    case 'expandParallels':
+      return setAll(state, 'parallels', true)
+    case 'closeParallels':
+      return setAll(state, 'parallels', false)
   }
 }
 

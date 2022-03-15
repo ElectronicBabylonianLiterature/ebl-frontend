@@ -95,8 +95,13 @@ describe('Diplay chapter', () => {
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
-  test('Show note', async () => {
+  test('Show note', () => {
     appDriver.clickByRole('button', 'Show note', 0)
+    expect(appDriver.getView().container).toMatchSnapshot()
+  })
+
+  test('Show parallels', () => {
+    appDriver.clickByRole('button', 'Show parallels', 0)
     expect(appDriver.getView().container).toMatchSnapshot()
   })
 
@@ -127,6 +132,8 @@ describe('Diplay chapter', () => {
     await waitFor(() => {
       expect(appDriver.getView().queryAllByText(/Loading/).length).toEqual(0)
     })
+    expect(appDriver.getView().container).toMatchSnapshot()
+    appDriver.click('Parallels')
     expect(appDriver.getView().container).toMatchSnapshot()
     appDriver.click('Notes')
     expect(appDriver.getView().container).toMatchSnapshot()

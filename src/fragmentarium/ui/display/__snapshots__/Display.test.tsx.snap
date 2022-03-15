@@ -188,11 +188,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%201"
+              id="o 1"
+            >
+              <sup>
+                (
+                1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -502,11 +508,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%202"
+              id="o 2"
+            >
+              <sup>
+                (
+                2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -661,11 +673,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%203"
+              id="o 3"
+            >
+              <sup>
+                (
+                3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -942,11 +960,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              4
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%204"
+              id="o 4"
+            >
+              <sup>
+                (
+                4
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -1177,11 +1201,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              5
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%205"
+              id="o 5"
+            >
+              <sup>
+                (
+                5
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -1463,11 +1493,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              6
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%206"
+              id="o 6"
+            >
+              <sup>
+                (
+                6
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2257,11 +2293,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%201"
+              id="o 1"
+            >
+              <sup>
+                (
+                1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2531,11 +2573,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%202"
+              id="o 2"
+            >
+              <sup>
+                (
+                2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -2899,11 +2947,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%203"
+              id="o 3"
+            >
+              <sup>
+                (
+                3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -3255,11 +3309,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              4
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%204"
+              id="o 4"
+            >
+              <sup>
+                (
+                4
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -3611,11 +3671,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              5
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%205"
+              id="o 5"
+            >
+              <sup>
+                (
+                5
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4453,11 +4519,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              6
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%206"
+              id="o 6"
+            >
+              <sup>
+                (
+                6
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4558,11 +4630,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              7
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%207"
+              id="o 7"
+            >
+              <sup>
+                (
+                7
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4711,11 +4789,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              D+3′a–4b
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20D%2B3'a-4b"
+              id="o D+3'a-4b"
+            >
+              <sup>
+                (
+                D+3′a–4b
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -4819,11 +4903,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20c%2B1"
+              id="o c+1"
+            >
+              <sup>
+                (
+                c+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="1"
@@ -4958,11 +5048,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20c%2B2"
+              id="o c+2"
+            >
+              <sup>
+                (
+                c+2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="1"
@@ -5054,11 +5150,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              c+3
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20c%2B3"
+              id="o c+3"
+            >
+              <sup>
+                (
+                c+3
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="2"
@@ -5164,11 +5266,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              9
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%209"
+              id="o 9"
+            >
+              <sup>
+                (
+                9
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5438,11 +5546,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              n+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20n%2B1"
+              id="o n+1"
+            >
+              <sup>
+                (
+                n+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5705,11 +5819,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              n+2
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20n%2B2"
+              id="o n+2"
+            >
+              <sup>
+                (
+                n+2
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5831,11 +5951,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20g%2B1"
+              id="o g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5876,11 +6002,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20g%2B1"
+              id="o g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -5963,11 +6095,17 @@ exports[`Snapshot 1`] = `
           <td
             class="Transliteration__TextLine"
           >
-            <sup>
-              (
-              g+1
-              )
-            </sup>
+            <a
+              class="Transliteration__anchor"
+              href="#o%20g%2B1"
+              id="o g+1"
+            >
+              <sup>
+                (
+                g+1
+                )
+              </sup>
+            </a>
           </td>
           <td
             colspan="4"
@@ -6047,6 +6185,90 @@ exports[`Snapshot 1`] = `
                 </span>
               </span>
             </span>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-43"
+        >
+          <td
+            class="Transliteration__ParallelFragment"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelFragment"
+            colspan="4"
+          >
+            <a
+              href="/fragmentarium/X.1#1'"
+            >
+              F 
+              
+              X.1
+               
+              1′
+            </a>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-44"
+        >
+          <td
+            class="Transliteration__ParallelText"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelText"
+            colspan="4"
+          >
+            <a
+              href="/corpus/L/1/1/Old%20Babylonian/II#2"
+            >
+              <span
+                class="Transliteration__cf"
+              >
+                cf. 
+              </span>
+              L
+               
+              I
+              .
+              1
+               
+              OB 
+              
+              II 
+              2
+            </a>
+          </td>
+          <td>
+             
+          </td>
+        </tr>
+        <tr
+          id="line-45"
+        >
+          <td
+            class="Transliteration__ParallelComposition"
+          >
+            // 
+          </td>
+          <td
+            class="Transliteration__ParallelComposition"
+            colspan="4"
+          >
+             (
+            Some Composition
+             
+            1
+            )
           </td>
           <td>
              

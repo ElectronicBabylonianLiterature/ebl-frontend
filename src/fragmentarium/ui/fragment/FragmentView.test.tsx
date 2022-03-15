@@ -48,6 +48,7 @@ function renderFragmentView(
           fragmentService={fragmentService}
           fragmentSearchService={fragmentSearchService}
           wordService={wordService}
+          activeLine=""
         />
       </SessionContext.Provider>
     </MemoryRouter>

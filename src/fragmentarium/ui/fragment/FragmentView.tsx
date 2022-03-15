@@ -37,14 +37,15 @@ type Props = {
   fragmentSearchService: FragmentSearchService
   wordService: WordService
   number: string
-  folioName?: string | null | undefined
-  folioNumber?: string | null | undefined
-  tab?: string | null | undefined
+  folioName: string | null
+  folioNumber: string | null
+  tab: string | null
+  activeLine: string
 }
 
 function createActiveFolio(
-  name: string | null | undefined,
-  number: string | null | undefined
+  name: string | null,
+  number: string | null
 ): Folio | null {
   return name && number
     ? new Folio({
@@ -63,6 +64,7 @@ function FragmentView({
   folioName,
   folioNumber,
   tab,
+  activeLine,
 }: Props): JSX.Element {
   const activeFolio = createActiveFolio(folioName, folioNumber)
 
@@ -90,6 +92,7 @@ function FragmentView({
         wordService={wordService}
         activeFolio={activeFolio}
         tab={tab}
+        activeLine={activeLine}
       />
     </AppContent>
   )

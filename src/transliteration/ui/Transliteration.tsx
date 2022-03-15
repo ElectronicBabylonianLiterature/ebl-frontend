@@ -4,10 +4,16 @@ import './Transliteration.sass'
 import TransliterationNotes from './TransliterationNotes'
 import TransliterationLines from './TransliterationLines'
 
-export function Transliteration({ text }: { text: Text }): JSX.Element {
+export function Transliteration({
+  text,
+  activeLine = '',
+}: {
+  text: Text
+  activeLine?: string
+}): JSX.Element {
   return (
     <section className="Transliteration">
-      <TransliterationLines text={text} />
+      <TransliterationLines text={text} activeLine={activeLine} />
       <TransliterationNotes notes={text.notes} />
     </section>
   )
