@@ -26,7 +26,7 @@ export class Chapter {
 
   constructor(
     readonly textId: TextId,
-    readonly textDOI: TextInfo['DOI'],
+    readonly textDoi: TextInfo['doi'],
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -100,7 +100,7 @@ export class ChapterDisplay {
 
   constructor(
     readonly id: ChapterId,
-    readonly textDOI: TextInfo['DOI'],
+    readonly textDoi: TextInfo['doi'],
     readonly textName: string,
     readonly isSingleStage: boolean,
     readonly title: ReadonlyArray<MarkupPart>,
@@ -166,7 +166,7 @@ export class ChapterDisplay {
       title: this.fullName,
       'container-title': 'electronic Babylonian Literature',
       URL: this.url,
-      DOI: this.textDOI,
+      DOI: this.textDoi,
     })
   }
 

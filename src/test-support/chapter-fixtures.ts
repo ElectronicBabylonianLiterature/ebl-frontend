@@ -156,7 +156,7 @@ export const chapterDisplayDtoFactory = Factory.define<
   const chance = transientParams.chance ?? defaultChance
   return {
     id: chapterIdFactory.build({}, { transient: { chance } }),
-    textDOI: chance.string(),
+    textDoi: chance.string(),
     textName: chance.sentence(),
     isSingleStage: chance.bool(),
     title: [

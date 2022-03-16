@@ -8,7 +8,7 @@ import { Chapter, ChapterId } from './chapter'
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
     data.textId ?? { genre: 'L', category: 0, index: 0 },
-    data.textDOI ?? '',
+    data.textDoi ?? '',
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',
@@ -37,7 +37,7 @@ export interface TextInfo {
   readonly name: string
   readonly numberOfVerses: number
   readonly approximateVerses: boolean
-  readonly DOI?: string
+  readonly doi?: string
 }
 
 export interface UncertainFragment {
@@ -60,7 +60,7 @@ export class Text implements TextInfo {
   readonly name: string = ''
   readonly numberOfVerses: number = 0
   readonly approximateVerses: boolean = false
-  readonly DOI: string = ''
+  readonly doi: string = ''
   readonly intro: string = ''
   readonly chapters: ReadonlyArray<ChapterListing> = []
   readonly references: ReadonlyArray<Reference> = []
