@@ -2,7 +2,6 @@ import { Stages } from 'corpus/domain/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import React from 'react'
-import romans from 'romans'
 import { statusAbbreviation } from 'transliteration/domain/labels'
 import lineNumberToString, {
   lineNumberToAtf,
@@ -14,6 +13,7 @@ import {
   parallelLinePrefix,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
+import { textIdToString } from 'transliteration/domain/text-id'
 import { LineProps } from './LineProps'
 import TransliterationTd from './TransliterationTd'
 
@@ -74,7 +74,7 @@ export function DisplayParallelText({
   const parallel = (
     <>
       <Cf parallel={text} />
-      {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
+      {text.text.genre} {textIdToString(text.text)}{' '}
       {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
       {text.chapter?.version && `${text.chapter.version} `}
       {text.chapter?.name && `${text.chapter.name} `}

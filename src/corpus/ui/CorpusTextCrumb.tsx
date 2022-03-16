@@ -1,7 +1,8 @@
 import React from 'react'
 import { Crumb } from 'common/Breadcrumbs'
 import InlineMarkdown from 'common/InlineMarkdown'
-import { Text, TextId, textIdToString } from 'corpus/domain/text'
+import { Text } from 'corpus/domain/text'
+import { TextId, textIdToString } from 'transliteration/domain/text-id'
 import { ChapterDisplay } from 'corpus/domain/chapter'
 
 export default class CorpusTextCrumb implements Crumb {

@@ -2,7 +2,7 @@ import { AbstractLine, LineBaseDto } from './abstract-line'
 import { SurfaceLabel } from './labels'
 import { LineNumber, LineNumberRange } from './line-number'
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
-import { TextId } from 'corpus/domain/text'
+import { TextId } from 'transliteration/domain/text-id'
 
 export const parallelLinePrefix = '// '
 
