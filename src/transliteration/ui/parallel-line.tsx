@@ -37,12 +37,8 @@ export function DisplayParallelFragment({
   const hash = fragment.surface
     ? encodeURIComponent(`${fragment.surface.abbreviation} ${atfLineNumber}`)
     : atfLineNumber
-  return (
-    <a
-      href={`/fragmentarium/${encodeURIComponent(
-        museumNumberToString(fragment.museumNumber)
-      )}#${hash}`}
-    >
+  const parallel = (
+    <>
       <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
       {museumNumberToString(fragment.museumNumber)}{' '}
       {fragment.surface &&
@@ -50,7 +46,18 @@ export function DisplayParallelFragment({
           .map(statusAbbreviation)
           .join('')} `}
       {lineNumberToString(fragment.lineNumber)}
+    </>
+  )
+  return fragment.exists ? (
+    <a
+      href={`/fragmentarium/${encodeURIComponent(
+        museumNumberToString(fragment.museumNumber)
+      )}#${hash}`}
+    >
+      {parallel}
     </a>
+  ) : (
+    parallel
   )
 }
 
@@ -64,7 +71,17 @@ export function DisplayParallelText({
         text.chapter.name
       )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`
     : ''
-  return (
+  const parallel = (
+    <>
+      <Cf parallel={text} />
+      {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
+      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
+      {text.chapter?.version && `${text.chapter.version} `}
+      {text.chapter?.name && `${text.chapter.name} `}
+      {lineNumberToString(text.lineNumber)}
+    </>
+  )
+  return text.exists ? (
     <a
       href={`/corpus/${encodeURIComponent(
         text.text.genre
@@ -72,13 +89,10 @@ export function DisplayParallelText({
         text.text.index
       )}${chapterPath}`}
     >
-      <Cf parallel={text} />
-      {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
-      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
-      {text.chapter?.version && `${text.chapter.version} `}
-      {text.chapter?.name && `${text.chapter.name} `}
-      {lineNumberToString(text.lineNumber)}
+      {parallel}
     </a>
+  ) : (
+    parallel
   )
 }
 

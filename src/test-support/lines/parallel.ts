@@ -20,6 +20,7 @@ export const fragment = new ParallelFragment({
     suffixModifier: '',
   },
   hasDuplicates: false,
+  exists: true,
 })
 
 export const text = new ParallelText({
@@ -41,6 +42,7 @@ export const text = new ParallelText({
     prefixModifier: '',
     suffixModifier: '',
   },
+  exists: true,
 })
 
 export const composition = new ParallelComposition({

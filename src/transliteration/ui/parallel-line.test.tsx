@@ -40,6 +40,13 @@ test.each([
   )
 })
 
+test('parallel fragment without link', () => {
+  const fragment = new ParallelFragment({ ...parallel.fragment, exists: false })
+  render(<DisplayParallel line={fragment} />)
+
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
+})
+
 test.each([
   [new ParallelText({ ...parallel.text, hasCf: false }), 'L I.1 OB II 2'],
   [
@@ -67,6 +74,13 @@ test.each([
   )
 })
 
+test('parallel text without link', () => {
+  const text = new ParallelText({ ...parallel.text, exists: false })
+  render(<DisplayParallel line={text} />)
+
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
+})
+
 test('parallel composition', () => {
   render(<DisplayParallel line={parallel.composition} />)
 
@@ -74,5 +88,6 @@ test('parallel composition', () => {
     parallel.composition.lineNumber
   )})`
 
-  expect(screen.getByText(content)).not.toHaveAttribute('href')
+  expect(screen.getByText(content)).toBeVisible()
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
 })
