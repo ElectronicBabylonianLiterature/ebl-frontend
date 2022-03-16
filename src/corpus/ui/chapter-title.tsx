@@ -3,7 +3,7 @@ import { ChapterListing, Text } from 'corpus/domain/text'
 import Markup from 'transliteration/ui/markup'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
-import { defaultName } from 'corpus/domain/chapter'
+import { defaultName } from 'transliteration/domain/chapter-id'
 
 export function ChapterTitle({
   chapter,

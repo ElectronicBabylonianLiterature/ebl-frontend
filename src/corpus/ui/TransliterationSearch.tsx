@@ -7,7 +7,7 @@ import { Line } from 'corpus/domain/line'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import ChapterLink from './ChapterLink'
 import DisplayTextId from './DisplayTextId'
-import { defaultName } from 'corpus/domain/chapter'
+import { chapterIdToString } from 'transliteration/domain/chapter-id'
 
 function Lines({
   searchResult: { matchingLines, siglums },
@@ -81,9 +81,7 @@ function TransliterationSearch({
             </td>
             <td>
               <ChapterLink id={searchResult.id}>
-                {searchResult.id.stage}
-                {searchResult.id.name !== defaultName &&
-                  ` ${searchResult.id.name}`}
+                {chapterIdToString(searchResult.id)}
               </ChapterLink>
             </td>
             <td>

@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
-import { ChapterDisplay, ChapterId } from 'corpus/domain/chapter'
+import { ChapterDisplay } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ExtantLines } from 'corpus/domain/extant-lines'
 import Word from 'dictionary/domain/Word'
 import MuseumNumber, {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Crumb } from 'common/Breadcrumbs'
-import { ChapterId } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export default class ChapterCrumb implements Crumb {
   constructor(readonly id: ChapterId) {}

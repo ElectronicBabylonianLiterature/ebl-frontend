@@ -1,6 +1,7 @@
 import { Factory } from 'fishery'
 import Chance from 'chance'
-import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
+import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 import { periods } from 'corpus/domain/period'
 import _ from 'lodash'

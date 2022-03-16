@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom'
-import { ChapterId } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 export default function ChapterLink({
   id: { textId, stage, name },

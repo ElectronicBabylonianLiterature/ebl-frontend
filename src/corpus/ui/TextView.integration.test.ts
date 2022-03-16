@@ -1,5 +1,5 @@
 import Chance from 'chance'
-import { ChapterId } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import { ManuscriptTypes } from 'corpus/domain/manuscript'
 import { PeriodModifiers, Periods } from 'corpus/domain/period'
 import { Provenances } from 'corpus/domain/provenance'
