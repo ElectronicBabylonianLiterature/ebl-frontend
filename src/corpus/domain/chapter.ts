@@ -16,6 +16,8 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 
+export const defaultName = '-'
+
 export interface ChapterId {
   readonly textId: TextId
   readonly stage: string
@@ -127,7 +129,7 @@ export class ChapterDisplay {
   }
 
   get fullName(): string {
-    const showName = this.id.name !== '-' || this.isSingleStage
+    const showName = this.id.name !== defaultName || this.isSingleStage
     return [
       removeMd(this.textName),
       'Chapter',

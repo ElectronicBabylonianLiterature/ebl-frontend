@@ -7,8 +7,7 @@ import { Line } from 'corpus/domain/line'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
 import ChapterLink from './ChapterLink'
 import DisplayTextId from './DisplayTextId'
-
-const defaultName = '-'
+import { defaultName } from 'corpus/domain/chapter'
 
 function Lines({
   searchResult: { matchingLines, siglums },
