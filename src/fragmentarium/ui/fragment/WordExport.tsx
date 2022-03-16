@@ -34,7 +34,11 @@ export async function wordExport(
   jQueryRef: JQuery
 ): Promise<Document> {
   const tableHtml: JQuery = $(
-    renderToString(TransliterationLines({ text: fragment.text }))
+    renderToString(
+      <MemoryRouter>
+        {TransliterationLines({ text: fragment.text })}
+      </MemoryRouter>
+    )
   )
   const notesHtml: JQuery = $(
     renderToString(TransliterationNotes({ notes: fragment.text.notes }))

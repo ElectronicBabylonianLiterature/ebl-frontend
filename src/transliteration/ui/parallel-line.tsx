@@ -1,5 +1,6 @@
 import { Stages } from 'corpus/domain/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import React from 'react'
 import romans from 'romans'
 import { statusAbbreviation } from 'transliteration/domain/labels'
@@ -35,7 +36,7 @@ export function DisplayParallelFragment({
 }): JSX.Element {
   const atfLineNumber = lineNumberToAtf(fragment.lineNumber)
   const hash = fragment.surface
-    ? encodeURIComponent(`${fragment.surface.abbreviation} ${atfLineNumber}`)
+    ? `${fragment.surface.abbreviation} ${atfLineNumber}`
     : atfLineNumber
   const parallel = (
     <>
@@ -49,13 +50,12 @@ export function DisplayParallelFragment({
     </>
   )
   return fragment.exists ? (
-    <a
-      href={`/fragmentarium/${encodeURIComponent(
-        museumNumberToString(fragment.museumNumber)
-      )}#${hash}`}
+    <FragmentLink
+      number={museumNumberToString(fragment.museumNumber)}
+      hash={hash}
     >
       {parallel}
-    </a>
+    </FragmentLink>
   ) : (
     parallel
   )

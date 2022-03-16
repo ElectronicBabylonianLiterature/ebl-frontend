@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import * as parallel from 'test-support/lines/parallel'
 import { DisplayParallel } from './parallel-line'
 import lineNumberToString, {
@@ -28,7 +29,11 @@ test.each([
     "o 1'",
   ],
 ])('parallel fragment %#', (fragment, content, hash) => {
-  render(<DisplayParallel line={fragment} />)
+  render(
+    <MemoryRouter>
+      <DisplayParallel line={fragment} />
+    </MemoryRouter>
+  )
 
   const museumNumber = museumNumberToString(fragment.museumNumber)
 
