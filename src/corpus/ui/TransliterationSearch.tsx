@@ -3,10 +3,10 @@ import { Table } from 'react-bootstrap'
 import _ from 'lodash'
 import romans from 'romans'
 import withData from 'http/withData'
-import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
+import ChapterLink from './ChapterLink'
 
 const defaultName = '-'
 
@@ -22,23 +22,6 @@ function TextId({
       {textId.genre} {textId.category && romans.romanize(textId.category)}.
       {textId.index}
     </>
-  )
-}
-
-function ChapterLink({
-  searchResult: {
-    id: { textId, stage, name },
-  },
-}: {
-  searchResult: TransliterationSearchResult
-}): JSX.Element {
-  return (
-    <Link
-      to={`/corpus/${textId.genre}/${textId.category}/${textId.index}/${stage}/${name}`}
-    >
-      {stage}
-      {name !== defaultName && ` ${name}`}
-    </Link>
   )
 }
 
@@ -113,7 +96,11 @@ function TransliterationSearch({
               <TextId searchResult={searchResult} />
             </td>
             <td>
-              <ChapterLink searchResult={searchResult} />
+              <ChapterLink id={searchResult.id}>
+                {searchResult.id.stage}
+                {searchResult.id.name !== defaultName &&
+                  ` ${searchResult.id.name}`}
+              </ChapterLink>
             </td>
             <td>
               <Lines searchResult={searchResult} />
