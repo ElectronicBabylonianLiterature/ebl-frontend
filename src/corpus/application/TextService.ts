@@ -208,7 +208,7 @@ export default class TextService {
           (lines) =>
             new ChapterDisplay(
               chapter.id,
-              chapter.textDoi,
+              chapter.textHasDoi,
               chapter.textName,
               chapter.isSingleStage,
               chapter.title,
