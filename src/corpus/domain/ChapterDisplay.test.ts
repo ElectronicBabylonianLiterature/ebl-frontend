@@ -110,6 +110,8 @@ describe('citation', () => {
     }))
 
   test('URL', () => expect(data.URL).toEqual(chapter.url))
+
+  test('DOI', () => expect(data.DOI).toEqual(chapter.doi))
 })
 
 test('getTranslatorsFor', () => {

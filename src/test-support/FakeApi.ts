@@ -147,6 +147,7 @@ export default class FakeApi {
         authenticate: true,
         response: {
           id: chapter.id,
+          textHasDoi: chapter.textHasDoi,
           textName: chapter.textName,
           isSingleStage: chapter.isSingleStage,
           title: chapter.title,

@@ -8,7 +8,7 @@ import { Chapter, ChapterId } from './chapter'
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
     data.textId ?? { genre: 'L', category: 0, index: 0 },
-    data.textHasDoi ?? '',
+    data.textHasDoi ?? false,
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',

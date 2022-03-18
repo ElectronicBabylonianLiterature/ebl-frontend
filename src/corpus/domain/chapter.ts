@@ -11,7 +11,7 @@ import { Token } from 'transliteration/domain/token'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
-import { TextId, TextInfo, textIdToDoiString } from './text'
+import { TextId, textIdToDoiString } from './text'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
@@ -27,7 +27,7 @@ export class Chapter {
 
   constructor(
     readonly textId: TextId,
-    readonly textHasDoi: TextInfo['hasDoi'],
+    readonly textHasDoi: boolean,
     readonly classification: string,
     readonly stage: string,
     readonly version: string,
@@ -102,7 +102,7 @@ export class ChapterDisplay {
 
   constructor(
     readonly id: ChapterId,
-    readonly textHasDoi: TextInfo['hasDoi'],
+    readonly textHasDoi: boolean,
     readonly textName: string,
     readonly isSingleStage: boolean,
     readonly title: ReadonlyArray<MarkupPart>,
@@ -146,6 +146,10 @@ export class ChapterDisplay {
       .join('/')}`
   }
 
+  get doi(): string | null {
+    return this.textHasDoi ? textIdToDoiString(this.id.textId) : null
+  }
+
   get citation(): Cite {
     const issued = new Date(this.record.publicationDate)
     const now = new Date()
@@ -167,7 +171,7 @@ export class ChapterDisplay {
       title: this.fullName,
       'container-title': 'electronic Babylonian Literature',
       URL: this.url,
-      DOI: this.textHasDoi ? textIdToDoiString(this.id.textId) : null,
+      DOI: this.doi,
     })
   }
 
