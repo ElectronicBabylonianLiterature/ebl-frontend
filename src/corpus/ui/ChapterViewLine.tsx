@@ -1,19 +1,26 @@
-import React, { useContext, useMemo } from 'react'
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import _ from 'lodash'
-import { ChapterDisplay, ChapterId, LineDisplay } from 'corpus/domain/chapter'
-import withData from 'http/withData'
+import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
+import lineNumberToString, {
+  lineNumberToAtf,
+} from 'transliteration/domain/lineNumberToString'
 import { TextLineColumn } from 'transliteration/domain/columns'
 import classNames from 'classnames'
 import TextService from 'corpus/application/TextService'
-import { LineDetails, ManuscriptLineDisplay } from 'corpus/domain/line-details'
-import classnames from 'classnames'
-import { Collapse, OverlayTrigger, Popover } from 'react-bootstrap'
-import { isTextLine } from 'transliteration/domain/type-guards'
+import { Collapse } from 'react-bootstrap'
 import RowsContext from './RowsContext'
 import TranslationContext from './TranslationContext'
+import { Anchor } from 'transliteration/ui/line-number'
+import Score from './Score'
+import Parallels from './Parallels'
 
 const lineNumberColumns = 1
 const toggleColumns = 2
@@ -39,10 +46,27 @@ function InterText({
   )
 }
 
-function LineNumber({ line }: { line: LineDisplay }): JSX.Element {
+function LineNumber({
+  line,
+  activeLine,
+}: {
+  line: LineDisplay
+  activeLine: string
+}): JSX.Element {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const id = lineNumberToAtf(line.number)
+
+  useEffect(() => {
+    if (id === activeLine) {
+      ref.current?.scrollIntoView()
+    }
+  }, [id, activeLine])
+
   return (
     <td className="chapter-display__line-number">
-      {lineNumberToString(line.number)}
+      <Anchor className="chapter-display__anchor" id={id} ref={ref}>
+        {lineNumberToString(line.number)}
+      </Anchor>
     </td>
   )
 }
@@ -59,7 +83,9 @@ function Translation({
   )
   return translation.length > 0 ? (
     <>
-      <LineNumber line={line} />
+      <td className="chapter-display__line-number">
+        {lineNumberToString(line.number)}
+      </td>
       <td className="chapter-display__translation">
         <Markup parts={translation[0].parts} />
       </td>
@@ -69,102 +95,24 @@ function Translation({
   )
 }
 
-function Manuscript({
-  manuscript,
-  maxColumns,
-}: {
-  manuscript: ManuscriptLineDisplay
-  maxColumns: number
-}): JSX.Element {
+function CollapsibleRow({
+  show,
+  id,
+  totalColumns,
+  children,
+}: PropsWithChildren<{
+  show: boolean
+  id: string
+  totalColumns: number
+}>): JSX.Element {
   return (
-    <tr
-      className={classnames({
-        'chapter-display__manuscript': true,
-        'chapter-display__manuscript--standard': manuscript.isStandardText,
-      })}
-    >
-      <td>
-        <span className="chapter-display__manuscript-siglum">
-          {manuscript.isParallelText && '// '}
-          {manuscript.siglum}
-        </span>
-      </td>
-      <td>
-        <span className="chapter-display__manuscript-labels">
-          {manuscript.labels.join(' ')}{' '}
-          {manuscript.number !== null &&
-            `${lineNumberToString(manuscript.number)}.`}
-        </span>
-      </td>
-      {isTextLine(manuscript.line) ? (
-        <LineColumns
-          columns={manuscript.line.columns}
-          maxColumns={maxColumns}
-        />
-      ) : (
-        <td colSpan={maxColumns}></td>
-      )}
-      <td>
-        <span className="chapter-display__manuscript-paratext">
-          {manuscript.dollarLines
-            .map((dollarLine) => dollarLine.displayValue)
-            .join(' ')}
-        </span>
-      </td>
-      <td>
-        {manuscript.hasNotes && (
-          <OverlayTrigger
-            rootClose
-            overlay={
-              <Popover
-                id={_.uniqueId('ManuscriptLineNotesPopOver-')}
-                className=""
-              >
-                <Popover.Content>
-                  <ol className="chapter-display__manuscript-notes">
-                    {manuscript.noteLines.map((note, index) => (
-                      <Markup key={index} container="li" parts={note.parts} />
-                    ))}
-                  </ol>
-                </Popover.Content>
-              </Popover>
-            }
-            trigger={['click']}
-            placement="top"
-          >
-            <i className="fas fa-book chapter-display__manuscript-info-toggle"></i>
-          </OverlayTrigger>
-        )}
-      </td>
-    </tr>
+    <Collapse in={show} mountOnEnter>
+      <tr id={id}>
+        <td colSpan={totalColumns}>{children}</td>
+      </tr>
+    </Collapse>
   )
 }
-
-const Score = withData<
-  Record<string, unknown>,
-  {
-    id: ChapterId
-    lineNumber: number
-    textService: TextService
-  },
-  LineDetails
->(
-  ({ data: line }): JSX.Element => (
-    <table className="chapter-display__manuscripts">
-      <tbody>
-        {line.sortedManuscripts.map((manuscript, index) => (
-          <Manuscript
-            manuscript={manuscript}
-            key={index}
-            maxColumns={line.numberOfColumns}
-          />
-        ))}
-      </tbody>
-    </table>
-  ),
-  ({ id, lineNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber)
-)
 
 export function ChapterViewLine({
   chapter,
@@ -173,6 +121,7 @@ export function ChapterViewLine({
   columns,
   maxColumns,
   textService,
+  activeLine,
 }: {
   chapter: ChapterDisplay
   lineNumber: number
@@ -180,14 +129,20 @@ export function ChapterViewLine({
   columns: readonly TextLineColumn[]
   maxColumns: number
   textService: TextService
+  activeLine: string
 }): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
+  const parallelsId = _.uniqueId('parallels-')
   const totalColumns =
     toggleColumns + lineNumberColumns + maxColumns + translationColumns
   const [
     {
-      [lineNumber]: { score: showScore, note: showNote },
+      [lineNumber]: {
+        score: showScore,
+        note: showNote,
+        parallels: showParallels,
+      },
     },
     dispatchRows,
   ] = useContext(RowsContext)
@@ -196,43 +151,45 @@ export function ChapterViewLine({
   const transliteration = useMemo(
     () => (
       <>
-        <LineNumber line={line} />
+        <LineNumber line={line} activeLine={activeLine} />
         <LineColumns columns={columns} maxColumns={maxColumns} />
       </>
     ),
-    [columns, line, maxColumns]
+    [activeLine, columns, line, maxColumns]
   )
   const score = useMemo(
     () => (
-      <Collapse in={showScore} mountOnEnter>
-        <tr id={scoreId}>
-          <td colSpan={totalColumns}>
-            <Score
-              id={chapter.id}
-              lineNumber={lineNumber}
-              textService={textService}
-            />
-          </td>
-        </tr>
-      </Collapse>
+      <CollapsibleRow show={showScore} id={scoreId} totalColumns={totalColumns}>
+        <Score
+          id={chapter.id}
+          lineNumber={lineNumber}
+          textService={textService}
+        />
+      </CollapsibleRow>
     ),
     [chapter.id, lineNumber, scoreId, showScore, textService, totalColumns]
   )
   const note = useMemo(
     () =>
       line.note && (
-        <Collapse in={showNote} mountOnEnter>
-          <tr id={noteId}>
-            <td colSpan={totalColumns}>
-              <Markup
-                className="chapter-display__note"
-                parts={line.note.parts}
-              />
-            </td>
-          </tr>
-        </Collapse>
+        <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
+          <Markup className="chapter-display__note" parts={line.note.parts} />
+        </CollapsibleRow>
       ),
     [line.note, noteId, showNote, totalColumns]
+  )
+  const parallels = useMemo(
+    () =>
+      line.parallelLines.length > 0 && (
+        <CollapsibleRow
+          show={showParallels}
+          id={parallelsId}
+          totalColumns={totalColumns}
+        >
+          <Parallels lines={line.parallelLines} />
+        </CollapsibleRow>
+      ),
+    [line.parallelLines, parallelsId, showParallels, totalColumns]
   )
 
   return (
@@ -282,9 +239,29 @@ export function ChapterViewLine({
             ></i>
           )}
         </td>
+        <td
+          className="chapter-display__toggle"
+          onClick={() =>
+            dispatchRows({ type: 'toggleParallels', row: lineNumber })
+          }
+        >
+          {line.parallelLines.length > 0 && (
+            <i
+              className={classNames({
+                fas: true,
+                'fa-quote-right': true,
+              })}
+              aria-expanded={showParallels}
+              aria-controls={parallelsId}
+              aria-label="Show parallels"
+              role="button"
+            ></i>
+          )}
+        </td>
         <Translation line={line} language={language} />
       </tr>
       {note}
+      {parallels}
       {score}
     </>
   )

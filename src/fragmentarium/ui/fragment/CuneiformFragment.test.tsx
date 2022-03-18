@@ -92,6 +92,7 @@ beforeEach(async () => {
           fragmentService={fragmentService}
           fragmentSearchService={fragmentSearchService}
           wordService={wordService}
+          activeLine=""
         />
       </SessionContext.Provider>
     </MemoryRouter>

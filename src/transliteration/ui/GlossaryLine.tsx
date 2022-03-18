@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import DisplayToken from 'transliteration/ui/DisplayToken'
 import { GlossaryToken } from 'transliteration/domain/glossary'
-import { Label, Status } from 'transliteration/domain/labels'
+import { Label, statusAbbreviation } from 'transliteration/domain/labels'
 import DictionaryWord from 'dictionary/domain/Word'
 import lineNumberToString from 'transliteration/domain/lineNumberToString'
 
@@ -81,13 +81,6 @@ function GlossaryWord({
   )
 }
 
-const statuses = new Map<Status, string>([
-  ['PRIME', "'"],
-  ['UNCERTAIN', '?'],
-  ['CORRECTION', '!'],
-  ['COLLATION', '*'],
-])
-
 function GlossaryLabel({
   label: { abbreviation, status },
 }: {
@@ -96,7 +89,7 @@ function GlossaryLabel({
   return (
     <>
       {abbreviation}
-      {status && <sup>{status.map((x: Status) => statuses.get(x))}</sup>}{' '}
+      {status && <sup>{status.map(statusAbbreviation)}</sup>}{' '}
     </>
   )
 }

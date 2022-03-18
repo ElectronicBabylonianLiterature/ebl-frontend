@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import _ from 'lodash'
 import React, { FunctionComponent } from 'react'
 import { Text, Notes } from 'transliteration/domain/text'
@@ -8,63 +7,11 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import TranslationLine, {
-  Extent,
-} from 'transliteration/domain/translation-line'
-import Markup from 'transliteration/ui/markup'
-import lineNumberToString from 'transliteration/domain/lineNumberToString'
-
-function DisplayControlLine({
-  line: { type, prefix, content },
-  columns,
-}: LineProps): JSX.Element {
-  return (
-    <>
-      <td className={classNames([`Transliteration__${type}`])}>{prefix}</td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${type}`])}
-      >
-        {content.map(({ value }) => value).join('')}
-      </td>
-    </>
-  )
-}
-
-function DispalyExtent({ extent }: { extent: Extent }): JSX.Element {
-  const labels = extent.labels.join(' ')
-  return (
-    <>
-      ({labels}
-      {!_.isEmpty(labels) && ' '}
-      {lineNumberToString(extent.number)})
-    </>
-  )
-}
-
-function DisplayTranslationLine({ line, columns }: LineProps): JSX.Element {
-  const translationLine = line as TranslationLine
-  return (
-    <>
-      <td className={classNames([`Transliteration__${line.type}`])}>
-        {translationLine.language}
-        {translationLine.extent && (
-          <>
-            {' '}
-            <DispalyExtent extent={translationLine.extent} />
-          </>
-        )}
-        :
-      </td>
-      <td
-        colSpan={columns}
-        className={classNames([`Transliteration__${line.type}`])}
-      >
-        <Markup parts={translationLine.parts} />
-      </td>
-    </>
-  )
-}
+import { SurfaceLabel } from 'transliteration/domain/labels'
+import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
+import DisplayTranslationLine from './DisplayTranslationLine'
+import DisplayControlLine from './DisplayControlLine'
+import { DisplayParallelLine } from './parallel-line'
 
 const lineComponents: ReadonlyMap<
   string,
@@ -85,6 +32,9 @@ const lineComponents: ReadonlyMap<
   ['DivisionAtLine', DisplayDollarAndAtLine],
   ['CompositeAtLine', DisplayDollarAndAtLine],
   ['TranslationLine', DisplayTranslationLine],
+  ['ParallelFragment', DisplayParallelLine],
+  ['ParallelText', DisplayParallelLine],
+  ['ParallelComposition', DisplayParallelLine],
 ])
 
 function FirstLineNotes({
@@ -115,17 +65,26 @@ function TransliterationLine({
   notes,
   index,
   columns,
+  surface,
+  activeLine,
 }: {
   line: AbstractLine
   notes: Notes
   index: number
   columns: number
+  surface: SurfaceLabel | null
+  activeLine: string
 }): JSX.Element {
   const LineComponent = lineComponents.get(line.type) || DisplayControlLine
   const lineNumber = index + 1
   return (
     <tr id={createLineId(lineNumber)}>
-      <LineComponent line={line} columns={columns} />
+      <LineComponent
+        line={line}
+        columns={columns}
+        surface={surface}
+        activeLine={activeLine}
+      />
       <td>
         <NoteLinks notes={notes} lineNumber={lineNumber} />
       </td>
@@ -135,23 +94,45 @@ function TransliterationLine({
 
 export default function TransliterationLines({
   text,
+  activeLine = '',
 }: {
   text: Text
+  activeLine?: string
 }): JSX.Element {
   const numberOfColumns = text.numberOfColumns
   return (
     <table className="Transliteration__lines">
       <tbody>
         <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
-        {text.lines.map((line: AbstractLine, index: number) => (
-          <TransliterationLine
-            key={index}
-            line={line}
-            notes={text.notes}
-            index={index}
-            columns={numberOfColumns}
-          />
-        ))}
+        {
+          text.lines.reduce<[JSX.Element[], SurfaceLabel | null]>(
+            (
+              [elements, surface]: [JSX.Element[], SurfaceLabel | null],
+              line: AbstractLine,
+              index: number
+            ) => {
+              const currentSurface = isSurfaceAtLine(line)
+                ? line.label
+                : surface
+              return [
+                [
+                  ...elements,
+                  <TransliterationLine
+                    key={index}
+                    line={line}
+                    notes={text.notes}
+                    index={index}
+                    columns={numberOfColumns}
+                    surface={currentSurface}
+                    activeLine={activeLine}
+                  />,
+                ],
+                currentSurface,
+              ]
+            },
+            [[], null]
+          )[0]
+        }
       </tbody>
     </table>
   )

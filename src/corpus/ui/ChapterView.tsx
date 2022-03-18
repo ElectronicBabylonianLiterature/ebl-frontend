@@ -78,7 +78,12 @@ function ChapterView({
   chapter,
   text,
   textService,
-}: Props & { text: Text; textService: TextService }): JSX.Element {
+  activeLine,
+}: Props & {
+  activeLine: string
+  text: Text
+  textService: TextService
+}): JSX.Element {
   const columns = useMemo(
     () => chapter.lines.map((line) => createColumns(line.reconstruction)),
     [chapter.lines]
@@ -119,6 +124,7 @@ function ChapterView({
                 {chapter.lines.map((line, index) => (
                   <ChapterViewLine
                     key={index}
+                    activeLine={activeLine}
                     line={line}
                     columns={columns[index]}
                     maxColumns={maxColumns_}
@@ -139,6 +145,7 @@ function ChapterView({
 export default withData<
   {
     textService
+    activeLine: string
   },
   { id: ChapterId },
   [ChapterDisplay, Text]

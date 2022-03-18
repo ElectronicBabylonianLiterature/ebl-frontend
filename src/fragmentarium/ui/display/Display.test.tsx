@@ -32,7 +32,7 @@ beforeEach(async () => {
   await act(async () => {
     element = render(
       <MemoryRouter>
-        <Display fragment={fragment} wordService={wordService} />
+        <Display fragment={fragment} wordService={wordService} activeLine="" />
       </MemoryRouter>
     )
   })

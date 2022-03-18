@@ -1,4 +1,4 @@
-import { AbstractLine } from 'transliteration/domain/abstract-line'
+import { AbstractLine, LineBaseDto } from 'transliteration/domain/abstract-line'
 import {
   ColumnAtLine,
   CompositeAtLine,
@@ -21,6 +21,11 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { Text } from 'transliteration/domain/text'
 import { TextLine } from 'transliteration/domain/text-line'
 import TranslationLine from 'transliteration/domain/translation-line'
+import {
+  ParallelFragment,
+  ParallelText,
+  ParallelComposition,
+} from 'transliteration/domain/parallel-line'
 
 const lineClasses = {
   TextLine: TextLine,
@@ -40,13 +45,15 @@ const lineClasses = {
   ObjectAtLine: ObjectAtLine,
   DivisionAtLine: DivisionAtLine,
   CompositeAtLine: CompositeAtLine,
-  ParallelFragment: ControlLine,
-  ParallelText: ControlLine,
-  ParallelComposition: ControlLine,
+  ParallelFragment: ParallelFragment,
+  ParallelText: ParallelText,
+  ParallelComposition: ParallelComposition,
   TranslationLine: TranslationLine,
 } as const
 
-export function fromTransliterationLineDto(lineDto): AbstractLine {
+export function fromTransliterationLineDto<T extends LineBaseDto>(
+  lineDto: T
+): AbstractLine {
   const LineClass = lineClasses[lineDto.type]
   if (LineClass) {
     return new LineClass(lineDto)
