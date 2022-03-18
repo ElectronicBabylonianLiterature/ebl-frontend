@@ -21,6 +21,7 @@ const fragmentData = {
     suffixModifier: '',
   },
   hasDuplicates: false,
+  exists: false,
 } as const
 
 const textData = {
@@ -42,6 +43,7 @@ const textData = {
     prefixModifier: '',
     suffixModifier: '',
   },
+  exists: false,
 }
 
 const compositionData = {
@@ -57,16 +59,8 @@ const compositionData = {
 }
 
 describe.each([
-  [
-    { ...fragmentData, exists: true },
-    new ParallelFragment({ ...fragmentData, exists: true }),
-  ],
-  [{ ...fragmentData, exists: false }, new ParallelFragment(fragmentData)],
-  [
-    { ...textData, exists: true },
-    new ParallelText({ ...textData, exists: true }),
-  ],
-  [{ ...textData, exists: false }, new ParallelText(textData)],
+  [fragmentData, new ParallelFragment(fragmentData)],
+  [textData, new ParallelText(textData)],
   [compositionData, new ParallelComposition(compositionData)],
 ])('%p', (data, line) => {
   test.each(_.keys(data))('%s', (property) => {

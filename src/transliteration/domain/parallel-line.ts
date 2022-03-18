@@ -18,7 +18,7 @@ export interface ParallelFragmentDto extends ParallelLineBaseDto {
   readonly museumNumber: MuseumNumber
   readonly hasDuplicates: boolean
   readonly surface: SurfaceLabel | null
-  readonly exists?: boolean
+  readonly exists: boolean | null
 }
 
 export class ParallelFragment extends AbstractLine {
@@ -28,7 +28,7 @@ export class ParallelFragment extends AbstractLine {
   readonly hasDuplicates: boolean
   readonly surface: SurfaceLabel | null
   readonly lineNumber: LineNumber | LineNumberRange
-  readonly exists: boolean
+  readonly exists: boolean | null
 
   constructor(
     data: Pick<
@@ -48,7 +48,7 @@ export class ParallelFragment extends AbstractLine {
     this.hasDuplicates = data.hasDuplicates
     this.surface = data.surface
     this.lineNumber = data.lineNumber
-    this.exists = data.exists ?? false
+    this.exists = data.exists
   }
 }
 
@@ -62,7 +62,7 @@ export interface ParallelTextDto extends ParallelLineBaseDto {
   readonly type: 'ParallelText'
   readonly text: TextId
   readonly chapter: ChapterName | null
-  readonly exists?: boolean
+  readonly exists: boolean | null
 }
 
 export class ParallelText extends AbstractLine {
@@ -71,7 +71,7 @@ export class ParallelText extends AbstractLine {
   readonly text: TextId
   readonly chapter: ChapterName | null
   readonly lineNumber: LineNumber | LineNumberRange
-  readonly exists: boolean
+  readonly exists: boolean | null
 
   constructor(
     data: Pick<
@@ -84,7 +84,7 @@ export class ParallelText extends AbstractLine {
     this.text = data.text
     this.chapter = data.chapter
     this.lineNumber = data.lineNumber
-    this.exists = data.exists ?? false
+    this.exists = data.exists
   }
 }
 
