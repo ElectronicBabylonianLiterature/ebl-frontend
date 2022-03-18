@@ -165,7 +165,7 @@ export class ChapterDisplay {
       title: this.fullName,
       'container-title': 'electronic Babylonian Literature',
       URL: this.url,
-      DOI: this.textHasDoi ? textIdToDoiString(this.id.textId) : '',
+      DOI: this.textHasDoi ? textIdToDoiString(this.id.textId) : null,
     })
   }
 
