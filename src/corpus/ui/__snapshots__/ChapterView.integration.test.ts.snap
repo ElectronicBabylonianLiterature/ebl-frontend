@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Diplay chapter How to cite 1`] = `
+exports[`Display chapter How to cite 1`] = `
 <div>
   <header
     class="Header"
@@ -545,7 +545,7 @@ exports[`Diplay chapter How to cite 1`] = `
 </div>
 `;
 
-exports[`Diplay chapter Show manuscripts 1`] = `
+exports[`Display chapter Show manuscripts 1`] = `
 <div>
   <header
     class="Header"
@@ -1313,7 +1313,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
 </div>
 `;
 
-exports[`Diplay chapter Show note 1`] = `
+exports[`Display chapter Show note 1`] = `
 <div>
   <header
     class="Header"
@@ -1875,7 +1875,7 @@ exports[`Diplay chapter Show note 1`] = `
 </div>
 `;
 
-exports[`Diplay chapter Show parallels 1`] = `
+exports[`Display chapter Show parallels 1`] = `
 <div>
   <header
     class="Header"
@@ -2442,7 +2442,7 @@ exports[`Diplay chapter Show parallels 1`] = `
 </div>
 `;
 
-exports[`Diplay chapter Sidebar 1`] = `
+exports[`Display chapter Sidebar 1`] = `
 <div>
   <header
     class="Header"
@@ -3286,7 +3286,7 @@ exports[`Diplay chapter Sidebar 1`] = `
 </div>
 `;
 
-exports[`Diplay chapter Sidebar 2`] = `
+exports[`Display chapter Sidebar 2`] = `
 <div>
   <header
     class="Header"
@@ -4174,7 +4174,7 @@ exports[`Diplay chapter Sidebar 2`] = `
 </div>
 `;
 
-exports[`Diplay chapter Sidebar 3`] = `
+exports[`Display chapter Sidebar 3`] = `
 <div>
   <header
     class="Header"
@@ -5096,7 +5096,7 @@ exports[`Diplay chapter Sidebar 3`] = `
 </div>
 `;
 
-exports[`Diplay chapter Sidebar 4`] = `
+exports[`Display chapter Sidebar 4`] = `
 <div>
   <header
     class="Header"
@@ -6018,7 +6018,7 @@ exports[`Diplay chapter Sidebar 4`] = `
 </div>
 `;
 
-exports[`Diplay chapter Sidebar 5`] = `
+exports[`Display chapter Sidebar 5`] = `
 <div>
   <header
     class="Header"
@@ -6819,7 +6819,7 @@ exports[`Diplay chapter Sidebar 5`] = `
 </div>
 `;
 
-exports[`Diplay chapter Snapshot 1`] = `
+exports[`Display chapter Snapshot 1`] = `
 <div>
   <header
     class="Header"

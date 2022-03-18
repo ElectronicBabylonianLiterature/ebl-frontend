@@ -178,7 +178,7 @@ afterEach(() => {
   fakeApi.verifyExpectations()
 })
 
-describe('Diplay chapter', () => {
+describe('Display chapter', () => {
   const chapter = chapterDtos[0]
 
   beforeEach(async () => {
