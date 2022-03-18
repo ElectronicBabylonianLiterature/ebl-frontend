@@ -313,7 +313,7 @@ exports[`Diplay chapter How to cite 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -417,7 +417,7 @@ exports[`Diplay chapter How to cite 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -858,7 +858,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -965,7 +965,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -1185,7 +1185,7 @@ exports[`Diplay chapter Show manuscripts 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -1626,7 +1626,7 @@ exports[`Diplay chapter Show note 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -1733,7 +1733,7 @@ exports[`Diplay chapter Show note 1`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -1747,7 +1747,7 @@ exports[`Diplay chapter Show note 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -2188,7 +2188,7 @@ exports[`Diplay chapter Show parallels 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -2296,7 +2296,7 @@ exports[`Diplay chapter Show parallels 1`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -2315,7 +2315,7 @@ exports[`Diplay chapter Show parallels 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -2756,7 +2756,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -2863,7 +2863,7 @@ exports[`Diplay chapter Sidebar 1`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -2966,7 +2966,7 @@ exports[`Diplay chapter Sidebar 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -3073,7 +3073,7 @@ exports[`Diplay chapter Sidebar 1`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -3600,7 +3600,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -3708,7 +3708,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -3730,7 +3730,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -3833,7 +3833,7 @@ exports[`Diplay chapter Sidebar 2`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -3941,7 +3941,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -3963,7 +3963,7 @@ exports[`Diplay chapter Sidebar 2`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -4490,7 +4490,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -4598,7 +4598,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -4615,7 +4615,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -4637,7 +4637,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -4740,7 +4740,7 @@ exports[`Diplay chapter Sidebar 3`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -4848,7 +4848,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -4865,7 +4865,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -4887,7 +4887,7 @@ exports[`Diplay chapter Sidebar 3`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -5414,7 +5414,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -5522,7 +5522,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -5539,7 +5539,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -5561,7 +5561,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -5664,7 +5664,7 @@ exports[`Diplay chapter Sidebar 4`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -5772,7 +5772,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -5789,7 +5789,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style="height: 0px;"
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -5811,7 +5811,7 @@ exports[`Diplay chapter Sidebar 4`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -6338,7 +6338,7 @@ exports[`Diplay chapter Sidebar 5`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -6446,7 +6446,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -6463,7 +6463,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -6485,7 +6485,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -6588,7 +6588,7 @@ exports[`Diplay chapter Sidebar 5`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -6696,7 +6696,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="chapter-display__note"
@@ -6713,7 +6713,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <ul
                   class="chapter-display__parallels"
@@ -6735,7 +6735,7 @@ exports[`Diplay chapter Sidebar 5`] = `
               style=""
             >
               <td
-                colspan="6"
+                colspan="7"
               >
                 <table
                   class="chapter-display__manuscripts"
@@ -7141,7 +7141,7 @@ exports[`Diplay chapter Snapshot 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
@@ -7245,7 +7245,7 @@ exports[`Diplay chapter Snapshot 1`] = `
             <tr>
               <td
                 class="chapter-display__intertext"
-                colspan="6"
+                colspan="7"
               >
                 (
                 <span>
