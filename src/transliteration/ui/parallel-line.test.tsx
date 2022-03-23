@@ -64,19 +64,23 @@ test.each([
     }),
     'cf. L I.1 OB version II 2',
   ],
+  [parallel.textWithImplicitChapter, 'cf. L I.1 2'],
 ])('parallel text %#', (text, content) => {
   const hash = lineNumberToAtf(text.lineNumber)
 
   render(<DisplayParallel line={text} />)
 
-  expect(screen.getByRole('link', { name: content })).toHaveAttribute(
-    'href',
-    `/corpus/L/1/1/${encodeURIComponent(
-      text.chapter?.stage ?? ''
-    )}/${encodeURIComponent(text.chapter?.name ?? '')}#${encodeURIComponent(
-      hash
-    )}`
-  )
+  const linkChapter = text.chapter ?? text.implicitChapter
+  if (linkChapter) {
+    expect(screen.getByRole('link', { name: content })).toHaveAttribute(
+      'href',
+      `/corpus/L/1/1/${encodeURIComponent(
+        linkChapter.stage
+      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(hash)}`
+    )
+  } else {
+    fail('Bad test data. chapter or implicitChapter should be non null.')
+  }
 })
 
 test('parallel text without link', () => {

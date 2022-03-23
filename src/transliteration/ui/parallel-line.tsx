@@ -66,11 +66,7 @@ export function DisplayParallelText({
 }: {
   text: ParallelText
 }): JSX.Element {
-  const chapterPath = text.chapter
-    ? `/${encodeURIComponent(text.chapter.stage)}/${encodeURIComponent(
-        text.chapter.name
-      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`
-    : ''
+  const linkChapter = text.chapter ?? text.implicitChapter
   const parallel = (
     <>
       <Cf parallel={text} />
@@ -81,13 +77,15 @@ export function DisplayParallelText({
       {lineNumberToString(text.lineNumber)}
     </>
   )
-  return text.exists ? (
+  return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(
         text.text.genre
       )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
         text.text.index
-      )}${chapterPath}`}
+      )}/${encodeURIComponent(linkChapter.stage)}/${encodeURIComponent(
+        linkChapter.name
+      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`}
     >
       {parallel}
     </a>

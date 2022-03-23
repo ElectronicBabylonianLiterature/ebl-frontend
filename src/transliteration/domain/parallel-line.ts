@@ -63,6 +63,7 @@ export interface ParallelTextDto extends ParallelLineBaseDto {
   readonly text: TextId
   readonly chapter: ChapterName | null
   readonly exists: boolean | null
+  readonly implicitChapter: ChapterName | null
 }
 
 export class ParallelText extends AbstractLine {
@@ -72,11 +73,18 @@ export class ParallelText extends AbstractLine {
   readonly chapter: ChapterName | null
   readonly lineNumber: LineNumber | LineNumberRange
   readonly exists: boolean | null
+  readonly implicitChapter: ChapterName | null
 
   constructor(
     data: Pick<
       ParallelTextDto,
-      'content' | 'hasCf' | 'text' | 'chapter' | 'lineNumber' | 'exists'
+      | 'content'
+      | 'hasCf'
+      | 'text'
+      | 'chapter'
+      | 'lineNumber'
+      | 'exists'
+      | 'implicitChapter'
     >
   ) {
     super(parallelLinePrefix, data.content)
@@ -85,6 +93,7 @@ export class ParallelText extends AbstractLine {
     this.chapter = data.chapter
     this.lineNumber = data.lineNumber
     this.exists = data.exists
+    this.implicitChapter = data.implicitChapter
   }
 }
 

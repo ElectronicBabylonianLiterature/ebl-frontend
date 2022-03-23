@@ -43,6 +43,30 @@ export const text = new ParallelText({
     suffixModifier: '',
   },
   exists: true,
+  implicitChapter: null,
+})
+
+export const textWithImplicitChapter = new ParallelText({
+  content: [],
+  hasCf: true,
+  text: {
+    genre: 'L',
+    category: 1,
+    index: 1,
+  },
+  chapter: null,
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: '',
+    suffixModifier: '',
+  },
+  exists: true,
+  implicitChapter: {
+    stage: 'Old Babylonian',
+    version: '',
+    name: 'II',
+  },
 })
 
 export const composition = new ParallelComposition({
