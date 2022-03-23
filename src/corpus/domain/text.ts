@@ -3,7 +3,7 @@ import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Chapter } from './chapter'
-import { ChapterId } from '../../transliteration/domain/chapter-id'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
 
 export function createChapter(data: Partial<Chapter>): Chapter {

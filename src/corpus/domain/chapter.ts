@@ -15,7 +15,7 @@ import { TextId } from 'transliteration/domain/text-id'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
-import { ChapterId, defaultName } from '../../transliteration/domain/chapter-id'
+import { ChapterId, defaultName } from 'transliteration/domain/chapter-id'
 
 export class Chapter {
   readonly [immerable] = true
