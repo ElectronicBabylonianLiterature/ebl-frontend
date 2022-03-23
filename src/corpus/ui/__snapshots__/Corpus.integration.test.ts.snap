@@ -488,7 +488,7 @@ exports[`With session 1`] = `
             <img
               alt="LibraryCropped.svg"
               class="img-fluid"
-              src="http://localhost:8000//images/LibraryCropped.svg"
+              src="http://example.com/images/LibraryCropped.svg"
             />
           </div>
         </div>
@@ -961,7 +961,7 @@ exports[`Without session 1`] = `
             <img
               alt="LibraryCropped.svg"
               class="img-fluid"
-              src="http://localhost:8000//images/LibraryCropped.svg"
+              src="http://example.com/images/LibraryCropped.svg"
             />
           </div>
         </div>
