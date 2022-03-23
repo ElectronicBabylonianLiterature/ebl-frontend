@@ -44,6 +44,7 @@ const textData = {
     suffixModifier: '',
   },
   exists: false,
+  implicitChapter: null,
 }
 
 const compositionData = {
