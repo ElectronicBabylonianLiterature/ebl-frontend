@@ -146,8 +146,8 @@ export class ChapterDisplay {
       .join('/')}`
   }
 
-  get doi(): string | null {
-    return this.textHasDoi ? textIdToDoiString(this.id.textId) : null
+  get doi(): string {
+    return this.textHasDoi ? textIdToDoiString(this.id.textId) : ''
   }
 
   get citation(): Cite {
@@ -171,7 +171,7 @@ export class ChapterDisplay {
       title: this.fullName,
       'container-title': 'electronic Babylonian Literature',
       URL: this.url,
-      DOI: this.doi,
+      ...(this.doi && { DOI: this.doi }),
     })
   }
 

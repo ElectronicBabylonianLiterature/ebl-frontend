@@ -39,7 +39,7 @@ export interface TextInfo {
   readonly category: number
   readonly index: number
   readonly name: string
-  readonly hasDoi?: string
+  readonly hasDoi?: boolean
   readonly numberOfVerses: number
   readonly approximateVerses: boolean
 }
@@ -62,7 +62,7 @@ export class Text implements TextInfo {
   readonly category: number = 0
   readonly index: number = 0
   readonly name: string = ''
-  readonly hasDoi: string = ''
+  readonly hasDoi: boolean = false
   readonly numberOfVerses: number = 0
   readonly approximateVerses: boolean = false
   readonly intro: string = ''
