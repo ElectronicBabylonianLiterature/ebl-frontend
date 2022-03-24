@@ -23,7 +23,7 @@ import Score from './Score'
 import Parallels from './Parallels'
 
 const lineNumberColumns = 1
-const toggleColumns = 2
+const toggleColumns = 3
 const translationColumns = lineNumberColumns + 1
 
 function InterText({

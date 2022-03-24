@@ -17,6 +17,14 @@ it('Creates double encoded URL', () => {
   )
 })
 
+it('Creates URL with hash', () => {
+  const number = chance.string()
+  const hash = chance.string()
+  expect(createFragmentUrl(number, hash)).toEqual(
+    `/fragmentarium/${doubleEncode(number)}#${encodeURIComponent(hash)}`
+  )
+})
+
 it('Creates URL with folio query', () => {
   const number = chance.string()
   const folio = folioFactory.build()

@@ -15,9 +15,9 @@ import { Popover } from 'react-bootstrap'
 import FragmentariumLink from './FragmentariumLink'
 import { ChapterTitleLink } from './chapter-title'
 import { groupReferences } from 'bibliography/domain/Reference'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 
 import './Chapters.sass'
-import { ChapterId } from 'corpus/domain/chapter'
 
 function ProvenanceHeading({
   id,

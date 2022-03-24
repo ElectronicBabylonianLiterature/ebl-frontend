@@ -1,7 +1,7 @@
 import { Stages } from 'corpus/domain/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
+import FragmentLink from 'fragmentarium/ui/FragmentLink'
 import React from 'react'
-import romans from 'romans'
 import { statusAbbreviation } from 'transliteration/domain/labels'
 import lineNumberToString, {
   lineNumberToAtf,
@@ -13,6 +13,7 @@ import {
   parallelLinePrefix,
   ParallelText,
 } from 'transliteration/domain/parallel-line'
+import { textIdToString } from 'transliteration/domain/text-id'
 import { LineProps } from './LineProps'
 import TransliterationTd from './TransliterationTd'
 
@@ -35,14 +36,10 @@ export function DisplayParallelFragment({
 }): JSX.Element {
   const atfLineNumber = lineNumberToAtf(fragment.lineNumber)
   const hash = fragment.surface
-    ? encodeURIComponent(`${fragment.surface.abbreviation} ${atfLineNumber}`)
+    ? `${fragment.surface.abbreviation} ${atfLineNumber}`
     : atfLineNumber
-  return (
-    <a
-      href={`/fragmentarium/${encodeURIComponent(
-        museumNumberToString(fragment.museumNumber)
-      )}#${hash}`}
-    >
+  const parallel = (
+    <>
       <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
       {museumNumberToString(fragment.museumNumber)}{' '}
       {fragment.surface &&
@@ -50,7 +47,17 @@ export function DisplayParallelFragment({
           .map(statusAbbreviation)
           .join('')} `}
       {lineNumberToString(fragment.lineNumber)}
-    </a>
+    </>
+  )
+  return fragment.exists ? (
+    <FragmentLink
+      number={museumNumberToString(fragment.museumNumber)}
+      hash={hash}
+    >
+      {parallel}
+    </FragmentLink>
+  ) : (
+    parallel
   )
 }
 
@@ -59,26 +66,31 @@ export function DisplayParallelText({
 }: {
   text: ParallelText
 }): JSX.Element {
-  const chapterPath = text.chapter
-    ? `/${encodeURIComponent(text.chapter.stage)}/${encodeURIComponent(
-        text.chapter.name
-      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`
-    : ''
-  return (
+  const linkChapter = text.chapter ?? text.implicitChapter
+  const parallel = (
+    <>
+      <Cf parallel={text} />
+      {text.text.genre} {textIdToString(text.text)}{' '}
+      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
+      {text.chapter?.version && `${text.chapter.version} `}
+      {text.chapter?.name && `${text.chapter.name} `}
+      {lineNumberToString(text.lineNumber)}
+    </>
+  )
+  return text.exists && linkChapter ? (
     <a
       href={`/corpus/${encodeURIComponent(
         text.text.genre
       )}/${encodeURIComponent(text.text.category)}/${encodeURIComponent(
         text.text.index
-      )}${chapterPath}`}
+      )}/${encodeURIComponent(linkChapter.stage)}/${encodeURIComponent(
+        linkChapter.name
+      )}#${encodeURIComponent(lineNumberToAtf(text.lineNumber))}`}
     >
-      <Cf parallel={text} />
-      {text.text.genre} {romans.romanize(text.text.category)}.{text.text.index}{' '}
-      {text.chapter?.stage && `${Stages[text.chapter.stage].abbreviation} `}
-      {text.chapter?.version && `${text.chapter.version} `}
-      {text.chapter?.name && `${text.chapter.name} `}
-      {lineNumberToString(text.lineNumber)}
+      {parallel}
     </a>
+  ) : (
+    parallel
   )
 }
 

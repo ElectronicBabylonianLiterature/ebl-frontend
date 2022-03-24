@@ -32,8 +32,8 @@ import SignDisplay from 'signs/ui/display/SignDisplay'
 import SignService from 'signs/application/SignService'
 import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
 import ChapterView from 'corpus/ui/ChapterView'
-import { ChapterId } from 'corpus/domain/chapter'
-import { TextId } from 'corpus/domain/text'
+import { ChapterId } from 'transliteration/domain/chapter-id'
+import { TextId } from 'transliteration/domain/text-id'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]

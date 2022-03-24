@@ -2,7 +2,7 @@ import { AbstractLine, LineBaseDto } from './abstract-line'
 import { SurfaceLabel } from './labels'
 import { LineNumber, LineNumberRange } from './line-number'
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
-import { TextId } from 'corpus/domain/text'
+import { TextId } from 'transliteration/domain/text-id'
 
 export const parallelLinePrefix = '// '
 
@@ -18,6 +18,7 @@ export interface ParallelFragmentDto extends ParallelLineBaseDto {
   readonly museumNumber: MuseumNumber
   readonly hasDuplicates: boolean
   readonly surface: SurfaceLabel | null
+  readonly exists: boolean | null
 }
 
 export class ParallelFragment extends AbstractLine {
@@ -27,6 +28,7 @@ export class ParallelFragment extends AbstractLine {
   readonly hasDuplicates: boolean
   readonly surface: SurfaceLabel | null
   readonly lineNumber: LineNumber | LineNumberRange
+  readonly exists: boolean | null
 
   constructor(
     data: Pick<
@@ -37,6 +39,7 @@ export class ParallelFragment extends AbstractLine {
       | 'hasDuplicates'
       | 'surface'
       | 'lineNumber'
+      | 'exists'
     >
   ) {
     super(parallelLinePrefix, data.content)
@@ -45,6 +48,7 @@ export class ParallelFragment extends AbstractLine {
     this.hasDuplicates = data.hasDuplicates
     this.surface = data.surface
     this.lineNumber = data.lineNumber
+    this.exists = data.exists
   }
 }
 
@@ -58,6 +62,8 @@ export interface ParallelTextDto extends ParallelLineBaseDto {
   readonly type: 'ParallelText'
   readonly text: TextId
   readonly chapter: ChapterName | null
+  readonly exists: boolean | null
+  readonly implicitChapter: ChapterName | null
 }
 
 export class ParallelText extends AbstractLine {
@@ -66,11 +72,19 @@ export class ParallelText extends AbstractLine {
   readonly text: TextId
   readonly chapter: ChapterName | null
   readonly lineNumber: LineNumber | LineNumberRange
+  readonly exists: boolean | null
+  readonly implicitChapter: ChapterName | null
 
   constructor(
     data: Pick<
       ParallelTextDto,
-      'content' | 'hasCf' | 'text' | 'chapter' | 'lineNumber'
+      | 'content'
+      | 'hasCf'
+      | 'text'
+      | 'chapter'
+      | 'lineNumber'
+      | 'exists'
+      | 'implicitChapter'
     >
   ) {
     super(parallelLinePrefix, data.content)
@@ -78,6 +92,8 @@ export class ParallelText extends AbstractLine {
     this.text = data.text
     this.chapter = data.chapter
     this.lineNumber = data.lineNumber
+    this.exists = data.exists
+    this.implicitChapter = data.implicitChapter
   }
 }
 
