@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Diplay annotate view Snapshot 1`] = `
+exports[`Display annotate view Snapshot 1`] = `
 <div>
   <header
     class="Header"

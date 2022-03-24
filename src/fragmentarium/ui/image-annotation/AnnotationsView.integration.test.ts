@@ -16,7 +16,7 @@ afterEach(() => {
   fakeApi.verifyExpectations()
 })
 
-describe('Diplay annotate view', () => {
+describe('Display annotate view', () => {
   beforeEach(async () => {
     ;(URL.createObjectURL as jest.Mock).mockReturnValueOnce('mock url')
     fakeApi = new FakeApi()

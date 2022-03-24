@@ -9,6 +9,7 @@ import { TextId } from 'transliteration/domain/text-id'
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
     data.textId ?? { genre: 'L', category: 0, index: 0 },
+    data.textHasDoi ?? false,
     data.classification ?? 'Ancient',
     data.stage ?? 'Neo-Assyrian',
     data.version ?? '',
@@ -19,12 +20,12 @@ export function createChapter(data: Partial<Chapter>): Chapter {
     data.lines ?? []
   )
 }
-
 export interface TextInfo {
   readonly genre: string
   readonly category: number
   readonly index: number
   readonly name: string
+  readonly hasDoi?: boolean
   readonly numberOfVerses: number
   readonly approximateVerses: boolean
 }
@@ -47,6 +48,7 @@ export class Text implements TextInfo {
   readonly category: number = 0
   readonly index: number = 0
   readonly name: string = ''
+  readonly hasDoi: boolean = false
   readonly numberOfVerses: number = 0
   readonly approximateVerses: boolean = false
   readonly intro: string = ''

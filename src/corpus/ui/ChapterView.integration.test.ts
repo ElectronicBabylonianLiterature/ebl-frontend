@@ -33,7 +33,7 @@ afterEach(() => {
   fakeApi.verifyExpectations()
 })
 
-describe('Diplay chapter', () => {
+describe('Display chapter', () => {
   beforeEach(async () => {
     await setup(chapter)
   })

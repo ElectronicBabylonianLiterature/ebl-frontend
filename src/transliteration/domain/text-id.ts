@@ -9,3 +9,7 @@ export interface TextId {
 export function textIdToString(id: TextId): string {
   return `${id.category && romans.romanize(id.category)}.${id.index}`
 }
+
+export function textIdToDoiString(id: TextId): string {
+  return `10.5282/ebl/${id.genre.toLowerCase()}/${id.category}/${id.index}`
+}
