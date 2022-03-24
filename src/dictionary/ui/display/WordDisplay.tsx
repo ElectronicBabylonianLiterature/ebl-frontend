@@ -104,9 +104,10 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       />
       {word.cdaAddenda && (
         <>
+          <Heading number={Sections[1].number} title={Sections[1].title} />
           <Row className="ml-5">
             <Col>
-              <Heading number={Sections[1].number} title={Sections[1].title} />
+              {' '}
               <Markdown text={word.cdaAddenda} />
             </Col>
           </Row>

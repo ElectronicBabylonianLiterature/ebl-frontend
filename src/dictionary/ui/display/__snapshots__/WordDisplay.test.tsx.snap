@@ -552,26 +552,27 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
         </a>
       </div>
       <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            id="Ⅱ"
+          >
+            Ⅱ
+            . 
+            A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
+          </h3>
+        </div>
+      </div>
+      <div
         class="ml-5 row"
       >
         <div
           class="col"
         >
-          <div
-            class="row"
-          >
-            <div
-              class="col"
-            >
-              <h3
-                id="Ⅱ"
-              >
-                Ⅱ
-                . 
-                A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
-              </h3>
-            </div>
-          </div>
+           
           <span>
             fe
           </span>
