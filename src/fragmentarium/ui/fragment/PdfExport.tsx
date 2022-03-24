@@ -24,7 +24,11 @@ export async function pdfExport(
   jQueryRef: JQuery
 ): Promise<jsPDF> {
   const tableHtml: JQuery = $(
-    renderToString(TransliterationLines({ text: fragment.text }))
+    renderToString(
+      <MemoryRouter>
+        {TransliterationLines({ text: fragment.text })}
+      </MemoryRouter>
+    )
   )
   const notesHtml: JQuery = $(
     renderToString(TransliterationNotes({ notes: fragment.text.notes }))

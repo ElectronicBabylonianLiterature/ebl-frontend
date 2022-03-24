@@ -1,46 +1,13 @@
 import React, { Fragment } from 'react'
 import { Table } from 'react-bootstrap'
 import _ from 'lodash'
-import romans from 'romans'
 import withData from 'http/withData'
-import { Link } from 'react-router-dom'
 import TextService from 'corpus/application/TextService'
 import { Line } from 'corpus/domain/line'
 import TransliterationSearchResult from 'corpus/domain/TransliterationSearchResult'
-
-const defaultName = '-'
-
-function TextId({
-  searchResult: {
-    id: { textId },
-  },
-}: {
-  searchResult: TransliterationSearchResult
-}): JSX.Element {
-  return (
-    <>
-      {textId.genre} {textId.category && romans.romanize(textId.category)}.
-      {textId.index}
-    </>
-  )
-}
-
-function ChapterLink({
-  searchResult: {
-    id: { textId, stage, name },
-  },
-}: {
-  searchResult: TransliterationSearchResult
-}): JSX.Element {
-  return (
-    <Link
-      to={`/corpus/${textId.genre}/${textId.category}/${textId.index}/${stage}/${name}`}
-    >
-      {stage}
-      {name !== defaultName && ` ${name}`}
-    </Link>
-  )
-}
+import ChapterLink from './ChapterLink'
+import DisplayTextId from './DisplayTextId'
+import { chapterIdToString } from 'transliteration/domain/chapter-id'
 
 function Lines({
   searchResult: { matchingLines, siglums },
@@ -110,10 +77,12 @@ function TransliterationSearch({
         {results.map((searchResult, index: number) => (
           <tr key={index}>
             <td>
-              <TextId searchResult={searchResult} />
+              <DisplayTextId id={searchResult.id.textId} />
             </td>
             <td>
-              <ChapterLink searchResult={searchResult} />
+              <ChapterLink id={searchResult.id}>
+                {chapterIdToString(searchResult.id)}
+              </ChapterLink>
             </td>
             <td>
               <Lines searchResult={searchResult} />

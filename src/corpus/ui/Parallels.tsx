@@ -1,5 +1,8 @@
 import React from 'react'
-import { ParallelLine } from 'transliteration/domain/parallel-line'
+import {
+  ParallelLine,
+  parallelLinePrefix,
+} from 'transliteration/domain/parallel-line'
 import { DisplayParallel } from 'transliteration/ui/parallel-line'
 
 export default function Parallels({
@@ -11,6 +14,7 @@ export default function Parallels({
     <ul className="chapter-display__parallels">
       {parallelLines.map((parallelLine, index) => (
         <li key={index}>
+          {parallelLinePrefix}
           <DisplayParallel line={parallelLine} />
         </li>
       ))}

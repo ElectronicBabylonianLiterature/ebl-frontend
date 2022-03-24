@@ -1,9 +1,10 @@
 import Reference from 'bibliography/domain/Reference'
 import produce, { Draft, immerable } from 'immer'
 import _ from 'lodash'
-import romans from 'romans'
 import { MarkupPart } from 'transliteration/domain/markup'
-import { Chapter, ChapterId } from './chapter'
+import { Chapter } from './chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
+import { TextId } from 'transliteration/domain/text-id'
 
 export function createChapter(data: Partial<Chapter>): Chapter {
   return new Chapter(
@@ -17,16 +18,6 @@ export function createChapter(data: Partial<Chapter>): Chapter {
     data.uncertainFragments ?? [],
     data.lines ?? []
   )
-}
-
-export interface TextId {
-  readonly genre: string
-  readonly category: number
-  readonly index: number
-}
-
-export function textIdToString(id: TextId): string {
-  return `${id.category && romans.romanize(id.category)}.${id.index}`
 }
 
 export interface TextInfo {

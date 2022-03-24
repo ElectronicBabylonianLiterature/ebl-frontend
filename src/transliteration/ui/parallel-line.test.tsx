@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import * as parallel from 'test-support/lines/parallel'
 import { DisplayParallel } from './parallel-line'
 import lineNumberToString, {
@@ -28,7 +29,11 @@ test.each([
     "o 1'",
   ],
 ])('parallel fragment %#', (fragment, content, hash) => {
-  render(<DisplayParallel line={fragment} />)
+  render(
+    <MemoryRouter>
+      <DisplayParallel line={fragment} />
+    </MemoryRouter>
+  )
 
   const museumNumber = museumNumberToString(fragment.museumNumber)
 
@@ -38,6 +43,13 @@ test.each([
       hash
     )}`
   )
+})
+
+test('parallel fragment without link', () => {
+  const fragment = new ParallelFragment({ ...parallel.fragment, exists: false })
+  render(<DisplayParallel line={fragment} />)
+
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
 })
 
 test.each([
@@ -52,19 +64,30 @@ test.each([
     }),
     'cf. L I.1 OB version II 2',
   ],
+  [parallel.textWithImplicitChapter, 'cf. L I.1 2'],
 ])('parallel text %#', (text, content) => {
   const hash = lineNumberToAtf(text.lineNumber)
 
   render(<DisplayParallel line={text} />)
 
-  expect(screen.getByRole('link', { name: content })).toHaveAttribute(
-    'href',
-    `/corpus/L/1/1/${encodeURIComponent(
-      text.chapter?.stage ?? ''
-    )}/${encodeURIComponent(text.chapter?.name ?? '')}#${encodeURIComponent(
-      hash
-    )}`
-  )
+  const linkChapter = text.chapter ?? text.implicitChapter
+  if (linkChapter) {
+    expect(screen.getByRole('link', { name: content })).toHaveAttribute(
+      'href',
+      `/corpus/L/1/1/${encodeURIComponent(
+        linkChapter.stage
+      )}/${encodeURIComponent(linkChapter.name)}#${encodeURIComponent(hash)}`
+    )
+  } else {
+    fail('Bad test data. chapter or implicitChapter should be non null.')
+  }
+})
+
+test('parallel text without link', () => {
+  const text = new ParallelText({ ...parallel.text, exists: false })
+  render(<DisplayParallel line={text} />)
+
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
 })
 
 test('parallel composition', () => {
@@ -74,5 +97,6 @@ test('parallel composition', () => {
     parallel.composition.lineNumber
   )})`
 
-  expect(screen.getByText(content)).not.toHaveAttribute('href')
+  expect(screen.getByText(content)).toBeVisible()
+  expect(screen.queryByRole('link')).not.toBeInTheDocument()
 })

@@ -21,6 +21,7 @@ const fragmentData = {
     suffixModifier: '',
   },
   hasDuplicates: false,
+  exists: false,
 } as const
 
 const textData = {
@@ -42,6 +43,8 @@ const textData = {
     prefixModifier: '',
     suffixModifier: '',
   },
+  exists: false,
+  implicitChapter: null,
 }
 
 const compositionData = {

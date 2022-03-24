@@ -20,6 +20,7 @@ export const fragment = new ParallelFragment({
     suffixModifier: '',
   },
   hasDuplicates: false,
+  exists: true,
 })
 
 export const text = new ParallelText({
@@ -40,6 +41,31 @@ export const text = new ParallelText({
     hasPrime: false,
     prefixModifier: '',
     suffixModifier: '',
+  },
+  exists: true,
+  implicitChapter: null,
+})
+
+export const textWithImplicitChapter = new ParallelText({
+  content: [],
+  hasCf: true,
+  text: {
+    genre: 'L',
+    category: 1,
+    index: 1,
+  },
+  chapter: null,
+  lineNumber: {
+    number: 2,
+    hasPrime: false,
+    prefixModifier: '',
+    suffixModifier: '',
+  },
+  exists: true,
+  implicitChapter: {
+    stage: 'Old Babylonian',
+    version: '',
+    name: 'II',
   },
 })
 

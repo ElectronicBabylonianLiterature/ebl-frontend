@@ -11,16 +11,11 @@ import { Token } from 'transliteration/domain/token'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
-import { TextId } from './text'
+import { TextId } from 'transliteration/domain/text-id'
 import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
-
-export interface ChapterId {
-  readonly textId: TextId
-  readonly stage: string
-  readonly name: string
-}
+import { ChapterId, defaultName } from 'transliteration/domain/chapter-id'
 
 export class Chapter {
   readonly [immerable] = true
@@ -127,7 +122,7 @@ export class ChapterDisplay {
   }
 
   get fullName(): string {
-    const showName = this.id.name !== '-' || this.isSingleStage
+    const showName = this.id.name !== defaultName || this.isSingleStage
     return [
       removeMd(this.textName),
       'Chapter',

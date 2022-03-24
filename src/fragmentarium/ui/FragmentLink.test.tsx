@@ -60,6 +60,29 @@ describe('With folio', () => {
   expectToRenderChildren()
 })
 
+describe('With hash', () => {
+  const hash = 'line 1'
+
+  beforeEach(() => {
+    render(
+      <MemoryRouter>
+        <FragmentLink number={number} hash={hash} aria-label={label}>
+          {children}
+        </FragmentLink>
+      </MemoryRouter>
+    )
+  })
+
+  it('Links to the fragment', () => {
+    expect(screen.getByLabelText(label)).toHaveAttribute(
+      'href',
+      `/fragmentarium/${encodeURIComponent(number)}#${encodeURIComponent(hash)}`
+    )
+  })
+
+  expectToRenderChildren()
+})
+
 function expectToRenderChildren() {
   it('Renders children', () => {
     expect(screen.getByText(children)).toBeInTheDocument()

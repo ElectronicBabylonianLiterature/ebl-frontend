@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { text } from 'test-support/test-corpus-text'
 import CorpusTextCrumb from './CorpusTextCrumb'
 import { chapterDisplayFactory } from 'test-support/chapter-fixtures'
-import { textIdToString } from 'corpus/domain/text'
+import { textIdToString } from 'transliteration/domain/text-id'
 
 describe('ofText', () => {
   const crumb = CorpusTextCrumb.ofText(text)

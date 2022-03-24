@@ -3,6 +3,7 @@ import { ChapterListing, Text } from 'corpus/domain/text'
 import Markup from 'transliteration/ui/markup'
 import _ from 'lodash'
 import { Link } from 'react-router-dom'
+import { defaultName } from 'transliteration/domain/chapter-id'
 
 export function ChapterTitle({
   chapter,
@@ -12,7 +13,7 @@ export function ChapterTitle({
   showStage?: boolean
 }): JSX.Element {
   const showName =
-    chapter.name !== '-' || (!showStage && _.isEmpty(chapter.title))
+    chapter.name !== defaultName || (!showStage && _.isEmpty(chapter.title))
   return (
     <>
       {showStage && <>{chapter.stage} </>}

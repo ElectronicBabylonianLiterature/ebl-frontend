@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { ChapterId } from 'corpus/domain/chapter'
+import { ChapterId } from 'transliteration/domain/chapter-id'
 import withData from 'http/withData'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
