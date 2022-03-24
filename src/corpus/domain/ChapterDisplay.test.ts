@@ -3,6 +3,7 @@ import {
   chapterIdFactory,
 } from 'test-support/chapter-fixtures'
 import { Author, Translator } from 'corpus/domain/chapter'
+import { textIdToDoiString } from 'transliteration/domain/text-id'
 
 const author: Author = {
   name: 'name 1',
@@ -78,9 +79,17 @@ test('url', () => {
   )
 })
 
-describe('citation', () => {
+test.each([false, true])('doi', (textHasDoi) => {
+  const chapter = chapterDisplayFactory.build({ textHasDoi })
+  expect(chapter.doi).toEqual(
+    textHasDoi ? textIdToDoiString(chapter.id.textId) : ''
+  )
+})
+
+describe.each([true, false])('citation', (textHasDoi) => {
   const today = new Date()
   const chapter = chapterDisplayFactory.build({
+    textHasDoi,
     record: { authors: [author], publicationDate },
   })
   const data = chapter.citation.data[0]
@@ -111,7 +120,8 @@ describe('citation', () => {
 
   test('URL', () => expect(data.URL).toEqual(chapter.url))
 
-  test('DOI', () => expect(data.DOI).toEqual(chapter.doi))
+  test('DOI', () =>
+    expect(data.DOI).toEqual(textHasDoi ? chapter.doi : undefined))
 })
 
 test('getTranslatorsFor', () => {
