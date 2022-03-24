@@ -38,7 +38,12 @@ const Heading = ({
 
 const Sections = [
   { number: 'Ⅰ', title: 'A Concise Dictionary of Akkadian' },
-  { number: 'Ⅱ', title: 'Akkadische Glossare und Indizes' },
+  {
+    number: 'Ⅱ',
+    title:
+      'A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)',
+  },
+  { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
 ]
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
@@ -97,8 +102,27 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
         icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
       />
+      {word.cdaAddenda && (
+        <>
+          <Row className="ml-5">
+            <Col>
+              <Heading number={Sections[1].number} title={Sections[1].title} />
+              <Markdown text={word.cdaAddenda} />
+            </Col>
+          </Row>
+          <LiteratureRedirectBox
+            authors="Postgate, N.; Worthington, M."
+            book={Sections[1].title}
+            notelink=""
+            subtitle="2003–2011"
+            note="By permission from the authors"
+            link="https://www.soas.ac.uk/cda-archive/"
+            icon="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </>
+      )}
       {word.akkadischeGlossareUndIndices && (
-        <Heading number={Sections[1].number} title={Sections[1].title} />
+        <Heading number={Sections[2].number} title={Sections[2].title} />
       )}
       {word.akkadischeGlossareUndIndices && (
         <AGI AkkadischeGlossareUndIndices={word.akkadischeGlossareUndIndices} />
@@ -106,7 +130,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       {word.akkadischeGlossareUndIndices && (
         <LiteratureRedirectBox
           authors="Sommerfeld, W."
-          book={Sections[1].title}
+          book={Sections[2].title}
           notelink="https://creativecommons.org/licenses/by-nd/4.0/"
           subtitle="Version 1.1 (26. Mai 2021)"
           note="CC BY-ND 4.0"

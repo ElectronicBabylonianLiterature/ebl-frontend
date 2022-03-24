@@ -18,6 +18,7 @@ export default interface Word {
   readonly pos: readonly string[]
   readonly guideWord: string
   readonly arabicGuideWord: string
+  readonly cdaAddenda: string
   readonly oraccWords: readonly OraccWord[]
   readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
   readonly [key: string]: any

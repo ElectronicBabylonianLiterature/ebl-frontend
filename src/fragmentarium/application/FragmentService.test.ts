@@ -44,6 +44,7 @@ const word: Word = {
   homonym: 'I',
   guideWord: 'test',
   arabicGuideWord: 'test',
+  cdaAddenda: 'test',
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
   pos: [],
