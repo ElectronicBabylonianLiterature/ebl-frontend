@@ -5,21 +5,21 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { LineProps } from './LineProps'
 import { lineNumberToAtf } from 'transliteration/domain/lineNumberToString'
 import TransliterationTd from './TransliterationTd'
+import { Labels, labelsAbbreviation } from 'transliteration/domain/labels'
 
-function createId(surface: LineProps['surface'], textLine: TextLine) {
-  const surfaceAbbreviation = surface ? `${surface.abbreviation} ` : ''
-  const id = `${surfaceAbbreviation}${lineNumberToAtf(textLine.lineNumber)}`
-  return id
+function createId(labels: Labels | undefined, textLine: TextLine) {
+  const label = labels ? `${labelsAbbreviation(labels)} ` : ''
+  return `${label}${lineNumberToAtf(textLine.lineNumber)}`
 }
 
 export default function DisplayTextLine({
   line,
   columns,
-  surface,
+  labels,
   activeLine = '',
 }: LineProps): JSX.Element {
   const textLine = line as TextLine
-  const id = createId(surface, textLine)
+  const id = createId(labels, textLine)
   const lineRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
