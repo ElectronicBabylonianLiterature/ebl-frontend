@@ -226,6 +226,17 @@ exports[`With session 1`] = `
               >
                 Lexicography
               </a>
+              <a
+                aria-controls="CorpusTab-2-tabpane-Med"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Med"
+                href="#"
+                id="CorpusTab-2-tab-Med"
+                role="tab"
+              >
+                Medicine
+              </a>
             </nav>
             <div
               class="tab-content"
@@ -467,6 +478,51 @@ exports[`With session 1`] = `
                           1
                           . 
                           Lexicography First Category
+                        </a>
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        3
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-2-tab-Med"
+                class="fade tab-pane"
+                id="CorpusTab-2-tabpane-Med"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Nineveh Medical Encyclopaedia
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  >
+                    <li
+                      class="row"
+                    >
+                      <div
+                        class="col-md-8"
+                      >
+                        <a
+                          href="/corpus/Med/1/1"
+                        >
+                          1
+                          . 
+                          Medicine First Category
                         </a>
                       </div>
                       <div
@@ -723,6 +779,17 @@ exports[`Without session 1`] = `
               >
                 Lexicography
               </a>
+              <a
+                aria-controls="CorpusTab-5-tabpane-Med"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-rb-event-key="Med"
+                href="#"
+                id="CorpusTab-5-tab-Med"
+                role="tab"
+              >
+                Medicine
+              </a>
             </nav>
             <div
               class="tab-content"
@@ -941,6 +1008,47 @@ exports[`Without session 1`] = `
                         1
                         . 
                         Lexicography First Category
+                      </div>
+                      <div
+                        class="col-md-4"
+                      >
+                        
+                        3
+                         vv.
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+              </div>
+              <div
+                aria-hidden="true"
+                aria-labelledby="CorpusTab-5-tab-Med"
+                class="fade tab-pane"
+                id="CorpusTab-5-tabpane-Med"
+                role="tabpanel"
+              >
+                <section>
+                  <h3 />
+                  <ol
+                    class="container-fluid"
+                  />
+                </section>
+                <section>
+                  <h3>
+                    I. Nineveh Medical Encyclopaedia
+                  </h3>
+                  <ol
+                    class="container-fluid"
+                  >
+                    <li
+                      class="row"
+                    >
+                      <div
+                        class="col-md-8"
+                      >
+                        1
+                        . 
+                        Medicine First Category
                       </div>
                       <div
                         class="col-md-4"
