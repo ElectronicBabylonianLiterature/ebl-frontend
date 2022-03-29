@@ -137,6 +137,7 @@ test.each([
         pos: [],
         guideWord: '',
         arabicGuideWord: '',
+        origin: 'cda',
         cdaAddenda: '(egg-shaped) bead',
         oraccWords: [],
         akkadischeGlossareUndIndices: [],
