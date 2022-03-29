@@ -548,7 +548,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           <i
             class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
           />
-          \`
         </a>
       </div>
       <div
@@ -607,7 +606,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           <i
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
-          \`
         </a>
       </div>
       <div
@@ -756,7 +754,6 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           <i
             class="pointer__hover my-2 fas fa-external-link-square-alt"
           />
-          \`
         </a>
       </div>
     </div>

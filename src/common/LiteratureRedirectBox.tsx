@@ -32,7 +32,7 @@ export const LiteratureRedirectBox = ({
     )) || <strong>{note}</strong>}
     <br />
     <ExternalLink className="text-dark " href={link}>
-      <i className={icon} />`
+      <i className={icon} />
     </ExternalLink>
   </div>
 )
