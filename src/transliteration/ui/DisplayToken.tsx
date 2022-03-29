@@ -21,6 +21,7 @@ import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from './SubIndex'
+import { OverlayTrigger, Popover } from 'react-bootstrap'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
@@ -255,12 +256,32 @@ function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
 
 function WordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const word = token as Word
-  return (
+  const InnerWord = () => (
     <EnclosureFlags token={token}>
       {word.parts.map((token, index) => (
         <DisplayToken key={index} token={token} Wrapper={Wrapper} />
       ))}
     </EnclosureFlags>
+  )
+  const WordInfo = (
+    <Popover id={_.uniqueId('word-info-')}>
+      <Popover.Title>
+        <InnerWord />
+      </Popover.Title>
+      <Popover.Content></Popover.Content>
+    </Popover>
+  )
+  return (
+    <OverlayTrigger
+      trigger="click"
+      rootClose
+      placement="top"
+      overlay={WordInfo}
+    >
+      <span>
+        <InnerWord />
+      </span>
+    </OverlayTrigger>
   )
 }
 
