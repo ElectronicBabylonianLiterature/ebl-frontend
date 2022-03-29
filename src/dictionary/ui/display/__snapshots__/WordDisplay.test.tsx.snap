@@ -562,6 +562,65 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           >
             Ⅱ
             . 
+            A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
+          </h3>
+        </div>
+      </div>
+      <div
+        class="ml-5 row"
+      >
+        <div
+          class="col"
+        >
+           
+          <span>
+            fe
+          </span>
+        </div>
+      </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Postgate, N.; Worthington, M.
+        , 
+        <em>
+          A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)
+        </em>
+        . 
+        2003–2011
+        .
+        <br />
+        <strong>
+          By permission from the authors
+        </strong>
+        <br />
+        <a
+          class="text-dark "
+          href="https://www.soas.ac.uk/cda-archive/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+          \`
+        </a>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            id="Ⅲ"
+          >
+            Ⅲ
+            . 
             Akkadische Glossare und Indizes
           </h3>
         </div>

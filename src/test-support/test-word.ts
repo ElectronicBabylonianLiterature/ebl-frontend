@@ -67,6 +67,7 @@ export const wordDto: Word = {
   pos: ['V'],
   guideWord: 'weed',
   arabicGuideWord: 'weed',
+  cdaAddenda: '(egg-shaped) bead',
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
 }
