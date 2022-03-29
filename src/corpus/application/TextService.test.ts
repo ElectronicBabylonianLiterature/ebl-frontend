@@ -100,6 +100,7 @@ const word: Word = {
   homonym: 'I',
   guideWord: '',
   arabicGuideWord: '',
+  origin: '',
   cdaAddenda: '',
   oraccWords: [],
   akkadischeGlossareUndIndices: [],

@@ -59,10 +59,16 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           <Row>
             <Col>
               <strong>
-                {word.lemma.join(' ')}
-                {word.attested === false && '*'} {word.homonym}
+                {word.attested === false && '*'}
+                {word.lemma.join(' ')} {word.homonym}
               </strong>
-              , &ldquo;{word.guideWord}&rdquo;
+              {word.guideWord.length > 0 && (
+                <>
+                  , &ldquo;
+                  <Markdown text={word.guideWord} />
+                  &rdquo;
+                </>
+              )}
               {word.arabicGuideWord.length > 0 && (
                 <> ({word.arabicGuideWord})</>
               )}
@@ -91,17 +97,21 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
         </>
       }
     >
-      <Heading number={Sections[0].number} title={Sections[0].title} />
-      <WordDisplayDetails word={word} />
-      <LiteratureRedirectBox
-        authors="Black, J.; George, A.R.; Postgate, N."
-        book={Sections[0].title}
-        subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
-        notelink=""
-        note="By permission from Harrassowitz"
-        link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
-        icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
-      />
+      {word.origin === 'cda' && (
+        <>
+          <Heading number={Sections[0].number} title={Sections[0].title} />
+          <WordDisplayDetails word={word} />
+          <LiteratureRedirectBox
+            authors="Black, J.; George, A.R.; Postgate, N."
+            book={Sections[0].title}
+            subtitle="Second (corrected) printing. SANTAG Arbeiten und Untersuchungen zur Keilschriftkunde 5. Wiesbaden: Harrassowitz, ²2000"
+            notelink=""
+            note="By permission from Harrassowitz"
+            link="https://www.harrassowitz-verlag.de/isbn_978-3-447-04264-2.ahtml"
+            icon="pointer__hover my-2 fas fa-shopping-cart fa-2x"
+          />
+        </>
+      )}
       {word.cdaAddenda && (
         <>
           <Heading number={Sections[1].number} title={Sections[1].title} />
