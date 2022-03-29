@@ -62,7 +62,13 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
                 {word.attested === false && '*'}
                 {word.lemma.join(' ')} {word.homonym}
               </strong>
-              {word.guideWord.length > 0 && `, &ldquo;{word.guideWord}&rdquo;`}
+              {word.guideWord.length > 0 && (
+                <>
+                  , &ldquo;
+                  <Markdown text={word.guideWord} />
+                  &rdquo;
+                </>
+              )}
               {word.arabicGuideWord.length > 0 && (
                 <> ({word.arabicGuideWord})</>
               )}
