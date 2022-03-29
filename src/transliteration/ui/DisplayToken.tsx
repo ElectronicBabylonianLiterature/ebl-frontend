@@ -13,6 +13,7 @@ import {
   Token,
   UnknownSign,
   Variant,
+  Word,
 } from 'transliteration/domain/token'
 import { addAccents, addBreves } from 'transliteration/domain/accents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -252,6 +253,17 @@ function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
+function WordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  const word = token as Word
+  return (
+    <EnclosureFlags token={token}>
+      {word.parts.map((token, index) => (
+        <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+      ))}
+    </EnclosureFlags>
+  )
+}
+
 const tokens: ReadonlyMap<
   Token['type'],
   FunctionComponent<{
@@ -276,6 +288,7 @@ const tokens: ReadonlyMap<
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
   ['AkkadianWord', AkkadianWordComponent],
+  ['Word', WordComponent],
 ])
 
 export default function DisplayToken({
