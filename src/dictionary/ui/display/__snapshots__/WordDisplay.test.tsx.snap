@@ -58,7 +58,11 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
                  
                 IV
               </strong>
-              , &ldquo;{word.guideWord}&rdquo;
+              , “
+              <span>
+                fe
+              </span>
+              ”
                (
               fe
               )
