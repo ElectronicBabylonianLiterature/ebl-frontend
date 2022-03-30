@@ -16,6 +16,7 @@ import TranslationLine from 'transliteration/domain/translation-line'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { ChapterId, defaultName } from 'transliteration/domain/chapter-id'
+import { AnyArray } from 'immer/dist/internal'
 
 export class Chapter {
   readonly [immerable] = true
@@ -65,11 +66,12 @@ export interface LineDisplay {
   readonly number: LineNumber
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
-  readonly intertext: ReadonlyArray<MarkupPart>
-  readonly reconstruction: ReadonlyArray<Token>
+  readonly intertext: ReadonlyArray<MarkupPart> //TODO: make nested in variants
+  readonly reconstruction: ReadonlyArray<Token> //TODO: make nested in variants
   readonly translation: ReadonlyArray<TranslationLine>
-  readonly note: NoteLine | null
-  readonly parallelLines: ReadonlyArray<ParallelLine>
+  readonly note: NoteLine | null //TODO: make nested in variants
+  readonly parallelLines: ReadonlyArray<ParallelLine> //TODO: make nested in variants
+  readonly variants: AnyArray //TODO: specify type
 }
 
 export interface Author {

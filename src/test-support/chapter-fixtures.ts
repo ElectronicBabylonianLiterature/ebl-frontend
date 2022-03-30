@@ -114,6 +114,7 @@ export const lineDisplayDtoFactory = Factory.define<
         content: [],
       },
     ],
+    variants: [], //TODO: Add specification
   }
 })
 
@@ -179,6 +180,7 @@ export const lineDisplayFactory = Factory.define<
         content: [],
       }),
     ],
+    variants: [], //TODO: Add specification
   }
 })
 

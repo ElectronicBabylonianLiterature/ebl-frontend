@@ -148,6 +148,9 @@ export function ChapterViewLine({
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
 
+  const variantsLen = line.variants.length
+  console.log('!!!', line, variantsLen)
+
   const transliteration = useMemo(
     () => (
       <>

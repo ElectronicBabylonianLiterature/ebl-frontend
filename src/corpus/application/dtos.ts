@@ -49,6 +49,7 @@ export type LineDisplayDto = Pick<
   | 'isBeginningOfSection'
   | 'intertext'
   | 'reconstruction'
+  | 'variants'
 > & {
   translation: {
     language: string
