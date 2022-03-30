@@ -131,6 +131,49 @@ export function ChapterViewLine({
   textService: TextService
   activeLine: string
 }): JSX.Element {
+  const variants = useMemo(
+    () =>
+      line.variants.map((variant, variantNumber) => {
+        const variantId = _.uniqueId('variant-')
+        console.log(variant, variantNumber)
+        return (
+          <ChapterViewLineVariant
+            key={variantId}
+            chapter={chapter}
+            lineNumber={lineNumber}
+            line={line}
+            variantNumber={variantNumber}
+            columns={columns}
+            maxColumns={maxColumns}
+            textService={textService}
+            activeLine={activeLine}
+          />
+        )
+      }),
+    [chapter, lineNumber, line, columns, maxColumns, textService, activeLine]
+  )
+  return variants
+}
+
+export function ChapterViewLineVariant({
+  chapter,
+  lineNumber,
+  line,
+  variantNumber,
+  columns,
+  maxColumns,
+  textService,
+  activeLine,
+}: {
+  chapter: ChapterDisplay
+  lineNumber: number
+  line: LineDisplay
+  variantNumber: number
+  columns: readonly TextLineColumn[]
+  maxColumns: number
+  textService: TextService
+  activeLine: string
+}): JSX.Element {
   const scoreId = _.uniqueId('score-')
   const noteId = _.uniqueId('note-')
   const parallelsId = _.uniqueId('parallels-')
@@ -147,9 +190,6 @@ export function ChapterViewLine({
     dispatchRows,
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
-
-  const variantsLen = line.variants.length
-  console.log('!!!', line, variantsLen)
 
   const transliteration = useMemo(
     () => (
