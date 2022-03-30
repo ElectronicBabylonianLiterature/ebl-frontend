@@ -1,3 +1,4 @@
+import { defaultLabels } from 'transliteration/domain/labels'
 import {
   ParallelComposition,
   ParallelFragment,
@@ -12,7 +13,7 @@ export const fragment = new ParallelFragment({
     number: '1',
     suffix: '',
   },
-  surface: null,
+  labels: defaultLabels,
   lineNumber: {
     number: 1,
     hasPrime: true,

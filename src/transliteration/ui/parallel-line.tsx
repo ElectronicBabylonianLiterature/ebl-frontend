@@ -1,8 +1,8 @@
+import React from 'react'
 import { Stages } from 'corpus/domain/period'
 import { museumNumberToString } from 'fragmentarium/domain/MuseumNumber'
 import FragmentLink from 'fragmentarium/ui/FragmentLink'
-import React from 'react'
-import { statusAbbreviation } from 'transliteration/domain/labels'
+import { labelsAbbreviation } from 'transliteration/domain/labels'
 import lineNumberToString, {
   lineNumberToAtf,
 } from 'transliteration/domain/lineNumberToString'
@@ -35,17 +35,13 @@ export function DisplayParallelFragment({
   fragment: ParallelFragment
 }): JSX.Element {
   const atfLineNumber = lineNumberToAtf(fragment.lineNumber)
-  const hash = fragment.surface
-    ? `${fragment.surface.abbreviation} ${atfLineNumber}`
-    : atfLineNumber
+  const labels = labelsAbbreviation(fragment.labels)
+  const hash = labels ? `${labels} ${atfLineNumber}` : atfLineNumber
+
   const parallel = (
     <>
       <Cf parallel={fragment} />F {fragment.hasDuplicates ? '&d ' : ''}
-      {museumNumberToString(fragment.museumNumber)}{' '}
-      {fragment.surface &&
-        `${fragment.surface.abbreviation}${fragment.surface.status
-          .map(statusAbbreviation)
-          .join('')} `}
+      {museumNumberToString(fragment.museumNumber)} {labels}{' '}
       {lineNumberToString(fragment.lineNumber)}
     </>
   )
