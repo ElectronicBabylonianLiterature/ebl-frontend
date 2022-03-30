@@ -7,6 +7,7 @@ import Display from './Display'
 import { wordDto } from 'test-support/test-word'
 import { MemoryRouter } from 'react-router-dom'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 jest.mock('dictionary/application/WordService')
 
@@ -32,7 +33,13 @@ beforeEach(async () => {
   await act(async () => {
     element = render(
       <MemoryRouter>
-        <Display fragment={fragment} wordService={wordService} activeLine="" />
+        <DictionaryContext.Provider value={wordService}>
+          <Display
+            fragment={fragment}
+            wordService={wordService}
+            activeLine=""
+          />
+        </DictionaryContext.Provider>
       </MemoryRouter>
     )
   })

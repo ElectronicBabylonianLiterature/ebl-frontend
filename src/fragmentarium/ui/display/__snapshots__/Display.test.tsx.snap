@@ -211,7 +211,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -368,7 +370,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -406,7 +410,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--BROKEN_AWAY"
                 >
@@ -537,7 +543,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -581,7 +589,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -706,7 +716,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -758,7 +770,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -797,7 +811,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -880,7 +896,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -934,7 +952,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--BROKEN_AWAY"
                 >
@@ -1013,7 +1033,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1255,7 +1277,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1297,7 +1321,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1344,7 +1370,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1544,7 +1572,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1752,7 +1782,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -1809,7 +1841,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -1955,7 +1989,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -2051,7 +2087,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -2234,7 +2272,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -2356,7 +2396,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2658,7 +2700,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2696,7 +2740,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2772,7 +2818,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2810,7 +2858,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2848,7 +2898,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2886,7 +2938,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -2962,7 +3016,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3026,7 +3082,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3050,7 +3108,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3196,7 +3256,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3294,7 +3356,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--SUMERIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3396,7 +3460,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3420,7 +3486,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3566,7 +3634,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3664,7 +3734,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--EMESAL"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3766,7 +3838,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3813,7 +3887,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--ACCIDENTAL_OMISSION"
                 >
@@ -3860,7 +3936,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -3907,7 +3985,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--INTENTIONAL_OMISSION"
                 >
@@ -3954,7 +4034,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -4001,7 +4083,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--REMOVAL"
                 >
@@ -4052,7 +4136,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4140,7 +4226,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--ACCIDENTAL_OMISSION"
                 >
@@ -4199,7 +4287,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4258,7 +4348,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--INTENTIONAL_OMISSION"
                 >
@@ -4317,7 +4409,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4376,7 +4470,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS Transliteration__Word--REMOVAL"
                 >
@@ -4435,7 +4531,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4570,7 +4668,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4674,7 +4774,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4778,7 +4880,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
                 >
@@ -4916,7 +5020,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -4943,7 +5049,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5037,7 +5145,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5079,7 +5189,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5121,7 +5233,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5185,7 +5299,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5227,7 +5343,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5291,7 +5409,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5333,7 +5453,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5411,7 +5533,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5449,7 +5573,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-bs"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5487,7 +5613,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-cm"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5525,7 +5653,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-qt"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5563,7 +5693,9 @@ exports[`Snapshot 1`] = `
             <span
               class="Transliteration__Word Transliteration__Word--AKKADIAN Transliteration__Word--commentary-protocol-zz"
             >
-              <span>
+              <span
+                class="word-info__trigger"
+              >
                 <span
                   class=""
                 >
@@ -5702,66 +5834,25 @@ exports[`Snapshot 1`] = `
               class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
-                class=""
+                class="word-info__trigger"
               >
                 <span
-                  class="Transliteration__ValueToken"
+                  class=""
                 >
                   <span
-                    class=""
+                    class="Transliteration__ValueToken"
                   >
-                    kur
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
                   </span>
-                </span>
-                <sup
-                  class="Transliteration__flag"
-                >
-                  ?
-                </sup>
-              </span>
-            </span>
-            <span
-              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-            >
-               
-            </span>
-            <span
-              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="Transliteration__Emendation"
-                >
-                  <span
-                    class=""
+                  <sup
+                    class="Transliteration__flag"
                   >
-                    &lt;
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  <span
-                    class="Transliteration__ValueToken--EMENDATION"
-                  >
-                    ḫur
-                  </span>
-                </span>
-                <sup
-                  class="Transliteration__flag"
-                >
-                  !
-                </sup>
-                <span
-                  class="Transliteration__Emendation"
-                >
-                  <span
-                    class="Transliteration__Emendation--EMENDATION"
-                  >
-                    &gt;
-                  </span>
+                    ?
+                  </sup>
                 </span>
               </span>
             </span>
@@ -5774,77 +5865,42 @@ exports[`Snapshot 1`] = `
               class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
-                class=""
+                class="word-info__trigger"
               >
                 <span
-                  class="Transliteration__BrokenAway"
+                  class=""
                 >
                   <span
-                    class=""
+                    class="Transliteration__Emendation"
                   >
-                    [
+                    <span
+                      class=""
+                    >
+                      &lt;
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
                   <span
-                    class="Transliteration__ValueToken--BROKEN_AWAY"
+                    class="Transliteration__ValueToken"
                   >
-                    kur
+                    <span
+                      class="Transliteration__ValueToken--EMENDATION"
+                    >
+                      ḫur
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__Joiner"
-                >
-                  <span
-                    class="Transliteration__Joiner--BROKEN_AWAY"
+                  <sup
+                    class="Transliteration__flag"
                   >
-                    -
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__PerhapsBrokenAway"
-                >
+                    !
+                  </sup>
                   <span
-                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                    class="Transliteration__Emendation"
                   >
-                    (
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
-                  <span
-                    class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
-                  >
-                    kur
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__PerhapsBrokenAway"
-                >
-                  <span
-                    class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
-                  >
-                    )
-                  </span>
-                </span>
-                <span
-                  class="Transliteration__UnknownNumberOfSigns"
-                >
-                  …
-                </span>
-                <sup
-                  class="Transliteration__flag"
-                />
-                <span
-                  class="Transliteration__BrokenAway"
-                >
-                  <span
-                    class="Transliteration__BrokenAway--BROKEN_AWAY"
-                  >
-                    ]
+                    <span
+                      class="Transliteration__Emendation--EMENDATION"
+                    >
+                      &gt;
+                    </span>
                   </span>
                 </span>
               </span>
@@ -5858,36 +5914,81 @@ exports[`Snapshot 1`] = `
               class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
-                class=""
+                class="word-info__trigger"
               >
                 <span
-                  class="Transliteration__PerhapsBrokenAway"
+                  class=""
                 >
                   <span
-                    class=""
+                    class="Transliteration__BrokenAway"
                   >
-                    (
+                    <span
+                      class=""
+                    >
+                      [
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
                   <span
-                    class="Transliteration__ValueToken--PERHAPS"
+                    class="Transliteration__ValueToken"
                   >
-                    kur
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY"
+                    >
+                      kur
+                    </span>
                   </span>
-                </span>
-                <sup
-                  class="Transliteration__flag"
-                />
-                <span
-                  class="Transliteration__PerhapsBrokenAway"
-                >
                   <span
-                    class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                    class="Transliteration__Joiner"
                   >
-                    )
+                    <span
+                      class="Transliteration__Joiner--BROKEN_AWAY"
+                    >
+                      -
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__PerhapsBrokenAway"
+                  >
+                    <span
+                      class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY"
+                    >
+                      (
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class="Transliteration__ValueToken--BROKEN_AWAY Transliteration__ValueToken--PERHAPS_BROKEN_AWAY"
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__PerhapsBrokenAway"
+                  >
+                    <span
+                      class="Transliteration__PerhapsBrokenAway--BROKEN_AWAY Transliteration__PerhapsBrokenAway--PERHAPS_BROKEN_AWAY"
+                    >
+                      )
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__UnknownNumberOfSigns"
+                  >
+                    …
+                  </span>
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                  <span
+                    class="Transliteration__BrokenAway"
+                  >
+                    <span
+                      class="Transliteration__BrokenAway--BROKEN_AWAY"
+                    >
+                      ]
+                    </span>
                   </span>
                 </span>
               </span>
@@ -5901,43 +6002,94 @@ exports[`Snapshot 1`] = `
               class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
             >
               <span
-                class=""
+                class="word-info__trigger"
               >
                 <span
-                  class="Transliteration__ValueToken"
+                  class=""
                 >
                   <span
-                    class=""
+                    class="Transliteration__PerhapsBrokenAway"
                   >
-                    kur
+                    <span
+                      class=""
+                    >
+                      (
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class="Transliteration__ValueToken--PERHAPS"
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <sup
+                    class="Transliteration__flag"
+                  />
+                  <span
+                    class="Transliteration__PerhapsBrokenAway"
+                  >
+                    <span
+                      class="Transliteration__PerhapsBrokenAway--PERHAPS"
+                    >
+                      )
+                    </span>
                   </span>
                 </span>
+              </span>
+            </span>
+            <span
+              class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+            >
+               
+            </span>
+            <span
+              class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+            >
+              <span
+                class="word-info__trigger"
+              >
                 <span
-                  class="Transliteration__Joiner"
+                  class=""
                 >
                   <span
-                    class=""
+                    class="Transliteration__ValueToken"
                   >
-                    -
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
                   </span>
-                </span>
-                <span
-                  class="Transliteration__ValueToken"
-                >
                   <span
-                    class=""
+                    class="Transliteration__Joiner"
                   >
-                    kur
+                    <span
+                      class=""
+                    >
+                      -
+                    </span>
                   </span>
+                  <span
+                    class="Transliteration__ValueToken"
+                  >
+                    <span
+                      class=""
+                    >
+                      kur
+                    </span>
+                  </span>
+                  <span
+                    class="Transliteration__UnknownNumberOfSigns"
+                  >
+                    …
+                  </span>
+                  <sup
+                    class="Transliteration__flag"
+                  />
                 </span>
-                <span
-                  class="Transliteration__UnknownNumberOfSigns"
-                >
-                  …
-                </span>
-                <sup
-                  class="Transliteration__flag"
-                />
               </span>
             </span>
           </td>
@@ -6439,7 +6591,9 @@ exports[`Snapshot 1`] = `
           <span
             class="Transliteration__Word Transliteration__Word--AKKADIAN"
           >
-            <span>
+            <span
+              class="word-info__trigger"
+            >
               <span
                 class=""
               >
@@ -6480,7 +6634,9 @@ exports[`Snapshot 1`] = `
           <span
             class="Transliteration__Word Transliteration__Word--SUMERIAN"
           >
-            <span>
+            <span
+              class="word-info__trigger"
+            >
               <span
                 class=""
               >
@@ -6548,7 +6704,9 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Word"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class="Transliteration__Word--BROKEN_AWAY Transliteration__Word--DOCUMENT_ORIENTED_GLOSS"
             >

@@ -27,7 +27,9 @@ exports[`Glossary snapshot 1`] = `
         <span
           class="Transliteration__Word"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >
@@ -105,7 +107,9 @@ exports[`Glossary snapshot 1`] = `
         <span
           class="Transliteration__Word"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >

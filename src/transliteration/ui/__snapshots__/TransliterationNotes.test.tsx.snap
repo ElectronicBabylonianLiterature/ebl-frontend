@@ -33,7 +33,9 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >
@@ -74,7 +76,9 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >
@@ -143,7 +147,9 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Word Transliteration__Word--AKKADIAN"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >
@@ -184,7 +190,9 @@ exports[`Snapshot 1`] = `
         <span
           class="Transliteration__Word Transliteration__Word--SUMERIAN"
         >
-          <span>
+          <span
+            class="word-info__trigger"
+          >
             <span
               class=""
             >
