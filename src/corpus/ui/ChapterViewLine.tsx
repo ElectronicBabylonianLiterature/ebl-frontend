@@ -21,6 +21,7 @@ import TranslationContext from './TranslationContext'
 import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
+import { createColumns } from 'transliteration/domain/columns'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -152,7 +153,7 @@ export function ChapterViewLine({
       }),
     [chapter, lineNumber, line, columns, maxColumns, textService, activeLine]
   )
-  return variants
+  return <>{variants}</>
 }
 
 export function ChapterViewLineVariant({
@@ -191,14 +192,23 @@ export function ChapterViewLineVariant({
   ] = useContext(RowsContext)
   const [{ language }] = useContext(TranslationContext)
 
+  const column = useMemo(
+    () => createColumns(line.variants[variantNumber].reconstruction),
+    [line, variantNumber]
+  )
+
   const transliteration = useMemo(
     () => (
       <>
-        <LineNumber line={line} activeLine={activeLine} />
-        <LineColumns columns={columns} maxColumns={maxColumns} />
+        {variantNumber === 0 ? (
+          <LineNumber line={line} activeLine={activeLine} />
+        ) : (
+          <td>{`variant ${variantNumber}`}</td>
+        )}
+        <LineColumns columns={column} maxColumns={maxColumns} />
       </>
     ),
-    [activeLine, columns, line, maxColumns]
+    [activeLine, column, line, variantNumber, maxColumns]
   )
   const score = useMemo(
     () => (
@@ -214,16 +224,19 @@ export function ChapterViewLineVariant({
   )
   const note = useMemo(
     () =>
-      line.note && (
+      line.variants[variantNumber].note && (
         <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
-          <Markup className="chapter-display__note" parts={line.note.parts} />
+          <Markup
+            className="chapter-display__note"
+            parts={line.variants[variantNumber].note.parts}
+          />
         </CollapsibleRow>
       ),
-    [line.note, noteId, showNote, totalColumns]
+    [line, variantNumber, noteId, showNote, totalColumns]
   )
   const parallels = useMemo(
     () =>
-      line.parallelLines.length > 0 && (
+      line.variants[variantNumber].parallelLines.length > 0 && (
         <CollapsibleRow
           show={showParallels}
           id={parallelsId}
@@ -232,7 +245,7 @@ export function ChapterViewLineVariant({
           <Parallels lines={line.parallelLines} />
         </CollapsibleRow>
       ),
-    [line.parallelLines, parallelsId, showParallels, totalColumns]
+    [line, variantNumber, parallelsId, showParallels, totalColumns]
   )
 
   return (
@@ -268,7 +281,7 @@ export function ChapterViewLineVariant({
           className="chapter-display__toggle"
           onClick={() => dispatchRows({ type: 'toggleNote', row: lineNumber })}
         >
-          {line.note && (
+          {line.variants[variantNumber].note && (
             <i
               className={classNames({
                 fas: true,
@@ -288,7 +301,7 @@ export function ChapterViewLineVariant({
             dispatchRows({ type: 'toggleParallels', row: lineNumber })
           }
         >
-          {line.parallelLines.length > 0 && (
+          {line.variants[variantNumber].parallelLines.length > 0 && (
             <i
               className={classNames({
                 fas: true,
