@@ -198,7 +198,7 @@ function App({
               <ChapterView
                 textService={textService}
                 id={parseChapterId(match.params)}
-                activeLine={location.hash.replace(/^#/, '')}
+                activeLine={decodeURIComponent(location.hash.replace(/^#/, ''))}
               />
             )}
           />
