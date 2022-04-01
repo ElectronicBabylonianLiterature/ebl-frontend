@@ -3,14 +3,23 @@ import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Word.css'
 import InlineMarkdown from 'common/InlineMarkdown'
-import Word from 'dictionary/domain/Word'
+import Word, {
+  Form as WordForm,
+  Derived as WordDerived,
+} from 'dictionary/domain/Word'
+import ErrorBoundary from 'common/ErrorBoundary'
 
 export function Lemma({
   container = 'em',
   word,
 }: {
   container?: string
-  word: Word
+  word: {
+    _id?: string
+    attested?: boolean
+    lemma: readonly string[]
+    homonym?: string
+  }
 }): JSX.Element {
   const attested = word.attested === false ? '*' : ''
   const lemma = word.lemma.join(' ')
@@ -58,7 +67,11 @@ function Notes({
   )
 }
 
-function Form({ value }: { value: string | Word }): JSX.Element {
+function Form({
+  value,
+}: {
+  value: string | WordForm | WordDerived
+}): JSX.Element {
   return _.isString(value) ? (
     <InlineMarkdown source={value} />
   ) : (
@@ -67,6 +80,7 @@ function Form({ value }: { value: string | Word }): JSX.Element {
     </Notes>
   )
 }
+
 function AmplifiedMeanings({
   values,
 }: {
@@ -92,7 +106,11 @@ function AmplifiedMeanings({
   )
 }
 
-function Derived({ derived }: { derived: readonly any[][] }): JSX.Element {
+function Derived({
+  derived,
+}: {
+  derived: readonly WordDerived[][]
+}): JSX.Element {
   return (
     <ul>
       {derived.map((group, index) => (
@@ -134,26 +152,30 @@ class WordDisplay extends Component<{ value: Word }> {
   render(): JSX.Element {
     return (
       <div className="Word">
-        <Link
-          to={`/dictionary/${this.props.value._id}/edit`}
-          className="BibliographySearch__edit"
-        >
-          <i className="fas fa-edit" />
-        </Link>
-        <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
-          <Lemma word={this.word} container="strong" />
-        </dfn>
-        {!_.isEmpty(this.forms) && this.forms}{' '}
-        <InlineMarkdown source={this.word.meaning} />{' '}
-        {this.isNotEmpty('amplifiedMeanings') && (
-          <AmplifiedMeanings values={this.word.amplifiedMeanings} />
-        )}{' '}
-        {this.isNotEmpty('derived') && <Derived derived={this.word.derived} />}{' '}
-        {this.word.derivedFrom && (
-          <span className="Word__derivedFrom">
-            <Form value={this.word.derivedFrom} />
-          </span>
-        )}
+        <ErrorBoundary>
+          <Link
+            to={`/dictionary/${this.props.value._id}/edit`}
+            className="BibliographySearch__edit"
+          >
+            <i className="fas fa-edit" />
+          </Link>
+          <dfn title={`${this.word.lemma.join(' ')} ${this.word.homonym}`}>
+            <Lemma word={this.word} container="strong" />
+          </dfn>
+          {!_.isEmpty(this.forms) && this.forms}{' '}
+          <InlineMarkdown source={this.word.meaning} />{' '}
+          {this.isNotEmpty('amplifiedMeanings') && (
+            <AmplifiedMeanings values={this.word.amplifiedMeanings} />
+          )}{' '}
+          {this.isNotEmpty('derived') && (
+            <Derived derived={this.word.derived} />
+          )}{' '}
+          {this.word.derivedFrom && (
+            <span className="Word__derivedFrom">
+              <Form value={this.word.derivedFrom} />
+            </span>
+          )}
+        </ErrorBoundary>
       </div>
     )
   }

@@ -68,25 +68,3 @@ describe('word display', () => {
     )
   })
 })
-
-describe('broken word display', () => {
-  beforeEach(() => {
-    word = wordFactory.build({
-      forms: ['broken-form'],
-      derived: [['broken-derived']],
-    })
-    textContent = render(
-      <MemoryRouter>
-        <Word value={word} />
-      </MemoryRouter>
-    ).container.textContent
-  })
-
-  it('form', () => {
-    expect(textContent).toContain('broken-form')
-  })
-
-  it('derived', () => {
-    expect(textContent).toContain('broken-derived')
-  })
-})

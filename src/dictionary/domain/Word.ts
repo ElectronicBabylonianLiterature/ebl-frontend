@@ -1,6 +1,6 @@
 export interface OraccWord {
-  lemma: string
-  guideWord: string
+  readonly lemma: string
+  readonly guideWord: string
 }
 
 export interface AkkadischeGlossareUndIndex {
@@ -45,14 +45,23 @@ export interface Logogram {
 
 export default interface Word {
   readonly _id: string
+  readonly attested: boolean
   readonly lemma: readonly string[]
+  readonly legacyLemma: string
   readonly homonym: string
+  readonly meaning: string
   readonly pos: readonly string[]
+  readonly forms: readonly Form[]
+  readonly amplifiedMeanings: readonly AmplifiedMeaning[]
+  readonly logograms: readonly Logogram[]
+  readonly derived: readonly Derived[][]
+  readonly derivedFrom: Derived
+  readonly source?: string
+  readonly roots?: readonly string[]
   readonly guideWord: string
   readonly arabicGuideWord: string
-  readonly cdaAddenda: string
+  readonly cdaAddenda?: string
   readonly origin: string
   readonly oraccWords: readonly OraccWord[]
   readonly akkadischeGlossareUndIndices: readonly AkkadischeGlossareUndIndex[]
-  readonly [key: string]: any
 }

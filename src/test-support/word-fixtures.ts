@@ -119,10 +119,10 @@ class WordFactory extends Factory<Word> {
     return this.params({ homonym: defaultChance.pickone(homonyms.slice(1)) })
   }
 
-  verb() {
+  verb(roots?: readonly string[]) {
     return this.params({
       pos: ['V'],
-      roots: ['rrr', 'ttt'],
+      roots: roots ?? ['rrr', 'ttt'],
     })
   }
 }

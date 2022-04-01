@@ -38,6 +38,7 @@ import { BibliographyPart } from 'transliteration/domain/markup'
 import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { fromTransliterationLineDto } from 'transliteration/application/dtos'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('bibliography/application/BibliographyService')
 jest.mock('dictionary/application/WordService')
@@ -93,18 +94,11 @@ const alignmentDto = {
   ],
 }
 
-const word: Word = {
+const word: Word = wordFactory.build({
   _id: 'aklu I',
-  pos: [],
   lemma: ['aklu'],
   homonym: 'I',
-  guideWord: '',
-  arabicGuideWord: '',
-  origin: '',
-  cdaAddenda: '',
-  oraccWords: [],
-  akkadischeGlossareUndIndices: [],
-}
+})
 
 const lemmatization = [
   [

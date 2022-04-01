@@ -36,19 +36,21 @@ beforeEach(() => {
 })
 
 describe('Verb', () => {
+  const roots = ['rrr', 'ttt']
+
   beforeEach(async () => {
-    value = wordFactory.verb().build()
+    value = wordFactory.verb(roots).build()
     renderPosInput()
   })
 
   it('Displays all roots', () => {
-    value.roots.forEach((root) =>
+    roots.forEach((root) =>
       expect(screen.getByDisplayValue(root)).toBeVisible()
     )
   })
 
   it('Calls onChange with updated value on root change', () => {
-    whenChangedByValue(screen, value.roots[0], 'rtr')
+    whenChangedByValue(screen, roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         roots: [newValue, ..._.tail(value.roots)],

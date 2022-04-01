@@ -131,18 +131,20 @@ it('clearSuggestionFlags clears flags', () => {
 test.each([
   [
     new LemmatizationToken('kur', true, [
-      new Lemma({
-        _id: '',
-        lemma: ['kur'],
-        homonym: 'I',
-        pos: [],
-        guideWord: '',
-        arabicGuideWord: '',
-        origin: 'cda',
-        cdaAddenda: '(egg-shaped) bead',
-        oraccWords: [],
-        akkadischeGlossareUndIndices: [],
-      }),
+      new Lemma(
+        wordFactory.build({
+          _id: '',
+          lemma: ['kur'],
+          homonym: 'I',
+          pos: [],
+          guideWord: '',
+          arabicGuideWord: '',
+          origin: 'cda',
+          cdaAddenda: '(egg-shaped) bead',
+          oraccWords: [],
+          akkadischeGlossareUndIndices: [],
+        })
+      ),
     ]),
     true,
   ],
