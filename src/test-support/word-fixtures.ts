@@ -54,8 +54,10 @@ const amplifiedMeanings = [
   'D.',
 ]
 
+const homonyms = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']
+
 function homonym(chance = defaultChance) {
-  return chance.pickone(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'])
+  return chance.pickone(homonyms)
 }
 
 function vowel(chance = defaultChance) {
@@ -109,6 +111,14 @@ export const oraccWordFactory = Factory.define<OraccWord>(() => ({
 }))
 
 class WordFactory extends Factory<Word> {
+  homonymI() {
+    return this.params({ homonym: 'I' })
+  }
+
+  homonymNotI() {
+    return this.params({ homonym: defaultChance.pickone(homonyms.slice(1)) })
+  }
+
   verb() {
     return this.params({
       pos: ['V'],
