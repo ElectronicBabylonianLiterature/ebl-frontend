@@ -227,10 +227,14 @@ export default class TextService {
       )
   }
 
-  findChapterLine(id: ChapterId, number: number): Bluebird<LineDetails> {
+  findChapterLine(
+    id: ChapterId,
+    number: number,
+    variantNumber: number
+  ): Bluebird<LineDetails> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
-      .then(fromLineDetailsDto)
+      .then((json) => fromLineDetailsDto(json, variantNumber))
       .then((line) =>
         Bluebird.all(
           line.variants.map((variant) =>
@@ -258,7 +262,7 @@ export default class TextService {
               )
             ).then((manuscripts) => new LineVariantDisplay(manuscripts))
           )
-        ).then((variants) => new LineDetails(variants))
+        ).then((variants) => new LineDetails(variants, variantNumber))
       )
   }
 

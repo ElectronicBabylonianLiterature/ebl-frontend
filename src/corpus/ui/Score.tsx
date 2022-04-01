@@ -88,25 +88,32 @@ const Score = withData<
   {
     id: ChapterId
     lineNumber: number
+    variantNumber: number
     textService: TextService
   },
   LineDetails
 >(
-  ({ data: line }): JSX.Element => (
-    <table className="chapter-display__manuscripts">
-      <tbody>
-        {line.sortedManuscripts.map((manuscript, index) => (
-          <Manuscript
-            manuscript={manuscript}
-            key={index}
-            maxColumns={line.numberOfColumns}
-          />
-        ))}
-      </tbody>
-    </table>
-  ),
-  ({ id, lineNumber, textService }) =>
-    textService.findChapterLine(id, lineNumber)
+  ({ data: line }): JSX.Element => {
+    return (
+      <table className="chapter-display__manuscripts">
+        <tbody>
+          {line.sortedManuscripts
+            .filter((manuscript) =>
+              line.variants[line.activeVariant].manuscripts.includes(manuscript)
+            )
+            .map((manuscript, index) => (
+              <Manuscript
+                manuscript={manuscript}
+                key={index}
+                maxColumns={line.numberOfColumns}
+              />
+            ))}
+        </tbody>
+      </table>
+    )
+  },
+  ({ id, lineNumber, variantNumber, textService }) =>
+    textService.findChapterLine(id, lineNumber, variantNumber)
 )
 
 export default Score

@@ -75,7 +75,10 @@ export class LineVariantDisplay {
 export class LineDetails {
   readonly [immerable] = true
 
-  constructor(readonly variants: readonly LineVariantDisplay[]) {}
+  constructor(
+    readonly variants: readonly LineVariantDisplay[],
+    readonly activeVariant: number
+  ) {}
 
   get numberOfColumns(): number {
     return Math.max(

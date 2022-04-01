@@ -146,7 +146,7 @@ export function fromLineDto(lineDto): Line {
   })
 }
 
-export function fromLineDetailsDto(line): LineDetails {
+export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   return new LineDetails(
     line.variants.map(
       (variant) =>
@@ -167,7 +167,8 @@ export function fromLineDetailsDto(line): LineDetails {
               )
           )
         )
-    )
+    ),
+    activeVariant
   )
 }
 
