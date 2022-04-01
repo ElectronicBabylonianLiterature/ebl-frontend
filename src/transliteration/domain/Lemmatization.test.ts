@@ -1,13 +1,14 @@
 import _ from 'lodash'
-import { factory } from 'factory-girl'
+
 import Lemma from './Lemma'
 import Lemmatization, { LemmatizationToken } from './Lemmatization'
 import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 let words: Word[]
 
-beforeEach(async () => {
-  words = await factory.buildMany('word', 2)
+beforeEach(() => {
+  words = wordFactory.buildList(2)
 })
 
 it('Equals', () => {

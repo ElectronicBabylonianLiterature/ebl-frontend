@@ -22,9 +22,7 @@ beforeEach(async () => {
   const wordService = new (WordService as jest.Mock<WordService>)()
   jest
     .spyOn(wordService, 'find')
-    .mockImplementation(
-      (id) => new Bluebird((resolve) => createDictionaryWord(id).then(resolve))
-    )
+    .mockImplementation((id) => Bluebird.resolve(createDictionaryWord(id)))
 
   element = render(
     <MemoryRouter>

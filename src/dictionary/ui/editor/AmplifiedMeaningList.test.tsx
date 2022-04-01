@@ -2,8 +2,12 @@ import React from 'react'
 import _ from 'lodash'
 import AmplifiedMeaningList from './AmplifiedMeaningList'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
+import {
+  amplifiedMeaningFactory,
+  entryFactory,
+} from 'test-support/word-fixtures'
 
 const label = 'Amplified Meanings'
 
@@ -18,7 +22,7 @@ beforeEach(() => {
 describe('Entries', () => {
   beforeEach(async () => {
     noun = 'entry'
-    value = await factory.buildMany('entry', 2)
+    value = entryFactory.buildList(2)
     renderAmplifiedMeaningList(true)
   })
 
@@ -34,7 +38,7 @@ describe('Entries', () => {
 describe('Conjugations/Functions', () => {
   beforeEach(async () => {
     noun = 'amplified meaning'
-    value = await factory.buildMany('amplifiedMeaning', 2)
+    value = amplifiedMeaningFactory.buildList(2)
     renderAmplifiedMeaningList(false)
   })
 

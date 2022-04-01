@@ -1,4 +1,4 @@
-import { factory } from 'factory-girl'
+import { wordFactory } from 'test-support/word-fixtures'
 import compareWord from './compareWord'
 
 test.each([
@@ -8,7 +8,7 @@ test.each([
   ['abu', 'abama', 1],
   ['šaniš', 'šan iš', -1],
 ])('compares %s and %s', async (lemma, anotherLemma, expected) => {
-  const word = await factory.build('word', { lemma: lemma.split(' ') })
+  const word = wordFactory.build({ lemma: lemma.split(' ') })
   const anotherWord = { ...word, lemma: anotherLemma.split(' ') }
   const comparedWords = compareWord(word, anotherWord)
   expect(comparedWords).toBe(expected)
@@ -27,7 +27,7 @@ test.each([
   ['V', 'VI', -1],
   ['VI', 'VII', -1],
 ])('compares homonyms %s and %s', async (homonym, anotherHomonym, expected) => {
-  const word = await factory.build('word', {
+  const word = wordFactory.build({
     lemma: ['abullu'],
     homonym: homonym,
   })

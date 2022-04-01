@@ -1,6 +1,6 @@
-import { factory } from 'factory-girl'
 import Lemma from './Lemma'
 import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 let word: Word
 let lemma: Lemma
@@ -9,10 +9,8 @@ describe.each([
   ['I', ''],
   ['II', ' II'],
 ])('Word with homonym %s', (homonym, expected) => {
-  beforeEach(async () => {
-    word = await factory.build('word', {
-      homonym: homonym,
-    })
+  beforeEach(() => {
+    word = wordFactory.build({ homonym: homonym })
     lemma = new Lemma(word)
   })
 
@@ -29,10 +27,8 @@ describe.each([
 })
 
 describe('Empty POS', () => {
-  beforeEach(async () => {
-    word = await factory.build('word', {
-      pos: [],
-    })
+  beforeEach(() => {
+    word = wordFactory.build({ pos: [] })
     lemma = new Lemma(word)
   })
 

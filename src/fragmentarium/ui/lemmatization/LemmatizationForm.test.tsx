@@ -1,13 +1,13 @@
 import React from 'react'
 import { render, waitFor, screen, Matcher } from '@testing-library/react'
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
 
 import LemmatizationForm from './LemmatizationForm'
 import Lemma from 'transliteration/domain/Lemma'
 import { changeValueByLabel, clickNth } from 'test-support/utils'
 import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
 
 let searchWord: Word
 let onChange: (selected: readonly Lemma[]) => void
@@ -17,8 +17,8 @@ let fragmentService: {
 }
 let token: LemmatizationToken
 
-beforeEach(async () => {
-  searchWord = await factory.build('word', {
+beforeEach(() => {
+  searchWord = wordFactory.build({
     _id: 'waklu I',
     meaning: 'a very very long complicated meaning of a word',
   })
@@ -32,8 +32,8 @@ beforeEach(async () => {
 describe('Single lemma', () => {
   let word: Word
 
-  beforeEach(async () => {
-    word = await factory.build('word')
+  beforeEach(() => {
+    word = wordFactory.build()
     token = new LemmatizationToken('kur', true, [new Lemma(word)])
     container = render(
       <LemmatizationForm
@@ -61,8 +61,8 @@ describe('Single lemma', () => {
 describe('Complex lemma', () => {
   let words: readonly Word[]
 
-  beforeEach(async () => {
-    words = await factory.buildMany('word', 2)
+  beforeEach(() => {
+    words = wordFactory.buildList(2)
     token = new LemmatizationToken(
       'kur',
       true,
@@ -77,7 +77,7 @@ describe('Complex lemma', () => {
     ).container
   })
 
-  it('Complex is checked', async () => {
+  it('Complex is checked', () => {
     expect(screen.getByLabelText('Complex')).toBeChecked()
   })
 

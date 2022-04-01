@@ -1,8 +1,9 @@
 import React from 'react'
 import DerivedFromInput from './DerivedFromInput'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
+import { derivedFactory } from 'test-support/word-fixtures'
 
 let value
 let onChange
@@ -12,8 +13,8 @@ beforeEach(() => {
 })
 
 describe('Derived from set', () => {
-  beforeEach(async () => {
-    value = await factory.build('derived')
+  beforeEach(() => {
+    value = derivedFactory.build()
     renderDerivedFromInput()
   })
 
