@@ -24,7 +24,7 @@ import { scopeString, useAuthentication } from 'auth/Auth'
 import SignService from 'signs/application/SignService'
 import SignRepository from 'signs/infrastructure/SignRepository'
 
-import './index.css'
+import './index.sass'
 
 if (process.env.REACT_APP_SENTRY_DSN && process.env.NODE_ENV) {
   SentryErrorReporter.init(
