@@ -54,13 +54,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
   await screen.findByText(dictionaryWord.lemma.join(' '))
 }
 
-test('homonym I is not shown', async () => {
-  const homonymI = wordFactory.homonymI().build()
-  await renderAndOpen(homonymI)
-  expect(screen.queryByText(homonymI.homonym)).not.toBeInTheDocument()
-})
-
-test('other homonyms are shown', async () => {
+test('homonym', async () => {
   await renderAndOpen(dictionaryWord)
   expect(screen.getByText(dictionaryWord.homonym)).toBeVisible()
 })

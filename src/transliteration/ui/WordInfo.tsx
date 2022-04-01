@@ -16,9 +16,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
   return (
     <li className="word-info__word">
       <span className="word-info__lemma">{word.lemma.join(' ')}</span>{' '}
-      {word.homonym !== 'I' && (
-        <span className="word-info__homonym">{word.homonym}</span>
-      )}{' '}
+      <span className="word-info__homonym">{word.homonym}</span>,{' '}
       {word.guideWord && (
         <span className="word-info__guide-word">
           &ldquo;{word.guideWord}&rdquo;
