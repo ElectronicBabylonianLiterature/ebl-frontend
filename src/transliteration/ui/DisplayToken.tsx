@@ -28,6 +28,7 @@ export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
+  modifierClasses?: readonly string[]
 }
 
 function DamagedFlag({
@@ -233,12 +234,16 @@ function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
-function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function AkkadianWordComponent({
+  token,
+  Wrapper,
+  modifierClasses,
+}: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <WordInfo word={word}>
+    <WordInfo word={word} modifierClasses={modifierClasses ?? []}>
       <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
         <EnclosureFlags token={word}>
           {parts.map((token, index) => (
@@ -256,10 +261,14 @@ function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
-function WordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function WordComponent({
+  token,
+  Wrapper,
+  modifierClasses,
+}: TokenProps): JSX.Element {
   const word = token as Word
   return (
-    <WordInfo word={word}>
+    <WordInfo word={word} modifierClasses={modifierClasses ?? []}>
       <EnclosureFlags token={token}>
         {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
@@ -298,7 +307,7 @@ const tokens: ReadonlyMap<
 
 export default function DisplayToken({
   token,
-  bemModifiers: modifiers = [],
+  bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
@@ -308,14 +317,19 @@ export default function DisplayToken({
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
+  const modifierClasses = createModifierClasses(token.type, bemModifiers)
   return (
     <span
       className={classNames([
         `Transliteration__${token.type}`,
-        ...createModifierClasses(token.type, modifiers),
+        ...modifierClasses,
       ])}
     >
-      <TokenComponent token={token} Wrapper={Wrapper} />
+      <TokenComponent
+        token={token}
+        Wrapper={Wrapper}
+        modifierClasses={modifierClasses}
+      />
     </span>
   )
 }

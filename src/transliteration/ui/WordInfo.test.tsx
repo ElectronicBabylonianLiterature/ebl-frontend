@@ -2,7 +2,7 @@ import React from 'react'
 import WordService from 'dictionary/application/WordService'
 import { wordFactory } from 'test-support/word-fixtures'
 import { DictionaryContext } from 'dictionary/ui/dictionary-context'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import WordInfo from './WordInfo'
 import Bluebird from 'bluebird'
 import { Word } from 'transliteration/domain/token'
@@ -38,6 +38,8 @@ const word: Word = {
   ],
   type: 'Word',
 }
+const modifierClass = 'block__element--modifier'
+const trigger = 'trigger'
 
 async function renderAndOpen(dictionaryWord: DictionaryWord) {
   wordServiceMock.find.mockReturnValueOnce(Bluebird.resolve(dictionaryWord))
@@ -45,29 +47,41 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
   render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordServiceMock}>
-        <WordInfo word={word}>trigger</WordInfo>
+        <WordInfo word={word} modifierClasses={[modifierClass]}>
+          {trigger}
+        </WordInfo>
       </DictionaryContext.Provider>
     </MemoryRouter>
   )
 
   userEvent.click(screen.getByText('trigger'))
-  await screen.findByText(dictionaryWord.lemma.join(' '))
+  return screen.findByRole('tooltip')
 }
 
+test('heading', async () => {
+  const view = await renderAndOpen(dictionaryWord)
+  expect(within(view).getByText(trigger)).toHaveClass(modifierClass)
+})
+
+test('lemma', async () => {
+  const view = await renderAndOpen(dictionaryWord)
+  expect(within(view).getByText(dictionaryWord.lemma.join(' '))).toBeVisible()
+})
+
 test('homonym', async () => {
-  await renderAndOpen(dictionaryWord)
-  expect(screen.getByText(dictionaryWord.homonym)).toBeVisible()
+  const view = await renderAndOpen(dictionaryWord)
+  expect(within(view).getByText(dictionaryWord.homonym)).toBeVisible()
 })
 
 test('guide word', async () => {
-  await renderAndOpen(dictionaryWord)
-  expect(screen.getByText(`“${dictionaryWord.guideWord}”`)).toBeVisible()
+  const view = await renderAndOpen(dictionaryWord)
+  expect(within(view).getByText(`“${dictionaryWord.guideWord}”`)).toBeVisible()
 })
 
 test('dictionary link', async () => {
-  await renderAndOpen(dictionaryWord)
+  const view = await renderAndOpen(dictionaryWord)
   expect(
-    screen.getByRole('link', { name: 'Open the word in the Dictionary.' })
+    within(view).getByRole('link', { name: 'Open the word in the Dictionary.' })
   ).toHaveAttribute(
     'href',
     `/dictionary/${encodeURIComponent(dictionaryWord._id)}`

@@ -7,10 +7,11 @@ import { useDictionary } from 'dictionary/ui/dictionary-context'
 import DictionaryWord from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import Bluebird from 'bluebird'
-
-import './WordInfo.sass'
 import Word from 'dictionary/domain/Word'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+
+import './WordInfo.sass'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -38,7 +39,7 @@ const Info = withData<
   DictionaryWord[]
 >(
   ({ data }) => (
-    <ol className="word-info__words">
+    <ol className="word-info__word">
       {data.map((word, index) => (
         <WordItem key={index} word={word} />
       ))}
@@ -50,14 +51,20 @@ const Info = withData<
 
 export default function WordInfo({
   word,
+  modifierClasses,
   children,
-}: PropsWithChildren<{ word: LemmatizableToken }>): JSX.Element {
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  modifierClasses: readonly string[]
+}>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
-        <span className="word-info__header">{children}</span>
+        <span className={classNames(['word-info__header', ...modifierClasses])}>
+          {children}
+        </span>
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
