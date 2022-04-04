@@ -7,6 +7,10 @@ import WordService from 'dictionary/application/WordService'
 import { Text } from 'transliteration/domain/text'
 import { MemoryRouter } from 'react-router-dom'
 import { createDictionaryWord } from 'test-support/glossary'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import Bluebird from 'bluebird'
+
+jest.mock('dictionary/application/WordService')
 
 let element: RenderResult
 
@@ -15,18 +19,16 @@ beforeEach(async () => {
   const text = new Text({
     lines: [firstLine, object, surface, column, secondLine],
   })
-  const wordService = {
-    find: jest.fn(),
-  }
-
-  wordService.find.mockImplementation(createDictionaryWord)
+  const wordService = new (WordService as jest.Mock<WordService>)()
+  jest
+    .spyOn(wordService, 'find')
+    .mockImplementation((id) => Bluebird.resolve(createDictionaryWord(id)))
 
   element = render(
     <MemoryRouter>
-      <Glossary
-        text={text}
-        wordService={(wordService as unknown) as WordService}
-      />
+      <DictionaryContext.Provider value={wordService}>
+        <Glossary text={text} wordService={wordService} />
+      </DictionaryContext.Provider>
     </MemoryRouter>
   )
 })

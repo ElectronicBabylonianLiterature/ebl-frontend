@@ -2,20 +2,22 @@ import React from 'react'
 import _ from 'lodash'
 import DerivedList from './DerivedList'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
+import { Derived } from 'dictionary/domain/Word'
+import { derivedFactory } from 'test-support/word-fixtures'
 
 const label = 'Derived'
 
-let value
+let value: Derived[][]
 let onChange
 
 beforeEach(() => {
   onChange = jest.fn()
 })
 
-beforeEach(async () => {
-  value = [[await factory.build('derived')], [await factory.build('derived')]]
+beforeEach(() => {
+  value = [[derivedFactory.build()], [derivedFactory.build()]]
   renderDerivedList()
 })
 

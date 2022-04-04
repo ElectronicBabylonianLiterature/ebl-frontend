@@ -2,12 +2,13 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, withRouter } from 'react-router-dom'
 import Promise from 'bluebird'
-import { factory } from 'factory-girl'
+
 import SessionContext from 'auth/SessionContext'
 import Dictionary from './Dictionary'
 import Word from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import MemorySession from 'auth/Session'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/application/WordService')
 
@@ -17,8 +18,8 @@ let words: Word[]
 const wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
 let session: MemorySession
 
-beforeEach(async () => {
-  words = await factory.buildMany('word', 2)
+beforeEach(() => {
+  words = wordFactory.buildList(2)
 })
 
 describe('Searching for word', () => {

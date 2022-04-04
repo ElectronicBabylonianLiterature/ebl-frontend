@@ -13,10 +13,12 @@ class Expectation {
   method: 'POST' | 'GET' = 'GET'
   path = ''
   authenticate = true
-  response: Dto | readonly Dto[] = {}
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  response: any = {}
   verify = false
   called = false
-  body: Dto | null = null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body: any = null
   isBlob = false
 
   constructor(data: Partial<Expectation>) {

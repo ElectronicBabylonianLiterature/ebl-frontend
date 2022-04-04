@@ -21,6 +21,7 @@ import {
   referenceFactory,
 } from 'test-support/bibliography-fixtures'
 import BibliographyEntry from 'bibliography/domain/BibliographyEntry'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('./LemmatizationFactory')
 
@@ -38,18 +39,7 @@ jest.mock('dictionary/infrastructure/WordRepository', () => {
 const resultStub = {}
 const folio = new Folio({ name: 'AKG', number: '375' })
 const fileName = 'Babel_Project_01_cropped.svg'
-const word: Word = {
-  _id: 'aklu I',
-  lemma: ['aklu'],
-  homonym: 'I',
-  guideWord: 'test',
-  arabicGuideWord: 'test',
-  origin: '',
-  cdaAddenda: 'test',
-  oraccWords: [],
-  akkadischeGlossareUndIndices: [],
-  pos: [],
-}
+const word: Word = wordFactory.build()
 const fragmentRepository = {
   statistics: jest.fn(),
   find: jest.fn(),

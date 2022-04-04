@@ -8,6 +8,7 @@ import SignInformation from 'signs/ui/display/SignInformation'
 import { MemoryRouter } from 'react-router'
 import _ from 'lodash'
 import SignService from 'signs/application/SignService'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -41,7 +42,7 @@ const sign = new Sign({
   LaBaSi: '',
 })
 
-const wordErimmatu: Word = {
+const wordErimmatu: Word = wordFactory.build({
   _id: 'erimmatu I',
   lemma: ['erimmatu'],
   attested: true,
@@ -54,8 +55,9 @@ const wordErimmatu: Word = {
   pos: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
-}
-const wordLipu: Word = {
+})
+
+const wordLipu: Word = wordFactory.build({
   _id: 'līpu I',
   lemma: ['līpu'],
   attested: true,
@@ -68,7 +70,7 @@ const wordLipu: Word = {
   pos: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
-}
+})
 
 function renderSignInformation(): RenderResult {
   return render(

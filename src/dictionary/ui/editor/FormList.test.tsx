@@ -2,20 +2,22 @@ import React from 'react'
 import _ from 'lodash'
 import FormList from './FormList'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import { whenClicked, whenChangedByValue } from 'test-support/utils'
+import { formFactory } from 'test-support/word-fixtures'
+import { Form } from 'dictionary/domain/Word'
 
 const label = 'List'
 
-let value
+let value: Form[]
 let onChange
 
 beforeEach(() => {
   onChange = jest.fn()
 })
 
-beforeEach(async () => {
-  value = await factory.buildMany('form', 2)
+beforeEach(() => {
+  value = formFactory.buildList(2)
   renderForms()
 })
 

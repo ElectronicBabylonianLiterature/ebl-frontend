@@ -111,7 +111,6 @@
     "@typescript-eslint/parser": "^4.19.0",
     "canvas": "^2.6.1",
     "chance": "^1.0.16",
-    "factory-girl": "^5.0.2",
     "fishery": "^2.1.0",
     "husky": "^7.0.0",
     "jest-date-mock": "^1.0.2",

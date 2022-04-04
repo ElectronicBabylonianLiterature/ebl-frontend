@@ -13,6 +13,7 @@ import {
   Token,
   UnknownSign,
   Variant,
+  Word,
 } from 'transliteration/domain/token'
 import { addAccents, addBreves } from 'transliteration/domain/accents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -20,6 +21,7 @@ import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from './SubIndex'
+import WordInfo from './WordInfo'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
@@ -227,7 +229,7 @@ function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
-function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
@@ -236,19 +238,34 @@ function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
-      <EnclosureFlags token={word}>
-        {parts.map((token, index) => (
-          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-        ))}
-        <Wrapper>
-          <Flags flags={word.modifiers} />
-        </Wrapper>
-        {lastParts.map((token, index) => (
+    <WordInfo word={word}>
+      <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
+        <EnclosureFlags token={word}>
+          {parts.map((token, index) => (
+            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          ))}
+          <Wrapper>
+            <Flags flags={word.modifiers} />
+          </Wrapper>
+          {lastParts.map((token, index) => (
+            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          ))}
+        </EnclosureFlags>
+      </DamagedFlag>
+    </WordInfo>
+  )
+}
+
+function WordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+  const word = token as Word
+  return (
+    <WordInfo word={word}>
+      <EnclosureFlags token={token}>
+        {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
         ))}
       </EnclosureFlags>
-    </DamagedFlag>
+    </WordInfo>
   )
 }
 
@@ -276,6 +293,7 @@ const tokens: ReadonlyMap<
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
   ['AkkadianWord', AkkadianWordComponent],
+  ['Word', WordComponent],
 ])
 
 export default function DisplayToken({

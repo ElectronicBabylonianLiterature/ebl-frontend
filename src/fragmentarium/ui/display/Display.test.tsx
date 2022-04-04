@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, render, RenderResult } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { Fragment } from 'fragmentarium/domain/fragment'
 import complexText from 'test-support/complexTestText'
 import WordService from 'dictionary/application/WordService'
@@ -7,19 +7,20 @@ import Display from './Display'
 import { wordDto } from 'test-support/test-word'
 import { MemoryRouter } from 'react-router-dom'
 import { fragmentFactory } from 'test-support/fragment-fixtures'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
+import Bluebird from 'bluebird'
 
 jest.mock('dictionary/application/WordService')
 
-let wordService
+let wordService: WordService
 let fragment: Fragment
-let element: RenderResult
 let container: Element
 
 beforeEach(async () => {
   wordService = new (WordService as jest.Mock<WordService>)()
   jest
     .spyOn(wordService, 'find')
-    .mockImplementation(() => Promise.resolve(wordDto))
+    .mockImplementation(() => Bluebird.resolve(wordDto))
   fragment = fragmentFactory.build(
     {
       notes: 'lorem ipsum quia dolor sit amet',
@@ -29,14 +30,17 @@ beforeEach(async () => {
     },
     { associations: { text: complexText } }
   )
-  await act(async () => {
-    element = render(
-      <MemoryRouter>
+  container = render(
+    <MemoryRouter>
+      <DictionaryContext.Provider value={wordService}>
         <Display fragment={fragment} wordService={wordService} activeLine="" />
-      </MemoryRouter>
-    )
-  })
-  container = element.container
+      </DictionaryContext.Provider>
+    </MemoryRouter>
+  ).container
+
+  await waitFor(() =>
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+  )
 })
 
 test(`Renders header`, () => {

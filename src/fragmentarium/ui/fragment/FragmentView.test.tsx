@@ -1,5 +1,5 @@
 import React from 'react'
-import { factory } from 'factory-girl'
+
 import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import Promise from 'bluebird'
@@ -17,6 +17,7 @@ import {
   fragmentFactory,
 } from 'test-support/fragment-fixtures'
 import { FragmentPagerData } from 'fragmentarium/domain/pager'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('dictionary/application/WordService')
 jest.mock('fragmentarium/application/FragmentService')
@@ -55,14 +56,14 @@ function renderFragmentView(
   ).container
 }
 
-beforeEach(async () => {
+beforeEach(() => {
   const folioPager = folioPagerFactory.build()
   const fragmentPagerData: FragmentPagerData = {
     next: 'K.00001',
     previous: 'J.99999',
   }
   wordService = new (WordService as jest.Mock<jest.Mocked<WordService>>)()
-  const word = await factory.build('word')
+  const word = wordFactory.build()
   wordService.find.mockReturnValue(Promise.resolve(word))
   fragmentService = new (FragmentService as jest.Mock<
     jest.Mocked<FragmentService>

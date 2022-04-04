@@ -27,6 +27,7 @@ import rgbHex from 'rgb-hex'
 import WordService from 'dictionary/application/WordService'
 import GlossaryFactory from 'transliteration/application/GlossaryFactory'
 import { MemoryRouter } from 'react-router-dom'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 export async function wordExport(
   fragment: Fragment,
@@ -36,12 +37,18 @@ export async function wordExport(
   const tableHtml: JQuery = $(
     renderToString(
       <MemoryRouter>
-        {TransliterationLines({ text: fragment.text })}
+        <DictionaryContext.Provider value={wordService}>
+          <TransliterationLines text={fragment.text} />
+        </DictionaryContext.Provider>
       </MemoryRouter>
     )
   )
   const notesHtml: JQuery = $(
-    renderToString(TransliterationNotes({ notes: fragment.text.notes }))
+    renderToString(
+      <DictionaryContext.Provider value={wordService}>
+        <TransliterationNotes notes={fragment.text.notes} />
+      </DictionaryContext.Provider>
+    )
   )
   const records: JQuery = $(
     renderToString(Record({ record: fragment.uniqueRecord }))
@@ -54,7 +61,13 @@ export async function wordExport(
       return Glossary({ data: glossaryData })
     })
   const glossaryHtml: JQuery = $(
-    renderToString(wrapWithMemoryRouter(glossaryJsx))
+    renderToString(
+      wrapWithMemoryRouter(
+        <DictionaryContext.Provider value={wordService}>
+          {glossaryJsx}
+        </DictionaryContext.Provider>
+      )
+    )
   )
 
   const glossary: Paragraph | false =
