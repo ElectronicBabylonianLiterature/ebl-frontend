@@ -80,10 +80,12 @@ test('guide word', async () => {
 
 test('dictionary link', async () => {
   const view = await renderAndOpen(dictionaryWord)
-  expect(
-    within(view).getByRole('link', { name: 'Open the word in the Dictionary.' })
-  ).toHaveAttribute(
+  const link = within(view).getByRole('link', {
+    name: 'Open the word in the Dictionary.',
+  })
+  expect(link).toHaveAttribute(
     'href',
     `/dictionary/${encodeURIComponent(dictionaryWord._id)}`
   )
+  expect(link).toHaveAttribute('target', '_blank')
 })

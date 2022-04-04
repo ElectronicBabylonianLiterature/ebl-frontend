@@ -25,6 +25,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
       )}{' '}
       <Link
         to={`/dictionary/${word._id}`}
+        target="_blank"
         aria-label="Open the word in the Dictionary."
       >
         <i className="fas fa-external-link-alt" />
