@@ -497,6 +497,17 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
             <div
               class="col"
             >
+              <h3>
+                Ⅲ. Palaeopgrahy
+              </h3>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
               <figure
                 class="figure"
               >
@@ -509,11 +520,12 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 >
                   <a
                     href="/fragmentarium/"
-                  />
+                  >
+                    
+                     
+                  </a>
                   i stone wig 1' 
-                   (
-                  NA
-                  )
+                  (NA)
                 </figcaption>
               </figure>
             </div>
