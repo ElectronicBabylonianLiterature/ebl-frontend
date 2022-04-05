@@ -25,7 +25,7 @@ exports[`Glossary snapshot 1`] = `
         class="Transliteration"
       >
         <span
-          class="Transliteration__Word"
+          class="Transliteration__Word Transliteration__Word"
         >
           <span
             class="word-info__trigger"
@@ -35,13 +35,13 @@ exports[`Glossary snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Reading"
+                class="Transliteration__Reading Transliteration__Reading"
               >
                 <span
                   class=""
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class="Transliteration__ValueToken Transliteration__ValueToken"
                   >
                     <span
                       class=""
@@ -106,7 +106,7 @@ exports[`Glossary snapshot 1`] = `
         class="Transliteration"
       >
         <span
-          class="Transliteration__Word"
+          class="Transliteration__Word Transliteration__Word"
         >
           <span
             class="word-info__trigger"
@@ -116,13 +116,13 @@ exports[`Glossary snapshot 1`] = `
               class=""
             >
               <span
-                class="Transliteration__Reading"
+                class="Transliteration__Reading Transliteration__Reading"
               >
                 <span
                   class=""
                 >
                   <span
-                    class="Transliteration__ValueToken"
+                    class="Transliteration__ValueToken Transliteration__ValueToken"
                   >
                     <span
                       class=""
