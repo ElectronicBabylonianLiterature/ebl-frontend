@@ -72,7 +72,7 @@ function SignImagePagination({
     <Container>
       <Row>
         <Col>
-          <h3>&#8546;. Palaeopgrahy</h3>
+          <h3>&#8546;. Palaeography</h3>
         </Col>
       </Row>
       <Row>
