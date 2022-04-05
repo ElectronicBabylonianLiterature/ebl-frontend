@@ -38,6 +38,7 @@ const word: Word = {
   ],
   type: 'Word',
 }
+
 const modifierClass = 'block__element--modifier'
 const trigger = 'trigger'
 
@@ -54,7 +55,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
     </MemoryRouter>
   )
 
-  userEvent.click(screen.getByText('trigger'))
+  userEvent.click(screen.getByRole('button', { name: 'trigger' }))
   return screen.findByRole('tooltip')
 }
 
@@ -88,4 +89,21 @@ test('dictionary link', async () => {
     `/dictionary/${encodeURIComponent(dictionaryWord._id)}`
   )
   expect(link).toHaveAttribute('target', '_blank')
+})
+
+test('no lemma', () => {
+  const notLemmatized: Word = { ...word, uniqueLemma: [] }
+
+  render(
+    <MemoryRouter>
+      <DictionaryContext.Provider value={wordServiceMock}>
+        <WordInfo word={notLemmatized} modifierClasses={[]}>
+          {trigger}
+        </WordInfo>
+      </DictionaryContext.Provider>
+    </MemoryRouter>
+  )
+
+  expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  expect(screen.getByText(trigger)).toBeVisible()
 })

@@ -40,7 +40,7 @@ const Info = withData<
   DictionaryWord[]
 >(
   ({ data }) => (
-    <ol className="word-info__word">
+    <ol className="word-info__words">
       {data.map((word, index) => (
         <WordItem key={index} word={word} />
       ))}
@@ -73,9 +73,13 @@ export default function WordInfo({
     </Popover>
   )
 
-  return (
+  return word.uniqueLemma.length > 0 ? (
     <OverlayTrigger trigger="click" rootClose placement="top" overlay={popover}>
-      <span className="word-info__trigger">{children}</span>
+      <span className="word-info__trigger" role="button">
+        {children}
+      </span>
     </OverlayTrigger>
+  ) : (
+    <>{children}</>
   )
 }

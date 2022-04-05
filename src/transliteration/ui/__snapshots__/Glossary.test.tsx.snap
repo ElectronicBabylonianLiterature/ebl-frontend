@@ -29,6 +29,7 @@ exports[`Glossary snapshot 1`] = `
         >
           <span
             class="word-info__trigger"
+            role="button"
           >
             <span
               class=""
@@ -109,6 +110,7 @@ exports[`Glossary snapshot 1`] = `
         >
           <span
             class="word-info__trigger"
+            role="button"
           >
             <span
               class=""
