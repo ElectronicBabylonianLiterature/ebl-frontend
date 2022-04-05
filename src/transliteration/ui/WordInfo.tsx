@@ -52,18 +52,18 @@ const Info = withData<
 
 export default function WordInfo({
   word,
-  modifierClasses,
+  tokenClasses,
   children,
 }: PropsWithChildren<{
   word: LemmatizableToken
-  modifierClasses: readonly string[]
+  tokenClasses: readonly string[]
 }>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
-        <span className={classNames(['word-info__header', ...modifierClasses])}>
+        <span className={classNames(['word-info__header', ...tokenClasses])}>
           {children}
         </span>
       </Popover.Title>

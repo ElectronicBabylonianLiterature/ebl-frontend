@@ -48,7 +48,7 @@ async function renderAndOpen(dictionaryWord: DictionaryWord) {
   render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordServiceMock}>
-        <WordInfo word={word} modifierClasses={[modifierClass]}>
+        <WordInfo word={word} tokenClasses={[modifierClass]}>
           {trigger}
         </WordInfo>
       </DictionaryContext.Provider>
@@ -97,7 +97,7 @@ test('no lemma', () => {
   render(
     <MemoryRouter>
       <DictionaryContext.Provider value={wordServiceMock}>
-        <WordInfo word={notLemmatized} modifierClasses={[]}>
+        <WordInfo word={notLemmatized} tokenClasses={[]}>
           {trigger}
         </WordInfo>
       </DictionaryContext.Provider>
