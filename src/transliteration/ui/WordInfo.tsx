@@ -7,10 +7,11 @@ import { useDictionary } from 'dictionary/ui/dictionary-context'
 import DictionaryWord from 'dictionary/domain/Word'
 import WordService from 'dictionary/application/WordService'
 import Bluebird from 'bluebird'
-
-import './WordInfo.sass'
 import Word from 'dictionary/domain/Word'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames'
+
+import './WordInfo.sass'
 
 function WordItem({ word }: { word: Word }): JSX.Element {
   return (
@@ -24,6 +25,7 @@ function WordItem({ word }: { word: Word }): JSX.Element {
       )}{' '}
       <Link
         to={`/dictionary/${word._id}`}
+        target="_blank"
         aria-label="Open the word in the Dictionary."
       >
         <i className="fas fa-external-link-alt" />
@@ -50,14 +52,20 @@ const Info = withData<
 
 export default function WordInfo({
   word,
+  modifierClasses,
   children,
-}: PropsWithChildren<{ word: LemmatizableToken }>): JSX.Element {
+}: PropsWithChildren<{
+  word: LemmatizableToken
+  modifierClasses: readonly string[]
+}>): JSX.Element {
   const dictionary = useDictionary()
 
   const popover = (
     <Popover id={_.uniqueId('word-info-')}>
       <Popover.Title>
-        <span className="word-info__header">{children}</span>
+        <span className={classNames(['word-info__header', ...modifierClasses])}>
+          {children}
+        </span>
       </Popover.Title>
       <Popover.Content>
         <Info word={word} dictionary={dictionary} />
@@ -65,9 +73,13 @@ export default function WordInfo({
     </Popover>
   )
 
-  return (
+  return word.uniqueLemma.length > 0 ? (
     <OverlayTrigger trigger="click" rootClose placement="top" overlay={popover}>
-      <span className="word-info__trigger">{children}</span>
+      <span className="word-info__trigger" role="button">
+        {children}
+      </span>
     </OverlayTrigger>
+  ) : (
+    <>{children}</>
   )
 }

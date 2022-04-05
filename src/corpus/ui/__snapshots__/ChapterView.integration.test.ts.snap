@@ -361,24 +361,20 @@ exports[`Display chapter How to cite 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -469,24 +465,20 @@ exports[`Display chapter How to cite 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -914,24 +906,20 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1014,12 +1002,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1030,12 +1014,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1068,12 +1048,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -1145,12 +1121,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1161,12 +1133,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -1199,12 +1167,8 @@ exports[`Display chapter Show manuscripts 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -1269,24 +1233,20 @@ exports[`Display chapter Show manuscripts 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1714,24 +1674,20 @@ exports[`Display chapter Show note 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -1839,24 +1795,20 @@ exports[`Display chapter Show note 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2284,24 +2236,20 @@ exports[`Display chapter Show parallels 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2415,24 +2363,20 @@ exports[`Display chapter Show parallels 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2860,24 +2804,20 @@ exports[`Display chapter Sidebar 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -2960,12 +2900,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -2976,12 +2912,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3014,12 +2946,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -3086,24 +3014,20 @@ exports[`Display chapter Sidebar 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -3186,12 +3110,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3202,12 +3122,8 @@ exports[`Display chapter Sidebar 1`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -3732,24 +3648,20 @@ exports[`Display chapter Sidebar 2`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -3855,12 +3767,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3871,12 +3779,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -3909,12 +3813,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -3981,24 +3881,20 @@ exports[`Display chapter Sidebar 2`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -4104,12 +4000,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4120,12 +4012,8 @@ exports[`Display chapter Sidebar 2`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -4650,24 +4538,20 @@ exports[`Display chapter Sidebar 3`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -4790,12 +4674,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4806,12 +4686,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -4844,12 +4720,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -4916,24 +4788,20 @@ exports[`Display chapter Sidebar 3`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -5056,12 +4924,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5072,12 +4936,8 @@ exports[`Display chapter Sidebar 3`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -5602,24 +5462,20 @@ exports[`Display chapter Sidebar 4`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -5742,12 +5598,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5758,12 +5610,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -5796,12 +5644,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -5868,24 +5712,20 @@ exports[`Display chapter Sidebar 4`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -6008,12 +5848,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6024,12 +5860,8 @@ exports[`Display chapter Sidebar 4`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -6554,24 +6386,20 @@ exports[`Display chapter Sidebar 5`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -6694,12 +6522,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6710,12 +6534,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6748,12 +6568,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -6820,24 +6636,20 @@ exports[`Display chapter Sidebar 5`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -6960,12 +6772,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                         <span
                           class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
@@ -6976,12 +6784,8 @@ exports[`Display chapter Sidebar 5`] = `
                           class="Transliteration__Word Transliteration__Word--AKKADIAN"
                         >
                           <span
-                            class="word-info__trigger"
-                          >
-                            <span
-                              class=""
-                            />
-                          </span>
+                            class=""
+                          />
                         </span>
                       </td>
                       <td>
@@ -7385,24 +7189,20 @@ exports[`Display chapter Snapshot 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
@@ -7493,24 +7293,20 @@ exports[`Display chapter Snapshot 1`] = `
                   class="Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
                 >
                   <span
-                    class="word-info__trigger"
+                    class=""
                   >
                     <span
-                      class=""
+                      class="Transliteration__ValueToken"
                     >
                       <span
-                        class="Transliteration__ValueToken"
+                        class=""
                       >
-                        <span
-                          class=""
-                        >
-                          kur-kur
-                        </span>
+                        kur-kur
                       </span>
-                      <sup
-                        class="Transliteration__flag"
-                      />
                     </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
                   </span>
                 </span>
               </td>
