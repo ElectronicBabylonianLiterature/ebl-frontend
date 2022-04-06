@@ -257,6 +257,23 @@ export function ChapterViewLineVariant({
     [line, variantNumber, parallelsId, showParallels, totalColumns]
   )
 
+  const showScoreCaret = useMemo(
+    () => (
+      <i
+        className={classNames({
+          fas: true,
+          'fa-caret-right': !showScore,
+          'fa-caret-down': showScore,
+        })}
+        aria-expanded={showScore}
+        aria-controls={scoreId}
+        aria-label="Show score"
+        role="button"
+      ></i>
+    ),
+    [showScore, scoreId]
+  )
+
   return (
     <>
       <InterText line={line} colSpan={totalColumns} />
@@ -273,17 +290,7 @@ export function ChapterViewLineVariant({
           className="chapter-display__toggle"
           onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
         >
-          <i
-            className={classNames({
-              fas: true,
-              'fa-caret-right': !showScore,
-              'fa-caret-down': showScore,
-            })}
-            aria-expanded={showScore}
-            aria-controls={scoreId}
-            aria-label="Show score"
-            role="button"
-          ></i>
+          {variantNumber === 0 ? showScoreCaret : ''}
         </td>
         {transliteration}
         <td
