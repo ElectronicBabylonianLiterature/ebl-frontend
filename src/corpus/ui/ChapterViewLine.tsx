@@ -257,7 +257,7 @@ export function ChapterViewLineVariant({
     [line, variantNumber, parallelsId, showParallels, totalColumns]
   )
 
-  const showScoreCaret = useMemo(
+  const scoreCaret = useMemo(
     () => (
       <i
         className={classNames({
@@ -290,7 +290,7 @@ export function ChapterViewLineVariant({
           className="chapter-display__toggle"
           onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
         >
-          {variantNumber === 0 ? showScoreCaret : ''}
+          {variantNumber === 0 ? scoreCaret : ''}
         </td>
         {transliteration}
         <td
@@ -330,7 +330,11 @@ export function ChapterViewLineVariant({
             ></i>
           )}
         </td>
-        <Translation line={line} language={language} />
+        {variantNumber === 0 ? (
+          <Translation line={line} language={language} />
+        ) : (
+          ''
+        )}
       </tr>
       {note}
       {parallels}
