@@ -22,6 +22,7 @@ import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
+import { numberToUnicodeSubscript } from 'transliteration/ui/SubIndex'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -203,7 +204,11 @@ export function ChapterViewLineVariant({
         {variantNumber === 0 ? (
           <LineNumber line={line} activeLine={activeLine} />
         ) : (
-          <td>{`variant ${variantNumber}`}</td>
+          <td style={{ textAlign: 'right' }}>
+            <span>{`variant${numberToUnicodeSubscript(
+              variantNumber
+            )}:\xa0`}</span>
+          </td>
         )}
         <LineColumns columns={column} maxColumns={maxColumns} />
       </>
@@ -290,7 +295,7 @@ export function ChapterViewLineVariant({
           className="chapter-display__toggle"
           onClick={() => dispatchRows({ type: 'toggleScore', row: lineNumber })}
         >
-          {variantNumber === 0 ? scoreCaret : ''}
+          {variantNumber === 0 && scoreCaret}
         </td>
         {transliteration}
         <td
@@ -330,11 +335,7 @@ export function ChapterViewLineVariant({
             ></i>
           )}
         </td>
-        {variantNumber === 0 ? (
-          <Translation line={line} language={language} />
-        ) : (
-          ''
-        )}
+        {variantNumber === 0 && <Translation line={line} language={language} />}
       </tr>
       {note}
       {parallels}

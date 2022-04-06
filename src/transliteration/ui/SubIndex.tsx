@@ -14,7 +14,9 @@ export const subscriptNumbers: ReadonlyMap<string, string> = new Map([
   ['9', '₉'],
 ])
 
-function numberToUnicodeSubscript(number: number | null | undefined): string {
+export function numberToUnicodeSubscript(
+  number: number | null | undefined
+): string {
   return (
     number
       ?.toString()
