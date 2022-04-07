@@ -137,7 +137,6 @@ export function ChapterViewLine({
     () =>
       line.variants.map((variant, variantNumber) => {
         const variantId = _.uniqueId('variant-')
-        console.log(variant, variantNumber)
         return (
           <ChapterViewLineVariant
             key={variantId}

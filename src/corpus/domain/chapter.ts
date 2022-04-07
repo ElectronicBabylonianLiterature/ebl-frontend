@@ -66,12 +66,12 @@ export interface LineDisplay {
   readonly number: LineNumber
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
-  readonly intertext: ReadonlyArray<MarkupPart> //TODO: make nested in variants
-  readonly reconstruction: ReadonlyArray<Token> //TODO: make nested in variants
+  readonly intertext: ReadonlyArray<MarkupPart>
+  readonly reconstruction: ReadonlyArray<Token>
   readonly translation: ReadonlyArray<TranslationLine>
-  readonly note: NoteLine | null //TODO: make nested in variants
-  readonly parallelLines: ReadonlyArray<ParallelLine> //TODO: make nested in variants
-  readonly variants: AnyArray //TODO: specify type
+  readonly note: NoteLine | null
+  readonly parallelLines: ReadonlyArray<ParallelLine>
+  readonly variants: AnyArray
 }
 
 export interface Author {
