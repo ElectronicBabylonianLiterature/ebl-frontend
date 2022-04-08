@@ -42,7 +42,12 @@ function InterText({
       {line.variants[variantNumber].intertext.length > 0 && (
         <tr>
           <td colSpan={colSpan} className="chapter-display__intertext">
-            (<Markup container="span" parts={line.intertext} />)
+            (
+            <Markup
+              container="span"
+              parts={line.variants[variantNumber].intertext}
+            />
+            )
           </td>
         </tr>
       )}
