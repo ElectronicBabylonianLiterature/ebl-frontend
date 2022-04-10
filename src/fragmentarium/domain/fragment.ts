@@ -103,7 +103,8 @@ export class Fragment {
     readonly uncuratedReferences: ReadonlyArray<UncuratedReference> | null,
     readonly atf: string,
     readonly hasPhoto: boolean,
-    readonly genres: Genres
+    readonly genres: Genres,
+    readonly editedInOraccProject: string
   ) {}
 
   static create({
@@ -127,6 +128,7 @@ export class Fragment {
     atf,
     hasPhoto,
     genres,
+    editedInOraccProject,
   }: {
     number: string
     cdliNumber: string
@@ -148,6 +150,7 @@ export class Fragment {
     atf: string
     hasPhoto: boolean
     genres: Genres
+    editedInOraccProject: string
   }): Fragment {
     return new Fragment(
       number,
@@ -169,7 +172,8 @@ export class Fragment {
       uncuratedReferences ?? null,
       atf,
       hasPhoto,
-      genres
+      genres,
+      editedInOraccProject
     )
   }
 

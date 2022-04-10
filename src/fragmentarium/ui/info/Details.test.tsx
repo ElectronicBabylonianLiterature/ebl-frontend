@@ -124,6 +124,11 @@ describe('All details', () => {
     expect(screen.getByText(expectedMeasures)).toBeInTheDocument()
   })
 
+  it('Renders editedInOraccProject', () => {
+    const expectedEditedInOraccProject = `${fragment.editedInOraccProject}`
+    expect(screen.getByText(expectedEditedInOraccProject)).toBeInTheDocument()
+  })
+
   it('Renders CDLI number', () => {
     expect(
       screen.getByText((_, node) => {
@@ -153,6 +158,7 @@ describe('Missing details', () => {
         cdliNumber: '',
         accession: '',
         bmIdNumber: '',
+        editedInOraccProject: '',
       },
       {
         associations: {
@@ -172,6 +178,9 @@ describe('Missing details', () => {
 
   it('Does not render colection', () =>
     expect(screen.queryByText('Collection')).not.toBeInTheDocument())
+
+  it('Does not render editedInOraccProject', () =>
+    expect(screen.queryByText('EditedInOraccProject')).not.toBeInTheDocument())
 
   it(`Renders dash for joins`, () => {
     expect(screen.getByText(/Joins:/)).toHaveTextContent('-')
