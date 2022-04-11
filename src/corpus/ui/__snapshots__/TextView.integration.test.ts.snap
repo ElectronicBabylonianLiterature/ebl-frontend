@@ -630,6 +630,7 @@ exports[`Chapter Show list of manuscripts 1`] = `
                         AssaOBSch1
                       </th>
                       <td
+                        class="list-of-manuscripts__museum-numbers"
                         headers="provenace-33 row-34 museumNumber-29"
                       >
                         <a
