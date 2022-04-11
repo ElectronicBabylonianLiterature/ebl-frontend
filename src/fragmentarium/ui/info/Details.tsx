@@ -95,10 +95,10 @@ function EditedInOraccProject({
   const encodedCdliNumber = encodeURIComponent(cdliNumber)
   const projectLink =
     editedInOraccProject == 'ccp'
-      ? `http://oracc.org/${encodeURIComponent(
+      ? `https://ccp.yale.edu/${encodedCdliNumber}`
+      : `http://oracc.org/${encodeURIComponent(
           editedInOraccProject.toLowerCase()
         )}/${encodedCdliNumber}`
-      : `https://ccp.yale.edu/${encodedCdliNumber}`
   return (
     <>
       {editedInOraccProject && (
