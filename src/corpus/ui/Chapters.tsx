@@ -173,6 +173,7 @@ const Manuscripts = withData<
                           headers={[provenanceId, rowId, museumNumberId].join(
                             ' '
                           )}
+                          className="list-of-manuscripts__museum-numbers"
                         >
                           <ManuscriptJoins manuscript={manuscript} />
                           <ManuscriptReferences manuscript={manuscript} />
