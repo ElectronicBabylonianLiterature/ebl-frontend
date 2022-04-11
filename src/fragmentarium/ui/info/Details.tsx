@@ -92,12 +92,13 @@ function CdliNumber({ fragment: { cdliNumber } }: Props): JSX.Element {
 function EditedInOraccProject({
   fragment: { editedInOraccProject, cdliNumber },
 }: Props): JSX.Element {
-  let projectLink = `http://oracc.org/${encodeURIComponent(
-    editedInOraccProject.toLowerCase()
-  )}/${encodeURIComponent(cdliNumber)}`
-  if (editedInOraccProject === 'ccp') {
-    projectLink = `https://ccp.yale.edu/${encodeURIComponent(cdliNumber)}`
-  }
+  const encodedCdliNumber = encodeURIComponent(cdliNumber)
+  const projectLink =
+    editedInOraccProject == 'ccp'
+      ? `http://oracc.org/${encodeURIComponent(
+          editedInOraccProject.toLowerCase()
+        )}/${encodedCdliNumber}`
+      : `https://ccp.yale.edu/${encodedCdliNumber}`
   return (
     <>
       {editedInOraccProject && (

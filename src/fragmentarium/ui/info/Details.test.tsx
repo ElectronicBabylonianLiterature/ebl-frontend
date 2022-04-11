@@ -125,8 +125,7 @@ describe('All details', () => {
   })
 
   it('Renders editedInOraccProject', () => {
-    const expectedEditedInOraccProject = `${fragment.editedInOraccProject}`
-    expect(screen.getByText(expectedEditedInOraccProject)).toBeInTheDocument()
+    expect(screen.getByText(fragment.editedInOraccProject)).toBeInTheDocument()
   })
 
   it('Renders CDLI number', () => {
