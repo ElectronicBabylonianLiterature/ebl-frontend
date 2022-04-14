@@ -458,7 +458,9 @@ test('inject ChapterDisplay', async () => {
     draft.lines[0].translation[0].parts = [
       createInjectedPart(translationReference),
     ]
-    draft.lines[0].intertext = [createInjectedPart(intertextReference)]
+    draft.lines[0].variants[0].intertext = [
+      createInjectedPart(intertextReference),
+    ]
   })
   const injectedChapter = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
@@ -467,7 +469,7 @@ test('inject ChapterDisplay', async () => {
         type: 'BibliographyPart',
       },
     ]
-    draft.lines[0].intertext = [
+    draft.lines[0].variants[0].intertext = [
       {
         reference: castDraft(intertextReference),
         type: 'BibliographyPart',

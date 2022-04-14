@@ -47,8 +47,8 @@ export type LineDisplayDto = Pick<
   | 'number'
   | 'isSecondLineOfParallelism'
   | 'isBeginningOfSection'
-  | 'intertext'
-  | 'reconstruction'
+  //| 'intertext'
+  //| 'reconstruction'
   | 'variants'
 > & {
   translation: {

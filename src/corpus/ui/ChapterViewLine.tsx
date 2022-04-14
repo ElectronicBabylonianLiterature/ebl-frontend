@@ -262,7 +262,7 @@ export function ChapterViewLineVariant({
           id={parallelsId}
           totalColumns={totalColumns}
         >
-          <Parallels lines={line.parallelLines} />
+          <Parallels lines={line.variants[0].parallelLines} />
         </CollapsibleRow>
       ),
     [line, variantNumber, parallelsId, showParallels, totalColumns]
