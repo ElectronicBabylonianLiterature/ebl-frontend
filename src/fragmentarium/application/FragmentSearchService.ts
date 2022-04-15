@@ -11,6 +11,12 @@ export interface FragmentInfoRepository {
   searchNumber(number: string): FragmentInfosPromise
   searchReference(id: string, page: string): FragmentInfosPromise
   searchTransliteration(number: string): FragmentInfosPromise
+  searchFragmentarium(
+    number: string,
+    transliteration: string,
+    id: string,
+    pages: string
+  ): FragmentInfosPromise
   fetchLatestTransliterations(): FragmentInfosPromise
   fetchNeedsRevision(): FragmentInfosPromise
 }
@@ -57,6 +63,20 @@ export default class FragmentSearchService {
 
   searchTransliteration(transliteration: string): FragmentInfosPromise {
     return this.fragmentRepository.searchTransliteration(transliteration)
+  }
+  searchFragmentarium(
+    number: string,
+    transliteration: string,
+    id: string,
+    pages: string
+  ): FragmentInfosPromise {
+    console.log('1')
+    return this.fragmentRepository.searchFragmentarium(
+      number,
+      transliteration,
+      id,
+      pages
+    )
   }
 
   fetchLatestTransliterations(): FragmentInfosPromise {

@@ -115,6 +115,16 @@ class ApiFragmentRepository
     return this._fetch({ transliteration })
   }
 
+  searchFragmentarium(
+    number: string,
+    transliteration: string,
+    id: string,
+    pages: string
+  ): FragmentInfosPromise {
+    console.log({ number, transliteration, id, pages })
+    return this._fetch({ number, transliteration, id, pages })
+  }
+
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {
     return this.apiClient.fetchJson(`/fragments?${stringify(params)}`, true)
   }
