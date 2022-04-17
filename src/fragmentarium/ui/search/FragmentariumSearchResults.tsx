@@ -65,7 +65,8 @@ export default withData<
       props.id,
       props.pages,
     ],
-    filter: (props) => !_.isEmpty(props.transliteration),
+    filter: (props) =>
+      !_.isEmpty(props.number) || !_.isEmpty(props.transliteration),
     defaultData: [],
   }
 )
