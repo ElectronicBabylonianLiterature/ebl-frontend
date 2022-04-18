@@ -289,20 +289,23 @@ const testData: TestData[] = [
     'findChapterLine',
     [chapterId, 0],
     apiClient.fetchJson,
-    new LineDetails([
-      new LineVariantDisplay([
-        new ManuscriptLineDisplay(
-          Provenances.Nippur,
-          PeriodModifiers['Early'],
-          Periods['Ur III'],
-          ManuscriptTypes.School,
-          '1',
-          ['o'],
-          new TextLine(lines[0]),
-          []
-        ),
-      ]),
-    ]),
+    new LineDetails(
+      [
+        new LineVariantDisplay([
+          new ManuscriptLineDisplay(
+            Provenances.Nippur,
+            PeriodModifiers['Early'],
+            Periods['Ur III'],
+            ManuscriptTypes.School,
+            '1',
+            ['o'],
+            new TextLine(lines[0]),
+            []
+          ),
+        ]),
+      ],
+      0
+    ),
     [`${chapterUrl}/lines/0`, true],
     Bluebird.resolve({
       variants: [
