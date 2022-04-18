@@ -98,31 +98,18 @@ class ApiFragmentRepository
     return this._fetch({ needsRevision: true })
   }
 
-  searchNumber(number: string): FragmentInfosPromise {
-    return this._fetch({ number })
-  }
-
-  searchReference(id: string, pages: string): FragmentInfosPromise {
-    return this._fetch({ id, pages }).then((dto) =>
-      dto.map((fragmentInfo) => ({
-        ...fragmentInfo,
-        references: fragmentInfo.references.map(createReference),
-      }))
-    )
-  }
-
-  searchTransliteration(transliteration: string): FragmentInfosPromise {
-    return this._fetch({ transliteration })
-  }
-
   searchFragmentarium(
     number: string,
     transliteration: string,
     id: string,
     pages: string
   ): FragmentInfosPromise {
-    console.log({ number, transliteration, id, pages })
-    return this._fetch({ number, transliteration, id, pages })
+    return this._fetch({ number, transliteration, id, pages }).then((dto) =>
+      dto.map((fragmentInfo) => ({
+        ...fragmentInfo,
+        references: fragmentInfo.references.map(createReference),
+      }))
+    )
   }
 
   _fetch(params: Record<string, unknown>): FragmentInfosPromise {

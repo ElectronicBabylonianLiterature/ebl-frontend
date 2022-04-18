@@ -6,11 +6,9 @@ const resultStub = {}
 const fragmentRepository = {
   random: jest.fn(),
   interesting: jest.fn(),
-  searchNumber: jest.fn(),
-  searchReference: jest.fn(),
-  searchTransliteration: jest.fn(),
   fetchLatestTransliterations: jest.fn(),
   fetchNeedsRevision: jest.fn(),
+  searchFragmentarium: jest.fn(),
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
@@ -31,11 +29,17 @@ const testData: TestData[] = [
     null,
     Promise.resolve([resultStub]),
   ],
-  ['searchNumber', ['K.1'], fragmentRepository.searchNumber, resultStub],
+
   [
-    'searchTransliteration',
-    ['kur'],
-    fragmentRepository.searchTransliteration,
+    'searchFragmentarium',
+    ['K.1', '', '', ''],
+    fragmentRepository.searchFragmentarium,
+    resultStub,
+  ],
+  [
+    'searchFragmentarium',
+    ['', 'kur', '', ''],
+    fragmentRepository.searchFragmentarium,
     resultStub,
   ],
   [

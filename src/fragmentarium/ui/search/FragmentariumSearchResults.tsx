@@ -3,6 +3,7 @@ import FragmentList from '../FragmentList'
 import withData from '../../../http/withData'
 import _ from 'lodash'
 import React from 'react'
+import ReferenceList from '../../../bibliography/ui/ReferenceList'
 
 function Lines({ fragment }: { fragment: FragmentInfo }) {
   return (
@@ -28,13 +29,18 @@ function FragmentariumSearchResult({
   function makeLine(fragment: FragmentInfo) {
     return <Lines fragment={fragment} />
   }
-  console.log('')
+  function makeReferences(data: FragmentInfo) {
+    return <ReferenceList references={data.references} />
+  }
   return (
     <FragmentList
       fragments={fragmentInfos}
       columns={{
         Script: 'script',
+        References: (fragmentInfo) => makeReferences(fragmentInfo),
         'Matching lines': makeLine,
+        Description: 'description',
+        Genre: 'genre',
       }}
     />
   )
@@ -66,7 +72,9 @@ export default withData<
       props.pages,
     ],
     filter: (props) =>
-      !_.isEmpty(props.number) || !_.isEmpty(props.transliteration),
+      !_.isEmpty(props.number) ||
+      !_.isEmpty(props.transliteration) ||
+      !_.isEmpty(props.id),
     defaultData: [],
   }
 )
