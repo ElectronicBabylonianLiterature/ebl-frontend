@@ -190,28 +190,33 @@ export default class TextService {
                     )
                 )
               ),
-              this.referenceInjector.injectReferencesToMarkup(
-                line.variants[0].intertext
+              line.variants.map((variant) =>
+                this.referenceInjector.injectReferencesToMarkup(
+                  variant.intertext
+                )
               ),
-              line.note &&
-                this.referenceInjector
-                  .injectReferencesToMarkup(line.variants[0].note.parts)
-                  .then(
-                    (parts) =>
-                      new NoteLine({
-                        ...(line.variants[0].note as NoteLineDto),
-                        parts,
-                      })
-                  ),
-            ]).then(([translation, intertext, note]) => ({
+              line.variants.map(
+                (variant) =>
+                  variant.note &&
+                  this.referenceInjector
+                    .injectReferencesToMarkup(variant.note.parts)
+                    .then(
+                      (parts) =>
+                        new NoteLine({
+                          ...(variant.note as NoteLineDto),
+                          parts,
+                        })
+                    )
+              ),
+              line.variants.map((variant) =>
+                variant.parallelLines.map(
+                  (parallel) =>
+                    fromTransliterationLineDto(parallel) as ParallelLine
+                )
+              ),
+            ]).then(([translation]) => ({
               ...line,
               translation,
-              //intertext,
-              //note,
-              parallelLines: line.variants[0].parallelLines.map(
-                (parallel) =>
-                  fromTransliterationLineDto(parallel) as ParallelLine
-              ),
             }))
           )
         ).then(
