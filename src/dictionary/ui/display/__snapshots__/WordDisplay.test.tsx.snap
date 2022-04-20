@@ -758,6 +758,71 @@ exports[`Fetch word Word parts are displayed correctly 1`] = `
           />
         </a>
       </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            id="Ⅳ"
+          >
+            Ⅳ
+            . 
+            Supplement to the Akkadian Dictionaries
+          </h3>
+        </div>
+      </div>
+      <div
+        class="ml-5 row"
+      >
+        <div
+          class="col"
+        >
+           
+          <span>
+            word
+          </span>
+        </div>
+      </div>
+      <div
+        class="text-center border border-dark mx-5 m-3 p-2"
+      >
+        <strong>
+          From
+        </strong>
+        <br />
+        Streck, M.P.
+        , 
+        <em>
+          Supplement to the Akkadian Dictionaries
+        </em>
+        . 
+        2013–
+        .
+        <br />
+        <a
+          class="text-dark "
+          href="https://creativecommons.org/licenses/by-sa/3.0/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <strong>
+            CC BY-ND 3.0
+          </strong>
+        </a>
+        <br />
+        <a
+          class="text-dark "
+          href="https://altorient.gko.uni-leipzig.de/etymd.html"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </a>
+      </div>
     </div>
   </main>
 </div>

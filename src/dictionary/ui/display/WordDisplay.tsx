@@ -44,6 +44,7 @@ const Sections = [
       'A Concise Dictionary of Akkadian (Justifications, Addenda and Corrigenda)',
   },
   { number: 'Ⅲ', title: 'Akkadische Glossare und Indizes' },
+  { number: 'Ⅳ', title: 'Supplement to the Akkadian Dictionaries' },
 ]
 
 function WordDisplay({ word }: { word: Word }): JSX.Element {
@@ -148,6 +149,27 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
           link="https://www.uni-marburg.de/cnms/forschung/dnms/apps/agi"
           icon="pointer__hover my-2 fas fa-external-link-square-alt"
         />
+      )}
+
+      {word.supplementsAkkadianDictionaries && (
+        <>
+          <Heading number={Sections[3].number} title={Sections[3].title} />
+          <Row className="ml-5">
+            <Col>
+              {' '}
+              <Markdown text={word.supplementsAkkadianDictionaries} />
+            </Col>
+          </Row>
+          <LiteratureRedirectBox
+            authors="Streck, M.P."
+            book={Sections[3].title}
+            notelink="https://creativecommons.org/licenses/by-sa/3.0/"
+            subtitle="2013–"
+            note="CC BY-ND 3.0"
+            link="https://altorient.gko.uni-leipzig.de/etymd.html"
+            icon="pointer__hover my-2 fas fa-external-link-square-alt"
+          />
+        </>
       )}
     </AppContent>
   )
