@@ -230,10 +230,12 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
-    note: dto.note && new NoteLine(dto.note),
-    parallelLines: dto.parallelLines.map(
-      (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
-    ),
+    variants: dto.variants.map((variant) => ({
+      note: variant.note && new NoteLine(variant.note),
+      parallelLines: variant.parallelLines.map(
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+      ),
+    })),
   })),
   chapterDisplayDto.record
 )

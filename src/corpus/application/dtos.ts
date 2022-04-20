@@ -42,14 +42,20 @@ import { Token } from 'transliteration/domain/token'
 import { NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 
+export type LineVariantDisplayDto = Pick<
+  LineVariantDisplay,
+  'reconstruction' | 'note' | 'manuscripts' | 'parallelLines' | 'intertext'
+> & {
+  reconstruction: string
+  manuscripts: []
+  note: Omit<NoteLineDto, 'type'> | null
+  parallelLines: ParallelLineDto[]
+  intertext: string
+}
+
 export type LineDisplayDto = Pick<
   LineDisplay,
-  | 'number'
-  | 'isSecondLineOfParallelism'
-  | 'isBeginningOfSection'
-  //| 'intertext'
-  //| 'reconstruction'
-  | 'variants'
+  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection' | 'variants'
 > & {
   translation: {
     language: string
@@ -57,8 +63,7 @@ export type LineDisplayDto = Pick<
     parts: MarkupPart[]
     content: Token[]
   }[]
-  note: Omit<NoteLineDto, 'type'> | null
-  parallelLines: ParallelLineDto[]
+  variants: LineVariantDisplayDto[]
 }
 
 export type ChapterDisplayDto = Pick<

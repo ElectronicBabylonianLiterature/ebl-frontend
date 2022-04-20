@@ -7,16 +7,16 @@ import Cite from 'citation-js'
 import removeMd from 'remove-markdown'
 import { LineNumber } from 'transliteration/domain/line-number'
 import { MarkupPart } from 'transliteration/domain/markup'
-//import { Token } from 'transliteration/domain/token'
 import { ChapterAlignment } from './alignment'
 import { Line, ManuscriptLine } from './line'
 import { Manuscript } from './manuscript'
 import { TextId, textIdToDoiString } from 'transliteration/domain/text-id'
 import TranslationLine from 'transliteration/domain/translation-line'
-//import { NoteLine } from 'transliteration/domain/note-line'
-//import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { ChapterId, defaultName } from 'transliteration/domain/chapter-id'
-import { AnyArray } from 'immer/dist/internal'
+import { NoteLine } from 'transliteration/domain/note-line'
+import { ParallelLine } from 'transliteration/domain/parallel-line'
+import { Token } from 'transliteration/domain/token'
+import { ManuscriptLineDisplay } from 'corpus/domain/line-details'
 
 export class Chapter {
   readonly [immerable] = true
@@ -62,16 +62,20 @@ export class Chapter {
   }
 }
 
+interface LineVariantDisplay {
+  readonly reconstruction: ReadonlyArray<MarkupPart>
+  readonly note: NoteLine | null
+  readonly manuscripts: ReadonlyArray<ManuscriptLineDisplay>
+  readonly parallelLines: ReadonlyArray<ParallelLine>
+  readonly intertext: ReadonlyArray<Token>
+}
+
 export interface LineDisplay {
   readonly number: LineNumber
   readonly isSecondLineOfParallelism: boolean
   readonly isBeginningOfSection: boolean
-  //readonly intertext: ReadonlyArray<MarkupPart>
-  //readonly reconstruction: ReadonlyArray<Token>
   readonly translation: ReadonlyArray<TranslationLine>
-  //readonly note: NoteLine | null
-  //readonly parallelLines: ReadonlyArray<ParallelLine>
-  readonly variants: AnyArray
+  readonly variants: ReadonlyArray<LineVariantDisplay>
 }
 
 export interface Author {
