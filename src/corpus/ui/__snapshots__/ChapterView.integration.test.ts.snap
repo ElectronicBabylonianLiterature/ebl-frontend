@@ -51,7 +51,7 @@ exports[`Display chapter How to cite 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-155"
+          id="Header-181"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Display chapter How to cite 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-155"
+          aria-controls="Header-181"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -251,7 +251,7 @@ exports[`Display chapter How to cite 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-168"
+          aria-controls="collapse-194"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -263,7 +263,7 @@ exports[`Display chapter How to cite 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-168"
+          id="collapse-194"
         >
           <div
             class="csl-bib-body"
@@ -331,7 +331,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-158"
+                  aria-controls="score-184"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -382,7 +382,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-159"
+                  aria-controls="note-185"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -393,7 +393,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-160"
+                  aria-controls="parallels-186"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -435,7 +435,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-163"
+                  aria-controls="score-189"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -486,7 +486,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-164"
+                  aria-controls="note-190"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -497,7 +497,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-165"
+                  aria-controls="parallels-191"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -529,7 +529,7 @@ exports[`Display chapter How to cite 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-167"
+          aria-controls="settings-193"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1364,7 +1364,7 @@ exports[`Display chapter Show note 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-48"
+          id="Header-54"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1438,7 +1438,7 @@ exports[`Display chapter Show note 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-48"
+          aria-controls="Header-54"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1564,7 +1564,7 @@ exports[`Display chapter Show note 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-61"
+          aria-controls="collapse-67"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -1576,7 +1576,7 @@ exports[`Display chapter Show note 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-61"
+          id="collapse-67"
         >
           <div
             class="csl-bib-body"
@@ -1644,7 +1644,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-62"
+                  aria-controls="score-68"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1695,7 +1695,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-63"
+                  aria-controls="note-69"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -1706,7 +1706,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-64"
+                  aria-controls="parallels-70"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1729,7 +1729,7 @@ exports[`Display chapter Show note 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-63"
+              id="note-69"
               style="height: 0px;"
             >
               <td
@@ -1765,7 +1765,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-65"
+                  aria-controls="score-71"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1816,7 +1816,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-66"
+                  aria-controls="note-72"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1827,7 +1827,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-67"
+                  aria-controls="parallels-73"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1859,7 +1859,7 @@ exports[`Display chapter Show note 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-68"
+          aria-controls="settings-74"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1926,7 +1926,7 @@ exports[`Display chapter Show parallels 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-69"
+          id="Header-75"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2000,7 +2000,7 @@ exports[`Display chapter Show parallels 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-69"
+          aria-controls="Header-75"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2126,7 +2126,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-82"
+          aria-controls="collapse-88"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2138,7 +2138,7 @@ exports[`Display chapter Show parallels 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-82"
+          id="collapse-88"
         >
           <div
             class="csl-bib-body"
@@ -2206,7 +2206,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-83"
+                  aria-controls="score-89"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2257,7 +2257,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-84"
+                  aria-controls="note-90"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2268,7 +2268,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-85"
+                  aria-controls="parallels-91"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -2292,7 +2292,7 @@ exports[`Display chapter Show parallels 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-85"
+              id="parallels-91"
               style="height: 0px;"
             >
               <td
@@ -2333,7 +2333,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-86"
+                  aria-controls="score-92"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2384,7 +2384,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-87"
+                  aria-controls="note-93"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2395,7 +2395,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-88"
+                  aria-controls="parallels-94"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2427,7 +2427,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-89"
+          aria-controls="settings-95"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -2494,7 +2494,7 @@ exports[`Display chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-96"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2568,7 +2568,7 @@ exports[`Display chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-96"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2694,7 +2694,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-107"
+          aria-controls="collapse-113"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2706,7 +2706,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-107"
+          id="collapse-113"
         >
           <div
             class="csl-bib-body"
@@ -2774,7 +2774,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-108"
+                  aria-controls="score-114"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2825,7 +2825,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-109"
+                  aria-controls="note-115"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2836,7 +2836,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-110"
+                  aria-controls="parallels-116"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2859,18 +2859,108 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-108"
+              id="score-114"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                        >
+                          …
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
             <tr>
@@ -2894,7 +2984,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-111"
+                  aria-controls="score-117"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2945,7 +3035,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-112"
+                  aria-controls="note-118"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2956,7 +3046,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-113"
+                  aria-controls="parallels-119"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2979,18 +3069,74 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-111"
+              id="score-117"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
           </tbody>
@@ -3004,7 +3150,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-114"
+          aria-controls="settings-120"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -3016,7 +3162,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-114"
+          id="settings-120"
         >
           <form
             class="settings__section"
@@ -3031,12 +3177,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-115"
+                id="sidebar-text-toggle-121"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-115"
+                for="sidebar-text-toggle-121"
                 title=""
               >
                 Score
@@ -3056,12 +3202,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-116"
+                id="sidebar-text-toggle-122"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-116"
+                for="sidebar-text-toggle-122"
                 title=""
               >
                 Parallels
@@ -3072,12 +3218,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-117"
+                id="sidebar-text-toggle-123"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-117"
+                for="sidebar-text-toggle-123"
                 title=""
               >
                 Notes
@@ -3192,7 +3338,7 @@ exports[`Display chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-96"
         >
           <div
             class="mx-auto navbar-nav"
@@ -3266,751 +3412,7 @@ exports[`Display chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
-          aria-label="Toggle navigation"
-          class="navbar-toggler collapsed"
-          type="button"
-        >
-          <span
-            class="navbar-toggler-icon"
-          />
-        </button>
-      </div>
-    </nav>
-  </header>
-  <main
-    class="main"
-  >
-    <div
-      class="main__content"
-    >
-      <header
-        class="main__header"
-      >
-        <nav
-          aria-label="breadcrumb"
-          class="main__breadcrumbs"
-        >
-          <ol
-            class="breadcrumb"
-          >
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/"
-              >
-                eBL
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus/L"
-              >
-                L
-              </a>
-            </li>
-            <li
-              class="breadcrumb-item active"
-            >
-              <a
-                href="/corpus/L/1/1"
-              >
-                I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
-              </a>
-            </li>
-            <li
-              aria-current="page"
-              class="breadcrumb-item active"
-            >
-              Chapter Old Babylonian The Only Chapter
-            </li>
-          </ol>
-        </nav>
-        <h2
-          class="main__heading"
-        >
-          Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
-          <br />
-          <small>
-            Chapter
-             
-            The Only Chapter
-             
-            <span>
-              <span>
-                Tetkoze bowko iz owaofoece zuh se napdef nuh eno ifuluab juwkaril iz jato milatas sik.
-              </span>
-            </span>
-          </small>
-        </h2>
-        <div
-          class="main__toolbar btn-toolbar"
-          role="toolbar"
-        >
-          <div
-            class="btn-group"
-            role="group"
-          >
-            <div
-              class="dropdown btn-group"
-              role="group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn btn-outline-primary"
-                type="button"
-              >
-                Go to
-              </button>
-            </div>
-            <a
-              class="btn btn-outline-primary"
-              href="/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter/edit"
-            >
-              <i
-                class="fas fa-edit"
-              />
-               Edit
-            </a>
-          </div>
-        </div>
-      </header>
-      <section
-        class="chapter-view__section"
-      >
-        <h3
-          aria-controls="collapse-118"
-          class="chapter-view__section-heading collapsible_section__heading"
-        >
-          How to cite
-           
-          <i
-            aria-expanded="true"
-            class="collapsible_section__collapse-indicator fas fa-caret-down"
-          />
-        </h3>
-        <div
-          class="collapse show"
-          id="collapse-118"
-        >
-          <div
-            class="csl-bib-body"
-          >
-            
-  
-            <div
-              class="csl-entry"
-              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
-            >
-              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
-              <i>
-                Electronic Babylonian Literature
-              </i>
-              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
-            </div>
-            
-
-          </div>
-          <div
-            class="justify-content-center mt-3 btn-toolbar"
-            role="toolbar"
-          >
-            <div
-              class="mr-2 btn-group"
-              role="group"
-            />
-            <div
-              class="mr-2 btn-group"
-              role="group"
-            />
-            <div
-              class="mr-2 btn-group"
-              role="group"
-            />
-          </div>
-        </div>
-      </section>
-      <section>
-        <h3>
-          Edition
-        </h3>
-        <table
-          class="chapter-display"
-        >
-          <tbody>
-            <tr>
-              <td
-                class="chapter-display__intertext"
-                colspan="7"
-              >
-                (
-                <span>
-                  <span>
-                    Zaf todnohlaf uc uhoev ficdogpih wujfoj komtedzi ver sunhicna kohmoj sejtelru vavpelu uhajovsi ise.
-                  </span>
-                </span>
-                )
-              </td>
-            </tr>
-            <tr
-              class="chapter-display__line chapter-display__line--is-beginning-of-section"
-            >
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="score-119"
-                  aria-expanded="true"
-                  aria-label="Show score"
-                  class="fas fa-caret-down"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__line-number"
-              >
-                <a
-                  class="chapter-display__anchor"
-                  href="#1"
-                  id="1"
-                >
-                  1
-                </a>
-              </td>
-              <td
-                colspan="1"
-              >
-                <span
-                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                >
-                   
-                </span>
-                <span
-                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                >
-                  <span
-                    class=""
-                  >
-                    <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
-                    >
-                      <span
-                        class=""
-                      >
-                        kur-kur
-                      </span>
-                    </span>
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </td>
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="note-120"
-                  aria-expanded="false"
-                  aria-label="Show note"
-                  class="fas fa-book"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="parallels-121"
-                  aria-expanded="true"
-                  aria-label="Show parallels"
-                  class="fas fa-quote-right"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__line-number"
-              >
-                1
-              </td>
-              <td
-                class="chapter-display__translation"
-              >
-                <div>
-                  <span>
-                    Sitemo vojjiw ga muvcaeni ke vena pur gi tufse lero hel patedofo.
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr
-              class="collapsing"
-              id="parallels-121"
-              style="height: 0px;"
-            >
-              <td
-                colspan="7"
-              >
-                <ul
-                  class="chapter-display__parallels"
-                >
-                  <li>
-                    // 
-                     (
-                    A Composition
-                     
-                    2
-                    )
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr
-              class="collapse show"
-              id="score-119"
-              style=""
-            >
-              <td
-                colspan="7"
-              >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
-                >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="chapter-display__intertext"
-                colspan="7"
-              >
-                (
-                <span>
-                  <span>
-                    Oni zu zir mup ohmud bazosron lewji ruh deb egi oszeceg sulujan ulijegciw uriumuca du uj zo.
-                  </span>
-                </span>
-                )
-              </td>
-            </tr>
-            <tr
-              class="chapter-display__line chapter-display__line--is-beginning-of-section"
-            >
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="score-122"
-                  aria-expanded="true"
-                  aria-label="Show score"
-                  class="fas fa-caret-down"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__line-number"
-              >
-                <a
-                  class="chapter-display__anchor"
-                  href="#2"
-                  id="2"
-                >
-                  2
-                </a>
-              </td>
-              <td
-                colspan="1"
-              >
-                <span
-                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
-                >
-                   
-                </span>
-                <span
-                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
-                >
-                  <span
-                    class=""
-                  >
-                    <span
-                      class="Transliteration__ValueToken Transliteration__ValueToken"
-                    >
-                      <span
-                        class=""
-                      >
-                        kur-kur
-                      </span>
-                    </span>
-                    <sup
-                      class="Transliteration__flag"
-                    />
-                  </span>
-                </span>
-              </td>
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="note-123"
-                  aria-expanded="false"
-                  aria-label="Show note"
-                  class="fas fa-book"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__toggle"
-              >
-                <i
-                  aria-controls="parallels-124"
-                  aria-expanded="true"
-                  aria-label="Show parallels"
-                  class="fas fa-quote-right"
-                  role="button"
-                />
-              </td>
-              <td
-                class="chapter-display__line-number"
-              >
-                2
-              </td>
-              <td
-                class="chapter-display__translation"
-              >
-                <div>
-                  <span>
-                    Le wuzre itbidulu kibacmuh por sipazzug ize jajus zocuzmev oc givor onbu sojo zomu tedef ujado dadi.
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr
-              class="collapsing"
-              id="parallels-124"
-              style="height: 0px;"
-            >
-              <td
-                colspan="7"
-              >
-                <ul
-                  class="chapter-display__parallels"
-                >
-                  <li>
-                    // 
-                     (
-                    A Composition
-                     
-                    2
-                    )
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr
-              class="collapse show"
-              id="score-122"
-              style=""
-            >
-              <td
-                colspan="7"
-              >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
-                >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </div>
-    <aside
-      class="main__sidebar"
-    >
-      <section
-        class="settings"
-      >
-        <h3
-          aria-controls="settings-125"
-          aria-expanded="true"
-          class="settings__heading"
-          role="button"
-        >
-          <i
-            class="fas fa-cog"
-          />
-           Settings
-        </h3>
-        <div
-          class="fade show"
-          id="settings-125"
-        >
-          <form
-            class="settings__section"
-          >
-            <h4
-              class="settings__subheading"
-            >
-              Text
-            </h4>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-126"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-126"
-                title=""
-              >
-                Score
-              </label>
-            </div>
-          </form>
-          <form
-            class="settings__section"
-          >
-            <h4
-              class="settings__subheading"
-            >
-              Scholia
-            </h4>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-127"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-127"
-                title=""
-              >
-                Parallels
-              </label>
-            </div>
-            <div
-              class="settings__switch custom-control custom-switch"
-            >
-              <input
-                class="custom-control-input"
-                id="sidebar-text-toggle-128"
-                type="checkbox"
-              />
-              <label
-                class="custom-control-label"
-                for="sidebar-text-toggle-128"
-                title=""
-              >
-                Notes
-              </label>
-            </div>
-          </form>
-          <section
-            class="settings__section"
-          >
-            <h4
-              class="settings__subheading"
-            >
-              Translation
-            </h4>
-            <ul
-              class="settings__languages"
-            >
-              <li>
-                <span
-                  class="settings__language settings__language--active"
-                  role="button"
-                >
-                  English
-                </span>
-                 
-                <span
-                  class="settings__translators"
-                />
-              </li>
-              <li>
-                <span
-                  class="settings__language"
-                  role="button"
-                >
-                  Deutsch
-                </span>
-                 
-                <span
-                  class="settings__translators"
-                />
-              </li>
-            </ul>
-          </section>
-          <footer
-            class="settings__footer"
-          >
-            <span
-              class="settings__close-button"
-              role="button"
-            >
-              <i
-                class="far fa-times-circle"
-              />
-               Close
-            </span>
-          </footer>
-        </div>
-      </section>
-    </aside>
-  </main>
-</div>
-`;
-
-exports[`Display chapter Sidebar 3`] = `
-<div>
-  <header
-    class="Header"
-  >
-    <nav
-      class="navbar navbar-expand-md navbar-light"
-    >
-      <div
-        class="container"
-      >
-        <span
-          class="navbar-brand"
-        >
-          <a
-            href="https://www.lmu.de"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <img
-              class="Header__corporate-logo img-fluid"
-              src="LMU_Logo.svg"
-            />
-          </a>
-        </span>
-        <a
-          class="active navbar-brand"
-          href="/"
-          title="electronic Babylonian Literature (eBL)"
-        >
-          <h1
-            class="Header__title"
-          >
-            <span
-              class="Header__title-main"
-            >
-              electronic
-              <br />
-              Babylonian
-              <br />
-              Literature
-            </span>
-            <small
-              class="Header__title-abbreviation"
-            >
-              eBL
-            </small>
-          </h1>
-        </a>
-        <div
-          class="navbar-collapse collapse"
-          id="Header-90"
-        >
-          <div
-            class="mx-auto navbar-nav"
-          >
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/signs"
-                href="/signs"
-              >
-                Signs
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/dictionary"
-                href="/dictionary"
-              >
-                Dictionary
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="active nav-link"
-                data-rb-event-key="/corpus"
-                href="/corpus"
-              >
-                Corpus
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/fragmentarium"
-                href="/fragmentarium"
-              >
-                Fragmentarium
-              </a>
-            </div>
-            <div
-              class="nav-item"
-            >
-              <a
-                class="nav-link"
-                data-rb-event-key="/bibliography"
-                href="/bibliography"
-              >
-                Bibliography
-              </a>
-            </div>
-          </div>
-          <span
-            class="navbar-text"
-          >
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              type="button"
-            >
-              Logout 
-              Test
-            </button>
-          </span>
-        </div>
-        <button
-          aria-controls="Header-90"
+          aria-controls="Header-96"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -4268,9 +3670,9 @@ exports[`Display chapter Sidebar 3`] = `
               >
                 <i
                   aria-controls="note-131"
-                  aria-expanded="true"
+                  aria-expanded="false"
                   aria-label="Show note"
-                  class="fas fa-book-open"
+                  class="fas fa-book"
                   role="button"
                 />
               </td>
@@ -4296,23 +3698,6 @@ exports[`Display chapter Sidebar 3`] = `
                 <div>
                   <span>
                     Sitemo vojjiw ga muvcaeni ke vena pur gi tufse lero hel patedofo.
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr
-              class="collapsing"
-              id="note-131"
-              style="height: 0px;"
-            >
-              <td
-                colspan="7"
-              >
-                <div
-                  class="chapter-display__note"
-                >
-                  <span>
-                    Beanvot ridju ca ro pimpe wib irhihub nobu bitu de pesfas gobvut.
                   </span>
                 </div>
               </td>
@@ -4347,12 +3732,102 @@ exports[`Display chapter Sidebar 3`] = `
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                        >
+                          …
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
             <tr>
@@ -4376,7 +3851,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-133"
+                  aria-controls="score-136"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4427,10 +3902,10 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-134"
-                  aria-expanded="true"
+                  aria-controls="note-137"
+                  aria-expanded="false"
                   aria-label="Show note"
-                  class="fas fa-book-open"
+                  class="fas fa-book"
                   role="button"
                 />
               </td>
@@ -4438,7 +3913,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-135"
+                  aria-controls="parallels-138"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -4462,24 +3937,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-134"
-              style="height: 0px;"
-            >
-              <td
-                colspan="7"
-              >
-                <div
-                  class="chapter-display__note"
-                >
-                  <span>
-                    Buzni utnuplo agbi iwjit fovo cazponem veh espice nerekti dek nithas jiju.
-                  </span>
-                </div>
-              </td>
-            </tr>
-            <tr
-              class="collapsing"
-              id="parallels-135"
+              id="parallels-138"
               style="height: 0px;"
             >
               <td
@@ -4501,18 +3959,74 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-133"
+              id="score-136"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
           </tbody>
@@ -4526,7 +4040,7 @@ exports[`Display chapter Sidebar 3`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-136"
+          aria-controls="settings-141"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -4538,7 +4052,7 @@ exports[`Display chapter Sidebar 3`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-136"
+          id="settings-141"
         >
           <form
             class="settings__section"
@@ -4553,12 +4067,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-137"
+                id="sidebar-text-toggle-142"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-137"
+                for="sidebar-text-toggle-142"
                 title=""
               >
                 Score
@@ -4578,12 +4092,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-138"
+                id="sidebar-text-toggle-143"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-138"
+                for="sidebar-text-toggle-143"
                 title=""
               >
                 Parallels
@@ -4594,12 +4108,936 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-139"
+                id="sidebar-text-toggle-144"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-139"
+                for="sidebar-text-toggle-144"
+                title=""
+              >
+                Notes
+              </label>
+            </div>
+          </form>
+          <section
+            class="settings__section"
+          >
+            <h4
+              class="settings__subheading"
+            >
+              Translation
+            </h4>
+            <ul
+              class="settings__languages"
+            >
+              <li>
+                <span
+                  class="settings__language settings__language--active"
+                  role="button"
+                >
+                  English
+                </span>
+                 
+                <span
+                  class="settings__translators"
+                />
+              </li>
+              <li>
+                <span
+                  class="settings__language"
+                  role="button"
+                >
+                  Deutsch
+                </span>
+                 
+                <span
+                  class="settings__translators"
+                />
+              </li>
+            </ul>
+          </section>
+          <footer
+            class="settings__footer"
+          >
+            <span
+              class="settings__close-button"
+              role="button"
+            >
+              <i
+                class="far fa-times-circle"
+              />
+               Close
+            </span>
+          </footer>
+        </div>
+      </section>
+    </aside>
+  </main>
+</div>
+`;
+
+exports[`Display chapter Sidebar 3`] = `
+<div>
+  <header
+    class="Header"
+  >
+    <nav
+      class="navbar navbar-expand-md navbar-light"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="navbar-brand"
+        >
+          <a
+            href="https://www.lmu.de"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img
+              class="Header__corporate-logo img-fluid"
+              src="LMU_Logo.svg"
+            />
+          </a>
+        </span>
+        <a
+          class="active navbar-brand"
+          href="/"
+          title="electronic Babylonian Literature (eBL)"
+        >
+          <h1
+            class="Header__title"
+          >
+            <span
+              class="Header__title-main"
+            >
+              electronic
+              <br />
+              Babylonian
+              <br />
+              Literature
+            </span>
+            <small
+              class="Header__title-abbreviation"
+            >
+              eBL
+            </small>
+          </h1>
+        </a>
+        <div
+          class="navbar-collapse collapse"
+          id="Header-96"
+        >
+          <div
+            class="mx-auto navbar-nav"
+          >
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/signs"
+                href="/signs"
+              >
+                Signs
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/dictionary"
+                href="/dictionary"
+              >
+                Dictionary
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="active nav-link"
+                data-rb-event-key="/corpus"
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/fragmentarium"
+                href="/fragmentarium"
+              >
+                Fragmentarium
+              </a>
+            </div>
+            <div
+              class="nav-item"
+            >
+              <a
+                class="nav-link"
+                data-rb-event-key="/bibliography"
+                href="/bibliography"
+              >
+                Bibliography
+              </a>
+            </div>
+          </div>
+          <span
+            class="navbar-text"
+          >
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              type="button"
+            >
+              Logout 
+              Test
+            </button>
+          </span>
+        </div>
+        <button
+          aria-controls="Header-96"
+          aria-label="Toggle navigation"
+          class="navbar-toggler collapsed"
+          type="button"
+        >
+          <span
+            class="navbar-toggler-icon"
+          />
+        </button>
+      </div>
+    </nav>
+  </header>
+  <main
+    class="main"
+  >
+    <div
+      class="main__content"
+    >
+      <header
+        class="main__header"
+      >
+        <nav
+          aria-label="breadcrumb"
+          class="main__breadcrumbs"
+        >
+          <ol
+            class="breadcrumb"
+          >
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/"
+              >
+                eBL
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus"
+              >
+                Corpus
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus/L"
+              >
+                L
+              </a>
+            </li>
+            <li
+              class="breadcrumb-item active"
+            >
+              <a
+                href="/corpus/L/1/1"
+              >
+                I.1 Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
+              </a>
+            </li>
+            <li
+              aria-current="page"
+              class="breadcrumb-item active"
+            >
+              Chapter Old Babylonian The Only Chapter
+            </li>
+          </ol>
+        </nav>
+        <h2
+          class="main__heading"
+        >
+          Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki.
+          <br />
+          <small>
+            Chapter
+             
+            The Only Chapter
+             
+            <span>
+              <span>
+                Tetkoze bowko iz owaofoece zuh se napdef nuh eno ifuluab juwkaril iz jato milatas sik.
+              </span>
+            </span>
+          </small>
+        </h2>
+        <div
+          class="main__toolbar btn-toolbar"
+          role="toolbar"
+        >
+          <div
+            class="btn-group"
+            role="group"
+          >
+            <div
+              class="dropdown btn-group"
+              role="group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn btn-outline-primary"
+                type="button"
+              >
+                Go to
+              </button>
+            </div>
+            <a
+              class="btn btn-outline-primary"
+              href="/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter/edit"
+            >
+              <i
+                class="fas fa-edit"
+              />
+               Edit
+            </a>
+          </div>
+        </div>
+      </header>
+      <section
+        class="chapter-view__section"
+      >
+        <h3
+          aria-controls="collapse-145"
+          class="chapter-view__section-heading collapsible_section__heading"
+        >
+          How to cite
+           
+          <i
+            aria-expanded="true"
+            class="collapsible_section__collapse-indicator fas fa-caret-down"
+          />
+        </h3>
+        <div
+          class="collapse show"
+          id="collapse-145"
+        >
+          <div
+            class="csl-bib-body"
+          >
+            
+  
+            <div
+              class="csl-entry"
+              data-csl-entry-id="L 1 1 Old Babylonian The Only Chapter"
+            >
+              Test, A. (2020). Vu siscedeh ir lino oveagfes bohhi watil te zulreziv weemwin fodiric ipagiiki. Chapter The Only Chapter. 
+              <i>
+                Electronic Babylonian Literature
+              </i>
+              . https://www.ebl.lmu.de/corpus/L/1/1/Old%20Babylonian/The%20Only%20Chapter
+            </div>
+            
+
+          </div>
+          <div
+            class="justify-content-center mt-3 btn-toolbar"
+            role="toolbar"
+          >
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+            <div
+              class="mr-2 btn-group"
+              role="group"
+            />
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3>
+          Edition
+        </h3>
+        <table
+          class="chapter-display"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="chapter-display__intertext"
+                colspan="7"
+              >
+                (
+                <span>
+                  <span>
+                    Zaf todnohlaf uc uhoev ficdogpih wujfoj komtedzi ver sunhicna kohmoj sejtelru vavpelu uhajovsi ise.
+                  </span>
+                </span>
+                )
+              </td>
+            </tr>
+            <tr
+              class="chapter-display__line chapter-display__line--is-beginning-of-section"
+            >
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="score-146"
+                  aria-expanded="true"
+                  aria-label="Show score"
+                  class="fas fa-caret-down"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                <a
+                  class="chapter-display__anchor"
+                  href="#1"
+                  id="1"
+                >
+                  1
+                </a>
+              </td>
+              <td
+                colspan="1"
+              >
+                <span
+                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                >
+                   
+                </span>
+                <span
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur-kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </td>
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="note-147"
+                  aria-expanded="true"
+                  aria-label="Show note"
+                  class="fas fa-book-open"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="parallels-148"
+                  aria-expanded="true"
+                  aria-label="Show parallels"
+                  class="fas fa-quote-right"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                1
+              </td>
+              <td
+                class="chapter-display__translation"
+              >
+                <div>
+                  <span>
+                    Sitemo vojjiw ga muvcaeni ke vena pur gi tufse lero hel patedofo.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="collapsing"
+              id="note-147"
+              style="height: 0px;"
+            >
+              <td
+                colspan="7"
+              >
+                <div
+                  class="chapter-display__note"
+                >
+                  <span>
+                    Beanvot ridju ca ro pimpe wib irhihub nobu bitu de pesfas gobvut.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="collapsing"
+              id="parallels-148"
+              style="height: 0px;"
+            >
+              <td
+                colspan="7"
+              >
+                <ul
+                  class="chapter-display__parallels"
+                >
+                  <li>
+                    // 
+                     (
+                    A Composition
+                     
+                    2
+                    )
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr
+              class="collapse show"
+              id="score-146"
+              style=""
+            >
+              <td
+                colspan="7"
+              >
+                <table
+                  class="chapter-display__manuscripts"
+                >
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                        >
+                          …
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="chapter-display__intertext"
+                colspan="7"
+              >
+                (
+                <span>
+                  <span>
+                    Oni zu zir mup ohmud bazosron lewji ruh deb egi oszeceg sulujan ulijegciw uriumuca du uj zo.
+                  </span>
+                </span>
+                )
+              </td>
+            </tr>
+            <tr
+              class="chapter-display__line chapter-display__line--is-beginning-of-section"
+            >
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="score-152"
+                  aria-expanded="true"
+                  aria-label="Show score"
+                  class="fas fa-caret-down"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                <a
+                  class="chapter-display__anchor"
+                  href="#2"
+                  id="2"
+                >
+                  2
+                </a>
+              </td>
+              <td
+                colspan="1"
+              >
+                <span
+                  class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                >
+                   
+                </span>
+                <span
+                  class="Transliteration__AkkadianWord Transliteration__AkkadianWord Transliteration__AkkadianWord--AKKADIAN"
+                >
+                  <span
+                    class=""
+                  >
+                    <span
+                      class="Transliteration__ValueToken Transliteration__ValueToken"
+                    >
+                      <span
+                        class=""
+                      >
+                        kur-kur
+                      </span>
+                    </span>
+                    <sup
+                      class="Transliteration__flag"
+                    />
+                  </span>
+                </span>
+              </td>
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="note-153"
+                  aria-expanded="true"
+                  aria-label="Show note"
+                  class="fas fa-book-open"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__toggle"
+              >
+                <i
+                  aria-controls="parallels-154"
+                  aria-expanded="true"
+                  aria-label="Show parallels"
+                  class="fas fa-quote-right"
+                  role="button"
+                />
+              </td>
+              <td
+                class="chapter-display__line-number"
+              >
+                2
+              </td>
+              <td
+                class="chapter-display__translation"
+              >
+                <div>
+                  <span>
+                    Le wuzre itbidulu kibacmuh por sipazzug ize jajus zocuzmev oc givor onbu sojo zomu tedef ujado dadi.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="collapsing"
+              id="note-153"
+              style="height: 0px;"
+            >
+              <td
+                colspan="7"
+              >
+                <div
+                  class="chapter-display__note"
+                >
+                  <span>
+                    Buzni utnuplo agbi iwjit fovo cazponem veh espice nerekti dek nithas jiju.
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="collapsing"
+              id="parallels-154"
+              style="height: 0px;"
+            >
+              <td
+                colspan="7"
+              >
+                <ul
+                  class="chapter-display__parallels"
+                >
+                  <li>
+                    // 
+                     (
+                    A Composition
+                     
+                    2
+                    )
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr
+              class="collapse show"
+              id="score-152"
+              style=""
+            >
+              <td
+                colspan="7"
+              >
+                <table
+                  class="chapter-display__manuscripts"
+                >
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <aside
+      class="main__sidebar"
+    >
+      <section
+        class="settings"
+      >
+        <h3
+          aria-controls="settings-157"
+          aria-expanded="true"
+          class="settings__heading"
+          role="button"
+        >
+          <i
+            class="fas fa-cog"
+          />
+           Settings
+        </h3>
+        <div
+          class="fade show"
+          id="settings-157"
+        >
+          <form
+            class="settings__section"
+          >
+            <h4
+              class="settings__subheading"
+            >
+              Text
+            </h4>
+            <div
+              class="settings__switch custom-control custom-switch"
+            >
+              <input
+                class="custom-control-input"
+                id="sidebar-text-toggle-158"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="sidebar-text-toggle-158"
+                title=""
+              >
+                Score
+              </label>
+            </div>
+          </form>
+          <form
+            class="settings__section"
+          >
+            <h4
+              class="settings__subheading"
+            >
+              Scholia
+            </h4>
+            <div
+              class="settings__switch custom-control custom-switch"
+            >
+              <input
+                class="custom-control-input"
+                id="sidebar-text-toggle-159"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="sidebar-text-toggle-159"
+                title=""
+              >
+                Parallels
+              </label>
+            </div>
+            <div
+              class="settings__switch custom-control custom-switch"
+            >
+              <input
+                class="custom-control-input"
+                id="sidebar-text-toggle-160"
+                type="checkbox"
+              />
+              <label
+                class="custom-control-label"
+                for="sidebar-text-toggle-160"
                 title=""
               >
                 Notes
@@ -4714,7 +5152,7 @@ exports[`Display chapter Sidebar 4`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-96"
         >
           <div
             class="mx-auto navbar-nav"
@@ -4788,7 +5226,7 @@ exports[`Display chapter Sidebar 4`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-96"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -4914,7 +5352,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-140"
+          aria-controls="collapse-161"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -4926,7 +5364,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-140"
+          id="collapse-161"
         >
           <div
             class="csl-bib-body"
@@ -4994,7 +5432,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-141"
+                  aria-controls="score-162"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5045,7 +5483,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-142"
+                  aria-controls="note-163"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5056,7 +5494,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-143"
+                  aria-controls="parallels-164"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5080,7 +5518,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-142"
+              id="note-163"
               style="height: 0px;"
             >
               <td
@@ -5097,7 +5535,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-143"
+              id="parallels-164"
               style="height: 0px;"
             >
               <td
@@ -5119,18 +5557,108 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-141"
+              id="score-162"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                        >
+                          …
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
             <tr>
@@ -5154,7 +5682,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-144"
+                  aria-controls="score-168"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5205,7 +5733,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-145"
+                  aria-controls="note-169"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5216,7 +5744,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-146"
+                  aria-controls="parallels-170"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5240,7 +5768,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-145"
+              id="note-169"
               style="height: 0px;"
             >
               <td
@@ -5257,7 +5785,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-146"
+              id="parallels-170"
               style="height: 0px;"
             >
               <td
@@ -5279,18 +5807,74 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-144"
+              id="score-168"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
           </tbody>
@@ -5304,7 +5888,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-147"
+          aria-controls="settings-173"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -5316,7 +5900,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-147"
+          id="settings-173"
         >
           <form
             class="settings__section"
@@ -5331,12 +5915,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-148"
+                id="sidebar-text-toggle-174"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-148"
+                for="sidebar-text-toggle-174"
                 title=""
               >
                 Score
@@ -5356,12 +5940,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-149"
+                id="sidebar-text-toggle-175"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-149"
+                for="sidebar-text-toggle-175"
                 title=""
               >
                 Parallels
@@ -5372,12 +5956,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-150"
+                id="sidebar-text-toggle-176"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-150"
+                for="sidebar-text-toggle-176"
                 title=""
               >
                 Notes
@@ -5492,7 +6076,7 @@ exports[`Display chapter Sidebar 5`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-90"
+          id="Header-96"
         >
           <div
             class="mx-auto navbar-nav"
@@ -5566,7 +6150,7 @@ exports[`Display chapter Sidebar 5`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-90"
+          aria-controls="Header-96"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -5692,7 +6276,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-140"
+          aria-controls="collapse-161"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -5704,7 +6288,7 @@ exports[`Display chapter Sidebar 5`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-140"
+          id="collapse-161"
         >
           <div
             class="csl-bib-body"
@@ -5772,7 +6356,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-141"
+                  aria-controls="score-162"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5823,7 +6407,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-142"
+                  aria-controls="note-163"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5834,7 +6418,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-143"
+                  aria-controls="parallels-164"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5858,7 +6442,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-142"
+              id="note-163"
               style=""
             >
               <td
@@ -5875,7 +6459,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-143"
+              id="parallels-164"
               style=""
             >
               <td
@@ -5897,18 +6481,108 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-141"
+              id="score-162"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__LoneDeterminative Transliteration__LoneDeterminative Transliteration__LoneDeterminative--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns Transliteration__UnknownNumberOfSigns--AKKADIAN"
+                        >
+                          …
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
             <tr>
@@ -5932,7 +6606,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-144"
+                  aria-controls="score-168"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5983,7 +6657,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-145"
+                  aria-controls="note-169"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5994,7 +6668,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-146"
+                  aria-controls="parallels-170"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -6018,7 +6692,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-145"
+              id="note-169"
               style=""
             >
               <td
@@ -6035,7 +6709,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-146"
+              id="parallels-170"
               style=""
             >
               <td
@@ -6057,18 +6731,74 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-144"
+              id="score-168"
               style=""
             >
               <td
                 colspan="7"
               >
-                <div
-                  class="fade alert alert-danger show"
-                  role="alert"
+                <table
+                  class="chapter-display__manuscripts"
                 >
-                  Cannot read properties of undefined (reading 'provenance')
-                </div>
+                  <tbody>
+                    <tr
+                      class="chapter-display__manuscript chapter-display__manuscript--standard"
+                    >
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-siglum"
+                        >
+                          Std
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-labels"
+                        >
+                          
+                           
+                          10.
+                        </span>
+                      </td>
+                      <td
+                        colspan="1"
+                      >
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                        <span
+                          class="Transliteration__wordSeparator Transliteration__wordSeparator--AKKADIAN"
+                        >
+                           
+                        </span>
+                        <span
+                          class="Transliteration__Word Transliteration__Word Transliteration__Word--AKKADIAN"
+                        >
+                          <span
+                            class=""
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          class="chapter-display__manuscript-paratext"
+                        >
+                          (single ruling)
+                        </span>
+                      </td>
+                      <td />
+                    </tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
           </tbody>
@@ -6082,7 +6812,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-151"
+          aria-controls="settings-177"
           aria-expanded="false"
           class="settings__heading"
           role="button"
