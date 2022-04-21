@@ -17,6 +17,7 @@ import getJunicodeBold from './pdf-fonts/JunicodeBold'
 import getJunicodeItalic from './pdf-fonts/JunicodeItalic'
 
 import { jsPDF } from 'jspdf'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 export async function pdfExport(
   fragment: Fragment,
@@ -26,12 +27,18 @@ export async function pdfExport(
   const tableHtml: JQuery = $(
     renderToString(
       <MemoryRouter>
-        {TransliterationLines({ text: fragment.text })}
+        <DictionaryContext.Provider value={wordService}>
+          <TransliterationLines text={fragment.text} />
+        </DictionaryContext.Provider>
       </MemoryRouter>
     )
   )
   const notesHtml: JQuery = $(
-    renderToString(TransliterationNotes({ notes: fragment.text.notes }))
+    renderToString(
+      <DictionaryContext.Provider value={wordService}>
+        <TransliterationNotes notes={fragment.text.notes} />
+      </DictionaryContext.Provider>
+    )
   )
 
   const pdf = getPdfDoc(tableHtml, notesHtml, jQueryRef, wordService, fragment)
@@ -99,7 +106,13 @@ async function getGlossaryHtml(
     })
 
   const glossaryHtml: JQuery = $(
-    renderToString(wrapWithMemoryRouter(glossaryJsx))
+    renderToString(
+      wrapWithMemoryRouter(
+        <DictionaryContext.Provider value={wordService}>
+          {glossaryJsx}
+        </DictionaryContext.Provider>
+      )
+    )
   )
 
   return glossaryHtml

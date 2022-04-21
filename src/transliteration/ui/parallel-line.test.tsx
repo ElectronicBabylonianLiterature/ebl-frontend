@@ -18,15 +18,28 @@ test.each([
     new ParallelFragment({
       ...parallel.fragment,
       hasCf: true,
-      surface: {
-        status: [],
-        surface: 'OBVERSE',
-        text: '',
-        abbreviation: 'o',
+      labels: {
+        object: {
+          object: 'TABLET',
+          text: '',
+          status: ['UNCERTAIN'],
+          abbreviation: 'tablet',
+        },
+        surface: {
+          status: [],
+          surface: 'OBVERSE',
+          text: '',
+          abbreviation: 'o',
+        },
+        column: {
+          column: 2,
+          status: [],
+          abbreviation: 'ii',
+        },
       },
     }),
-    'cf. F X.1 o 1′',
-    "o 1'",
+    'cf. F X.1 tablet? o ii 1′',
+    "tablet? o ii 1'",
   ],
 ])('parallel fragment %#', (fragment, content, hash) => {
   render(

@@ -8,7 +8,7 @@ import InlineMarkdown from 'common/InlineMarkdown'
 import 'dictionary/ui/search/WordSearch.css'
 import 'dictionary/ui/search/Word.css'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
-import './Signs.css'
+import './Signs.sass'
 import MesZL from 'signs/ui/search/MesZL'
 
 interface Props {

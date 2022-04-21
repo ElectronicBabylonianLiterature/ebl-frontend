@@ -34,6 +34,7 @@ import TagSignsView from 'fragmentarium/ui/image-annotation/TagSignsView'
 import ChapterView from 'corpus/ui/ChapterView'
 import { ChapterId } from 'transliteration/domain/chapter-id'
 import { TextId } from 'transliteration/domain/text-id'
+import { DictionaryContext } from 'dictionary/ui/dictionary-context'
 
 function parseStringParam(location: Location, param: string): string | null {
   const value = parse(location.search)[param]
@@ -115,180 +116,184 @@ function App({
   const authenticationService = useAuthentication()
   return (
     <SessionContext.Provider value={authenticationService.getSession()}>
-      <Header />
-      <ErrorBoundary>
-        <Switch>
-          <Route
-            path="/bibliography/:id"
-            render={(props): ReactNode => (
-              <BibliographyEditor
-                bibliographyService={bibliographyService}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/bibliography_new"
-            render={(props): ReactNode => (
-              <BibliographyEditor
-                bibliographyService={bibliographyService}
-                {...props}
-                create
-              />
-            )}
-          />
-          <Route
-            path="/bibliography"
-            render={(props): ReactNode => (
-              <Bibliography
-                bibliographyService={bibliographyService}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/signs/:id"
-            render={(props): ReactNode => (
-              <SignDisplay
-                signService={signService}
-                wordService={wordService}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/signs"
-            render={(props): ReactNode => (
-              <Signs {...props} signService={signService} />
-            )}
-          />
-          <Route
-            path="/dictionary/:id/edit"
-            render={(props): ReactNode => (
-              <WordEditor wordService={wordService} {...props} />
-            )}
-          />
-          <Route
-            path="/dictionary/:id"
-            render={(props): ReactNode => (
-              <WordDisplay wordService={wordService} {...props} />
-            )}
-          />
-          <Route
-            path="/dictionary"
-            render={(props): ReactNode => (
-              <Dictionary wordService={wordService} {...props} />
-            )}
-          />
-          <Route
-            path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
-            render={({ match }): ReactNode => (
-              <ChapterEditView
-                textService={textService}
-                bibliographyService={bibliographyService}
-                fragmentService={fragmentService}
-                wordService={wordService}
-                id={parseChapterId(match.params)}
-              />
-            )}
-          />
-          <Route
-            path="/corpus/:genre/:category/:index/:stage/:chapter"
-            render={({ match, location }): ReactNode => (
-              <ChapterView
-                textService={textService}
-                id={parseChapterId(match.params)}
-                activeLine={location.hash.replace(/^#/, '')}
-              />
-            )}
-          />
-          <Route
-            path="/corpus/:genre/:category/:index"
-            render={({ match }): ReactNode => (
-              <TextView
-                textService={textService}
-                id={parseTextId(match.params)}
-              />
-            )}
-          />
-          <Route
-            path="/corpus/:genre"
-            render={({ match, ...props }): ReactNode => (
-              <Corpus
-                textService={textService}
-                genre={match.params.genre}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/corpus"
-            render={(props): ReactNode => (
-              <Corpus textService={textService} {...props} />
-            )}
-          />
-          <Route
-            path="/fragmentarium/search"
-            render={({ location }): ReactNode => (
-              <FragmentariumSearch
-                fragmentService={fragmentService}
-                fragmentSearchService={fragmentSearchService}
-                textService={textService}
-                {...parseFragmentSearchParams(location)}
-              />
-            )}
-          />
-          <Route
-            path="/fragmentarium/:id/match"
-            render={({
-              match,
-            }: {
-              match: Match<{ id: string }>
-            }): ReactNode => (
-              <FragmentLineToVecRanking
-                fragmentService={fragmentService}
-                number={decodeURIComponent(match.params.id)}
-              />
-            )}
-          />
-          <Route
-            path="/fragmentarium/:id/annotate"
-            render={({
-              match,
-            }: {
-              match: Match<{ id: string }>
-            }): ReactNode => (
-              <TagSignsView
-                signService={signService}
-                fragmentService={fragmentService}
-                number={decodeURIComponent(match.params.id)}
-              />
-            )}
-          />
-          <Route
-            path="/fragmentarium/:id"
-            render={({ match, location }): ReactNode => (
-              <FragmentView
-                fragmentService={fragmentService}
-                fragmentSearchService={fragmentSearchService}
-                wordService={wordService}
-                {...parseFargmentParams(match, location)}
-              />
-            )}
-          />
-          <Route
-            path="/fragmentarium"
-            render={({ location }): ReactNode => (
-              <Fragmentarium
-                fragmentService={fragmentService}
-                fragmentSearchService={fragmentSearchService}
-                {...parseFragmentSearchParams(location)}
-              />
-            )}
-          />
-          <Route component={Introduction} />
-        </Switch>
-      </ErrorBoundary>
+      <DictionaryContext.Provider value={wordService}>
+        <Header />
+        <ErrorBoundary>
+          <Switch>
+            <Route
+              path="/bibliography/:id"
+              render={(props): ReactNode => (
+                <BibliographyEditor
+                  bibliographyService={bibliographyService}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/bibliography_new"
+              render={(props): ReactNode => (
+                <BibliographyEditor
+                  bibliographyService={bibliographyService}
+                  {...props}
+                  create
+                />
+              )}
+            />
+            <Route
+              path="/bibliography"
+              render={(props): ReactNode => (
+                <Bibliography
+                  bibliographyService={bibliographyService}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/signs/:id"
+              render={(props): ReactNode => (
+                <SignDisplay
+                  signService={signService}
+                  wordService={wordService}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/signs"
+              render={(props): ReactNode => (
+                <Signs {...props} signService={signService} />
+              )}
+            />
+            <Route
+              path="/dictionary/:id/edit"
+              render={(props): ReactNode => (
+                <WordEditor wordService={wordService} {...props} />
+              )}
+            />
+            <Route
+              path="/dictionary/:id"
+              render={(props): ReactNode => (
+                <WordDisplay wordService={wordService} {...props} />
+              )}
+            />
+            <Route
+              path="/dictionary"
+              render={(props): ReactNode => (
+                <Dictionary wordService={wordService} {...props} />
+              )}
+            />
+            <Route
+              path="/corpus/:genre/:category/:index/:stage/:chapter/edit"
+              render={({ match }): ReactNode => (
+                <ChapterEditView
+                  textService={textService}
+                  bibliographyService={bibliographyService}
+                  fragmentService={fragmentService}
+                  wordService={wordService}
+                  id={parseChapterId(match.params)}
+                />
+              )}
+            />
+            <Route
+              path="/corpus/:genre/:category/:index/:stage/:chapter"
+              render={({ match, location }): ReactNode => (
+                <ChapterView
+                  textService={textService}
+                  id={parseChapterId(match.params)}
+                  activeLine={decodeURIComponent(
+                    location.hash.replace(/^#/, '')
+                  )}
+                />
+              )}
+            />
+            <Route
+              path="/corpus/:genre/:category/:index"
+              render={({ match }): ReactNode => (
+                <TextView
+                  textService={textService}
+                  id={parseTextId(match.params)}
+                />
+              )}
+            />
+            <Route
+              path="/corpus/:genre"
+              render={({ match, ...props }): ReactNode => (
+                <Corpus
+                  textService={textService}
+                  genre={match.params.genre}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/corpus"
+              render={(props): ReactNode => (
+                <Corpus textService={textService} {...props} />
+              )}
+            />
+            <Route
+              path="/fragmentarium/search"
+              render={({ location }): ReactNode => (
+                <FragmentariumSearch
+                  fragmentService={fragmentService}
+                  fragmentSearchService={fragmentSearchService}
+                  textService={textService}
+                  {...parseFragmentSearchParams(location)}
+                />
+              )}
+            />
+            <Route
+              path="/fragmentarium/:id/match"
+              render={({
+                match,
+              }: {
+                match: Match<{ id: string }>
+              }): ReactNode => (
+                <FragmentLineToVecRanking
+                  fragmentService={fragmentService}
+                  number={decodeURIComponent(match.params.id)}
+                />
+              )}
+            />
+            <Route
+              path="/fragmentarium/:id/annotate"
+              render={({
+                match,
+              }: {
+                match: Match<{ id: string }>
+              }): ReactNode => (
+                <TagSignsView
+                  signService={signService}
+                  fragmentService={fragmentService}
+                  number={decodeURIComponent(match.params.id)}
+                />
+              )}
+            />
+            <Route
+              path="/fragmentarium/:id"
+              render={({ match, location }): ReactNode => (
+                <FragmentView
+                  fragmentService={fragmentService}
+                  fragmentSearchService={fragmentSearchService}
+                  wordService={wordService}
+                  {...parseFargmentParams(match, location)}
+                />
+              )}
+            />
+            <Route
+              path="/fragmentarium"
+              render={({ location }): ReactNode => (
+                <Fragmentarium
+                  fragmentService={fragmentService}
+                  fragmentSearchService={fragmentSearchService}
+                  {...parseFragmentSearchParams(location)}
+                />
+              )}
+            />
+            <Route component={Introduction} />
+          </Switch>
+        </ErrorBoundary>
+      </DictionaryContext.Provider>
     </SessionContext.Provider>
   )
 }

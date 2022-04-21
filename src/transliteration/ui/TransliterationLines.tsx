@@ -7,8 +7,12 @@ import DisplayTextLine from './text-line'
 import { DisplayDollarAndAtLine } from './dollar-and-at-lines'
 import { LineProps } from './LineProps'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
-import { SurfaceLabel } from 'transliteration/domain/labels'
-import { isSurfaceAtLine } from 'transliteration/domain/type-guards'
+import { defaultLabels, Labels } from 'transliteration/domain/labels'
+import {
+  isColumnAtLine,
+  isObjectAtLine,
+  isSurfaceAtLine,
+} from 'transliteration/domain/type-guards'
 import DisplayTranslationLine from './DisplayTranslationLine'
 import DisplayControlLine from './DisplayControlLine'
 import { DisplayParallelLine } from './parallel-line'
@@ -65,14 +69,14 @@ function TransliterationLine({
   notes,
   index,
   columns,
-  surface,
+  labels,
   activeLine,
 }: {
   line: AbstractLine
   notes: Notes
   index: number
   columns: number
-  surface: SurfaceLabel | null
+  labels: Labels
   activeLine: string
 }): JSX.Element {
   const LineComponent = lineComponents.get(line.type) || DisplayControlLine
@@ -82,7 +86,7 @@ function TransliterationLine({
       <LineComponent
         line={line}
         columns={columns}
-        surface={surface}
+        labels={labels}
         activeLine={activeLine}
       />
       <td>
@@ -90,6 +94,18 @@ function TransliterationLine({
       </td>
     </tr>
   )
+}
+
+function getCurrentLabels(labels: Labels, line: AbstractLine): Labels {
+  if (isObjectAtLine(line)) {
+    return { ...labels, object: line.label }
+  } else if (isSurfaceAtLine(line)) {
+    return { ...labels, surface: line.label }
+  } else if (isColumnAtLine(line)) {
+    return { ...labels, column: line.label }
+  } else {
+    return labels
+  }
 }
 
 export default function TransliterationLines({
@@ -105,15 +121,13 @@ export default function TransliterationLines({
       <tbody>
         <FirstLineNotes notes={text.notes} columns={numberOfColumns} />
         {
-          text.lines.reduce<[JSX.Element[], SurfaceLabel | null]>(
+          text.lines.reduce<[JSX.Element[], Labels]>(
             (
-              [elements, surface]: [JSX.Element[], SurfaceLabel | null],
+              [elements, labels]: [JSX.Element[], Labels],
               line: AbstractLine,
               index: number
             ) => {
-              const currentSurface = isSurfaceAtLine(line)
-                ? line.label
-                : surface
+              const currentLabels = getCurrentLabels(labels, line)
               return [
                 [
                   ...elements,
@@ -123,14 +137,14 @@ export default function TransliterationLines({
                     notes={text.notes}
                     index={index}
                     columns={numberOfColumns}
-                    surface={currentSurface}
+                    labels={currentLabels}
                     activeLine={activeLine}
                   />,
                 ],
-                currentSurface,
+                currentLabels,
               ]
             },
-            [[], null]
+            [[], defaultLabels]
           )[0]
         }
       </tbody>

@@ -101,6 +101,11 @@ const genres: readonly {
     name: 'Lexicography',
     categories: ['', 'I.  Urra = *ḫubullu*'],
   },
+  {
+    genre: 'Med',
+    name: 'Medicine',
+    categories: ['', 'I. Nineveh Medical Encyclopaedia'],
+  },
 ]
 
 function Corpus({

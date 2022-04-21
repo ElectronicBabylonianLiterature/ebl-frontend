@@ -27,6 +27,8 @@ function SignImage({
 }: {
   croppedAnnotation: CroppedAnnotation
 }): JSX.Element {
+  const label = croppedAnnotation.label ? `${croppedAnnotation.label} ` : ''
+  const script = croppedAnnotation.script ? `(${croppedAnnotation.script})` : ''
   return (
     <Col>
       <Figure>
@@ -36,10 +38,10 @@ function SignImage({
         />
         <Figure.Caption>
           <Link to={`/fragmentarium/${croppedAnnotation.fragmentNumber}`}>
-            {croppedAnnotation.fragmentNumber}
+            {croppedAnnotation.fragmentNumber}&nbsp;
           </Link>
-          {croppedAnnotation.label && `${croppedAnnotation.label} `}&nbsp;(
-          {croppedAnnotation.script})
+          {label}
+          {script}
         </Figure.Caption>
       </Figure>
     </Col>
@@ -68,6 +70,11 @@ function SignImagePagination({
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <h3>&#8546;. Palaeography</h3>
+        </Col>
+      </Row>
       <Row>
         {chunks[activePage - 1].map((croppedAnnotation, index) => (
           <SignImage key={index} croppedAnnotation={croppedAnnotation} />

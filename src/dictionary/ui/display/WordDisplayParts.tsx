@@ -3,12 +3,8 @@ import { Col, Row } from 'react-bootstrap'
 import { HashLink } from 'react-router-hash-link'
 import './wordInformationDisplay.css'
 import { Markdown } from 'common/Markdown'
+import { AmplifiedMeaning, Form } from 'dictionary/domain/Word'
 
-interface Form {
-  attested: boolean
-  lemma: string[]
-  notes: string[]
-}
 export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
   const attestedSign = attested ? '' : '*'
   return (
@@ -30,7 +26,7 @@ export function OtherForm({ attested, lemma, notes }: Form): JSX.Element {
 }
 
 interface JoinProps<T> {
-  list: T[]
+  list: readonly T[]
   separator: string
   Component: FunctionComponent<T>
 }
@@ -76,8 +72,8 @@ export function Logogram({
   logogram,
   notes,
 }: {
-  logogram: string[]
-  notes: string[]
+  logogram: readonly string[]
+  notes: readonly string[]
 }): JSX.Element {
   return (
     <span>
@@ -100,9 +96,9 @@ export function Logogram({
 }
 
 interface SingleDerivativeProps {
-  lemma: string[]
+  lemma: readonly string[]
   homonym: string
-  notes: string[]
+  notes: readonly string[]
 }
 
 export function SingleDerivative({
@@ -114,7 +110,7 @@ export function SingleDerivative({
     lemmas,
     homonym,
   }: {
-    lemmas: string[]
+    lemmas: readonly string[]
     homonym: string
   }): JSX.Element => {
     const joinedLemmas = lemmas.join(' ')
@@ -144,7 +140,7 @@ export function SingleDerivative({
 export function Derivatives({
   derivatives,
 }: {
-  derivatives: any[][]
+  derivatives: readonly any[][]
 }): JSX.Element {
   return (
     <>
@@ -162,16 +158,11 @@ export function Derivatives({
   )
 }
 
-interface AmplifiedMeaning {
-  meaning: string
-  key: string
-  entries: { meaning: string }[]
-}
 export function AmplifiedMeanings({
   amplifiedMeanings,
   wordId,
 }: {
-  amplifiedMeanings: AmplifiedMeaning[]
+  amplifiedMeanings: readonly AmplifiedMeaning[]
   wordId: string
 }): JSX.Element {
   return (
@@ -192,7 +183,7 @@ export function AmplifiedMeanings({
 export function AmplifiedMeaningsDetails({
   amplifiedMeanings,
 }: {
-  amplifiedMeanings: AmplifiedMeaning[]
+  amplifiedMeanings: readonly AmplifiedMeaning[]
 }): JSX.Element {
   const AttestedStemDetail = ({
     amplifiedMeaning,

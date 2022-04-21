@@ -137,7 +137,7 @@ const Manuscripts = withData<
                     <Popover id={_.uniqueId('ExtantLinesHelp-')}>
                       <Popover.Content>
                         Bold figures indicate lines at the beginning or end of
-                        columns or sides.
+                        columns, sides, or excerpts.
                       </Popover.Content>
                     </Popover>
                   }
@@ -173,6 +173,7 @@ const Manuscripts = withData<
                           headers={[provenanceId, rowId, museumNumberId].join(
                             ' '
                           )}
+                          className="list-of-manuscripts__museum-numbers"
                         >
                           <ManuscriptJoins manuscript={manuscript} />
                           <ManuscriptReferences manuscript={manuscript} />

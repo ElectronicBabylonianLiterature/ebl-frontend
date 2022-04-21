@@ -482,7 +482,6 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                     <i
                       class="pointer__hover my-2 fas fa-shopping-cart fa-2x"
                     />
-                    \`
                   </a>
                 </div>
               </div>
@@ -492,6 +491,17 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
         <div
           class="container"
         >
+          <div
+            class="row"
+          >
+            <div
+              class="col"
+            >
+              <h3>
+                Ⅲ. Palaeography
+              </h3>
+            </div>
+          </div>
           <div
             class="row"
           >
@@ -510,11 +520,12 @@ exports[`Sign Display Sign Display Snapshot 1`] = `
                 >
                   <a
                     href="/fragmentarium/"
-                  />
+                  >
+                    
+                     
+                  </a>
                   i stone wig 1' 
-                   (
-                  NA
-                  )
+                  (NA)
                 </figcaption>
               </figure>
             </div>

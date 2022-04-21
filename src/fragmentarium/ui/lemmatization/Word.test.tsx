@@ -1,16 +1,18 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { factory } from 'factory-girl'
+
 import Word from './Word'
 import Lemma from 'transliteration/domain/Lemma'
 import _ from 'lodash'
+import { wordFactory } from 'test-support/word-fixtures'
+import { LemmatizationToken } from 'transliteration/domain/Lemmatization'
 
 let container: HTMLElement
-let token
-let lemmas
+let token: LemmatizationToken
+let lemmas: Lemma[]
 
-beforeEach(async () => {
-  lemmas = (await factory.buildMany('word', 2)).map((word) => new Lemma(word))
+beforeEach(() => {
+  lemmas = wordFactory.buildList(2).map((word) => new Lemma(word))
 })
 
 describe.each([
@@ -21,16 +23,13 @@ describe.each([
   '%#',
   (hasLemma, suggested, expectedClasses, notExpectedClasses) => {
     beforeEach(async () => {
-      token = {
-        type: 'Word',
-        value: 'DIŠ',
-        uniqueLemma: hasLemma ? lemmas : [],
-        language: 'AKKADIAN',
-        normalized: false,
-        lemmatizable: true,
-        alignable: true,
-        suggested: suggested,
-      }
+      token = new LemmatizationToken(
+        'DIŠ',
+        true,
+        hasLemma ? lemmas : [],
+        [],
+        suggested
+      )
       container = render(<Word token={token} />).container
     })
 

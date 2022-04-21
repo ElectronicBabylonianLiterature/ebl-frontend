@@ -87,9 +87,23 @@ yarn lighthouse <url>
 
 [bluebird](http://bluebirdjs.com) promises are used whenever a cancellable promise is needed. E.g. when loading data to components (see [isMounted is an Antipattern](https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html)). bluebird is compatible with native JavaScript promises, but care should taken that a bluebird promise is always used when `Promise.cancel()` is needed.
 
+## Authentication and Authorization
+
+Authentication is handled with [Auth0](https://auth0.com) and [@auth0/auth0-spa-js](https://github.com/auth0/auth0-spa-js).
+
+Display of content can be controlled using `SessionContext`:
+
+```typescript
+<SessionContext.Consumer>
+  {(session: Session): JSX.Element =>
+    session.isAllowedToReadFragments() ? 'access' : 'no access'
+  }
+</SessionContext.Consumer>
+```
+
 ## Coding Conventions
 
-- Write [clean code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
+- Write [clean code](https://www.amazon.d]e/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882).
   Use linters and analysers to find code smells.
 - Write tests for your code. Test Driven Development is recommended but not mandatory.
   There is no hard requirement for code coverage but it should improve over time.

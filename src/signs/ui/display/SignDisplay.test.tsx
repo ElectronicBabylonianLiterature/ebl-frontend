@@ -10,6 +10,7 @@ import Sign, { Value } from 'signs/domain/Sign'
 import WordService from 'dictionary/application/WordService'
 import Word from 'dictionary/domain/Word'
 import { CroppedAnnotation } from 'signs/domain/CroppedAnnotation'
+import { wordFactory } from 'test-support/word-fixtures'
 
 jest.mock('signs/application/SignService')
 jest.mock('dictionary/application/WordService')
@@ -37,16 +38,18 @@ lita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lor
   LaBaSi: '123',
 })
 
-const word: Word = {
+const word: Word = wordFactory.build({
   guideWord: '',
   arabicGuideWord: '',
+  origin: '',
+  cdaAddenda: '',
   homonym: '',
   lemma: [],
   oraccWords: [],
   akkadischeGlossareUndIndices: [],
   pos: [],
   _id: '',
-}
+})
 
 const croppedAnnotation: CroppedAnnotation = {
   image: 'test-base64-string',

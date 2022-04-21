@@ -7,10 +7,11 @@ import {
 } from '@testing-library/react'
 import Promise from 'bluebird'
 import WordSearch from './WordSearch'
-import { factory } from 'factory-girl'
+import { wordFactory } from 'test-support/word-fixtures'
+import Word from 'dictionary/domain/Word'
 
 const query = 'lem[ma?]'
-let words
+let words: Word[]
 let wordService
 
 async function renderWordSearch(): Promise<void> {
@@ -23,7 +24,7 @@ async function renderWordSearch(): Promise<void> {
 }
 
 beforeEach(async () => {
-  words = await factory.buildMany('word', 2)
+  words = wordFactory.buildList(2)
   wordService = {
     search: jest.fn(),
   }

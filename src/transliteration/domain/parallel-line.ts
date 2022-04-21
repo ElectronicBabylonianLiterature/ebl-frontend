@@ -1,5 +1,5 @@
 import { AbstractLine, LineBaseDto } from './abstract-line'
-import { SurfaceLabel } from './labels'
+import { Labels } from './labels'
 import { LineNumber, LineNumberRange } from './line-number'
 import MuseumNumber from 'fragmentarium/domain/MuseumNumber'
 import { TextId } from 'transliteration/domain/text-id'
@@ -17,7 +17,7 @@ export interface ParallelFragmentDto extends ParallelLineBaseDto {
   readonly type: 'ParallelFragment'
   readonly museumNumber: MuseumNumber
   readonly hasDuplicates: boolean
-  readonly surface: SurfaceLabel | null
+  readonly labels: Labels
   readonly exists: boolean | null
 }
 
@@ -26,7 +26,7 @@ export class ParallelFragment extends AbstractLine {
   readonly hasCf: boolean
   readonly museumNumber: MuseumNumber
   readonly hasDuplicates: boolean
-  readonly surface: SurfaceLabel | null
+  readonly labels: Labels
   readonly lineNumber: LineNumber | LineNumberRange
   readonly exists: boolean | null
 
@@ -37,7 +37,7 @@ export class ParallelFragment extends AbstractLine {
       | 'hasCf'
       | 'museumNumber'
       | 'hasDuplicates'
-      | 'surface'
+      | 'labels'
       | 'lineNumber'
       | 'exists'
     >
@@ -46,7 +46,7 @@ export class ParallelFragment extends AbstractLine {
     this.hasCf = data.hasCf
     this.museumNumber = data.museumNumber
     this.hasDuplicates = data.hasDuplicates
-    this.surface = data.surface
+    this.labels = data.labels
     this.lineNumber = data.lineNumber
     this.exists = data.exists
   }

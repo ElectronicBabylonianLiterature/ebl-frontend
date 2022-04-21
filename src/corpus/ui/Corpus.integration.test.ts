@@ -24,6 +24,16 @@ const textsDto = [
     references: [],
   },
   {
+    genre: 'Med',
+    category: 1,
+    index: 1,
+    name: 'Medicine First Category',
+    numberOfVerses: 3,
+    approximateVerses: false,
+    chapters: [],
+    references: [],
+  },
+  {
     genre: 'L',
     category: 1,
     index: 2,

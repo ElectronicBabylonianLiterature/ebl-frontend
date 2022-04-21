@@ -13,6 +13,7 @@ import {
   Token,
   UnknownSign,
   Variant,
+  Word,
 } from 'transliteration/domain/token'
 import { addAccents, addBreves } from 'transliteration/domain/accents'
 import { isEnclosure } from 'transliteration/domain/type-guards'
@@ -20,12 +21,14 @@ import { createModifierClasses, Modifiers } from './modifiers'
 import EnclosureFlags from './EnclosureFlags'
 import Flags from './Flags'
 import SubIndex from './SubIndex'
+import WordInfo from './WordInfo'
 
 export type TokenWrapper = FunctionComponent<PropsWithChildren<unknown>>
 
 interface TokenProps {
   token: Token
   Wrapper: TokenWrapper
+  tokenClasses?: readonly string[]
 }
 
 function DamagedFlag({
@@ -227,28 +230,51 @@ function TabulationComponent({ token, Wrapper }: TokenProps): JSX.Element {
   )
 }
 
-function LineBreakComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function LineBreakComponent({ Wrapper }: TokenProps): JSX.Element {
   return <Wrapper>|</Wrapper>
 }
 
-function AkkadianWordComponent({ token, Wrapper }: TokenProps): JSX.Element {
+function AkkadianWordComponent({
+  token,
+  Wrapper,
+  tokenClasses: modifierClasses,
+}: TokenProps): JSX.Element {
   const word = addBreves(token as AkkadianWord)
   const lastParts = _.takeRightWhile(word.parts, isEnclosure)
   const parts = _.dropRight(word.parts, lastParts.length)
   return (
-    <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
-      <EnclosureFlags token={word}>
-        {parts.map((token, index) => (
-          <DisplayToken key={index} token={token} Wrapper={Wrapper} />
-        ))}
-        <Wrapper>
-          <Flags flags={word.modifiers} />
-        </Wrapper>
-        {lastParts.map((token, index) => (
+    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+      <DamagedFlag sign={{ flags: word.modifiers }} Wrapper={Wrapper}>
+        <EnclosureFlags token={word}>
+          {parts.map((token, index) => (
+            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          ))}
+          <Wrapper>
+            <Flags flags={word.modifiers} />
+          </Wrapper>
+          {lastParts.map((token, index) => (
+            <DisplayToken key={index} token={token} Wrapper={Wrapper} />
+          ))}
+        </EnclosureFlags>
+      </DamagedFlag>
+    </WordInfo>
+  )
+}
+
+function WordComponent({
+  token,
+  Wrapper,
+  tokenClasses: modifierClasses,
+}: TokenProps): JSX.Element {
+  const word = token as Word
+  return (
+    <WordInfo word={word} tokenClasses={modifierClasses ?? []}>
+      <EnclosureFlags token={token}>
+        {word.parts.map((token, index) => (
           <DisplayToken key={index} token={token} Wrapper={Wrapper} />
         ))}
       </EnclosureFlags>
-    </DamagedFlag>
+    </WordInfo>
   )
 }
 
@@ -276,11 +302,12 @@ const tokens: ReadonlyMap<
   ['LineBreak', LineBreakComponent],
   ['GreekLetter', GreekLetterComponent],
   ['AkkadianWord', AkkadianWordComponent],
+  ['Word', WordComponent],
 ])
 
 export default function DisplayToken({
   token,
-  bemModifiers: modifiers = [],
+  bemModifiers = [],
   Wrapper = ({ children }: PropsWithChildren<unknown>): JSX.Element => (
     <>{children}</>
   ),
@@ -290,14 +317,22 @@ export default function DisplayToken({
   Wrapper?: FunctionComponent<PropsWithChildren<unknown>>
 }): JSX.Element {
   const TokenComponent = tokens.get(token.type) ?? DefaultToken
+  const tokenClasses = [
+    `Transliteration__${token.type}`,
+    ...createModifierClasses(token.type, bemModifiers),
+  ]
   return (
     <span
       className={classNames([
         `Transliteration__${token.type}`,
-        ...createModifierClasses(token.type, modifiers),
+        ...tokenClasses,
       ])}
     >
-      <TokenComponent token={token} Wrapper={Wrapper} />
+      <TokenComponent
+        token={token}
+        Wrapper={Wrapper}
+        tokenClasses={tokenClasses}
+      />
     </span>
   )
 }

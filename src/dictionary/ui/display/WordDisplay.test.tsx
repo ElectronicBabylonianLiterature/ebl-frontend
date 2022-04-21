@@ -50,6 +50,8 @@ const word = {
   source: '**source**',
   guideWord: 'fe',
   arabicGuideWord: 'fe',
+  origin: 'cda',
+  cdaAddenda: 'fe',
   oraccWords: [
     {
       lemma: 'serbig',

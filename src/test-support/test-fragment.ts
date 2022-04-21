@@ -348,6 +348,7 @@ export const fragmentDto = {
       uncertain: false,
     },
   ],
+  editedInOraccProject: 'ccp',
 }
 
 export const fragment = new Fragment(
@@ -421,5 +422,6 @@ export const fragment = new Fragment(
       category: ['ARCHIVE', 'Administrative', 'Lists'],
       uncertain: false,
     },
-  ])
+  ]),
+  'ccp'
 )

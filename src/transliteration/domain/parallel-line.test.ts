@@ -13,7 +13,11 @@ const fragmentData = {
     number: '1',
     suffix: '',
   },
-  surface: null,
+  labels: {
+    object: null,
+    surface: null,
+    column: null,
+  },
   lineNumber: {
     number: 4,
     hasPrime: true,

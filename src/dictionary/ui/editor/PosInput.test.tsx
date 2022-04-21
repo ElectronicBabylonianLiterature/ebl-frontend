@@ -2,10 +2,12 @@ import React from 'react'
 import PosInput from './PosInput'
 import { render, screen } from '@testing-library/react'
 import _ from 'lodash'
-import { factory } from 'factory-girl'
-import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
 
-let value
+import { whenChangedByValue, whenChangedByLabel } from 'test-support/utils'
+import Word from 'dictionary/domain/Word'
+import { wordFactory } from 'test-support/word-fixtures'
+
+let value: Word
 let onChange
 
 const positionsOfScpeech = {
@@ -34,19 +36,21 @@ beforeEach(() => {
 })
 
 describe('Verb', () => {
+  const roots = ['rrr', 'ttt']
+
   beforeEach(async () => {
-    value = await factory.build('verb')
+    value = wordFactory.verb(roots).build()
     renderPosInput()
   })
 
   it('Displays all roots', () => {
-    value.roots.forEach((root) =>
+    roots.forEach((root) =>
       expect(screen.getByDisplayValue(root)).toBeVisible()
     )
   })
 
   it('Calls onChange with updated value on root change', () => {
-    whenChangedByValue(screen, value.roots[0], 'rtr')
+    whenChangedByValue(screen, roots[0], 'rtr')
       .expect(onChange)
       .toHaveBeenCalledWith((newValue) => ({
         roots: [newValue, ..._.tail(value.roots)],
@@ -57,8 +61,8 @@ describe('Verb', () => {
 })
 
 describe('Not verb', () => {
-  beforeEach(async () => {
-    value = await factory.build('word')
+  beforeEach(() => {
+    value = wordFactory.build()
     renderPosInput()
   })
 
@@ -76,7 +80,11 @@ function commonTests() {
   })
 
   it('Other POS are not selected', () => {
-    for (const pos of _(positionsOfScpeech).omit(value.pos).values().value()) {
+    for (const pos of _(positionsOfScpeech)
+      .toPairs()
+      .reject(([pos, label]) => value.pos.includes(pos))
+      .map(([pos, label]) => label)
+      .value()) {
       expect((screen.getByText(pos) as HTMLOptionElement).selected).toBe(false)
     }
   })

@@ -29,6 +29,10 @@ function description(): string {
   return `${defaultChance.sentence()}\n${defaultChance.sentence()}`
 }
 
+function editedInOraccProject(): string {
+  return defaultChance.pickone(['ccp', 'dcclt', 'saao'])
+}
+
 function collection(): string {
   return defaultChance.pickone([
     'Babylon',
@@ -146,7 +150,8 @@ export const fragmentFactory = Factory.define<Fragment>(
             new Genre(['Other', 'Fake', 'Certain'], false),
           ]),
           new Genres([new Genre(['Other', 'Fake', 'Certain'], false)]),
-        ])
+        ]),
+      editedInOraccProject()
     )
   }
 )
@@ -163,6 +168,7 @@ export const fragmentInfoFactory = Factory.define<FragmentInfo>(
     // eslint-disable-next-line camelcase
     edition_date: date(),
     references: associations.references ?? [],
+    editedInOraccProject: editedInOraccProject(),
   })
 )
 
