@@ -46,11 +46,8 @@ export type LineVariantDisplayDto = Pick<
   LineVariantDisplay,
   'reconstruction' | 'note' | 'manuscripts' | 'parallelLines' | 'intertext'
 > & {
-  reconstruction: string
-  manuscripts: []
   note: Omit<NoteLineDto, 'type'> | null
   parallelLines: ParallelLineDto[]
-  intertext: string
 }
 
 export type LineDisplayDto = Pick<
@@ -156,6 +153,8 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
     line.variants.map(
       (variant) =>
         new LineVariantDisplay(
+          variant.reconstruction,
+          variant.note,
           variant.manuscripts.map(
             (manuscript) =>
               new ManuscriptLineDisplay(
@@ -170,7 +169,9 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
                   | EmptyLine,
                 manuscript.paratext.map(fromTransliterationLineDto)
               )
-          )
+          ),
+          variant.parallelLines,
+          variant.intertext
         )
     ),
     activeVariant

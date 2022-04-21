@@ -63,11 +63,11 @@ export class Chapter {
 }
 
 interface LineVariantDisplay {
-  readonly reconstruction: ReadonlyArray<MarkupPart>
-  readonly note: NoteLine | null
+  readonly reconstruction: ReadonlyArray<Token>
+  readonly note: NoteLine
   readonly manuscripts: ReadonlyArray<ManuscriptLineDisplay>
   readonly parallelLines: ReadonlyArray<ParallelLine>
-  readonly intertext: ReadonlyArray<Token>
+  readonly intertext: ReadonlyArray<MarkupPart>
 }
 
 export interface LineDisplay {

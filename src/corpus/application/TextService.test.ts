@@ -289,22 +289,36 @@ const testData: TestData[] = [
   ],
   [
     'findChapterLine',
-    [chapterId, 0],
+    [chapterId, 0, 0],
     apiClient.fetchJson,
     new LineDetails(
       [
-        new LineVariantDisplay([
-          new ManuscriptLineDisplay(
-            Provenances.Nippur,
-            PeriodModifiers['Early'],
-            Periods['Ur III'],
-            ManuscriptTypes.School,
-            '1',
-            ['o'],
-            new TextLine(lines[0]),
-            []
-          ),
-        ]),
+        new LineVariantDisplay(
+          [], // reconstruction
+          new NoteLine({
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          }), // note
+          [
+            new ManuscriptLineDisplay(
+              Provenances.Nippur,
+              PeriodModifiers['Early'],
+              Periods['Ur III'],
+              ManuscriptTypes.School,
+              '1',
+              ['o'],
+              new TextLine(lines[0]),
+              []
+            ),
+          ],
+          [], // parallelLines
+          [] // intertext
+        ),
       ],
       0
     ),

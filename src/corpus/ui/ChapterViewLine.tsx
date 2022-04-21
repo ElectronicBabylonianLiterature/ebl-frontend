@@ -168,7 +168,6 @@ export function ChapterViewLineVariant({
   lineNumber,
   line,
   variantNumber,
-  columns,
   maxColumns,
   textService,
   activeLine,

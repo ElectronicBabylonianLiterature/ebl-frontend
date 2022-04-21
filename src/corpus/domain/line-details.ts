@@ -69,12 +69,12 @@ export class ManuscriptLineDisplay {
   }
 }
 
-export class LineVariantDetails {
+export class LineVariantDisplay {
   readonly [immerable] = true
 
   constructor(
     readonly reconstruction: MarkupPart[],
-    readonly note: NoteLine | null,
+    readonly note: NoteLine,
     readonly manuscripts: readonly ManuscriptLineDisplay[],
     readonly parallelLines: ParallelLine[],
     readonly intertext: Token[]
@@ -85,7 +85,7 @@ export class LineDetails {
   readonly [immerable] = true
 
   constructor(
-    readonly variants: readonly LineVariantDetails[],
+    readonly variants: readonly LineVariantDisplay[],
     readonly activeVariant: number
   ) {}
 

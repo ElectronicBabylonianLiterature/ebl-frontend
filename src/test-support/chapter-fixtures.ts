@@ -101,6 +101,7 @@ export const lineDisplayDtoFactory = Factory.define<
             },
           ],
         },
+        manuscripts: [],
         parallelLines: [
           {
             type: 'ParallelComposition',

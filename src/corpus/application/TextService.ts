@@ -190,11 +190,6 @@ export default class TextService {
                     )
                 )
               ),
-              line.variants.map((variant) =>
-                this.referenceInjector.injectReferencesToMarkup(
-                  variant.intertext
-                )
-              ),
               line.variants.map(
                 (variant) =>
                   variant.note &&
@@ -212,6 +207,11 @@ export default class TextService {
                 variant.parallelLines.map(
                   (parallel) =>
                     fromTransliterationLineDto(parallel) as ParallelLine
+                )
+              ),
+              line.variants.map((variant) =>
+                this.referenceInjector.injectReferencesToMarkup(
+                  variant.intertext
                 )
               ),
             ]).then(([translation]) => ({
@@ -267,7 +267,16 @@ export default class TextService {
                   })
                 )
               )
-            ).then((manuscripts) => new LineVariantDisplay(manuscripts))
+            ).then(
+              (manuscripts) =>
+                new LineVariantDisplay(
+                  variant.reconstruction,
+                  variant.note,
+                  manuscripts,
+                  variant.parallelLines,
+                  variant.intertext
+                )
+            )
           )
         ).then((variants) => new LineDetails(variants, variantNumber))
       )
