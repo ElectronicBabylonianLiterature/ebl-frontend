@@ -12,9 +12,9 @@ export function AGI({
 }): JSX.Element {
   return AkkadischeGlossareUndIndices.slice()
     .sort(compareAfO)
-    .map((InstanceOfAkkadischeGlossareUndIndices) => (
+    .map((InstanceOfAkkadischeGlossareUndIndices, index) => (
       <>
-        <Row className="ml-5">
+        <Row className="ml-5" key={index}>
           <Col>
             <Row className="small text-black-50">
               <div
