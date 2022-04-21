@@ -148,32 +148,36 @@ export function fromLineDto(lineDto): Line {
   })
 }
 
+function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
+  return new ManuscriptLineDisplay(
+    Provenances[manuscript.provenance],
+    PeriodModifiers[manuscript.periodModifier],
+    Periods[manuscript.period],
+    ManuscriptTypes[manuscript.type],
+    manuscript.siglumDisambiguator,
+    manuscript.labels,
+    (fromTransliterationLineDto(manuscript.line) as unknown) as
+      | TextLine
+      | EmptyLine,
+    manuscript.paratext.map(fromTransliterationLineDto)
+  )
+}
+
+function fromLineVariantDisplay(variant): LineVariantDisplay {
+  return new LineVariantDisplay(
+    variant.reconstruction,
+    variant.note && new NoteLine(variant.note),
+    variant.manuscripts.map((manuscript) =>
+      fromManuscriptLineDisplay(manuscript)
+    ),
+    variant.parallelLines,
+    variant.intertext
+  )
+}
+
 export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   return new LineDetails(
-    line.variants.map(
-      (variant) =>
-        new LineVariantDisplay(
-          variant.reconstruction,
-          variant.note && new NoteLine(variant.note),
-          variant.manuscripts.map(
-            (manuscript) =>
-              new ManuscriptLineDisplay(
-                Provenances[manuscript.provenance],
-                PeriodModifiers[manuscript.periodModifier],
-                Periods[manuscript.period],
-                ManuscriptTypes[manuscript.type],
-                manuscript.siglumDisambiguator,
-                manuscript.labels,
-                (fromTransliterationLineDto(manuscript.line) as unknown) as
-                  | TextLine
-                  | EmptyLine,
-                manuscript.paratext.map(fromTransliterationLineDto)
-              )
-          ),
-          variant.parallelLines,
-          variant.intertext
-        )
-    ),
+    line.variants.map((variant) => fromLineVariantDisplay(variant)),
     activeVariant
   )
 }
