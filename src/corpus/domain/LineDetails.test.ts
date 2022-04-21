@@ -19,26 +19,35 @@ const manyColumns = manuscriptLineDisplayFactory.build(
 )
 
 test.each([
-  [new LineDetails([]), 1],
-  [new LineDetails([new LineVariantDisplay([])]), 1],
-  [new LineDetails([new LineVariantDisplay([empty])]), 1],
+  [new LineDetails([], 0), 1],
+  [new LineDetails([new LineVariantDisplay([], null, [], [], [])], 0), 1],
+  [new LineDetails([new LineVariantDisplay([], null, [empty], [], [])], 0), 1],
   [
-    new LineDetails([new LineVariantDisplay([oneColumn])]),
+    new LineDetails([new LineVariantDisplay([], null, [oneColumn], [], [])], 0),
     textLine.numberOfColumns,
   ],
   [
-    new LineDetails([new LineVariantDisplay([manyColumns])]),
+    new LineDetails(
+      [new LineVariantDisplay([], null, [manyColumns], [], [])],
+      0
+    ),
     implicitFirstColumn.numberOfColumns,
   ],
   [
-    new LineDetails([new LineVariantDisplay([empty, manyColumns])]),
+    new LineDetails(
+      [new LineVariantDisplay([], null, [empty, manyColumns], [], [])],
+      0
+    ),
     implicitFirstColumn.numberOfColumns,
   ],
   [
-    new LineDetails([
-      new LineVariantDisplay([manyColumns]),
-      new LineVariantDisplay([oneColumn]),
-    ]),
+    new LineDetails(
+      [
+        new LineVariantDisplay([], null, [manyColumns], [], []),
+        new LineVariantDisplay([], null, [oneColumn], [], []),
+      ],
+      0
+    ),
     implicitFirstColumn.numberOfColumns,
   ],
 ])('numberOfColumns %s', (line, expected) => {
@@ -46,10 +55,13 @@ test.each([
 })
 
 test('sortedManuscripts', () => {
-  const lineDetails = new LineDetails([
-    new LineVariantDisplay([manyColumns]),
-    new LineVariantDisplay([oneColumn]),
-  ])
+  const lineDetails = new LineDetails(
+    [
+      new LineVariantDisplay([], null, [manyColumns], [], []),
+      new LineVariantDisplay([], null, [oneColumn], [], []),
+    ],
+    0
+  )
 
   expect(lineDetails.sortedManuscripts).toEqual(
     [manyColumns, oneColumn].sort(compareManuscripts)

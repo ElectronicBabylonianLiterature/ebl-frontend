@@ -116,7 +116,8 @@ const lineConfig: Line = {
         },
       ],
       [createManuscriptLine(manuscrpitLineConfig)],
-      'intertext'
+      'intertext',
+      'note'
     ),
   ],
   isSecondLineOfParallelism: true,

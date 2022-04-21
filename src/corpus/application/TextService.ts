@@ -190,33 +190,42 @@ export default class TextService {
                     )
                 )
               ),
-              line.variants.map(
-                (variant) =>
-                  variant.note &&
-                  this.referenceInjector
-                    .injectReferencesToMarkup(variant.note.parts)
-                    .then(
-                      (parts) =>
-                        new NoteLine({
-                          ...(variant.note as NoteLineDto),
-                          parts,
-                        })
-                    )
-              ),
-              line.variants.map((variant) =>
-                variant.parallelLines.map(
-                  (parallel) =>
-                    fromTransliterationLineDto(parallel) as ParallelLine
+              Bluebird.all(
+                line.variants.map((variant) =>
+                  Bluebird.all([
+                    variant.note &&
+                      this.referenceInjector
+                        .injectReferencesToMarkup(variant.note.parts)
+                        .then(
+                          (parts) =>
+                            new NoteLine({
+                              ...(variant.note as NoteLineDto),
+                              parts,
+                            })
+                        ),
+                    variant.parallelLines.map(
+                      (parallel) =>
+                        fromTransliterationLineDto(parallel) as ParallelLine
+                    ),
+                    this.referenceInjector.injectReferencesToMarkup(
+                      variant.intertext
+                    ),
+                  ]).then(
+                    ([note, parallelLines, intertext]) =>
+                      new LineVariantDisplay(
+                        variant.reconstruction,
+                        note,
+                        variant.manuscripts,
+                        parallelLines,
+                        intertext
+                      )
+                  )
                 )
               ),
-              line.variants.map((variant) =>
-                this.referenceInjector.injectReferencesToMarkup(
-                  variant.intertext
-                )
-              ),
-            ]).then(([translation]) => ({
+            ]).then(([translation, variants]) => ({
               ...line,
               translation,
+              variants,
             }))
           )
         ).then(

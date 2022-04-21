@@ -39,12 +39,12 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { Extent } from 'transliteration/domain/translation-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
-import { NoteLineDto } from 'transliteration/domain/note-line'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 
 export type LineVariantDisplayDto = Pick<
   LineVariantDisplay,
-  'reconstruction' | 'note' | 'manuscripts' | 'parallelLines' | 'intertext'
+  'reconstruction' | 'manuscripts' | 'intertext'
 > & {
   note: Omit<NoteLineDto, 'type'> | null
   parallelLines: ParallelLineDto[]
@@ -52,7 +52,7 @@ export type LineVariantDisplayDto = Pick<
 
 export type LineDisplayDto = Pick<
   LineDisplay,
-  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection' | 'variants'
+  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
 > & {
   translation: {
     language: string
@@ -154,7 +154,7 @@ export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
       (variant) =>
         new LineVariantDisplay(
           variant.reconstruction,
-          variant.note,
+          variant.note && new NoteLine(variant.note),
           variant.manuscripts.map(
             (manuscript) =>
               new ManuscriptLineDisplay(

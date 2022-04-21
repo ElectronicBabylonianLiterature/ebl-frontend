@@ -165,6 +165,7 @@ export const lineDisplayFactory = Factory.define<
           },
         ],
         reconstruction: _.cloneDeep(reconstructionTokens),
+        manuscripts: [],
         note: new NoteLine({
           content: [],
           parts: [

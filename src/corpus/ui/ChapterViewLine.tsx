@@ -247,7 +247,7 @@ export function ChapterViewLineVariant({
         <CollapsibleRow show={showNote} id={noteId} totalColumns={totalColumns}>
           <Markup
             className="chapter-display__note"
-            parts={line.variants[variantNumber].note.parts}
+            parts={line.variants[variantNumber].note?.parts ?? []}
           />
         </CollapsibleRow>
       ),

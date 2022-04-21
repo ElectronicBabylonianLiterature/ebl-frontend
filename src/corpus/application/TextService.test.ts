@@ -230,12 +230,18 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
-    variants: dto.variants.map((variant) => ({
-      note: variant.note && new NoteLine(variant.note),
-      parallelLines: variant.parallelLines.map(
-        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
-      ),
-    })),
+    variants: dto.variants.map(
+      (variant) =>
+        new LineVariantDisplay(
+          variant.reconstruction,
+          variant.note && new NoteLine(variant.note),
+          variant.manuscripts,
+          variant.parallelLines.map(
+            (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+          ),
+          variant.intertext
+        )
+    ),
   })),
   chapterDisplayDto.record
 )
@@ -326,6 +332,17 @@ const testData: TestData[] = [
     Bluebird.resolve({
       variants: [
         {
+          reconstruction: [],
+          note: {
+            prefix: '#note: ',
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          },
           manuscripts: [
             {
               provenance: 'Nippur',
@@ -338,6 +355,8 @@ const testData: TestData[] = [
               paratext: [],
             },
           ],
+          parallelLines: [],
+          intertext: [],
         },
       ],
     }),

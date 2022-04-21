@@ -73,11 +73,11 @@ export class LineVariantDisplay {
   readonly [immerable] = true
 
   constructor(
-    readonly reconstruction: MarkupPart[],
-    readonly note: NoteLine,
+    readonly reconstruction: Token[],
+    readonly note: NoteLine | null,
     readonly manuscripts: readonly ManuscriptLineDisplay[],
     readonly parallelLines: ParallelLine[],
-    readonly intertext: Token[]
+    readonly intertext: MarkupPart[]
   ) {}
 }
 
