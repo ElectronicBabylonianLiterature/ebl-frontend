@@ -2,7 +2,7 @@ import { manuscriptLineDisplayFactory } from 'test-support/line-details-fixtures
 import { implicitFirstColumn } from 'test-support/lines/text-columns'
 import textLine from 'test-support/lines/text-line'
 import { EmptyLine } from 'transliteration/domain/line'
-import { LineDetails, LineVariantDisplay } from './line-details'
+import { LineDetails, LineVariantDetails } from './line-details'
 import { compareManuscripts } from './manuscript'
 
 const empty = manuscriptLineDisplayFactory.build(
@@ -20,22 +20,22 @@ const manyColumns = manuscriptLineDisplayFactory.build(
 
 test.each([
   [new LineDetails([], 0), 1],
-  [new LineDetails([new LineVariantDisplay([], null, [], [], [])], 0), 1],
-  [new LineDetails([new LineVariantDisplay([], null, [empty], [], [])], 0), 1],
+  [new LineDetails([new LineVariantDetails([], null, [], [], [])], 0), 1],
+  [new LineDetails([new LineVariantDetails([], null, [empty], [], [])], 0), 1],
   [
-    new LineDetails([new LineVariantDisplay([], null, [oneColumn], [], [])], 0),
+    new LineDetails([new LineVariantDetails([], null, [oneColumn], [], [])], 0),
     textLine.numberOfColumns,
   ],
   [
     new LineDetails(
-      [new LineVariantDisplay([], null, [manyColumns], [], [])],
+      [new LineVariantDetails([], null, [manyColumns], [], [])],
       0
     ),
     implicitFirstColumn.numberOfColumns,
   ],
   [
     new LineDetails(
-      [new LineVariantDisplay([], null, [empty, manyColumns], [], [])],
+      [new LineVariantDetails([], null, [empty, manyColumns], [], [])],
       0
     ),
     implicitFirstColumn.numberOfColumns,
@@ -43,8 +43,8 @@ test.each([
   [
     new LineDetails(
       [
-        new LineVariantDisplay([], null, [manyColumns], [], []),
-        new LineVariantDisplay([], null, [oneColumn], [], []),
+        new LineVariantDetails([], null, [manyColumns], [], []),
+        new LineVariantDetails([], null, [oneColumn], [], []),
       ],
       0
     ),
@@ -57,8 +57,8 @@ test.each([
 test('sortedManuscripts', () => {
   const lineDetails = new LineDetails(
     [
-      new LineVariantDisplay([], null, [manyColumns], [], []),
-      new LineVariantDisplay([], null, [oneColumn], [], []),
+      new LineVariantDetails([], null, [manyColumns], [], []),
+      new LineVariantDetails([], null, [oneColumn], [], []),
     ],
     0
   )

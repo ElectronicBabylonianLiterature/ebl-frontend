@@ -13,7 +13,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { LineDetails, LineVariantDisplay } from 'corpus/domain/line-details'
+import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
@@ -214,7 +214,7 @@ export default class TextService {
       )
   }
 
-  findLineVariant(variant: any): Bluebird<LineVariantDisplay> {
+  findLineVariant(variant: any): Bluebird<LineVariantDetails> {
     return Bluebird.all([
       variant.note &&
         this.referenceInjector
@@ -232,7 +232,7 @@ export default class TextService {
       this.referenceInjector.injectReferencesToMarkup(variant.intertext),
     ]).then(
       ([note, parallelLines, intertext]) =>
-        new LineVariantDisplay(
+        new LineVariantDetails(
           variant.reconstruction,
           note,
           variant.manuscripts,
@@ -277,7 +277,7 @@ export default class TextService {
               )
             ).then(
               (manuscripts) =>
-                new LineVariantDisplay(
+                new LineVariantDetails(
                   variant.reconstruction,
                   variant.note,
                   manuscripts,

@@ -62,7 +62,7 @@ export class Chapter {
   }
 }
 
-interface LineVariantDisplay {
+export interface LineVariantDisplay {
   readonly reconstruction: ReadonlyArray<Token>
   readonly note: NoteLine | null
   readonly manuscripts: ReadonlyArray<ManuscriptLineDisplay>

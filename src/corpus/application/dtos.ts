@@ -15,7 +15,7 @@ import {
 } from 'corpus/domain/line'
 import {
   LineDetails,
-  LineVariantDisplay,
+  LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import { Manuscript, ManuscriptTypes } from 'corpus/domain/manuscript'
@@ -43,7 +43,7 @@ import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 
 export type LineVariantDisplayDto = Pick<
-  LineVariantDisplay,
+  LineVariantDetails,
   'reconstruction' | 'manuscripts' | 'intertext'
 > & {
   note: Omit<NoteLineDto, 'type'> | null
@@ -163,8 +163,8 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
   )
 }
 
-function fromLineVariantDisplay(variant): LineVariantDisplay {
-  return new LineVariantDisplay(
+function fromLineVariantDisplay(variant): LineVariantDetails {
+  return new LineVariantDetails(
     variant.reconstruction,
     variant.note && new NoteLine(variant.note),
     variant.manuscripts.map((manuscript) =>

@@ -24,7 +24,7 @@ import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   LineDetails,
-  LineVariantDisplay,
+  LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
@@ -228,7 +228,7 @@ const chapterDisplay = new ChapterDisplay(
     ),
     variants: dto.variants.map(
       (variant) =>
-        new LineVariantDisplay(
+        new LineVariantDetails(
           variant.reconstruction,
           variant.note && new NoteLine(variant.note),
           variant.manuscripts,
@@ -295,7 +295,7 @@ const testData: TestData[] = [
     apiClient.fetchJson,
     new LineDetails(
       [
-        new LineVariantDisplay(
+        new LineVariantDetails(
           [],
           new NoteLine({
             content: [],

@@ -6,7 +6,11 @@ import React, {
   useRef,
 } from 'react'
 import _ from 'lodash'
-import { ChapterDisplay, LineDisplay } from 'corpus/domain/chapter'
+import {
+  ChapterDisplay,
+  LineDisplay,
+  LineVariantDisplay,
+} from 'corpus/domain/chapter'
 import { LineColumns } from 'transliteration/ui/line-tokens'
 import Markup from 'transliteration/ui/markup'
 import lineNumberToString, {
@@ -23,7 +27,6 @@ import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
 import { numberToUnicodeSubscript } from 'transliteration/ui/SubIndex'
-import { LineVariantDisplay } from 'corpus/domain/line-details'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
@@ -32,13 +35,15 @@ const translationColumns = lineNumberColumns + 1
 function InterText({
   variant,
   colSpan,
+  hasIntertext,
 }: {
   variant: LineVariantDisplay
   colSpan: number
+  hasIntertext
 }): JSX.Element {
   return (
     <>
-      {variant.hasIntertext && (
+      {variant && (
         <tr>
           <td colSpan={colSpan} className="chapter-display__intertext">
             (
@@ -193,6 +198,7 @@ export function ChapterViewLineVariant({
   const [{ language }] = useContext(TranslationContext)
   const variant = line.variants[variantNumber]
   const isPrimaryVariant = variantNumber === 0
+  const hasIntertext = variant.intertext.length > 0
 
   const columns = useMemo(() => createColumns(variant.reconstruction), [
     variant,
@@ -281,7 +287,11 @@ export function ChapterViewLineVariant({
 
   return (
     <>
-      <InterText variant={variant} colSpan={totalColumns} />
+      <InterText
+        variant={variant}
+        colSpan={totalColumns}
+        hasIntertext={hasIntertext}
+      />
       <tr
         className={classNames({
           'chapter-display__line': true,
