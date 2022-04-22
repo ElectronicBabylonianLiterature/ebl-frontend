@@ -105,4 +105,10 @@ export class LineDetails {
       .flatMap((variant) => variant.manuscripts)
       .sort(compareManuscripts)
   }
+
+  get manuscriptsOfVariant(): ManuscriptLineDisplay[] {
+    return this.sortedManuscripts.filter((manuscript) =>
+      this.variants[this.activeVariant].manuscripts.includes(manuscript)
+    )
+  }
 }

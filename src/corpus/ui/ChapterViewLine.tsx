@@ -39,11 +39,11 @@ function InterText({
 }: {
   variant: LineVariantDisplay
   colSpan: number
-  hasIntertext
+  hasIntertext: boolean
 }): JSX.Element {
   return (
     <>
-      {variant && (
+      {hasIntertext && (
         <tr>
           <td colSpan={colSpan} className="chapter-display__intertext">
             (

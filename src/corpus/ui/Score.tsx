@@ -97,17 +97,13 @@ const Score = withData<
     return (
       <table className="chapter-display__manuscripts">
         <tbody>
-          {line.sortedManuscripts
-            .filter((manuscript) =>
-              line.variants[line.activeVariant].manuscripts.includes(manuscript)
-            )
-            .map((manuscript, index) => (
-              <Manuscript
-                manuscript={manuscript}
-                key={index}
-                maxColumns={line.numberOfColumns}
-              />
-            ))}
+          {line.manuscriptsOfVariant.map((manuscript, index) => (
+            <Manuscript
+              manuscript={manuscript}
+              key={index}
+              maxColumns={line.numberOfColumns}
+            />
+          ))}
         </tbody>
       </table>
     )
