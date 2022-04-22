@@ -51,7 +51,7 @@ exports[`Display chapter How to cite 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-181"
+          id="Header-169"
         >
           <div
             class="mx-auto navbar-nav"
@@ -125,7 +125,7 @@ exports[`Display chapter How to cite 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-181"
+          aria-controls="Header-169"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -251,7 +251,7 @@ exports[`Display chapter How to cite 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-194"
+          aria-controls="collapse-180"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -263,7 +263,7 @@ exports[`Display chapter How to cite 1`] = `
         </h3>
         <div
           class="collapse"
-          id="collapse-194"
+          id="collapse-180"
         >
           <div
             class="csl-bib-body"
@@ -331,7 +331,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-184"
+                  aria-controls="score-171"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -382,7 +382,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-185"
+                  aria-controls="note-172"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -393,7 +393,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-186"
+                  aria-controls="parallels-173"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -435,7 +435,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-189"
+                  aria-controls="score-175"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -486,7 +486,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-190"
+                  aria-controls="note-176"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -497,7 +497,7 @@ exports[`Display chapter How to cite 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-191"
+                  aria-controls="parallels-177"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -529,7 +529,7 @@ exports[`Display chapter How to cite 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-193"
+          aria-controls="settings-179"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -596,7 +596,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-27"
+          id="Header-23"
         >
           <div
             class="mx-auto navbar-nav"
@@ -670,7 +670,7 @@ exports[`Display chapter Show manuscripts 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-27"
+          aria-controls="Header-23"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -796,7 +796,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-40"
+          aria-controls="collapse-34"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -808,7 +808,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-40"
+          id="collapse-34"
         >
           <div
             class="csl-bib-body"
@@ -876,7 +876,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-41"
+                  aria-controls="score-35"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -927,7 +927,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-42"
+                  aria-controls="note-36"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -938,7 +938,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-43"
+                  aria-controls="parallels-37"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -961,7 +961,7 @@ exports[`Display chapter Show manuscripts 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-41"
+              id="score-35"
               style=""
             >
               <td
@@ -1203,7 +1203,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-44"
+                  aria-controls="score-38"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1254,7 +1254,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-45"
+                  aria-controls="note-39"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1265,7 +1265,7 @@ exports[`Display chapter Show manuscripts 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-46"
+                  aria-controls="parallels-40"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1297,7 +1297,7 @@ exports[`Display chapter Show manuscripts 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-47"
+          aria-controls="settings-41"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1364,7 +1364,7 @@ exports[`Display chapter Show note 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-54"
+          id="Header-48"
         >
           <div
             class="mx-auto navbar-nav"
@@ -1438,7 +1438,7 @@ exports[`Display chapter Show note 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-54"
+          aria-controls="Header-48"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -1564,7 +1564,7 @@ exports[`Display chapter Show note 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-67"
+          aria-controls="collapse-59"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -1576,7 +1576,7 @@ exports[`Display chapter Show note 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-67"
+          id="collapse-59"
         >
           <div
             class="csl-bib-body"
@@ -1644,7 +1644,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-68"
+                  aria-controls="score-60"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1695,7 +1695,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-69"
+                  aria-controls="note-61"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -1706,7 +1706,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-70"
+                  aria-controls="parallels-62"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1729,7 +1729,7 @@ exports[`Display chapter Show note 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-69"
+              id="note-61"
               style="height: 0px;"
             >
               <td
@@ -1765,7 +1765,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-71"
+                  aria-controls="score-63"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -1816,7 +1816,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-72"
+                  aria-controls="note-64"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -1827,7 +1827,7 @@ exports[`Display chapter Show note 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-73"
+                  aria-controls="parallels-65"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -1859,7 +1859,7 @@ exports[`Display chapter Show note 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-74"
+          aria-controls="settings-66"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -1926,7 +1926,7 @@ exports[`Display chapter Show parallels 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-75"
+          id="Header-67"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2000,7 +2000,7 @@ exports[`Display chapter Show parallels 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-75"
+          aria-controls="Header-67"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2126,7 +2126,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-88"
+          aria-controls="collapse-78"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2138,7 +2138,7 @@ exports[`Display chapter Show parallels 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-88"
+          id="collapse-78"
         >
           <div
             class="csl-bib-body"
@@ -2206,7 +2206,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-89"
+                  aria-controls="score-79"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2257,7 +2257,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-90"
+                  aria-controls="note-80"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2268,7 +2268,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-91"
+                  aria-controls="parallels-81"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -2292,7 +2292,7 @@ exports[`Display chapter Show parallels 1`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-91"
+              id="parallels-81"
               style="height: 0px;"
             >
               <td
@@ -2333,7 +2333,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-92"
+                  aria-controls="score-82"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -2384,7 +2384,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-93"
+                  aria-controls="note-83"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2395,7 +2395,7 @@ exports[`Display chapter Show parallels 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-94"
+                  aria-controls="parallels-84"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2427,7 +2427,7 @@ exports[`Display chapter Show parallels 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-95"
+          aria-controls="settings-85"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -2494,7 +2494,7 @@ exports[`Display chapter Sidebar 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-96"
+          id="Header-86"
         >
           <div
             class="mx-auto navbar-nav"
@@ -2568,7 +2568,7 @@ exports[`Display chapter Sidebar 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-96"
+          aria-controls="Header-86"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -2694,7 +2694,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-113"
+          aria-controls="collapse-101"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -2706,7 +2706,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-113"
+          id="collapse-101"
         >
           <div
             class="csl-bib-body"
@@ -2774,7 +2774,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-114"
+                  aria-controls="score-102"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -2825,7 +2825,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-115"
+                  aria-controls="note-103"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -2836,7 +2836,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-116"
+                  aria-controls="parallels-104"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -2859,7 +2859,7 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-114"
+              id="score-102"
               style=""
             >
               <td
@@ -2984,7 +2984,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-117"
+                  aria-controls="score-105"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3035,7 +3035,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-118"
+                  aria-controls="note-106"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -3046,7 +3046,7 @@ exports[`Display chapter Sidebar 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-119"
+                  aria-controls="parallels-107"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -3069,7 +3069,7 @@ exports[`Display chapter Sidebar 1`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-117"
+              id="score-105"
               style=""
             >
               <td
@@ -3150,7 +3150,7 @@ exports[`Display chapter Sidebar 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-120"
+          aria-controls="settings-108"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -3162,7 +3162,7 @@ exports[`Display chapter Sidebar 1`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-120"
+          id="settings-108"
         >
           <form
             class="settings__section"
@@ -3177,12 +3177,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-121"
+                id="sidebar-text-toggle-109"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-121"
+                for="sidebar-text-toggle-109"
                 title=""
               >
                 Score
@@ -3202,12 +3202,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-122"
+                id="sidebar-text-toggle-110"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-122"
+                for="sidebar-text-toggle-110"
                 title=""
               >
                 Parallels
@@ -3218,12 +3218,12 @@ exports[`Display chapter Sidebar 1`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-123"
+                id="sidebar-text-toggle-111"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-123"
+                for="sidebar-text-toggle-111"
                 title=""
               >
                 Notes
@@ -3338,7 +3338,7 @@ exports[`Display chapter Sidebar 2`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-96"
+          id="Header-86"
         >
           <div
             class="mx-auto navbar-nav"
@@ -3412,7 +3412,7 @@ exports[`Display chapter Sidebar 2`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-96"
+          aria-controls="Header-86"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -3538,7 +3538,7 @@ exports[`Display chapter Sidebar 2`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-129"
+          aria-controls="collapse-117"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -3550,7 +3550,7 @@ exports[`Display chapter Sidebar 2`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-129"
+          id="collapse-117"
         >
           <div
             class="csl-bib-body"
@@ -3618,7 +3618,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-130"
+                  aria-controls="score-118"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3669,7 +3669,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-131"
+                  aria-controls="note-119"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -3680,7 +3680,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-132"
+                  aria-controls="parallels-120"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -3704,7 +3704,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-132"
+              id="parallels-120"
               style="height: 0px;"
             >
               <td
@@ -3726,7 +3726,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-130"
+              id="score-118"
               style=""
             >
               <td
@@ -3851,7 +3851,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-136"
+                  aria-controls="score-124"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -3902,7 +3902,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-137"
+                  aria-controls="note-125"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -3913,7 +3913,7 @@ exports[`Display chapter Sidebar 2`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-138"
+                  aria-controls="parallels-126"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -3937,7 +3937,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-138"
+              id="parallels-126"
               style="height: 0px;"
             >
               <td
@@ -3959,7 +3959,7 @@ exports[`Display chapter Sidebar 2`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-136"
+              id="score-124"
               style=""
             >
               <td
@@ -4040,7 +4040,7 @@ exports[`Display chapter Sidebar 2`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-141"
+          aria-controls="settings-129"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -4052,7 +4052,7 @@ exports[`Display chapter Sidebar 2`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-141"
+          id="settings-129"
         >
           <form
             class="settings__section"
@@ -4067,12 +4067,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-142"
+                id="sidebar-text-toggle-130"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-142"
+                for="sidebar-text-toggle-130"
                 title=""
               >
                 Score
@@ -4092,12 +4092,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-143"
+                id="sidebar-text-toggle-131"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-143"
+                for="sidebar-text-toggle-131"
                 title=""
               >
                 Parallels
@@ -4108,12 +4108,12 @@ exports[`Display chapter Sidebar 2`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-144"
+                id="sidebar-text-toggle-132"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-144"
+                for="sidebar-text-toggle-132"
                 title=""
               >
                 Notes
@@ -4228,7 +4228,7 @@ exports[`Display chapter Sidebar 3`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-96"
+          id="Header-86"
         >
           <div
             class="mx-auto navbar-nav"
@@ -4302,7 +4302,7 @@ exports[`Display chapter Sidebar 3`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-96"
+          aria-controls="Header-86"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -4428,7 +4428,7 @@ exports[`Display chapter Sidebar 3`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-145"
+          aria-controls="collapse-133"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -4440,7 +4440,7 @@ exports[`Display chapter Sidebar 3`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-145"
+          id="collapse-133"
         >
           <div
             class="csl-bib-body"
@@ -4508,7 +4508,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-146"
+                  aria-controls="score-134"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4559,7 +4559,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-147"
+                  aria-controls="note-135"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -4570,7 +4570,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-148"
+                  aria-controls="parallels-136"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -4594,7 +4594,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-147"
+              id="note-135"
               style="height: 0px;"
             >
               <td
@@ -4611,7 +4611,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-148"
+              id="parallels-136"
               style="height: 0px;"
             >
               <td
@@ -4633,7 +4633,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-146"
+              id="score-134"
               style=""
             >
               <td
@@ -4758,7 +4758,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-152"
+                  aria-controls="score-140"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -4809,7 +4809,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-153"
+                  aria-controls="note-141"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -4820,7 +4820,7 @@ exports[`Display chapter Sidebar 3`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-154"
+                  aria-controls="parallels-142"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -4844,7 +4844,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-153"
+              id="note-141"
               style="height: 0px;"
             >
               <td
@@ -4861,7 +4861,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-154"
+              id="parallels-142"
               style="height: 0px;"
             >
               <td
@@ -4883,7 +4883,7 @@ exports[`Display chapter Sidebar 3`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-152"
+              id="score-140"
               style=""
             >
               <td
@@ -4964,7 +4964,7 @@ exports[`Display chapter Sidebar 3`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-157"
+          aria-controls="settings-145"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -4976,7 +4976,7 @@ exports[`Display chapter Sidebar 3`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-157"
+          id="settings-145"
         >
           <form
             class="settings__section"
@@ -4991,12 +4991,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-158"
+                id="sidebar-text-toggle-146"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-158"
+                for="sidebar-text-toggle-146"
                 title=""
               >
                 Score
@@ -5016,12 +5016,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-159"
+                id="sidebar-text-toggle-147"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-159"
+                for="sidebar-text-toggle-147"
                 title=""
               >
                 Parallels
@@ -5032,12 +5032,12 @@ exports[`Display chapter Sidebar 3`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-160"
+                id="sidebar-text-toggle-148"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-160"
+                for="sidebar-text-toggle-148"
                 title=""
               >
                 Notes
@@ -5152,7 +5152,7 @@ exports[`Display chapter Sidebar 4`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-96"
+          id="Header-86"
         >
           <div
             class="mx-auto navbar-nav"
@@ -5226,7 +5226,7 @@ exports[`Display chapter Sidebar 4`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-96"
+          aria-controls="Header-86"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -5352,7 +5352,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-161"
+          aria-controls="collapse-149"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -5364,7 +5364,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-161"
+          id="collapse-149"
         >
           <div
             class="csl-bib-body"
@@ -5432,7 +5432,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-162"
+                  aria-controls="score-150"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5483,7 +5483,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-163"
+                  aria-controls="note-151"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5494,7 +5494,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-164"
+                  aria-controls="parallels-152"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5518,7 +5518,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-163"
+              id="note-151"
               style="height: 0px;"
             >
               <td
@@ -5535,7 +5535,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-164"
+              id="parallels-152"
               style="height: 0px;"
             >
               <td
@@ -5557,7 +5557,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-162"
+              id="score-150"
               style=""
             >
               <td
@@ -5682,7 +5682,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-168"
+                  aria-controls="score-156"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -5733,7 +5733,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-169"
+                  aria-controls="note-157"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -5744,7 +5744,7 @@ exports[`Display chapter Sidebar 4`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-170"
+                  aria-controls="parallels-158"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -5768,7 +5768,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="note-169"
+              id="note-157"
               style="height: 0px;"
             >
               <td
@@ -5785,7 +5785,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapsing"
-              id="parallels-170"
+              id="parallels-158"
               style="height: 0px;"
             >
               <td
@@ -5807,7 +5807,7 @@ exports[`Display chapter Sidebar 4`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-168"
+              id="score-156"
               style=""
             >
               <td
@@ -5888,7 +5888,7 @@ exports[`Display chapter Sidebar 4`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-173"
+          aria-controls="settings-161"
           aria-expanded="true"
           class="settings__heading"
           role="button"
@@ -5900,7 +5900,7 @@ exports[`Display chapter Sidebar 4`] = `
         </h3>
         <div
           class="fade show"
-          id="settings-173"
+          id="settings-161"
         >
           <form
             class="settings__section"
@@ -5915,12 +5915,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-174"
+                id="sidebar-text-toggle-162"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-174"
+                for="sidebar-text-toggle-162"
                 title=""
               >
                 Score
@@ -5940,12 +5940,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-175"
+                id="sidebar-text-toggle-163"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-175"
+                for="sidebar-text-toggle-163"
                 title=""
               >
                 Parallels
@@ -5956,12 +5956,12 @@ exports[`Display chapter Sidebar 4`] = `
             >
               <input
                 class="custom-control-input"
-                id="sidebar-text-toggle-176"
+                id="sidebar-text-toggle-164"
                 type="checkbox"
               />
               <label
                 class="custom-control-label"
-                for="sidebar-text-toggle-176"
+                for="sidebar-text-toggle-164"
                 title=""
               >
                 Notes
@@ -6076,7 +6076,7 @@ exports[`Display chapter Sidebar 5`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-96"
+          id="Header-86"
         >
           <div
             class="mx-auto navbar-nav"
@@ -6150,7 +6150,7 @@ exports[`Display chapter Sidebar 5`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-96"
+          aria-controls="Header-86"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -6276,7 +6276,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-161"
+          aria-controls="collapse-149"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -6288,7 +6288,7 @@ exports[`Display chapter Sidebar 5`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-161"
+          id="collapse-149"
         >
           <div
             class="csl-bib-body"
@@ -6356,7 +6356,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-162"
+                  aria-controls="score-150"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -6407,7 +6407,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-163"
+                  aria-controls="note-151"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -6418,7 +6418,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-164"
+                  aria-controls="parallels-152"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -6442,7 +6442,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-163"
+              id="note-151"
               style=""
             >
               <td
@@ -6459,7 +6459,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-164"
+              id="parallels-152"
               style=""
             >
               <td
@@ -6481,7 +6481,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-162"
+              id="score-150"
               style=""
             >
               <td
@@ -6606,7 +6606,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-168"
+                  aria-controls="score-156"
                   aria-expanded="true"
                   aria-label="Show score"
                   class="fas fa-caret-down"
@@ -6657,7 +6657,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-169"
+                  aria-controls="note-157"
                   aria-expanded="true"
                   aria-label="Show note"
                   class="fas fa-book-open"
@@ -6668,7 +6668,7 @@ exports[`Display chapter Sidebar 5`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-170"
+                  aria-controls="parallels-158"
                   aria-expanded="true"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
@@ -6692,7 +6692,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="note-169"
+              id="note-157"
               style=""
             >
               <td
@@ -6709,7 +6709,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="parallels-170"
+              id="parallels-158"
               style=""
             >
               <td
@@ -6731,7 +6731,7 @@ exports[`Display chapter Sidebar 5`] = `
             </tr>
             <tr
               class="collapse show"
-              id="score-168"
+              id="score-156"
               style=""
             >
               <td
@@ -6812,7 +6812,7 @@ exports[`Display chapter Sidebar 5`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-177"
+          aria-controls="settings-165"
           aria-expanded="false"
           class="settings__heading"
           role="button"
@@ -6879,7 +6879,7 @@ exports[`Display chapter Snapshot 1`] = `
         </a>
         <div
           class="navbar-collapse collapse"
-          id="Header-14"
+          id="Header-12"
         >
           <div
             class="mx-auto navbar-nav"
@@ -6953,7 +6953,7 @@ exports[`Display chapter Snapshot 1`] = `
           </span>
         </div>
         <button
-          aria-controls="Header-14"
+          aria-controls="Header-12"
           aria-label="Toggle navigation"
           class="navbar-toggler collapsed"
           type="button"
@@ -7079,7 +7079,7 @@ exports[`Display chapter Snapshot 1`] = `
         class="chapter-view__section"
       >
         <h3
-          aria-controls="collapse-15"
+          aria-controls="collapse-13"
           class="chapter-view__section-heading collapsible_section__heading"
         >
           How to cite
@@ -7091,7 +7091,7 @@ exports[`Display chapter Snapshot 1`] = `
         </h3>
         <div
           class="collapse show"
-          id="collapse-15"
+          id="collapse-13"
         >
           <div
             class="csl-bib-body"
@@ -7159,7 +7159,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-17"
+                  aria-controls="score-14"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -7210,7 +7210,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-18"
+                  aria-controls="note-15"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -7221,7 +7221,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-19"
+                  aria-controls="parallels-16"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -7263,7 +7263,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="score-22"
+                  aria-controls="score-18"
                   aria-expanded="false"
                   aria-label="Show score"
                   class="fas fa-caret-right"
@@ -7314,7 +7314,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="note-23"
+                  aria-controls="note-19"
                   aria-expanded="false"
                   aria-label="Show note"
                   class="fas fa-book"
@@ -7325,7 +7325,7 @@ exports[`Display chapter Snapshot 1`] = `
                 class="chapter-display__toggle"
               >
                 <i
-                  aria-controls="parallels-24"
+                  aria-controls="parallels-20"
                   aria-label="Show parallels"
                   class="fas fa-quote-right"
                   role="button"
@@ -7357,7 +7357,7 @@ exports[`Display chapter Snapshot 1`] = `
         class="settings"
       >
         <h3
-          aria-controls="settings-26"
+          aria-controls="settings-22"
           aria-expanded="false"
           class="settings__heading"
           role="button"
