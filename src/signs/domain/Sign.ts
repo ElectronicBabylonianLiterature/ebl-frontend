@@ -1,6 +1,6 @@
 import produce, { immerable } from 'immer'
 import { compareCleanedAkkadianString } from 'dictionary/domain/compareAkkadianStrings'
-import { subscriptNumbers } from 'transliteration/ui/SubIndex'
+import { subscriptNumbers } from 'transliteration/application/SubIndex'
 
 export interface Logogram {
   logogram: string

@@ -26,7 +26,7 @@ import { Anchor } from 'transliteration/ui/line-number'
 import Score from './Score'
 import Parallels from './Parallels'
 import { createColumns } from 'transliteration/domain/columns'
-import { numberToUnicodeSubscript } from 'transliteration/ui/SubIndex'
+import { numberToUnicodeSubscript } from 'transliteration/application/SubIndex'
 
 const lineNumberColumns = 1
 const toggleColumns = 3
