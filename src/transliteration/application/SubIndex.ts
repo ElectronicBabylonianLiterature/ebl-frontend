@@ -1,6 +1,3 @@
-import React from 'react'
-import { NamedSign } from 'transliteration/domain/token'
-
 export const subscriptNumbers: ReadonlyMap<string, string> = new Map([
   ['0', '₀'],
   ['1', '₁'],
@@ -24,9 +21,4 @@ export function numberToUnicodeSubscript(
       .map((number) => subscriptNumbers.get(number))
       .join('') ?? 'ₓ'
   )
-}
-
-export default function SubIndex({ token }: { token: NamedSign }): JSX.Element {
-  const subIndex = numberToUnicodeSubscript(token.subIndex)
-  return <span className="Transliteration__subIndex">{subIndex}</span>
 }
