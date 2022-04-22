@@ -191,36 +191,7 @@ export default class TextService {
                 )
               ),
               Bluebird.all(
-                line.variants.map((variant) =>
-                  Bluebird.all([
-                    variant.note &&
-                      this.referenceInjector
-                        .injectReferencesToMarkup(variant.note.parts)
-                        .then(
-                          (parts) =>
-                            new NoteLine({
-                              ...(variant.note as NoteLineDto),
-                              parts,
-                            })
-                        ),
-                    variant.parallelLines.map(
-                      (parallel) =>
-                        fromTransliterationLineDto(parallel) as ParallelLine
-                    ),
-                    this.referenceInjector.injectReferencesToMarkup(
-                      variant.intertext
-                    ),
-                  ]).then(
-                    ([note, parallelLines, intertext]) =>
-                      new LineVariantDisplay(
-                        variant.reconstruction,
-                        note,
-                        variant.manuscripts,
-                        parallelLines,
-                        intertext
-                      )
-                  )
-                )
+                line.variants.map((variant) => this.findLineVariant(variant))
               ),
             ]).then(([translation, variants]) => ({
               ...line,
@@ -241,6 +212,34 @@ export default class TextService {
             )
         )
       )
+  }
+
+  findLineVariant(variant: any): Bluebird<LineVariantDisplay> {
+    return Bluebird.all([
+      variant.note &&
+        this.referenceInjector
+          .injectReferencesToMarkup(variant.note.parts)
+          .then(
+            (parts) =>
+              new NoteLine({
+                ...(variant.note as NoteLineDto),
+                parts,
+              })
+          ),
+      variant.parallelLines.map(
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+      ),
+      this.referenceInjector.injectReferencesToMarkup(variant.intertext),
+    ]).then(
+      ([note, parallelLines, intertext]) =>
+        new LineVariantDisplay(
+          variant.reconstruction,
+          note,
+          variant.manuscripts,
+          parallelLines,
+          intertext
+        )
+    )
   }
 
   findChapterLine(
