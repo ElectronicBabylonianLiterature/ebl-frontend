@@ -194,9 +194,11 @@ export function ChapterViewLineVariant({
   const variant = line.variants[variantNumber]
   const isPrimaryVariant = variantNumber === 0
 
-  const column = useMemo(() => createColumns(variant.reconstruction), [variant])
+  const columns = useMemo(() => createColumns(variant.reconstruction), [
+    variant,
+  ])
 
-  const transliterations = useMemo(
+  const transliteration = useMemo(
     () => (
       <>
         {isPrimaryVariant ? (
@@ -208,10 +210,10 @@ export function ChapterViewLineVariant({
             )}:\xa0`}</span>
           </td>
         )}
-        <LineColumns columns={column} maxColumns={maxColumns} />
+        <LineColumns columns={columns} maxColumns={maxColumns} />
       </>
     ),
-    [activeLine, column, line, variantNumber, isPrimaryVariant, maxColumns]
+    [activeLine, columns, line, variantNumber, isPrimaryVariant, maxColumns]
   )
   const score = useMemo(
     () => (
@@ -295,7 +297,7 @@ export function ChapterViewLineVariant({
         >
           {isPrimaryVariant && scoreCaret}
         </td>
-        {transliterations}
+        {transliteration}
         <td
           className="chapter-display__toggle"
           onClick={() => dispatchRows({ type: 'toggleNote', row: lineNumber })}
