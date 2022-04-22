@@ -122,34 +122,44 @@ export function submitFormByTestId(
   fireEvent.submit(element.getByTestId(testId))
 }
 
-export type TestData = [
-  string,
-  unknown[],
-  jest.Mock | jest.MockInstance<any, any>,
-  unknown,
-  (unknown[] | null)?,
-  unknown?
-]
+export class TestData {
+  constructor(
+    public method: string,
+    public params: unknown[],
+    public target: jest.Mock | jest.MockInstance<any, any>,
+    public expectedResult: unknown,
+    public expectedParams?: unknown[] | null,
+    public targetResult?: unknown
+  ) {}
+}
+
 export function testDelegation(
   object: unknown,
   testData: readonly TestData[]
 ): void {
   describe.each(testData)(
     '%s',
-    (method, params, target, expectedResult, expectedParams, targetResult) => {
+    ({
+      method,
+      params,
+      target,
+      expectedResult,
+      expectedParams,
+      targetResult,
+    }) => {
       let result: unknown
 
       beforeEach(() => {
         jest.clearAllMocks()
-        target.mockReturnValueOnce(targetResult || expectedResult)
+        target.mockReturnValueOnce(targetResult ?? expectedResult)
         result = (_.isFunction(object) ? object() : object)[method](...params)
       })
 
-      it(`Delegates`, () => {
-        expect(target).toHaveBeenCalledWith(...(expectedParams || params))
+      it('Delegates', () => {
+        expect(target).toHaveBeenCalledWith(...(expectedParams ?? params))
       })
 
-      it(`Returns`, async () => {
+      it('Returns', async () => {
         if (result instanceof Bluebird || result instanceof Promise) {
           await expect(result).resolves.toEqual(expectedResult)
         } else {

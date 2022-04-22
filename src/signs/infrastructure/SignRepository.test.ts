@@ -32,30 +32,30 @@ const getImagesResult = {
 }
 
 const testData: TestData[] = [
-  [
+  new TestData(
     'find',
     [signName],
     apiClient.fetchJson,
     resultStub,
     [`/signs/${encodeURIComponent(signName)}`, true],
-    Promise.resolve(resultStub),
-  ],
-  [
+    Promise.resolve(resultStub)
+  ),
+  new TestData(
     'search',
     [query],
     apiClient.fetchJson,
     [resultStub],
     [`/signs?${stringify(query)}`, true],
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
     'getImages',
     [signName],
     apiClient.fetchJson,
     [getImagesResult],
     [`/signs/${encodeURIComponent(signName)}/images`, true],
-    Promise.resolve([getImagesResult]),
-  ],
+    Promise.resolve([getImagesResult])
+  ),
 ]
 describe('test word repository', () => {
   testDelegation(signsRepository, testData)

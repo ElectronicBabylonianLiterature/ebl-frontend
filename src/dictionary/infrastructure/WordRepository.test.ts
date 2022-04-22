@@ -15,38 +15,38 @@ const word = {
 const resultStub = { pos: ['AJ'] }
 
 const testData: TestData[] = [
-  [
+  new TestData(
     'find',
     [wordId],
     apiClient.fetchJson,
     resultStub,
     [`/words/${encodeURIComponent(wordId)}`, true],
-    Promise.resolve(resultStub),
-  ],
-  [
+    Promise.resolve(resultStub)
+  ),
+  new TestData(
     'search',
     [query],
     apiClient.fetchJson,
     [resultStub],
     [`/words?query=${encodeURIComponent(query)}`, true],
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
     'searchLemma',
     [query],
     apiClient.fetchJson,
     [resultStub],
     [`/words?lemma=${encodeURIComponent(query)}`, true],
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
     'update',
     [word],
     apiClient.postJson,
     resultStub,
     [`/words/${encodeURIComponent(word._id)}`, word],
-    Promise.resolve(resultStub),
-  ],
+    Promise.resolve(resultStub)
+  ),
 ]
 describe('test word repository', () => {
   testDelegation(wordRepository, testData)

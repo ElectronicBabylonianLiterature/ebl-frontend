@@ -17,38 +17,38 @@ const resultStub = {
 const entry = new BibliographyEntry(resultStub)
 
 const testData: TestData[] = [
-  [
+  new TestData(
     'find',
     [id],
     apiClient.fetchJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, true],
-    Promise.resolve(resultStub),
-  ],
-  [
+    Promise.resolve(resultStub)
+  ),
+  new TestData(
     'search',
     [query],
     apiClient.fetchJson,
     [entry],
     [`/bibliography?query=${encodeURIComponent(query)}`, true],
-    Promise.resolve([resultStub]),
-  ],
-  [
+    Promise.resolve([resultStub])
+  ),
+  new TestData(
     'update',
     [entry],
     apiClient.postJson,
     entry,
     [`/bibliography/${encodeURIComponent(id)}`, resultStub],
-    Promise.resolve(resultStub),
-  ],
-  [
+    Promise.resolve(resultStub)
+  ),
+  new TestData(
     'create',
     [entry],
     apiClient.postJson,
     entry,
     ['/bibliography', resultStub],
-    Promise.resolve(resultStub),
-  ],
+    Promise.resolve(resultStub)
+  ),
 ]
 
 describe('BibliographyRepository', () =>
