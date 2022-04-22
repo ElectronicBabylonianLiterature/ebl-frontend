@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import AppContent from 'common/AppContent'
 import { SectionCrumb, TextCrumb } from 'common/Breadcrumbs'
 import { Button, Col, Row } from 'react-bootstrap'
-import './wordInformationDisplay.css'
+import './wordInformationDisplay.sass'
 import WordService from 'dictionary/application/WordService'
 import { LiteratureRedirectBox } from 'common/LiteratureRedirectBox'
 import {
@@ -154,7 +154,7 @@ function WordDisplay({ word }: { word: Word }): JSX.Element {
       {word.supplementsAkkadianDictionaries && (
         <>
           <Heading number={Sections[3].number} title={Sections[3].title} />
-          <Row className="ml-5">
+          <Row className="supplementsAkkadianDictionaries">
             <Col>
               {' '}
               <Markdown text={word.supplementsAkkadianDictionaries} />
