@@ -32,15 +32,13 @@ const translationColumns = lineNumberColumns + 1
 function InterText({
   variant,
   colSpan,
-  hasIntertext,
 }: {
   variant: LineVariantDisplay
   colSpan: number
-  hasIntertext: boolean
 }): JSX.Element {
   return (
     <>
-      {hasIntertext && (
+      {variant.hasIntertext && (
         <tr>
           <td colSpan={colSpan} className="chapter-display__intertext">
             (
@@ -195,7 +193,6 @@ export function ChapterViewLineVariant({
   const [{ language }] = useContext(TranslationContext)
   const variant = line.variants[variantNumber]
   const isPrimaryVariant = variantNumber === 0
-  const hasIntertext = variant.intertext.length > 0
 
   const columns = useMemo(() => createColumns(variant.reconstruction), [
     variant,
@@ -284,11 +281,7 @@ export function ChapterViewLineVariant({
 
   return (
     <>
-      <InterText
-        variant={variant}
-        colSpan={totalColumns}
-        hasIntertext={hasIntertext}
-      />
+      <InterText variant={variant} colSpan={totalColumns} />
       <tr
         className={classNames({
           'chapter-display__line': true,

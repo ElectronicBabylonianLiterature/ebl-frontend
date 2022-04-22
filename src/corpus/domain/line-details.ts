@@ -79,6 +79,10 @@ export class LineVariantDisplay {
     readonly parallelLines: ParallelLine[],
     readonly intertext: MarkupPart[]
   ) {}
+
+  get hasIntertext(): boolean {
+    return this.intertext.length > 0
+  }
 }
 
 export class LineDetails {
