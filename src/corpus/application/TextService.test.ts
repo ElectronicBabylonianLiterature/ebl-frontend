@@ -296,7 +296,7 @@ const testData: TestData[] = [
     new LineDetails(
       [
         new LineVariantDisplay(
-          [], // reconstruction
+          [],
           new NoteLine({
             content: [],
             parts: [
@@ -305,7 +305,7 @@ const testData: TestData[] = [
                 type: 'StringPart',
               },
             ],
-          }), // note
+          }),
           [
             new ManuscriptLineDisplay(
               Provenances.Nippur,
@@ -318,8 +318,8 @@ const testData: TestData[] = [
               []
             ),
           ],
-          [], // parallelLines
-          [] // intertext
+          [],
+          []
         ),
       ],
       0
