@@ -31,7 +31,7 @@ const getImagesResult = {
   script: 'script-label',
 }
 
-const testData: TestData[] = [
+const testData: TestData<SignRepository>[] = [
   new TestData(
     'find',
     [signName],

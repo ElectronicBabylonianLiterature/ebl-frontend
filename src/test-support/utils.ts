@@ -122,20 +122,21 @@ export function submitFormByTestId(
   fireEvent.submit(element.getByTestId(testId))
 }
 
-export class TestData {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class TestData<S, T = any, Y extends any[] = any[]> {
   constructor(
-    public method: string,
+    public method: keyof S,
     public params: unknown[],
-    public target: jest.Mock | jest.MockInstance<any, any>,
+    public target: jest.Mock<T, Y> | jest.MockInstance<T, Y>,
     public expectedResult: unknown,
-    public expectedParams?: unknown[] | null,
-    public targetResult?: unknown
+    public expectedParams?: Y,
+    public targetResult?: T
   ) {}
 }
 
-export function testDelegation(
-  object: unknown,
-  testData: readonly TestData[]
+export function testDelegation<S>(
+  object: S,
+  testData: readonly TestData<S>[]
 ): void {
   describe.each(testData)(
     '%s',

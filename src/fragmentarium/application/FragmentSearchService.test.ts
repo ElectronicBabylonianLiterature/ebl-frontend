@@ -14,7 +14,7 @@ const fragmentRepository = {
 }
 
 const fragmentSearchService = new FragmentSearchService(fragmentRepository)
-const testData: TestData[] = [
+const testData: TestData<FragmentSearchService>[] = [
   new TestData(
     'random',
     [],

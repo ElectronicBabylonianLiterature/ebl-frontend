@@ -16,7 +16,7 @@ const resultStub = {
 }
 const entry = new BibliographyEntry(resultStub)
 
-const testData: TestData[] = [
+const testData: TestData<BibliographyRepository>[] = [
   new TestData(
     'find',
     [id],

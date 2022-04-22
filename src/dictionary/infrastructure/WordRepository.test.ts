@@ -14,7 +14,7 @@ const word = {
 }
 const resultStub = { pos: ['AJ'] }
 
-const testData: TestData[] = [
+const testData: TestData<WordRepository>[] = [
   new TestData(
     'find',
     [wordId],

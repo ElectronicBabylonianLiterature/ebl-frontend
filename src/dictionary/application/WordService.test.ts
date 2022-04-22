@@ -11,7 +11,7 @@ const wordRepository = new (WordRepository as jest.Mock<
 
 const wordService = new WordService(wordRepository)
 
-const testData: TestData[] = [
+const testData: TestData<WordService>[] = [
   new TestData('find', ['id'], wordRepository.find, resultStub),
   new TestData('search', ['aklu'], wordRepository.search, resultStub),
   new TestData('update', [{ _id: 'id' }], wordRepository.update, resultStub),

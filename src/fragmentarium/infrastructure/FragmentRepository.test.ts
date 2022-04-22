@@ -49,7 +49,7 @@ const fragmentInfoWithLines = {
   edition_date: '2019-09-10T13:03:37.575580',
 }
 
-const testData: TestData[] = [
+const testData: TestData<FragmentRepository>[] = [
   new TestData(
     'statistics',
     [],

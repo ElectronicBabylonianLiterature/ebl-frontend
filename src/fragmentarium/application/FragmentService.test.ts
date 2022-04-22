@@ -70,7 +70,7 @@ const fragmentService = new FragmentService(
   wordRepository,
   bibliographyService
 )
-const testData: TestData[] = [
+const testData: TestData<FragmentService>[] = [
   new TestData('statistics', [], fragmentRepository.statistics, resultStub),
   new TestData(
     'lineToVecRanking',

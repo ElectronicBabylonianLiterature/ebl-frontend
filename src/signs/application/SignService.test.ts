@@ -10,7 +10,7 @@ const signRepository = new (SignRepository as jest.Mock<
 
 const signService = new SignService(signRepository)
 
-const testData: TestData[] = [
+const testData: TestData<SignService>[] = [
   new TestData('find', ['signName'], signRepository.find, resultStub),
   new TestData(
     'search',

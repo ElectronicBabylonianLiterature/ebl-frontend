@@ -251,7 +251,7 @@ const chapterUrl = `/texts/${encodeURIComponent(
   chapter.name
 )}`
 
-const testData: TestData[] = [
+const testData: TestData<TextService>[] = [
   new TestData(
     'find',
     [text.id],

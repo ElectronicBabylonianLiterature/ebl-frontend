@@ -17,7 +17,7 @@ const resultStub = {}
 const bibliographyRepository = new (BibliographyRepository as jest.Mock)()
 const bibliographyService = new BibliographyService(bibliographyRepository)
 
-const testData: TestData[] = [
+const testData: TestData<BibliographyService>[] = [
   new TestData('find', ['RN2020'], bibliographyRepository.find, [resultStub]),
   new TestData('update', [resultStub], bibliographyRepository.update, [
     resultStub,
