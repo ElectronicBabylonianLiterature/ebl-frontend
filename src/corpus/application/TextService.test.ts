@@ -24,7 +24,7 @@ import { chapterDisplayDtoFactory } from 'test-support/chapter-fixtures'
 import { referenceFactory } from 'test-support/bibliography-fixtures'
 import {
   LineDetails,
-  LineVariantDisplay,
+  LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import { TextLine } from 'transliteration/domain/text-line'
@@ -226,9 +226,17 @@ const chapterDisplay = new ChapterDisplay(
     translation: dto.translation.map(
       (translation) => new TranslationLine(translation)
     ),
-    note: dto.note && new NoteLine(dto.note),
-    parallelLines: dto.parallelLines.map(
-      (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+    variants: dto.variants.map(
+      (variant) =>
+        new LineVariantDetails(
+          variant.reconstruction,
+          variant.note && new NoteLine(variant.note),
+          variant.manuscripts,
+          variant.parallelLines.map(
+            (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+          ),
+          variant.intertext
+        )
     ),
   })),
   chapterDisplayDto.record
@@ -283,26 +291,54 @@ const testData: TestData[] = [
   ],
   [
     'findChapterLine',
-    [chapterId, 0],
+    [chapterId, 0, 0],
     apiClient.fetchJson,
-    new LineDetails([
-      new LineVariantDisplay([
-        new ManuscriptLineDisplay(
-          Provenances.Nippur,
-          PeriodModifiers['Early'],
-          Periods['Ur III'],
-          ManuscriptTypes.School,
-          '1',
-          ['o'],
-          new TextLine(lines[0]),
+    new LineDetails(
+      [
+        new LineVariantDetails(
+          [],
+          new NoteLine({
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          }),
+          [
+            new ManuscriptLineDisplay(
+              Provenances.Nippur,
+              PeriodModifiers['Early'],
+              Periods['Ur III'],
+              ManuscriptTypes.School,
+              '1',
+              ['o'],
+              new TextLine(lines[0]),
+              []
+            ),
+          ],
+          [],
           []
         ),
-      ]),
-    ]),
+      ],
+      0
+    ),
     [`${chapterUrl}/lines/0`, true],
     Bluebird.resolve({
       variants: [
         {
+          reconstruction: [],
+          note: {
+            prefix: '#note: ',
+            content: [],
+            parts: [
+              {
+                text: 'note note',
+                type: 'StringPart',
+              },
+            ],
+          },
           manuscripts: [
             {
               provenance: 'Nippur',
@@ -315,6 +351,8 @@ const testData: TestData[] = [
               paratext: [],
             },
           ],
+          parallelLines: [],
+          intertext: [],
         },
       ],
     }),
@@ -454,7 +492,9 @@ test('inject ChapterDisplay', async () => {
     draft.lines[0].translation[0].parts = [
       createInjectedPart(translationReference),
     ]
-    draft.lines[0].intertext = [createInjectedPart(intertextReference)]
+    draft.lines[0].variants[0].intertext = [
+      createInjectedPart(intertextReference),
+    ]
   })
   const injectedChapter = produce(chapterDisplay, (draft) => {
     draft.lines[0].translation[0].parts = [
@@ -463,7 +503,7 @@ test('inject ChapterDisplay', async () => {
         type: 'BibliographyPart',
       },
     ]
-    draft.lines[0].intertext = [
+    draft.lines[0].variants[0].intertext = [
       {
         reference: castDraft(intertextReference),
         type: 'BibliographyPart',

@@ -86,7 +86,10 @@ function ChapterView({
   textService: TextService
 }): JSX.Element {
   const columns = useMemo(
-    () => chapter.lines.map((line) => createColumns(line.reconstruction)),
+    () =>
+      chapter.lines.map((line) =>
+        createColumns(line.variants[0].reconstruction)
+      ),
     [chapter.lines]
   )
   const maxColumns_ = maxColumns(columns)

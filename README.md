@@ -95,7 +95,9 @@ Display of content can be controlled using `SessionContext`:
 
 ```typescript
 <SessionContext.Consumer>
-  {(session: Session): JSX.Element => session.isAllowedToReadFragments() ? 'access' : 'no access'}
+  {(session: Session): JSX.Element =>
+    session.isAllowedToReadFragments() ? 'access' : 'no access'
+  }
 </SessionContext.Consumer>
 ```
 
