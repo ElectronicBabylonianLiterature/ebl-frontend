@@ -210,7 +210,7 @@ export function ChapterViewLineVariant({
         {isPrimaryVariant ? (
           <LineNumber line={line} activeLine={activeLine} />
         ) : (
-          <td style={{ textAlign: 'right' }}>
+          <td className="chapter-display__variant">
             <span>{`variant${numberToUnicodeSubscript(
               variantNumber
             )}:\xa0`}</span>
