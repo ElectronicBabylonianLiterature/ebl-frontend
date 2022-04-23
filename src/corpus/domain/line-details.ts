@@ -8,6 +8,7 @@ import {
   compareManuscripts,
   ManuscriptType,
   ManuscriptTypes,
+  OldSiglum,
 } from './manuscript'
 import { DollarLine } from 'transliteration/domain/dollar-lines'
 import {
@@ -30,6 +31,7 @@ export class ManuscriptLineDisplay {
     readonly period: Period,
     readonly type: ManuscriptType,
     readonly siglumDisambiguator: string,
+    readonly oldSigla: readonly OldSiglum[],
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
     readonly paratext: readonly AbstractLine[]

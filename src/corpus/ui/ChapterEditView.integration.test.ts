@@ -78,6 +78,7 @@ const chapterDtos = [
       manuscriptDtoFactory.build(
         {
           siglumDisambiguator: '1c',
+          oldSigla: [],
           museumNumber: 'BM.X',
           accession: 'X.1',
           periodModifier: 'Late',
@@ -145,6 +146,7 @@ const chapterDtos = [
 const defaultManuscriptDto = {
   id: null,
   siglumDisambiguator: '',
+  oldSigla: [],
   museumNumber: '',
   accession: '',
   periodModifier: 'None',

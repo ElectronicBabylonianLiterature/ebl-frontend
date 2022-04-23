@@ -13,6 +13,7 @@ test('constructor', () => {
   const period = Periods.Persian
   const type = ManuscriptTypes.Library
   const disambiguator = 'a'
+  const oldSigla = []
   const labels = ['r']
   const line = textLine
   const paratext = [note, singleRuling]
@@ -23,6 +24,7 @@ test('constructor', () => {
     period,
     type,
     disambiguator,
+    oldSigla,
     labels,
     line,
     paratext

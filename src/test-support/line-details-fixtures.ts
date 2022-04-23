@@ -60,6 +60,7 @@ export const manuscriptLineDisplayFactory = ManuscriptLineDisplayFactory.define(
           )
         ),
       chance.word(),
+      [],
       chance.pickone([[], ['r'], ['o'], ['o', 'i'], ['iii']]),
       associations.line ?? textLine,
       associations.paratext ??

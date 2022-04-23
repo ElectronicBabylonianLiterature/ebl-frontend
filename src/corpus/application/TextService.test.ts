@@ -325,6 +325,7 @@ const testData: TestData[] = [
               Periods['Ur III'],
               ManuscriptTypes.School,
               '1',
+              [],
               ['o'],
               new TextLine(lines[0]),
               []
@@ -357,6 +358,7 @@ const testData: TestData[] = [
               periodModifier: 'Early',
               period: 'Ur III',
               siglumDisambiguator: '1',
+              oldSigla: [],
               type: 'School',
               labels: ['o'],
               line: lines[0],
