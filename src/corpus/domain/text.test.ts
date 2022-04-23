@@ -253,6 +253,7 @@ describe('Manuscript', () => {
       new Manuscript(
         manuscriptConfig.id,
         manuscriptConfig.siglumDisambiguator,
+        manuscriptConfig.oldSigla,
         manuscriptConfig.museumNumber,
         manuscriptConfig.accession,
         manuscriptConfig.periodModifier,

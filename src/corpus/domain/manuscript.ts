@@ -64,12 +64,19 @@ export function compareManuscriptTypes(
   }
 }
 
+export class OldSiglum {
+  readonly [immerable] = true
+
+  constructor(readonly siglum: string, readonly reference: Reference) {}
+}
+
 export class Manuscript {
   readonly [immerable] = true
 
   constructor(
     readonly id: number | null = null,
     readonly siglumDisambiguator: string = '',
+    readonly oldSigla: OldSiglum[] = [],
     readonly museumNumber: string = '',
     readonly accession: string = '',
     readonly periodModifier: PeriodModifier = PeriodModifiers.None,
