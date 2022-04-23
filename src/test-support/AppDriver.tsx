@@ -142,7 +142,7 @@ export default class AppDriver {
   }
 
   async waitForText(text: Matcher): Promise<void> {
-    await this.getView().findByText(text)
+    await this.getView().findAllByText(text)
   }
 
   async waitForTextToDisappear(text: Matcher): Promise<void> {

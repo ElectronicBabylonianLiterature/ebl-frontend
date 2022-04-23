@@ -13,7 +13,7 @@ import {
   LineLemmatization,
 } from 'corpus/domain/lemmatization'
 import { Line, LineVariant, ManuscriptLine } from 'corpus/domain/line'
-import { LineDetails, LineVariantDisplay } from 'corpus/domain/line-details'
+import { LineDetails, LineVariantDetails } from 'corpus/domain/line-details'
 import { Manuscript } from 'corpus/domain/manuscript'
 import SiglumAndTransliteration from 'corpus/domain/SiglumAndTransliteration'
 import { Text } from 'corpus/domain/text'
@@ -190,26 +190,13 @@ export default class TextService {
                     )
                 )
               ),
-              this.referenceInjector.injectReferencesToMarkup(line.intertext),
-              line.note &&
-                this.referenceInjector
-                  .injectReferencesToMarkup(line.note.parts)
-                  .then(
-                    (parts) =>
-                      new NoteLine({
-                        ...(line.note as NoteLineDto),
-                        parts,
-                      })
-                  ),
-            ]).then(([translation, intertext, note]) => ({
+              Bluebird.all(
+                line.variants.map((variant) => this.findLineVariant(variant))
+              ),
+            ]).then(([translation, variants]) => ({
               ...line,
               translation,
-              intertext,
-              note,
-              parallelLines: line.parallelLines.map(
-                (parallel) =>
-                  fromTransliterationLineDto(parallel) as ParallelLine
-              ),
+              variants,
             }))
           )
         ).then(
@@ -227,10 +214,42 @@ export default class TextService {
       )
   }
 
-  findChapterLine(id: ChapterId, number: number): Bluebird<LineDetails> {
+  findLineVariant(variant: any): Bluebird<LineVariantDetails> {
+    return Bluebird.all([
+      variant.note &&
+        this.referenceInjector
+          .injectReferencesToMarkup(variant.note.parts)
+          .then(
+            (parts) =>
+              new NoteLine({
+                ...(variant.note as NoteLineDto),
+                parts,
+              })
+          ),
+      variant.parallelLines.map(
+        (parallel) => fromTransliterationLineDto(parallel) as ParallelLine
+      ),
+      this.referenceInjector.injectReferencesToMarkup(variant.intertext),
+    ]).then(
+      ([note, parallelLines, intertext]) =>
+        new LineVariantDetails(
+          variant.reconstruction,
+          note,
+          variant.manuscripts,
+          parallelLines,
+          intertext
+        )
+    )
+  }
+
+  findChapterLine(
+    id: ChapterId,
+    number: number,
+    variantNumber: number
+  ): Bluebird<LineDetails> {
     return this.apiClient
       .fetchJson(`${createChapterUrl(id)}/lines/${number}`, true)
-      .then(fromLineDetailsDto)
+      .then((json) => fromLineDetailsDto(json, variantNumber))
       .then((line) =>
         Bluebird.all(
           line.variants.map((variant) =>
@@ -256,9 +275,18 @@ export default class TextService {
                   })
                 )
               )
-            ).then((manuscripts) => new LineVariantDisplay(manuscripts))
+            ).then(
+              (manuscripts) =>
+                new LineVariantDetails(
+                  variant.reconstruction,
+                  variant.note,
+                  manuscripts,
+                  variant.parallelLines,
+                  variant.intertext
+                )
+            )
           )
-        ).then((variants) => new LineDetails(variants))
+        ).then((variants) => new LineDetails(variants, variantNumber))
       )
   }
 

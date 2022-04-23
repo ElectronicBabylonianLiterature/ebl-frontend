@@ -15,7 +15,7 @@ import {
 } from 'corpus/domain/line'
 import {
   LineDetails,
-  LineVariantDisplay,
+  LineVariantDetails,
   ManuscriptLineDisplay,
 } from 'corpus/domain/line-details'
 import {
@@ -44,17 +44,21 @@ import { TextLine } from 'transliteration/domain/text-line'
 import { Extent } from 'transliteration/domain/translation-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
-import { NoteLineDto } from 'transliteration/domain/note-line'
+import { NoteLine, NoteLineDto } from 'transliteration/domain/note-line'
 import { ParallelLineDto } from 'transliteration/domain/parallel-line'
 import Reference from 'bibliography/domain/Reference'
 
+export type LineVariantDisplayDto = Pick<
+  LineVariantDetails,
+  'reconstruction' | 'manuscripts' | 'intertext'
+> & {
+  note: Omit<NoteLineDto, 'type'> | null
+  parallelLines: ParallelLineDto[]
+}
+
 export type LineDisplayDto = Pick<
   LineDisplay,
-  | 'number'
-  | 'isSecondLineOfParallelism'
-  | 'isBeginningOfSection'
-  | 'intertext'
-  | 'reconstruction'
+  'number' | 'isSecondLineOfParallelism' | 'isBeginningOfSection'
 > & {
   translation: {
     language: string
@@ -62,8 +66,7 @@ export type LineDisplayDto = Pick<
     parts: MarkupPart[]
     content: Token[]
   }[]
-  note: Omit<NoteLineDto, 'type'> | null
-  parallelLines: ParallelLineDto[]
+  variants: LineVariantDisplayDto[]
 }
 
 export type ChapterDisplayDto = Pick<
@@ -164,28 +167,37 @@ export function fromLineDto(lineDto): Line {
   })
 }
 
-export function fromLineDetailsDto(line): LineDetails {
+function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
+  return new ManuscriptLineDisplay(
+    Provenances[manuscript.provenance],
+    PeriodModifiers[manuscript.periodModifier],
+    Periods[manuscript.period],
+    ManuscriptTypes[manuscript.type],
+    manuscript.siglumDisambiguator,
+    manuscript.labels,
+    (fromTransliterationLineDto(manuscript.line) as unknown) as
+      | TextLine
+      | EmptyLine,
+    manuscript.paratext.map(fromTransliterationLineDto)
+  )
+}
+
+function fromLineVariantDisplay(variant): LineVariantDetails {
+  return new LineVariantDetails(
+    variant.reconstruction,
+    variant.note && new NoteLine(variant.note),
+    variant.manuscripts.map((manuscript) =>
+      fromManuscriptLineDisplay(manuscript)
+    ),
+    variant.parallelLines,
+    variant.intertext
+  )
+}
+
+export function fromLineDetailsDto(line, activeVariant: number): LineDetails {
   return new LineDetails(
-    line.variants.map(
-      (variant) =>
-        new LineVariantDisplay(
-          variant.manuscripts.map(
-            (manuscript) =>
-              new ManuscriptLineDisplay(
-                Provenances[manuscript.provenance],
-                PeriodModifiers[manuscript.periodModifier],
-                Periods[manuscript.period],
-                ManuscriptTypes[manuscript.type],
-                manuscript.siglumDisambiguator,
-                manuscript.labels,
-                (fromTransliterationLineDto(manuscript.line) as unknown) as
-                  | TextLine
-                  | EmptyLine,
-                manuscript.paratext.map(fromTransliterationLineDto)
-              )
-          )
-        )
-    )
+    line.variants.map((variant) => fromLineVariantDisplay(variant)),
+    activeVariant
   )
 }
 

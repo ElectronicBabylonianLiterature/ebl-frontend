@@ -17,6 +17,9 @@ import {
 } from 'transliteration/domain/type-guards'
 import { AbstractLine } from 'transliteration/domain/abstract-line'
 import { NoteLine } from 'transliteration/domain/note-line'
+import { ParallelLine } from 'transliteration/domain/parallel-line'
+import { MarkupPart } from 'transliteration/domain/markup'
+import { Token } from 'transliteration/domain/token'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -66,16 +69,25 @@ export class ManuscriptLineDisplay {
   }
 }
 
-export class LineVariantDisplay {
+export class LineVariantDetails {
   readonly [immerable] = true
 
-  constructor(readonly manuscripts: readonly ManuscriptLineDisplay[]) {}
+  constructor(
+    readonly reconstruction: Token[],
+    readonly note: NoteLine | null,
+    readonly manuscripts: readonly ManuscriptLineDisplay[],
+    readonly parallelLines: ParallelLine[],
+    readonly intertext: MarkupPart[]
+  ) {}
 }
 
 export class LineDetails {
   readonly [immerable] = true
 
-  constructor(readonly variants: readonly LineVariantDisplay[]) {}
+  constructor(
+    readonly variants: readonly LineVariantDetails[],
+    readonly activeVariant: number
+  ) {}
 
   get numberOfColumns(): number {
     return Math.max(
@@ -92,5 +104,11 @@ export class LineDetails {
     return this.variants
       .flatMap((variant) => variant.manuscripts)
       .sort(compareManuscripts)
+  }
+
+  get manuscriptsOfVariant(): ManuscriptLineDisplay[] {
+    return this.sortedManuscripts.filter((manuscript) =>
+      this.variants[this.activeVariant].manuscripts.includes(manuscript)
+    )
   }
 }
