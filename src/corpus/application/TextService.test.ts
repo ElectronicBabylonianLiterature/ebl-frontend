@@ -251,8 +251,8 @@ const chapterUrl = `/texts/${encodeURIComponent(
   chapter.name
 )}`
 
-const testData: TestData[] = [
-  [
+const testData: TestData<TextService>[] = [
+  new TestData(
     'find',
     [text.id],
     apiClient.fetchJson,
@@ -263,33 +263,33 @@ const testData: TestData[] = [
       )}/${encodeURIComponent(text.index)}`,
       true,
     ],
-    Bluebird.resolve(textDto),
-  ],
-  [
+    Bluebird.resolve(textDto)
+  ),
+  new TestData(
     'list',
     [],
     apiClient.fetchJson,
     [text],
     ['/texts', false],
-    Bluebird.resolve(textsDto),
-  ],
-  [
+    Bluebird.resolve(textsDto)
+  ),
+  new TestData(
     'findChapter',
     [chapterId],
     apiClient.fetchJson,
     chapter,
     [chapterUrl, true],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'findChapterDisplay',
     [chapterId],
     apiClient.fetchJson,
     chapterDisplay,
     [`${chapterUrl}/display`, true],
-    Bluebird.resolve(chapterDisplay),
-  ],
-  [
+    Bluebird.resolve(chapterDisplay)
+  ),
+  new TestData(
     'findChapterLine',
     [chapterId, 0, 0],
     apiClient.fetchJson,
@@ -355,41 +355,41 @@ const testData: TestData[] = [
           intertext: [],
         },
       ],
-    }),
-  ],
-  [
+    })
+  ),
+  new TestData(
     'findColophons',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/colophons`, true],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
-  ],
-  [
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+  ),
+  new TestData(
     'findUnplacedLines',
     [chapterId],
     apiClient.fetchJson,
     [{ siglum: 'NinNA1a', text: fragment.text }],
     [`${chapterUrl}/unplaced_lines`, true],
-    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }]),
-  ],
-  [
+    Bluebird.resolve([{ siglum: 'NinNA1a', text: fragmentDto.text }])
+  ),
+  new TestData(
     'findExtantLines',
     [chapterId],
     apiClient.fetchJson,
     extantLines,
     [`${chapterUrl}/extant_lines`, true],
-    Bluebird.resolve(extantLines),
-  ],
-  [
+    Bluebird.resolve(extantLines)
+  ),
+  new TestData(
     'findManuscripts',
     [chapterId],
     apiClient.fetchJson,
     chapter.manuscripts,
     [`${chapterUrl}/manuscripts`, true],
-    Bluebird.resolve(chapterDto.manuscripts),
-  ],
-  [
+    Bluebird.resolve(chapterDto.manuscripts)
+  ),
+  new TestData(
     'searchTransliteration',
     ['kur'],
     apiClient.fetchJson,
@@ -400,33 +400,33 @@ const testData: TestData[] = [
       },
     ],
     ['/textsearch?transliteration=kur', true],
-    Bluebird.resolve([searchDto]),
-  ],
-  [
+    Bluebird.resolve([searchDto])
+  ),
+  new TestData(
     'updateAlignment',
     [chapterId, chapter.alignment],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/alignment`, alignmentDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateLemmatization',
     [chapterId, lemmatization],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/lemmatization`, lemmatizationDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateManuscripts',
     [chapterId, chapter.manuscripts, chapter.uncertainFragments],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/manuscripts`, manuscriptsDto],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'updateLines',
     [
       chapterId,
@@ -448,16 +448,16 @@ const testData: TestData[] = [
         new: [_.omit(createLine({ number: '3' }), 'status')],
       },
     ],
-    Bluebird.resolve(chapterDto),
-  ],
-  [
+    Bluebird.resolve(chapterDto)
+  ),
+  new TestData(
     'importChapter',
     [chapterId, '1. kur'],
     apiClient.postJson,
     chapter,
     [`${chapterUrl}/import`, { atf: '1. kur' }],
-    Bluebird.resolve(chapterDto),
-  ],
+    Bluebird.resolve(chapterDto)
+  ),
 ]
 
 describe('TextService', () => testDelegation(testService, testData))
