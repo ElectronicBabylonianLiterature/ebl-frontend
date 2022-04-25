@@ -30,7 +30,6 @@ function Manuscript({
       <td>
         <span className="chapter-display__manuscript-siglum">
           {manuscript.isParallelText && parallelLinePrefix}
-          {manuscript.siglum}
           <ManuscriptPopOver manuscript={manuscript} />
         </span>
       </td>
