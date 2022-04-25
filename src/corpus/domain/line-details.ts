@@ -21,6 +21,7 @@ import { NoteLine } from 'transliteration/domain/note-line'
 import { ParallelLine } from 'transliteration/domain/parallel-line'
 import { MarkupPart } from 'transliteration/domain/markup'
 import { Token } from 'transliteration/domain/token'
+import Reference from 'bibliography/domain/Reference'
 
 export class ManuscriptLineDisplay {
   readonly [immerable] = true
@@ -34,7 +35,8 @@ export class ManuscriptLineDisplay {
     readonly oldSigla: readonly OldSiglum[],
     readonly labels: readonly string[],
     readonly line: TextLine | EmptyLine,
-    readonly paratext: readonly AbstractLine[]
+    readonly paratext: readonly AbstractLine[],
+    readonly references: readonly Reference[]
   ) {}
 
   get number(): LineNumber | LineNumberRange | null {

@@ -179,7 +179,8 @@ function fromManuscriptLineDisplay(manuscript): ManuscriptLineDisplay {
     (fromTransliterationLineDto(manuscript.line) as unknown) as
       | TextLine
       | EmptyLine,
-    manuscript.paratext.map(fromTransliterationLineDto)
+    manuscript.paratext.map(fromTransliterationLineDto),
+    manuscript.references.map(createReference)
   )
 }
 
